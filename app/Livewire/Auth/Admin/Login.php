@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth\Admin;
 
+use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
@@ -46,22 +47,25 @@ class Login extends Component
             return;
         }
 
-        Auth::login($user, $this->remember);
+        Auth::guard('admin')->login($user, $this->remember);
 
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        $this->redirectIntended(default: route('admin.dashboard', absolute: false), navigate: true);
     }
 
     /**
      * Validate the user's credentials.
      */
-    protected function validateCredentials(): User
+    protected function validateCredentials(): Admin
     {
-        $user = Auth::getProvider()->retrieveByCredentials(['email' => $this->email, 'password' => $this->password]);
+        // 1. Correctly get the Admin provider and retrieve the user by email
+        $provider = Auth::guard('admin')->getProvider();
+        $admin = $provider->retrieveByCredentials(['email' => $this->email]);
 
-        if (! $user || ! Auth::getProvider()->validateCredentials($user, ['password' => $this->password])) {
+        // 2. Check if admin exists AND if the credentials are valid
+        if (! $admin || ! $provider->validateCredentials($admin, ['password' => $this->password])) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -69,7 +73,7 @@ class Login extends Component
             ]);
         }
 
-        return $user;
+        return $admin;
     }
 
     /**
@@ -98,6 +102,6 @@ class Login extends Component
      */
     protected function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
+        return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
     }
 }

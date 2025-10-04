@@ -16,10 +16,10 @@ class Sidebar extends Component
 
     public function logout()
     {
-        Auth::logout();
+        Auth::guard('admin')->logout();
         session()->invalidate();
         session()->regenerateToken();
-        return $this->redirectRoute('home', navigate: true);
+        return $this->redirectIntended(default: route('home', absolute: false), navigate: true);
     }
     public function render()
     {

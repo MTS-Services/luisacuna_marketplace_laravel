@@ -24,14 +24,15 @@ class AdminMiddleware
         }
 
         // Get authenticated admin user
-        $admin = Auth::guard('admin')->user();
+        // $admin = Auth::guard('admin')->user();
 
         // Redirect to verification page if email not verified
-        if (!$admin->email_verified_at) {
-            Log::info('Admin email not verified', ['admin_id' => $admin->id]);
-            session()->flash('warning', 'Your admin account is not verified. Please verify your email.');
-            // return redirect()->route('admin.verification.notice');
-        }
+        // if (!$admin->email_verified_at) {
+        //     Log::info('Admin email not verified', ['admin_id' => $admin->id]);
+        //     session()->flash('warning', 'Your admin account is not verified. Please verify your email.');
+        //     // return redirect()->route('admin.verification.notice');
+        //     return redirect()->route('admin.login');
+        // }
 
         return $next($request);
     }

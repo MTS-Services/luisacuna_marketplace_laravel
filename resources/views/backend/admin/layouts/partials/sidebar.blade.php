@@ -47,25 +47,25 @@
                         'icon' => 'user-circle',
                         'active' => 'admin',
                     ],
-                    [
-                        'name' => 'Roles',
-                        'route' => '#',
-                        'icon' => 'shield-exclamation',
-                        'active' => 'role',
-                    ],
-                    [
-                        'name' => 'Permissions',
-                        'route' => '#',
-                        'icon' => 'shield-check',
-                        'active' => 'permission',
-                    ],
+                    // [
+                    //     'name' => 'Roles',
+                    //     'route' => '#',
+                    //     'icon' => 'shield-exclamation',
+                    //     'active' => 'role',
+                    // ],
+                    // [
+                    //     'name' => 'Permissions',
+                    //     'route' => '#',
+                    //     'icon' => 'shield-check',
+                    //     'active' => 'permission',
+                    // ],
                 ]" />
 
             <x-backend.navlink type="dropdown" icon="user-group" name="User Management" :page_slug="$active"
                 :items="[
                     [
                         'name' => 'All Users',
-                        'route' => route('admin.users'),
+                        'route' => '#',
                         'icon' => 'user',
                         'active' => 'admin-users',
                     ],
@@ -83,6 +83,7 @@
                     ],
                 ]" />
 
+
             <div class="pt-4 pb-2">
                 <p class="text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
                     x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)">Settings & Tools</p>
@@ -97,12 +98,12 @@
                         'icon' => 'cog-8-tooth',
                         'active' => 'settings-general',
                     ],
-                    [
-                        'name' => 'Appearance',
-                        'route' => '#',
-                        'icon' => 'palette',
-                        'active' => 'settings-appearance',
-                    ],
+                    // [
+                    //     'name' => 'Appearance',
+                    //     'route' => '#',
+                    //     'icon' => 'palette',
+                    //     'active' => 'settings-appearance',
+                    // ],
                     [
                         'name' => 'Security',
                         'route' => '#',
@@ -121,24 +122,24 @@
                         'icon' => 'credit-card',
                         'active' => 'settings-payments',
                     ],
-                    [
-                        'name' => 'Analytics',
-                        'route' => '#',
-                        'icon' => 'chart-bar',
-                        'active' => 'settings-analytics',
-                    ],
-                    [
-                        'name' => 'Support',
-                        'route' => '#',
-                        'icon' => 'headset',
-                        'active' => 'settings-support',
-                    ],
-                    [
-                        'name' => 'Notifications',
-                        'route' => '#',
-                        'icon' => 'bell',
-                        'active' => 'settings-notifications',
-                    ],
+                    // [
+                    //     'name' => 'Analytics',
+                    //     'route' => '#',
+                    //     'icon' => 'chart-bar',
+                    //     'active' => 'settings-analytics',
+                    // ],
+                    // [
+                    //     'name' => 'Support',
+                    //     'route' => '#',
+                    //     'icon' => 'headset',
+                    //     'active' => 'settings-support',
+                    // ],
+                    // [
+                    //     'name' => 'Notifications',
+                    //     'route' => '#',
+                    //     'icon' => 'bell',
+                    //     'active' => 'settings-notifications',
+                    // ],
                     [
                         'name' => 'Database',
                         'route' => '#',

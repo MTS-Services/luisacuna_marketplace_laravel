@@ -8,33 +8,131 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+
+:root {
+    /* ... Light mode colors are unchanged ... */
+
+    --color-black: #000000;
+    --color-white: #ffffff;
+
+    --color-primary-50: #fcf8ef;
+    --color-primary-100: #f8f0db;
+    --color-primary-200: #f0e0b3;
+    --color-primary-300: #e5cd84;
+    --color-primary-400: #dcb65a;
+    --color-primary-500: #bb8106;
+    --color-primary-600: #977534;
+    --color-primary-700: #755927;
+    --color-primary-800: #55401c;
+    --color-primary-900: #382a12;
+    --color-primary-950: #1e1608;
+
+    --color-accent-light: #bb8106;
+    --color-accent-content-light: #7A4630;
+    --color-accent-foreground-light: #fffcfb;
+
+    --color-accent-dark: #B79347;
+    --color-accent-content-dark: #573024;
+    --color-accent-foreground-dark: #1a1a1a;
+
+    --color-text-primary-light: #2c2920;
+    --color-text-secondary-light: #5a554a;
+    --color-text-muted-light: #89867b;
+
+    --color-text-primary-dark: #e8e6e3;
+    --color-text-secondary-dark: #a9a69e;
+    --color-text-muted-dark: #7d7a73;
+
+    --color-bg-primary-light: oklch(98.5% 0 0);
+    --color-bg-secondary-light: oklch(96.7% 0.001 286.375);
+    --color-bg-tertiary-light: oklch(92% 0.004 286.32);
+
+    --color-bg-primary-dark: oklch(21% 0.006 285.885);
+    --color-bg-secondary-dark: oklch(27.4% 0.006 286.033);
+    --color-bg-tertiary-dark: oklch(37% 0.013 285.805);
+}
+
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    /* ======================================================
+                            # Colors
+    ======================================================== */
+    --color-zinc-50: var(--color-primary-50);
+    --color-zinc-100: var(--color-primary-100);
+    --color-zinc-200: var(--color-primary-200);
+    --color-zinc-300: var(--color-primary-300);
+    --color-zinc-400: var(--color-primary-400);
+    --color-zinc-500: var(--color-primary-500);
+    --color-zinc-600: var(--color-primary-600);
+    --color-zinc-700: var(--color-primary-700);
+    --color-zinc-800: var(--color-primary-800);
+    --color-zinc-900: var(--color-primary-900);
+    --color-zinc-950: var(--color-primary-950);
 
-    --color-zinc-50: #fafafa;
-    --color-zinc-100: #f5f5f5;
-    --color-zinc-200: #e5e5e5;
-    --color-zinc-300: #d4d4d4;
-    --color-zinc-400: #a3a3a3;
-    --color-zinc-500: #737373;
-    --color-zinc-600: #525252;
-    --color-zinc-700: #404040;
-    --color-zinc-800: #262626;
-    --color-zinc-900: #171717;
-    --color-zinc-950: #0a0a0a;
+    --color-accent: var(--color-accent-light);
+    --color-accent-content: var(--color-accent-content-light);
+    --color-accent-foreground: var(--color-accent-foreground-light);
 
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
-    --color-accent-foreground: var(--color-white);
+    --color-text-primary: var(--color-text-primary-light);
+    --color-text-secondary: var(--color-text-secondary-light);
+    --color-text-muted: var(--color-text-muted-light);
+
+    --color-bg-primary: var(--color-bg-primary-light);
+    --color-bg-secondary: var(--color-bg-secondary-light);
+    --color-bg-tertiary: var(--color-bg-tertiary-light);
+
+    --color-bg-black: var(--color-black);
+    --color-bg-white: var(--color-white);
+
+    /* ======================================================
+                            # Shadows
+    ======================================================== */
+
+    --shadow-glass-card: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+        rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+
+    /* ======================================================
+                            # Animations
+    ======================================================== */
+    --animate-gradientBG: gradientBG 15s ease infinite;
+
+    @keyframes gradientBG {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    /* ======================================================
+                            # Breakpoints
+    ======================================================== */
+    --breakpoint-xxs: 480px;
+    --breakpoint-xs: 576px;
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1024px;
+    --breakpoint-2xl: 1280px;
+    --breakpoint-3xl: 1536px;
+    --breakpoint-4xl: 1920px;
+    --breakpoint-5xl: 2560px;
+
 }
 
 @layer theme {
-    .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
+    :root {
+        --color-accent: var(--color-accent-light) !important;
+        --color-accent-content: var(--color-accent-content-light) !important;
+        --color-accent-foreground: var(--color-accent-foreground-light) !important;
     }
 }
+
 
 @layer base {
 
@@ -44,15 +142,92 @@
     ::backdrop,
     ::file-selector-button {
         border-color: var(--color-gray-200, currentColor);
+        scroll-behavior: smooth;
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-accent) var(--color-accent-content) !important;
+        @apply transition-colors duration-200 ease-in-out text-text-primary;
     }
+
+
+
+    /* For Webkit-based browsers (Chrome, Edge, Safari) */
+    *::-webkit-scrollbar {
+        height: 8px;
+        width: 8px;
+        background-color: var(--color-accent-content) !important;
+    }
+
+
+    *::-webkit-scrollbar-thumb {
+        background-color: var(--color-accent) !important;
+        border-radius: 9999px !important;
+        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.75);
+    }
+
+
+    *::-webkit-scrollbar-thumb:hover {
+        background-color: var(--color-accent) !important;
+    }
+
+    *::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+
+
+    /* Custom scrollbar */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .glass-card {
+        @apply backdrop-blur-md bg-gradient-to-tr from-zinc-50/10 via-accent/5 to-zinc-50/10 shadow-glass-card;
+    }
+
+
+    .sidebar-glass-card {
+        @apply bg-gradient-to-tr from-zinc-800/10 via-accent/10 to-zinc-800/10 shadow-glass-card;
+    }
+
+    .animated-bg {
+        @apply bg-[length:400%_400%] animate-gradientBG bg-gradient-to-br from-bg-tertiary via-bg-primary to-bg-tertiary;
+    }
+
 }
+
+.container {
+    @apply mx-auto;
+    max-width: 1280px;
+}
+
+button {
+    @apply cursor-pointer transition duration-150;
+}
+
+button:hover {
+    @apply scale-[1.01];
+}
+
 
 [data-flux-field]:not(ui-radio, ui-checkbox) {
     @apply grid gap-2;
 }
 
 [data-flux-label] {
-    @apply  !mb-0 !leading-tight;
+    @apply !mb-0 !leading-tight;
 }
 
 input:focus[data-flux-control],
@@ -60,7 +235,3 @@ textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
-
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */

@@ -4,11 +4,8 @@ use App\Livewire\Backend\Admin\Components\Dashboard;
 use App\Livewire\Backend\Admin\Components\UserManagement\AllUser;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'admin'])->name('admin.')->prefix('admin')->group(function () {
-    Route::get('/dashboard', Dashboard::class)->name('dashboard');
-    Route::get('/users', AllUser::class)->name('users');
-});
-
-Route::get('admins', function () {
-    return view('backend.admin.pages.admin-management.admin');
+Route::middleware(['auth:admin', 'admin'])->name('admin.')->prefix('admin')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('backend.admin.pages.dashboard');
+    })->name('dashboard');
 });
