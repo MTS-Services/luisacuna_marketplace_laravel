@@ -4,13 +4,8 @@ namespace App\Models;
 
 use App\Models\AuthBaseModel;
 
-class User extends AuthBaseModel
+class Admin extends AuthBaseModel
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
         'email',
@@ -43,5 +38,18 @@ class User extends AuthBaseModel
             'last_synced_at' => 'datetime',
             'otp_expires_at' => 'datetime',
         ];
+    }
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->appends = array_merge(parent::getAppends(), [
+            'status_label',
+            'status_color',
+            'status_btn_label',
+            'status_btn_color',
+
+            'modified_image',
+        ]);
     }
 }
