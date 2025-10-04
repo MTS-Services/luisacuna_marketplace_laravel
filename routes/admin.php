@@ -8,3 +8,7 @@ Route::middleware(['auth', 'admin'])->name('admin.')->prefix('admin')->group(fun
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/users', AllUser::class)->name('users');
 });
+
+Route::get('admins', function () {
+    return view('backend.admin.pages.admin-management.admin');
+});
