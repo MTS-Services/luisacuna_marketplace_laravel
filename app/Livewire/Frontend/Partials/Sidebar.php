@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Partials\Frontend;
+namespace App\Livewire\Frontend\Partials;
 
 use Livewire\Component;
 

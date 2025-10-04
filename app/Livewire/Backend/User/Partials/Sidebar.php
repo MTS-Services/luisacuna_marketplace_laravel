@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Partials\User;
+namespace App\Livewire\Backend\User\Partials;
 
 use Livewire\Component;
 
@@ -8,6 +8,6 @@ class Sidebar extends Component
 {
     public function render()
     {
-        return view('livewire.partials.user.sidebar');
+        return view('backend.user.partials.sidebar');
     }
 }

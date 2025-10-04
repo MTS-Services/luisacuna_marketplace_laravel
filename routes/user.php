@@ -1,6 +1,6 @@
 <?php
 
-use App\Livewire\Backend\User\Profile;
+use App\Livewire\Backend\User\Components\Profile;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->name('user.')->prefix('user')->group(function () {

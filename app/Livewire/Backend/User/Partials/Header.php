@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Partials\Frontend;
+namespace App\Livewire\Backend\User\Partials;
 
 use Livewire\Component;
 
@@ -8,6 +8,6 @@ class Header extends Component
 {
     public function render()
     {
-        return view('livewire.partials.frontend.header');
+        return view('backend.user.partials.header');
     }
 }

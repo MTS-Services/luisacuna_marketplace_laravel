@@ -10,7 +10,14 @@
 </head>
 
 <body>
-    {{ $slot }}
+
+    @if (auth()->guard('web')->check() && request()->routeIs('user.*'))
+        {{ $slot }}
+    @elseif (auth()->guard('admin')->check() && request()->routeIs('admin.*'))
+        {{ $slot }}
+    @else
+        {{ $slot }}
+    @endif
 </body>
 
 </html>

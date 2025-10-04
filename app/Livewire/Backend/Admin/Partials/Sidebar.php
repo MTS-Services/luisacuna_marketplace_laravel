@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Partials\Admin;
+namespace App\Livewire\Backend\Admin\Partials;
 
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -23,6 +23,6 @@ class Sidebar extends Component
     }
     public function render()
     {
-        return view('livewire.partials.admin.sidebar');
+        return view('backend.admin.partials.sidebar');
     }
 }
