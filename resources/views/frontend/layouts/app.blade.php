@@ -9,8 +9,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
-    {{ $slot }}
+<body class="h-screen flex flex-col">
+    <livewire:frontend.partials.header :pageSlug="$pageSlug ?? 'home'" />
+    <main class="flex-1">
+        {{ $slot }}
+    </main>
+    <livewire:frontend.partials.footer />
 </body>
 
 </html>

@@ -23,6 +23,6 @@ class Sidebar extends Component
     }
     public function render()
     {
-        return view('backend.admin.partials.sidebar');
+        return view('backend.admin.layouts.partials.sidebar');
     }
 }

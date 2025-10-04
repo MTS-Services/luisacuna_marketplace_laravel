@@ -13,6 +13,6 @@ class Header extends Component
     }
     public function render()
     {
-        return view('backend.admin.partials.header');
+        return view('backend.admin.layouts.partials.header');
     }
 }
