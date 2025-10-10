@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserStatus;
 use App\Models\AuthBaseModel;
 
 class User extends AuthBaseModel
@@ -15,9 +16,11 @@ class User extends AuthBaseModel
         'name',
         'email',
         'password',
+        'phone',
         'last_synced_at',
         'otp',
         'otp_expires_at',
+        'status',
     ];
 
     /**
@@ -42,6 +45,22 @@ class User extends AuthBaseModel
             'password' => 'hashed',
             'last_synced_at' => 'datetime',
             'otp_expires_at' => 'datetime',
+            'status' => UserStatus::class,
         ];
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === UserStatus::Active;
+    }
+
+    public function getStatusBadgeAttribute(): string
+    {
+        return sprintf(
+            '%s',
+            $this->status->color(),
+            $this->status->color(),
+            $this->status->label()
+        );
     }
 }
