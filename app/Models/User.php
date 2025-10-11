@@ -49,18 +49,75 @@ class User extends AuthBaseModel
         ];
     }
 
-    public function isActive(): bool
+     // Scopes
+    public function scopeActive($query)
     {
-        return $this->status === UserStatus::Active;
+        return $query->where('status', UserStatus::ACTIVE);
     }
 
-    public function getStatusBadgeAttribute(): string
+    public function scopeInactive($query)
     {
-        return sprintf(
-            '%s',
-            $this->status->color(),
-            $this->status->color(),
-            $this->status->label()
-        );
+        return $query->where('status', UserStatus::INACTIVE);
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('phone', 'like', "%{$search}%");
+        });
+    }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['status'] ?? null, function ($query, $status) {
+            $query->where('status', $status);
+        });
+
+        $query->when($filters['search'] ?? null, function ($query, $search) {
+            $query->search($search);
+        });
+
+        return $query;
+    }
+
+    // Accessors
+    public function getStatusLabelAttribute(): string
+    {
+        return $this->status->label();
+    }
+
+    public function getStatusColorAttribute(): string
+    {
+        return $this->status->color();
+    }
+
+    public function getAvatarUrlAttribute(): string
+    {
+        return $this->avatar 
+            ? asset('storage/' . $this->avatar)
+            : 'https://ui-avatars.com/api/?name=' . urlencode($this->name);
+    }
+
+    // Methods
+    public function isActive(): bool
+    {
+        return $this->status === UserStatus::ACTIVE;
+    }
+
+    public function activate(): void
+    {
+        $this->update(['status' => UserStatus::ACTIVE]);
+    }
+
+    public function deactivate(): void
+    {
+        $this->update(['status' => UserStatus::INACTIVE]);
+    }
+
+    public function suspend(): void
+    {
+        $this->update(['status' => UserStatus::SUSPENDED]);
     }
 }

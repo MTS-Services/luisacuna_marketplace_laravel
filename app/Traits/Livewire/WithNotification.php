@@ -4,24 +4,39 @@ namespace App\Traits\Livewire;
 
 trait WithNotification
 {
-    public function success($message)
+    public function success(string $message, string $title = 'Success'): void
     {
-        session()->flash('success', $message);
+        $this->dispatch('notify', [
+            'type' => 'success',
+            'title' => $title,
+            'message' => $message,
+        ]);
     }
-    public function error($message)
+
+    public function error(string $message, string $title = 'Error'): void
     {
-        session()->flash('error', $message);
+        $this->dispatch('notify', [
+            'type' => 'error',
+            'title' => $title,
+            'message' => $message,
+        ]);
     }
-    public function warning($message)
+
+    public function warning(string $message, string $title = 'Warning'): void
     {
-        session()->flash('warning', $message);
+        $this->dispatch('notify', [
+            'type' => 'warning',
+            'title' => $title,
+            'message' => $message,
+        ]);
     }
-    public function info($message)
+
+    public function info(string $message, string $title = 'Info'): void
     {
-        session()->flash('info', $message);
-    }
-    public function danger($message)
-    {
-        session()->flash('danger', $message);
+        $this->dispatch('notify', [
+            'type' => 'info',
+            'title' => $title,
+            'message' => $message,
+        ]);
     }
 }

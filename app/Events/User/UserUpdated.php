@@ -12,7 +12,7 @@ class UserUpdated
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public function __construct(
-        public User $user
+        public User $user,
+        public array $changes
     ) {}
 }
-

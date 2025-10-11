@@ -4,24 +4,28 @@ namespace App\Enums;
 
 enum UserStatus: string
 {
-    case Active = 'active';
-    case Inactive = 'inactive';
-    case Banned = 'banned';
+    case ACTIVE = 'active';
+    case INACTIVE = 'inactive';
+    case SUSPENDED = 'suspended';
+    case PENDING = 'pending';
 
     public function label(): string
     {
-        return match ($this) {
-            self::Active => 'Active',
-            self::Inactive => 'Inactive',
-            self::Banned => 'Banned',
+        return match($this) {
+            self::ACTIVE => 'Active',
+            self::INACTIVE => 'Inactive',
+            self::SUSPENDED => 'Suspended',
+            self::PENDING => 'Pending',
         };
     }
+
     public function color(): string
     {
-        return match ($this) {
-            self::Active => 'badge-success',
-            self::Inactive => 'badge-warning',
-            self::Banned => 'badge-danger',
+        return match($this) {
+            self::ACTIVE => 'success',
+            self::INACTIVE => 'secondary',
+            self::SUSPENDED => 'danger',
+            self::PENDING => 'warning',
         };
     }
 

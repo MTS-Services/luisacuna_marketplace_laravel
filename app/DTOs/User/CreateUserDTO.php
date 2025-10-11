@@ -3,15 +3,18 @@
 namespace App\DTOs\User;
 
 use App\Enums\UserStatus;
+use Illuminate\Http\UploadedFile;
 
-readonly class CreateUserDTO
+class CreateUserDTO
 {
     public function __construct(
-        public string $name,
-        public string $email,
-        public string $password,
-        public ?string $phone = null,
-        public UserStatus $status = UserStatus::Active,
+        public readonly string $name,
+        public readonly string $email,
+        public readonly string $password,
+        public readonly ?string $phone = null,
+        public readonly ?string $address = null,
+        public readonly UserStatus $status = UserStatus::ACTIVE,
+        public readonly ?UploadedFile $avatar = null,
     ) {}
 
     public static function fromArray(array $data): self
@@ -19,10 +22,17 @@ readonly class CreateUserDTO
         return new self(
             name: $data['name'],
             email: $data['email'],
-            password: bcrypt($data['password']),
+            password: $data['password'],
             phone: $data['phone'] ?? null,
-            status: $data['status'] ?? UserStatus::Active,
+            address: $data['address'] ?? null,
+            status: isset($data['status']) ? UserStatus::from($data['status']) : UserStatus::ACTIVE,
+            avatar: $data['avatar'] ?? null,
         );
+    }
+
+    public static function fromRequest($request): self
+    {
+        return self::fromArray($request->validated());
     }
 
     public function toArray(): array
@@ -30,9 +40,10 @@ readonly class CreateUserDTO
         return [
             'name' => $this->name,
             'email' => $this->email,
-            'password' => $this->password,
+            'password' => bcrypt($this->password),
             'phone' => $this->phone,
-            'status' => $this->status,
+            'address' => $this->address,
+            'status' => $this->status->value,
         ];
     }
 }

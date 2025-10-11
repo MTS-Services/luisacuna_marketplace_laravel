@@ -2,102 +2,134 @@
 
 namespace App\Services\User;
 
+use App\Actions\User\CreateUserAction;
+use App\Actions\User\DeleteUserAction;
+use App\Actions\User\UpdateUserAction;
 use App\DTOs\User\CreateUserDTO;
 use App\DTOs\User\UpdateUserDTO;
-use App\Events\User\UserCreated;
+use App\Enums\UserStatus;
 use App\Models\User;
 use App\Repositories\Contracts\User\UserRepositoryInterface;
-use App\Services\Contracts\User\UserServiceInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class UserService
 {
-    public function __construct(protected UserRepositoryInterface $userRepository) {}
+    public function __construct(
+        protected UserRepositoryInterface $userRepository,
+        protected CreateUserAction $createUserAction,
+        protected UpdateUserAction $updateUserAction,
+        protected DeleteUserAction $deleteUserAction,
+    ) {}
 
-    public function all()
+    public function getAllUsers(): Collection
     {
         return $this->userRepository->all();
     }
 
-    public function find($id)
+    public function getUsersPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        return $this->userRepository->paginate($perPage, $filters);
+    }
+
+    public function getUserById(int $id): ?User
     {
         return $this->userRepository->find($id);
     }
 
-    public function getPaginatedUsers(int $perPage = 15)
+    public function getUserByEmail(string $email): ?User
     {
-        return $this->userRepository->paginate($perPage);
+        return $this->userRepository->findByEmail($email);
     }
 
     public function createUser(CreateUserDTO $dto): User
     {
-        try {
-            return DB::transaction(function () use ($dto) {
-                // Create user
-                $user = $this->userRepository->create($dto->toArray());
-
-                // Fire event for side effects
-                event(new UserCreated($user));
-
-                Log::info('User created successfully', ['user_id' => $user->id]);
-
-                return $user;
-            });
-        } catch (\Exception $e) {
-            Log::error('Failed to create user', [
-                'error' => $e->getMessage(),
-                'data' => $dto->toArray()
-            ]);
-            throw $e;
-        }
+        return $this->createUserAction->execute($dto);
     }
 
     public function updateUser(int $id, UpdateUserDTO $dto): User
     {
-        try {
-            return DB::transaction(function () use ($id, $dto) {
-                $user = $this->userRepository->update($id, $dto->toArray());
-
-                Log::info('User updated successfully', ['user_id' => $user->id]);
-
-                return $user;
-            });
-        } catch (\Exception $e) {
-            Log::error('Failed to update user', [
-                'user_id' => $id,
-                'error' => $e->getMessage()
-            ]);
-            throw $e;
-        }
+        return $this->updateUserAction->execute($id, $dto);
     }
 
-    public function deleteUser(int $id): bool
+    public function deleteUser(int $id, bool $forceDelete = false): bool
     {
-        try {
-            $result = $this->userRepository->delete($id);
-
-            Log::info('User deleted successfully', ['user_id' => $id]);
-
-            return $result;
-        } catch (\Exception $e) {
-            Log::error('Failed to delete user', [
-                'user_id' => $id,
-                'error' => $e->getMessage()
-            ]);
-            throw $e;
-        }
+        return $this->deleteUserAction->execute($id, $forceDelete);
     }
 
-    public function searchUsers(string $query, int $perPage = 15): LengthAwarePaginator
+    public function restoreUser(int $id): bool
     {
-        return $this->userRepository->search($query, $perPage);
+        return $this->deleteUserAction->restore($id);
     }
 
     public function getActiveUsers(): Collection
     {
-        return $this->userRepository->getActiveUsers();
+        return $this->userRepository->getActive();
+    }
+
+    public function getInactiveUsers(): Collection
+    {
+        return $this->userRepository->getInactive();
+    }
+
+    public function searchUsers(string $query): Collection
+    {
+        return $this->userRepository->search($query);
+    }
+
+    public function bulkDeleteUsers(array $ids): int
+    {
+        return $this->userRepository->bulkDelete($ids);
+    }
+
+    public function bulkUpdateStatus(array $ids, UserStatus $status): int
+    {
+        return $this->userRepository->bulkUpdateStatus($ids, $status->value);
+    }
+
+    public function getUsersCount(array $filters = []): int
+    {
+        return $this->userRepository->count($filters);
+    }
+
+    public function userExists(int $id): bool
+    {
+        return $this->userRepository->exists($id);
+    }
+
+    public function activateUser(int $id): bool
+    {
+        $user = $this->getUserById($id);
+        
+        if (!$user) {
+            return false;
+        }
+
+        $user->activate();
+        return true;
+    }
+
+    public function deactivateUser(int $id): bool
+    {
+        $user = $this->getUserById($id);
+        
+        if (!$user) {
+            return false;
+        }
+
+        $user->deactivate();
+        return true;
+    }
+
+    public function suspendUser(int $id): bool
+    {
+        $user = $this->getUserById($id);
+        
+        if (!$user) {
+            return false;
+        }
+
+        $user->suspend();
+        return true;
     }
 }
