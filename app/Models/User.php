@@ -16,11 +16,14 @@ class User extends AuthBaseModel
         'name',
         'email',
         'password',
-        'phone',
         'last_synced_at',
         'otp',
         'otp_expires_at',
+
+        'phone',
+        'address',
         'status',
+        'avatar',
     ];
 
     /**
@@ -49,7 +52,7 @@ class User extends AuthBaseModel
         ];
     }
 
-     // Scopes
+    // Scopes
     public function scopeActive($query)
     {
         return $query->where('status', UserStatus::ACTIVE);
@@ -95,7 +98,7 @@ class User extends AuthBaseModel
 
     public function getAvatarUrlAttribute(): string
     {
-        return $this->avatar 
+        return $this->avatar
             ? asset('storage/' . $this->avatar)
             : 'https://ui-avatars.com/api/?name=' . urlencode($this->name);
     }
@@ -119,5 +122,13 @@ class User extends AuthBaseModel
     public function suspend(): void
     {
         $this->update(['status' => UserStatus::SUSPENDED]);
+    }
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->appends = array_merge(parent::getAppends(), [
+            //
+        ]);
     }
 }

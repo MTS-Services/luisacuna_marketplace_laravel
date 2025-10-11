@@ -3,7 +3,7 @@
 namespace App\Actions\User;
 
 use App\Events\User\UserDeleted;
-use App\Repositories\Contracts\User\UserRepositoryInterface;
+use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 

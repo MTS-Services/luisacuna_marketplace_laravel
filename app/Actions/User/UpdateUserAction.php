@@ -5,7 +5,7 @@ namespace App\Actions\User;
 use App\DTOs\User\UpdateUserDTO;
 use App\Events\User\UserUpdated;
 use App\Models\User;
-use App\Repositories\Contracts\User\UserRepositoryInterface;
+use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\AdminStatus;
 use App\Traits\AuditColumnsTrait;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -20,11 +21,17 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->timestamp('last_synced_at')->nullable();
+
             $table->string('otp')->nullable();
             $table->timestamp('otp_expires_at')->nullable();
+
+            $table->string('phone')->index()->nullable();
+            $table->text('address')->nullable();
+            $table->string('status')->index()->default(AdminStatus::ACTIVE->value);
+            $table->string('avatar')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
-
             $table->softDeletes();
             $this->addMorphedAuditColumns($table);
         });
