@@ -5,7 +5,7 @@ namespace App\Actions\Admin;
 use App\DTOs\Admin\UpdateAdminDTO;
 use App\Events\Admin\AdminUpdated;
 use App\Models\Admin;
-use App\Repositories\Contracts\Admin\AdminRepositoryInterface;
+use App\Repositories\Contracts\AdminRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -28,12 +28,12 @@ class UpdateAdminAction
 
             // Store old data BEFORE any modifications
             $oldData = $admin->getAttributes();
-            
+
             Log::info('Admin found', [
                 'admin_id' => $adminId,
                 'admin_data' => $oldData
             ]);
-            
+
             Log::info('UpdateAdminDTO data', [
                 'dto_data' => $dto->toArray()
             ]);
@@ -44,16 +44,16 @@ class UpdateAdminAction
             // Handle avatar upload
             if ($dto->avatar) {
                 Log::info('Processing avatar upload');
-                
+
                 // Delete old avatar
                 if ($admin->avatar) {
                     Storage::disk('public')->delete($admin->avatar);
                     Log::info('Old avatar deleted', ['path' => $admin->avatar]);
                 }
-                
+
                 $avatarPath = $dto->avatar->store('avatars', 'public');
                 $data['avatar'] = $avatarPath;
-                
+
                 Log::info('New avatar uploaded', ['path' => $avatarPath]);
             }
 
@@ -68,7 +68,7 @@ class UpdateAdminAction
 
             // Update Admin
             $updated = $this->adminRepository->update($adminId, $data);
-            
+
             if (!$updated) {
                 Log::error('Failed to update Admin in repository', ['admin_id' => $adminId]);
                 throw new \Exception('Failed to update Admin');
@@ -76,7 +76,7 @@ class UpdateAdminAction
 
             // Refresh the Admin model
             $admin = $admin->fresh();
-            
+
             Log::info('Admin after update', [
                 'admin_data' => $admin->getAttributes()
             ]);
@@ -84,7 +84,7 @@ class UpdateAdminAction
             // Calculate changes - compare actual attributes, not toArray() which includes relations
             $newData = $admin->getAttributes();
             $changes = [];
-            
+
             foreach ($newData as $key => $value) {
                 if (isset($oldData[$key]) && $oldData[$key] != $value) {
                     $changes[$key] = [

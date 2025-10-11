@@ -5,7 +5,7 @@ namespace App\Actions\Admin;
 use App\DTOs\Admin\CreateAdminDTO;
 use App\Events\Admin\AdminCreated;
 use App\Models\Admin;
-use App\Repositories\Contracts\Admin\AdminRepositoryInterface;
+use App\Repositories\Contracts\AdminRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 

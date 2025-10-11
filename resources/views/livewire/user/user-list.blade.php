@@ -66,8 +66,6 @@
         </div>
     @endif
 
-    {{ $bulkAction }}
-
     <!-- Users Table -->
     <div class="card">
         <div class="overflow-x-auto">

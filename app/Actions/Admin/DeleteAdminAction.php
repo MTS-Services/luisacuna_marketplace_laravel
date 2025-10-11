@@ -3,7 +3,7 @@
 namespace App\Actions\Admin;
 
 use App\Events\Admin\AdminDeleted;
-use App\Repositories\Contracts\Admin\AdminRepositoryInterface;
+use App\Repositories\Contracts\AdminRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 

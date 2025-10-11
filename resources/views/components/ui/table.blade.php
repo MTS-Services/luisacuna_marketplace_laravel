@@ -11,6 +11,12 @@
     'class' => '',
     'showRowNumber' => true,
     'mobileColumns' => 2,
+
+    'sortField' => 'created_at',
+    'sortDirection' => 'desc',
+    'showBulkActions' => true,
+    'filters' => [],
+    'statuses' => [],
 ])
 
 <div class="glass-card rounded-2xl p-6 mb-6 {{ $class }}">
@@ -18,7 +24,7 @@
     {{-- HEADER --}}
     <div class="flex flex-col xs:flex-row items-center justify-between gap-4 mb-4">
 
-        @if ($showPerPage)
+        {{-- @if ($showPerPage)
             @php
                 $currentPerPage = method_exists($data, 'perPage') ? $data->perPage() : 10;
             @endphp
@@ -56,7 +62,46 @@
                 <x-input wire:model.live.debounce.500ms="{{ $searchProperty }}" type="text" placeholder="Search..."
                     class="w-full" />
             </div>
-        @endif
+        @endif --}}
+
+        <div class="mb-6 w-full">
+            <div class="flex justify-between w-full gap-5">
+                <div class="flex-1 flex items-center justify-start gap-5">
+
+                    <div>
+                        <select wire:model.live="perPage" class="form-select w-full">
+                            <option value="10">10 per page</option>
+                            <option value="15">15 per page</option>
+                            <option value="25">25 per page</option>
+                            <option value="50">50 per page</option>
+                        </select>
+                    </div>
+
+                    @if (!empty($statuses))
+                        <div>
+                            <select wire:model.live="statusFilter" class="form-select w-full">
+                                <option value="">All Statuses</option>
+                                @foreach ($statuses as $status)
+                                    <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
+
+                    <div class="">
+                        <x-ui.button wire:click="resetFilters" type="accent" button>
+                            <flux:icon icon="arrow-path" class="w-4 h-4 stroke-white" />
+                            {{ __('Reset') }}
+                        </x-ui.button>
+                    </div>
+                </div>
+
+                <div class="w-full sm:max-w-64">
+                    <x-input type="text" wire:model.live.debounce.300ms="search" placeholder="Search users..."
+                        class="form-input w-full max-w-64" />
+                </div>
+            </div>
+        </div>
     </div>
 
     <hr class="mb-4">
@@ -67,19 +112,37 @@
             {{-- Table Header --}}
             <div
                 class="flex bg-gray-50 text-xs font-semibold uppercase tracking-wider text-gray-500 rounded-t-lg border-b border-gray-200">
-                @if ($showRowNumber)
-                    <div class="p-3 text-center flex-shrink-0" style="width: 60px;">
-                        No.
+
+                @if ($showBulkActions)
+                    <div class="p-3 text-center flex-shrink-0">
+                        <input type="checkbox" wire:model.live="selectAll" class="checkbox w-5 h-5">
                     </div>
                 @endif
+
+                @if ($showRowNumber)
+                    @if (in_array('id', array_column($columns, 'key')))
+                        <div class="p-3 text-center flex-shrink-0">
+                            {{ __('ID') }}
+                            @if ($sortField === 'id')
+                                <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                            @endif
+                        </div>
+                    @else
+                        <div class="p-3 text-center flex-shrink-0">
+                            {{ __('No.') }}
+                        </div>
+                    @endif
+                @endif
                 @foreach ($columns as $column)
-                    <div class="p-3 text-left flex-1"
-                        style="flex-basis: {{ $column['width'] ?? 100 / count($columns) . '%' }}">
+                    @if ($column['key'] == 'id')
+                        @continue
+                    @endif
+                    <div class="p-3 text-left flex-1">
                         {{ $column['label'] }}
                     </div>
                 @endforeach
                 @if (count($actions) > 0)
-                    <div class="p-3 text-center flex-shrink-0" style="width: 100px;">
+                    <div class="p-3 text-center flex-shrink-0">
                         Actions
                     </div>
                 @endif
@@ -87,21 +150,36 @@
 
             {{-- Table Body --}}
             @forelse ($data as $item)
-                @php
-                    $rowNumber = method_exists($data, 'firstItem')
-                        ? $data->firstItem() + $loop->index
-                        : $loop->iteration;
-                @endphp
+                @if (in_array('id', array_column($columns, 'key')))
+                    @php
+                        $rowNumber = $item->id;
+                    @endphp
+                @else
+                    @php
+                        $rowNumber = method_exists($data, 'firstItem')
+                            ? $data->firstItem() + $loop->index
+                            : $loop->iteration;
+                    @endphp
+                @endif
                 <div wire:key="row-{{ $item->id ?? $loop->index }}"
                     class="flex text-sm border-b border-gray-100 hover:bg-gray-50 transition duration-150 ease-in-out">
+
+                    @if ($showBulkActions)
+                        <div class="p-3 text-center flex-shrink-0">
+                            <input type="checkbox" wire:model.live="selectedIds" value="{{ $item->id }}"
+                                class="checkbox w-5 h-5">
+                        </div>
+                    @endif
                     @if ($showRowNumber)
-                        <div class="p-3 text-center flex-shrink-0" style="width: 60px;">
+                        <div class="p-3 text-center flex-shrink-0">
                             {{ $rowNumber }}
                         </div>
                     @endif
                     @foreach ($columns as $column)
-                        <div class="p-3 text-left flex-1 break-words"
-                            style="flex-basis: {{ $column['width'] ?? 100 / count($columns) . '%' }}">
+                        @if ($column['key'] == 'id')
+                            @continue
+                        @endif
+                        <div class="p-3 text-left flex-1 break-words">
                             @if (isset($column['format']) && is_callable($column['format']))
                                 {!! $column['format']($item) !!}
                             @else
@@ -111,7 +189,7 @@
                     @endforeach
 
                     @if (count($actions) > 0)
-                        <div class="p-3 text-center flex-shrink-0" style="width: 100px;">
+                        <div class="p-3 text-center flex-shrink-0">
                             <div class="relative inline-block text-left">
                                 <div x-data="{ open: false }">
                                     <button type="button" @click="open = !open"

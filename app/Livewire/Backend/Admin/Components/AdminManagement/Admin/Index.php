@@ -2,59 +2,238 @@
 
 namespace App\Livewire\Backend\Admin\Components\AdminManagement\Admin;
 
+use App\Enums\AdminStatus;
 use App\Models\Admin;
+use App\Services\Admin\AdminService;
+use App\Traits\Livewire\WithDataTable;
+use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class Index extends Component
 {
 
-    #[Validate('int', 'min:1')]
-    public $search = '';
+    // #[Validate('int', 'min:1')]
+    // public $search = '';
+
+    // public function render()
+    // {
+    //     $admin = Admin::all();
+    //     $columns = [
+    //         ['key' => 'name', 'label' => 'Name', 'width' => '20%'],
+    //         ['key' => 'email', 'label' => 'Email', 'width' => '25%'],
+    //         [
+    //             'key' => 'status',
+    //             'label' => 'Status',
+    //             'width' => '10%',
+    //             'format' => function ($admin) {
+    //                 return '<span class="badge badge-soft ' . $admin->status_color . '">' . ucfirst($admin->status) . '</span>';
+    //             }
+    //         ],
+    //         [
+    //             'key' => 'created_at',
+    //             'label' => 'Created',
+    //             'width' => '15%',
+    //             'format' => function ($admin) {
+    //                 return $admin->created_at_formatted;
+    //             }
+    //         ],
+
+    //         [
+    //             'key' => 'created_by',
+    //             'label' => 'Created By',
+    //             'width' => '15%',
+    //             'format' => function ($admin) {
+    //                 return $admin->createdBy?->name ?? 'System';
+    //             }
+    //         ]
+    //     ];
+
+    //     $actions = [
+    //         ['key' => 'id', 'label' => 'View', 'method' => 'openDetailsModal'],
+    //         ['key' => 'id', 'label' => 'Edit', 'method' => 'openEditModal'],
+    //         ['key' => 'id', 'label' => 'Delete', 'method' => 'openForceDeleteModal'],
+
+    //     ];
+    //     return view('livewire.backend.admin.components.admin-management.admin.index',[
+    //         'admins' => $admin,
+    //         'columns' => $columns,
+    //         'actions' => $actions
+    //     ]);
+    // }
+
+    use WithDataTable, WithNotification;
+
+    public $statusFilter = '';
+    public $showDeleteModal = false;
+    public $deleteAdminId = null;
+    public $bulkAction = '';
+
+    protected $listeners = ['adminCreated' => '$refresh', 'adminUpdated' => '$refresh'];
+
+    protected AdminService $adminService;
+    public function boot(
+        AdminService $adminService
+    ) {
+        $this->adminService = $adminService;
+    }
+
 
     public function render()
     {
-        $admin = Admin::all();
-        $columns = [
-            ['key' => 'name', 'label' => 'Name', 'width' => '20%'],
-            ['key' => 'email', 'label' => 'Email', 'width' => '25%'],
-            [
-                'key' => 'status',
-                'label' => 'Status',
-                'width' => '10%',
-                'format' => function ($admin) {
-                    return '<span class="badge badge-soft ' . $admin->status_color . '">' . ucfirst($admin->status) . '</span>';
-                }
-            ],
-            [
-                'key' => 'created_at',
-                'label' => 'Created',
-                'width' => '15%',
-                'format' => function ($admin) {
-                    return $admin->created_at_formatted;
-                }
-            ],
+        $admins = $this->adminService->getAdminsPaginated(
+            perPage: $this->perPage,
+            filters: $this->getFilters()
+        );
 
-            [
-                'key' => 'created_by',
-                'label' => 'Created By',
-                'width' => '15%',
-                'format' => function ($admin) {
-                    return $admin->createdBy?->name ?? 'System';
-                }
-            ]
+        $columns = [
+            ['key' => 'id', 'label' => 'ID', 'width' => '5%'],
+            ['key' => 'avatar', 'label' => 'Avatar', 'format' => function ($admin) {
+                return $admin->avatar_url ? '<img src="' . $admin->avatar_url . '" alt="' . $admin->name . '" class="avatar avatar-md rounded-full w-10">' : '';
+            }],
+            ['key' => 'name', 'label' => 'Name'],
+            ['key' => 'email', 'label' => 'Email'],
+            ['key' => 'status', 'label' => 'Status'],
+            ['key' => 'created_at', 'label' => 'Created'],
+            ['key' => 'created_by', 'label' => 'Created By', 'format' => function ($admin) {
+                return $admin->createdBy ? $admin->createdBy->name : 'System';
+            }],
         ];
 
         $actions = [
             ['key' => 'id', 'label' => 'View', 'method' => 'openDetailsModal'],
             ['key' => 'id', 'label' => 'Edit', 'method' => 'openEditModal'],
-            ['key' => 'id', 'label' => 'Delete', 'method' => 'openForceDeleteModal'],
-            
+            ['key' => 'id', 'label' => 'Delete', 'method' => 'openDeleteModal'],
         ];
-        return view('livewire.backend.admin.components.admin-management.admin.index',[
-            'admins' => $admin,
+
+        return view('livewire.backend.admin.components.admin-management.admin.index', [
+            'admins' => $admins,
+            'statuses' => AdminStatus::options(),
             'columns' => $columns,
-            'actions' => $actions
+            'actions' => $actions,
         ]);
+    }
+
+    public function confirmDelete($adminId): void
+    {
+        $this->deleteAdminId = $adminId;
+        $this->showDeleteModal = true;
+    }
+
+    public function delete(): void
+    {
+        try {
+            if (!$this->deleteAdminId) {
+                return;
+            }
+
+            $this->adminService->deleteAdmin($this->deleteAdminId);
+
+            $this->showDeleteModal = false;
+            $this->deleteAdminId = null;
+
+            $this->success('admin deleted successfully');
+        } catch (\Exception $e) {
+            $this->error('Failed to delete Admin: ' . $e->getMessage());
+        }
+    }
+
+    public function forceDelete($adminId): void
+    {
+        try {
+            $this->adminService->deleteAdmin($adminId, forceDelete: true);
+            $this->success('admin permanently deleted');
+        } catch (\Exception $e) {
+            $this->error('Failed to delete Admin: ' . $e->getMessage());
+        }
+    }
+
+    public function restore($adminId): void
+    {
+        try {
+            $this->adminService->restoreAdmin($adminId);
+            $this->success('admin restored successfully');
+        } catch (\Exception $e) {
+            $this->error('Failed to restore Admin: ' . $e->getMessage());
+        }
+    }
+
+    public function changeStatus($adminId, $status): void
+    {
+        try {
+            $adminStatus = AdminStatus::from($status);
+
+            match ($adminStatus) {
+                AdminStatus::ACTIVE => $this->adminService->activateAdmin($adminId),
+                AdminStatus::INACTIVE => $this->adminService->deactivateAdmin($adminId),
+                AdminStatus::SUSPENDED => $this->adminService->suspendAdmin($adminId),
+                default => null,
+            };
+
+            $this->success('admin status updated successfully');
+        } catch (\Exception $e) {
+            $this->error('Failed to update status: ' . $e->getMessage());
+        }
+    }
+
+    public function executeBulkAction(): void
+    {
+        if (empty($this->selectedIds) || empty($this->bulkAction)) {
+            $this->warning('Please select Admins and an action');
+            Log::info('No Admins selected or no bulk action selected');
+            return;
+        }
+
+        try {
+            match ($this->bulkAction) {
+                'delete' => $this->bulkDelete(),
+                'activate' => $this->bulkUpdateStatus(AdminStatus::ACTIVE),
+                'deactivate' => $this->bulkUpdateStatus(AdminStatus::INACTIVE),
+                'suspend' => $this->bulkUpdateStatus(AdminStatus::SUSPENDED),
+                default => null,
+            };
+
+            $this->selectedIds = [];
+            $this->selectAll = false;
+            $this->bulkAction = '';
+        } catch (\Exception $e) {
+            $this->error('Bulk action failed: ' . $e->getMessage());
+        }
+    }
+
+    protected function bulkDelete(): void
+    {
+        $count = $this->adminService->bulkDeleteAdmins($this->selectedIds);
+        $this->success("{$count} Admins deleted successfully");
+    }
+
+    protected function bulkUpdateStatus(AdminStatus $status): void
+    {
+        $count = $this->adminService->bulkUpdateStatus($this->selectedIds, $status);
+        $this->success("{$count} Admins updated successfully");
+    }
+
+    protected function getFilters(): array
+    {
+        return [
+            'search' => $this->search,
+            'status' => $this->statusFilter,
+            'sort_field' => $this->sortField,
+            'sort_direction' => $this->sortDirection,
+        ];
+    }
+
+    protected function getSelectableIds(): array
+    {
+        return $this->adminService->getAdminsPaginated(
+            perPage: $this->perPage,
+            filters: $this->getFilters()
+        )->pluck('id')->toArray();
+    }
+
+    public function updatedStatusFilter(): void
+    {
+        $this->resetPage();
     }
 }
