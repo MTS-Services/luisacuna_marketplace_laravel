@@ -76,17 +76,17 @@ class AuthBaseModel extends Authenticatable
 
     public function getCreatedAtFormattedAttribute(): string
     {
-        return Carbon::parse($this->created_at)->format('d M, Y h:i A');
+        return $this->created_at ? Carbon::parse($this->created_at)->format('d M, Y h:i A') : 'N/A';
     }
 
     public function getUpdatedAtFormattedAttribute(): string
     {
-        return Carbon::parse($this->updated_at)->format('d M, Y h:i A');
+        return $this->updated_at && $this->updated_at != $this->created_at ? Carbon::parse($this->updated_at)->format('d M, Y h:i A') : 'N/A';
     }
 
     public function getDeletedAtFormattedAttribute(): string
     {
-        return Carbon::parse($this->deleted_at)->format('d M, Y h:i A');
+        return $this->deleted_at ? Carbon::parse($this->deleted_at)->format('d M, Y h:i A') : 'N/A';
     }
 
     public function getCreatedAtHumanAttribute(): string
@@ -96,12 +96,12 @@ class AuthBaseModel extends Authenticatable
 
     public function getUpdatedAtHumanAttribute(): string
     {
-        return $this->updated_at->diffForHumans();
+        return $this->updated_at && $this->updated_at != $this->created_at ? $this->updated_at->diffForHumans() : 'N/A';
     }
 
     public function getDeletedAtHumanAttribute(): string
     {
-        return $this->deleted_at->diffForHumans();
+        return $this->deleted_at ? $this->deleted_at->diffForHumans() : 'N/A';
     }
 
     // Verify Accessors

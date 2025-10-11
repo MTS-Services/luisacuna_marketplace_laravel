@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\User;
+namespace App\Livewire\User;
 
 use App\Enums\UserStatus;
 use App\Services\User\UserService;
@@ -10,7 +10,7 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 
-#[Layout('layouts.app')]
+#[Layout('app')]
 #[Title('Users')]
 class UserList extends Component
 {
@@ -23,11 +23,18 @@ class UserList extends Component
 
     protected $listeners = ['userCreated' => '$refresh', 'userUpdated' => '$refresh'];
 
-    public function __construct(
-        protected UserService $userService
+    protected UserService $userService;
+    public function boot(
+        UserService $userService
     ) {
-        parent::__construct();
+        $this->userService = $userService;
     }
+
+    // public function __construct(
+    //     protected UserService $userService
+    // ) {
+    //     parent::__construct();
+    // }
 
     public function render()
     {

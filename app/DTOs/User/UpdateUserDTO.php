@@ -23,7 +23,7 @@ class UpdateUserDTO
         return new self(
             name: $data['name'],
             email: $data['email'],
-            password: $data['password'] ?? null,
+            password: !empty($data['password']) ? $data['password'] : null,
             phone: $data['phone'] ?? null,
             address: $data['address'] ?? null,
             status: isset($data['status']) ? UserStatus::from($data['status']) : null,
@@ -42,14 +42,24 @@ class UpdateUserDTO
         $data = [
             'name' => $this->name,
             'email' => $this->email,
-            'phone' => $this->phone,
-            'address' => $this->address,
         ];
 
+        // Only include phone if not null
+        if ($this->phone !== null) {
+            $data['phone'] = $this->phone;
+        }
+
+        // Only include address if not null
+        if ($this->address !== null) {
+            $data['address'] = $this->address;
+        }
+
+        // Only include password if provided
         if ($this->password) {
             $data['password'] = bcrypt($this->password);
         }
 
+        // Only include status if provided
         if ($this->status) {
             $data['status'] = $this->status->value;
         }

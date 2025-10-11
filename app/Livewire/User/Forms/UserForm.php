@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\User\Forms;
+namespace App\Livewire\User\Forms;
 
 use App\Enums\UserStatus;
 use Livewire\Attributes\Validate;

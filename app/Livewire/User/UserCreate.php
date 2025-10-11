@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Livewire\User;
+namespace App\Livewire\User;
 
 use App\DTOs\User\CreateUserDTO;
 use App\Enums\UserStatus;
-use App\Http\Livewire\User\Forms\UserForm;
+use App\Livewire\User\Forms\UserForm;
 use App\Services\User\UserService;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Component;
@@ -12,7 +12,7 @@ use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 
-#[Layout('layouts.app')]
+#[Layout('app')]
 #[Title('Create User')]
 class UserCreate extends Component
 {
@@ -20,10 +20,11 @@ class UserCreate extends Component
 
     public UserForm $form;
 
-    public function __construct(
-        protected UserService $userService
-    ) {
-        parent::__construct();
+    protected UserService $userService;
+
+    public function boot(UserService $userService)
+    {
+        $this->userService = $userService;
     }
 
     public function mount(): void

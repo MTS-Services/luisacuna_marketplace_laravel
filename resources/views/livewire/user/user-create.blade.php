@@ -3,14 +3,14 @@
         <h1 class="text-3xl font-bold">Create User</h1>
     </div>
 
-    <div class="card max-w-2xl">
-        <div class="card-body">
+    <div class="card max-w-2xl mx-auto shadow">
+        <div class="card-body p-4">
             <form wire:submit="save">
                 <!-- Name -->
                 <div class="mb-4">
                     <label for="name" class="form-label">Name *</label>
                     <input type="text" id="name" wire:model="form.name"
-                        class="form-input @error('form.name') border-red-500 @enderror">
+                        class="input border  @error('form.name') border-red-500 @enderror">
                     @error('form.name')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
@@ -20,7 +20,7 @@
                 <div class="mb-4">
                     <label for="email" class="form-label">Email *</label>
                     <input type="email" id="email" wire:model="form.email"
-                        class="form-input @error('form.email') border-red-500 @enderror">
+                        class="input border  @error('form.email') border-red-500 @enderror">
                     @error('form.email')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
@@ -30,7 +30,7 @@
                 <div class="mb-4">
                     <label for="password" class="form-label">Password *</label>
                     <input type="password" id="password" wire:model="form.password"
-                        class="form-input @error('form.password') border-red-500 @enderror">
+                        class="input border  @error('form.password') border-red-500 @enderror">
                     @error('form.password')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
@@ -40,7 +40,7 @@
                 <div class="mb-4">
                     <label for="password_confirmation" class="form-label">Confirm Password *</label>
                     <input type="password" id="password_confirmation" wire:model="form.password_confirmation"
-                        class="form-input @error('form.password_confirmation') border-red-500 @enderror">
+                        class="input border  @error('form.password_confirmation') border-red-500 @enderror">
                     @error('form.password_confirmation')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
@@ -50,7 +50,7 @@
                 <div class="mb-4">
                     <label for="phone" class="form-label">Phone</label>
                     <input type="text" id="phone" wire:model="form.phone"
-                        class="form-input @error('form.phone') border-red-500 @enderror">
+                        class="input border  @error('form.phone') border-red-500 @enderror">
                     @error('form.phone')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
@@ -60,7 +60,7 @@
                 <div class="mb-4">
                     <label for="address" class="form-label">Address</label>
                     <textarea id="address" wire:model="form.address" rows="3"
-                        class="form-input @error('form.address') border-red-500 @enderror"></textarea>
+                        class="input border  @error('form.address') border-red-500 @enderror"></textarea>
                     @error('form.address')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
@@ -84,7 +84,7 @@
                 <div class="mb-4">
                     <label for="avatar" class="form-label">Avatar</label>
                     <input type="file" id="avatar" wire:model="form.avatar" accept="image/*"
-                        class="form-input @error('form.avatar') border-red-500 @enderror">
+                        class="input border  @error('form.avatar') border-red-500 @enderror">
                     @error('form.avatar')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror

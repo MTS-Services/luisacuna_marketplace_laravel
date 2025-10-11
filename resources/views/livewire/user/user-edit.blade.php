@@ -5,6 +5,14 @@
 
     <div class="card max-w-2xl">
         <div class="card-body">
+
+            @if ($errors->any())
+                @foreach ($errors->all() as $error)
+                    <div class="text-red-500 text-sm">{{$error->message}}</div>
+                @endforeach
+                
+            @endif
+
             <form wire:submit="save">
                 <!-- Name -->
                 <div class="mb-4">
