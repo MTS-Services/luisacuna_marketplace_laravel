@@ -49,7 +49,7 @@
                 <div class="flex items-center gap-4">
                     <span class="font-medium">{{ count($selectedIds) }} selected</span>
 
-                    <select wire:model="bulkAction" class="form-select">
+                    <select wire:model.live="bulkAction" class="form-select">
                         <option value="">Select Action</option>
                         <option value="delete">Delete</option>
                         <option value="activate">Activate</option>
@@ -65,6 +65,8 @@
             </div>
         </div>
     @endif
+
+    {{ $bulkAction }}
 
     <!-- Users Table -->
     <div class="card">

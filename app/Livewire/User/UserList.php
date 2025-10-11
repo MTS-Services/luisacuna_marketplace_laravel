@@ -6,6 +6,7 @@ use App\Enums\UserStatus;
 use App\Services\User\UserService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -115,6 +116,7 @@ class UserList extends Component
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
             $this->warning('Please select users and an action');
+            Log::info('No users selected or no bulk action selected');
             return;
         }
 
