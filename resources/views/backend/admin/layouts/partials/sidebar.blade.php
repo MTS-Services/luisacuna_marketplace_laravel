@@ -61,6 +61,26 @@
                     // ],
                 ]" />
 
+
+                {{-- User Managments Menu --}}
+            <x-backend.navlink type="dropdown" icon="users" name="User Management" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'Users',
+                        'route' => route('admin.um.user.index'),
+                        'icon' => 'user-circle',
+                        'active' => 'admin',
+                    ],
+                    // [
+                    //     'name' => 'Roles',
+                    //     'route' => '#',
+                    //     'icon' => 'shield-exclamation',
+                    //     'active' => 'role',
+                    // ],
+                   
+                ]"
+                 />
+
             <x-backend.navlink type="dropdown" icon="user-group" name="User Management" :page_slug="$active"
                 :items="[
                     [

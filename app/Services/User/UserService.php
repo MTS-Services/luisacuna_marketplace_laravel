@@ -13,7 +13,7 @@ use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
-class UserService
+class UserService 
 {
     public function __construct(
         protected UserRepositoryInterface $userRepository,

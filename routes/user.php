@@ -7,4 +7,6 @@ Route::middleware(['auth'])->name('user.')->group(function () {
     Route::get('/profile', function () {
         return view('backend.user.pages.profile');
     })->name('profile');
+
+
 });
