@@ -103,8 +103,8 @@ class Index extends Component
 
         $actions = [
             ['key' => 'id', 'label' => 'View', 'method' => 'openDetailsModal'],
-            ['key' => 'id', 'label' => 'Edit', 'method' => 'openEditModal'],
-            ['key' => 'id', 'label' => 'Delete', 'method' => 'openDeleteModal'],
+            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.am.admin.edit'],
+            ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete'],
         ];
 
         return view('livewire.backend.admin.components.admin-management.admin.index', [
@@ -125,6 +125,10 @@ class Index extends Component
     {
         try {
             if (!$this->deleteAdminId) {
+                return;
+            }
+            if ($this->deleteAdminId == admin()->id) {
+                $this->error('You cannot delete your own account');
                 return;
             }
 

@@ -11,8 +11,11 @@ Route::middleware(['auth:admin', 'admin'])->name('admin.')->prefix('admin')->gro
     })->name('dashboard');
 
     Route::group(['prefix' => 'admin-management', 'as' => 'am.'], function () {
-        Route::resource('admin' , AdminController::class);
         Route::controller(AdminController::class)->name('admin.')->prefix('admin')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/view/{id}', 'view')->name('edit');
             Route::get('/trash', 'trash')->name('trash');
         });
     });

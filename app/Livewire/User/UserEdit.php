@@ -35,6 +35,7 @@ class UserEdit extends Component
     public function mount(User $user): void
     {
         $this->user = $user;
+        dd($this->user);
         $this->userId = $user->id;
         $this->form->setUser($user);
         $this->existingAvatar = $user->avatar_url;

@@ -15,12 +15,9 @@
         </div>
     </div>
 
-
-
-
-
     <x-ui.table :data="$admins" :columns="$columns" :actions="$actions" :statuses="$statuses" />
-    {{-- <x-ui.table :columns="$columns" :data="$admins" :actions="$actions" search-property="search"
-        per-page-property="perPage" empty-message="No admins found." /> --}}
+
+    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this user?'" :message="'Are you absolutely sure you want to remove this user?All associated data will be lost.'" :method="'delete'"
+        :button-text="'Delete User'" />
 
 </section>

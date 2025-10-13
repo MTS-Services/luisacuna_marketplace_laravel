@@ -3,19 +3,18 @@
 namespace App\Http\Controllers\Backend\Admin\AdminManagement;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
 
-    protected function masterView()
-    {
-        return view('backend.admin.pages.admin-management.admin.admin');
-    }
+
+    protected $masterView = 'backend.admin.pages.admin-management.admin.admin';
 
     public function index()
     {
-        return $this->masterView();
+        return view($this->masterView);
     }
 
     /**
@@ -23,15 +22,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return $this->masterView();
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        return view($this->masterView);
     }
 
     /**
@@ -47,21 +38,16 @@ class AdminController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $admin = Admin::find($id);
+        if (!$admin) {
+            abort(404);
+        }
+        return view($this->masterView, [
+            'admin' => $admin
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function trash()
     {
         //
     }
