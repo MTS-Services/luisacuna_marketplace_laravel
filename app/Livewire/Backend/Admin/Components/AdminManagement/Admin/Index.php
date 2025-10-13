@@ -8,7 +8,6 @@ use App\Services\Admin\AdminService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class Index extends Component
@@ -24,12 +23,11 @@ class Index extends Component
     protected $listeners = ['adminCreated' => '$refresh', 'adminUpdated' => '$refresh'];
 
     protected AdminService $adminService;
-    public function boot(
-        AdminService $adminService
-    ) {
+
+    public function boot(AdminService $adminService)
+    {
         $this->adminService = $adminService;
     }
-
 
     public function render()
     {
@@ -39,24 +37,86 @@ class Index extends Component
         );
 
         $columns = [
-
-            ['key' => 'avatar', 'label' => 'Avatar', 'format' => function ($admin) {
-                return $admin->avatar_url ? '<img src="' . $admin->avatar_url . '" alt="' . $admin->name . '" class="avatar avatar-md rounded-full w-10">' : '';
-            }],
-            ['key' => 'name', 'label' => 'Name'],
-            ['key' => 'email', 'label' => 'Email'],
-            ['key' => 'status', 'label' => 'Status'],
-            ['key' => 'created_at', 'label' => 'Created'],
-            ['key' => 'created_by', 'label' => 'Created By', 'format' => function ($admin) {
-                return $admin->createdBy ? $admin->createdBy->name : 'System';
-            }],
+            [
+                'key' => 'id',
+                'label' => 'ID',
+                'sortable' => true
+            ],
+            [
+                'key' => 'avatar',
+                'label' => 'Avatar',
+                'format' => function ($admin) {
+                    return $admin->avatar_url
+                        ? '<img src="' . $admin->avatar_url . '" alt="' . $admin->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($admin->name, 0, 2)) . '</div>';
+                }
+            ],
+            [
+                'key' => 'name',
+                'label' => 'Name',
+                'sortable' => true
+            ],
+            [
+                'key' => 'email',
+                'label' => 'Email',
+                'sortable' => true
+            ],
+            [
+                'key' => 'status',
+                'label' => 'Status',
+                'sortable' => true,
+                'format' => function ($admin) {
+                    $colors = [
+                        'active' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+                        'inactive' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+                        'suspended' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+                    ];
+                    $color = $colors[$admin->status->value] ?? 'bg-gray-100 text-gray-800';
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' .
+                        ucfirst($admin->status->value) .
+                        '</span>';
+                }
+            ],
+            [
+                'key' => 'created_at',
+                'label' => 'Created',
+                'sortable' => true,
+                'format' => function ($admin) {
+                    return '<div class="text-sm">' .
+                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $admin->created_at->format('M d, Y') . '</div>' .
+                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $admin->created_at->format('h:i A') . '</div>' .
+                        '</div>';
+                }
+            ],
+            [
+                'key' => 'created_by',
+                'label' => 'Created By',
+                'format' => function ($admin) {
+                    return $admin->createdBy
+                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $admin->createdBy->name . '</span>'
+                        : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
+                }
+            ],
         ];
 
         $actions = [
-            ['key' => 'id', 'label' => 'View', 'method' => 'openDetailsModal'],
-            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.am.admin.edit'],
-            ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete'],
+            [
+                'key' => 'id',
+                'label' => 'View',
+                'method' => 'openDetailsModal'
+            ],
+            [
+                'key' => 'id',
+                'label' => 'Edit',
+                'route' => 'admin.am.admin.edit'
+            ],
+            [
+                'key' => 'id',
+                'label' => 'Delete',
+                'method' => 'confirmDelete'
+            ],
         ];
+
         $bulkActions = [
             ['value' => 'delete', 'label' => 'Delete'],
             ['value' => 'activate', 'label' => 'Activate'],
@@ -85,6 +145,7 @@ class Index extends Component
             if (!$this->deleteAdminId) {
                 return;
             }
+
             if ($this->deleteAdminId == admin()->id) {
                 $this->error('You cannot delete your own account');
                 return;
@@ -95,35 +156,16 @@ class Index extends Component
             $this->showDeleteModal = false;
             $this->deleteAdminId = null;
 
-            $this->success('admin deleted successfully');
+            $this->success('Admin deleted successfully');
         } catch (\Exception $e) {
             $this->error('Failed to delete Admin: ' . $e->getMessage());
         }
     }
 
-    // public function forceDelete($adminId): void
-    // {
-    //     try {
-    //         $this->adminService->deleteAdmin($adminId, forceDelete: true);
-    //         $this->success('admin permanently deleted');
-    //     } catch (\Exception $e) {
-    //         $this->error('Failed to delete Admin: ' . $e->getMessage());
-    //     }
-    // }
-
-    // public function restore($adminId): void
-    // {
-    //     try {
-    //         $this->adminService->restoreAdmin($adminId);
-    //         $this->success('admin restored successfully');
-    //     } catch (\Exception $e) {
-    //         $this->error('Failed to restore Admin: ' . $e->getMessage());
-    //     }
-    // }
-
     public function resetFilters(): void
     {
-        $this->reset();
+        $this->reset(['search', 'statusFilter', 'perPage', 'sortField', 'sortDirection', 'selectedIds', 'selectAll', 'bulkAction']);
+        $this->resetPage();
     }
 
     public function changeStatus($adminId, $status): void
@@ -138,7 +180,7 @@ class Index extends Component
                 default => null,
             };
 
-            $this->success('admin status updated successfully');
+            $this->success('Admin status updated successfully');
         } catch (\Exception $e) {
             $this->error('Failed to update status: ' . $e->getMessage());
         }
@@ -158,6 +200,7 @@ class Index extends Component
     public function executeBulkAction(): void
     {
         $this->showBulkActionModal = false;
+
         try {
             match ($this->bulkAction) {
                 'delete' => $this->bulkDelete(),
