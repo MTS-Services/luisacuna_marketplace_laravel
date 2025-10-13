@@ -100,10 +100,10 @@
                     {{ __('Cancel') }}
                 </x-ui.button>
 
-                <button type="submit">
+                <x-ui.button type="accent" button>
                     <span wire:loading.remove wire:target="save" class="text-white">Create Admin</span>
                     <span wire:loading wire:target="save" class="text-white">Creating...</span>
-                </button>
+                </x-ui.button>
             </div>
         </form>
     </div>

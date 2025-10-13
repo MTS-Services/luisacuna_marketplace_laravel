@@ -88,7 +88,7 @@ class Index extends Component
         );
 
         $columns = [
-            ['key' => 'id', 'label' => 'ID', 'width' => '5%'],
+
             ['key' => 'avatar', 'label' => 'Avatar', 'format' => function ($admin) {
                 return $admin->avatar_url ? '<img src="' . $admin->avatar_url . '" alt="' . $admin->name . '" class="avatar avatar-md rounded-full w-10">' : '';
             }],
