@@ -7,12 +7,15 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    protected function masterView()
     {
         return view('backend.admin.pages.admin-management.admin.admin');
+    }
+
+    public function index()
+    {
+        return $this->masterView();
     }
 
     /**
@@ -20,7 +23,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        return $this->masterView();
     }
 
     /**

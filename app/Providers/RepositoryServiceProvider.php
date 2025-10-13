@@ -12,11 +12,13 @@ class RepositoryServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        // Admin Repository
         $this->app->bind(
-            // Admin Repository
             AdminRepositoryInterface::class,
             AdminRepository::class,
-            // User Repository
+        );
+        // User Repository
+        $this->app->bind(
             UserRepositoryInterface::class,
             UserRepository::class
         );

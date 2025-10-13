@@ -18,8 +18,8 @@
 
 
 
-    
-    <x-ui.table :data="$admins" :columns="$columns" :actions="$actions" :statuses="$statuses"/>
+
+    <x-ui.table :data="$admins" :columns="$columns" :actions="$actions" :statuses="$statuses" />
     {{-- <x-ui.table :columns="$columns" :data="$admins" :actions="$actions" search-property="search"
         per-page-property="perPage" empty-message="No admins found." /> --}}
 
