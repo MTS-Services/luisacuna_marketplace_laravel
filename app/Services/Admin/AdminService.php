@@ -22,14 +22,39 @@ class AdminService
         protected DeleteAdminAction $deleteAdminAction,
     ) {}
 
+/*************  ✨ Windsurf Command ⭐  *************/
+/**
+ * Get all admins.
+ *
+ * @return \Illuminate\Support\Collection
+ */
+/*******  b112efcc-2204-4830-835a-0e7c6fee632c  *******/
     public function getAllAdmins(): Collection
     {
         return $this->adminRepository->all();
     }
 
-    public function getAdminsPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function getDeletedAdmins(): Collection
     {
-        return $this->adminRepository->paginate($perPage, $filters);
+        return $this->adminRepository->deletedAdmins();
+    }
+
+    public function forceDelete($id){
+        return $this->adminRepository->forceDelete($id);
+    }
+    public function getAdminsPaginated(int $perPage = 15, array $filters = [], ?array $queries = []): LengthAwarePaginator
+    {
+        return $this->adminRepository->paginate($perPage, $filters, $queries);
+    }
+
+    public function getAdminsPaginatedWithTrashed(int $perPage = 15, array $filters = [], ?array $queries = []): LengthAwarePaginator
+    {
+        return $this->adminRepository->paginateWithTrashed($perPage, $filters, $queries);
+    }
+
+    public function getAdminsPaginatedOnlyTrashed(int $perPage = 15, array $filters = [], ?array $queries = []): LengthAwarePaginator
+    {
+        return $this->adminRepository->paginateOnlyTrashed($perPage, $filters, $queries);
     }
 
     public function getAdminById(int $id): ?Admin

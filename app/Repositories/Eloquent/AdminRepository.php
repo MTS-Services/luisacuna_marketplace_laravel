@@ -7,6 +7,7 @@ use App\Repositories\Contracts\AdminRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
+
 class AdminRepository implements AdminRepositoryInterface
 {
     public function __construct(
@@ -18,9 +19,50 @@ class AdminRepository implements AdminRepositoryInterface
         return $this->model->orderBy('created_at', 'desc')->get();
     }
 
-    public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function deletedAdmins(): Collection
+    {
+        return $this->model->onlyTrashed()->orderBy('created_at', 'desc')->get();
+    }
+
+    public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator
     {
         $query = $this->model->query();
+
+        // Apply filters
+        if (!empty($filters)) {
+            $query->filter($filters);
+        }
+
+        // Apply sorting
+        $sortField = $filters['sort_field'] ?? 'created_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+        $query->orderBy($sortField, $sortDirection);
+
+        return $query->paginate($perPage);
+    }
+
+    public function paginateWithTrashed(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator
+    {
+        $query = $this->model->query();
+        $query->withTrashed();
+
+        // Apply filters
+        if (!empty($filters)) {
+            $query->filter($filters);
+        }
+
+        // Apply sorting
+        $sortField = $filters['sort_field'] ?? 'created_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+        $query->orderBy($sortField, $sortDirection);
+
+        return $query->paginate($perPage);
+    }
+
+    public function paginateOnlyTrashed(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator
+    {
+        $query = $this->model->query();
+        $query->onlyTrashed();
 
         // Apply filters
         if (!empty($filters)) {
@@ -53,7 +95,7 @@ class AdminRepository implements AdminRepositoryInterface
     public function update(int $id, array $data): bool
     {
         $admin = $this->find($id);
-        
+
         if (!$admin) {
             return false;
         }
@@ -64,7 +106,7 @@ class AdminRepository implements AdminRepositoryInterface
     public function delete(int $id): bool
     {
         $admin = $this->find($id);
-        
+
         if (!$admin) {
             return false;
         }
@@ -75,7 +117,7 @@ class AdminRepository implements AdminRepositoryInterface
     public function forceDelete(int $id): bool
     {
         $admin = $this->model->withTrashed()->find($id);
-        
+
         if (!$admin) {
             return false;
         }
@@ -86,7 +128,7 @@ class AdminRepository implements AdminRepositoryInterface
     public function restore(int $id): bool
     {
         $admin = $this->model->withTrashed()->find($id);
-        
+
         if (!$admin) {
             return false;
         }

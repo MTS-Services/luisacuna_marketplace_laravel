@@ -49,6 +49,6 @@ class AdminController extends Controller
 
     public function trash()
     {
-        //
+        return view('backend.admin.pages.admin-management.admin.trash');
     }
 }
