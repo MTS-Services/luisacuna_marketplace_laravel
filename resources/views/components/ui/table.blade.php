@@ -21,6 +21,7 @@
     'selectedIds' => [],
     'bulkActions' => [],
     'bulkAction' => '',
+    'resetFiltersAction' => 'resetFilters',
 ])
 
 <div class="glass-card rounded-2xl p-6 mb-6 {{ $class }}">
@@ -79,7 +80,7 @@
                     @endif
 
                     <div>
-                        <x-ui.button wire:click="resetFilters" type="accent" button>
+                        <x-ui.button wire:click="{{ $resetFiltersAction }}" type="accent" button>
                             <flux:icon icon="arrow-path" class="w-4 h-4 stroke-white" />
                             {{ __('Reset') }}
                         </x-ui.button>
@@ -88,7 +89,6 @@
 
                 <div>
                     @if (count($selectedIds) > 0)
-
                         <div class="flex items-center gap-4">
                             <span class="font-medium text-nowrap">{{ count($selectedIds) }} selected</span>
 

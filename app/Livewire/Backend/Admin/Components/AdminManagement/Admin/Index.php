@@ -121,6 +121,11 @@ class Index extends Component
     //     }
     // }
 
+    public function resetFilters(): void
+    {
+        $this->reset();
+    }
+
     public function changeStatus($adminId, $status): void
     {
         try {
