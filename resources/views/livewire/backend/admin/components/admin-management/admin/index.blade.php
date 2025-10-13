@@ -15,9 +15,12 @@
         </div>
     </div>
 
-    <x-ui.table :data="$admins" :columns="$columns" :actions="$actions" :statuses="$statuses" />
+    <x-ui.table :data="$admins" :columns="$columns" :actions="$actions" :bulkActions="$bulkActions" :bulkAction="$bulkAction"
+        :statuses="$statuses" :selectedIds="$selectedIds" />
 
     <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this user?'" :message="'Are you absolutely sure you want to remove this user?All associated data will be lost.'" :method="'delete'"
         :button-text="'Delete User'" />
+    <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="'Are you sure?'" :message="'Are you sure you want to perform this bulk action?'" :method="'executeBulkAction'"
+        :button-text="'Confirm'" />
 
 </section>

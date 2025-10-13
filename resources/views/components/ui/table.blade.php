@@ -17,6 +17,10 @@
     'showBulkActions' => true,
     'filters' => [],
     'statuses' => [],
+    'statusFilter' => '',
+    'selectedIds' => [],
+    'bulkActions' => [],
+    'bulkAction' => '',
 ])
 
 <div class="glass-card rounded-2xl p-6 mb-6 {{ $class }}">
@@ -24,62 +28,48 @@
     {{-- HEADER --}}
     <div class="flex flex-col xs:flex-row items-center justify-between gap-4 mb-4">
 
-        {{-- @if ($showPerPage)
-            @php
-                $currentPerPage = method_exists($data, 'perPage') ? $data->perPage() : 10;
-            @endphp
-            <div x-data="{ open: false, selectedPerPage: {{ $currentPerPage }} }" class="relative py-2">
-                <button type="button" @click="open = !open"
-                    class="flex items-center gap-1 text-gray-700 hover:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-500 rounded-md p-1">
-                    PerPage: <span x-text="selectedPerPage"></span>
-                    <flux:icon icon="chevron-down" class="w-4 h-4 transition-transform duration-200"
-                        x-bind:class="open && 'rotate-180'" />
-                </button>
-
-                <div x-show="open" x-cloak @click.outside="open = false"
-                    x-transition:enter="transition ease-out duration-100"
-                    x-transition:enter-start="transform opacity-0 scale-95"
-                    x-transition:enter-end="transform opacity-100 scale-100"
-                    x-transition:leave="transition ease-in duration-75"
-                    x-transition:leave-start="transform opacity-100 scale-100"
-                    x-transition:leave-end="transform opacity-0 scale-95"
-                    class="absolute z-10 top-full left-0 mt-1 bg-white shadow-lg rounded-md w-max min-w-[5rem] border border-gray-100 origin-top-left">
-                    <ul class="flex flex-col gap-1 w-full text-center py-1">
-                        @foreach ($perPageOptions as $option)
-                            <li class="px-4 py-1 cursor-pointer text-gray-600 hover:bg-zinc-50 hover:text-zinc-600 font-medium"
-                                @click="open = false; selectedPerPage = {{ $option }}"
-                                wire:click="$set('{{ $perPageProperty }}', {{ $option }})">
-                                {{ $option }}
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        @endif
-
-        @if ($showSearch)
-            <div class="relative w-full sm:max-w-xs">
-                <x-input wire:model.live.debounce.500ms="{{ $searchProperty }}" type="text" placeholder="Search..."
-                    class="w-full" />
-            </div>
-        @endif --}}
-
-        <div class="mb-6 w-full">
+        <div class="w-full">
             <div class="flex justify-between w-full gap-5">
                 <div class="flex-1 flex items-center justify-start gap-5">
-
                     <div>
-                        <select wire:model.live="perPage" class="form-select w-full">
-                            <option value="10">10 per page</option>
-                            <option value="15">15 per page</option>
-                            <option value="25">25 per page</option>
-                            <option value="50">50 per page</option>
+                        <select wire:model.live="perPage" class="select w-full">
+                            @foreach ($perPageOptions as $option)
+                                <option value="{{ $option }}">{{ $option }} per page</option>
+                            @endforeach
                         </select>
                     </div>
 
                     @if (!empty($statuses))
+
+                        {{-- <div x-data="showStatusFilters: false"
+                            class="relative w-full min-w-32 max-w-fit transition-all duration-200 ease-linear px-3 py-1 shadow rounded-md">
+                            <button type="button" @click="showFilters = !showFilters"
+                                x-on:click="showStatusFilters = !showStatusFilters"
+                                class="flex items-center justify-between w-full text-sm font-medium  group">
+                                <div class="flex items-center gap-2 justify-start ">
+                                    <span class="text-gray-600 group-hover:text-gray-900"> {{ __('Status: ') }}</span>
+                                </div>
+                                <flux:icon icon="chevron-down"
+                                    class="w-4 h-4 stroke-gray-600 group-hover:stroke-gray-900" />
+                            </button>
+
+                            <div x-show="showStatusFilters" x-cloak
+                                x-transition:enter="transition ease-out duration-100"
+                                x-transition:enter-start="transform opacity-0 scale-95"
+                                x-transition:enter-end="transform opacity-100 scale-100"
+                                class="absolute top-full mt-2 min-w-32 w-fit max-w-52 origin-top-right right-0 rounded-md shadow-lg text-center">
+                                @foreach ($statuses as $status)
+                                    <button type="button" wire:click="statusFilter('{{ $status['value'] }}')"
+                                        class="flex items-center justify-between w-full text-sm font-medium text-gray-600 hover:text-gray-900">
+                                        <span x-text="status['label']"></span>
+                                    </button>
+                                @endforeach
+                            </div>
+
+                        </div> --}}
+
                         <div>
-                            <select wire:model.live="statusFilter" class="form-select w-full">
+                            <select wire:model.live="statusFilter" class="select w-full">
                                 <option value="">All Statuses</option>
                                 @foreach ($statuses as $status)
                                     <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
@@ -88,12 +78,33 @@
                         </div>
                     @endif
 
-                    <div class="">
+                    <div>
                         <x-ui.button wire:click="resetFilters" type="accent" button>
                             <flux:icon icon="arrow-path" class="w-4 h-4 stroke-white" />
                             {{ __('Reset') }}
                         </x-ui.button>
                     </div>
+                </div>
+
+                <div>
+                    @if (count($selectedIds) > 0)
+
+                        <div class="flex items-center gap-4">
+                            <span class="font-medium text-nowrap">{{ count($selectedIds) }} selected</span>
+
+                            <select wire:model.live="bulkAction" class="select">
+                                <option value="">Select Action</option>
+                                @foreach ($bulkActions as $action)
+                                    <option value="{{ $action['value'] }}">{{ $action['label'] }}</option>
+                                @endforeach
+                            </select>
+
+                            <button wire:click="confirmBulkAction" class="btn btn-secondary"
+                                @if (empty($bulkAction)) disabled @endif>
+                                Execute
+                            </button>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="w-full sm:max-w-64">

@@ -1,19 +1,43 @@
-<?php
-// Define the Blade component props, setting smart defaults.
-$show = $show ?? 'showModal';
-$title = $title ?? 'Are you sure?';
-$message = $message ?? 'Please confirm your action.';
-$method = $method ?? 'confirmAction';
-$buttonText = $buttonText ?? 'Confirm';
-$iconColor = $iconColor ?? 'red'; // Supports red, blue, green, yellow, etc.
+@props([
+    'show' => 'showModal',
+    'title' => 'Are you sure?',
+    'message' => 'Please confirm your action.',
+    'method' => 'confirmAction',
+    'buttonText' => 'Confirm',
+    'colorBg' => 'zinc',
+    'iconColor' => 'red',
 
-// Dynamic color classes based on the iconColor prop.
-$colorBase = "text-{$iconColor}-600";
-$colorBg = "bg-{$iconColor}-100";
-$buttonBg = "bg-{$iconColor}-600";
-$buttonHoverBg = "hover:bg-{$iconColor}-700";
-$buttonFocusRing = "focus:ring-{$iconColor}-500";
-?>
+    'buttonVariant' => 'danger',
+    'iconVariant' => 'outline',
+    'iconName' => 'exclamation-triangle',
+    'iconClasss' => '',
+])
+
+@php
+    $buttonBg = [
+        'primary' => 'bg-zinc-600 text-white hover:bg-zinc-700',
+        'secondary' => 'bg-zinc-400 text-white hover:bg-zinc-500',
+        'accent' => 'bg-accent text-white hover:bg-accent-content',
+        'success' => 'bg-green-600 text-white hover:bg-green-700',
+        'danger' => 'bg-red-600 text-white hover:bg-red-700',
+        'warning' => 'bg-yellow-600 text-white hover:bg-yellow-700',
+        'info' => 'bg-blue-600 text-white hover:bg-blue-700',
+        'dark' => 'bg-black text-white hover:bg-zinc-900 dark:bg-white dark:text-black dark:hover:bg-zinc-100',
+        'light' => 'bg-white text-black hover:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800',
+    ];
+
+    $iconEffectClass = [
+        'primary' => 'bg-zinc-600/30',
+        'secondary' => 'bg-zinc-400/30',
+        'accent' => 'bg-accent/30',
+        'success' => 'bg-green-600/30',
+        'danger' => 'bg-red-600/30',
+        'warning' => 'bg-yellow-600/30',
+        'info' => 'bg-blue-600/30',
+        'dark' => 'bg-black/30',
+        'light' => 'bg-white/30',
+    ];
+@endphp
 
 <div x-data="{ localShow: @entangle($show) }">
     <div x-show="localShow" x-cloak x-transition:enter="transition ease-out duration-300"
@@ -43,25 +67,15 @@ $buttonFocusRing = "focus:ring-{$iconColor}-500";
                     <button @click="localShow = false" wire:click="$set('{{ $show }}', false)"
                         class="text-gray-400 hover:text-gray-600 transition-colors duration-150 rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-gray-200">
                         <span class="sr-only">Close</span>
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+                        <flux:icon icon="x-mark" class="w-6 h-6" />
                     </button>
                 </div>
 
                 {{-- Modal Content --}}
                 <div class="p-8 text-center">
-                    {{-- Icon (The specific icon for 'alert/delete' is kept, but its color is dynamic) --}}
                     <div
-                        class="mx-auto flex items-center justify-center h-16 w-16 rounded-full {{ $colorBg }} mb-4">
-                        <svg class="h-8 w-8 {{ $colorBase }}" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            {{-- Exclamation Mark Triangle Icon --}}
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M12 9v3.75m-9.303 3.376c-.866 1.5.305 3.254 1.933 3.254h14.714c1.628 0 2.792-1.754 1.933-3.254L12.94 2.332c-.865-1.5-3.032-1.5-3.897 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                        </svg>
+                        class="mx-auto flex items-center justify-center h-16 w-16 rounded-full {{ $iconEffectClass[$buttonVariant] }} mb-4">
+                        <flux:icon name="{{ $iconName }}" class="w-8 h-8 stroke-red-500 {{ $iconClasss }}" />
                     </div>
 
                     {{-- Title --}}
@@ -77,8 +91,8 @@ $buttonFocusRing = "focus:ring-{$iconColor}-500";
                     {{-- Action Buttons --}}
                     <div class="flex flex-col sm:flex-row justify-center gap-3">
                         {{-- Primary Action Button --}}
-                        <button wire:click="{{ $method }}" @click="localShow = false" {{-- Close modal after Livewire action initiates --}}
-                            class="w-full sm:w-auto px-6 py-3 rounded-xl {{ $buttonBg }} text-white text-base font-semibold shadow-sm {{ $buttonHoverBg }} focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $buttonFocusRing }} transition duration-150">
+                        <button wire:click="{{ $method }}" @click="localShow = false"
+                            class="w-full sm:w-auto px-6 py-3 rounded-xl {{ $buttonBg[$buttonVariant] }} text-white text-base font-semibold shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 transition duration-150">
                             {{ $buttonText }}
                         </button>
 
