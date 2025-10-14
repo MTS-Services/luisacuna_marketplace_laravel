@@ -87,8 +87,16 @@
                         <tbody class="divide-y divide-gray-200">
                             <tr class="hover:bg-white transition-colors">
                                 <td class="p-4 w-2/5 text-gray-600 font-semibold">Created By</td>
-                                <td class="p-4 text-gray-900">{{ $admin->creater }}</td>
+                                <td class="p-4 text-gray-900">{{ $admin->creater_admin->name }}</td>
                             </tr>
+                            @if($admin->updated_by)
+                             <tr class="hover:bg-white transition-colors">
+                                <td class="p-4 w-2/5 text-gray-600 font-semibold">Updated By</td>
+                                <td class="p-4 text-gray-900">{{ $admin->updated_at_human }}</td>
+                                
+                            </tr>
+                            @endif
+
                             <tr class="hover:bg-white transition-colors">
                                 <td class="p-4 text-gray-600 font-semibold">Created At</td>
                                 <td class="p-4 text-gray-900">{{ $admin->created_at_formatted }}</td>
