@@ -19,9 +19,9 @@ enum UserType: string
     public function color(): string
     {
         return match($this) {
-            self::BUYER => 'success',
-            self::SELLER => 'secondary',
-            self::BOTH => 'danger',
+            self::BUYER => 'badge-success',
+            self::SELLER => 'badge-secondary',
+            self::BOTH => 'badge-danger',
         };
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserAccountStatus;
 use App\Enums\UserStatus;
 use App\Enums\UserType;
 use App\Traits\AuditColumnsTrait;
@@ -44,8 +45,7 @@ return new class extends Migration
             $table->timestamp('otp_expires_at')->nullable();
 
             $table->string('user_type')->default(UserType::BUYER->value);
-            $table->enum('account_status', ['pending_verification', 'active', 'suspended', 'banned'])
-                ->default('pending_verification');
+            $table->string('account_status')->default(UserAccountStatus::PENDING_VERIFICATION->value);
 
             $table->timestamp('last_login_at')->nullable();
             $table->string('last_login_ip')->nullable();
