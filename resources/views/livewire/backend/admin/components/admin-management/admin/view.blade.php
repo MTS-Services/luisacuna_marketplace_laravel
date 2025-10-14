@@ -15,7 +15,7 @@
         </div>
     </div>
 
-    <div class=" mx-auto mt-10 bg-white shadow rounded-lg p-8 glass-card rounded-2xl p-6 ">
+    <div class=" mx-auto mt-10 bg-white shadow glass-card rounded-2xl p-6 ">
         <!-- Profile Header -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between border-b pb-6 mb-6">
             <div class="flex items-center space-x-4">
@@ -35,51 +35,63 @@
         <div class="grid md:grid-cols-2 gap-6">
             <div>
 
-
-                <!-- Vertical Table -->
-                <table class="w-full border border-gray-200 rounded-lg text-sm">
-                    <tbody class="divide-y divide-gray-200">
-                        <tr class="hover:bg-gray-50">
-                            <td class="p-3  w-1/3 text-gray-700 font-bold">Full Name:</td>
-                            <td class="p-3">{{ $admin->name }}</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="p-3  text-gray-700 font-bold">Email:</td>
-                            <td class="p-3">{{ $admin->email }}</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="p-3 font-bold text-gray-700">Phone:</td>
-                            <td class="p-3">{{ $admin->phone }}</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="p-3 font-bold text-gray-700">Address</td>
-                            <td class="p-3">{{ $admin->address }}</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="p-3 font-bold text-gray-700">Status</td>
-                            <td class="p-3 badge badge-info align-middle my-2">{{ $admin->status }}</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="p-3 font-bold text-gray-700">Verified:</td>
-                            <td class="p-3 badge {{ $admin->verify_color }} align-middle my-2">{{ $admin->verify_label }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden">
+                    <table class="w-full text-sm">
+                        <tbody class="divide-y divide-gray-200">
+                            <tr class="hover:bg-white transition-colors">
+                                <td class="p-4 w-2/5 text-gray-600 font-semibold">Full Name</td>
+                                <td class="p-4 text-gray-900">{{ $admin->name }}</td>
+                            </tr>
+                            <tr class="hover:bg-white transition-colors">
+                                <td class="p-4 text-gray-600 font-semibold">Email</td>
+                                <td class="p-4 text-gray-900">{{ $admin->email }}</td>
+                            </tr>
+                            <tr class="hover:bg-white transition-colors">
+                                <td class="p-4 text-gray-600 font-semibold">Phone</td>
+                                <td class="p-4 text-gray-900">{{ $admin->phone }}</td>
+                            </tr>
+                            <tr class="hover:bg-white transition-colors">
+                                <td class="p-4 text-gray-600 font-semibold">Address</td>
+                                <td class="p-4 text-gray-900">{{ $admin->address }}</td>
+                            </tr>
+                            <tr class="hover:bg-white transition-colors">
+                                <td class="p-4 text-gray-600 font-semibold">Status</td>
+                                <td class="p-4">
+                                    <span
+                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                        {{ $admin->status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-white transition-colors">
+                                <td class="p-4 text-gray-600 font-semibold">Verified</td>
+                                <td class="p-4">
+                                    <span
+                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $admin->verify_color }}">
+                                        {{ $admin->verify_label }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div>
-                <table class="w-full border border-gray-200 rounded-lg text-sm">
-                    <tbody class="divide-y divide-gray-200">
-                        <tr class="hover:bg-gray-50">
-                            <td class="p-3 font-bold w-1/3 text-gray-700">Created By</td>
-                            <td class="p-3">{{ $admin->creater }}</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="p-3 font-bold text-gray-700">Created At</td>
-                            <td class="p-3">{{ $admin->created_at_formatted }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden">
+                    <table class="w-full text-sm">
+                        <tbody class="divide-y divide-gray-200">
+                            <tr class="hover:bg-white transition-colors">
+                                <td class="p-4 w-2/5 text-gray-600 font-semibold">Created By</td>
+                                <td class="p-4 text-gray-900">{{ $admin->creater }}</td>
+                            </tr>
+                            <tr class="hover:bg-white transition-colors">
+                                <td class="p-4 text-gray-600 font-semibold">Created At</td>
+                                <td class="p-4 text-gray-900">{{ $admin->created_at_formatted }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
