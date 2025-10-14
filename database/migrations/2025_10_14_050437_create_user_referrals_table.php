@@ -13,22 +13,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_statistics', function (Blueprint $table) {
+        Schema::create('user_referrals', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0);
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('referred_by');
 
-            $table->integer('total_orders_as_buyer')->default(0);
-            $table->decimal('total_spent', 15, 2)->default(0.00);
-            $table->integer('total_orders_as_seller')->default(0);
-            $table->decimal('total_earned', 15, 2)->default(0.00);
-            $table->decimal('average_rating_as_seller', 3, 2)->default(0.00);
-            $table->integer('total_reviews_as_seller')->default(0);
+            $table->string('referral_code')->unique();
+            $table->decimal('referral_earnings', 10, 2)->default(0.00);
 
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('referred_by')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $this->addMorphedAuditColumns($table);
         });
     }
@@ -38,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_statistics');
+        Schema::dropIfExists('user_referrals');
     }
 };

@@ -16,8 +16,8 @@ return new class extends Migration
     {
         Schema::create('seller_profiles', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('sort_order')->default(0);
-            $table->bigInteger('user_id');
+            $table->unsignedBigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('user_id');;
             $table->string('shop_name');
             $table->text('shop_description')->nullable();
 
