@@ -11,8 +11,8 @@
                     <flux:icon name="user-plus" class="w-4 h-4 stroke-white" />
                     {{ __('Add') }}
                 </x-ui.button>  --}}
-                   <x-ui.button href="{{ route('admin.am.admin.index') }}">
-                    <flux:icon name="user-plus" class="w-4 h-4 stroke-white" />
+                   <x-ui.button href="{{ route('admin.am.admin.index') }}" type='accent'>
+                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
                     {{ __('Back') }}
                 </x-ui.button>
             </div>
@@ -87,20 +87,25 @@
                         <tbody class="divide-y divide-gray-200">
                             <tr class="hover:bg-white transition-colors">
                                 <td class="p-4 w-2/5 text-gray-600 font-semibold">Created By</td>
-                                <td class="p-4 text-gray-900">{{ $admin->creater_admin->name }}</td>
+                                <td class="p-4 text-gray-900">{{ $admin->creater_admin->name ?? 'System' }}</td>
                             </tr>
-                            @if($admin->updated_by)
-                             <tr class="hover:bg-white transition-colors">
-                                <td class="p-4 w-2/5 text-gray-600 font-semibold">Updated By</td>
-                                <td class="p-4 text-gray-900">{{ $admin->updated_at_human }}</td>
-                                
-                            </tr>
-                            @endif
-
+                            
                             <tr class="hover:bg-white transition-colors">
                                 <td class="p-4 text-gray-600 font-semibold">Created At</td>
                                 <td class="p-4 text-gray-900">{{ $admin->created_at_formatted }}</td>
                             </tr>
+                            @if($admin->updated_by)
+                             <tr class="hover:bg-white transition-colors">
+                                <td class="p-4 w-2/5 text-gray-600 font-semibold">Updated By</td>
+                                <td class="p-4 text-gray-900">{{ $admin->updater_admin->name }}</td>
+                                
+                            </tr>
+                             <tr class="hover:bg-white transition-colors">
+                                <td class="p-4 w-2/5 text-gray-600 font-semibold">Updated At</td>
+                                <td class="p-4 text-gray-900">{{ $admin->updated_at_formatted }}</td>
+
+                            </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
