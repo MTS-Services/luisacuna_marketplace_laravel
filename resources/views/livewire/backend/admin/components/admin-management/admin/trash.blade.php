@@ -11,6 +11,10 @@
                     <flux:icon name="user-plus" class="w-4 h-4 stroke-white" />
                     {{ __('Add') }}
                 </x-ui.button> --}}
+                <x-ui.button href="{{ route('admin.am.admin.index') }}">
+                    <flux:icon name="user-plus" class="w-4 h-4 stroke-white" />
+                    {{ __('Back') }}
+                </x-ui.button>
             </div>
         </div>
     </div>

@@ -112,6 +112,7 @@ class Index extends Component
             ['value' => 'suspend', 'label' => 'Suspend'],
         ];
 
+     
         return view('livewire.backend.admin.components.admin-management.admin.index', [
             'admins' => $admins,
             'statuses' => AdminStatus::options(),
