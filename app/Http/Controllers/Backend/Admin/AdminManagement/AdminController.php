@@ -30,7 +30,14 @@ class AdminController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $admin = Admin::find($id);
+        if (!$admin) {
+            abort(404);
+        }
+        return view($this->masterView, [
+            'admin' => $admin
+        ]);
+        
     }
 
     /**
@@ -49,6 +56,6 @@ class AdminController extends Controller
 
     public function trash()
     {
-        return view('backend.admin.pages.admin-management.admin.trash');
+        return view($this->masterView);
     }
 }

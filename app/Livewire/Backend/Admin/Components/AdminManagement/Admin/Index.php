@@ -102,7 +102,7 @@ class Index extends Component
         ];
 
         $actions = [
-            ['key' => 'id', 'label' => 'View', 'method' => 'openDetailsModal'],
+            ['key' => 'id', 'label' => 'View', 'route' => 'admin.am.admin.view'],
             ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.am.admin.edit'],
             ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete'],
         ];
@@ -114,6 +114,7 @@ class Index extends Component
             'actions' => $actions,
         ]);
     }
+
 
     public function confirmDelete($adminId): void
     {
