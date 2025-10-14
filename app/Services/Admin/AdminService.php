@@ -22,13 +22,11 @@ class AdminService
         protected DeleteAdminAction $deleteAdminAction,
     ) {}
 
-/*************  ✨ Windsurf Command ⭐  *************/
 /**
  * Get all admins.
  *
  * @return \Illuminate\Support\Collection
  */
-/*******  b112efcc-2204-4830-835a-0e7c6fee632c  *******/
     public function getAllAdmins(): Collection
     {
         return $this->adminRepository->all();
@@ -60,6 +58,12 @@ class AdminService
     public function getAdminById(int $id): ?Admin
     {
         return $this->adminRepository->find($id);
+    }
+
+    public function getAdminWithTrash(int $id): ?Admin{
+
+        return $this->adminRepository->getAdminWithTrash($id);
+        
     }
 
     public function getAdminByEmail(string $email): ?Admin

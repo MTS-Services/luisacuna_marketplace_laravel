@@ -16,8 +16,8 @@ class DeleteAdminAction
     public function execute(int $adminId, bool $forceDelete = false): bool
     {
         return DB::transaction(function () use ($adminId, $forceDelete) {  
-
-            $admin = $this->adminRepository->find($adminId);
+           
+            $admin = $this->adminRepository->getAdminWithTrash($adminId);
 
             if (!$admin) {
                 throw new \Exception('Admin not found');

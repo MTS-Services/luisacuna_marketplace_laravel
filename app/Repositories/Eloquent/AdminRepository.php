@@ -82,6 +82,10 @@ class AdminRepository implements AdminRepositoryInterface
         return $this->model->find($id);
     }
 
+    public function getAdminWithTrash(int $id): ?Admin  {
+       return  $this->model->withTrashed()->find($id);
+    }
+
     public function findByEmail(string $email): ?Admin
     {
         return $this->model->where('email', $email)->first();

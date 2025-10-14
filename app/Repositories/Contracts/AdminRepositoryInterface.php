@@ -14,6 +14,8 @@ interface AdminRepositoryInterface
     public function deletedAdmins(): Collection;
 
     public function forceDelete(int $id): bool;
+    
+    public function getAdminWithTrash(int $id): ?Admin;
 
     public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
 
