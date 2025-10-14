@@ -58,6 +58,13 @@ class User extends AuthBaseModel
 
         'last_synced_at',
         'status',
+        
+        'created_type',
+        'updated_type',
+        'deleted_type',
+        'created_id',
+        'updated_id',
+        'deleted_id',
     ];
 
     /**

@@ -4,11 +4,11 @@ namespace App\Enums;
 
 enum SellerLevel: string
 {
-    const BRONZE = 'bronze';
-    const SILVER = 'silver';
-    const GOLD = 'gold';
-    const PLATINUM = 'platinum';
-    const DIAMOND = 'diamond';
+    case BRONZE = 'bronze';
+    case SILVER = 'silver';
+    case GOLD = 'gold';
+    case PLATINUM = 'platinum';
+    case DIAMOND = 'diamond';
 
 
     public function label(): string

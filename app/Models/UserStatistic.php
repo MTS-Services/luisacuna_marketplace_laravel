@@ -7,6 +7,7 @@ use App\Models\BaseModel;
 class UserStatistic extends BaseModel
 {
       protected $fillable = [
+        'sort_order',
         'user_id',
         'total_orders_as_buyer',
         'total_spent',
@@ -14,6 +15,13 @@ class UserStatistic extends BaseModel
         'total_earned',
         'average_rating_as_seller',
         'total_reviews_as_seller',
+
+        'created_type',
+        'updated_type',
+        'deleted_type',
+        'created_id',
+        'updated_id',
+        'deleted_id',
     ];
 
     protected $casts = [
