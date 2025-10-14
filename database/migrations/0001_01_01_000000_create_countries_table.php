@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\KycStatus;
 use App\Traits\AuditColumnsTrait;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,18 +13,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_kycs', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0);
-            $table->unsignedBigInteger('user_id');
-
-            $table->string('kyc_status')->default(KycStatus::NotRequired->value);
-            $table->timestamp('kyc_submitted_at')->nullable();
-            $table->timestamp('kyc_approved_at')->nullable();
-
+            $table->string('name');
+            $table->string('code')->unique();
+            $table->string('phone_code')->nullable();
+            $table->string('currency')->nullable();
+            $table->boolean('is_active')->default(true);
+            
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $this->addMorphedAuditColumns($table);
         });
     }
@@ -35,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_kycs');
+        Schema::dropIfExists('countries');
     }
 };

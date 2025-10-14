@@ -21,7 +21,7 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('sort_order')->default(0);
-            $table->bigInteger('country_id');
+            $table->unsignedBigInteger('country_id');
 
             $table->string('username')->unique();
             $table->string('first_name')->nullable();
@@ -67,7 +67,7 @@ return new class extends Migration
             $table->softDeletes();
 
 
-            $table->foreignId('country_id')->nullable()->constrained('countries')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
             $this->addMorphedAuditColumns($table);
 
             // Indexes
@@ -84,9 +84,8 @@ return new class extends Migration
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()
-                ->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('ip_address')->nullable();
+            $table->foreignId('user_id')->nullable()->index();
+            $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();
