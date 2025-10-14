@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\UserStatus;
+use App\Enums\UserType;
 use App\Traits\AuditColumnsTrait;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     use AuditColumnsTrait;
+
     /**
      * Run the migrations.
      */
@@ -17,27 +19,61 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name');
+            $table->bigInteger('sort_order')->default(0);
+            $table->bigInteger('country_id');
+
+            $table->string('username')->unique();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('display_name')->nullable();
+
+            $table->string('avatar')->nullable();
+            $table->date('date_of_birth')->nullable();
+
+            $table->string('timezone')->default('UTC');
+            $table->string('language')->default('en');
+            $table->string('currency')->default('USD');
+
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            
-            $table->string('phone')->index()->nullable();
-            $table->text('address')->nullable();
-            $table->string('status')->index()->default(UserStatus::ACTIVE->value);
-            $table->string('avatar')->nullable();
 
-            $table->timestamp('last_synced_at')->nullable();
+            $table->string('phone')->nullable()->index();
+            $table->timestamp('phone_verified_at')->nullable();
             $table->string('otp')->nullable();
             $table->timestamp('otp_expires_at')->nullable();
-            
+
+            $table->string('user_type')->default(UserType::BUYER->value);
+            $table->enum('account_status', ['pending_verification', 'active', 'suspended', 'banned'])
+                ->default('pending_verification');
+
+            $table->timestamp('last_login_at')->nullable();
+            $table->string('last_login_ip')->nullable();
+            $table->integer('login_attempts')->default(0);
+            $table->timestamp('locked_until')->nullable();
+
+            $table->boolean('two_factor_enabled')->default(false);
+            $table->text('two_factor_secret')->nullable();
+            $table->text('two_factor_recovery_codes')->nullable();
+
+            $table->timestamp('terms_accepted_at')->nullable();
+            $table->timestamp('privacy_accepted_at')->nullable();
+
+            $table->timestamp('last_synced_at')->nullable();
+            $table->string('status')->index()->default(UserStatus::ACTIVE->value);
+
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
+
+            
+            $table->foreignId('country_id')->nullable()->constrained('countries')->onDelete('cascade')->onUpdate('cascade');
             $this->addMorphedAuditColumns($table);
 
-            // INDEXES
+            // Indexes
             $table->index('email');
+            $table->index('user_type');
+            $table->index('account_status');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -48,8 +84,9 @@ return new class extends Migration
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
+            $table->foreignId('user_id')->nullable()
+                ->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('ip_address')->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();
@@ -61,8 +98,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
     }
 };
