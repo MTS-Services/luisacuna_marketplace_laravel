@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
-       
         Admin::create([
             'name' => 'Admin',
             'email' => 'admin@dev.com',

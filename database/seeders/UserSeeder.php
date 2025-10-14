@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
          $faker = Faker::create();
 
         // Create 10 dummy users
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             User::create([
                 'sort_order' => $i,
                 'country_id' => 1,
@@ -34,9 +34,9 @@ class UserSeeder extends Seeder
                 'timezone' => $faker->timezone,
                 'language' => 'en',
                 'currency' => 'USD',
-                'email' => $faker->unique()->safeEmail,
+                'email' => "user@dev{$i}.com",
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'), // default password
+                'password' => Hash::make("user@dev{$i}.com"), // default password
                 'phone' => $faker->phoneNumber,
                 'phone_verified_at' => now(),
                 'otp' => null,
