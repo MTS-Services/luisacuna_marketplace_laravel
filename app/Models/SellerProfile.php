@@ -4,8 +4,9 @@ namespace App\Models;
 
 use App\Enums\SellerLevel;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class SellerProfile extends Model
+class SellerProfile extends BaseModel
 {
     protected $fillable = [
         'user_id',

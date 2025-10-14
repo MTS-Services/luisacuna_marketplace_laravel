@@ -29,7 +29,7 @@ return new class extends Migration
             $table->decimal('commission_rate', 5, 2)->default(10.00);
             $table->decimal('minimum_payout', 10, 2)->default(50.00);
 
-
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
             $table->softDeletes();
             $this->addMorphedAuditColumns($table);
