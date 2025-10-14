@@ -36,8 +36,8 @@ class View extends Component
 
   public function render()
     {
-   
-        return view('livewire.backend.admin.components.admin-management.admin.view',[
+
+         return view('livewire.backend.admin.components.admin-management.admin.view',[
             'statuses' => AdminStatus::options(),
         ]);
     }

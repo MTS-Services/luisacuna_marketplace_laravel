@@ -15,88 +15,76 @@
         </div>
     </div>
 
-
-    <div class="admin_details">
-              <div class="block inset-0 z-50 overflow-y-auto">
-            <div class="block items-center justify-center min-h-screen py-6">
-
-                
-                {{-- Modal --}}
-                <div
-                    class="relative bg-zinc-50  rounded-2xl text-left overflow-hidden  transform transition-all w-full border border-zinc-50">
-                   
-
-                    {{-- Body --}}
-                    <div class="px-6 py-6 space-y-6">
-                        {{-- Profile Section --}}
-                    
-                        {{-- Information Grid --}}
-                        <div class="grid grid-cols-3 gap-4">
-                            <div class="bg-white rounded-lg p-4 border border-zinc-700" >
-                                <p class="text-xs text-zinc-500 uppercase tracking-wider mb-1">id</p>
-                                <p class="text-zinc-500 font-medium">{{ '#'.$admin->id }}</p>
-                            </div>
-
-                            <div class="bg-white rounded-lg p-4 border border-zinc-700 ">
-                                <p class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Name</p>
-                                <div class="text-zinc-500 font-medium flex items-center ">
-                                  <p class="inline-block !rounded-full overflow-hidden">  <img src="{{ $existingAvatar }}" alt="" class="w-[50px] h-[50px] "></p>
-                                  <p class="font-bold text-zinc-500 pl-3">{{ $admin->name }}</p> 
-                                </div>
-                              
-                            </div>
-
-                            <div class="bg-white rounded-lg p-4 border border-zinc-700">
-                                <p class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Status</p>
-                               
-                                <span
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border">
-                                 
-                                  {{ $admin->status }}
-                                </span>
-                            </div>
-                            <div class="bg-white rounded-lg p-4 border border-zinc-700 ">
-                                <p class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Email</p>
-                                <p class="text-zinc-500 font-medium">{{ $admin->email}}</p>
-                            </div>
-
-                            <div class="bg-white rounded-lg p-4 border border-zinc-700" >
-                                <p class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Phone</p>
-                                <p class="text-zinc-500 font-medium">{{ $admin->phone }}</p>
-                            </div>
-
-                            <div class="bg-white rounded-lg p-4 border border-zinc-700">
-                                <p class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Address</p>
-                               
-                                <p class="text-zinc-500 font-medium">{{ $admin->address }}</p>
-                            </div>
-                            <div class="bg-white rounded-lg p-4 border border-zinc-700 ">
-                                <p class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Verified</p>
-                                <p class="text-zinc-500 font-medium">{{ $admin->verify_label}}</p>
-                            </div>
-
-                            <div class="bg-white rounded-lg p-4 border border-zinc-700" >
-                                <p class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Created By</p>
-                                <p class="text-zinc-500 font-medium">{{ $admin->created_at_human }}</p>
-                            </div>
-
-                            <div class="bg-white rounded-lg p-4 border border-zinc-700">
-                                <p class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Created at</p>
-                               
-                                <span
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border">
-                                  {{$admin->created_at_formatted}}
-                                </span>
-                            </div>
-                            
-                    </div>
-
-                
-
-                    
+    <div class=" mx-auto mt-10 bg-white shadow rounded-lg p-8 glass-card rounded-2xl p-6 ">
+        <!-- Profile Header -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between border-b pb-6 mb-6">
+            <div class="flex items-center space-x-4">
+                <img src="{{ $existingAvatar ?? '' }}" alt="Profile" class="w-24 h-24 rounded-full object-cover">
+                <div>
+                    <h2 class="text-2xl font-semibold">{{ $admin->name }}</h2>
+                    <p class="text-sm text-gray-500">{{ $admin->email }}</p>
+                    <p class="text-sm text-gray-500 mt-1"><i class="fa-solid fa-location-dot mr-1"></i>
+                        {{ $admin->address }}</p>
                 </div>
             </div>
+
+
         </div>
+
+        <!-- Profile Info -->
+        <div class="grid md:grid-cols-2 gap-6">
+            <div>
+
+
+                <!-- Vertical Table -->
+                <table class="w-full border border-gray-200 rounded-lg text-sm">
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3  w-1/3 text-gray-700 font-bold">Full Name:</td>
+                            <td class="p-3">{{ $admin->name }}</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3  text-gray-700 font-bold">Email:</td>
+                            <td class="p-3">{{ $admin->email }}</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3 font-bold text-gray-700">Phone:</td>
+                            <td class="p-3">{{ $admin->phone }}</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3 font-bold text-gray-700">Address</td>
+                            <td class="p-3">{{ $admin->address }}</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3 font-bold text-gray-700">Status</td>
+                            <td class="p-3 badge badge-info align-middle my-2">{{ $admin->status }}</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3 font-bold text-gray-700">Verified:</td>
+                            <td class="p-3 badge {{ $admin->verify_color }} align-middle my-2">{{ $admin->verify_label }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <table class="w-full border border-gray-200 rounded-lg text-sm">
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3 font-bold w-1/3 text-gray-700">Created By</td>
+                            <td class="p-3">{{ $admin->creater }}</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3 font-bold text-gray-700">Created At</td>
+                            <td class="p-3">{{ $admin->created_at_formatted }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
     </div>
+
 
 </section>

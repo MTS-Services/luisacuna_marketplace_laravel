@@ -7,10 +7,10 @@
                     <flux:icon name="trash" class="w-4 h-4 stroke-white" />
                     {{ __('Trash') }}
                 </x-ui.button> --}}
-                <x-ui.button href="{{ route('admin.am.admin.create') }}">
+                {{-- <x-ui.button href="{{ route('admin.am.admin.create') }}">
                     <flux:icon name="user-plus" class="w-4 h-4 stroke-white" />
                     {{ __('Add') }}
-                </x-ui.button>
+                </x-ui.button> --}}
             </div>
         </div>
     </div>
