@@ -1,248 +1,144 @@
-# Laravel 12 + Livewire 3 User CRUD - Setup Guide
+# 🛍️ Luisacuna Marketplace
 
-## Prerequisites
-- PHP 8.2 or higher
-- Composer
-- MySQL/PostgreSQL
-- Node.js & NPM
+## Project Overview
 
-## Installation Steps
+Luisacuna Marketplace is a modern, secure, and feature-rich e-commerce platform designed to facilitate the buying and selling of digital goods. It provides dedicated, optimized experiences for multiple user roles, robust administrative control, and full internationalization support, including multi-currency and various digital payment/withdrawal methods.
 
-### 1. Clone and Install Dependencies
+The platform is built for speed, security, and scalability using the latest PHP ecosystem tools.
+
+## Key Features & Functionality
+
+### 1. Multi-Role User Panels
+
+The marketplace is designed to serve distinct user needs through dedicated panels:
+
+* **Seller Panel:** Tools for listing products, managing inventory, tracking sales, and managing withdrawal requests.
+
+* **Buyer Panel:** Features for browsing, purchasing, order tracking, and managing account details.
+
+* **Guest Access:** Supports guest browsing and potential limited checkout capabilities.
+
+### 2. Secure & Modern Admin Dashboard
+
+A centralized and highly secure dashboard provides complete oversight and control:
+
+* **Full Control:** Manage users, products, categories, transactions, and system settings.
+
+* **Monitoring:** Real-time analytics and monitoring tools to track sales performance, user activity, and system health.
+
+* **Modern UI:** Built with a modern, responsive, and intuitive interface for optimal administrative efficiency.
+
+### 3. Products & Digital Goods
+
+The platform specializes in the sale and purchase of various digital items:
+
+* 🎮 Games
+
+* 🔑 Passes / Subscriptions
+
+* 🎁 Gift Cards
+
+* 💡 And many other types of digital assets.
+
+### 4. Internationalization & Finance
+
+The platform is built to operate globally with flexible financial options:
+
+* **Multi-Language Support:** The primary language is **English**, with support for multiple secondary languages to cater to a global user base.
+
+* **Multi-Currency Support:** Handles transactions in various fiat (country-specific) currencies as well as digital currencies like **Bitcoin** and other cryptocurrencies.
+
+* **Multiple Withdrawal Methods:** Sellers can easily withdraw their earnings through diverse and secured payment gateways, including:
+
+  * Stripe
+
+  * PayPal
+
+  * Various crypto withdrawal platforms
+
+## Technology Stack
+
+Luisacuna Marketplace leverages a cutting-edge, highly secure, and efficient technology stack:
+
+| **Category** | **Technology** | **Version / Use** |
+| :--- | :--- | :--- |
+| **Backend** | **PHP** | `v8.3` (Latest stable and secure version) |
+| **Framework** | **Laravel** | `v12` (Latest, most secure major version) |
+| **Interactivity** | **Livewire** | `v3` (Used as the core "Starter Kit" for dynamic interfaces) |
+| **Styling/UI** | **Tailwind CSS** | Utility-first CSS framework for rapid development. |
+| **UI Components** | **Daisy UI** & **Flux** | Component libraries built on Tailwind for a cohesive and aesthetic design. |
+| **Icons** | **Heroicons** & **Lucide** | A comprehensive set of modern, clear icons for the application interface. |
+| **Packages** | Other essential Laravel/PHP packages for payment, security, and localization. | |
+
+## Installation & Setup
+
+Follow these steps to set up and run the Luisacuna Marketplace project on your local machine.
+
+### Prerequisites
+
+Ensure you have the following software installed:
+
+* **PHP:** Version `8.3` or higher
+
+* **Composer:** Latest version
+
+* **Node.js & npm:** Latest LTS version (for compiling frontend assets)
+
+* **Database:** MySQL, PostgreSQL, or SQLite (configured in `.env`)
+
+### Step 1: Clone the Repository
+
+Clone the project repository to your local system and navigate into the directory:
+
 ```bash
-composer install
-npm install && npm run build
+git clone [https://github.com/luisacuna/marketplace.git](https://github.com/luisacuna/marketplace.git)
+cd marketplace
 ```
 
-### 2. Environment Setup
+Step 2: Configure Environment
+Create your environment configuration file by copying the example:
+
 ```bash
 cp .env.example .env
+```
+
+Now, open the newly created .env file and update the database credentials (DB_* variables), application URL (APP_URL), and any third-party service keys (e.g., Stripe, PayPal, Crypto Platform API keys) as needed.
+
+### Step 3: Install Dependencies
+Install the backend (PHP) dependencies using Composer and the frontend (JavaScript/CSS) dependencies using npm:
+
+```bash
+# Install PHP dependencies
+composer install
+
+# Install Node.js dependencies
+npm install
+```
+### Step 4: Generate Application Key and Compile Assets
+Generate a unique application key and link the public storage directory. Then, compile the Tailwind CSS (including Daisy UI and Flux) and Livewire assets:
+
+```bash
+# Generate application key
 php artisan key:generate
-```
 
-### 3. Configure Database
-Edit `.env` file:
-```
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=your_database
-DB_USERNAME=your_username
-DB_PASSWORD=your_password
-```
-
-### 4. Run Migrations and Seeders
-```bash
-php artisan migrate
-php artisan db:seed
-```
-
-### 5. Storage Link
-```bash
+# Link storage directory
 php artisan storage:link
+
+# Compile frontend assets
+npm run build
 ```
 
-### 6. Register Service Providers
-Ensure `bootstrap/providers.php` contains:
-```php
-return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\EventServiceProvider::class,
-    App\Providers\RepositoryServiceProvider::class,
-];
+### Step 5: Run Migrations and Seeding
+Run the database migrations to create the necessary tables and use the seeders to populate the database with initial data (e.g., categories, initial admin user):
+
+```bash
+php artisan migrate --seed
 ```
 
-### 7. Start Development Server
+### Step 6: Start the Local Server
+Start the Laravel development server. The application will typically be accessible at http://127.0.0.1:8000.
+
 ```bash
 php artisan serve
 ```
-
-## Default Login Credentials
-- **Email:** admin@example.com
-- **Password:** password
-
-## Routes
-
-### Web Routes
-- `GET /users` - User List
-- `GET /users/create` - Create User
-- `GET /users/{user}/edit` - Edit User
-
-### API Routes (Requires Authentication)
-- `GET /api/users` - List users
-- `POST /api/users` - Create user
-- `GET /api/users/{id}` - Get user
-- `PUT /api/users/{id}` - Update user
-- `DELETE /api/users/{id}` - Soft delete user
-- `POST /api/users/{id}/restore` - Restore user
-- `DELETE /api/users/{id}/force` - Force delete user
-- `POST /api/users/bulk-delete` - Bulk delete users
-
-## Testing
-
-### Run All Tests
-```bash
-php artisan test
-```
-
-### Run Specific Test
-```bash
-php artisan test --filter UserListTest
-php artisan test --filter UserServiceTest
-```
-
-## Features Implemented
-
-### 1. Complete CRUD Operations
-- ✅ Create User
-- ✅ Read/List Users
-- ✅ Update User
-- ✅ Delete User (Soft Delete)
-- ✅ Force Delete
-- ✅ Restore User
-
-### 2. Advanced Features
-- ✅ Search & Filtering
-- ✅ Sorting (All Columns)
-- ✅ Pagination
-- ✅ Bulk Operations (Delete, Status Update)
-- ✅ Avatar Upload & Management
-- ✅ Status Management (Active, Inactive, Suspended, Pending)
-- ✅ Real-time Validation
-- ✅ Soft Deletes
-
-### 3. Architecture Components
-- ✅ DTOs (Data Transfer Objects)
-- ✅ Actions
-- ✅ Services
-- ✅ Repositories (Interface & Implementation)
-- ✅ Events & Listeners
-- ✅ Enums
-- ✅ Traits
-- ✅ Form Objects (Livewire Forms)
-- ✅ API Controller
-- ✅ Comprehensive Tests
-
-### 4. Livewire Features
-- ✅ Wire Navigation
-- ✅ File Uploads
-- ✅ Real-time Search
-- ✅ Loading States
-- ✅ Notifications
-- ✅ Modal Dialogs
-
-## Queue Configuration (Optional)
-
-For async email sending:
-
-1. Update `.env`:
-```
-QUEUE_CONNECTION=database
-```
-
-2. Create queue table:
-```bash
-php artisan queue:table
-php artisan migrate
-```
-
-3. Run queue worker:
-```bash
-php artisan queue:work
-```
-
-## File Structure
-```
-app/
-├── Actions/User/          # Business actions
-├── DTOs/User/             # Data Transfer Objects
-├── Enums/                 # Enumerations
-├── Events/User/           # Event classes
-├── Http/
-│   ├── Controllers/Api/   # API Controllers
-│   └── Livewire/User/     # Livewire Components
-├── Listeners/User/        # Event Listeners
-├── Models/                # Eloquent Models
-├── Repositories/          # Repository Pattern
-├── Services/User/         # Service Layer
-└── Traits/Livewire/       # Reusable Traits
-
-database/
-├── factories/             # Model Factories
-└── migrations/            # Database Migrations
-
-resources/views/livewire/  # Blade Views
-
-tests/
-├── Feature/Livewire/      # Feature Tests
-└── Unit/Services/         # Unit Tests
-```
-
-## Architecture Benefits
-
-1. **Separation of Concerns**: Each layer has a specific responsibility
-2. **Testability**: Easy to write unit and feature tests
-3. **Maintainability**: Clear structure makes code easy to maintain
-4. **Scalability**: Easy to add new features
-5. **Reusability**: Components can be reused across the application
-6. **Type Safety**: DTOs and Enums provide type safety
-
-## Troubleshooting
-
-### Issue: Livewire not working
-```bash
-php artisan livewire:publish --config
-php artisan livewire:publish --assets
-```
-
-### Issue: Avatar upload not working
-```bash
-php artisan storage:link
-chmod -R 775 storage
-chmod -R 775 bootstrap/cache
-```
-
-### Issue: Events not firing
-```bash
-php artisan event:clear
-php artisan cache:clear
-```
-
-## Production Deployment
-
-1. Optimize application:
-```bash
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-php artisan event:cache
-```
-
-2. Set environment:
-```
-APP_ENV=production
-APP_DEBUG=false
-```
-
-3. Run migrations:
-```bash
-php artisan migrate --force
-```
-
-## Additional Commands
-
-```bash
-# Clear all caches
-php artisan optimize:clear
-
-# Run tests with coverage
-php artisan test --coverage
-
-# Generate IDE helper (optional)
-composer require --dev barryvdh/laravel-ide-helper
-php artisan ide-helper:generate
-php artisan ide-helper:models
-```
-
-## Support
-For issues or questions, please check the documentation or create an issue in the repository.
+You should now be able to access and test the Luisacuna Marketplace locally!
