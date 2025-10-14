@@ -13,6 +13,7 @@ class UpdateAdminDTO
         public readonly ?string $password = null,
         public readonly ?string $phone = null,
         public readonly ?string $address = null,
+        public readonly ?int $updated_by = null,
         public readonly ?AdminStatus $status = null,
         public readonly ?UploadedFile $avatar = null,
         public readonly bool $removeAvatar = false,
@@ -29,6 +30,7 @@ class UpdateAdminDTO
             status: isset($data['status']) ? AdminStatus::from($data['status']) : null,
             avatar: $data['avatar'] ?? null,
             removeAvatar: $data['remove_avatar'] ?? false,
+            updated_by: $data['updated_by'] ?? null,
         );
     }
 
@@ -42,6 +44,7 @@ class UpdateAdminDTO
         $data = [
             'name' => $this->name,
             'email' => $this->email,
+            'updated_by' => admin()->id,
         ];
 
         // Only include phone if not null
@@ -63,6 +66,7 @@ class UpdateAdminDTO
         if ($this->status) {
             $data['status'] = $this->status->value;
         }
+
 
         return $data;
     }

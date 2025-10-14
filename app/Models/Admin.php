@@ -19,6 +19,9 @@ class Admin extends AuthBaseModel
         'address',
         'status',
         'avatar',
+        'created_by',
+        'updated_by',
+        'deleted_by',
     ];
 
     /**

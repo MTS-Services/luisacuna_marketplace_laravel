@@ -13,6 +13,7 @@ class CreateAdminDTO
         public readonly string $password,
         public readonly ?string $phone = null,
         public readonly ?string $address = null,
+        public readonly ?int $created_by = null,
         public readonly AdminStatus $status = AdminStatus::ACTIVE,
         public readonly ?UploadedFile $avatar = null,
     ) {}
@@ -27,6 +28,8 @@ class CreateAdminDTO
             address: $data['address'] ?? null,
             status: isset($data['status']) ? AdminStatus::from($data['status']) : AdminStatus::ACTIVE,
             avatar: $data['avatar'] ?? null,
+            created_by: $data['created_by'] ?? null,
+
         );
     }
 
@@ -44,6 +47,7 @@ class CreateAdminDTO
             'phone' => $this->phone,
             'address' => $this->address,
             'status' => $this->status->value,
+            'created_by' => $this->created_by,
         ];
     }
 }

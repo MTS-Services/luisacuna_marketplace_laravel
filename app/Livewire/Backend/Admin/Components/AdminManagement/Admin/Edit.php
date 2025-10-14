@@ -79,6 +79,7 @@ class Edit extends Component
                 'address' => $this->form->address,
                 'status' => $this->form->status,
                 'remove_avatar' => $this->form->remove_avatar,
+                'updated_by' => admin()->id,
             ];
 
             // Only add password if it's provided

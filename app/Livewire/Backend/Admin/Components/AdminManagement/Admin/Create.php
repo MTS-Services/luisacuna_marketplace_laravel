@@ -46,6 +46,7 @@ class Create extends Component
                 'address' => $this->form->address,
                 'status' => $this->form->status,
                 'avatar' => $this->form->avatar,
+                'created_by' => admin()->id,
             ]);
 
             $admin = $this->adminService->createAdmin($dto);
