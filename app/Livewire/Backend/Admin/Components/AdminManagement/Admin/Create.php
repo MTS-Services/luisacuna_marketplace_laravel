@@ -36,6 +36,7 @@ class Create extends Component
     }
     public function save()
     {
+        dd($this->form);
         $this->form->validate();
         try {
             $dto = CreateAdminDTO::fromArray([
