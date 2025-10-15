@@ -39,8 +39,7 @@ class UserForm extends Form
         $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'password' => $this->isUpdating() ? 'nullable|string|min:8' : 'required|string|min:8',
-            'password_confirmation' => 'nullable|string|min:8|same:password',
+            'password' => $this->isUpdating() ? 'nullable|string|min:8' : 'required|string|min:8|confirmed',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string',
             'status' => 'required|string|in:' . implode(',', array_column(UserStatus::cases(), 'value')),

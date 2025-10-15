@@ -65,22 +65,22 @@
                 :items="[
                     [
                         'name' => 'All Users',
-                        'route' => '#',
+                        'route' => route('admin.um.user.index'),
                         'icon' => 'user',
                         'active' => 'admin-users',
                     ],
-                    [
-                        'name' => 'Pending Users',
-                        'route' => '#',
-                        'icon' => 'user-plus',
-                        'active' => 'admin-users-pending',
-                    ],
-                    [
-                        'name' => 'Banned Users',
-                        'route' => '#',
-                        'icon' => 'user-round-x',
-                        'active' => 'admin-users-banned',
-                    ],
+                    // [
+                    //     'name' => 'Pending Users',
+                    //     'route' => '#',
+                    //     'icon' => 'user-plus',
+                    //     'active' => 'admin-users-pending',
+                    // ],
+                    // [
+                    //     'name' => 'Banned Users',
+                    //     'route' => '#',
+                    //     'icon' => 'user-round-x',
+                    //     'active' => 'admin-users-banned',
+                    // ],
                 ]" />
 
 
