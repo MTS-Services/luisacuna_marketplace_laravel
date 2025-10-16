@@ -16,9 +16,8 @@
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                     {{ __('Profile Picture') }}
                 </h3>
-
                 <x-ui.file-input wire:model="form.avatar" label="Avatar" accept="image/*" :error="$errors->first('form.avatar')"
-                    hint="Upload a profile picture (Max: 2MB, Formats: JPG, PNG, GIF, WebP)" />
+                    hint="Upload a profile picture (Max: 2MB)" />
             </div>
 
             <!-- Add other form fields here -->
