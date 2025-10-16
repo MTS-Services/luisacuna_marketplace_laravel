@@ -7,7 +7,7 @@ use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Route;
 
 // User Auth Routes
-Route::middleware('guest')->group(function () {
+Route::middleware('guest:web')->group(function () {
     Route::get('login', function () {
         return view('frontend.auth.user.login');
     })->name('login');
@@ -37,7 +37,7 @@ Route::post('logout', Logout::class)
 
 // Admin Auth Routes 
 Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
-    Route::middleware('guest')->group(function () {
+    Route::middleware('guest:admin')->group(function () {
         Route::get('login', function () {
             return view('frontend.auth.admin.login');
         })->name('login');
@@ -47,9 +47,12 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
         Route::get('reset-password/{token}', function () {
             return view('frontend.auth.admin.reset-password');
         })->name('password.reset');
+            Route::get('verify-otp', function () {
+            return view('frontend.auth.admin.verify-otp');
+        })->name('verify-otp');
     });
 
-    Route::middleware('auth:web')->group(function () {
+    Route::middleware('auth:admin')->group(function () {
         Route::get('verify-email', function () {
             return view('frontend.auth.admin.verify-email');
         })->name('verification.notice');
