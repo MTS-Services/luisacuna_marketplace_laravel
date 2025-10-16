@@ -58,7 +58,7 @@ class User extends AuthBaseModel
 
         'last_synced_at',
         'status',
-        
+
         'created_type',
         'updated_type',
         'deleted_type',
@@ -112,10 +112,10 @@ class User extends AuthBaseModel
     |--------------------------------------------------------------------------
     */
 
-    // public function country()
-    // {
-    //     return $this->belongsTo(Country::class, 'country_id');
-    // }
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
 
     /*
     |--------------------------------------------------------------------------

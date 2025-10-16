@@ -8,7 +8,12 @@ use Illuminate\Http\UploadedFile;
 class UpdateUserDTO
 {
     public function __construct(
-        public readonly string $name,
+        public readonly string $first_name,
+        public readonly ?string $last_name = null,
+        public readonly ?string $username = null,
+        public readonly ?string $display_name = null,
+        public readonly string $country_id,
+        public readonly ?string $date_of_birth = null,
         public readonly string $email,
         public readonly ?string $password = null,
         public readonly ?string $phone = null,
@@ -21,7 +26,12 @@ class UpdateUserDTO
     public static function fromArray(array $data): self
     {
         return new self(
-            name: $data['name'],
+            first_name: $data['first_name'],
+            last_name: $data['last_name'] ?? null,
+            username: $data['username'] ?? null,
+            display_name: $data['display_name'] ?? null,
+            country_id: $data['country_id'],
+            date_of_birth: $data['date_of_birth'] ?? null,
             email: $data['email'],
             password: !empty($data['password']) ? $data['password'] : null,
             phone: $data['phone'] ?? null,
@@ -40,7 +50,12 @@ class UpdateUserDTO
     public function toArray(): array
     {
         $data = [
-            'name' => $this->name,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'username' => $this->username,
+            'display_name' => $this->display_name,
+            'country_id' => $this->country_id,
+            'date_of_birth' => $this->date_of_birth,
             'email' => $this->email,
         ];
 

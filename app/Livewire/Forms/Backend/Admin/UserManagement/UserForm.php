@@ -9,7 +9,22 @@ use Livewire\Form;
 class UserForm extends Form
 {
     #[Validate('required|string|max:255')]
-    public $name = '';
+    public $first_name = '';
+
+    #[Validate('nullable|string|max:255')]
+    public $last_name = '';
+
+    #[Validate('nullable|string|max:255|regex:/^[A-Za-z0-9_\-\$]+$/')]
+    public $username = '';
+
+    #[Validate('nullable|date')]
+    public $date_of_birth = '';
+
+    #[Validate('required|exists:countries,id')]
+    public $country_id = '';
+
+    #[Validate('nullable|string|max:255')]
+    public $display_name = '';
 
     #[Validate('required|email|max:255')]
     public $email = '';
@@ -23,9 +38,6 @@ class UserForm extends Form
     #[Validate('nullable|string|max:20')]
     public $phone = '';
 
-    #[Validate('nullable|string')]
-    public $address = '';
-
     #[Validate('required|string')]
     public $status = '';
 
@@ -37,11 +49,15 @@ class UserForm extends Form
     public function rules(): array
     {
         $rules = [
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'nullable|string|max:255',
+            'username' => 'nullable|string|max:255|regex:/^[A-Za-z0-9_\-\$]+$/',
+            'display_name' => 'nullable|string|max:255',
+            'date_of_birth' => 'nullable|date',
+            'country_id' => 'required|exists:countries,id',
             'email' => 'required|email|max:255',
             'password' => $this->isUpdating() ? 'nullable|string|min:8' : 'required|string|min:8|confirmed',
             'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
             'status' => 'required|string|in:' . implode(',', array_column(UserStatus::cases(), 'value')),
             'avatar' => 'nullable|image|max:2048',
         ];
@@ -51,21 +67,29 @@ class UserForm extends Form
 
     public function setUser($user): void
     {
-        $this->name = $user->name;
+        $this->first_name = $user->first_name;
+        $this->last_name = $user->last_name;
+        $this->username = $user->username;
+        $this->display_name = $user->display_name;
+        $this->country_id = $user->country_id;
+        $this->date_of_birth = $user->date_of_birth;
         $this->email = $user->email;
         $this->phone = $user->phone;
-        $this->address = $user->address;
         $this->status = $user->status->value;
     }
 
     public function reset(...$properties): void
     {
-        $this->name = '';
+        $this->first_name = '';
+        $this->last_name = '';
+        $this->username = '';
+        $this->display_name = '';
+        $this->country_id = '';
+        $this->date_of_birth = '';
         $this->email = '';
         $this->password = '';
         $this->password_confirmation = '';
         $this->phone = '';
-        $this->address = '';
         $this->status = UserStatus::ACTIVE->value;
         $this->avatar = null;
         $this->remove_avatar = false;

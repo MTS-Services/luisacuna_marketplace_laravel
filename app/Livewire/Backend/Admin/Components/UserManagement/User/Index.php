@@ -2,10 +2,12 @@
 
 namespace App\Livewire\Backend\Admin\Components\UserManagement\User;
 
-use Livewire\Component;
-use App\Enums\AdminStatus;
 use App\Models\User;
+use Livewire\Component;
+use App\Enums\UserStatus;
+use App\Enums\AdminStatus;
 use App\Services\User\UserService;
+use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 
@@ -15,8 +17,12 @@ class Index extends Component
 
 
     protected UserService $userService;
-    //  public $showUserModal = false;
-    // public $user;
+
+    public $statusFilter = '';
+    public $deleteUserId;
+    public $bulkAction = '';
+    public $showDeleteModal = false;
+    public $showBulkActionModal = false;
 
     public function boot(UserService $userService)
     {
@@ -27,19 +33,15 @@ class Index extends Component
     {
         $users = $this->userService->getUsersPaginated(
             perPage: $this->perPage,
-            // filters: $this->getFilters()
+            filters: $this->getFilters()
         );
+
         // $users = $this->userService->getAllUsers();
 
         $columns = [
             [
-                'key' => 'id',
-                'label' => 'ID',
-                'sortable' => true
-            ],
-            [
-                'key' => 'name',
-                'label' => 'Name',
+                'key' => 'username',
+                'label' => 'User Name',
                 'sortable' => true
             ],
             [
@@ -53,23 +55,26 @@ class Index extends Component
                 'sortable' => true
             ],
             [
-                'key' => 'address',
-                'label' => 'Address',
-                'sortable' => true
+                'key' => 'country_id',
+                'label' => 'Country Name',
+                'sortable' => true,
+                'format' => function ($user) {
+                    return $user->country->name;
+                }
             ],
             [
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
-                'format' => function ($admin) {
+                'format' => function ($user) {
                     $colors = [
                         'active' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
                         'inactive' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
                         'suspended' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
                     ];
-                    $color = $colors[$admin->status->value] ?? 'bg-gray-100 text-gray-800';
+                    $color = $colors[$user->status->value] ?? 'bg-gray-100 text-gray-800';
                     return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' .
-                        ucfirst($admin->status->value) .
+                        ucfirst($user->status->value) .
                         '</span>';
                 }
             ],
@@ -100,10 +105,130 @@ class Index extends Component
         return view('livewire.backend.admin.components.user-management.user.index', [
             'users' => $users,
             'columns' => $columns,
-            'statuses' => AdminStatus::options(),
+            'statuses' => UserStatus::options(),
             'actions' => $actions,
             'bulkActions' => $bulkActions,
 
         ]);
+    }
+
+    public function confirmDelete($userId): void
+    {
+        $this->deleteUserId = $userId;
+        $this->showDeleteModal = true;
+    }
+
+    public function delete(): void
+    {
+        try {
+            if (!$this->deleteUserId) {
+                return;
+            }
+
+            if ($this->deleteUserId == user()->id) {
+                $this->error('You cannot delete your own account');
+                return;
+            }
+
+            $this->userService->deleteUser($this->deleteUserId);
+
+            $this->showDeleteModal = false;
+            $this->deleteUserId = null;
+
+            $this->success('User deleted successfully');
+        } catch (\Exception $e) {
+            $this->error('Failed to delete User: ' . $e->getMessage());
+        }
+    }
+
+    public function resetFilters(): void
+    {
+        $this->reset(['search', 'statusFilter', 'perPage', 'sortField', 'sortDirection', 'selectedIds', 'selectAll', 'bulkAction']);
+        $this->resetPage();
+    }
+
+    public function changeStatus($userId, $status): void
+    {
+        try {
+            $userStatus = UserStatus::from($status);
+
+            match ($userStatus) {
+                UserStatus::ACTIVE => $this->userService->activateUser($userId),
+                UserStatus::INACTIVE => $this->userService->deactivateUser($userId),
+                UserStatus::SUSPENDED => $this->userService->suspendUser($userId),
+                default => null,
+            };
+
+            $this->success('User status updated successfully');
+        } catch (\Exception $e) {
+            $this->error('Failed to update status: ' . $e->getMessage());
+        }
+    }
+
+    public function confirmBulkAction(): void
+    {
+        if (empty($this->selectedIds) || empty($this->bulkAction)) {
+            $this->warning('Please select Users and an action');
+            Log::info('No Users selected or no bulk action selected');
+            return;
+        }
+
+        $this->showBulkActionModal = true;
+    }
+
+    public function executeBulkAction(): void
+    {
+        $this->showBulkActionModal = false;
+
+        try {
+            match ($this->bulkAction) {
+                'delete' => $this->bulkDelete(),
+                'activate' => $this->bulkUpdateStatus(UserStatus::ACTIVE),
+                'deactivate' => $this->bulkUpdateStatus(UserStatus::INACTIVE),
+                'suspend' => $this->bulkUpdateStatus(UserStatus::SUSPENDED),
+                default => null,
+            };
+
+            $this->selectedIds = [];
+            $this->selectAll = false;
+            $this->bulkAction = '';
+        } catch (\Exception $e) {
+            $this->error('Bulk action failed: ' . $e->getMessage());
+        }
+    }
+
+    protected function bulkDelete(): void
+    {
+        $count = $this->userService->bulkDeleteUsers($this->selectedIds);
+        $this->success("{$count} Users deleted successfully");
+    }
+
+    protected function bulkUpdateStatus(UserStatus $status): void
+    {
+        $count = $this->userService->bulkUpdateStatus($this->selectedIds, $status);
+        $this->success("{$count} Users updated successfully");
+    }
+
+    protected function getFilters(): array
+    {
+        return [
+            'search' => $this->search,
+            'status' => $this->statusFilter,
+            'sort_field' => $this->sortField,
+            'sort_direction' => $this->sortDirection,
+        ];
+    }
+
+    protected function getSelectableIds(): array
+    {
+        return $this->userService->getUsersPaginated(
+            perPage: $this->perPage,
+            filters: $this->getFilters()
+        )->pluck('id')->toArray();
+    }
+
+    public function updatedStatusFilter(): void
+    {
+        $this->resetPage();
     }
 }

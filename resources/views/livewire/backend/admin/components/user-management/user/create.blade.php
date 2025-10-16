@@ -22,13 +22,61 @@
 
             <!-- Add other form fields here -->
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
+
+                {{-- first_name --}}
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Name <span class="text-red-500">*</span>
+                        First Name <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" wire:model="form.name"
+                    <input type="text" wire:model="form.first_name"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.name')
+                    @error('form.first_name')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Last Name --}}
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Last Name
+                    </label>
+                    <input type="text" wire:model="form.last_name"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                    @error('form.last_name')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+                {{-- user name --}}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        User Name
+                    </label>
+                    <input type="text" wire:model="form.username"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                    @error('form.username')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+                {{-- display name --}}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Display Name
+                    </label>
+                    <input type="text" wire:model="form.display_name"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                    @error('form.display_name')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+                {{-- date_of_birth --}}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Date Of Birth
+                    </label>
+                    <input type="date" wire:model="form.date_of_birth"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                    @error('form.date_of_birth')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
@@ -45,7 +93,7 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Phone <span class="text-red-500">*</span>
+                        Phone
                     </label>
                     <input type="number" wire:model="form.phone"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
@@ -54,13 +102,19 @@
                     @enderror
                 </div>
 
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Address <span class="text-red-500">*</span>
+                        Country <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" wire:model="form.address"
+                    <select wire:model="form.country_id"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.address')
+                        <option value="">Select Country</option>
+                        @foreach ($countries as $country)
+                            <option value="{{ $country->id }}">{{ $country['name'] }}</option>
+                        @endforeach
+                    </select>
+                    @error('form.phone')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>

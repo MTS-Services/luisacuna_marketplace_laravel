@@ -3,15 +3,16 @@
 namespace App\Livewire\Backend\Admin\Components\UserManagement\User;
 
 use App\Models\User;
+use App\Models\Country;
 use Livewire\Component;
 use App\Enums\UserStatus;
-use App\DTOs\User\UpdateUserDTO;
 
+use App\DTOs\User\UpdateUserDTO;
 use App\Services\User\UserService;
 use Illuminate\Support\Facades\Log;
-use App\Livewire\Forms\Backend\Admin\UserManagement\UserForm;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
+use App\Livewire\Forms\Backend\Admin\UserManagement\UserForm;
 
 class Edit extends Component
 {
@@ -43,7 +44,12 @@ class Edit extends Component
         Log::info('UserEdit mounted', [
             'user_id' => $user->id,
             'form_data' => [
-                'name' => $this->form->name,
+                'first_name' => $this->form->first_name,
+                'last_name' => $this->form->last_name,
+                'username' => $this->form->username,
+                'display_name' => $this->form->display_name,
+                // 'date_of_birth' => $this->form->date_of_birth?->format('Y-m-d'),
+                'country_id' => $this->form->country_id,
                 'email' => $this->form->email,
                 'status' => $this->form->status,
             ]
@@ -53,6 +59,7 @@ class Edit extends Component
     {
         return view('livewire.backend.admin.components.user-management.user.edit', [
             'statuses' => UserStatus::options(),
+            'countries' => Country::orderBy('name', 'asc')->get(),
         ]);
     }
 
@@ -61,11 +68,15 @@ class Edit extends Component
         Log::info('Save method called', [
             'user_id' => $this->userId,
             'form_data' => [
-                'name' => $this->form->name,
+                'first_name' => $this->form->first_name,
+                'last_name' => $this->form->last_name,
+                'username' => $this->form->username,
+                'display_name' => $this->form->display_name,
+                'date_of_birth' => $this->form->date_of_birth,
+                'country_id' => $this->form->country_id,
                 'email' => $this->form->email,
                 'password' => $this->form->password ? 'SET' : 'NOT SET',
                 'phone' => $this->form->phone,
-                'address' => $this->form->address,
                 'status' => $this->form->status,
                 'avatar' => $this->form->avatar ? 'FILE' : 'NULL',
                 'remove_avatar' => $this->form->remove_avatar,
@@ -76,10 +87,14 @@ class Edit extends Component
 
         try {
             $dtoData = [
-                'name' => $this->form->name,
+                'first_name' => $this->form->first_name,
+                'last_name' => $this->form->last_name,
+                'username' => $this->form->username,
+                'display_name' => $this->form->display_name,
+                'date_of_birth' => $this->form->date_of_birth,
+                'country_id' => $this->form->country_id,
                 'email' => $this->form->email,
                 'phone' => $this->form->phone,
-                'address' => $this->form->address,
                 'status' => $this->form->status,
                 'remove_avatar' => $this->form->remove_avatar,
             ];
