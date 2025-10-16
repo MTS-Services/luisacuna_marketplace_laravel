@@ -16,7 +16,7 @@
 
         @case('admin.um.user.view')
             <x-slot name="title">User View</x-slot>
-            <livewire:backend.admin.components.user-management.user.view />
+            <livewire:backend.admin.components.user-management.user.view :user="$user" />
         @break
 
         @case('admin.um.user.trash')

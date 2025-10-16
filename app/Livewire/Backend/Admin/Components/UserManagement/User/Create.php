@@ -45,6 +45,7 @@ class Create extends Component
                 'phone' => $this->form->phone,
                 'address' => $this->form->address,
                 'status' => $this->form->status,
+                'avatar' => $this->form->avatar,
             ]);
 
             $user = $this->userService->CreateUser($dto);

@@ -19,5 +19,6 @@
     </div>
 
     {{-- Table Component --}}
-    <x-ui.table :data="$users" :columns="$columns" :actions="$actions" :statuses="$statuses" :selectedIds="$selectedIds" :bulkActions="$bulkActions" :showBulkActions="true" :  emptyMessage="No admins found. Create your first admin to get started." />
+    <x-ui.table :data="$users" :columns="$columns" :actions="$actions" :statuses="$statuses" :selectedIds="$selectedIds"
+        :bulkActions="$bulkActions" :showBulkActions="true" : emptyMessage="No admins found. Create your first admin to get started." />
 </section>

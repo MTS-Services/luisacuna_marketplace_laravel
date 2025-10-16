@@ -4,6 +4,7 @@ namespace App\Livewire\Backend\Admin\Components\UserManagement\User;
 
 use Livewire\Component;
 use App\Enums\AdminStatus;
+use App\Models\User;
 use App\Services\User\UserService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
@@ -14,11 +15,14 @@ class Index extends Component
 
 
     protected UserService $userService;
+    //  public $showUserModal = false;
+    // public $user;
 
     public function boot(UserService $userService)
     {
         $this->userService = $userService;
     }
+
     public function render()
     {
         $users = $this->userService->getUsersPaginated(
@@ -74,12 +78,12 @@ class Index extends Component
             [
                 'key' => 'id',
                 'label' => 'View',
-                'method' => 'openDetailsModal'
+                'route' => 'admin.um.user.view'
             ],
             [
                 'key' => 'id',
                 'label' => 'Edit',
-                'route' => 'admin.am.admin.edit'
+                'route' => 'admin.um.user.edit'
             ],
             [
                 'key' => 'id',

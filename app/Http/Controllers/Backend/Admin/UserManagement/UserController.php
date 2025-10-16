@@ -19,20 +19,24 @@ class UserController extends Controller
         return view($this->masterView);
     }
     public function view(string $id){
-        $admin = User::find($id);
-        if(!$admin){
+        $user = User::find($id);
+        if(!$user){
             abort(404);
         }else{
-            return view($this->masterView);
+            return view($this->masterView,[
+                'user' => $user
+            ]);
         }
     }
     public function edit(string $id)
     {
-        $admin = User::find($id);
-        if(!$admin){
+        $user = User::find($id);
+        if(!$user){
             abort(404);
         }else{
-            return view($this->masterView);
+            return view($this->masterView,[
+                'user' => $user
+            ]);
         }
     }
     public function trash()

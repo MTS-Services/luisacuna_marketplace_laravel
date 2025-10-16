@@ -56,6 +56,17 @@
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Address <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" wire:model="form.address"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                    @error('form.address')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Status <span class="text-red-500">*</span>
                     </label>
                     <select wire:model="form.status"
