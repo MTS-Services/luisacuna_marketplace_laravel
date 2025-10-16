@@ -11,8 +11,6 @@ class Admin extends AuthBaseModel
         'name',
         'email',
         'password',
-        'email_verified_at',
-        'remember_token',
         'last_synced_at',
         'otp',
         'otp_expires_at',
@@ -130,10 +128,4 @@ class Admin extends AuthBaseModel
             //
         ]);
     }
-    // public function routeNotificationForMail(): string
-    // {
-    //     return $this->email;
-    // }
-   
-
 }
