@@ -7,7 +7,6 @@ use App\Http\Controllers\Backend\Admin\UserManagement\UserController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 
 Route::middleware(['auth:admin', 'admin'])->name('admin.')->prefix('admin')->group(function () {
-    
     Route::get('/dashboard', function () {
         return view('backend.admin.pages.dashboard');
     })->name('dashboard');

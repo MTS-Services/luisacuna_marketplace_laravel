@@ -3,10 +3,9 @@
 namespace App\Livewire\Auth\Admin;
 
 use App\Models\Admin;
-use App\Notifications\AdminOtpNotification;
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -18,45 +17,28 @@ use Livewire\Component;
 
 class Login extends Component
 {
-    #[Validate('required|email')]
+    #[Validate('required|string|email')]
     public string $email = '';
 
-    #[Validate('required|string|min:6')]
+    #[Validate('required|string')]
     public string $password = '';
 
     public bool $remember = false;
 
+    /**
+     * Handle an incoming authentication request.
+     */
     public function login(): void
     {
         $this->validate();
 
         $this->ensureIsNotRateLimited();
 
-        $admin = $this->validateCredentials();
+        $user = $this->validateCredentials();
 
-        // Check if email is verified
-        if (is_null($admin->email_verified_at)) {
-            // Generate OTP
-            $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-            
-            $admin->update([
-                'otp' => Hash::make($otp),
-                'otp_expires_at' => now()->addMinutes(10),
-            ]);
-
-            // Send OTP via email
-            $admin->notify(new AdminOtpNotification($otp));
-
-            Session::put('admin_otp_id', $admin->id);
-
-            $this->redirect(route('admin.verify-otp'), navigate: true);
-
-            return;
-        }
-
-        if (Features::canManageTwoFactorAuthentication() && $admin->hasEnabledTwoFactorAuthentication()) {
+        if (Features::canManageTwoFactorAuthentication() && $user->hasEnabledTwoFactorAuthentication()) {
             Session::put([
-                'login.id' => $admin->getKey(),
+                'login.id' => $user->getKey(),
                 'login.remember' => $this->remember,
             ]);
 
@@ -65,7 +47,7 @@ class Login extends Component
             return;
         }
 
-        Auth::guard('admin')->login($admin, $this->remember);
+        Auth::guard('admin')->login($user, $this->remember);
 
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
@@ -78,9 +60,11 @@ class Login extends Component
      */
     protected function validateCredentials(): Admin
     {
+        // 1. Correctly get the Admin provider and retrieve the user by email
         $provider = Auth::guard('admin')->getProvider();
         $admin = $provider->retrieveByCredentials(['email' => $this->email]);
 
+        // 2. Check if admin exists AND if the credentials are valid
         if (! $admin || ! $provider->validateCredentials($admin, ['password' => $this->password])) {
             RateLimiter::hit($this->throttleKey());
 
@@ -119,10 +103,5 @@ class Login extends Component
     protected function throttleKey(): string
     {
         return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
-    }
-
-    public function render()
-    {
-        return view('livewire.auth.admin.login');
     }
 }

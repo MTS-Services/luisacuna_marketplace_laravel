@@ -149,8 +149,4 @@ class AuthBaseModel extends Authenticatable
             ->map(fn($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
-      public function getLastSyncedAtHumanAttribute(): ?string
-    {
-        return $this->last_synced_at?->diffForHumans();
-    }
 }
