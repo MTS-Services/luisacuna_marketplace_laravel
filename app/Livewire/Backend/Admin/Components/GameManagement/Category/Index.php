@@ -45,9 +45,7 @@ class Index extends Component
             [
                 'key' => 'slug',
                 'label' => 'Slug',
-                'format' => function ($category) {
-                    return "/".$category->slug;
-                }
+                'sortable' => true
             ],
             // [
             //     'key' => 'status',
