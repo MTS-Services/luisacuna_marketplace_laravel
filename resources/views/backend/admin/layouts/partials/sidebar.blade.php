@@ -64,23 +64,23 @@
             <x-backend.navlink type="dropdown" icon="user-group" name="User Management" :page_slug="$active"
                 :items="[
                     [
-                        'name' => 'All Users',
+                        'name' => 'Users',
                         'route' => '#',
                         'icon' => 'user',
                         'active' => 'admin-users',
                     ],
-                    [
-                        'name' => 'Pending Users',
-                        'route' => '#',
-                        'icon' => 'user-plus',
-                        'active' => 'admin-users-pending',
-                    ],
-                    [
-                        'name' => 'Banned Users',
-                        'route' => '#',
-                        'icon' => 'user-round-x',
-                        'active' => 'admin-users-banned',
-                    ],
+                    // [
+                    //     'name' => 'Pending Users',
+                    //     'route' => '#',
+                    //     'icon' => 'user-plus',
+                    //     'active' => 'admin-users-pending',
+                    // ],
+                    // [
+                    //     'name' => 'Banned Users',
+                    //     'route' => '#',
+                    //     'icon' => 'user-round-x',
+                    //     'active' => 'admin-users-banned',
+                    // ],
                 ]" />
 
 
