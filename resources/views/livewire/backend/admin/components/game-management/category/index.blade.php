@@ -21,7 +21,7 @@
     {{-- Table Component --}}
     <x-ui.table :data="$categories" :columns="$columns" :actions="$actions" :bulkActions="$bulkActions" :bulkAction="$bulkAction"
         :statuses="$statuses" :selectedIds="$selectedIds" :mobileVisibleColumns="2" searchProperty="search" perPageProperty="perPage"
-        :showBulkActions="true" emptyMessage="No admins found. Create your first admin to get started." />
+        :showBulkActions="true" emptyMessage="No Game Category found. Create your first admin to get started." />
 
     {{-- Delete Confirmation Modal --}}
     <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this admin?'" :message="'Are you absolutely sure you want to remove this admin? All associated data will be permanently deleted.'" :method="'delete'"
