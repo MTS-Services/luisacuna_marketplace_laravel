@@ -19,8 +19,6 @@ class VerifyOtp extends Component
 
     public function mount()
     {
-        // Initialize the form
-        $this->form = new OtpForm();
 
         // Redirect if not authenticated
         if (!admin()) {
@@ -41,7 +39,7 @@ class VerifyOtp extends Component
         $admin = admin();
 
         if (has_valid_otp($admin, OtpType::EMAIL_VERIFICATION)) {
-            session()->flash('message', 'A verification code was already sent to your email.');
+             $this->info('A verification code was already sent to your email.');
             return;
         }
 
@@ -50,7 +48,7 @@ class VerifyOtp extends Component
         Log::info('OTP Code for Admin ID ' . $admin->id . ': ' . $otpVerification->code);
         $admin->notify(new AdminOtpNotification($otpVerification->code));
 
-        session()->flash('message', 'Verification code has been sent to your email.');
+         $this->success('Verification code has been sent to your email.');
     }
 
     public function verify(): void
@@ -100,7 +98,9 @@ class VerifyOtp extends Component
             $admin->markEmailAsVerified();
             RateLimiter::clear($this->throttleKey());
 
-            session()->flash('message', 'Email verified successfully!');
+            $this->success('Email verified successfully!');
+            $this->dispatch('clear-auth-code');
+
             $this->redirect(route('admin.dashboard'), navigate: true);
 
         } catch (ValidationException $e) {
@@ -113,7 +113,6 @@ class VerifyOtp extends Component
             ]);
 
              $this->error('Something went wrong while verifying your code. Please try again.');
-            // session()->flash('error', 'Something went wrong while verifying your code. Please try again.');
         }
     }
 
@@ -129,7 +128,7 @@ class VerifyOtp extends Component
 
         RateLimiter::hit($this->resendThrottleKey(), 60);
 
-        session()->flash('message', 'A new verification code has been sent to your email.');
+        $this->success('A new verification code has been sent to your email.');
         $this->dispatch('clear-auth-code');
     }
 
