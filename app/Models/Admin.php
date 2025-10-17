@@ -161,7 +161,7 @@ class Admin extends AuthBaseModel
         $this->otpVerifications()
             ->where('type', $type)
             ->whereNull('verified_at')
-            ->update(['verified_at' => now()]);
+            ->update(['expires_at' => now()]);
 
         $otp = sprintf('%06d', mt_rand(0, 999999));
 

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Illuminate\Support\Facades\Log;
 
 class VerifyOtp extends Component
 {
@@ -44,15 +45,16 @@ class VerifyOtp extends Component
         $otpVerification = create_otp($admin, OtpType::EMAIL_VERIFICATION, 10);
 
         // Send OTP via email
+        Log::info('OTP Code for Admin ID ' . $admin->id . ': ' . $otpVerification->code);
         $admin->notify(new AdminOtpNotification($otpVerification->code));
 
         session()->flash('message', 'Verification code has been sent to your email.');
     }
 
     public function verify(): void
-    {
+{
+    try {
         $this->validate();
-
         $this->ensureIsNotRateLimited();
 
         $admin = admin();
@@ -91,7 +93,7 @@ class VerifyOtp extends Component
             RateLimiter::hit($this->throttleKey());
 
             $remainingAttempts = 5 - $otpVerification->fresh()->attempts;
-            
+
             throw ValidationException::withMessages([
                 'code' => "The verification code is incorrect. {$remainingAttempts} attempts remaining.",
             ]);
@@ -103,9 +105,24 @@ class VerifyOtp extends Component
         RateLimiter::clear($this->throttleKey());
 
         session()->flash('message', 'Email verified successfully!');
-
         $this->redirect(route('admin.dashboard'), navigate: true);
+
+    } catch (ValidationException $e) {
+        // Re-throw validation errors to be handled normally by Livewire
+        throw $e;
+
+    } catch (\Throwable $e) {
+        // Catch all unexpected errors and log them for debugging
+        Log::error('OTP verification failed', [
+            'admin_id' => $admin->id ?? null,
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString(),
+        ]);
+
+        // Show a generic error message
+        session()->flash('error', 'Something went wrong while verifying your code. Please try again.');
     }
+}
 
     public function resend(): void
     {
@@ -117,6 +134,7 @@ class VerifyOtp extends Component
         $otpVerification = create_otp($admin, OtpType::EMAIL_VERIFICATION, 10);
 
         // Send OTP via email
+        Log::info('Resent OTP Code for Admin ID ' . $admin->id . ': ' . $otpVerification->code);
         $admin->notify(new AdminOtpNotification($otpVerification->code));
 
         RateLimiter::hit($this->resendThrottleKey(), 60); // 1 minute cooldown
