@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
                 'language' => 'en',
                 'currency' => 'USD',
                 'email' => "user@dev{$i}.com",
-                'email_verified_at' => now(),
+                'email_verified_at' => null,
                 'password' => Hash::make("user@dev{$i}.com"), // default password
                 'phone' => $faker->phoneNumber,
                 'phone_verified_at' => now(),

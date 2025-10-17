@@ -26,6 +26,10 @@ Route::middleware('auth:web')->group(function () {
     Route::get('verify-email', function () {
         return view('frontend.auth.user.verify-email');
     })->name('verification.notice');
+     // Add OTP verification route for users
+    Route::get('verify-otp', function () {
+        return view('frontend.auth.user.verify-otp');
+    })->name('verify-otp');
 
     Route::get('verify-email/{id}/{hash}', UserVerifyEmailController::class)
         ->middleware(['signed', 'throttle:6,1'])
