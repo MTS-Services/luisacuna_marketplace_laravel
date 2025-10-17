@@ -1,7 +1,6 @@
 <?php
 
 use App\Enums\UserAccountStatus;
-use App\Enums\UserStatus;
 use App\Enums\UserType;
 use App\Traits\AuditColumnsTrait;
 use Illuminate\Database\Migrations\Migration;
@@ -23,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('sort_order')->default(0);
             $table->unsignedBigInteger('country_id');
 
-            $table->string('username')->unique();
+            // $table->string('username')->unique();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('display_name')->nullable();
@@ -63,7 +62,6 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
             $this->addMorphedAuditColumns($table);
 
@@ -82,7 +80,7 @@ return new class extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
+            // $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();
