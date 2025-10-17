@@ -83,6 +83,22 @@
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Country <span class="text-red-500">*</span>
+                    </label>
+                    <select wire:model="form.country_id"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                        <option value="">Select Country</option>
+                        @foreach ($countries as $country)
+                            <option value="{{ $country->id }}">{{ $country['name'] }}</option>
+                        @endforeach
+                    </select>
+                    @error('form.phone')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Email <span class="text-red-500">*</span>
                     </label>
                     <input type="email" wire:model="form.email"
@@ -97,23 +113,6 @@
                     </label>
                     <input type="number" wire:model="form.phone"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.phone')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Country <span class="text-red-500">*</span>
-                    </label>
-                    <select wire:model="form.country_id"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                        <option value="">Select Country</option>
-                        @foreach ($countries as $country)
-                            <option value="{{ $country->id }}">{{ $country['name'] }}</option>
-                        @endforeach
-                    </select>
                     @error('form.phone')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror

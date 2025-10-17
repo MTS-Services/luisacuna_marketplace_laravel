@@ -39,6 +39,7 @@ class Edit extends Component
         $this->userId = $user->id;
         $this->form->setUser($user);
         $this->existingAvatar = $user->avatar_url;
+        // $this->form->date_of_birth->format('Y-m-d');
 
 
         Log::info('UserEdit mounted', [
@@ -48,7 +49,7 @@ class Edit extends Component
                 'last_name' => $this->form->last_name,
                 'username' => $this->form->username,
                 'display_name' => $this->form->display_name,
-                // 'date_of_birth' => $this->form->date_of_birth?->format('Y-m-d'),
+                'date_of_birth' => $this->form->date_of_birth,
                 'country_id' => $this->form->country_id,
                 'email' => $this->form->email,
                 'status' => $this->form->status,

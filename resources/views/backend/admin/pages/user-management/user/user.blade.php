@@ -10,7 +10,7 @@
             @break
             
             @case('admin.um.user.edit')
-            <x-slot name="title">User Edit</x-slot>>
+            <x-slot name="title">User Edit</x-slot>
             <livewire:backend.admin.components.user-management.user.edit :user="$user" />
             @break
             

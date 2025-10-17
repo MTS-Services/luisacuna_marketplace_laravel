@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use App\Enums\UserAccountStatus;
-use App\Enums\UserStatus;
 use App\Enums\UserType;
+use App\Enums\UserStatus;
+use Illuminate\Support\Carbon;
+use App\Enums\UserAccountStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends AuthBaseModel
@@ -202,6 +203,11 @@ class User extends AuthBaseModel
         return $this->avatar
             ? asset('storage/' . $this->avatar)
             : 'https://ui-avatars.com/api/?name=' . urlencode($name);
+    }
+
+    public function getDateOfBirthAttribute($value)
+    {
+        return $value ? Carbon::parse($value)->format('Y-m-d') : null;
     }
 
     /*
