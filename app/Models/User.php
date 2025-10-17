@@ -38,8 +38,6 @@ class User extends AuthBaseModel
 
         'phone',
         'phone_verified_at',
-        'otp',
-        'otp_expires_at',
 
         'user_type',
         'account_status',
@@ -57,7 +55,6 @@ class User extends AuthBaseModel
         'privacy_accepted_at',
 
         'last_synced_at',
-        'status',
         
         'created_type',
         'updated_type',
@@ -100,7 +97,6 @@ class User extends AuthBaseModel
             'two_factor_enabled'     => 'boolean',
             'password'               => 'hashed',
 
-            'status'                 => UserStatus::class,
             'user_type'              => UserType::class,
             'account_status'         => UserAccountStatus::class,
         ];
@@ -125,12 +121,12 @@ class User extends AuthBaseModel
 
     public function scopeActive($query)
     {
-        return $query->where('status', UserStatus::ACTIVE);
+        return $query->where('status', UserAccountStatus::ACTIVE);
     }
 
     public function scopeInactive($query)
     {
-        return $query->where('status', UserStatus::INACTIVE);
+        return $query->where('status', UserAccountStatus::INACTIVE);
     }
 
     public function scopeSearch($query, $search)
@@ -168,12 +164,12 @@ class User extends AuthBaseModel
 
     public function getStatusLabelAttribute(): string
     {
-        return $this->status->label();
+        return $this->account_status->label();
     }
 
     public function getStatusColorAttribute(): string
     {
-        return $this->status->color();
+        return $this->account_status->color();
     }
 
     public function getUserTypeLabelAttribute(): string
