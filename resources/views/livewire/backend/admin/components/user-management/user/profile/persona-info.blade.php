@@ -1,4 +1,4 @@
-<section class="">
+<section>
     <div class="glass-card rounded-2xl p-6 mb-6">
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('User Edit') }}</h2>
@@ -10,7 +10,6 @@
             </div>
         </div>
     </div>
-
 
     {{-- Tab Navigation Bar --}}
     <div class="flex glass-card rounded border-b text-zinc-600 dark:bg-zinc-400 mb-6 space-x-2 overflow-x-auto">
@@ -140,5 +139,4 @@
         </div>
 
     </div>
-
 </section>

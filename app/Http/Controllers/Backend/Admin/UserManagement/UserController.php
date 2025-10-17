@@ -43,4 +43,26 @@ class UserController extends Controller
     {
         return view($this->masterView);
     }
+    public function profileInfo($id)
+    {
+       $user = User::find($id);
+        if(!$user){
+            abort(404);
+        }else{
+            return view($this->masterView,[
+                'user' => $user
+            ]);
+        }
+    }
+    public function shopInfo($id)
+    {
+       $user = User::find($id);
+        if(!$user){
+            abort(404);
+        }else{
+            return view($this->masterView,[
+                'user' => $user
+            ]);
+        }
+    }
 }

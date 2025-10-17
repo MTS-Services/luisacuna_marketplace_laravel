@@ -1,22 +1,36 @@
 <x-admin::app>
     <x-slot name="pageSlug">admin-users</x-slot>
-    <x-slot name="breadcrumb">User Management</x-slot>
 
 
     @switch(Route::currentRouteName())
         @case('admin.um.user.create')
             <x-slot name="title">User Create</x-slot>
+            <x-slot name="breadcrumb">User Management</x-slot>
             <livewire:backend.admin.components.user-management.user.create />
             @break
             
             @case('admin.um.user.edit')
             <x-slot name="title">User Edit</x-slot>
+            <x-slot name="breadcrumb">User Management</x-slot>
             <livewire:backend.admin.components.user-management.user.edit :user="$user" />
             @break
             
             @case('admin.um.user.view')
             <x-slot name="title">User View</x-slot>
+            <x-slot name="breadcrumb">User Management</x-slot>
             <livewire:backend.admin.components.user-management.user.view :user="$user" />
+            @break
+            
+            @case('admin.um.user.profileInfo')
+            <x-slot name="title">Profile Info</x-slot>
+            <x-slot name="breadcrumb">User Management</x-slot>
+           <livewire:backend.admin.components.user-management.user.profile.persona-info :user="$user" />
+            @break
+            
+            @case('admin.um.user.shopInfo')
+            <x-slot name="title">Shop Info</x-slot>
+            <x-slot name="breadcrumb">User Management</x-slot>
+           <livewire:backend.admin.components.user-management.user.profile.shop-info :user="$user" />
             @break
             
             @case('admin.um.user.trash')

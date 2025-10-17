@@ -4,8 +4,7 @@ namespace App\Livewire\Backend\Admin\Components\UserManagement\User;
 
 use App\Models\User;
 use Livewire\Component;
-use App\Enums\UserStatus;
-use App\Enums\AdminStatus;
+use App\Enums\UserAccountStatus;
 use App\Services\User\UserService;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
@@ -40,6 +39,11 @@ class Index extends Component
 
         $columns = [
             [
+                'key' => 'first_name',
+                'label' => 'Name',
+                'sortable' => true
+            ],
+            [
                 'key' => 'username',
                 'label' => 'User Name',
                 'sortable' => true
@@ -63,7 +67,7 @@ class Index extends Component
                 }
             ],
             [
-                'key' => 'status',
+                'key' => 'account_status',
                 'label' => 'Status',
                 'sortable' => true,
                 'format' => function ($user) {
@@ -72,9 +76,9 @@ class Index extends Component
                         'inactive' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
                         'suspended' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
                     ];
-                    $color = $colors[$user->status->value] ?? 'bg-gray-100 text-gray-800';
+                    $color = $colors[$user->account_status->value] ?? 'bg-gray-100 text-gray-800';
                     return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' .
-                        ucfirst($user->status->value) .
+                        ucfirst($user->account_status->value) .
                         '</span>';
                 }
             ],
@@ -82,8 +86,8 @@ class Index extends Component
         $actions = [
             [
                 'key' => 'id',
-                'label' => 'View',
-                'route' => 'admin.um.user.view'
+                'label' => 'Profile',
+                'route' => 'admin.um.user.profileInfo'
             ],
             [
                 'key' => 'id',
@@ -105,7 +109,7 @@ class Index extends Component
         return view('livewire.backend.admin.components.user-management.user.index', [
             'users' => $users,
             'columns' => $columns,
-            'statuses' => UserStatus::options(),
+            'statuses' => UserAccountStatus::options(),
             'actions' => $actions,
             'bulkActions' => $bulkActions,
 
@@ -150,12 +154,12 @@ class Index extends Component
     public function changeStatus($userId, $status): void
     {
         try {
-            $userStatus = UserStatus::from($status);
+            $userStatus = UserAccountStatus::from($status);
 
             match ($userStatus) {
-                UserStatus::ACTIVE => $this->userService->activateUser($userId),
-                UserStatus::INACTIVE => $this->userService->deactivateUser($userId),
-                UserStatus::SUSPENDED => $this->userService->suspendUser($userId),
+                UserAccountStatus::ACTIVE => $this->userService->activateUser($userId),
+                UserAccountStatus::INACTIVE => $this->userService->deactivateUser($userId),
+                UserAccountStatus::SUSPENDED => $this->userService->suspendUser($userId),
                 default => null,
             };
 
@@ -183,9 +187,9 @@ class Index extends Component
         try {
             match ($this->bulkAction) {
                 'delete' => $this->bulkDelete(),
-                'activate' => $this->bulkUpdateStatus(UserStatus::ACTIVE),
-                'deactivate' => $this->bulkUpdateStatus(UserStatus::INACTIVE),
-                'suspend' => $this->bulkUpdateStatus(UserStatus::SUSPENDED),
+                'activate' => $this->bulkUpdateStatus(UserAccountStatus::ACTIVE),
+                'deactivate' => $this->bulkUpdateStatus(UserAccountStatus::INACTIVE),
+                'suspend' => $this->bulkUpdateStatus(UserAccountStatus::SUSPENDED),
                 default => null,
             };
 
@@ -203,7 +207,7 @@ class Index extends Component
         $this->success("{$count} Users deleted successfully");
     }
 
-    protected function bulkUpdateStatus(UserStatus $status): void
+    protected function bulkUpdateStatus(UserAccountStatus $status): void
     {
         $count = $this->userService->bulkUpdateStatus($this->selectedIds, $status);
         $this->success("{$count} Users updated successfully");
@@ -213,7 +217,7 @@ class Index extends Component
     {
         return [
             'search' => $this->search,
-            'status' => $this->statusFilter,
+            'account_status' => $this->statusFilter,
             'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
         ];

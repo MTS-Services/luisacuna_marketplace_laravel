@@ -1,4 +1,4 @@
-<section class="">
+<section>
     <div class="glass-card rounded-2xl p-6 mb-6">
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('User Edit') }}</h2>
@@ -36,13 +36,15 @@
         </button> --}}
     </div>
 
+
+
     <div class="bg-white shadow rounded-xl p-6 min-h-[500px]">
         {{-- PERSONAL INFO (Default Tab) --}}
 
         <div class="grid lg:grid-cols-3 gap-6">
 
             {{-- Left Column --}}
-            <div class="flex flex-col h-auto p-4 border-r lg:border-r-2 border-gray-100">
+            {{-- <div class="flex flex-col h-auto p-4 border-r lg:border-r-2 border-gray-100">
                 <h2 class="text-xl text-gray-800 font-semibold mb-6">Profile Image</h2>
 
                 <div class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-red-100 overflow-hidden">
@@ -99,11 +101,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             {{-- Right Column --}}
             <div class="col-span-1 lg:col-span-2 p-4">
-                <h2 class="text-xl font-semibold mb-6 border-b pb-2 text-gray-800">Profile Information</h2>
+                <h2 class="text-xl font-semibold mb-6 border-b pb-2 text-gray-800">Shop Information</h2>
 
                 <div class="grid md:grid-cols-2 gap-8 text-base">
                     {{-- First Name --}}
@@ -140,5 +142,4 @@
         </div>
 
     </div>
-
 </section>

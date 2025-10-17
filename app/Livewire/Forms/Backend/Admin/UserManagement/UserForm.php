@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Forms\Backend\Admin\UserManagement;
 
-use App\Enums\UserStatus;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
+use App\Enums\UserStatus;
+use App\Enums\UserAccountStatus;
+use Livewire\Attributes\Validate;
 
 class UserForm extends Form
 {
@@ -23,6 +24,9 @@ class UserForm extends Form
     #[Validate('required|exists:countries,id')]
     public $country_id = '';
 
+     #[Validate('required|string|max:255')]
+    public $language = '';
+
     #[Validate('nullable|string|max:255')]
     public $display_name = '';
 
@@ -39,7 +43,7 @@ class UserForm extends Form
     public $phone = '';
 
     #[Validate('required|string')]
-    public $status = '';
+    public $account_status = '';
 
     #[Validate('nullable|image|max:2048')]
     public $avatar;
@@ -55,10 +59,11 @@ class UserForm extends Form
             'display_name' => 'nullable|string|max:255',
             'date_of_birth' => 'nullable|date',
             'country_id' => 'required|exists:countries,id',
+            'language' => 'required|max:255',
             'email' => 'required|email|max:255',
             'password' => $this->isUpdating() ? 'nullable|string|min:8' : 'required|string|min:8|confirmed',
             'phone' => 'nullable|string|max:20',
-            'status' => 'required|string|in:' . implode(',', array_column(UserStatus::cases(), 'value')),
+            'account_status' => 'required|string|in:' . implode(',', array_column(UserAccountStatus::cases(), 'value')),
             'avatar' => 'nullable|image|max:2048',
         ];
 
@@ -75,7 +80,7 @@ class UserForm extends Form
         $this->date_of_birth = $user->date_of_birth;
         $this->email = $user->email;
         $this->phone = $user->phone;
-        $this->status = $user->status->value;
+        $this->account_status = $user->account_status->value;
     }
 
     public function reset(...$properties): void
@@ -90,7 +95,7 @@ class UserForm extends Form
         $this->password = '';
         $this->password_confirmation = '';
         $this->phone = '';
-        $this->status = UserStatus::ACTIVE->value;
+        $this->account_status = UserAccountStatus::ACTIVE->value;
         $this->avatar = null;
         $this->remove_avatar = false;
 

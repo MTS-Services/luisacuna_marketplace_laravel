@@ -2,7 +2,7 @@
 
 namespace App\DTOs\User;
 
-use App\Enums\UserStatus;
+use App\Enums\UserAccountStatus;
 use Illuminate\Http\UploadedFile;
 
 class CreateUserDTO
@@ -13,11 +13,12 @@ class CreateUserDTO
         public readonly ?string $username = null,
         public readonly ?string $display_name = null,
         public readonly string $country_id,
+        public readonly string $language,
         public readonly ?string $date_of_birth = null,
         public readonly string $email,
         public readonly string $password,
         public readonly ?string $phone = null,
-        public readonly UserStatus $status = UserStatus::ACTIVE,
+        public readonly UserAccountStatus $account_status = UserAccountStatus::ACTIVE,
         public readonly ?UploadedFile $avatar = null,
     ) {}
 
@@ -29,11 +30,12 @@ class CreateUserDTO
             username: $data['username'] ?? null,
             display_name: $data['display_name'] ?? null,
             country_id: $data['country_id'],
+            language: $data['language'],
             date_of_birth: $data['date_of_birth'] ?? null,
             email: $data['email'],
             password: $data['password'],
             phone: $data['phone'] ?? null,
-            status: isset($data['status']) ? UserStatus::from($data['status']) : UserStatus::ACTIVE,
+            account_status: isset($data['account_status']) ? UserAccountStatus::from($data['account_status']) : UserAccountStatus::ACTIVE,
             avatar: $data['avatar'] ?? null,
         );
     }
@@ -55,7 +57,7 @@ class CreateUserDTO
             'email' => $this->email,
             'password' => bcrypt($this->password),
             'phone' => $this->phone,
-            'status' => $this->status->value,
+            'account_status' => $this->account_status->value,
         ];
     }
 }

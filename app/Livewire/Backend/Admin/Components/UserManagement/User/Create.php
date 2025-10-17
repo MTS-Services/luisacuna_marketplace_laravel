@@ -4,9 +4,9 @@ namespace App\Livewire\Backend\Admin\Components\UserManagement\User;
 
 use App\Models\Country;
 use Livewire\Component;
-use App\Enums\UserStatus;
 use Livewire\WithFileUploads;
 use App\DTOs\User\CreateUserDTO;
+use App\Enums\UserAccountStatus;
 use App\Services\User\UserService;
 use App\Traits\Livewire\WithNotification;
 use App\Livewire\Forms\Backend\Admin\UserManagement\UserForm;
@@ -26,13 +26,13 @@ class Create extends Component
     }
     public function mount(): void
     {
-        $this->form->status = UserStatus::ACTIVE->value;
+        $this->form->account_status = UserAccountStatus::ACTIVE->value;
 
     }
     public function render()
     {
         return view('livewire.backend.admin.components.user-management.user.create', [
-            'statuses' => UserStatus::options(),
+            'statuses' => UserAccountStatus::options(),
             'countries' => Country::orderBy('name', 'asc')->get(),
         ]);
     }
@@ -52,8 +52,9 @@ class Create extends Component
                 'email' => $this->form->email,
                 'password' => $this->form->password,
                 'phone' => $this->form->phone,
-                'status' => $this->form->status,
+                'account_status' => $this->form->account_status,
                 'avatar' => $this->form->avatar,
+                'language' => $this->form->language,
             ]);
 
             $user = $this->userService->CreateUser($dto);

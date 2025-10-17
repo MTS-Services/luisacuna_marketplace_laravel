@@ -5,9 +5,9 @@ namespace App\Livewire\Backend\Admin\Components\UserManagement\User;
 use App\Models\User;
 use App\Models\Country;
 use Livewire\Component;
-use App\Enums\UserStatus;
 
 use App\DTOs\User\UpdateUserDTO;
+use App\Enums\UserAccountStatus;
 use App\Services\User\UserService;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithNotification;
@@ -52,14 +52,14 @@ class Edit extends Component
                 'date_of_birth' => $this->form->date_of_birth,
                 'country_id' => $this->form->country_id,
                 'email' => $this->form->email,
-                'status' => $this->form->status,
+                'account_status' => $this->form->account_status,
             ]
         ]);
     }
     public function render()
     {
         return view('livewire.backend.admin.components.user-management.user.edit', [
-            'statuses' => UserStatus::options(),
+            'statuses' => UserAccountStatus::options(),
             'countries' => Country::orderBy('name', 'asc')->get(),
         ]);
     }
@@ -78,7 +78,7 @@ class Edit extends Component
                 'email' => $this->form->email,
                 'password' => $this->form->password ? 'SET' : 'NOT SET',
                 'phone' => $this->form->phone,
-                'status' => $this->form->status,
+                'account_status' => $this->form->account_status,
                 'avatar' => $this->form->avatar ? 'FILE' : 'NULL',
                 'remove_avatar' => $this->form->remove_avatar,
             ]
@@ -96,7 +96,7 @@ class Edit extends Component
                 'country_id' => $this->form->country_id,
                 'email' => $this->form->email,
                 'phone' => $this->form->phone,
-                'status' => $this->form->status,
+                'account_status' => $this->form->account_status,
                 'remove_avatar' => $this->form->remove_avatar,
             ];
             // Only add password if it's provided

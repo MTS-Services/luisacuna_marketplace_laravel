@@ -99,6 +99,17 @@
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Langugae <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" wire:model="form.language"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                    @error('form.language')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Email <span class="text-red-500">*</span>
                     </label>
                     <input type="email" wire:model="form.email"
@@ -122,14 +133,14 @@
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Status <span class="text-red-500">*</span>
                     </label>
-                    <select wire:model="form.status"
+                    <select wire:model="form.account_status"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
                         <option value="">Select Status</option>
                         @foreach ($statuses as $status)
                             <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
                         @endforeach
                     </select>
-                    @error('form.status')
+                    @error('form.account_status')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>

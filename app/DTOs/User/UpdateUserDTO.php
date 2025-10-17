@@ -2,7 +2,7 @@
 
 namespace App\DTOs\User;
 
-use App\Enums\UserStatus;
+use App\Enums\UserAccountStatus;
 use Illuminate\Http\UploadedFile;
 
 class UpdateUserDTO
@@ -18,7 +18,7 @@ class UpdateUserDTO
         public readonly ?string $password = null,
         public readonly ?string $phone = null,
         public readonly ?string $address = null,
-        public readonly ?UserStatus $status = null,
+        public readonly ?UserAccountStatus $account_status = null,
         public readonly ?UploadedFile $avatar = null,
         public readonly bool $removeAvatar = false,
     ) {}
@@ -36,7 +36,7 @@ class UpdateUserDTO
             password: !empty($data['password']) ? $data['password'] : null,
             phone: $data['phone'] ?? null,
             address: $data['address'] ?? null,
-            status: isset($data['status']) ? UserStatus::from($data['status']) : null,
+            account_status: isset($data['account_status']) ? UserAccountStatus::from($data['account_status']) : null,
             avatar: $data['avatar'] ?? null,
             removeAvatar: $data['remove_avatar'] ?? false,
         );
@@ -75,8 +75,8 @@ class UpdateUserDTO
         }
 
         // Only include status if provided
-        if ($this->status) {
-            $data['status'] = $this->status->value;
+        if ($this->account_status) {
+            $data['account_status'] = $this->account_status->value;
         }
 
         return $data;
