@@ -39,8 +39,6 @@ class UserSeeder extends Seeder
                 'password' => Hash::make("user@dev{$i}.com"), // default password
                 'phone' => $faker->phoneNumber,
                 'phone_verified_at' => now(),
-                'otp' => null,
-                'otp_expires_at' => null,
                 'user_type' => UserType::BUYER->value,
                 'account_status' => UserAccountStatus::PENDING_VERIFICATION->value,
                 'last_login_at' => now(),
@@ -53,7 +51,6 @@ class UserSeeder extends Seeder
                 'terms_accepted_at' => now(),
                 'privacy_accepted_at' => now(),
                 'last_synced_at' => now(),
-                'status' => UserStatus::ACTIVE->value,
                 'remember_token' => Str::random(10),
             ]);
         }
