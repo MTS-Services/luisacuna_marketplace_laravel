@@ -41,8 +41,6 @@ return new class extends Migration
 
             $table->string('phone')->nullable()->index();
             $table->timestamp('phone_verified_at')->nullable();
-            $table->string('otp')->nullable();
-            $table->timestamp('otp_expires_at')->nullable();
 
             $table->string('user_type')->default(UserType::BUYER->value);
             $table->string('account_status')->default(UserAccountStatus::PENDING_VERIFICATION->value);
@@ -60,7 +58,6 @@ return new class extends Migration
             $table->timestamp('privacy_accepted_at')->nullable();
 
             $table->timestamp('last_synced_at')->nullable();
-            $table->string('status')->index()->default(UserStatus::ACTIVE->value);
 
             $table->rememberToken();
             $table->timestamps();

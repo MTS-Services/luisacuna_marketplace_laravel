@@ -8,17 +8,20 @@ use App\Models\AuthBaseModel;
 class Admin extends AuthBaseModel
 {
     protected $fillable = [
+        'sort_order',
         'name',
         'email',
-        'password',
-        'last_synced_at',
-        'otp',
-        'otp_expires_at',
-
+        'email_verified_at',
         'phone',
-        'address',
-        'status',
+        'phone_verified_at',
+        'password',
         'avatar',
+        'status',
+        'two_factor_enabled',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
+        'last_login_at',
+        'last_login_ip',
 
         'created_by',
         'updated_by',
