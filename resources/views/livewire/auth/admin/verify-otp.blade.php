@@ -42,12 +42,12 @@
                     </label>
 
                     <x-auth.input-otp 
-                        wire:model="code" 
+                        wire:model="form.code" 
                         name="code" 
                         :digits="6" 
                     />
 
-                    @error('code')
+                    @error('form.code')
                         <p class="mt-2 text-center text-sm text-red-600 dark:text-red-400">
                             {{ $message }}
                         </p>
