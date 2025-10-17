@@ -26,7 +26,7 @@ Route::middleware('auth:web')->group(function () {
     Route::get('verify-email', function () {
         return view('frontend.auth.user.verify-email');
     })->name('verification.notice');
-     // Add OTP verification route for users
+    // Add OTP verification route for users
     Route::get('verify-otp', function () {
         return view('frontend.auth.user.verify-otp');
     })->name('verify-otp');
@@ -48,18 +48,23 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
         Route::get('forgot-password', function () {
             return view('frontend.auth.admin.forgot-password');
         })->name('password.request');
-        Route::get('reset-password/{token}', function () {
-            return view('frontend.auth.admin.reset-password');
+        Route::get('password-reset/verify-otp', function () {
+            return view('frontend.auth.admin.verify-reset-otp');
+        })->name('reset.verify-otp');
+        Route::get('reset-password/{token}', function (string $token) {
+            return view('frontend.auth.admin.reset-password', compact('token'));
         })->name('password.reset');
     });
+
 
     Route::middleware('auth:admin')->group(function () {
         Route::get('verify-email', function () {
             return view('frontend.auth.admin.verify-email');
         })->name('verification.notice');
-            Route::get('verify-otp', function () {
+        Route::get('verify-otp', function () {
             return view('frontend.auth.admin.verify-otp');
-            })->name('verify-otp');
+        })->name('verify-otp');
+
         Route::get('verify-email/{id}/{hash}', AdminVerifyEmailController::class)
             ->middleware(['signed', 'throttle:6,1'])
             ->name('verification.verify');
