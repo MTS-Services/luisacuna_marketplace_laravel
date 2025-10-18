@@ -24,7 +24,7 @@ Route::middleware(['auth:admin', 'admin'])->name('admin.')->prefix('admin')->gro
     Route::group(['prefix' => 'game-management', 'as' => 'gm.'], function () {
         Route::controller(CategoryController::class)->name('category.')->prefix('category')->group(function () {
              Route::get('/', 'index')->name('index');
-            // Route::get('/create', 'create')->name('create');
+             Route::get('/create', 'create')->name('create');
             // Route::get('/edit/{id}', 'edit')->name('edit');
             // Route::get('/view/{id}', 'show')->name('view');
             // Route::get('/trash', 'trash')->name('trash');
@@ -34,9 +34,9 @@ Route::middleware(['auth:admin', 'admin'])->name('admin.')->prefix('admin')->gro
 
     Route::group(['prefix' => 'game-management', 'as' => 'gm.'], function () {
         Route::controller(CategoryController::class)->name('category.')->prefix('category')->group(function () {
-             Route::get('/', 'index')->name('index');
-            // Route::get('/create', 'create')->name('create');
-            // Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
             // Route::get('/view/{id}', 'show')->name('view');
             // Route::get('/trash', 'trash')->name('trash');
             

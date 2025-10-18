@@ -10,7 +10,7 @@
                     <flux:icon name="trash" class="w-4 h-4 stroke-white" />
                     <span class="sm:inline text-white">{{ __('Trash') }}</span>
                 </x-ui.button>
-                <x-ui.button href="{{ route('admin.am.admin.create') }}" class="flex-1 sm:flex-none">
+                <x-ui.button href="{{ route('admin.gm.category.create') }}" class="flex-1 sm:flex-none">
                     <flux:icon name="user-plus" class="w-4 h-4 stroke-white" />
                     <span class="sm:inline text-white">{{ __('Add') }}</span>
                 </x-ui.button>
@@ -24,8 +24,8 @@
         :showBulkActions="true" emptyMessage="No Game Category found. Create your first admin to get started." />
 
     {{-- Delete Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this admin?'" :message="'Are you absolutely sure you want to remove this admin? All associated data will be permanently deleted.'" :method="'delete'"
-        :button-text="'Delete Admin'" />
+    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this Game Category?'" :message="'Are you absolutely sure you want to remove this Game Category? All associated data will be permanently deleted.'" :method="'delete'"
+        :button-text="'Delete Game Category'" />
 
     {{-- Bulk Action Confirmation Modal --}}
     <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="'Confirm Bulk Action'" :message="'Are you sure you want to perform this action on ' . count($selectedIds) . ' selected admin(s)?'" :method="'executeBulkAction'"

@@ -14,7 +14,7 @@ class Index extends Component
 
     public $statusFilter = '';
     public $showDeleteModal = false;
-    public $deleteAdminId = null;
+    public $deleteGameCategoryId = null;
     public $bulkAction = '';
     public $showBulkActionModal = false;
 
@@ -87,7 +87,7 @@ class Index extends Component
 
         $actions = [
             // ['key' => 'id', 'label' => 'View', 'route' => 'admin.am.admin.view'],
-            // ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.am.admin.edit'],
+            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.gm.category.edit'],
             ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete'],
         ];
 
@@ -106,5 +106,30 @@ class Index extends Component
             'actions' => $actions,
             'bulkActions' => [],
         ]);
+    }
+
+    public function confirmDelete($id){
+        $this->showDeleteModal = true;
+        $this->deleteGameCategoryId = $id;
+    }
+
+    public function delete(){
+
+        try {
+            if (!$this->deleteGameCategoryId) {
+                return;
+            }
+
+          $state =   $this->gameCategoryService->deleteCategory($this->deleteGameCategoryId, false);
+        
+
+
+            $this->showDeleteModal = false;
+            $this->deleteGameCategoryId = null;
+            
+           
+        } catch (\Exception $e) {
+            $this->error('Failed to delete category: ' . $e->getMessage());
+        }
     }
 }
