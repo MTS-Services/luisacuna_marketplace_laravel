@@ -199,4 +199,12 @@ class Index extends Component
         $count = $this->gameCategoryService->bulkUpdateStatus($this->selectedIds, $status);
         $this->success("{$count} categories updated successfully");
     }
+
+    protected function getSelectableIds(): array
+    {
+        return $this->gameCategoryService->paginate(
+            perPage: $this->perPage,
+            filters: $this->getFilters()
+        )->pluck('id')->toArray();
+    }
 }

@@ -181,4 +181,12 @@ class Trash extends Component
         $count = $this->gameCategoryService->BulkCategoryRestore($this->selectedIds,);
         // $this->success("{$count} categories updated successfully");
     }
+
+      protected function paginateOnlyTrashed(): array
+    {
+        return $this->gameCategoryService->paginate(
+            perPage: $this->perPage,
+            filters: $this->getFilters()
+        )->pluck('id')->toArray();
+    }
 }
