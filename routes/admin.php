@@ -6,7 +6,7 @@ use App\Livewire\Backend\Admin\Components\UserManagement\AllUser;
 use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth:admin', 'admin'])->name('admin.')->prefix('admin')->group(function () {
+Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
         return view('backend.admin.pages.dashboard');
     })->name('dashboard');
