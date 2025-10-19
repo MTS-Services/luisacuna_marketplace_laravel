@@ -30,6 +30,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/trash', 'trash')->name('trash');
             Route::get('/profile-info/{id}', 'profileInfo')->name('profileInfo');
             Route::get('/shop-info/{id}', 'shopInfo')->name('shopInfo');
+            Route::get('/kyc-info/{id}', 'kycInfo')->name('kycInfo');
         });
     });
 });

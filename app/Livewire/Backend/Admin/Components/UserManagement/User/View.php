@@ -4,45 +4,18 @@ namespace App\Livewire\Backend\Admin\Components\UserManagement\User;
 
 use App\Models\User;
 use Livewire\Component;
+use App\Services\User\UserService;
 
 class View extends Component
 {
-    public $selectedUser;
-    public $showUserModal = false;
 
 
-
-    // public $userId;
     public $user;
-    // public $activeTab = 'personal_info';
 
-    // protected $listeners = ['openUserModal' => 'openDetailsModal'];
-
-    // user profile tabs
-    // public $tabs = [
-    //     'personal_info' => 'Personal Info',
-    //     'shop_info' => 'Shop Info',
-    //     'kyc' => 'KYC',
-    //     'security_info' => 'Security Info',
-    // ];
-    // public function switchTab($tabName)
-    // {
-    //     if (array_key_exists($tabName, $this->tabs)) {
-    //         $this->activeTab = $tabName;
-    //     }
-    // }
-
-
-    public function openDetailsModal($id)
+    protected UserService $userService;
+    public function boot(UserService $userService)
     {
-        $this->user = User::findOrFail($id);
-        $this->showUserModal = true;
-        $this->dispatch('loadProfileInfo', id: $id);
-    }
-    public function closeUserModal()
-    {
-        $this->showUserModal = false;
-        $this->selectedUser = null;
+        $this->userService = $userService;
     }
     public function render()
     {

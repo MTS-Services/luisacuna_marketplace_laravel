@@ -3,24 +3,25 @@
 namespace App\Livewire\Backend\Admin\Components\UserManagement\User\Profile;
 
 use App\Models\User;
+use App\Services\User\UserService;
 use Livewire\Component;
-use Livewire\Attributes\On;
 
 class ShopInfo extends Component
 {
+    public User $user;
 
-    public $user;
-    public $activeTab = 'shop_info';
-    #[On('loadProfileInfo')]
-    public function profile_info($id)
+    protected UserService $userService;
+
+    public function boot(UserService $userService)
     {
-        $this->user = User::findOrFail($id);
+        $this->userService = $userService;
+    }
+    public function mount(User $user)
+    {
+        $this->user = $user->load(['seller']);
     }
     public function render()
     {
-        return view('livewire.backend.admin.components.user-management.user.profile.shop-info', [
-            'user' => $this->user,
-            'activeTab' => $this->activeTab,
-        ]);
+        return view('livewire.backend.admin.components.user-management.user.profile.shop-info');
     }
 }

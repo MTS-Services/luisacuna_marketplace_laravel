@@ -7,7 +7,10 @@ use App\Enums\UserAccountStatus;
 use App\Enums\UserStatus;
 use App\Enums\UserType;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends AuthBaseModel
 {
@@ -110,11 +113,19 @@ class User extends AuthBaseModel
     |--------------------------------------------------------------------------
     */
 
-    public function country()
+    public function country(): BelongsTo
     {
-        return $this->belongsTo(Country::class, 'country_id');
+        return $this->belongsTo(Country::class, 'country_id', 'id');
     }
 
+    public function seller(): HasOne
+    {
+        return $this->hasOne(SellerProfile::class, 'user_id', 'id');
+    }
+    public function kyc(): HasOne
+    {
+        return $this->hasOne(UserKyc::class, 'user_id', 'id');
+    }
     /*
     |--------------------------------------------------------------------------
     | Query Scopes

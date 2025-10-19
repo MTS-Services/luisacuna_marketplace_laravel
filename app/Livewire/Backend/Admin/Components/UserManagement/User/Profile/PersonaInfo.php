@@ -4,24 +4,26 @@ namespace App\Livewire\Backend\Admin\Components\UserManagement\User\Profile;
 
 use App\Models\User;
 use Livewire\Component;
-use Livewire\Attributes\On;
+use App\Services\User\UserService;
 
 class PersonaInfo extends Component
 {
-    public $user;
-    public $activeTab = 'personal_info';
+    public User $user;
 
-    protected $listeners = ['loadProfileInfo' => 'profile_info'];
-    #[On('loadProfileInfo')]
-    public function profile_info($id)
+    // protected UserService $userService;
+
+    // public function boot(UserService $userService)
+    // {
+    //     $this->userService = $userService;
+    // }
+
+    public function mount(User $user)
     {
-        $this->user = User::findOrFail($id);
+        $this->user = $user;
     }
+
     public function render()
     {
-        return view('livewire.backend.admin.components.user-management.user.profile.persona-info', [
-            'user' => $this->user,
-            'activeTab' => $this->activeTab,
-        ]);
+        return view('livewire.backend.admin.components.user-management.user.profile.persona-info');
     }
 }

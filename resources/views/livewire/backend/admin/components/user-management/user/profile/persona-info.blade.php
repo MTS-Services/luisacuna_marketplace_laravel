@@ -12,28 +12,7 @@
     </div>
 
     {{-- Tab Navigation Bar --}}
-    <div class="flex glass-card rounded border-b text-zinc-600 dark:bg-zinc-400 mb-6 space-x-2 overflow-x-auto">
-        {{-- Personal Info Tab --}}
-        <a type="button" wire:navigate href="{{ route('admin.um.user.profileInfo', $user->id) }}"
-            class="px-4 py-2 text-sm font-medium transition duration-150 ease-in-out focus:outline-none
-    {{ request()->routeIs('admin.um.user.profileInfo') ? 'border-b-2 border-zinc-500 text-zinc-600 font-semibold' : 'text-gray-600 hover:text-gray-900 dark:hover:text-white transition-all duration-200' }}">
-            Personal Info
-        </a>
-
-        {{-- Shop Info Tab --}}
-        <a type="button" wire:navigate href="{{ route('admin.um.user.shopInfo', $user->id) }}"
-            class="px-4 py-2 text-sm font-medium transition duration-150 ease-in-out focus:outline-none
-    {{ request()->routeIs('admin.um.user.shopInfo') ? 'border-b-2 border-zinc-500 text-zinc-600 font-semibold' : 'text-gray-600 hover:text-gray-900 dark:hover:text-white transition-all duration-200' }}">
-            Shop Info
-        </a>
-
-        {{-- KYC Tab --}}
-        {{-- <button wire:click=""
-            class="px-4 py-2 text-sm font-medium transition duration-150 ease-in-out focus:outline-none
-       'border-b-2 border-zinc-500 text-zinc-600 font-semibold' : 'text-gray-600 hover:text-gray-900 dark:hover:text-white transition-all duration-200">
-            KYC
-        </button> --}}
-    </div>
+    @include('backend.admin.pages.user-management.user.nav')
 
     <div class="bg-white shadow rounded-xl p-6 min-h-[500px]">
         {{-- PERSONAL INFO (Default Tab) --}}
