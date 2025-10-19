@@ -34,9 +34,15 @@
         @break
 
         @case('admin.um.user.kycInfo')
-            <x-slot name="title">Shop Info</x-slot>
+            <x-slot name="title">KYC Info</x-slot>
             <x-slot name="breadcrumb">User Management</x-slot>
             <livewire:backend.admin.components.user-management.user.profile.kyc-info :user="$user" />
+        @break
+
+        @case('admin.um.user.statistic')
+            <x-slot name="title">Statistic Info</x-slot>
+            <x-slot name="breadcrumb">User Management</x-slot>
+            <livewire:backend.admin.components.user-management.user.profile.statistic :user="$user" />
         @break
 
         @case('admin.um.user.trash')

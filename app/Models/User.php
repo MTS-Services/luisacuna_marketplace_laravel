@@ -126,6 +126,10 @@ class User extends AuthBaseModel
     {
         return $this->hasOne(UserKyc::class, 'user_id', 'id');
     }
+    public function statistic(): HasOne
+    {
+        return $this->hasOne(UserStatistic::class, 'user_id', 'id');
+    }
     /*
     |--------------------------------------------------------------------------
     | Query Scopes
