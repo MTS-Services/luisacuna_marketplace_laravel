@@ -182,9 +182,9 @@ class Trash extends Component
         // $this->success("{$count} categories updated successfully");
     }
 
-      protected function paginateOnlyTrashed(): array
+      protected function getSelectableIds(): array
     {
-        return $this->gameCategoryService->paginate(
+        return $this->gameCategoryService->paginateOnlyTrashed(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();
