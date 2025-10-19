@@ -85,16 +85,14 @@ class VerifyResetOtp extends Component
             $this->success('Verification successful! Redirecting to reset password...');
             $this->dispatch('clear-auth-code');
 
-            // Create encrypted token
+            // Create encrypted token with only email
             $token = encrypt([
-                'admin_id' => $admin->id,
                 'email' => $admin->email,
                 'expires_at' => now()->addMinutes(15)->timestamp,
             ]);
 
             // Clear email from session
             session()->forget('password_reset_email');
-            // dd($token);
 
             $this->redirect(route('admin.password.reset', ['token' => $token]), navigate: true);
 
@@ -124,7 +122,7 @@ class VerifyResetOtp extends Component
 
         $otpVerification = create_otp($admin, OtpType::PASSWORD_RESET, 10);
 
-        Log::info('Resent Password Reset OTP for Admin ID ' . $admin->id . ': ' . $otpVerification->code);
+        Log::info('Resent Password Reset OTP for Admin: ' . $admin->email . ' - Code: ' . $otpVerification->code);
         $admin->notify(new AdminOtpNotification($otpVerification->code));
 
         RateLimiter::hit($this->resendThrottleKey(), 60);
