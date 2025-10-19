@@ -24,5 +24,10 @@
     {{ request()->routeIs('admin.um.user.statistic') ? 'border-b-2 border-zinc-500 text-zinc-600 font-semibold' : 'text-gray-600 hover:text-gray-900 dark:hover:text-white transition-all duration-200' }}">
           Statistic
       </a>
+      <a type="button" wire:navigate href="{{ route('admin.um.user.referral', $user->id) }}"
+          class="px-4 py-2 text-sm font-medium transition duration-150 ease-in-out focus:outline-none
+    {{ request()->routeIs('admin.um.user.referral') ? 'border-b-2 border-zinc-500 text-zinc-600 font-semibold' : 'text-gray-600 hover:text-gray-900 dark:hover:text-white transition-all duration-200' }}">
+          Referral
+      </a>
 
   </div>

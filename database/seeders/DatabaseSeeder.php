@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             UserSeeder::class,
             SellerSeeder::class,
-            UserStatisticsSeeder::class
+            UserStatisticsSeeder::class,
+            UserReferralSeeder::class,
 
         ]);
 

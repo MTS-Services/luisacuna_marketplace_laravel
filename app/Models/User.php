@@ -130,6 +130,10 @@ class User extends AuthBaseModel
     {
         return $this->hasOne(UserStatistic::class, 'user_id', 'id');
     }
+    public function referral(): HasOne
+    {
+        return $this->hasOne(UserReferral::class, 'user_id', 'id');
+    }
     /*
     |--------------------------------------------------------------------------
     | Query Scopes

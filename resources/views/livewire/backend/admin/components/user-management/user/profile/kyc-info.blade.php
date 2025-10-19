@@ -23,7 +23,7 @@
                 {{-- KYC Status --}}
                 <div>
                     <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">KYC Status</p>
-                    <h3 class="text-lg font-medium text-gray-900 badge badge-soft {{ $user->kyc->kyc_status_color }}">
+                    <h3 class="text-lg font-medium text-gray-900 badge badge-soft {{ $user->kyc->kyc_status_color ?? 'N/A' }}">
                         {{ $user->kyc->kyc_status_label ?? 'N/A' }}
                     </h3>
                 </div>

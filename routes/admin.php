@@ -32,6 +32,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/shop-info/{id}', 'shopInfo')->name('shopInfo');
             Route::get('/kyc-info/{id}', 'kycInfo')->name('kycInfo');
             Route::get('/statistic/{id}', 'statistic')->name('statistic');
+            Route::get('/referral/{id}', 'referral')->name('referral');
         });
     });
 });
