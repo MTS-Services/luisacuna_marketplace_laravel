@@ -17,9 +17,12 @@ Route::middleware('guest:web')->group(function () {
     Route::get('forgot-password', function () {
         return view('frontend.auth.user.forgot-password');
     })->name('password.request');
-    Route::get('reset-password/{token}', function () {
-        return view('frontend.auth.user.reset-password');
+    Route::get('reset-password/{token}', function ($token) {
+        return view('frontend.auth.user.reset-password', compact('token'));
     })->name('password.reset');
+    Route::get('password-reset/verify--otp', function () {
+        return view('frontend.auth.user.verify-reset-otp');
+    })->name('verify-reset-otp');
 });
 
 Route::middleware('auth:web')->group(function () {
