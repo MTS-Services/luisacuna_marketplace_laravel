@@ -7,7 +7,7 @@ use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Route;
 
 // User Auth Routes
-Route::middleware('guest')->group(function () {
+Route::middleware('guest:web')->group(function () {
     Route::get('login', function () {
         return view('frontend.auth.user.login');
     })->name('login');
@@ -26,6 +26,10 @@ Route::middleware('auth:web')->group(function () {
     Route::get('verify-email', function () {
         return view('frontend.auth.user.verify-email');
     })->name('verification.notice');
+     // Add OTP verification route for users
+    Route::get('verify-otp', function () {
+        return view('frontend.auth.user.verify-otp');
+    })->name('verify-otp');
 
     Route::get('verify-email/{id}/{hash}', UserVerifyEmailController::class)
         ->middleware(['signed', 'throttle:6,1'])
@@ -37,7 +41,7 @@ Route::post('logout', Logout::class)
 
 // Admin Auth Routes 
 Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
-    Route::middleware('guest')->group(function () {
+    Route::middleware('guest:admin')->group(function () {
         Route::get('login', function () {
             return view('frontend.auth.admin.login');
         })->name('login');
@@ -49,11 +53,13 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
         })->name('password.reset');
     });
 
-    Route::middleware('auth:web')->group(function () {
+    Route::middleware('auth:admin')->group(function () {
         Route::get('verify-email', function () {
             return view('frontend.auth.admin.verify-email');
         })->name('verification.notice');
-
+            Route::get('verify-otp', function () {
+            return view('frontend.auth.admin.verify-otp');
+            })->name('verify-otp');
         Route::get('verify-email/{id}/{hash}', AdminVerifyEmailController::class)
             ->middleware(['signed', 'throttle:6,1'])
             ->name('verification.verify');

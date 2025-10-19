@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\AdminStatus;
+use App\Enums\OtpType;
 use App\Models\AuthBaseModel;
 
 class Admin extends AuthBaseModel
@@ -131,5 +132,64 @@ class Admin extends AuthBaseModel
         $this->appends = array_merge(parent::getAppends(), [
             //
         ]);
+    }
+
+
+
+    public function otpVerifications()
+    {
+        return $this->morphMany(OtpVerification::class, 'verifiable');
+    }
+
+    /**
+     * Get the latest OTP verification of a specific type.
+     */
+    public function latestOtp(OtpType $type)
+    {
+        return $this->otpVerifications()
+            ->where('type', $type)
+            ->latest()
+            ->first();
+    }
+
+    /**
+     * Create a new OTP verification.
+     */
+    public function createOtp(OtpType $type, int $expiresInMinutes = 10): OtpVerification
+    {
+        // Invalidate old OTPs of same type
+        $this->otpVerifications()
+            ->where('type', $type)
+            ->whereNull('verified_at')
+            ->update(['expires_at' => now()]);
+
+        $otp = sprintf('%06d', mt_rand(0, 999999));
+
+        return $this->otpVerifications()->create([
+            'type' => $type,
+            'code' => $otp,
+            'expires_at' => now()->addMinutes($expiresInMinutes),
+            'attempts' => 0,
+        ]);
+    }
+
+    /**
+     * Mark email as verified.
+     */
+    public function markEmailAsVerified()
+    {
+        return $this->forceFill([
+            'email_verified_at' => now(),
+        ])->save();
+    }
+
+    /**
+     * Mark phone as verified.
+     */
+    public function markPhoneAsVerified()
+    {
+        return $this->forceFill([
+            'phone_verified_at' => now(),
+        ])->save();
     }
 }

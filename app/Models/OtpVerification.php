@@ -16,6 +16,14 @@ class OtpVerification extends Model
         'expires_at',
         'attempts',
         'verified_at',
+
+        'creater_type',
+        'updater_type',
+        'deleter_type',
+        
+        'creator_id',
+        'updater_id',
+        'deleter_id',
     ];
 
     protected $casts = [
