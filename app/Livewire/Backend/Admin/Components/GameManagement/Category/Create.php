@@ -13,8 +13,9 @@ class Create extends Component
     protected GameCategoryService $gameCategoryService;
     public GameCategory $form;
 
-    public function boot(GameCategoryService $gameCategoryService){
-       $this->gameCategoryService = $gameCategoryService;
+    public function boot(GameCategoryService $gameCategoryService)
+    {
+        $this->gameCategoryService = $gameCategoryService;
     }
 
     // public function mount(){
@@ -33,18 +34,16 @@ class Create extends Component
     public function save()
     {
         $data = $this->form->validate();
-       
+
         try {
             $data = CreateGameCategoryDTO::formArray($data);
-            
-           $data =  $this->gameCategoryService->create($data);
-            
+
+            $data =  $this->gameCategoryService->create($data);
+
             return $this->redirect(route('admin.gm.category.index'), navigate: true);
-           
         } catch (\Throwable $th) {
 
             dd($th->getMessage());
-            
         }
     }
 }

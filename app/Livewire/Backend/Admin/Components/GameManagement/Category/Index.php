@@ -12,7 +12,7 @@ class Index extends Component
 {
 
     use WithDataTable, WithNotification;
-  
+
     public $statusFilter = '';
     public $showDeleteModal = false;
     public $deleteGameCategoryId = null;
@@ -31,9 +31,10 @@ class Index extends Component
 
     public function render()
     {
-          $categories = $this->gameCategoryService->paginate(
+        $categories = $this->gameCategoryService->paginate(
             perPage: $this->perPage,
-            filters: $this->getFilters());
+            filters: $this->getFilters()
+        );
 
 
         $columns = [
@@ -110,19 +111,20 @@ class Index extends Component
 
         return view('livewire.backend.admin.components.game-management.category.index', [
             'categories' => $categories,
-            'statuses' =>[],
+            'statuses' => [],
             'columns' =>  $columns,
             'actions' => $actions,
             'bulkActions' => $bulkActions,
         ]);
     }
 
-    public function confirmDelete($id){
+    public function confirmDelete($id)
+    {
         $this->showDeleteModal = true;
         $this->deleteGameCategoryId = $id;
     }
 
-      protected function getFilters(): array
+    protected function getFilters(): array
     {
         return [
             'search' => $this->search,
@@ -132,25 +134,25 @@ class Index extends Component
         ];
     }
 
-    public function cancelDelete(){
+    public function cancelDelete()
+    {
         $this->showDeleteModal = false;
         $this->deleteGameCategoryId = null;
     }
-    public function delete(){
+    public function delete()
+    {
 
         try {
             if (!$this->deleteGameCategoryId) {
                 return;
             }
 
-          $state =   $this->gameCategoryService->deleteCategory($this->deleteGameCategoryId, false);
-        
+            $state =   $this->gameCategoryService->deleteCategory($this->deleteGameCategoryId, false);
+
 
 
             $this->showDeleteModal = false;
             $this->deleteGameCategoryId = null;
-            
-           
         } catch (\Exception $e) {
             $this->error('Failed to delete category: ' . $e->getMessage());
         }
@@ -163,14 +165,14 @@ class Index extends Component
             return;
         }
 
-          $this->showBulkActionModal = true;
+        $this->showBulkActionModal = true;
     }
 
     public function executeBulkAction(): void
     {
         $this->showBulkActionModal = false;
 
-            try {
+        try {
             match ($this->bulkAction) {
                 'delete' => $this->bulkDelete(),
                 'activate' => $this->bulkUpdateStatus(GameCategoryStatus::ACTIVE),

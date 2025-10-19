@@ -11,18 +11,19 @@ use Livewire\Component;
 
 class Edit extends Component
 {
-    public GameCategory $form; 
+    public GameCategory $form;
     public ModelsGameCategory $ModelsGameCategory;
     protected GameCategoryService $gameCategoryService;
     public $categoryId = null;
 
-    public function boot(GamecategoryService $gameCategoryService){
+    public function boot(GamecategoryService $gameCategoryService)
+    {
         $this->gameCategoryService = $gameCategoryService;
     }
-    public function mount(ModelsGameCategory $category){
-       $this->form->setCategory($category);
-       $this->categoryId = $category->id ;
-     
+    public function mount(ModelsGameCategory $category)
+    {
+        $this->form->setCategory($category);
+        $this->categoryId = $category->id;
     }
     public function render()
     {
@@ -32,19 +33,19 @@ class Edit extends Component
     }
 
 
-    public function update(){
-       $data =  $this->form->validate();
+    public function update()
+    {
+        $data =  $this->form->validate();
 
-       try {
-       $dto = UpdateGameCategoryDTO::formArray($data);
-     
-          $this->gameCategoryService->update($this->categoryId, $dto->toArray());
+        try {
+            $dto = UpdateGameCategoryDTO::formArray($data);
 
-       return $this->redirect(route('admin.gm.category.index'), navigate: true);
+            $this->gameCategoryService->update($this->categoryId, $dto->toArray());
 
-       } catch (\Throwable $th) {
-      
-        dd($th->getMessage());
-       }
+            return $this->redirect(route('admin.gm.category.index'), navigate: true);
+        } catch (\Throwable $th) {
+
+            dd($th->getMessage());
+        }
     }
 }

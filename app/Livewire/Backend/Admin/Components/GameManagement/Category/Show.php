@@ -8,7 +8,8 @@ use Livewire\Component;
 class Show extends Component
 {
     public GameCategory $category;
-    public function mount(GameCategory $category):void{
+    public function mount(GameCategory $category): void
+    {
         $this->category = $category;
     }
     public function render()

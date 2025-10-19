@@ -11,7 +11,7 @@
                     <flux:icon name="user-plus" class="w-4 h-4 stroke-white" />
                     {{ __('Add') }}
                 </x-ui.button>  --}}
-                   <x-ui.button href="{{ route('admin.gm.category.index') }}" type='accent'>
+                <x-ui.button href="{{ route('admin.gm.category.index') }}" type='accent'>
                     <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
                     {{ __('Back') }}
                 </x-ui.button>
@@ -50,7 +50,7 @@
                                 <td class="p-4 text-gray-600 font-semibold">Slug</td>
                                 <td class="p-4 text-gray-900">{{ $category->slug }}</td>
                             </tr>
-                         
+
                             <tr class="hover:bg-white transition-colors">
                                 <td class="p-4 text-gray-600 font-semibold">Status</td>
                                 <td class="p-4">
@@ -64,22 +64,22 @@
                                 <td class="p-4 w-2/5 text-gray-600 font-semibold">Created By</td>
                                 <td class="p-4 text-gray-900">{{ $category->creater_admin->name ?? 'System' }}</td>
                             </tr>
-                            
+
                             <tr class="hover:bg-white transition-colors">
                                 <td class="p-4 text-gray-600 font-semibold">Created At</td>
                                 <td class="p-4 text-gray-900">{{ $category->created_at_formatted }}</td>
                             </tr>
-                            @if($category->updated_by)
-                             <tr class="hover:bg-white transition-colors">
-                                <td class="p-4 w-2/5 text-gray-600 font-semibold">Updated By</td>
-                                <td class="p-4 text-gray-900">{{ $category->updater_admin->name }}</td>
-                                
-                            </tr>
-                             <tr class="hover:bg-white transition-colors">
-                                <td class="p-4 w-2/5 text-gray-600 font-semibold">Updated At</td>
-                                <td class="p-4 text-gray-900">{{ $category->updated_at_formatted }}</td>
+                            @if ($category->updated_by)
+                                <tr class="hover:bg-white transition-colors">
+                                    <td class="p-4 w-2/5 text-gray-600 font-semibold">Updated By</td>
+                                    <td class="p-4 text-gray-900">{{ $category->updater_admin->name }}</td>
 
-                            </tr>
+                                </tr>
+                                <tr class="hover:bg-white transition-colors">
+                                    <td class="p-4 w-2/5 text-gray-600 font-semibold">Updated At</td>
+                                    <td class="p-4 text-gray-900">{{ $category->updated_at_formatted }}</td>
+
+                                </tr>
                             @endif
                         </tbody>
                     </table>

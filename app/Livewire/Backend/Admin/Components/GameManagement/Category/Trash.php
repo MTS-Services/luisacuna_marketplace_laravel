@@ -18,7 +18,7 @@ class Trash extends Component
     public $showBulkActionModal = false;
     public $bulkAction = '';
 
-  
+
     public function boot(GameCategoryService $gameCategoryService)
     {
 
@@ -141,7 +141,7 @@ class Trash extends Component
     }
 
 
-    
+
     public function confirmBulkAction(): void
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
@@ -149,14 +149,14 @@ class Trash extends Component
             return;
         }
 
-          $this->showBulkActionModal = true;
+        $this->showBulkActionModal = true;
     }
 
     public function executeBulkAction(): void
     {
         $this->showBulkActionModal = false;
 
-            try {
+        try {
             match ($this->bulkAction) {
                 'delete' => $this->bulkForceDelete(),
                 'restore' => $this->bulkRestore(),
@@ -174,7 +174,6 @@ class Trash extends Component
     public function bulkForceDelete(): void
     {
         $count = $this->gameCategoryService->bulkDeleteCategories($this->selectedIds, true);
-       
     }
 
     public function bulkRestore(): void
