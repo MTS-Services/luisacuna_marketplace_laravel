@@ -1,23 +1,20 @@
-<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-6 ">
     <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
 
     <!-- Session Status -->
-    <x-auth-session-status class="text-center " :status="session('status')" />
-
+    <x-auth-session-status class="text-center" :status="session('status')" />
     <div class="flex items-center justify-center min-h-screen ">
-        <form method="POST" wire:submit="register" class="flex flex-col gap-6 max-w-7xl w-full p-8  shadow-lg rounded-lg">
+        <form method="POST" wire:submit="register"
+            class="grid grid-cols-2 gap-4 max-w-7xl w-full p-8  shadow-lg rounded-lg">
             <flux:input wire:model="name" :label="__('Name')" type="text" required autofocus autocomplete="name"
                 :placeholder="__('Full name')" />
-
             <flux:input wire:model="sort_order" :label="__('Sort Order')" type="text" required autofocus
                 autocomplete="sort_order" :placeholder="__('Sort Order')" />
-
             <flux:input wire:model="country_id" :label="__('Country Id')" type="text" required autofocus
                 autocomplete="country_id" :placeholder="__('Country Id')" />
 
             <flux:input wire:model="first_name" :label="__('First Name')" type="text" required autofocus
                 autocomplete="first_name" :placeholder="__('First Name')" />
-
             <flux:input wire:model="last_name" :label="__('Last Name')" type="text" required autofocus
                 autocomplete="last_name" :placeholder="__('Last Name')" />
 
@@ -93,13 +90,11 @@
 
             <flux:input wire:model="password_confirmation" :label="__('Confirm password')" type="password" required
                 autocomplete="new-password" :placeholder="__('Confirm password')" viewable />
-
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
                 <!-- Create Account Button -->
                 <flux:button type="submit" variant="primary" class="w-full sm:w-auto px-6 py-2">
                     {{ __('Create account') }}
                 </flux:button>
-
                 <!-- Login Link -->
                 <div class="flex items-center gap-2 text-sm">
                     <span class="text-gray-600">{{ __('Already have an account?') }}</span>
@@ -108,9 +103,6 @@
                     </flux:link>
                 </div>
             </div>
-
         </form>
     </div>
-
-
 </div>
