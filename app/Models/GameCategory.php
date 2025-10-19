@@ -21,4 +21,17 @@ class GameCategory extends BaseModel
         });
     }
 
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['status'] ?? null, function ($query, $status) {
+            $query->where('status', $status);
+        });
+
+        $query->when($filters['search'] ?? null, function ($query, $search) {
+            $query->search($search);
+        });
+
+        return $query;
+    }
+
 }

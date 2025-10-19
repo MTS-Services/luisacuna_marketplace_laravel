@@ -3,19 +3,24 @@
 namespace App\Livewire\Backend\Admin\Components\GameManagement\Category;
 
 use App\Services\Game\GameCategoryService;
+use App\Traits\Livewire\WithDataTable;
 use Livewire\Component;
 
 class Trash extends Component
 {
+    use WithDataTable;
 
+    public $search = '';
+    public $statusFilter = '';
     protected GameCategoryService $gameCategoryService;
     public $deleteGameCategoryId;
     public bool $showDeleteModal = false;
     public bool $showRestoreModal = false;
-    public function boot(GameCategoryService $gameCategoryService){
+    public $perPage = 15;
+    public function boot(GameCategoryService $gameCategoryService)
+    {
 
         $this->gameCategoryService = $gameCategoryService;
-
     }
     public function render()
     {
@@ -86,10 +91,14 @@ class Trash extends Component
         ];
 
         // $category = GameCategory::onlyTrashed()->get();
-         $categories = $this->gameCategoryService->paginateOnlyTrashed(); 
+        $categories = $this->gameCategoryService->paginateOnlyTrashed(
+
+            perPage: $this->perPage,
+            filters: $this->getFilters()
+        );
         return view('livewire.backend.admin.components.game-management.category.trash', [
             'categories' => $categories,
-            'statuses' =>[],
+            'statuses' => [],
             'columns' =>  $columns,
             'actions' => $actions,
             'bulkActions' => $bulkActions,
@@ -98,26 +107,38 @@ class Trash extends Component
         ]);
     }
 
-    public function confirmDelete($id){
+    public function confirmDelete($id)
+    {
 
         $this->showDeleteModal = true;
         $this->deleteGameCategoryId = $id;
     }
 
 
-    public function cancelDelete(){
+    public function cancelDelete()
+    {
         $this->showDeleteModal = false;
     }
 
-    public function delete(){
+    public function delete()
+    {
         $this->showDeleteModal = false;
 
         $this->gameCategoryService->deleteCategory($this->deleteGameCategoryId, true);
-        
     }
 
-    public function restoreDelete($id){
-        
+    public function restoreDelete($id)
+    {
+
         $this->gameCategoryService->restoreDelete($id, false);
+    }
+
+    public function getFilters()
+    {
+        return [
+            'search' => $this->search,
+            'sort_field' => $this->sortField,
+            'sort_direction' => $this->sortDirection,
+        ];
     }
 }

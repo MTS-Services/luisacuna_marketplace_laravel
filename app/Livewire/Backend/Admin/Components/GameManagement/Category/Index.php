@@ -11,7 +11,8 @@ class Index extends Component
 {
 
     use WithDataTable, WithNotification;
-
+    public $serach = '';
+    public $page = 10;
     public $statusFilter = '';
     public $showDeleteModal = false;
     public $deleteGameCategoryId = null;
@@ -29,7 +30,10 @@ class Index extends Component
 
     public function render()
     {
-          $categories = $this->gameCategoryService->all();
+          $categories = $this->gameCategoryService->paginate(
+            perPage: $this->page,
+            filters: $this->getFilters());
+
 
         $columns = [
             // [
@@ -113,6 +117,20 @@ class Index extends Component
         $this->deleteGameCategoryId = $id;
     }
 
+      protected function getFilters(): array
+    {
+        return [
+            'search' => $this->search,
+            'status' => $this->statusFilter,
+            'sort_field' => $this->sortField,
+            'sort_direction' => $this->sortDirection,
+        ];
+    }
+
+    public function cancelDelete(){
+        $this->showDeleteModal = false;
+        $this->deleteGameCategoryId = null;
+    }
     public function delete(){
 
         try {

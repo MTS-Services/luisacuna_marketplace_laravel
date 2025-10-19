@@ -59,7 +59,7 @@ class GameCategoryRepository implements GameCategoryRepositoryInterface
 
     public function paginateOnlyTrashed(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator
     {
-        $query = $this->model->query();
+        $query = $this->model->onlyTrashed();
 
         // Apply filters
         if (!empty($filters)) {
@@ -71,7 +71,7 @@ class GameCategoryRepository implements GameCategoryRepositoryInterface
         $sortDirection = $filters['sort_direction'] ?? 'desc';
         $query->orderBy($sortField, $sortDirection);
 
-        return $query->onlyTrashed()->paginate($perPage);
+        return $query->paginate($perPage);
     }
 
     public function restoreDelete($id): bool
