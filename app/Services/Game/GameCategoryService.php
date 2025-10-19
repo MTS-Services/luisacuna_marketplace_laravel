@@ -4,6 +4,8 @@ namespace App\Services\Game;
 
 use App\Actions\Admin\CreateGameCategoryAction;
 use App\DTOs\GameCategory\CreateGameCategoryDTO;
+use App\Enums\GameCategoryStatus;
+use App\Models\GameCategory;
 use App\Repositories\Contracts\GameCategoryRepositoryInterface;
 
 class GameCategoryService
@@ -48,5 +50,24 @@ class GameCategoryService
     {
         return $this->gameCategoryRepository->restoreDelete($id);
     }
+
+    public function bulkDeleteCategories(array $ids, bool $forceDelete = false):bool
+    {
+        return $this->gameCategoryRepository->bulkDeleteCategories($ids, $forceDelete);
+    }
+
+    public function BulkCategoryRestore(array $ids):bool       
+    {
+        return $this->gameCategoryRepository->BulkCategoryRestore($ids);    
+    }
+    public function bulkUpdateStatus(array $ids, GameCategoryStatus $status):bool
+    {
+        return $this->gameCategoryRepository->bulkUpdateStatus($ids, $status);
+    }
+
+    public function findOrFail($id): GameCategory
+    {
+        return $this->gameCategoryRepository->findOrFail($id);
+    }   
 }
 

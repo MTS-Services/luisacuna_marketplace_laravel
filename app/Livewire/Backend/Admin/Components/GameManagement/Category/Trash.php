@@ -10,13 +10,15 @@ class Trash extends Component
 {
     use WithDataTable;
 
-    public $search = '';
     public $statusFilter = '';
     protected GameCategoryService $gameCategoryService;
     public $deleteGameCategoryId;
     public bool $showDeleteModal = false;
     public bool $showRestoreModal = false;
-    public $perPage = 15;
+    public $showBulkActionModal = false;
+    public $bulkAction = '';
+
+  
     public function boot(GameCategoryService $gameCategoryService)
     {
 
@@ -84,10 +86,8 @@ class Trash extends Component
         ];
 
         $bulkActions = [
+            ['value' => 'restore', 'label' => 'Restore'],
             ['value' => 'delete', 'label' => 'Delete'],
-            ['value' => 'activate', 'label' => 'Activate'],
-            ['value' => 'deactivate', 'label' => 'Deactivate'],
-            ['value' => 'suspend', 'label' => 'Suspend'],
         ];
 
         // $category = GameCategory::onlyTrashed()->get();
@@ -102,8 +102,6 @@ class Trash extends Component
             'columns' =>  $columns,
             'actions' => $actions,
             'bulkActions' => $bulkActions,
-            'selectedIds' => [],
-            'bulkAction' => '',
         ]);
     }
 
@@ -140,5 +138,48 @@ class Trash extends Component
             'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
         ];
+    }
+
+
+    
+    public function confirmBulkAction(): void
+    {
+        if (empty($this->selectedIds) || empty($this->bulkAction)) {
+            $this->warning('Please select categories and an action');
+            return;
+        }
+
+          $this->showBulkActionModal = true;
+    }
+
+    public function executeBulkAction(): void
+    {
+        $this->showBulkActionModal = false;
+
+            try {
+            match ($this->bulkAction) {
+                'delete' => $this->bulkForceDelete(),
+                'restore' => $this->bulkRestore(),
+                default => null,
+            };
+
+            $this->selectedIds = [];
+            $this->selectAll = false;
+            $this->bulkAction = '';
+        } catch (\Exception $e) {
+            $this->error('Bulk action failed: ' . $e->getMessage());
+        }
+    }
+
+    public function bulkForceDelete(): void
+    {
+        $count = $this->gameCategoryService->bulkDeleteCategories($this->selectedIds, true);
+       
+    }
+
+    public function bulkRestore(): void
+    {
+        $count = $this->gameCategoryService->BulkCategoryRestore($this->selectedIds,);
+        // $this->success("{$count} categories updated successfully");
     }
 }

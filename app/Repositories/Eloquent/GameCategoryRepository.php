@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Enums\GameCategoryStatus;
 use App\Models\GameCategory;
 use App\Repositories\Contracts\GameCategoryRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -77,5 +78,26 @@ class GameCategoryRepository implements GameCategoryRepositoryInterface
     public function restoreDelete($id): bool
     {
         return $this->model->withTrashed()->findOrFail($id)->restore();
+    }
+
+    public function bulkDeleteCategories(array $ids, bool $forceDelete = false): bool
+    {
+       if(! $forceDelete)  return $this->model->whereIn('id', $ids)->delete();
+
+       return $this->model->withTrashed()->whereIn('id', $ids)->forceDelete();
+    }
+
+    public function BulkCategoryRestore(array $ids): bool
+    {
+        return $this->model->withTrashed()->whereIn('id', $ids)->restore();
+    }
+    public function bulkUpdateStatus(array $ids, GameCategoryStatus $status):bool
+    {
+        return $this->model->whereIn('id', $ids)->update(['status' => $status]);
+    }
+
+    public function findOrFail($id): GameCategory
+    {
+        return $this->model->findOrFail($id);
     }
 }

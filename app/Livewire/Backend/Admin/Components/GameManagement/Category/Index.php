@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\Admin\Components\GameManagement\Category;
 
+use App\Enums\GameCategoryStatus;
 use App\Services\Game\GameCategoryService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
@@ -11,13 +12,13 @@ class Index extends Component
 {
 
     use WithDataTable, WithNotification;
-    public $serach = '';
-    public $page = 10;
+  
     public $statusFilter = '';
     public $showDeleteModal = false;
     public $deleteGameCategoryId = null;
     public $bulkAction = '';
     public $showBulkActionModal = false;
+
 
     // protected $listeners = ['adminCreated' => '$refresh', 'adminUpdated' => '$refresh'];
 
@@ -31,7 +32,7 @@ class Index extends Component
     public function render()
     {
           $categories = $this->gameCategoryService->paginate(
-            perPage: $this->page,
+            perPage: $this->perPage,
             filters: $this->getFilters());
 
 
@@ -79,6 +80,11 @@ class Index extends Component
                 }
             ],
             [
+                'key' => 'status',
+                'label' => 'Status',
+                'sortable' => true,
+            ],
+            [
                 'key' => 'created_by',
                 'label' => 'Created By',
                 'format' => function ($category) {
@@ -98,8 +104,7 @@ class Index extends Component
         $bulkActions = [
             ['value' => 'delete', 'label' => 'Delete'],
             ['value' => 'activate', 'label' => 'Activate'],
-            ['value' => 'deactivate', 'label' => 'Deactivate'],
-            ['value' => 'suspend', 'label' => 'Suspend'],
+            ['value' => 'inactivate', 'label' => 'Inactive'],
         ];
 
 
@@ -108,7 +113,7 @@ class Index extends Component
             'statuses' =>[],
             'columns' =>  $columns,
             'actions' => $actions,
-            'bulkActions' => [],
+            'bulkActions' => $bulkActions,
         ]);
     }
 
@@ -149,5 +154,47 @@ class Index extends Component
         } catch (\Exception $e) {
             $this->error('Failed to delete category: ' . $e->getMessage());
         }
+    }
+
+    public function confirmBulkAction(): void
+    {
+        if (empty($this->selectedIds) || empty($this->bulkAction)) {
+            $this->warning('Please select categories and an action');
+            return;
+        }
+
+          $this->showBulkActionModal = true;
+    }
+
+    public function executeBulkAction(): void
+    {
+        $this->showBulkActionModal = false;
+
+            try {
+            match ($this->bulkAction) {
+                'delete' => $this->bulkDelete(),
+                'activate' => $this->bulkUpdateStatus(GameCategoryStatus::ACTIVE),
+                'inactivate' => $this->bulkUpdateStatus(GameCategoryStatus::INACTIVE),
+                default => null,
+            };
+
+            $this->selectedIds = [];
+            $this->selectAll = false;
+            $this->bulkAction = '';
+        } catch (\Exception $e) {
+            $this->error('Bulk action failed: ' . $e->getMessage());
+        }
+    }
+
+    public function bulkDelete(): void
+    {
+        $count = $this->gameCategoryService->bulkDeleteCategories($this->selectedIds);
+        $this->success("{$count} categories deleted successfully");
+    }
+
+    public function bulkUpdateStatus(GameCategoryStatus $status): void
+    {
+        $count = $this->gameCategoryService->bulkUpdateStatus($this->selectedIds, $status);
+        $this->success("{$count} categories updated successfully");
     }
 }
