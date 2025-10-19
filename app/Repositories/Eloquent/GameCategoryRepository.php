@@ -56,4 +56,21 @@ class GameCategoryRepository implements GameCategoryRepositoryInterface
 
         return $query->paginate($perPage);
     }
+
+    public function paginateOnlyTrashed(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator
+    {
+        $query = $this->model->query();
+
+        // Apply filters
+        if (!empty($filters)) {
+            $query->filter($filters);
+        }
+
+        // Apply sorting
+        $sortField = $filters['sort_field'] ?? 'created_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+        $query->orderBy($sortField, $sortDirection);
+
+        return $query->onlyTrashed()->paginate($perPage);
+    }
 }

@@ -15,7 +15,10 @@ interface GameCategoryRepositoryInterface
 
     public function update( $id, array $data): bool;
     
+    public function paginateOnlyTrashed(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
+
     public function deleteCategory($id, bool $force = false);
-   public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
+
+    public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
 }
 

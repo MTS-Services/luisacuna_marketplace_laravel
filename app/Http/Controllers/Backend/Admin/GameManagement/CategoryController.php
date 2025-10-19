@@ -25,4 +25,18 @@ class CategoryController extends Controller
             'category'  => $category
         ]);
     }
+    public function show($id)
+    {
+        $category = GameCategory::findOrFail($id);
+        return view($this->masterView , [
+            'category'  => $category
+        ]);
+    }
+
+    public function trash(){
+
+        return view($this->masterView);
+
+    }
+
 }

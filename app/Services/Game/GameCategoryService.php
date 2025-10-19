@@ -34,10 +34,15 @@ class GameCategoryService
     {
         return $this->gameCategoryRepository->deleteCategory($id, $force);
     }
-    public function paginate()
+    public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null)
     {
-        return $this->gameCategoryRepository->paginate();
+        return $this->gameCategoryRepository->paginate($perPage, $filters, $queries ?? []);
     }
+
+    public function paginateOnlyTrashed(int $perPage = 15, array $filters = [], ?array $queries = null)
+    {
+        return $this->gameCategoryRepository->paginateOnlyTrashed($perPage, $filters, $queries ?? []);
+    }   
 
     
 }

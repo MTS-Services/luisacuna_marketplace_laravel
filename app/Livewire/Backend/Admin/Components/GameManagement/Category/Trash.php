@@ -3,34 +3,22 @@
 namespace App\Livewire\Backend\Admin\Components\GameManagement\Category;
 
 use App\Services\Game\GameCategoryService;
-use App\Traits\Livewire\WithDataTable;
-use App\Traits\Livewire\WithNotification;
 use Livewire\Component;
 
-class Index extends Component
+class Trash extends Component
 {
 
-    use WithDataTable, WithNotification;
-
-    public $statusFilter = '';
-    public $showDeleteModal = false;
-    public $deleteGameCategoryId = null;
-    public $bulkAction = '';
-    public $showBulkActionModal = false;
-
-    // protected $listeners = ['adminCreated' => '$refresh', 'adminUpdated' => '$refresh'];
-
     protected GameCategoryService $gameCategoryService;
+    public $deleteGameCategoryId;
+    public bool $showDeleteModal = false;
+    public bool $showRestoreModal = false;
+    public function boot(GameCategoryService $gameCategoryService){
 
-    public function boot(GameCategoryService $gameCategoryService)
-    {
         $this->gameCategoryService = $gameCategoryService;
-    }
 
+    }
     public function render()
     {
-          $categories = $this->gameCategoryService->all();
-
         $columns = [
             // [
             //     'key' => 'id',
@@ -86,8 +74,7 @@ class Index extends Component
         ];
 
         $actions = [
-            ['key' => 'id', 'label' => 'View', 'route' => 'admin.gm.category.view'],
-            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.gm.category.edit'],
+            ['key' => 'id', 'label' => 'Restore', 'route' => 'admin.gm.category.edit'],
             ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete'],
         ];
 
@@ -98,38 +85,34 @@ class Index extends Component
             ['value' => 'suspend', 'label' => 'Suspend'],
         ];
 
-
-        return view('livewire.backend.admin.components.game-management.category.index', [
+        // $category = GameCategory::onlyTrashed()->get();
+         $categories = $this->gameCategoryService->paginateOnlyTrashed(); 
+        return view('livewire.backend.admin.components.game-management.category.trash', [
             'categories' => $categories,
             'statuses' =>[],
             'columns' =>  $columns,
             'actions' => $actions,
-            'bulkActions' => [],
+            'bulkActions' => $bulkActions,
+            'selectedIds' => [],
+            'bulkAction' => '',
         ]);
     }
 
     public function confirmDelete($id){
+
         $this->showDeleteModal = true;
         $this->deleteGameCategoryId = $id;
     }
 
+
+    public function cancelDelete(){
+        $this->showDeleteModal = false;
+    }
+
     public function delete(){
+        $this->showDeleteModal = false;
 
-        try {
-            if (!$this->deleteGameCategoryId) {
-                return;
-            }
-
-          $state =   $this->gameCategoryService->deleteCategory($this->deleteGameCategoryId, false);
+        $this->gameCategoryService->deleteCategory($this->deleteGameCategoryId, true);
         
-
-
-            $this->showDeleteModal = false;
-            $this->deleteGameCategoryId = null;
-            
-           
-        } catch (\Exception $e) {
-            $this->error('Failed to delete category: ' . $e->getMessage());
-        }
     }
 }
