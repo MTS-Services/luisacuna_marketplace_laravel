@@ -74,7 +74,7 @@ class Trash extends Component
         ];
 
         $actions = [
-            ['key' => 'id', 'label' => 'Restore', 'route' => 'admin.gm.category.edit'],
+            ['key' => 'id', 'label' => 'Restore', 'method' => 'restoreDelete'],
             ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete'],
         ];
 
@@ -114,5 +114,10 @@ class Trash extends Component
 
         $this->gameCategoryService->deleteCategory($this->deleteGameCategoryId, true);
         
+    }
+
+    public function restoreDelete($id){
+        
+        $this->gameCategoryService->restoreDelete($id, false);
     }
 }

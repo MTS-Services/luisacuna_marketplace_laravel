@@ -44,6 +44,9 @@ class GameCategoryService
         return $this->gameCategoryRepository->paginateOnlyTrashed($perPage, $filters, $queries ?? []);
     }   
 
-    
+    public function restoreDelete($id):bool
+    {
+        return $this->gameCategoryRepository->restoreDelete($id);
+    }
 }
 

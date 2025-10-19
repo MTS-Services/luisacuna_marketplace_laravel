@@ -19,6 +19,8 @@ interface GameCategoryRepositoryInterface
 
     public function deleteCategory($id, bool $force = false);
 
+   public function restoreDelete($id) :bool;
+
     public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
 }
 

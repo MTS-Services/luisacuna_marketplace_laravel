@@ -73,4 +73,9 @@ class GameCategoryRepository implements GameCategoryRepositoryInterface
 
         return $query->onlyTrashed()->paginate($perPage);
     }
+
+    public function restoreDelete($id): bool
+    {
+        return $this->model->withTrashed()->findOrFail($id)->restore();
+    }
 }

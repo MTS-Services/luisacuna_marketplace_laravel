@@ -23,9 +23,6 @@
         :statuses="$statuses" :selectedIds="$selectedIds" :mobileVisibleColumns="2" searchProperty="search" perPageProperty="perPage"
         :showBulkActions="true" emptyMessage="No Game Category found. Create your first admin to get started." />
 
-     {{-- Restore Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showRestoreModal'" :title="'Restore this Game Category?'" :message="'Are you absolutely sure you want to restore this Game Category?'" :method="'restore'"
-        :button-text="'Restore'" />
     {{-- Delete Confirmation Modal --}}
     <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this Game Category?'" :message="'Are you absolutely sure you want to remove this Game Category? All associated data will be permanently deleted.'" :method="'delete'"
         :button-text="'Delete Game Category'" />
