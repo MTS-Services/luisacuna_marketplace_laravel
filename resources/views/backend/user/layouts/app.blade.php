@@ -13,7 +13,7 @@
     @fluxAppearance
 </head>
 
-<body x-data="{ sidebarOpen: true, mobileMenuOpen: false }" class="h-full max-h-screen antialiased !bg-white">
+<body x-data="{ sidebarOpen: false, mobileMenuOpen: false }" class="h-full max-h-screen antialiased bg-gray-950 text-gray-100">
 
     <div class="flex h-screen ">
         <!-- Sidebar -->
@@ -35,6 +35,12 @@
             {{-- <livewire:backend.user.partials.footer /> --}}
 
         </div>
+    </div>
+    <div x-show="sidebarOpen" @click="sidebarOpen = false"
+        class="fixed inset-0 bg-black/50 z-40 lg:hidden transition-opacity"
+        x-transition:enter="transition-opacity ease-linear duration-300" x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-linear duration-300"
+        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
     </div>
     @fluxScripts
 
