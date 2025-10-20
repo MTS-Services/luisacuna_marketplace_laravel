@@ -10,6 +10,11 @@
         {{ site_name() }}
     </title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        :root {
+            --livewire-progress-bar-color: var(--accent);
+        }
+    </style>
 </head>
 
 <body class="h-screen flex flex-col">
