@@ -93,8 +93,8 @@
             <x-backend.navlink type="dropdown" icon="wrench-screwdriver" name="Application Settings" :page_slug="$active"
                 :items="[
                     [
-                        'name' => 'General Settings',
-                        'route' => '#',
+                        'name' => 'Settings',
+                        'route' => route('admin.two-factor.index'),
                         'icon' => 'cog-8-tooth',
                         'active' => 'settings-general',
                     ],

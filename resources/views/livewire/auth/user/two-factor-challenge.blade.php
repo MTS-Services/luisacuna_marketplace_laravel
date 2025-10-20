@@ -1,99 +1,78 @@
 <x-layouts.auth>
-    <div class="flex flex-col gap-6">
-        <div
-            class="relative w-full h-auto"
-            x-cloak
-            x-data="{
-                showRecoveryInput: @js($errors->has('recovery_code')),
-                code: '',
-                recovery_code: '',
-                toggleInput() {
-                    this.showRecoveryInput = !this.showRecoveryInput;
+<div class="max-w-md mx-auto">
+    <h2 class="text-2xl font-bold mb-6">Two-Factor Authentication</h2>
+    
+    <p class="text-gray-600 mb-6">
+        Please enter your authentication code to continue.
+    </p>
 
-                    this.code = '';
-                    this.recovery_code = '';
-
-                    $dispatch('clear-2fa-auth-code');
-
-                    $nextTick(() => {
-                        this.showRecoveryInput
-                            ? this.$refs.recovery_code?.focus()
-                            : $dispatch('focus-2fa-auth-code');
-                    });
-                },
-            }"
-        >
-            <div x-show="!showRecoveryInput">
-                <x-auth-header
-                    :title="__('Authentication Code')"
-                    :description="__('Enter the authentication code provided by your authenticator application.')"
-                />
-            </div>
-
-            <div x-show="showRecoveryInput">
-                <x-auth-header
-                    :title="__('Recovery Code')"
-                    :description="__('Please confirm access to your account by entering one of your emergency recovery codes.')"
-                />
-            </div>
-
-            <form method="POST" action="{{ route('two-factor.login.store') }}">
-                @csrf
-
-                <div class="space-y-5 text-center">
-                    <div x-show="!showRecoveryInput">
-                        <div class="flex items-center justify-center my-5">
-                            <x-input-otp
-                                name="code"
-                                digits="6"
-                                autocomplete="one-time-code"
-                                x-model="code"
-                            />
-                        </div>
-
-                        @error('code')
-                            <flux:text color="red">
-                                {{ $message }}
-                            </flux:text>
-                        @enderror
-                    </div>
-
-                    <div x-show="showRecoveryInput">
-                        <div class="my-5">
-                            <flux:input
-                                type="text"
-                                name="recovery_code"
-                                x-ref="recovery_code"
-                                x-bind:required="showRecoveryInput"
-                                autocomplete="one-time-code"
-                                x-model="recovery_code"
-                            />
-                        </div>
-
-                        @error('recovery_code')
-                            <flux:text color="red">
-                                {{ $message }}
-                            </flux:text>
-                        @enderror
-                    </div>
-
-                    <flux:button
-                        variant="primary"
-                        type="submit"
-                        class="w-full"
-                    >
-                        {{ __('Continue') }}
-                    </flux:button>
-                </div>
-
-                <div class="mt-5 space-x-0.5 text-sm leading-5 text-center">
-                    <span class="opacity-50">{{ __('or you can') }}</span>
-                    <div class="inline font-medium underline cursor-pointer opacity-80">
-                        <span x-show="!showRecoveryInput" @click="toggleInput()">{{ __('login using a recovery code') }}</span>
-                        <span x-show="showRecoveryInput" @click="toggleInput()">{{ __('login using an authentication code') }}</span>
-                    </div>
-                </div>
-            </form>
+    @if($errors->any())
+        <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
+            @foreach($errors->all() as $error)
+                <p>{{ $error }}</p>
+            @endforeach
         </div>
-    </div>
+    @endif
+
+    <form method="POST" action="{{ route('two-factor.login') }}">
+        @csrf
+        <div class="mb-4">
+            <label for="code" class="block mb-2">Authentication Code</label>
+            <input type="text" 
+                   id="code" 
+                   name="code" 
+                   class="w-full px-4 py-2 border rounded"
+                   maxlength="6"
+                   placeholder="000000"
+                   autofocus>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+            Verify
+        </button>
+    </form>
+
+    <div class="mt-6 border-t pt-6">
+        <p class="text-sm text-gray-600 mb-4">Use a recovery code</p>
+        <form method="POST" action="{{ route('admin.two-factor.disable') }}">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded">
+                Disable Admin 2FA
+            </button>
+        </form>
+    @else
+        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded">
+            <p class="text-red-900 font-semibold">⚠️ Admin 2FA is not enabled</p>
+        </div>
+
+        <form method="POST" action="{{ route('admin.two-factor.enable') }}">
+            @csrf
+            <button type="submit" class="px-6 py-3 bg-purple-600 text-white rounded">
+                Enable Admin 2FA
+            </button>
+        </form>
+    @endif
+</div>
+
+<script>
+function loadQRCode() {
+    fetch('{{ route("admin.two-factor.qr-code") }}')
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('qrCode').innerHTML = data.svg;
+            document.getElementById('qrCode').classList.remove('hidden');
+        });
+}
+
+function showRecoveryCodes() {
+    fetch('{{ route("admin.two-factor.recovery-codes") }}')
+        .then(r => r.json())
+        .then(codes => {
+            document.getElementById('recoveryCodes').innerHTML = codes.map(code => 
+                `<div class="p-2 bg-white border rounded font-mono">${code}</div>`
+            ).join('');
+            document.getElementById('recoveryCodes').classList.remove('hidden');
+        });
+}
+</script>
 </x-layouts.auth>

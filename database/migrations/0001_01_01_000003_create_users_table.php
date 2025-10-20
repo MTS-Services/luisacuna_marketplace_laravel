@@ -51,8 +51,6 @@ return new class extends Migration
             $table->timestamp('locked_until')->nullable();
 
             $table->boolean('two_factor_enabled')->default(false);
-            $table->text('two_factor_secret')->nullable();
-            $table->text('two_factor_recovery_codes')->nullable();
 
             $table->timestamp('terms_accepted_at')->nullable();
             $table->timestamp('privacy_accepted_at')->nullable();

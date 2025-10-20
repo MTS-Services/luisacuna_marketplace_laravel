@@ -26,8 +26,6 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->string('status')->index()->default(AdminStatus::ACTIVE->value);
             $table->boolean('two_factor_enabled')->default(false);
-            $table->text('two_factor_secret')->nullable();
-            $table->text('two_factor_recovery_codes')->nullable();
             $table->timestamp('last_login_at')->nullable();
             $table->string('last_login_ip')->nullable();
 
