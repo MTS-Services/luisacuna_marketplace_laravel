@@ -1,4 +1,11 @@
-@props(['disabled' => false, 'append' => null])
+@props([
+    'disabled' => false,
+    'append' => null,
+    'multiple' => false,
+    'placeholder' => 'Choose an option',
+    'tags' => false,
+    'allowClear' => true,
+])
 
 {{-- Check if $append prop is provided (using null default instead of isset) --}}
 @if (is_null($append))
@@ -27,3 +34,41 @@
         </span>
     </div>
 @endif
+
+@push('scripts')
+    <script>
+        // Initialize on Livewire navigation
+        document.addEventListener("livewire:navigated", () => {
+            initializeSelect2({
+                placeholder: "{{ $placeholder }}",
+                multiple: {{ $multiple ? 'true' : 'false' }},
+                tags: {{ $tags ? 'true' : 'false' }},
+                allowClear: {{ $allowClear ? 'true' : 'false' }},
+            });
+        });
+
+        // Initialize on page load
+        document.addEventListener("livewire:initialized", () => {
+            initializeSelect2({
+                placeholder: "{{ $placeholder }}",
+                multiple: {{ $multiple ? 'true' : 'false' }},
+                tags: {{ $tags ? 'true' : 'false' }},
+                allowClear: {{ $allowClear ? 'true' : 'false' }},
+            });
+        });
+
+        // Re-initialize after DOM morphing
+        // Livewire.hook('morph.updated', ({
+        //     el
+        // }) => {
+        //     if (el.matches('select.select2') || el.querySelector('select.select2')) {
+        //         initializeSelect2({
+        //             placeholder: "{{ $placeholder }}",
+        //             multiple: {{ $multiple ? 'true' : 'false' }},
+        //             tags: {{ $tags ? 'true' : 'false' }},
+        //             allowClear: {{ $allowClear ? 'true' : 'false' }},
+        //         });
+        //     }
+        // });
+    </script>
+@endpush
