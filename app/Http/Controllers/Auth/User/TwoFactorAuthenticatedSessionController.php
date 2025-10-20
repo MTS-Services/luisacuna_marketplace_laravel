@@ -93,6 +93,6 @@ class TwoFactorAuthenticatedSessionController extends Controller
         // Clear the login session data
         $request->session()->forget(['login.id', 'login.remember']);
 
-        return redirect()->intended(route('dashboard'));
+        return redirect()->intended(route('user.profile'));
     }
 }

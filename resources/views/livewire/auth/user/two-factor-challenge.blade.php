@@ -1,78 +1,97 @@
-<x-layouts.auth>
-<div class="max-w-md mx-auto">
-    <h2 class="text-2xl font-bold mb-6">Two-Factor Authentication</h2>
-    
-    <p class="text-gray-600 mb-6">
-        Please enter your authentication code to continue.
-    </p>
+<div>
+    <div class="max-w-md mx-auto">
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold mb-2 text-gray-900">Two-Factor Authentication</h2>
+            <p class="text-gray-600 mb-6">Please enter your authentication code to continue.</p>
 
-    @if($errors->any())
-        <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
-            @foreach($errors->all() as $error)
-                <p>{{ $error }}</p>
-            @endforeach
+            @if ($errors->any())
+                <div class="mb-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
+                    @foreach ($errors->all() as $error)
+                        <p class="text-sm">{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
+
+            <!-- OTP Code Form -->
+            <form method="POST" action="{{ route('two-factor.login.store') }}">
+                @csrf
+                <div class="mb-6">
+                    <label for="code" class="block text-sm font-medium text-gray-700 mb-2">
+                        Authentication Code
+                    </label>
+                    <input 
+                        type="text" 
+                        id="code" 
+                        name="code" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-2xl tracking-widest"
+                        maxlength="6" 
+                        placeholder="000000" 
+                        autofocus
+                        required
+                    >
+                    <p class="text-xs text-gray-500 mt-2">From your authenticator app (Google Authenticator, Authy, etc.)</p>
+                </div>
+
+                <button 
+                    type="submit" 
+                    class="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition duration-200"
+                >
+                    Verify Code
+                </button>
+            </form>
+
+            <!-- Recovery Code Option -->
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <button 
+                    type="button" 
+                    onclick="toggleRecoveryForm()"
+                    class="w-full text-center text-sm text-blue-600 hover:text-blue-800 font-medium"
+                >
+                    Don't have your authenticator? Use a recovery code
+                </button>
+
+                <form method="POST" action="{{ route('two-factor.login.store') }}" id="recoveryForm" class="hidden mt-4">
+                    @csrf
+                    <div class="mb-4">
+                        <label for="recovery_code" class="block text-sm font-medium text-gray-700 mb-2">
+                            Recovery Code
+                        </label>
+                        <input 
+                            type="text" 
+                            id="recovery_code" 
+                            name="recovery_code" 
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Enter recovery code"
+                            maxlength="12"
+                        >
+                        <p class="text-xs text-gray-500 mt-2">Enter one of your recovery codes (stored separately)</p>
+                    </div>
+                    <button 
+                        type="submit" 
+                        class="w-full bg-gray-600 text-white font-semibold py-2 rounded-lg hover:bg-gray-700 transition duration-200"
+                    >
+                        Verify Recovery Code
+                    </button>
+                </form>
+            </div>
         </div>
-    @endif
 
-    <form method="POST" action="{{ route('two-factor.login') }}">
-        @csrf
-        <div class="mb-4">
-            <label for="code" class="block mb-2">Authentication Code</label>
-            <input type="text" 
-                   id="code" 
-                   name="code" 
-                   class="w-full px-4 py-2 border rounded"
-                   maxlength="6"
-                   placeholder="000000"
-                   autofocus>
-        </div>
-        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-            Verify
-        </button>
-    </form>
+        <script>
+            function toggleRecoveryForm() {
+                const form = document.getElementById('recoveryForm');
+                form.classList.toggle('hidden');
+                if (!form.classList.contains('hidden')) {
+                    document.getElementById('recovery_code').focus();
+                }
+            }
 
-    <div class="mt-6 border-t pt-6">
-        <p class="text-sm text-gray-600 mb-4">Use a recovery code</p>
-        <form method="POST" action="{{ route('admin.two-factor.disable') }}">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded">
-                Disable Admin 2FA
-            </button>
-        </form>
-    @else
-        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded">
-            <p class="text-red-900 font-semibold">⚠️ Admin 2FA is not enabled</p>
-        </div>
-
-        <form method="POST" action="{{ route('admin.two-factor.enable') }}">
-            @csrf
-            <button type="submit" class="px-6 py-3 bg-purple-600 text-white rounded">
-                Enable Admin 2FA
-            </button>
-        </form>
-    @endif
+            // Auto-focus code input for better UX
+            document.addEventListener('DOMContentLoaded', function() {
+                const codeInput = document.getElementById('code');
+                if (codeInput) {
+                    codeInput.focus();
+                }
+            });
+        </script>
+    </div>
 </div>
-
-<script>
-function loadQRCode() {
-    fetch('{{ route("admin.two-factor.qr-code") }}')
-        .then(r => r.json())
-        .then(data => {
-            document.getElementById('qrCode').innerHTML = data.svg;
-            document.getElementById('qrCode').classList.remove('hidden');
-        });
-}
-
-function showRecoveryCodes() {
-    fetch('{{ route("admin.two-factor.recovery-codes") }}')
-        .then(r => r.json())
-        .then(codes => {
-            document.getElementById('recoveryCodes').innerHTML = codes.map(code => 
-                `<div class="p-2 bg-white border rounded font-mono">${code}</div>`
-            ).join('');
-            document.getElementById('recoveryCodes').classList.remove('hidden');
-        });
-}
-</script>
-</x-layouts.auth>

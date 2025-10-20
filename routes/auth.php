@@ -96,9 +96,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
             return view('frontend.auth.admin.two-factor-challenge');
         })->name('two-factor.login');
         
-        Route::post('two-factor-challenge', [AdminTwoFactorSessionController::class, 'store'])
-            ->middleware(['throttle:6,1'])
-            ->name('two-factor.login.store');
+        // Route::post('two-factor-challenge', [AdminTwoFactorSessionController::class, 'store'])
+        //     ->middleware(['throttle:6,1'])
+        //     ->name('two-factor.login.store');
     });
 
     Route::middleware('auth:admin')->group(function () {

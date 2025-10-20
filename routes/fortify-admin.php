@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\Auth\Admin\TwoFactorAuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\RecoveryCodeController;
-use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticationController;
 use Laravel\Fortify\Http\Controllers\TwoFactorQrCodeController;
 use Laravel\Fortify\Http\Controllers\TwoFactorSecretKeyController;
@@ -55,4 +55,45 @@ Route::middleware(['auth:admin'])->group(function () {
 
     Route::post('/admin/two-factor-recovery-codes', [RecoveryCodeController::class, 'store'])
         ->name('admin.two-factor.recovery-codes.store');
+});
+
+Route::middleware(['auth:web'])->group(function () {
+    // Enable 2FA
+    Route::post('user/two-factor-authentication', [TwoFactorAuthenticationController::class, 'store'])
+        ->name('user.two-factor.enable');
+
+    // Confirm 2FA
+    Route::post('user/confirmed-two-factor-authentication', function (Illuminate\Http\Request $request) {
+        $user = $request->user();
+        
+        $confirmed = app(\Laravel\Fortify\Actions\ConfirmTwoFactorAuthentication::class)(
+            $user,
+            $request->input('code')
+        );
+
+        if (!$confirmed) {
+            return back()->withErrors(['code' => 'The provided code was invalid.']);
+        }
+
+        return back()->with('status', 'two-factor-authentication-confirmed');
+    })->name('two-factor.confirm');
+
+    // Disable 2FA
+    Route::delete('user/two-factor-authentication', [TwoFactorAuthenticationController::class, 'destroy'])
+        ->name('user.two-factor.disable');
+
+    // QR Code
+    Route::get('user/two-factor-qr-code', [TwoFactorQrCodeController::class, 'show'])
+        ->name('user.two-factor.qr-code');
+
+    // Secret Key
+    Route::get('user/two-factor-secret-key', [TwoFactorSecretKeyController::class, 'show'])
+        ->name('user.two-factor.secret-key');
+
+    // Recovery Codes
+    Route::get('user/two-factor-recovery-codes', [RecoveryCodeController::class, 'index'])
+        ->name('user.two-factor.recovery-codes');
+
+    Route::post('user/two-factor-recovery-codes', [RecoveryCodeController::class, 'store'])
+        ->name('user.two-factor.recovery-codes.store');
 });
