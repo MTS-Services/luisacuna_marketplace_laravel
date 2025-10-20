@@ -30,5 +30,7 @@ interface GameCategoryRepositoryInterface
     public function bulkUpdateStatus(array $ids, GameCategoryStatus $status): bool;
 
     public function findOrFail($id): GameCategory;
+
+    
 }
 

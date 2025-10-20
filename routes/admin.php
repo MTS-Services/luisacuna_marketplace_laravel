@@ -36,6 +36,8 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
 
         Route::controller(GameController::class)->name('game.')->prefix('game')->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/view/{id}', 'show')->name('view');
         });
     });
 });

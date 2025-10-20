@@ -20,7 +20,7 @@ class Index extends Component
     public string $bulkAction = '';
     public $statusFilter = '';
     public $showBulkActionModal = false;
-
+    
 
     public function boot(GameService $gameService)  
     {
@@ -92,7 +92,7 @@ class Index extends Component
         ];
 
             $actions = [
-                ['key' => 'id', 'label' => 'View', 'route' => 'admin.gm.category.view'],
+                ['key' => 'id', 'label' => 'View', 'route' => 'admin.gm.game.view'],
                 ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.gm.category.edit'],
                 ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete'],
             ];
@@ -157,5 +157,23 @@ class Index extends Component
         } catch (\Exception $e) {
             $this->error('Bulk action failed: ' . $e->getMessage());
         }
+    }
+
+    public function bulkDelete(): void
+    {
+         $this->gameService->bulkDeleteGames($this->selectedIds, false);
+       
+    }
+
+    public function bulkUpdateStatus( GameStatus $status): void{
+        $this->gameService->bulkUpdateStatus($this->selectedIds, $status);
+    }
+
+    protected function getSelectableIds(): array
+    {
+        return $this->gameService->paginate(
+            perPage: $this->perPage,
+            filters: $this->filters()
+        )->pluck('id')->toArray();
     }
 }

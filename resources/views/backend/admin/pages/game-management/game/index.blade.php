@@ -3,9 +3,14 @@
    
     @switch(Route::currentRouteName())
         @case('admin.gm.game.create')        
-            <x-slot name="title">Game Category Create</x-slot>
-            <x-slot name="breadcrumb">Game Management / Category Add</x-slot>
-            <livewire:backend.admin.components.game-management.category.create />
+            <x-slot name="title">Game Create</x-slot>
+            <x-slot name="breadcrumb">Game Management / Game Create</x-slot>
+            <livewire:backend.admin.components.game-management.game.create />
+        @break 
+         @case('admin.gm.game.view')        
+            <x-slot name="title">Game View</x-slot>
+            <x-slot name="breadcrumb">Game Management / Game View</x-slot>
+            <livewire:backend.admin.components.game-management.game.show :game="$game" />
         @break 
 
         @default

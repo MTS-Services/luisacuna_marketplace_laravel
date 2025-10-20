@@ -2,6 +2,8 @@
 
 namespace App\Services\Game;
 
+use App\Enums\GameStatus;
+use App\Models\Game;
 use App\Repositories\Contracts\GameRepositoryInterface;
 
 class GameService
@@ -14,4 +16,18 @@ class GameService
         return $this->gameRepository->paginate($perPage, $filters, $queries ?? []);
     }
     
+    public function bulkDeleteGames($ids, bool $forceDelete = false)
+    {
+        return $this->gameRepository->bulkDeleteGames($ids, $forceDelete);
+    }
+
+    public function bulkUpdateStatus($ids, GameStatus $status)
+    {
+        return $this->gameRepository->bulkUpdateStatus($ids, $status);
+    }
+
+    public function findOrFail($id): Game
+    {
+        return $this->gameRepository->findOrFail($id);
+    }
 }

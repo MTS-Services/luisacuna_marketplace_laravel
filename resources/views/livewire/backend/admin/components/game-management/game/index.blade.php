@@ -10,7 +10,7 @@
                     <flux:icon name="trash" class="w-4 h-4 stroke-white" />
                     <span class="sm:inline text-white">{{ __('Trash') }}</span>
                 </x-ui.button>
-                <x-ui.button href="{{ route('admin.gm.category.create') }}" class="flex-1 sm:flex-none">
+                <x-ui.button href="{{ route('admin.gm.game.create') }}" class="flex-1 sm:flex-none">
                     <flux:icon name="user-plus" class="w-4 h-4 stroke-white" />
                     <span class="sm:inline text-white">{{ __('Add') }}</span>
                 </x-ui.button>
