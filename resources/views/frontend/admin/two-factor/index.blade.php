@@ -1,5 +1,9 @@
-<x-frontend::app>
-    <div class="max-w-4xl mx-auto py-8">
+<x-admin::app>
+    <x-slot name="pageSlug">two-factor</x-slot>
+    <x-slot name="breadcrumb">Two-Factor Authentication</x-slot>
+    <x-slot name="title">Two-Factor Authentication</x-slot>
+
+    <div class="max-w-6xl mx-auto py-6">
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <!-- Header -->
             <div class="p-6 bg-gradient-to-r from-purple-600 to-purple-700">
@@ -264,4 +268,4 @@
                 });
         }
     </script>
-</x-frontend::app>
+</x-admin::app>

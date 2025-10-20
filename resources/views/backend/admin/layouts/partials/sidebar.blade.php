@@ -96,7 +96,7 @@
                         'name' => 'Settings',
                         'route' => route('admin.two-factor.index'),
                         'icon' => 'cog-8-tooth',
-                        'active' => 'settings-general',
+                        'active' => 'two-factor',
                     ],
                     // [
                     //     'name' => 'Appearance',
