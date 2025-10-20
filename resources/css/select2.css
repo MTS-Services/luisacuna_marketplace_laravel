@@ -320,17 +320,19 @@
     @apply !absolute right-2 top-1/2 -translate-y-1/2 transform text-zinc-400 hover:text-zinc-600 cursor-pointer text-lg font-bold dark:text-zinc-700 dark:hover:text-zinc-300;
 }
 
+.select2-container--default .select2-selection--multiple .select2-selection__clear {
+    @apply !hidden;
+}
+
 /* ====================
    Z-INDEX & POSITIONING
    ==================== */
 .select2-container {
-    z-index: 99 !important;
     width: 100% !important;
     box-sizing: border-box !important;
 }
 
 .select2-dropdown {
-    z-index: 100 !important;
 }
 
 /* Prevent body overflow when dropdown is open */

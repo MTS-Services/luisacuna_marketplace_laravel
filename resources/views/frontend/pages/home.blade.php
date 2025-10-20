@@ -139,7 +139,7 @@
                     <div class="w-full">
                         <x-ui.label value="Select 2 Multiple" class="mb-1" />
                         <x-ui.select class="select2" wire:model="select2-multiple" multiple>
-                            <option value="" >Choose an option</option>
+                            <option value="">Choose an option</option>
                             <option value="option1">Option 1</option>
                             <option value="option2">Option 2</option>
                             <option value="option3">Option 3</option>
