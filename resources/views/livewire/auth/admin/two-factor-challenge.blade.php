@@ -32,30 +32,19 @@
             <label for="code" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Authentication Code
             </label>
-            <input
-                type="text"
-                id="code"
-                name="code"
-                maxlength="6"
-                placeholder="000000"
-                autocomplete="one-time-code"
-                autofocus
-                inputmode="numeric"
-                pattern="[0-9]*"
+            <input type="text" id="code" name="code" maxlength="6" placeholder="000000"
+                autocomplete="one-time-code" autofocus inputmode="numeric" pattern="[0-9]*"
                 class="mt-1 w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-900
                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-gray-100
-                       shadow-sm py-2.5 px-3 text-center text-lg tracking-widest font-mono"
-            >
+                       shadow-sm py-2.5 px-3 text-center text-lg tracking-widest font-mono">
             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
                 Enter the 6-digit code from your authenticator app
             </p>
         </div>
 
-        <button
-            type="submit"
+        <button type="submit"
             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg
-                   transition duration-150 ease-in-out shadow-sm"
-        >
+                   transition duration-150 ease-in-out shadow-sm">
             Verify Code
         </button>
     </form>
@@ -66,9 +55,31 @@
         <span class="mx-3 text-sm text-gray-500 dark:text-gray-400">or</span>
         <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
     </div>
+    <div class="mt-6 pt-6 border-t border-gray-200">
+        <button type="button" onclick="toggleRecoveryForm()"
+            class="w-full text-center text-sm text-blue-600 hover:text-blue-800 font-medium">
+            Don't have your authenticator? Use a recovery code
+        </button>
 
+        <form method="POST" action="{{ route('admin.two-factor.login.store') }}" id="recoveryForm" class="hidden mt-4">
+            @csrf
+            <div class="mb-4">
+                <label for="recovery_code" class="block text-sm font-medium text-gray-700 mb-2">
+                    Recovery Code
+                </label>
+                <input type="text" id="recovery_code" name="recovery_code"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter recovery code">
+                <p class="text-xs text-gray-500 mt-2">Enter one of your recovery codes (stored separately)</p>
+            </div>
+            <button type="submit"
+                class="w-full bg-gray-600 text-white font-semibold py-2 rounded-lg hover:bg-gray-700 transition duration-200">
+                Verify Recovery Code
+            </button>
+        </form>
+    </div>
     <!-- Recovery Code Form -->
-    <form method="POST" action="{{ route('admin.two-factor.login.store') }}" class="space-y-5">
+    {{-- <form method="POST" action="{{ route('admin.two-factor.login.store') }}" class="space-y-5">
         @csrf
         <div>
             <label for="recovery_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -96,7 +107,7 @@
         >
             Use Recovery Code
         </button>
-    </form>
+    </form> --}}
 
     <!-- Back to Login -->
     <div class="mt-6 text-center">
@@ -104,4 +115,23 @@
             ← Back to Login
         </a>
     </div>
+
+
+    <script>
+        function toggleRecoveryForm() {
+            const form = document.getElementById('recoveryForm');
+            form.classList.toggle('hidden');
+            if (!form.classList.contains('hidden')) {
+                document.getElementById('recovery_code').focus();
+            }
+        }
+
+        // Auto-focus code input for better UX
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeInput = document.getElementById('code');
+            if (codeInput) {
+                codeInput.focus();
+            }
+        });
+    </script>
 </div>
