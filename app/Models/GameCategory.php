@@ -28,7 +28,7 @@ class GameCategory extends BaseModel
 
 
     // Scope    
-       public function scopeSearch($query, $search)
+public function scopeSearch($query, $search)
     {
         return $query->where(function ($q) use ($search) {
             $q->where('name', 'like', "%{$search}%")

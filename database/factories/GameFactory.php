@@ -22,9 +22,9 @@ class GameFactory extends Factory
     public function definition(): array
     {
         $faker = Faker::create();
-        $name =$faker->name();
+        $name =$faker->unique()->name();
         return [
-            'game_category_id' => GameCategory::inRandomOrder()->value()->id,
+            'game_category_id' => GameCategory::inRandomOrder()->value('id'),
             'sort_order' => $faker->numberBetween(1, 1000),
             'name' => $name,    
             'slug' => Str::slug($name) ,            

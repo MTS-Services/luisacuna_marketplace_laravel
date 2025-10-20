@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 
 use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
+use App\Http\Controllers\Backend\Admin\GameManagement\GameController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefix('admin')->group(function () {
@@ -21,8 +22,9 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
     });
 
 
-
+// Game  Controller
     Route::group(['prefix' => 'game-management', 'as' => 'gm.'], function () {
+
         Route::controller(CategoryController::class)->name('category.')->prefix('category')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
@@ -30,6 +32,10 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/view/{id}', 'show')->name('view');
             Route::get('/trash', 'trash')->name('trash');
             
+        });
+
+        Route::controller(GameController::class)->name('game.')->prefix('game')->group(function () {
+            Route::get('/', 'index')->name('index');
         });
     });
 });

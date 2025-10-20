@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Repositories\Contracts\AdminRepositoryInterface;
 use App\Repositories\Contracts\GameCategoryRepositoryInterface;
+use App\Repositories\Contracts\GameRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Eloquent\AdminRepository;
 use App\Repositories\Eloquent\GameCategoryRepository;
+use App\Repositories\Eloquent\GameRepository;
 use App\Repositories\Eloquent\UserRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,6 +30,12 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             GameCategoryRepositoryInterface::class,
            GameCategoryRepository::class,
+        );
+
+        // Game Category Repository
+        $this->app->bind(
+            GameRepositoryInterface::class,
+           GameRepository::class,
         );
     }
 

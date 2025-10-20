@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             UserSeeder::class,
             GameCategorySeeder::class,
+            GameSeeder::class,
 
         ]);
 

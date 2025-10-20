@@ -86,6 +86,12 @@
                 <x-backend.navlink type="dropdown" icon="user-group" name="Game Management" :page_slug="$active"
                 :items="[
                     [
+                        'name' => 'Games',
+                        'route' => route('admin.gm.game.index'),
+                        'icon' => 'user',
+                        'active' => 'game-management',
+                    ],
+                    [
                         'name' => 'Categories',
                         'route' => route('admin.gm.category.index'),
                         'icon' => 'user',

@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class Game extends Model
+class Game extends BaseModel
 {
     //
 
@@ -38,4 +37,26 @@ class Game extends Model
         'deleter_id',
 
     ];
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+        });
+    }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['status'] ?? null, function ($query, $status) {
+            $query->where('status', $status);
+        });
+
+        $query->when($filters['search'] ?? null, function ($query, $search) {
+            $query->search($search);
+        });
+
+        return $query;
+    }
+
 }
