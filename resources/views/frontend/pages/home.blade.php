@@ -116,7 +116,7 @@
                     </div>
                     <div class="w-full">
                         <x-ui.label value="Select 2" class="mb-1" />
-                        <x-ui.select class="select2" wire:model="select2">
+                        <x-ui.select class="select2" wire:model="select2" >
                             <option value="">Choose an option</option>
                             <option value="option1">Option 1</option>
                             <option value="option2">Option 2</option>
