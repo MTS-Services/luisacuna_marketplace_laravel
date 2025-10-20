@@ -2,18 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\GameCategory;
+use App\Models\Game;
 use Illuminate\Database\Seeder;
-// use Faker\Factory as Faker;
-class GameCategorySeeder extends Seeder
+
+class GameSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-
-        GameCategory::factory(10)->create();
-       
+        //
+        Game::factory(10)->create();
     }
 }

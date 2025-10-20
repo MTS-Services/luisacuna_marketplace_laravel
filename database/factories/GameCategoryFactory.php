@@ -20,7 +20,7 @@ class GameCategoryFactory extends Factory
             $faker = Faker::create();
             return [
                     'sort_order' => $faker->numberBetween(1, 1000),
-                    'name' => $name = ucfirst($faker->word()),
+                    'name' => $name = ucfirst($faker->unique()->word()),
                     'slug' => Str::slug($name),
 
 

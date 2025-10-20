@@ -6,9 +6,24 @@ use App\Models\BaseModel;
 
 class GameCategory extends BaseModel
 {
-    //
+ 
 
-    protected $guarded = [];
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+        'icon',
+        'status',
+
+        'sort_order',
+        'creater_type',
+        'updater_type',
+        'deleter_type',
+        'creater_id',
+        'updater_id',
+        'deleter_id',
+    ];
 
 
 
