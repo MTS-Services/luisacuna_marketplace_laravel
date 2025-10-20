@@ -12,7 +12,7 @@ class Show extends Component
     public Game $game;
     public function mount(Game $game){
 
-        $this->game = $game;
+        $this->game = $game->load('category');
 
     }
     public function render()

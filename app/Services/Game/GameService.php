@@ -16,6 +16,10 @@ class GameService
         return $this->gameRepository->paginate($perPage, $filters, $queries ?? []);
     }
     
+    public function OnlyTrashedPaginate(int $perPage = 15, array $filters = [], ?array $queries = null) 
+    {
+        return $this->gameRepository->OnlyTrashedPaginate($perPage, $filters, $queries ?? []);
+    }
     public function bulkDeleteGames($ids, bool $forceDelete = false)
     {
         return $this->gameRepository->bulkDeleteGames($ids, $forceDelete);
@@ -26,6 +30,15 @@ class GameService
         return $this->gameRepository->bulkUpdateStatus($ids, $status);
     }
 
+    public function bulkRestoreGame($ids) :bool
+    {
+        return $this->gameRepository->bulkRestoreGame($ids);
+    }
+
+    public function restoreGame($id) :bool
+    {
+        return $this->gameRepository->restoreGame($id);
+    }
     public function findOrFail($id): Game
     {
         return $this->gameRepository->findOrFail($id);

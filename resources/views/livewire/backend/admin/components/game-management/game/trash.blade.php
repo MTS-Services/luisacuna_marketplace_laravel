@@ -6,13 +6,9 @@
                 {{ __('Game List') }}
             </h2>
             <div class="flex items-center gap-2 w-full sm:w-auto">
-                <x-ui.button href="{{ route('admin.gm.game.trash') }}" type='secondary' class="flex-1 sm:flex-none">
-                    <flux:icon name="trash" class="w-4 h-4 stroke-white" />
-                    <span class="sm:inline text-white">{{ __('Trash') }}</span>
-                </x-ui.button>
-                <x-ui.button href="{{ route('admin.gm.game.create') }}" class="flex-1 sm:flex-none">
-                    <flux:icon name="user-plus" class="w-4 h-4 stroke-white" />
-                    <span class="sm:inline text-white">{{ __('Add') }}</span>
+                    <x-ui.button href="{{ route('admin.gm.game.index') }}" class="flex-1 sm:flex-none">
+                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
+                    <span class="sm:inline text-white">{{ __('Back') }}</span>
                 </x-ui.button>
             </div>
         </div>
@@ -24,7 +20,7 @@
         :showBulkActions="true" emptyMessage="No Game  found. Create your first admin to get started." />
 
     {{-- Delete Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this Game?'" :message="'Are you absolutely sure you want to remove this Game Category? All data will be permanently deleted.'" :method="'delete'"
+    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this Game?'" :message="'Are you absolutely sure you want to remove this Games? All data will be permanently deleted.'" :method="'delete'"
         :button-text="'Delete Game Category'" />
 
     {{-- Bulk Action Confirmation Modal --}}

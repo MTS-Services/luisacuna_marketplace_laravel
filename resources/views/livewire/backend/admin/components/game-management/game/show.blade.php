@@ -1,7 +1,7 @@
 <section>
     <div class="glass-card rounded-2xl p-6 mb-6">
         <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Category View') }}</h2>
+            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game View') }}</h2>
             <div class="flex items-center gap-2">
                 {{-- <x-ui.button href="{{ route('admin.am.admin.trash') }}" type='secondary'>
                     <flux:icon name="trash" class="w-4 h-4 stroke-white" />
@@ -11,7 +11,7 @@
                     <flux:icon name="user-plus" class="w-4 h-4 stroke-white" />
                     {{ __('Add') }}
                 </x-ui.button>  --}}
-                <x-ui.button href="{{ route('admin.gm.category.index') }}" type='accent'>
+                <x-ui.button href="{{ route('admin.gm.game.index') }}" type='accent'>
                     <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
                     {{ __('Back') }}
                 </x-ui.button>
@@ -46,10 +46,38 @@
                             <td class="p-4 w-2/5 text-gray-600 font-semibold">Game Name</td>
                             <td class="p-4 text-gray-900">{{ $game->name }}</td>
                         </tr>
+                         <tr class="hover:bg-white transition-colors">
+                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Category Name</td>
+                            <td class="p-4 text-gray-900">{{ $game->category->name ?? 'No Category' }}</td>
+                        </tr>
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 text-gray-600 font-semibold">Slug</td>
                             <td class="p-4 text-gray-900">{{ '/' . $game->slug }}</td>
                         </tr>
+                        <tr class="hover:bg-white transition-colors">
+                            <td class="p-4 text-gray-600 font-semibold">Developer</td>
+                            <td class="p-4 text-gray-900">{{ $game->developer ?? 'N/A' }}</td>
+                        </tr>
+                        <tr class="hover:bg-white transition-colors">
+                            <td class="p-4 text-gray-600 font-semibold">Publisher</td>
+                            <td class="p-4 text-gray-900">{{ $game->publisher ?? 'N/A' }}</td>
+                        </tr>
+                        <tr class="hover:bg-white transition-colors">
+                            <td class="p-4 text-gray-600 font-semibold">Trending</td>
+                            <td class="p-4 text-gray-900">{{ $game->is_trending ? 'Trending' : 'Not Trending' }}</td>
+                        </tr>
+                        <tr class="hover:bg-white transition-colors">
+                            <td class="p-4 text-gray-600 font-semibold">Featured</td>
+                            <td class="p-4 text-gray-900">{{ $game->is_featured ? 'Featured' : 'Not Featured' }}</td>
+                        </tr>
+                        <tr class="hover:bg-white transition-colors">
+                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Game Description</td>
+                            <td class="p-4 text-gray-900">{{ $game->Description ?? 'N/A' }}</td>
+                        </tr>
+
+
+
+
 
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 text-gray-600 font-semibold">Status</td>
@@ -89,33 +117,47 @@
             <div class="glass-card rounded-xl border border-gray-200 overflow-hidden">
                 <table class="w-full text-sm">
                     <tbody class="divide-y divide-gray-200">
+
                         <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Category Name</td>
-                            <td class="p-4 text-gray-900">{{ $game->game_category_id }}</td>
+                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Released Date</td>
+                            <td class="p-4 text-gray-900">{{ $game->release_date?? 'N/A' }}</td>
                         </tr>
                         <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 text-gray-600 font-semibold">Slug</td>
-                            <td class="p-4 text-gray-900">{{ $game->slug }}</td>
+                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Platform</td>
+                            <td class="p-4 text-gray-900">{{ $game->platfrom?? 'N/A' }}</td>
                         </tr>
 
                         <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 text-gray-600 font-semibold">Status</td>
-                            <td class="p-4">
-                                <span
-                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                    {{ $game->status }}
-                                </span>
-                            </td>
+                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Meta Title</td>
+                            <td class="p-4 text-gray-900">{{ $game->meta_title?? 'N/A' }}</td>
                         </tr>
                         <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Created By</td>
-                            <td class="p-4 text-gray-900">{{ $game->creater_admin->name ?? 'System' }}</td>
+                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Meta Description</td>
+                            <td class="p-4 text-gray-900">{{ $game->meta_description?? 'N/A' }}</td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white transition-colors">
+                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Meta Keywords</td>
+                            <td class="p-4 text-gray-900">{{ $game->meta_keywords?? 'N/A' }}</td>
                         </tr>
 
                         <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 text-gray-600 font-semibold">Created At</td>
-                            <td class="p-4 text-gray-900">{{ $game->created_at_formatted }}</td>
+                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Meta Keywords</td>
+                            <td class="p-4 text-gray-900">{{ $game->meta_keywords?? 'N/A' }}</td>
                         </tr>
+                        <tr class="hover:bg-white transition-colors">
+                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Logo </td>
+                            <td class="p-4 text-gray-900">{{ $game->logo?? 'N/A' }}</td>
+                        </tr>
+                        <tr class="hover:bg-white transition-colors">
+                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Banner </td>
+                            <td class="p-4 text-gray-900">{{ $game->banner?? 'N/A' }}</td>
+                        </tr>
+                        <tr class="hover:bg-white transition-colors">
+                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Thumbnail </td>
+                            <td class="p-4 text-gray-900">{{ $game->thumbnail?? 'N/A' }}</td>
+                        </tr>
+
                         @if ($game->updated_by)
                             <tr class="hover:bg-white transition-colors">
                                 <td class="p-4 w-2/5 text-gray-600 font-semibold">Updated By</td>

@@ -29,6 +29,23 @@ class GameRepository implements GameRepositoryInterface {
         return $query->paginate($perPage);
     }
 
+    public function OnlyTrashedPaginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator
+    {
+        $query = $this->model->onlyTrashed();
+       
+        // Apply filters    
+        if (!empty($filters)) {
+            $query->filter($filters);
+        }    
+
+        // Apply sorting
+        $sortField = $filters['sort_field'] ?? 'created_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+        $query->orderBy($sortField, $sortDirection);
+
+        return $query->paginate($perPage);   
+    }
+
     public function bulkDeleteGames($ids, bool $forceDelete = false):bool
     {
        if(! $forceDelete)  return $this->model->whereIn('id', $ids)->delete();  
@@ -36,6 +53,15 @@ class GameRepository implements GameRepositoryInterface {
        return $this->model->whereIn('id', $ids)->forceDelete();
     }
 
+    public function bulkRestoreGame($ids): bool
+    {
+        return $this->model->withTrashed()->whereIn('id', $ids)->restore();
+    }
+
+    public function restoreGame($id): bool
+    {
+        return $this->model->withTrashed()->findOrFail($id)->restore();
+    }
     public function bulkUpdateStatus($ids, GameStatus $status): bool
     {
         return $this->model->whereIn('id', $ids)->update(['status' => $status]);

@@ -59,4 +59,9 @@ class Game extends BaseModel
         return $query;
     }
 
+    public function category()
+    {
+        return $this->belongsTo(GameCategory::class, 'game_category_id', 'id');
+    }
+
 }

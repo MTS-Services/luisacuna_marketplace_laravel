@@ -35,4 +35,9 @@ class GameController extends Controller
             'game' => $this->game,
         ]);
     }
+
+    public function trash()
+    {
+        return view($this->masterView);
+    }
 }

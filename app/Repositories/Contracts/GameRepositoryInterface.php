@@ -9,10 +9,18 @@ use Illuminate\Pagination\LengthAwarePaginator;
 interface GameRepositoryInterface
 {
     public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
+    
+    public function OnlyTrashedPaginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
 
     public function bulkDeleteGames($ids, bool $forceDelete = false): bool;
+
+    public function bulkRestoreGame($ids): bool;
+
+    public function restoreGame($id): bool; 
 
     public function bulkUpdateStatus($ids, GameStatus $status): bool;
 
     public function findOrFail($id): Game;
+
+
 }
