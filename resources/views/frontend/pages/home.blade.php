@@ -62,7 +62,7 @@
             </div>
             <!-- End Portals Container -->
         </div>
-        <div class="w-full max-w-4xl mx-auto bg-white rounded-xl shadow-2xl p-6 md:p-10 mt-10">
+        <div class="w-full max-w-4xl mx-auto bg-white rounded-xl shadow-2xl p-6 md:p-10 mt-10 shadow-sm">
             <h2 class="text-3xl font-extrabold text-center text-gray-900 mb-8">
                 Explore UI's
             </h2>
@@ -115,8 +115,8 @@
                         <x-ui.input-error :messages="$errors->get('disabledSelect')" />
                     </div>
                     <div class="w-full">
-                        <x-ui.label value="Select 2" class="mb-1" />
-                        <x-ui.select class="select2" wire:model="select2" >
+                        <x-ui.label value="Select 2 Single" class="mb-1" />
+                        <x-ui.select class="select2" wire:model="select2-single">
                             <option value="">Choose an option</option>
                             <option value="option1">Option 1</option>
                             <option value="option2">Option 2</option>
@@ -129,12 +129,34 @@
                             <option value="option9">Option 9</option>
                             <option value="option10">Option 10</option>
                             <option value="option11">Option 11</option>
-                            <option value="option12">Option 12</option>                            
+                            <option value="option12">Option 12</option>
                             <option value="option13">Option 13</option>
                             <option value="option14">Option 14</option>
                             <option value="option15">Option 15</option>
                         </x-ui.select>
-                        <x-ui.input-error :messages="$errors->get('disabledSelect')" />
+                        <x-ui.input-error :messages="$errors->get('select2-single')" />
+                    </div>
+                    <div class="w-full">
+                        <x-ui.label value="Select 2 Multiple" class="mb-1" />
+                        <x-ui.select class="select2" wire:model="select2-multiple" multiple>
+                            <option value="" >Choose an option</option>
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                            <option value="option4">Option 4</option>
+                            <option value="option5">Option 5</option>
+                            <option value="option6">Option 6</option>
+                            <option value="option7">Option 7</option>
+                            <option value="option8">Option 8</option>
+                            <option value="option9">Option 9</option>
+                            <option value="option10">Option 10</option>
+                            <option value="option11">Option 11</option>
+                            <option value="option12">Option 12</option>
+                            <option value="option13">Option 13</option>
+                            <option value="option14">Option 14</option>
+                            <option value="option15">Option 15</option>
+                        </x-ui.select>
+                        <x-ui.input-error :messages="$errors->get('select2-multiple')" />
                     </div>
                 </div>
             </div>

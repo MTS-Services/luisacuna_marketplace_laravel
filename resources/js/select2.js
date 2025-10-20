@@ -26,9 +26,12 @@ function initializeSelect2() {
             
             // Disable auto width
             dropdownAutoWidth: false,
+
+            // Allow clear button
+            // allowClear: true,
             
             // Placeholder
-            placeholder: "Choose an option",
+            // placeholder: "Choose an option",
             
             // Theme
             theme: 'default'
