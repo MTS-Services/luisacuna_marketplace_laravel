@@ -2,7 +2,10 @@
 @import '../../vendor/livewire/flux/dist/flux.css';
 @plugin 'daisyui';
 
+/* ================= CUSTOM CSS START ================= */
 @import './table.css';
+/* ================= CUSTOM CSS END =================*/
+
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
@@ -236,4 +239,463 @@ input:focus[data-flux-control],
 textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+}
+
+/* ================= SELECT2 COMPLETE STYLING - FROM SCRATCH ================= */
+
+/* Reset Select2 default styles */
+.select2-container * {
+    box-sizing: border-box;
+}
+
+/* ====================
+   MAIN SELECTION BOX
+   ==================== */
+.select2-container--default .select2-selection--single {
+    height: 3rem !important;
+    border-radius: 0.5rem !important;
+    border: 1px solid !important;
+    background-color: white !important;
+    border-color: rgb(212, 212, 216) !important;
+    /* zinc-300 */
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 !important;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+    transition: all 150ms ease-in-out !important;
+}
+
+/* Dark mode selection box */
+.dark .select2-container--default .select2-selection--single {
+    background-color: rgb(24, 24, 27) !important;
+    /* zinc-900 */
+    border-color: rgb(63, 63, 70) !important;
+    /* zinc-700 */
+}
+
+/* Selection box FOCUSED state */
+.select2-container--default.select2-container--open .select2-selection--single,
+.select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #bb8106 !important;
+    /* accent */
+    outline: none !important;
+    box-shadow: 0 0 0 1px #bb8106 !important;
+    /* ring-1 ring-accent */
+}
+
+/* Selection box HOVER state */
+.select2-container--default .select2-selection--single:hover {
+    border-color: rgb(161, 161, 170) !important;
+    /* zinc-400 */
+}
+
+.dark .select2-container--default .select2-selection--single:hover {
+    border-color: rgb(82, 82, 91) !important;
+    /* zinc-600 */
+}
+
+/* Selected text rendering area */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: rgb(41, 37, 36) !important;
+    /* zinc-900 */
+    line-height: 3rem !important;
+    padding-left: 1rem !important;
+    padding-right: 2.5rem !important;
+    display: block !important;
+}
+
+.dark .select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: rgb(212, 212, 216) !important;
+    /* zinc-300 */
+}
+
+/* Placeholder text */
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: rgb(161, 161, 170) !important;
+    /* zinc-400 */
+}
+
+.dark .select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: rgb(113, 113, 122) !important;
+    /* zinc-500 */
+}
+
+/* Arrow container */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 3rem !important;
+    position: absolute !important;
+    top: 0 !important;
+    right: 0.75rem !important;
+    width: 1.25rem !important;
+}
+
+/* Arrow icon itself */
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: rgb(113, 113, 122) transparent transparent transparent !important;
+    /* zinc-500 */
+    border-style: solid !important;
+    border-width: 5px 4px 0 4px !important;
+    height: 0 !important;
+    left: 50% !important;
+    margin-left: -4px !important;
+    margin-top: -2px !important;
+    position: absolute !important;
+    top: 50% !important;
+    width: 0 !important;
+}
+
+/* Arrow when opened */
+.select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+    border-color: transparent transparent #bb8106 transparent !important;
+    border-width: 0 4px 5px 4px !important;
+}
+
+/* ====================
+   DROPDOWN PANEL
+   ==================== */
+.select2-container--default .select2-dropdown {
+    background-color: white !important;
+    border: 1px solid rgb(212, 212, 216) !important;
+    /* zinc-300 */
+    border-radius: 0.5rem !important;
+    margin-top: 0.25rem !important;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    left: 0 !important;
+    right: 0 !important;
+}
+
+.dark .select2-container--default .select2-dropdown {
+    background-color: rgb(39, 39, 42) !important;
+    /* zinc-800 */
+    border-color: rgb(63, 63, 70) !important;
+    /* zinc-700 */
+}
+
+/* ====================
+   SEARCH BOX IN DROPDOWN
+   ==================== */
+.select2-container--default .select2-search--dropdown {
+    display: block !important;
+    padding: 0.75rem !important;
+    background-color: white !important;
+    border-bottom: 1px solid rgb(228, 228, 231) !important;
+    /* zinc-200 */
+}
+
+.dark .select2-container--default .select2-search--dropdown {
+    background-color: rgb(39, 39, 42) !important;
+    /* zinc-800 */
+    border-bottom-color: rgb(63, 63, 70) !important;
+    /* zinc-700 */
+}
+
+/* THE ACTUAL SEARCH INPUT FIELD - THIS IS CRITICAL */
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    width: 100% !important;
+    height: 2.5rem !important;
+    padding: 0.5rem 0.75rem !important;
+    border: 1px solid rgb(212, 212, 216) !important;
+    /* zinc-300 */
+    border-radius: 0.375rem !important;
+    background-color: white !important;
+    color: rgb(41, 37, 36) !important;
+    /* zinc-900 */
+    font-size: 0.875rem !important;
+    line-height: 1.25rem !important;
+    outline: none !important;
+    transition: all 150ms ease-in-out !important;
+    box-sizing: border-box !important;
+    display: block !important;
+}
+
+.dark .select2-container--default .select2-search--dropdown .select2-search__field {
+    background-color: rgb(24, 24, 27) !important;
+    /* zinc-900 */
+    border-color: rgb(63, 63, 70) !important;
+    /* zinc-700 */
+    color: rgb(212, 212, 216) !important;
+    /* zinc-300 */
+}
+
+/* Search input FOCUS state */
+.select2-container--default .select2-search--dropdown .select2-search__field:focus {
+    border-color: #bb8106 !important;
+    /* accent */
+    box-shadow: 0 0 0 1px #bb8106 !important;
+    /* ring-1 ring-accent */
+}
+
+/* ====================
+   RESULTS/OPTIONS LIST
+   ==================== */
+.select2-container--default .select2-results {
+    display: block !important;
+    background-color: white !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+}
+
+.dark .select2-container--default .select2-results {
+    background-color: rgb(39, 39, 42) !important;
+    /* zinc-800 */
+}
+
+.select2-container--default .select2-results__options {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0.5rem !important;
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+/* Individual option item */
+.select2-container--default .select2-results__option {
+    padding: 0.5rem 0.75rem !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    color: rgb(63, 63, 70) !important;
+    /* zinc-700 */
+    border-radius: 0.375rem !important;
+    margin-bottom: 0.125rem !important;
+    transition: all 100ms ease-in-out !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+}
+
+.dark .select2-container--default .select2-results__option {
+    color: rgb(212, 212, 216) !important;
+    /* zinc-300 */
+}
+
+/* Option HOVER state */
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: rgba(187, 129, 6, 0.1) !important;
+    /* accent/10 */
+    color: #7A4630 !important;
+    /* accent-content */
+}
+
+.dark .select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: rgba(183, 147, 71, 0.1) !important;
+    color: #B79347 !important;
+}
+
+/* Option SELECTED state */
+.select2-container--default .select2-results__option[aria-selected="true"] {
+    background-color: rgba(187, 129, 6, 0.2) !important;
+    /* accent/20 */
+    color: #7A4630 !important;
+    /* accent-content */
+    font-weight: 500 !important;
+}
+
+.dark .select2-container--default .select2-results__option[aria-selected="true"] {
+    background-color: rgba(183, 147, 71, 0.2) !important;
+    color: #B79347 !important;
+}
+
+/* No results message */
+.select2-container--default .select2-results__option--no-results {
+    color: rgb(113, 113, 122) !important;
+    /* zinc-500 */
+    padding: 0.75rem !important;
+    text-align: center !important;
+}
+
+.dark .select2-container--default .select2-results__option--no-results {
+    color: rgb(161, 161, 170) !important;
+    /* zinc-400 */
+}
+
+/* ====================
+   DISABLED STATE
+   ==================== */
+.select2-container--default.select2-container--disabled .select2-selection--single {
+    background-color: rgb(244, 244, 245) !important;
+    /* zinc-100 */
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
+}
+
+.dark .select2-container--default.select2-container--disabled .select2-selection--single {
+    background-color: rgb(39, 39, 42) !important;
+    /* zinc-800 */
+}
+
+/* ====================
+   MULTIPLE SELECT (TAGS)
+   ==================== */
+.select2-container--default .select2-selection--multiple {
+    min-height: 3rem !important;
+    border-radius: 0.5rem !important;
+    border: 1px solid rgb(212, 212, 216) !important;
+    /* zinc-300 */
+    background-color: white !important;
+    padding: 0.25rem 0.5rem !important;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+    transition: all 150ms ease-in-out !important;
+}
+
+.dark .select2-container--default .select2-selection--multiple {
+    background-color: rgb(24, 24, 27) !important;
+    /* zinc-900 */
+    border-color: rgb(63, 63, 70) !important;
+    /* zinc-700 */
+}
+
+/* Multiple select focus */
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border-color: #bb8106 !important;
+    box-shadow: 0 0 0 1px #bb8106 !important;
+}
+
+/* Tag/Choice items */
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: rgba(187, 129, 6, 0.1) !important;
+    border: 1px solid rgba(187, 129, 6, 0.3) !important;
+    color: #7A4630 !important;
+    border-radius: 0.375rem !important;
+    padding: 0.25rem 0.5rem !important;
+    margin: 0.25rem 0.25rem 0.25rem 0 !important;
+}
+
+/* Tag remove button */
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #7A4630 !important;
+    margin-right: 0.25rem !important;
+    cursor: pointer !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+    color: #bb8106 !important;
+}
+
+/* Search field inside multiple select */
+.select2-container--default .select2-selection--multiple .select2-search--inline .select2-search__field {
+    margin: 0.25rem !important;
+    padding: 0.25rem !important;
+    min-height: 2rem !important;
+    color: rgb(41, 37, 36) !important;
+    border: none !important;
+    outline: none !important;
+}
+
+.dark .select2-container--default .select2-selection--multiple .select2-search--inline .select2-search__field {
+    color: rgb(212, 212, 216) !important;
+}
+
+/* ====================
+   CLEAR BUTTON
+   ==================== */
+.select2-container--default .select2-selection__clear {
+    color: rgb(161, 161, 170) !important;
+    cursor: pointer !important;
+    float: right !important;
+    font-size: 1.25rem !important;
+    font-weight: bold !important;
+    margin-right: 0.5rem !important;
+}
+
+.select2-container--default .select2-selection__clear:hover {
+    color: rgb(82, 82, 91) !important;
+}
+
+/* ====================
+   Z-INDEX & POSITIONING
+   ==================== */
+.select2-container {
+    z-index: 9999 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.select2-dropdown {
+    z-index: 10000 !important;
+}
+
+/* Prevent body overflow when dropdown is open */
+body.select2-dropdown-open {
+    overflow-x: hidden !important;
+}
+
+/* Ensure container doesn't cause overflow */
+.select2-container--open {
+    overflow: visible !important;
+}
+
+/* ====================
+   LOADING STATE
+   ==================== */
+.select2-container--default .select2-results__option--loading {
+    color: rgb(113, 113, 122) !important;
+}
+
+.dark .select2-container--default .select2-results__option--loading {
+    color: rgb(161, 161, 170) !important;
+}
+
+*=================NATIVE SELECT (DAISYUI) DROPDOWN STYLING=================*/
+
+/* Style the native select dropdown options */
+select.select option {
+    padding: 0.5rem 0.75rem !important;
+    background-color: white !important;
+    color: rgb(63, 63, 70) !important;
+    /* zinc-700 */
+    cursor: pointer !important;
+    min-height: 2.5rem !important;
+}
+
+.dark select.select option {
+    background-color: rgb(39, 39, 42) !important;
+    /* zinc-800 */
+    color: rgb(212, 212, 216) !important;
+    /* zinc-300 */
+}
+
+/* Option hover/focus state */
+select.select option:hover,
+select.select option:focus,
+select.select option:checked {
+    background-color: rgba(187, 129, 6, 0.1) !important;
+    /* accent/10 */
+    color: #7A4630 !important;
+    /* accent-content */
+    background-image: none !important;
+}
+
+.dark select.select option:hover,
+.dark select.select option:focus,
+.dark select.select option:checked {
+    background-color: rgba(183, 147, 71, 0.1) !important;
+    color: #B79347 !important;
+}
+
+/* Selected option with checkmark effect */
+select.select option:checked {
+    background-color: rgba(187, 129, 6, 0.2) !important;
+    /* accent/20 */
+    font-weight: 500 !important;
+}
+
+.dark select.select option:checked {
+    background-color: rgba(183, 147, 71, 0.2) !important;
+}
+
+/* Disabled option */
+select.select option:disabled {
+    color: rgb(161, 161, 170) !important;
+    /* zinc-400 */
+    cursor: not-allowed !important;
+    opacity: 0.5 !important;
+}
+
+.dark select.select option:disabled {
+    color: rgb(113, 113, 122) !important;
+    /* zinc-500 */
 }
