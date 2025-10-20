@@ -25,7 +25,7 @@
             <!-- Header -->
 
             {{-- <x-admin::header :breadcrumb="$breadcrumb" /> --}}
-            <livewire:backend.user.partials.header />
+            <livewire:backend.user.partials.header :pageSlug="$pageSlug"/>
             <main class="flex-1 p-4 lg:p-6">
                 <div class="mx-auto space-y-6">
                     {{ $slot }}

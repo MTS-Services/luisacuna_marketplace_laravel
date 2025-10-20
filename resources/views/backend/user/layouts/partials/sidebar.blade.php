@@ -1,11 +1,13 @@
 <div class="h-full z-50">
     <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-        class="fixed h-full lg:static inset-y-0 left-0 z-50 w-64 bg-[#0a0a1a] border-r border-gray-800 transition-transform duration-300 ease-in-out lg:translate-x-0 overflow-y-auto">
+        class="fixed h-full lg:static inset-y-0 left-0 z-50 w-64 bg-[#130924] border-r border-gray-800 transition-transform duration-300 ease-in-out lg:translate-x-0 overflow-y-auto">
         <div class="flex flex-col h-full">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-800">
-                <div
-                    class="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-                    MDB</div>
+            <div class="flex items-center justify-between px-6 py-6 border-b border-gray-800">
+                <div>
+                    <a href="{{ route('user.dashboard') }}" wire:navigate
+                        class="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+                        MDB</a>
+                </div>
                 <button @click="sidebarOpen = false" class="lg:hidden text-white z-50 hover:text-white">
                     <svg class="w-6 h-6" fill="none" stroke="white" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -20,11 +22,11 @@
                     <div class="relative">
                         <!-- Left indicator bar - only shows when dropdown is active -->
                         <div x-show="ordersOpen"
-                            class="absolute left-0 top-0 w-2 h-full bg-gradient-to-b from-pink-500 to-purple-600 rounded-r-full">
+                            class="absolute left-0 top-0 w-2 h-full bg-gradient-to-b from-pink-500 to-purple-600 rounded-r-full z-50">
                         </div>
 
                         <button @click="ordersOpen = !ordersOpen"
-                            class="w-full flex items-center justify-between px-3 py-3 rounded-lg transition-all text-white hover:bg-gray-500/50">
+                            class="w-full flex items-center justify-between px-3 bg-black py-3 rounded-lg transition-all text-white hover:bg-gray-500/50">
                             <div class="flex items-center space-x-3">
                                 <svg class="w-5 h-5 text-white" fill="none" stroke="white" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
