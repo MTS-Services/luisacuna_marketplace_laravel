@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Auth\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Laravel\Fortify\Events\RecoveryCodeReplaced;
+use PragmaRX\Google2FA\Google2FA;
 
 class TwoFactorAuthenticatedSessionController extends Controller
 {
@@ -36,53 +38,34 @@ class TwoFactorAuthenticatedSessionController extends Controller
             ]);
         }
 
+        // Validate that at least one field is provided
+        $request->validate([
+            'code' => 'nullable|string|size:6|required_without:recovery_code',
+            'recovery_code' => 'nullable|string|required_without:code',
+        ], [
+            'code.required_without' => 'Please provide an authentication code or recovery code.',
+            'recovery_code.required_without' => 'Please provide an authentication code or recovery code.',
+        ]);
+
         // Check if recovery code is provided
         if ($request->filled('recovery_code')) {
-            $recoveryCode = str_replace([' ', '-'], '', $request->input('recovery_code'));
+            $result = $this->verifyRecoveryCode($admin, $request->input('recovery_code'));
             
-            if (!$admin->two_factor_recovery_codes) {
+            if (!$result['valid']) {
                 return back()->withErrors([
-                    'recovery_code' => 'No recovery codes available.',
+                    'recovery_code' => $result['message'],
                 ]);
             }
-
-            $recoveryCodes = json_decode(decrypt($admin->two_factor_recovery_codes), true);
-            
-            if (!in_array($recoveryCode, $recoveryCodes)) {
-                return back()->withErrors([
-                    'recovery_code' => 'The provided recovery code was invalid.',
-                ]);
-            }
-
-            // Replace used recovery code
-            $admin->replaceRecoveryCode($recoveryCode);
-            event(new RecoveryCodeReplaced($admin, $recoveryCode));
         } 
         // Check if 2FA code is provided
         elseif ($request->filled('code')) {
-            $request->validate([
-                'code' => 'required|string|size:6',
-            ]);
-
-            $code = $request->input('code');
-
-            // Verify the code using Google2FA
-            $google2fa = app(\PragmaRX\Google2FA\Google2FA::class);
+            $result = $this->verifyTwoFactorCode($admin, $request->input('code'));
             
-            $valid = $google2fa->verifyKey(
-                decrypt($admin->two_factor_secret),
-                $code
-            );
-
-            if (!$valid) {
+            if (!$result['valid']) {
                 return back()->withErrors([
-                    'code' => 'The provided two factor authentication code was invalid.',
+                    'code' => $result['message'],
                 ]);
             }
-        } else {
-            return back()->withErrors([
-                'code' => 'Please provide an authentication code or recovery code.',
-            ]);
         }
 
         // Login the admin
@@ -94,5 +77,113 @@ class TwoFactorAuthenticatedSessionController extends Controller
         $request->session()->forget(['login.id', 'login.remember']);
 
         return redirect()->intended(route('admin.dashboard'));
+    }
+
+    /**
+     * Verify the two-factor authentication code
+     */
+    private function verifyTwoFactorCode($admin, $code)
+    {
+        try {
+            $google2fa = app(Google2FA::class);
+            
+            $decryptedSecret = decrypt($admin->two_factor_secret);
+            
+            $valid = $google2fa->verifyKey($decryptedSecret, $code);
+
+            if (!$valid) {
+                return [
+                    'valid' => false,
+                    'message' => 'The provided two-factor authentication code was invalid.',
+                ];
+            }
+
+            return ['valid' => true];
+        } catch (\Exception $e) {
+            return [
+                'valid' => false,
+                'message' => 'An error occurred while verifying the code.',
+            ];
+        }
+    }
+
+    /**
+     * Verify and use a recovery code
+     */
+    private function verifyRecoveryCode($admin, $recoveryCode)
+    {
+        try {
+            if (!$admin->two_factor_recovery_codes) {
+                return [
+                    'valid' => false,
+                    'message' => 'No recovery codes available.',
+                ];
+            }
+
+            // Clean up the recovery code (remove spaces and dashes)
+            $recoveryCode = str_replace([' ', '-', '_'], '', $recoveryCode);
+            $recoveryCode = strtolower(trim($recoveryCode));
+            
+            Log::info('Recovery code verification attempt', [
+                'admin_id' => $admin->id,
+                'recovery_code_input' => $recoveryCode,
+            ]);
+
+            // Decrypt and parse recovery codes
+            $decryptedCodes = decrypt($admin->two_factor_recovery_codes);
+            $recoveryCodes = json_decode($decryptedCodes, true);
+
+            if (!is_array($recoveryCodes)) {
+                Log::error('Recovery codes format invalid', ['admin_id' => $admin->id]);
+                return [
+                    'valid' => false,
+                    'message' => 'Recovery codes format is invalid.',
+                ];
+            }
+
+            // Normalize all codes to lowercase for comparison
+            $normalizedCodes = array_map(function($code) {
+                return strtolower(str_replace([' ', '-', '_'], '', $code));
+            }, $recoveryCodes);
+
+            Log::info('Available recovery codes count', [
+                'admin_id' => $admin->id,
+                'count' => count($normalizedCodes),
+            ]);
+
+            // Check if the code exists in the list (case-insensitive)
+            $codeKey = array_search($recoveryCode, $normalizedCodes);
+            
+            if ($codeKey === false) {
+                Log::warning('Recovery code not found', [
+                    'admin_id' => $admin->id,
+                    'provided' => $recoveryCode,
+                    'available' => implode(', ', array_slice($normalizedCodes, 0, 2)) . '...',
+                ]);
+                return [
+                    'valid' => false,
+                    'message' => 'The provided recovery code was invalid or has already been used.',
+                ];
+            }
+
+            // Remove the used code from the array
+            unset($recoveryCodes[$codeKey]);
+
+            // Update the recovery codes in the database
+            $admin->two_factor_recovery_codes = encrypt(json_encode(array_values($recoveryCodes)));
+            $admin->save();
+
+            // Fire event for recovery code replacement
+            event(new RecoveryCodeReplaced($admin, $recoveryCode));
+
+            return ['valid' => true];
+        } catch (\Exception $e) {
+            Log::error('Recovery code verification error: ' . $e->getMessage());
+            
+            return [
+                'valid' => false,
+                'message' => 'An error occurred while verifying the recovery code.',
+            ];
+        }
     }
 }
