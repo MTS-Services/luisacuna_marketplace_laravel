@@ -109,10 +109,10 @@ class User extends AuthBaseModel
     |--------------------------------------------------------------------------
     */
 
-    // public function country()
-    // {
-    //     return $this->belongsTo(Country::class, 'country_id');
-    // }
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id', 'id');
+    }
 
     /*
     |--------------------------------------------------------------------------
