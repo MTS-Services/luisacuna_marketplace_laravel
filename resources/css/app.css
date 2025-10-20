@@ -2,7 +2,10 @@
 @import '../../vendor/livewire/flux/dist/flux.css';
 @plugin 'daisyui';
 
+/* ================= CUSTOM CSS START ================= */
 @import './table.css';
+/* ================= CUSTOM CSS END =================*/
+
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
@@ -33,25 +36,25 @@
     --color-accent-content-light: #7A4630;
     --color-accent-foreground-light: #fffcfb;
 
-    --color-accent-dark: #B79347;
-    --color-accent-content-dark: #573024;
-    --color-accent-foreground-dark: #1a1a1a;
+    --color-accent-dark:#B79347;
+    --color-accent-content-dark:#573024;
+    --color-accent-foreground-dark:#1a1a1a;
 
     --color-text-primary-light: #2c2920;
     --color-text-secondary-light: #5a554a;
     --color-text-muted-light: #89867b;
 
-    --color-text-primary-dark: #e8e6e3;
-    --color-text-secondary-dark: #a9a69e;
-    --color-text-muted-dark: #7d7a73;
+    --color-text-primary-dark:#e8e6e3;
+    --color-text-secondary-dark:#a9a69e;
+    --color-text-muted-dark:#7d7a73;
 
     --color-bg-primary-light: oklch(98.5% 0 0);
     --color-bg-secondary-light: oklch(96.7% 0.001 286.375);
     --color-bg-tertiary-light: oklch(92% 0.004 286.32);
 
-    --color-bg-primary-dark: oklch(21% 0.006 285.885);
-    --color-bg-secondary-dark: oklch(27.4% 0.006 286.033);
-    --color-bg-tertiary-dark: oklch(37% 0.013 285.805);
+    --color-bg-primary-dark:oklch(21% 0.006 285.885);
+    --color-bg-secondary-dark:oklch(27.4% 0.006 286.033);
+    --color-bg-tertiary-dark:oklch(37% 0.013 285.805);
 }
 
 @theme {
