@@ -61,6 +61,98 @@
                 Explore UI's
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5">
+                 <div
+                    class="flex flex-col items-center justify-between p-8 bg-gray-50 border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4">
+                    <h4 class="text-xl font-semibold text-gray-800">Inputs</h4>
+                    <div class="w-full">
+                        <x-ui.label value="Standard Input" class="mb-1" />
+                        <x-ui.input placeholder="Standard Input" wire:model="input" />
+                        <x-ui.input-error :messages="$errors->get('input')" />
+                    </div>
+                    <div class="w-full">
+                        <x-ui.label value="Email Input" class="mb-1" />
+                        <x-ui.input type="email" placeholder="Email Input" wire:model="email" />
+                        <x-ui.input-error :messages="$errors->get('email')" />
+                    </div>
+                    <div class="w-full">
+                        <x-ui.label value="Password Input" class="mb-1" />
+                        <x-ui.input type="password" placeholder="Password Input" wire:model="password" />
+                        <x-ui.input-error :messages="$errors->get('password')" />
+                    </div>
+                    <div class="w-full">
+                        <x-ui.label value="Disabled Input" class="mb-1" />
+                        <x-ui.input disabled="true" placeholder="Disabled Input" wire:model="disabled" />
+                        <x-ui.input-error :messages="$errors->get('disabled')" />
+                    </div>
+                </div>
+                <div
+                    class="flex flex-col items-center justify-between p-8 bg-gray-50 border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4 h-fit">
+                    <h4 class="text-xl font-semibold text-gray-800">Selects</h4>
+                    <div class="w-full">
+                        <x-ui.label value="Standard Select" class="mb-1" />
+                        <x-ui.select wire:model="standardSelect">
+                            <option value="">Choose an option</option>
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                        </x-ui.select>
+                        <x-ui.input-error :messages="$errors->get('standardSelect')" />
+                    </div>
+                    <div class="w-full">
+                        <x-ui.label value="Disabled Select" class="mb-1" />
+                        <x-ui.select disabled="true" wire:model="disabledSelect">
+                            <option value="">Choose an option</option>
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                        </x-ui.select>
+                        <x-ui.input-error :messages="$errors->get('disabledSelect')" />
+                    </div>
+                    <div class="w-full">
+                        <x-ui.label value="Select 2 Single" class="mb-1" />
+                        <x-ui.select class="select2" wire:model="select2Single">
+                            <option value="">Choose an option</option>
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                            <option value="option4">Option 4</option>
+                            <option value="option5">Option 5</option>
+                            <option value="option6">Option 6</option>
+                            <option value="option7">Option 7</option>
+                            <option value="option8">Option 8</option>
+                            <option value="option9">Option 9</option>
+                            <option value="option10">Option 10</option>
+                            <option value="option11">Option 11</option>
+                            <option value="option12">Option 12</option>
+                            <option value="option13">Option 13</option>
+                            <option value="option14">Option 14</option>
+                            <option value="option15">Option 15</option>
+                        </x-ui.select>
+                        <x-ui.input-error :messages="$errors->get('select2Single')" />
+                    </div>
+                    <div class="w-full">
+                        <x-ui.label value="Select 2 Multiple" class="mb-1" />
+                        <x-ui.select class="select2" wire:model="select2Multiple" multiple>
+                            <option value="">Choose an option</option>
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                            <option value="option4">Option 4</option>
+                            <option value="option5">Option 5</option>
+                            <option value="option6">Option 6</option>
+                            <option value="option7">Option 7</option>
+                            <option value="option8">Option 8</option>
+                            <option value="option9">Option 9</option>
+                            <option value="option10">Option 10</option>
+                            <option value="option11">Option 11</option>
+                            <option value="option12">Option 12</option>
+                            <option value="option13">Option 13</option>
+                            <option value="option14">Option 14</option>
+                            <option value="option15">Option 15</option>
+                        </x-ui.select>
+                        <x-ui.input-error :messages="$errors->get('select2Multiple')" />
+                    </div>
+                </div>
                 <div
                     class="flex flex-col items-center justify-between p-8 bg-gray-50 border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4 h-fit col-span-2">
                     <h4 class="text-xl font-semibold text-gray-800">Text areas</h4>
