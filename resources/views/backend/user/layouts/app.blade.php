@@ -13,29 +13,31 @@
     @fluxAppearance
 </head>
 
-<body x-data="{ sidebarOpen: false, mobileMenuOpen: false }" class="h-full max-h-screen antialiased bg-gray-950 text-gray-100">
+<body x-data="{ sidebarOpen: false, mobileMenuOpen: false }"
+    class="h-full max-h-screen antialiased bg-gray-950 text-gray-100">
 
-    <div class="flex h-screen ">
-        <!-- Sidebar -->
-        <livewire:backend.user.partials.sidebar :pageSlug="$pageSlug" />
+    <div class="flex flex-col h-screen">
+        <!-- Header (fixed height at top) -->
+        <livewire:backend.user.partials.header :pageSlug="$pageSlug" />
 
+        <!-- Content area: Sidebar + Main -->
+        <div class="flex flex-1 overflow-hidden">
+            <!-- Sidebar -->
+            <livewire:backend.user.partials.sidebar :pageSlug="$pageSlug" />
 
-        <!-- Main Content -->
-        <div class="flex-1 flex flex-col custom-scrollbar overflow-y-auto">
-            <!-- Header -->
+            <!-- Main content -->
+            <div class="flex-1 flex flex-col custom-scrollbar overflow-y-auto">
+                <main class="flex-1 p-4 lg:p-6">
+                    <div class="mx-auto space-y-6">
+                        {{ $slot }}
+                    </div>
+                </main>
 
-            {{-- <x-admin::header :breadcrumb="$breadcrumb" /> --}}
-            <livewire:backend.user.partials.header :pageSlug="$pageSlug"/>
-            <main class="flex-1 p-4 lg:p-6">
-                <div class="mx-auto space-y-6">
-                    {{ $slot }}
-                </div>
-            </main>
-
-            {{-- <livewire:backend.user.partials.footer /> --}}
-
+                {{-- <livewire:backend.user.partials.footer /> --}}
+            </div>
         </div>
     </div>
+
     <div x-show="sidebarOpen" @click="sidebarOpen = false"
         class="fixed inset-0 bg-black/50 z-40 lg:hidden transition-opacity"
         x-transition:enter="transition-opacity ease-linear duration-300" x-transition:enter-start="opacity-0"
