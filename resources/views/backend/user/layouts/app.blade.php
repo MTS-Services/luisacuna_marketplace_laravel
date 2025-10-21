@@ -8,7 +8,6 @@
     <title>Document</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="{{ asset('assets/css/user-dashboard.css') }}">
 
     @fluxAppearance
 </head>
@@ -17,14 +16,11 @@
     class="h-full max-h-screen antialiased bg-gray-950 text-gray-100">
 
     <div class="flex flex-col h-screen">
-        <!-- Header (fixed height at top) -->
         <livewire:backend.user.partials.header :pageSlug="$pageSlug" />
 
-        <!-- Content area: Sidebar + Main -->
         <div class="flex flex-1 overflow-hidden">
             <!-- Sidebar -->
             <livewire:backend.user.partials.sidebar :pageSlug="$pageSlug" />
-
             <!-- Main content -->
             <div class="flex-1 flex flex-col custom-scrollbar overflow-y-auto">
                 <main class="flex-1 p-4 lg:p-6">
@@ -33,7 +29,6 @@
                     </div>
                 </main>
 
-                {{-- <livewire:backend.user.partials.footer /> --}}
             </div>
         </div>
     </div>
