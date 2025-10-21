@@ -6,11 +6,11 @@ use App\Enums\OtpType;
 use App\Enums\UserAccountStatus;
 use App\Enums\UserStatus;
 use App\Enums\UserType;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 
 class User extends AuthBaseModel
 {
-    use HasFactory;
+    use  TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -51,6 +51,7 @@ class User extends AuthBaseModel
         'two_factor_enabled',
         'two_factor_secret',
         'two_factor_recovery_codes',
+        'two_factor_confirmed_at',
 
         'terms_accepted_at',
         'privacy_accepted_at',
@@ -73,8 +74,8 @@ class User extends AuthBaseModel
     protected $hidden = [
         'password',
         'remember_token',
-        'two_factor_secret',
         'two_factor_recovery_codes',
+        'two_factor_secret',
     ];
 
     /**
@@ -93,6 +94,7 @@ class User extends AuthBaseModel
             'terms_accepted_at'      => 'datetime',
             'privacy_accepted_at'    => 'datetime',
             'last_synced_at'         => 'datetime',
+            'two_factor_confirmed_at' => 'datetime',
             'date_of_birth'          => 'date',
 
             'two_factor_enabled'     => 'boolean',
@@ -109,10 +111,10 @@ class User extends AuthBaseModel
     |--------------------------------------------------------------------------
     */
 
-    // public function country()
-    // {
-    //     return $this->belongsTo(Country::class, 'country_id');
-    // }
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id', 'id');
+    }
 
     /*
     |--------------------------------------------------------------------------

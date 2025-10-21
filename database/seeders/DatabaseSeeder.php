@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@dev.com',
             'password' => 'admin@dev.com',
+            'email_verified_at' => now(),
         ]);
     }
 }
