@@ -1,6 +1,6 @@
 <div class="max-w-7xl mx-auto p-6 space-y-8">
-    @push('style')
-        
+    @push('styles')
+        <link rel="stylesheet" href="{{ asset('assets/css/ckEditor.css') }}">
     @endpush
 
     @if (session()->has('message'))
