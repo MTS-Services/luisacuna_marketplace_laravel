@@ -56,12 +56,12 @@
             </div>
         </div>
 
-        <div class="w-full max-w-4xl mx-auto bg-white rounded-xl shadow-2xl p-6 md:p-10 mt-10 shadow-sm">
+        <div class="w-full max-w-4xl mx-auto bg-white rounded-xl shadow-2xl p-6 md:p-10 mt-10">
             <h2 class="text-3xl font-extrabold text-center text-gray-900 mb-8">
                 Explore UI's
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5">
-                 <div
+                <div
                     class="flex flex-col items-center justify-between p-8 bg-gray-50 border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4">
                     <h4 class="text-xl font-semibold text-gray-800">Inputs</h4>
                     <div class="w-full">
@@ -153,7 +153,7 @@
                         <x-ui.input-error :messages="$errors->get('select2Multiple')" />
                     </div>
                 </div>
-                <div
+                {{-- <div
                     class="flex flex-col items-center justify-between p-8 bg-gray-50 border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4 h-fit col-span-2">
                     <h4 class="text-xl font-semibold text-gray-800">Text areas</h4>
                     <form class="w-full" wire:submit.prevent="saveContent">
@@ -161,6 +161,20 @@
                         <div wire:ignore>
                             <textarea id="content-{{ $this->getId() }}" class="tinymce-editor">{{ $content }}</textarea>
                         </div>
+
+                        <x-ui.input-error :messages="$errors->get('content')" />
+                        <button type="submit" class="btn btn-primary mt-4">
+                            Save Content
+                        </button>
+                    </form>
+                </div> --}}
+                <div
+                    class="flex flex-col items-center justify-between p-8 bg-gray-50 border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4 h-fit col-span-2">
+                    <h4 class="text-xl font-semibold text-gray-800">Text areas</h4>
+                    <form class="w-full" wire:submit.prevent="saveContent2">
+                        <x-ui.label value="Standard Select" class="mb-1" />
+                        {{-- <x-ui.text-area-editor>{{ $content }}</x-ui.text-area-editor> --}}
+                        <textarea id="tinymce-editor" class="tinymce" wire:model="content">{!! $content !!}</textarea>
 
                         <x-ui.input-error :messages="$errors->get('content')" />
                         <button type="submit" class="btn btn-primary mt-4">

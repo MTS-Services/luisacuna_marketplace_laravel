@@ -22,6 +22,11 @@ class Home extends Component
     {
         dd($this->content);
     }
+    public function saveContent2()
+    {
+        dd($this->content);
+    }
+
     public function render()
     {
         return view('livewire.frontend.components.home');
