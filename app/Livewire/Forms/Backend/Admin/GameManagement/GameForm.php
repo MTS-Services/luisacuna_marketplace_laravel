@@ -7,17 +7,17 @@ use App\Models\Game as ModelsGame;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class Game extends Form
+class GameForm extends Form
 {
     // 
 
-    #[Validate( 'string',)]
+    #[Validate( 'required','string',)]
     public ?string $name = null; 
 
-    #[Validate( 'nullable|integer')]
+    #[Validate( 'required','integer')]
     public ?string $game_category_id = null;
 
-    #[Validate('required', 'in:active,inactive','string')]
+    #[Validate('required', 'in:active,inactive',GameStatus::class)]
     public ?string $status = null;
 
     #[Validate('required', 'string')]
@@ -26,10 +26,10 @@ class Game extends Form
     #[Validate('required', 'string')]
     public ?string $publisher = null;
 
-    #[Validate('required', 'file', 'image', 'max:10240','mimes:jpg,jpeg,png',)]
+    #[Validate('nullable', 'file', 'image', 'max:10240','mimes:jpg,jpeg,png',)]
     public ?string $logo = null;
     
-    #[Validate('required', 'file', 'image', 'max:10240','mimes:jpg,jpeg,png',)]
+    #[Validate('nullable', 'file', 'image', 'max:10240','mimes:jpg,jpeg,png',)]
     public ?string $banner = null;  
 
     #[Validate('required', 'date', 'after_or_equal:today')]
@@ -44,22 +44,22 @@ class Game extends Form
     public ?string $description = null;
 
     
-    #[Validate('required', 'file', 'image', 'max:10240','mimes:jpg,jpeg,png')]
+    #[Validate('nullable', 'file', 'image', 'max:10240','mimes:jpg,jpeg,png')]
     public ?string $thumbnail = null;
     
     #[Validate('required', 'boolean')]
-    public ?string $is_featured = null; 
+    public ?bool $is_featured = false; 
 
     #[Validate('required', 'boolean')]
-    public ?string $is_trending = null;
+    public ?bool $is_trending = false;
 
-    #[Validate('required', 'string')]
+    #[Validate('nullable', 'string')]
     public ?string $meta_title = null;
 
-    #[Validate('required', 'string')]
+    #[Validate('nullable', 'string')]
     public ?string $meta_description = null;
 
-    #[Validate('required', 'string')]
+    #[Validate('nullable', 'string')]
     public ?string $meta_keywords = null;
 
     public function rules() :array 
@@ -70,12 +70,12 @@ class Game extends Form
             'status' => 'required|string|in:'.implode(',', array_column(GameStatus::cases(), 'value')),
             'developer' => 'required|string',
             'publisher' => 'required|string',
-            'logo' => 'file|image|max:10240|mimes:jpg,jpeg,png',
-            'banner' => 'file|image|max:10240|mimes:jpg,jpeg,png',
+            'logo' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
+            'banner' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
             'release_date' => 'required|date|after_or_equal:today',
             'platform' => 'required|array',
             'description' => 'required|string',
-            'thumbnail' => 'file|image|max:10240|mimes:jpg,jpeg,png',
+            'thumbnail' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
             'is_featured' => 'boolean',
             'is_trending' => 'boolean',
             'meta_title' => 'nullable|string',

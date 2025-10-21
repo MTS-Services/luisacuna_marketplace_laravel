@@ -1,13 +1,12 @@
 <?php 
 
-namespace App\DTOs\GameCategory;
+namespace App\DTOs\Game;
 
 use App\Enums\GameCategoryStatus;
 use Illuminate\Support\Str;
-
-class UpdateGameCategoryDTO
- {
-        public function __construct(
+class CreateGameCategoryDTO
+{
+    public function __construct(
         public readonly string $name,
         public readonly ?string $description ,
         public readonly GameCategoryStatus $status = GameCategoryStatus::ACTIVE
@@ -16,7 +15,6 @@ class UpdateGameCategoryDTO
         
     }
 
-    
     public static function formArray(array $data): self
     {
         return new self(
@@ -41,4 +39,5 @@ class UpdateGameCategoryDTO
             'slug' => Str::slug($this->name),
         ];
     }
+
 }
