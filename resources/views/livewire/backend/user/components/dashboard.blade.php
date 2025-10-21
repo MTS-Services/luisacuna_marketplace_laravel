@@ -61,8 +61,9 @@
                     <tr class="bg-bg-primary hover:bg-zinc-950 transition-colors">
                         <td class="px-4 md:px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <img src="fortnite-logo.png" alt="Fortnite Logo"
-                                    class="w-10 h-10 rounded-lg bg-orange-600 p-1 flex-shrink-0" />
+                                <div class="w-10 h-10 rounded-lg bg-orange-600 flex-shrink-0">
+                                    <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo" class="w-full h-full rounded-lg" />
+                                </div>
                                 <div class="min-w-0">
                                     <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift
                                     </h3>
@@ -88,7 +89,7 @@
                         <td class="px-4 md:px-6 py-4">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-lg bg-orange-600 flex-shrink-0">
-                                    <img src="https://dummyimage.com/600x600/000&text=F" alt="Fortnite Logo" class="w-full h-full rounded-lg" />
+                                    <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo" class="w-full h-full rounded-lg" />
                                 </div>
                                 <div class="min-w-0">
                                     <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift
@@ -114,8 +115,9 @@
                     <tr class="bg-bg-primary hover:bg-bg-primary/60 transition-colors">
                         <td class="px-4 md:px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <img src="fortnite-logo.png" alt="Fortnite Logo"
-                                    class="w-10 h-10 rounded-lg bg-orange-600 p-1 flex-shrink-0" />
+                                 <div class="w-10 h-10 rounded-lg bg-orange-600 flex-shrink-0">
+                                    <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo" class="w-full h-full rounded-lg" />
+                                </div>
                                 <div class="min-w-0">
                                     <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift
                                     </h3>
@@ -140,8 +142,9 @@
                     <tr class=" hover:bg-bg-primary/60 transition-colors">
                         <td class="px-4 md:px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <img src="fortnite-logo.png" alt="Fortnite Logo"
-                                    class="w-10 h-10 rounded-lg bg-orange-600 p-1 flex-shrink-0" />
+                                <div class="w-10 h-10 rounded-lg bg-orange-600 flex-shrink-0">
+                                    <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo" class="w-full h-full rounded-lg" />
+                                </div>
                                 <div class="min-w-0">
                                     <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift
                                     </h3>
@@ -166,8 +169,9 @@
                     <tr class="bg-bg-primary hover:bg-bg-primary/60 transition-colors">
                         <td class="px-4 md:px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <img src="fortnite-logo.png" alt="Fortnite Logo"
-                                    class="w-10 h-10 rounded-lg bg-orange-600 p-1 flex-shrink-0" />
+                                <div class="w-10 h-10 rounded-lg bg-orange-600 flex-shrink-0">
+                                    <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo" class="w-full h-full rounded-lg" />
+                                </div>
                                 <div class="min-w-0">
                                     <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift
                                     </h3>
@@ -192,8 +196,9 @@
                     <tr class=" hover:bg-bg-primary/60 transition-colors">
                         <td class="px-4 md:px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <img src="apex-logo.png" alt="Apex Legends Logo"
-                                    class="w-10 h-10 rounded-full bg-bg-primary border border-zinc-700 p-1 flex-shrink-0" />
+                                <div class="w-10 h-10 rounded-lg ">
+                                    <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo" class="w-full h-full rounded-lg" />
+                                </div>
                                 <div class="min-w-0">
                                     <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Apex Legends Batt...
                                     </h3>
@@ -219,8 +224,9 @@
                     <tr class="bg-bg-primary hover:bg-bg-primary/60 transition-colors">
                         <td class="px-4 md:px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <img src="cod-logo.png" alt="Call of Duty Logo"
-                                    class="w-10 h-10 rounded-full bg-gray-900 border border-zinc-700 p-1 flex-shrink-0" />
+                                <div class="w-10 h-10 rounded-lg bg-orange-600 flex-shrink-0">
+                                    <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo" class="w-full h-full rounded-lg" />
+                                </div>
                                 <div class="min-w-0">
                                     <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Call of Duty Skin P...
                                     </h3>
