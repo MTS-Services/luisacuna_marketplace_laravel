@@ -25,7 +25,7 @@
 
     {{-- Delete Confirmation Modal --}}
     <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this Game?'" :message="'Are you absolutely sure you want to remove this Game Category? All data will be permanently deleted.'" :method="'delete'"
-        :button-text="'Delete Game Category'" />
+        :button-text="'Delete Game '" />
 
     {{-- Bulk Action Confirmation Modal --}}
     <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="'Confirm Bulk Action'" :message="'Are you sure you want to perform this action on ' . count($selectedIds) . ' selected category(ies)?'" :method="'executeBulkAction'"

@@ -12,6 +12,11 @@
             <x-slot name="breadcrumb">Game Management / Game View</x-slot>
             <livewire:backend.admin.components.game-management.game.show :game="$game" />
         @break 
+         @case('admin.gm.game.edit')        
+            <x-slot name="title">Game Edit</x-slot>
+            <x-slot name="breadcrumb">Game Management / Game Edit</x-slot>
+            <livewire:backend.admin.components.game-management.game.edit :game="$game" />
+        @break 
         
          @case('admin.gm.game.trash')        
                  <x-slot name="title">Game Trash List</x-slot>

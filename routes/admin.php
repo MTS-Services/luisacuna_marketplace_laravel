@@ -38,6 +38,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/view/{id}', 'show')->name('view');
+            Route::get('/edit/{id}', 'edit')->name('edit');
             Route::get('/trash', 'trash')->name('trash');
         });
     });

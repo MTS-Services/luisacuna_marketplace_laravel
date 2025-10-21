@@ -20,6 +20,11 @@ class GameService
     {
         return $this->gameRepository->OnlyTrashedPaginate($perPage, $filters, $queries ?? []);
     }
+
+    public function deleteGame($id, bool $forceDelete = false)
+    {
+        return $this->gameRepository->deleteGame($id, $forceDelete);
+    }   
     public function bulkDeleteGames($ids, bool $forceDelete = false)
     {
         return $this->gameRepository->bulkDeleteGames($ids, $forceDelete);

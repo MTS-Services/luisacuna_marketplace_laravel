@@ -12,6 +12,8 @@ interface GameRepositoryInterface
     
     public function OnlyTrashedPaginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
 
+    public function deleteGame($id, bool $forceDelete = false): bool;
+    
     public function bulkDeleteGames($ids, bool $forceDelete = false): bool;
 
     public function bulkRestoreGame($ids): bool;

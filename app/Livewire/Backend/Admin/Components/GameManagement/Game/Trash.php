@@ -16,6 +16,9 @@ class Trash extends Component
     public string $bulkAction = '';
     public $statusFilter = '';
     public $showBulkActionModal = false;
+
+    public $showDeleteModal = false;
+    public $deleteGameId = null;
     
 
     public function boot(GameService $gameService)  
@@ -89,7 +92,7 @@ class Trash extends Component
 
             $actions = [
                 ['key' => 'id', 'label' => 'Restore', 'method' => 'restore'],
-                ['key' => 'id', 'label' => 'Delete', 'method' => 'delete'],
+                ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete'],
             ];
 
             $bulkActions = [
@@ -127,6 +130,16 @@ class Trash extends Component
         $this->gameService->restoreGame($id);
     }
     
+    public function confirmDelete($id)
+    {
+        $this->showDeleteModal = true;
+        $this->deleteGameId = $id;
+    }
+
+    public function delete(){
+        $this->showDeleteModal = false;
+        $this->gameService->deleteGame($this->deleteGameId, true);
+    }
     public function confirmBulkAction(): void
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {

@@ -35,9 +35,17 @@ class GameController extends Controller
             'game' => $this->game,
         ]);
     }
-
+    public function edit($id)    
+    {
+        $this->game = $this->gameService->findOrFail($id);
+        return view($this->masterView, [
+            'game' => $this->game,
+        ]); 
+    }
     public function trash()
     {
         return view($this->masterView);
     }
+
+
 }

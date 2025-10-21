@@ -45,7 +45,11 @@ class GameRepository implements GameRepositoryInterface {
 
         return $query->paginate($perPage);   
     }
-
+    public function deleteGame($id, bool $forceDelete = false): bool
+    {
+        if(! $forceDelete)  return $this->model->findOrFail($id)->delete();  
+        return $this->model->withTrashed()->findOrFail($id)->forceDelete();
+    }
     public function bulkDeleteGames($ids, bool $forceDelete = false):bool
     {
        if(! $forceDelete)  return $this->model->whereIn('id', $ids)->delete();  

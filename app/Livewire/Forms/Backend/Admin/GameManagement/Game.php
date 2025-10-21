@@ -84,7 +84,7 @@ class Game extends Form
         ];
     }
 
-    public function setGameCategory(ModelsGame $game) :void 
+    public function setGame(ModelsGame $game) :void 
     {
         $this->game_category_id = $game->game_category_id;
         $this->name = $game->name;

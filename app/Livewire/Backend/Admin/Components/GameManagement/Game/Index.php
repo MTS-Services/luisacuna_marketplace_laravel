@@ -20,6 +20,8 @@ class Index extends Component
     public string $bulkAction = '';
     public $statusFilter = '';
     public $showBulkActionModal = false;
+    public $showDeleteModal = false;
+    public $deleteGameId = null;
     
 
     public function boot(GameService $gameService)  
@@ -93,7 +95,7 @@ class Index extends Component
 
             $actions = [
                 ['key' => 'id', 'label' => 'View', 'route' => 'admin.gm.game.view'],
-                ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.gm.category.edit'],
+                ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.gm.game.edit'],
                 ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete'],
             ];
 
@@ -128,7 +130,17 @@ class Index extends Component
         ];
     }
 
-    
+     public function confirmDelete($id)
+    {
+        $this->showDeleteModal = true;
+        $this->deleteGameId = $id;
+    }
+
+    public function delete(){
+        $this->showDeleteModal = false;
+        $this->gameService->deleteGame($this->deleteGameId, false);
+    }
+
     public function confirmBulkAction(): void
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
