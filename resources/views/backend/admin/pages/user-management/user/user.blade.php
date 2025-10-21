@@ -53,6 +53,7 @@
 
         @case('admin.um.user.trash')
             <x-slot name="title">User Trash</x-slot>
+            <x-slot name="breadcrumb">User Management</x-slot>
             <livewire:backend.admin.components.user-management.user.trash />
         @break
 

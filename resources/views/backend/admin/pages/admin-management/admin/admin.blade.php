@@ -20,7 +20,7 @@
 
         @case('admin.am.admin.view')
             <x-slot name="title">Admins Create</x-slot>
-            <livewire:backend.admin.components.admin-management.admin.view />
+            <livewire:backend.admin.components.admin-management.admin.view :admin="$admin"/>
         @break
 
         @default

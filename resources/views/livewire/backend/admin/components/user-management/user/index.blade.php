@@ -23,4 +23,12 @@
     <x-ui.table :data="$users" :columns="$columns" :actions="$actions" :bulkActions="$bulkActions" :bulkAction="$bulkAction"
         :statuses="$statuses" :selectedIds="$selectedIds" :mobileVisibleColumns="2" searchProperty="search" perPageProperty="perPage"
         :showBulkActions="true" emptyMessage="No users found. Create your first user to get started." />
+
+    {{-- Delete Confirmation Modal --}}
+    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this User?'" :message="'Are you absolutely sure you want to remove this user? All associated data will be permanently deleted.'" :method="'delete'"
+        :button-text="'Delete User'" />
+
+    {{-- Bulk Action Confirmation Modal --}}
+    <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="'Confirm Bulk Action'" :message="'Are you sure you want to perform this action on ' . count($selectedIds) . ' selected admin(s)?'" :method="'executeBulkAction'"
+        :button-text="'Confirm Action'" />
 </section>

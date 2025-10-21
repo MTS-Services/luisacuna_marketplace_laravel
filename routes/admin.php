@@ -16,7 +16,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
-            Route::get('/view/{id}', 'view')->name('edit');
+            Route::get('/view/{id}', 'view')->name('view');
             Route::get('/trash', 'trash')->name('trash');
         });
     });

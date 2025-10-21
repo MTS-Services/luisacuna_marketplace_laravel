@@ -129,10 +129,10 @@ class Index extends Component
                 return;
             }
 
-            if ($this->deleteUserId == user()->id) {
-                $this->error('You cannot delete your own account');
-                return;
-            }
+            // if ($this->deleteUserId == user()->id) {
+            //     $this->error('You cannot delete your own account');
+            //     return;
+            // }
 
             $this->userService->deleteUser($this->deleteUserId);
 

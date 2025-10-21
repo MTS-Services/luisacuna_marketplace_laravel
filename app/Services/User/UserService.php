@@ -33,6 +33,11 @@ class UserService
         return $this->userRepository->paginate($perPage, $filters);
     }
 
+    public function getTrashedUsersPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        return $this->userRepository->trashPaginate($perPage, $filters);
+    }
+
     public function getUserById(int $id): ?User
     {
         return $this->userRepository->find($id);

@@ -39,4 +39,6 @@ interface UserRepositoryInterface
     public function bulkDelete(array $ids): int;
     
     public function bulkUpdateStatus(array $ids, string $status): int;
+
+    public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
 }
