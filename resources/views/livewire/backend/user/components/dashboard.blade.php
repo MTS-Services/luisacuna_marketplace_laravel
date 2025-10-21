@@ -1,19 +1,4 @@
  <div class="space-y-6">
-     <!-- Page Header -->
-     <div class="flex items-center justify-between">
-         <div>
-             <h1 class="text-2xl font-bold text-white">Order/Purchased Orders</h1>
-             <p class="text-gray-400 text-sm mt-1">Manage and track your purchased orders</p>
-         </div>
-         <button
-             class="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-6 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all shadow-lg hover:shadow-purple-500/50">
-             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-             </svg>
-             New Order
-         </button>
-     </div>
-
      <!-- Filters -->
      <div class="flex flex-col sm:flex-row gap-4">
          <select
