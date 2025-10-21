@@ -70,7 +70,7 @@
         </nav>
 
         <!-- Right Side Icons -->
-        <div class="flex items-center gap-1 sm:gap-2 md:gap-3">
+        <div class="flex items-center gap-1 sm:gap-2">
             <!-- Mobile Search -->
             <button class="lg:hidden text-white hover:bg-gray-800 p-1.5 sm:p-2 rounded transition-all">
                 <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -98,9 +98,9 @@
                 <button @click="open = !open"
                     class="flex items-center p-1 sm:p-1.5 rounded-lg text-white hover:bg-gray-800 transition-all focus:outline-none">
                     <div
-                        class="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center overflow-hidden">
+                        class="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full overflow-hidden">
                         <img src="{{ storage_url(auth()->user()->avatar) }}" class="w-full h-full object-cover"
-                            alt="Avatar">
+                            alt="{{ auth()->user()->full_name ?? 'User Avatar' }}">
                     </div>
                 </button>
 
