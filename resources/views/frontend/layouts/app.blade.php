@@ -10,6 +10,13 @@
         {{ site_name() }}
     </title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @fluxAppearance()
+    <style>
+        :root {
+            --livewire-progress-bar-color: var(--accent);
+        }
+    </style>
+    @stack('styles')
 </head>
 
 <body class="h-screen flex flex-col">
@@ -18,6 +25,9 @@
         {{ $slot }}
     </main>
     <livewire:frontend.partials.footer />
+    @fluxScripts()
+    
+    @stack('scripts')
 </body>
 
 </html>
