@@ -75,4 +75,9 @@ class GameRepository implements GameRepositoryInterface {
     {
         return $this->model->findOrFail($id);
     }
+
+    public function createGame(array $data): Game
+    {
+        return $this->model->create($data);
+    }   
 }

@@ -24,5 +24,6 @@ interface GameRepositoryInterface
 
     public function findOrFail($id): Game;
 
+    public function createGame(array $data): Game;
 
 }

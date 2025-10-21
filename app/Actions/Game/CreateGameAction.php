@@ -2,6 +2,7 @@
 
 namespace App\Actions\Game;
 
+use App\DTOs\Game\CreateGameDTO;
 use App\Models\Game;
 use App\Repositories\Contracts\GameRepositoryInterface;
 use Illuminate\Support\Facades\DB;
@@ -13,11 +14,19 @@ class CreateGameAction {
         
     }
 
-    public function execute( $data)
+    public function execute(CreateGameDTO $dto)
     {
-      DB::transaction(function () use($data){
+      
+      if($dto->logo) $dto->logo->store('logo', 'public');
+
+
+      $dto = $dto->toArray();
+      DB::transaction(function () use($dto){
         
+        // if($data->logo) dd($data->logo);
        
+        dd($dto);
+
       });
     }
 }

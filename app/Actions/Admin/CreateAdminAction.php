@@ -7,7 +7,7 @@ use App\Events\Admin\AdminCreated;
 use App\Models\Admin;
 use App\Repositories\Contracts\AdminRepositoryInterface;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+
 
 class CreateAdminAction
 {

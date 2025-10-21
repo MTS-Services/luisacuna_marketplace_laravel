@@ -2,13 +2,14 @@
 
 namespace App\Services\Game;
 
+use App\Actions\Game\CreateGameAction;
 use App\Enums\GameStatus;
 use App\Models\Game;
 use App\Repositories\Contracts\GameRepositoryInterface;
 
 class GameService
 {
-    public function __construct(Protected GameRepositoryInterface $gameRepository)
+    public function __construct(Protected GameRepositoryInterface $gameRepository, protected CreateGameAction $createGameAction)
     { }
 
     public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null)
@@ -47,5 +48,10 @@ class GameService
     public function findOrFail($id): Game
     {
         return $this->gameRepository->findOrFail($id);
+    }
+
+    public function createGame(array $data): Game
+    {
+        return $this->createGame($data);
     }
 }

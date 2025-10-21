@@ -3,7 +3,7 @@
 namespace App\Services\Game;
 
 use App\Actions\Admin\CreateGameCategoryAction;
-use App\DTOs\GameCategory\CreateGameCategoryDTO;
+use App\DTOs\Game\CreateGameCategoryDTO;
 use App\Enums\GameCategoryStatus;
 use App\Models\GameCategory;
 use App\Repositories\Contracts\GameCategoryRepositoryInterface;
@@ -22,7 +22,7 @@ class GameCategoryService
     {
         return $this->gameCategoryRepository->all();
     }
-    public function create(CreateGameCategoryDTO $dto)
+    public function create(CreateGameCategoryDTO $dto): GameCategory
     {
         return $this->gameCategoryAction->execute($dto);
     }
