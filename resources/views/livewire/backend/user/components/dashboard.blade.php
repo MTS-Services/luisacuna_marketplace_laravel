@@ -34,18 +34,27 @@
             <table class="w-full text-left table-auto border-separate border-spacing-0">
                 <thead>
                     <tr class=" text-sm text-zinc-100 uppercase tracking-wider">
-                        <th class="px-4 md:px-6 py-5 text-sm md:text-base text-zinc-50 capitalize font-normal flex items-center gap-1">
+                        <th
+                            class="px-4 md:px-6 py-5 text-sm md:text-base text-zinc-50 capitalize font-normal flex items-center gap-1">
                             Order Name
                             <span>
-                               <img src="{{ asset('assets/icons/ic_round-arrow-left.png') }}" class="w-full h-full" alt="">
+                                <img src="{{ asset('assets/icons/ic_round-arrow-left.png') }}" class="w-full h-full"
+                                    alt="">
                             </span>
                         </th>
                         <th class="px-4 md:px-6 py-5 text-sm md:text-base text-zinc-50 capitalize font-normal">Type</th>
-                        <th class="px-4 md:px-6 py-5 text-sm md:text-base text-zinc-50 capitalize font-normal">Seller</th>
-                        <th class="px-4 md:px-6 py-5 text-sm md:text-base text-zinc-50 capitalize font-normal whitespace-nowrap">Ordered date</th>
-                        <th class="px-4 md:px-6 py-5 text-sm md:text-base text-zinc-50 capitalize font-normal whitespace-nowrap">Order status</th>
-                        <th class="px-4 md:px-6 py-5 text-sm md:text-base text-zinc-50 capitalize font-normal">Quantity</th>
-                        <th class="px-4 md:px-6 py-5 text-sm md:text-base text-zinc-50 capitalize font-normal">Price ($)</th>
+                        <th class="px-4 md:px-6 py-5 text-sm md:text-base text-zinc-50 capitalize font-normal">Seller
+                        </th>
+                        <th
+                            class="px-4 md:px-6 py-5 text-sm md:text-base text-zinc-50 capitalize font-normal whitespace-nowrap">
+                            Ordered date</th>
+                        <th
+                            class="px-4 md:px-6 py-5 text-sm md:text-base text-zinc-50 capitalize font-normal whitespace-nowrap">
+                            Order status</th>
+                        <th class="px-4 md:px-6 py-5 text-sm md:text-base text-zinc-50 capitalize font-normal">Quantity
+                        </th>
+                        <th class="px-4 md:px-6 py-5 text-sm md:text-base text-zinc-50 capitalize font-normal">Price ($)
+                        </th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-zinc-800">
@@ -55,7 +64,8 @@
                                 <img src="fortnite-logo.png" alt="Fortnite Logo"
                                     class="w-10 h-10 rounded-lg bg-orange-600 p-1 flex-shrink-0" />
                                 <div class="min-w-0">
-                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift</h3>
+                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift
+                                    </h3>
                                     <p class="text-xs text-green-400 truncate">Cheapest +75% Discount</p>
                                     <a href="#"
                                         class="text-pink-400 text-xs hover:underline flex items-center gap-1">Learn
@@ -77,10 +87,12 @@
                     <tr class=" hover:bg-bg-primary/60 transition-colors">
                         <td class="px-4 md:px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <img src="fortnite-logo.png" alt="Fortnite Logo"
-                                    class="w-10 h-10 rounded-lg bg-orange-600 p-1 flex-shrink-0" />
+                                <div class="w-10 h-10 rounded-lg bg-orange-600 flex-shrink-0">
+                                    <img src="https://dummyimage.com/600x600/000&text=F" alt="Fortnite Logo" class="w-full h-full rounded-lg" />
+                                </div>
                                 <div class="min-w-0">
-                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift</h3>
+                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift
+                                    </h3>
                                     <p class="text-xs text-green-400 truncate">Cheapest +75% Discount</p>
                                     <a href="#"
                                         class="text-pink-400 text-xs hover:underline flex items-center gap-1">Learn
@@ -105,7 +117,8 @@
                                 <img src="fortnite-logo.png" alt="Fortnite Logo"
                                     class="w-10 h-10 rounded-lg bg-orange-600 p-1 flex-shrink-0" />
                                 <div class="min-w-0">
-                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift</h3>
+                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift
+                                    </h3>
                                     <p class="text-xs text-green-400 truncate">Cheapest +75% Discount</p>
                                     <a href="#"
                                         class="text-pink-400 text-xs hover:underline flex items-center gap-1">Learn
@@ -130,7 +143,8 @@
                                 <img src="fortnite-logo.png" alt="Fortnite Logo"
                                     class="w-10 h-10 rounded-lg bg-orange-600 p-1 flex-shrink-0" />
                                 <div class="min-w-0">
-                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift</h3>
+                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift
+                                    </h3>
                                     <p class="text-xs text-green-400 truncate">Cheapest +75% Discount</p>
                                     <a href="#"
                                         class="text-pink-400 text-xs hover:underline flex items-center gap-1">Learn
@@ -155,7 +169,8 @@
                                 <img src="fortnite-logo.png" alt="Fortnite Logo"
                                     class="w-10 h-10 rounded-lg bg-orange-600 p-1 flex-shrink-0" />
                                 <div class="min-w-0">
-                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift</h3>
+                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift
+                                    </h3>
                                     <p class="text-xs text-green-400 truncate">Cheapest +75% Discount</p>
                                     <a href="#"
                                         class="text-pink-400 text-xs hover:underline flex items-center gap-1">Learn
@@ -180,7 +195,8 @@
                                 <img src="apex-logo.png" alt="Apex Legends Logo"
                                     class="w-10 h-10 rounded-full bg-bg-primary border border-zinc-700 p-1 flex-shrink-0" />
                                 <div class="min-w-0">
-                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Apex Legends Batt...</h3>
+                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Apex Legends Batt...
+                                    </h3>
                                     <p class="text-xs text-red-400 truncate">Exclusive +60% Off</p>
                                     <a href="#"
                                         class="text-pink-400 text-xs hover:underline flex items-center gap-1">Discover
@@ -192,7 +208,8 @@
                         <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm">Lara Croft</td>
                         <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm whitespace-nowrap">January 15, 2019</td>
                         <td class="px-4 md:px-6 py-4">
-                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-primary-800 text-red-400 whitespace-nowrap inline-block">In
+                            <span
+                                class="px-3 py-1 text-xs font-semibold rounded-full bg-primary-800 text-red-400 whitespace-nowrap inline-block">In
                                 Progress</span>
                         </td>
                         <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm">11567</td>
@@ -205,7 +222,8 @@
                                 <img src="cod-logo.png" alt="Call of Duty Logo"
                                     class="w-10 h-10 rounded-full bg-gray-900 border border-zinc-700 p-1 flex-shrink-0" />
                                 <div class="min-w-0">
-                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Call of Duty Skin P...</h3>
+                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Call of Duty Skin P...
+                                    </h3>
                                     <p class="text-xs text-pink-400 truncate">Limited Time +50% Savi...</p>
                                     <a href="#"
                                         class="text-pink-400 text-xs hover:underline flex items-center gap-1">View
