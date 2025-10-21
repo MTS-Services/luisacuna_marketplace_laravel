@@ -2,19 +2,18 @@
     @push('styles')
         <link rel="stylesheet" href="{{ asset('assets/css/ckEditor.css') }}">
     @endpush
-
     @if (session()->has('message'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
             {{ session('message') }}
         </div>
     @endif
 
-    {{-- <!-- Example 1: Simple Usage -->
+    <!-- Example 1: Simple Usage -->
     <div class="bg-white rounded-lg shadow-md p-6">
         <h2 class="text-2xl font-bold mb-4">Example 1: Simple Usage</h2>
         <form wire:submit.prevent="saveSimple">
             <livewire:ui.text-areat wire:model="simpleContent" label="Content" :required="true" :error="$errors->first('simpleContent')" />
-            <button type="submit" class="mt-4 px-6 py-2 bg-zinc-600 text-white rounded hover:bg-zinc-700">
+            <button type="submit" class="mt-4 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                 Save Simple Content
             </button>
         </form>
@@ -62,7 +61,7 @@
                 Update Content
             </button>
         </form>
-    </div> --}}
+    </div>
 
     <!-- Example 5: Read-only Editor -->
     {{-- <div class="bg-white rounded-lg shadow-md p-6">
@@ -77,8 +76,7 @@
 
 
 
-    <div class="bg-bg-secondary
-     rounded-lg shadow-md p-6">
+    <div class="bg-white rounded-lg shadow-md p-6">
         <form wire:submit="saveContent">
             {{-- First Editor --}}
             <div class="mb-6">
@@ -86,11 +84,11 @@
                     Main Content *
                 </label>
 
-                <x-ui.text-editor model="content1" id="text-editor-main-content" placeholder="Enter your main content here..."
-                    :height="250" />
+                <x-ui.text-editor model="content1" id="text-editor-main-content"
+                    placeholder="Enter your main content here..." :height="250" />
 
-                {{-- <x-tiny-editor model="content1" id="editor-main-content" placeholder="Enter your main content here..."
-                    :height="250" /> --}}
+                <x-tiny-editor model="content1" id="editor-main-content" placeholder="Enter your main content here..."
+                    :height="250" />
 
                 @error('content1')
                     <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
@@ -98,7 +96,7 @@
             </div>
 
             {{-- Second Editor --}}
-            {{-- <div class="mb-6">
+            <div class="mb-6">
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                     Additional Content *
                 </label>
@@ -109,10 +107,10 @@
                 @error('content2')
                     <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                 @enderror
-            </div> --}}
+            </div>
 
             {{-- Third Editor (Optional/Smaller) --}}
-            {{-- <div class="mb-6">
+            <div class="mb-6">
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                     Description (Optional)
                 </label>
@@ -123,17 +121,17 @@
                 @error('description')
                     <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                 @enderror
-            </div> --}}
+            </div>
 
             {{-- Submit Button --}}
-            {{-- <div class="flex justify-end">
+            <div class="flex justify-end">
                 <button type="submit"
-                    class="bg-zinc-600 hover:bg-zinc-700 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-200"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-200"
                     wire:loading.attr="disabled">
                     <span wire:loading.remove wire:target="saveContent">Save Content</span>
                     <span wire:loading wire:target="saveContent">Saving...</span>
                 </button>
-            </div> --}}
+            </div>
         </form>
     </div>
 </div>
