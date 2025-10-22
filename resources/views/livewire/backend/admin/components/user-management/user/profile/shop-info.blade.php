@@ -45,7 +45,7 @@
                 <div>
                     <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">Seller Level</p>
                     <h3
-                        class="text-lg font-medium text-gray-900 badge badge-soft {{ $user->seller->seller_level_color }}">
+                        class="text-lg font-medium text-gray-900 badge badge-soft {{ $user->seller->seller_level_color ?? 'N/A' }}">
                         {{ $user->seller->seller_level_label ?? 'N/A' }}
                     </h3>
                 </div>

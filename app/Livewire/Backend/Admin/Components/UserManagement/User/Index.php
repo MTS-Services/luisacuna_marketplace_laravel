@@ -34,6 +34,7 @@ class Index extends Component
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
+        $users->load('country');
 
         // $users = $this->userService->getAllUsers();
 

@@ -151,6 +151,16 @@ class UserRepository implements UserRepositoryInterface
 
     public function bulkUpdateStatus(array $ids, string $status): int
     {
-        return $this->model->whereIn('id', $ids)->update(['status' => $status]);
+        return $this->model->whereIn('id', $ids)->update(['account_status' => $status]);
+    }
+
+    public function bulkRestore(array $ids): int
+    {
+        return $this->model->withTrashed()->whereIn('id', $ids)->restore();
+    }
+
+    public function bulkForceDelete(array $ids): int
+    {
+        return $this->model->withTrashed()->whereIn('id', $ids)->forceDelete();
     }
 }

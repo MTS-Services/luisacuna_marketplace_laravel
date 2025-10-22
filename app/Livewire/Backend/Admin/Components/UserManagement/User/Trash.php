@@ -10,6 +10,7 @@ use App\Services\User\UserService;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
+use Throwable;
 
 class Trash extends Component
 {
@@ -20,7 +21,7 @@ class Trash extends Component
     protected UserService $userService;
 
     public $statusFilter = '';
-    public $deleteUserId;
+    public $userId;
     public $bulkAction = '';
     public $showDeleteModal = false;
     public $showBulkActionModal = false;
@@ -93,14 +94,18 @@ class Trash extends Component
             [
                 'key' => 'id',
                 'label' => 'Confirm Delete',
-                'method' => 'forceDelete'
+                'method' => 'confirmDelete'
             ],
         ];
         $bulkActions = [
-            ['value' => 'delete', 'label' => 'Delete'],
+            ['value' => 'bulkRestore', 'label' => 'Restore'],
+            ['value' => 'bulkForceDelete', 'label' => 'Permanently Delete'],
             ['value' => 'activate', 'label' => 'Activate'],
+            ['value' => 'deactivate', 'label' => 'Deactivate'],
+            ['value' => 'suspend', 'label' => 'Suspend'],
+
         ];
-        return view('livewire.backend.admin.components.user-management.user.index', [
+        return view('livewire.backend.admin.components.user-management.user.trash', [
             'users' => $users,
             'columns' => $columns,
             'statuses' => UserAccountStatus::options(),
@@ -111,30 +116,33 @@ class Trash extends Component
     }
     public function confirmDelete($userId): void
     {
-        $this->deleteUserId = $userId;
+        $this->userId = $userId;
         $this->showDeleteModal = true;
     }
 
-    public function delete(): void
+    public function forceDelete(): void
     {
         try {
-            if (!$this->deleteUserId) {
-                return;
-            }
-
-            if ($this->deleteUserId == user()->id) {
-                $this->error('You cannot delete your own account');
-                return;
-            }
-
-            $this->userService->deleteUser($this->deleteUserId);
-
+            $this->userService->deleteUser($this->userId, forceDelete: true);
             $this->showDeleteModal = false;
-            $this->deleteUserId = null;
+            $this->resetPage();
 
-            $this->success('User deleted successfully');
-        } catch (\Exception $e) {
-            $this->error('Failed to delete User: ' . $e->getMessage());
+            $this->success('User permanently deleted successfully');
+        } catch (Throwable $e) {
+            $this->error('Failed to delete user: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    public function restore($userId): void
+    {
+        try {
+            $this->userService->restoreUser($userId);
+
+            $this->success('User restored successfully');
+        } catch (Throwable $e) {
+            $this->error('Failed to restore user: ' . $e->getMessage());
+            throw $e;
         }
     }
     public function resetFilters(): void
@@ -178,7 +186,8 @@ class Trash extends Component
 
         try {
             match ($this->bulkAction) {
-                'delete' => $this->bulkDelete(),
+                'bulkForceDelete' => $this->bulkForceDeleteUsers(),
+                'bulkRestore' => $this->bulkRestoreUsers(),
                 'activate' => $this->bulkUpdateStatus(UserAccountStatus::ACTIVE),
                 'deactivate' => $this->bulkUpdateStatus(UserAccountStatus::INACTIVE),
                 'suspend' => $this->bulkUpdateStatus(UserAccountStatus::SUSPENDED),
@@ -192,17 +201,20 @@ class Trash extends Component
             $this->error('Bulk action failed: ' . $e->getMessage());
         }
     }
-
-    protected function bulkDelete(): void
-    {
-        $count = $this->userService->bulkDeleteUsers($this->selectedIds);
-        $this->success("{$count} Users deleted successfully");
-    }
-
     protected function bulkUpdateStatus(UserAccountStatus $status): void
     {
         $count = $this->userService->bulkUpdateStatus($this->selectedIds, $status);
         $this->success("{$count} Users updated successfully");
+    }
+    protected function bulkRestoreUsers(): void
+    {
+        $count = $this->userService->bulkRestoreUsers($this->selectedIds);
+        $this->success("{$count} Users restored successfully");
+    }
+    protected function bulkForceDeleteUsers(): void
+    {
+        $count = $this->userService->bulkForceDeleteUsers($this->selectedIds);
+        $this->success("{$count} Users permanently deleted successfully");
     }
 
     protected function getFilters(): array
@@ -234,16 +246,5 @@ class Trash extends Component
     public function updatedStatusFilter(): void
     {
         $this->resetPage();
-    }
-
-    public function restore($userId): void
-    {
-        $this->userService->restoreUser($userId);
-    }
-
-    public function forceDelete($userId): void
-    {
-        $this->userService->deleteUser($userId, forceDelete: true);
-        $this->showDeleteModal = true;
     }
 }

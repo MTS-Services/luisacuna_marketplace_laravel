@@ -60,6 +60,6 @@ class AdminController extends Controller
 
     public function trash()
     {
-        //
+        return view($this->masterView);
     }
 }

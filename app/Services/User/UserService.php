@@ -138,4 +138,13 @@ class UserService
         $user->suspend();
         return true;
     }
+    public function bulkRestoreUsers(array $ids): int
+    {
+        return $this->userRepository->bulkRestore($ids);
+    }
+
+    public function bulkForceDeleteUsers(array $ids): int
+    {
+        return $this->userRepository->bulkForceDelete($ids);
+    }
 }

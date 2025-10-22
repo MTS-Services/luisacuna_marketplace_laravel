@@ -138,9 +138,10 @@ class Index extends Component
         $this->deleteAdminId = $adminId;
         $this->showDeleteModal = true;
     }
-
+    
     public function delete(): void
     {
+        // dd($this->deleteAdminId);
         try {
             if (!$this->deleteAdminId) {
                 return;
