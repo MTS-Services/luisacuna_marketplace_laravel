@@ -23,7 +23,7 @@
 
             <!-- Add other form fields here -->
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
-                <div>
+                {{-- <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Name <span class="text-red-500">*</span>
                     </label>
@@ -32,9 +32,15 @@
                     @error('form.name')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
+                </div> --}}
+
+                <div class="w-full">
+                    <x-ui.label value="Name" class="mb-1" />
+                    <x-ui.input type="text" placeholder="Name" wire:model="form.name" />
+                    <x-ui.input-error :messages="$errors->get('form.name')" />
                 </div>
 
-                <div>
+                {{-- <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Email <span class="text-red-500">*</span>
                     </label>
@@ -43,8 +49,14 @@
                     @error('form.email')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
+                </div> --}}
+
+                <div class="w-full">
+                    <x-ui.label value="Email" class="mb-1" />
+                    <x-ui.input type="email" placeholder="Email" wire:model="form.email" />
+                    <x-ui.input-error :messages="$errors->get('form.email')" />
                 </div>
-                <div>
+                {{-- <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Phone <span class="text-red-500">*</span>
                     </label>
@@ -53,9 +65,15 @@
                     @error('form.phone')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
+                </div> --}}
+
+                <div class="w-full">
+                    <x-ui.label value="Phone" class="mb-1" />
+                    <x-ui.input type="tel" placeholder="Phone" wire:model="form.phone" />
+                    <x-ui.input-error :messages="$errors->get('form.phone')" />
                 </div>
 
-                <div>
+                {{-- <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Status <span class="text-red-500">*</span>
                     </label>
@@ -69,9 +87,19 @@
                     @error('form.status')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
+                </div> --}}
+
+                <div class="w-full">
+                    <x-ui.label value="Status Select" class="mb-1" />
+                    <x-ui.select wire:model="form.status">
+                        @foreach ($statuses as $status)
+                            <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
+                        @endforeach
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.status')" />
                 </div>
 
-                <div>
+                {{-- <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Password <span class="text-red-500">*</span>
                     </label>
@@ -80,8 +108,14 @@
                     @error('form.password')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
+                </div> --}}
+
+                <div class="w-full">
+                    <x-ui.label value="Password" class="mb-1" />
+                    <x-ui.input type="password" placeholder="Password" wire:model="form.password" />
+                    <x-ui.input-error :messages="$errors->get('form.password')" />
                 </div>
-                <div>
+                {{-- <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Confirm Password <span class="text-red-500">*</span>
                     </label>
@@ -90,6 +124,13 @@
                     @error('form.password_confirmation')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
+                </div> --}}
+
+                <div class="w-full">
+                    <x-ui.label value="Confirm Password" class="mb-1" />
+                    <x-ui.input type="password" placeholder="Confirm Password"
+                        wire:model="form.password_confirmation" />
+                    <x-ui.input-error :messages="$errors->get('form.password_confirmation')" />
                 </div>
             </div>
 
