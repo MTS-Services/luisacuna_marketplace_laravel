@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Backend\Admin\Components\GameManagement\Category;
 
-use App\DTOs\GameCategory\CreateGameCategoryDTO;
+use App\DTOs\Game\CreateGameCategoryDTO ;
 use App\Enums\GameCategoryStatus;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameCategory;
 use App\Services\Game\GameCategoryService;

@@ -2,7 +2,7 @@
 
 namespace App\Actions\Admin;
 
-use App\DTOs\GameCategory\CreateGameCategoryDTO;
+use App\DTOs\Game\CreateGameCategoryDTO;
 use App\Models\GameCategory;
 use App\Repositories\Contracts\GameCategoryRepositoryInterface;
 use Illuminate\Support\Facades\DB;
