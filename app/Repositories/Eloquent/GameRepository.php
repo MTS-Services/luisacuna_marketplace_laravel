@@ -13,7 +13,7 @@ class GameRepository implements GameRepositoryInterface
 
     public function __construct(public Game $model)
     {
-        $this->model = $model;
+
     }
     public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator
     {
@@ -133,5 +133,18 @@ class GameRepository implements GameRepositoryInterface
     {
 
         return $this->model->create($data);
+    }
+
+    public function find($id): ?Game
+    {
+        return $this->model->find($id);
+    }   
+
+    public function updateGame($id, array $data): bool
+    {
+        $game = $this->findOrFail($id);
+        
+        return $game->update($data);
+      
     }
 }

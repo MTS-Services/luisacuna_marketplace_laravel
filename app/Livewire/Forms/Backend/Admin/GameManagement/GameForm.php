@@ -3,7 +3,7 @@
 namespace App\Livewire\Forms\Backend\Admin\GameManagement;
 
 use App\Enums\GameStatus;
-use App\Models\Game as ModelsGame;
+use App\Models\Game;
 use Illuminate\Http\UploadedFile;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -85,7 +85,7 @@ class GameForm extends Form
         ];
     }
 
-    public function setGame(ModelsGame $game) :void 
+    public function setGame(Game $game) :void 
     {
         $this->game_category_id = $game->game_category_id;
         $this->name = $game->name;

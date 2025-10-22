@@ -25,8 +25,8 @@
                     <select wire:model="form.game_category_id"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
                         <option value="">Select Category</option>
-                        @foreach ([] as $cat)
-                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                        @foreach ($categories as $index => $value)
+                            <option value="{{ $index }}" >{{ $value }}</option>
                         @endforeach
                     </select>
                     @error('form.game_category_id') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
