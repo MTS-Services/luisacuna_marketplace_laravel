@@ -66,7 +66,7 @@
                     <h4 class="text-xl font-semibold text-gray-800">Inputs</h4>
                     <div class="w-full">
                         <x-ui.label value="Standard Input" class="mb-1" />
-                        <x-ui.input placeholder="Standard Input" wire:model="input" />
+                        <x-ui.input type="text" placeholder="Standard Input" wire:model="input" />
                         <x-ui.input-error :messages="$errors->get('input')" />
                     </div>
                     <div class="w-full">
