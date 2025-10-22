@@ -7,6 +7,9 @@ use App\Enums\UserAccountStatus;
 use App\Enums\UserStatus;
 use App\Enums\UserType;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends AuthBaseModel
 {
@@ -111,11 +114,27 @@ class User extends AuthBaseModel
     |--------------------------------------------------------------------------
     */
 
-    public function country()
+    public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'country_id', 'id');
     }
 
+    public function seller(): HasOne
+    {
+        return $this->hasOne(SellerProfile::class, 'user_id', 'id');
+    }
+    public function kyc(): HasOne
+    {
+        return $this->hasOne(UserKyc::class, 'user_id', 'id');
+    }
+    public function statistic(): HasOne
+    {
+        return $this->hasOne(UserStatistic::class, 'user_id', 'id');
+    }
+    public function referral(): HasOne
+    {
+        return $this->hasOne(UserReferral::class, 'user_id', 'id');
+    }
     /*
     |--------------------------------------------------------------------------
     | Query Scopes
@@ -201,6 +220,11 @@ class User extends AuthBaseModel
         return $this->avatar
             ? asset('storage/' . $this->avatar)
             : 'https://ui-avatars.com/api/?name=' . urlencode($name);
+    }
+
+    public function getDateOfBirthAttribute($value)
+    {
+        return $value ? Carbon::parse($value)->format('Y-m-d') : null;
     }
 
     /*

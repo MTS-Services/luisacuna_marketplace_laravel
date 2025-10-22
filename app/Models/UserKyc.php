@@ -54,4 +54,23 @@ class UserKyc extends Model
     {
         return $this->kyc_status === 'rejected';
     }
+
+    public function getKycStatusLabelAttribute(): string
+    {
+        return $this->kyc_status->label();
+    }
+
+    public function getKycStatusColorAttribute(): string
+    {
+        return $this->kyc_status->color();
+    }
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->appends = array_merge(parent::getAppends(), [
+            'kyc_status_label',
+            'kyc_status_color',
+        ]);
+    }
 }

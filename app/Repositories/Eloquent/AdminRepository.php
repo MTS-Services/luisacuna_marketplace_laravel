@@ -35,9 +35,26 @@ class AdminRepository implements AdminRepositoryInterface
         return $query->paginate($perPage);
     }
 
+    public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        $query = $this->model->onlyTrashed()->orderBy('deleted_at', 'desc');
+
+        // Apply filters
+        if (!empty($filters)) {
+            $query->filter($filters);
+        }
+
+        // Apply sorting        
+        $sortField = $filters['sort_field'] ?? 'deleted_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+        $query->orderBy($sortField, $sortDirection);
+
+        return $query->paginate($perPage);
+    }
+
     public function find(int $id): ?Admin
     {
-        return $this->model->find($id);
+        return $this->model->withTrashed()->find($id);
     }
 
     public function findByEmail(string $email): ?Admin
@@ -74,7 +91,7 @@ class AdminRepository implements AdminRepositoryInterface
 
     public function forceDelete(int $id): bool
     {
-        $admin = $this->model->withTrashed()->find($id);
+        $admin = $this->model->onlyTrashed()->find($id);
         
         if (!$admin) {
             return false;
@@ -133,5 +150,13 @@ class AdminRepository implements AdminRepositoryInterface
     public function bulkUpdateStatus(array $ids, string $status): int
     {
         return $this->model->whereIn('id', $ids)->update(['status' => $status]);
+    }
+    public function bulkRestore(array $ids): int
+    {
+         return $this->model->withTrashed()->whereIn('id', $ids)->restore();
+    }
+    public function bulkForceDelete(array $ids): int //
+    {  
+        return $this->model->withTrashed()->whereIn('id', $ids)->forceDelete();
     }
 }

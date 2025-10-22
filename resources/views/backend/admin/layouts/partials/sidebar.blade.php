@@ -64,8 +64,8 @@
             <x-backend.navlink type="dropdown" icon="user-group" name="User Management" :page_slug="$active"
                 :items="[
                     [
-                        'name' => 'Users',
-                        'route' => '#',
+                        'name' => 'All Users',
+                        'route' => route('admin.um.user.index'),
                         'icon' => 'user',
                         'active' => 'admin-users',
                     ],

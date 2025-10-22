@@ -132,4 +132,18 @@ class AdminService
         $admin->suspend();
         return true;
     }
+    public function getTrashedAdminsPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        return $this->adminRepository->trashPaginate($perPage, $filters);
+    }
+
+    public function bulkRestoreAdmins(array $ids): int
+    {
+        return $this->adminRepository->bulkRestore($ids);
+    }
+
+    public function bulkForceDeleteAdmins(array $ids): int
+    {
+        return $this->adminRepository->bulkForceDelete($ids);
+    }
 }

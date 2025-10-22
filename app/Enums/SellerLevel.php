@@ -13,7 +13,7 @@ enum SellerLevel: string
 
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::BRONZE => 'Bronze',
             self::SILVER => 'Silver',
             self::GOLD => 'Gold',
@@ -25,12 +25,12 @@ enum SellerLevel: string
 
     public function color(): string
     {
-        return match($this) {
-            self::BRONZE => 'badge-bronze',
-            self::SILVER => 'badge-silver',
-            self::GOLD => 'badge-gold',
-            self::PLATINUM => 'badge-platinum',
-            self::DIAMOND => 'badge-diamond',
+        return match ($this) {
+            self::BRONZE => 'badge badge-warning',
+            self::SILVER => 'badge badge-secondary',
+            self::GOLD => 'badge badge-primary', 
+            self::PLATINUM => 'badge badge-info',
+            self::DIAMOND => 'badge badge-success',
         };
     }
 
