@@ -51,8 +51,7 @@ class Create extends Component
             $admin = $this->adminService->createAdmin($dto);
 
             $this->dispatch('adminCreated');
-            $this->success('Admin created successfully');
-
+           $this->success('Admin created successfully');
             // Redirect to user list
             return $this->redirect(route('admin.am.admin.index'), navigate: true);
         } catch (\Exception $e) {

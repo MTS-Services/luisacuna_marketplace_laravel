@@ -26,6 +26,13 @@
             }
         }
     </style>
+    <script>
+        document.addEventListener('livewire:initialized', function() {
+            Livewire.on('notify', (event) => {
+                showAlert(event.type, event.message);
+            });
+        });
+    </script>
     @stack('styles')
 </head>
 
