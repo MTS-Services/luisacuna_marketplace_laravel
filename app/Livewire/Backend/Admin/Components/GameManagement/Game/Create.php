@@ -15,6 +15,7 @@ use Livewire\WithFileUploads;
 class Create extends Component
 {
     use WithFileUploads;
+
     protected GameService $gameService;
 
     public GameForm $form;
@@ -53,10 +54,30 @@ class Create extends Component
      
         $data = $this->form->validate();
 
-        $dto = CreateGameDTO::formArray($data);
+        $dto = CreateGameDTO::formArray([
+            'game_category_id' => $this->form->game_category_id,
+            'name' => $this->form->name,
+            'status' => $this->form->status,
+            'developer' => $this->form->developer,
+            'publisher' => $this->form->publisher,
+            'release_date' => $this->form->release_date,
+            'platform' => $this->form->platform,
+            'description' => $this->form->description,
+
+            'is_featured' => $this->form->is_featured,
+            'is_trending' => $this->form->is_trending,
+
+            'logo' => $this->form->logo,
+            'banner' => $this->form->banner,
+            'thumbnail' => $this->form->thumbnail,
+            
+            'meta_title' => $this->form->meta_title,
+            'meta_description' => $this->form->meta_description,
+            'meta_keywords' => $this->form->meta_keywords,
+        ]);
         try {
 
-            $this->createAdminAction->execute($dto);
+            $this->gameService->createGame($dto);
 
             return $this->redirect(route('admin.gm.game.index'), navigate: true);
 

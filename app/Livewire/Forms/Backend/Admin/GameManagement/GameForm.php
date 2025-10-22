@@ -4,6 +4,7 @@ namespace App\Livewire\Forms\Backend\Admin\GameManagement;
 
 use App\Enums\GameStatus;
 use App\Models\Game as ModelsGame;
+use Illuminate\Http\UploadedFile;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -27,10 +28,10 @@ class GameForm extends Form
     public ?string $publisher = null;
 
     #[Validate('nullable', 'file', 'image', 'max:10240','mimes:jpg,jpeg,png',)]
-    public ?string $logo = null;
+    public ?UploadedFile $logo = null;
     
     #[Validate('nullable', 'file', 'image', 'max:10240','mimes:jpg,jpeg,png',)]
-    public ?string $banner = null;  
+    public ?UploadedFile $banner = null;  
 
     #[Validate('required', 'date', 'after_or_equal:today')]
     public ?string $release_date = null;
@@ -45,7 +46,7 @@ class GameForm extends Form
 
     
     #[Validate('nullable', 'file', 'image', 'max:10240','mimes:jpg,jpeg,png')]
-    public ?string $thumbnail = null;
+    public ?UploadedFile $thumbnail = null;
     
     #[Validate('required', 'boolean')]
     public ?bool $is_featured = false; 

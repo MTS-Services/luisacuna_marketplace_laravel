@@ -3,6 +3,7 @@
 namespace App\Services\Game;
 
 use App\Actions\Game\CreateGameAction;
+use App\DTOs\Game\CreateGameDTO;
 use App\Enums\GameStatus;
 use App\Models\Game;
 use App\Repositories\Contracts\GameRepositoryInterface;
@@ -50,8 +51,8 @@ class GameService
         return $this->gameRepository->findOrFail($id);
     }
 
-    public function createGame(array $data): Game
+    public function createGame(CreateGameDTO $data): Game
     {
-        return $this->createGame($data);
+        return $this->createGameAction->execute($data);
     }
 }
