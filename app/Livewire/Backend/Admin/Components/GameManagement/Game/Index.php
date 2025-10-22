@@ -21,7 +21,7 @@ class Index extends Component
     public $statusFilter = '';
     public $showBulkActionModal = false;
     public $showDeleteModal = false;
-    public $deleteGameId = null;
+    public $deleteGameId = [];
     
 
     public function boot(GameService $gameService)  
@@ -133,11 +133,12 @@ class Index extends Component
      public function confirmDelete($id)
     {
         $this->showDeleteModal = true;
-        $this->deleteGameId = $id;
+        $this->deleteGameId[] = $id;
     }
 
     public function delete(){
         $this->showDeleteModal = false;
+
         $this->gameService->deleteGame($this->deleteGameId, false);
     }
 
@@ -167,14 +168,14 @@ class Index extends Component
             $this->selectAll = false;
             $this->bulkAction = '';
         } catch (\Exception $e) {
-            $this->error('Bulk action failed: ' . $e->getMessage());
+            dd('Bulk action failed: ' . $e->getMessage());
         }
     }
 
     public function bulkDelete(): void
     {
-         $this->gameService->bulkDeleteGames($this->selectedIds, false);
-       
+        $this->gameService->deleteGame($this->selectedIds, false);
+
     }
 
     public function bulkUpdateStatus( GameStatus $status): void{

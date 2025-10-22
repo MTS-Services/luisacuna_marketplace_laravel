@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('developer')->nullable();
             $table->string('publisher')->nullable();
             $table->date('release_date')->nullable();
-            $table->json('platfrom')->nullable();
+            $table->json('platform')->nullable();
             $table->string('logo')->nullable();
             $table->string('banner')->nullable();
             $table->string('thumbnail')->nullable();

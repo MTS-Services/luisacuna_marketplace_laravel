@@ -146,16 +146,30 @@
                             <td class="p-4 text-gray-900">{{ $game->meta_keywords?? 'N/A' }}</td>
                         </tr>
                         <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Logo </td>
-                            <td class="p-4 text-gray-900">{{ $game->logo?? 'N/A' }}</td>
+                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Logo</td>
+                            <td class="p-4 text-gray-900">
+                            @if($game->logo)
+                                <img src="{{ asset('/storage/'.$game->logo) }}" alt="{{ $game->name }}" class="w-16 h-16 object-cover">
+                            @else
+                                N/A
+                            @endif
+                            </td>
                         </tr>
                         <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Banner </td>
-                            <td class="p-4 text-gray-900">{{ $game->banner?? 'N/A' }}</td>
+                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Banner</td>
+                           <td class="p-4 text-gray-900"> @if($game->banner)
+                                <img src="{{ asset('/storage/'.$game->banner) }}" alt="{{ $game->name }}" class="w-16 h-16 object-cover">
+                            @else
+                                N/A
+                            @endif</td>
                         </tr>
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 w-2/5 text-gray-600 font-semibold">Thumbnail </td>
-                            <td class="p-4 text-gray-900">{{ $game->thumbnail?? 'N/A' }}</td>
+                            <td class="p-4 text-gray-900"> @if($game->thumbnail)
+                                <img src="{{ asset('/storage/'.$game->thumbnail) }}" alt="{{ $game->name }}" class="w-16 h-16 object-cover">
+                            @else
+                                N/A
+                            @endif</td>
                         </tr>
 
                         @if ($game->updated_by)

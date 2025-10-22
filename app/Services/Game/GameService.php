@@ -3,6 +3,7 @@
 namespace App\Services\Game;
 
 use App\Actions\Game\CreateGameAction;
+use App\Actions\Game\DeleteGameAction;
 use App\DTOs\Game\CreateGameDTO;
 use App\Enums\GameStatus;
 use App\Models\Game;
@@ -10,7 +11,7 @@ use App\Repositories\Contracts\GameRepositoryInterface;
 
 class GameService
 {
-    public function __construct(Protected GameRepositoryInterface $gameRepository, protected CreateGameAction $createGameAction)
+    public function __construct(Protected GameRepositoryInterface $gameRepository, protected CreateGameAction $createGameAction , protected DeleteGameAction $deleteGameAction)
     { }
 
     public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null)
@@ -23,13 +24,9 @@ class GameService
         return $this->gameRepository->OnlyTrashedPaginate($perPage, $filters, $queries ?? []);
     }
 
-    public function deleteGame($id, bool $forceDelete = false)
+    public function deleteGame(array $ids, bool $forceDelete = false)
     {
-        return $this->gameRepository->deleteGame($id, $forceDelete);
-    }   
-    public function bulkDeleteGames($ids, bool $forceDelete = false)
-    {
-        return $this->gameRepository->bulkDeleteGames($ids, $forceDelete);
+        return $this->deleteGameAction->execute($ids, $forceDelete);
     }
 
     public function bulkUpdateStatus($ids, GameStatus $status)

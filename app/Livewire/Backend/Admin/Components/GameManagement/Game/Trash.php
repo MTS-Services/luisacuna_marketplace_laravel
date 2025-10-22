@@ -18,7 +18,7 @@ class Trash extends Component
     public $showBulkActionModal = false;
 
     public $showDeleteModal = false;
-    public $deleteGameId = null;
+    public $deleteGameId = [];
     
 
     public function boot(GameService $gameService)  
@@ -133,11 +133,12 @@ class Trash extends Component
     public function confirmDelete($id)
     {
         $this->showDeleteModal = true;
-        $this->deleteGameId = $id;
+        $this->deleteGameId[] = $id;
     }
 
     public function delete(){
         $this->showDeleteModal = false;
+
         $this->gameService->deleteGame($this->deleteGameId, true);
     }
     public function confirmBulkAction(): void
@@ -171,9 +172,11 @@ class Trash extends Component
 
     public function bulkDelete(): void
     {
-         $this->gameService->bulkDeleteGames($this->selectedIds, true);
+
+         $this->gameService->deleteGame($this->selectedIds, true);
        
     }
+
     public function bulkRestore(): void
     {
          $this->gameService->bulkRestoreGame($this->selectedIds);

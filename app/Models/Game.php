@@ -15,7 +15,7 @@ class Game extends BaseModel
         'developer',
         'publisher',
         'release_date',
-        'platfrom',
+        'platform',
         'logo',
         'banner',
         'thumbnail',
@@ -36,6 +36,10 @@ class Game extends BaseModel
         'updater_id',
         'deleter_id',
 
+    ];
+
+    protected $casts = [
+        'platform' => 'array'
     ];
 
     public function scopeSearch($query, $search)
