@@ -5,14 +5,19 @@ namespace App\Models;
 use App\Enums\AdminStatus;
 use App\Enums\OtpType;
 use App\Models\AuthBaseModel;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 
 class Admin extends AuthBaseModel
 {
+    use TwoFactorAuthenticatable;
+    protected $guard = 'admin';
+
     protected $fillable = [
         'sort_order',
         'name',
         'email',
         'email_verified_at',
+        'two_factor_confirmed_at',
         'phone',
         'phone_verified_at',
         'password',
@@ -37,6 +42,8 @@ class Admin extends AuthBaseModel
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
     ];
 
     /**
@@ -52,6 +59,7 @@ class Admin extends AuthBaseModel
             'last_synced_at' => 'datetime',
             'otp_expires_at' => 'datetime',
             'status' => AdminStatus::class,
+            'two_factor_confirmed_at' => 'datetime',
         ];
     }
 

@@ -17,31 +17,46 @@
 
 
 :root {
-    /* ... Light mode colors are unchanged ... */
-
+    /* Base Colors */
     --color-black: #000000;
     --color-white: #ffffff;
 
-    --color-primary-50: #fcf8ef;
-    --color-primary-100: #f8f0db;
-    --color-primary-200: #f0e0b3;
-    --color-primary-300: #e5cd84;
-    --color-primary-400: #dcb65a;
-    --color-primary-500: #bb8106;
-    --color-primary-600: #977534;
-    --color-primary-700: #755927;
-    --color-primary-800: #55401c;
-    --color-primary-900: #382a12;
-    --color-primary-950: #1e1608;
+    /* Primary: Purple */
+    --color-primary-50: #f5f3ff;
+    --color-primary-100: #ede9fe;
+    --color-primary-200: #ddd6fe;
+    --color-primary-300: #c4b5fd;
+    --color-primary-400: #a78bfa;
+    --color-primary-500: #853EFF;
+    --color-primary-600: #7c3aed;
+    --color-primary-700: #6d28d9;
+    --color-primary-800: #5b21b6;
+    --color-primary-900: #351966;
+    --color-primary-950: #1B0C33;
 
-    --color-accent-light: #bb8106;
-    --color-accent-content-light: #7A4630;
+    /* Secondary: Pink */
+    --color-secondary-50: #fdf2f8;
+    --color-secondary-100: #fce7f3;
+    --color-secondary-200: #fbcfe8;
+    --color-secondary-300: #f9a8d4;
+    --color-secondary-400: #f472b6;
+    --color-secondary-500: #FF2E91;
+    --color-secondary-600: #db2777;
+    --color-secondary-700: #be185d;
+    --color-secondary-800: #9d174d;
+    --color-secondary-900: #831843;
+    --color-secondary-950: #50072c;
+
+    /* Accent Colors */
+    --color-accent-light: var(--color-primary-500);
+    --color-accent-content-light: var(--color-primary-700);
     --color-accent-foreground-light: #fffcfb;
 
-    --color-accent-dark: #B79347;
-    --color-accent-content-dark: #573024;
+    --color-accent-dark: var(--color-primary-400);
+    --color-accent-content-dark: var(--color-primary-800);
     --color-accent-foreground-dark: #1a1a1a;
 
+    /* Text Colors */
     --color-text-primary-light: #2c2920;
     --color-text-secondary-light: #5a554a;
     --color-text-muted-light: #89867b;
@@ -50,6 +65,7 @@
     --color-text-secondary-dark: #a9a69e;
     --color-text-muted-dark: #7d7a73;
 
+    /* Backgrounds */
     --color-bg-primary-light: oklch(98.5% 0 0);
     --color-bg-secondary-light: oklch(96.7% 0.001 286.375);
     --color-bg-tertiary-light: oklch(92% 0.004 286.32);
@@ -59,9 +75,10 @@
     --color-bg-tertiary-dark: oklch(37% 0.013 285.805);
 }
 
+
 @theme {
     /* ======================================================
-                            # Colors
+    	 	 	 	 	 	 # Colors
     ======================================================== */
     --color-zinc-50: var(--color-primary-50);
     --color-zinc-100: var(--color-primary-100);
@@ -75,7 +92,22 @@
     --color-zinc-900: var(--color-primary-900);
     --color-zinc-950: var(--color-primary-950);
 
+    /* --- Secondary: Pink Colors Added Here --- */
+    --color-pink-50: var(--color-secondary-50);
+    --color-pink-100: var(--color-secondary-100);
+    --color-pink-200: var(--color-secondary-200);
+    --color-pink-300: var(--color-secondary-300);
+    --color-pink-400: var(--color-secondary-400);
+    --color-pink-500: var(--color-secondary-500);
+    --color-pink-600: var(--color-secondary-600);
+    --color-pink-700: var(--color-secondary-700);
+    --color-pink-800: var(--color-secondary-800);
+    --color-pink-900: var(--color-secondary-900);
+    --color-pink-950: var(--color-secondary-950);
+    /* ------------------------------------------ */
+
     --color-accent: var(--color-accent-light);
+    --color-pink: var(--color-secondary-500);
     --color-accent-content: var(--color-accent-content-light);
     --color-accent-foreground: var(--color-accent-foreground-light);
 
@@ -83,22 +115,22 @@
     --color-text-secondary: var(--color-text-secondary-light);
     --color-text-muted: var(--color-text-muted-light);
 
-    --color-bg-primary: var(--color-bg-primary-light);
-    --color-bg-secondary: var(--color-bg-secondary-light);
-    --color-bg-tertiary: var(--color-bg-tertiary-light);
+    --color-bg-primary: var(--color-primary-900);
+    --color-bg-secondary: var(--color-primary-950);
+    --color-bg-tertiary: var(--color-secondary-500);
 
     --color-bg-black: var(--color-black);
     --color-bg-white: var(--color-white);
 
     /* ======================================================
-                            # Shadows
+    	 	 	 	 	 	 # Shadows
     ======================================================== */
 
     --shadow-glass-card: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
         rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 
     /* ======================================================
-                            # Animations
+    	 	 	 	 	 	 # Animations
     ======================================================== */
     --animate-gradientBG: gradientBG 15s ease infinite;
 
@@ -117,7 +149,7 @@
     }
 
     /* ======================================================
-                            # Breakpoints
+    	 	 	 	 	 	 # Breakpoints
     ======================================================== */
     --breakpoint-xxs: 480px;
     --breakpoint-xs: 576px;
