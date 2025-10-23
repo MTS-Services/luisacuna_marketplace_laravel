@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             SellerSeeder::class,
             UserStatisticsSeeder::class,
             UserReferralSeeder::class,
-
+            LanguageSeeder::class,
         ]);
 
         Admin::create([
