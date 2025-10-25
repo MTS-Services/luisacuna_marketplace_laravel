@@ -1,8 +1,8 @@
 <div>
     <section class="flex items-center justify-center min-h-screen p-4 sm:p-6 flex-col">
-        <div class="w-full max-w-4xl mx-auto bg-white rounded-xl shadow-2xl p-6 md:p-10">
+        <div class="w-full max-w-4xl mx-auto bg-bg-secondary rounded-xl shadow-2xl p-6 md:p-10">
             <!-- Header -->
-            <h2 class="text-3xl font-extrabold text-center text-gray-900 mb-8">
+            <h2 class="text-3xl font-extrabold text-center text-text-primary mb-8">
                 Welcome to <span class="text-indigo-600">{{ site_name() }}</span>
             </h2>
 
@@ -11,13 +11,13 @@
 
                 <!-- 1. Seller / Buyer Portal Card -->
                 <div
-                    class="flex flex-col items-center justify-between p-8 bg-gray-50 border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Seller / Buyer Portal</h3>
+                    class="flex flex-col items-center justify-between p-8 bg-bg-primary border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400">
+                    <h3 class="text-xl font-semibold text-text-secondary mb-4">Seller / Buyer Portal</h3>
 
                     <div class="flex items-center justify-center space-x-4">
                         @auth('web')
                             <a href="{{ route('user.profile') }}" wire:navigate
-                                class="px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg shadow-md hover:bg-indigo-700 transition duration-150 transform hover:scale-105">
+                                class="px-6 py-3 bg-indigo-600 text-text-primary font-medium rounded-lg shadow-md hover:bg-indigo-700 transition duration-150 transform hover:scale-105">
                                 Go to Profile
                             </a>
                         @else
@@ -26,7 +26,7 @@
                                 Login
                             </a>
                             <a href="{{ route('register') }}" wire:navigate
-                                class="px-5 py-3 bg-indigo-600 text-white font-medium rounded-lg shadow-md hover:bg-indigo-700 transition duration-150">
+                                class="px-5 py-3 bg-indigo-600 text-text-primary font-medium rounded-lg shadow-md hover:bg-indigo-700 transition duration-150">
                                 Register
                             </a>
                         @endauth
@@ -35,13 +35,13 @@
 
                 <!-- 2. Administrator Portal Card -->
                 <div
-                    class="flex flex-col items-center justify-between p-8 bg-gray-50 border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-teal-400">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Administrator Portal</h3>
+                    class="flex flex-col items-center justify-between p-8 bg-bg-primary border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-teal-400">
+                    <h3 class="text-xl font-semibold text-text-secondary mb-4">Administrator Portal</h3>
 
                     <div class="flex items-center justify-center space-x-4">
                         @auth('admin')
                             <a href="{{ route('admin.dashboard') }}" wire:navigate
-                                class="px-6 py-3 bg-teal-600 text-white font-medium rounded-lg shadow-md hover:bg-teal-700 transition duration-150 transform hover:scale-105">
+                                class="px-6 py-3 bg-teal-600 text-text-primary font-medium rounded-lg shadow-md hover:bg-teal-700 transition duration-150 transform hover:scale-105">
                                 Go to Dashboard
                             </a>
                         @else
@@ -56,14 +56,14 @@
             </div>
         </div>
 
-        <div class="w-full max-w-4xl mx-auto bg-white rounded-xl shadow-2xl p-6 md:p-10 mt-10">
-            <h2 class="text-3xl font-extrabold text-center text-gray-900 mb-8">
+        <div class="w-full max-w-4xl mx-auto bg-bg-secondary rounded-xl shadow-2xl p-6 md:p-10 mt-10">
+            <h2 class="text-3xl font-extrabold text-center text-text-primary mb-8">
                 Explore UI's
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5">
                 <div
-                    class="flex flex-col items-center justify-between p-8 bg-gray-50 border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4">
-                    <h4 class="text-xl font-semibold text-gray-800">Inputs</h4>
+                    class="flex flex-col items-center justify-between p-8 bg-bg-primary border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4">
+                    <h4 class="text-xl font-semibold text-text-secondary">Inputs</h4>
                     <div class="w-full">
                         <x-ui.label value="Standard Input" class="mb-1" />
                         <x-ui.input placeholder="Standard Input" wire:model="input" />
@@ -86,8 +86,8 @@
                     </div>
                 </div>
                 <div
-                    class="flex flex-col items-center justify-between p-8 bg-gray-50 border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4 h-fit">
-                    <h4 class="text-xl font-semibold text-gray-800">Selects</h4>
+                    class="flex flex-col items-center justify-between p-8 bg-bg-primary border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4 h-fit">
+                    <h4 class="text-xl font-semibold text-text-secondary">Selects</h4>
                     <div class="w-full">
                         <x-ui.label value="Standard Select" class="mb-1" />
                         <x-ui.select wire:model="standardSelect">
@@ -154,8 +154,8 @@
                     </div>
                 </div>
                 {{-- <div
-                    class="flex flex-col items-center justify-between p-8 bg-gray-50 border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4 h-fit col-span-2">
-                    <h4 class="text-xl font-semibold text-gray-800">Text areas</h4>
+                    class="flex flex-col items-center justify-between p-8 bg-bg-primary border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4 h-fit col-span-2">
+                    <h4 class="text-xl font-semibold text-text-secondary">Text areas</h4>
                     <form class="w-full" wire:submit.prevent="saveContent">
                         <x-ui.label value="Standard Select" class="mb-1" />
                         <div wire:ignore>
@@ -169,8 +169,8 @@
                     </form>
                 </div> --}}
                 <div
-                    class="flex flex-col items-center justify-between p-8 bg-gray-50 border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4 h-fit col-span-2">
-                    <h4 class="text-xl font-semibold text-gray-800">Text areas</h4>
+                    class="flex flex-col items-center justify-between p-8 bg-bg-primary border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4 h-fit col-span-2">
+                    <h4 class="text-xl font-semibold text-text-secondary">Text areas</h4>
                     <form class="w-full" wire:submit.prevent="saveContent2">
                         <x-ui.label value="Standard Select" class="mb-1" />
                         {{-- <x-ui.text-area-editor>{{ $content }}</x-ui.text-area-editor> --}}

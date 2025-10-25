@@ -18,7 +18,39 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-         $faker = Faker::create();
+        $faker = Faker::create();
+
+        User::create([
+            'sort_order' => 1,
+            'country_id' => 1,
+            'username' => 'user',
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'display_name' => 'John Doe',
+            'avatar' => null,
+            'date_of_birth' => '1990-01-01',
+            'timezone' => 'UTC',
+            'language' => 'en',
+            'currency' => 'USD',
+            'email' => "user@dev.com",
+            'email_verified_at' => now(),
+            'password' => Hash::make("user@dev.com"), // default password
+            'phone' => '1234567890',
+            'phone_verified_at' => now(),
+            'user_type' => UserType::BUYER->value,
+            'account_status' => UserAccountStatus::ACTIVE->value,
+            'last_login_at' => now(),
+            'last_login_ip' => '127.0.0.1',
+            'login_attempts' => 0,
+            'locked_until' => null,
+            'two_factor_enabled' => false,
+            'two_factor_secret' => null,
+            'two_factor_recovery_codes' => null,
+            'terms_accepted_at' => now(),
+            'privacy_accepted_at' => now(),
+            'last_synced_at' => now(),
+            'remember_token' => Str::random(10),
+        ]);
 
         // Create 10 dummy users
         for ($i = 1; $i <= 5; $i++) {
