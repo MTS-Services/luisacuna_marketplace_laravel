@@ -71,15 +71,20 @@ class Index extends Component
                 'key' => 'account_status',
                 'label' => 'Status',
                 'sortable' => true,
+                // 'format' => function ($user) {
+                //     $colors = [
+                //         'active' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+                //         'inactive' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+                //         'suspended' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+                //     ];
+                //     $color = $colors[$user->account_status_color ] ?? 'bg-gray-100 text-gray-800';
+                //     return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' .
+                //         ucfirst($user->account_status_label) .
+                //         '</span>';
                 'format' => function ($user) {
-                    $colors = [
-                        'active' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-                        'inactive' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-                        'suspended' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-                    ];
-                    $color = $colors[$user->account_status->value] ?? 'bg-gray-100 text-gray-800';
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' .
-                        ucfirst($user->account_status->value) .
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium '
+                        . $user->account_status_color . '">'
+                        . $user->account_status_label .
                         '</span>';
                 }
             ],
