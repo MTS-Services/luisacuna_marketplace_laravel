@@ -20,6 +20,7 @@
     /* Base Colors */
     --color-black: #000000;
     --color-white: #ffffff;
+    --color-bg-base: #1B0C33;
 
     /* Primary: Purple */
     --color-primary-50: #f5f3ff;
@@ -317,4 +318,80 @@ input:focus[data-flux-control],
 textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+}
+
+body {
+    background: black !important;
+    color: var(--color-text-primary) !important;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #853EFF 0%, #FF2E91 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.btn-primary {
+    background: var(--color-primary-500);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: var(--color-primary-600);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--color-primary-500);
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    border: 2px solid white;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background: var(--color-primary-50);
+    color: var(--color-primary-500);
+}
+
+
+.card-game:hover {
+    border-color: rgba(133, 62, 255, 0.5);
+    transform: translateY(-8px);
+    background: rgba(53, 25, 102, 0.7);
+}
+
+.card-game img {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1rem;
+    object-fit: contain;
+}
+
+.icon-box {
+    width: 80px;
+    height: 80px;
+    background: rgba(133, 62, 255, 0.1);
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 2rem;
+}
+
+.glass-effect {
+    background: rgba(27, 12, 51, 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(133, 62, 255, 0.1);
 }
