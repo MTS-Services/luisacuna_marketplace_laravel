@@ -40,4 +40,6 @@ class UserReferral extends BaseModel
     {
         return $this->belongsTo(User::class, 'referred_by');
     }
+
+    
 }

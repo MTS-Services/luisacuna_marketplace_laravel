@@ -134,6 +134,10 @@ class User extends AuthBaseModel
     {
         return $this->hasOne(UserReferral::class, 'user_id', 'id');
     }
+    public function language(): BelongsTo
+    {
+        return $this->belongsTo(Language::class, 'language_id', 'id');
+    }
     /*
     |--------------------------------------------------------------------------
     | Query Scopes

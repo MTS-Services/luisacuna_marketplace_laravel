@@ -36,6 +36,16 @@ class Language extends BaseModel
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
 
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+
+
+
+
+
     /*
     |--------------------------------------------------------------------------
     | Query Scopes
