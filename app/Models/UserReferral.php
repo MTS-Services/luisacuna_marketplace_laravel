@@ -40,6 +40,18 @@ class UserReferral extends BaseModel
     {
         return $this->belongsTo(User::class, 'referred_by');
     }
+    public function referrerReferralSetting()
+    {
+        return $this->belongsTo(ReferralSetting::class, 'referrer_id');
+    }
+    public function referrer_Id()
+    {
+        return $this->belongsTo(User::class, 'referrer_id');
+    }
+    public function currency_id()
+    {
+        return $this->belongsTo(Currency::class,'currency_id', 'id');
+    }
 
-    
+
 }

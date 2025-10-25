@@ -60,11 +60,15 @@ class Currency extends BaseModel
     }
     public function referralSettings()
     {
-        return $this->hasMany(ReferralSetting::class);
+        return $this->hasMany(ReferralSetting::class, 'currency_id');
     }
     public function userStatistics()
     {
-        return $this->hasMany(UserStatistic::class);
+        return $this->hasMany(UserStatistic::class , 'currency_id');
+    }
+    public function userReferrals()
+    {
+        return $this->hasMany(UserReferral::class, 'currency_id');
     }
 
     /*

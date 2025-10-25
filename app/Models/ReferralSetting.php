@@ -53,6 +53,10 @@ class ReferralSetting extends BaseModel
     {
         return $this->belongsTo(Currency::class);
     }
+    public function userReferrals()
+    {
+        return $this->hasMany(UserReferral::class);
+    }
 
 
     /*
