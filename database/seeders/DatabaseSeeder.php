@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Livewire\Backend\Admin\Components\UserManagement\User\Profile\Referral;
 use App\Models\Admin;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -26,7 +27,13 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             SellerProfileSeeder::class,
             UserStatisticsSeeder::class,
+            ReferraSettingSeeder::class,
             UserReferralSeeder::class,
+            KycSettingSeeder::class,
+            CountryKycSettingSeeder::class,
+            KycFormSectionSeeder::class,
+            KycFormFieldSeeder::class,
+            SubmittedKycSeeder::class,
             
         ]);
 
