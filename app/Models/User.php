@@ -123,10 +123,6 @@ class User extends AuthBaseModel
     {
         return $this->hasOne(SellerProfile::class, 'user_id', 'id');
     }
-    public function kyc(): HasOne
-    {
-        return $this->hasOne(UserKyc::class, 'user_id', 'id');
-    }
     public function statistic(): HasOne
     {
         return $this->hasOne(UserStatistic::class, 'user_id', 'id');
