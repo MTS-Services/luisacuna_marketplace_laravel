@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Enums\OtpType;
-use App\Enums\UserAccountStatus;
-use App\Enums\UserStatus;
 use App\Enums\UserType;
-use Laravel\Fortify\TwoFactorAuthenticatable;
+use App\Enums\UserStatus;
+use App\Enums\userKycStatus;
 use Illuminate\Support\Carbon;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Enums\UserAccountStatus;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends AuthBaseModel
 {
@@ -60,6 +61,7 @@ class User extends AuthBaseModel
         'privacy_accepted_at',
 
         'last_synced_at',
+        'language_id',
 
         'created_type',
         'updated_type',
@@ -105,6 +107,7 @@ class User extends AuthBaseModel
 
             'user_type'              => UserType::class,
             'account_status'         => UserAccountStatus::class,
+            'kyc_status'             => userKycStatus::class,
         ];
     }
 

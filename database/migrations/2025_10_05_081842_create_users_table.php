@@ -23,27 +23,30 @@ return new class extends Migration
             $table->unsignedBigInteger('sort_order')->default(0);
             $table->unsignedBigInteger('country_id');
 
-            $table->string('username')->nullable()->unique();
+            $table->string('username')->unique();
             $table->string('first_name');
-            $table->string('last_name')->nullable();
-            $table->string('display_name')->nullable();
+            $table->string('last_name');
+            
 
             $table->string('avatar')->nullable();
             $table->date('date_of_birth')->nullable();
 
             $table->string('timezone')->default('UTC');
-            $table->string('language')->default('en');
-            $table->string('currency')->default('USD');
+            
+            $table->unsignedBigInteger('language_id');
+            
+            $table->unsignedBigInteger('currency_id');
 
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('email_verified_at');
             $table->string('password');
 
-            $table->string('phone')->nullable()->index();
+            $table->string('phone');
             $table->timestamp('phone_verified_at')->nullable();
 
             $table->string('user_type')->default(UserType::BUYER->value);
             $table->string('account_status')->default(UserAccountStatus::PENDING_VERIFICATION->value);
+            $table->string('kyc_status');
 
             $table->timestamp('last_login_at')->nullable();
             $table->string('last_login_ip')->nullable();
@@ -63,6 +66,8 @@ return new class extends Migration
 
 
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('language_id')->references('id')->on('languages')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade')->onUpdate('cascade');
             $this->addMorphedAuditColumns($table);
 
             // Indexes
