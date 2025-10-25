@@ -3,15 +3,17 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
-use App\Enums\KycSettingType;
-use App\Enums\KycSettingStatus;
+use App\Enums\CountryKycSettingType;
+use App\Enums\CountryKycSettingStatus;
 
-class KycSetting extends BaseModel
+class CountryKycSetting extends BaseModel
 {
     //
 
     protected $fillable = [
         'sort_order',
+        'kyc_setting_id',
+        'country_id',
         'type',
         'status',
         'version',
@@ -24,17 +26,22 @@ class KycSetting extends BaseModel
     ];
 
     protected $casts = [
-        'type' => KycSettingType::class,
-        'status' => KycSettingStatus::class,
+        'type' => CountryKycSettingType::class,
+        'status' => CountryKycSettingStatus::class,
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    public function CountryKycSettings()
+    public function kycSetting()
     {
-        return $this->hasMany(CountryKycSetting::class);
+        return $this->belongsTo(KycSetting::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -42,27 +49,27 @@ class KycSetting extends BaseModel
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
 
+
     /*
     |--------------------------------------------------------------------------
     | Query Scopes
     |--------------------------------------------------------------------------
     */
+
     public function scopeActive($query)
     {
-        return $query->where('status', KycSettingStatus::ACTIVE);
+        return $query->where('status', CountryKycSettingStatus::ACTIVE);
     }
     public function scopeInactive($query)
     {
-        return $query->where('status', KycSettingStatus::INACTIVE);
+        return $query->where('status', CountryKycSettingStatus::INACTIVE);
     }
-
     public function scopeSearch($query, $search)
     {
         return $query->where(function ($q) use ($search) {
             $q->where('version', 'like', "%{$search}%");
         });
     }
-
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['status'] ?? null, fn($q, $status) => $q->where('status', $status));
@@ -81,7 +88,7 @@ class KycSetting extends BaseModel
     |--------------------------------------------------------------------------
     */
 
-    public function getStatusLabelAttribute(): string
+    public function getStatusAttribute(): string
     {
         return $this->status->label();
     }
@@ -89,7 +96,7 @@ class KycSetting extends BaseModel
     {
         return $this->status->color();
     }
-    public function getTypeLabelAttribute(): string
+    public function getTypeAttribute(): string
     {
         return $this->type->label();
     }
@@ -107,17 +114,18 @@ class KycSetting extends BaseModel
     |--------------------------------------------------------------------------
     */
 
+
     public function isActive(): bool
     {
-        return $this->status === KycSettingStatus::ACTIVE;
+        return $this->status === CountryKycSettingStatus::ACTIVE;
     }
     public function activate(): void
     {
-        $this->update(['status' => KycSettingStatus::ACTIVE]);
+        $this->update(['status' => CountryKycSettingStatus::ACTIVE]);
     }
     public function deactivate(): void
     {
-        $this->update(['status' => KycSettingStatus::INACTIVE]);
+        $this->update(['status' => CountryKycSettingStatus::INACTIVE]);
     }
 
 
