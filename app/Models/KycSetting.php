@@ -16,7 +16,12 @@ class KycSetting extends BaseModel
         'status',
         'version',
 
-        //here AuditColumns 
+        'created_type',
+        'created_id',
+        'updated_type',
+        'updated_id',
+        'deleted_type',
+        'deleted_id',
     ];
 
     protected $hidden = [

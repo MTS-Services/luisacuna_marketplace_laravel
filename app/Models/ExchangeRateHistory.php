@@ -18,6 +18,15 @@ class ExchangeRateHistory extends BaseModel
         'target_currency',
         'rate',
         'last_updated_at',
+
+
+
+        'created_type',
+        'created_id',
+        'updated_type',
+        'updated_id',
+        'deleted_type',
+        'deleted_id',
     ];
 
 

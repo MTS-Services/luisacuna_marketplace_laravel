@@ -20,6 +20,15 @@ class KycFormField extends BaseModel
         'options',
         'example',
 
+
+
+        'created_type',
+        'created_id',
+        'updated_type',
+        'updated_id',
+        'deleted_type',
+        'deleted_id',
+
         //here AuditColumns 
     ];
 

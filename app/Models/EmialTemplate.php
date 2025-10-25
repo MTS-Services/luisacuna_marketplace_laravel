@@ -18,6 +18,15 @@ class EmialTemplate extends BaseModel
         'subject',
         'template',
         'variables',
+
+
+
+        'created_type',
+        'created_id',
+        'updated_type',
+        'updated_id',
+        'deleted_type',
+        'deleted_id',
     ];
 
 

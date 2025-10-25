@@ -23,6 +23,14 @@ class Currency extends BaseModel
         'decimal_places',
         'status',
         'is_default',
+
+
+        'created_type',
+        'created_id',
+        'updated_type',
+        'updated_id',
+        'deleted_type',
+        'deleted_id',
     ];
 
 
@@ -64,7 +72,7 @@ class Currency extends BaseModel
     }
     public function userStatistics()
     {
-        return $this->hasMany(UserStatistic::class , 'currency_id');
+        return $this->hasMany(UserStatistic::class, 'currency_id');
     }
     public function userReferrals()
     {

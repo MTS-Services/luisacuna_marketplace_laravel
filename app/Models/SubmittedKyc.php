@@ -19,6 +19,15 @@ class SubmittedKyc extends BaseModel
         'submitted_data',
         'note',
 
+
+
+        'created_type',
+        'created_id',
+        'updated_type',
+        'updated_id',
+        'deleted_type',
+        'deleted_id',
+
         //here AuditColumns 
     ];
 

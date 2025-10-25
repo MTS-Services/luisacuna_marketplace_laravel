@@ -22,7 +22,17 @@ class ReferralSetting extends BaseModel
         'referred_bonus',
         'max_referrals_per_user',
         'expiry_days',
-        'currency_id'
+        'currency_id',
+
+
+
+
+        'created_type',
+        'created_id',
+        'updated_type',
+        'updated_id',
+        'deleted_type',
+        'deleted_id',
     ];
 
 
