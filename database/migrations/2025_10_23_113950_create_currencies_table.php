@@ -35,7 +35,6 @@ return new class extends Migration
             // Indexs
             $table->index('sort_order');
             $table->index('code');
-            $table->index('status');
         });
     }
 

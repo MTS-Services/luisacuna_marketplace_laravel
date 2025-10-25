@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserReferral extends Model
+class UserReferral extends BaseModel
 {
        protected $fillable = [
         'sort_order',

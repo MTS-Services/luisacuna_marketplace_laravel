@@ -6,7 +6,7 @@ use App\Enums\LanguageDirection;
 use App\Enums\LanguageStatus;
 use Illuminate\Database\Eloquent\Model;
 
-class Language extends Model
+class Language extends BaseModel
 {
     protected $fillable = [
         'sort_order',

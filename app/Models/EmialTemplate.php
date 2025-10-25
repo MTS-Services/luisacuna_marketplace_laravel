@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ExchangeRateHistory extends BaseModel
+class EmialTemplate extends BaseModel
 {
     /**
      * The attributes that are mass assignable.
@@ -12,12 +12,12 @@ class ExchangeRateHistory extends BaseModel
      * @var list<string>
      */
 
-
     protected $fillable = [
-        'base_currency',
-        'target_currency',
-        'rate',
-        'last_updated_at',
+        'key',
+        'name',
+        'subject',
+        'template',
+        'variables',
     ];
 
 
@@ -28,7 +28,7 @@ class ExchangeRateHistory extends BaseModel
      */
 
     protected $casts = [
-        'last_updated_at' => 'datetime',
+        'variables' => 'array',
     ];
 
 
@@ -39,15 +39,6 @@ class ExchangeRateHistory extends BaseModel
     */
 
 
-    public function baseCurrency()
-    {
-        return $this->belongsTo(Currency::class, 'base_currency');
-    }
-
-    public function targetCurrency()
-    {
-        return $this->belongsTo(Currency::class, 'target_currency');
-    }
 
     /*
     |--------------------------------------------------------------------------
@@ -55,25 +46,31 @@ class ExchangeRateHistory extends BaseModel
     |--------------------------------------------------------------------------
     */
 
-
     public function scopeSearch($query, $search)
     {
         return $query->where(function ($q) use ($search) {
-            $q->where('base_currency', 'like', "%{$search}%")
-                ->orWhere('target_currency', 'like', "%{$search}%");
+            $q->where('name', 'like', "%{$search}%")
+                ->orWhere('key', 'like', "%{$search}%")
+                ->orWhere('subject', 'like', "%{$search}%");
         });
     }
-    public function scopeFilter($query, array $filters)
+    public function scopeFilder($query, array $filters)
     {
         $query->when($filters['search'] ?? null, fn($q, $search) => $q->search($search));
+        $query->when($filters['key'] ?? null, fn($q, $key) => $q->where('key', $key));
+        $query->when($filters['name'] ?? null, fn($q, $name) => $q->where('name', $name));
         return $query;
     }
+
+
 
     /*
     |--------------------------------------------------------------------------
     | Accessors
     |--------------------------------------------------------------------------
     */
+
+
 
 
 

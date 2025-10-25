@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Enums\KycStatus;
 use Illuminate\Database\Eloquent\Model;
 
-class UserKyc extends Model
+class UserKyc extends BaseModel
 {
 
     protected $fillable = [
