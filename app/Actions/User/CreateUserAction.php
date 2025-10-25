@@ -22,7 +22,7 @@ class CreateUserAction
 
             // Handle avatar upload
             if ($dto->avatar) {
-                $data['avatar'] = $dto->avatar->store('avatars', 'public');
+                $data['avatar'] = $dto->avatar->store('users', 'public');
             }
 
             // Create user
