@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('expiry_days')->default(0);
 
             $table->unsignedBigInteger('currency_id')->nullable();
-            $table->foreignId('currency_id')->references('id')->on('currencies')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('currency_id')->references('id')->on('currencies')->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->softDeletes();
             $table->timestamps();

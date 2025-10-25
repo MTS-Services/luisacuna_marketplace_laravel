@@ -29,14 +29,16 @@ return new class extends Migration
 
 
 
-            $table->foreignId('kyc_setting_id')->references('id')->on('kyc_settings')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('country_id')->references('id')->on('countries')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('kyc_setting_id')->references('id')->on('kyc_settings')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('country_id')->references('id')->on('countries')->cascadeOnDelete()->cascadeOnUpdate();
 
 
             $table->softDeletes();
             $table->timestamps();
  
             $this->addAdminAuditColumns($table);
+
+
         });
     }
  
