@@ -20,6 +20,7 @@ class UserStatisticsSeeder extends Seeder
             UserStatistic::create([
                 'sort_order' => 0,
                 'user_id' => $user->id,
+                'currency_id'=>1,
                 'total_orders_as_buyer' => rand(0, 50),
                 'total_spent' => rand(1000, 50000) / 1.5,
                 'total_orders_as_seller' => rand(0, 100),

@@ -23,6 +23,7 @@ class LanguageSeeder extends Seeder
                 'status'       => LanguageStatus::ACTIVE->value,
                 'is_active'    => true,
                 'direction'    => LanguageDirection::LTR->value,
+                'flag_icon'    => 'us.svg',
             ],
             [
                 'sort_order'   => 2,
@@ -32,6 +33,7 @@ class LanguageSeeder extends Seeder
                 'status'       => LanguageStatus::ACTIVE->value,
                 'is_active'    => false,
                 'direction'    => LanguageDirection::LTR->value,
+                'flag_icon'    => 'us.svg',
             ],
             [
                 'sort_order'   => 3,
@@ -41,6 +43,7 @@ class LanguageSeeder extends Seeder
                 'status'       => LanguageStatus::ACTIVE->value,
                 'is_active'    => false,
                 'direction'    => LanguageDirection::LTR->value,
+                'flag_icon'    => 'us.svg',
             ],
         ];
 

@@ -38,7 +38,7 @@ return new class extends Migration
             $table->unsignedBigInteger('currency_id');
 
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at');
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
 
             $table->string('phone');

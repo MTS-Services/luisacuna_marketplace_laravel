@@ -16,18 +16,25 @@ class DatabaseSeeder extends Seeder
     {
           $this->call([
             CountrySeeder::class,
+            AdminSeeder::class,
+            LanguageSeeder::class,
+            CurrencySeeder::class,
+            ExchangeRateSeeder::class,
+            ExchangeRateHistorySeeder::class,
+            EmialTemplateSeeder::class,
+            ReferralSettingSeeder::class,
             UserSeeder::class,
-            SellerSeeder::class,
+            SellerProfileSeeder::class,
             UserStatisticsSeeder::class,
             UserReferralSeeder::class,
-            LanguageSeeder::class,
+            
         ]);
 
-        Admin::create([
-            'name' => 'Admin',
-            'email' => 'admin@dev.com',
-            'password' => 'admin@dev.com',
-            'email_verified_at' => now(),
-        ]);
+        // Admin::create([
+        //     'name' => 'Admin',
+        //     'email' => 'admin@dev.com',
+        //     'password' => 'admin@dev.com',
+        //     'email_verified_at' => now(),
+        // ]);
     }
 }
