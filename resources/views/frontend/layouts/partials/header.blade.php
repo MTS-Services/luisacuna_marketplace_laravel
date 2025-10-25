@@ -1,7 +1,7 @@
 <header x-data="{ mobileMenuOpen: false }"
-    class="sticky top-0 z-50 {{ request()->routeIs('home') ? '' : 'glass-effect' }}">
+    class="sticky top-0 z-50 {{ request()->routeIs('home') ? 'bg-gradient-to-r from-purple-950 via-black to-purple-950' : 'glass-card' }}">
     <div
-        class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between {{ request()->routeIs('home') ? 'bg-gradient-to-r from-purple-950 via-black to-purple-950' : '' }}">
+        class="container px-4 py-4 flex items-center justify-between">
         <div class="text-2xl font-bold gradient-text text-white"><a href="{{ route('home') }}">
                 <img src="{{ asset('assets/images/header_logo.png') }}" alt=""></a>
         </div>

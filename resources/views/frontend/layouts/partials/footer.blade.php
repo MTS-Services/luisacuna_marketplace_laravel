@@ -1,9 +1,11 @@
-<footer>
-    <div class="max-w-7xl mx-auto pt-16 pb-12 bg-[#1B0C33] text-white">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12 px-[100px]">
+<footer class="bg-bg-primary">
+    <div class="pt-16 pb-12 text-white">
+        <div class="container grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <!-- Brand -->
             <div>
-                <div class="text-2xl font-bold gradient-text mb-4 text-white"><a href="{{ route('home') }}">MDB</a></div>
+                <div class="text-2xl font-bold gradient-text mb-4 text-white"><a href="{{ route('home') }}">
+                    <img src="{{ asset('assets/images/header_logo.png') }}" alt="">    
+                </a></div>
                 <p class="text-gray-400 text-md">Digital Commerce connects buyers and verified sellers for secure,
                     fast, and seamless digital transactions.</p>
                 <div class="flex gap-4 mt-6">

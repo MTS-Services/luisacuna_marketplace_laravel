@@ -48,6 +48,11 @@
     --color-secondary-900: #831843;
     --color-secondary-950: #50072c;
 
+
+
+    --color-text-new-light: #1b1b1b;
+    --color-text-new-dark: #f1f1f1;
+
     /* Accent Colors */
     --color-accent-light: var(--color-primary-600);
     --color-accent-content-light: var(--color-primary-700);
@@ -115,6 +120,8 @@
     --color-pink-900: var(--color-secondary-900);
     --color-pink-950: var(--color-secondary-950);
     /* ------------------------------------------ */
+
+    --color-text-new: var(--color-text-new-light);
 
     --color-accent: var(--color-accent-light);
     --color-accent-content: var(--color-accent-content-light);
@@ -196,6 +203,8 @@
         --color-bg-primary: var(--color-bg-primary-dark);
         --color-bg-secondary: var(--color-bg-secondary-dark);
         --color-bg-tertiary: var(--color-bg-tertiary-dark);
+
+        --color-text-new: var(--color-text-new-dark);
     }
 }
 
