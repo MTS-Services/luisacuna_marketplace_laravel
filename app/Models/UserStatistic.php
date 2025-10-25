@@ -15,6 +15,7 @@ class UserStatistic extends BaseModel
         'total_earned',
         'average_rating_as_seller',
         'total_reviews_as_seller',
+        'currency_id',
 
         'created_type',
         'updated_type',
