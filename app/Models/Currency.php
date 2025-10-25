@@ -62,6 +62,10 @@ class Currency extends BaseModel
     {
         return $this->hasMany(ReferralSetting::class);
     }
+    public function userStatistics()
+    {
+        return $this->hasMany(UserStatistic::class);
+    }
 
     /*
     |--------------------------------------------------------------------------
