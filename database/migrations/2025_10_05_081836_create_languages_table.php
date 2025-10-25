@@ -18,16 +18,17 @@ return new class extends Migration
         Schema::create('languages', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0);
-            $table->string('locale')->unique();
-            $table->string('name')->unique();
-            $table->string('native_name')->nullabl();
+            $table->string('locale')->unique()->comment('en, es, fr, bn');
+            $table->string('name')->unique()->comment('English, Spanish, France');
+            $table->string('native_name')->nullabl()->comment('English, Español');
+            $table->string('flag_icon');
             $table->string('status')->index()->default(LanguageStatus::ACTIVE->value);
             $table->boolean('is_active')->default(false);
             $table->string('direction')->index()->default(LanguageDirection::LTR->value);
 
             $table->timestamps();
             $table->softDeletes();
-            $this->addMorphedAuditColumns($table);
+            $this->addAdminAuditColumns($table);
         });
     }
 
