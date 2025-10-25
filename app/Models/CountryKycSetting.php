@@ -43,6 +43,10 @@ class CountryKycSetting extends BaseModel
     {
         return $this->belongsTo(Country::class);
     }
+    public function kycFormSections()
+    {
+        return $this->hasMany(KycFormSection::class);
+    }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
