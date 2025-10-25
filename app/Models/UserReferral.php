@@ -12,6 +12,9 @@ class UserReferral extends BaseModel
         'referral_code',
         'referred_by',
         'referral_earnings',
+        'referrer_id',
+        'referral_setting_id',
+        'currency_id',
 
         'created_type',
         'updated_type',
