@@ -36,6 +36,10 @@ class KycSetting extends BaseModel
     {
         return $this->hasMany(CountryKycSetting::class);
     }
+    public function submittedKyc()
+    {
+        return $this->hasMany(SubmittedKyc::class);
+    }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS

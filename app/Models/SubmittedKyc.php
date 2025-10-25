@@ -3,20 +3,21 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
-use App\Enums\CountryKycSettingType;
-use App\Enums\CountryKycSettingStatus;
+use App\Enums\SubmittedKycStatus;
 
-class CountryKycSetting extends BaseModel
+class SubmittedKyc extends BaseModel
 {
     //
 
     protected $fillable = [
         'sort_order',
         'kyc_setting_id',
-        'country_id',
+        'ckyc_setting_id',
+        'version',
         'type',
         'status',
-        'version',
+        'submitted_data',
+        'note',
 
         //here AuditColumns 
     ];
@@ -26,8 +27,8 @@ class CountryKycSetting extends BaseModel
     ];
 
     protected $casts = [
-        'type' => CountryKycSettingType::class,
-        'status' => CountryKycSettingStatus::class,
+        'type' => SubmittedKycStatus::class,
+        'status' => SubmittedKycStatus::class,
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -38,23 +39,15 @@ class CountryKycSetting extends BaseModel
     {
         return $this->belongsTo(KycSetting::class);
     }
-
-    public function country()
+    public function CountrykycSetting()
     {
-        return $this->belongsTo(Country::class);
-    }
-    public function kycFormSections()
-    {
-        return $this->hasMany(KycFormSection::class);
-    }
-    public function submittedKyc()
-    {
-        return $this->hasMany(SubmittedKyc::class);
+        return $this->belongsTo(CountryKycSetting::class);
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+
 
 
 
@@ -64,13 +57,19 @@ class CountryKycSetting extends BaseModel
     |--------------------------------------------------------------------------
     */
 
-    public function scopeActive($query)
+    public function scopeApproved($query)
     {
-        return $query->where('status', CountryKycSettingStatus::ACTIVE);
+        return $query->where('status', SubmittedKycStatus::APPROVED);
     }
-    public function scopeInactive($query)
+
+    public function scopePending($query)
     {
-        return $query->where('status', CountryKycSettingStatus::INACTIVE);
+        return $query->where('status', SubmittedKycStatus::PENDING);
+    }
+
+    public function scopeRejected($query)
+    {
+        return $query->where('status', SubmittedKycStatus::REJECTED);
     }
     public function scopeSearch($query, $search)
     {
@@ -89,14 +88,13 @@ class CountryKycSetting extends BaseModel
 
 
 
-
     /*
     |--------------------------------------------------------------------------
     | Accessors
     |--------------------------------------------------------------------------
     */
 
-    public function getStatusAttribute(): string
+    public function getStatusLabelAttribute(): string
     {
         return $this->status->label();
     }
@@ -104,7 +102,7 @@ class CountryKycSetting extends BaseModel
     {
         return $this->status->color();
     }
-    public function getTypeAttribute(): string
+    public function getTypeLabelAttribute(): string
     {
         return $this->type->label();
     }
@@ -113,9 +111,6 @@ class CountryKycSetting extends BaseModel
         return $this->type->color();
     }
 
-
-
-
     /*
     |--------------------------------------------------------------------------
     | Methods
@@ -123,19 +118,22 @@ class CountryKycSetting extends BaseModel
     */
 
 
-    public function isActive(): bool
+    public function isApproved(): bool
     {
-        return $this->status === CountryKycSettingStatus::ACTIVE;
+        return $this->status === SubmittedKycStatus::APPROVED;
     }
-    public function activate(): void
+    public function approvate(): void
     {
-        $this->update(['status' => CountryKycSettingStatus::ACTIVE]);
+        $this->update(['status' => SubmittedKycStatus::APPROVED]);
     }
-    public function deactivate(): void
+    public function pending(): void
     {
-        $this->update(['status' => CountryKycSettingStatus::INACTIVE]);
+        $this->update(['status' => SubmittedKycStatus::PENDING]);
     }
-
+    public function reject(): void
+    {
+        $this->update(['status' => SubmittedKycStatus::REJECTED]);
+    }
 
 
     public function __construct(array $attributes = [])
