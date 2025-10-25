@@ -17,9 +17,9 @@ return new class extends Migration
         Schema::create('seller_profiles', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0);
-            $table->unsignedBigInteger('user_id');;
+            $table->unsignedBigInteger('user_id');
             $table->string('shop_name');
-            $table->text('shop_description')->nullable();
+            $table->text('shop_description');
 
             $table->boolean('seller_verified')->default(false);
             $table->timestamp('seller_verified_at')->nullable();
@@ -32,7 +32,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
             $table->softDeletes();
-            $this->addMorphedAuditColumns($table);
+            $this->addAdminAuditColumns($table);
         });
     }
 
