@@ -1,227 +1,375 @@
-<div>
-    <section class="flex items-center justify-center min-h-screen p-4 sm:p-6 flex-col">
-        <div class="w-full max-w-4xl mx-auto bg-bg-secondary rounded-xl shadow-2xl p-6 md:p-10">
-            <!-- Header -->
-            <h2 class="text-3xl font-extrabold text-center text-text-primary mb-8">
-                Welcome to <span class="text-indigo-600">{{ site_name() }}</span>
-            </h2>
+<main class="overflow-x-hidden-hidden">
+    <!-- Hero Section -->
+    <section class=" relative py-20 overflow-hidden">
+        <div class="absolute inset-0 z-0 bg-gradient-to-r from-purple-950 via-black to-purple-950">
+            <div class="absolute top-50 -translate-y-1/2 left-0">
+                <img src="{{ asset('assets/images/home_page/Frame 62.png') }}" alt="">
+            </div>
 
-            <!-- Portals Container (Responsive Flex/Grid) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5 pt-5">
-
-                <!-- 1. Seller / Buyer Portal Card -->
-                <div
-                    class="flex flex-col items-center justify-between p-8 bg-bg-primary border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400">
-                    <h3 class="text-xl font-semibold text-text-secondary mb-4">Seller / Buyer Portal</h3>
-
-                    <div class="flex items-center justify-center space-x-4">
-                        @auth('web')
-                            <a href="{{ route('user.profile') }}" wire:navigate
-                                class="px-6 py-3 bg-indigo-600 text-text-primary font-medium rounded-lg shadow-md hover:bg-indigo-700 transition duration-150 transform hover:scale-105">
-                                Go to Profile
-                            </a>
-                        @else
-                            <a href="{{ route('login') }}" wire:navigate
-                                class="px-5 py-3 border border-indigo-600 text-indigo-600 font-medium rounded-lg hover:bg-indigo-50 transition duration-150">
-                                Login
-                            </a>
-                            <a href="{{ route('register') }}" wire:navigate
-                                class="px-5 py-3 bg-indigo-600 text-text-primary font-medium rounded-lg shadow-md hover:bg-indigo-700 transition duration-150">
-                                Register
-                            </a>
-                        @endauth
-                    </div>
-                </div>
-
-                <!-- 2. Administrator Portal Card -->
-                <div
-                    class="flex flex-col items-center justify-between p-8 bg-bg-primary border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-teal-400">
-                    <h3 class="text-xl font-semibold text-text-secondary mb-4">Administrator Portal</h3>
-
-                    <div class="flex items-center justify-center space-x-4">
-                        @auth('admin')
-                            <a href="{{ route('admin.dashboard') }}" wire:navigate
-                                class="px-6 py-3 bg-teal-600 text-text-primary font-medium rounded-lg shadow-md hover:bg-teal-700 transition duration-150 transform hover:scale-105">
-                                Go to Dashboard
-                            </a>
-                        @else
-                            <a href="{{ route('admin.login') }}" wire:navigate
-                                class="px-6 py-3 border border-teal-600 text-teal-600 font-medium rounded-lg hover:bg-teal-50 transition duration-150 transform hover:scale-105">
-                                Login
-                            </a>
-                        @endauth
-                    </div>
-                </div>
-
+            <div class="absolute top-50 translate-y-[-50%] right-0 z-10">
+                <img src="{{ asset('assets/images/home_page/Frame 61.png') }}" alt="">
             </div>
         </div>
 
-        <div class="w-full max-w-4xl mx-auto bg-bg-secondary rounded-xl shadow-2xl p-6 md:p-10 mt-10">
-            <h2 class="text-3xl font-extrabold text-center text-text-primary mb-8">
-                Explore UI's
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5">
-                <div
-                    class="flex flex-col items-center justify-between p-8 bg-bg-primary border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4">
-                    <h4 class="text-xl font-semibold text-text-secondary">Inputs</h4>
-                    <div class="w-full">
-                        <x-ui.label value="Standard Input" class="mb-1" />
-                        <x-ui.input type="text" placeholder="Standard Input" wire:model="input" />
-                        <x-ui.input-error :messages="$errors->get('input')" />
-                    </div>
-                    <div class="w-full">
-                        <x-ui.label value="Email Input" class="mb-1" />
-                        <x-ui.input type="email" placeholder="Email Input" wire:model="email" />
-                        <x-ui.input-error :messages="$errors->get('email')" />
-                    </div>
-                    <div class="w-full">
-                        <x-ui.label value="Password Input" class="mb-1" />
-                        <x-ui.input type="password" placeholder="Password Input" wire:model="password" />
-                        <x-ui.input-error :messages="$errors->get('password')" />
-                    </div>
-                    <div class="w-full">
-                        <x-ui.label value="Disabled Input" class="mb-1" />
-                        <x-ui.input disabled="true" placeholder="Disabled Input" wire:model="disabled" />
-                        <x-ui.input-error :messages="$errors->get('disabled')" />
-                    </div>
-                </div>
-                <div
-                    class="flex flex-col items-center justify-between p-8 bg-bg-primary border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4 h-fit">
-                    <h4 class="text-xl font-semibold text-text-secondary">Selects</h4>
-                    <div class="w-full">
-                        <x-ui.label value="Standard Select" class="mb-1" />
-                        <x-ui.select wire:model="standardSelect">
-                            <option value="">Choose an option</option>
-                            <option value="option1">Option 1</option>
-                            <option value="option2">Option 2</option>
-                            <option value="option3">Option 3</option>
-                        </x-ui.select>
-                        <x-ui.input-error :messages="$errors->get('standardSelect')" />
-                    </div>
-                    <div class="w-full">
-                        <x-ui.label value="Disabled Select" class="mb-1" />
-                        <x-ui.select disabled="true" wire:model="disabledSelect">
-                            <option value="">Choose an option</option>
-                            <option value="option1">Option 1</option>
-                            <option value="option2">Option 2</option>
-                            <option value="option3">Option 3</option>
-                        </x-ui.select>
-                        <x-ui.input-error :messages="$errors->get('disabledSelect')" />
-                    </div>
-                    <div class="w-full">
-                        <x-ui.label value="Select 2 Single" class="mb-1" />
-                        <x-ui.select class="select2" wire:model="select2Single">
-                            <option value="">Choose an option</option>
-                            <option value="option1">Option 1</option>
-                            <option value="option2">Option 2</option>
-                            <option value="option3">Option 3</option>
-                            <option value="option4">Option 4</option>
-                            <option value="option5">Option 5</option>
-                            <option value="option6">Option 6</option>
-                            <option value="option7">Option 7</option>
-                            <option value="option8">Option 8</option>
-                            <option value="option9">Option 9</option>
-                            <option value="option10">Option 10</option>
-                            <option value="option11">Option 11</option>
-                            <option value="option12">Option 12</option>
-                            <option value="option13">Option 13</option>
-                            <option value="option14">Option 14</option>
-                            <option value="option15">Option 15</option>
-                        </x-ui.select>
-                        <x-ui.input-error :messages="$errors->get('select2Single')" />
-                    </div>
-                    <div class="w-full">
-                        <x-ui.label value="Select 2 Multiple" class="mb-1" />
-                        <x-ui.select class="select2" wire:model="select2Multiple" multiple>
-                            <option value="">Choose an option</option>
-                            <option value="option1">Option 1</option>
-                            <option value="option2">Option 2</option>
-                            <option value="option3">Option 3</option>
-                            <option value="option4">Option 4</option>
-                            <option value="option5">Option 5</option>
-                            <option value="option6">Option 6</option>
-                            <option value="option7">Option 7</option>
-                            <option value="option8">Option 8</option>
-                            <option value="option9">Option 9</option>
-                            <option value="option10">Option 10</option>
-                            <option value="option11">Option 11</option>
-                            <option value="option12">Option 12</option>
-                            <option value="option13">Option 13</option>
-                            <option value="option14">Option 14</option>
-                            <option value="option15">Option 15</option>
-                        </x-ui.select>
-                        <x-ui.input-error :messages="$errors->get('select2Multiple')" />
-                    </div>
-                </div>
-                {{-- <div
-                    class="flex flex-col items-center justify-between p-8 bg-bg-primary border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4 h-fit col-span-2">
-                    <h4 class="text-xl font-semibold text-text-secondary">Text areas</h4>
-                    <form class="w-full" wire:submit.prevent="saveContent">
-                        <x-ui.label value="Standard Select" class="mb-1" />
-                        <div wire:ignore>
-                            <textarea id="content-{{ $this->getId() }}" class="tinymce-editor">{{ $content }}</textarea>
-                        </div>
+        <div class=" relative z-10 text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 text-white">Digital Commerce</h1>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">The most reliable platform to buy and sell
+                high-quality digital products.</p>
 
-                        <x-ui.input-error :messages="$errors->get('content')" />
-                        <button type="submit" class="btn btn-primary mt-4">
-                            Save Content
-                        </button>
-                    </form>
-                </div> --}}
-                <div
-                    class="flex flex-col items-center justify-between p-8 bg-bg-primary border border-gray-200 rounded-xl transition duration-300 ease-in-out hover:shadow-lg hover:border-indigo-400 gap-2 mt-4 h-fit col-span-2">
-                    <h4 class="text-xl font-semibold text-text-secondary">Text areas</h4>
-                    <form class="w-full" wire:submit.prevent="saveContent2">
-                        <x-ui.label value="Standard Select" class="mb-1" />
-                        {{-- <x-ui.text-area-editor>{{ $content }}</x-ui.text-area-editor> --}}
-                        <textarea id="tinymce-editor" class="tinymce" wire:model="content">{!! $content !!}</textarea>
+            <div class="flex gap-4 justify-center flex-wrap">
+                <button class="btn-primary">
+                    <span><x-flux::icon name="user" class="w-6 h-6 inline-block" stroke="white" /></span>
+                    Explore Products</button>
+                <button class="btn-secondary"><span><x-flux::icon name="shopping-cart" class="w-5 h-5 inline-block stroke-purple-950" />
+                    </span> Sell Now</button>
+            </div>
+        </div>
+    </section>
 
-                        <x-ui.input-error :messages="$errors->get('content')" />
-                        <button type="submit" class="btn btn-primary mt-4">
-                            Save Content
-                        </button>
-                    </form>
+    <!-- Popular Games Section -->
+    <section class="py-20">
+        <div class="max-w-7xl  mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 text-white">Popular Games</h2>
+                <p class="text-gray-400">Find coins, items, and services for your favorite games.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Game Card 1 -->
+                <div
+                    class="bg-[#1B0C33] border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    <div class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
+                        <img src="{{ asset('assets/images/home_page/game-1.png') }}" alt="">
+                    </div>
+                    <h3 class="font-bold text-lg mb-2 text-white">Blade Ball Tokens</h3>
+                    <p class="text-sm text-gray-400 mb-4">50 items available</p>
+                    <button class="btn-primary w-full">Buy Now</button>
+                </div>
+
+                <!-- Game Card 2 -->
+                <div
+                    class="bg-[#1B0C33] border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    <div
+                        class="w-full max-w-[300px] mx-auto mb-4  rounded-lg flex items-center justify-center text-4xl">
+                        <img src="{{ asset('assets/images/home_page/game-2.png') }}" alt="">
+                    </div>
+                    <h3 class="font-bold text-lg mb-2 text-white">Path Of Exile 2 Currency</h3>
+                    <p class="text-sm text-gray-400 mb-4">50 items available</p>
+                    <button class="btn-primary w-full">Buy Now</button>
+                </div>
+
+                <!-- Game Card 3 -->
+                <div
+                    class="bg-[#1B0C33] border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    <div
+                        class="w-full max-w-[300px] mx-auto mb-4  rounded-lg flex items-center justify-center text-4xl">
+                        <img src="{{ asset('assets/images/home_page/game-3.png') }}" alt="">
+                    </div>
+                    <h3 class="font-bold text-lg mb-2 text-white">RuneScape 3 Gold</h3>
+                    <p class="text-sm text-gray-400 mb-4">50 items available</p>
+                    <button class="btn-primary w-full">Buy Now</button>
+                </div>
+
+                <!-- Game Card 4 -->
+                <div
+                    class="bg-[#1B0C33] border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    <div class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
+                        <img src="{{ asset('assets/images/home_page/game-4.png') }}" alt="">
+                    </div>
+                    <h3 class="font-bold text-lg mb-2 text-white">New World Coins</h3>
+                    <p class="text-sm text-gray-400 mb-4">50 items available</p>
+                    <button class="btn-primary w-full">Buy Now</button>
+                </div>
+
+                <!-- Game Card 5 -->
+                <div
+                    class="bg-[#1B0C33] border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    <div class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
+                        <img src="{{ asset('assets/images/home_page/game-5.png') }}" alt="">
+                    </div>
+                    <h3 class="font-bold text-lg mb-2 text-white">Lost Ark Gold</h3>
+                    <p class="text-sm text-gray-400 mb-4">50 items available</p>
+                    <button class="btn-primary w-full">Buy Now</button>
+                </div>
+
+                <!-- Game Card 6 -->
+                <div
+                    class="bg-[#1B0C33] border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    <div class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
+                        <img src="{{ asset('assets/images/home_page/game-6.png') }}" alt="">
+                    </div>
+                    <h3 class="font-bold text-lg mb-2 text-white">Old School RuneScape Gold</h3>
+                    <p class="text-sm text-gray-400 mb-4">50 items available</p>
+                    <button class="btn-primary w-full">Buy Now</button>
                 </div>
             </div>
         </div>
     </section>
 
-    @script
-        <script>
-            const editorId = 'content-' + $wire.__instance.id;
+    <!-- How It Works Section -->
+    <section class="py-20">
+        <div class="max-w-7xl  mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 text-white">How It Works</h2>
+            </div>
 
-            const initEditor = () => {
-                if (typeof tinymce === 'undefined') {
-                    setTimeout(initEditor, 100);
-                    return;
-                }
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="text-center">
+                    <div class="icon-box">
+                        <img src="{{ asset('assets/images/home_page/secure_transaction.png') }}" alt="">
+                    </div>
+                    <h3 class="font-bold text-lg mb-2 text-white">Secure Transactions</h3>
+                    <p class="text-gray-400 text-sm">Our platform uses industry-leading encryption to ensure your
+                        transactions are safe and secure, guaranteeing a safe shopping experience.</p>
+                </div>
 
-                if (tinymce.get(editorId)) {
-                    tinymce.get(editorId).remove();
-                }
+                <!-- Step 2 -->
+                <div class="text-center relative">
+                    <div class="icon-box">
+                        <img src="{{ asset('assets/images/home_page/verified_sellers.png') }}" alt="">
+                    </div>
+                    <div class="absolute top-1/4 -left-1/4 z-20">
+                        <img src="{{ asset('assets/images/home_page/right-arrow.png') }}" alt="">
+                    </div>
+                    <h3 class="font-bold text-lg mb-2 text-white">Verified Sellers</h3>
+                    <p class="text-gray-400 text-sm">We meticulously verify each seller to ensure you receive
+                        genuine digital goods from trusted sources.</p>
+                </div>
 
-                tinymce.init({
-                    selector: '#' + editorId,
-                    plugins: 'code table lists link image media preview',
-                    toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | link image media | code preview',
-                    height: 400,
-                    menubar: false,
-                    branding: false,
-                    license_key: 'gpl',
+                <!-- Step 3 -->
+                <div class="text-center relative">
+                    <div class="icon-box">
+                        <img src="{{ asset('assets/images/home_page/effortless_buying.png') }}" alt="">
+                    </div>
+                    <div class="absolute top-1/4 -left-1/4 z-20">
+                        <img src="{{ asset('assets/images/home_page/right-arrow.png') }}" alt="">
+                    </div>
+                    <h3 class="font-bold text-lg mb-2 text-white">Effortless Buying & Selling</h3>
+                    <p class="text-gray-400 text-sm">Our intuitive platform streamlines the buying and selling
+                        process, set with quick delivery and software within reach.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                    setup: (editor) => {
-                        editor.on('init', () => {
-                            editor.setContent($wire.content || '');
-                        });
+    <!-- About Us Section -->
+    <section class="py-20 bg-gradient-to-r from-[#5f3fbc]  to-[#50072c]">
+        <div class="container">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold mb-6 text-white">About us</h2>
+                    <p class="text-gray-300 mb-4">Digital Commerce is your go-to destination for buying and selling
+                        high-quality digital products. We connect buyers and verified sellers, ensuring secure
+                        transactions, fast delivery, and dedicated support for a seamless experience.</p>
+                    <button class="btn-primary">
+                        <span><x-flux::icon name="user" class="w-6 h-6 inline-block" stroke="white" /></span>
+                        Explore Products</button>
+                </div>
 
-                        editor.on('blur', () => {
-                            $wire.content = editor.getContent();
-                        });
-                    }
-                });
-            };
+                <div class="w-full h-full">
+                    <img src="{{ asset('assets/images/home_page/about.png') }}" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
 
-            initEditor();
-        </script>
-    @endscript
-</div>
+    <!-- FAQ Section -->
+    <section class="py-20">
+        <div class="container py-8  bg-black/50" x-data="{ active: 0, tab: 'buyers' }">
+
+            <h2 class="text-white text-center text-[40px] mb-6 font-semibold">Frequently Asked Questions</h2>
+
+            <!-- Tabs -->
+            <div class="max-w-xs mx-auto flex justify-between mb-8 bg-bg-primary rounded-full px-4 py-3">
+                <button @click="tab = 'buyers'; active = 0"
+                    :class="tab === 'buyers' ? 'bg-purple-700 px-5 py-3 rounded-full shadow-lg text-white' :
+                        'text-gray-300 px-7'"
+                    class="transition-colors duration-300 font-medium">
+                    For Buyers
+                </button>
+                <button @click="tab = 'sellers'; active = 0"
+                    :class="tab === 'sellers' ? 'bg-purple-700 px-5 py-3 rounded-full shadow-lg text-white' :
+                        'text-gray-300 px-7'"
+                    class="transition-colors duration-300 font-medium">
+                    For Sellers
+                </button>
+            </div>
+
+            <!-- FAQ Items for Buyers -->
+            <template x-if="tab === 'buyers'">
+                <div class="space-y-4">
+
+                    <!-- Buyer FAQ Items -->
+                    <div class="bg-bg-primary rounded-xl p-4 cursor-pointer"
+                        @click="active === 0 ? active = null : active = 0">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-white font-semibold">How do I buy a product?</h3>
+                            <svg :class="active === 0 ? 'rotate-180' : ''"
+                                class="w-5 h-5 text-white transition-transform" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                        <p x-show="active === 0" x-transition class="mt-2 text-gray-300 text-sm">
+                            Browse or search for your desired digital product. Click on the product, review the
+                            details,
+                            click "Buy Now," proceed to checkout, and select your preferred payment method.
+                        </p>
+                    </div>
+
+                    <div class="bg-bg-primary rounded-xl p-4 cursor-pointer"
+                        @click="active === 1 ? active = null : active = 1">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-white font-semibold">What payment methods are accepted?</h3>
+                            <svg :class="active === 1 ? 'rotate-180' : ''"
+                                class="w-5 h-5 text-white transition-transform" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                        <p x-show="active === 1" x-transition class="mt-2 text-gray-300 text-sm">
+                            We accept various payment methods including credit cards, PayPal, and more.
+                        </p>
+                    </div>
+
+                    <div class="bg-bg-primary rounded-xl p-4 cursor-pointer"
+                        @click="active === 2 ? active = null : active = 2">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-white font-semibold">What is the buyer protection policy?</h3>
+                            <svg :class="active === 2 ? 'rotate-180' : ''"
+                                class="w-5 h-5 text-white transition-transform" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                        <p x-show="active === 2" x-transition class="mt-2 text-gray-300 text-sm">
+                            Our buyer protection policy ensures secure transactions and support for any disputes.
+                        </p>
+                    </div>
+
+                    <div class="bg-bg-primary rounded-xl p-4 cursor-pointer"
+                        @click="active === 3 ? active = null : active = 3">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-white font-semibold">How do I receive my purchased digital product?
+                            </h3>
+                            <svg :class="active === 3 ? 'rotate-180' : ''"
+                                class="w-5 h-5 text-white transition-transform" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                        <p x-show="active === 3" x-transition class="mt-2 text-gray-300 text-sm">
+                            After purchase, you will receive a download link or access instructions via email.
+                        </p>
+                    </div>
+
+                    <div class="bg-bg-primary rounded-xl p-4 cursor-pointer"
+                        @click="active === 4 ? active = null : active = 4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-white font-semibold">What if the seller doesn't deliver the product?
+                            </h3>
+                            <svg :class="active === 4 ? 'rotate-180' : ''"
+                                class="w-5 h-5 text-white transition-transform" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                        <p x-show="active === 4" x-transition class="mt-2 text-gray-300 text-sm">
+                            Contact support immediately and we will assist you with dispute resolution.
+                        </p>
+                    </div>
+
+                </div>
+            </template>
+
+            <!-- FAQ Items for Sellers -->
+            <template x-if="tab === 'sellers'">
+                <div class="space-y-4">
+
+                    <div class="bg-bg-primary rounded-xl p-4 cursor-pointer"
+                        @click="active === 0 ? active = null : active = 0">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-white font-semibold">How do I become a seller?</h3>
+                            <svg :class="active === 0 ? 'rotate-180' : ''"
+                                class="w-5 h-5 text-white transition-transform" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                        <p x-show="active === 0" x-transition class="mt-2 text-gray-300 text-sm">
+                            Click "Start Selling" or register an account and navigate to the seller dashboard. You
+                            will
+                            need to complete our seller verification process, which includes providing personal
+                            information and an ID document.
+                        </p>
+                    </div>
+
+                    <div class="bg-bg-primary rounded-xl p-4 cursor-pointer"
+                        @click="active === 1 ? active = null : active = 1">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-white font-semibold">Why do I need to be verified to sell?</h3>
+                            <svg :class="active === 1 ? 'rotate-180' : ''"
+                                class="w-5 h-5 text-white transition-transform" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                        <p x-show="active === 1" x-transition class="mt-2 text-gray-300 text-sm">
+                            Verification helps us ensure the authenticity and trustworthiness of sellers on our
+                            platform.
+                        </p>
+                    </div>
+
+                    <div class="bg-bg-primary rounded-xl p-4 cursor-pointer"
+                        @click="active === 2 ? active = null : active = 2">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-white font-semibold">What kind of digital products can I sell?</h3>
+                            <svg :class="active === 2 ? 'rotate-180' : ''"
+                                class="w-5 h-5 text-white transition-transform" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                        <p x-show="active === 2" x-transition class="mt-2 text-gray-300 text-sm">
+                            You can sell ebooks, music, software, design files, and other digital goods.
+                        </p>
+                    </div>
+
+                    <div class="bg-bg-primary rounded-xl p-4 cursor-pointer"
+                        @click="active === 3 ? active = null : active = 3">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-white font-semibold">How do I list a product?</h3>
+                            <svg :class="active === 3 ? 'rotate-180' : ''"
+                                class="w-5 h-5 text-white transition-transform" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                        <p x-show="active === 3" x-transition class="mt-2 text-gray-300 text-sm">
+                            Register your product on the seller dashboard by providing the required details and
+                            uploading your files.
+                        </p>
+                    </div>
+
+                    <div class="bg-bg-primary rounded-xl p-4 cursor-pointer"
+                        @click="active === 4 ? active = null : active = 4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-white font-semibold">How do I get paid?</h3>
+                            <svg :class="active === 4 ? 'rotate-180' : ''"
+                                class="w-5 h-5 text-white transition-transform" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                        <p x-show="active === 4" x-transition class="mt-2 text-gray-300 text-sm">
+                            Payments are processed securely via the platform, and funds are transferred according to
+                            your selected payout method.
+                        </p>
+                    </div>
+
+                </div>
+            </template>
+        </div>
+    </section>
+</main>
