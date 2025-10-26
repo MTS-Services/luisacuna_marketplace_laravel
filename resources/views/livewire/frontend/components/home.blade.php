@@ -13,14 +13,13 @@
 
         <div class=" relative z-10 text-center">
             <h1 class="text-5xl md:text-6xl font-bold mb-6 text-white">Digital Commerce</h1>
-            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">The most reliable platform to buy and sell
-                high-quality digital products.</p>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">The most reliable platform to buy and sell high-quality digital products.</p>
 
             <div class="flex gap-4 justify-center flex-wrap">
                 <button class="btn-primary">
                     <span><x-flux::icon name="user" class="w-6 h-6 inline-block" stroke="white" /></span>
                     Explore Products</button>
-                <button class="btn-secondary"><span><x-flux::icon name="shopping-cart" class="w-5 h-5 inline-block stroke-purple-950" />
+                <button class="btn-secondary"><span><x-flux::icon name="shopping-cart" class="w-5 h-5 inline-block stroke-zinc-500" />
                     </span> Sell Now</button>
             </div>
         </div>
