@@ -1,6 +1,6 @@
 <main class="overflow-x-hidden">
     {{-- menu card --}}
-    {{-- <section class="max-w-5xl mx-auto mt-6">
+    <section class="max-w-5xl mx-auto mt-6">
         <div class="bg-zinc-950 flex align-items-center justify-between p-10">
             <div class="pt-10">
                 <h3 class="text-3xl pb-3 text-base-600">Popular games</h3>
@@ -101,7 +101,7 @@
                 </div>
             </div>
         </div>
-    </section> --}}
+    </section>
     {{-- filter section --}}
     <section class="container mx-auto">
         <div class="title mt-20 mb-5">
