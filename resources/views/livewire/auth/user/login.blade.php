@@ -45,9 +45,18 @@
                 </div>
 
                 <!-- Forgot password -->
-                <div class="text-right px-2 sm:px-6 mb-6">
+                {{-- <div class="text-right px-2 sm:px-6 mb-6">
                     <a href="#" class="text-md text-[#853fee] hover:underline">Forgot password?</a>
-                </div>
+                </div> --}}
+
+                @if (Route::has('password.request'))
+                    <div class="text-right px-2 sm:px-6 mb-6">
+                        <a href="{{ route('password.request') }}" wire:navigate
+                            class="text-md text-[#853fee] hover:underline">
+                            Forgot password?
+                        </a>
+                    </div>
+                @endif
 
                 <!-- Sign in button -->
                 <div class="flex justify-center mb-6 px-2 sm:px-6">
