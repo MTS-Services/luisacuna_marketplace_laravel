@@ -51,7 +51,7 @@ class UpdateAdminAction
                     Log::info('Old avatar deleted', ['path' => $admin->avatar]);
                 }
 
-                $avatarPath = $dto->avatar->store('avatars', 'public');
+                $avatarPath = $dto->avatar->store('admins', 'public');
                 $data['avatar'] = $avatarPath;
 
                 Log::info('New avatar uploaded', ['path' => $avatarPath]);

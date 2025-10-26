@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -12,8 +12,7 @@
     @fluxAppearance
 </head>
 
-<body x-data="{ sidebarOpen: false, mobileMenuOpen: false }"
-    class="h-full max-h-screen antialiased bg-gray-950 text-gray-100">
+<body x-data="{ sidebarOpen: false, mobileMenuOpen: false, $flux.dark = true }" class="h-full max-h-screen antialiased bg-gray-950 text-gray-100">
 
     <div class="flex flex-col h-screen">
         <livewire:backend.user.partials.header :pageSlug="$pageSlug" />

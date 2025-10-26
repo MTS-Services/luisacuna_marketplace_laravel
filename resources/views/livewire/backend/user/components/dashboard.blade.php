@@ -28,8 +28,7 @@
         </div>
     </div>
 
-    <div class="bg-zinc-950 min-h-[90vh] font-sans">
-
+    <div>
         <div class="overflow-x-auto shadow-2xl">
             <table class="w-full text-left table-auto border-separate border-spacing-0">
                 <thead>
@@ -58,11 +57,12 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-zinc-800">
-                    <tr class="bg-bg-primary hover:bg-zinc-950 transition-colors">
+                    <tr class="bg-zinc-800 hover:bg-zinc-700 transition-colors">
                         <td class="px-4 md:px-6 py-4">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-lg bg-orange-600 flex-shrink-0">
-                                    <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo" class="w-full h-full rounded-lg" />
+                                    <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo"
+                                        class="w-full h-full rounded-lg" />
                                 </div>
                                 <div class="min-w-0">
                                     <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift
@@ -85,11 +85,12 @@
                         <td class="px-4 md:px-6 py-4 text-zinc-50 font-semibold text-sm">$4.75</td>
                     </tr>
 
-                    <tr class=" hover:bg-bg-primary/60 transition-colors">
+                    <tr class="bg-zinc-950 hover:bg-zinc-700 transition-colors">
                         <td class="px-4 md:px-6 py-4">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-lg bg-orange-600 flex-shrink-0">
-                                    <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo" class="w-full h-full rounded-lg" />
+                                    <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo"
+                                        class="w-full h-full rounded-lg" />
                                 </div>
                                 <div class="min-w-0">
                                     <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift
@@ -112,141 +113,6 @@
                         <td class="px-4 md:px-6 py-4 text-zinc-50 font-semibold text-sm">$15.30</td>
                     </tr>
 
-                    <tr class="bg-bg-primary hover:bg-bg-primary/60 transition-colors">
-                        <td class="px-4 md:px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                 <div class="w-10 h-10 rounded-lg bg-orange-600 flex-shrink-0">
-                                    <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo" class="w-full h-full rounded-lg" />
-                                </div>
-                                <div class="min-w-0">
-                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift
-                                    </h3>
-                                    <p class="text-xs text-green-400 truncate">Cheapest +75% Discount</p>
-                                    <a href="#"
-                                        class="text-pink-400 text-xs hover:underline flex items-center gap-1">Learn
-                                        more →</a>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm">Items</td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm">Ralph Edwards</td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm whitespace-nowrap">May 20, 2015</td>
-                        <td class="px-4 md:px-6 py-4">
-                            <span
-                                class="px-3 py-1 text-xs font-semibold rounded-full bg-pink-500 text-white whitespace-nowrap inline-block">Completed</span>
-                        </td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm">6190</td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-50 font-semibold text-sm">$10.25</td>
-                    </tr>
-
-                    <tr class=" hover:bg-bg-primary/60 transition-colors">
-                        <td class="px-4 md:px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-lg bg-orange-600 flex-shrink-0">
-                                    <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo" class="w-full h-full rounded-lg" />
-                                </div>
-                                <div class="min-w-0">
-                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift
-                                    </h3>
-                                    <p class="text-xs text-green-400 truncate">Cheapest +75% Discount</p>
-                                    <a href="#"
-                                        class="text-pink-400 text-xs hover:underline flex items-center gap-1">Learn
-                                        more →</a>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm">Items</td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm">Theresa Webb</td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm whitespace-nowrap">May 29, 2017</td>
-                        <td class="px-4 md:px-6 py-4">
-                            <span
-                                class="px-3 py-1 text-xs font-semibold rounded-full bg-pink-500 text-white whitespace-nowrap inline-block">Completed</span>
-                        </td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm">8347</td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-50 font-semibold text-sm">$13.60</td>
-                    </tr>
-
-                    <tr class="bg-bg-primary hover:bg-bg-primary/60 transition-colors">
-                        <td class="px-4 md:px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-lg bg-orange-600 flex-shrink-0">
-                                    <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo" class="w-full h-full rounded-lg" />
-                                </div>
-                                <div class="min-w-0">
-                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Fortnite VB Skin Gift
-                                    </h3>
-                                    <p class="text-xs text-green-400 truncate">Cheapest +75% Discount</p>
-                                    <a href="#"
-                                        class="text-pink-400 text-xs hover:underline flex items-center gap-1">Learn
-                                        more →</a>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm">Items</td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm">Marvin McKinney</td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm whitespace-nowrap">December 29, 2012</td>
-                        <td class="px-4 md:px-6 py-4">
-                            <span
-                                class="px-3 py-1 text-xs font-semibold rounded-full bg-pink-500 text-white whitespace-nowrap inline-block">Completed</span>
-                        </td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm">7210</td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-50 font-semibold text-sm">$7.99</td>
-                    </tr>
-
-                    <tr class=" hover:bg-bg-primary/60 transition-colors">
-                        <td class="px-4 md:px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-lg ">
-                                    <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo" class="w-full h-full rounded-lg" />
-                                </div>
-                                <div class="min-w-0">
-                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Apex Legends Batt...
-                                    </h3>
-                                    <p class="text-xs text-red-400 truncate">Exclusive +60% Off</p>
-                                    <a href="#"
-                                        class="text-pink-400 text-xs hover:underline flex items-center gap-1">Discover
-                                        more →</a>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm">Passes</td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm">Lara Croft</td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm whitespace-nowrap">January 15, 2019</td>
-                        <td class="px-4 md:px-6 py-4">
-                            <span
-                                class="px-3 py-1 text-xs font-semibold rounded-full bg-primary-800 text-red-400 whitespace-nowrap inline-block">In
-                                Progress</span>
-                        </td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm">11567</td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-50 font-semibold text-sm">$8.50</td>
-                    </tr>
-
-                    <tr class="bg-bg-primary hover:bg-bg-primary/60 transition-colors">
-                        <td class="px-4 md:px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-lg bg-orange-600 flex-shrink-0">
-                                    <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo" class="w-full h-full rounded-lg" />
-                                </div>
-                                <div class="min-w-0">
-                                    <h3 class="font-semibold text-zinc-50 text-sm md:text-base">Call of Duty Skin P...
-                                    </h3>
-                                    <p class="text-xs text-pink-400 truncate">Limited Time +50% Savi...</p>
-                                    <a href="#"
-                                        class="text-pink-400 text-xs hover:underline flex items-center gap-1">View
-                                        details →</a>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm">Bundles</td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm">John Doe</td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm whitespace-nowrap">March 10, 2026</td>
-                        <td class="px-4 md:px-6 py-4">
-                            <span
-                                class="px-3 py-1 text-xs font-semibold rounded-full bg-primary-800 text-pink-400 whitespace-nowrap inline-block">Pending</span>
-                        </td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-100 text-sm">3024</td>
-                        <td class="px-4 md:px-6 py-4 text-zinc-50 font-semibold text-sm">$11.75</td>
-                    </tr>
                 </tbody>
             </table>
         </div>
