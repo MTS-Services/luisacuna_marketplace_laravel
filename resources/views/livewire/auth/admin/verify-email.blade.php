@@ -1,21 +1,55 @@
-<div class="mt-4 flex flex-col gap-6">
-    <flux:text class="text-center">
-        {{ __('Please verify your email address by clicking on the link we just emailed to you.') }}
-    </flux:text>
+ <div class="container mx-auto ">
+     <div class="min-h-screen flex items-center justify-center bg-[#0D061A] text-white ">
+         <form method="POST" wire:submit.prevent="login"
+             class="-mt-28 w-full h-[600px] max-w-lg bg-[#1a0b2e] rounded-2xl p-8 shadow-lg space-y-8">
+             <!-- Header -->
+             <div class="text-center">
+                 <h2 class="text-5xl font-medium p-4 text-white">Gmail Verification</h2>
+                 <p class="text-gray-300 lg:text-xl text-base">
+                     Hi! Welcome back, you’ve been missed
+                 </p>
+             </div>
+             
+             <!-- Email -->
+             <div>
+                 <label class="block text-xl font-medium mb-2 text-white">Email</label>
+                 <input type="email" placeholder="example@gmail.com" wire:model="email"
+                     class="w-full px-4 py-3 bg-[#2d1f43] text-white placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" />
+             </div>
 
-    @if (session('status') == 'verification-link-sent')
-        <flux:text class="text-center font-medium !dark:text-green-400 !text-green-600">
-            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
-        </flux:text>
-    @endif
+             <!-- Submit button -->
+             <div>
+                 <button type="submit" wire:click="sendCode"
+                     class="w-full bg-[#853fee] hover:bg-purple-700 transition-colors text-white font-medium py-3 rounded-full">
+                     Send Code
+                 </button>
+             </div>
 
-    <div class="flex flex-col items-center justify-between space-y-3">
-        <flux:button wire:click="sendVerification" variant="primary" class="w-full">
-            {{ __('Resend verification email') }}
-        </flux:button>
+             <!-- Divider -->
+             <div class="flex items-center justify-center space-x-2">
+                 <hr class="flex-1 border-gray-700" />
+                 <span class="text-gray-200 text-sm">Or sign in with</span>
+                 <hr class="flex-1 border-gray-700" />
+             </div>
 
-        <flux:link class="text-sm cursor-pointer" wire:click="logout">
-            {{ __('Log out') }}
-        </flux:link>
-    </div>
-</div>
+             <!-- Social login -->
+             <div class="flex justify-center gap-4">
+                 <button class="w-12 h-12 flex items-center justify-center bg-white rounded-md">
+                     <img src="{{ asset('assets/icons/icons8-google.svg') }}" class="w-6 h-6" alt="Google" />
+                 </button>
+                 <button class="w-12 h-12 flex items-center justify-center bg-white rounded-md">
+                     <img src="{{ asset('assets/icons/icons8-apple-logo.svg') }}" class="w-6 h-6" alt="Apple" />
+                 </button>
+                 <button class="w-12 h-12 flex items-center justify-center bg-white rounded-md">
+                     <img src="{{ asset('assets/icons/icons8-facebook.svg') }}" class="w-6 h-6" alt="Facebook" />
+                 </button>
+             </div>
+
+             <!-- Footer -->
+             <div class="text-center text-gray-200 text-sm">
+                 Don’t have an account?
+                 <a href="{{ route('register') }}" class="text-purple-400 hover:underline">Sign up</a>
+             </div>
+         </form>
+     </div>
+ </div>
