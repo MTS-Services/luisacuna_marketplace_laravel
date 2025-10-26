@@ -1,7 +1,10 @@
 <main class="overflow-x-hidden">
     {{-- filter section --}}
-    <section class="search-filter">
-        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4 mt-3.5">
+    <section class="search-filter max-w-7xl mx-auto">
+        <div class="title mt-20 mb-5">
+            <h2 class="font-bold text-4xl">Currency</h2>
+        </div>
+        <div class="flex items-center justify-between gap-4 mt-3.5">
             <div class="search w-full">
                 <x-input 
                     type="text" 
