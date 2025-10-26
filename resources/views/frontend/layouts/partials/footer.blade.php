@@ -3,7 +3,7 @@
         <div class="container grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <!-- Brand -->
             <div>
-                <div class="text-2xl font-bold gradient-text mb-4 text-white"><a href="{{ route('home') }}">
+                <div class="mb-4"><a href="{{ route('home') }}">
                     <img src="{{ asset('assets/images/header_logo.png') }}" alt="">    
                 </a></div>
                 <p class="text-gray-400 text-md">Digital Commerce connects buyers and verified sellers for secure,
