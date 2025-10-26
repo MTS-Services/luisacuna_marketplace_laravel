@@ -314,7 +314,7 @@
 }
 
 .container {
-    @apply mx-auto;
+    @apply mx-auto px-4 lg:px-0;
     max-width: 1280px;
 }
 
@@ -393,18 +393,6 @@ body {
     height: 100px;
     margin: 0 auto 1rem;
     object-fit: contain;
-}
-
-.icon-box {
-    width: 80px;
-    height: 80px;
-    background: rgba(133, 62, 255, 0.1);
-    border-radius: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1rem;
-    font-size: 2rem;
 }
 
 .glass-effect {
