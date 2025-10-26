@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('kyc_setting_id');
             $table->unsignedBigInteger('ckyc_setting_id');
             $table->integer('version');
-            $table->string('type');
+            $table->string('type')->index();
             $table->string('status')->index()->default(SubmittedKycStatus::PENDING->value);
             $table->json('submitted_data');
             $table->longText('note')->nullable();

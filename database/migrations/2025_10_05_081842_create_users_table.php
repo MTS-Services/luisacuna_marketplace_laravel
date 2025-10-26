@@ -44,8 +44,8 @@ return new class extends Migration
             $table->string('phone');
             $table->timestamp('phone_verified_at')->nullable();
 
-            $table->string('user_type')->default(UserType::BUYER->value);
-            $table->string('account_status')->default(UserAccountStatus::PENDING_VERIFICATION->value);
+            $table->string('user_type')->index()->default(UserType::BUYER->value);
+            $table->string('account_status')->index()->default(UserAccountStatus::PENDING_VERIFICATION->value);
             $table->string('kyc_status');
 
             $table->timestamp('last_login_at')->nullable();
@@ -70,10 +70,6 @@ return new class extends Migration
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade')->onUpdate('cascade');
             $this->addMorphedAuditColumns($table);
 
-            // Indexes
-            $table->index('email');
-            $table->index('user_type');
-            $table->index('account_status');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

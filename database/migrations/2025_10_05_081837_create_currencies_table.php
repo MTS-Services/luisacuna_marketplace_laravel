@@ -17,7 +17,7 @@ return new class extends Migration
     {
         Schema::create('currencies', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->index()->default(0);
             $table->string('code')->unique()->comment('USD, EUR, GBP, BDT');
             $table->string('symbol')->comment('&#xa3;, &#xa2;, &#x24;');
             $table->string('name')->unique();
@@ -31,10 +31,6 @@ return new class extends Migration
             $table->timestamps();
             $this->addAdminAuditColumns($table);
 
-
-            // Indexs
-            $table->index('sort_order');
-            $table->index('code');
         });
     }
 

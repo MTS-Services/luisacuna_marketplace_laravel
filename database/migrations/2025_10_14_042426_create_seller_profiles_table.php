@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('shop_name');
             $table->text('shop_description');
 
-            $table->boolean('seller_verified')->default(false);
+            $table->boolean('seller_verified')->index()->default(false);
             $table->timestamp('seller_verified_at')->nullable();
 
             $table->string('seller_level')->default(SellerLevel::BRONZE->value);

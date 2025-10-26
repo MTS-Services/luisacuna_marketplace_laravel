@@ -25,11 +25,6 @@ return new class extends Migration
             $table->timestamps();
             $this->addAdminAuditColumns($table);
 
-
-
-            // indexes
-            $table->index('type', 'idx_kyc_settings_type');
-            $table->index('status', 'idx_kyc_settings_status');
         });
     }
 

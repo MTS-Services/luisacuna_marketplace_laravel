@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             CurrencySeeder::class,
             ExchangeRateSeeder::class,
             ExchangeRateHistorySeeder::class,
-            EmialTemplateSeeder::class,
+            EmailTemplateSeeder::class,
             ReferralSettingSeeder::class,
             UserSeeder::class,
             SellerProfileSeeder::class,

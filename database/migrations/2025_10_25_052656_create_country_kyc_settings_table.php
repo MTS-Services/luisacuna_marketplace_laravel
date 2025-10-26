@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('country_id');
     
 
-            $table->string('type');
+            $table->string('type')->index();
             $table->string('status')->index()->default(CountryKycSettingStatus::ACTIVE->value);
             $table->integer('version')->default(1);
             

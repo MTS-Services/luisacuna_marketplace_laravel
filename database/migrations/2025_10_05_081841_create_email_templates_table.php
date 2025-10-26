@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('emial_templates', function (Blueprint $table) {
+        Schema::create('email_templates', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0);
             $table->string('key')->unique();
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('emial_templates');
+        Schema::dropIfExists('email_templates');
     }
 };

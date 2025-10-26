@@ -2,19 +2,20 @@
 
 namespace Database\Seeders;
 
-use App\Models\EmialTemplate;
+use App\Models\EmailTemplate;
+
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class EmialTemplateSeeder extends Seeder
+class EmailTemplateSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        EmialTemplate::insert([
+        EmailTemplate::insert([
             [
                 'sort_order' => 1,
                 'key' => 'welcome_email',

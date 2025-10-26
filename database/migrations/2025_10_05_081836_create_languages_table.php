@@ -17,7 +17,7 @@ return new class extends Migration
     {
         Schema::create('languages', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->index()->default(0);
             $table->string('locale')->unique()->comment('en, es, fr, bn');
             $table->string('name')->unique()->comment('English, Spanish, France');
             $table->string('native_name')->nullabl()->comment('English, Español');

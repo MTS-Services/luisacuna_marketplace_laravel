@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('exchange_rate_histories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->index()->default(0);
             $table->unsignedBigInteger('base_currency');
             $table->unsignedBigInteger('target_currency');
             $table->decimal('rate', 10, 6);
-            $table->timestamp('last_updated_at');
+            $table->timestamp('last_updated_at')->index();
 
 
             $table->softDeletes();
@@ -27,9 +27,6 @@ return new class extends Migration
             $this->addAdminAuditColumns($table);
 
 
-            // indexs
-            $table->index('sort_order');
-            $table->index('last_updated_at');
         });
     }
 
