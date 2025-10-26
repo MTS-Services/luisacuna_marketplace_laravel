@@ -1,19 +1,40 @@
 <header x-data="{ mobileMenuOpen: false }"
     class="sticky top-0 z-50 {{ request()->routeIs('home') ? 'bg-gradient-to-r from-purple-950 via-black to-purple-950' : 'glass-card' }}">
-    <div
-        class="container px-4 py-4 flex items-center justify-between">
+    <div class="container px-4 py-4 flex items-center justify-between">
         <div class="text-2xl font-bold gradient-text text-white"><a href="{{ route('home') }}">
                 <img src="{{ asset('assets/images/header_logo.png') }}" alt=""></a>
         </div>
 
         <nav class="hidden md:flex gap-8 text-sm items-center">
-            <a href="#" class="hover:text-purple-400 transition text-white">Company</a>
-            <a href="#" class="hover:text-purple-400 transition text-white">Gift Cards</a>
-            <a href="#" class="hover:text-purple-400 transition text-white">Reselling</a>
-            <a href="#" class="hover:text-purple-400 transition text-white">News</a>
-            <a href="#" class="hover:text-purple-400 transition text-white">Accounts</a>
-            <a href="#" class="hover:text-purple-400 transition text-white">Top Ups</a>
-            <a href="#" class="hover:text-purple-400 transition text-white">Coaching</a>
+            {{-- <a href="#" class="hover:text-purple-400 transition text-white">Currency</a> --}}
+            <a href="#" class="navbar_style group active">
+                <span class="relative z-10">Currency</span>
+                <span class="navbar_indicator active"></span>
+            </a>
+            <a href="#" class="navbar_style group">
+                <span class="relative z-10">Gift Cards</span>
+                <span class="navbar_indicator"></span>
+            </a>
+            <a href="#" class="navbar_style group">
+                <span class="relative z-10">Boosting</span>
+                <span class="navbar_indicator"></span>
+            </a>
+            <a href="#" class="navbar_style group">
+                <span class="relative z-10">Items</span>
+                <span class="navbar_indicator"></span>
+            </a>
+            <a href="#" class="navbar_style group">
+                <span class="relative z-10">Accounts</span>
+                <span class="navbar_indicator"></span>
+            </a>
+            <a href="#" class="navbar_style group">
+                <span class="relative z-10">Top Ups</span>
+                <span class="navbar_indicator"></span>
+            </a>
+            <a href="#" class="navbar_style group">
+                <span class="relative z-10">Coaching</span>
+                <span class="navbar_indicator"></span>
+            </a>
             {{-- Search --}}
             <button
                 class="flex items-center gap-2 px-4 py-2 border border-white rounded-full text-white bg-transparent hover:bg-white/10 transition max-w-fit">

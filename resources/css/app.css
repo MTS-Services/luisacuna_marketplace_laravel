@@ -302,6 +302,13 @@
     .dark .animated-bg {
         @apply bg-[length:400%_400%] animate-gradientBG bg-gradient-to-br from-pink-950 via-zinc-950 to-pink-950;
     }
+    .navbar_style {
+        @apply relative text-white font-medium transition-colors duration-300 hover:text-purple-400 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:bg-purple-500 after:w-0 hover:after:w-full after:transition-all after:duration-300 [&.active]:text-purple-400 [&.active]:after:w-full;
+    }
+    .navbar_indicator{
+        @apply absolute inset-x-0 bottom-0 h-5 bg-purple-500/80 blur-md rounded-full 
+               opacity-0 group-hover:opacity-100 [&.active]:opacity-100 transition-opacity duration-300 ease-in-out;
+    }
 
 }
 
