@@ -181,7 +181,7 @@
             <h2 class="text-white text-center text-[40px] mb-6 font-semibold">Frequently Asked Questions</h2>
 
             <!-- Tabs -->
-            <div class="max-w-xs mx-auto flex justify-between mb-8 bg-bg-primary rounded-full px-4 py-5">
+            <div class="max-w-xs mx-auto flex justify-between mb-8 bg-bg-primary rounded-full px-4 py-3">
                 <button @click="tab = 'buyers'; active = 0"
                     :class="tab === 'buyers' ? 'bg-purple-700 px-5 py-3 rounded-full shadow-lg text-white' :
                         'text-gray-300 px-7'"
