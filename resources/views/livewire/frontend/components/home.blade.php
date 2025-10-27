@@ -13,13 +13,15 @@
 
         <div class=" relative z-10 text-center">
             <h1 class="text-5xl md:text-6xl font-bold mb-6 text-white">Digital Commerce</h1>
-            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">The most reliable platform to buy and sell high-quality digital products.</p>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">The most reliable platform to buy and sell
+                high-quality digital products.</p>
 
             <div class="flex gap-4 justify-center flex-wrap">
                 <button class="btn-primary">
                     <span><x-flux::icon name="user" class="w-6 h-6 inline-block" stroke="white" /></span>
                     Explore Products</button>
-                <button class="btn-secondary"><span><x-flux::icon name="shopping-cart" class="w-5 h-5 inline-block stroke-zinc-500" />
+                <button class="btn-secondary"><span><x-flux::icon name="shopping-cart"
+                            class="w-5 h-5 inline-block stroke-zinc-500" />
                     </span> Sell Now</button>
             </div>
         </div>
@@ -27,7 +29,7 @@
 
     <!-- Popular Games Section -->
     <section class="py-20">
-        <div class="max-w-7xl  mx-auto">
+        <div class="container">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold mb-4 text-white">Popular Games</h2>
                 <p class="text-gray-400">Find coins, items, and services for your favorite games.</p>
@@ -107,7 +109,7 @@
 
     <!-- How It Works Section -->
     <section class="py-20">
-        <div class="max-w-7xl  mx-auto">
+        <div class="container">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold mb-4 text-white">How It Works</h2>
             </div>
@@ -115,7 +117,8 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Step 1 -->
                 <div class="text-center">
-                    <div class="icon-box">
+                    <div
+                        class="w-20 h-20 bg-[rgba(133,62,255,0.1)] rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
                         <img src="{{ asset('assets/images/home_page/secure_transaction.png') }}" alt="">
                     </div>
                     <h3 class="font-bold text-lg mb-2 text-white">Secure Transactions</h3>
@@ -125,10 +128,10 @@
 
                 <!-- Step 2 -->
                 <div class="text-center relative">
-                    <div class="icon-box">
+                    <div class="w-20 h-20 bg-[rgba(133,62,255,0.1)] rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
                         <img src="{{ asset('assets/images/home_page/verified_sellers.png') }}" alt="">
                     </div>
-                    <div class="absolute top-1/4 -left-1/4 z-20">
+                    <div class="absolute top-1/4 -left-1/4 z-20 hidden md:block">
                         <img src="{{ asset('assets/images/home_page/right-arrow.png') }}" alt="">
                     </div>
                     <h3 class="font-bold text-lg mb-2 text-white">Verified Sellers</h3>
@@ -138,10 +141,10 @@
 
                 <!-- Step 3 -->
                 <div class="text-center relative">
-                    <div class="icon-box">
+                    <div class="w-20 h-20 bg-[rgba(133,62,255,0.1)] rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
                         <img src="{{ asset('assets/images/home_page/effortless_buying.png') }}" alt="">
                     </div>
-                    <div class="absolute top-1/4 -left-1/4 z-20">
+                    <div class="absolute top-1/4 -left-1/4 z-20 hidden md:block">
                         <img src="{{ asset('assets/images/home_page/right-arrow.png') }}" alt="">
                     </div>
                     <h3 class="font-bold text-lg mb-2 text-white">Effortless Buying & Selling</h3>
