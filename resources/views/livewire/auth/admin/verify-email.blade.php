@@ -16,6 +16,10 @@
                  <input type="email" placeholder="example@gmail.com" wire:model="email"
                      class="w-full px-4 py-3 bg-[#2d1f43] text-white placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" />
              </div>
+                <!-- Error message -->
+                @error('email')
+                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                @enderror
 
              <!-- Submit button -->
              <div>

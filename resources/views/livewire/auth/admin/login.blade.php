@@ -25,8 +25,12 @@
                         class="text-white w-full px-4 py-2 bg-[#2d1f43] border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400" />
                 </div>
 
+                @error('email')
+                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                @enderror
+
                 <!-- Password -->
-                <div class="mb-2 sm:mb-6 px-2 sm:px-6">
+                <div class="-mt-10 sm:mb-6 px-2 sm:px-6">
                     <label class="block text-lg sm:text-2xl font-medium mb-2 text-white">Password</label>
                     <div class="relative">
                         <input type="password" id="password" placeholder="Aex@8465" wire:model="password"
@@ -44,20 +48,12 @@
                     </div>
                 </div>
 
-                <!-- Forgot password -->
-                {{-- <div class="text-right px-2 sm:px-6 mb-6" wire:click="redirectToForgotPassword">
-                    <a href="#" class="text-md text-[#853fee] hover:underline">Forgot password?</a>
-                </div> --}}
-
-                {{-- @if (Route::has('admin.password.request'))
-                    <div class="text-right px-2 sm:px-6 mb-6" :href="route('admin.password.request')" wire:navigate>
-                        <a href="{{ route('admin.password.request') }}" class="text-md text-[#853fee] hover:underline">Forgot
-                            password?</a>
-                    </div>
-                @endif --}}
+                @error('password')
+                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                @enderror
 
                 @if (Route::has('admin.password.request'))
-                    <div class="text-right px-2 sm:px-6 mb-6">
+                    <div class="-mt-10 text-right px-2 sm:px-6">
                         <a href="{{ route('admin.password.request') }}" wire:navigate
                             class="text-md text-[#853fee] hover:underline">
                             Forgot password?
@@ -66,7 +62,7 @@
                 @endif
 
                 <!-- Sign in button -->
-                <div class="flex justify-center mb-6 px-2 sm:px-6">
+                <div class="flex justify-center px-2 sm:px-6">
                     <button type="submit"
                         class="bg-[#853fee] hover:bg-purple-700 transition-colors text-white font-medium py-3 w-full sm:w-auto sm:px-24 md:px-48 rounded-full">
                         Sign in
