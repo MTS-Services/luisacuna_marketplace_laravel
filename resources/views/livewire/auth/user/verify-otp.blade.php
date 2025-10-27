@@ -47,14 +47,16 @@
                  </div>
              </div>
 
-             <!-- Forgot password -->
              <div class="text-right px-2 sm:px-6 mb-6">
-                 <a href="#" class="text-md text-white hover:underline">Don't have resend again?</a>
+                 <span wire:click="resend" wire:loading.attr="disabled" class="text-md text-white hover:underline cursor-pointer">
+                     <span wire:loading.remove wire:target="resend">Don't have resend again?</span>
+                     <span wire:loading wire:target="resend">Sending...</span>
+                 </span>
              </div>
 
              <!-- Submit button -->
              <div>
-                 <button type="submit" wire:click="sendCode"
+                 <button type="submit" 
                      class="w-full bg-[#853fee] hover:bg-purple-700 transition-colors text-white font-medium py-3 rounded-full">
                      Verify
                  </button>
