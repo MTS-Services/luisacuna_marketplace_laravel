@@ -94,9 +94,9 @@
                 :items="[
                     [
                         'name' => 'Settings',
-                        'route' => route('admin.two-factor.index'),
+                        'route' => '#',
                         'icon' => 'cog-8-tooth',
-                        'active' => 'two-factor',
+                        'active' => '',
                     ],
                     // [
                     //     'name' => 'Appearance',
@@ -106,9 +106,9 @@
                     // ],
                     [
                         'name' => 'Security',
-                        'route' => '#',
+                        'route' => route('admin.two-factor.index'),
                         'icon' => 'shield',
-                        'active' => 'settings-security',
+                        'active' => 'two-factor',
                     ],
                     [
                         'name' => 'Email',
