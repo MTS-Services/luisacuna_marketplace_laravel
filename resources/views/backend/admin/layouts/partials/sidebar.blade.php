@@ -84,6 +84,9 @@
                 ]" />
 
 
+            <x-backend.navlink type="single" icon="language" name="Language" :route="route('admin.language.index')"
+                active="language" :page_slug="$active" />
+
             <div class="pt-4 pb-2">
                 <p class="text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
                     x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)">Settings & Tools</p>

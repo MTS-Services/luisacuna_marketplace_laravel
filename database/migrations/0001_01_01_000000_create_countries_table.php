@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->string('phone_code')->nullable();
             $table->string('currency')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active')->index()->default(true);
             
             $table->timestamps();
             $table->softDeletes();

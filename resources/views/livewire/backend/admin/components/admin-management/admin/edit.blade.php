@@ -23,76 +23,42 @@
 
             <!-- Add other form fields here -->
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Name <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" wire:model="form.name"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.name')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                <div class="w-full">
+                    <x-ui.label value="Name" class="mb-1" />
+                    <x-ui.input type="text" placeholder="Name" wire:model="form.name" />
+                    <x-ui.input-error :messages="$errors->get('form.name')" />
                 </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Email <span class="text-red-500">*</span>
-                    </label>
-                    <input type="email" wire:model="form.email"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.email')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                <div class="w-full">
+                    <x-ui.label value="Email" class="mb-1" />
+                    <x-ui.input type="email" placeholder="Email" wire:model="form.email" />
+                    <x-ui.input-error :messages="$errors->get('form.email')" />
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Phone <span class="text-red-500">*</span>
-                    </label>
-                    <input type="tel" wire:model="form.phone"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.phone')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                <div class="w-full">
+                    <x-ui.label value="Phone" class="mb-1" />
+                    <x-ui.input type="tel" placeholder="Phone" wire:model="form.phone" />
+                    <x-ui.input-error :messages="$errors->get('form.phone')" />
                 </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Status <span class="text-red-500">*</span>
-                    </label>
-                    <select wire:model="form.status"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                        <option value="">Select Status</option>
+                <div class="w-full">
+                    <x-ui.label value="Status Select" class="mb-1" />
+                    <x-ui.select wire:model="form.status">
                         @foreach ($statuses as $status)
                             <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
                         @endforeach
-                    </select>
-                    @error('form.status')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.status')" />
                 </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Password <span class="text-red-500">*</span>
-                    </label>
-                    <input type="password" wire:model="form.password"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.password')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                <div class="w-full">
+                    <x-ui.label value="Password" class="mb-1" />
+                    <x-ui.input type="password" placeholder="Password" wire:model="form.password" />
+                    <x-ui.input-error :messages="$errors->get('form.password')" />
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Confirm Password <span class="text-red-500">*</span>
-                    </label>
-                    <input type="password" wire:model="form.password_confirmation"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.password_confirmation')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                <div class="w-full">
+                    <x-ui.label value="Confirm Password" class="mb-1" />
+                    <x-ui.input type="password" placeholder="Confirm Password"
+                        wire:model="form.password_confirmation" />
+                    <x-ui.input-error :messages="$errors->get('form.password_confirmation')" />
                 </div>
             </div>
-
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
                 <x-ui.button href="{{ route('admin.am.admin.index') }}" type="danger">
