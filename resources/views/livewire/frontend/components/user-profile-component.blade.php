@@ -5,7 +5,7 @@
         </div>
     </section>
     {{-- profile card --}}
-    <section class="container mx-auto bg-zinc-900 p-10 rounded-2xl absolute top-20 left-1/2 translate-x-[-50%] ">
+    <section class="container mx-auto bg-zinc-900 p-10! rounded-2xl absolute top-20 left-1/2 translate-x-[-50%] ">
         <div class="flex justify-between">
             <div class="flex items-center gap-6">
                 <div class="">
@@ -93,8 +93,8 @@
             </div>
 
             {{-- games --}}
-            <div class="grid grid-cols-4 gap-4 mt-10">
-                <div class="bg-zinc-800 rounded-lg p-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
+                <div class="bg-zinc-900 rounded-lg p-5">
                     <div class="flex gap-4">
                         <div class="profile">
                             <a href="">
@@ -105,35 +105,35 @@
                             <a href="" class="flex items-center gap-2">
                                 <img src="{{ asset('assets/images/user_profile/Frame1.png') }}" alt=""
                                     class="w-5 h-5">
-                                <span>PlayStation</span>
+                                <span class="text-zinc-50/95 text-base-600">PlayStation</span>
                             </a>
                         </div>
                         <div class="">
-                            <span>.Stacked</span>
+                            <span class="text-zinc-200/50 text-base-600">.Stacked</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 mt-5">
-                        <span>
-                            【1 SKIN】Galaxy ✴ PSN/XBOX/PC FULL ACCESS
+                        <span class="text-base-400 text-zinc-200/50">
+                            【1 SKIN】Galaxy <span class="text-zinc-50 text-1xl">✴</span> PSN/XBOX/PC FULL ACCESS
                         </span>
                         <img src="{{ asset('assets/images/user_profile/product-image-container -_ image.png') }}"
                             alt="">
                     </div>
                     <div class="flex items-center justify-between mt-10">
                         <div class="">
-                            <span>
+                            <span class="text-2xl-600 text-zinc-50">
                                 PEN175.27
                             </span>
                         </div>
-                        <div class="">
-                            <span>
-                                <x:flux::icon name="clock" class="w-6 h-6 inline-block" stroke="white" />
+                        <div class="flex items-center gap-2">
+                            <flux:icon name="clock" class="w-6 h-6 text-zinc-50/50"/>
+                            <span class="text-xs-400 text-zinc-50/50">
                                 Instant
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="bg-zinc-800 rounded-lg p-5">
+                <div class="bg-zinc-900 rounded-lg p-5">
                     <div class="flex gap-4">
                         <div class="profile">
                             <a href="">
@@ -142,37 +142,37 @@
                         </div>
                         <div class="flex items-center">
                             <a href="" class="flex items-center gap-2">
-                                <img src="{{ asset('assets/images/user_profile/Frame1.png') }}" alt=""
+                                <img src="{{ asset('assets/images/user_profile/Frame3.png') }}" alt=""
                                     class="w-5 h-5">
-                                <span>PlayStation</span>
+                                <span class="text-zinc-50/95 text-base-600">Xbox</span>
                             </a>
                         </div>
                         <div class="">
-                            <span>.Stacked</span>
+                            <span class="text-zinc-200/50 text-base-600">.Stacked</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 mt-5">
-                        <span>
-                            【1 SKIN】Galaxy ✴ PSN/XBOX/PC FULL ACCESS
+                        <span class="text-base-400 text-zinc-200/50">
+                            【1 SKIN】Galaxy <span class="text-zinc-50 text-1xl">✴</span> PSN/XBOX/PC FULL ACCESS
                         </span>
                         <img src="{{ asset('assets/images/user_profile/product-image-container -_ image.png') }}"
                             alt="">
                     </div>
                     <div class="flex items-center justify-between mt-10">
                         <div class="">
-                            <span>
+                            <span class="text-2xl-600 text-zinc-50">
                                 PEN175.27
                             </span>
                         </div>
-                        <div class="">
-                            <span>
-                                <x:flux::icon name="clock" class="w-6 h-6 inline-block" stroke="white" />
+                        <div class="flex items-center gap-2">
+                            <flux:icon name="clock" class="w-6 h-6 text-zinc-50/50"/>
+                            <span class="text-xs-400 text-zinc-50/50">
                                 Instant
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="bg-zinc-800 rounded-lg p-5">
+                <div class="bg-zinc-900 rounded-lg p-5">
                     <div class="flex gap-4">
                         <div class="profile">
                             <a href="">
@@ -181,37 +181,37 @@
                         </div>
                         <div class="flex items-center">
                             <a href="" class="flex items-center gap-2">
-                                <img src="{{ asset('assets/images/user_profile/Frame1.png') }}" alt=""
+                                <img src="{{ asset('assets/images/user_profile/Frame3.png') }}" alt=""
                                     class="w-5 h-5">
-                                <span>PlayStation</span>
+                                <span class="text-zinc-50/95 text-base-600">Xbox</span>
                             </a>
                         </div>
                         <div class="">
-                            <span>.Stacked</span>
+                            <span class="text-zinc-200/50 text-base-600">.Stacked</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 mt-5">
-                        <span>
-                            【1 SKIN】Galaxy ✴ PSN/XBOX/PC FULL ACCESS
+                        <span class="text-base-400 text-zinc-200/50">
+                            【1 SKIN】Galaxy <span class="text-zinc-50 text-1xl">✴</span> PSN/XBOX/PC FULL ACCESS
                         </span>
                         <img src="{{ asset('assets/images/user_profile/product-image-container -_ image.png') }}"
                             alt="">
                     </div>
                     <div class="flex items-center justify-between mt-10">
                         <div class="">
-                            <span>
+                            <span class="text-2xl-600 text-zinc-50">
                                 PEN175.27
                             </span>
                         </div>
-                        <div class="">
-                            <span>
-                                <x:flux::icon name="clock" class="w-6 h-6 inline-block" stroke="white" />
+                        <div class="flex items-center gap-2">
+                            <flux:icon name="clock" class="w-6 h-6 text-zinc-50/50"/>
+                            <span class="text-xs-400 text-zinc-50/50">
                                 Instant
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="bg-zinc-800 rounded-lg p-5">
+                <div class="bg-zinc-900 rounded-lg p-5">
                     <div class="flex gap-4">
                         <div class="profile">
                             <a href="">
@@ -220,37 +220,37 @@
                         </div>
                         <div class="flex items-center">
                             <a href="" class="flex items-center gap-2">
-                                <img src="{{ asset('assets/images/user_profile/Frame1.png') }}" alt=""
+                                <img src="{{ asset('assets/images/user_profile/Frame3.png') }}" alt=""
                                     class="w-5 h-5">
-                                <span>PlayStation</span>
+                                <span class="text-zinc-50/95 text-base-600">Xbox</span>
                             </a>
                         </div>
                         <div class="">
-                            <span>.Stacked</span>
+                            <span class="text-zinc-200/50 text-base-600">.Stacked</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 mt-5">
-                        <span>
-                            【1 SKIN】Galaxy ✴ PSN/XBOX/PC FULL ACCESS
+                        <span class="text-base-400 text-zinc-200/50">
+                            【1 SKIN】Galaxy <span class="text-zinc-50 text-1xl">✴</span> PSN/XBOX/PC FULL ACCESS
                         </span>
                         <img src="{{ asset('assets/images/user_profile/product-image-container -_ image.png') }}"
                             alt="">
                     </div>
                     <div class="flex items-center justify-between mt-10">
                         <div class="">
-                            <span>
+                            <span class="text-2xl-600 text-zinc-50">
                                 PEN175.27
                             </span>
                         </div>
-                        <div class="">
-                            <span>
-                                <x:flux::icon name="clock" class="w-6 h-6 inline-block" stroke="white" />
+                        <div class="flex items-center gap-2">
+                            <flux:icon name="clock" class="w-6 h-6 text-zinc-50/50"/>
+                            <span class="text-xs-400 text-zinc-50/50">
                                 Instant
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="bg-zinc-800 rounded-lg p-5">
+                <div class="bg-zinc-900 rounded-lg p-5">
                     <div class="flex gap-4">
                         <div class="profile">
                             <a href="">
@@ -259,37 +259,37 @@
                         </div>
                         <div class="flex items-center">
                             <a href="" class="flex items-center gap-2">
-                                <img src="{{ asset('assets/images/user_profile/Frame1.png') }}" alt=""
+                                <img src="{{ asset('assets/images/user_profile/Frame3.png') }}" alt=""
                                     class="w-5 h-5">
-                                <span>PlayStation</span>
+                                <span class="text-zinc-50/95 text-base-600">Xbox</span>
                             </a>
                         </div>
                         <div class="">
-                            <span>.Stacked</span>
+                            <span class="text-zinc-200/50 text-base-600">.Stacked</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 mt-5">
-                        <span>
-                            【1 SKIN】Galaxy ✴ PSN/XBOX/PC FULL ACCESS
+                        <span class="text-base-400 text-zinc-200/50">
+                            【1 SKIN】Galaxy <span class="text-zinc-50 text-1xl">✴</span> PSN/XBOX/PC FULL ACCESS
                         </span>
                         <img src="{{ asset('assets/images/user_profile/product-image-container -_ image.png') }}"
                             alt="">
                     </div>
                     <div class="flex items-center justify-between mt-10">
                         <div class="">
-                            <span>
+                            <span class="text-2xl-600 text-zinc-50">
                                 PEN175.27
                             </span>
                         </div>
-                        <div class="">
-                            <span>
-                                <x:flux::icon name="clock" class="w-6 h-6 inline-block" stroke="white" />
+                        <div class="flex items-center gap-2">
+                            <flux:icon name="clock" class="w-6 h-6 text-zinc-50/50"/>
+                            <span class="text-xs-400 text-zinc-50/50">
                                 Instant
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="bg-zinc-800 rounded-lg p-5">
+                <div class="bg-zinc-900 rounded-lg p-5">
                     <div class="flex gap-4">
                         <div class="profile">
                             <a href="">
@@ -298,37 +298,37 @@
                         </div>
                         <div class="flex items-center">
                             <a href="" class="flex items-center gap-2">
-                                <img src="{{ asset('assets/images/user_profile/Frame1.png') }}" alt=""
+                                <img src="{{ asset('assets/images/user_profile/Frame3.png') }}" alt=""
                                     class="w-5 h-5">
-                                <span>PlayStation</span>
+                                <span class="text-zinc-50/95 text-base-600">Xbox</span>
                             </a>
                         </div>
                         <div class="">
-                            <span>.Stacked</span>
+                            <span class="text-zinc-200/50 text-base-600">.Stacked</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 mt-5">
-                        <span>
-                            【1 SKIN】Galaxy ✴ PSN/XBOX/PC FULL ACCESS
+                        <span class="text-base-400 text-zinc-200/50">
+                            【1 SKIN】Galaxy <span class="text-zinc-50 text-1xl">✴</span> PSN/XBOX/PC FULL ACCESS
                         </span>
                         <img src="{{ asset('assets/images/user_profile/product-image-container -_ image.png') }}"
                             alt="">
                     </div>
                     <div class="flex items-center justify-between mt-10">
                         <div class="">
-                            <span>
+                            <span class="text-2xl-600 text-zinc-50">
                                 PEN175.27
                             </span>
                         </div>
-                        <div class="">
-                            <span>
-                                <x:flux::icon name="clock" class="w-6 h-6 inline-block" stroke="white" />
+                        <div class="flex items-center gap-2">
+                            <flux:icon name="clock" class="w-6 h-6 text-zinc-50/50"/>
+                            <span class="text-xs-400 text-zinc-50/50">
                                 Instant
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="bg-zinc-800 rounded-lg p-5">
+                <div class="bg-zinc-900 rounded-lg p-5">
                     <div class="flex gap-4">
                         <div class="profile">
                             <a href="">
@@ -337,37 +337,37 @@
                         </div>
                         <div class="flex items-center">
                             <a href="" class="flex items-center gap-2">
-                                <img src="{{ asset('assets/images/user_profile/Frame1.png') }}" alt=""
+                                <img src="{{ asset('assets/images/user_profile/Frame3.png') }}" alt=""
                                     class="w-5 h-5">
-                                <span>PlayStation</span>
+                                <span class="text-zinc-50/95 text-base-600">Xbox</span>
                             </a>
                         </div>
                         <div class="">
-                            <span>.Stacked</span>
+                            <span class="text-zinc-200/50 text-base-600">.Stacked</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 mt-5">
-                        <span>
-                            【1 SKIN】Galaxy ✴ PSN/XBOX/PC FULL ACCESS
+                        <span class="text-base-400 text-zinc-200/50">
+                            【1 SKIN】Galaxy <span class="text-zinc-50 text-1xl">✴</span> PSN/XBOX/PC FULL ACCESS
                         </span>
                         <img src="{{ asset('assets/images/user_profile/product-image-container -_ image.png') }}"
                             alt="">
                     </div>
                     <div class="flex items-center justify-between mt-10">
                         <div class="">
-                            <span>
+                            <span class="text-2xl-600 text-zinc-50">
                                 PEN175.27
                             </span>
                         </div>
-                        <div class="">
-                            <span>
-                                <x:flux::icon name="clock" class="w-6 h-6 inline-block" stroke="white" />
+                        <div class="flex items-center gap-2">
+                            <flux:icon name="clock" class="w-6 h-6 text-zinc-50/50"/>
+                            <span class="text-xs-400 text-zinc-50/50">
                                 Instant
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="bg-zinc-800 rounded-lg p-5">
+                <div class="bg-zinc-900 rounded-lg p-5">
                     <div class="flex gap-4">
                         <div class="profile">
                             <a href="">
@@ -376,37 +376,37 @@
                         </div>
                         <div class="flex items-center">
                             <a href="" class="flex items-center gap-2">
-                                <img src="{{ asset('assets/images/user_profile/Frame1.png') }}" alt=""
+                                <img src="{{ asset('assets/images/user_profile/Frame3.png') }}" alt=""
                                     class="w-5 h-5">
-                                <span>PlayStation</span>
+                                <span class="text-zinc-50/95 text-base-600">Xbox</span>
                             </a>
                         </div>
                         <div class="">
-                            <span>.Stacked</span>
+                            <span class="text-zinc-200/50 text-base-600">.Stacked</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 mt-5">
-                        <span>
-                            【1 SKIN】Galaxy ✴ PSN/XBOX/PC FULL ACCESS
+                        <span class="text-base-400 text-zinc-200/50">
+                            【1 SKIN】Galaxy <span class="text-zinc-50 text-1xl">✴</span> PSN/XBOX/PC FULL ACCESS
                         </span>
                         <img src="{{ asset('assets/images/user_profile/product-image-container -_ image.png') }}"
                             alt="">
                     </div>
                     <div class="flex items-center justify-between mt-10">
                         <div class="">
-                            <span>
+                            <span class="text-2xl-600 text-zinc-50">
                                 PEN175.27
                             </span>
                         </div>
-                        <div class="">
-                            <span>
-                                <x:flux::icon name="clock" class="w-6 h-6 inline-block" stroke="white" />
+                        <div class="flex items-center gap-2">
+                            <flux:icon name="clock" class="w-6 h-6 text-zinc-50/50"/>
+                            <span class="text-xs-400 text-zinc-50/50">
                                 Instant
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="bg-zinc-800 rounded-lg p-5">
+                <div class="bg-zinc-900 rounded-lg p-5">
                     <div class="flex gap-4">
                         <div class="profile">
                             <a href="">
@@ -415,109 +415,31 @@
                         </div>
                         <div class="flex items-center">
                             <a href="" class="flex items-center gap-2">
-                                <img src="{{ asset('assets/images/user_profile/Frame1.png') }}" alt=""
+                                <img src="{{ asset('assets/images/user_profile/Frame3.png') }}" alt=""
                                     class="w-5 h-5">
-                                <span>PlayStation</span>
+                                <span class="text-zinc-50/95 text-base-600">Xbox</span>
                             </a>
                         </div>
                         <div class="">
-                            <span>.Stacked</span>
+                            <span class="text-zinc-200/50 text-base-600">.Stacked</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 mt-5">
-                        <span>
-                            【1 SKIN】Galaxy ✴ PSN/XBOX/PC FULL ACCESS
+                        <span class="text-base-400 text-zinc-200/50">
+                            【1 SKIN】Galaxy <span class="text-zinc-50 text-1xl">✴</span> PSN/XBOX/PC FULL ACCESS
                         </span>
                         <img src="{{ asset('assets/images/user_profile/product-image-container -_ image.png') }}"
                             alt="">
                     </div>
                     <div class="flex items-center justify-between mt-10">
                         <div class="">
-                            <span>
+                            <span class="text-2xl-600 text-zinc-50">
                                 PEN175.27
                             </span>
                         </div>
-                        <div class="">
-                            <span>
-                                <x:flux::icon name="clock" class="w-6 h-6 inline-block" stroke="white" />
-                                Instant
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-zinc-800 rounded-lg p-5">
-                    <div class="flex gap-4">
-                        <div class="profile">
-                            <a href="">
-                                <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
-                            </a>
-                        </div>
-                        <div class="flex items-center">
-                            <a href="" class="flex items-center gap-2">
-                                <img src="{{ asset('assets/images/user_profile/Frame1.png') }}" alt=""
-                                    class="w-5 h-5">
-                                <span>PlayStation</span>
-                            </a>
-                        </div>
-                        <div class="">
-                            <span>.Stacked</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2 mt-5">
-                        <span>
-                            【1 SKIN】Galaxy ✴ PSN/XBOX/PC FULL ACCESS
-                        </span>
-                        <img src="{{ asset('assets/images/user_profile/product-image-container -_ image.png') }}"
-                            alt="">
-                    </div>
-                    <div class="flex items-center justify-between mt-10">
-                        <div class="">
-                            <span>
-                                PEN175.27
-                            </span>
-                        </div>
-                        <div class="">
-                            <span>
-                                <x:flux::icon name="clock" class="w-6 h-6 inline-block" stroke="white" />
-                                Instant
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-zinc-800 rounded-lg p-5">
-                    <div class="flex gap-4">
-                        <div class="profile">
-                            <a href="">
-                                <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
-                            </a>
-                        </div>
-                        <div class="flex items-center">
-                            <a href="" class="flex items-center gap-2">
-                                <img src="{{ asset('assets/images/user_profile/Frame1.png') }}" alt=""
-                                    class="w-5 h-5">
-                                <span>PlayStation</span>
-                            </a>
-                        </div>
-                        <div class="">
-                            <span>.Stacked</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2 mt-5">
-                        <span>
-                            【1 SKIN】Galaxy ✴ PSN/XBOX/PC FULL ACCESS
-                        </span>
-                        <img src="{{ asset('assets/images/user_profile/product-image-container -_ image.png') }}"
-                            alt="">
-                    </div>
-                    <div class="flex items-center justify-between mt-10">
-                        <div class="">
-                            <span>
-                                PEN175.27
-                            </span>
-                        </div>
-                        <div class="">
-                            <span>
-                                <x:flux::icon name="clock" class="w-6 h-6 inline-block" stroke="white" />
+                        <div class="flex items-center gap-2">
+                            <flux:icon name="clock" class="w-6 h-6 text-zinc-50/50"/>
+                            <span class="text-xs-400 text-zinc-50/50">
                                 Instant
                             </span>
                         </div>
