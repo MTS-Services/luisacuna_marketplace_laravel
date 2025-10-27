@@ -83,6 +83,34 @@
                     // ],
                 ]" />
 
+                <x-backend.navlink type="dropdown" icon="user-group" name="Game Management" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'Games',
+                        'route' => route('admin.gm.game.index'),
+                        'icon' => 'user',
+                        'active' => 'game-management',
+                    ],
+                    [
+                        'name' => 'Categories',
+                        'route' => route('admin.gm.category.index'),
+                        'icon' => 'user',
+                        'active' => 'game-management',
+                    ],
+                    // [
+                    //     'name' => 'Pending Users',
+                    //     'route' => '#',
+                    //     'icon' => 'user-plus',
+                    //     'active' => 'admin-users-pending',
+                    // ],
+                    // [
+                    //     'name' => 'Banned Users',
+                    //     'route' => '#',
+                    //     'icon' => 'user-round-x',
+                    //     'active' => 'admin-users-banned',
+                    // ],
+                ]" />
+
 
             <x-backend.navlink type="single" icon="language" name="Language" :route="route('admin.language.index')"
                 active="language" :page_slug="$active" />
