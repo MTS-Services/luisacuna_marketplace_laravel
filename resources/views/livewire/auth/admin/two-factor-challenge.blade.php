@@ -1,8 +1,10 @@
 <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-md p-8 mt-10">
+    
     <!-- Header -->
     <h2 class="text-2xl font-semibold text-center text-gray-900 dark:text-gray-100 mb-2">
         Two-Factor Authentication
     </h2>
+
     <p class="text-sm text-gray-600 dark:text-gray-400 text-center mb-6">
         Please confirm access to your account by entering the authentication code
         provided by your authenticator app.
@@ -78,7 +80,9 @@
             </button>
         </form>
     </div>
+
     <!-- Recovery Code Form -->
+
     {{-- <form method="POST" action="{{ route('admin.two-factor.login.store') }}" class="space-y-5">
         @csrf
         <div>
@@ -107,6 +111,7 @@
         >
             Use Recovery Code
         </button>
+
     </form> --}}
 
     <!-- Back to Login -->
