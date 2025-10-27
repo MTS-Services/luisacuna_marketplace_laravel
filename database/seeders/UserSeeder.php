@@ -2,14 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Enums\UserAccountStatus;
-use App\Enums\UserStatus;
-use App\Enums\UserType;
 use App\Models\User;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use App\Enums\UserType;
+use App\Enums\UserStatus;
 use Faker\Factory as Faker;
+use Illuminate\Support\Str;
+use App\Enums\userKycStatus;
+use Illuminate\Database\Seeder;
+use App\Enums\UserAccountStatus;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -26,12 +27,12 @@ class UserSeeder extends Seeder
             'username' => 'user',
             'first_name' => 'John',
             'last_name' => 'Doe',
-            'display_name' => 'John Doe',
             'avatar' => null,
             'date_of_birth' => '1990-01-01',
             'timezone' => 'UTC',
-            'language' => 'en',
-            'currency' => 'USD',
+            'language_id' => 1,
+            'currency_id' => 1,
+            'kyc_status' => userKycStatus::PENDING->value,
             'email' => "user@dev.com",
             'email_verified_at' => now(),
             'password' => Hash::make("user@dev.com"), // default password
@@ -60,12 +61,9 @@ class UserSeeder extends Seeder
                 'username' => $faker->unique()->userName,
                 'first_name' => $faker->firstName,
                 'last_name' => $faker->lastName,
-                'display_name' => $faker->name,
                 'avatar' => null,
                 'date_of_birth' => $faker->date(),
                 'timezone' => $faker->timezone,
-                'language' => 'en',
-                'currency' => 'USD',
                 'email' => "user@dev{$i}.com",
                 'email_verified_at' => null,
                 'password' => Hash::make("user@dev{$i}.com"), // default password
@@ -73,6 +71,9 @@ class UserSeeder extends Seeder
                 'phone_verified_at' => now(),
                 'user_type' => UserType::BUYER->value,
                 'account_status' => UserAccountStatus::PENDING_VERIFICATION->value,
+                'language_id' => 1,
+                'currency_id' => 1,
+                'kyc_status' => userKycStatus::PENDING->value,
                 'last_login_at' => now(),
                 'last_login_ip' => $faker->ipv4,
                 'login_attempts' => 0,

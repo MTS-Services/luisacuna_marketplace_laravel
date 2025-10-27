@@ -18,6 +18,14 @@ class SellerProfile extends BaseModel
         'seller_level',
         'commission_rate',
         'minimum_payout',
+
+
+        'created_type',
+        'created_id',
+        'updated_type',
+        'updated_id',
+        'deleted_type',
+        'deleted_id',
     ];
 
     protected $casts = [

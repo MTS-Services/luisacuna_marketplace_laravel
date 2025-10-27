@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Enums\OtpType;
 use Illuminate\Database\Eloquent\Model;
 
-class OtpVerification extends Model
+class OtpVerification extends BaseModel
 {
      protected $fillable = [
         'sort_order',
