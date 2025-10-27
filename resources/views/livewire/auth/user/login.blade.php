@@ -87,26 +87,28 @@
                     <hr class="flex-1 border-gray-700" />
                 </div>
 
-                <!-- Social login -->
-                <div class="flex justify-center gap-4 mb-6">
-                    <button class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
-                        <img src="{{ asset('assets/icons/icons8-google.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
-                            alt="Google" />
-                    </button>
-                    <button class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
-                        <img src="{{ asset('assets/icons/icons8-apple-logo.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
-                            alt="Apple" />
-                    </button>
-                    <button class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
-                        <img src="{{ asset('assets/icons/icons8-facebook.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
-                            alt="Facebook" />
-                    </button>
-                </div>
+                <div>
+                    <!-- Social login -->
+                    <div class="flex justify-center gap-4 mb-6">
+                        <button class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
+                            <img src="{{ asset('assets/icons/icons8-google.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
+                                alt="Google" />
+                        </button>
+                        <button class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
+                            <img src="{{ asset('assets/icons/icons8-apple-logo.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
+                                alt="Apple" />
+                        </button>
+                        <button class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
+                            <img src="{{ asset('assets/icons/icons8-facebook.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
+                                alt="Facebook" />
+                        </button>
+                    </div>
 
-                <!-- Sign up link -->
-                <div class="text-center text-sm text-gray-300">
-                    Don’t have an account?
-                    <a href="{{ route('register') }}" class="text-purple-400 hover:underline">Sign up</a>
+                    <!-- Sign up link -->
+                    <div class="text-center text-sm text-gray-300">
+                        Don’t have an account?
+                        <a href="{{ route('register') }}" class="text-purple-400 hover:underline">Sign up</a>
+                    </div>
                 </div>
             </div>
         </form>
