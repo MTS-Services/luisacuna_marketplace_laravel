@@ -111,9 +111,9 @@
                     // ],
                 ]" />
 
-
+{{-- 
             <x-backend.navlink type="single" icon="language" name="Language" :route="route('admin.language.index')"
-                active="language" :page_slug="$active" />
+                active="language" :page_slug="$active" /> --}}
 
             <div class="pt-4 pb-2">
                 <p class="text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
@@ -142,16 +142,16 @@
                         'active' => 'settings-security',
                     ],
                     [
-                        'name' => 'Email',
-                        'route' => '#',
-                        'icon' => 'envelope',
-                        'active' => 'settings-email',
+                        'name' => 'Languages',
+                        'route' => route('admin.as.language.index'),
+                        'icon' => 'language',
+                        'active' => 'language',
                     ],
                     [
-                        'name' => 'Payment Gateways',
-                        'route' => '#',
-                        'icon' => 'credit-card',
-                        'active' => 'settings-payments',
+                        'name' => 'Currencies',
+                        'route' => route('admin.as.currency.index'),
+                        'icon' => 'currency-dollar',
+                        'active' => 'currency',
                     ],
                     // [
                     //     'name' => 'Analytics',
