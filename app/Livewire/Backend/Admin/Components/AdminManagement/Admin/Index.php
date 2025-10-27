@@ -103,7 +103,7 @@ class Index extends Component
             [
                 'key' => 'id',
                 'label' => 'View',
-                'method' => 'openDetailsModal'
+                'route' => 'admin.am.admin.view',
             ],
             [
                 'key' => 'id',
@@ -138,9 +138,10 @@ class Index extends Component
         $this->deleteAdminId = $adminId;
         $this->showDeleteModal = true;
     }
-
+    
     public function delete(): void
     {
+        // dd($this->deleteAdminId);
         try {
             if (!$this->deleteAdminId) {
                 return;

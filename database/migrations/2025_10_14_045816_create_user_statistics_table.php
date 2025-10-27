@@ -24,11 +24,13 @@ return new class extends Migration
             $table->decimal('total_earned', 15, 2)->default(0.00);
             $table->decimal('average_rating_as_seller', 3, 2)->default(0.00);
             $table->integer('total_reviews_as_seller')->default(0);
+            $table->unsignedBigInteger('currency_id');
 
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('currency_id')->references('id')->on('currencies')->cascadeOnDelete()->cascadeOnUpdate();
             $this->addMorphedAuditColumns($table);
         });
     }

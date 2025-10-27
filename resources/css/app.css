@@ -17,51 +17,83 @@
 
 
 :root {
-    /* ... Light mode colors are unchanged ... */
-
+    /* Base Colors */
     --color-black: #000000;
     --color-white: #ffffff;
+    --color-bg-base: #1B0C33;
 
-    --color-primary-50: #fcf8ef;
-    --color-primary-100: #f8f0db;
-    --color-primary-200: #f0e0b3;
-    --color-primary-300: #e5cd84;
-    --color-primary-400: #dcb65a;
-    --color-primary-500: #bb8106;
-    --color-primary-600: #977534;
-    --color-primary-700: #755927;
-    --color-primary-800: #55401c;
-    --color-primary-900: #382a12;
-    --color-primary-950: #1e1608;
+    /* Primary: Purple */
+    --color-primary-50: #f5f3ff;
+    --color-primary-100: #ede9fe;
+    --color-primary-200: #ddd6fe;
+    --color-primary-300: #c4b5fd;
+    --color-primary-400: #a78bfa;
+    --color-primary-500: #853EFF;
+    --color-primary-600: #7c3aed;
+    --color-primary-700: #6d28d9;
+    --color-primary-800: #351966;
+    --color-primary-900: #1B0C33;
+    --color-primary-950: #0D061A;
 
-    --color-accent-light: #bb8106;
-    --color-accent-content-light: #7A4630;
-    --color-accent-foreground-light: #fffcfb;
+    /* Secondary: Pink */
+    --color-secondary-50: #fdf2f8;
+    --color-secondary-100: #fce7f3;
+    --color-secondary-200: #fbcfe8;
+    --color-secondary-300: #f9a8d4;
+    --color-secondary-400: #f472b6;
+    --color-secondary-500: #FF2E91;
+    --color-secondary-600: #db2777;
+    --color-secondary-700: #be185d;
+    --color-secondary-800: #9d174d;
+    --color-secondary-900: #831843;
+    --color-secondary-950: #50072c;
 
-    --color-accent-dark: #B79347;
-    --color-accent-content-dark: #573024;
-    --color-accent-foreground-dark: #1a1a1a;
 
-    --color-text-primary-light: #2c2920;
-    --color-text-secondary-light: #5a554a;
-    --color-text-muted-light: #89867b;
 
-    --color-text-primary-dark: #e8e6e3;
-    --color-text-secondary-dark: #a9a69e;
-    --color-text-muted-dark: #7d7a73;
+    --color-text-new-light: #1b1b1b;
+    --color-text-new-dark: #f1f1f1;
 
-    --color-bg-primary-light: oklch(98.5% 0 0);
-    --color-bg-secondary-light: oklch(96.7% 0.001 286.375);
-    --color-bg-tertiary-light: oklch(92% 0.004 286.32);
+    /* Accent Colors */
+    --color-accent-light: var(--color-primary-600);
+    --color-accent-content-light: var(--color-primary-700);
+    --color-accent-foreground-light: var(--color-secondary-600);
 
-    --color-bg-primary-dark: oklch(21% 0.006 285.885);
-    --color-bg-secondary-dark: oklch(27.4% 0.006 286.033);
-    --color-bg-tertiary-dark: oklch(37% 0.013 285.805);
+    --color-accent-dark: var(--color-primary-400);
+    --color-accent-content-dark: var(--color-primary-500);
+    --color-accent-foreground-dark: var(--color-secondary-500);
+
+    /* Text Colors */
+    --color-text-primary-light: oklch(21.779% 0.00002 271.152);
+    --color-text-secondary-light: oklch(26.862% 0.00003 271.152);
+    --color-text-muted-light: oklch(32.109% 0.00004 271.152);
+
+    --color-text-primary-dark: oklch(92.494% 0.00011 271.152);
+    --color-text-secondary-dark: oklch(88.531% 0.0001 271.152);
+    --color-text-muted-dark: oklch(84.522% 0.0001 271.152);
+
+    /* Backgrounds */
+    /* Backgrounds */
+    /* --color-bg-primary-light: oklch(96.115% 0.00011 271.152);
+    --color-bg-secondary-light: oklch(92.494% 0.00011 271.152);
+    --color-bg-tertiary-light: oklch(88.531% 0.0001 271.152); */
+
+    /* --color-bg-primary-dark: oklch(15.907% 0.00002 271.152);
+    --color-bg-secondary-dark: oklch(21.779% 0.00002 271.152);
+    --color-bg-tertiary-dark: oklch(26.862% 0.00003 271.152);  */
+
+    --color-bg-primary-light: var(--color-primary-50);
+    --color-bg-secondary-light: var(--color-primary-100);
+    --color-bg-tertiary-light: var(--color-secondary-50);
+
+    --color-bg-primary-dark: var(--color-primary-900);
+    --color-bg-secondary-dark: var(--color-primary-950);
+    --color-bg-tertiary-dark: var(--color-secondary-500);
 }
+
 
 @theme {
     /* ======================================================
-                            # Colors
+    	 	 	 	 	 	 # Colors
     ======================================================== */
     --color-zinc-50: var(--color-primary-50);
     --color-zinc-100: var(--color-primary-100);
@@ -75,6 +107,22 @@
     --color-zinc-900: var(--color-primary-900);
     --color-zinc-950: var(--color-primary-950);
 
+    /* --- Secondary: Pink Colors Added Here --- */
+    --color-pink-50: var(--color-secondary-50);
+    --color-pink-100: var(--color-secondary-100);
+    --color-pink-200: var(--color-secondary-200);
+    --color-pink-300: var(--color-secondary-300);
+    --color-pink-400: var(--color-secondary-400);
+    --color-pink-500: var(--color-secondary-500);
+    --color-pink-600: var(--color-secondary-600);
+    --color-pink-700: var(--color-secondary-700);
+    --color-pink-800: var(--color-secondary-800);
+    --color-pink-900: var(--color-secondary-900);
+    --color-pink-950: var(--color-secondary-950);
+    /* ------------------------------------------ */
+
+    --color-text-new: var(--color-text-new-light);
+
     --color-accent: var(--color-accent-light);
     --color-accent-content: var(--color-accent-content-light);
     --color-accent-foreground: var(--color-accent-foreground-light);
@@ -82,6 +130,10 @@
     --color-text-primary: var(--color-text-primary-light);
     --color-text-secondary: var(--color-text-secondary-light);
     --color-text-muted: var(--color-text-muted-light);
+
+    /* --color-bg-primary: var(--color-primary-900);
+    --color-bg-secondary: var(--color-primary-950);
+    --color-bg-tertiary: var(--color-secondary-500); */
 
     --color-bg-primary: var(--color-bg-primary-light);
     --color-bg-secondary: var(--color-bg-secondary-light);
@@ -91,14 +143,14 @@
     --color-bg-white: var(--color-white);
 
     /* ======================================================
-                            # Shadows
+    	 	 	 	 	 	 # Shadows
     ======================================================== */
 
     --shadow-glass-card: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
         rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 
     /* ======================================================
-                            # Animations
+    	 	 	 	 	 	 # Animations
     ======================================================== */
     --animate-gradientBG: gradientBG 15s ease infinite;
 
@@ -117,7 +169,7 @@
     }
 
     /* ======================================================
-                            # Breakpoints
+    	 	 	 	 	 	 # Breakpoints
     ======================================================== */
     --breakpoint-xxs: 480px;
     --breakpoint-xs: 576px;
@@ -138,6 +190,22 @@
         --color-accent-content: var(--color-accent-content-light) !important;
         --color-accent-foreground: var(--color-accent-foreground-light) !important;
     }
+
+    .dark {
+        --color-accent: var(--color-accent-dark);
+        --color-accent-content: var(--color-accent-content-dark);
+        --color-accent-foreground: var(--color-accent-foreground-dark);
+
+        --color-text-primary: var(--color-text-primary-dark);
+        --color-text-secondary: var(--color-text-secondary-dark);
+        --color-text-muted: var(--color-text-muted-dark);
+
+        --color-bg-primary: var(--color-bg-primary-dark);
+        --color-bg-secondary: var(--color-bg-secondary-dark);
+        --color-bg-tertiary: var(--color-bg-tertiary-dark);
+
+        --color-text-new: var(--color-text-new-dark);
+    }
 }
 
 
@@ -155,7 +223,10 @@
         @apply transition-colors duration-200 ease-in-out text-text-primary;
     }
 
-
+    .dark * {
+        border-color: var(--color-gray-700, currentColor);
+        scrollbar-color: var(--color-accent-dark) var(--color-accent-content-dark) !important;
+    }
 
     /* For Webkit-based browsers (Chrome, Edge, Safari) */
     *::-webkit-scrollbar {
@@ -164,6 +235,9 @@
         background-color: var(--color-accent-content) !important;
     }
 
+    .dark *::-webkit-scrollbar {
+        background-color: var(--color-accent-content-dark) !important;
+    }
 
     *::-webkit-scrollbar-thumb {
         background-color: var(--color-accent) !important;
@@ -171,9 +245,16 @@
         box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.75);
     }
 
+    .dark *::-webkit-scrollbar-thumb {
+        background-color: var(--color-accent-dark) !important;
+    }
 
     *::-webkit-scrollbar-thumb:hover {
         background-color: var(--color-accent) !important;
+    }
+
+    .dark *::-webkit-scrollbar-thumb:hover {
+        background-color: var(--color-accent-dark) !important;
     }
 
     *::-webkit-scrollbar-corner {
@@ -209,23 +290,36 @@
         @apply bg-gradient-to-tr from-zinc-800/10 via-accent/10 to-zinc-800/10 shadow-glass-card;
     }
 
+    .dark .glass-card,
+    .dark .sidebar-glass-card {
+        @apply from-zinc-50/5 via-zinc-600/5 to-zinc-50/5;
+    }
+
     .animated-bg {
-        @apply bg-[length:400%_400%] animate-gradientBG bg-gradient-to-br from-bg-tertiary via-bg-primary to-bg-tertiary;
+        @apply bg-[length:400%_400%] animate-gradientBG bg-gradient-to-br from-zinc-50 via-bg-primary to-bg-secondary;
+    }
+
+    .dark .animated-bg {
+        @apply bg-[length:400%_400%] animate-gradientBG bg-gradient-to-br from-pink-950 via-zinc-950 to-pink-950;
+    }
+
+    .navbar_style {
+        @apply relative text-white font-medium transition-colors duration-300 hover:text-purple-400 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:bg-purple-500 after:w-0 hover:after:w-full after:transition-all after:duration-300 [&.active]:text-purple-400 [&.active]:after:w-full;
+    }
+
+    .navbar_indicator {
+        @apply absolute inset-x-0 bottom-0 h-5 bg-purple-500/80 blur-md rounded-full opacity-0 group-hover:opacity-100 [&.active]:opacity-100 transition-opacity duration-300 ease-in-out;
     }
 
 }
 
 .container {
-    @apply mx-auto;
+    @apply mx-auto px-4 lg:px-0;
     max-width: 1280px;
 }
 
 button {
-    @apply cursor-pointer transition duration-150;
-}
-
-button:hover {
-    @apply scale-[1.01];
+    @apply cursor-pointer transition-all duration-200 ease-in-out hover:scale-[1.01];
 }
 
 
@@ -241,4 +335,68 @@ input:focus[data-flux-control],
 textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+}
+
+body {
+    background: black !important;
+    color: var(--color-text-primary) !important;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #853EFF 0%, #FF2E91 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.btn-primary {
+    background: var(--color-primary-500);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: var(--color-primary-600);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--color-primary-500);
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    border: 2px solid white;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background: var(--color-primary-50);
+    color: var(--color-primary-500);
+}
+
+
+.card-game:hover {
+    border-color: rgba(133, 62, 255, 0.5);
+    transform: translateY(-8px);
+    background: rgba(53, 25, 102, 0.7);
+}
+
+.card-game img {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1rem;
+    object-fit: contain;
+}
+
+.glass-effect {
+    background: rgba(27, 12, 51, 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(133, 62, 255, 0.1);
 }

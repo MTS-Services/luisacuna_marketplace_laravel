@@ -3,14 +3,18 @@
 namespace App\Models;
 
 use App\Enums\OtpType;
-use App\Enums\UserAccountStatus;
-use App\Enums\UserStatus;
 use App\Enums\UserType;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\UserStatus;
+use App\Enums\userKycStatus;
+use Illuminate\Support\Carbon;
+use App\Enums\UserAccountStatus;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends AuthBaseModel
 {
-    use HasFactory;
+    use  TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -51,11 +55,13 @@ class User extends AuthBaseModel
         'two_factor_enabled',
         'two_factor_secret',
         'two_factor_recovery_codes',
+        'two_factor_confirmed_at',
 
         'terms_accepted_at',
         'privacy_accepted_at',
 
         'last_synced_at',
+        'language_id',
 
         'created_type',
         'updated_type',
@@ -73,8 +79,8 @@ class User extends AuthBaseModel
     protected $hidden = [
         'password',
         'remember_token',
-        'two_factor_secret',
         'two_factor_recovery_codes',
+        'two_factor_secret',
     ];
 
     /**
@@ -93,6 +99,7 @@ class User extends AuthBaseModel
             'terms_accepted_at'      => 'datetime',
             'privacy_accepted_at'    => 'datetime',
             'last_synced_at'         => 'datetime',
+            'two_factor_confirmed_at' => 'datetime',
             'date_of_birth'          => 'date',
 
             'two_factor_enabled'     => 'boolean',
@@ -100,6 +107,7 @@ class User extends AuthBaseModel
 
             'user_type'              => UserType::class,
             'account_status'         => UserAccountStatus::class,
+            'kyc_status'             => userKycStatus::class,
         ];
     }
 
@@ -109,11 +117,31 @@ class User extends AuthBaseModel
     |--------------------------------------------------------------------------
     */
 
-    // public function country()
-    // {
-    //     return $this->belongsTo(Country::class, 'country_id');
-    // }
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class, 'country_id', 'id');
+    }
 
+    public function seller(): HasOne
+    {
+        return $this->hasOne(SellerProfile::class, 'user_id', 'id');
+    }
+    public function statistic(): HasOne
+    {
+        return $this->hasOne(UserStatistic::class, 'user_id', 'id');
+    }
+    public function referral(): HasOne
+    {
+        return $this->hasOne(UserReferral::class, 'user_id', 'id');
+    }
+    public function language(): BelongsTo
+    {
+        return $this->belongsTo(Language::class, 'language_id', 'id');
+    }
+    public function userReferral(): HasOne
+    {
+        return $this->hasOne(UserReferral::class, 'user_id', 'id');
+    }
     /*
     |--------------------------------------------------------------------------
     | Query Scopes
@@ -199,6 +227,11 @@ class User extends AuthBaseModel
         return $this->avatar
             ? asset('storage/' . $this->avatar)
             : 'https://ui-avatars.com/api/?name=' . urlencode($name);
+    }
+
+    public function getDateOfBirthAttribute($value)
+    {
+        return $value ? Carbon::parse($value)->format('Y-m-d') : null;
     }
 
     /*

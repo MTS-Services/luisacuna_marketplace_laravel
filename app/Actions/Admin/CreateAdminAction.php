@@ -23,7 +23,7 @@ class CreateAdminAction
 
             // Handle avatar upload
             if ($dto->avatar) {
-                $data['avatar'] = $dto->avatar->store('avatars', 'public');
+                $data['avatar'] = $dto->avatar->store('admins', 'public');
             }
 
             // Create user

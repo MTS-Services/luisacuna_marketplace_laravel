@@ -35,9 +35,28 @@ class UserRepository implements UserRepositoryInterface
         return $query->paginate($perPage);
     }
 
+    public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        $query = $this->model->query();
+
+        $query = $this->model->onlyTrashed();
+
+        // Apply filters
+        if (!empty($filters)) {
+            $query->filter($filters);
+        }
+
+        // Apply sorting
+        $sortField = $filters['sort_field'] ?? 'created_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+        $query->orderBy($sortField, $sortDirection);
+
+        return $query->paginate($perPage);
+    }
+
     public function find(int $id): ?User
     {
-        return $this->model->find($id);
+        return $this->model->withTrashed()->find($id);
     }
 
     public function findByEmail(string $email): ?User
@@ -53,7 +72,7 @@ class UserRepository implements UserRepositoryInterface
     public function update(int $id, array $data): bool
     {
         $user = $this->find($id);
-        
+
         if (!$user) {
             return false;
         }
@@ -64,7 +83,7 @@ class UserRepository implements UserRepositoryInterface
     public function delete(int $id): bool
     {
         $user = $this->find($id);
-        
+
         if (!$user) {
             return false;
         }
@@ -74,8 +93,8 @@ class UserRepository implements UserRepositoryInterface
 
     public function forceDelete(int $id): bool
     {
-        $user = $this->model->withTrashed()->find($id);
-        
+        $user = $this->model->onlyTrashed()->find($id);
+
         if (!$user) {
             return false;
         }
@@ -86,7 +105,7 @@ class UserRepository implements UserRepositoryInterface
     public function restore(int $id): bool
     {
         $user = $this->model->withTrashed()->find($id);
-        
+
         if (!$user) {
             return false;
         }
@@ -132,6 +151,16 @@ class UserRepository implements UserRepositoryInterface
 
     public function bulkUpdateStatus(array $ids, string $status): int
     {
-        return $this->model->whereIn('id', $ids)->update(['status' => $status]);
+        return $this->model->whereIn('id', $ids)->update(['account_status' => $status]);
+    }
+
+    public function bulkRestore(array $ids): int
+    {
+        return $this->model->withTrashed()->whereIn('id', $ids)->restore();
+    }
+
+    public function bulkForceDelete(array $ids): int
+    {
+        return $this->model->withTrashed()->whereIn('id', $ids)->forceDelete();
     }
 }

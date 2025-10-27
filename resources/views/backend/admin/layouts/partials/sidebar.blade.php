@@ -64,8 +64,8 @@
             <x-backend.navlink type="dropdown" icon="user-group" name="User Management" :page_slug="$active"
                 :items="[
                     [
-                        'name' => 'Users',
-                        'route' => '#',
+                        'name' => 'All Users',
+                        'route' => route('admin.um.user.index'),
                         'icon' => 'user',
                         'active' => 'admin-users',
                     ],
@@ -112,6 +112,9 @@
                 ]" />
 
 
+            <x-backend.navlink type="single" icon="language" name="Language" :route="route('admin.language.index')"
+                active="language" :page_slug="$active" />
+
             <div class="pt-4 pb-2">
                 <p class="text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
                     x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)">Settings & Tools</p>
@@ -121,10 +124,10 @@
             <x-backend.navlink type="dropdown" icon="wrench-screwdriver" name="Application Settings" :page_slug="$active"
                 :items="[
                     [
-                        'name' => 'General Settings',
-                        'route' => '#',
+                        'name' => 'Settings',
+                        'route' => route('admin.two-factor.index'),
                         'icon' => 'cog-8-tooth',
-                        'active' => 'settings-general',
+                        'active' => 'two-factor',
                     ],
                     // [
                     //     'name' => 'Appearance',

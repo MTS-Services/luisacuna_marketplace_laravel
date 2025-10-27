@@ -51,7 +51,7 @@ class UpdateUserAction
                     Log::info('Old avatar deleted', ['path' => $user->avatar]);
                 }
                 
-                $avatarPath = $dto->avatar->store('avatars', 'public');
+                $avatarPath = $dto->avatar->store('users', 'public');
                 $data['avatar'] = $avatarPath;
                 
                 Log::info('New avatar uploaded', ['path' => $avatarPath]);

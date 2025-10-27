@@ -23,5 +23,6 @@ class AppServiceProvider extends ServiceProvider
         Blade::componentNamespace('App\View\Components\Layout\Admin', 'admin');
         Blade::componentNamespace('App\View\Components\Layout\User', 'user');
         Blade::componentNamespace('App\View\Components\Layout\Frontend', 'frontend');
+        Blade::componentNamespace('App\View\Components\Layout\Language', 'language');
     }
 }

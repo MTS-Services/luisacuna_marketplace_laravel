@@ -22,10 +22,10 @@ enum UserStatus: string
     public function color(): string
     {
         return match ($this) {
-            self::ACTIVE => 'success',
-            self::INACTIVE => 'secondary',
-            self::SUSPENDED => 'danger',
-            self::PENDING => 'warning',
+            self::ACTIVE => 'badge badge-success',
+            self::INACTIVE => 'badge badge-secondary',
+            self::SUSPENDED => 'badge badge-danger',
+            self::PENDING => 'badge badge-warning',
         };
     }
 

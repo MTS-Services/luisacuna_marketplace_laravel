@@ -16,18 +16,16 @@ return new class extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->index()->default(0);
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('phone')->index()->nullable();
-            $table->timestamp('phone_verified_at')->nullable();
+            $table->timestamp('email_verified_at');
+            $table->string('phone')->index();
+            $table->timestamp('phone_verified_at');
             $table->string('password');
-            $table->string('avatar')->nullable();
+            $table->string('avatar');
             $table->string('status')->index()->default(AdminStatus::ACTIVE->value);
             $table->boolean('two_factor_enabled')->default(false);
-            $table->text('two_factor_secret')->nullable();
-            $table->text('two_factor_recovery_codes')->nullable();
             $table->timestamp('last_login_at')->nullable();
             $table->string('last_login_ip')->nullable();
 

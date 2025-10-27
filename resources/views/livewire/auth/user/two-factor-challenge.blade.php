@@ -1,99 +1,93 @@
-<x-layouts.auth>
-    <div class="flex flex-col gap-6">
-        <div
-            class="relative w-full h-auto"
-            x-cloak
-            x-data="{
-                showRecoveryInput: @js($errors->has('recovery_code')),
-                code: '',
-                recovery_code: '',
-                toggleInput() {
-                    this.showRecoveryInput = !this.showRecoveryInput;
+<div>
+    <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-md  mt-10">
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold mb-2 text-gray-900">Two-Factor Authentication</h2>
+            <p class="text-gray-600 mb-6">Please enter your authentication code to continue.</p>
 
-                    this.code = '';
-                    this.recovery_code = '';
+            @if ($errors->any())
+                <div class="mb-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
+                    @foreach ($errors->all() as $error)
+                        <p class="text-sm">{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
 
-                    $dispatch('clear-2fa-auth-code');
-
-                    $nextTick(() => {
-                        this.showRecoveryInput
-                            ? this.$refs.recovery_code?.focus()
-                            : $dispatch('focus-2fa-auth-code');
-                    });
-                },
-            }"
-        >
-            <div x-show="!showRecoveryInput">
-                <x-auth-header
-                    :title="__('Authentication Code')"
-                    :description="__('Enter the authentication code provided by your authenticator application.')"
-                />
-            </div>
-
-            <div x-show="showRecoveryInput">
-                <x-auth-header
-                    :title="__('Recovery Code')"
-                    :description="__('Please confirm access to your account by entering one of your emergency recovery codes.')"
-                />
-            </div>
-
+            <!-- OTP Code Form -->
             <form method="POST" action="{{ route('two-factor.login.store') }}">
                 @csrf
-
-                <div class="space-y-5 text-center">
-                    <div x-show="!showRecoveryInput">
-                        <div class="flex items-center justify-center my-5">
-                            <x-input-otp
-                                name="code"
-                                digits="6"
-                                autocomplete="one-time-code"
-                                x-model="code"
-                            />
-                        </div>
-
-                        @error('code')
-                            <flux:text color="red">
-                                {{ $message }}
-                            </flux:text>
-                        @enderror
-                    </div>
-
-                    <div x-show="showRecoveryInput">
-                        <div class="my-5">
-                            <flux:input
-                                type="text"
-                                name="recovery_code"
-                                x-ref="recovery_code"
-                                x-bind:required="showRecoveryInput"
-                                autocomplete="one-time-code"
-                                x-model="recovery_code"
-                            />
-                        </div>
-
-                        @error('recovery_code')
-                            <flux:text color="red">
-                                {{ $message }}
-                            </flux:text>
-                        @enderror
-                    </div>
-
-                    <flux:button
-                        variant="primary"
-                        type="submit"
-                        class="w-full"
-                    >
-                        {{ __('Continue') }}
-                    </flux:button>
+                <div class="mb-6">
+                    <label for="code" class="block text-sm font-medium text-gray-700 mb-2">
+                        Authentication Code
+                    </label>
+                    <input type="text" id="code" name="code"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-2xl tracking-widest"
+                        maxlength="6" placeholder="000000" autofocus required>
+                    <p class="text-xs text-gray-500 mt-2">From your authenticator app (Google Authenticator, Authy,
+                        etc.)</p>
                 </div>
 
-                <div class="mt-5 space-x-0.5 text-sm leading-5 text-center">
-                    <span class="opacity-50">{{ __('or you can') }}</span>
-                    <div class="inline font-medium underline cursor-pointer opacity-80">
-                        <span x-show="!showRecoveryInput" @click="toggleInput()">{{ __('login using a recovery code') }}</span>
-                        <span x-show="showRecoveryInput" @click="toggleInput()">{{ __('login using an authentication code') }}</span>
-                    </div>
-                </div>
+                <button type="submit"
+                    class="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition duration-200">
+                    Verify Code
+                </button>
             </form>
-        </div>
+            <!-- Divider -->
+            <div class="my-6 flex items-center">
+                <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+                <span class="mx-3 text-sm text-gray-500 dark:text-gray-400">or</span>
+                <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+            </div>
+
+            <!-- Recovery Code Option -->
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <button type="button" onclick="toggleRecoveryForm()"
+                    class="w-full text-center text-sm text-blue-600 hover:text-blue-800 font-medium">
+                    Don't have your authenticator? Use a recovery code
+                </button>
+
+                <form method="POST" action="{{ route('two-factor.login.store') }}" id="recoveryForm"
+                    class="hidden mt-4">
+                    @csrf
+                    <div class="mb-4">
+                        <label for="recovery_code" class="block text-sm font-medium text-gray-700 mb-2">
+                            Recovery Code
+                        </label>
+                        <input type="text" id="recovery_code" name="recovery_code"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Enter recovery code">
+                        <p class="text-xs text-gray-500 mt-2">Enter one of your recovery codes (stored separately)</p>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-gray-600 text-white font-semibold py-2 rounded-lg hover:bg-gray-700 transition duration-200">
+                        Verify Recovery Code
+                    </button>
+                </form>
+            </div>
+             <!-- Back to Login -->
+    <div class="mt-6 text-center">
+        <a href="{{ route('admin.login') }}" class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400">
+            ← Back to Login
+        </a>
     </div>
-</x-layouts.auth>
+        </div>
+        
+
+        <script>
+            function toggleRecoveryForm() {
+                const form = document.getElementById('recoveryForm');
+                form.classList.toggle('hidden');
+                if (!form.classList.contains('hidden')) {
+                    document.getElementById('recovery_code').focus();
+                }
+            }
+
+            // Auto-focus code input for better UX
+            document.addEventListener('DOMContentLoaded', function() {
+                const codeInput = document.getElementById('code');
+                if (codeInput) {
+                    codeInput.focus();
+                }
+            });
+        </script>
+    </div>
+</div>

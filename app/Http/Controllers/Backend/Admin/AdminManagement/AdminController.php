@@ -47,8 +47,19 @@ class AdminController extends Controller
         ]);
     }
 
+    public function view(string $id)
+    {
+        $admin = Admin::find($id);
+        if (!$admin) {
+            abort(404);
+        }
+        return view($this->masterView, [
+            'admin' => $admin
+        ]);
+    }
+
     public function trash()
     {
-        //
+        return view($this->masterView);
     }
 }

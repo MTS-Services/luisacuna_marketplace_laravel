@@ -2,16 +2,17 @@
 
 namespace App\Services\User;
 
+use App\Models\User;
+use App\Enums\UserStatus;
+use App\DTOs\User\CreateUserDTO;
+use App\DTOs\User\UpdateUserDTO;
+use App\Enums\UserAccountStatus;
 use App\Actions\User\CreateUserAction;
 use App\Actions\User\DeleteUserAction;
 use App\Actions\User\UpdateUserAction;
-use App\DTOs\User\CreateUserDTO;
-use App\DTOs\User\UpdateUserDTO;
-use App\Enums\UserStatus;
-use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
 
 class UserService
 {
@@ -30,6 +31,11 @@ class UserService
     public function getUsersPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return $this->userRepository->paginate($perPage, $filters);
+    }
+
+    public function getTrashedUsersPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        return $this->userRepository->trashPaginate($perPage, $filters);
     }
 
     public function getUserById(int $id): ?User
@@ -82,7 +88,7 @@ class UserService
         return $this->userRepository->bulkDelete($ids);
     }
 
-    public function bulkUpdateStatus(array $ids, UserStatus $status): int
+    public function bulkUpdateStatus(array $ids, UserAccountStatus $status): int
     {
         return $this->userRepository->bulkUpdateStatus($ids, $status->value);
     }
@@ -131,5 +137,14 @@ class UserService
 
         $user->suspend();
         return true;
+    }
+    public function bulkRestoreUsers(array $ids): int
+    {
+        return $this->userRepository->bulkRestore($ids);
+    }
+
+    public function bulkForceDeleteUsers(array $ids): int
+    {
+        return $this->userRepository->bulkForceDelete($ids);
     }
 }

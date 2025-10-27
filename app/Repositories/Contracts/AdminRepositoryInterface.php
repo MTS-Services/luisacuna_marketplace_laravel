@@ -39,4 +39,10 @@ interface AdminRepositoryInterface
     public function bulkDelete(array $ids): int;
     
     public function bulkUpdateStatus(array $ids, string $status): int;
+
+    public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
+
+    public function bulkRestore(array $ids): int;
+
+    public function bulkForceDelete(array $ids): int;
 }
