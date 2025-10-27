@@ -196,7 +196,7 @@
                     <div class="border-t pt-6">
                         <h3 class="text-lg font-semibold mb-4 text-red-600">Cancel Processing</h3>
                         <p class="text-gray-600 mb-4">
-                            ⚠️ <strong>Warning:</strong> Cancel two-factor authentication will make your admin
+                            ⚠️ <strong>Warning:</strong> Cancel two-factor authentication processing will make your admin
                             account significantly less secure.
                         </p>
 
