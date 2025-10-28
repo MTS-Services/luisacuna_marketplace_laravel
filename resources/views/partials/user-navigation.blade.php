@@ -4,17 +4,17 @@
         <span class="relative z-10">Currency</span>
         <span class="navbar_indicator {{ $pageSlug == 'currency' ? 'active' : '' }}"></span>
     </a>
-    <a href="#" class="navbar_style group">
+    <a href="{{ route('gift-card') }}" class="navbar_style group {{ $pageSlug == 'gift-card' ? 'active' : '' }}">
         <span class="relative z-10">Gift Cards</span>
-        <span class="navbar_indicator"></span>
+        <span class="navbar_indicator {{ $pageSlug == 'gift-card' ? 'active' : '' }}"></span>
     </a>
     <a href="{{ route('boost.index') }}" class="navbar_style group {{ $pageSlug == 'boosting' ? 'active' : '' }}">
         <span class="relative z-10">Boosting</span>
         <span class="navbar_indicator {{ $pageSlug == 'boosting' ? 'active' : '' }}"></span>
     </a>
-    <a href="{{ route('items') }}" class="navbar_style group active">
+    <a href="{{ route('items') }}" class="navbar_style group {{ $pageSlug == 'items' ? 'active' : '' }}">
         <span class="relative z-10">Items</span>
-        <span class="navbar_indicator"></span>
+        <span class="navbar_indicator {{ $pageSlug == 'items' ? 'active' : '' }}"></span>
     </a>
     <a href="#" class="navbar_style group">
         <span class="relative z-10">Accounts</span>
