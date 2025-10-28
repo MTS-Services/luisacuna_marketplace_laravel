@@ -45,10 +45,8 @@
                             <h3 class="lg:text-3xl sm:text-1xl md:text-2xl font-medium mb-4 dark:text-white">Clash of
                                 Clans
                             </h3>
-                            <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6" variant="tertiary">
-                                <flux:icon name="user-plus"
-                                    class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                                {{ __('Add') }}
+                            <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                {{ __('See Seller List') }}
                             </x-ui.button>
                         </div>
                     </div>
@@ -61,10 +59,8 @@
                             <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
                                 Fortnite
                             </h3>
-                            <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6" variant="tertiary">
-                                <flux:icon name="user-plus"
-                                    class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                                {{ __('Add') }}
+                            <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                {{ __('See Seller List') }}
                             </x-ui.button>
                         </div>
                     </div>
@@ -77,10 +73,8 @@
                             <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
                                 Genshin
                                 Impact</h3>
-                            <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6" variant="tertiary">
-                                <flux:icon name="user-plus"
-                                    class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                                {{ __('Add') }}
+                            <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                {{ __('See Seller List') }}
                             </x-ui.button>
                         </div>
                     </div>
@@ -110,11 +104,9 @@
                         <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
                             DarkWar:
                             survival</h3>
-                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6" variant="tertiary">
-                            <flux:icon name="user-plus"
-                                class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                            {{ __('Add') }}
-                        </x-ui.button>
+                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                {{ __('See Seller List') }}
+                            </x-ui.button>
                     </div>
                 </div>
 
@@ -126,11 +118,9 @@
                         <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
                             KingShot
                         </h3>
-                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6" variant="tertiary">
-                            <flux:icon name="user-plus"
-                                class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                            {{ __('Add') }}
-                        </x-ui.button>
+                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                {{ __('See Seller List') }}
+                            </x-ui.button>
                     </div>
                 </div>
 
@@ -141,11 +131,9 @@
                     <div class="p-4">
                         <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">Last
                             war:survival</h3>
-                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6" variant="tertiary">
-                            <flux:icon name="user-plus"
-                                class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                            {{ __('Add') }}
-                        </x-ui.button>
+                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                {{ __('See Seller List') }}
+                            </x-ui.button>
                     </div>
                 </div>
 
@@ -172,11 +160,9 @@
                         <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">Apex
                             Legends
                         </h3>
-                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6" variant="tertiary">
-                            <flux:icon name="user-plus"
-                                class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                            {{ __('Add') }}
-                        </x-ui.button>
+                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                {{ __('See Seller List') }}
+                            </x-ui.button>
                     </div>
                 </div>
 
@@ -188,11 +174,9 @@
                         <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
                             Battlefield
                         </h3>
-                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6" variant="tertiary">
-                            <flux:icon name="user-plus"
-                                class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                            {{ __('Add') }}
-                        </x-ui.button>
+                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                {{ __('See Seller List') }}
+                            </x-ui.button>
                     </div>
                 </div>
 
@@ -203,11 +187,9 @@
                     <div class="p-4">
                         <h3 class=" lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">Black
                             Desert Online</h3>
-                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6" variant="tertiary">
-                            <flux:icon name="user-plus"
-                                class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                            {{ __('Add') }}
-                        </x-ui.button>
+                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                {{ __('See Seller List') }}
+                            </x-ui.button>
                     </div>
                 </div>
             </div>
@@ -225,11 +207,9 @@
                         <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">Call
                             of
                             Duty</h3>
-                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6" variant="tertiary">
-                            <flux:icon name="user-plus"
-                                class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                            {{ __('Add') }}
-                        </x-ui.button>
+                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                {{ __('See Seller List') }}
+                            </x-ui.button>
                     </div>
                 </div>
 
@@ -241,11 +221,9 @@
                         <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">Clash
                             of
                             Clans</h3>
-                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6" variant="tertiary">
-                            <flux:icon name="user-plus"
-                                class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                            {{ __('Add') }}
-                        </x-ui.button>
+                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                {{ __('See Seller List') }}
+                            </x-ui.button>
                     </div>
                 </div>
 
@@ -257,11 +235,9 @@
                         <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">Dead
                             By
                             Daylight</h3>
-                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6" variant="tertiary">
-                            <flux:icon name="user-plus"
-                                class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                            {{ __('Add') }}
-                        </x-ui.button>
+                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                {{ __('See Seller List') }}
+                            </x-ui.button>
                     </div>
                 </div>
             </div>
@@ -281,11 +257,9 @@
                         <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">EA
                             Sports
                             FC</h3>
-                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6" variant="tertiary">
-                            <flux:icon name="user-plus"
-                                class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                            {{ __('Add') }}
-                        </x-ui.button>
+                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                {{ __('See Seller List') }}
+                            </x-ui.button>
                     </div>
                 </div>
 
@@ -296,11 +270,9 @@
                     <div class="p-4">
                         <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">Elder
                             Scrolls Online</h3>
-                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6" variant="tertiary">
-                            <flux:icon name="user-plus"
-                                class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                            {{ __('Add') }}
-                        </x-ui.button>
+                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                {{ __('See Seller List') }}
+                            </x-ui.button>
                     </div>
                 </div>
 
@@ -312,11 +284,9 @@
                         <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">Escape
                             from
                             Tarkov</h3>
-                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6" variant="tertiary">
-                            <flux:icon name="user-plus"
-                                class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                            {{ __('Add') }}
-                        </x-ui.button>
+                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                {{ __('See Seller List') }}
+                            </x-ui.button>
                     </div>
                 </div>
             </div>
