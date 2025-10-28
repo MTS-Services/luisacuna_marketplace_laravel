@@ -4,6 +4,7 @@ namespace App\Services\Admin;
 
 use App\Actions\Currency\CreateAction;
 use App\Actions\Currency\DeleteAction;
+use App\Actions\Currency\RestoreAction;
 use App\Actions\Currency\UpdateAction;
 use App\DTOs\Currency\CreateDTO;
 use App\DTOs\Currency\UpdateDTO;
@@ -22,12 +23,12 @@ class CurrencyService
         protected DeleteAction $deleteAction,
     ) {}
 
-    public function getAll($sortField = 'created_at' , $order = 'desc'): Collection
+    public function getAll($sortField = 'created_at', $order = 'desc'): Collection
     {
         return $this->currencyInterface->all($sortField, $order);
     }
 
-    public function getPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return $this->currencyInterface->paginate($perPage, $filters);
     }
@@ -37,14 +38,14 @@ class CurrencyService
         return $this->currencyInterface->find($column_value, $column_name);
     }
 
-    public function createData(CreateDTO $dto): Currency
+    public function createData(array $data): Currency
     {
-        return $this->createAction->execute($dto);
+        return $this->createAction->execute($data);
     }
 
-    public function updateData(int $id, UpdateDTO $dto): Currency
+    public function updateData(int $id, array $data): Currency
     {
-        return $this->updateAction->execute($id, $dto);
+        return $this->updateAction->execute($id, $data);
     }
 
     public function deleteData(int $id, bool $forceDelete = false): bool
@@ -57,19 +58,19 @@ class CurrencyService
         return $this->deleteAction->restore($id);
     }
 
-    public function getActiveData($sortField = 'created_at' , $order = 'desc'): Collection
+    public function getActiveData($sortField = 'created_at', $order = 'desc'): Collection
     {
-        return $this->currencyInterface->getActive($sortField , $order);
+        return $this->currencyInterface->getActive($sortField, $order);
     }
 
-    public function getInactiveData($sortField = 'created_at' , $order = 'desc'): Collection
+    public function getInactiveData($sortField = 'created_at', $order = 'desc'): Collection
     {
-        return $this->currencyInterface->getInactive($sortField , $order);
+        return $this->currencyInterface->getInactive($sortField, $order);
     }
 
-    public function searchData(string $query, $sortField = 'created_at' , $order = 'desc'): Collection
+    public function searchData(string $query, $sortField = 'created_at', $order = 'desc'): Collection
     {
-        return $this->currencyInterface->search($query,$sortField , $order);
+        return $this->currencyInterface->search($query, $sortField, $order);
     }
 
     public function bulkDeleteData(array $ids): int
@@ -127,10 +128,11 @@ class CurrencyService
         $currency->suspend();
         return true;
     }
-    public function getTrashedDataPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function getTrashedPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return $this->currencyInterface->trashPaginate($perPage, $filters);
     }
+
 
     public function bulkRestoreData(array $ids): int
     {

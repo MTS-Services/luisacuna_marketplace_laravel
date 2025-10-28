@@ -29,7 +29,7 @@ class Index extends Component
 
     public function render()
     {
-        $datas = $this->currencyService->getPaginated(
+        $datas = $this->currencyService->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
