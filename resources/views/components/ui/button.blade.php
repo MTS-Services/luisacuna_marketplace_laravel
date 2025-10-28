@@ -26,6 +26,7 @@
     $typeClasses = [
         'primary' => 'btn-primary',
         'secondary' => 'btn-secondary',
+        'tertiary' => 'btn-tertiary',
         'accent' => 'btn-accent',
         'success' => 'btn-success',
         'danger' => 'btn-error',
