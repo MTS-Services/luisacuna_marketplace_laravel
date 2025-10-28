@@ -1,7 +1,7 @@
 <div>
-    <div class="bg-[#000] text-white font-sans">
+    <div class=" text-white font-sans">
         <!-- Container -->
-        <div class="max-w-7xl mx-auto px-12 py-12 bg-[#0d0d16] ">
+        <div class="max-w-7xl mx-auto px-12 py-12">
 
             <!-- Title -->
             <h1 class="lg:text-5xl sm:text-3xl md:text-4xl mb-8">Boosting</h1>
