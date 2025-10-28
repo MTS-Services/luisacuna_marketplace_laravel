@@ -1,16 +1,16 @@
 <nav class="hidden md:flex gap-8 text-sm items-center">
     {{-- <a href="#" class="hover:text-purple-400 transition text-white">Currency</a> --}}
-    <a wire:navigate href="{{ route('currency') }}" class="navbar_style group active">
+    <a wire:navigate href="{{ route('currency') }}" class="navbar_style group {{ $pageSlug == 'currency' ? 'active' : '' }}">
         <span class="relative z-10">Currency</span>
-        <span class="navbar_indicator active"></span>
+        <span class="navbar_indicator {{ $pageSlug == 'currency' ? 'active' : '' }}"></span>
     </a>
     <a href="#" class="navbar_style group">
         <span class="relative z-10">Gift Cards</span>
         <span class="navbar_indicator"></span>
     </a>
-    <a href="#" class="navbar_style group">
+    <a href="{{ route('boosting') }}" class="navbar_style group {{ $pageSlug == 'boosting' ? 'active' : '' }}">
         <span class="relative z-10">Boosting</span>
-        <span class="navbar_indicator"></span>
+        <span class="navbar_indicator {{ $pageSlug == 'boosting' ? 'active' : '' }}"></span>
     </a>
     <a href="#" class="navbar_style group">
         <span class="relative z-10">Items</span>
