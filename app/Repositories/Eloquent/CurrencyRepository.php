@@ -2,26 +2,26 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Models\Language;
-use App\Repositories\Contracts\LanguageRepositoryInterface;
+use App\Models\Currency;
+use App\Repositories\Contracts\CurrencyRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
-class LanguageRepository implements LanguageRepositoryInterface
+class CurrencyRepository implements CurrencyRepositoryInterface
 {
     public function __construct(
-        protected Language $model
+        protected Currency $model
     ) {}
 
-    public function all(): Collection
+    public function all(string $sortField = 'created_at' , $order = 'desc'): Collection
     {
-        return $this->model->orderBy('created_at', 'desc')->get();
+        $query = $this->model->query();
+        return $query->orderBy($sortField, $order)->get();
     }
 
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         $query = $this->model->query();
-
         // Apply filters
         if (!empty($filters)) {
             $query->filter($filters);
@@ -37,8 +37,7 @@ class LanguageRepository implements LanguageRepositoryInterface
 
     public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        $query = $this->model->onlyTrashed()->orderBy('deleted_at', 'desc');
-
+        $query = $this->model->onlyTrashed();
         // Apply filters
         if (!empty($filters)) {
             $query->filter($filters);
@@ -52,63 +51,68 @@ class LanguageRepository implements LanguageRepositoryInterface
         return $query->paginate($perPage);
     }
 
-    public function find(int $id): ?Language
+    public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?Currency
     {
-        return $this->model->withTrashed()->find($id);
+        $model = $this->model;
+        if ($trashed) {
+            $model = $model->withTrashed();
+        }
+        return $model->where($column_name, $column_value)->first();
     }
 
-    public function findByEmail(string $email): ?Language
+    public function findTrashed($column_value, string $column_name = 'id'): ?Currency
     {
-        return $this->model->where('email', $email)->first();
+        $model = $this->model->onlyTrashed();
+        return $model->where($column_name, $column_value)->first();
     }
 
-    public function create(array $data): Language
+    public function create(array $data): Currency
     {
         return $this->model->create($data);
     }
 
     public function update(int $id, array $data): bool
     {
-        $language = $this->find($id);
+        $currency = $this->find($id);
         
-        if (!$language) {
+        if (!$currency) {
             return false;
         }
 
-        return $language->update($data);
+        return $currency->update($data);
     }
 
     public function delete(int $id): bool
     {
-        $language = $this->find($id);
+        $currency = $this->find($id);
         
-        if (!$language) {
+        if (!$currency) {
             return false;
         }
 
-        return $language->delete();
+        return $currency->delete();
     }
 
     public function forceDelete(int $id): bool
     {
-        $language = $this->model->onlyTrashed()->find($id);
+        $currency = $this->findTrashed($id);
         
-        if (!$language) {
+        if (!$currency) {
             return false;
         }
 
-        return $language->forceDelete();
+        return $currency->forceDelete();
     }
 
     public function restore(int $id): bool
     {
-        $language = $this->model->withTrashed()->find($id);
+        $currency = $this->findTrashed($id);
         
-        if (!$language) {
+        if (!$currency) {
             return false;
         }
 
-        return $language->restore();
+        return $currency->restore();
     }
 
     public function exists(int $id): bool
@@ -127,19 +131,19 @@ class LanguageRepository implements LanguageRepositoryInterface
         return $query->count();
     }
 
-    public function getActive(): Collection
+    public function getActive(string $sortField = 'created_at' , $order = 'desc'): Collection
     {
-        return $this->model->active()->get();
+        return $this->model->active()->orderBy($sortField, $order)->get();
     }
 
-    public function getInactive(): Collection
+    public function getInactive(string $sortField = 'created_at' , $order = 'desc'): Collection
     {
-        return $this->model->inactive()->get();
+        return $this->model->inactive()->orderBy($sortField, $order)->get();
     }
 
-    public function search(string $query): Collection
+    public function search(string $query, string $sortField = 'created_at' , $order = 'desc'): Collection
     {
-        return $this->model->search($query)->get();
+        return $this->model->search($query)->orderBy($sortField, $order)->get();
     }
 
     public function bulkDelete(array $ids): int
@@ -153,10 +157,10 @@ class LanguageRepository implements LanguageRepositoryInterface
     }
     public function bulkRestore(array $ids): int
     {
-         return $this->model->withTrashed()->whereIn('id', $ids)->restore();
+         return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
     }
     public function bulkForceDelete(array $ids): int //
     {  
-        return $this->model->withTrashed()->whereIn('id', $ids)->forceDelete();
+        return $this->model->onlyTrashed()->whereIn('id', $ids)->forceDelete();
     }
 }

@@ -1,185 +1,71 @@
 @props([
     'href' => 'javascript:void(0)',
-    'target' => '_self',
-    'type' => 'primary',
     'disabled' => false,
-    'permission' => '',
-    'icon' => '',
-    'title' => null,
-    'soft' => false,
-    'outline' => false,
-    'glass' => false,
-    'block' => false,
-    'no_animation' => false,
-    'active' => false,
-    'loading' => false,
-    'size' => 'sm',
-    'icon_position' => 'right',
-    'dashed' => false,
-    'shape' => '',
-    'button' => false,
-    'is_submit' => true,
-    'wire' => false,
+    'type' => 'button',
+
+    'target' => '_self',
+    'variant' => 'primary',
+    'wire' => true,
+    'permission' => null,
 ])
 
 @php
-    $typeClasses = [
-        'primary' => 'btn-primary',
-        'secondary' => 'btn-secondary',
-        'tertiary' => 'btn-tertiary',
-        'accent' => 'btn-accent',
-        'success' => 'btn-success',
-        'danger' => 'btn-error',
-        'warning' => 'btn-warning',
-        'info' => 'btn-info',
-        'dark' => 'btn-dark',
-        'light' => 'btn-light',
-        'ghost' => 'btn-ghost',
-        'link' => 'btn-link',
-        'neutral' => 'btn-neutral dark:text-white',
+    $variantClasses = [
+        'primary' =>
+            'bg-zinc-500 px-4 md:px-6 py-2 md:py-4 text-text-btn-primary hover:text-text-btn-secondary hover:bg-zinc-50 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500',
+        'secondary' =>
+            'bg-zinc-50 px-4 md:px-6 py-2 md:py-4 text-text-btn-secondary hover:text-text-btn-primary hover:bg-zinc-500 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500',
+        'tertiary' =>
+            'bg-pink-500 px-4 md:px-6 py-2 md:py-4 text-text-btn-primary hover:text-text-btn-tertiary hover:bg-pink-50 border border-pink-500 focus:outline-none focus:ring focus:ring-zinc-500',
+        'link' =>
+            'bg-transparent px-4 md:px-6 py-2 md:py-4 text-text-btn-primary hover:text-text-btn-secondary/90 focus:outline-none focus:ring focus:ring-pink-500',
     ];
-    $sizeClasses = [
-        'lg' => 'btn-lg',
-        'md' => 'btn-md',
-        'sm' => 'btn-sm',
-        'xs' => 'btn-xs',
-    ];
-
-    $buttonTypeClass = $typeClasses[$type] ?? 'btn-primary';
-    $buttonSizeClass = $sizeClasses[$size] ?? '';
-
-    $baseClasses = 'btn uppercase tracking-widest';
-    $shapeClass = !empty($shape) && in_array($shape, ['circle', 'square']) ? 'btn-' . $shape : 'rounded-md';
-
-    $shouldHaveWhiteText = true;
-    if ($soft || $outline || $glass || $dashed || in_array($type, ['ghost', 'link', 'light', 'dark'])) {
-        $shouldHaveWhiteText = false;
-    }
-
-    $finalClasses = trim(
-        $baseClasses .
-            ' ' .
-            $buttonTypeClass .
-            ' ' .
-            $buttonSizeClass .
-            ' ' .
-            $shapeClass .
-            ' ' .
-            ($soft ? 'btn-soft' : '') .
-            ' ' .
-            ($outline ? 'btn-outline' : '') .
-            ' ' .
-            ($glass ? 'btn-glass' : '') .
-            ' ' .
-            ($block ? 'btn-block' : '') .
-            ' ' .
-            ($no_animation ? 'no-animation' : '') .
-            ' ' .
-            ($active ? 'btn-active' : '') .
-            ' ' .
-            ($loading ? 'btn-loading' : '') .
-            ' ' .
-            ($disabled ? 'btn-disabled' : '') .
-            ' ' .
-            ($dashed ? 'btn-dash' : '') .
-            ' ' .
-            ($shouldHaveWhiteText ? 'text-white' : ''),
-    );
-
-    $mergedAttributes = $attributes->merge([
-        'class' => $finalClasses,
-        'title' => $title ?? ($slot->isNotEmpty() ? strip_tags($slot) : ''),
-    ]);
 @endphp
+
+{{ Log::info($href) }}
 
 @if (!empty($permission))
     @if (Auth::user()->can($permission))
-        @if ($button)
-            <button {{ $disabled ? 'disabled' : '' }} {{ $mergedAttributes }}
-                type="{{ $is_submit ? 'submit' : 'button' }}}}">
-                @if ($icon_position === 'left')
-                    @if ($loading)
-                        <span class="loading loading-spinner mr-1"></span>
-                    @elseif (!empty($icon))
-                        {{-- <i data-lucide="{{ $icon }}" class="w-4 h-4 mr-1"></i> --}}
-                        <flux:icon name="{{ $icon }}" class="w-4 h-4 mr-1" />
-                    @endif
-                @endif
+        @if ($href != 'javascript:void(0)')
+            <a href="{{ $href }}" target="{{ $target }}" {{ $disabled ? 'disabled' : '' }}
+                {{ $wire ? 'wire:navigate' : '' }} {!! $attributes->merge([
+                    'class' =>
+                        $variantClasses[$variant] .
+                        ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
+                        ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
+                ]) !!}>
                 {{ $slot }}
-                @if ($icon_position === 'right')
-                    @if ($loading)
-                        <span class="loading loading-spinner ml-1"></span>
-                    @elseif (!empty($icon))
-                        {{-- <i data-lucide="{{ $icon }}" class="w-4 h-4 ml-1"></i> --}}
-                        <flux:icon name="{{ $icon }}" class="w-4 h-4 mr-1" />
-                    @endif
-                @endif
-            </button>
-        @else
-            <a {{ $disabled ? 'disabled' : '' }} href="{{ $href }}" wire:navigate target="{{ $target }}"
-                {{ $wire ? 'wire:navigate' : '' }} {{ $mergedAttributes }}>
-                @if ($icon_position === 'left')
-                    @if ($loading)
-                        <span class="loading loading-spinner mr-1"></span>
-                    @elseif (!empty($icon))
-                        {{-- <i data-lucide="{{ $icon }}" class="w-4 h-4 mr-1"></i> --}}
-                        <flux:icon name="{{ $icon }}" class="w-4 h-4 mr-1" />
-                    @endif
-                @endif
-                {{ $slot }}
-                @if ($icon_position === 'right')
-                    @if ($loading)
-                        <span class="loading loading-spinner ml-1"></span>
-                    @elseif (!empty($icon))
-                        {{-- <i data-lucide="{{ $icon }}" class="w-4 h-4 ml-1"></i> --}}
-                        <flux:icon name="{{ $icon }}" class="w-4 h-4 mr-1" />
-                    @endif
-                @endif
             </a>
+        @else
+            <button type="{{ $type }}" {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge([
+                'class' =>
+                    $variantClasses[$variant] .
+                    ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
+                    ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
+            ]) !!}>
+                {{ $slot }}
+            </button>
         @endif
     @endif
 @else
-    @if ($button)
-        <button {{ $disabled ? 'disabled' : '' }} {{ $mergedAttributes }}
-            type="{{ $is_submit ? 'submit' : 'button' }}">
-            @if ($icon_position === 'left')
-                @if ($loading)
-                    <span class="loading loading-spinner mr-1"></span>
-                @elseif (!empty($icon))
-                    {{-- <i data-lucide="{{ $icon }}" class="w-4 h-4 mr-1"></i> --}}
-                    <flux:icon name="{{ $icon }}" class="w-4 h-4 mr-1" />
-                @endif
-            @endif
+    @if ($href != 'javascript:void(0)')
+        <a href="{{ $href }}" target="{{ $target }}" {{ $disabled ? 'disabled' : '' }}
+            {{ $wire ? 'wire:navigate' : '' }} {!! $attributes->merge([
+                'class' =>
+                    $variantClasses[$variant] .
+                    ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
+                    ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
+            ]) !!}>
             {{ $slot }}
-            @if ($icon_position === 'right')
-                @if ($loading)
-                    <span class="loading loading-spinner ml-1"></span>
-                @elseif (!empty($icon))
-                    {{-- <i data-lucide="{{ $icon }}" class="w-4 h-4 ml-1"></i> --}}
-                    <flux:icon name="{{ $icon }}" class="w-4 h-4 mr-1" />
-                @endif
-            @endif
-        </button>
-    @else
-        <a {{ $disabled ? 'disabled' : '' }} href="{{ $href }}" wire:navigate target="{{ $target }}"
-            {{ $mergedAttributes }} {{ $wire ? 'wire:navigate' : '' }} {{ $mergedAttributes }}>
-            @if ($icon_position === 'left')
-                @if ($loading)
-                    <span class="loading loading-spinner mr-1"></span>
-                @elseif (!empty($icon))
-                    {{-- <i data-lucide="{{ $icon }}" class="w-4 h-4 mr-1"></i> --}}
-                    <flux:icon name="{{ $icon }}" class="w-4 h-4 mr-1" />
-                @endif
-            @endif
-            {{ $slot }}
-            @if ($icon_position === 'right')
-                @if ($loading)
-                    <span class="loading loading-spinner ml-1"></span>
-                @elseif (!empty($icon))
-                    {{-- <i data-lucide="{{ $icon }}" class="w-4 h-4 ml-1"></i> --}}
-                    <flux:icon name="{{ $icon }}" class="w-4 h-4 mr-1" />
-                @endif
-            @endif
         </a>
+    @else
+        <button type="{{ $type }}" {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge([
+            'class' =>
+                $variantClasses[$variant] .
+                ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
+                ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
+        ]) !!}>
+            {{ $slot }}
+        </button>
     @endif
 @endif

@@ -54,8 +54,9 @@
 
             {{-- Reset Button --}}
             <div class="w-full sm:w-auto">
-                <x-ui.button wire:click="{{ $resetFiltersAction }}" type="accent" button class="w-full sm:w-auto">
-                    <flux:icon icon="arrow-path" class="w-4 h-4 stroke-white" />
+                <x-ui.button wire:click="{{ $resetFiltersAction }}" variant="tertiary" class="w-full sm:w-auto py-2!">
+                    <flux:icon icon="arrow-path"
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
                     {{ __('Reset') }}
                 </x-ui.button>
             </div>
@@ -86,14 +87,21 @@
                         @endforeach
                     </select>
 
-                    <button wire:click="confirmBulkAction" class="btn btn-secondary w-full sm:w-auto"
-                        @if (empty($bulkAction)) disabled @endif>
-                        Execute
-                    </button>
+                    @if (empty($bulkAction))
+                        <x-ui.button wire:click="confirmBulkAction" variant="secondary" class="w-full sm:w-auto py-2!"
+                            disabled>
+                            {{ __('Execute') }}
+                        </x-ui.button>
+                    @else
+                        <x-ui.button wire:click="confirmBulkAction" variant="secondary" class="w-full sm:w-auto py-2!">
+                            {{ __('Execute') }}
+                        </x-ui.button>
+                    @endif
                 </div>
             </div>
         @endif
     </div>
+
     {{-- DESKTOP TABLE VIEW (lg and above) --}}
     <div class="hidden lg:block">
         <table class="min-w-full divide-y divide-accent/30">
