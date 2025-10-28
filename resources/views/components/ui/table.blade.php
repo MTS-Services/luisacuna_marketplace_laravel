@@ -66,7 +66,7 @@
             {{-- Search --}}
             @if ($showSearch)
                 <div class="w-full sm:flex-1 lg:max-w-xs">
-                    <x-input type="text" wire:model.live.debounce.300ms="{{ $searchProperty }}"
+                    <x-ui.input type="text" wire:model.live.debounce.300ms="{{ $searchProperty }}"
                         placeholder="Search..." class="form-input w-full" />
                 </div>
             @endif
