@@ -40,7 +40,7 @@
                     class="menu menu-sm dropdown-content bg-purple-600 rounded-box z-1 mt-3 w-52 p-2 shadow">
                     @auth
                         @if (auth()->guard('web')->check())
-                            <li><a href="{{ route('user.profile') }}" class="text-white" wire:navigate>Profile</a></li>
+                            <li><a href="{{ route('profile') }}" class="text-white" wire:navigate>Profile</a></li>
                         @else
                             <li><a href="{{ route('admin.dashboard') }}" class="text-white" wire:navigate>Dashboard</a></li>
                         @endif
