@@ -4,6 +4,7 @@ namespace App\Services\Admin;
 
 use App\Actions\Currency\CreateAction;
 use App\Actions\Currency\DeleteAction;
+use App\Actions\Currency\RestoreAction;
 use App\Actions\Currency\UpdateAction;
 use App\DTOs\Currency\CreateDTO;
 use App\DTOs\Currency\UpdateDTO;
@@ -27,7 +28,7 @@ class CurrencyService
         return $this->currencyInterface->all($sortField, $order);
     }
 
-    public function getPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return $this->currencyInterface->paginate($perPage, $filters);
     }
@@ -127,10 +128,11 @@ class CurrencyService
         $currency->suspend();
         return true;
     }
-    public function getTrashedDataPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function getTrashedPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return $this->currencyInterface->trashPaginate($perPage, $filters);
     }
+
 
     public function bulkRestoreData(array $ids): int
     {

@@ -2,7 +2,6 @@
 
 namespace App\Actions\Currency;
 
-use App\Events\Currency\CurrencyCreated;
 use App\Models\Currency;
 use App\Repositories\Contracts\CurrencyRepositoryInterface;
 use Illuminate\Support\Facades\DB;
