@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\BoostingController;
 use App\Livewire\Frontend\Buttons;
 use App\Livewire\Frontend\Home;
 use App\Livewire\Frontend\Product;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/boosting', [BoostingController::class, 'index'])->name('boosting');

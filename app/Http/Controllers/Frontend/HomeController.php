@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-
-
     protected $masterView = 'frontend.pages.home';
 
     public function index()
