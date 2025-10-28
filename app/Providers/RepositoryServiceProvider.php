@@ -12,7 +12,9 @@ use App\Repositories\Eloquent\AdminRepository;
 use App\Repositories\Eloquent\LanguageRepository;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\AdminRepositoryInterface;
+use App\Repositories\Contracts\CurrencyRepositoryInterface;
 use App\Repositories\Contracts\LanguageRepositoryInterface;
+use App\Repositories\Eloquent\CurrencyRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -42,6 +44,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             LanguageRepositoryInterface::class, 
             LanguageRepository::class
+        );
+         $this->app->bind(
+            CurrencyRepositoryInterface::class,
+            CurrencyRepository::class
         );
     }
 

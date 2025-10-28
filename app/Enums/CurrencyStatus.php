@@ -9,7 +9,7 @@ enum CurrencyStatus: string
 
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::ACTIVE => 'Active',
             self::INACTIVE => 'Inactive',
         };
@@ -17,17 +17,18 @@ enum CurrencyStatus: string
 
     public function color(): string
     {
-        return match($this) {
-            self::ACTIVE => 'success',
-            self::INACTIVE => 'secondary',
+        return match ($this) {
+            self::ACTIVE => 'badge-success',
+            self::INACTIVE => 'badge-error',
         };
     }
 
+
     public static function options(): array
     {
-        return [
-            self::ACTIVE->value => self::ACTIVE->label(),
-            self::INACTIVE->value => self::INACTIVE->label(),
-        ];
+        return array_map(
+            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            self::cases()
+        );
     }
 }
