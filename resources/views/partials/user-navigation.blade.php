@@ -8,7 +8,7 @@
         <span class="relative z-10">Gift Cards</span>
         <span class="navbar_indicator"></span>
     </a>
-    <a href="{{ route('boosting') }}" class="navbar_style group {{ $pageSlug == 'boosting' ? 'active' : '' }}">
+    <a href="{{ route('boost.index') }}" class="navbar_style group {{ $pageSlug == 'boosting' ? 'active' : '' }}">
         <span class="relative z-10">Boosting</span>
         <span class="navbar_indicator {{ $pageSlug == 'boosting' ? 'active' : '' }}"></span>
     </a>
