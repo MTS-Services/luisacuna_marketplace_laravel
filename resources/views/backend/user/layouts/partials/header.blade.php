@@ -1,4 +1,4 @@
-<header class="bg-gray-950 px-3 sm:px-4 md:px-6 py-3 sm:py-4 z-10">
+<header class="px-3 sm:px-4 md:px-6 py-3 sm:py-4 z-10 {{ request()->routeIs('home') ? 'bg-gradient-to-r from-zinc-950 via-black to-zinc-950' : 'glass-card' }}">
     <div class="flex items-center justify-between">
         <!-- Logo and Mobile Menu -->
         <div class="flex items-center gap-2 sm:gap-4">
@@ -16,57 +16,7 @@
         </div>
 
         <!-- Desktop Navigation -->
-        <nav class="hidden lg:flex items-center gap-4 xl:gap-6 absolute left-1/2 transform -translate-x-1/2">
-            <a href="#"
-                class="text-xs xl:text-sm font-medium pb-1 transition-all border-b-2 whitespace-nowrap
-              {{ $pageSlug === 'currency' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
-                Currency
-            </a>
-
-            <a href="#"
-                class="text-xs xl:text-sm font-medium pb-1 transition-all border-b-2 whitespace-nowrap
-                 {{ $pageSlug === 'gift-cards' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
-                Gift Cards
-            </a>
-
-            <a href="#"
-                class="text-xs xl:text-sm font-medium pb-1 transition-all border-b-2 whitespace-nowrap
-                  {{ $pageSlug === 'boosting' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
-                Boosting
-            </a>
-
-            <a href="#"
-                class="text-xs xl:text-sm font-medium pb-1 transition-all border-b-2 whitespace-nowrap
-                {{ $pageSlug === 'items' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
-                Items
-            </a>
-
-            <a href="#"
-                class="text-xs xl:text-sm font-medium pb-1 transition-all border-b-2 whitespace-nowrap
-              {{ $pageSlug === 'accounts' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
-                Accounts
-            </a>
-
-            <a href="#"
-                class="text-xs xl:text-sm font-medium pb-1 transition-all border-b-2 whitespace-nowrap
-             {{ $pageSlug === 'top-ups' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
-                Top Ups
-            </a>
-
-            <a href="#"
-                class="text-xs xl:text-sm font-medium pb-1 transition-all border-b-2 whitespace-nowrap
-                  {{ $pageSlug === 'coaching' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
-                Coaching
-            </a>
-
-            <!-- Desktop Search -->
-            <div class="relative hidden xl:block">
-                <flux:icon name="magnifying-glass"
-                    class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-white" stroke="white" />
-                <input type="text" placeholder="Search"
-                    class="border border-white rounded-full py-1.5 pl-8 pr-2 text-sm text-white placeholder-gray-100 focus:outline-none focus:border-purple-500 focus:bg-gray-800 transition-all w-22 focus:w-64 bg-transparent">
-            </div>
-        </nav>
+        @include('partials.user-navigation')
 
         <!-- Right Side Icons -->
         <div class="flex items-center gap-1 sm:gap-2">

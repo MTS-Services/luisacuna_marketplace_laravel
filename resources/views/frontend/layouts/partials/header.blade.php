@@ -1,61 +1,21 @@
 <header x-data="{ mobileMenuOpen: false }"
-    class="sticky top-0 z-50 {{ request()->routeIs('home') ? 'bg-gradient-to-r from-purple-950 via-black to-purple-950' : 'glass-card' }}">
+    class="sticky top-0 z-50 {{ request()->routeIs('home') ? 'bg-gradient-to-r from-zinc-950 via-black to-zinc-950' : 'glass-card' }}">
     <div class="container px-4 py-4 flex items-center justify-between">
         <div class=""><a href="{{ route('home') }}">
                 <img src="{{ asset('assets/images/header_logo.png') }}" alt=""></a>
         </div>
 
-        <nav class="hidden md:flex gap-8 text-sm items-center">
-            {{-- <a href="#" class="hover:text-purple-400 transition text-white">Currency</a> --}}
-            <a wire:navigate href="{{ route('currency') }}" class="navbar_style group active">
-                <span class="relative z-10">Currency</span>
-                <span class="navbar_indicator active"></span>
-            </a>
-            <a href="#" class="navbar_style group">
-                <span class="relative z-10">Gift Cards</span>
-                <span class="navbar_indicator"></span>
-            </a>
-            <a href="#" class="navbar_style group">
-                <span class="relative z-10">Boosting</span>
-                <span class="navbar_indicator"></span>
-            </a>
-            <a href="#" class="navbar_style group">
-                <span class="relative z-10">Items</span>
-                <span class="navbar_indicator"></span>
-            </a>
-            <a href="#" class="navbar_style group">
-                <span class="relative z-10">Accounts</span>
-                <span class="navbar_indicator"></span>
-            </a>
-            <a href="#" class="navbar_style group">
-                <span class="relative z-10">Top Ups</span>
-                <span class="navbar_indicator"></span>
-            </a>
-            <a href="#" class="navbar_style group">
-                <span class="relative z-10">Coaching</span>
-                <span class="navbar_indicator"></span>
-            </a>
-            {{-- Search --}}
-            <button
-                class="flex items-center gap-2 px-4 py-2 border border-white rounded-full text-white bg-transparent hover:bg-white/10 transition max-w-fit">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="white" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                </svg>
-                <input type="text" placeholder="Search" class="outline-none focus:ring-0">
-            </button>
-        </nav>
+        @include('partials.user-navigation')
 
         <div class="flex items-center">
             <button class="btn btn-ghost btn-circle hover:bg-purple-500/20">
-                <svg class="w-6 h-6" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="w-6 h-6 stroke-black" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M32 6C17.64 6 6 17.1 6 30.48C6 38.01 9.69 44.59 15.48 48.84V58L25.23 52.66C27.38 53.26 29.65 53.56 32 53.56C46.36 53.56 58 42.46 58 29.08C58 15.7 46.36 6 32 6ZM33.18 36.44L26.92 30.72L13.32 36.44L26.08 22.68L32.32 28.4L45.92 22.68L33.18 36.44Z"
                         fill="white" />
                 </svg>
             </button>
-            <button class="btn btn-ghost btn-circle hover:bg-purple-500/20">
+            <button class="btn btn-ghost btn-circle hover:bg-purple-500/20 mr-2">
                 <div class="indicator">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="white">
@@ -65,6 +25,10 @@
                     <span class="badge badge-xs badge-primary indicator-item">1</span>
                 </div>
             </button>
+            <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
+                <flux:radio value="light" icon="sun" />
+                <flux:radio value="dark" icon="moon" />
+            </flux:radio.group>
             <div class="dropdown dropdown-end ml-2 ">
                 <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                     <div class="w-10 rounded-full">
@@ -83,8 +47,7 @@
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button type="submit"
-                                    class="">
+                                <button type="submit" class="">
                                     Logout
                                 </button>
                             </form>
