@@ -148,7 +148,7 @@
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
                                     <span
-                                        class="text-base-600 font-semibold >
+                                        class="text-base-600 font-semibold" >
                                         PEN175.27
                                     </span>
                                 </div>
@@ -186,7 +186,7 @@
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
                                     <span
-                                        class="text-base-600 font-semibold >
+                                        class="text-base-600 font-semibold" >
                                         PEN175.27
                                     </span>
                                 </div>
@@ -224,7 +224,7 @@
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
                                     <span
-                                        class="text-base-600 font-semibold >
+                                        class="text-base-600 font-semibold" >
                                         PEN175.27
                                     </span>
                                 </div>
@@ -262,7 +262,7 @@
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
                                     <span
-                                        class="text-base-600 font-semibold >
+                                        class="text-base-600 font-semibold" >
                                         PEN175.27
                                     </span>
                                 </div>
@@ -300,7 +300,7 @@
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
                                     <span
-                                        class="text-base-600 font-semibold >
+                                        class="text-base-600 font-semibold" >
                                         PEN175.27
                                     </span>
                                 </div>
@@ -338,7 +338,7 @@
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
                                     <span
-                                        class="text-base-600 font-semibold >
+                                        class="text-base-600 font-semibold" >
                                         PEN175.27
                                     </span>
                                 </div>
@@ -376,7 +376,7 @@
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
                                     <span
-                                        class="text-base-600 font-semibold >
+                                        class="text-base-600 font-semibold" >
                                         PEN175.27
                                     </span>
                                 </div>
@@ -414,7 +414,7 @@
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
                                     <span
-                                        class="text-base-600 font-semibold >
+                                        class="text-base-600 font-semibold" >
                                         PEN175.27
                                     </span>
                                 </div>
@@ -452,7 +452,7 @@
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
                                     <span
-                                        class="text-base-600 font-semibold >
+                                        class="text-base-600 font-semibold ">
                                         PEN175.27
                                     </span>
                                 </div>
@@ -495,10 +495,8 @@
                 {{-- Items --}}
                 @if ($activeTab === 'items')
                     <div class="mt-6 flex items-center gap-4">
-                        <div class="w-md border-2 border-zinc-800 rounded-lg">
-                            <select name="" id="" class="w-full p-2">
-                                <option value="Search">Search</option>
-                            </select>
+                        <div class="w-md">
+                            <x-ui.input type="text" placeholder="Search" class="w-full p-2 border-2 border-zinc-800" />
                         </div>
                         <div class="w-md border-2 border-zinc-800 rounded-lg">
                             <select name="" id="" class="w-full p-2">
@@ -600,7 +598,7 @@
                                     <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
                                         alt="">
                                     <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-zinc-700 self-stretch"></span>
+                                    <span class="border-l border-white self-stretch"></span>
                                     <p class="text-xs">Yeg***</p>
                                 </div>
                                 <div class="">
@@ -621,7 +619,7 @@
                                     <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
                                         alt="">
                                     <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-zinc-700 self-stretch"></span>
+                                    <span class="border-l border-white self-stretch"></span>
                                     <p class="text-xs">Yeg***</p>
                                 </div>
                                 <div class="">
@@ -642,7 +640,7 @@
                                     <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
                                         alt="">
                                     <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-zinc-700 self-stretch"></span>
+                                    <span class="border-l border-white self-stretch"></span>
                                     <p class="text-xs">Yeg***</p>
                                 </div>
                                 <div class="">
@@ -663,7 +661,7 @@
                                     <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
                                         alt="">
                                     <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-zinc-700 self-stretch"></span>
+                                    <span class="border-l border-white self-stretch"></span>
                                     <p class="text-xs">Yeg***</p>
                                 </div>
                                 <div class="">
@@ -683,7 +681,7 @@
                                 <div class="flex items-center gap-3">
                                     <img src="{{ asset('assets/images/user_profile/Subtract.png') }}" alt="">
                                     <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-zinc-700 self-stretch"></span>
+                                    <span class="border-l border-white self-stretch"></span>
                                     <p class="text-xs">Yeg***</p>
                                 </div>
                                 <div class="">
@@ -714,7 +712,7 @@
                                     <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
                                         alt="">
                                     <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-zinc-700 self-stretch"></span>
+                                    <span class="border-l border-white self-stretch"></span>
                                     <p class="text-xs">Yeg***</p>
                                 </div>
                                 <div class="">
@@ -735,7 +733,7 @@
                                     <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
                                         alt="">
                                     <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-zinc-700 self-stretch"></span>
+                                    <span class="border-l border-white self-stretch"></span>
                                     <p class="text-xs">Yeg***</p>
                                 </div>
                                 <div class="">
@@ -756,7 +754,7 @@
                                     <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
                                         alt="">
                                     <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-zinc-700 self-stretch"></span>
+                                    <span class="border-l border-white self-stretch"></span>
                                     <p class="text-xs">Yeg***</p>
                                 </div>
                                 <div class="">
@@ -777,7 +775,7 @@
                                     <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
                                         alt="">
                                     <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-zinc-700 self-stretch"></span>
+                                    <span class="border-l border-white self-stretch"></span>
                                     <p class="text-xs">Yeg***</p>
                                 </div>
                                 <div class="">

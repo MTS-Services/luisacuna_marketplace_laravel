@@ -83,7 +83,7 @@
                 <div class="">
                     <div class="">
                         <span class="relative">
-                            <x-input type="text" wire:model.live.debounce.300ms="search" placeholder="Search for game"  class="form-input w-full text-zinc-50!" />
+                            <x-ui.input type="text" wire:model.live.debounce.300ms="search" placeholder="Search for game"  class="form-input w-full text-zinc-50!" />
                         </span>
                          <span class="absolute top-35 right-125">
                             <x-flux::icon name="magnifying-glass" class="w-6 h-6 inline-block " stroke="white" />
@@ -109,7 +109,7 @@
         </div>
         <div class="flex items-center justify-between gap-4 mt-3.5">
             <div class="search w-full">
-                <x-input type="text" wire:model.live.debounce.300ms="search" placeholder="Search..."
+                <x-ui.input type="text" wire:model.live.debounce.300ms="search" placeholder="Search..."
                     class="form-input w-full" />
             </div>
             <div class="filter flex items-center">

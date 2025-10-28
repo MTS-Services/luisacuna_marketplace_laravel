@@ -12,7 +12,7 @@ class UserProfileComponent extends Component
     public $activeTab = 'currency';
     public $reviewItem = 'all';
 
-    public $activeInnerMenu = 'about';
+    public $activeInnerMenu = 'shop';
     public function switchTab($tab)
     {
         $this->activeTab = $tab;
