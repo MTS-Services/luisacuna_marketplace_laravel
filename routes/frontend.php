@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\CurrencyController;
 use App\Http\Controllers\Frontend\GiftCardController;
+use App\Http\Controllers\Frontend\ItemsController;
 use App\Http\Controllers\Frontend\UserAccountController;
 use App\Http\Controllers\Frontend\UserProfileController;
 
@@ -16,3 +17,5 @@ Route::get('profile', [UserProfileController::class, 'profile'])->name('profile'
 Route::get('account', [UserAccountController::class, 'account'])->name('account');
 // GiftCard
 Route::get('gift-card', [GiftCardController::class, 'index'])->name('gift-card');
+// Items
+Route::get('/items', [ItemsController::class, 'items'])->name('items');

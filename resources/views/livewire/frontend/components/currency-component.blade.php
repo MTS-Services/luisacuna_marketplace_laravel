@@ -186,7 +186,7 @@
                 <div class="">
                     <h3 class="font-bold text-lg mb-2 mt-3  text-white">RuneScape 3 Gold</h3>
                     <p class="text-sm text-pink-500 mb-4">50 offer</p>
-                    <button class="btn-primary w-full !px-4 !py-2 sm:!px-5 sm:!py-3 px-4! py-2!">See Seller List</button>
+                    <button class="btn-primary w-full !px-4 !py-2 sm:!px-5 sm:!py-3">See Seller List</button>
                 </div>
             </div>
             <div class="bg-zinc-900 p-5 rounded-2xl">
