@@ -1,8 +1,10 @@
 <?php
 
+
+use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
+use App\Http\Controllers\Backend\Admin\GameManagement\GameController;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Backend\Admin\Components\Dashboard;
-use App\Livewire\Backend\Admin\Components\UserManagement\AllUser;
+use App\Http\Controllers\Backend\Admin\Language\LanguageController;
 use App\Http\Controllers\Backend\Admin\UserManagement\UserController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 
@@ -21,6 +23,27 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
         });
     });
 
+
+// Game  Controller
+    Route::group(['prefix' => 'game-management', 'as' => 'gm.'], function () {
+
+        Route::controller(CategoryController::class)->name('category.')->prefix('category')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/view/{id}', 'show')->name('view');
+            Route::get('/trash', 'trash')->name('trash');
+            
+        });
+
+        Route::controller(GameController::class)->name('game.')->prefix('game')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/view/{id}', 'show')->name('view');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/trash', 'trash')->name('trash');
+        });
+    });
     Route::group(['prefix' => 'user-management', 'as' => 'um.'], function () {
         Route::controller(UserController::class)->name('user.')->prefix('user')->group(function () {
             Route::get('/', 'index')->name('index');
@@ -34,5 +57,12 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/statistic/{id}', 'statistic')->name('statistic');
             Route::get('/referral/{id}', 'referral')->name('referral');
         });
+    });
+    Route::controller(LanguageController::class)->name('language.')->prefix('language')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::get('/edit/{id}', 'edit')->name('edit');
+        Route::get('/view/{id}', 'view')->name('view');
+        Route::get('/trash', 'trash')->name('trash');
     });
 });

@@ -32,10 +32,12 @@ class UserReferralSeeder extends Seeder
 
             UserReferral::create([
                 'sort_order'        => $i,
-                'user_id'           => $userId,
                 'referred_by'       => $referredBy,
                 'referral_code'     => strtoupper(Str::random(10)),
                 'referral_earnings' => fake()->randomFloat(2, 0, 500),
+                'referral_setting_id' =>1,
+                'referrer_id'=>1,
+                'currency_id'=>1,
             ]);
         }
     }

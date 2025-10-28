@@ -54,7 +54,7 @@ class Create extends Component
                 'phone' => $this->form->phone,
                 'account_status' => $this->form->account_status,
                 'avatar' => $this->form->avatar,
-                'language' => $this->form->language,
+                'language' => $this->form->language ?? 'en',
             ]);
 
             $user = $this->userService->CreateUser($dto);

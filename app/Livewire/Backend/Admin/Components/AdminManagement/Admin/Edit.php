@@ -31,6 +31,7 @@ class Edit extends Component
 
     public function mount(Admin $admin): void
     {
+        
         $this->admin = $admin;
         $this->adminId = $admin->id;
         $this->form->setAdmin($admin);
