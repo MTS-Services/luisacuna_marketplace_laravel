@@ -4,7 +4,7 @@
 
          <!-- Correct form submission -->
          <form  wire:submit="sendPasswordResetOtp"
-             class="-mt-28 w-full h-[600px] max-w-lg bg-[#1a0b2e] rounded-2xl p-8 shadow-lg space-y-8">
+             class=" w-full min-h-[550px] max-w-lg bg-[#1a0b2e] rounded-2xl p-8 shadow-lg space-y-8">
 
              <!-- Header -->
              <div class="text-center">
