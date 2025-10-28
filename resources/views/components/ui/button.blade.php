@@ -1,11 +1,10 @@
 @props([
-    'href' => null,
+    'href' => 'javascript:void(0)',
     'disabled' => false,
     'type' => 'button',
 
     'target' => '_self',
     'variant' => 'primary',
-    'button' => false,
     'wire' => true,
     'permission' => null,
 ])
@@ -23,34 +22,44 @@
     ];
 @endphp
 
+{{ Log::info($href) }}
+
 @if (!empty($permission))
     @if (Auth::user()->can($permission))
-        @if ($href != 'javascript:void(0)' || $href != '' || $href != null || $href != undefined || $href != '#')
+        @if ($href != 'javascript:void(0)')
             <a href="{{ $href }}" target="{{ $target }}" {{ $disabled ? 'disabled' : '' }}
                 {{ $wire ? 'wire:navigate' : '' }} {!! $attributes->merge([
-                    'class' => "{$variantClasses[$variant]} font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 ease-in-out group",
+                    'class' => $variantClasses[$variant] .
+           ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
+           ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
                 ]) !!}>
                 {{ $slot }}
             </a>
         @else
             <button type="{{ $type }}" {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge([
-                'class' => "{$variantClasses[$variant]} font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 ease-in-out group",
+                'class' => $variantClasses[$variant] .
+           ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
+           ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
             ]) !!}>
                 {{ $slot }}
             </button>
         @endif
     @endif
 @else
-    @if ($href != 'javascript:void(0)' || $href != '' || $href != null || $href != undefined || $href != '#')
+    @if ($href != 'javascript:void(0)')
         <a href="{{ $href }}" target="{{ $target }}" {{ $disabled ? 'disabled' : '' }}
             {{ $wire ? 'wire:navigate' : '' }} {!! $attributes->merge([
-                'class' => "{$variantClasses[$variant]} font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 ease-in-out group",
+                'class' => $variantClasses[$variant] .
+           ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
+           ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
             ]) !!}>
             {{ $slot }}
         </a>
     @else
         <button type="{{ $type }}" {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge([
-            'class' => "{$variantClasses[$variant]} font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 ease-in-out group",
+            'class' => $variantClasses[$variant] .
+           ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
+           ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
         ]) !!}>
             {{ $slot }}
         </button>
