@@ -132,6 +132,10 @@
     --color-text-secondary: var(--color-text-secondary-light);
     --color-text-muted: var(--color-text-muted-light);
 
+    --color-text-btn-primary: #f8f8f8;
+    --color-text-btn-secondary: var(--color-primary-500);
+    --color-text-btn-tertiary: var(--color-secondary-500);
+
     /* --color-bg-primary: var(--color-primary-900);
     --color-bg-secondary: var(--color-primary-950);
     --color-bg-tertiary: var(--color-secondary-500); */
@@ -350,55 +354,6 @@ select:focus[data-flux-control] {
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
-
-.btn-primary {
-    background: var(--color-primary-500);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-primary:hover {
-    background: var(--color-primary-600);
-    transform: translateY(-2px);
-}
-
-.btn-secondary {
-    background: var(--color-secondary-500);
-    color: white !important;
-    padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-secondary:hover {
-    background: var(--color-secondary-600);
-    transform: translateY(-2px);
-}
-
-.btn-tertiary {
-    background: white;
-    color: var(--color-primary-500) !important;
-    padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    font-weight: 600;
-    border: 2px solid white;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.btn-tertiary:hover {
-    background: var(--color-primary-50);
-    color: var(--color-primary-500);
-}
-
 
 .card-game:hover {
     border-color: rgba(133, 62, 255, 0.5);
