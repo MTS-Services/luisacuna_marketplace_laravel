@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -94,6 +94,42 @@
                 searchQuery: '',
                 // darkMode: true,
                 showNotifications: false,
+
+                stats: {
+                    users: 12384,
+                    revenue: 48392,
+                    orders: 2847,
+                    activeUsers: 847
+                },
+
+                notifications: [{
+                        id: 1,
+                        title: 'System Update',
+                        message: 'System maintenance scheduled for tonight',
+                        time: '5 minutes ago',
+                        icon: 'settings',
+                        iconBg: 'bg-blue-500/20',
+                        iconColor: 'text-blue-400'
+                    },
+                    {
+                        id: 2,
+                        title: 'New Comment',
+                        message: 'Someone commented on your post',
+                        time: '10 minutes ago',
+                        icon: 'message-circle',
+                        iconBg: 'bg-green-500/20',
+                        iconColor: 'text-green-400'
+                    },
+                    {
+                        id: 3,
+                        title: 'Security Alert',
+                        message: 'New login from unknown device',
+                        time: '1 hour ago',
+                        icon: 'shield-alert',
+                        iconBg: 'bg-red-500/20',
+                        iconColor: 'text-red-400'
+                    }
+                ],
 
                 // Methods
                 init() {
