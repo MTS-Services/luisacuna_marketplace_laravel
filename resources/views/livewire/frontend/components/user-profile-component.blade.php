@@ -5,7 +5,8 @@
         </div>
     </section>
     {{-- profile header --}}
-    <section class="container mx-auto bg-zinc-900 p-10 rounded-2xl absolute left-1/2 -translate-x-1/2 top-10 sm:top-5 md:top-15">
+    <section
+        class="container mx-auto bg-zinc-900 p-10 rounded-2xl absolute left-1/2 -translate-x-1/2 top-10 sm:top-5 md:top-15">
         <div class="flex justify-between">
             <div class="flex items-center gap-6">
                 <div class="">
@@ -924,12 +925,49 @@
             @endif
 
             <div class="pagination">
-              <x-frontend.pagination-ui />
+                <x-frontend.pagination-ui />
             </div>
 
         </section>
     @endif
     @if ($activeInnerMenu === 'about')
-        <h2>This is about</h2>
+        <section class="container mx-auto bg-zinc-900 rounded-2xl mb-10 p-5 sm:p-10 md:p-20">
+            <div class="mb-5">
+                <h2 class="font-semibold text-3xl">About</h2>
+            </div>
+            <div class="flex flex-col gap-5">
+                <div class="p-6 bg-white/10 rounded-2xl">
+                    <div class="flex items-center justify-between">
+                        <div class="">
+                            <h3 class="text-2xl font-semibold text-white">Description</h3>
+                        </div>
+                        <div class="">
+                            <x-flux::icon name="pencil-square" class="w-5 h-5 inline-block" stroke="white" />
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="">
+                            <p class="text-base text-white">
+                                Hey there!
+                            </p>
+                        </div>
+                        <div class="">
+                            <p class="text-base text-white">
+                                At PixelStoreLAT, we bring you the best digital deals, game keys, and in-game items —
+                                fast, safe, and hassle-free. Trusted by thousands of gamers worldwide with 97% positive
+                                reviews. Level up your experience with us today!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 bg-white/10 rounded-2xl">
+                    <div class="">
+                        <p class="text-base text-white">
+                            Registered: Feb 20, 2023
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
     @endif
 </main>
