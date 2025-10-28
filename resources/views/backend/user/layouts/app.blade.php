@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -12,7 +12,7 @@
     @fluxAppearance
 </head>
 
-<body x-data="{ sidebarOpen: false, mobileMenuOpen: false, $flux.dark = true }" class="h-full max-h-screen antialiased bg-gray-950 text-gray-100">
+<body x-data="{ sidebarOpen: false, mobileMenuOpen: false, }" class="h-full max-h-screen antialiased bg-bg-primary ">
 
     <div class="flex flex-col h-screen">
         <livewire:backend.user.partials.header :pageSlug="$pageSlug" />
@@ -33,7 +33,7 @@
     </div>
 
     <div x-show="sidebarOpen" @click="sidebarOpen = false"
-        class="fixed inset-0 bg-black/50 z-40 lg:hidden transition-opacity"
+        class="fixed inset-0 z-40 lg:hidden transition-opacity"
         x-transition:enter="transition-opacity ease-linear duration-300" x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-linear duration-300"
         x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
