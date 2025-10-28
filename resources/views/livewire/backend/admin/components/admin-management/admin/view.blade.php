@@ -17,7 +17,7 @@
             </div>
         </div>
     </div>
-    <div class="bg-bg-secondary shadow-glass-card rounded-xl p-6 min-h-[500px]">
+    <div class="glass-card shadow-glass-card rounded-xl p-6 min-h-[500px]">
         {{-- PERSONAL INFO (Default Tab) --}}
 
         <div class="grid lg:grid-cols-3 gap-6">

@@ -10,7 +10,7 @@
     <div class="sidebar-glass-card h-full custom-scrollbar rounded-xl overflow-y-auto">
         <a href="{{ route('admin.dashboard') }}" wire:navigate class="p-4 inline-block">
             <div class="flex items-center gap-4">
-                <div class="w-10 h-10 glass-card shadow inset-shadow-lg p-0 rounded-xl flex items-center justify-center">
+                <div class="w-10 h-10  shadow inset-shadow-lg p-0 rounded-xl flex items-center justify-center">
                     <flux:icon name="bolt" class="w-5 h-5 text-zinc-500" />
                 </div>
                 <div x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)"
