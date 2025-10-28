@@ -9,27 +9,15 @@ use Livewire\Form;
 
 class CurrencyForm extends Form
 {
-    
+
     public ?int $id = null;
-    
-    #[Validate('required|string|max:10')]
+
     public string $code = '';
-    #[Validate('required|string|max:10')]
     public string $symbol = '';
-
-    #[Validate('required|string|max:50')]
     public string $name = '';
-
-    #[Validate('required')]
     public ?float $exchange_rate = null;
-
-    #[Validate('required|integer')]
     public int $decimal_places = 2;
-
-    #[Validate('required|string')]
     public ?string $status = CurrencyStatus::ACTIVE->value;
-
-    #[Validate('nullable|boolean')]
     public int $is_default = 0;
 
     /**
@@ -49,7 +37,7 @@ class CurrencyForm extends Form
             'code' => $codeRule,
             'symbol' => 'required|string|max:10',
             'name' => $nameRule,
-            'exchange_rate' => 'required|double',
+            'exchange_rate' => 'required|numeric',
             'decimal_places' => 'required|integer',
             'status' => 'required|string|in:' . implode(',', array_column(CurrencyStatus::cases(), 'value')),
             'is_default' => 'nullable|boolean',
@@ -59,21 +47,21 @@ class CurrencyForm extends Form
     /**
      * Custom validation messages
      */
-    public function messages(): array
-    {
-        return [
-            'code.required' => 'The currency code is required .',
-            'code.unique' => 'This currency code is already in use.',
-            'symbol.required' => 'The currency symbol is required.',
-            'name.required' => 'The currency name is required.',
-            'name.unique' => 'This currency name is already in use.',
-            'exchange_rate.required' => 'The exchange rate is required.',
-            'decimal_places.required' => 'The decimal places is required.',
-            'status.required' => 'Please select a status.',
-            'is_default.required' => 'Please select a status.',
+    // public function messages(): array
+    // {
+    //     return [
+    //         'code.required' => 'The currency code is required .',
+    //         'code.unique' => 'This currency code is already in use.',
+    //         'symbol.required' => 'The currency symbol is required.',
+    //         'name.required' => 'The currency name is required.',
+    //         'name.unique' => 'This currency name is already in use.',
+    //         'exchange_rate.required' => 'The exchange rate is required.',
+    //         'decimal_places.required' => 'The decimal places is required.',
+    //         'status.required' => 'Please select a status.',
+    //         'is_default.required' => 'Please select a status.',
 
-        ];
-    }
+    //     ];
+    // }
 
     /**
      * Fill the form fields from a Language model
@@ -99,9 +87,9 @@ class CurrencyForm extends Form
         $this->code = '';
         $this->symbol = '';
         $this->name = '';
-        $this->exchange_rate = '';
-        $this->decimal_places = '';
-        $this->status = '';
+        $this->exchange_rate = null;
+        $this->decimal_places = 2;
+        $this->status = CurrencyStatus::ACTIVE->value;
         $this->is_default = false;
 
         $this->resetValidation();
@@ -113,5 +101,18 @@ class CurrencyForm extends Form
     protected function isUpdating(): bool
     {
         return !empty($this->id);
+    }
+
+    public function fillables(): array
+    {
+        return [
+            'code' => $this->code,
+            'symbol' => $this->symbol,
+            'name' => $this->name,
+            'exchange_rate' => $this->exchange_rate,
+            'decimal_places' => $this->decimal_places,
+            'status' => $this->status,
+            'is_default' => $this->is_default,
+        ];
     }
 }

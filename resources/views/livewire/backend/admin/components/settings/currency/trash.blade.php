@@ -3,8 +3,9 @@
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Currency Trash List') }}</h2>
             <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.as.currency.index') }}">
-                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
+                <x-ui.button href="{{ route('admin.as.currency.index') }}" class="w-auto py-2!">
+                    <flux:icon name="arrow-left"
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                     {{ __('Back') }}
                 </x-ui.button>
             </div>
@@ -18,7 +19,7 @@
 
     {{-- Delete Confirmation Modal --}}
     <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Permanently delete this data?'" :message="'Are you absolutely sure you want to delete this data? All associated data will be permanently deleted.'" :method="'forceDelete'"
-        :button-text="'Permanently Delete Data'" />
+        :button-text="'Permanently Delete'" />
 
     {{-- Bulk Action Confirmation Modal --}}
     <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="'Confirm Bulk Action'" :message="'Are you sure you want to perform this action on ' . count($selectedIds) . ' selected data(s)?'" :method="'executeBulkAction'"

@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Forms\Backend\Admin\Settings;
 
-use App\Enums\LanguageDirections;
+use App\Enums\LanguageDirection;
 use App\Enums\LanguageStatus;
 use App\Models\Language;
 use Livewire\Attributes\Validate;
@@ -60,7 +60,7 @@ class LanguageForm extends Form
             'flag_icon' => 'nullable|string|max:255',
             'status' => 'required|string|in:' . implode(',', array_column(LanguageStatus::cases(), 'value')),
             'is_default' => 'boolean',
-            'direction' => 'required|string|in:' . implode(',', array_column(LanguageDirections::cases(), 'value')),
+            'direction' => 'required|string|in:' . implode(',', array_column(LanguageDirection::cases(), 'value')),
         ];
     }
 
@@ -110,7 +110,7 @@ class LanguageForm extends Form
         $this->flag_icon = '';
         $this->status = LanguageStatus::ACTIVE->value;
         $this->is_default = false;
-        $this->direction = LanguageDirections::LTR->value;
+        $this->direction = LanguageDirection::LTR->value;
         $this->country_code = '';
 
         $this->resetValidation();
