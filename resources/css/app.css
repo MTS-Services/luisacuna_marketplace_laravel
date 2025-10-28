@@ -336,12 +336,6 @@ textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
-
-body {
-    background: black !important;
-    color: var(--color-text-primary) !important;
-}
-
 .gradient-text {
     background: linear-gradient(135deg, #853EFF 0%, #FF2E91 100%);
     -webkit-background-clip: text;
