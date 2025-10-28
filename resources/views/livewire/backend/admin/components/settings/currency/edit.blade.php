@@ -3,8 +3,9 @@
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Language Edit') }}</h2>
             <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.as.language.index') }}">
-                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
+                <x-ui.button href="{{ route('admin.as.currency.index') }}" class="w-auto py-2!">
+                    <flux:icon name="arrow-left"
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                     {{ __('Back') }}
                 </x-ui.button>
             </div>
@@ -14,7 +15,7 @@
     <div class="glass-card rounded-2xl p-6 mb-6">
         <form wire:submit="save">
 
-             <!-- Fields -->
+            <!-- Fields -->
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
                 <div>
                     <x-ui.label for="name" :value="__('Name')" required />
@@ -36,16 +37,16 @@
                 </div>
                 <div>
                     <x-ui.label for="exchange_rate" :value="__('Exchange Rate')" />
-                    <x-ui.input id="exchange_rate" type="text" class="mt-1 block w-full" wire:model="form.exchange_rate"
-                        placeholder="Enter exchange rate. e.g. 100" />
+                    <x-ui.input id="exchange_rate" type="number" class="mt-1 block w-full"
+                        wire:model="form.exchange_rate" placeholder="Enter exchange rate. e.g. 100" />
                     <x-ui.input-error :messages="$errors->get('form.exchange_rate')" class="mt-2" />
                 </div>
             </div>
             <div class="mt-6 space-y-4 grid grid-cols-3 gap-5">
                 <div>
                     <x-ui.label for="decimal_places" :value="__('Decimal Places')" />
-                    <x-ui.input id="decimal_places" type="text" class="mt-1 block w-full" wire:model="form.decimal_places"
-                        placeholder="Enter decimal places. e.g. 2" />
+                    <x-ui.input id="decimal_places" type="number" class="mt-1 block w-full"
+                        wire:model="form.decimal_places" placeholder="Enter decimal places. e.g. 2" />
                     <x-ui.input-error :messages="$errors->get('form.decimal_places')" class="mt-2" />
                 </div>
                 <div>
@@ -71,14 +72,20 @@
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button href="{{ route('admin.as.currency.index') }}" type="danger">
-                    <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
-                    {{ __('Cancel') }}
+                <x-ui.button wire:click="resetForm" variant="tertiary" class="w-auto! py-2!">
+                    <flux:icon name="x-circle"
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
+                    <span wire:loading.remove wire:target="resetForm"
+                        class="text-text-btn-primary group-hover:text-text-btn-tertiary">{{ __('Reset') }}</span>
+                    <span wire:loading wire:target="resetForm"
+                        class="text-text-btn-primary group-hover:text-text-btn-tertiary">{{ __('Reseting...') }}</span>
                 </x-ui.button>
 
-                <x-ui.button type="accent" button>
-                    <span wire:loading.remove wire:target="save" class="text-white">{{ __('Update Currency') }}</span>
-                    <span wire:loading wire:target="save" class="text-white">{{ __('Updating...') }}</span>
+                <x-ui.button class="w-auto! py-2!" type="submit">
+                    <span wire:loading.remove wire:target="save"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Update Currency') }}</span>
+                    <span wire:loading wire:target="save"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Updating...') }}</span>
                 </x-ui.button>
             </div>
         </form>

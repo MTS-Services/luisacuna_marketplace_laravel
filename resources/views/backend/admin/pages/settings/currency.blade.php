@@ -10,7 +10,8 @@
         @case('admin.as.currency.edit')
             <x-slot name="breadcrumb">Application Settings > Currency Edit</x-slot>
             <x-slot name="title">Currency Edit</x-slot>
-            <livewire:backend.admin.components.settings.currency.edit :data="$data"/>
+            {{-- @dd($data, 'currency') --}}
+            <livewire:backend.admin.components.settings.currency.edit :data="$data" />
         @break
 
         @case('admin.as.currency.trash')
@@ -22,7 +23,7 @@
         @case('admin.as.currency.view')
             <x-slot name="breadcrumb">Application Settings > Currency Details</x-slot>
             <x-slot name="title">Currency Details</x-slot>
-            <livewire:backend.admin.components.settings.currency.view :data="$data"/>
+            <livewire:backend.admin.components.settings.currency.view :data="$data" />
         @break
 
         @default

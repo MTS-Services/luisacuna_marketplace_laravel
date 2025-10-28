@@ -15,9 +15,9 @@ class UpdateAction
         protected CurrencyRepositoryInterface $currencyInterface
     ) {}
 
-    public function execute(int $currencyId, UpdateDTO $dto): Currency
+    public function execute(int $currencyId, array $data): Currency
     {
-        return DB::transaction(function () use ($currencyId, $dto) {
+        return DB::transaction(function () use ($currencyId, $data) {
 
             // Fetch Currency
            $currency = $this->currencyInterface->find($currencyId);
@@ -28,8 +28,7 @@ class UpdateAction
             }
 
             $oldData =$currency->getAttributes();
-            $data = $dto->toArray();
-
+            
             // Update Currency
             $updated = $this->currencyInterface->update($currencyId, $data);
 

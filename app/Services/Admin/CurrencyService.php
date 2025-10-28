@@ -22,7 +22,7 @@ class CurrencyService
         protected DeleteAction $deleteAction,
     ) {}
 
-    public function getAll($sortField = 'created_at' , $order = 'desc'): Collection
+    public function getAll($sortField = 'created_at', $order = 'desc'): Collection
     {
         return $this->currencyInterface->all($sortField, $order);
     }
@@ -37,14 +37,14 @@ class CurrencyService
         return $this->currencyInterface->find($column_value, $column_name);
     }
 
-    public function createData(CreateDTO $dto): Currency
+    public function createData(array $data): Currency
     {
-        return $this->createAction->execute($dto);
+        return $this->createAction->execute($data);
     }
 
-    public function updateData(int $id, UpdateDTO $dto): Currency
+    public function updateData(int $id, array $data): Currency
     {
-        return $this->updateAction->execute($id, $dto);
+        return $this->updateAction->execute($id, $data);
     }
 
     public function deleteData(int $id, bool $forceDelete = false): bool
@@ -57,19 +57,19 @@ class CurrencyService
         return $this->deleteAction->restore($id);
     }
 
-    public function getActiveData($sortField = 'created_at' , $order = 'desc'): Collection
+    public function getActiveData($sortField = 'created_at', $order = 'desc'): Collection
     {
-        return $this->currencyInterface->getActive($sortField , $order);
+        return $this->currencyInterface->getActive($sortField, $order);
     }
 
-    public function getInactiveData($sortField = 'created_at' , $order = 'desc'): Collection
+    public function getInactiveData($sortField = 'created_at', $order = 'desc'): Collection
     {
-        return $this->currencyInterface->getInactive($sortField , $order);
+        return $this->currencyInterface->getInactive($sortField, $order);
     }
 
-    public function searchData(string $query, $sortField = 'created_at' , $order = 'desc'): Collection
+    public function searchData(string $query, $sortField = 'created_at', $order = 'desc'): Collection
     {
-        return $this->currencyInterface->search($query,$sortField , $order);
+        return $this->currencyInterface->search($query, $sortField, $order);
     }
 
     public function bulkDeleteData(array $ids): int
