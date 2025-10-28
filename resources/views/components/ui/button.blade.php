@@ -29,17 +29,19 @@
         @if ($href != 'javascript:void(0)')
             <a href="{{ $href }}" target="{{ $target }}" {{ $disabled ? 'disabled' : '' }}
                 {{ $wire ? 'wire:navigate' : '' }} {!! $attributes->merge([
-                    'class' => $variantClasses[$variant] .
-           ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
-           ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
+                    'class' =>
+                        $variantClasses[$variant] .
+                        ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
+                        ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
                 ]) !!}>
                 {{ $slot }}
             </a>
         @else
             <button type="{{ $type }}" {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge([
-                'class' => $variantClasses[$variant] .
-           ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
-           ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
+                'class' =>
+                    $variantClasses[$variant] .
+                    ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
+                    ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
             ]) !!}>
                 {{ $slot }}
             </button>
@@ -49,17 +51,19 @@
     @if ($href != 'javascript:void(0)')
         <a href="{{ $href }}" target="{{ $target }}" {{ $disabled ? 'disabled' : '' }}
             {{ $wire ? 'wire:navigate' : '' }} {!! $attributes->merge([
-                'class' => $variantClasses[$variant] .
-           ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
-           ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
+                'class' =>
+                    $variantClasses[$variant] .
+                    ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
+                    ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
             ]) !!}>
             {{ $slot }}
         </a>
     @else
         <button type="{{ $type }}" {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge([
-            'class' => $variantClasses[$variant] .
-           ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
-           ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
+            'class' =>
+                $variantClasses[$variant] .
+                ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
+                ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
         ]) !!}>
             {{ $slot }}
         </button>
