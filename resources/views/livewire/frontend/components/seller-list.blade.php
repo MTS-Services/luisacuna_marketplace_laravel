@@ -1,4 +1,4 @@
-<div class="#">
+{{-- <div class="#">
     <div class="lg:w-[1400px] bg-[#0d061a] mx-auto">
         <div class="  text-white">
         <!-- Header -->
@@ -437,4 +437,4 @@
     </main>
     </div>
     </div>
-</div>
+</div> --}}
