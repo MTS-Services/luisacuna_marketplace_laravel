@@ -1,9 +1,9 @@
 <main class="overflow-x-hidden">
     {{-- menu card --}}
     <section class="max-w-5xl mx-auto mt-6">
-        <div class="bg-zinc-950 flex align-items-center justify-between p-10">
+        <div class="bg-zinc-900 flex align-items-center justify-between py-11 px-10">
             <div class="pt-10">
-                <h3 class="text-3xl pb-3 text-base-600">Popular games</h3>
+                <h3 class="text-text-white text-base font-semibold">Popular games</h3>
                 <div class="grid grid-cols-2 gap-5">
                     <div class="">
                         <div class="flex align-items-center gap-2">
@@ -134,7 +134,7 @@
                 <div class="">
                     <h3 class="font-bold text-lg mb-2 mt-3  text-white">EA sports FC Coins</h3>
                     <p class="text-sm text-pink-500 mb-4">50 offer</p>
-                    <button class="btn-primary w-full !px-4 !py-2 sm:!px-5 sm:!py-3">See Seller List</button>
+                    <x-ui.button class="">See Seller List</x-ui.button>
                 </div>
             </div>
             <div class="bg-zinc-900 p-5 rounded-2xl">
@@ -145,7 +145,7 @@
                 <div class="">
                     <h3 class="font-bold text-lg mb-2 mt-3  text-white">Blade Ball Tokens</h3>
                     <p class="text-sm text-pink-500 mb-4">50 offer</p>
-                    <button class="btn-primary w-full !px-4 !py-2 sm:!px-5 sm:!py-3">See Seller List</button>
+                    <x-ui.button class="">See Seller List</x-ui.button>
                 </div>
             </div>
             <div class="bg-zinc-900 p-5 rounded-2xl">
@@ -156,7 +156,7 @@
                 <div class="">
                     <h3 class="font-bold text-lg mb-2 mt-3  text-white">New World Coins</h3>
                     <p class="text-sm text-pink-500 mb-4">50 offer</p>
-                    <button class="btn-primary w-full !px-4 !py-2 sm:!px-5 sm:!py-3">See Seller List</button>
+                    <x-ui.button class="">See Seller List</x-ui.button>
                 </div>
             </div>
         </div>
@@ -175,7 +175,7 @@
                 <div class="">
                     <h3 class="font-bold text-lg mb-2 mt-3  text-white">Exilecon Official Trailer</h3>
                     <p class="text-sm text-pink-500 mb-4">50 offer</p>
-                    <button class="btn-primary w-full !px-4 !py-2 sm:!px-5 sm:!py-3">See Seller List</button>
+                    <x-ui.button class="">See Seller List</x-ui.button>
                 </div>
             </div>
             <div class="bg-zinc-900 p-5 rounded-2xl">
@@ -186,7 +186,7 @@
                 <div class="">
                     <h3 class="font-bold text-lg mb-2 mt-3  text-white">RuneScape 3 Gold</h3>
                     <p class="text-sm text-pink-500 mb-4">50 offer</p>
-                    <button class="btn-primary w-full !px-4 !py-2 sm:!px-5 sm:!py-3">See Seller List</button>
+                    <x-ui.button class="">See Seller List</x-ui.button>
                 </div>
             </div>
             <div class="bg-zinc-900 p-5 rounded-2xl">
@@ -197,7 +197,7 @@
                 <div class="">
                     <h3 class="font-bold text-lg mb-2 mt-3  text-white">Silver Farming</h3>
                     <p class="text-sm text-pink-500 mb-4">50 offer</p>
-                    <button class="btn-primary w-full !px-4 !py-2 sm:!px-5 sm:!py-3">See Seller List</button>
+                    <x-ui.button class="">See Seller List</x-ui.button>
                 </div>
             </div>
             <div class="bg-zinc-900 p-5 rounded-2xl">
@@ -208,7 +208,7 @@
                 <div class="">
                     <h3 class="font-bold text-lg mb-2 mt-3  text-white">Hand Farmed Low Price Gold</h3>
                     <p class="text-sm text-pink-500 mb-4">50 offer</p>
-                    <button class="btn-primary w-full !px-4 !py-2 sm:!px-5 sm:!py-3">See Seller List</button>
+                    <x-ui.button class="">See Seller List</x-ui.button>
                 </div>
             </div>
             <div class="bg-zinc-900 p-5 rounded-2xl">
@@ -219,7 +219,7 @@
                 <div class="">
                     <h3 class="font-bold text-lg mb-2 mt-3  text-white">RuneScape 3 Gold</h3>
                     <p class="text-sm text-pink-500 mb-4">50 offer</p>
-                    <button class="btn-primary w-full !px-4 !py-2 sm:!px-5 sm:!py-3">See Seller List</button>
+                    <x-ui.button class="">See Seller List</x-ui.button>
                 </div>
             </div>
             <div class="bg-zinc-900 p-5 rounded-2xl">
@@ -230,7 +230,7 @@
                 <div class="">
                     <h3 class="font-bold text-lg mb-2 mt-3  text-white">Free Club Coins FC25</h3>
                     <p class="text-sm text-pink-500 mb-4">50 offer</p>
-                    <button class="btn-primary w-full !px-4 !py-2 sm:!px-5 sm:!py-3">See Seller List</button>
+                    <x-ui.button class="">See Seller List</x-ui.button>
                 </div>
             </div>
             <div class="bg-zinc-900 p-5 rounded-2xl">
@@ -241,7 +241,7 @@
                 <div class="">
                     <h3 class="font-bold text-lg mb-2 mt-3  text-white">Worldforge Legends</h3>
                     <p class="text-sm text-pink-500 mb-4">50 offer</p>
-                    <button class="btn-primary w-full !px-4 !py-2 sm:!px-5 sm:!py-3">See Seller List</button>
+                    <x-ui.button class="">See Seller List</x-ui.button>
                 </div>
             </div>
             <div class="bg-zinc-900 p-5 rounded-2xl">
@@ -252,7 +252,7 @@
                 <div class="">
                     <h3 class="font-bold text-lg mb-2 mt-3  text-white">Echoes of the Terra</h3>
                     <p class="text-sm text-pink-500 mb-4">50 offer</p>
-                    <button class="btn-primary w-full !px-4 !py-2 sm:!px-5 sm:!py-3">See Seller List</button>
+                    <x-ui.button class="">See Seller List</x-ui.button>
                 </div>
             </div>
             <div class="bg-zinc-900 p-5 rounded-2xl">
@@ -263,7 +263,7 @@
                 <div class="">
                     <h3 class="font-bold text-lg mb-2 mt-3  text-white">Epochs of Gaia</h3>
                     <p class="text-sm text-pink-500 mb-4">50 offer</p>
-                    <button class="btn-primary w-full !px-4 !py-2 sm:!px-5 sm:!py-3">See Seller List</button>
+                    <x-ui.button class="">See Seller List</x-ui.button>
                 </div>
             </div>
             <div class="bg-zinc-900 p-5 rounded-2xl">
@@ -274,7 +274,7 @@
                 <div class="">
                     <h3 class="font-bold text-lg mb-2 mt-3  text-white">Titan Realms</h3>
                     <p class="text-sm text-pink-500 mb-4">50 offer</p>
-                    <button class="btn-primary w-full !px-4 !py-2 sm:!px-5 sm:!py-3">See Seller List</button>
+                    <x-ui.button class="">See Seller List</x-ui.button>
                 </div>
             </div>
             <div class="bg-zinc-900 p-5 rounded-2xl">
@@ -285,7 +285,7 @@
                 <div class="">
                     <h3 class="font-bold text-lg mb-2 mt-3  text-white">Kingdoms Across Skies</h3>
                     <p class="text-sm text-pink-500 mb-4">50 offer</p>
-                    <button class="btn-primary w-full !px-4 !py-2 sm:!px-5 sm:!py-3">See Seller List</button>
+                    <x-ui.button class="">See Seller List</x-ui.button>
                 </div>
             </div>
             <div class="bg-zinc-900 p-5 rounded-2xl">
@@ -296,12 +296,12 @@
                 <div class="">
                     <h3 class="font-bold text-lg mb-2 mt-3  text-white">Realmwalker: New Dawn</h3>
                     <p class="text-sm text-pink-500 mb-4">50 offer</p>
-                    <button class="btn-primary w-full !px-4 !py-2 sm:!px-5 sm:!py-3">See Seller List</button>
+                    <x-ui.button class="">See Seller List</x-ui.button>
                 </div>
             </div>
         </div>
         <div class="mt-10 mb-30 text-center">
-            <button class="btn-primary w-sm">Load More</button>
+            <x-ui.button class="w-sm mx-auto">Load More</x-ui.button>
         </div>
     </section>
 </main>

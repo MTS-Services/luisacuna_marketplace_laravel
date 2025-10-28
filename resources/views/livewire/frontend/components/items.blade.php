@@ -2,7 +2,7 @@
     <section class="container mx-auto mt-16">
         {{-- inner nav --}}
         <div class="sm:py-4 sm:px-8 lg:py-0 lg:px-0">
-            <div class=" text-white px-18 lg:px-0 md:px-0">
+            <div class=" text-text-white px-18 lg:px-0 md:px-0">
                 <div
                     class="max-w-[900px] mx-auto flex flex-col md:flex-row gap-4 md:items-center justify-between w-full sm:px-6 sm:py-6 lg:py-0 lg:px-0 mt-4">
                     <!-- Logo -->
@@ -51,10 +51,10 @@
                 <div class="text-muted text-base">
                     <span class="text-base text-text-white">Home</span>
                 </div>
-                <div class="px-2 text-white text-base">
+                <div class="px-2 text-text-white text-base">
                     >
                 </div>
-                <div class="text-white text-base">
+                <div class="text-text-white text-base">
                     Items
                 </div>
             </div>
@@ -68,7 +68,7 @@
                         class="w-full h-full object-cover">
                 </div>
                 <div class="">
-                    <h2 class="font-semibold text-white text-5xl">Items</h2>
+                    <h2 class="font-semibold text-text-white text-5xl">Items</h2>
                 </div>
             </div>
             <div class="flex items-center justify-between gap-4 mt-3.5">
@@ -89,7 +89,7 @@
         <section class="container mx-auto">
             <div class="mt-10">
                 <div class="mb-10">
-                    <h2 class="font-semibold text-white text-5xl">Popular Item</h2>
+                    <h2 class="font-semibold text-text-white text-5xl">Popular Item</h2>
                 </div>
                 <div class=" sm:flex items-center gap-6">
                     <div class="p-6 bg-zinc-900 rounded-2xl">
@@ -99,7 +99,7 @@
                                     class="w-full h-full object-cover rounded-lg">
                             </div>
                             <div class="mt-5 mb-8">
-                                <h2 class="text-2xl text-semibold text-white">Grand Theft Auto 5</h2>
+                                <h2 class="text-2xl text-semibold text-text-white">Grand Theft Auto 5</h2>
                             </div>
                         </div>
                         <div class="">
@@ -115,7 +115,7 @@
                                     class="w-full h-full object-cover rounded-lg">
                             </div>
                             <div class="mt-5 mb-8">
-                                <h2 class="text-2xl text-semibold text-white">Valorant</h2>
+                                <h2 class="text-2xl text-semibold text-text-white">Valorant</h2>
                             </div>
                         </div>
                         <div class="">
@@ -131,7 +131,7 @@
                                     class="w-full h-full object-cover rounded-lg">
                             </div>
                             <div class="mt-5 mb-8">
-                                <h2 class="text-2xl text-semibold text-white">Call of Duty</h2>
+                                <h2 class="text-2xl text-semibold text-text-white">Call of Duty</h2>
                             </div>
                         </div>
                         <div class="">
@@ -146,7 +146,7 @@
         {{-- all items --}}
         <section class="container mx-auto mt-10">
             <div class="mb-10">
-                <h2 class="font-semibold text-white text-5xl">All Item</h2>
+                <h2 class="font-semibold text-text-white text-5xl">All Item</h2>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center gap-6">
                 <div class="p-6 bg-zinc-900 rounded-2xl">
@@ -156,7 +156,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">League of Legends</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">League of Legends</h2>
                         </div>
                     </div>
                     <div class="">
@@ -172,7 +172,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Fortnite</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Fortnite</h2>
                         </div>
                     </div>
                     <div class="">
@@ -188,7 +188,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Rainbow Six Siege X</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Rainbow Six Siege X</h2>
                         </div>
                     </div>
                     <div class="">
@@ -204,7 +204,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Clash Royale</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Clash Royale</h2>
                         </div>
                     </div>
                     <div class="">
@@ -220,7 +220,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Counter-Strike 2</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Counter-Strike 2</h2>
                         </div>
                     </div>
                     <div class="">
@@ -236,7 +236,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Call of Duty</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Call of Duty</h2>
                         </div>
                     </div>
                     <div class="">
@@ -252,7 +252,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Grand Theft Auto 5</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Grand Theft Auto 5</h2>
                         </div>
                     </div>
                     <div class="">
@@ -268,7 +268,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Valorant</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Valorant</h2>
                         </div>
                     </div>
                     <div class="">
@@ -284,7 +284,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Minecraft</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Minecraft</h2>
                         </div>
                     </div>
                     <div class="">
@@ -300,7 +300,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Forza Horizon 5</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Forza Horizon 5</h2>
                         </div>
                     </div>
                     <div class="">
@@ -316,7 +316,7 @@
                                 alt="" class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">WOW Mists of Pandaria Classic</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">WOW Mists of Pandaria Classic</h2>
                         </div>
                     </div>
                     <div class="">
@@ -332,7 +332,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">1945 US Air Force</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">1945 US Air Force</h2>
                         </div>
                     </div>
                     <div class="">
@@ -358,13 +358,13 @@
                     <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo"
                         class="w-full h-full object-cover">
                 </div>
-                <div class="text-white text-base">
+                <div class="text-text-white text-base">
                     Home
                 </div>
-                <div class="px-2 text-white text-base">
+                <div class="px-2 text-text-white text-base">
                     >
                 </div>
-                <div class="text-white text-base">
+                <div class="text-text-white text-base">
                     Accounts
                 </div>
             </div>
@@ -374,7 +374,7 @@
             {{-- filter section --}}
             <div class="flex items-center gap-1 mt-10 mb-10">
                 <div class="">
-                    <h2 class="font-semibold text-white text-5xl">Accounts</h2>
+                    <h2 class="font-semibold text-text-white text-5xl">Accounts</h2>
                 </div>
             </div>
             <div class="flex items-center justify-between gap-4 mt-3.5">
@@ -395,7 +395,7 @@
         <section class="container mx-auto">
             <div class="mt-10">
                 <div class="mb-10">
-                    <h2 class="font-semibold text-white text-5xl">Popular Accoounts</h2>
+                    <h2 class="font-semibold text-text-white text-5xl">Popular Accoounts</h2>
                 </div>
                 <div class=" sm:flex items-center gap-6">
                     <div class="p-6 bg-zinc-900 rounded-2xl">
@@ -405,7 +405,7 @@
                                     class="w-full h-full object-cover rounded-lg">
                             </div>
                             <div class="mt-5 mb-8">
-                                <h2 class="text-2xl text-semibold text-white">Grand Theft Auto 5</h2>
+                                <h2 class="text-2xl text-semibold text-text-white">Grand Theft Auto 5</h2>
                             </div>
                         </div>
                         <div class="">
@@ -421,7 +421,7 @@
                                     class="w-full h-full object-cover rounded-lg">
                             </div>
                             <div class="mt-5 mb-8">
-                                <h2 class="text-2xl text-semibold text-white">Valorant</h2>
+                                <h2 class="text-2xl text-semibold text-text-white">Valorant</h2>
                             </div>
                         </div>
                         <div class="">
@@ -437,7 +437,7 @@
                                     class="w-full h-full object-cover rounded-lg">
                             </div>
                             <div class="mt-5 mb-8">
-                                <h2 class="text-2xl text-semibold text-white">Call of Duty</h2>
+                                <h2 class="text-2xl text-semibold text-text-white">Call of Duty</h2>
                             </div>
                         </div>
                         <div class="">
@@ -452,7 +452,7 @@
         {{-- all items --}}
         <section class="container mx-auto mt-10">
             <div class="mb-10">
-                <h2 class="font-semibold text-white text-5xl">All Item</h2>
+                <h2 class="font-semibold text-text-white text-5xl">All Item</h2>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center gap-6">
                 <div class="p-6 bg-zinc-900 rounded-2xl">
@@ -462,7 +462,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">League of Legends</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">League of Legends</h2>
                         </div>
                     </div>
                     <div class="">
@@ -478,7 +478,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Fortnite</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Fortnite</h2>
                         </div>
                     </div>
                     <div class="">
@@ -494,7 +494,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Rainbow Six Siege X</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Rainbow Six Siege X</h2>
                         </div>
                     </div>
                     <div class="">
@@ -510,7 +510,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Clash Royale</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Clash Royale</h2>
                         </div>
                     </div>
                     <div class="">
@@ -526,7 +526,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Counter-Strike 2</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Counter-Strike 2</h2>
                         </div>
                     </div>
                     <div class="">
@@ -542,7 +542,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Call of Duty</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Call of Duty</h2>
                         </div>
                     </div>
                     <div class="">
@@ -558,7 +558,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Grand Theft Auto 5</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Grand Theft Auto 5</h2>
                         </div>
                     </div>
                     <div class="">
@@ -574,7 +574,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Valorant</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Valorant</h2>
                         </div>
                     </div>
                     <div class="">
@@ -590,7 +590,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Minecraft</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Minecraft</h2>
                         </div>
                     </div>
                     <div class="">
@@ -606,7 +606,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">Forza Horizon 5</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">Forza Horizon 5</h2>
                         </div>
                     </div>
                     <div class="">
@@ -622,7 +622,7 @@
                                 alt="" class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">WOW Mists of Pandaria Classic</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">WOW Mists of Pandaria Classic</h2>
                         </div>
                     </div>
                     <div class="">
@@ -638,7 +638,7 @@
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="mt-5 mb-8">
-                            <h2 class="text-2xl text-semibold text-white">1945 US Air Force</h2>
+                            <h2 class="text-2xl text-semibold text-text-white">1945 US Air Force</h2>
                         </div>
                     </div>
                     <div class="">

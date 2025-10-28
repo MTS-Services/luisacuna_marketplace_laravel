@@ -6,7 +6,7 @@
     </section>
     {{-- profile header --}}
     <section
-        class="container mx-auto bg-zinc-900 p-10 rounded-2xl absolute left-1/2 -translate-x-1/2 top-10 sm:top-5 md:top-15">
+        class="container mx-auto bg-bg-primary p-10 rounded-2xl absolute left-1/2 -translate-x-1/2 top-10 sm:top-5 md:top-15">
         <div class="flex justify-between">
             <div class="flex items-center gap-6">
                 <div class="">
@@ -23,13 +23,13 @@
 
                 </div>
                 <div class="">
-                    <h3 class="text-4xl font-semibold mb-2">Starriz.clo</h3>
+                    <h3 class="text-4xl font-semibold text-text-white mb-2">Starriz.clo</h3>
                     <div class="flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#12D212"
-                            class="w-10 h-10 text-zinc-200/50">
+                            class="w-10 h-10 text-text-secondary">
                             <path d="M12 10.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
                         </svg>
-                        <span class="text-base-400">Online</span>
+                        <span class="text-base-400 text-text-white">Online</span>
                     </div>
 
                 </div>
@@ -42,17 +42,17 @@
         <div class="flex gap-6">
             <button wire:navigate wire:click="switchInnerMenu('shop')"
                 class="navbar_style  {{ $activeInnerMenu === 'shop' ? 'active' : '' }} group">
-                <span class="relative z-10  ">Shop</span>
+                <span class="relative z-10 text-text-white ">Shop</span>
                 <span class="navbar_style"></span>
             </button>
             <button wire:navigate wire:click="switchInnerMenu('reviews')"
                 class=" navbar_style {{ $activeInnerMenu === 'reviews' ? 'active' : '' }} group">
-                <span class="relative z-10 ">Reviews</span>
+                <span class="relative z-10 text-text-white ">Reviews</span>
                 <span class=""></span>
             </button>
             <button wire:navigate wire:click="switchInnerMenu('about')"
                 class=" navbar_style {{ $activeInnerMenu === 'about' ? 'active' : '' }} group">
-                <span class="relative z-10 ">About</span>
+                <span class="relative z-10 text-text-white ">About</span>
                 <span class=""></span>
             </button>
         </div>
@@ -121,7 +121,7 @@
 
                     {{-- games --}}
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
-                        <div class="bg-zinc-900 rounded-lg p-5">
+                        <div class="bg-bg-primary rounded-lg p-5">
                             <div class="flex items-center justify-between gap-4">
                                 <div class="flex items-center gap-2">
                                     <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
@@ -130,16 +130,16 @@
                                 <div class="flex items-center">
                                     <div class="flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            fill="currentColor" class="w-10 h-10 text-zinc-200/50">
+                                            fill="currentColor" class="w-10 h-10 text-text-secondary">
                                             <path d="M12 10.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
                                         </svg>
-                                        <span class="text-zinc-200/50 text-base-600">Stacked</span>
+                                        <span class="text-text-secondary text-base-600">Stacked</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="flex items-center gap-2 mt-5">
                                 <span
-                                    class="text-base-400 >
+                                    class="text-base-400" >
                                     Galaxy Skin – PSN / Xbox / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/product-image-container -_ image.png') }}"
@@ -161,7 +161,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-zinc-900 rounded-lg p-5">
+                        <div class="bg-bg-primary rounded-lg p-5">
                             <div class="flex items-center justify-between gap-4">
                                 <div class="flex items-center gap-2">
                                     <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
@@ -169,15 +169,15 @@
                                 </div>
                                 <div class="flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        class="w-10 h-10 text-zinc-200/50">
+                                        class="w-10 h-10 text-text-secondary">
                                         <path d="M12 10.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
                                     </svg>
-                                    <span class="text-zinc-200/50 text-base-600">Stacked</span>
+                                    <span class="text-text-secondary text-base-600">Stacked</span>
                                 </div>
                             </div>
                             <div class="flex items-center mt-5">
                                 <span
-                                    class="text-base-400 >
+                                    class="text-base-400">
                                     Blue Squire Skin – 50 VB – Xbox / PSN / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/e84f9097828ae420d3f6578c742ab821a27d643b.png') }}"
@@ -199,7 +199,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-zinc-900 rounded-lg p-5">
+                        <div class="bg-bg-primary rounded-lg p-5">
                             <div class="flex items-center justify-between gap-4">
                                 <div class="flex items-center gap-2">
                                     <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
@@ -207,15 +207,15 @@
                                 </div>
                                 <div class="flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        class="w-10 h-10 text-zinc-200/50">
+                                        class="w-10 h-10 text-text-secondary">
                                         <path d="M12 10.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
                                     </svg>
-                                    <span class="text-zinc-200/50 text-base-600">Stacked</span>
+                                    <span class="text-text-secondary text-base-600">Stacked</span>
                                 </div>
                             </div>
                             <div class="flex items-center mt-5">
                                 <span
-                                    class="text-base-400 >
+                                    class="text-base-400">
                                     Blue Squire Skin – 50 VB – Xbox / PSN / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/e84f9097828ae420d3f6578c742ab821a27d643b.png') }}"
@@ -237,7 +237,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-zinc-900 rounded-lg p-5">
+                        <div class="bg-bg-primary rounded-lg p-5">
                             <div class="flex items-center justify-between gap-4">
                                 <div class="flex items-center gap-2">
                                     <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
@@ -245,15 +245,15 @@
                                 </div>
                                 <div class="flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        class="w-10 h-10 text-zinc-200/50">
+                                        class="w-10 h-10 text-text-secondary">
                                         <path d="M12 10.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
                                     </svg>
-                                    <span class="text-zinc-200/50 text-base-600">Stacked</span>
+                                    <span class="text-text-secondary text-base-600">Stacked</span>
                                 </div>
                             </div>
                             <div class="flex items-center mt-5">
                                 <span
-                                    class="text-base-400 >
+                                    class="text-base-400">
                                     Blue Squire Skin – 50 VB – Xbox / PSN / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/e84f9097828ae420d3f6578c742ab821a27d643b.png') }}"
@@ -275,7 +275,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-zinc-900 rounded-lg p-5">
+                        <div class="bg-bg-primary rounded-lg p-5">
                             <div class="flex items-center justify-between gap-4">
                                 <div class="flex items-center gap-2">
                                     <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
@@ -283,15 +283,15 @@
                                 </div>
                                 <div class="flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        class="w-10 h-10 text-zinc-200/50">
+                                        class="w-10 h-10 text-text-secondary">
                                         <path d="M12 10.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
                                     </svg>
-                                    <span class="text-zinc-200/50 text-base-600">Stacked</span>
+                                    <span class="text-text-secondary text-base-600">Stacked</span>
                                 </div>
                             </div>
                             <div class="flex items-center mt-5">
                                 <span
-                                    class="text-base-400 >
+                                    class="text-base-400">
                                     Blue Squire Skin – 50 VB – Xbox / PSN / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/e84f9097828ae420d3f6578c742ab821a27d643b.png') }}"
@@ -313,7 +313,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-zinc-900 rounded-lg p-5">
+                        <div class="bg-bg-primary rounded-lg p-5">
                             <div class="flex items-center justify-between gap-4">
                                 <div class="flex items-center gap-2">
                                     <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
@@ -321,15 +321,15 @@
                                 </div>
                                 <div class="flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        class="w-10 h-10 text-zinc-200/50">
+                                        class="w-10 h-10 text-text-secondary">
                                         <path d="M12 10.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
                                     </svg>
-                                    <span class="text-zinc-200/50 text-base-600">Stacked</span>
+                                    <span class="text-text-secondary text-base-600">Stacked</span>
                                 </div>
                             </div>
                             <div class="flex items-center mt-5">
                                 <span
-                                    class="text-base-400 >
+                                    class="text-base-400">
                                     Blue Squire Skin – 50 VB – Xbox / PSN / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/e84f9097828ae420d3f6578c742ab821a27d643b.png') }}"
@@ -351,7 +351,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-zinc-900 rounded-lg p-5">
+                        <div class="bg-bg-primary rounded-lg p-5">
                             <div class="flex items-center justify-between gap-4">
                                 <div class="flex items-center gap-2">
                                     <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
@@ -359,15 +359,15 @@
                                 </div>
                                 <div class="flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        class="w-10 h-10 text-zinc-200/50">
+                                        class="w-10 h-10 text-text-secondary">
                                         <path d="M12 10.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
                                     </svg>
-                                    <span class="text-zinc-200/50 text-base-600">Stacked</span>
+                                    <span class="text-text-secondary text-base-600">Stacked</span>
                                 </div>
                             </div>
                             <div class="flex items-center mt-5">
                                 <span
-                                    class="text-base-400 >
+                                    class="text-base-400">
                                     Blue Squire Skin – 50 VB – Xbox / PSN / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/e84f9097828ae420d3f6578c742ab821a27d643b.png') }}"
@@ -389,7 +389,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-zinc-900 rounded-lg p-5">
+                        <div class="bg-bg-primary rounded-lg p-5">
                             <div class="flex items-center justify-between gap-4">
                                 <div class="flex items-center gap-2">
                                     <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
@@ -397,15 +397,15 @@
                                 </div>
                                 <div class="flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        class="w-10 h-10 text-zinc-200/50">
+                                        class="w-10 h-10 text-text-secondary">
                                         <path d="M12 10.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
                                     </svg>
-                                    <span class="text-zinc-200/50 text-base-600">Stacked</span>
+                                    <span class="text-text-secondary text-base-600">Stacked</span>
                                 </div>
                             </div>
                             <div class="flex items-center mt-5">
                                 <span
-                                    class="text-base-400 >
+                                    class="text-base-400">
                                     Blue Squire Skin – 50 VB – Xbox / PSN / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/e84f9097828ae420d3f6578c742ab821a27d643b.png') }}"
@@ -427,7 +427,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-zinc-900 rounded-lg p-5">
+                        <div class="bg-bg-primary rounded-lg p-5">
                             <div class="flex items-center justify-between gap-4">
                                 <div class="flex items-center gap-2">
                                     <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
@@ -435,15 +435,15 @@
                                 </div>
                                 <div class="flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        class="w-10 h-10 text-zinc-200/50">
+                                        class="w-10 h-10 text-text-secondary">
                                         <path d="M12 10.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
                                     </svg>
-                                    <span class="text-zinc-200/50 text-base-600">Stacked</span>
+                                    <span class="text-text-secondary text-base-600">Stacked</span>
                                 </div>
                             </div>
                             <div class="flex items-center mt-5">
                                 <span
-                                    class="text-base-400 >
+                                    class="text-base-400">
                                     Blue Squire Skin – 50 VB – Xbox / PSN / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/e84f9097828ae420d3f6578c742ab821a27d643b.png') }}"
@@ -561,18 +561,18 @@
         </section>
     @endif
     @if ($activeInnerMenu === 'reviews')
-        <section class="container mx-auto bg-zinc-900 p-10! rounded-2xl mb-10">
+        <section class="container mx-auto bg-bg-primary p-10! rounded-2xl mb-10">
             <div class="">
                 <h2 class="font-semibold text-3xl">Reviews</h2>
             </div>
             <div class="flex items-center gap-4 mt-5 mb-5">
                 <div class="">
                     <button wire:navigate wire:click="switchReviewItem('all')"
-                        class="{{ $reviewItem === 'all' ? 'bg-zinc-500 text-white' : 'bg-zinc-50 text-zinc-500' }} font-semibold border-1 border-zinc-500 py-2 px-4 sm:py-3 sm:px-6 rounded-2xl">All</button>
+                        class="{{ $reviewItem === 'all' ? 'bg-zinc-500 text-text-white' : 'bg-zinc-50 text-zinc-500' }} font-semibold border-1 border-zinc-500 py-2 px-4 sm:py-3 sm:px-6 rounded-2xl">All</button>
                 </div>
                 <div class="">
                     <button wire:navigate wire:click="switchReviewItem('positive')"
-                        class="{{ $reviewItem === 'positive' ? 'bg-zinc-500 text-white' : 'bg-zinc-50 text-zinc-500' }} font-semibold border-1 border-zinc-500 py-2 px-4 sm:py-3 sm:px-6 rounded-2xl inline-block">
+                        class="{{ $reviewItem === 'positive' ? 'bg-zinc-500 text-text-white' : 'bg-zinc-50 text-zinc-500' }} font-semibold border-1 border-zinc-500 py-2 px-4 sm:py-3 sm:px-6 rounded-2xl inline-block">
                         {!! $reviewItem === 'positive'
                             ? '<img src="' . asset('assets/images/user_profile/New Project.png') . '" alt="" class="inline-block">'
                             : '<img src="' . asset('assets/images/user_profile/thumb up filled.svg') . '" alt="" class="inline-block">' !!}
@@ -582,7 +582,7 @@
                 </div>
                 <div class="">
                     <button wire:navigate wire:click="switchReviewItem('negative')"
-                        class="{{ $reviewItem === 'negative' ? 'bg-zinc-500 text-white' : 'bg-zinc-50 text-zinc-500' }} border-1 border-zinc-500 font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-2xl inline-block">
+                        class="{{ $reviewItem === 'negative' ? 'bg-zinc-500 text-text-white' : 'bg-zinc-50 text-zinc-500' }} border-1 border-zinc-500 font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-2xl inline-block">
                         <img src="{{ asset('assets/images/user_profile/Subtract.png') }}" alt=""
                             class="inline-block">
                         Negative
@@ -598,70 +598,7 @@
                                     <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
                                         alt="">
                                     <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-white self-stretch"></span>
-                                    <p class="text-xs">Yeg***</p>
-                                </div>
-                                <div class="">
-                                    <span>24.10.25</span>
-                                </div>
-                            </div>
-                            <div class="mt-2">
-                                <span class="font-normal text-base">
-                                    Yeg***
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6 bg-white/10 rounded-2xl">
-                        <div class="">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
-                                        alt="">
-                                    <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-white self-stretch"></span>
-                                    <p class="text-xs">Yeg***</p>
-                                </div>
-                                <div class="">
-                                    <span>24.10.25</span>
-                                </div>
-                            </div>
-                            <div class="mt-2">
-                                <span class="font-normal text-base">
-                                    Yeg***
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6 bg-white/10 rounded-2xl">
-                        <div class="">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
-                                        alt="">
-                                    <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-white self-stretch"></span>
-                                    <p class="text-xs">Yeg***</p>
-                                </div>
-                                <div class="">
-                                    <span>24.10.25</span>
-                                </div>
-                            </div>
-                            <div class="mt-2">
-                                <span class="font-normal text-base">
-                                    Yeg***
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6 bg-white/10 rounded-2xl">
-                        <div class="">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
-                                        alt="">
-                                    <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-white self-stretch"></span>
+                                    <span class="border-l border-text-white self-stretch"></span>
                                     <p class="text-xs">Yeg***</p>
                                 </div>
                                 <div class="">
@@ -681,7 +618,120 @@
                                 <div class="flex items-center gap-3">
                                     <img src="{{ asset('assets/images/user_profile/Subtract.png') }}" alt="">
                                     <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-white self-stretch"></span>
+                                    <span class="border-l border-text-white self-stretch"></span>
+                                    <p class="text-xs">Yeg***</p>
+                                </div>
+                                <div class="">
+                                    <span>24.10.25</span>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <span class="font-normal text-base">
+                                    Did not respond in over 24 hours to the messages, even though "average delivery
+                                    time" is
+                                    3
+                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
+                                    the
+                                    gift nor reply to the messages.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white/10 rounded-2xl">
+                        <div class="">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <img src="{{ asset('assets/images/user_profile/Subtract.png') }}" alt="">
+                                    <p class="font-semibold text-2xl">Items</p>
+                                    <span class="border-l border-text-white self-stretch"></span>
+                                    <p class="text-xs">Yeg***</p>
+                                </div>
+                                <div class="">
+                                    <span>24.10.25</span>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <span class="font-normal text-base">
+                                    Did not respond in over 24 hours to the messages, even though "average delivery
+                                    time" is
+                                    3
+                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
+                                    the
+                                    gift nor reply to the messages.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white/10 rounded-2xl">
+                        <div class="">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
+                                        alt="">
+                                    <p class="font-semibold text-2xl">Items</p>
+                                    <span class="border-l border-text-white self-stretch"></span>
+                                    <p class="text-xs">Yeg***</p>
+                                </div>
+                                <div class="">
+                                    <span>24.10.25</span>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <span class="font-normal text-base">
+                                    Yeg***
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white/10 rounded-2xl">
+                        <div class="">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
+                                        alt="">
+                                    <p class="font-semibold text-2xl">Items</p>
+                                    <span class="border-l border-text-white self-stretch"></span>
+                                    <p class="text-xs">Yeg***</p>
+                                </div>
+                                <div class="">
+                                    <span>24.10.25</span>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <span class="font-normal text-base">
+                                    Yeg***
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white/10 rounded-2xl">
+                        <div class="">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
+                                        alt="">
+                                    <p class="font-semibold text-2xl">Items</p>
+                                    <span class="border-l border-text-white self-stretch"></span>
+                                    <p class="text-xs">Yeg***</p>
+                                </div>
+                                <div class="">
+                                    <span>24.10.25</span>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <span class="font-normal text-base">
+                                    Yeg***
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white/10 rounded-2xl">
+                        <div class="">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <img src="{{ asset('assets/images/user_profile/Subtract.png') }}" alt="">
+                                    <p class="font-semibold text-2xl">Items</p>
+                                    <span class="border-l border-text-white self-stretch"></span>
                                     <p class="text-xs">Yeg***</p>
                                 </div>
                                 <div class="">
@@ -712,7 +762,7 @@
                                     <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
                                         alt="">
                                     <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-white self-stretch"></span>
+                                    <span class="border-l border-text-white self-stretch"></span>
                                     <p class="text-xs">Yeg***</p>
                                 </div>
                                 <div class="">
@@ -733,7 +783,7 @@
                                     <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
                                         alt="">
                                     <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-white self-stretch"></span>
+                                    <span class="border-l border-text-white self-stretch"></span>
                                     <p class="text-xs">Yeg***</p>
                                 </div>
                                 <div class="">
@@ -754,7 +804,7 @@
                                     <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
                                         alt="">
                                     <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-white self-stretch"></span>
+                                    <span class="border-l border-text-white self-stretch"></span>
                                     <p class="text-xs">Yeg***</p>
                                 </div>
                                 <div class="">
@@ -775,7 +825,28 @@
                                     <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
                                         alt="">
                                     <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-white self-stretch"></span>
+                                    <span class="border-l border-text-white self-stretch"></span>
+                                    <p class="text-xs">Yeg***</p>
+                                </div>
+                                <div class="">
+                                    <span>24.10.25</span>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <span class="font-normal text-base">
+                                    Yeg***
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white/10 rounded-2xl">
+                        <div class="">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
+                                        alt="">
+                                    <p class="font-semibold text-2xl">Items</p>
+                                    <span class="border-l border-text-white self-stretch"></span>
                                     <p class="text-xs">Yeg***</p>
                                 </div>
                                 <div class="">
@@ -869,56 +940,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="p-6 bg-white/10 rounded-2xl">
-                        <div class="">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/user_profile/Subtract.png') }}" alt="">
-                                    <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-zinc-700 self-stretch"></span>
-                                    <p class="text-xs">Yeg***</p>
-                                </div>
-                                <div class="">
-                                    <span>24.10.25</span>
-                                </div>
-                            </div>
-                            <div class="mt-2">
-                                <span class="font-normal text-base">
-                                    Did not respond in over 24 hours to the messages, even though "average delivery
-                                    time" is
-                                    3
-                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
-                                    the
-                                    gift nor reply to the messages.
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6 bg-white/10 rounded-2xl">
-                        <div class="">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/user_profile/Subtract.png') }}" alt="">
-                                    <p class="font-semibold text-2xl">Items</p>
-                                    <span class="border-l border-zinc-700 self-stretch"></span>
-                                    <p class="text-xs">Yeg***</p>
-                                </div>
-                                <div class="">
-                                    <span>24.10.25</span>
-                                </div>
-                            </div>
-                            <div class="mt-2">
-                                <span class="font-normal text-base">
-                                    Did not respond in over 24 hours to the messages, even though "average delivery
-                                    time" is
-                                    3
-                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
-                                    the
-                                    gift nor reply to the messages.
-                                </span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             @endif
 
@@ -929,7 +950,7 @@
         </section>
     @endif
     @if ($activeInnerMenu === 'about')
-        <section class="container mx-auto bg-zinc-900 rounded-2xl mb-10 p-5 sm:p-10 md:p-20">
+        <section class="container mx-auto bg-bg-primary rounded-2xl mb-10 p-5 sm:p-10 md:p-20">
             <div class="mb-5">
                 <h2 class="font-semibold text-3xl">About</h2>
             </div>
@@ -937,7 +958,7 @@
                 <div class="p-6 bg-white/10 rounded-2xl">
                     <div class="flex items-center justify-between">
                         <div class="">
-                            <h3 class="text-2xl font-semibold text-white">Description</h3>
+                            <h3 class="text-2xl font-semibold text-text-white">Description</h3>
                         </div>
                         <div class="">
                             <x-flux::icon name="pencil-square" class="w-5 h-5 inline-block" stroke="white" />
@@ -945,12 +966,12 @@
                     </div>
                     <div class="mt-2">
                         <div class="">
-                            <p class="text-base text-white">
+                            <p class="text-base text-text-white">
                                 Hey there!
                             </p>
                         </div>
                         <div class="">
-                            <p class="text-base text-white">
+                            <p class="text-base text-text-white">
                                 At PixelStoreLAT, we bring you the best digital deals, game keys, and in-game items —
                                 fast, safe, and hassle-free. Trusted by thousands of gamers worldwide with 97% positive
                                 reviews. Level up your experience with us today!
@@ -960,7 +981,7 @@
                 </div>
                 <div class="p-6 bg-white/10 rounded-2xl">
                     <div class="">
-                        <p class="text-base text-white">
+                        <p class="text-base text-text-white">
                             Registered: Feb 20, 2023
                         </p>
                     </div>
