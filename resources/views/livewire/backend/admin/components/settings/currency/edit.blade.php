@@ -14,7 +14,6 @@
 
     <div class="glass-card rounded-2xl p-6 mb-6">
         <form wire:submit="save">
-
             <!-- Fields -->
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
                 <div>

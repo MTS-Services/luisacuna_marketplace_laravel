@@ -22,7 +22,7 @@ class DeleteAction
             }
 
             // Dispatch event before deletion
-            event(new CurrencyDeleted($currency));
+            // event(new CurrencyDeleted($currency));
 
             if ($forceDelete) {
                 return $this->currencyInterface->forceDelete($currencyId);
