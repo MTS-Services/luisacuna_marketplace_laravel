@@ -43,6 +43,6 @@
         <flux:icon name="magnifying-glass" class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-white"
             stroke="white" />
         <input type="text" placeholder="Search"
-            class="border border-white rounded-full py-1.5 pl-8 pr-2 text-sm text-white placeholder-gray-100 focus:outline-none focus:border-purple-500 focus:bg-gray-800 transition-all w-22 focus:w-64 bg-transparent">
+            class="border dark:border-white border-gray-600 rounded-full py-1.5 pl-8 pr-2 text-sm text-text-white placeholder-text-text-white focus:outline-none focus:border-purple-500 focus:bg-gray-800 transition-all w-22 focus:w-64 bg-transparent">
     </div>
 </nav>

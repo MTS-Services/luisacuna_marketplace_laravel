@@ -1,5 +1,5 @@
-<footer class="bg-bg-primary">
-    <div class="pt-16 pb-12 text-white">
+<footer class="bg-zinc-900">
+    <div class="pt-12">
         <div class="container grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <!-- Brand -->
             <div>
@@ -10,19 +10,19 @@
                     fast, and seamless digital transactions.</p>
                 <div class="flex gap-4 mt-6">
                     <a href="#"
-                        class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center hover:bg-purple-500/40 transition">
+                        class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center hover:bg-purple-500/40 transition">
                         <img src="{{ asset('assets/svgs/twiter.svg') }}" class="w-5 h-5" alt="">
                     </a>
                     <a href="#"
-                        class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center hover:bg-purple-500/40 transition">
+                        class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center hover:bg-purple-500/40 transition">
                         <img src="{{ asset('assets/svgs/instagram.svg') }}" class="w-5 h-5" alt="">
                     </a>
                     <a href="#"
-                        class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center hover:bg-purple-500/40 transition">
+                        class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center hover:bg-purple-500/40 transition">
                         <img src="{{ asset('assets/svgs/youtube.svg') }}" class="w-5 h-5" alt="">
                     </a>
                     <a href="#"
-                        class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center hover:bg-purple-500/40 transition">
+                        class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center hover:bg-purple-500/40 transition">
                         <img src="{{ asset('assets/svgs/linkdin.svg') }}" class="w-5 h-5" alt="">
                     </a>
                 </div>
@@ -68,9 +68,8 @@
                 </ul>
             </div>
         </div>
-
-        <div class="bg-black/50 py-4 text-center text-md text-gray-500">
-            <p class="text-gray-400">© 2025 DigitalCommerce. All rights reserved</p>
-        </div>
+    </div>
+    <div class="bg-black/50 py-4 text-center text-md text-gray-500">
+        <p class="text-gray-400">© 2025 DigitalCommerce. All rights reserved</p>
     </div>
 </footer>

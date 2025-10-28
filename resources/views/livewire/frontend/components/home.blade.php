@@ -1,7 +1,7 @@
 <main class="overflow-x-hidden-hidden">
     <!-- Hero Section -->
     <section class=" relative py-20 overflow-hidden">
-        <div class="absolute inset-0 z-0 bg-gradient-to-r from-purple-950/50 via-white dark:via-black to-purple-950/50">
+        <div class="absolute inset-0 z-0 bg-gradient-to-r from-purple-950/50 via-text-white to-purple-950/50">
             <div class="absolute top-50 -translate-y-1/2 left-0">
                 <img src="{{ asset('assets/images/home_page/Frame 62.png') }}" alt="">
             </div>
