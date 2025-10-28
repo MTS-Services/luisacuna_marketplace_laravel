@@ -122,7 +122,7 @@
     /* ------------------------------------------ */
 
     --color-text-new: var(--color-text-new-light);
-    --color-text-white: var(--color-white);
+    --color-text-white: var(--color-white-light);
 
     --color-accent: var(--color-accent-light);
     --color-accent-content: var(--color-accent-content-light);
@@ -346,30 +346,4 @@ input:focus[data-flux-control],
 textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
-}
-
-.gradient-text {
-    background: linear-gradient(135deg, #853EFF 0%, #FF2E91 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.card-game:hover {
-    border-color: rgba(133, 62, 255, 0.5);
-    transform: translateY(-8px);
-    background: rgba(53, 25, 102, 0.7);
-}
-
-.card-game img {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto 1rem;
-    object-fit: contain;
-}
-
-.glass-effect {
-    background: rgba(27, 12, 51, 0.4);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(133, 62, 255, 0.1);
 }

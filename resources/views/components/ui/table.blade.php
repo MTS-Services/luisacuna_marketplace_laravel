@@ -87,10 +87,9 @@
                         @endforeach
                     </select>
 
-                    <button wire:click="confirmBulkAction" class="btn btn-secondary w-full sm:w-auto"
-                        @if (empty($bulkAction)) disabled @endif>
-                        Execute
-                    </button>
+                    <x-ui.button wire:click="confirmBulkAction" variant="secondary" class="w-full sm:w-auto py-2!" :disabled="empty($blukAction) ? true : false">
+                        {{ __('Execute') }}
+                    </x-ui.button>
                 </div>
             </div>
         @endif
