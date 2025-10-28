@@ -8,7 +8,7 @@ class GiftCardController extends Controller
 {
 
 
-    protected $masterView = 'frontend.pages.gift_card';
+    protected $masterView ='frontend.pages.gift_card';
 
     public function index()
     {
