@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 
-class HomeController extends Controller
+class GiftCardController extends Controller
 {
 
 
-    protected $masterView = 'frontend.pages.home';
+    protected $masterView = 'frontend.pages.gift_card';
 
     public function index()
     {
