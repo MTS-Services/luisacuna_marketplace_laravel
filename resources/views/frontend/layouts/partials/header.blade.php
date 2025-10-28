@@ -1,5 +1,5 @@
 <header x-data="{ mobileMenuOpen: false }"
-    class="sticky top-0 z-50 {{ request()->routeIs('home') ? 'bg-gradient-to-r from-bg-primary via-black to-bg-primary' : 'glass-card' }}">
+    class="sticky top-0 z-50 {{ request()->routeIs('home') ? 'bg-gradient-to-r from-purple-950/50 via-text-white to-purple-950/50' : 'glass-card' }}">
     <div class="container px-4 py-4 flex items-center justify-between">
         <div class=""><a href="{{ route('home') }}">
                 <img src="{{ asset('assets/images/header_logo.png') }}" alt=""></a>
