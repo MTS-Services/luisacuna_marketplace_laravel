@@ -1,11 +1,11 @@
 <main class=" mx-auto relative">
     <section class="">
-        <div class="inner_banner">
-            <img src="{{ asset('assets/images/user_profile/inner_banner.png') }}" alt="" class="w-full">
+        <div class="inner_banner h-16 sm:h-32">
+            <img src="{{ asset('assets/images/user_profile/inner_banner.png') }}" alt="" class="w-full h-full">
         </div>
     </section>
     {{-- profile header --}}
-    <section class="container mx-auto bg-zinc-900 p-10 rounded-2xl absolute left-1/2 -translate-x-1/2 top-32 md:top-40 sm:top-40">
+    <section class="container mx-auto bg-zinc-900 p-10 rounded-2xl absolute left-1/2 -translate-x-1/2 top-10 sm:top-5 md:top-15">
         <div class="flex justify-between">
             <div class="flex items-center gap-6">
                 <div class="">
