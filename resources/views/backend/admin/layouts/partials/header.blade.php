@@ -61,8 +61,8 @@
 
                     <button @click="open = !open" class="avatar">
                         <div class="w-8 rounded-xl">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face&auto=format"
-                                alt="" class="object-cover w-full h-full">
+                            <img src="{{ auth_storage_url(admin()->avatar) }}"
+                                alt="{{ (admin()->name) }}" class="object-cover w-full h-full">
                         </div>
                     </button>
 
@@ -70,13 +70,12 @@
                     <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-200"
                         x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
                         x-transition:leave="transition ease-in duration-75"
-                        x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-                        class="hidden absolute right-0 mt-2 w-fit min-w-40 glass-card bg-bg-white dark:bg-bg-dark-tertiary rounded-xl shadow-lg py-2 z-50"
+                        class="hidden absolute right-0 mt-2 w-fit min-w-40 glass-card bg-bg-secondary rounded-xl shadow-lg py-2 z-50"
                         :class="open ? '!block' : '!hidden'">
 
                         <div class="px-4 py-2 border-b border-white/10">
-                            <p class="text-sm text-text-primary font-medium">Alex Johnson</p>
-                            <p class="text-xs text-text-secondary">@alexjohnson</p>
+                            <p class="text-sm text-text-primary font-medium">{{ (admin()->name) }}</p>
+                            <p class="text-xs text-text-secondary">{{ admin()->email }}</p>
                         </div>
                         {{-- <x-admin.profile-navlink route="#" name="{{ __('Profile') }}" />
                         <x-admin.profile-navlink route="#" name="{{ __('Settings') }}" />
