@@ -11,8 +11,7 @@
 
             <!-- Logo -->
             <a href="{{ route('user.dashboard') }}" wire:navigate>
-                <img src="{{ asset('assets/images/header_logo.png') }}" alt="Logo"
-                    class="h-6 sm:h-8 w-auto">
+                <img src="{{ asset('assets/images/header_logo.png') }}" alt="Logo" class="h-6 sm:h-8 w-auto">
             </a>
         </div>
 
@@ -20,43 +19,43 @@
         <nav class="hidden lg:flex items-center gap-4 xl:gap-6 absolute left-1/2 transform -translate-x-1/2">
             <a href="#"
                 class="text-xs xl:text-sm font-medium pb-1 transition-all border-b-2 whitespace-nowrap
-        {{ $pageSlug === 'currency' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
+              {{ $pageSlug === 'currency' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
                 Currency
             </a>
 
             <a href="#"
                 class="text-xs xl:text-sm font-medium pb-1 transition-all border-b-2 whitespace-nowrap
-        {{ $pageSlug === 'gift-cards' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
+                 {{ $pageSlug === 'gift-cards' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
                 Gift Cards
             </a>
 
             <a href="#"
                 class="text-xs xl:text-sm font-medium pb-1 transition-all border-b-2 whitespace-nowrap
-        {{ $pageSlug === 'boosting' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
+                  {{ $pageSlug === 'boosting' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
                 Boosting
             </a>
 
             <a href="#"
                 class="text-xs xl:text-sm font-medium pb-1 transition-all border-b-2 whitespace-nowrap
-        {{ $pageSlug === 'items' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
+                {{ $pageSlug === 'items' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
                 Items
             </a>
 
             <a href="#"
                 class="text-xs xl:text-sm font-medium pb-1 transition-all border-b-2 whitespace-nowrap
-        {{ $pageSlug === 'accounts' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
+              {{ $pageSlug === 'accounts' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
                 Accounts
             </a>
 
             <a href="#"
                 class="text-xs xl:text-sm font-medium pb-1 transition-all border-b-2 whitespace-nowrap
-        {{ $pageSlug === 'top-ups' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
+             {{ $pageSlug === 'top-ups' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
                 Top Ups
             </a>
 
             <a href="#"
                 class="text-xs xl:text-sm font-medium pb-1 transition-all border-b-2 whitespace-nowrap
-        {{ $pageSlug === 'coaching' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
+                  {{ $pageSlug === 'coaching' ? 'text-white border-purple-500' : 'text-gray-200 border-transparent hover:text-white hover:border-purple-500' }}">
                 Coaching
             </a>
 
@@ -83,6 +82,10 @@
             <button class="text-white hover:bg-gray-800 p-1 sm:p-1.5 rounded transition-all">
                 <img src="{{ asset('assets/icons/MessengerLogo.svg') }}" alt="Messages" class="w-5 h-5 sm:w-6 sm:h-6">
             </button>
+            <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
+                <flux:radio value="light" icon="sun" />
+                <flux:radio value="dark" icon="moon" />
+            </flux:radio.group>
 
             <!-- Notifications -->
             <button class="text-white hover:bg-gray-800 p-1 sm:p-1.5 md:p-2 rounded transition-all relative">
@@ -97,8 +100,7 @@
             <div x-data="{ open: false }" class="relative">
                 <button @click="open = !open"
                     class="flex items-center p-1 sm:p-1.5 rounded-lg text-white hover:bg-gray-800 transition-all focus:outline-none">
-                    <div
-                        class="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full overflow-hidden">
+                    <div class="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full overflow-hidden">
                         <img src="{{ storage_url(auth()->user()->avatar) }}" class="w-full h-full object-cover"
                             alt="{{ auth()->user()->full_name ?? 'User Avatar' }}">
                     </div>
@@ -152,7 +154,8 @@
         <a href="#"
             class="text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Accounts</a>
         <a href="#"
-            class="text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Top Ups</a>
+            class="text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Top
+            Ups</a>
         <a href="#"
             class="text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Coaching</a>
     </nav>
