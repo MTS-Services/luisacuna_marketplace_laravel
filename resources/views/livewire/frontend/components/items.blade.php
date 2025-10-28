@@ -92,7 +92,7 @@
                     <h2 class="font-semibold text-text-white text-5xl">Popular Item</h2>
                 </div>
                 <div class=" sm:flex items-center gap-6">
-                    <div class="p-6 bg-zinc-900 rounded-2xl">
+                    <div class="p-6 bg-bg-primary rounded-2xl">
                         <div class="">
                             <div class="w-full h-68">
                                 <img src="{{ asset('assets/images/items/Grand-Thef- Auto5.jpg') }}" alt=""
@@ -108,7 +108,7 @@
                             </x-ui.button>
                         </div>
                     </div>
-                    <div class="p-6 bg-zinc-900 rounded-2xl">
+                    <div class="p-6 bg-bg-primary rounded-2xl">
                         <div class="">
                             <div class="w-full h-68 rounded-2xl">
                                 <img src="{{ asset('assets/images/items/Valorant.jpg') }}" alt=""
@@ -124,7 +124,7 @@
                             </x-ui.button>
                         </div>
                     </div>
-                    <div class="p-6 bg-zinc-900 rounded-2xl">
+                    <div class="p-6 bg-bg-primary rounded-2xl">
                         <div class="">
                             <div class="w-full h-68 rounded-2xl">
                                 <img src="{{ asset('assets/images/items/Call-of-Duty.png') }}" alt=""
@@ -149,7 +149,7 @@
                 <h2 class="font-semibold text-text-white text-5xl">All Item</h2>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center gap-6">
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68">
                             <img src="{{ asset('assets/images/items/language-legends.jpg') }}" alt=""
@@ -165,7 +165,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/Fortnite.jpg') }}" alt=""
@@ -181,7 +181,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/RainbowSixSiegeX.jpg') }}" alt=""
@@ -197,7 +197,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/ClashRoyale.jpg') }}" alt=""
@@ -213,7 +213,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/Counter-Strike2.jpg') }}" alt=""
@@ -229,7 +229,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/CallofDuty.jpg') }}" alt=""
@@ -245,7 +245,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/GrandTheftAuto5.png') }}" alt=""
@@ -261,7 +261,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/Valorant1.jpg') }}" alt=""
@@ -277,7 +277,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/Valorant.jpg') }}" alt=""
@@ -293,7 +293,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/ForzaHorizon5.png') }}" alt=""
@@ -309,7 +309,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/WOWMistsOfPandariaClassic.jpg') }}"
@@ -325,7 +325,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/1945USAirForce.png') }}" alt=""
@@ -398,7 +398,7 @@
                     <h2 class="font-semibold text-text-white text-5xl">Popular Accoounts</h2>
                 </div>
                 <div class=" sm:flex items-center gap-6">
-                    <div class="p-6 bg-zinc-900 rounded-2xl">
+                    <div class="p-6 bg-bg-primary rounded-2xl">
                         <div class="">
                             <div class="w-full h-68">
                                 <img src="{{ asset('assets/images/items/b9448e58e81f17534ad44dab6cafb2c9435fd19f.jpg') }}" alt=""
@@ -414,7 +414,7 @@
                             </x-ui.button>
                         </div>
                     </div>
-                    <div class="p-6 bg-zinc-900 rounded-2xl">
+                    <div class="p-6 bg-bg-primary rounded-2xl">
                         <div class="">
                             <div class="w-full h-68 rounded-2xl">
                                 <img src="{{ asset('assets/images/items/Valorant1.jpg') }}" alt=""
@@ -430,7 +430,7 @@
                             </x-ui.button>
                         </div>
                     </div>
-                    <div class="p-6 bg-zinc-900 rounded-2xl">
+                    <div class="p-6 bg-bg-primary rounded-2xl">
                         <div class="">
                             <div class="w-full h-68 rounded-2xl">
                                 <img src="{{ asset('assets/images/items/CallofDuty.jpg') }}" alt=""
@@ -455,7 +455,7 @@
                 <h2 class="font-semibold text-text-white text-5xl">All Item</h2>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center gap-6">
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68">
                             <img src="{{ asset('assets/images/items/language-legends.jpg') }}" alt=""
@@ -471,7 +471,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/Fortnite.jpg') }}" alt=""
@@ -487,7 +487,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/RainbowSixSiegeX.jpg') }}" alt=""
@@ -503,7 +503,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/ClashRoyale.jpg') }}" alt=""
@@ -519,7 +519,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/Counter-Strike2.jpg') }}" alt=""
@@ -535,7 +535,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/CallofDuty.jpg') }}" alt=""
@@ -551,7 +551,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/GrandTheftAuto5.png') }}" alt=""
@@ -567,7 +567,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/Valorant1.jpg') }}" alt=""
@@ -583,7 +583,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/Valorant.jpg') }}" alt=""
@@ -599,7 +599,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/ForzaHorizon5.png') }}" alt=""
@@ -615,7 +615,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/WOWMistsOfPandariaClassic.jpg') }}"
@@ -631,7 +631,7 @@
                         </x-ui.button>
                     </div>
                 </div>
-                <div class="p-6 bg-zinc-900 rounded-2xl">
+                <div class="p-6 bg-bg-primary rounded-2xl">
                     <div class="">
                         <div class="w-full h-68 rounded-2xl">
                             <img src="{{ asset('assets/images/items/1945USAirForce.png') }}" alt=""
