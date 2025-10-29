@@ -8,13 +8,16 @@ use App\Enums\UserStatus;
 use App\Enums\userKycStatus;
 use Illuminate\Support\Carbon;
 use App\Enums\UserAccountStatus;
+use App\Traits\AuditableTrait;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class User extends AuthBaseModel
+class User extends AuthBaseModel implements Auditable
 {
-    use  TwoFactorAuthenticatable;
+    use  TwoFactorAuthenticatable, AuditableTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -70,6 +73,21 @@ class User extends AuthBaseModel
         'updated_id',
         'deleted_id',
     ];
+
+     protected $auditExclude = [
+        'password',
+        'remember_token',
+        'created_at',
+        'updated_at',
+    ];
+
+    /**
+     * Audits relationship
+     */
+    public function audits(): MorphMany
+    {
+        return $this->morphMany(Audit::class, 'user');
+    }
 
     /**
      * The attributes that should be hidden for serialization.

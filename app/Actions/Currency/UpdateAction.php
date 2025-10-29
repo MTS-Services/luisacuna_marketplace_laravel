@@ -10,33 +10,33 @@ use Illuminate\Support\Facades\Log;
 class UpdateAction
 {
     public function __construct(
-        protected CurrencyRepositoryInterface $currencyInterface
+        protected CurrencyRepositoryInterface $interface
     ) {}
 
-    public function execute(int $currencyId, array $data): Currency
+    public function execute(int $id, array $data): Currency
     {
-        return DB::transaction(function () use ($currencyId, $data) {
+        return DB::transaction(function () use ($id, $data) {
 
             // Fetch Currency
-           $currency = $this->currencyInterface->find($currencyId);
+            $currency = $this->interface->find($id);
 
             if (!$currency) {
-                Log::error('Currency not found', ['currency_id' => $currencyId]);
+                Log::error('Currency not found', ['currency_id' => $id]);
                 throw new \Exception('Currency not found');
             }
 
-            $oldData =$currency->getAttributes();
-            
+            $oldData = $currency->getAttributes();
+
             // Update Currency
-            $updated = $this->currencyInterface->update($currencyId, $data);
+            $updated = $this->interface->update($id, $data);
 
             if (!$updated) {
-                Log::error('Failed to update Currency', ['currency_id' => $currencyId]);
+                Log::error('Failed to update Currency', ['currency_id' => $id]);
                 throw new \Exception('Failed to update Currency');
             }
 
             // Refresh model
-           $currency =$currency->fresh();
+            $currency = $currency->fresh();
 
             // Detect changes
             $changes = [];
@@ -49,8 +49,7 @@ class UpdateAction
                 }
             }
 
-
-            return$currency;
+            return $currency;
         });
     }
 }

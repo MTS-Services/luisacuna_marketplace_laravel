@@ -42,7 +42,7 @@ Route::middleware('guest:web')->group(function () {
     
     Route::get('password-reset/verify-otp', function () {
         return view('frontend.auth.user.verify-reset-otp');
-    })->name('verify-reset-otp');
+    })->middleware(['throttle:6,1'])->name('verify-reset-otp');
 });
 
 Route::middleware('auth:web')->group(function () {
@@ -52,7 +52,7 @@ Route::middleware('auth:web')->group(function () {
     
     Route::get('verify-otp', function () {
         return view('frontend.auth.user.verify-otp');
-    })->name('verify-otp');
+    })->name('verify-otp')->middleware(['throttle:6,1']);
 
     Route::get('verify-email/{id}/{hash}', UserVerifyEmailController::class)
         ->middleware(['signed', 'throttle:6,1'])
@@ -81,7 +81,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
         
         Route::get('password-reset/verify-otp', function () {
             return view('frontend.auth.admin.verify-reset-otp');
-        })->name('reset.verify-otp');
+        })->name('reset.verify-otp')->middleware(['throttle:6,1']);
         
         Route::get('reset-password/{token}', function (string $token) {
             return view('frontend.auth.admin.reset-password', compact('token'));
@@ -108,7 +108,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
         
         Route::get('verify-otp', function () {
             return view('frontend.auth.admin.verify-otp');
-        })->name('verify-otp');
+        })->name('verify-otp')->middleware(['throttle:6,1']);
 
         Route::prefix('profile/two-factor')->name('two-factor.')->group(function () {
             Route::get('/', [AdminTwoFactorController::class, 'index'])->name('index');

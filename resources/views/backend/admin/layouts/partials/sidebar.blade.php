@@ -10,7 +10,7 @@
     <div class="sidebar-glass-card h-full custom-scrollbar rounded-xl overflow-y-auto">
         <a href="{{ route('admin.dashboard') }}" wire:navigate class="p-4 inline-block">
             <div class="flex items-center gap-4">
-                <div class="w-10 h-10 glass-card shadow inset-shadow-lg p-0 rounded-xl flex items-center justify-center">
+                <div class="w-10 h-10  shadow inset-shadow-lg p-0 rounded-xl flex items-center justify-center">
                     <flux:icon name="bolt" class="w-5 h-5 text-zinc-500" />
                 </div>
                 <div x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)"
@@ -111,10 +111,17 @@
                     // ],
                 ]" />
 
-{{-- 
-            <x-backend.navlink type="single" icon="language" name="Language" :route="route('admin.language.index')"
-                active="language" :page_slug="$active" /> --}}
-
+                <x-backend.navlink type="dropdown" icon="user-group" name="Audit Log Management" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'Audit Logs',
+                        'route' => route('admin.alm.audit.index'),
+                        'icon' => 'user',
+                        'active' => 'audit-log-management',
+                    ],
+                  
+                ]" />
+                
             <div class="pt-4 pb-2">
                 <p class="text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
                     x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)">Settings & Tools</p>

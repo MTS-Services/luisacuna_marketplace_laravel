@@ -18,6 +18,7 @@ class VerifyResetOtp extends Component
 
     public OtpForm $form;
     public string $email = '';
+    public ?int $resendCooldown = null;
 
     public function mount()
     {
@@ -28,6 +29,18 @@ class VerifyResetOtp extends Component
             $this->error('Session expired. Please start the password reset process again.');
             $this->redirect(route('admin.password.request'), navigate: true);
             return;
+        }
+
+        // Check if there's an active cooldown
+        $this->updateResendCooldown();
+    }
+
+    public function updateResendCooldown()
+    {
+        if (RateLimiter::tooManyAttempts($this->resendThrottleKey(), 1)) {
+            $this->resendCooldown = RateLimiter::availableIn($this->resendThrottleKey());
+        } else {
+            $this->resendCooldown = null;
         }
     }
 
@@ -125,10 +138,12 @@ class VerifyResetOtp extends Component
         Log::info('Resent Password Reset OTP for Admin: ' . $admin->email . ' - Code: ' . $otpVerification->code);
         $admin->notify(new AdminOtpNotification($otpVerification->code));
 
-        RateLimiter::hit($this->resendThrottleKey(), 60);
+        // Set 30 second cooldown
+        RateLimiter::hit($this->resendThrottleKey(), 30);
+        $this->resendCooldown = 30;
 
         $this->success('A new verification code has been sent to your email.');
-        $this->dispatch('clear-auth-code');
+        $this->dispatch('otp-resent');
     }
 
     protected function ensureIsNotRateLimited(): void
