@@ -178,7 +178,14 @@
         }
     }
 
-    --text-50px: 50px;
+
+
+    /* ======================================================
+    	 	 	 	 	 	 # font size
+    ======================================================== */
+
+    --text-40px: 2.5rem;
+    --text-20px: 1.25rem;
 
     /* ======================================================
     	 	 	 	 	 	 # Breakpoints
@@ -193,6 +200,9 @@
     --breakpoint-3xl: 1536px;
     --breakpoint-4xl: 1920px;
     --breakpoint-5xl: 2560px;
+
+
+
 
 }
 
@@ -329,7 +339,7 @@
 
     /* === Global Swiper Pagination Style === */
     .swiper-pagination-bullet {
-        @apply w-4! h-2.5! bg-bg-primary!  rounded-md! transition-all duration-300 ease-in-out;
+        @apply w-4! h-2.5! bg-bg-secondary! rounded-md! transition-all duration-300 ease-in-out;
     }
 
     .swiper-pagination-bullet-active {

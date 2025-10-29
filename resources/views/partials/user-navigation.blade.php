@@ -5,7 +5,7 @@
         <span class="relative z-10">Currency</span>
         <span class="navbar_indicator {{ $pageSlug == 'currency' ? 'active' : '' }}"></span>
     </a>
-    <a href="#" class="navbar_style group {{ $pageSlug == 'gift-card' ? 'active' : '' }}">
+    <a href="{{ route('gift-card.index') }}" class="navbar_style group {{ $pageSlug == 'gift-card' ? 'active' : '' }}">
         <span class="relative z-10">Gift Cards</span>
         <span class="navbar_indicator {{ $pageSlug == 'gift-card' ? 'active' : '' }}"></span>
     </a>
