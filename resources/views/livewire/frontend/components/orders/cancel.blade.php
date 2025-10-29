@@ -160,7 +160,7 @@
                             {{ __('Order Created: https//www_companyname_gWorder/98bc4674-4bde-4498-9175-a4a0318458eO') }}
                         </p>
 
-                        <div class="mt-3 w-full  bg-white/5 p-4 rounded-xl">
+                        <div class="mt-3 w-full bg-bg-light p-4 rounded-xl">
                             <p class="flex items-center">
                                 <flux:icon name="link" class="inline-block pr-2" />
                                 {{ __('98bc46744bde-4498-9175-a4a031U58eO') }}
@@ -177,7 +177,7 @@
             <div class="w-full mb-10">
                 <div class="py-7 px-7 rounded-3xl bg-bg-base flex flex-col border-l-4 border-pink-500 w-full">
                     <div class="flex flex-col w-full ">
-                        <div class="mt-3 w-full  bg-white/5 p-4 rounded-xl">
+                        <div class="mt-3 w-full bg-bg-light p-4 rounded-xl">
                             <p class="flex items-center">
                                 <flux:icon name="link" class="inline-block pr-2" />
                                 {{ __('98bc46744bde-4498-9175-a4a031U58eO') }}
@@ -203,7 +203,7 @@
                     </div>
                     <div class="w-8/9">
                         <div class="flex flex-col w-full ">
-                            <div class=" w-full  bg-white/5 p-4 rounded-xl">
+                            <div class=" w-full bg-bg-light p-4 rounded-xl">
                                 <p class="flex items-center">
 
                                     {{ __('98bc46744bde-4498-9175-a4a031U58eO') }}
@@ -227,7 +227,7 @@
                     </div>
                     <div class="w-8/9">
                         <div class="flex flex-col w-full ">
-                            <div class=" w-full  bg-white/5 p-4 rounded-xl">
+                            <div class=" w-full  bg-bg-light p-4 rounded-xl">
                                 <p class="flex items-center">
 
                                     {{ __('98bc46744bde-4498-9175-a4a031U58eO') }}
@@ -244,7 +244,7 @@
             <div class="w-full mb-10">
                 <div class="py-7 px-7 rounded-3xl bg-bg-base flex flex-col border-l-4 border-pink-500 w-full">
                     <div class="flex flex-col w-full ">
-                        <div class="mt-3 w-full  bg-white/5 p-4 rounded-xl">
+                        <div class="mt-3 w-full  bg-bg-light p-4 rounded-xl">
                             <p class="flex items-center">
                                 <flux:icon name="link" class="inline-block pr-2" />
                                 {{ __('98bc46744bde-4498-9175-a4a031U58eO') }}
@@ -264,7 +264,7 @@
                 <div class="py-7  rounded-3xl ">
 
                     <div class="flex flex-col w-full ">
-                        <div class=" w-full  bg-white/5 p-4 rounded-xl">
+                        <div class=" w-full bg-bg-light p-4 rounded-xl">
                             <p class="flex items-center">
 
                                 {{ __('this conversation is no longer active. ') }}

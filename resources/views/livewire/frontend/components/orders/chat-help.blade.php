@@ -14,7 +14,7 @@
 
 
             <div class="item-details pb-10">
-                <div class="w-full bg-bg-base rounded-3xl p-20">
+                <div class="w-full bg-bg-primary rounded-3xl p-20">
 
                     <div class="item-title pb-10">
                         <div class="item-short-info flex justify-between">
@@ -31,7 +31,7 @@
 
                         </div>
                     </div>
-                    <div class="detail-right w-full p-7  bg-white/6  rounded-3xl">
+                    <div class="detail-right w-full p-7 bg-bg-light  rounded-3xl">
 
                         <div class="item-title pb-10">
                             <div class="item-short-info flex justify-between">
@@ -98,7 +98,7 @@
                 </div>
             </div>
 
-            <div class="payment-info w-full p-20  bg-white/6  rounded-3xl mb-10">
+            <div class="payment-info w-full p-20 bg-bg-light rounded-3xl mb-10">
 
                 <div class="item-title pb-5">
                     <div class="item-short-info flex justify-between">
@@ -138,7 +138,7 @@
                 </div>
             </div>
 
-            <div class="payment-info w-full p-20  bg-white/6  rounded-3xl  mb-25">
+            <div class="payment-info w-full p-20 bg-bg-light  rounded-3xl  mb-25">
 
                 <div class="item-title pb-10">
                     <div class="item-short-info flex justify-between">

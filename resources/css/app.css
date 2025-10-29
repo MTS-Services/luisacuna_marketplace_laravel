@@ -153,7 +153,8 @@
     --color-bg-black: var(--color-black);
     --color-bg-white: var(--color-white);
     --color-bg-base: var(--color-bg-base);
-
+   /* Monir */
+     --color-bg-light: var(--color-bg-primary-light);   
     /* ======================================================
     	 	 	 	 	 	 # Shadows
     ======================================================== */
@@ -225,7 +226,11 @@
         --color-btn-danger : var(--color-text-danger);
         /* Button Colors */
 
-       
+        --color-bg-base: var(--color-bg-primary-dark);
+
+        /* Monirul */
+         --color-bg-light:rgb(255 255 255 / 0.06);    
+        
     }
 }
 
