@@ -1,8 +1,9 @@
 <?php
+
 namespace App\Livewire\Backend\Admin\Components\Settings\Currency;
 
 use App\Enums\CurrencyStatus;
-use App\Services\Admin\CurrencyService;
+use App\Services\CurrencyService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -35,13 +36,13 @@ class Index extends Component
         );
 
         $columns = [
-          
+
             [
                 'key' => 'name',
                 'label' => 'Name',
                 'sortable' => true
             ],
-                [
+            [
                 'key' => 'code',
                 'label' => 'Code',
                 'sortable' => true
@@ -87,7 +88,6 @@ class Index extends Component
                 'label' => 'Created By',
                 'format' => function ($data) {
                     return $data->creater_admin?->name ?? 'System';
-                       
                 }
             ],
         ];
@@ -130,7 +130,7 @@ class Index extends Component
         $this->deleteId = $id;
         $this->showDeleteModal = true;
     }
-    
+
     public function delete(): void
     {
         try {
@@ -159,8 +159,8 @@ class Index extends Component
             $currencyStatus = CurrencyStatus::from($status);
 
             match ($currencyStatus) {
-                CurrencyStatus::ACTIVE => $this->currencyService->activateData($id),
-                CurrencyStatus::INACTIVE => $this->currencyService->deactivateData($id),
+                CurrencyStatus::ACTIVE => $this->currencyService->updateStatusData($id, CurrencyStatus::ACTIVE),
+                CurrencyStatus::INACTIVE => $this->currencyService->updateStatusData($id, CurrencyStatus::INACTIVE),
                 default => null,
             };
 
@@ -225,10 +225,10 @@ class Index extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->currencyService->getPaginated(
+        return collect($this->currencyService->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        )->pluck('id')->toArray();
+        ))->pluck('id')->toArray();
     }
 
     public function updatedStatusFilter(): void

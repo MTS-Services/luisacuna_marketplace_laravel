@@ -3,7 +3,7 @@
 namespace App\Livewire\Backend\Admin\Components\Settings\Currency;
 
 use App\Enums\CurrencyStatus;
-use App\Services\Admin\CurrencyService;
+use App\Services\CurrencyService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -162,25 +162,6 @@ class Trash extends Component
     {
         $this->reset(['search', 'statusFilter', 'perPage', 'sortField', 'sortDirection', 'selectedIds', 'selectAll', 'bulkAction']);
         $this->resetPage();
-    }
-
-    public function changeStatus($id, $status): void
-    {
-        try {
-            $updatedStatus = CurrencyStatus::from($status);
-
-            match ($updatedStatus) {
-                CurrencyStatus::ACTIVE => $this->languageService->activateLanguage($id),
-                CurrencyStatus::INACTIVE => $this->languageService->deactivateLanguage($id),
-                default => null,
-            };
-
-            $this->success('Currency status updated successfully');
-        } catch (\Exception $e) {
-            $this->error('Failed to update currency status.');
-            Log::error('Failed to update currency status: ' . $e->getMessage());
-            throw $e;
-        }
     }
 
     public function confirmBulkAction(): void

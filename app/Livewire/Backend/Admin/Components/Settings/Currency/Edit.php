@@ -6,7 +6,7 @@ use App\DTOs\Currency\UpdateDTO;
 use App\Enums\CurrencyStatus;
 use App\Livewire\Forms\Backend\Admin\Settings\CurrencyForm;
 use App\Models\Currency;
-use App\Services\Admin\CurrencyService;
+use App\Services\CurrencyService;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Component;
 

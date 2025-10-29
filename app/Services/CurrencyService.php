@@ -87,6 +87,14 @@ class CurrencyService
         return $this->restoreAction->execute($id);
     }
 
+    public function updateStatusData(int $id, CurrencyStatus $status): Currency
+    {
+        return $this->updateAction->execute($id, [
+            'status' => $status->value,
+        ]);
+    }
+
+
     public function bulkRestoreData(array $ids): int
     {
         return $this->bulkAction->execute($ids, 'restore');

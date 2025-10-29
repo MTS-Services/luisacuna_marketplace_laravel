@@ -39,35 +39,49 @@ class CurrencyRepository implements CurrencyRepositoryInterface
         return $model->where($column_name, $column_value)->first();
     }
 
+
+
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        $query = $this->model->query();
-        // Apply filters
-        if (!empty($filters)) {
-            $query->filter($filters);
-        }
-
-        // Apply sorting
+        $search = $filters['search'] ?? null;
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
-        $query->orderBy($sortField, $sortDirection);
 
-        return $query->paginate($perPage);
-    }
-
-    public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
-    {
-        $query = $this->model->onlyTrashed();
-        // Apply filters
-        if (!empty($filters)) {
-            $query->filter($filters);
+        if ($search) {
+            // Scout Search
+            return Currency::search($search)
+                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->paginate($perPage);
         }
 
-        // Apply sorting        
+        // Normal Eloquent Query
+        return $this->model->query()
+            ->filter($filters)
+            ->orderBy($sortField, $sortDirection)
+            ->paginate($perPage);
+    }
+
+    /**
+     * Paginate only trashed records with optional search.
+     */
+    public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        $search = $filters['search'] ?? null;
         $sortField = $filters['sort_field'] ?? 'deleted_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
-        $query->orderBy($sortField, $sortDirection);
 
+        if ($search) {
+            // 👇 Manually filter trashed + search
+            return Currency::search($search)
+                ->onlyTrashed()
+                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->paginate($perPage);
+        }
+
+        return $this->model->onlyTrashed()
+            ->filter($filters)
+            ->orderBy($sortField, $sortDirection)
+            ->paginate($perPage);
         return $query->paginate($perPage);
     }
 
