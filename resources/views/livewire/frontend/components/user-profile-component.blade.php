@@ -41,19 +41,16 @@
         <div class="border-b border-zinc-700 mt-6 mb-4"></div>
         <div class="flex gap-6">
             <button wire:navigate wire:click="switchInnerMenu('shop')"
-                class="navbar_style  {{ $activeInnerMenu === 'shop' ? 'active' : '' }} group">
+                class="{{ $activeInnerMenu === 'shop' ? 'border-b-3 border-zinc-500' : '' }} group">
                 <span class="relative z-10 text-text-white ">Shop</span>
-                <span class="navbar_style"></span>
             </button>
             <button wire:navigate wire:click="switchInnerMenu('reviews')"
-                class=" navbar_style {{ $activeInnerMenu === 'reviews' ? 'active' : '' }} group">
-                <span class="relative z-10 text-text-white ">Reviews</span>
-                <span class=""></span>
+                class="{{ $activeInnerMenu === 'reviews' ? 'border-b-3 border-zinc-500' : '' }} group">
+                <span class="relative z-10 text-text-white">Reviews</span>
             </button>
             <button wire:navigate wire:click="switchInnerMenu('about')"
-                class=" navbar_style {{ $activeInnerMenu === 'about' ? 'active' : '' }} group">
+                class="{{ $activeInnerMenu === 'about' ? 'border-b-3 border-zinc-500' : '' }} group">
                 <span class="relative z-10 text-text-white ">About</span>
-                <span class=""></span>
             </button>
         </div>
     </section>
@@ -69,7 +66,7 @@
                     <button wire:navigate wire:click="switchTab('currency')" class="flex flex-col items-center">
                         <div
                             class="w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] mb-2 {{ $activeTab === 'currency' ? 'bg-zinc-500' : 'bg-zinc-800' }} b rounded-xl flex items-center justify-center">
-                            <img src="{{ asset('assets/images/user_profile/vector.png') }}" alt="Currency Icon"
+                            <img src="{{ asset('assets/images/user_profile/Vector.png') }}" alt="Currency Icon"
                                 class="w-[25px] h-[25px] sm:w-[30px] sm:h-[30px] object-contain">
                         </div>
                         <h3 class="text-sm font-medium whitespace-nowrap">Currency (0)</h3>
@@ -129,8 +126,8 @@
                                 </div>
                                 <div class="flex items-center">
                                     <div class="flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            fill="currentColor" class="w-10 h-10 text-text-secondary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                            class="w-10 h-10 text-text-secondary">
                                             <path d="M12 10.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
                                         </svg>
                                         <span class="text-text-secondary text-base-600">Stacked</span>
@@ -138,8 +135,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center gap-2 mt-5">
-                                <span
-                                    class="text-base-400" >
+                                <span class="text-base-400">
                                     Galaxy Skin – PSN / Xbox / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/product-image-container -_ image.png') }}"
@@ -147,17 +143,16 @@
                             </div>
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
-                                    <span
-                                        class="text-base-600 font-semibold" >
+                                    <span class="text-base-600 font-semibold">
                                         PEN175.27
                                     </span>
                                 </div>
                                 <div class="flex
                                         items-center gap-2">
-                                        <flux:icon name="clock" class="w-6 h-6 50" />
-                                        <span class="text-xs-400 50">
-                                            Instant
-                                        </span>
+                                    <flux:icon name="clock" class="w-6 h-6 50" />
+                                    <span class="text-xs-400 50">
+                                        Instant
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -176,8 +171,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center mt-5">
-                                <span
-                                    class="text-base-400">
+                                <span class="text-base-400">
                                     Blue Squire Skin – 50 VB – Xbox / PSN / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/e84f9097828ae420d3f6578c742ab821a27d643b.png') }}"
@@ -185,17 +179,16 @@
                             </div>
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
-                                    <span
-                                        class="text-base-600 font-semibold" >
+                                    <span class="text-base-600 font-semibold">
                                         PEN175.27
                                     </span>
                                 </div>
                                 <div class="flex
                                         items-center gap-2">
-                                        <flux:icon name="clock" class="w-6 h-6 50" />
-                                        <span class="text-xs-400 50">
-                                            Instant
-                                        </span>
+                                    <flux:icon name="clock" class="w-6 h-6 50" />
+                                    <span class="text-xs-400 50">
+                                        Instant
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -214,8 +207,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center mt-5">
-                                <span
-                                    class="text-base-400">
+                                <span class="text-base-400">
                                     Blue Squire Skin – 50 VB – Xbox / PSN / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/e84f9097828ae420d3f6578c742ab821a27d643b.png') }}"
@@ -223,17 +215,16 @@
                             </div>
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
-                                    <span
-                                        class="text-base-600 font-semibold" >
+                                    <span class="text-base-600 font-semibold">
                                         PEN175.27
                                     </span>
                                 </div>
                                 <div class="flex
                                         items-center gap-2">
-                                        <flux:icon name="clock" class="w-6 h-6 50" />
-                                        <span class="text-xs-400 50">
-                                            Instant
-                                        </span>
+                                    <flux:icon name="clock" class="w-6 h-6 50" />
+                                    <span class="text-xs-400 50">
+                                        Instant
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -252,8 +243,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center mt-5">
-                                <span
-                                    class="text-base-400">
+                                <span class="text-base-400">
                                     Blue Squire Skin – 50 VB – Xbox / PSN / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/e84f9097828ae420d3f6578c742ab821a27d643b.png') }}"
@@ -261,17 +251,16 @@
                             </div>
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
-                                    <span
-                                        class="text-base-600 font-semibold" >
+                                    <span class="text-base-600 font-semibold">
                                         PEN175.27
                                     </span>
                                 </div>
                                 <div class="flex
                                         items-center gap-2">
-                                        <flux:icon name="clock" class="w-6 h-6 50" />
-                                        <span class="text-xs-400 50">
-                                            Instant
-                                        </span>
+                                    <flux:icon name="clock" class="w-6 h-6 50" />
+                                    <span class="text-xs-400 50">
+                                        Instant
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -290,8 +279,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center mt-5">
-                                <span
-                                    class="text-base-400">
+                                <span class="text-base-400">
                                     Blue Squire Skin – 50 VB – Xbox / PSN / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/e84f9097828ae420d3f6578c742ab821a27d643b.png') }}"
@@ -299,17 +287,16 @@
                             </div>
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
-                                    <span
-                                        class="text-base-600 font-semibold" >
+                                    <span class="text-base-600 font-semibold">
                                         PEN175.27
                                     </span>
                                 </div>
                                 <div class="flex
                                         items-center gap-2">
-                                        <flux:icon name="clock" class="w-6 h-6 50" />
-                                        <span class="text-xs-400 50">
-                                            Instant
-                                        </span>
+                                    <flux:icon name="clock" class="w-6 h-6 50" />
+                                    <span class="text-xs-400 50">
+                                        Instant
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -328,8 +315,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center mt-5">
-                                <span
-                                    class="text-base-400">
+                                <span class="text-base-400">
                                     Blue Squire Skin – 50 VB – Xbox / PSN / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/e84f9097828ae420d3f6578c742ab821a27d643b.png') }}"
@@ -337,17 +323,16 @@
                             </div>
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
-                                    <span
-                                        class="text-base-600 font-semibold" >
+                                    <span class="text-base-600 font-semibold">
                                         PEN175.27
                                     </span>
                                 </div>
                                 <div class="flex
                                         items-center gap-2">
-                                        <flux:icon name="clock" class="w-6 h-6 50" />
-                                        <span class="text-xs-400 50">
-                                            Instant
-                                        </span>
+                                    <flux:icon name="clock" class="w-6 h-6 50" />
+                                    <span class="text-xs-400 50">
+                                        Instant
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -366,8 +351,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center mt-5">
-                                <span
-                                    class="text-base-400">
+                                <span class="text-base-400">
                                     Blue Squire Skin – 50 VB – Xbox / PSN / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/e84f9097828ae420d3f6578c742ab821a27d643b.png') }}"
@@ -375,17 +359,16 @@
                             </div>
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
-                                    <span
-                                        class="text-base-600 font-semibold" >
+                                    <span class="text-base-600 font-semibold">
                                         PEN175.27
                                     </span>
                                 </div>
                                 <div class="flex
                                         items-center gap-2">
-                                        <flux:icon name="clock" class="w-6 h-6 50" />
-                                        <span class="text-xs-400 50">
-                                            Instant
-                                        </span>
+                                    <flux:icon name="clock" class="w-6 h-6 50" />
+                                    <span class="text-xs-400 50">
+                                        Instant
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -404,8 +387,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center mt-5">
-                                <span
-                                    class="text-base-400">
+                                <span class="text-base-400">
                                     Blue Squire Skin – 50 VB – Xbox / PSN / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/e84f9097828ae420d3f6578c742ab821a27d643b.png') }}"
@@ -413,17 +395,16 @@
                             </div>
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
-                                    <span
-                                        class="text-base-600 font-semibold" >
+                                    <span class="text-base-600 font-semibold">
                                         PEN175.27
                                     </span>
                                 </div>
                                 <div class="flex
                                         items-center gap-2">
-                                        <flux:icon name="clock" class="w-6 h-6 50" />
-                                        <span class="text-xs-400 50">
-                                            Instant
-                                        </span>
+                                    <flux:icon name="clock" class="w-6 h-6 50" />
+                                    <span class="text-xs-400 50">
+                                        Instant
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -442,8 +423,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center mt-5">
-                                <span
-                                    class="text-base-400">
+                                <span class="text-base-400">
                                     Blue Squire Skin – 50 VB – Xbox / PSN / PC Full Access
                                 </span>
                                 <img src="{{ asset('assets/images/user_profile/e84f9097828ae420d3f6578c742ab821a27d643b.png') }}"
@@ -451,17 +431,16 @@
                             </div>
                             <div class="flex items-center justify-between mt-10">
                                 <div class="">
-                                    <span
-                                        class="text-base-600 font-semibold ">
+                                    <span class="text-base-600 font-semibold ">
                                         PEN175.27
                                     </span>
                                 </div>
                                 <div class="flex
                                         items-center gap-2">
-                                        <flux:icon name="clock" class="w-6 h-6 50" />
-                                        <span class="text-xs-400 50">
-                                            Instant
-                                        </span>
+                                    <flux:icon name="clock" class="w-6 h-6 50" />
+                                    <span class="text-xs-400 50">
+                                        Instant
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -472,10 +451,9 @@
 
                 @if ($activeTab === 'account')
                     <div class="mt-6 flex items-center gap-4">
-                        <div class="w-md border-2 border-zinc-800 rounded-lg">
-                            <select name="" id="" class="w-full p-2">
-                                <option value="Search">Search</option>
-                            </select>
+                        <div class="w-md">
+                            <x-ui.input type="text" placeholder="Search"
+                                class="w-full p-2 border-2 border-zinc-800" />
                         </div>
                         <div class="w-md border-2 border-zinc-800 rounded-lg">
                             <select name="" id="" class="w-full p-2">
@@ -496,7 +474,8 @@
                 @if ($activeTab === 'items')
                     <div class="mt-6 flex items-center gap-4">
                         <div class="w-md">
-                            <x-ui.input type="text" placeholder="Search" class="w-full p-2 border-2 border-zinc-800" />
+                            <x-ui.input type="text" placeholder="Search"
+                                class="w-full p-2 border-2 border-zinc-800" />
                         </div>
                         <div class="w-md border-2 border-zinc-800 rounded-lg">
                             <select name="" id="" class="w-full p-2">
@@ -516,12 +495,7 @@
                 {{-- Top ups --}}
                 @if ($activeTab === 'topups')
                     <div class="mt-6 flex items-center gap-4">
-                        <div class="w-md border-2 border-zinc-800 rounded-lg">
-                            <select name="" id="" class="w-full p-2">
-                                <option value="Search">Search</option>
-                            </select>
-                        </div>
-                        <div class="w-md border-2 border-zinc-800 rounded-lg">
+                        <div class="w-full sm:w-sm md:w-md lg:w-md mt-6 border-2 border-zinc-800 rounded-lg">
                             <select name="" id="" class="w-full p-2">
                                 <option value="All Game">All Game</option>
                             </select>
@@ -539,12 +513,7 @@
                 {{-- gift cards --}}
                 @if ($activeTab === 'giftcards')
                     <div class="mt-6 flex items-center gap-4">
-                        <div class="w-md border-2 border-zinc-800 rounded-lg">
-                            <select name="" id="" class="w-full p-2">
-                                <option value="Search">Search</option>
-                            </select>
-                        </div>
-                        <div class="w-md border-2 border-zinc-800 rounded-lg">
+                        <div class="w-full sm:w-sm md:w-md lg:w-md mt-6 border-2 border-zinc-800 rounded-lg">
                             <select name="" id="" class="w-full p-2">
                                 <option value="All Game">All Game</option>
                             </select>
