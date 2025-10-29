@@ -3,8 +3,9 @@
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Personal Info ') }}</h2>
             <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.um.user.index') }}">
-                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
+                <x-ui.button href="{{ route('admin.um.user.index') }}" class="w-auto! py-2!">
+                    <flux:icon name="arrow-left"
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                     {{ __('Back') }}
                 </x-ui.button>
             </div>
@@ -94,12 +95,6 @@
                     <div>
                         <p class="text-text-secondary mb-1 text-sm uppercase tracking-wider">Last Name</p>
                         <h3 class="text-lg font-medium text-gray-900">{{ $user->last_name }}</h3>
-                    </div>
-
-                    {{-- Display Name --}}
-                    <div>
-                        <p class="text-text-secondary mb-1 text-sm uppercase tracking-wider">Display Name</p>
-                        <h3 class="text-lg font-medium text-gray-900">{{ $user->display_name }}</h3>
                     </div>
 
                     {{-- Date of Birth --}}
