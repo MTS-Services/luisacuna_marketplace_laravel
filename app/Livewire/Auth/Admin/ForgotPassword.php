@@ -20,7 +20,7 @@ class ForgotPassword extends Component
     public function sendPasswordResetOtp(): void
     {
         $this->validate([
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required', 'string', 'email', 'exists:admins,email'],
         ]);
 
         $this->ensureSendIsNotRateLimited();
