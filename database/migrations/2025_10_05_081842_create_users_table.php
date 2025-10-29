@@ -33,9 +33,8 @@ return new class extends Migration
 
             $table->string('timezone')->default('UTC');
             
-            $table->unsignedBigInteger('language_id');
-            
-            $table->unsignedBigInteger('currency_id');
+            $table->unsignedBigInteger('language_id')->nullable();
+            $table->unsignedBigInteger('currency_id')->nullable();
 
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
