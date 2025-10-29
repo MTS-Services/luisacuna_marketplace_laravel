@@ -1,70 +1,27 @@
 <main class="mx-auto">
-    {{-- <section class="container mx-auto mt-16">
-        <!-- inner nav -->
-        <div class="sm:py-4 sm:px-8 lg:py-0 lg:px-0">
-            <div class=" text-text-white px-18 lg:px-0 md:px-0">
-                <div
-                    class="max-w-[900px] mx-auto flex flex-col md:flex-row gap-4 md:items-center justify-between w-full sm:px-6 sm:py-6 lg:py-0 lg:px-0 mt-4">
-                    <!-- Logo -->
-                    <div class="flex gap-8">
-                        <div class="h-8 w-8 bg-orange-500 rounded flex items-center justify-center font-medium">
-                            <img src="{{ asset('assets/images/fortnite.png') }}" alt="">
-                        </div>
-                        <span class="text-xl font-medium">Fortnite</span>
-                    </div>
-                    <!-- Navigation Links -->
-                    <nav
-                        class=" peer-checked:flex flex-col lg:flex lg:flex-row gap-6 w-full lg:w-auto  lg:bg-transparent border-t border-gray-800 lg:border-none z-50">
-                        <button wire:navigate wire:click="switchTab('items')"
-                            class="navbar_style group {{ $activeTab === 'items' ? 'active' : '' }} ">
-                            <span class="relative z-10">Items</span>
-                            <span class="navbar_indicator"></span>
-                        </button>
-                        <button wire:navigate wire:click="switchTab('accounts')"
-                            class="navbar_style group {{ $activeTab === 'accounts' ? 'active' : '' }}">
-                            <span class="relative z-10">Accounts</span>
-                            <span class="navbar_indicator"></span>
-                        </button>
-                        <button wire:navigate wire:click="switchTab('topUps')"
-                            class="navbar_style group {{ $activeTab === 'topUps' ? 'active' : '' }}">
-                            <span class="relative z-10">Top Ups</span>
-                            <span class="navbar_indicator"></span>
-                        </button>
-                        <button wire:navigate wire:click="switchTab('giftCard')"
-                            class="navbar_style group {{ $activeTab === 'giftCard' ? 'active' : '' }}">
-                            <span class="relative z-10">Gift Card</span>
-                            <span class="navbar_indicator"></span>
-                        </button>
-                    </nav>
-                </div>
-            </div>
-        </div>
-
-    </section> --}}
     <section class="container mx-auto">
         {{-- paginate --}}
         <div class="flex items-center gap-1 mt-10">
             <div class="w-3 h-3">
                 <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
             </div>
-            <div class="text-muted text-base">
-                <span class="text-base text-text-white">Home</span>
+            <div class="text-text-white text-base">
+                Home
             </div>
             <div class="px-2 text-text-white text-base">
                 >
             </div>
             <div class="text-text-white text-base">
-                Items
+                Accounts
             </div>
         </div>
+
+
+
         {{-- filter section --}}
         <div class="flex items-center gap-1 mt-14 mb-10">
-            {{-- <div class="w-12 h-12">
-                <img src="{{ asset('assets/images/items/item-logo.png') }}" alt="m logo"
-                    class="w-full h-full object-cover">
-            </div> --}}
             <div class="">
-                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">Items</h2>
+                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">Accounts</h2>
             </div>
         </div>
         <div class="flex items-center justify-between gap-4 mt-3.5">
@@ -81,13 +38,13 @@
         </div>
     </section>
 
-    {{-- popular items --}}
+    {{-- popular accounts --}}
     <section class="container mx-auto">
         <div class="mt-10">
             <div class="">
-                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">Popular Item</h2>
+                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">Popular Accoounts</h2>
             </div>
-            <div class="swiper popular-items">
+            <div class="swiper popular-accounts">
                 <div class="swiper-wrapper py-10">
                     <div class="swiper-slide">
                         <div class="p-6 bg-bg-primary rounded-2xl">
@@ -394,10 +351,11 @@
             <x-frontend.pagination-ui />
         </div>
     </section>
+
     @push('scripts')
         <script>
             document.addEventListener('livewire:initialized', function() {
-                const swiper = new Swiper('.popular-items', {
+                const swiper = new Swiper('.popular-accounts', {
                     loop: true,
                     pagination: {
                         el: '.swiper-pagination',
