@@ -7,7 +7,7 @@ use Livewire\Component;
 class Items extends Component
 {
 
-    public $activeTab = 'accounts';
+    public $activeTab = 'items';
 
     public function switchTab($tab)
     {
