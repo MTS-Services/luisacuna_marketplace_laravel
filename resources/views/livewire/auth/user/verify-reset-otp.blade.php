@@ -28,19 +28,21 @@
             @enderror
 
             <div class="text-right" id="resend-container">
-                @if(isset($resendLimitReached) && $resendLimitReached)
+                @if (isset($resendLimitReached) && $resendLimitReached)
                     <span class="text-md text-red-400 font-semibold">
                         Don't resend again. Maximum limit reached.
                     </span>
                 @elseif($resendCooldown && $resendCooldown > 0)
                     <span class="text-md text-gray-400">
-                        Resend available in <span id="countdown" class="font-semibold text-white">{{ $resendCooldown }}</span>s
+                        Resend available in <span id="countdown"
+                            class="font-semibold text-white">{{ $resendCooldown }}</span>s
                         <span class="text-xs text-gray-500">({{ 6 - ($resendAttempts ?? 0) }} left)</span>
                     </span>
                 @else
                     <button type="button" wire:click="resendOtp" wire:loading.attr="disabled"
                         class="text-md text-gray-300 hover:underline disabled:opacity-50 disabled:cursor-not-allowed">
-                        <span wire:loading.remove wire:target="resendOtp">Resend <span class="text-xs text-gray-500">({{ 6 - ($resendAttempts ?? 0) }} left)</span></span>
+                        <span wire:loading.remove wire:target="resendOtp">Resend <span
+                                class="text-xs text-gray-500">({{ 6 - ($resendAttempts ?? 0) }} left)</span></span>
                         <span wire:loading wire:target="resendOtp">Sending...</span>
                     </button>
                 @endif
@@ -67,7 +69,7 @@
     document.addEventListener('livewire:initialized', () => {
         const STORAGE_KEY = 'password_reset_countdown_{{ $email }}';
         const STORAGE_TIMESTAMP_KEY = 'password_reset_timestamp_{{ $email }}';
-        
+
         let countdown = @js($resendCooldown);
         let resendLimitReached = @js($resendLimitReached ?? false);
         let resendAttempts = @js($resendAttempts ?? 0);
@@ -82,7 +84,7 @@
             }
 
             countdown = initialSeconds;
-            
+
             // Store initial countdown and timestamp
             localStorage.setItem(STORAGE_KEY, countdown);
             localStorage.setItem(STORAGE_TIMESTAMP_KEY, Date.now());
@@ -92,10 +94,10 @@
 
             intervalId = setInterval(() => {
                 countdown--;
-                
+
                 // Update localStorage
                 localStorage.setItem(STORAGE_KEY, countdown);
-                
+
                 // Update UI
                 updateUI();
 
@@ -103,7 +105,7 @@
                     clearInterval(intervalId);
                     localStorage.removeItem(STORAGE_KEY);
                     localStorage.removeItem(STORAGE_TIMESTAMP_KEY);
-                    
+
                     // Update component state and reload
                     @this.updateResendCooldown().then(() => {
                         location.reload();
@@ -114,7 +116,7 @@
 
         function updateUI() {
             const remainingResends = 6 - resendAttempts;
-            
+
             if (resendLimitReached) {
                 resendContainer.innerHTML = `
                     <span class="text-md text-red-400 font-semibold">
@@ -146,7 +148,7 @@
             const elapsed = Math.floor((Date.now() - parseInt(storedTimestamp)) / 1000);
             const storedCountdown = parseInt(localStorage.getItem(STORAGE_KEY) || '0');
             const remainingTime = Math.max(0, storedCountdown - elapsed);
-            
+
             if (remainingTime > 0) {
                 startCountdown(remainingTime);
             } else {
@@ -160,10 +162,21 @@
         }
 
         // Listen for resend event to restart countdown
-        Livewire.on('otp-resent', () => {
-            resendAttempts++;
+        Livewire.on('otp-resent', (event) => {
+            // Get attempts from event data
+            if (event && event[0] && event[0].attempts) {
+                resendAttempts = event[0].attempts;
+            } else {
+                resendAttempts++;
+            }
+
             resendLimitReached = resendAttempts >= 6;
-            
+
+            console.log('Resend event received', {
+                attempts: resendAttempts,
+                limitReached: resendLimitReached
+            });
+
             if (!resendLimitReached) {
                 startCountdown(30);
             } else {
