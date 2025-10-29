@@ -5,9 +5,14 @@ namespace App\Models;
 use App\Enums\CurrencyStatus;
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
+use Laravel\Scout\Searchable;
+use Laravel\Scout\Attributes\SearchUsingFullText;
+use Laravel\Scout\Attributes\SearchUsingPrefix;
 
 class Currency extends BaseModel
 {
+    use Searchable;
+
     protected $fillable = [
         'sort_order',
         'code',
@@ -30,48 +35,85 @@ class Currency extends BaseModel
     protected $casts = [
         'is_default' => 'boolean',
         'status' => CurrencyStatus::class,
+        // 'exchange_rate' => 'decimal:15,2',
+        // 'decimal_places' => 'integer',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     //
+    //
 
-     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     public function scopeActive(Builder $query): Builder
+    /* ================================================================
+     |  Query Scopes
+     ================================================================ */
+
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('status', CurrencyStatus::ACTIVE);
     }
 
-    public function scopeInactive(Builder $query):Builder 
+    public function scopeInactive(Builder $query): Builder
     {
         return $query->where('status', CurrencyStatus::INACTIVE);
     }
 
-    public function scopeSearch(Builder $query, $search): Builder
+    public function scopeFilter(Builder $query, array $filters): Builder
     {
-        return $query->where(function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%")
-                ->orWhere('code', 'like', "%{$search}%");
-        });
+        return $query
+            ->when(
+                $filters['status'] ?? null,
+                fn($q, $status) =>
+                $q->where('status', $status)
+            )
+            ->when(
+                $filters['code'] ?? null,
+                fn($q, $code) =>
+                $q->where('code', 'like', "%{$code}%")
+            )
+            ->when(
+                $filters['is_default'] ?? null,
+                fn($q, $isDefault) =>
+                $q->where('is_default', $isDefault)
+            );
     }
 
-    public function scopeFilter(Builder $query, array $filters): Builder 
+    /* ================================================================
+     |  Query Scopes
+     ================================================================ */
+
+    /* ================================================================
+     |  Scout Search Configuration
+     ================================================================ */
+
+    #[SearchUsingPrefix(['id', 'name', 'code', 'symbol'])]
+    public function toSearchableArray(): array
     {
-        $query->when($filters['status'] ?? null, function ($query, $status) {
-            $query->where('status', $status);
-        });
-
-        $query->when($filters['search'] ?? null, function ($query, $search) {
-            $query->search($search);
-        });
-
-        return $query;
+        return [
+            'name' => $this->name,
+            'code' => $this->code,
+            'symbol' => $this->symbol,
+            'exchange_rate' => (float) $this->exchange_rate,
+            'decimal_places' => (int) $this->decimal_places,
+            'status' => $this->status,
+            'is_default' => $this->is_default,
+        ];
     }
+
+    /**
+     * Include only non-deleted data in search index.
+     */
+    public function shouldBeSearchable(): bool
+    {
+        return is_null($this->deleted_at);
+    }
+
+
     // public function __construct(array $attributes = [])
     // {
     //     parent::__construct($attributes);
