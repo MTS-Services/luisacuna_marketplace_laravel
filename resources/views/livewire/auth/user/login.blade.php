@@ -1,4 +1,4 @@
-<div class="container min-h-[80vh]">
+<div class="container min-h-[80vh] py-8">
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password');
@@ -6,9 +6,9 @@
         }
     </script>
 
-    <div class="min-h-screen flex items-center justify-center text-white px-4 sm:px-6 lg:px-8 ">
+    <div class="min-h-[80vh] flex items-center justify-center text-white px-4  sm:px-6 lg:px-8 ">
         <form method="POST" wire:submit.prevent="login" class="w-full max-w-md sm:max-w-lg md:max-w-xl">
-            <div class="bg-[#1a0b2e] rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col justify-between h-[900px]">
+            <div class="bg-[#1a0b2e] rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col justify-between min-h-[75vh]">
 
                 <!-- Header -->
                 <div class="mb-6 text-center">
@@ -64,7 +64,7 @@
                 </div> --}}
 
                 @if (Route::has('password.request'))
-                    <div class="-mt-10 text-right px-2 sm:px-6 mb-6">
+                    <div class=" text-right px-2 sm:px-6 mb-2">
                         <a href="{{ route('password.request') }}" wire:navigate
                             class="text-md text-[#853fee] hover:underline">
                             Forgot password?
@@ -73,7 +73,7 @@
                 @endif
 
                 <!-- Sign in button -->
-                <div class="-mt-10 flex justify-center px-2 sm:px-6">
+                <div class=" flex justify-center px-2 sm:px-6">
                     <button type="submit"
                         class="bg-[#853fee] hover:bg-purple-700 transition-colors text-white font-medium py-3 w-full sm:w-auto sm:px-24 md:px-48 rounded-full">
                         Sign in
@@ -81,7 +81,7 @@
                 </div>
 
                 <!-- Divider -->
-                <div class="flex items-center mb-6 px-4">
+                <div class="flex items-center mb-2 px-4">
                     <hr class="flex-1 border-gray-700" />
                     <span class="px-3 text-sm sm:text-md text-gray-200">Or sign in with</span>
                     <hr class="flex-1 border-gray-700" />
@@ -89,7 +89,7 @@
 
                 <div>
                     <!-- Social login -->
-                    <div class="flex justify-center gap-4 mb-6">
+                    <div class="flex justify-center gap-4 mb-2">
                         <button class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
                             <img src="{{ asset('assets/icons/icons8-google.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
                                 alt="Google" />

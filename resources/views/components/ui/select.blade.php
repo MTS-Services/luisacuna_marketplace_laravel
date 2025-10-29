@@ -13,7 +13,7 @@
     <select {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge([
         'class' =>
             // DaisyUI 'select' class
-            'select w-full !border-zinc-300 focus:!border-accent focus:!outline-none focus:!ring-1 focus:!ring-accent shadow-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:focus:border-accent dark:focus:ring-accent !transition-all !duration-300 !ease-in-out',
+            'select w-full !border-zinc-300 focus:!border-accent focus:!outline-none focus:!ring-1 focus:!ring-accent shadow-sm dark:border-zinc-700 bg-transparent! dark:text-zinc-100! text-zinc-900 dark:focus:border-accent dark:focus:ring-accent !transition-all !duration-300 !ease-in-out',
     ]) !!}>
         {{ $slot }}
     </select>
@@ -22,7 +22,7 @@
         <select {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge([
             'class' =>
                 // DaisyUI 'select' class + remove rounded right corner
-                'select select-bordered rounded-r-none w-full !border-zinc-300 focus:!border-accent focus:!ring-1 focus:!ring-accent shadow-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:focus:border-accent dark:focus:ring-accent !transition-all !duration-300 !ease-in-out',
+                'select select-bordered rounded-r-none w-full !border-zinc-300 focus:!border-accent focus:!ring-1 focus:!ring-accent shadow-sm dark:border-zinc-700 bg-transparent! dark:text-zinc-100! text-zinc-900 dark:focus:border-accent dark:focus:ring-accent !transition-all !duration-300 !ease-in-out',
         ]) !!}>
             {{ $slot }}
         </select>

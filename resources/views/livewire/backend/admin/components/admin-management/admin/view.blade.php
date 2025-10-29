@@ -5,14 +5,11 @@
             <h2 class="text-xl lg:text-2xl font-bold text-text-primary">
                 {{ __('Admin Profile') }}
             </h2>
-            <div class="flex items-center gap-2 w-full sm:w-auto">
-                {{-- <x-ui.button href="{{ route('admin.am.admin.index') }}" type='secondary' class="flex-1 sm:flex-none">
-                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-text-white" />
-                    <span class="sm:inline text-text-white">{{ __('Back') }}</span>
-                </x-ui.button> --}}
-                <x-ui.button href="{{ route('admin.am.admin.index') }}" class="flex-1 sm:flex-none">
-                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-text-white" />
-                    <span class="sm:inline text-text-white">{{ __('Back') }}</span>
+            <div class="flex items-center gap-2">
+                <x-ui.button href="{{ route('admin.am.admin.index') }}" class="w-auto! py-2!">
+                    <flux:icon name="arrow-left"
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
+                    {{ __('Back') }}
                 </x-ui.button>
             </div>
         </div>

@@ -16,10 +16,12 @@ class VerifyOtp extends Component
     use WithNotification;
 
     public OtpForm $form;
+    public ?int $resendCooldown = null;
+    public int $resendAttempts = 0;
+    public bool $resendLimitReached = false;
 
     public function mount()
     {
-
         // Redirect if not authenticated
         if (!admin()) {
             return redirect()->route('admin.login');
@@ -30,8 +32,41 @@ class VerifyOtp extends Component
             return redirect()->route('admin.dashboard');
         }
 
-        // Generate and send OTP when component loads
-        $this->sendOtp();
+        // Load resend attempts from cache
+        $this->loadResendAttempts();
+
+        // Check if there's an active cooldown
+        $this->updateResendCooldown();
+
+        // Generate and send OTP when component loads (only if no cooldown)
+        if ($this->resendCooldown === null && !$this->resendLimitReached) {
+            $this->sendOtp();
+        }
+    }
+
+    protected function loadResendAttempts()
+    {
+        $cacheKey = 'admin_otp_resend_attempts:' . admin()->id;
+        $this->resendAttempts = cache()->get($cacheKey, 0);
+        $this->resendLimitReached = $this->resendAttempts >= 6;
+    }
+
+    protected function incrementResendAttempts()
+    {
+        $this->resendAttempts++;
+        $cacheKey = 'admin_otp_resend_attempts:' . admin()->id;
+        // Store attempts for 1 hour
+        cache()->put($cacheKey, $this->resendAttempts, now()->addHour());
+        $this->resendLimitReached = $this->resendAttempts >= 6;
+    }
+
+    public function updateResendCooldown()
+    {
+        if (RateLimiter::tooManyAttempts($this->resendThrottleKey(), 1)) {
+            $this->resendCooldown = RateLimiter::availableIn($this->resendThrottleKey());
+        } else {
+            $this->resendCooldown = null;
+        }
     }
 
     protected function sendOtp(): void
@@ -39,7 +74,7 @@ class VerifyOtp extends Component
         $admin = admin();
 
         if (has_valid_otp($admin, OtpType::EMAIL_VERIFICATION)) {
-             $this->info('A verification code was already sent to your email.');
+            $this->info('A verification code was already sent to your email.');
             return;
         }
 
@@ -48,7 +83,7 @@ class VerifyOtp extends Component
         Log::info('OTP Code for Admin ID ' . $admin->id . ': ' . $otpVerification->code);
         $admin->notify(new AdminOtpNotification($otpVerification->code));
 
-         $this->success('Verification code has been sent to your email.');
+        $this->success('Verification code has been sent to your email.');
     }
 
     public function verify(): void
@@ -98,6 +133,9 @@ class VerifyOtp extends Component
             $admin->markEmailAsVerified();
             RateLimiter::clear($this->throttleKey());
 
+            // Clear resend attempts on successful verification
+            cache()->forget('admin_otp_resend_attempts:' . $admin->id);
+
             $this->success('Email verified successfully!');
             $this->dispatch('clear-auth-code');
 
@@ -107,17 +145,23 @@ class VerifyOtp extends Component
             throw $e;
         } catch (\Throwable $e) {
             Log::error('OTP verification failed', [
-                'admin_id' => $admin->id ?? null,
+                'admin_id' => admin()->id ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
 
-             $this->error('Something went wrong while verifying your code. Please try again.');
+            $this->error('Something went wrong while verifying your code. Please try again.');
         }
     }
 
     public function resend(): void
     {
+        // Check if limit reached
+        if ($this->resendLimitReached) {
+            $this->error('Maximum resend limit reached. Please contact support.');
+            return;
+        }
+
         $this->ensureResendIsNotRateLimited();
 
         $admin = admin();
@@ -126,10 +170,15 @@ class VerifyOtp extends Component
         Log::info('Resent OTP Code for Admin ID ' . $admin->id . ': ' . $otpVerification->code);
         $admin->notify(new AdminOtpNotification($otpVerification->code));
 
-        RateLimiter::hit($this->resendThrottleKey(), 60);
+        // Increment attempts
+        $this->incrementResendAttempts();
+
+        // Set 2 minute (120 seconds) cooldown
+        RateLimiter::hit($this->resendThrottleKey(), 120);
+        $this->resendCooldown = 120;
 
         $this->success('A new verification code has been sent to your email.');
-        $this->dispatch('clear-auth-code');
+        $this->dispatch('otp-resent', ['attempts' => $this->resendAttempts]);
     }
 
     protected function ensureIsNotRateLimited(): void

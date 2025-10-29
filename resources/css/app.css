@@ -88,6 +88,8 @@
     --color-bg-primary-dark: var(--color-primary-900);
     --color-bg-secondary-dark: var(--color-primary-950);
     --color-bg-tertiary-dark: var(--color-secondary-500);
+
+   
 }
 
 
@@ -132,6 +134,8 @@
     --color-text-secondary: var(--color-text-secondary-light);
     --color-text-muted: var(--color-text-muted-light);
 
+    --color-bg-hover:var(--color-zinc-100);
+
     --color-text-btn-primary: #f8f8f8;
     --color-text-btn-secondary: var(--color-primary-500);
     --color-text-btn-tertiary: var(--color-secondary-500);
@@ -144,6 +148,7 @@
     --color-bg-secondary: var(--color-bg-secondary-light);
     --color-bg-tertiary: var(--color-bg-tertiary-light);
 
+     --hover-bg-theme: var(--color-zinc-200);
     --color-bg-black: var(--color-black);
     --color-bg-white: var(--color-white);
 
@@ -173,7 +178,14 @@
         }
     }
 
-    --text-50px: 50px;
+
+
+    /* ======================================================
+    	 	 	 	 	 	 # font size
+    ======================================================== */
+
+    --text-40px: 2.5rem;
+    --text-20px: 1.25rem;
 
     /* ======================================================
     	 	 	 	 	 	 # Breakpoints
@@ -189,6 +201,9 @@
     --breakpoint-4xl: 1920px;
     --breakpoint-5xl: 2560px;
 
+
+
+
 }
 
 @layer theme {
@@ -200,6 +215,7 @@
 
     .dark {
         --color-accent: var(--color-accent-dark);
+        
         --color-accent-content: var(--color-accent-content-dark);
         --color-accent-foreground: var(--color-accent-foreground-dark);
 
@@ -210,6 +226,8 @@
         --color-bg-primary: var(--color-bg-primary-dark);
         --color-bg-secondary: var(--color-bg-secondary-dark);
         --color-bg-tertiary: var(--color-bg-tertiary-dark);
+
+        --color-bg-hover:var(--color-zinc-800);
 
         --color-text-new: var(--color-text-new-dark);
         --color-text-white: var(--color-white-dark);
@@ -290,12 +308,12 @@
     }
 
     .glass-card {
-        @apply backdrop-blur-md bg-gradient-to-tr from-zinc-50/10 via-accent/5 to-zinc-50/10 shadow-glass-card;
+        @apply backdrop-blur-md bg-gradient-to-tr from-zinc-50/50 via-accent/5 to-zinc-50/50 shadow-glass-card;
     }
 
 
     .sidebar-glass-card {
-        @apply bg-gradient-to-tr from-zinc-800/10 via-accent/10 to-zinc-800/10 shadow-glass-card;
+        @apply bg-gradient-to-tr from-zinc-100/80 via-accent/30 to-zinc-100/80 shadow-glass-card;
     }
 
     .dark .glass-card,
@@ -321,13 +339,15 @@
 
     /* === Global Swiper Pagination Style === */
     .swiper-pagination-bullet {
-        @apply w-4! h-2.5! bg-bg-primary!  rounded-md! transition-all duration-300 ease-in-out;
+        @apply w-4! h-2.5! bg-bg-secondary! rounded-md! transition-all duration-300 ease-in-out;
     }
 
     .swiper-pagination-bullet-active {
         @apply bg-purple-700! opacity-100;
     }
-
+    .mobile-nav-item{
+        @apply text-text-primary hover:bg-bg-secondary block px-3 py-2 rounded-md text-base font-medium;
+    }
 }
 
 @utility container {
