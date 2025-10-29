@@ -17,8 +17,8 @@
             <!-- Code -->
             <div>
                 <label class="block text-xl font-medium mb-2 text-white">Code</label>
-                <input type="text" placeholder="Enter your code" wire:model="form.code"
-                    class="w-full px-4 py-3 bg-[#2d1f43] text-white placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                <x-ui.input type="text" placeholder="Enter your code" wire:model="form.code"
+                    />
             </div>
 
             @error('form.code')
@@ -36,7 +36,7 @@
             <!-- Submit button -->
             <div>
                 <div>
-                    <x-ui.button class="w-auto py-2!">
+                    <x-ui.button class="w-auto py-2!" type="submit">
                         {{ __('Verify') }}
                     </x-ui.button>
                 </div>

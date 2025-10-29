@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-6">
-        <div class="container mx-auto min-h-[80vh]">
+        <div class="container mx-auto min-h-[80vh] flex items-center justify-center">
             <script>
                 function togglePassword(id) {
                     const input = document.getElementById(id);
@@ -8,9 +8,9 @@
                 }
             </script>
 
-            <div class="min-h-[80vh] flex items-center justify-center bg-bg-primary text-white px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-center  text-white px-4 sm:px-6 lg:px-8">
                 <form method="POST" wire:submit.prevent="resetPassword" class="w-full max-w-md sm:max-w-lg md:max-w-xl">
-                    <div class="bg-bg-primary rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col justify-between h-[900px]">
+                    <div class="bg-bg-primary rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col justify-between min-h-[60vh] ">
 
                         <!-- Header -->
                         <div class="mb-6 text-center">
@@ -23,8 +23,8 @@
                         <!-- Email -->
                         <div class="mb-4 sm:mb-6 px-2 sm:px-6">
                             <label class="block text-lg sm:text-2xl font-medium mb-2 text-white">Email</label>
-                            <input type="email" placeholder="example@gmail.com" wire:model="email"
-                                class="text-white w-full px-4 py-2 bg-[#2d1f43] border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400" />
+                            <x-ui.input type="email" placeholder="example@gmail.com" disabled wire:model="email"
+                               />
                         </div>
 
                         @error('email')
@@ -36,8 +36,8 @@
                             <label class="block text-lg sm:text-2xl font-medium mb-2 text-white">Password</label>
 
                             <div class="relative">
-                                <input type="password" id="password" placeholder="Aex@8465" wire:model="password"
-                                    class="text-white w-full px-4 py-2 bg-[#2d1f43] border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400" />
+                                <x-ui.input type="password" id="password" placeholder="Aex@8465" wire:model="password"
+                                     />
                                 <button type="button" onclick="togglePassword('password')"
                                     class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300">
                                     <svg class="w-5 h-5" fill="none" stroke="gray" viewBox="0 0 24 24">
@@ -61,9 +61,8 @@
                                 Password</label>
 
                             <div class="relative">
-                                <input type="password" id="confirmPassword" placeholder="Aex@8465"
-                                    wire:model="password_confirmation"
-                                    class="text-white w-full px-4 py-2 bg-[#2d1f43] border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400" />
+                                <x-ui.input type="password" id="confirmPassword" placeholder="Aex@8465"
+                                    wire:model="password_confirmation"/>
                                 <button type="button" onclick="togglePassword('confirmPassword')"
                                     class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300">
                                     <svg class="w-5 h-5" fill="none" stroke="gray" viewBox="0 0 24 24">
@@ -84,43 +83,9 @@
                         <!-- Submit button -->
                         <div class="flex justify-center mb-6 px-2 sm:px-6">
                             <button type="submit"
-                                class="bg-[#853fee] hover:bg-purple-700 transition-colors text-white font-medium py-3 w-full sm:w-auto sm:px-24 md:px-48 rounded-full">
+                                class="bg-zinc-600 hover:bg-zinc-700 transition-colors text-white font-medium py-3 w-full sm:w-auto sm:px-24 md:px-48 rounded-full">
                                 Sign in
                             </button>
-                        </div>
-
-                        <!-- Divider -->
-                        <div class="flex items-center mb-6 px-4">
-                            <hr class="flex-1 border-gray-700" />
-                            <span class="px-3 text-sm sm:text-md text-gray-200">Or sign in with</span>
-                            <hr class="flex-1 border-gray-700" />
-                        </div>
-
-                        <!-- Social login -->
-                        <div class="flex justify-center gap-4 mb-6">
-                            <button
-                                class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
-                                <img src="{{ asset('assets/icons/icons8-google.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
-                                    alt="Google" />
-                            </button>
-
-                            <button
-                                class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
-                                <img src="{{ asset('assets/icons/icons8-apple-logo.svg') }}"
-                                    class="w-8 sm:w-10 h-8 sm:h-10" alt="Apple" />
-                            </button>
-
-                            <button
-                                class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
-                                <img src="{{ asset('assets/icons/icons8-facebook.svg') }}"
-                                    class="w-8 sm:w-10 h-8 sm:h-10" alt="Facebook" />
-                            </button>
-                        </div>
-
-                        <!-- Sign up link -->
-                        <div class="text-center text-sm text-gray-300">
-                            Don’t have an account?
-                            <a href="{{ route('register') }}" class="text-purple-400 hover:underline">Sign up</a>
                         </div>
                     </div>
                 </form>

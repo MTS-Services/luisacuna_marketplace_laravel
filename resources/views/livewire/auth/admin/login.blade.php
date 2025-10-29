@@ -8,7 +8,7 @@
 
     <div class="min-h-[80vh] flex items-center justify-center text-white px-4  sm:px-6 lg:px-8 ">
         <form method="POST" wire:submit.prevent="login" class="w-full max-w-md sm:max-w-lg md:max-w-xl">
-            <div class="bg-bg-primary rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col justify-between min-h-[60vh] my-10">
+            <div class="bg-bg-primary rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col justify-between min-h-[55vh] py-20">
 
                 <!-- Header -->
                 <div class="mb-6 text-center">
@@ -21,8 +21,8 @@
                 <!-- Email -->
                 <div class="mb-4 sm:mb-6 px-2 sm:px-6">
                     <label class="block text-lg sm:text-2xl font-medium mb-2 text-white">Email</label>
-                    <input type="email" placeholder="example@gmail.com" wire:model="email"
-                        class="text-white w-full px-4 py-2 bg-[#2d1f43] border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400" />
+                    <x-ui.input type="email" placeholder="example@gmail.com" wire:model="email"
+                        />
                     {{-- Error message --}}
                     @error('email')
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
@@ -35,11 +35,11 @@
                 @enderror
 
                 <!-- Password -->
-                <div class="-mt-10 sm:mb-6 px-2 sm:px-6">
+                <div class=" sm:mb-6 px-2 sm:px-6">
                     <label class="block text-lg sm:text-2xl font-medium mb-2 text-white">Password</label>
                     <div class="relative">
-                        <input type="password" id="password" placeholder="Aex@8465" wire:model="password"
-                            class="text-white w-full px-4 py-2 bg-[#2d1f43] border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400" />
+                        <x-ui.input type="password" id="password" placeholder="Aex@8465" wire:model="password"
+                            />
                         <button type="button" onclick="togglePassword()"
                             class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300">
                             <svg class="w-5 h-5" fill="none" stroke="gray" viewBox="0 0 24 24">
