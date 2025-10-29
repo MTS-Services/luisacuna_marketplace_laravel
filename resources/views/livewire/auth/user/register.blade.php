@@ -1,4 +1,4 @@
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen flex items-center justify-center bg-bg-secondary py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-2xl w-full">
         <!-- Header Section -->
         <div class="text-center mb-8">
@@ -16,7 +16,7 @@
         </div>
 
         <!-- Card Container -->
-        <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-700">
+        <div class="bg-bg-primary shadow-2xl rounded-3xl overflow-hidden border border-zinc-100 dark:border-zinc-950">
             <div class="p-8 sm:p-10">
                 <!-- Session Status -->
                 <x-auth-session-status class="mb-6" :status="session('status')" />
@@ -234,13 +234,6 @@
                     </p>
                 </div>
             </div>
-        </div>
-
-        <!-- Additional Info -->
-        <div class="mt-8 text-center">
-            <p class="text-xs text-gray-500 dark:text-gray-400">
-                {{ __('By creating an account, you agree to our terms and conditions') }}
-            </p>
         </div>
     </div>
 </div>
