@@ -2,7 +2,6 @@
     <div class=" text-white font-sans">
         <!-- Container -->
         <div class="max-w-7xl mx-auto px-12 py-12">
-
             <!-- Title -->
             <h1 class="lg:text-5xl sm:text-3xl md:text-4xl mb-8">Boosting</h1>
 
@@ -122,57 +121,94 @@
         <div class="max-w-7xl mx-auto px-12">
             <!-- Popular Boosting -->
             <h2 class="text-4xl mb-6 dark:text-white">Newly Boosting</h2>
-
-            <!-- Cards Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 ">
-
-                <!-- Card 1 -->
-                <div class="bg-bg-primary rounded-xl overflow-hidden shadow-lg py-8 px-2 ">
-                    <img src="{{ asset('assets/images/darkwar.png') }}" alt="DarkWar: survival"
-                        class="p-2 w-full h-68 object-cover rounded-xl" />
-                    <div class="p-4">
-                        <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
-                            DarkWar:
-                            survival</h3>
-                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
-                            {{ __('See Seller List') }}
-                        </x-ui.button>
+            <div class="swiper popular-boosting">
+                <div class="swiper-wrapper py-16">
+                    <div class="swiper-slide">
+                        <!-- Card 1 -->
+                        <div class="bg-bg-primary rounded-xl overflow-hidden shadow-lg py-8 px-2 ">
+                            <img src="{{ asset('assets/images/darkwar.png') }}" alt="DarkWar: survival"
+                                class="p-2 w-full h-68 object-cover rounded-xl" />
+                            <div class="p-4">
+                                <h3
+                                    class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
+                                    DarkWar:
+                                    survival</h3>
+                                <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                    {{ __('See Seller List') }}
+                                </x-ui.button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <!-- Card 2 -->
+                        <div class="bg-bg-primary rounded-xl overflow-hidden shadow-lg py-8 px-2 ">
+                            <img src="{{ asset('assets/images/kingshort.png') }}" alt="Clash of Clans"
+                                class="p-2 w-full h-68 object-cover rounded-xl" />
+                            <div class="p-4">
+                                <h3
+                                    class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
+                                    KingShot
+                                </h3>
+                                <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                    {{ __('See Seller List') }}
+                                </x-ui.button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <!-- Card 3 -->
+                        <div class="bg-bg-primary rounded-xl overflow-hidden shadow-lg py-8 px-2 ">
+                            <img src="{{ asset('assets/images/lastwar.png') }}" alt="Clash of Clans"
+                                class="p-2 w-full h-68 object-cover rounded-xl" />
+                            <div class="p-4">
+                                <h3
+                                    class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
+                                    Last
+                                    war:survival</h3>
+                                <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                    {{ __('See Seller List') }}
+                                </x-ui.button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="bg-bg-primary rounded-xl overflow-hidden shadow-lg py-8 px-2 ">
+                            <img src="{{ asset('assets/images/class_of_clans.png') }}" alt="Clash of Clans"
+                                class="p-2 w-full h-68 object-cover rounded-xl" />
+                            <div class="p-4">
+                                <h3 class="lg:text-3xl sm:text-1xl md:text-2xl font-medium mb-4 dark:text-white">Clash
+                                    of
+                                    Clans
+                                </h3>
+                                <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                    {{ __('See Seller List') }}
+                                </x-ui.button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class=" rounded-xl overflow-hidden shadow-lg py-8 px-2 bg-bg-primary">
+                            <img src="{{ asset('assets/images/fortnight.png') }}" alt="Clash of Clans"
+                                class="p-2 w-full h-68 object-cover rounded-xl" />
+                            <div class="p-4">
+                                <h3
+                                    class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
+                                    Fortnite
+                                </h3>
+                                <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
+                                    {{ __('See Seller List') }}
+                                </x-ui.button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Card 2 -->
-                <div class="bg-bg-primary rounded-xl overflow-hidden shadow-lg py-8 px-2 ">
-                    <img src="{{ asset('assets/images/kingshort.png') }}" alt="Clash of Clans"
-                        class="p-2 w-full h-68 object-cover rounded-xl" />
-                    <div class="p-4">
-                        <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
-                            KingShot
-                        </h3>
-                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
-                            {{ __('See Seller List') }}
-                        </x-ui.button>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="bg-bg-primary rounded-xl overflow-hidden shadow-lg py-8 px-2 ">
-                    <img src="{{ asset('assets/images/lastwar.png') }}" alt="Clash of Clans"
-                        class="p-2 w-full h-68 object-cover rounded-xl" />
-                    <div class="p-4">
-                        <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">Last
-                            war:survival</h3>
-                        <x-ui.button href="{{ route('boost.seller-list') }}" class="w-full p-6">
-                            {{ __('See Seller List') }}
-                        </x-ui.button>
-                    </div>
-                </div>
-
+                <!-- Add Pagination and Navigation -->
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
             </div>
-            <div class="flex space-x-2 justify-center items-center  mt-8">
-                <div class="w-4 h-2 rounded-full bg-gray-200"></div>
-                <div class="w-4 h-2 rounded-full bg-purple-500"></div>
-                <div class="w-4 h-2 rounded-full bg-gray-200"></div>
-            </div>
+
         </div>
 
         <div class="max-w-7xl mx-auto px-12 py-6  ">

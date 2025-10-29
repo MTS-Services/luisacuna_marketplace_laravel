@@ -63,12 +63,7 @@
             {{-- Boosting card --}}
             <div
                 class="group flex flex-col items-center justify-center gap-2 w-32 h-32 rounded-2xl bg-bg-primary hover:bg-pink-500 transition-colors duration-300 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white" fill="currentColor"
-                    viewBox="0 0 256 256">
-                    <path
-                        d="M245,110.64A16,16,0,0,0,232,104H216V88a16,16,0,0,0-16-16H130.67L102.94,51.2a16.14,16.14,0,0,0-9.6-3.2H40A16,16,0,0,0,24,64V208h0a8,8,0,0,0,8,8H211.1a8,8,0,0,0,7.59-5.47l28.49-85.47A16.05,16.05,0,0,0,245,110.64ZM93.34,64,123.2,86.4A8,8,0,0,0,128,88h72v16H69.77a16,16,0,0,0-15.18,10.94L40,158.7V64Zm112,136H43.1l26.67-80H232Z">
-                    </path>
-                </svg>
+                <flux:icon name="rocket-launch" class="w-8 h-8" />
                 <span class="text-text-white text-2xl font-medium">Boosting</span>
             </div>
             {{-- Items card --}}
@@ -92,6 +87,17 @@
                     </path>
                 </svg>
                 <span class="text-text-white text-2xl font-medium">Accounts</span>
+            </div>
+            {{-- Top up card --}}
+            <div
+                class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-pink-500 transition-colors duration-300 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white" fill="currentColor"
+                    viewBox="0 0 256 256">
+                    <path
+                        d="M216,64H56a8,8,0,0,1,0-16H192a8,8,0,0,0,0-16H56A24,24,0,0,0,32,56V184a24,24,0,0,0,24,24H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64Zm0,128H56a8,8,0,0,1-8-8V78.63A23.84,23.84,0,0,0,56,80H216Zm-48-60a12,12,0,1,1,12,12A12,12,0,0,1,168,132Z">
+                    </path>
+                </svg>
+                <span class="text-text-white text-2xl font-medium">Top up</span>
             </div>
             {{-- Coacing card --}}
             <div
