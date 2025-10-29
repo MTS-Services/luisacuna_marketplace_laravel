@@ -313,7 +313,7 @@
 
 
     .sidebar-glass-card {
-        @apply bg-gradient-to-tr from-zinc-400/80 via-accent/80 to-zinc-400/80 shadow-glass-card;
+        @apply bg-gradient-to-tr from-zinc-100/80 via-accent/30 to-zinc-100/80 shadow-glass-card;
     }
 
     .dark .glass-card,
