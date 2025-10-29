@@ -17,6 +17,8 @@ Route::group(['prefix' => 'boosting', 'as' => 'boost.'], function () {
     Route::get('/', [BoostingController::class, 'index'])->name('index');
     Route::get('/seller-list/{id?}', [BoostingController::class, 'sellerList'])->name('seller-list');
     Route::get('/buy-now/{id?}', [BoostingController::class, 'buyNow'])->name('buy-now');
+    Route::get('/checkout/{id?}', [BoostingController::class, 'checkout'])->name('checkout');
+
 });
 Route::get('/currency', [CurrencyController::class, 'index'])->name('currency');
 Route::get('profile', [UserProfileController::class, 'profile'])->name('profile');

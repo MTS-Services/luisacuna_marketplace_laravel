@@ -5,9 +5,13 @@ namespace App\Models;
 use App\Enums\LanguageDirection;
 use App\Enums\LanguageStatus;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Language extends BaseModel
+class Language extends BaseModel implements Auditable
 {
+    use  AuditableTrait;
+    
     protected $fillable = [
         'sort_order',
         'locale',

@@ -26,7 +26,9 @@
                         <div class="flex items-center space-x-2 sm:space-x-3">
                             {{-- <img  src="{{ asset('assets/icons/light.svg') }}" alt=""
                                 class="w-5 h-5 sm:w-6 sm:h-6"> --}}
-                            <flux:icon name="shopping-cart" class="w-5 h-5 sm:w-6 sm:h-6 text-text-white" stroke="white " />
+                            <flux:icon name="shopping-cart"
+                                class="w-5 h-5 sm:w-6 sm:h-6 text-text-white stroke-current" />
+
                             <span class="text-xs sm:text-sm font-medium text-text-white">Orders</span>
                             <!-- Left indicator bar for Orders button only -->
                             <div x-show="isActive" x-cloak
@@ -36,20 +38,20 @@
 
                         <!-- Chevron Icons -->
                         <flux:icon name="chevron-down" x-show="!ordersOpen" x-cloak
-                            class="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform" stroke="white" />
+                            class="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform text-text-white stroke-current" />
 
                         <flux:icon name="chevron-up" x-show="ordersOpen" x-cloak
-                            class="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform" stroke="white" />
+                            class="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform text-text-white stroke-current" />
                     </button>
 
                     <!-- Dropdown links (no left bar here) -->
                     <div x-show="ordersOpen" x-collapse x-cloak class="mt-1 ml-6 sm:ml-8 space-y-1">
                         <a href="{{ route('user.dashboard') }}" x-cloak
-                            class="block px-2 sm:px-3 py-2 text-xs sm:text-sm rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'dashboard' ? 'bg-pink-500' : 'bg-pink-400 dark:bg-zinc-950' }}">
+                            class="block px-2 sm:px-3 py-2 text-xs sm:text-sm rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'dashboard' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                             {{ __('Purchased orders') }}
                         </a>
                         <a href="" x-cloak
-                            class="block px-2 sm:px-3 py-2 text-xs sm:text-sm rounded-lg transition-all text-text-text-white hover:bg-pink-500/50 {{ $pageSlug === '' ? 'bg-pink-500' : 'bg-pink-100 dark:bg-zinc-950' }}">
+                            class="block px-2 sm:px-3 py-2 text-xs sm:text-sm rounded-lg transition-all text-text-text-white hover:bg-pink-500/50 {{ $pageSlug === '' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                             {{ __('Sold orders') }}
                         </a>
                     </div>
@@ -59,8 +61,8 @@
 
                 <!-- Loyalty Link -->
                 <a href="{{ route('user.profile') }}" x-cloak
-                    class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'profile' ? 'bg-pink-500' : 'bg-pink-400 dark:bg-zinc-950' }}">
-                    <flux:icon name="star" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" stroke="white" />
+                    class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'profile' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                    <flux:icon name="star" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white stroke-current" />
                     <span class="text-xs sm:text-sm font-medium text-text-white">View Profile</span>
                 </a>
             </nav>

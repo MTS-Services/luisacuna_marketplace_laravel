@@ -58,8 +58,8 @@
                         <div class="relative">
                             <x-ui.label for="email" :value="__('Email address')" />
                             <div class="relative">
-                                <x-ui.input wire:model="email" id="email" type="email"
-                                    autocomplete="email" placeholder="john@example.com" />
+                                <x-ui.input wire:model="email" id="email" type="email" autocomplete="email"
+                                    placeholder="john@example.com" />
                             </div>
                             <x-ui.input-error :messages="$errors->get('email')" class="mt-1" />
                         </div>
@@ -110,8 +110,7 @@
                             <x-ui.label for="password_confirmation" :value="__('Confirm password')" />
                             <div class="relative">
                                 <x-ui.input wire:model="password_confirmation" id="password_confirmation"
-                                    type="password" autocomplete="new-password" :placeholder="__('••••••••')"
-                                    class="pl-10" />
+                                    type="password" autocomplete="new-password" :placeholder="__('••••••••')" class="pl-10" />
                             </div>
                             <x-ui.input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
                         </div>
@@ -124,8 +123,7 @@
                         <div class="flex items-start">
                             <div class="flex items-center h-5 mt-0.5">
                                 <input wire:model="terms_accepted" id="terms_accepted" type="checkbox"
-                                    class="w-4 h-4 text-zinc-600 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-zinc-500 dark:focus:ring-zinc-600 focus:ring-2 transition-colors cursor-pointer"
-                                 />
+                                    class="w-4 h-4 text-zinc-600 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-zinc-500 dark:focus:ring-zinc-600 focus:ring-2 transition-colors cursor-pointer" />
                             </div>
                             <label for="terms_accepted"
                                 class="ms-3 text-sm text-gray-700 dark:text-gray-300 cursor-pointer select-none">
@@ -142,8 +140,7 @@
                         <div class="flex items-start">
                             <div class="flex items-center h-5 mt-0.5">
                                 <input wire:model="privacy_accepted" id="privacy_accepted" type="checkbox"
-                                    class="w-4 h-4 text-zinc-600 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-zinc-500 dark:focus:ring-zinc-600 focus:ring-2 transition-colors cursor-pointer"
-                                 />
+                                    class="w-4 h-4 text-zinc-600 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-zinc-500 dark:focus:ring-zinc-600 focus:ring-2 transition-colors cursor-pointer" />
                             </div>
                             <label for="privacy_accepted"
                                 class="ms-3 text-sm text-gray-700 dark:text-gray-300 cursor-pointer select-none">
@@ -159,10 +156,10 @@
 
                     <!-- Submit Button -->
                     <div class="pt-2">
-                        <x-ui.button type="submit"
-                           >
+                        <x-ui.button type="submit" variant="primary" class="w-auto py-2!">
                             {{ __('Create account') }}
                         </x-ui.button>
+
                     </div>
                 </form>
             </div>
