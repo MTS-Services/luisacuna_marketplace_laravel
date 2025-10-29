@@ -1,20 +1,21 @@
 <nav class="hidden md:flex gap-8 text-sm items-center">
     {{-- <a href="#" class="hover:text-purple-400 transition text-white">Currency</a> --}}
-    <a wire:navigate href="{{ route('currency') }}" class="navbar_style group active">
+    <a wire:navigate href="{{ route('currency') }}"
+        class="navbar_style group {{ $pageSlug == 'currency' ? 'active' : '' }}">
         <span class="relative z-10">Currency</span>
-        <span class="navbar_indicator active"></span>
+        <span class="navbar_indicator {{ $pageSlug == 'currency' ? 'active' : '' }}"></span>
     </a>
-    <a href="#" class="navbar_style group">
+    <a href="#" class="navbar_style group {{ $pageSlug == 'gift-card' ? 'active' : '' }}">
         <span class="relative z-10">Gift Cards</span>
-        <span class="navbar_indicator"></span>
+        <span class="navbar_indicator {{ $pageSlug == 'gift-card' ? 'active' : '' }}"></span>
     </a>
-    <a href="#" class="navbar_style group">
+    <a href="{{ route('boost.index') }}" class="navbar_style group {{ $pageSlug == 'boosting' ? 'active' : '' }}">
         <span class="relative z-10">Boosting</span>
-        <span class="navbar_indicator"></span>
+        <span class="navbar_indicator {{ $pageSlug == 'boosting' ? 'active' : '' }}"></span>
     </a>
-    <a href="#" class="navbar_style group">
+    <a href="{{ route('items') }}" class="navbar_style group {{ $pageSlug == 'items' ? 'active' : '' }}">
         <span class="relative z-10">Items</span>
-        <span class="navbar_indicator"></span>
+        <span class="navbar_indicator {{ $pageSlug == 'items' ? 'active' : '' }}"></span>
     </a>
     <a href="#" class="navbar_style group">
         <span class="relative z-10">Accounts</span>
@@ -40,9 +41,12 @@
     </button> --}}
     <!-- Desktop Search -->
     <div class="relative hidden xl:block">
-        <flux:icon name="magnifying-glass" class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-white"
-            stroke="white" />
+        <flux:icon
+            name="magnifying-glass"
+            class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 stroke-gray-500"
+        />
+
         <input type="text" placeholder="Search"
-            class="border border-white rounded-full py-1.5 pl-8 pr-2 text-sm text-white placeholder-gray-100 focus:outline-none focus:border-purple-500 focus:bg-gray-800 transition-all w-22 focus:w-64 bg-transparent">
+            class="border dark:border-white border-gray-600 rounded-full py-1.5 pl-8 pr-2 text-sm focus:outline-none focus:border-purple-500 focus:bg-gray-800 transition-all w-22 focus:w-64 bg-transparent">
     </div>
 </nav>

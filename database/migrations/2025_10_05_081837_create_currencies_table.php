@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('code')->unique()->comment('USD, EUR, GBP, BDT');
             $table->string('symbol')->comment('&#xa3;, &#xa2;, &#x24;');
             $table->string('name')->unique();
-            $table->decimal('exchange_rate', 10, 2)->comment('against base currency');
+            $table->decimal('exchange_rate', 15, 2)->comment('against base currency');
             $table->integer('decimal_places')->default(2);
             $table->string('status')->index()->default(CurrencyStatus::ACTIVE->value);
             $table->boolean('is_default')->default(false);

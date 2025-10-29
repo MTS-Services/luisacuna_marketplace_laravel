@@ -26,7 +26,7 @@ class BaseModel extends Model
     ];
 
     /* ================================================================
-     * *** Relations ***
+     |  Relationships
      ================================================================ */
 
 
@@ -61,36 +61,44 @@ class BaseModel extends Model
     }
 
     /* ================================================================
-     * *** Accessors ***
+     |  Accessors
      ================================================================ */
+
+    protected function formatDate(?string $value, $createdAt = null): string
+    {
+        if ($createdAt != null) {
+            return $value != $createdAt ? Carbon::parse($value)->format('d M, Y h:i A') : 'N/A';
+        }
+        return $value ? Carbon::parse($value)->format('d M, Y h:i A') : 'N/A';
+    }
 
     public function getCreatedAtHumanAttribute(): string
     {
-        return $this->created_at->diffForHumans();
+        return optional($this->created_at)?->diffForHumans() ?? 'N/A';
     }
 
     public function getUpdatedAtHumanAttribute(): string
     {
-        return $this->updated_at->diffForHumans();
+        return optional($this->updated_at)?->diffForHumans() ?? 'N/A';
     }
 
     public function getDeletedAtHumanAttribute(): ?string
     {
-        return $this->deleted_at?->diffForHumans();
+        return optional($this->deleted_at)?->diffForHumans();
     }
 
     public function getCreatedAtFormattedAttribute(): string
     {
-        return Carbon::parse($this->created_at)->format('d M, Y h:i A');
+        return $this->formatDate($this->created_at);
     }
 
     public function getUpdatedAtFormattedAttribute(): string
     {
-        return Carbon::parse($this->updated_at)->format('d M, Y h:i A');
+        return $this->formatDate($this->updated_at, $this->created_at);
     }
 
     public function getDeletedAtFormattedAttribute(): string
     {
-        return Carbon::parse($this->deleted_at)->format('d M, Y h:i A');
+        return $this->formatDate($this->deleted_at);
     }
 }

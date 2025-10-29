@@ -1,5 +1,5 @@
 <header x-data="{ mobileMenuOpen: false }"
-    class="sticky top-0 z-50 {{ request()->routeIs('home') ? 'bg-gradient-to-r from-zinc-950 via-black to-zinc-950' : 'glass-card' }}">
+    class="sticky top-0 z-50 {{ request()->routeIs('home') ? 'bg-gradient-to-r from-purple-950/50 via-text-white to-purple-950/50' : 'glass-card' }}">
     <div class="container px-4 py-4 flex items-center justify-between">
         <div class=""><a href="{{ route('home') }}">
                 <img src="{{ asset('assets/images/header_logo.png') }}" alt=""></a>
@@ -25,10 +25,6 @@
                     <span class="badge badge-xs badge-primary indicator-item">1</span>
                 </div>
             </button>
-            <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
-                <flux:radio value="light" icon="sun" />
-                <flux:radio value="dark" icon="moon" />
-            </flux:radio.group>
             <div class="dropdown dropdown-end ml-2 ">
                 <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                     <div class="w-10 rounded-full">
@@ -40,7 +36,7 @@
                     class="menu menu-sm dropdown-content bg-purple-600 rounded-box z-1 mt-3 w-52 p-2 shadow">
                     @auth
                         @if (auth()->guard('web')->check())
-                            <li><a href="{{ route('user.profile') }}" class="text-white" wire:navigate>Profile</a></li>
+                            <li><a href="{{ route('profile') }}" class="text-white" wire:navigate>Profile</a></li>
                         @else
                             <li><a href="{{ route('admin.dashboard') }}" class="text-white" wire:navigate>Dashboard</a></li>
                         @endif
@@ -59,6 +55,22 @@
                     {{-- <li><a href="#" class="text-white">Settings</a></li> --}}
                 </ul>
             </div>
+
+            {{-- <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
+                <flux:radio value="light" icon="sun" />
+                <flux:radio value="dark" icon="moon" />
+            </flux:radio.group> --}}
+
+            <div class="flex items-center">
+                <button x-on:click="$flux.dark = false" class="flex items-center justify-center w-8 h-8 text-white text-lg">
+                    <flux:icon name="sun" class="w-5 h-5" />
+                </button>
+                <button x-on:click="$flux.dark = true" class="flex items-center justify-center w-10 h-8 bg-[#8c7bbd] rounded-r-full text-white text-lg">
+                    <flux:icon name="moon" class="w-5 h-5 stroke-white" />
+                </button>
+            </div>
+
+
             <button @click="mobileMenuOpen = !mobileMenuOpen"
                 class="md:hidden ml-2 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"

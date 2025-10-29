@@ -126,9 +126,9 @@
 
         <div @dragover.prevent="isDragging = true" @dragleave.prevent="isDragging = false"
             @drop.prevent="handleDrop($event)"
-            :class="isDragging || preview || previews.length > 0 ? '!border-blue-500 bg-blue-50 dark:bg-blue-900/20' :
+            :class="isDragging || preview || previews.length > 0 ? '!border-zinc-600 bg-zinc-50 dark:bg-zinc-900/20' :
                 'border-gray-300 dark:border-gray-600'"
-            class="border-2 border-dashed rounded-xl transition-all duration-300 bg-white dark:bg-gray-800 hover:border-accent hover:shadow-lg cursor-pointer relative overflow-hidden w-full p-2">
+            class="border-2 border-dashed rounded-xl transition-all duration-300 bg-bg-primary! hover:border-accent hover:shadow-lg cursor-pointer relative overflow-hidden w-full p-2">
 
             <input type="file" id="{{ $inputId }}" {{ $attributes->wire('model') }}
                 @if ($accept) accept="{{ $accept }}" @endif
@@ -320,7 +320,7 @@
                                         x-if="getFileType(file.type) !== 'image' && getFileType(file.type) !== 'video'">
                                         <div
                                             class="relative aspect-square rounded-lg bg-gray-50 dark:bg-gray-900 p-3 flex flex-col items-center justify-center">
-                                            <svg class="w-8 h-8 text-blue-500 mb-2" fill="none"
+                                            <svg class="w-8 h-8 text-zinc-600 mb-2" fill="none"
                                                 stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />

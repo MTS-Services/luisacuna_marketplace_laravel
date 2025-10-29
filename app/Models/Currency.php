@@ -3,19 +3,18 @@
 namespace App\Models;
 
 use App\Enums\CurrencyStatus;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Builder;
+use Laravel\Scout\Searchable;
+use Laravel\Scout\Attributes\SearchUsingFullText;
+use Laravel\Scout\Attributes\SearchUsingPrefix;
 
 class Currency extends BaseModel
 {
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-
+    use Searchable;
 
     protected $fillable = [
+        'sort_order',
         'code',
         'symbol',
         'name',
@@ -24,133 +23,105 @@ class Currency extends BaseModel
         'status',
         'is_default',
 
-
-        'created_type',
-        'created_id',
-        'updated_type',
-        'updated_id',
-        'deleted_type',
-        'deleted_id',
+        'created_by',
+        'updated_by',
+        'deleted_by',
     ];
 
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
+    protected $hidden = [
+        //
+    ];
 
     protected $casts = [
-        'status' => CurrencyStatus::class,
         'is_default' => 'boolean',
+        'status' => CurrencyStatus::class,
+        // 'exchange_rate' => 'decimal:15,2',
+        // 'decimal_places' => 'integer',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Relationships
-    |--------------------------------------------------------------------------
-    */
-    public function baseExchangeRates()
-    {
-        return $this->hasMany(ExchangeRate::class, 'base_currency');
-    }
-    public function targetExchangeRates()
-    {
-        return $this->hasMany(ExchangeRate::class, 'target_currency');
-    }
-    public function baseExchangeRateHistories()
-    {
-        return $this->hasMany(ExchangeRateHistory::class, 'base_currency');
-    }
-    public function targetExchangeRateHistories()
-    {
-        return $this->hasMany(ExchangeRateHistory::class, 'target_currency');
-    }
-    public function referralSettings()
-    {
-        return $this->hasMany(ReferralSetting::class, 'currency_id');
-    }
-    public function userStatistics()
-    {
-        return $this->hasMany(UserStatistic::class, 'currency_id');
-    }
-    public function userReferrals()
-    {
-        return $this->hasMany(UserReferral::class, 'currency_id');
-    }
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+                Start of RELATIONSHIPS
+     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    /*
-    |--------------------------------------------------------------------------
-    | Query Scopes
-    |--------------------------------------------------------------------------
-    */
+    //
 
-    public function scopeActive($query)
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+                End of RELATIONSHIPS
+     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+
+    /* ================================================================
+     |  Query Scopes
+     ================================================================ */
+
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('status', CurrencyStatus::ACTIVE);
     }
-    public function scopeInactive($query)
+
+    public function scopeInactive(Builder $query): Builder
     {
         return $query->where('status', CurrencyStatus::INACTIVE);
     }
-    public function scopeSearch($query, $search)
+
+    public function scopeFilter(Builder $query, array $filters): Builder
     {
-        return $query->where(function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%")
-                ->orWhere('code', 'like', "%{$search}%")
-                ->orWhere('symbol', 'like', "%{$search}%");
-        });
+        return $query
+            ->when(
+                $filters['status'] ?? null,
+                fn($q, $status) =>
+                $q->where('status', $status)
+            )
+            ->when(
+                $filters['code'] ?? null,
+                fn($q, $code) =>
+                $q->where('code', 'like', "%{$code}%")
+            )
+            ->when(
+                $filters['is_default'] ?? null,
+                fn($q, $isDefault) =>
+                $q->where('is_default', $isDefault)
+            );
     }
 
-    public function scopeFilder($query, array $filters)
+    /* ================================================================
+     |  Query Scopes
+     ================================================================ */
+
+    /* ================================================================
+     |  Scout Search Configuration
+     ================================================================ */
+
+    #[SearchUsingPrefix(['id', 'name', 'code', 'symbol'])]
+    public function toSearchableArray(): array
     {
-        $query->when($filters['search'] ?? null, fn($q, $search) => $q->search($search));
-        $query->when($filters['status'] ?? null, fn($q, $status) => $q->where('status', $status));
-        return $query;
+        return [
+            'name' => $this->name,
+            'code' => $this->code,
+            'symbol' => $this->symbol,
+            'exchange_rate' => (float) $this->exchange_rate,
+            'decimal_places' => (int) $this->decimal_places,
+            'status' => $this->status,
+            'is_default' => $this->is_default,
+        ];
+    }
+
+    /**
+     * Include only non-deleted data in search index.
+     */
+    public function shouldBeSearchable(): bool
+    {
+        return is_null($this->deleted_at);
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Accessors
-    |--------------------------------------------------------------------------
-    */
+    // public function __construct(array $attributes = [])
+    // {
+    //     parent::__construct($attributes);
+    //     $this->appends = array_merge(parent::getAppends(), [
+    //         'status_label',
+    //         'status_color',
+    //     ]);
+    // }
 
 
-    public function getStatusLabelAttribute()
-    {
-        return $this->status->label();
-    }
-    public function getStatusColorAttribute()
-    {
-        return $this->status->color();
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Methods
-    |--------------------------------------------------------------------------
-    */
-
-
-    public function is_active(): bool
-    {
-        return $this->status === CurrencyStatus::ACTIVE;
-    }
-    public function activate(): void
-    {
-        $this->update(['status' => CurrencyStatus::ACTIVE]);
-    }
-    public function deactivate(): void
-    {
-        $this->update(['status' => CurrencyStatus::INACTIVE]);
-    }
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->appends = array_merge(parent::getAppends(), [
-            'status_label',
-            'status_color',
-        ]);
-    }
 }
