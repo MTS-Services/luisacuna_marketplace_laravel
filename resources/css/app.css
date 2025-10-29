@@ -48,7 +48,9 @@
     --color-secondary-900: #831843;
     --color-secondary-950: #50072c;
 
-
+    /* Button Colors */
+        --color-text-danger : #AF0F0F;
+    /* Button Colors */
 
     --color-text-new-light: #1b1b1b;
     --color-text-new-dark: #f1f1f1;
@@ -121,6 +123,10 @@
     --color-pink-950: var(--color-secondary-950);
     /* ------------------------------------------ */
 
+    /* Button Colors */
+    --color-btn-danger : var(--color-text-danger);
+
+    /* Button Colors */
     --color-text-new: var(--color-text-new-light);
     --color-text-white: var(--color-white-light);
 
@@ -146,6 +152,7 @@
 
     --color-bg-black: var(--color-black);
     --color-bg-white: var(--color-white);
+    --color-bg-base: var(--color-bg-base);
 
     /* ======================================================
     	 	 	 	 	 	 # Shadows
@@ -213,6 +220,12 @@
 
         --color-text-new: var(--color-text-new-dark);
         --color-text-white: var(--color-white-dark);
+
+        /* Button Colors */
+        --color-btn-danger : var(--color-text-danger);
+        /* Button Colors */
+
+       
     }
 }
 
