@@ -3,17 +3,19 @@
     <x-slot name="breadcrumb">Two-Factor Authentication</x-slot>
     <x-slot name="title">Two-Factor Authentication</x-slot>
 
-    <div class="max-w-6xl mx-auto py-6">
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+    <div class="max-w-4xl  mx-auto py-8">
+        <div class="glass-card min-h-[50vh] rounded-lg overflow-hidden">
             <!-- Header -->
-            <div class="p-6 bg-gradient-to-r from-purple-600 to-purple-700">
-                <h2 class="text-2xl font-bold text-white">Admin Two-Factor Authentication</h2>
-                <p class="text-purple-100 mt-1">Secure your admin account with additional protection</p>
+            <div class="p-6 bg-gradient-to-r from-zinc-600 to-zinc-700">
+                <h2 class="text-2xl font-bold text-text-btn-primary">Two-Factor Authentication</h2>
+                <p class="text-zinc-100 mt-1">Secure your account with additional protection</p>
             </div>
+
             <div class="p-6">
                 <!-- Status Messages -->
                 @if (session('status') === 'two-factor-authentication-enabled')
-                    <div class="mb-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded">
+                    <div
+                        class="mb-6 p-4 bg-zinc-100 dark:bg-zinc-800/50 border-l-4 border-zinc-500 text-text-primary rounded">
                         <div class="flex items-center">
                             <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"
@@ -23,10 +25,11 @@
                             <p class="font-semibold">Two-factor authentication setup is in progress</p>
                         </div>
                     </div>
-                @endif 
+                @endif
 
                 @if (session('status') === 'two-factor-authentication-confirmed')
-                    <div class="mb-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded">
+                    <div
+                        class="mb-6 p-4 bg-zinc-100 dark:bg-zinc-800/50 border-l-4 border-zinc-500 text-text-primary rounded">
                         <div class="flex items-center">
                             <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"
@@ -39,7 +42,8 @@
                 @endif
 
                 @if (session('status') === 'two-factor-authentication-disabled')
-                    <div class="mb-6 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 rounded">
+                    <div
+                        class="mb-6 p-4 bg-pink-100 dark:bg-pink-900/30 border-l-4 border-pink-500 text-text-primary rounded">
                         <div class="flex items-center">
                             <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"
@@ -52,7 +56,8 @@
                 @endif
 
                 @if (session('status') === 'recovery-codes-generated')
-                    <div class="mb-6 p-4 bg-blue-100 border-l-4 border-blue-500 text-blue-700 rounded">
+                    <div
+                        class="mb-6 p-4 bg-zinc-100 dark:bg-zinc-800/50 border-l-4 border-zinc-500 text-text-primary rounded">
                         <div class="flex items-center">
                             <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"
@@ -64,32 +69,11 @@
                     </div>
                 @endif
 
-                {{-- <!-- Current Status -->
-                <div class="mb-8">
-                    @if ($twoFactorEnabled)
-                        <div class="flex items-center gap-3 p-4 bg-blue-100 border border-blue-300 rounded-lg">
-                            <div
-                                class="flex items-center justify-center w-10 h-10 bg-blue-500 text-white rounded-full animate-pulse">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-lg font-semibold text-blue-800">Two-Factor Authentication Processing</p>
-                                <p class="text-sm text-blue-700">Please wait while your two-factor verification setup is
-                                    being confirmed.</p>
-                            </div>
-                        </div>
-                    @endif
-                </div> --}}
-
-
                 <!-- Enable/Disable 2FA -->
                 @if (!$twoFactorEnabled)
-                    <div class="border-t pt-6">
+                    <div class="border-t border-text-muted/20 pt-6">
                         <h3 class="text-lg font-semibold mb-4">Enable Two-Factor Authentication</h3>
-                        <p class="text-gray-600 mb-6">
+                        <p class="text-text-secondary mb-6">
                             When two-factor authentication is enabled, you will be prompted for a secure, random token
                             during authentication.
                             You may retrieve this token from your phone's Google Authenticator, Authy, or any compatible
@@ -98,8 +82,11 @@
 
                         <form method="POST" action="{{ route('admin.two-factor.enable') }}">
                             @csrf
+                            {{-- <x-ui.button class="w-auto py-2!" type="submit" variant="primary">
+                                Enable Two-Factor Authentication
+                            </x-ui.button> --}}
                             <button type="submit"
-                                class="px-6 py-3 bg-purple-600 text-white font-semibold rounded-md hover:bg-purple-700 transition duration-200">
+                                class="px-6 py-3 bg-zinc-600 text-white font-semibold rounded-md hover:bg-zinc-700 transition duration-200">
                                 Enable Two-Factor Authentication
                             </button>
                         </form>
@@ -107,23 +94,28 @@
                 @else
                     <!-- QR Code Section -->
                     @if (!auth()->guard('admin')->user()->two_factor_confirmed_at)
-                        <div class="border-t pt-6 mb-6">
+                        <div class="border-t border-text-muted/20 pt-6 mb-6">
                             <h3 class="text-lg font-semibold mb-4">Finish Enabling Two-Factor Authentication</h3>
 
-                            <p class="text-gray-600 mb-4">
+                            <p class="text-text-secondary mb-4">
                                 To finish enabling two-factor authentication, scan the following QR code using your
                                 phone's authenticator application
                                 or enter the setup key and provide the generated OTP code.
                             </p>
 
                             <!-- QR Code Display -->
-                            <div class="mb-6 p-6 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                            <div
+                                class="mb-6 p-6 bg-bg-secondary rounded-lg border-2 border-dashed border-zinc-300 dark:border-zinc-700">
                                 <div id="qrCode" class="flex justify-center mb-4">
                                     <div class="text-center">
-                                        <button type="button" onclick="loadQRCode()"
-                                            class="px-6 py-3 bg-purple-600 text-white font-semibold rounded hover:bg-purple-700 transition">
+                                        <x-ui.button class="w-auto py-2!" type="button" onclick="loadQRCode()"
+                                            variant="primary">
                                             Show QR Code
-                                        </button>
+                                        </x-ui.button>
+                                        {{-- <button type="button" onclick="loadQRCode()"
+                                            class="px-6 py-3 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition">
+                                            Show QR Code
+                                        </button> --}}
                                     </div>
                                 </div>
                                 <div id="qrCodeContainer" class="hidden text-center"></div>
@@ -134,18 +126,21 @@
                                 @csrf
 
                                 <div class="mb-4">
-                                    <label for="code" class="block text-sm font-medium text-gray-700 mb-2">
+                                    <label for="code" class="block text-sm font-medium text-text-primary mb-2">
                                         Confirm with code from authenticator app
                                     </label>
                                     <input type="text" id="code" name="code"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500"
-                                        placeholder="000000" maxlength="6" required>
+                                        class="w-full px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-bg-primary text-text-primary focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-accent-foreground"
+                                        placeholder="000000" maxlength="6" requipink>
                                 </div>
 
                                 @error('code')
-                                    <p class="text-red-600 text-sm mb-4">{{ $message }}</p>
+                                    <p class="text-pink-600 text-sm mb-4">{{ $message }}</p>
                                 @enderror
 
+                                {{-- <x-ui.button class="w-auto py-2!" type="submit" variant="tertiary">
+                                    Confirm & Enable
+                                </x-ui.button> --}}
                                 <button type="submit"
                                     class="px-6 py-2 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 transition duration-200">
                                     Confirm & Enable
@@ -156,68 +151,100 @@
 
                     <!-- Recovery Codes Section -->
                     @if (auth()->guard('admin')->user()->two_factor_confirmed_at)
-                        <div class="border-t pt-6 mb-6">
+                        <div class="border-t border-text-muted/20 pt-6 mb-6">
                             <h3 class="text-lg font-semibold mb-4">Recovery Codes</h3>
-                            <p class="text-gray-600 mb-4">
+                            <p class="text-text-secondary mb-4">
                                 Store these recovery codes in a secure password manager. They can be used to recover
-                                access to your admin account
+                                access to your account
                                 if your two-factor authentication device is lost.
                             </p>
 
-                            <button type="button" onclick="showRecoveryCodes()"
-                                class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition mb-4">
+                            <x-ui.button class="w-auto py-2! mb-4" type="button" onclick="showRecoveryCodes()"
+                                variant="primary">
                                 Show Recovery Codes
-                            </button>
+                            </x-ui.button>
 
                             <div id="recoveryCodes" class="hidden mb-4">
-                                <div class="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                                <div class="p-4 bg-bg-secondary border border-zinc-200 dark:border-zinc-700 rounded-lg">
                                     <div id="recoveryCodesList"
                                         class="grid grid-cols-1 md:grid-cols-2 gap-2 font-mono text-sm">
                                         <!-- Codes loaded here via JavaScript -->
                                     </div>
                                 </div>
-                                <p class="text-sm text-gray-600 mt-2">💡 Save these codes in a safe place. Each code
+                                <p class="text-sm text-text-secondary mt-2">💡 Save these codes in a safe place. Each
+                                    code
                                     can only be used once.</p>
                             </div>
 
                             <form method="POST" action="{{ route('admin.two-factor.recovery-codes.store') }}"
                                 class="inline">
                                 @csrf
-                                <button type="submit"
-                                    class="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition"
+                                <x-ui.button class="w-auto py-2!" type="submit" variant="secondary"
                                     onclick="return confirm('This will invalidate all your old recovery codes. Are you sure?')">
                                     Regenerate Recovery Codes
+                                </x-ui.button>
+                            </form>
+                        </div>
+                    @endif
+
+                    <!-- Two-Factor Authentication Actions -->
+                    @if (is_null(auth()->guard('admin')->user()->two_factor_confirmed_at))
+                        <!-- Cancel 2FA Processing -->
+                        <div class="border-t border-text-muted/20 pt-6">
+                            <h3 class="text-lg font-semibold mb-4 text-pink-600">Cancel Processing</h3>
+                            <p class="text-text-secondary mb-4">
+                                ⚠️ <strong>Warning:</strong> Canceling two-factor authentication processing will make
+                                your admin
+                                account significantly less secure.
+                            </p>
+
+                            <form method="POST" action="{{ route('admin.two-factor.disable') }}">
+                                @csrf
+                                @method('DELETE')
+                                {{-- <x-ui.button class="w-auto py-2!" type="submit" variant="tertiary"
+                                    onclick="return confirm('Are you sure you want to cancel processing for your admin account?')">
+                                    Cancel Processing
+                                </x-ui.button> --}}
+                                <button type="submit"
+                                    class="px-6 py-2 bg-pink-600 text-white font-semibold rounded-md hover:bg-pink-700 transition duration-200"
+                                    onclick="return confirm('Are you sure you want to cancel Processing for your admin account?')">
+                                    Cancel Processing
+                                </button>
+                            </form>
+                        </div>
+                    @else
+                        <!-- Disable 2FA -->
+                        <div class="border-t border-text-muted/20 pt-6">
+                            <h3 class="text-lg font-semibold mb-4 text-pink-600">Disable Two-Factor Authentication</h3>
+                            <p class="text-text-secondary mb-4">
+                                ⚠️ <strong>Warning:</strong> Disabling two-factor authentication will make your admin
+                                account significantly less secure.
+                            </p>
+
+                            <form method="POST" action="{{ route('admin.two-factor.disable') }}">
+                                @csrf
+                                @method('DELETE')
+                                {{-- <x-ui.button class="w-auto py-2!" type="submit" variant="tertiary"
+                                    onclick="return confirm('Are you sure you want to disable two-factor authentication for your admin account?')">
+                                    Disable Two-Factor Authentication
+                                </x-ui.button> --}}
+                                <button type="submit"
+                                    class="px-6 py-2 bg-pink-600 text-white font-semibold rounded-md hover:bg-pink-700 transition duration-200"
+                                    onclick="return confirm('Are you sure you want to disable two-factor for your admin account?')">
+                                    Disable Two-Factor Authentication
                                 </button>
                             </form>
                         </div>
                     @endif
 
-                    <!-- Cancel 2FA -->
-                    <div class="border-t pt-6">
-                        <h3 class="text-lg font-semibold mb-4 text-red-600">Cancel Processing</h3>
-                        <p class="text-gray-600 mb-4">
-                            ⚠️ <strong>Warning:</strong> Cancel two-factor authentication processing will make your admin
-                            account significantly less secure.
-                        </p>
-
-                        <form method="POST" action="{{ route('admin.two-factor.disable') }}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                class="px-6 py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 transition duration-200"
-                                onclick="return confirm('Are you sure you want to cancel Processing for your admin account?')">
-                                Cancel Processing
-                            </button>
-                        </form>
-                    </div>
                 @endif
             </div>
         </div>
 
         <!-- Back to Dashboard -->
         <div class="mt-6 text-center">
-            <a href="{{ route('admin.dashboard') }}" class="text-purple-600 hover:text-purple-800 font-medium">
-                ← Back to Admin Dashboard
+            <a href="{{ route('admin.dashboard') }}" class="text-accent hover:text-accent-content font-medium">
+                ← Back to Dashboard
             </a>
         </div>
     </div>
@@ -243,7 +270,7 @@
                 .then(codes => {
                     const container = document.getElementById('recoveryCodesList');
                     container.innerHTML = codes.map(code =>
-                        `<div class="p-3 bg-white border border-gray-300 rounded text-center font-bold">${code}</div>`
+                        `<div class="p-3 bg-bg-primary border border-zinc-300 dark:border-zinc-700 rounded text-center font-bold">${code}</div>`
                     ).join('');
                     document.getElementById('recoveryCodes').classList.remove('hidden');
                 })

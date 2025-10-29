@@ -20,8 +20,9 @@ class ForgotPassword extends Component
     public function sendPasswordResetOtp(): void
     {
         $this->validate([
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required', 'string', 'email', 'exists:users,email'],
         ]);
+
 
         $this->ensureSendIsNotRateLimited();
 
@@ -30,7 +31,7 @@ class ForgotPassword extends Component
         if (!$user) {
             // Security: Don't reveal if email exists
             $this->success('If an account exists, a verification code has been sent to your email.');
-            
+
             // Redirect to verify page anyway for security
             session(['password_reset_email' => $this->email]);
             $this->redirect(route('verify-reset-otp'), navigate: true);
