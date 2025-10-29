@@ -21,4 +21,8 @@ class BoostingController extends Controller
     {
         return view($this->masterView);
     }
+    public function checkout()
+    {
+        return view($this->masterView);
+    }
 }
