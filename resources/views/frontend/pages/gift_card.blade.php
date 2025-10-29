@@ -8,6 +8,6 @@
         @break
 
         @default
-            <livewire:frontend.components.gift-card />
+            <livewire:frontend.components.gift-cards.gift-card />
     @endswitch
 </x-frontend::app>
