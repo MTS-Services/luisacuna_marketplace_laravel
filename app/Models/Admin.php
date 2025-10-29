@@ -5,11 +5,13 @@ namespace App\Models;
 use App\Enums\AdminStatus;
 use App\Enums\OtpType;
 use App\Models\AuthBaseModel;
+use App\Traits\AuditableTrait;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Admin extends AuthBaseModel
+class Admin extends AuthBaseModel implements Auditable
 {
-    use TwoFactorAuthenticatable;
+    use TwoFactorAuthenticatable, AuditableTrait;
     protected $guard = 'admin';
 
     protected $fillable = [

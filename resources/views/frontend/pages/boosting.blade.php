@@ -10,6 +10,10 @@
             <livewire:frontend.components.boostings.boosting-buy-now />
         @break
 
+        @case('boost.checkout')
+            <livewire:frontend.components.boostings.boosting-checkout />
+        @break
+
         @default
             <livewire:frontend.components.boostings.boosting />
     @endswitch

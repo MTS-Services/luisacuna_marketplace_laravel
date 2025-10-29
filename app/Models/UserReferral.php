@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class UserReferral extends BaseModel
+class UserReferral extends BaseModel implements Auditable
 {
+    use  AuditableTrait;
     protected $fillable = [
         'sort_order',
         'user_id',
