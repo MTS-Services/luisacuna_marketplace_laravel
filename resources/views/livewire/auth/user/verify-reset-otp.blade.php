@@ -9,7 +9,7 @@
             <div class="text-center">
                 <h2 class="text-4xl font-medium p-4 text-white">Confirm your account</h2>
                 <p class="text-gray-300 lg:text-xl text-sm">
-                     We have sent a code in an Email message to ex***@gmail.com To confirm your account, please enter the
+                    We have sent a code in an Email message to ex***@gmail.com To confirm your account, please enter the
                     code.
                 </p>
             </div>
@@ -28,14 +28,19 @@
             @enderror
 
             <div class="text-right" id="resend-container">
-                @if($resendCooldown && $resendCooldown > 0)
+                @if(isset($resendLimitReached) && $resendLimitReached)
+                    <span class="text-md text-red-400 font-semibold">
+                        Don't resend again. Maximum limit reached.
+                    </span>
+                @elseif($resendCooldown && $resendCooldown > 0)
                     <span class="text-md text-gray-400">
                         Resend available in <span id="countdown" class="font-semibold text-white">{{ $resendCooldown }}</span>s
+                        <span class="text-xs text-gray-500">({{ 6 - ($resendAttempts ?? 0) }} left)</span>
                     </span>
                 @else
                     <button type="button" wire:click="resendOtp" wire:loading.attr="disabled"
                         class="text-md text-gray-300 hover:underline disabled:opacity-50 disabled:cursor-not-allowed">
-                        <span wire:loading.remove wire:target="resendOtp">Resend</span>
+                        <span wire:loading.remove wire:target="resendOtp">Resend <span class="text-xs text-gray-500">({{ 6 - ($resendAttempts ?? 0) }} left)</span></span>
                         <span wire:loading wire:target="resendOtp">Sending...</span>
                     </button>
                 @endif
@@ -64,6 +69,8 @@
         const STORAGE_TIMESTAMP_KEY = 'password_reset_timestamp_{{ $email }}';
         
         let countdown = @js($resendCooldown);
+        let resendLimitReached = @js($resendLimitReached ?? false);
+        let resendAttempts = @js($resendAttempts ?? 0);
         let countdownElement = document.getElementById('countdown');
         let resendContainer = document.getElementById('resend-container');
         let intervalId = null;
@@ -106,10 +113,19 @@
         }
 
         function updateUI() {
-            if (countdown > 0) {
+            const remainingResends = 6 - resendAttempts;
+            
+            if (resendLimitReached) {
+                resendContainer.innerHTML = `
+                    <span class="text-md text-red-400 font-semibold">
+                        Don't resend again. Maximum limit reached.
+                    </span>
+                `;
+            } else if (countdown > 0) {
                 resendContainer.innerHTML = `
                     <span class="text-md text-gray-400">
                         Resend available in <span id="countdown" class="font-semibold text-white">${countdown}</span>s
+                        <span class="text-xs text-gray-500">(${remainingResends} left)</span>
                     </span>
                 `;
                 countdownElement = document.getElementById('countdown');
@@ -117,7 +133,7 @@
                 resendContainer.innerHTML = `
                     <button type="button" wire:click="resendOtp" wire:loading.attr="disabled"
                         class="text-md text-gray-300 hover:underline disabled:opacity-50 disabled:cursor-not-allowed">
-                        <span wire:loading.remove wire:target="resendOtp">Resend</span>
+                        <span wire:loading.remove wire:target="resendOtp">Resend <span class="text-xs text-gray-500">(${remainingResends} left)</span></span>
                         <span wire:loading wire:target="resendOtp">Sending...</span>
                     </button>
                 `;
@@ -126,7 +142,7 @@
 
         // Check if there's a stored countdown on page load
         const storedTimestamp = localStorage.getItem(STORAGE_TIMESTAMP_KEY);
-        if (storedTimestamp) {
+        if (storedTimestamp && !resendLimitReached) {
             const elapsed = Math.floor((Date.now() - parseInt(storedTimestamp)) / 1000);
             const storedCountdown = parseInt(localStorage.getItem(STORAGE_KEY) || '0');
             const remainingTime = Math.max(0, storedCountdown - elapsed);
@@ -138,14 +154,21 @@
                 localStorage.removeItem(STORAGE_KEY);
                 localStorage.removeItem(STORAGE_TIMESTAMP_KEY);
             }
-        } else if (countdown && countdown > 0) {
+        } else if (countdown && countdown > 0 && !resendLimitReached) {
             // Start countdown from server value
             startCountdown(countdown);
         }
 
         // Listen for resend event to restart countdown
         Livewire.on('otp-resent', () => {
-            startCountdown(30);
+            resendAttempts++;
+            resendLimitReached = resendAttempts >= 6;
+            
+            if (!resendLimitReached) {
+                startCountdown(30);
+            } else {
+                updateUI();
+            }
         });
 
         // Clean up on page unload
