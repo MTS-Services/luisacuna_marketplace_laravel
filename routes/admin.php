@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Admin\Language\LanguageController;
 use App\Http\Controllers\Backend\Admin\UserManagement\UserController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
+use App\Http\Controllers\Backend\Admin\AuditingController;
 
 Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
@@ -64,5 +65,15 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
         Route::get('/edit/{id}', 'edit')->name('edit');
         Route::get('/view/{id}', 'view')->name('view');
         Route::get('/trash', 'trash')->name('trash');
+    });
+
+    Route::group(['prefix' => 'audit-log-management', 'as' => 'alm.'], function () {
+        Route::controller(AuditingController::class)->name('audit.')->prefix('audit')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/view/{id}', 'view')->name('view');
+            Route::get('/trash', 'trash')->name('trash');
+        });
     });
 });

@@ -111,6 +111,17 @@
                     // ],
                 ]" />
 
+                <x-backend.navlink type="dropdown" icon="user-group" name="Audit Log Management" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'Audit Logs',
+                        'route' => route('admin.alm.audit.index'),
+                        'icon' => 'user',
+                        'active' => 'audit-log-management',
+                    ],
+                  
+                ]" />
+
 
             <x-backend.navlink type="single" icon="language" name="Language" :route="route('admin.language.index')"
                 active="language" :page_slug="$active" />

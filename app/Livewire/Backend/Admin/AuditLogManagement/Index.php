@@ -44,18 +44,8 @@ class Index extends Component
                 'sortable' => true
             ],
             [
-                'key' => 'model',
-                'label' => 'Model',
-                'sortable' => true
-            ],
-            [
                 'key' => 'auditable_type',
                 'label' => 'Auditable',
-                'sortable' => true
-            ],
-            [
-                'key' => 'user.name',
-                'label' => 'User',
                 'sortable' => true
             ],
             [
@@ -71,18 +61,16 @@ class Index extends Component
             
             [
                 'key' => 'created_at',
-                'label' => 'Created',
+                'label' => 'Audit Date',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return $data->created_at_formated;
+                    return $data->created_at_formatted;
                 }
             ],
             [
-                'key' => 'created_by',
-                'label' => 'Created By',
-                'format' => function ($data) {
-                    return $data->creater?->name;
-                }
+                'key' => 'user.name',
+                'label' => 'Audit By',
+                'sortable' => true,
             ],
         ];
 
@@ -180,7 +168,6 @@ class Index extends Component
     {
         return [
             'search' => $this->search,
-            'status' => $this->statusFilter,
             'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
         ];

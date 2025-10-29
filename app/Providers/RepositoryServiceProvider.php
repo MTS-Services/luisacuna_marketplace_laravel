@@ -12,7 +12,9 @@ use App\Repositories\Eloquent\AdminRepository;
 use App\Repositories\Eloquent\LanguageRepository;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\AdminRepositoryInterface;
+use App\Repositories\Contracts\AuditRepositoryInterface;
 use App\Repositories\Contracts\LanguageRepositoryInterface;
+use App\Repositories\Eloquent\AuditRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -42,6 +44,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             LanguageRepositoryInterface::class, 
             LanguageRepository::class
+        );
+        $this->app->bind(
+            AuditRepositoryInterface::class, 
+            AuditRepository::class
         );
     }
 

@@ -285,4 +285,23 @@ class Audit extends AuditModel
     {
         return Carbon::parse($this->deleted_at)->format('d M, Y h:i A');
     }
+
+
+       public function scopeSearch($query, $search)
+    {
+        return $query->where(function ($q) use ($search) {
+            $q->where('event', 'like', "%{$search}%")
+                ->orWhere('model', 'like', "%{$search}%");
+        });
+    }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? null, function ($query, $search) {
+            $query->search($search);
+        });
+
+        return $query;
+    }
+
 }
