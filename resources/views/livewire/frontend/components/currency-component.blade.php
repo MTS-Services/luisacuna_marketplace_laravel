@@ -135,46 +135,87 @@
         <div class="title mt-20 mb-6">
             <h2 class="font-semibold text-40px">Popular Currency</h2>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-6">
-            <div class="bg-bg-primary p-6 rounded-2xl">
-                <div class="images w-full h-68">
-                    <img src="{{ asset('assets/images/home_page/Rectangle 163.png') }}" alt=""
-                        class="w-full h-full object-cover rounded-lg">
+        <div class="swiper popular-currency">
+            <div class="swiper-wrapper py-16">
+                <div class="swiper-slide">
+                    <div class="bg-bg-primary p-6 rounded-2xl">
+                        <div class="images w-full h-68">
+                            <img src="{{ asset('assets/images/home_page/Rectangle 163.png') }}" alt=""
+                                class="w-full h-full object-cover rounded-lg">
+                        </div>
+                        <div class="">
+                            <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">EA sports FC Coins</h3>
+                            <p class="text-pink-500 mb-8">50 offer</p>
+                            <x-ui.button class="">See Seller List</x-ui.button>
+                        </div>
+                    </div>
                 </div>
-                <div class="">
-                    <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">EA sports FC Coins</h3>
-                    <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                <div class="swiper-slide">
+                    <div class="bg-bg-primary p-6 rounded-2xl">
+                        <div class="images w-full h-68">
+                            <img src="{{ asset('assets/images/home_page/Rectangle 163 (1).png') }}" alt=""
+                                class="w-full h-full object-cover rounded-lg">
+                        </div>
+                        <div class="">
+                            <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Blade Ball Tokens</h3>
+                            <p class="text-pink-500 mb-8">50 offer</p>
+                            <x-ui.button class="">See Seller List</x-ui.button>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="bg-bg-primary p-6 rounded-2xl">
+                        <div class="images w-full min-h-68">
+                            <img src="{{ asset('assets/images/home_page/Rectangle 163 (2).png') }}" alt=""
+                                class="w-full h-full object-cover rounded-lg">
+                        </div>
+                        <div class="">
+                            <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">New World Coins</h3>
+                            <p class="text-pink-500 mb-8">50 offer</p>
+                            <x-ui.button class="">See Seller List</x-ui.button>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="bg-bg-primary p-6 rounded-2xl">
+                        <div class="images w-full h-68">
+                            <img src="{{ asset('assets/images/home_page/Rectangle 163 (1).png') }}" alt=""
+                                class="w-full h-full object-cover rounded-lg">
+                        </div>
+                        <div class="">
+                            <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Blade Ball Tokens</h3>
+                            <p class="text-pink-500 mb-8">50 offer</p>
+                            <x-ui.button class="">See Seller List</x-ui.button>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="bg-bg-primary p-6 rounded-2xl">
+                        <div class="images w-full min-h-68">
+                            <img src="{{ asset('assets/images/home_page/Rectangle 163 (2).png') }}" alt=""
+                                class="w-full h-full object-cover rounded-lg">
+                        </div>
+                        <div class="">
+                            <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">New World Coins</h3>
+                            <p class="text-pink-500 mb-8">50 offer</p>
+                            <x-ui.button class="">See Seller List</x-ui.button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="bg-bg-primary p-6 rounded-2xl">
-                <div class="images w-full h-68">
-                    <img src="{{ asset('assets/images/home_page/Rectangle 163 (1).png') }}" alt=""
-                        class="w-full h-full object-cover rounded-lg">
-                </div>
-                <div class="">
-                    <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Blade Ball Tokens</h3>
-                    <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
-                </div>
-            </div>
-            <div class="bg-bg-primary p-6 rounded-2xl">
-                <div class="images w-full min-h-68">
-                    <img src="{{ asset('assets/images/home_page/Rectangle 163 (2).png') }}" alt=""
-                        class="w-full h-full object-cover rounded-lg">
-                </div>
-                <div class="">
-                    <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">New World Coins</h3>
-                    <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
-                </div>
+
+            <!-- Add Pagination and Navigation -->
+            <div class="mt-10">
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
             </div>
         </div>
     </section>
     {{-- All Currency --}}
     <section class="container mx-auto mt-10">
         <div class="title mt-20 mb-6">
-            <h2 class="font-semiq text-40px">All Currency</h2>
+            <h2 class="font-semibold text-40px">All Currency</h2>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-6">
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -314,4 +355,39 @@
             <x-ui.button class="w-sm mx-auto">Load More</x-ui.button>
         </div>
     </section>
+    @push('scripts')
+        <script>
+            document.addEventListener('livewire:initialized', function() {
+                const swiper = new Swiper('.popular-currency', {
+                    loop: true,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    // navigation: {
+                    //     nextEl: '.swiper-button-next',
+                    //     prevEl: '.swiper-button-prev',
+                    // },
+                    autoplay: {
+                        delay: 2500,
+                        disableOnInteraction: false,
+                    },
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                    breakpoints: {
+                        640: {
+                            slidesPerView: 1,
+                        },
+                        768: {
+                            slidesPerView: 2,
+                        },
+                        1024: {
+                            slidesPerView: 3,
+                        },
+                    },
+                });
+
+            });
+        </script>
+    @endpush
 </main>
