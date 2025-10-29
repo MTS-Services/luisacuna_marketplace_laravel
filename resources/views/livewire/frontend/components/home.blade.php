@@ -2,21 +2,21 @@
     <!-- Hero Section -->
     <section class=" relative py-20 overflow-hidden">
         <div class="absolute inset-0 z-0 bg-gradient-to-r from-purple-950/50 via-text-white to-purple-950/50">
-            <div class="absolute top-50 -translate-y-1/2 left-0">
-                <img src="{{ asset('assets/images/home_page/Frame 62.png') }}" alt="">
+            <div class="absolute top-50 -translate-y-1/2 left-0 w-32 h-32 md:w-auto md:h-auto">
+                <img src="{{ asset('assets/images/home_page/Frame 62.png') }}" alt="" class="w-full h-full object-fit">
             </div>
 
-            <div class="absolute top-50 translate-y-[-50%] right-0 z-10">
-                <img src="{{ asset('assets/images/home_page/Frame 61.png') }}" alt="">
+            <div class="absolute top-50 translate-y-[-50%] right-0 z-10 w-32 h-32 md:w-auto md:h-auto">
+                <img src="{{ asset('assets/images/home_page/Frame 61.png') }}" alt="" class="w-full h-full object-fit">
             </div>
         </div>
 
-        <div class=" relative z-10 text-center">
+        <div class="container relative z-10 text-center">
             <h1 class="text-5xl md:text-6xl font-bold mb-6 text-text-white">Digital Commerce</h1>
             <p class="text-xl text-text-secondary mb-8 max-w-2xl mx-auto">The most reliable platform to buy and sell
                 high-quality digital products.</p>
 
-            <div class="flex gap-4 justify-center">
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
                 <div>
                     <x-ui.button class="py-2">
                         <flux:icon name="user"
