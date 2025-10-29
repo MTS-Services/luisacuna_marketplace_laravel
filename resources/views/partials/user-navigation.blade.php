@@ -1,6 +1,7 @@
 <nav class="hidden md:flex gap-8 text-sm items-center">
     {{-- <a href="#" class="hover:text-purple-400 transition text-white">Currency</a> --}}
-    <a wire:navigate href="{{ route('currency') }}" class="navbar_style group {{ $pageSlug == 'currency' ? 'active' : '' }}">
+    <a wire:navigate href="{{ route('currency') }}"
+        class="navbar_style group {{ $pageSlug == 'currency' ? 'active' : '' }}">
         <span class="relative z-10">Currency</span>
         <span class="navbar_indicator {{ $pageSlug == 'currency' ? 'active' : '' }}"></span>
     </a>
@@ -40,9 +41,12 @@
     </button> --}}
     <!-- Desktop Search -->
     <div class="relative hidden xl:block">
-        <flux:icon name="magnifying-glass" class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-white"
-            stroke="white" />
+        <flux:icon
+            name="magnifying-glass"
+            class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 stroke-gray-500"
+        />
+
         <input type="text" placeholder="Search"
-            class="border dark:border-white border-gray-600 rounded-full py-1.5 pl-8 pr-2 text-sm text-text-white placeholder-text-text-white focus:outline-none focus:border-purple-500 focus:bg-gray-800 transition-all w-22 focus:w-64 bg-transparent">
+            class="border dark:border-white border-gray-600 rounded-full py-1.5 pl-8 pr-2 text-sm focus:outline-none focus:border-purple-500 focus:bg-gray-800 transition-all w-22 focus:w-64 bg-transparent">
     </div>
 </nav>
