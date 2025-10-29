@@ -88,7 +88,7 @@
                         <!-- Divider -->
                         <div class="flex items-center mb-6 px-4">
                             <hr class="flex-1 border-gray-700" />
-                            <span class="px-3 text-sm sm:text-md text-zinc-200">Or sign in with</span>
+                            <span class="px-3 text-sm sm:text-md text-zinc-400">Or sign in with</span>
                             <hr class="flex-1 border-gray-700" />
                         </div>
 

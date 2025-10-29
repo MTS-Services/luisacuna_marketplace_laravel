@@ -8,7 +8,7 @@
 
     <div class="min-h-[70vh] flex items-center justify-center text-text-white px-4  sm:px-6 lg:px-8 ">
         <form method="POST" wire:submit.prevent="login" class="w-full max-w-md sm:max-w-lg md:max-w-xl">
-            <div class="bg-bg-primary rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col justify-between min-h-[55vh] py-20">
+            <div class="bg-bg-primary rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col justify-between min-h-[55vh]">
 
                 <!-- Header -->
                 <div class="mb-6 text-center">
@@ -73,7 +73,7 @@
                 @endif
 
                 <!-- Sign in button -->
-                <div class=" flex justify-center px-2 sm:px-6">
+                <div class=" flex justify-center px-2 sm:px-6 mb-2 sm:mb-6">
                     <x-ui.button type="submit"
                         class="w-auto py-2!">
                         Sign in
