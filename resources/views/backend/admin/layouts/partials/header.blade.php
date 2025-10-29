@@ -31,16 +31,16 @@
                     icon="magnifying-glass" />
 
                 {{-- <!-- Theme Toggle --> --}}
-                {{-- <flux:button x-data x-on:click="$flux.dark = !$flux.dark" variant="subtle"
+                <flux:button x-data x-on:click="$flux.dark = !$flux.dark" variant="subtle"
                     aria-label="Toggle dark mode">
                     <flux:icon name="moon" class="w-5 h-5" x-show="$flux.dark" />
                     <flux:icon name="sun" class="w-5 h-5" x-show="!$flux.dark" />
-                </flux:button> --}}
-
+                </flux:button>
+{{-- 
                 <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
                     <flux:radio value="light" icon="sun" />
                     <flux:radio value="dark" icon="moon" />
-                </flux:radio.group>
+                </flux:radio.group> --}}
 
                 <!-- Notifications -->
                 <button @click="toggleNotifications()"

@@ -1,10 +1,10 @@
 <nav class="hidden md:flex gap-8 text-sm items-center">
     {{-- <a href="#" class="hover:text-purple-400 transition text-white">Currency</a> --}}
-    <a wire:navigate href="{{ route('currency') }}"
+    <button @click="dropdown = !dropdown"
         class="navbar_style group {{ $pageSlug == 'currency' ? 'active' : '' }}">
         <span class="relative z-10">Currency</span>
         <span class="navbar_indicator {{ $pageSlug == 'currency' ? 'active' : '' }}"></span>
-    </a>
+    </button>
     <a href="{{ route('gift-card.index') }}" class="navbar_style group {{ $pageSlug == 'gift-card' ? 'active' : '' }}">
         <span class="relative z-10">Gift Cards</span>
         <span class="navbar_indicator {{ $pageSlug == 'gift-card' ? 'active' : '' }}"></span>
