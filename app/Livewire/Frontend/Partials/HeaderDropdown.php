@@ -8,13 +8,20 @@ class HeaderDropdown extends Component
 {
     public $dropdownType = '';
     public $search = '';
-    
-    public function mount($dropdownType)
+
+    protected $loaded = [];
+
+    protected $listeners = ['setDropdownType'];
+
+    public function setDropdownType($type)
     {
-        $this->dropdownType = $dropdownType;
+        if (!isset($this->loaded[$type])) {
+            $this->dropdownType = $type;
+            $this->loaded[$type] = true;
+        } else {
+            $this->dropdownType = $type;
+        }
     }
-    
-    // Get content based on dropdown type
     public function getContentProperty()
     {
         return match($this->dropdownType) {

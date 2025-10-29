@@ -1,6 +1,29 @@
-<section class="absolute top-full left-0 right-0 w-full z-50 mt-0" x-show="open != ''" x-hide="open == ''">
-    <div class="container mx-auto px-4 py-6">
-        <div class="bg-bg-primary flex flex-col lg:flex-row items-start justify-between rounded-lg py-11 px-4 lg:px-10 shadow-2xl">
+<section 
+    class="absolute top-full left-0 right-0 w-full z-50 mt-0"
+    x-data 
+    x-show="open != ''"
+    x-transition
+    x-cloak
+    x-effect="$wire.setDropdownType(open)"
+>
+    <div class="container mx-auto px-4 py-6 relative">
+
+        {{-- 🔄 Modern Loader --}}
+        <div 
+            wire:loading.flex 
+            wire:target="setDropdownType, search"
+            class="absolute inset-0 bg-bg-primary/70 backdrop-blur-sm flex flex-col items-center justify-center rounded-lg z-50"
+        >
+            <div class="relative flex items-center justify-center w-12 h-12">
+                <div class="absolute w-12 h-12 border-4 border-purple-500/30 rounded-full"></div>
+                <div class="absolute w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+            <p class="text-sm text-purple-300 mt-3 font-medium tracking-wide">Loading content...</p>
+        </div>
+
+        {{-- 🌟 Dropdown Content --}}
+        <div class="bg-bg-primary flex flex-col lg:flex-row items-start justify-between rounded-lg py-11 px-4 lg:px-10 shadow-2xl" style="min-height:578px">
+            
             {{-- Popular Games Section --}}
             <div class="w-full lg:w-2/3 pt-10 order-2 lg:order-1">
                 <h3 class="text-text-white text-base font-semibold pt-2 mb-6">
@@ -44,6 +67,7 @@
                     @endforeach
                 </div>
             </div>
+
         </div>
     </div>
 </section>
