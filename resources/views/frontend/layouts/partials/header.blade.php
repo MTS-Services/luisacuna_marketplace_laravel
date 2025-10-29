@@ -1,4 +1,4 @@
-<header x-data="{ mobileMenuOpen: false }"
+<header x-data="{ mobileMenuOpen: false, notification: false }"
     class="sticky top-0 z-50 {{ request()->routeIs('home') ? 'bg-gradient-to-r from-purple-950/50 via-text-white to-purple-950/50 glass-card shadow-none!' : 'glass-card' }}">
     <div class="container px-4 py-4 flex items-center justify-between">
         <div class=""><a href="{{ route('home') }}">
@@ -16,7 +16,8 @@
                     </path>
                 </svg>
             </button>
-            <button class="btn btn-ghost btn-circle hover:bg-purple-500/20 mr-2">
+            {{-- Notification --}}
+            <button class="btn btn-ghost btn-circle hover:bg-purple-500/20 mr-2" @click="notification = !notification">
                 <div class="indicator">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 stroke-text-primary" fill="none"
                         viewBox="0 0 24 24" stroke="white">
@@ -85,7 +86,7 @@
 
 
             <button @click="mobileMenuOpen = !mobileMenuOpen"
-                class="md:hidden ml-2 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                class="md:hidden ml-2 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-text-white hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                     stroke="white">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -95,12 +96,11 @@
 
     </div>
     {{-- Mobile sidebar --}}
-    {{-- <div x-show="mobileMenuOpen" x-cloak @click.outside="mobileMenuOpen = false" x-transition:enter="transition ease-out duration-100" class="absolute top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden glass w-sm">
-        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Team</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Projects</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Calendar</a>
-        </div>
-    </div> --}}
+    <div x-show="mobileMenuOpen" x-cloak @click.outside="mobileMenuOpen = false" x-transition:enter="transition ease-out duration-100" class="absolute top-18 right-2 w-3/4 bg-bg-primary backdrop:blure-md z-100 rounded-lg transition-all duration-300 h-[calc(100vh-4.5rem)]">
+        @include('partials.mobile-user-navigation')
+    </div>
+    {{-- Notification --}}
+    <div x-show="notification" x-cloak @click.outside="notification = false" x-transition:enter="transition ease-out duration-100" class="absolute top-18 right-2 w-3/4 bg-bg-primary backdrop:blure-md z-100 rounded-lg transition-all duration-300 h-[calc(100vh-4.5rem)]">
+        <h2 class="text-xl font-bold mb-4 p-2 text-text-white border-b border-bg-secondary">Notification</h2>
+    </div>
 </header>
