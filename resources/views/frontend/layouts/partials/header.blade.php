@@ -1,5 +1,5 @@
 <header x-data="{ mobileMenuOpen: false }"
-    class="sticky top-0 z-50 {{ request()->routeIs('home') ? 'bg-gradient-to-r from-purple-950/50 via-text-white to-purple-950/50' : 'glass-card' }}">
+    class="sticky top-0 z-50 {{ request()->routeIs('home') ? 'bg-gradient-to-r from-purple-950/50 via-text-white to-purple-950/50 glass-card shadow-none!' : 'glass-card' }}">
     <div class="container px-4 py-4 flex items-center justify-between">
         <div class=""><a href="{{ route('home') }}">
                 <img src="{{ asset('assets/images/header_logo.png') }}" alt=""></a>
@@ -9,16 +9,17 @@
 
         <div class="flex items-center">
             <button class="btn btn-ghost btn-circle hover:bg-purple-500/20">
-                <svg class="w-6 h-6 stroke-black" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor"
+                    viewBox="0 0 256 256">
                     <path
-                        d="M32 6C17.64 6 6 17.1 6 30.48C6 38.01 9.69 44.59 15.48 48.84V58L25.23 52.66C27.38 53.26 29.65 53.56 32 53.56C46.36 53.56 58 42.46 58 29.08C58 15.7 46.36 6 32 6ZM33.18 36.44L26.92 30.72L13.32 36.44L26.08 22.68L32.32 28.4L45.92 22.68L33.18 36.44Z"
-                        fill="white" />
+                        d="M181.66,106.34a8,8,0,0,1,0,11.32l-32,32a8,8,0,0,1-11.32,0L112,123.31,85.66,149.66a8,8,0,0,1-11.32-11.32l32-32a8,8,0,0,1,11.32,0L144,132.69l26.34-26.35A8,8,0,0,1,181.66,106.34ZM232,128A104,104,0,0,1,79.12,219.82L45.07,231.17a16,16,0,0,1-20.24-20.24l11.35-34.05A104,104,0,1,1,232,128Zm-16,0A88,88,0,1,0,51.81,172.06a8,8,0,0,1,.66,6.54L40,216,77.4,203.52a8,8,0,0,1,6.54.67A88,88,0,0,0,216,128Z">
+                    </path>
                 </svg>
             </button>
             <button class="btn btn-ghost btn-circle hover:bg-purple-500/20 mr-2">
                 <div class="indicator">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 stroke-text-primary" fill="none"
+                        viewBox="0 0 24 24" stroke="white">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
@@ -61,14 +62,26 @@
                 <flux:radio value="dark" icon="moon" />
             </flux:radio.group> --}}
 
-            <div class="flex items-center">
-                <button x-on:click="$flux.dark = false" class="flex items-center justify-center w-8 h-8 text-white text-lg">
-                    <flux:icon name="sun" class="w-5 h-5" />
+            <div class="flex items-center ml-2" x-data>
+                <!-- Light Mode Button -->
+                <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
+                    class="flex items-center justify-center w-10 h-8 text-lg rounded-l-full transition-colors duration-200"
+                    :class="!$flux.dark ?
+                        'bg-zinc-400 text-white' :
+                        'bg-transparent text-zinc-600 dark:text-zinc-300'">
+                    <flux:icon name="sun" class="w-5 h-5 stroke-white" />
                 </button>
-                <button x-on:click="$flux.dark = true" class="flex items-center justify-center w-10 h-8 bg-[#8c7bbd] rounded-r-full text-white text-lg">
-                    <flux:icon name="moon" class="w-5 h-5 stroke-white" />
+
+                <!-- Dark Mode Button -->
+                <button type="button" @click="$flux.dark = true" :aria-pressed="$flux.dark"
+                    class="flex items-center justify-center w-10 h-8 text-lg rounded-r-full transition-colors duration-200"
+                    :class="$flux.dark ?
+                        'bg-zinc-400 text-white' :
+                        'bg-transparent text-zinc-600 dark:text-zinc-300'">
+                    <flux:icon name="moon" class="w-5 h-5 stroke-current" />
                 </button>
             </div>
+
 
 
             <button @click="mobileMenuOpen = !mobileMenuOpen"
