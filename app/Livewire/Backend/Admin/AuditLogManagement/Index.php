@@ -175,9 +175,9 @@ class Index extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->auditService->getPaginated(
+        return collect($this->auditService->getPaginated(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        )->pluck('id')->toArray();
+        ))->pluck('id')->toArray();
     }
 }

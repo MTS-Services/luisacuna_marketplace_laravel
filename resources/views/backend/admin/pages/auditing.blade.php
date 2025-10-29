@@ -3,7 +3,7 @@
 
     @switch(Route::currentRouteName())
 
-        @case('admin.auditing.view')
+        @case('admin.alm.audit.view')
             <x-slot name="title">Auditing Log Details</x-slot>
             <x-slot name="breadcrumb">Auditing Log > Details </x-slot>
             <livewire:backend.admin.audit-log-management.view :data="$data"/>

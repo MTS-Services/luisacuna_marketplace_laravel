@@ -16,7 +16,7 @@ class AuditingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function view(string $id)
     {
         $data = Audit::find($id);
         if (!$data) {
