@@ -498,7 +498,108 @@
                 <div class="mb-10">
                     <h2 class="font-semibold text-text-white text-5xl">Popular Accoounts</h2>
                 </div>
-                <div class=" sm:flex items-center gap-6">
+                <div class="swiper popular-accounts">
+                    <div class="swiper-wrapper py-16">
+                        <div class="swiper-slide">
+                            <div class="p-6 bg-bg-primary rounded-2xl">
+                                <div class="">
+                                    <div class="w-full h-68">
+                                        <img src="{{ asset('assets/images/items/Grand-Thef- Auto5.jpg') }}"
+                                            alt="" class="w-full h-full object-cover rounded-lg">
+                                    </div>
+                                    <div class="mt-5 mb-8">
+                                        <h2 class="text-2xl text-semibold text-text-white">Grand Theft Auto 5</h2>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <x-ui.button class="">
+                                        See seller list
+                                    </x-ui.button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="p-6 bg-bg-primary rounded-2xl">
+                                <div class="">
+                                    <div class="w-full h-68 rounded-2xl">
+                                        <img src="{{ asset('assets/images/items/Valorant.jpg') }}" alt=""
+                                            class="w-full h-full object-cover rounded-lg">
+                                    </div>
+                                    <div class="mt-5 mb-8">
+                                        <h2 class="text-2xl text-semibold text-text-white">Valorant</h2>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <x-ui.button class="">
+                                        See seller list
+                                    </x-ui.button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="p-6 bg-bg-primary rounded-2xl">
+                                <div class="">
+                                    <div class="w-full h-68 rounded-2xl">
+                                        <img src="{{ asset('assets/images/items/Call-of-Duty.png') }}" alt=""
+                                            class="w-full h-full object-cover rounded-lg">
+                                    </div>
+                                    <div class="mt-5 mb-8">
+                                        <h2 class="text-2xl text-semibold text-text-white">Call of Duty</h2>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <x-ui.button class="">
+                                        See seller list
+                                    </x-ui.button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="p-6 bg-bg-primary rounded-2xl">
+                                <div class="">
+                                    <div class="w-full h-68 rounded-2xl">
+                                        <img src="{{ asset('assets/images/items/Call-of-Duty.png') }}" alt=""
+                                            class="w-full h-full object-cover rounded-lg">
+                                    </div>
+                                    <div class="mt-5 mb-8">
+                                        <h2 class="text-2xl text-semibold text-text-white">Call of Duty</h2>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <x-ui.button class="">
+                                        See seller list
+                                    </x-ui.button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="p-6 bg-bg-primary rounded-2xl">
+                                <div class="">
+                                    <div class="w-full h-68 rounded-2xl">
+                                        <img src="{{ asset('assets/images/items/Call-of-Duty.png') }}" alt=""
+                                            class="w-full h-full object-cover rounded-lg">
+                                    </div>
+                                    <div class="mt-5 mb-8">
+                                        <h2 class="text-2xl text-semibold text-text-white">Call of Duty</h2>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <x-ui.button class="">
+                                        See seller list
+                                    </x-ui.button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add Pagination and Navigation -->
+                    <div class="mt-10">
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+                {{-- <div class=" sm:flex items-center gap-6">
                     <div class="p-6 bg-bg-primary rounded-2xl">
                         <div class="">
                             <div class="w-full h-68">
@@ -547,7 +648,7 @@
                             </x-ui.button>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </section>
         {{-- all items --}}
@@ -764,6 +865,37 @@
         <script>
             document.addEventListener('livewire:initialized', function() {
                 const swiper = new Swiper('.popular-items', {
+                    loop: true,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    // navigation: {
+                    //     nextEl: '.swiper-button-next',
+                    //     prevEl: '.swiper-button-prev',
+                    // },
+                    autoplay: {
+                        delay: 2500,
+                        disableOnInteraction: false,
+                    },
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                    breakpoints: {
+                        640: {
+                            slidesPerView: 1,
+                        },
+                        768: {
+                            slidesPerView: 2,
+                        },
+                        1024: {
+                            slidesPerView: 3,
+                        },
+                    },
+                });
+
+            });
+            document.addEventListener('livewire:initialized', function() {
+                const swiper = new Swiper('.popular-accounts', {
                     loop: true,
                     pagination: {
                         el: '.swiper-pagination',
