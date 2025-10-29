@@ -83,7 +83,7 @@ class Index extends Component
             [
                 'key' => 'id',
                 'label' => 'Delete',
-                'method' => 'admin.alm.audit.delete',
+                'method' => 'confirmDelete',
             ],
         ];
 

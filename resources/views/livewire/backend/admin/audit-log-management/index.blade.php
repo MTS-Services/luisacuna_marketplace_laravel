@@ -5,10 +5,10 @@
                 {{ __('Audit Log List') }}
             </h2>
             <div class="flex items-center gap-2 w-full sm:w-auto">
-                <x-ui.button href="{{ route('admin.alm.audit.trash') }}" type='secondary' class="flex-1 sm:flex-none">
+                {{-- <x-ui.button href="{{ route('admin.alm.audit.trash') }}" type='secondary' class="flex-1 sm:flex-none">
                     <flux:icon name="trash" class="w-4 h-4 stroke-white" />
                     <span class="sm:inline text-white">{{ __('Trash') }}</span>
-                </x-ui.button>
+                </x-ui.button> --}}
             </div>
         </div>
     </div>

@@ -67,7 +67,7 @@
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
-            <h3 class="text-2xl font-bold mb-1 text-gray-900 dark:text-white mb-4">Old Datas</h3>
+            <h3 class="col-span-4 text-2xl font-bold mb-1 text-gray-900 dark:text-white my-4">Old Datas</h3>
             @foreach ($data->old_values as $key => $value)
                 <div class="col-span-1">
                     <p class="text-gray-500 dark:text-gray-400">{{Str::ucfirst($key)}}</p>
@@ -79,7 +79,7 @@
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
-            <h3 class="text-2xl font-bold mb-1 text-gray-900 dark:text-white mb-4">Old Datas</h3>
+            <h3 class="col-span-4 text-2xl font-bold mb-1 text-gray-900 dark:text-white my-4">Old Datas</h3>
             @if(!empty($data->new_values))
 
                 @foreach ($data->new_values as $key => $value)
