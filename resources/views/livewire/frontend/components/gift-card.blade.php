@@ -21,12 +21,14 @@
     {{-- Gift Cards --}}
     <section class="container mx-auto">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-10">
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/1.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/1.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
+            </a>
             <div class="w-full h-72 relative">
                 <img src="{{ asset('assets/images/gift_cards/2.png') }}" alt="" class="w-full h-full">
                 <div class="absolute top-2.5 right-2.5">
