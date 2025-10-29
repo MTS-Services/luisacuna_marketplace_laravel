@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\DB;
 class CreateAction
 {
     public function __construct(
-        protected CurrencyRepositoryInterface $currencyInterface
+        protected CurrencyRepositoryInterface $interface
     ) {}
 
 
     public function execute(array $data): Currency
     {
         return DB::transaction(function () use ($data) {
-            $currency = $this->currencyInterface->create($data);
+            $currency = $this->interface->create($data);
             // Dispatch event
             // event(new CurrencyCreated($currency));
             return $currency->fresh();
