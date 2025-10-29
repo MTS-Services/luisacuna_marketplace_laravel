@@ -69,7 +69,7 @@
                     {{ __('Cancel') }}
                 </x-ui.button>
 
-                <x-ui.button class="w-auto! py-2!">
+                <x-ui.button class="w-auto! py-2!" type="submit">
                     <span wire:loading.remove wire:target="save"
                         class="text-text-btn-primary group-hover:text-text-btn-secondary">Create
                         Admin</span>

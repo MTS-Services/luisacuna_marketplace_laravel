@@ -51,25 +51,12 @@ class Create extends Component
     {
         $this->form->validate();
         try {
-            $dto = CreateDTO::fromArray([
-                'code' => $this->form->code,
-                'symbol' => $this->form->symbol,
-                'name' => $this->form->name,
-                'exchange_rate' => $this->form->exchange_rate,
-                'decimal_places' => $this->form->decimal_places,
-                'status' => $this->form->status,
-                'is_default' => $this->form->is_default,
-                'created_by' => admin()->id
-
-            ]);
-
-            $currency = $this->currencyService->createData($dto);
+            $currency = $this->currencyService->createData($this->form->fillables());
 
             // $this->dispatch('currencyCreated');
             $this->success('Data created successfully.');
 
             return $this->redirect(route('admin.as.currency.index'), navigate: true);
-
         } catch (\Exception $e) {
             $this->error('Failed to create data: ' . $e->getMessage());
         }
@@ -78,8 +65,8 @@ class Create extends Component
     /**
      * Cancel creation and redirect back to index.
      */
-    public function cancel(): void
+    public function resetForm(): void
     {
-        $this->redirect(route('admin.as.currency.index'), navigate: true);
+        $this->form->reset();
     }
 }

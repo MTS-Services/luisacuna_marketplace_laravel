@@ -37,7 +37,7 @@ class CurrencyRepository implements CurrencyRepositoryInterface
 
     public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        $query = $this->model->onlyTrashed()->orderBy('deleted_at', 'desc');
+        $query = $this->model->onlyTrashed();
         // Apply filters
         if (!empty($filters)) {
             $query->filter($filters);
