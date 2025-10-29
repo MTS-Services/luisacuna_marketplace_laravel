@@ -8,9 +8,9 @@
                 }
             </script>
 
-            <div class="min-h-screen flex items-center justify-center bg-[#0D061A] text-white px-4 sm:px-6 lg:px-8">
+            <div class="min-h-[80vh] flex items-center justify-center bg-bg-primary text-white px-4 sm:px-6 lg:px-8">
                 <form method="POST" wire:submit.prevent="resetPassword" class="w-full max-w-md sm:max-w-lg md:max-w-xl">
-                    <div class="bg-[#1a0b2e] rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col justify-between h-[900px]">
+                    <div class="bg-bg-primary rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col justify-between h-[900px]">
 
                         <!-- Header -->
                         <div class="mb-6 text-center">
