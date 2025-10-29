@@ -18,6 +18,7 @@ class VerifyResetOtp extends Component
 
     public OtpForm $form;
     public string $email = '';
+    public ?int $resendCooldown = null;
 
     public function mount()
     {
@@ -28,6 +29,18 @@ class VerifyResetOtp extends Component
             $this->error('Session expired. Please start the password reset process again.');
             $this->redirect(route('password.request'), navigate: true);
             return;
+        }
+
+        // Check if there's an active cooldown
+        $this->updateResendCooldown();
+    }
+
+    public function updateResendCooldown()
+    {
+        if (RateLimiter::tooManyAttempts($this->resendThrottleKey(), 1)) {
+            $this->resendCooldown = RateLimiter::availableIn($this->resendThrottleKey());
+        } else {
+            $this->resendCooldown = null;
         }
     }
 
@@ -65,7 +78,7 @@ class VerifyResetOtp extends Component
                 ]);
             }
 
-            if ($otpVerification->attempts >= 5) {
+            if ($otpVerification->attempts >= 6) {
                 throw ValidationException::withMessages([
                     'form.code' => 'Too many failed attempts. Please request a new code.',
                 ]);
@@ -73,7 +86,7 @@ class VerifyResetOtp extends Component
 
             if (!verify_otp($user, $this->form->code, OtpType::PASSWORD_RESET)) {
                 RateLimiter::hit($this->throttleKey());
-                $remainingAttempts = 5 - $otpVerification->fresh()->attempts;
+                $remainingAttempts = 6 - $otpVerification->fresh()->attempts;
 
                 throw ValidationException::withMessages([
                     'form.code' => "The verification code is incorrect. {$remainingAttempts} attempts remaining.",
@@ -125,15 +138,17 @@ class VerifyResetOtp extends Component
         Log::info('Resent Password Reset OTP for User: ' . $user->email . ' - Code: ' . $otpVerification->code);
         $user->notify(new UserOtpNotification($otpVerification->code));
 
-        RateLimiter::hit($this->resendThrottleKey(), 60);
+        // Set 30 second cooldown
+        RateLimiter::hit($this->resendThrottleKey(), 30);
+        $this->resendCooldown = 30;
 
         $this->success('A new verification code has been sent to your email.');
-        $this->dispatch('clear-auth-code');
+        $this->dispatch('otp-resent');
     }
 
     protected function ensureIsNotRateLimited(): void
     {
-        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 6)) {
             return;
         }
 
