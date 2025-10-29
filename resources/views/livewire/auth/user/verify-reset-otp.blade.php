@@ -29,23 +29,24 @@
 
             <div class="text-right">
                 <button type="button" wire:click="resendOtp" class="text-md text-gray-300 hover:underline">
-                    don't have resent again?
+                    Rsent
                 </button>
             </div>
 
             <!-- Submit button -->
             <div>
-                <button type="submit"
-                    class="w-full bg-[#853fee] hover:bg-purple-700 transition-colors text-white font-medium py-3 rounded-full">
-                    Verify
-                </button>
+                <div>
+                    <x-ui.button class="w-auto py-2!">
+                        {{ __('Verify') }}
+                    </x-ui.button>
+                </div>
             </div>
 
             <!-- Back to login page -->
-            <div class="text-center w-full bg-[#fff] py-3 rounded-full">
-                <a href="{{ route('login') }}" class="text-purple-700 text-lg">
-                    Back
-                </a>
+            <div >
+                <x-ui.button href="{{ route('login') }}" variant='secondary' class="w-auto py-2!">
+                    {{ __('Back') }}
+                </x-ui.button>
             </div>
         </form>
     </div>

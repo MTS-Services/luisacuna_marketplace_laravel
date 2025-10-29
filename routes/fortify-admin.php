@@ -76,7 +76,7 @@ Route::middleware(['auth:web'])->group(function () {
         }
 
         return back()->with('status', 'two-factor-authentication-confirmed');
-    })->name('two-factor.confirm');
+    })->name('user.two-factor.confirm');
 
     // Disable 2FA
     Route::delete('user/two-factor-authentication', [TwoFactorAuthenticationController::class, 'destroy'])
