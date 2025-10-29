@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <select
-                        class="bg-bg-primary border border-slate-700 rounded-full px-4 py-2 focus:outline-none focus:border-purple-500">
+                        class="bg-bg-primary  border border-slate-700 rounded-full px-4 py-2 focus:outline-none focus:border-purple-500">
                         <option>Device</option>
                     </select>
                     <select
@@ -74,50 +74,50 @@
                 <!-- Game Tags -->
                 <div class="flex gap-2 flex-wrap">
                     <button
-                        class="px-3 py-1 bg-slate-800/60 rounded text-sm hover:bg-slate-500 transition">Robux</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">Steel A
+                        class="px-3 py-1 bg-slate-800/60 rounded text-sm hover:bg-slate-500 transition text-white">Robux</button>
+                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Steel A
                         Brainrot</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">Grow A
+                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Grow A
                         Garden</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">Hunty
+                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Hunty
                         Zombie</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">99 Nights In
+                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">99 Nights In
                         The Forest</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">prospecting</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">All Star
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">prospecting</button>
+                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">All Star
                         Tower
                         Defense X</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">Ink
+                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Ink
                         Game</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">Garden Tower
+                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Garden Tower
                         Defense</button>
                 </div>
 
                 <div class="flex gap-2 flex-wrap">
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">Bubble Gum
+                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Bubble Gum
                         Simulator</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">Dead
+                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Dead
                         Rails</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">TYPE./
+                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">TYPE./
                         ISOUL</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">Hypershot</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">Build A
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Hypershot</button>
+                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Build A
                         Zoo</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">Gems</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Gems</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">Rivals</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">MM2</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">Blox
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Rivals</button>
+                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">MM2</button>
+                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Blox
                         Fruit</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">Pet
+                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Pet
                         Simulator
                         99</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">Spin</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition">Adopt
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Spin</button>
+                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Adopt
                         Me</button>
                 </div>
 

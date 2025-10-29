@@ -44,6 +44,21 @@ class BaseModel extends Model
     {
         return $this->belongsTo(User::class, 'deleted_by')->select('id', 'name');
     }
+    
+    public function creater()
+    {
+        return $this->morphTo();
+    }
+
+    public function updater()
+    {
+        return $this->morphTo();
+    }
+
+    public function deleter()
+    {
+        return $this->morphTo();
+    }
 
     /* ================================================================
      |  Accessors

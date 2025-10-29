@@ -1,11 +1,11 @@
 <nav class="hidden md:flex gap-8 text-sm items-center">
     {{-- <a href="#" class="hover:text-purple-400 transition text-white">Currency</a> --}}
-    <a wire:navigate href="{{ route('currency') }}"
+    <button @click="dropdown = !dropdown"
         class="navbar_style group {{ $pageSlug == 'currency' ? 'active' : '' }}">
         <span class="relative z-10">Currency</span>
         <span class="navbar_indicator {{ $pageSlug == 'currency' ? 'active' : '' }}"></span>
-    </a>
-    <a href="#" class="navbar_style group {{ $pageSlug == 'gift-card' ? 'active' : '' }}">
+    </button>
+    <a href="{{ route('gift-card.index') }}" class="navbar_style group {{ $pageSlug == 'gift-card' ? 'active' : '' }}">
         <span class="relative z-10">Gift Cards</span>
         <span class="navbar_indicator {{ $pageSlug == 'gift-card' ? 'active' : '' }}"></span>
     </a>
@@ -43,10 +43,10 @@
     <div class="relative hidden xl:block">
         <flux:icon
             name="magnifying-glass"
-            class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 stroke-gray-500"
+            class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 stroke-text-primary"
         />
 
         <input type="text" placeholder="Search"
-            class="border dark:border-white border-gray-600 rounded-full py-1.5 pl-8 pr-2 text-sm focus:outline-none focus:border-purple-500 focus:bg-gray-800 transition-all w-22 focus:w-64 bg-transparent">
+            class="border dark:border-white border-gray-600 rounded-full py-1.5 pl-8 pr-2 text-sm focus:outline-none focus:border-purple-500 focus:bg-bg-primary transition-all w-22 focus:w-64 bg-transparent placeholder:text-text-primary">
     </div>
 </nav>

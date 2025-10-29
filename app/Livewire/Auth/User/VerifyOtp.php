@@ -10,12 +10,16 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\On;
 
 class VerifyOtp extends Component
 {
     use WithNotification;
 
     public OtpForm $form;
+    public ?int $resendCooldown = null;
+    public int $resendAttempts = 0;
+    public bool $resendLimitReached = false;
 
     public function mount()
     {
@@ -29,8 +33,41 @@ class VerifyOtp extends Component
             return redirect()->route('user.profile');
         }
 
-        // Generate and send OTP when component loads
-        $this->sendOtp();
+        // Load resend attempts from cache
+        $this->loadResendAttempts();
+
+        // Check if there's an active cooldown
+        $this->updateResendCooldown();
+
+        // Generate and send OTP when component loads (only if no cooldown)
+        if ($this->resendCooldown === null && !$this->resendLimitReached) {
+            $this->sendOtp();
+        }
+    }
+
+    protected function loadResendAttempts()
+    {
+        $cacheKey = 'otp_resend_attempts:' . user()->id;
+        $this->resendAttempts = cache()->get($cacheKey, 0);
+        $this->resendLimitReached = $this->resendAttempts >= 6;
+    }
+
+    protected function incrementResendAttempts()
+    {
+        $this->resendAttempts++;
+        $cacheKey = 'otp_resend_attempts:' . user()->id;
+        // Store attempts for 1 hour
+        cache()->put($cacheKey, $this->resendAttempts, now()->addHour());
+        $this->resendLimitReached = $this->resendAttempts >= 6;
+    }
+
+    public function updateResendCooldown()
+    {
+        if (RateLimiter::tooManyAttempts($this->resendThrottleKey(), 1)) {
+            $this->resendCooldown = RateLimiter::availableIn($this->resendThrottleKey());
+        } else {
+            $this->resendCooldown = null;
+        }
     }
 
     protected function sendOtp(): void
@@ -79,7 +116,7 @@ class VerifyOtp extends Component
                 ]);
             }
 
-            if ($otpVerification->attempts >= 5) {
+            if ($otpVerification->attempts >= 6) {
                 throw ValidationException::withMessages([
                     'form.code' => 'Too many failed attempts. Please request a new code.',
                 ]);
@@ -87,7 +124,7 @@ class VerifyOtp extends Component
 
             if (!verify_otp($user, $this->form->code, OtpType::EMAIL_VERIFICATION)) {
                 RateLimiter::hit($this->throttleKey());
-                $remainingAttempts = 5 - $otpVerification->fresh()->attempts;
+                $remainingAttempts = 6 - $otpVerification->fresh()->attempts;
 
                 throw ValidationException::withMessages([
                     'form.code' => "The verification code is incorrect. {$remainingAttempts} attempts remaining.",
@@ -96,6 +133,9 @@ class VerifyOtp extends Component
 
             $user->markEmailAsVerified();
             RateLimiter::clear($this->throttleKey());
+
+            // Clear resend attempts on successful verification
+            cache()->forget('otp_resend_attempts:' . $user->id);
 
             $this->success('Email verified successfully!');
             $this->dispatch('clear-auth-code');
@@ -106,7 +146,7 @@ class VerifyOtp extends Component
             throw $e;
         } catch (\Throwable $e) {
             Log::error('OTP verification failed', [
-                'user_id' => $user->id ?? null,
+                'user_id' => user()->id ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
@@ -117,6 +157,12 @@ class VerifyOtp extends Component
 
     public function resend(): void
     {
+        // Check if limit reached
+        if ($this->resendLimitReached) {
+            $this->error('Maximum resend limit reached. Please contact support.');
+            return;
+        }
+
         $this->ensureResendIsNotRateLimited();
 
         $user = user();
@@ -125,15 +171,20 @@ class VerifyOtp extends Component
         Log::info('Resent OTP Code for User ID ' . $user->id . ': ' . $otpVerification->code);
         $user->notify(new UserOtpNotification($otpVerification->code));
 
-        RateLimiter::hit($this->resendThrottleKey(), 60);
+        // Increment attempts
+        $this->incrementResendAttempts();
+
+        // Set  (30 seconds) cooldown
+        RateLimiter::hit($this->resendThrottleKey(), 30);
+        $this->resendCooldown = 30;
 
         $this->success('A new verification code has been sent to your email.');
-        $this->dispatch('clear-auth-code');
+        $this->dispatch('otp-resent', ['attempts' => $this->resendAttempts]);
     }
 
     protected function ensureIsNotRateLimited(): void
     {
-        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 6)) {
             return;
         }
 
