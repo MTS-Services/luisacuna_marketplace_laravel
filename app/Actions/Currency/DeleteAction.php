@@ -12,15 +12,15 @@ class DeleteAction
         protected CurrencyRepositoryInterface $interface
     ) {}
 
-    public function execute(int $currencyId, bool $forceDelete = false): bool
+    public function execute(int $id, bool $forceDelete = false): bool
     {
-        return DB::transaction(function () use ($currencyId, $forceDelete) {
+        return DB::transaction(function () use ($id, $forceDelete) {
             $currency = null;
 
             if ($forceDelete) {
-                $currency = $this->interface->findTrashed($currencyId);
+                $currency = $this->interface->findTrashed($id);
             } else {
-                $currency = $this->interface->find($currencyId);
+                $currency = $this->interface->find($id);
             }
 
             if (!$currency) {
@@ -31,15 +31,10 @@ class DeleteAction
             // event(new CurrencyDeleted($currency));
 
             if ($forceDelete) {
-                return $this->interface->forceDelete($currencyId);
+                return $this->interface->forceDelete($id);
             }
 
-            return $this->interface->delete($currencyId);
+            return $this->interface->delete($id);
         });
-    }
-
-    public function restore(int $currencyId): bool
-    {
-        return $this->interface->restore($currencyId);
     }
 }
