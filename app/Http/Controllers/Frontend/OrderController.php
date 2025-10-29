@@ -20,4 +20,10 @@ class OrderController extends Controller
         return view($this->master);
         
     }
+
+    public function chatHelp(){ 
+
+        return view($this->master);
+        
+    }
 }
