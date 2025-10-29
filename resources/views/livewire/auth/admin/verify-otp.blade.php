@@ -1,4 +1,4 @@
-<div class="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 dark:bg-gray-900 sm:px-6 lg:px-8">
+<div class="flex min-h-[80vh] items-center justify-center bg-gray-50 px-4 py-12 dark:bg-gray-900 sm:px-6 lg:px-8">
     <div class="w-full max-w-md space-y-8">
         <div class="text-center">
             <div
@@ -72,15 +72,25 @@
                     </button>
                 </div>
 
-                <div class="text-center">
+                <div class="text-center" id="resend-container">
                     <p class="text-sm text-gray-600 dark:text-gray-400">
                         Didn't receive the code?
                     </p>
-                    <button type="button" wire:click="resend" wire:loading.attr="disabled"
-                        class="mt-2 text-sm font-medium text-indigo-600 hover:text-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed dark:text-indigo-400 dark:hover:text-indigo-300">
-                        <span wire:loading.remove wire:target="resend">Resend Code</span>
-                        <span wire:loading wire:target="resend">Sending...</span>
-                    </button>
+                    @if($resendLimitReached)
+                        <span class="mt-2 inline-block text-sm font-semibold text-red-600 dark:text-red-400">
+                            Don't resend again. Maximum limit reached.
+                        </span>
+                    @elseif($resendCooldown && $resendCooldown > 0)
+                        <span class="mt-2 inline-block text-sm text-gray-600 dark:text-gray-400">
+                            Resend available in <span id="countdown" class="font-semibold text-indigo-600 dark:text-indigo-400">{{ $resendCooldown }}</span>s
+                        </span>
+                    @else
+                        <button type="button" wire:click="resend" wire:loading.attr="disabled"
+                            class="mt-2 text-sm font-medium text-indigo-600 hover:text-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed dark:text-indigo-400 dark:hover:text-indigo-300">
+                            <span wire:loading.remove wire:target="resend">Resend Code</span>
+                            <span wire:loading wire:target="resend">Sending...</span>
+                        </button>
+                    @endif
                 </div>
             </form>
         </div>
@@ -103,3 +113,146 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('livewire:initialized', () => {
+        const STORAGE_KEY = 'admin_otp_resend_countdown_{{ admin()->id }}';
+        const STORAGE_TIMESTAMP_KEY = 'admin_otp_resend_timestamp_{{ admin()->id }}';
+
+        let countdown = @js($resendCooldown);
+        let resendLimitReached = @js($resendLimitReached);
+        let resendAttempts = @js($resendAttempts);
+        let countdownElement = document.getElementById('countdown');
+        let resendContainer = document.getElementById('resend-container');
+        let intervalId = null;
+
+        function startCountdown(initialSeconds) {
+            // Clear any existing interval
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+
+            countdown = initialSeconds;
+
+            // Store initial countdown and timestamp
+            localStorage.setItem(STORAGE_KEY, countdown);
+            localStorage.setItem(STORAGE_TIMESTAMP_KEY, Date.now());
+
+            // Update UI immediately
+            updateUI();
+
+            intervalId = setInterval(() => {
+                countdown--;
+
+                // Update localStorage
+                localStorage.setItem(STORAGE_KEY, countdown);
+
+                // Update UI
+                updateUI();
+
+                if (countdown <= 0) {
+                    clearInterval(intervalId);
+                    localStorage.removeItem(STORAGE_KEY);
+                    localStorage.removeItem(STORAGE_TIMESTAMP_KEY);
+
+                    // Update component state and reload
+                    @this.updateResendCooldown().then(() => {
+                        location.reload();
+                    });
+                }
+            }, 1000);
+        }
+
+        function updateUI() {
+            if (resendLimitReached) {
+                resendContainer.innerHTML = `
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        Didn't receive the code?
+                    </p>
+                    <span class="mt-2 inline-block text-sm font-semibold text-red-600 dark:text-red-400">
+                        Don't resend again. Maximum limit reached.
+                    </span>
+                `;
+            } else if (countdown > 0) {
+                resendContainer.innerHTML = `
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        Didn't receive the code?
+                    </p>
+                    <span class="mt-2 inline-block text-sm text-gray-600 dark:text-gray-400">
+                        Resend available in <span id="countdown" class="font-semibold text-indigo-600 dark:text-indigo-400">${countdown}</span>s
+                    </span>
+                `;
+                countdownElement = document.getElementById('countdown');
+            } else {
+                resendContainer.innerHTML = `
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        Didn't receive the code?
+                    </p>
+                    <button type="button" wire:click="resend" wire:loading.attr="disabled"
+                        class="mt-2 text-sm font-medium text-indigo-600 hover:text-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed dark:text-indigo-400 dark:hover:text-indigo-300">
+                        <span wire:loading.remove wire:target="resend">Resend Code</span>
+                        <span wire:loading wire:target="resend">Sending...</span>
+                    </button>
+                `;
+            }
+        }
+
+        // Check if there's a stored countdown on page load
+        const storedTimestamp = localStorage.getItem(STORAGE_TIMESTAMP_KEY);
+        if (storedTimestamp && !resendLimitReached) {
+            const elapsed = Math.floor((Date.now() - parseInt(storedTimestamp)) / 1000);
+            const storedCountdown = parseInt(localStorage.getItem(STORAGE_KEY) || '0');
+            const remainingTime = Math.max(0, storedCountdown - elapsed);
+
+            if (remainingTime > 0) {
+                startCountdown(remainingTime);
+            } else {
+                // Clean up expired countdown
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.removeItem(STORAGE_TIMESTAMP_KEY);
+            }
+        } else if (countdown && countdown > 0 && !resendLimitReached) {
+            // Start countdown from server value
+            startCountdown(countdown);
+        }
+
+        // Listen for resend event to restart countdown
+        Livewire.on('otp-resent', (event) => {
+            // Get attempts from event data
+            if (event && event[0] && event[0].attempts) {
+                resendAttempts = event[0].attempts;
+            } else {
+                resendAttempts++;
+            }
+
+            resendLimitReached = resendAttempts >= 6;
+
+            console.log('Resend event received', {
+                attempts: resendAttempts,
+                limitReached: resendLimitReached
+            });
+
+            if (!resendLimitReached) {
+                startCountdown(120); // 2 minutes countdown
+            } else {
+                updateUI();
+            }
+        });
+
+        // Listen for clear-auth-code event
+        Livewire.on('clear-auth-code', () => {
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+            localStorage.removeItem(STORAGE_KEY);
+            localStorage.removeItem(STORAGE_TIMESTAMP_KEY);
+        });
+
+        // Clean up on page unload
+        window.addEventListener('beforeunload', () => {
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+        });
+    });
+</script>

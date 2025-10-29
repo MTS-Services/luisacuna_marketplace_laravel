@@ -19,11 +19,11 @@ return new class extends Migration
             $table->unsignedBigInteger('sort_order')->index()->default(0);
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at');
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('phone')->index();
-            $table->timestamp('phone_verified_at');
+            $table->timestamp('phone_verified_at')->nullable();
             $table->string('password');
-            $table->string('avatar');
+            $table->string('avatar')->nullable();
             $table->string('status')->index()->default(AdminStatus::ACTIVE->value);
             $table->boolean('two_factor_enabled')->default(false);
             $table->timestamp('last_login_at')->nullable();
