@@ -1,5 +1,5 @@
 <div class="container mx-auto">
-    <div class="min-h-screen flex items-center justify-center  text-white">
+    <div class="min-h-[80vh] flex items-center justify-center  text-white">
         <form wire:submit="verify"
             class="w-full min-h-[50vh] max-w-lg bg-bg-primary rounded-2xl p-8 shadow-lg space-y-8">
 
