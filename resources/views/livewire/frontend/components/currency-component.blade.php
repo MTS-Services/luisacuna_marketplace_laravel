@@ -357,7 +357,7 @@
     </section>
     @push('scripts')
         <script>
-            document.addEventListener('livewire:initialized', function() {
+            document.addEventListener('DOMContentLoaded', function() {
                 const swiper = new Swiper('.popular-currency', {
                     loop: true,
                     pagination: {
