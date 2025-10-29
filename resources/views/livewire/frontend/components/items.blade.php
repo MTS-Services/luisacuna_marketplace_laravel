@@ -70,7 +70,7 @@
                         class="w-full h-full object-cover">
                 </div>
                 <div class="">
-                    <h2 class="font-semibold text-text-white text-5xl">Items</h2>
+                    <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">Items</h2>
                 </div>
             </div>
             <div class="flex items-center justify-between gap-4 mt-3.5">
@@ -91,7 +91,7 @@
         <section class="container mx-auto">
             <div class="mt-10">
                 <div class="mb-10">
-                    <h2 class="font-semibold text-text-white text-5xl">Popular Item</h2>
+                    <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">Popular Item</h2>
                 </div>
                 <div class="swiper popular-items">
                     <div class="swiper-wrapper py-16">
@@ -199,7 +199,7 @@
         {{-- all items --}}
         <section class="container mx-auto mt-10">
             <div class="mb-10">
-                <h2 class="font-semibold text-text-white text-5xl">All Item</h2>
+                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">All Item</h2>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center gap-6">
                 <div class="p-6 bg-bg-primary rounded-2xl">
@@ -395,9 +395,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-10 mb-10 text-center">
-                <x-ui.button class="w-sm mx-auto block">Load More</x-ui.button>
-            </div>
+            
             <div class="pagination mb-24">
                 <x-frontend.pagination-ui />
             </div>
@@ -427,7 +425,7 @@
             {{-- filter section --}}
             <div class="flex items-center gap-1 mt-10 mb-10">
                 <div class="">
-                    <h2 class="font-semibold text-text-white text-5xl">Accounts</h2>
+                    <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">Accounts</h2>
                 </div>
             </div>
             <div class="flex items-center justify-between gap-4 mt-3.5">
@@ -448,7 +446,7 @@
         <section class="container mx-auto">
             <div class="mt-10">
                 <div class="mb-10">
-                    <h2 class="font-semibold text-text-white text-5xl">Popular Accoounts</h2>
+                    <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">Popular Accoounts</h2>
                 </div>
                 <div class="swiper popular-accounts">
                     <div class="swiper-wrapper py-16">
@@ -606,7 +604,7 @@
         {{-- all items --}}
         <section class="container mx-auto mt-10">
             <div class="mb-10">
-                <h2 class="font-semibold text-text-white text-5xl">All Item</h2>
+                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">All Item</h2>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center gap-6">
                 <div class="p-6 bg-bg-primary rounded-2xl">
@@ -802,9 +800,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-10 mb-10 text-center">
-                <x-ui.button class="w-sm mx-auto block">Load More</x-ui.button>
-            </div>
+            
             <div class="pagination mb-24">
                 <x-frontend.pagination-ui />
             </div>
@@ -834,7 +830,7 @@
             {{-- filter section --}}
             <div class="flex items-center justify-between my-10">
                 <div class="w-full">
-                    <h2 class="font-semibold text-text-white text-5xl">Top up</h2>
+                    <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">Top up</h2>
                     <p class="text-text-white text-20px pt-3">
                         Different from gift cards or vouchers, U7BUY provides a Top Up service with which you can add
                         funds directly to your balance. It contains a large variety, including mobile games, live
@@ -864,7 +860,7 @@
         <section class="container mx-auto">
             <div class="mt-10">
                 <div class="mb-10">
-                    <h2 class="font-semibold text-text-white text-5xl">Popular Now</h2>
+                    <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">Popular Now</h2>
                 </div>
                 <div class="swiper popular-toUp">
                     <div class="swiper-wrapper py-16">
@@ -974,7 +970,7 @@
         <section class="container mx-auto">
             <div class="mt-10">
                 <div class="mb-10">
-                    <h2 class="font-semibold text-text-white text-5xl">Newly Launched</h2>
+                    <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">Newly Launched</h2>
                 </div>
                 <div class="swiper popular-launched">
                     <div class="swiper-wrapper py-16">
@@ -1083,7 +1079,7 @@
         {{-- All Game --}}
         <section class="container mx-auto mt-10">
             <div class="mb-10">
-                <h2 class="font-semibold text-text-white text-5xl">All Game</h2>
+                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">All Game</h2>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center gap-6">
                 <div class="p-6 bg-bg-primary rounded-2xl">
@@ -1231,9 +1227,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-10 mb-10 text-center">
-                <x-ui.button class="w-sm mx-auto block">Load More</x-ui.button>
-            </div>
+            
             <div class="pagination mb-24">
                 <x-frontend.pagination-ui />
             </div>
@@ -1280,7 +1274,7 @@
         <section class="container mx-auto">
             <div class="mt-10">
                 <div class="mb-10">
-                    <h2 class="font-semibold text-text-white text-5xl">Popular Now</h2>
+                    <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">Popular Now</h2>
                 </div>
                 <div class="swiper popular-toUp">
                     <div class="swiper-wrapper pt-10">
@@ -1393,7 +1387,7 @@
         <section class="container mx-auto">
             <div class="mt-10">
                 <div class="mb-10">
-                    <h2 class="font-semibold text-text-white text-5xl">Newly Launched</h2>
+                    <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">Newly Launched</h2>
                 </div>
                 <div class="swiper popular-launched">
                     <div class="swiper-wrapper py-16">
@@ -1502,7 +1496,7 @@
         {{-- All brands for Coaching --}}
         <section class="container mx-auto mt-10">
             <div class="mb-10">
-                <h2 class="font-semibold text-text-white text-5xl">All brands for Coaching</h2>
+                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">All brands for Coaching</h2>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center gap-6">
                 <div class="p-6 bg-bg-primary rounded-2xl">
@@ -1650,9 +1644,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-10 mb-10 text-center">
-                <x-ui.button class="w-sm mx-auto block">Load More</x-ui.button>
-            </div>
+            
             <div class="pagination mb-24">
                 <x-frontend.pagination-ui />
             </div>
