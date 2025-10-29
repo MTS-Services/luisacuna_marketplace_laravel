@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\KycSettingStatus;
 use App\Enums\UserAccountStatus;
 use App\Enums\UserStatus;
 use App\Enums\UserType;
@@ -45,7 +46,7 @@ return new class extends Migration
 
             $table->string('user_type')->index()->default(UserType::BUYER->value);
             $table->string('account_status')->index()->default(UserAccountStatus::PENDING_VERIFICATION->value);
-            $table->string('kyc_status');
+            $table->string('kyc_status')->index()->default(KycSettingStatus::INACTIVE->value);
 
             $table->timestamp('last_login_at')->nullable();
             $table->string('last_login_ip')->nullable();

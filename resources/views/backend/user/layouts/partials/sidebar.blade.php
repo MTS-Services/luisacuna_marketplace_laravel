@@ -1,6 +1,6 @@
 <div class="h-full z-50">
     <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-        class="fixed h-full lg:static inset-y-0 left-0 z-50 w-64 sm:w-72 md:w-80 lg:w-68 bg-zinc-950 transition-transform duration-300 ease-in-out lg:translate-x-0 overflow-y-auto px-6">
+        class="fixed h-full lg:static inset-y-0 left-0 z-50 w-64 sm:w-72 md:w-80 lg:w-68 bg-bg-secondary transition-transform duration-300 ease-in-out lg:translate-x-0 overflow-y-auto px-6">
         <div class="flex flex-col h-full">
             <!-- Mobile Close Button -->
             <div class="lg:hidden flex items-center justify-between px-4 py-3 border-b border-gray-800">
@@ -20,7 +20,7 @@
                     isActive: {{ in_array($pageSlug, ['dashboard', '']) ? 'true' : 'false' }}
                 }">
                     <!-- Orders button -->
-                    <button x-cloak @click="ordersOpen = !ordersOpen" :class="isActive ? 'bg-black relative' : 'bg-transparent'"
+                    <button x-cloak @click="ordersOpen = !ordersOpen" :class="isActive ? 'bg-black  relative' : 'bg-transparent'"
                         class="w-full flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg transition-all text-white hover:bg-gray-500/50">
                         <div class="flex items-center space-x-2 sm:space-x-3">
                             <img  src="{{ asset('assets/icons/light.svg') }}" alt=""
