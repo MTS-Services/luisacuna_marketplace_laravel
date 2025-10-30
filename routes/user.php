@@ -17,6 +17,9 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
         Route::get('/currency', function () {
             return view('backend.user.pages.offers.currency');
         })->name('currency');
+        Route::get('/accounts', function () {
+            return view('backend.user.pages.offers.accounts');
+        })->name('accounts');
 
     });
 

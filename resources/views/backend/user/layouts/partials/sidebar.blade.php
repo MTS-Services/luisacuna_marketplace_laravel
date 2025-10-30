@@ -57,8 +57,8 @@
                     </div>
                 </div>
                 <div x-data="{
-                    ordersOpen: {{ in_array($pageSlug, ['currency', '']) ? 'true' : 'false' }},
-                    isActive: {{ in_array($pageSlug, ['currency', '']) ? 'true' : 'false' }}
+                    ordersOpen: {{ in_array($pageSlug, ['currency', 'accounts']) ? 'true' : 'false' }},
+                    isActive: {{ in_array($pageSlug, ['currency', 'accounts']) ? 'true' : 'false' }}
                 }">
                     <!-- Orders button -->
                     <button x-cloak @click="ordersOpen = !ordersOpen"
@@ -87,8 +87,8 @@
                             class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base xl:text-lg rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'currency' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                             {{ __('Currency') }}
                         </a>
-                        <a href="#" wire:navigate x-cloak
-                            class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base xl:text-lg rounded-lg transition-all text-text-text-white hover:bg-pink-500/50 {{ $pageSlug === '' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                        <a href="{{ route('user.accounts') }}" wire:navigate x-cloak
+                            class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base xl:text-lg rounded-lg transition-all text-text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'accounts' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                             {{ __('Accounts') }}
                         </a>
                     </div>
