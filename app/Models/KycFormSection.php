@@ -4,10 +4,12 @@ namespace App\Models;
 
 use App\Models\BaseModel;
 use App\Enums\CountryKycSettingStatus;
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class KycFormSection extends BaseModel
+class KycFormSection extends BaseModel implements Auditable
 {
-    //
+    use  AuditableTrait;
 
     protected $fillable = [
         'sort_order',

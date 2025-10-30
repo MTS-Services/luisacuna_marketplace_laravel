@@ -4,9 +4,12 @@ namespace App\Models;
 
 use App\Enums\OtpType;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class OtpVerification extends BaseModel
+class OtpVerification extends BaseModel implements Auditable
 {
+    use  AuditableTrait;
      protected $fillable = [
         'sort_order',
         'verifiable_type',

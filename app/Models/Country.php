@@ -5,9 +5,13 @@ namespace App\Models;
 
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Country extends BaseModel
+class Country extends BaseModel implements Auditable
 {
+     use  AuditableTrait;
+
     protected $fillable = [
         'sort_order',
         'name',

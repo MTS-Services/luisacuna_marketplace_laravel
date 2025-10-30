@@ -1,8 +1,24 @@
 <main class="mx-auto">
     {{-- Gift Card header --}}
     <section class="container mx-auto mt-10 gift-card">
+        <div class="flex items-center gap-1 mt-10">
+            <div class="w-3 h-3">
+                <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
+            </div>
+            <div class="text-muted text-base">
+                <span class="text-base text-text-white">Home</span>
+            </div>
+            <div class="px-2 text-text-white text-base">
+                >
+            </div>
+            <div class="text-text-white text-base">
+                Coaching
+            </div>
+        </div>
+
+
         <div class="mt-14">
-            <h2 class="text-5xl font-semibold text-text-white">Gift Cards</h2>
+            <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">Gift Cards</h2>
         </div>
 
         <div class="flex items-center justify-between gap-4 my-10">

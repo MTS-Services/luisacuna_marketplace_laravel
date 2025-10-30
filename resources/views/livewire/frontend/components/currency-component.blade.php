@@ -1,10 +1,26 @@
 <main class="overflow-x-hidden">
     {{-- filter section --}}
     <section class="container mx-auto">
-        <div class="title mt-20 mb-5">
-            <h2 class="font-bold text-4xl">Currency</h2>
+        <div class="flex items-center gap-1 mt-10">
+            <div class="w-3 h-3">
+                <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
+            </div>
+            <div class="text-muted text-base">
+                <span class="text-base text-text-white">Home</span>
+            </div>
+            <div class="px-2 text-text-white text-base">
+                >
+            </div>
+            <div class="text-text-white text-base">
+                Currency
+            </div>
         </div>
-        <div class="flex items-center justify-between gap-4 mt-3.5">
+
+
+        <div class="title mt-14 mb-5">
+            <h2 class="font-semibold text-4xl">Currency</h2>
+        </div>
+        <div class="flex items-center justify-between gap-4 mt-10">
             <div class="search w-full">
                 <x-ui.input type="text" wire:model.live.debounce.300ms="search" placeholder="Search..."
                     class="form-input w-full" />
@@ -19,11 +35,11 @@
     </section>
     {{-- popular currency --}}
     <section class="container mx-auto mt-10">
-        <div class="title mt-20 mb-6">
+        <div class="title mt-10">
             <h2 class="font-semibold text-40px">Popular Currency</h2>
         </div>
         <div class="swiper popular-currency">
-            <div class="swiper-wrapper py-16">
+            <div class="swiper-wrapper py-10">
                 <div class="swiper-slide">
                     <div class="bg-bg-primary p-6 rounded-2xl">
                         <div class="images w-full h-68">
@@ -101,7 +117,7 @@
     </section>
     {{-- All Currency --}}
     <section class="container mx-auto mt-10">
-        <div class="title mt-20 mb-6">
+        <div class="title mb-10">
             <h2 class="font-semibold text-40px">All Currency</h2>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-6">
@@ -238,8 +254,8 @@
                 </div>
             </div>
         </div>
-        <div class="mt-10 mb-30 text-center">
-            <x-ui.button class="w-sm mx-auto">Load More</x-ui.button>
+        <div class="pagination mb-24">
+            <x-frontend.pagination-ui />
         </div>
     </section>
     @push('scripts')

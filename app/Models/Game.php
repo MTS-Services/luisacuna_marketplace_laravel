@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Models;
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
-
-class Game extends BaseModel
+class Game extends BaseModel implements Auditable
 {
+    use  AuditableTrait;
     //
 
     protected $fillable = [

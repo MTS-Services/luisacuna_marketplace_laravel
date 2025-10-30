@@ -16,7 +16,7 @@
                 <div class="hidden sm:block">
                     <h1 class="text-xl lg:text-2xl font-bold text-text-primary">Good morning,
                         Alex!</h1>
-                    <p class="text-text-secondary text-text-secondary text-sm">Here's what's happening
+                    <p class="text-text-secondary text-sm">Here's what's happening
                         today
                     </p>
                 </div>
@@ -27,7 +27,7 @@
                 <!-- Search -->
                 {{-- <x-admin.search-form placeholder="Search here..." /> --}}
                 <flux:input type="search" placeholder="Search here..."
-                    class="w-32 sm:w-48 lg:w-64 !px-3 !py-2 !rounded-xl !bg-bg-black/10 dark:!bg-bg-white/10 !border-0 focus:!ring-2 focus:!ring-white/20 focus:!outline-none transition-all duration-200"
+                    class="w-32 sm:w-48 lg:w-64 px-3! py-2! rounded-xl! bg-bg-black/10! dark:bg-bg-white/10! border-0! focus:ring-2! focus:ring-white/20! focus:outline-none! transition-all duration-200"
                     icon="magnifying-glass" />
 
                 {{-- <!-- Theme Toggle --> --}}
@@ -36,7 +36,7 @@
                     <flux:icon name="moon" class="w-5 h-5" x-show="$flux.dark" />
                     <flux:icon name="sun" class="w-5 h-5" x-show="!$flux.dark" />
                 </flux:button>
-{{-- 
+                {{-- 
                 <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
                     <flux:radio value="light" icon="sun" />
                     <flux:radio value="dark" icon="moon" />
@@ -61,8 +61,8 @@
 
                     <button @click="open = !open" class="avatar">
                         <div class="w-8 rounded-xl">
-                            <img src="{{ auth_storage_url(admin()->avatar) }}"
-                                alt="{{ (admin()->name) }}" class="object-cover w-full h-full">
+                            <img src="{{ auth_storage_url(admin()->avatar) }}" alt="{{ admin()->name }}"
+                                class="object-cover w-full h-full">
                         </div>
                     </button>
 
@@ -74,7 +74,7 @@
                         :class="open ? '!block' : '!hidden'">
 
                         <div class="px-4 py-2 border-b border-white/10">
-                            <p class="text-sm text-text-primary font-medium">{{ (admin()->name) }}</p>
+                            <p class="text-sm text-text-primary font-medium">{{ admin()->name }}</p>
                             <p class="text-xs text-text-secondary">{{ admin()->email }}</p>
                         </div>
                         {{-- <x-admin.profile-navlink route="#" name="{{ __('Profile') }}" />
@@ -84,7 +84,7 @@
 
                         <a href="#"
                             class="block px-4 py-2 text-text-primary hover:bg-bg-white/10 transition-colors">Profile</a>
-                        
+
                         <a href="#"
                             class="block px-4 py-2 text-text-primary hover:bg-bg-white/10 transition-colors">Settings</a>
                         <div class="border-t border-white/10 my-2"></div>

@@ -1,14 +1,17 @@
 <?php
 
-use App\Http\Controllers\Frontend\BoostingController;
-use App\Http\Controllers\Frontend\CurrencyController;
-use App\Http\Controllers\Frontend\GiftCardController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ItemsController;
+use App\Http\Controllers\Frontend\TopUpController;
+use App\Http\Controllers\Frontend\AccountsController;
+use App\Http\Controllers\Frontend\BoostingController;
+use App\Http\Controllers\Frontend\CoachingController;
+use App\Http\Controllers\Frontend\CurrencyController;
+use App\Http\Controllers\Frontend\GiftCardController;
 use App\Http\Controllers\Frontend\UserAccountController;
 use App\Http\Controllers\Frontend\UserProfileController;
 use App\Http\Controllers\Frontend\SellGameController;
-use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -38,3 +41,11 @@ Route::group(['prefix' => 'gift-card', 'as' => 'gift-card.'], function () {
 
 // Items
 Route::get('/items', [ItemsController::class, 'items'])->name('items');
+// account
+Route::get('/accounts', [AccountsController::class, 'accounts'])->name('accounts');
+// top up
+Route::get('/top-up', [TopUpController::class, 'topUp'])->name('top-up');
+// gift card
+// Route::get('/gift-card', [GiftCardController::class, 'giftCard'])->name('gift-card');
+// Coaching
+Route::get('/coaching', [CoachingController::class, 'coaching'])->name('coaching');
