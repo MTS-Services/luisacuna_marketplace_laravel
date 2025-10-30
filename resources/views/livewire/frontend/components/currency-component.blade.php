@@ -20,16 +20,28 @@
         <div class="title mt-14 mb-5">
             <h2 class="font-semibold text-4xl">Currency</h2>
         </div>
-        <div class="flex items-center justify-between gap-4 mt-10">
+        <div class="flex items-center justify-between gap-4 mt-10 relative" x-data={filter:false}>
             <div class="search w-full">
                 <x-ui.input type="text" wire:model.live.debounce.300ms="search" placeholder="Search..."
-                    class="form-input w-full" />
+                    class="form-input w-full rounded-full!" />
             </div>
-            <div class="filter flex items-center">
-                <div class="border border-primary rounded-xl h-10 w-30 flex items-center justify-center">
-                    <img src="{{ asset('assets/icons/light.png') }}" alt="" class="w-5 h-5">
-                    <p>Filter</p>
-                </div>
+            <button @click="filter = !filter"
+                class="flex items-center gap-2 border border-purple-500 rounded-full px-5 py-2 hover:bg-purple-600 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2l-7 7v5l-4 4v-9L3 6V4z" />
+                </svg>
+                <span>Filter</span>
+            </button>
+            <div class="absolute top-14 right-0 z-10 shadow-glass-card" x-show="filter" x-transition x-cloak @click.outside="filter = false">
+                {{-- filter Options --}}
+                <div class="bg-bg-primary rounded-md p-4">
+                    <div class="flex flex-col gap-2">
+                        <button class="">Option 1</button>
+                        <button class="">Option 1</button>
+                    </div>
+                </div>  
             </div>
         </div>
     </section>
