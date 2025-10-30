@@ -121,13 +121,19 @@
                                         <div class=" rounded-full p-4 ">
                                             <button
                                                 class="flex items-center justify-between  px-6 py-3 border border-purple-500/50 rounded-full hover:bg-purple-900/20 transition">
-                                                <span>Recommended</span>
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                {{-- <span>Recommended</span> --}}
+                                                {{-- <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                     class="size-6 ml-2">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                                </svg>
+                                                </svg> --}}
+                                                <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70">
+                                                    <option value="">Recommended</option>
+                                                    <option value="completed">Completed</option>
+                                                    <option value="pending">Pending</option>
+                                                    <option value="processing">Processing</option>
+                                                </x-ui.select>
                                             </button>
                                         </div>
                                     </div>

@@ -29,7 +29,7 @@
         <main class="max-w-7xl mx-auto px-8 py-8">
             <!-- Breadcrumb -->
             <div class="flex items-center gap-2 mb-8 text-sm">
-                <span class="text-blue-100 text-text-primary">
+                <span class="text-text-primary">
                     <img width="25" class="inline-block" src="{{ asset('assets/images/mdb.png') }}" alt="img">
                     Blade ball tokens</span>
                 <span class=" text-text-primary">></span>

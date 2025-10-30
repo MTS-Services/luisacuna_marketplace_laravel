@@ -4,16 +4,17 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 
-class GiftCardController extends Controller
+class SellGameController extends Controller
 {
+    protected $masterView = 'frontend.pages.sellgame';
 
-    protected $masterView = 'frontend.pages.gift_card';
-
-    public function index()
+     
+    public function sellgame()
     {
         return view($this->masterView);
     }
-    public function sellerList()
+
+    public function delivery()
     {
         return view($this->masterView);
     }

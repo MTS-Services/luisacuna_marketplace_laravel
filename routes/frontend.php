@@ -7,9 +7,11 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ItemsController;
 use App\Http\Controllers\Frontend\UserAccountController;
 use App\Http\Controllers\Frontend\UserProfileController;
+use App\Http\Controllers\Frontend\SellGameController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
 Route::group(['prefix' => 'boosting', 'as' => 'boost.'], function () {
     Route::get('/', [BoostingController::class, 'index'])->name('index');
     Route::get('/seller-list/{id?}', [BoostingController::class, 'sellerList'])->name('seller-list');
@@ -17,13 +19,22 @@ Route::group(['prefix' => 'boosting', 'as' => 'boost.'], function () {
     Route::get('/checkout/{id?}', [BoostingController::class, 'checkout'])->name('checkout');
 
 });
+
+Route::group(['prefix' => 'sellgame', 'as' => 'sell.'], function () {
+    route::get('/', [SellGameController::class, 'index'])->name('index');
+    route::get('/sellgame', [SellGameController::class, 'sellgame'])->name('sellgame');
+    route::get('/delivery', [SellGameController::class, 'delivery'])->name('delivery');
+});
+
 Route::get('/currency', [CurrencyController::class, 'index'])->name('currency');
 Route::get('profile', [UserProfileController::class, 'profile'])->name('profile');
 Route::get('account', [UserAccountController::class, 'account'])->name('account');
+
 // GiftCard
 Route::group(['prefix' => 'gift-card', 'as' => 'gift-card.'], function () {
     Route::get('/', [GiftCardController::class, 'index'])->name('index');
     Route::get('seller-list/{id?}', [GiftCardController::class, 'sellerList'])->name('seller-list');
 });
+
 // Items
 Route::get('/items', [ItemsController::class, 'items'])->name('items');
