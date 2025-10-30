@@ -55,8 +55,14 @@
             {{-- Reset Button --}}
             <div class="w-full sm:w-auto">
                 <x-ui.button wire:click="{{ $resetFiltersAction }}" variant="tertiary" class="w-full sm:w-auto py-2!">
-                    <flux:icon icon="arrow-path"
-                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
+                    <span wire:loading.remove wire:target="{{ $resetFiltersAction }}">
+                        <flux:icon icon="arrow-path"
+                            class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
+                    </span>
+                    <span wire:loading wire:target="{{ $resetFiltersAction }}">
+                        <flux:icon icon="arrow-path"
+                            class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary animate-spin" />
+                    </span>
                     {{ __('Reset') }}
                 </x-ui.button>
             </div>
@@ -249,7 +255,7 @@
                                     </div>
                                 </div>
                             </td> --}}
-                            <td class="p-3 text-center flex-shrink-0">
+                            <td class="p-3 text-center shrink-0">
                                 <div class="relative inline-block text-left">
                                     <div x-data="{ open: false }">
                                         <button type="button" @click="open = !open"
@@ -270,20 +276,39 @@
                                             <div class="rounded-md bg-bg-primary shadow-xs">
                                                 <div class="py-1">
                                                     @foreach ($actions as $action)
-                                                        @if (isset($action['href']) && $action['href'] != null && $action['href'] != '#')
+                                                        @php
+                                                            // Determine which param key to use (e.g. 'id', 'slug', etc.)
+                                                            $param =
+                                                                isset($action['param']) && $action['param']
+                                                                    ? $action['param']
+                                                                    : $action['key'] ?? '';
+
+                                                            // Get actual value from current item/row
+                                                            $actionValue = data_get($item, $param);
+
+                                                            // Encrypt VALUE (not key) if requested
+                                                            $isEncrypted =
+                                                                isset($action['encrypt']) && $action['encrypt'];
+                                                            if ($isEncrypted && !is_null($actionValue)) {
+                                                                $actionValue = encrypt($actionValue);
+                                                            }
+
+                                                            // Format parameter safely
+                                                            $actionParam = is_numeric($actionValue)
+                                                                ? $actionValue
+                                                                : (is_null($actionValue)
+                                                                    ? null
+                                                                    : "'{$actionValue}'");
+                                                        @endphp
+
+                                                        {{-- 🔗 Case 1: Direct href --}}
+                                                        @if (!empty($action['href']) && $action['href'] !== '#')
                                                             @php
-                                                                $param =
-                                                                    (isset($action['param']) && $action['param']
-                                                                        ? $action['param']
-                                                                        : $action['key']) ?? '';
-                                                                $actionValue = data_get($item, $param);
-                                                                $actionParam = is_numeric($actionValue)
-                                                                    ? $actionValue
-                                                                    : "'{$actionValue}'";
-                                                                $href = empty($actionParam)
+                                                                $href = empty($actionValue)
                                                                     ? $action['href']
-                                                                    : "{$action['href']}/{$actionParam}";
+                                                                    : rtrim($action['href'], '/') . '/' . $actionValue;
                                                             @endphp
+
                                                             <a href="{{ $href }}"
                                                                 title="{{ $action['label'] }}"
                                                                 target="{{ $action['target'] ?? '_self' }}"
@@ -291,44 +316,45 @@
                                                                 wire:navigate>
                                                                 {{ $action['label'] }}
                                                             </a>
-                                                        @elseif (isset($action['route']) && $action['route'] != null && $action['route'] != '#')
-                                                            @php
-                                                                $param =
-                                                                    (isset($action['param']) && $action['param']
-                                                                        ? $action['param']
-                                                                        : $action['key']) ?? '';
-                                                                $actionValue = data_get($item, $param);
-                                                                $actionParam = is_numeric($actionValue)
-                                                                    ? $actionValue
-                                                                    : "'{$actionValue}'";
-                                                            @endphp
-                                                            <a href="{{ route($action['route'], $actionParam) }}"
+
+                                                            {{-- 🧭 Case 2: Named route --}}
+                                                        @elseif (!empty($action['route']) && $action['route'] !== '#')
+                                                            <a href="{{ route($action['route'], $actionValue) }}"
                                                                 title="{{ $action['label'] }}"
                                                                 target="{{ $action['target'] ?? '_self' }}"
                                                                 class="block px-4 py-2 w-full text-sm text-left dark:text-zinc-100! dark:hover:text-zinc-900! hover:bg-zinc-300 hover:text-gray-900"
                                                                 wire:navigate>
                                                                 {{ $action['label'] }}
                                                             </a>
-                                                        @elseif(isset($action['method']) && $action['method'] != null)
-                                                            @php
-                                                                $actionValue = data_get(
-                                                                    $item,
-                                                                    (isset($action['param']) && $action['param']
-                                                                        ? $action['param']
-                                                                        : $action['key']) ?? 'id',
-                                                                );
-                                                                $actionParam = is_numeric($actionValue)
-                                                                    ? $actionValue
-                                                                    : "'{$actionValue}'";
-                                                            @endphp
+
+                                                            {{-- ⚡ Case 3: Livewire method --}}
+                                                        @elseif (!empty($action['method']))
                                                             <button type="button"
                                                                 wire:click="{{ $action['method'] }}({{ $actionParam }})"
                                                                 class="block px-4 py-2 w-full text-left text-sm dark:text-zinc-100! dark:hover:text-zinc-900! hover:bg-zinc-300 hover:text-gray-900"
                                                                 @click="open = false">
                                                                 {{ $action['label'] }}
                                                             </button>
+
+                                                            {{-- 🪄 Case 4: Alpine.js x-on:click --}}
+                                                        @elseif (!empty($action['x_click']))
+                                                            @php
+                                                                // Replace {param} or {value} placeholders in x_click string
+                                                                $xClick = str_replace(
+                                                                    ['{param}', '{value}'],
+                                                                    $actionValue,
+                                                                    $action['x_click'],
+                                                                );
+                                                            @endphp
+
+                                                            <button type="button" x-on:click="{{ $xClick }}"
+                                                                class="block px-4 py-2 w-full text-left text-sm dark:text-zinc-100! dark:hover:text-zinc-900! hover:bg-zinc-300 hover:text-gray-900">
+                                                                {{ $action['label'] }}
+                                                            </button>
                                                         @endif
                                                     @endforeach
+
+
                                                 </div>
                                             </div>
                                         </div>

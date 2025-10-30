@@ -51,7 +51,9 @@ class Create extends Component
     {
         $this->form->validate();
         try {
-            $currency = $this->currencyService->createData($this->form->fillables());
+            $data = $this->form->fillables();
+            $data['created_by'] = admin()->id;
+            $this->currencyService->createData($data);
 
             // $this->dispatch('currencyCreated');
             $this->success('Data created successfully.');
