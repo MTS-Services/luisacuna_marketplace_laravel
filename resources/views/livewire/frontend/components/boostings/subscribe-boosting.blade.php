@@ -31,12 +31,12 @@
 
             <div class="collapse-title text-xl font-semibold flex justify-between items-center py-4 px-6 sm:px-8">
                 <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 rounded-lg flex-shrink-0 overflow-hidden border border-white/20">
+                    <div class="w-12 h-12 rounded-lg flex-shrink-0 overflow-hidden border border-zinc-100">
                         <img src="{{ asset('assets/images/Subscribe-boosting/Rectangle 1.png') }}" alt="Anime Vanguards Logo" class="w-full h-full object-cover">
                     </div>
                     <div>
                         <h2 class="text-xl sm:text-2xl font-semibold">Anime Vanguards</h2>
-                        <p class="text-sm text-pink-500">Subscribe 3/6</p>
+                        <p class="text-sm text-text-white/70">Subscribe 3/6</p>
                     </div>
                 </div>
             </div>
@@ -45,11 +45,11 @@
                 <div class="space-y-4">
                     <div class="flex justify-between items-center py-2">
                         <span class="text-base sm:text-lg font-medium">Unit Obtaining</span>
-                        <input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked />
+                        <input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 checked:bg-zinc-700 checked:border-zinc-700" checked />
                     </div>
                     <div class="flex justify-between items-center py-2">
                         <span class="text-base sm:text-lg font-medium">Points & Currency</span>
-                        <input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" />
+                        <input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 checked:bg- checked:border-zinc-700" />
                     </div>
                     <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
                     <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
@@ -59,31 +59,31 @@
             </div>
         </div>
 
-        <div class="collapse collapse-arrow bg-zinc-800 text-white rounded-xl shadow-2xl">
+        <div class="collapse collapse-arrow bg-zinc-800 text-text-white rounded-xl shadow-2xl">
             <input type="radio" name="game-settings-accordion" /> <div class="collapse-title text-xl font-semibold flex justify-between items-center py-4 px-6 sm:px-8">
                 <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 rounded-lg flex-shrink-0 overflow-hidden border border-white/20">
+                    <div class="w-12 h-12 rounded-lg flex-shrink-0 overflow-hidden border border-zinc-100">
                         <img src="{{ asset('assets/images/Subscribe-boosting/Rectangle 1.png') }}" alt="Albion Online Logo" class="w-full h-full object-cover">
                     </div>
                     <div>
                         <h2 class="text-xl sm:text-2xl font-semibold">Albion Online</h2>
-                        <p class="text-sm text-white/70">Not subscribed</p>
+                        <p class="text-sm text-text-whate/70">Not subscribed</p>
                     </div>
                 </div>
             </div>
             <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                 <div class="space-y-4">
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
                 </div>
             </div>
         </div>
 
-        <div class="collapse collapse-arrow bg-zinc-800 text-white rounded-xl shadow-2xl">
+        <div class="collapse collapse-arrow bg-zinc-800 text-text-white rounded-xl shadow-2xl">
             <input type="radio" name="game-settings-accordion" /> <div class="collapse-title text-xl font-semibold flex justify-between items-center py-4 px-6 sm:px-8">
                 <div class="flex items-center space-x-3">
                     <div class="w-12 h-12 rounded-lg flex-shrink-0 overflow-hidden border border-white/20">
@@ -91,18 +91,18 @@
                     </div>
                     <div>
                         <h2 class="text-xl sm:text-2xl font-semibold">Apex Legends</h2>
-                        <p class="text-sm text-white/70">Not subscribed</p>
+                        <p class="text-sm text-text-white/70">Not subscribed</p>
                     </div>
                 </div>
             </div>
             <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                 <div class="space-y-4">
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
                 </div>
             </div>
         </div>
@@ -115,18 +115,18 @@
                     </div>
                     <div>
                         <h2 class="text-xl sm:text-2xl font-semibold">ArcheAge</h2>
-                        <p class="text-sm text-white/70">Not subscribed</p>
+                        <p class="text-sm text-text-white/70">Not subscribed</p>
                     </div>
                 </div>
             </div>
             <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                 <div class="space-y-4">
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
                 </div>
             </div>
         </div>
@@ -139,18 +139,18 @@
                     </div>
                     <div>
                         <h2 class="text-xl sm:text-2xl font-semibold">Black Desert Online</h2>
-                        <p class="text-sm text-white/70">Not subscribed</p>
+                        <p class="text-sm text-text-white/70">Not subscribed</p>
                     </div>
                 </div>
             </div>
             <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                 <div class="space-y-4">
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
                 </div>
             </div>
         </div>
@@ -163,18 +163,18 @@
                     </div>
                     <div>
                         <h2 class="text-xl sm:text-2xl font-semibold">Call of Duty</h2>
-                        <p class="text-sm text-white/70">Not subscribed</p>
+                        <p class="text-sm text-text-white/70">Not subscribed</p>
                     </div>
                 </div>
             </div>
             <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                 <div class="space-y-4">
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
                 </div>
             </div>
         </div>
@@ -187,18 +187,18 @@
                     </div>
                     <div>
                         <h2 class="text-xl sm:text-2xl font-semibold">Clash Of clans</h2>
-                        <p class="text-sm text-white/70">Not subscribed</p>
+                        <p class="text-sm text-text-white/70">Not subscribed</p>
                     </div>
                 </div>
             </div>
             <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                 <div class="space-y-4">
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
                 </div>
             </div>
         </div>
@@ -213,18 +213,18 @@
                     </div>
                     <div>
                         <h2 class="text-xl sm:text-2xl font-semibold">Clash Royale</h2>
-                        <p class="text-sm text-white/70">Not subscribed</p>
+                        <p class="text-sm text-text-white/70">Not subscribed</p>
                     </div>
                 </div>
             </div>
             <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                 <div class="space-y-4">
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg  bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg  bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg  bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg  bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg  bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg  bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
                 </div>
             </div>
         </div>
@@ -237,18 +237,18 @@
                     </div>
                     <div>
                         <h2 class="text-xl sm:text-2xl font-semibold">Counter-Strike 2</h2>
-                        <p class="text-sm text-white/70">Not subscribed</p>
+                        <p class="text-sm text-text-white/70">Not subscribed</p>
                     </div>
                 </div>
             </div>
             <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                 <div class="space-y-4">
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
                 </div>
             </div>
         </div>
@@ -262,18 +262,18 @@
                     </div>
                     <div>
                         <h2 class="text-xl sm:text-2xl font-semibold">Diablo-4</h2>
-                        <p class="text-sm text-white/70">Not subscribed</p>
+                        <p class="text-sm text-text-white/70">Not subscribed</p>
                     </div>
                 </div>
             </div>
             <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                 <div class="space-y-4">
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
                 </div>
             </div>
         </div>
@@ -290,18 +290,18 @@
                     </div>
                     <div>
                         <h2 class="text-xl sm:text-2xl font-semibold">Dota 2</h2>
-                        <p class="text-sm text-white/70">Not subscribed</p>
+                        <p class="text-sm text-text-white/70">Not subscribed</p>
                     </div>
                 </div>
             </div>
             <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                 <div class="space-y-4">
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
                 </div>
             </div>
         </div>
@@ -314,18 +314,18 @@
                     </div>
                     <div>
                         <h2 class="text-xl sm:text-2xl font-semibold">EA Sports FC 24</h2>
-                        <p class="text-sm text-white/70">Not subscribed</p>
+                        <p class="text-sm text-text-white/70">Not subscribed</p>
                     </div>
                 </div>
             </div>
             <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                 <div class="space-y-4">
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
                 </div>
             </div>
         </div>
@@ -338,18 +338,18 @@
                     </div>
                     <div>
                         <h2 class="text-xl sm:text-2xl font-semibold">Elden Ring</h2>
-                        <p class="text-sm text-white/70">Not subscribed</p>
+                        <p class="text-sm text-text-white/70">Not subscribed</p>
                     </div>
                 </div>
             </div>
             <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                 <div class="space-y-4">
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
                 </div>
             </div>
         </div>
@@ -362,18 +362,18 @@
                     </div>
                     <div>
                         <h2 class="text-xl sm:text-2xl font-semibold">Escape from Tarkov</h2>
-                        <p class="text-sm text-white/70">Not subscribed</p>
+                        <p class="text-sm text-text-white/70">Not subscribed</p>
                     </div>
                 </div>
             </div>
             <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                 <div class="space-y-4">
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
                 </div>
             </div>
         </div>
@@ -386,18 +386,18 @@
                     </div>
                     <div>
                         <h2 class="text-xl sm:text-2xl font-semibold">Eve Online</h2>
-                        <p class="text-sm text-white/70">Not subscribed</p>
+                        <p class="text-sm text-text-white/70">Not subscribed</p>
                     </div>
                 </div>
             </div>
             <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                 <div class="space-y-4">
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" checked /></div>
-                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-gray-500 border-gray-500 checked:bg-violet-600 checked:border-violet-600" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Unit Obtaining</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Points & Currency</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Quests</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Stage Carry</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Materials Grinding</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" checked /></div>
+                    <div class="flex justify-between items-center py-2"><span class="text-base sm:text-lg font-medium">Custom Request</span><input type="checkbox" class="toggle toggle-lg bg-zinc-300 border-zinc-300 border-zinc- checked:bg-zinc-700 checked:border-zinc-700" /></div>
                 </div>
             </div>
         </div>
