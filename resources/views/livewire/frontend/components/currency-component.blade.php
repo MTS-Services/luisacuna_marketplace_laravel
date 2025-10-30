@@ -301,7 +301,7 @@
             </div>
         </div>
         <div class="pagination mb-24">
-            <x-frontend.pagination-ui />
+            <x-frontend.pagination-ui :pagination = "$pagination"/>
         </div>
     </section>
     @push('scripts')

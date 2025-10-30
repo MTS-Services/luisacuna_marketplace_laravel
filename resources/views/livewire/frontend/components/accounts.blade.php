@@ -347,9 +347,9 @@
             </div>
         </div>
 
-        <div class="pagination mb-24">
+        {{-- <div class="pagination mb-24">
             <x-frontend.pagination-ui />
-        </div>
+        </div> --}}
     </section>
 
     @push('scripts')

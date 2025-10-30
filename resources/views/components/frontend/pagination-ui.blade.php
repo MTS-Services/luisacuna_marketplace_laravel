@@ -1,6 +1,6 @@
 @props(['pagination' => []])
 
-@if ($pagination['last_page'] > 1)
+@if (isset($pagination['last_page']) && $pagination['last_page'] > 1)
     <div class="flex flex-wrap items-center justify-end mt-8 text-sm gap-2">
         {{-- Previous Button --}}
         <button wire:click="previousPage" @if ($pagination['current_page'] <= 1) disabled @endif
