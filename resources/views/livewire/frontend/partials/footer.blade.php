@@ -13,19 +13,19 @@
                     fast, and seamless digital transactions.</p>
                 <div class="flex gap-4 mt-6">
                     <a href="#"
-                        class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center hover:bg-purple-500/40 transition">
+                        class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center hover:bg-zinc-500/40 transition">
                         <img src="{{ asset('assets/svgs/twiter.svg') }}" class="w-5 h-5" alt="">
                     </a>
                     <a href="#"
-                        class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center hover:bg-purple-500/40 transition">
+                        class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center hover:bg-zinc-500/40 transition">
                         <img src="{{ asset('assets/svgs/instagram.svg') }}" class="w-5 h-5" alt="">
                     </a>
                     <a href="#"
-                        class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center hover:bg-purple-500/40 transition">
+                        class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center hover:bg-zinc-500/40 transition">
                         <img src="{{ asset('assets/svgs/youtube.svg') }}" class="w-5 h-5" alt="">
                     </a>
                     <a href="#"
-                        class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center hover:bg-purple-500/40 transition">
+                        class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center hover:bg-zinc-500/40 transition">
                         <img src="{{ asset('assets/svgs/linkdin.svg') }}" class="w-5 h-5" alt="">
                     </a>
                 </div>
