@@ -27,9 +27,19 @@ class OrderController extends Controller
         
     }
 
+    public function chatHelpTwo(){
+
+        return view($this->master);
+
+    }
+
     public function complete(){
 
         return view($this->master);
         
     }
+
+    public function chatHelpThree(){
+        return view($this->master);
+    }   
 }

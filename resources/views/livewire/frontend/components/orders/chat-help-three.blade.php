@@ -93,7 +93,53 @@
                             </div>
                             <div class="pl-2">
                                 <p class="mt-6 font-semibold text-xl"> {{ __('Description') }}</p>
-                                <p class="mt-3 text-base"> {{ __('Mercury Spark - Ultimate 5-start Boost') }}</p>
+                                <div>
+                                    <p class="text-base md:text-xl text-primary-50 mt-5">🚨 IMPORTANT — PLEASE READ
+                                        BEFORE ORDERING TO AVOID CANCELLATION OR REFUND! 🚨
+                                    </p>
+                                    <p class="text-base md:text-xl  text-primary-50 mt-5">
+                                        🔴 FRIENDSHIP REQUIRED: To follow Epic Games’ gifting policy, we must be Epic
+                                        friends for at least 48 hours before sending gifts.
+                                        Please send friend requests to all of these accounts:
+                                        AcuZone Twitch
+                                        PixelStoreLAT1
+                                        PixelStoreLAT2
+                                        PixelStoreLAT3
+                                        PixelStoreLAT4
+                                        PixelStoreLAT5
+                                    </p>
+                                    <p class="text-base md:text-xl  text-primary-50 mt-5">
+
+                                        🛒 HOW TO ORDER CORRECTLY: Order a quantity that matches the V-Bucks value of
+                                        the item you want. Example: If a skin costs 1000 V-Bucks, place an order for
+                                        quantity 1000. Incorrect quantities will result in automatic cancellation and
+                                        refund.
+
+                                        🎯 HOW TO RECEIVE YOUR SKIN: After 48 hours of Epic friendship, send us your
+                                        Epic username and a screenshot of the skin you’d like.
+                                    </p>
+                                    <p class="text-base md:text-xl  text-primary-50 mt-5">
+
+                                        💤 OFFLINE NOTE: If we appear offline, we’re just away or asleep — your friend
+                                        request will be accepted as soon as possible!
+                                    </p>
+                                    <p class="text-base md:text-xl  text-primary-50 mt-5">
+
+                                        ✅ SAFE & LEGAL GIFTING: All gifts are sent through the official Fortnite gifting
+                                        system. Only shop-available cosmetics purchasable with V-Bucks are eligible.
+                                        Works across all platforms (PC, Console, Mobile).
+                                    </p>
+                                    <p class="text-base md:text-xl  text-primary-50 mt-5">
+                                        🕹️ TAGS (Ignore): fortnite-vbucks-gift, fortnite-skins-sale, vbucks-discount,
+                                        fortnite-shop-deals, gaming-gifts, vbucks-promo, fortnite-deals,
+                                        fortnite-gifting, fortnite-items, gaming-giftcards, cosmetics-sale,
+                                        battle-royale-skins, gamer-gifts, vbucks-special, fortnite-gift-ideas
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="button">
+                                <x-ui.button :variant="'primary'" class="inline-block! mt-10 w-auto! ">Read
+                                    more</x-ui.button>
                             </div>
                         </div>
                     </div>

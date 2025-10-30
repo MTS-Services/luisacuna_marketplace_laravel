@@ -93,7 +93,20 @@
                             </div>
                             <div class="pl-2">
                                 <p class="mt-6 font-semibold text-xl"> {{ __('Description') }}</p>
-                                <p class="mt-3 text-base"> {{ __('Mercury Spark - Ultimate 5-start Boost') }}</p>
+                                <p class="mt-3 text-base">
+                                    {{ __('🚨 IMPORTANT — PLEASE READ BEFORE ORDERING TO AVOID CANCELLATION OR REFUND! ') }}
+                                </p>
+                                <p class="mt-3 text-base">
+                                    {{ __('
+                                                                    🔴 FRIENDSHIP REQUIRED:') }}</p>
+                                <p class="mt-3 text-base">
+                                    {{ __('To follow Epic Games’ gifting policy, we must be Epic friends for at least 48 hours before sending gifts.
+                                                                        Please send friend requests to all of these accounts') }}
+                                </p>
+                            </div>
+                            <div class="button">
+                                <x-ui.button :variant="'primary'" class="inline-block! mt-10 w-auto! ">Read
+                                    more</x-ui.button>
                             </div>
                         </div>
                     </div>

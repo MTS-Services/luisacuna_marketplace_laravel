@@ -10,6 +10,14 @@
             <x-slot name="pageSlug">oder-help</x-slot>
               <livewire:frontend.components.orders.chat-help />
         @break
+        @case('om.chat-help-two')
+            <x-slot name="pageSlug">oder-help</x-slot>
+              <livewire:frontend.components.orders.chat-help-two />
+        @break
+        @case('om.chat-help-three')
+            <x-slot name="pageSlug">oder-help</x-slot>
+              <livewire:frontend.components.orders.chat-help-three />
+        @break
         @case('om.complete')
             <x-slot name="pageSlug">order-complete</x-slot>
               <livewire:frontend.components.orders.complete />
