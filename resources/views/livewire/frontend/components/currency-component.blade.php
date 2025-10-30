@@ -49,7 +49,9 @@
                         <div class="">
                             <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">EA sports FC Coins</h3>
                             <p class="text-pink-500 mb-8">50 offer</p>
-                            <x-ui.button class="">See Seller List</x-ui.button>
+                            <a href="{{ route('boost.seller-list') }}">
+                                <x-ui.button class="">See Seller List</x-ui.button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -62,7 +64,9 @@
                         <div class="">
                             <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Blade Ball Tokens</h3>
                             <p class="text-pink-500 mb-8">50 offer</p>
-                            <x-ui.button class="">See Seller List</x-ui.button>
+                            <a href="{{ route('boost.seller-list') }}">
+                                <x-ui.button class="">See Seller List</x-ui.button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -75,7 +79,9 @@
                         <div class="">
                             <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">New World Coins</h3>
                             <p class="text-pink-500 mb-8">50 offer</p>
-                            <x-ui.button class="">See Seller List</x-ui.button>
+                            <a href="{{ route('boost.seller-list') }}">
+                                <x-ui.button class="">See Seller List</x-ui.button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -88,7 +94,9 @@
                         <div class="">
                             <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Blade Ball Tokens</h3>
                             <p class="text-pink-500 mb-8">50 offer</p>
-                            <x-ui.button class="">See Seller List</x-ui.button>
+                            <a href="{{ route('boost.seller-list') }}">
+                                <x-ui.button class="">See Seller List</x-ui.button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -101,7 +109,9 @@
                         <div class="">
                             <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">New World Coins</h3>
                             <p class="text-pink-500 mb-8">50 offer</p>
-                            <x-ui.button class="">See Seller List</x-ui.button>
+                            <a href="{{ route('boost.seller-list') }}">
+                                <x-ui.button class="">See Seller List</x-ui.button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -129,7 +139,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Exilecon Official Trailer</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('boost.seller-list') }}">
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -140,7 +152,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">RuneScape 3 Gold</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('boost.seller-list') }}">
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -151,7 +165,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Silver Farming</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('boost.seller-list') }}">
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -162,7 +178,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Hand Farmed Low Price Gold</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('boost.seller-list') }}">
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -173,7 +191,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">RuneScape 3 Gold</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('boost.seller-list') }}">
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -184,7 +204,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Free Club Coins FC25</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('boost.seller-list') }}">
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -195,7 +217,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Worldforge Legends</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('boost.seller-list') }}">
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -206,7 +230,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Echoes of the Terra</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('boost.seller-list') }}">
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -217,7 +243,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Epochs of Gaia</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('boost.seller-list') }}">
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -228,7 +256,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Titan Realms</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('boost.seller-list') }}">
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -239,7 +269,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Kingdoms Across Skies</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('boost.seller-list') }}">
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -250,7 +282,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Realmwalker: New Dawn</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('boost.seller-list') }}">
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
         </div>
