@@ -28,10 +28,11 @@ class Currency extends BaseModel implements Auditable
         'created_by',
         'updated_by',
         'deleted_by',
+        'restored_by',
     ];
 
     protected $hidden = [
-        //
+        'id',
     ];
 
     protected $casts = [

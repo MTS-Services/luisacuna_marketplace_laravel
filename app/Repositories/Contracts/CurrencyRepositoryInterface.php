@@ -37,17 +37,17 @@ interface CurrencyRepositoryInterface
 
     public function update(int $id, array $data): bool;
 
-    public function delete(int $id): bool;
+    public function delete(int $id, int $actionerId): bool;
 
     public function forceDelete(int $id): bool;
 
-    public function restore(int $id): bool;
+    public function restore(int $id, int $actionerId): bool;
 
-    public function bulkDelete(array $ids): int;
+    public function bulkDelete(array $ids, int $actionerId): int;
 
-    public function bulkUpdateStatus(array $ids, string $status): int;
+    public function bulkUpdateStatus(array $ids, string $status, int $actionerId): int;
 
-    public function bulkRestore(array $ids): int;
+    public function bulkRestore(array $ids, int $actionerId): int;
 
     public function bulkForceDelete(array $ids): int;
 

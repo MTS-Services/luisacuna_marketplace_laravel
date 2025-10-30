@@ -20,10 +20,10 @@
             <livewire:backend.admin.components.settings.currency.trash />
         @break
 
-        @case('admin.as.currency.view')
+        @case('admin.as.currency.show')
             <x-slot name="breadcrumb">Application Settings > Currency Details</x-slot>
             <x-slot name="title">Currency Details</x-slot>
-            <livewire:backend.admin.components.settings.currency.view :data="$data" />
+            <livewire:backend.admin.components.settings.currency.show :data="$data" />
         @break
 
         @default

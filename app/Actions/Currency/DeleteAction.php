@@ -12,13 +12,14 @@ class DeleteAction
         protected CurrencyRepositoryInterface $interface
     ) {}
 
-    public function execute(int $id, bool $forceDelete = false): bool
+    public function execute(int $id, bool $forceDelete = false, int $actionerId): bool
     {
-        return DB::transaction(function () use ($id, $forceDelete) {
+        return DB::transaction(function () use ($id, $forceDelete, $actionerId) {
             $currency = null;
 
             if ($forceDelete) {
                 $currency = $this->interface->findTrashed($id);
+                dd($currency, 'currency');
             } else {
                 $currency = $this->interface->find($id);
             }
@@ -33,8 +34,7 @@ class DeleteAction
             if ($forceDelete) {
                 return $this->interface->forceDelete($id);
             }
-
-            return $this->interface->delete($id);
+            return $this->interface->delete($id, $actionerId);
         });
     }
 }
