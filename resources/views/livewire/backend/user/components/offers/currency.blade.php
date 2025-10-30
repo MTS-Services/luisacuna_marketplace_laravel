@@ -43,300 +43,59 @@
     <div>
         <div class="overflow-x-auto shadow-2xl">
             <div class="overflow-x-auto">
-                <table class="w-full text-left table-auto border-separate border-spacing-0">
-                    <thead>
-                        <tr class="text-sm text-text-white uppercase tracking-wider">
-                            <th
-                                class="px-2 sm:px-4 md:px-6 py-5 text-sm md:text-base text-text-white capitalize font-normal items-center gap-1 flex">
-                                Game
-                                <div>
-                                    <x-phosphor-caret-up-fill class="w-4 h-4 fill-zinc-500" />
-                                    <x-phosphor-caret-down-fill class='w-4 h-4' />
-                                </div>
-                            </th>
-                            <th
-                                class="px-2 sm:px-4 md:px-6 py-5 text-sm md:text-base text-text-white capitalize font-normal">
-                                Quantity
-                            </th>
-                            <th
-                                class="px-2 sm:px-4 md:px-6 py-5 text-sm md:text-base text-text-white capitalize font-normal">
-                                Minimum quantity
-                            </th>
-                            <th
-                                class="px-2 sm:px-4 md:px-6 py-5 text-sm md:text-base text-text-white capitalize font-normal whitespace-nowrap">
-                                Price</th>
-                            <th
-                                class="px-2 sm:px-4 md:px-6 py-5 text-sm md:text-base text-text-white capitalize font-normal whitespace-nowrap">
-                                Status</th>
-                            <th
-                                class="px-2 sm:px-4 md:px-6 py-5 text-sm md:text-base text-text-white capitalize font-normal">
-                                Delivery time</th>
-                            <th
-                                class="px-2 sm:px-4 md:px-6 py-5 text-sm md:text-base text-text-white capitalize font-normal">
-                                Actions
-                                ($)</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-zinc-800">
-                        <tr class="bg-bg-primary hover:bg-bg-hover transition-colors">
-                            <td class="px-4 md:px-6 py-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 xxs:w-10 xxs:h-10 rounded-lg flex-shrink-0">
-                                        <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo"
-                                            class="w-full h-full rounded-lg object-cover" />
-                                    </div>
-                                    <div class="min-w-0">
-                                        <h3
-                                            class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">
-                                            Fortnite</h3>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm">1B</td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm hidden sm:table-cell">100k
-                            </td>
-                            <td
-                                class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm whitespace-nowrap hidden lg:table-cell">
-                                $6.5 (100k)</td>
-                            <td class="px-4 md:px-6 py-4">
-                                <span
-                                    class="px-2 xxs:px-3 py-1 text-xs font-semibold rounded-full bg-pink-500 text-white whitespace-nowrap inline-block">Active</span>
-                            </td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm hidden md:table-cell">1 h
-                            </td>
-                            <td class="px-4 md:px-6 py-3 rounded-r-lg">
-                                <div class="flex items-center gap-3 text-text-muted">
-                                    <x-phosphor-pause-fill class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-link-fill class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-pencil-simple-fill
-                                        class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-trash-fill class="w-5 h-5 cursor-pointer hover:text-status-paused" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="bg-bg-secondary hover:bg-bg-hover transition-colors">
-                            <td class="px-4 md:px-6 py-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 xxs:w-10 xxs:h-10 rounded-lg flex-shrink-0">
-                                        <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo"
-                                            class="w-full h-full rounded-lg object-cover" />
-                                    </div>
-                                    <div class="min-w-0">
-                                        <h3
-                                            class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">
-                                            Fortnite</h3>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm">2B</td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm hidden sm:table-cell">200K
-                            </td>
-                            <td
-                                class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm whitespace-nowrap hidden lg:table-cell">
-                                $9.5 (200k)</td>
-                            <td class="px-4 md:px-6 py-4">
-                                <span
-                                    class="px-2 xxs:px-3 py-1 text-xs font-semibold rounded-full bg-pink-500 text-white whitespace-nowrap inline-block">Active</span>
-                            </td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm hidden md:table-cell">10 min
-                            </td>
-                            <td class="px-4 md:px-6 py-3 rounded-r-lg">
-                                <div class="flex items-center gap-3 text-text-muted">
-                                    <x-phosphor-pause-fill class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-link-fill class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-pencil-simple-fill
-                                        class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-trash-fill class="w-5 h-5 cursor-pointer hover:text-status-paused" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="bg-bg-primary hover:bg-bg-hover transition-colors">
-                            <td class="px-4 md:px-6 py-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 xxs:w-10 xxs:h-10 rounded-lg flex-shrink-0">
-                                        <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo"
-                                            class="w-full h-full rounded-lg object-cover" />
-                                    </div>
-                                    <div class="min-w-0">
-                                        <h3
-                                            class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">
-                                            Fortnite</h3>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm">2M</td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm hidden sm:table-cell">1K
-                            </td>
-                            <td
-                                class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm whitespace-nowrap hidden lg:table-cell">
-                                $6 (1k)</td>
-                            <td class="px-4 md:px-6 py-4">
-                                <span
-                                    class="px-2 xxs:px-3 py-1 text-xs font-semibold rounded-full bg-pink-500 text-white whitespace-nowrap inline-block">Active</span>
-                            </td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm hidden md:table-cell">15 min
-                            </td>
-                            <td class="px-4 md:px-6 py-3 rounded-r-lg">
-                                <div class="flex items-center gap-3 text-text-muted">
-                                    <x-phosphor-pause-fill class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-link-fill class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-pencil-simple-fill
-                                        class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-trash-fill class="w-5 h-5 cursor-pointer hover:text-status-paused" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="bg-bg-secondary hover:bg-bg-hover transition-colors">
-                            <td class="px-4 md:px-6 py-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 xxs:w-10 xxs:h-10 rounded-lg flex-shrink-0">
-                                        <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo"
-                                            class="w-full h-full rounded-lg object-cover" />
-                                    </div>
-                                    <div class="min-w-0">
-                                        <h3
-                                            class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">
-                                            Fortnite</h3>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm">10M</td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm hidden sm:table-cell">10K
-                            </td>
-                            <td
-                                class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm whitespace-nowrap hidden lg:table-cell">
-                                $6.5 (10k)</td>
-                            <td class="px-4 md:px-6 py-4">
-                                <span
-                                    class="px-2 xxs:px-3 py-1 text-xs font-semibold rounded-full bg-pink-500 text-white whitespace-nowrap inline-block">Active</span>
-                            </td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm hidden md:table-cell">45
-                                min
-                            </td>
-                            <td class="px-4 md:px-6 py-3 rounded-r-lg">
-                                <div class="flex items-center gap-3 text-text-muted">
-                                    <x-phosphor-pause-fill class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-link-fill class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-pencil-simple-fill
-                                        class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-trash-fill class="w-5 h-5 cursor-pointer hover:text-status-paused" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="bg-bg-primary hover:bg-bg-hover transition-colors">
-                            <td class="px-4 md:px-6 py-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 xxs:w-10 xxs:h-10 rounded-lg flex-shrink-0">
-                                        <img src="{{ asset('assets/images/order.png') }}" alt="Call of Duty Skin Logo"
-                                            class="w-full h-full rounded-lg object-cover" />
-                                    </div>
-                                    <div class="min-w-0">
-                                        <h3
-                                            class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">
-                                            Call of Duty Skin</h3>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm">20M</td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm hidden sm:table-cell">20K
-                            </td>
-                            <td
-                                class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm whitespace-nowrap hidden lg:table-cell">
-                                $9.5 (20k)</td>
-                            <td class="px-4 md:px-6 py-4">
-                                <span
-                                    class="px-2 xxs:px-3 py-1 text-xs font-semibold rounded-full bg-red-500 text-white whitespace-nowrap inline-block">Paused</span>
-                            </td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm hidden md:table-cell">1 h
-                            </td>
-                            <td class="px-4 md:px-6 py-3 rounded-r-lg">
-                                <div class="flex items-center gap-3 text-text-muted">
-                                    <x-phosphor-play-fill class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-link-fill class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-pencil-simple-fill
-                                        class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-trash-fill class="w-5 h-5 cursor-pointer hover:text-status-paused" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="bg-bg-secondary hover:bg-bg-hover transition-colors">
-                            <td class="px-4 md:px-6 py-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 xxs:w-10 xxs:h-10 rounded-lg flex-shrink-0">
-                                        <img src="{{ asset('assets/images/order.png') }}" alt="Apex Legends Logo"
-                                            class="w-full h-full rounded-lg object-cover" />
-                                    </div>
-                                    <div class="min-w-0">
-                                        <h3
-                                            class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">
-                                            Apex Legen...</h3>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm">10M</td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm hidden sm:table-cell">50K
-                            </td>
-                            <td
-                                class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm whitespace-nowrap hidden lg:table-cell">
-                                $5.5 (50k)</td>
-                            <td class="px-4 md:px-6 py-4">
-                                <span
-                                    class="px-2 xxs:px-3 py-1 text-xs font-semibold rounded-full bg-red-500 text-white whitespace-nowrap inline-block">Paused</span>
-                            </td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm hidden md:table-cell">1 h
-                            </td>
-                            <td class="px-4 md:px-6 py-3 rounded-r-lg">
-                                <div class="flex items-center gap-3 text-text-muted">
-                                    <x-phosphor-play-fill class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-link-fill class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-pencil-simple-fill
-                                        class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-trash-fill class="w-5 h-5 cursor-pointer hover:text-status-paused" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="bg-bg-primary hover:bg-bg-hover transition-colors">
-                            <td class="px-4 md:px-6 py-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 xxs:w-10 xxs:h-10 rounded-lg flex-shrink-0">
-                                        <img src="{{ asset('assets/images/order.png') }}" alt="Fortnite Logo"
-                                            class="w-full h-full rounded-lg object-cover" />
-                                    </div>
-                                    <div class="min-w-0">
-                                        <h3
-                                            class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">
-                                            Fortnite</h3>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm">2.5B</td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm hidden sm:table-cell">100K
-                            </td>
-                            <td
-                                class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm whitespace-nowrap hidden lg:table-cell">
-                                $6.5 (100k)</td>
-                            <td class="px-4 md:px-6 py-4">
-                                <span
-                                    class="px-2 xxs:px-3 py-1 text-xs font-semibold rounded-full bg-red-500 text-white whitespace-nowrap inline-block">Paused</span>
-                            </td>
-                            <td class="px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm hidden md:table-cell">1 h
-                            </td>
-                            <td class="px-4 md:px-6 py-3 rounded-r-lg">
-                                <div class="flex items-center gap-3 text-text-muted">
-                                    <x-phosphor-play-fill class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-link-fill class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-pencil-simple-fill
-                                        class="w-5 h-5 cursor-pointer hover:text-text-primary" />
-                                    <x-phosphor-trash-fill class="w-5 h-5 cursor-pointer hover:text-status-paused" />
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <x-ui.user-table :data="$items" :columns="$columns" :actions="$actions" 
+                    emptyMessage="No games found. Add your first game to get started."
+                    class="rounded-lg overflow-hidden" />
             </div>
 
             <x-frontend.pagination-ui />
 
         </div>
     </div>
+
+       {{-- Delete Confirmation Modal --}}
+    @if($showDeleteModal)
+        <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                {{-- Background overlay --}}
+                <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" 
+                     wire:click="$set('showDeleteModal', false)"></div>
+
+                {{-- Modal panel --}}
+                <div class="inline-block align-bottom bg-bg-primary rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="bg-bg-primary px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-900/20 sm:mx-0 sm:h-10 sm:w-10">
+                                <svg class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                            </div>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                <h3 class="text-lg leading-6 font-medium text-text-white" id="modal-title">
+                                    Delete Item
+                                </h3>
+                                <div class="mt-2">
+                                    <p class="text-sm text-text-muted">
+                                        Are you sure you want to delete this item? This action cannot be undone.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-bg-secondary px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-3">
+                        <button type="button" 
+                                wire:click="deleteItem"
+                                class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm transition-colors">
+                            Delete
+                        </button>
+                        <button type="button" 
+                                wire:click="$set('showDeleteModal', false)"
+                                class="mt-3 w-full inline-flex justify-center rounded-lg border border-zinc-700 shadow-sm px-4 py-2 bg-bg-primary text-base font-medium text-text-white hover:bg-bg-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>
