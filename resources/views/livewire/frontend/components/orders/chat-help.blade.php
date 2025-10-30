@@ -14,7 +14,7 @@
 
 
             <div class="item-details pb-10">
-                <div class="w-full bg-bg-primary rounded-3xl p-20">
+                <div class="w-full bg-bg-light dark:bg-bg-base-50 rounded-3xl p-20">
 
                     <div class="item-title pb-10">
                         <div class="item-short-info flex justify-between">
@@ -31,7 +31,7 @@
 
                         </div>
                     </div>
-                    <div class="detail-right w-full p-7 bg-bg-light  rounded-3xl">
+                    <div class="detail-right w-full p-7 bg-zinc-50 dark:bg-bg-light  rounded-3xl">
 
                         <div class="item-title pb-10">
                             <div class="item-short-info flex justify-between">
@@ -85,13 +85,13 @@
 
                     <div class="item-list mt-10">
                         <div class="w-1/3 flex flex-col">
-                            <div class="p-2 w-100 h-100">
+                            <div class="p-2 w-100 h-100 ">
                                 <img src="{{ asset('assets/images/orders/Mercury_LMG_-_Schematic_-_Save_the_World .png') }}"
                                     alt="">
                             </div>
                             <div class="pl-2">
                                 <p class="mt-6 font-semibold text-xl"> {{ __('Description') }}</p>
-                                <p class="mt-3 text-base">Mercury Spark - Ultimate 5-start Boost</p>
+                                <p class="mt-3 text-base"> {{ __('Mercury Spark - Ultimate 5-start Boost') }}</p>
                             </div>
                         </div>
                     </div>
@@ -118,7 +118,7 @@
                         <div class="relative mr-5">
                             <img src="{{ asset('/assets/images/orders/2 2.png') }}" class="w-13.5 h-13.5"
                                 alt="">
-                            <span class="h-2 w-2 bg-blue-500 absolute rounded-full right-0 bottom-2.5"></span>
+                            <span class="h-2 w-2 bg-bg-active absolute rounded-full right-0 bottom-2.5"></span>
                         </div>
                     </div>
                     <div class="w-8/9">

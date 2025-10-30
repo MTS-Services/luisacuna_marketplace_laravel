@@ -31,4 +31,5 @@ Route::group(['prefix' => 'orders', 'as' => 'om.'], function () {
    Route::get('/', [OrderController::class, 'index'])->name('index');
    Route::get('/cancel', [OrderController::class, 'cancel'])->name('cancel');
    Route::get('/chat-help', [OrderController::class, 'chatHelp'])->name('chat-help');
+   Route::get('/complete', [OrderController::class, 'complete'])->name('complete');
 }); 

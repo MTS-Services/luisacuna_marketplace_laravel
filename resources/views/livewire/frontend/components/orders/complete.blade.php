@@ -35,32 +35,45 @@
             </div>
 
             <div class="item-details pb-10">
-                <div class="flex gap-6 ">
-                    <div class="details-left bg-zinc-50 dark:bg-bg-base-50 w-2/3 p-10  rounded-3xl">
-                        <div class="flex items-center pb-5">
-                            <div class="w-16.5 h-16.5 flex items-center justify-center bg-bg-secondary dark:bg-bg-light rounded-full ">
-                                <img src="{{ asset('assets/images/icons/Info.png') }}" alt="Info Icon" class="h-7 w-7">
+                <div class="flex gap-6 items-start ">
+                    <div class="details-left  w-2/3">
+
+                        <div class="bg-zinc-50 dark:bg-bg-base-50 rounded-3xl p-10 w-full ">
+                            <div class="flex items-center pb-5">
+                                <div
+                                    class="w-16.5 h-16.5 flex items-center justify-center bg-bg-secondary dark:bg-bg-light rounded-full ">
+                                    <flux:icon icon="check" class="w-7 h-7 text-primary-50"></flux:icon>
+                                    {{-- <img src="{{ asset('assets/images/icons/Info.png') }}" alt="Info Icon" class="h-7 w-7"> --}}
+                                </div>
+                                <di class="pl-4">
+                                    <p class="font-semibold  text-2xl">Order Cancelled</p>
+                                    <p>
+                                        <span class="text-xs text-primary-50 font-normal ">Jun 11, 2024 , </span>
+                                        <span class="text-xs   text-primary-50 font-normal">1:22:12 AM</span>
+                                    </p>
+                                </di>
                             </div>
-                            <p class="font-semibold pl-4 text-2xl">Order Cancelled</p>
+                            <p class="font-normal text-base text-primary-50">Order is marked as completed. Funds will be
+                                added to your Eldorado balance.</p>
                         </div>
 
-                        <div class="pb-5">
-                            <label class="pb-3 text-base">Dispute reason</label>
-                            <p class="font-bold text-primary-50 text-2xl">I have another issues.</p>
+                        <div class="bg-zinc-50 dark:bg-bg-base-50 rounded-3xl p-10 w-full mt-6 ">
+                            <div class="flex items-center pb-5">
+                               
+                                <di class="pl-4">
+                                    <p class="font-semibold  text-2xl"> {{ __('Buyer Feedback') }} </p>
+                                </di>
+                            </div>
+                            <p class="font-normal text-base text-primary-50">
+                                <flux:icon icon="thumbs-up" class="w-7 h-7 text-primary-50 inline-block pr-3"></flux:icon>
+                                {{ __('GGWP !') }}
+                            </p>
                         </div>
-                        <div class="pb-5">
-                            <label class="pb-3 text-base">Canceled by</label>
-                            <p class="font-bold text-primary-50 text-2xl">Seller</p>
-                        </div>
-                        <div class="pb-5">
-                            <label class="pb-3 text-base">Canceled reason</label>
-                            <p class="font-bold text-primary-50 text-2xl">Others</p>
-                        </div>
-                        <div class="pb-5">
-                            <label class="pb-3 text-base">Comment </label>
-                            <p class="font-bold text-primary-50 text-2xl">Buyer Requested to cancle the order </p>
-                        </div>
+
+
+
                     </div>
+
                     <div class="detail-right w-1/3 p-7 bg-bg-base-50 rounded-3xl">
                         <div class="pb-6">
                             <p class="font-semibold text-2xl">Order Cancelled</p>
@@ -97,9 +110,9 @@
                                 <p class="text-base">Seller</p>
                                 <p class="flex flex-end items-center">
                                     <span class="text-base text-btn-danger pl-3 ">D18QUAN</span>
-                                     <span class="w-3 h-3 rounded-full bg-bg-active ml-3"></span>
+                                    <span class="w-3 h-3 rounded-full bg-bg-active ml-3"></span>
                                     <span class="text-base pl-1">
-                                     
+
                                         Online
                                     </span>
                                 </p>

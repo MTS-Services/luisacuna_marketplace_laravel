@@ -26,4 +26,10 @@ class OrderController extends Controller
         return view($this->master);
         
     }
+
+    public function complete(){
+
+        return view($this->master);
+        
+    }
 }

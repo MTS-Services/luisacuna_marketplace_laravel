@@ -7,8 +7,12 @@
               <livewire:frontend.components.orders.cancel />
         @break
         @case('om.chat-help')
-            <x-slot name="pageSlug">cancel-help</x-slot>
+            <x-slot name="pageSlug">oder-help</x-slot>
               <livewire:frontend.components.orders.chat-help />
+        @break
+        @case('om.complete')
+            <x-slot name="pageSlug">order-complete</x-slot>
+              <livewire:frontend.components.orders.complete />
         @break
 
         @default
