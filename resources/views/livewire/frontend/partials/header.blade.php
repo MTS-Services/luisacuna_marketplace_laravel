@@ -4,7 +4,6 @@
         <div class=""><a href="{{ route('home') }}">
                 <img src="{{ asset('assets/images/header_logo.png') }}" alt=""></a>
         </div>
-
         @include('partials.user-navigation')
 
         <div class="flex items-center">
