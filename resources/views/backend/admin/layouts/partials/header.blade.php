@@ -16,7 +16,7 @@
                 <div class="hidden sm:block">
                     <h1 class="text-xl lg:text-2xl font-bold text-text-primary">Good morning,
                         Alex!</h1>
-                    <p class="text-text-secondary text-text-secondary text-sm">Here's what's happening
+                    <p class="text-text-secondary text-sm">Here's what's happening
                         today
                     </p>
                 </div>
@@ -27,7 +27,7 @@
                 <!-- Search -->
                 {{-- <x-admin.search-form placeholder="Search here..." /> --}}
                 <flux:input type="search" placeholder="Search here..."
-                    class="w-32 sm:w-48 lg:w-64 !px-3 !py-2 !rounded-xl !bg-bg-black/10 dark:!bg-bg-white/10 !border-0 focus:!ring-2 focus:!ring-white/20 focus:!outline-none transition-all duration-200"
+                    class="w-32 sm:w-48 lg:w-64 px-3! py-2! rounded-xl! bg-bg-black/10! dark:bg-bg-white/10! border-0! focus:ring-2! focus:ring-white/20! focus:outline-none! transition-all duration-200"
                     icon="magnifying-glass" />
 
                 {{-- <!-- Theme Toggle --> --}}

@@ -15,6 +15,18 @@
         :root {
             --livewire-progress-bar-color: var(--color-secondary-500) !important;
         }
+
+        @keyframes bounce-dot {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
     </style>
     @stack('styles')
 </head>
