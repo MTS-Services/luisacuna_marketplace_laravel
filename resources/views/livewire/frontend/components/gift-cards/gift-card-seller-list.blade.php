@@ -62,9 +62,9 @@
                 <div class="">
                     <span class="text-base font-semibold">Select region</span>
                 </div>
-                <div class="flex items-center gap-2 hidden md:block">
+                <div class="hidden md:flex items-center gap-2">
                     <div class="">
-                        <span class="">
+                        <span class="text-text-white">
                             Sort by:
                         </span>
                     </div>
