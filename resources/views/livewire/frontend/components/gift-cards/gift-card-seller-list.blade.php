@@ -78,12 +78,6 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="mt-3 mb-6">
-                <select name="" id=""
-                    class="borbder border-2 border-zinc-800 rounded-full py-4 px-8 w-sm text-text-white">
-                    <option value="">Global</option>
-                </select>
-            </div> --}}
             <div class="mt-3 mb-6">
                 <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70 rounded-full!">
                     <option value="">Global</option>
@@ -103,8 +97,8 @@
 
     {{-- main --}}
     <section class="container mx-auto">
-        <div class="flex gap-6">
-            <div class="w-[65%] grid grid-cols-3 gap-6">
+        <div class="md:flex gap-6">
+            <div class="w-full md:w-[65%]  grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
                 <div class="bg-bg-primary rounded-2xl p-7 border border-pink-500">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
@@ -187,7 +181,7 @@
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
             </div>
-            <div class="w-[35%]">
+            <div class="w-full md:w-[35%] mt-4 md:mt-0">
                 <div class="">
                     <div class="bg-bg-primary rounded-2xl py-7 px-6">
                         <div class="flex items-center gap-1 mb-8">
@@ -293,245 +287,131 @@
                 <option value="processing">Processing</option>
             </x-ui.select>
         </div>
-        <div class="overflow-x-auto">
-            <table class="min-w-full text-left border-collapse">
-                <!-- Table Header -->
-                <thead>
-                    <tr class="">
-                        <th class="px-4 py-3 text-sm text-text-white">All Sellers(8)</th>
-                        <th class="px-4 py-3 text-sm text-text-white">Delivery Time</th>
-                        <th class="px-4 py-3 text-sm text-text-white">Delivery Method</th>
-                        <th class="px-4 py-3 text-sm text-text-white">Stock</th>
-                        <th class="px-4 py-3 text-sm text-text-white">Price</th>
-                    </tr>
-                </thead>
+        <div class="min-w-full text-left border-collapse">
+            <div class="flex justify-between text-text-white text-sm">
+                <div class="px-4 py-3">All Sellers (8)</div>
+                <div class="px-4 py-3 hidden md:block">Delivery Time</div>
+                <div class="px-4 py-3 hidden md:block">Delivery Method</div>
+                <div class="px-4 py-3 hidden md:block">Stock</div>
+                <div class="px-4 py-3 hidden md:block">Price</div>
+            </div>
 
-                <!-- Table Body -->
-                <tbody class="py-7 px-3.5">
-                    <div class="mt-7">
-                        <tr class="bg-bg-primary">
-                            <div class="rounded-2xl">
-                                <td class="px-4 py-3">
-                                    <div class="flex items-center gap-4">
-                                        <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt=""
-                                            class="w-10 h-10 rounded-full">
-                                        <div>
-                                            <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
-                                            <div class="flex items-center gap-1">
-                                                <x-phosphor name="thumbs-up" variant="regular"
-                                                    class="fill-zinc-600 inline-block" />
-                                                <span class="text-xs text-text-white">99.3%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-3 text-text-white text-base font-semibold">Instants</td>
-                                <td class="px-4 py-3 text-text-white text-base font-semibold">Login Top UP</td>
-                                <td class="px-4 py-3 text-text-white text-base font-semibold">$77.07</td>
-                                <td class="px-4 py-3 text-text-white text-base font-semibold">$77.07</td>
+            <div class="py-7 space-y-7">
+                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl">
+                    <div class="px-4 py-3">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10">
+                                <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt=""
+                                    class="w-full h-full rounded-full">
                             </div>
-                        </tr>
-                    </div>
-                    <div class="mt-7">
-                        <tr class="bg-bg-primary">
-                            <div class="rounded-2xl">
-                                <td class="px-4 py-3">
-                                    <div class="flex items-center gap-4">
-                                        <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt=""
-                                            class="w-10 h-10 rounded-full">
-                                        <div>
-                                            <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
-                                            <div class="flex items-center gap-1">
-                                                <x-phosphor name="thumbs-up" variant="regular"
-                                                    class="fill-zinc-600 inline-block" />
-                                                <span class="text-xs text-text-white">99.3%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-3 text-text-white text-base font-semibold">Instants</td>
-                                <td class="px-4 py-3 text-text-white text-base font-semibold">Login Top UP</td>
-                                <td class="px-4 py-3 text-text-white text-base font-semibold">$77.07</td>
-                                <td class="px-4 py-3 text-text-white text-base font-semibold">$77.07</td>
+                            <div>
+                                <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
+                                <div class="flex items-center gap-1">
+                                    <x-phosphor name="thumbs-up" variant="regular"
+                                        class="fill-zinc-600 inline-block" />
+                                    <span class="text-xs text-text-white">99.3%</span>
+                                </div>
                             </div>
-                        </tr>
+                        </div>
                     </div>
-                    <tr class="bg-bg-primary">
-                        <div class="rounded-2xl">
-                            <td class="px-4 py-3">
-                                <div class="flex items-center gap-4">
-                                    <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt=""
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
-                                        <div class="flex items-center gap-1">
-                                            <x-phosphor name="thumbs-up" variant="regular"
-                                                class="fill-zinc-600 inline-block" />
-                                            <span class="text-xs text-text-white">99.3%</span>
-                                        </div>
-                                    </div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">Instants</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
+                </div>
+
+                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl">
+                    <div class="px-4 py-3">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10">
+                                <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt=""
+                                    class="w-full h-full rounded-full">
+                            </div>
+                            <div>
+                                <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
+                                <div class="flex items-center gap-1">
+                                    <x-phosphor name="thumbs-up" variant="regular"
+                                        class="fill-zinc-600 inline-block" />
+                                    <span class="text-xs text-text-white">99.3%</span>
                                 </div>
-                            </td>
-                            <td class="px-4 py-3 text-text-white text-base font-semibold">Instants</td>
-                            <td class="px-4 py-3 text-text-white text-base font-semibold">Login Top UP</td>
-                            <td class="px-4 py-3 text-text-white text-base font-semibold">$77.07</td>
-                            <td class="px-4 py-3 text-text-white text-base font-semibold">$77.07</td>
+                            </div>
                         </div>
-                    </tr>
-                    <tr class="bg-bg-primary">
-                        <div class="rounded-2xl">
-                            <td class="px-4 py-3">
-                                <div class="flex items-center gap-4">
-                                    <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt=""
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
-                                        <div class="flex items-center gap-1">
-                                            <x-phosphor name="thumbs-up" variant="regular"
-                                                class="fill-zinc-600 inline-block" />
-                                            <span class="text-xs text-text-white">99.3%</span>
-                                        </div>
-                                    </div>
+                    </div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">Instants</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
+                </div>
+
+                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl">
+                    <div class="px-4 py-3">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10">
+                                <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt=""
+                                    class="w-full h-full rounded-full">
+                            </div>
+                            <div>
+                                <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
+                                <div class="flex items-center gap-1">
+                                    <x-phosphor name="thumbs-up" variant="regular"
+                                        class="fill-zinc-600 inline-block" />
+                                    <span class="text-xs text-text-white">99.3%</span>
                                 </div>
-                            </td>
-                            <td class="px-4 py-3 text-text-white text-base font-semibold">Instants</td>
-                            <td class="px-4 py-3 text-text-white text-base font-semibold">Login Top UP</td>
-                            <td class="px-4 py-3 text-text-white text-base font-semibold">$77.07</td>
-                            <td class="px-4 py-3 text-text-white text-base font-semibold">$77.07</td>
+                            </div>
                         </div>
-                    </tr>
-                    <tr class="bg-bg-primary">
-                        <div class="rounded-2xl">
-                            <td class="px-4 py-3">
-                                <div class="flex items-center gap-4">
-                                    <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt=""
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
-                                        <div class="flex items-center gap-1">
-                                            <x-phosphor name="thumbs-up" variant="regular"
-                                                class="fill-zinc-600 inline-block" />
-                                            <span class="text-xs text-text-white">99.3%</span>
-                                        </div>
-                                    </div>
+                    </div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">Instants</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
+                </div>
+
+                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl">
+                    <div class="px-4 py-3">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10">
+                                <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt=""
+                                    class="w-full h-full rounded-full">
+                            </div>
+                            <div>
+                                <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
+                                <div class="flex items-center gap-1">
+                                    <x-phosphor name="thumbs-up" variant="regular"
+                                        class="fill-zinc-600 inline-block" />
+                                    <span class="text-xs text-text-white">99.3%</span>
                                 </div>
-                            </td>
-                            <td class="px-4 py-3 text-text-white text-base font-semibold">Instants</td>
-                            <td class="px-4 py-3 text-text-white text-base font-semibold">Login Top UP</td>
-                            <td class="px-4 py-3 text-text-white text-base font-semibold">$77.07</td>
-                            <td class="px-4 py-3 text-text-white text-base font-semibold">$77.07</td>
+                            </div>
                         </div>
-                    </tr>
-                    <tr class="bg-bg-primary">
-                        <div class="rounded-2xl">
-                            <td class="px-4 py-3">
-                                <div class="flex items-center gap-4">
-                                    <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt=""
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
-                                        <div class="flex items-center gap-1">
-                                            <x-phosphor name="thumbs-up" variant="regular"
-                                                class="fill-zinc-600 inline-block" />
-                                            <span class="text-xs text-text-white">99.3%</span>
-                                        </div>
-                                    </div>
+                    </div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">Instants</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
+                </div>
+
+                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl">
+                    <div class="px-4 py-3">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10">
+                                <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt=""
+                                    class="w-full h-full rounded-full">
+                            </div>
+                            <div>
+                                <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
+                                <div class="flex items-center gap-1">
+                                    <x-phosphor name="thumbs-up" variant="regular"
+                                        class="fill-zinc-600 inline-block" />
+                                    <span class="text-xs text-text-white">99.3%</span>
                                 </div>
-                            </td>
-                            <td class="px-4 py-3 text-text-white text-base font-semibold">Instants</td>
-                            <td class="px-4 py-3 text-text-white text-base font-semibold">Login Top UP</td>
-                            <td class="px-4 py-3 text-text-white text-base font-semibold">$77.07</td>
-                            <td class="px-4 py-3 text-text-white text-base font-semibold">$77.07</td>
+                            </div>
                         </div>
-                    </tr>
-                </tbody>
-            </table>
+                    </div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">Instants</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
+                </div>
+            </div>
         </div>
-        {{-- 
-        <div class="p-4 bg-gray-950 min-h-screen font-sans">
-            <div
-                class="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 px-4 py-3 text-sm font-semibold text-gray-400 border-b border-gray-700">
-                <div>All Sellers(8)</div>
-                <div>Delivery Time</div>
-                <div>Delivery Method</div>
-                <div>Stock</div>
-                <div>Price</div>
-            </div>
-
-            <div class="mt-4 space-y-4">
-                <div
-                    class="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] items-center gap-4 bg-indigo-900/50 rounded-2xl p-4 shadow-lg border border-indigo-700/50">
-                    <div class="flex items-center gap-4">
-                        <img src="https://via.placeholder.com/40" alt="Seller Avatar"
-                            class="w-10 h-10 rounded-full border border-gray-600">
-                        <div>
-                            <h3 class="text-white text-base font-semibold">Devon Lane</h3>
-                            <div class="flex items-center gap-1 text-gray-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"
-                                    class="w-4 h-4 text-zinc-400">
-                                    <path
-                                        d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm37.66,82.34L112,170.34a8,8,0,0,1-11.32,0L78.34,137.66a8,8,0,0,1,11.32-11.32L106.34,159l44.32-44.34a8,8,0,0,1,11.32,11.32Z">
-                                    </path>
-                                </svg>
-                                <span class="text-xs text-white">99.3%</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-white text-base font-semibold">Instants</div>
-                    <div class="text-white text-base font-semibold">Login Top UP</div>
-                    <div class="text-white text-base font-semibold">4156</div>
-                    <div class="text-white text-base font-semibold">$77.07</div>
-                </div>
-
-                <div
-                    class="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] items-center gap-4 bg-gray-800/60 rounded-2xl p-4 transition duration-150 ease-in-out hover:bg-gray-700/70">
-                    <div class="flex items-center gap-4">
-                        <img src="https://via.placeholder.com/40" alt="Seller Avatar"
-                            class="w-10 h-10 rounded-full border border-gray-600">
-                        <div>
-                            <h3 class="text-white text-base font-semibold">Devon Lane</h3>
-                            <div class="flex items-center gap-1 text-gray-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"
-                                    class="w-4 h-4 text-zinc-400">
-                                    <path
-                                        d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm37.66,82.34L112,170.34a8,8,0,0,1-11.32,0L78.34,137.66a8,8,0,0,1,11.32-11.32L106.34,159l44.32-44.34a8,8,0,0,1,11.32,11.32Z">
-                                    </path>
-                                </svg>
-                                <span class="text-xs text-white">99.3%</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-white text-base font-semibold">Instants</div>
-                    <div class="text-white text-base font-semibold">Gifting</div>
-                    <div class="text-white text-base font-semibold">400</div>
-                    <div class="text-white text-base font-semibold">$70</div>
-                </div>
-
-                <div
-                    class="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] items-center gap-4 bg-gray-800/60 rounded-2xl p-4 transition duration-150 ease-in-out hover:bg-gray-700/70">
-                    <div class="flex items-center gap-4">
-                        <img src="https://via.placeholder.com/40" alt="Seller Avatar"
-                            class="w-10 h-10 rounded-full border border-gray-600">
-                        <div>
-                            <h3 class="text-white text-base font-semibold">Devon Lane</h3>
-                            <div class="flex items-center gap-1 text-gray-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"
-                                    class="w-4 h-4 text-zinc-400">
-                                    <path
-                                        d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm37.66,82.34L112,170.34a8,8,0,0,1-11.32,0L78.34,137.66a8,8,0,0,1,11.32-11.32L106.34,159l44.32-44.34a8,8,0,0,1,11.32,11.32Z">
-                                    </path>
-                                </svg>
-                                <span class="text-xs text-white">99.3%</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-white text-base font-semibold">Instants</div>
-                    <div class="text-white text-base font-semibold">Gifting</div>
-                    <div class="text-white text-base font-semibold">400</div>
-                    <div class="text-white text-base font-semibold">$70</div>
-                </div>
-
-            </div>
-        </div> --}}
     </section>
 </main>
