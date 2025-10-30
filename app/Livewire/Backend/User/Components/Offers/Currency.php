@@ -6,22 +6,17 @@ use Livewire\Component;
 use Livewire\WithPagination;
 
 class Currency extends Component
-// {
-//     public function render()
-//     {
-//         return view('livewire.backend.user.components.offers.currency');
-//     }
-// }
 {
     use WithPagination;
 
     public $showDeleteModal = false;
     public $deleteItemId = null;
+    public $perPage = 7; // Items per page
+    protected $paginationTheme = 'tailwind';
 
     public function render()
     {
-        // Dummy data -  actual database query এর পরিবর্তে
-        $items = collect([
+        $allItems = collect([
             [
                 'id' => 1,
                 'name' => 'Fortnite',
@@ -92,15 +87,32 @@ class Currency extends Component
                 'status' => 'paused',
                 'delivery_time' => '1 h',
             ],
+            [
+                'id' => 8,
+                'name' => 'Fortnite',
+                'game_image' => asset('assets/images/order.png'),
+                'quantity' => '2.5B',
+                'min_quantity' => '100K',
+                'price' => '$6.5 (100k)',
+                'status' => 'paused',
+                'delivery_time' => '1 h',
+            ],
         ])->map(fn($item) => (object)$item);
+
+        $currentPage = $this->getPage();
+        $items = $allItems->slice(($currentPage - 1) * $this->perPage, $this->perPage)->values();
+        
+        $pagination = [
+            'total' => $allItems->count(),
+            'per_page' => $this->perPage,
+            'current_page' => $currentPage,
+            'last_page' => ceil($allItems->count() / $this->perPage),
+            'from' => (($currentPage - 1) * $this->perPage) + 1,
+            'to' => min($currentPage * $this->perPage, $allItems->count()),
+        ];
 
         // Table columns configuration
         $columns = [
-            // [
-            //     'key' => 'name',
-            //     'label' => 'Game',
-            //     'sortable' => true,
-            // ],
             [
                 'key' => 'name',
                 'label' => 'Game',
@@ -168,6 +180,7 @@ class Currency extends Component
             'items' => $items,
             'columns' => $columns,
             'actions' => $actions,
+            'pagination' => $pagination,
         ]);
     }
 

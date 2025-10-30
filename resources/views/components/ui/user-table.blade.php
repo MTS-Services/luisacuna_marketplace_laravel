@@ -5,7 +5,7 @@
     'emptyMessage' => 'No records found.',
 ])
 
-<div class="overflow-x-auto">
+<div class="overflow-x-auto bg-bg-primary">
     <table class="w-full text-left table-auto border-separate border-spacing-0">
         <thead>
             <tr class="text-sm text-text-white uppercase tracking-wider">
