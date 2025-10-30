@@ -21,19 +21,20 @@ class Trash extends Component
 
     protected $listeners = ['CurrencyDeleted' => '$refresh', 'CurrencyRestored' => '$refresh', 'CurrencyUpdated' => '$refresh'];
 
-    protected CurrencyService $currencyService;
+    protected CurrencyService $service;
 
-    public function boot(CurrencyService $currencyService)
+    public function boot(CurrencyService $service)
     {
-        $this->currencyService = $currencyService;
+        $this->service = $service;
     }
 
     public function render()
     {
-        $datas = $this->currencyService->getTrashedPaginatedData(
+        $datas = $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
+        $datas->load('deletedBy');
 
         $columns = [
 
@@ -84,10 +85,10 @@ class Trash extends Component
                 }
             ],
             [
-                'key' => 'created_by',
-                'label' => 'Created By',
+                'key' => 'deleted_by',
+                'label' => 'Deleted By',
                 'format' => function ($data) {
-                    return $data->creater_admin?->name ?? 'System';
+                    return $data->deletedBy?->name ?? 'System';
                 }
             ],
         ];
@@ -96,12 +97,14 @@ class Trash extends Component
             [
                 'key' => 'id',
                 'label' => 'Restore',
-                'method' => 'restore'
+                'method' => 'restore',
+                'encrypt' => true
             ],
             [
                 'key' => 'id',
                 'label' => 'Permanent Delete',
-                'method' => 'confirmDelete'
+                'method' => 'confirmDelete',
+                'encrypt' => true
             ],
         ];
 
@@ -119,21 +122,21 @@ class Trash extends Component
         ]);
     }
 
-    public function confirmDelete($id): void
+    public function confirmDelete($encryptedId): void
     {
-        if (!$id) {
+        if (!$encryptedId) {
             $this->error('No Currency selected');
             $this->resetPage();
             return;
         }
-        $this->selectedId = $id;
+        $this->selectedId = $encryptedId;
         $this->showDeleteModal = true;
     }
 
     public function forceDelete(): void
     {
         try {
-            $this->currencyService->deleteData($this->selectedId, forceDelete: true);
+            $this->service->deleteData(decrypt($this->selectedId), forceDelete: true);
             $this->showDeleteModal = false;
             $this->selectedId = null;
             $this->resetPage();
@@ -145,10 +148,10 @@ class Trash extends Component
         }
     }
 
-    public function restore($id): void
+    public function restore($encryptedId): void
     {
         try {
-            $this->currencyService->restoreData($id);
+            $this->service->restoreData(decrypt($encryptedId));
 
             $this->success('Currency restored successfully');
         } catch (\Throwable $e) {
@@ -197,13 +200,15 @@ class Trash extends Component
 
     protected function bulkRestore(): void
     {
-        $count = $this->currencyService->bulkRestoreData($this->selectedIds);
+        $count = count($this->selectedIds);
+        $this->service->bulkRestoreData($this->selectedIds);
         $this->success("{$count} Currencies restored successfully");
     }
 
     protected function bulkForceDelete(): void
     {
-        $count = $this->currencyService->bulkForceDeleteData($this->selectedIds);
+        $count = count($this->selectedIds);
+        $this->service->bulkForceDeleteData($this->selectedIds);
         $this->success("{$count} Currencies permanently deleted successfully");
     }
 
@@ -219,7 +224,7 @@ class Trash extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->currencyService->getTrashedPaginatedData(
+        return $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

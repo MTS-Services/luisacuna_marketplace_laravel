@@ -6,6 +6,7 @@ use App\Models\Currency;
 use App\Repositories\Contracts\CurrencyRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class CurrencyRepository implements CurrencyRepositoryInterface
 {
@@ -127,13 +128,14 @@ class CurrencyRepository implements CurrencyRepositoryInterface
         return $currency->update($data);
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id, int $actionerId): bool
     {
         $currency = $this->find($id);
 
         if (!$currency) {
             return false;
         }
+        $currency->update(['deleted_by' => $actionerId]);
 
         return $currency->delete();
     }
@@ -149,29 +151,36 @@ class CurrencyRepository implements CurrencyRepositoryInterface
         return $currency->forceDelete();
     }
 
-    public function restore(int $id): bool
+    public function restore(int $id, int $actionerId): bool
     {
         $currency = $this->findTrashed($id);
 
         if (!$currency) {
             return false;
         }
+        $currency->update(['restored_by' => $actionerId]);
 
         return $currency->restore();
     }
 
-    public function bulkDelete(array $ids): int
+    public function bulkDelete(array $ids, int $actionerId): int
     {
-        return $this->model->whereIn('id', $ids)->delete();
+        return DB::transaction(function () use ($ids, $actionerId) {
+            $this->model->whereIn('id', $ids)->update(['deleted_by' => $actionerId]);
+            return $this->model->whereIn('id', $ids)->delete();
+        });
     }
 
-    public function bulkUpdateStatus(array $ids, string $status): int
+    public function bulkUpdateStatus(array $ids, string $status, int $actionerId): int
     {
-        return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status]);
+        return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updated_by' => $actionerId]);
     }
-    public function bulkRestore(array $ids): int
+    public function bulkRestore(array $ids, int $actionerId): int
     {
-        return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
+        return DB::transaction(function () use ($ids, $actionerId) {
+            $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restored_by' => $actionerId]);
+            return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
+        });
     }
     public function bulkForceDelete(array $ids): int //
     {

@@ -32,17 +32,17 @@ class BaseModel extends Model
 
     public function createdBy()
     {
-        return $this->belongsTo(User::class, 'created_by')->select('id', 'name');
+        return $this->belongsTo(Admin::class, 'created_by')->select('id', 'name');
     }
 
     public function updatedBy()
     {
-        return $this->belongsTo(User::class, 'updated_by')->select('id', 'name');
+        return $this->belongsTo(Admin::class, 'updated_by')->select('id', 'name');
     }
 
     public function deletedBy()
     {
-        return $this->belongsTo(User::class, 'deleted_by')->select('id', 'name');
+        return $this->belongsTo(Admin::class, 'deleted_by')->select('id', 'name');
     }
     
     public function creater()
