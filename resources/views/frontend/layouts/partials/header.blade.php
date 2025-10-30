@@ -7,16 +7,16 @@
 
         @include('partials.user-navigation')
 
-        <div class="flex items-center">
+        <div class="flex items-center gap-2">
             <button class="btn btn-ghost btn-circle hover:bg-purple-500/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 256 256">
+                {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 256 256">
                     <path
                         d="M181.66,106.34a8,8,0,0,1,0,11.32l-32,32a8,8,0,0,1-11.32,0L112,123.31,85.66,149.66a8,8,0,0,1-11.32-11.32l32-32a8,8,0,0,1,11.32,0L144,132.69l26.34-26.35A8,8,0,0,1,181.66,106.34ZM232,128A104,104,0,0,1,79.12,219.82L45.07,231.17a16,16,0,0,1-20.24-20.24l11.35-34.05A104,104,0,1,1,232,128Zm-16,0A88,88,0,1,0,51.81,172.06a8,8,0,0,1,.66,6.54L40,216,77.4,203.52a8,8,0,0,1,6.54.67A88,88,0,0,0,216,128Z">
                     </path>
-                </svg>
+                </svg> --}}
             </button>
             {{-- Notification --}}
-            <button class="btn btn-ghost btn-circle hover:bg-purple-500/20 mr-2" @click="notification = !notification">
+            <button class="btn btn-ghost btn-circle hover:bg-purple-500/20" @click="notification = !notification">
                 <div class="indicator">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 stroke-text-primary" fill="none"
                         viewBox="0 0 24 24" stroke="white">
@@ -26,7 +26,7 @@
                     <span class="badge badge-xs badge-primary indicator-item">1</span>
                 </div>
             </button>
-            <div class="dropdown dropdown-end ml-2 ">
+            <div class="dropdown dropdown-end">
                 <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                     <div class="w-10 rounded-full">
                         <img alt="Tailwind CSS Navbar component"
@@ -62,9 +62,9 @@
                 <flux:radio value="dark" icon="moon" />
             </flux:radio.group> --}}
 
-            <div class="flex items-center ml-2" x-data>
+            <div class="flex items-center" x-data>
                 <!-- Light Mode Button -->
-                <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
+                <button type="button" x-on:click="$flux.dark = false"
                     class="flex items-center justify-center w-10 h-8 text-lg rounded-l-full transition-colors duration-200"
                     :class="!$flux.dark ?
                         'bg-zinc-400 text-white' :
@@ -73,7 +73,7 @@
                 </button>
 
                 <!-- Dark Mode Button -->
-                <button type="button" @click="$flux.dark = true" :aria-pressed="$flux.dark"
+                <button type="button" x-on:click="$flux.dark = true"
                     class="flex items-center justify-center w-10 h-8 text-lg rounded-r-full transition-colors duration-200"
                     :class="$flux.dark ?
                         'bg-zinc-400 text-white' :
@@ -82,10 +82,12 @@
                 </button>
             </div>
 
+            {{-- <flux:ui-icon name="lucide:bell" class="text-blue-600" />
+            <flux:ui-icon name="heroicon:user" class="text-gray-600" /> --}}
 
 
             <button @click="mobileMenuOpen = !mobileMenuOpen"
-                class="md:hidden ml-2 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-text-white hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-text-white">
+                class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-text-white hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                     stroke="white">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -96,7 +98,8 @@
         {{-- Dropdown --}}
         <section x-show="dropdown" x-cloak @click.outside="dropdown = false"
             class="absolute top-18 left-2 h-[calc(100vh-10rem)] overflow-y-auto mt-6">
-            <div class="bg-bg-primary flex flex-col lg:flex-row items-center justify-between rounded-lg py-11 px-4 lg:px-10">
+            <div
+                class="bg-bg-primary flex flex-col lg:flex-row items-center justify-between rounded-lg py-11 px-4 lg:px-10">
                 <div class="pt-10 order-2 lg:order-1">
                     <h3 class="text-text-white text-base font-semibold pt-2 mb-6">Popular games</h3>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-2.5">

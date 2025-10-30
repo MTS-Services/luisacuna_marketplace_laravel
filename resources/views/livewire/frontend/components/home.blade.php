@@ -1,4 +1,4 @@
-<main class="overflow-x-hidden-hidden">
+<main class="overflow-x-hidden">
     <!-- Hero Section -->
     <section class=" relative py-20 overflow-hidden">
         <div class="absolute inset-0 z-0 bg-gradient-to-r from-purple-950/50 via-text-white to-purple-950/50">

@@ -36,7 +36,7 @@
                     <flux:icon name="moon" class="w-5 h-5" x-show="$flux.dark" />
                     <flux:icon name="sun" class="w-5 h-5" x-show="!$flux.dark" />
                 </flux:button>
-{{-- 
+                {{-- 
                 <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
                     <flux:radio value="light" icon="sun" />
                     <flux:radio value="dark" icon="moon" />
@@ -61,8 +61,8 @@
 
                     <button @click="open = !open" class="avatar">
                         <div class="w-8 rounded-xl">
-                            <img src="{{ auth_storage_url(admin()->avatar) }}"
-                                alt="{{ (admin()->name) }}" class="object-cover w-full h-full">
+                            <img src="{{ auth_storage_url(admin()->avatar) }}" alt="{{ admin()->name }}"
+                                class="object-cover w-full h-full">
                         </div>
                     </button>
 
@@ -74,7 +74,7 @@
                         :class="open ? '!block' : '!hidden'">
 
                         <div class="px-4 py-2 border-b border-white/10">
-                            <p class="text-sm text-text-primary font-medium">{{ (admin()->name) }}</p>
+                            <p class="text-sm text-text-primary font-medium">{{ admin()->name }}</p>
                             <p class="text-xs text-text-secondary">{{ admin()->email }}</p>
                         </div>
                         {{-- <x-admin.profile-navlink route="#" name="{{ __('Profile') }}" />
@@ -84,7 +84,7 @@
 
                         <a href="#"
                             class="block px-4 py-2 text-text-primary hover:bg-bg-white/10 transition-colors">Profile</a>
-                        
+
                         <a href="#"
                             class="block px-4 py-2 text-text-primary hover:bg-bg-white/10 transition-colors">Settings</a>
                         <div class="border-t border-white/10 my-2"></div>
