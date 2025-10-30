@@ -11,8 +11,7 @@ class Currency extends Component
 
     public $showDeleteModal = false;
     public $deleteItemId = null;
-    public $perPage = 7; // Items per page
-    protected $paginationTheme = 'tailwind';
+    public $perPage = 7;
 
     public function render()
     {
