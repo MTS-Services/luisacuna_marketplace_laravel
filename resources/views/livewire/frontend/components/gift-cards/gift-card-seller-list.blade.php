@@ -125,7 +125,7 @@
     {{-- main --}}
     <section class="container">
         <div class="md:flex gap-6">
-            <div class="w-full md:w-[65%]  grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+            <div class="w-full md:w-[65%]  grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
                 <div
                     class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
