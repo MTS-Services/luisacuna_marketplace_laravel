@@ -204,7 +204,9 @@
                         </div>
                         <span class="border-t-2 border-zinc-500 w-full inline-block"></span>
                         <div class="mt-4">
-                            <x-ui.button class="">$76.28 | Buy now </x-ui.button>
+                            <a href="{{ route('gift-card.check-out') }}">
+                                <x-ui.button class="">$76.28 | Buy now </x-ui.button>
+                            </a>
                         </div>
                         <div class="flex items-center gap-2 mt-8">
                             <flux:icon name="shield-check" class="w-6 h-6 50" />

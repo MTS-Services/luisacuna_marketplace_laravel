@@ -27,6 +27,7 @@ Route::get('account', [UserAccountController::class, 'account'])->name('account'
 Route::group(['prefix' => 'gift-card', 'as' => 'gift-card.'], function () {
     Route::get('/', [GiftCardController::class, 'index'])->name('index');
     Route::get('seller-list/{id?}', [GiftCardController::class, 'sellerList'])->name('seller-list');
+    Route::get('check-out/{id?}', [GiftCardController::class, 'checkOut'])->name('check-out');
 });
 // Items
 Route::get('/items', [ItemsController::class, 'items'])->name('items');
