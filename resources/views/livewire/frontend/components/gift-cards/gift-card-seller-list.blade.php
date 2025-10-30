@@ -1,6 +1,6 @@
 <main class="mx-auto">
     {{-- header --}}
-    <section class="container mx-auto mt-16">
+    <section class="container mt-16">
         {{-- inner nav --}}
         <div class="sm:py-4 sm:px-8 lg:py-0 lg:px-0">
             <div class=" text-text-white px-18 lg:px-0 md:px-0">
@@ -77,6 +77,7 @@
                         <span>Lowest Price</span>
                     </div>
                 </div>
+                
             </div>
             <div class="mt-3 mb-6">
                 <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70 rounded-full!">
@@ -96,10 +97,10 @@
     </section>
 
     {{-- main --}}
-    <section class="container mx-auto">
+    <section class="container">
         <div class="md:flex gap-6">
             <div class="w-full md:w-[65%]  grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-                <div class="bg-bg-primary rounded-2xl p-7 border border-pink-500">
+                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -108,7 +109,7 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-bg-primary rounded-2xl p-7">
+                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -117,7 +118,7 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-bg-primary rounded-2xl p-7">
+                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -126,7 +127,7 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-bg-primary rounded-2xl p-7">
+                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -135,7 +136,7 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-bg-primary rounded-2xl p-7">
+                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -144,7 +145,7 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-bg-primary rounded-2xl p-7">
+                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -153,7 +154,7 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-bg-primary rounded-2xl p-7">
+                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -162,7 +163,7 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-bg-primary rounded-2xl p-7">
+                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -171,7 +172,7 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-bg-primary rounded-2xl p-7">
+                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -257,7 +258,7 @@
                                             <h2 class="text-text-white font-semibold text-base">Devon Lane</h2>
                                         </div>
                                         <div class="flex items-center gap-2">
-                                            <x-phosphor name="thumbs-up" variant="regular" class="fill-zinc-600" />
+                                            <x-phosphor name="thumbs-up" variant="solid" class="fill-zinc-600" />
                                             <span class="text-xs text-text-white">99.3%</span>
                                             <span class="w-px h-4 bg-zinc-200"></span>
                                             <span class="text-xs text-text-white">2434 reviews</span>
@@ -297,7 +298,7 @@
             </div>
 
             <div class="py-7 space-y-7">
-                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl">
+                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
                     <div class="px-4 py-3">
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10">
@@ -307,7 +308,7 @@
                             <div>
                                 <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
                                 <div class="flex items-center gap-1">
-                                    <x-phosphor name="thumbs-up" variant="regular"
+                                    <x-phosphor name="thumbs-up" variant="solid"
                                         class="fill-zinc-600 inline-block" />
                                     <span class="text-xs text-text-white">99.3%</span>
                                 </div>
@@ -320,7 +321,7 @@
                     <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
                 </div>
 
-                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl">
+                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
                     <div class="px-4 py-3">
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10">
@@ -330,7 +331,7 @@
                             <div>
                                 <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
                                 <div class="flex items-center gap-1">
-                                    <x-phosphor name="thumbs-up" variant="regular"
+                                    <x-phosphor name="thumbs-up" variant="solid"
                                         class="fill-zinc-600 inline-block" />
                                     <span class="text-xs text-text-white">99.3%</span>
                                 </div>
@@ -343,7 +344,7 @@
                     <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
                 </div>
 
-                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl">
+                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
                     <div class="px-4 py-3">
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10">
@@ -353,7 +354,7 @@
                             <div>
                                 <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
                                 <div class="flex items-center gap-1">
-                                    <x-phosphor name="thumbs-up" variant="regular"
+                                    <x-phosphor name="thumbs-up" variant="solid"
                                         class="fill-zinc-600 inline-block" />
                                     <span class="text-xs text-text-white">99.3%</span>
                                 </div>
@@ -366,7 +367,7 @@
                     <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
                 </div>
 
-                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl">
+                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
                     <div class="px-4 py-3">
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10">
@@ -376,7 +377,7 @@
                             <div>
                                 <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
                                 <div class="flex items-center gap-1">
-                                    <x-phosphor name="thumbs-up" variant="regular"
+                                    <x-phosphor name="thumbs-up" variant="solid"
                                         class="fill-zinc-600 inline-block" />
                                     <span class="text-xs text-text-white">99.3%</span>
                                 </div>
@@ -389,7 +390,7 @@
                     <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
                 </div>
 
-                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl">
+                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
                     <div class="px-4 py-3">
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10">
@@ -399,7 +400,7 @@
                             <div>
                                 <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
                                 <div class="flex items-center gap-1">
-                                    <x-phosphor name="thumbs-up" variant="regular"
+                                    <x-phosphor name="thumbs-up" variant="solid"
                                         class="fill-zinc-600 inline-block" />
                                     <span class="text-xs text-text-white">99.3%</span>
                                 </div>
