@@ -12,7 +12,7 @@
     @fluxAppearance
 </head>
 
-<body x-data="{ sidebarOpen: false, mobileMenuOpen: false, }" class="h-full max-h-screen antialiased bg-bg-primary">
+<body x-data="{ sidebarOpen: false, mobileMenuOpen: false, }" class="h-full max-h-screen antialiased bg-bg-secondary">
 
     <div class="flex flex-col h-screen">
         <livewire:backend.user.partials.header :pageSlug="$pageSlug" />

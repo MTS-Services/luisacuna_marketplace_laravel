@@ -31,6 +31,7 @@
                 </h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-2.5">
                     @foreach($this->content['popular'] ?? [] as $item)
+                    <a href="{{route('game.index', ['slug' => $item['slug'], 'game-category' => $dropdownType ])}}"  wire:navigate>
                         <div class="flex items-center gap-2.5 p-2.5 hover:bg-purple-500/10 rounded-lg transition cursor-pointer">
                             <div class="w-6 h-6">
                                 <img src="{{ asset('assets/images/game_icon/' . $item['icon']) }}" 
@@ -39,6 +40,7 @@
                             </div>
                             <p class="text-base font-normal text-text-white">{{ $item['name'] }}</p>
                         </div>
+                    </a>
                     @endforeach
                 </div>
             </div>

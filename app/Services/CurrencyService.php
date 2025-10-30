@@ -77,42 +77,65 @@ class CurrencyService
         return $this->updateAction->execute($id, $data);
     }
 
-    public function deleteData(int $id, bool $forceDelete = false): bool
+    public function deleteData(int $id, bool $forceDelete = false, ?int $actionerId = null): bool
     {
-        return $this->deleteAction->execute($id, $forceDelete);
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->deleteAction->execute($id, $forceDelete, $actionerId);
     }
 
-    public function restoreData(int $id): bool
+    public function restoreData(int $id, ?int $actionerId = null): bool
     {
-        return $this->restoreAction->execute($id);
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->restoreAction->execute($id, $actionerId);
     }
 
-    public function updateStatusData(int $id, CurrencyStatus $status): Currency
+    public function updateStatusData(int $id, CurrencyStatus $status, ?int $actionerId = null): Currency
     {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+
         return $this->updateAction->execute($id, [
             'status' => $status->value,
+            'updated_by' => $actionerId,
         ]);
     }
 
 
-    public function bulkRestoreData(array $ids): int
+    public function bulkRestoreData(array $ids, ?int $actionerId = null): int
     {
-        return $this->bulkAction->execute($ids, 'restore');
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->bulkAction->execute(ids: $ids, action: 'restore', status: null, actionerId: $actionerId);
     }
 
-    public function bulkForceDeleteData(array $ids): int
+    public function bulkForceDeleteData(array $ids, ?int $actionerId = null): int
     {
-        return $this->bulkAction->execute($ids, 'forceDelete');
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->bulkAction->execute(ids: $ids, action: 'forceDelete', status: null, actionerId: $actionerId);
     }
 
-    public function bulkDeleteData(array $ids): int
+    public function bulkDeleteData(array $ids, ?int $actionerId = null): int
     {
-        return $this->bulkAction->execute($ids, 'delete');
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->bulkAction->execute(ids: $ids, action: 'delete', status: null, actionerId: $actionerId);
     }
 
-    public function bulkUpdateStatus(array $ids, CurrencyStatus $status): int
+    public function bulkUpdateStatus(array $ids, CurrencyStatus $status, ?int $actionerId = null): int
     {
-        return $this->bulkAction->execute($ids, 'status', $status->value);
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->bulkAction->execute(ids: $ids, action: 'status', status: $status->value, actionerId: $actionerId);
     }
 
     /* ================== ================== ==================

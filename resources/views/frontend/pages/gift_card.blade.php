@@ -7,6 +7,10 @@
             <livewire:frontend.components.gift-cards.gift-card-seller-list />
         @break
 
+        @case('gift-card.check-out')
+            <livewire:frontend.components.gift-cards.check-out />
+        @break
+
         @default
             <livewire:frontend.components.gift-cards.gift-card />
     @endswitch

@@ -27,10 +27,10 @@
     </div>
 
     <div>
-        <div class="overflow-x-auto shadow-2xl">
-           <x-ui.user-table/>
-        </div>
+        <x-ui.user-table :data="$items" :columns="$columns"
+            emptyMessage="No data found. Add your first data to get started." class="rounded-lg overflow-hidden" />
 
-       
+        <x-frontend.pagination-ui :pagination="$pagination" />
     </div>
+
 </div>
