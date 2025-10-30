@@ -1,5 +1,4 @@
 <nav class="hidden md:flex gap-8 text-sm items-center">
-   {{-- Currency Dropdown --}}
     <button 
         x-on:click="open = (open == 'currency' ? '' : 'currency'); $wire.toggleDropdown('currency')"
         class="navbar_style group" :class="{'active' : open == 'currency' }">

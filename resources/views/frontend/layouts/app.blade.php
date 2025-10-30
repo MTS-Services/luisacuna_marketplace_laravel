@@ -32,7 +32,7 @@
 </head>
 
 <body class="min-h-screen flex flex-col bg-bg-secondary text-text-primary">
-    <livewire:frontend.partials.header :pageSlug="$pageSlug ?? 'home'" />
+    <livewire:frontend.partials.header/>
     <main class="flex-1">
         {{ $slot }}
     </main>

@@ -8,6 +8,7 @@ use App\Http\Controllers\Frontend\AccountsController;
 use App\Http\Controllers\Frontend\BoostingController;
 use App\Http\Controllers\Frontend\CoachingController;
 use App\Http\Controllers\Frontend\CurrencyController;
+use App\Http\Controllers\Frontend\GameController;
 use App\Http\Controllers\Frontend\GiftCardController;
 use App\Http\Controllers\Frontend\UserAccountController;
 use App\Http\Controllers\Frontend\UserProfileController;
@@ -38,3 +39,4 @@ Route::get('/top-up', [TopUpController::class, 'topUp'])->name('top-up');
 // Route::get('/gift-card', [GiftCardController::class, 'giftCard'])->name('gift-card');
 // Coaching
 Route::get('/coaching', [CoachingController::class, 'coaching'])->name('coaching');
+Route::get('/game/{slug}', [GameController::class, 'index'])->name('game.index');
