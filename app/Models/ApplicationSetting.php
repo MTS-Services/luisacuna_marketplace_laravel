@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Model;
 
-class ApplicationSetting extends BaseModel
+class ApplicationSetting extends BaseModel implements Auditable
 {
+    use AuditableTrait;
     /**
      * The attributes that are mass assignable.
      *

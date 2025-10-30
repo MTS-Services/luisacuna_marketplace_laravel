@@ -4,9 +4,12 @@ namespace App\Models;
 
 use App\Enums\ReferralSettingStatus;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class ReferralSetting extends BaseModel
+class ReferralSetting extends BaseModel implements Auditable
 {
+    use  AuditableTrait;
     /**
      * The attributes that are mass assignable.
      *

@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Searchable;
 use Laravel\Scout\Attributes\SearchUsingFullText;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Currency extends BaseModel
+class Currency extends BaseModel implements Auditable
 {
-    use Searchable;
+    use Searchable, AuditableTrait;
 
     protected $fillable = [
         'sort_order',
