@@ -1,4 +1,3 @@
- 
 <div>
     <div class=" flex items-center justify-center p-4 sm:p-6 md:p-8">
         <div class="w-full max-w-6xl">
@@ -46,9 +45,9 @@
                             <option>Game 3</option>
                         </select>
                         <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                         </svg>
                     </div>
                 </div>
@@ -59,10 +58,10 @@
                         class="w-full sm:w-auto px-8 py-2 rounded-full bg-white text-purple-900 hover:bg-gray-100 transition">
                         Back
                     </button>
-                    <button
-                        class="w-full sm:w-auto px-8 py-2 rounded-full bg-[#853EFF] text-white hover:from-purple-700 hover:to-blue-700 transition">
-                        Next
-                    </button>
+                    <a href="{{ route('sell.delivery') }}"
+                            class="w-full sm:w-auto px-8 py-2 rounded-full bg-[#853EFF] text-white hover:from-purple-700 hover:to-blue-700 transition">
+                            Next
+                    </a>
                 </div>
 
                 <!-- Footer Text -->

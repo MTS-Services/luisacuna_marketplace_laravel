@@ -185,14 +185,12 @@
                              Guaranteed Delivery Time:
                          </label>
 
-                         <select
-                             class="w-full bg-bg-secondary text-text-white  rounded px-4 py-3 focus:outline-none focus:border-[#FF2E91] focus:ring-1 focus:ring-[#FF2E91] transition appearance-none cursor-pointer">
-
-                             <option value="#" class="text-text-white">Choose </option>
-                             <option value="24h">24 Hours</option>
-                             <option value="48h">48 Hours</option>
-                             <option value="72h">72 Hours</option>
-                         </select>
+                         <x-ui.select id="status-select" class="py-0.5! w-full">
+                            <option value="">Choose</option>
+                            <option value="completed">Completed</option>
+                            <option value="pending">Pending</option>
+                            <option value="processing">Processing</option>
+                        </x-ui.select>
 
                          <!-- Helper Text -->
                          <p class="text-gray-100 text-lg mt-4">

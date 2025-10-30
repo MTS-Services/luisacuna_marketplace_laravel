@@ -1,17 +1,17 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Frontend\HomeController;
-use App\Http\Controllers\Frontend\ItemsController;
-use App\Http\Controllers\Frontend\TopUpController;
 use App\Http\Controllers\Frontend\AccountsController;
 use App\Http\Controllers\Frontend\BoostingController;
 use App\Http\Controllers\Frontend\CoachingController;
 use App\Http\Controllers\Frontend\CurrencyController;
 use App\Http\Controllers\Frontend\GiftCardController;
+use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\ItemsController;
+use App\Http\Controllers\Frontend\SellGameController;
+use App\Http\Controllers\Frontend\TopUpController;
 use App\Http\Controllers\Frontend\UserAccountController;
 use App\Http\Controllers\Frontend\UserProfileController;
-use App\Http\Controllers\Frontend\SellGameController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -20,12 +20,10 @@ Route::group(['prefix' => 'boosting', 'as' => 'boost.'], function () {
     Route::get('/seller-list/{id?}', [BoostingController::class, 'sellerList'])->name('seller-list');
     Route::get('/buy-now/{id?}', [BoostingController::class, 'buyNow'])->name('buy-now');
     Route::get('/checkout/{id?}', [BoostingController::class, 'checkout'])->name('checkout');
-
 });
 
 Route::group(['prefix' => 'sellgame', 'as' => 'sell.'], function () {
     route::get('/', [SellGameController::class, 'index'])->name('index');
-    route::get('/sellgame', [SellGameController::class, 'sellgame'])->name('sellgame');
     route::get('/delivery', [SellGameController::class, 'delivery'])->name('delivery');
 });
 
