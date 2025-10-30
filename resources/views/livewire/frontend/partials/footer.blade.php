@@ -78,7 +78,7 @@
             </div>
         </div>
     </div>
-    <div class="bg-black/50 py-4 text-center text-md text-gray-500">
+    <div class="bg-bg-secondary py-4 text-center text-md text-text-secondary">
         <p class="text-text-secondary">© 2025 DigitalCommerce. All rights reserved</p>
     </div>
 </footer>
