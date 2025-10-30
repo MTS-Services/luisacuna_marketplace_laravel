@@ -45,120 +45,158 @@
                     </div>
                 </div>
             </a>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/2.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/2.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/3.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/3.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/4.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/4.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/5.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/5.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/6.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/6.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/7.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/7.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/8.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/8.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/9.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/9.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/10.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/10.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/11.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/11.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/12.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/12.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/13.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/13.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/14.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/14.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/15.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/15.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/16.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/16.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/17.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/17.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/18.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/18.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/19.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/19.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full h-72 relative">
-                <img src="{{ asset('assets/images/gift_cards/20.png') }}" alt="" class="w-full h-full">
-                <div class="absolute top-2.5 right-2.5">
-                    <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+            </a>
+            <a href="{{ route('gift-card.seller-list') }}">
+                <div class="w-full h-72 relative">
+                    <img src="{{ asset('assets/images/gift_cards/20.png') }}" alt="" class="w-full h-full">
+                    <div class="absolute top-2.5 right-2.5">
+                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">4 offerd</span>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
         <div class="pagination mb-24">
             <x-frontend.pagination-ui />
