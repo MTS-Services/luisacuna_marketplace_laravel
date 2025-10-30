@@ -96,7 +96,7 @@
     <section class="container mx-auto">
         <div class="flex gap-6">
             <div class="w-[65%] grid grid-cols-3 gap-6">
-                <div class="bg-zinc-800 rounded-2xl p-7 border border-pink-500">
+                <div class="bg-bg-primary rounded-2xl p-7 border border-pink-500">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -105,7 +105,7 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-zinc-800 rounded-2xl p-7">
+                <div class="bg-bg-primary rounded-2xl p-7">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -114,7 +114,7 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-zinc-800 rounded-2xl p-7">
+                <div class="bg-bg-primary rounded-2xl p-7">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -123,7 +123,7 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-zinc-800 rounded-2xl p-7">
+                <div class="bg-bg-primary rounded-2xl p-7">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -132,7 +132,7 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-zinc-800 rounded-2xl p-7">
+                <div class="bg-bg-primary rounded-2xl p-7">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -141,7 +141,7 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-zinc-800 rounded-2xl p-7">
+                <div class="bg-bg-primary rounded-2xl p-7">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -150,7 +150,7 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-zinc-800 rounded-2xl p-7">
+                <div class="bg-bg-primary rounded-2xl p-7">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -159,7 +159,7 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-zinc-800 rounded-2xl p-7">
+                <div class="bg-bg-primary rounded-2xl p-7">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -168,7 +168,7 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-zinc-800 rounded-2xl p-7">
+                <div class="bg-bg-primary rounded-2xl p-7">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -180,7 +180,7 @@
             </div>
             <div class="w-[35%]">
                 <div class="">
-                    <div class="bg-zinc-800 rounded-2xl py-7 px-6">
+                    <div class="bg-bg-primary rounded-2xl py-7 px-6">
                         <div class="flex items-center gap-1 mb-8">
                             <div class="w-8 h-8">
                                 <img src="{{ asset('assets/images/gift_cards/V-Bucks1.png') }}" alt=""
@@ -227,7 +227,7 @@
                         </div>
                     </div>
                     <div class="mt-6">
-                        <div class="bg-zinc-800 rounded-2xl py-7 px-6">
+                        <div class="bg-bg-primary rounded-2xl py-7 px-6">
                             <h3 class="text-text-white text-base font-semibold mb-2">Delivery instructions</h3>
                             <div class="flex gap-2">
                                 <span class="text-sm text-text-white">Welcome</span>
