@@ -31,7 +31,7 @@
     @stack('styles')
 </head>
 
-<body class="min-h-screen flex flex-col bg-bg-primary text-text-primary">
+<body class="min-h-screen flex flex-col bg-bg-secondary text-text-primary">
     <livewire:frontend.partials.header :pageSlug="$pageSlug ?? 'home'" />
     <main class="flex-1">
         {{ $slot }}

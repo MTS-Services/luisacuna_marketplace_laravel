@@ -41,7 +41,7 @@
         <div class="flex flex-wrap justify-center gap-4 p-6">
             <a href="{{ route('currency') }}">
                 <div
-                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
+                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-pink-500 transition-colors duration-300 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white " fill="currentColor"
                         viewBox="0 0 256 256">
                         <path
@@ -54,7 +54,7 @@
             {{-- Gift Card --}}
             <a href="gift-card">
                 <div
-                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
+                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-pink-500 transition-colors duration-300 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white " fill="currentColor"
                         viewBox="0 0 256 256">
                         <path
@@ -67,7 +67,7 @@
             {{-- Boosting card --}}
             <a href="{{ route('boost.index') }}">
                 <div
-                    class="group flex flex-col items-center justify-center gap-2 w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
+                    class="group flex flex-col items-center justify-center gap-2 w-32 h-32 rounded-2xl bg-bg-primary hover:bg-pink-500 transition-colors duration-300 cursor-pointer">
                     <flux:icon name="rocket-launch" class="w-8 h-8" />
                     <span class="text-text-white text-2xl font-medium">Boosting</span>
                 </div>
@@ -75,7 +75,7 @@
             {{-- Items card --}}
             <a href="{{ route('items') }}">
                 <div
-                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
+                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-pink-500 transition-colors duration-300 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white" fill="currentColor"
                         viewBox="0 0 256 256">
                         <path
@@ -88,7 +88,7 @@
             {{-- User card --}}
             <a href="{{ route('accounts') }}">
                 <div
-                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
+                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-pink-500 transition-colors duration-300 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white" fill="currentColor"
                         viewBox="0 0 256 256">
                         <path
@@ -99,22 +99,20 @@
                 </div>
             </a>
             {{-- Top up card --}}
-            <a href="{{ route('top-up') }}">
-                <div
-                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white" fill="currentColor"
-                        viewBox="0 0 256 256">
-                        <path
-                            d="M216,64H56a8,8,0,0,1,0-16H192a8,8,0,0,0,0-16H56A24,24,0,0,0,32,56V184a24,24,0,0,0,24,24H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64Zm0,128H56a8,8,0,0,1-8-8V78.63A23.84,23.84,0,0,0,56,80H216Zm-48-60a12,12,0,1,1,12,12A12,12,0,0,1,168,132Z">
-                        </path>
-                    </svg>
-                    <span class="text-text-white text-2xl font-medium">Top up</span>
-                </div>
-            </a>
+            <div
+                class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-pink-500 transition-colors duration-300 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white" fill="currentColor"
+                    viewBox="0 0 256 256">
+                    <path
+                        d="M216,64H56a8,8,0,0,1,0-16H192a8,8,0,0,0,0-16H56A24,24,0,0,0,32,56V184a24,24,0,0,0,24,24H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64Zm0,128H56a8,8,0,0,1-8-8V78.63A23.84,23.84,0,0,0,56,80H216Zm-48-60a12,12,0,1,1,12,12A12,12,0,0,1,168,132Z">
+                    </path>
+                </svg>
+                <span class="text-text-white text-2xl font-medium">Top up</span>
+            </div>
             {{-- Coacing card --}}
             <a href="coaching">
                 <div
-                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
+                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-pink-500 transition-colors duration-300 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white" fill="currentColor"
                         viewBox="0 0 256 256">
                         <path
@@ -136,7 +134,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Game Card 1 -->
                 <div
-                    class="bg-bg-primary border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                     <div class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
                         <img src="{{ asset('assets/images/home_page/game-1.png') }}" alt="">
                     </div>
@@ -149,7 +147,7 @@
 
                 <!-- Game Card 2 -->
                 <div
-                    class="bg-bg-primary border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                     <div
                         class="w-full max-w-[300px] mx-auto mb-4  rounded-lg flex items-center justify-center text-4xl">
                         <img src="{{ asset('assets/images/home_page/game-2.png') }}" alt="">
@@ -163,7 +161,7 @@
 
                 <!-- Game Card 3 -->
                 <div
-                    class="bg-bg-primary border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                     <div
                         class="w-full max-w-[300px] mx-auto mb-4  rounded-lg flex items-center justify-center text-4xl">
                         <img src="{{ asset('assets/images/home_page/game-3.png') }}" alt="">
@@ -177,7 +175,7 @@
 
                 <!-- Game Card 4 -->
                 <div
-                    class="bg-bg-primary border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                     <div class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
                         <img src="{{ asset('assets/images/home_page/game-4.png') }}" alt="">
                     </div>
@@ -190,7 +188,7 @@
 
                 <!-- Game Card 5 -->
                 <div
-                    class="bg-bg-primary border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                     <div
                         class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
                         <img src="{{ asset('assets/images/home_page/game-5.png') }}" alt="">
@@ -204,7 +202,7 @@
 
                 <!-- Game Card 6 -->
                 <div
-                    class="bg-bg-primary border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                     <div
                         class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
                         <img src="{{ asset('assets/images/home_page/game-6.png') }}" alt="">
@@ -230,7 +228,7 @@
                 <!-- Step 1 -->
                 <div class="text-center">
                     <div
-                        class="w-20 h-20 bg-bg-primary rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
+                        class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
                         <img src="{{ asset('assets/images/home_page/secure_transaction.png') }}" alt="">
                     </div>
                     <h3 class="font-bold text-lg mb-2 text-text-white">Secure Transactions</h3>
@@ -241,7 +239,7 @@
                 <!-- Step 2 -->
                 <div class="text-center relative">
                     <div
-                        class="w-20 h-20 bg-[rgba(133,62,255,0.1)] rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
+                        class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
                         <img src="{{ asset('assets/images/home_page/verified_sellers.png') }}" alt="">
                     </div>
                     <div class="absolute top-1/4 -left-1/4 z-20 hidden md:block">
@@ -255,7 +253,7 @@
                 <!-- Step 3 -->
                 <div class="text-center relative">
                     <div
-                        class="w-20 h-20 bg-[rgba(133,62,255,0.1)] rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
+                        class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
                         <img src="{{ asset('assets/images/home_page/effortless_buying.png') }}" alt="">
                     </div>
                     <div class="absolute top-1/4 -left-1/4 z-20 hidden md:block">
@@ -270,7 +268,7 @@
     </section>
 
     <!-- About Us Section -->
-    <section class="py-20 bg-gradient-to-r from-[#5f3fbc]  to-[#50072c]">
+    <section class="py-20 bg-gradient-to-r from-zinc-500  to-pink-900">
         <div class="container">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div>
