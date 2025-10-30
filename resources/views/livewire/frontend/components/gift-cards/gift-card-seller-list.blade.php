@@ -62,7 +62,7 @@
                 <div class="">
                     <span class="text-base font-semibold">Select region</span>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 hidden md:block">
                     <div class="">
                         <span class="">
                             Sort by:
@@ -70,29 +70,55 @@
                     </div>
                     <div class="flex items-center gap-2">
                         <img src="{{ asset('assets/images/gift_cards/Ellipse 4.png') }}" alt="">
-                        <span>Recommended</span>
+                        <span class="text-text-white">Recommended</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <img src="{{ asset('assets/images/gift_cards/Ellipse 5.png') }}" alt="">
-                        <span>Lowest Price</span>
+                        <span class="text-text-white">Lowest Price</span>
                     </div>
                 </div>
-                
-            </div>
-            <div class="mt-3 mb-6">
-                <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70 rounded-full!">
-                    <option value="">Global</option>
-                    <option value="completed">Completed</option>
-                    <option value="pending">Pending</option>
-                    <option value="processing">Processing</option>
-                </x-ui.select>
+                <div class="block md:hidden relative z-10" x-data="{ open: false }">
+
+                    <div @click="open = !open" class="cursor-pointer inline-block">
+                        <x-phosphor name="sort-ascending" variant="bold" class="fill-white w-6 h-6" />
+                    </div>
+
+                    <div x-show="open" @click.outside="open = false"
+                        x-transition:enter="transition ease-out duration-100"
+                        x-transition:enter-start="transform opacity-0 scale-95"
+                        x-transition:enter-end="transform opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-75"
+                        x-transition:leave-start="transform opacity-100 scale-100"
+                        x-transition:leave-end="transform opacity-0 scale-95"
+                        class="absolute right-0 mt-2 w-48 p-2 bg-bg-primary rounded-2xl shadow-lg origin-top-right"
+                        style="display: none;">
+                        <a href="#"
+                            class="text-text-white block px-3 py-2 text-sm hover:bg-zinc-700 rounded-lg transition-colors duration-150">
+                            Recommended
+                        </a>
+                        <a href="#"
+                            class="text-text-white block px-3 py-2 text-sm hover:bg-zinc-700 rounded-lg transition-colors duration-150">
+                            Lowest Price
+                        </a>
+                    </div>
+                </div>
             </div>
 
-            <div class="mb-10">
-                <span class="text-base font-semibold text-text-white">
-                    About 21 results
-                </span>
-            </div>
+        </div>
+        <div class="mt-3 mb-6">
+            <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70 rounded-full!">
+                <option value="">Global</option>
+                <option value="completed">Completed</option>
+                <option value="pending">Pending</option>
+                <option value="processing">Processing</option>
+            </x-ui.select>
+        </div>
+
+        <div class="mb-10">
+            <span class="text-base font-semibold text-text-white">
+                About 21 results
+            </span>
+        </div>
         </div>
     </section>
 
@@ -100,7 +126,8 @@
     <section class="container">
         <div class="md:flex gap-6">
             <div class="w-full md:w-[65%]  grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                <div
+                    class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -109,7 +136,8 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                <div
+                    class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -118,7 +146,8 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                <div
+                    class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -127,7 +156,8 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                <div
+                    class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -136,7 +166,8 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                <div
+                    class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -145,7 +176,8 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                <div
+                    class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -154,7 +186,8 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                <div
+                    class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -163,7 +196,8 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                <div
+                    class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -172,7 +206,8 @@
                     <p class="text-xs text-text-white mt-2">V-Bucks</p>
                     <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
                 </div>
-                <div class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                <div
+                    class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
                     <div class="w-6 h-6">
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
@@ -298,7 +333,8 @@
             </div>
 
             <div class="py-7 space-y-7">
-                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
+                <div
+                    class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
                     <div class="px-4 py-3">
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10">
@@ -321,7 +357,8 @@
                     <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
                 </div>
 
-                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
+                <div
+                    class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
                     <div class="px-4 py-3">
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10">
@@ -344,7 +381,8 @@
                     <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
                 </div>
 
-                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
+                <div
+                    class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
                     <div class="px-4 py-3">
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10">
@@ -367,7 +405,8 @@
                     <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
                 </div>
 
-                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
+                <div
+                    class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
                     <div class="px-4 py-3">
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10">
@@ -390,7 +429,8 @@
                     <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
                 </div>
 
-                <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
+                <div
+                    class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
                     <div class="px-4 py-3">
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10">
