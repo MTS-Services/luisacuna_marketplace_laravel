@@ -13,15 +13,15 @@
                 </button>
             </div>
 
-            <nav class="flex-1 px-3 py-4 space-y-1">
+            <nav class="flex-1 px-3 py-4 space-y-2">
                 <!-- Orders Dropdown -->
                 <div x-data="{
-                    ordersOpen: {{ in_array($pageSlug, ['dashboard', '']) ? 'true' : 'false' }},
-                    isActive: {{ in_array($pageSlug, ['dashboard', '']) ? 'true' : 'false' }}
+                    ordersOpen: {{ in_array($pageSlug, ['purchased_orders', '']) ? 'true' : 'false' }},
+                    isActive: {{ in_array($pageSlug, ['purchased_orders', '']) ? 'true' : 'false' }}
                 }">
                     <!-- Orders button -->
                     <button x-cloak @click="ordersOpen = !ordersOpen"
-                        :class="isActive ? 'bg-pink-300 dark:bg-zinc-950  relative' : 'bg-pink-400'"
+                        :class="isActive ? 'bg-pink-300 dark:bg-zinc-950  relative' : 'bg-pink-400 dark:bg-zinc-950'"
                         class="w-full flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg transition-all text-text-white hover:bg-pink-500/50">
                         <div class="flex items-center space-x-2 sm:space-x-3">
                             {{-- <img  src="{{ asset('assets/icons/light.svg') }}" alt=""
@@ -46,8 +46,8 @@
 
                     <!-- Dropdown links (no left bar here) -->
                     <div x-show="ordersOpen" x-collapse x-cloak class="mt-1 ml-6 sm:ml-8 space-y-1">
-                        <a href="{{ route('user.dashboard') }}" x-cloak
-                            class="block px-2 sm:px-3 py-2 text-xs sm:text-sm rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'dashboard' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                        <a href="{{ route('user.purchased-orders') }}" x-cloak
+                            class="block px-2 sm:px-3 py-2 text-xs sm:text-sm rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'purchased_orders' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                             {{ __('Purchased orders') }}
                         </a>
                         <a href="" x-cloak
