@@ -78,12 +78,21 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-3 mb-6">
+            {{-- <div class="mt-3 mb-6">
                 <select name="" id=""
                     class="borbder border-2 border-zinc-800 rounded-full py-4 px-8 w-sm text-text-white">
                     <option value="">Global</option>
                 </select>
+            </div> --}}
+            <div class="mt-3 mb-6">
+                <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70 rounded-full!">
+                    <option value="">Global</option>
+                    <option value="completed">Completed</option>
+                    <option value="pending">Pending</option>
+                    <option value="processing">Processing</option>
+                </x-ui.select>
             </div>
+
             <div class="mb-10">
                 <span class="text-base font-semibold text-text-white">
                     About 21 results
@@ -275,10 +284,12 @@
             <h2 class="text-text-white font-semibold trxt-40px">Other sellers (84)</h2>
         </div>
         <div class="mt-10 mb-6">
-            <select name="" id=""
-                class="borbder border-2 border-zinc-800 rounded-full py-4 px-8 w-sm text-text-white">
+            <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70 rounded-full!">
                 <option value="">Recommended</option>
-            </select>
+                <option value="completed">Completed</option>
+                <option value="pending">Pending</option>
+                <option value="processing">Processing</option>
+            </x-ui.select>
         </div>
         <div class="overflow-x-auto">
             <table class="min-w-full text-left border-collapse">
@@ -434,7 +445,7 @@
                 </tbody>
             </table>
         </div>
-{{-- 
+        {{-- 
         <div class="p-4 bg-gray-950 min-h-screen font-sans">
             <div
                 class="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 px-4 py-3 text-sm font-semibold text-gray-400 border-b border-gray-700">
