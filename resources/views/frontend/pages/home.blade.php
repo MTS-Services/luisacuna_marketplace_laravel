@@ -15,6 +15,11 @@
             <x-slot name="pageSlug">select-game</x-slot>
               <livewire:frontend.components.sellings.select-game />
         @break
+        @case('sell-currency')
+            <x-slot name="title">Select Game</x-slot>
+            <x-slot name="pageSlug">select-game</x-slot>
+              <livewire:frontend.components.sellings.sell-currency />
+        @break
         @default
              <x-slot name="title">Home</x-slot>
              <x-slot name="pageSlug">home</x-slot>

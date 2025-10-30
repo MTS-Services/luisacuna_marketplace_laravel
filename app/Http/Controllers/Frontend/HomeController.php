@@ -21,5 +21,12 @@ class HomeController extends Controller
 
     public function selectGame(){
         return view($this->masterView);
-    }   
+    }  
+    
+    public function sellCurrency(){
+
+        return view($this->masterView);
+        
+    }
+
 }

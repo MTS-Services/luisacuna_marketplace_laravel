@@ -8,7 +8,7 @@
                     {{ __('Home') }}
                 </a>
                 <span class="text-primary-50 text-xl px-2">
-                   <flux:icon icon="arrow-left" class="inline-block pr-2" />
+                   <flux:icon icon="arrow-right" class="inline-block pr-2" />
                 </span>
                 <a href="javascript:void(0)" wire:navigate class="text-primary-50 text-xl ">
                     {{ __('Select Game') }}
@@ -18,7 +18,7 @@
 
 
 
-        <div class="chat mt-10 mb-16  p-4 md:p-20 bg-zinc-50 dark:bg-bg-base rounded-3xl">
+        <div class="select-game mt-10 mb-16  p-4 md:p-20 bg-zinc-50 dark:bg-bg-base rounded-3xl">
             <div class="mb-10">
                 <div class="">
                     <p class="text-center text-primary-50 text-2xl md:text-4xl font-semibold mb-3"> {{ __('Select Game Currency') }}</p>
@@ -30,7 +30,7 @@
                     <p class="text-base md:text-2xl "> {{ __('Choose Game') }} </p>
                 </div>  
                 <div class="w-2/3">
-                    <x-ui.select id="status-select" class="py-0.5! w-full! sm:w-70 rounded-xl! bg-bg-base! border-bg-base! ">
+                    <x-ui.select id="status-select" class="py-0.5! w-full! sm:w-70 rounded-xl! dark:bg-bg-base! border-bg-base! ">
                         <option value="">All Game</option>
                         <option value="completed">Completed</option>
                         <option value="pending">Pending</option>

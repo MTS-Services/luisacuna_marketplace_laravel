@@ -17,6 +17,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/sellings', [HomeController::class, 'selling'])->name('selling');
 Route::get('/select-game', [HomeController::class, 'selectGame'])->name('select-game');
+Route::get('/sell-currency', [HomeController::class, 'sellCurrency'])->name('sell-currency');
 
 
 
