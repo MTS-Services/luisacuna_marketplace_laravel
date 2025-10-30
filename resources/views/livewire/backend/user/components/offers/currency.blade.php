@@ -4,7 +4,7 @@
 
             <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
 
-                <div class="relative w-full sm:w-80">
+                <div class="relative w-full sm:w-35 lg:w-40 2xl:w-80">
                        <x-ui.select>
                         <option value="">All Game</option>
                         <option value="game1">Game 1</option>
@@ -13,7 +13,7 @@
                     </x-ui.select>
                 </div>
 
-                <div class="relative w-full sm:w-80">
+                <div class="relative w-full sm:w-35 lg:w-40 2xl:w-80">
                     <x-ui.select>
                         <option value="">All</option>
                         <option value="game1">Active offers</option>
@@ -24,7 +24,7 @@
 
             </div>
 
-            <div class="w-full md:w-auto flex items-center gap-2 justify-between">
+            <div class="w-full md:w-auto flex  items-center gap-2 justify-between">
                 <x-ui.button class="w-auto! py-2! " variant="secondary">
                     <x-phosphor-download class="w-5 h-5 fill-accent group-hover:fill-white" />
                    <span  class="text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Export') }}</span>
