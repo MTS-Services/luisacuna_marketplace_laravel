@@ -16,8 +16,8 @@
             <nav class="flex-1 px-3 py-4 space-y-2">
                 <!-- Orders Dropdown -->
                 <div x-data="{
-                    ordersOpen: {{ in_array($pageSlug, ['purchased_orders', '']) ? 'true' : 'false' }},
-                    isActive: {{ in_array($pageSlug, ['purchased_orders', '']) ? 'true' : 'false' }}
+                    ordersOpen: {{ in_array($pageSlug, ['purchased_orders', 'sold_orders']) ? 'true' : 'false' }},
+                    isActive: {{ in_array($pageSlug, ['purchased_orders', 'sold_orders']) ? 'true' : 'false' }}
                 }">
                     <!-- Orders button -->
                     <button x-cloak @click="ordersOpen = !ordersOpen"
@@ -29,7 +29,7 @@
                             <flux:icon name="shopping-cart"
                                 class="w-5 h-5 sm:w-6 sm:h-6 text-text-white" />
 
-                            <span class="text-xs sm:text-sm font-medium text-text-white">Orders</span>
+                            <span class="text-xs sm:text-sm lg:text-base xl:text-lg font-medium text-text-white">Orders</span>
                             <!-- Left indicator bar for Orders button only -->
                             <div x-show="isActive" x-cloak
                                 class="absolute left-0 top-0 w-1.5 sm:w-2 h-full bg-gradient-to-b from-pink-500 to-zinc-600 rounded-l-full z-50">
@@ -47,11 +47,11 @@
                     <!-- Dropdown links (no left bar here) -->
                     <div x-show="ordersOpen" x-collapse x-cloak class="mt-1 ml-6 sm:ml-8 space-y-1">
                         <a href="{{ route('user.purchased-orders') }}" x-cloak
-                            class="block px-2 sm:px-3 py-2 text-xs sm:text-sm rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'purchased_orders' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                            class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base xl:text-lg rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'purchased_orders' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                             {{ __('Purchased orders') }}
                         </a>
-                        <a href="" x-cloak
-                            class="block px-2 sm:px-3 py-2 text-xs sm:text-sm rounded-lg transition-all text-text-text-white hover:bg-pink-500/50 {{ $pageSlug === '' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                        <a href="{{ route('user.sold-orders') }}" x-cloak
+                            class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base xl:text-lg rounded-lg transition-all text-text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'sold_orders' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                             {{ __('Sold orders') }}
                         </a>
                     </div>
@@ -63,7 +63,7 @@
                 <a href="{{ route('user.profile') }}" x-cloak
                     class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'profile' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                     <flux:icon name="star" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
-                    <span class="text-xs sm:text-sm font-medium text-text-white">View Profile</span>
+                    <span class="text-xs sm:text-sm lg:text-base xl:text-lg font-medium text-text-white">View Profile</span>
                 </a>
             </nav>
         </div>
