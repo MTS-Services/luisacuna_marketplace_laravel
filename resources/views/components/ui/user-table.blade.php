@@ -8,7 +8,7 @@
 <div class="overflow-x-auto bg-bg-primary">
     <table class="w-full text-left table-auto border-separate border-spacing-0">
         <thead>
-            <tr class="text-sm text-text-white uppercase tracking-wider">
+            <tr class="text-sm text-text-white bg-bg-secondary/80! uppercase tracking-wider">
                 @foreach ($columns as $column)
                     <th class="px-2 sm:px-4 md:px-6 py-5 text-sm md:text-base text-text-white capitalize font-normal {{ $column['class'] ?? '' }}">
                         @if (isset($column['sortable']) && $column['sortable'])
@@ -39,7 +39,7 @@
                     @foreach ($columns as $column)
                         <td class="px-2 sm:px-4 md:px-6 py-4 {{ $column['tdClass'] ?? '' }}">
                             @if (isset($column['format']) && is_callable($column['format']))
-                                {{-- Custom Format Function - যা pass করা হবে তাই show করবে --}}
+                                {{-- Custom Format Function - --}}
                                 {!! $column['format']($item) !!}
                             @elseif (isset($column['badge']) && $column['badge'])
                                 {{-- Badge Style --}}

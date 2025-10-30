@@ -42,7 +42,7 @@
     </div>
     <div>
         <x-ui.user-table :data="$items" :columns="$columns" :actions="$actions"
-            emptyMessage="No games found. Add your first game to get started." class="rounded-lg overflow-hidden" />
+            emptyMessage="No data found. Add your first data to get started." class="rounded-lg overflow-hidden" />
         <x-frontend.pagination-ui :pagination="$pagination" />
     </div>
 
