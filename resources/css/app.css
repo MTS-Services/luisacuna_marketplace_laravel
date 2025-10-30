@@ -15,6 +15,9 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ================= GOOGLE FONTS ================= */
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
 
 :root {
     /* Base Colors */
@@ -91,7 +94,7 @@
     --color-bg-secondary-dark: var(--color-primary-950);
     --color-bg-tertiary-dark: var(--color-secondary-500);
 
-   
+
 }
 
 
@@ -139,7 +142,7 @@
     --color-text-secondary: var(--color-text-secondary-light);
     --color-text-muted: var(--color-text-muted-light);
 
-    --color-bg-hover:var(--color-zinc-100);
+    --color-bg-hover: var(--color-zinc-100);
 
     --color-text-btn-primary: #f8f8f8;
     --color-text-btn-secondary: var(--color-primary-500);
@@ -153,7 +156,7 @@
     --color-bg-secondary: var(--color-bg-secondary-light);
     --color-bg-tertiary: var(--color-bg-tertiary-light);
 
-     --hover-bg-theme: var(--color-zinc-200);
+    --hover-bg-theme: var(--color-zinc-200);
     --color-bg-black: var(--color-black);
     --color-bg-white: var(--color-white);
 
@@ -183,6 +186,13 @@
         }
     }
 
+
+
+    /* ======================================================
+    	 	 	 	 	 	 # font family
+    ======================================================== */
+    --font-open-sans: "Open Sans", sans-serif;
+    --font-lato: "Lato", sans-serif;
 
 
     /* ======================================================
@@ -220,7 +230,7 @@
 
     .dark {
         --color-accent: var(--color-accent-dark);
-        
+
         --color-accent-content: var(--color-accent-content-dark);
         --color-accent-foreground: var(--color-accent-foreground-dark);
 
@@ -232,7 +242,7 @@
         --color-bg-secondary: var(--color-bg-secondary-dark);
         --color-bg-tertiary: var(--color-bg-tertiary-dark);
 
-        --color-bg-hover:var(--color-zinc-800);
+        --color-bg-hover: var(--color-zinc-800);
 
         --color-text-new: var(--color-text-new-dark);
         --color-text-white: var(--color-white-dark);
@@ -252,6 +262,19 @@
         scrollbar-width: thin;
         scrollbar-color: var(--color-accent) var(--color-accent-content) !important;
         @apply transition-colors duration-200 ease-in-out text-text-primary;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-open-sans;
+    }
+
+    p {
+        @apply font-lato;
     }
 
     .dark * {
