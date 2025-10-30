@@ -16,100 +16,102 @@ class Accounts extends Component
 
     public function render()
     {
-        $allItems = collect([
+        $allItems = collect(
             [
-                'id' => 1,
-                'name' => 'Cheapest Fresh Fortnite',
-                'subtitle' => 'Account with 135,000 V-Bud....',
-                'game_image' => asset('assets/images/accounts.png'),
-                'quantity' => '1',
-                'min_quantity' => '1',
-                'price' => '$65',
-                'device' => 'PC', 
-                'status' => 'active',
-                'delivery_time' => '1 h',
-            ],
-            [
-                'id' => 2,
-                'name' => 'Fortnite Fresh Account ',
-                'subtitle' => '(135,000 V-Bucks) | Works...',
-                'game_image' => asset('assets/images/accounts.png'),
-                'quantity' => '1',
-                'min_quantity' => '1',
-                'price' => '$95',
-                'device' => 'Xbox', 
-                'status' => 'active',
-                'delivery_time' => '10 min',
-            ],
-            [
-                'id' => 3,
-                'name' => '135,000 V-Bucks Fortnite ',
-                'subtitle' => 'Account | All Platforms Sup...',
-                'game_image' => asset('assets/images/accounts.png'),
-                'quantity' => '1',
-                'min_quantity' => '1',
-                'price' => '$60',
-                'device' => 'PC', 
-                'status' => 'active',
-                'delivery_time' => '15 min',
-            ],
-            [
-                'id' => 4,
-                'name' => 'Fresh Fortnite Account 135K',
-                'subtitle' => 'V-Bucks | All Platforms Sup...',
-                'game_image' => asset('assets/images/accounts.png'),
-                'quantity' => '1',
-                'min_quantity' => '1',
-                'price' => '$65',
-                'device' => 'PC', 
-                'status' => 'active',
-                'delivery_time' => '45 min',
-            ],
-            [
-                'id' => 5,
-                'name' => 'Call of Duty Skin',
-                'game_image' => asset('assets/images/accounts.png'),
-                'quantity' => '20M',
-                'min_quantity' => '20K',
-                'price' => '$9.5 (20k)',
-                'device' => '-',
-                'status' => 'paused',
-                'delivery_time' => '1 h',
-            ],
-            [
-                'id' => 6,
-                'name' => 'Apex Legends',
-                'game_image' => asset('assets/images/accounts.png'),
-                'quantity' => '10M',
-                'min_quantity' => '50K',
-                'price' => '$5.5 (50k)',
-                'device' => '-',
-                'status' => 'paused',
-                'delivery_time' => '1 h',
-            ],
-            [
-                'id' => 7,
-                'name' => 'Fortnite',
-                'game_image' => asset('assets/images/accounts.png'),
-                'quantity' => '2.5B',
-                'min_quantity' => '100K',
-                'price' => '$6.5 (100k)',
-                'device' => '-',
-                'status' => 'paused',
-                'delivery_time' => '1 h',
-            ],
-            [
-                'id' => 8,
-                'name' => 'Fortnite',
-                'game_image' => asset('assets/images/accounts.png'),
-                'quantity' => '2.5B',
-                'min_quantity' => '100K',
-                'price' => '$6.5 (100k)',
-                'device' => '-',
-                'status' => 'paused',
-                'delivery_time' => '1 h',
-            ],
-        ])->map(fn($item) => (object)$item);
+                [
+                    'id' => 1,
+                    'name' => 'Cheapest Fresh Fortnite',
+                    'subtitle' => 'Account with 135,000 V-Bud....',
+                    'game_image' => asset('assets/images/accounts.png'),
+                    'quantity' => '1',
+                    'min_quantity' => '1',
+                    'price' => '$65',
+                    'device' => 'PC',
+                    'status' => 'active',
+                    'delivery_time' => '1 h',
+                ],
+                [
+                    'id' => 2,
+                    'name' => 'Fortnite Fresh Account ',
+                    'subtitle' => '(135,000 V-Bucks) | Works...',
+                    'game_image' => asset('assets/images/accounts.png'),
+                    'quantity' => '1',
+                    'min_quantity' => '1',
+                    'price' => '$95',
+                    'device' => 'Xbox',
+                    'status' => 'active',
+                    'delivery_time' => '10 min',
+                ],
+                [
+                    'id' => 3,
+                    'name' => '135,000 V-Bucks Fortnite ',
+                    'subtitle' => 'Account | All Platforms Sup...',
+                    'game_image' => asset('assets/images/accounts.png'),
+                    'quantity' => '1',
+                    'min_quantity' => '1',
+                    'price' => '$60',
+                    'device' => 'PC',
+                    'status' => 'active',
+                    'delivery_time' => '15 min',
+                ],
+                [
+                    'id' => 4,
+                    'name' => 'Fresh Fortnite Account 135K',
+                    'subtitle' => 'V-Bucks | All Platforms Sup...',
+                    'game_image' => asset('assets/images/accounts.png'),
+                    'quantity' => '1',
+                    'min_quantity' => '1',
+                    'price' => '$65',
+                    'device' => 'PC',
+                    'status' => 'active',
+                    'delivery_time' => '45 min',
+                ],
+                [
+                    'id' => 5,
+                    'name' => 'Call of Duty Skin',
+                    'game_image' => asset('assets/images/accounts.png'),
+                    'quantity' => '20M',
+                    'min_quantity' => '20K',
+                    'price' => '$9.5 (20k)',
+                    'device' => '-',
+                    'status' => 'paused',
+                    'delivery_time' => '1 h',
+                ],
+                [
+                    'id' => 6,
+                    'name' => 'Apex Legends',
+                    'game_image' => asset('assets/images/accounts.png'),
+                    'quantity' => '10M',
+                    'min_quantity' => '50K',
+                    'price' => '$5.5 (50k)',
+                    'device' => '-',
+                    'status' => 'paused',
+                    'delivery_time' => '1 h',
+                ],
+                [
+                    'id' => 7,
+                    'name' => 'Fortnite',
+                    'game_image' => asset('assets/images/accounts.png'),
+                    'quantity' => '2.5B',
+                    'min_quantity' => '100K',
+                    'price' => '$6.5 (100k)',
+                    'device' => '-',
+                    'status' => 'paused',
+                    'delivery_time' => '1 h',
+                ],
+                [
+                    'id' => 8,
+                    'name' => 'Fortnite',
+                    'game_image' => asset('assets/images/accounts.png'),
+                    'quantity' => '2.5B',
+                    'min_quantity' => '100K',
+                    'price' => '$6.5 (100k)',
+                    'device' => '-',
+                    'status' => 'paused',
+                    'delivery_time' => '1 h',
+                ],
+            ]
+        )->map(fn($item) => (object)$item);
 
         $currentPage = $this->getPage();
         $items = $allItems->slice(($currentPage - 1) * $this->perPage, $this->perPage)->values();
@@ -124,11 +126,12 @@ class Accounts extends Component
         ];
 
         // Table columns configuration
-        $columns = [
+        $columns =
             [
-                'key' => 'name',
-                'label' => 'Game',
-                'format' => fn($item) => '
+                [
+                    'key' => 'name',
+                    'label' => 'Game',
+                    'format' => fn($item) => '
                 <div class="flex items-center gap-3">
                     <img src="' . ($item->game_image ?? '/default.png') . '" 
                         class="w-14 h-14 rounded-lg object-cover flex-shrink-0" 
@@ -136,41 +139,41 @@ class Accounts extends Component
                     <div class="flex flex-col">
                         <span class="font-semibold text-text-white text-sm sm:text-base leading-tight"
                             title="' . e($item->name ?? '-') . '">'
-                            . e(Str::limit($item->name ?? '-', 30)) .
-                            '</span>
+                        . e(Str::limit($item->name ?? '-', 30)) .
+                        '</span>
                         <span class="text-text-muted text-xs sm:text-sm"
                             title="' . e($item->subtitle ?? '(No details)') . '">'
-                            . e(Str::limit($item->subtitle ?? '(No details)', 28)) .
-                            '</span>
+                        . e(Str::limit($item->subtitle ?? '(No details)', 28)) .
+                        '</span>
                     </div>
                 </div>'
-            ],
-            [
-                'key' => 'quantity',
-                'label' => 'Quantity',
-            ],
-            [
-                'key' => 'price',
-                'label' => 'Price',
-            ],
-            [
-                'key' => 'device',
-                'label' => 'Device',
-            ],
-            [
-                'key' => 'status',
-                'label' => 'Status',
-                'badge' => true,
-                'badgeColors' => [
-                    'active' => 'bg-pink-500',
-                    'paused' => 'bg-status-paused',
-                ]
-            ],
-            [
-                'key' => 'delivery_time',
-                'label' => 'Delivery time',
-            ],
-        ];
+                ],
+                [
+                    'key' => 'quantity',
+                    'label' => 'Quantity',
+                ],
+                [
+                    'key' => 'price',
+                    'label' => 'Price',
+                ],
+                [
+                    'key' => 'device',
+                    'label' => 'Device',
+                ],
+                [
+                    'key' => 'status',
+                    'label' => 'Status',
+                    'badge' => true,
+                    'badgeColors' => [
+                        'active' => 'bg-pink-500',
+                        'paused' => 'bg-status-paused',
+                    ]
+                ],
+                [
+                    'key' => 'delivery_time',
+                    'label' => 'Delivery time',
+                ],
+            ];
 
         $actions = [
             [

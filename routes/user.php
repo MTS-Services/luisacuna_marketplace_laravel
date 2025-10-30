@@ -20,6 +20,9 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
         Route::get('/accounts', function () {
             return view('backend.user.pages.offers.accounts');
         })->name('accounts');
+        Route::get('/top-ups', function () {
+            return view('backend.user.pages.offers.top-ups');
+        })->name('top-ups');
 
     });
 
