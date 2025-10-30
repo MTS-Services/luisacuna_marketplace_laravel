@@ -14,6 +14,13 @@ use App\Http\Controllers\Frontend\UserAccountController;
 use App\Http\Controllers\Frontend\UserProfileController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/sellings', [HomeController::class, 'selling'])->name('selling');
+Route::get('/select-game', [HomeController::class, 'selectGame'])->name('select-game');
+
+
+
+
 Route::group(['prefix' => 'boosting', 'as' => 'boost.'], function () {
     Route::get('/', [BoostingController::class, 'index'])->name('index');
     Route::get('/seller-list/{id?}', [BoostingController::class, 'sellerList'])->name('seller-list');
