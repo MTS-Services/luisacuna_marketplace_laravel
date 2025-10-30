@@ -21,22 +21,22 @@ class Index extends Component
 
     // protected $listeners = ['CurrencyCreated' => '$refresh', 'CurrencyUpdated' => '$refresh'];
 
-    protected CurrencyService $currencyService;
+    protected CurrencyService $service;
 
-    public function boot(CurrencyService $currencyService)
+    public function boot(CurrencyService $service)
     {
-        $this->currencyService = $currencyService;
+        $this->service = $service;
     }
 
     public function render()
     {
-        $datas = $this->currencyService->getPaginatedData(
+        $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
+        $datas->load('createdBy');
 
         $columns = [
-
             [
                 'key' => 'name',
                 'label' => 'Name',
@@ -87,7 +87,7 @@ class Index extends Component
                 'key' => 'created_by',
                 'label' => 'Created By',
                 'format' => function ($data) {
-                    return $data->creater_admin?->name ?? 'System';
+                    return $data->createdBy?->name ?? 'System';
                 }
             ],
         ];
@@ -95,18 +95,21 @@ class Index extends Component
         $actions = [
             [
                 'key' => 'id',
-                'label' => 'View',
-                'route' => 'admin.as.currency.view',
+                'label' => 'Show',
+                'route' => 'admin.as.currency.show',
+                'encrypt' => true
             ],
             [
                 'key' => 'id',
                 'label' => 'Edit',
-                'route' => 'admin.as.currency.edit'
+                'route' => 'admin.as.currency.edit',
+                'encrypt' => true
             ],
             [
                 'key' => 'id',
                 'label' => 'Delete',
-                'method' => 'confirmDelete'
+                'method' => 'confirmDelete',
+                'encrypt' => true
             ],
         ];
 
@@ -135,10 +138,10 @@ class Index extends Component
     {
         try {
             if (!$this->deleteId) {
+                $this->warning('No data selected');
                 return;
             }
-
-            $this->currencyService->deleteData($this->deleteId);
+            $this->service->deleteData(decrypt($this->deleteId));
             $this->reset(['deleteId', 'showDeleteModal']);
 
             $this->success('Data deleted successfully');
@@ -159,8 +162,8 @@ class Index extends Component
             $currencyStatus = CurrencyStatus::from($status);
 
             match ($currencyStatus) {
-                CurrencyStatus::ACTIVE => $this->currencyService->updateStatusData($id, CurrencyStatus::ACTIVE),
-                CurrencyStatus::INACTIVE => $this->currencyService->updateStatusData($id, CurrencyStatus::INACTIVE),
+                CurrencyStatus::ACTIVE => $this->service->updateStatusData($id, CurrencyStatus::ACTIVE),
+                CurrencyStatus::INACTIVE => $this->service->updateStatusData($id, CurrencyStatus::INACTIVE),
                 default => null,
             };
 
@@ -203,13 +206,15 @@ class Index extends Component
 
     protected function bulkDelete(): void
     {
-        $count = $this->currencyService->bulkDeleteData($this->selectedIds);
+        $count = count($this->selectedIds);
+        $this->service->bulkDeleteData($this->selectedIds);
         $this->success("{$count} Data deleted successfully");
     }
 
     protected function bulkUpdateStatus(CurrencyStatus $status): void
     {
-        $count = $this->currencyService->bulkUpdateStatus($this->selectedIds, $status);
+        $count = count($this->selectedIds);
+        $this->service->bulkUpdateStatus($this->selectedIds, $status);
         $this->success("{$count} Data updated successfully");
     }
 
@@ -225,10 +230,10 @@ class Index extends Component
 
     protected function getSelectableIds(): array
     {
-        return collect($this->currencyService->getPaginatedData(
+        return $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        ))->pluck('id')->toArray();
+        )->pluck('id')->toArray();
     }
 
     public function updatedStatusFilter(): void

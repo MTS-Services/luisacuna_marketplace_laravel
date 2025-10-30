@@ -1,7 +1,7 @@
 <section>
     <div class="glass-card rounded-2xl p-6 mb-6">
         <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Language Edit') }}</h2>
+            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Currency Edit') }}</h2>
             <div class="flex items-center gap-2">
                 <x-ui.button href="{{ route('admin.as.currency.index') }}" class="w-auto py-2!">
                     <flux:icon name="arrow-left"
@@ -36,7 +36,7 @@
                 </div>
                 <div>
                     <x-ui.label for="exchange_rate" :value="__('Exchange Rate')" />
-                    <x-ui.input id="exchange_rate" type="number" class="mt-1 block w-full"
+                    <x-ui.input id="exchange_rate" type="text" class="mt-1 block w-full"
                         wire:model="form.exchange_rate" placeholder="Enter exchange rate. e.g. 100" />
                     <x-ui.input-error :messages="$errors->get('form.exchange_rate')" class="mt-2" />
                 </div>

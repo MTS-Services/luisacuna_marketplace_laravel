@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Backend\Admin\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Models\Currency;
+use App\Services\CurrencyService;
 
 class CurrencyController extends Controller
 {
-     protected $masterView = 'backend.admin.pages.settings.currency';
+    protected $masterView = 'backend.admin.pages.settings.currency';
+
+    public function __construct(protected CurrencyService $service) {}
 
     public function index()
     {
@@ -25,17 +28,9 @@ class CurrencyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $encryptedId)
     {
-        return view($this->masterView, $id);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $data = Currency::find($id);
+        $data = $this->service->findData(decrypt($encryptedId));
         if (!$data) {
             abort(404);
         }
@@ -44,9 +39,12 @@ class CurrencyController extends Controller
         ]);
     }
 
-    public function view(string $id)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $encryptedId)
     {
-        $data = Currency::find($id);
+        $data = $this->service->findData(decrypt($encryptedId));
         if (!$data) {
             abort(404);
         }

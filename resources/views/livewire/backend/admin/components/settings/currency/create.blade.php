@@ -37,7 +37,7 @@
                 </div>
                 <div>
                     <x-ui.label for="exchange_rate" :value="__('Exchange Rate')" />
-                    <x-ui.input id="exchange_rate" type="number" class="mt-1 block w-full"
+                    <x-ui.input id="exchange_rate" type="text" class="mt-1 block w-full"
                         wire:model="form.exchange_rate" placeholder="Enter exchange rate. e.g. 100" />
                     <x-ui.input-error :messages="$errors->get('form.exchange_rate')" class="mt-2" />
                 </div>
