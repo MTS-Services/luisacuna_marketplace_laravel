@@ -7,7 +7,7 @@
                     Order Name
                     <div>
                         <x-phosphor-caret-up-fill class="w-4 h-4 fill-zinc-500"/>
-                        <x-phosphor-caret-down-fill class='w-4 h-4 fill-zinc-500' />
+                        <x-phosphor-caret-down-fill class='w-4 h-4' />
                     </div>
                 </th>
                 <th class="px-2 sm:px-4 md:px-6 py-5 text-sm md:text-base text-text-white capitalize font-normal">Type
