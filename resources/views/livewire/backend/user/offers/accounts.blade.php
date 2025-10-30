@@ -1,11 +1,13 @@
 <div class="space-y-6">
     <div class=" p-4 w-full">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-3 lg:gap-4">
 
-            <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+            <!-- Left Side: Filters -->
+            <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
 
-                <div class="relative w-full sm:w-35 lg:w-40 2xl:w-80">
-                       <x-ui.select>
+                <!-- Game Filter -->
+                <div class="relative w-full sm:w-40 lg:w-44">
+                    <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
                         <option value="">All Game</option>
                         <option value="game1">Game 1</option>
                         <option value="game2">Game 2</option>
@@ -13,26 +15,49 @@
                     </x-ui.select>
                 </div>
 
-                <div class="relative w-full sm:w-35 lg:w-40 2xl:w-80">
-                    <x-ui.select>
+                <!-- Status Filter -->
+                <div class="relative w-full sm:w-40 lg:w-44">
+                    <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
                         <option value="">All</option>
-                        <option value="game1">Active offers</option>
-                        <option value="game2">Paused offers</option>
-                        <option value="game3">Closed offers</option>
+                        <option value="active">Active offers</option>
+                        <option value="paused">Paused offers</option>
+                        <option value="closed">Closed offers</option>
                     </x-ui.select>
+                </div>
+
+                <!-- Recommended Filter -->
+                <div class="relative w-full sm:w-44 lg:w-48">
+                    <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
+                        <option value="">Recommended</option>
+                        <option value="price_low">Price: Low to High</option>
+                        <option value="price_high">Price: High to Low</option>
+                        <option value="newest">Newest First</option>
+                    </x-ui.select>
+                </div>
+                <div class="relative w-full sm:w-56">
+                    <x-ui.input type="text" placeholder="Search" class="pl-5 py-1.5! text-text-white" />
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <x-phosphor-magnifying-glass class="w-5 h-5 fill-text-text-white" />
+                    </div>
                 </div>
 
             </div>
 
-            <div class="w-full md:w-auto flex  items-center gap-2 justify-between">
-                <x-ui.button class="w-auto! py-2! " variant="secondary">
+            <!-- Right Side: Search & Actions -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+
+                <!-- Export Button -->
+                <x-ui.button variant="secondary" class="sm:w-auto! py-2!">
                     <x-phosphor-download class="w-5 h-5 fill-accent group-hover:fill-white" />
-                   <span  class="text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Export') }}</span>
+                    <span class="text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Export') }}</span>
                 </x-ui.button>
-                <x-ui.button class="w-auto! py-2!">
+
+                <!-- New Offer Button -->
+                <x-ui.button class="w-full sm:w-auto! py-2!">
                     <x-phosphor-plus class="w-5 h-5 fill-text-text-white group-hover:fill-accent" />
-                    <span  class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('New Offer') }}</span>
+                    <span class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('New Offer') }}</span>
                 </x-ui.button>
+
             </div>
 
         </div>
