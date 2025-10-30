@@ -4,17 +4,8 @@
 
             <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
 
-                <div class="relative w-full sm:w-56">
-                    <x-ui.select>
-                        <option value="">All statuses</option>
-                        <option value="Active">Active</option>
-                        <option value="pending">Pending</option>
-                        <option value="processing">Processing</option>
-                    </x-ui.select>
-                </div>
-
-                <div class="relative w-full sm:w-56">
-                    <x-ui.select>
+                <div class="relative w-full sm:w-80">
+                       <x-ui.select>
                         <option value="">All Game</option>
                         <option value="game1">Game 1</option>
                         <option value="game2">Game 2</option>
@@ -22,19 +13,25 @@
                     </x-ui.select>
                 </div>
 
-                <div class="relative w-full sm:w-56">
-                    <x-ui.input type="text" placeholder="Search" class="pl-5" />
-                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        <x-phosphor-magnifying-glass class="w-5 h-5 fill-text-text-white" />
-                    </div>
+                <div class="relative w-full sm:w-80">
+                    <x-ui.select>
+                        <option value="">All</option>
+                        <option value="game1">Active offers</option>
+                        <option value="game2">Paused offers</option>
+                        <option value="game3">Closed offers</option>
+                    </x-ui.select>
                 </div>
 
             </div>
 
-            <div class="w-full md:w-auto">
-                <x-ui.button class="w-auto py!">
-                    <x-phosphor-download class="w-5 h-5 fill-text-text-white" />
-                    <span>Download invoice</span>
+            <div class="w-full md:w-auto flex items-center gap-2 justify-between">
+                <x-ui.button class="w-auto! py-2! " variant="secondary">
+                    <x-phosphor-download class="w-5 h-5 fill-accent group-hover:fill-white" />
+                   <span  class="text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Export') }}</span>
+                </x-ui.button>
+                <x-ui.button class="w-auto! py-2!">
+                    <x-phosphor-plus class="w-5 h-5 fill-text-text-white group-hover:fill-accent" />
+                    <span  class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('New Offer') }}</span>
                 </x-ui.button>
             </div>
 

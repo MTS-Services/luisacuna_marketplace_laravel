@@ -140,7 +140,7 @@ class SoldOrders extends Component
                         </div>
                         <div class="min-w-0">
                             <h3 class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">' . $order->name . '</h3>
-                            <p class="text-xs text-green-400 truncate hidden xxs:block">' . $order->subtitle . '</p>
+                            <p class="text-xs text-text-white/50 truncate hidden xxs:block">' . $order->subtitle . '</p>
                             <a href="#" class="text-pink-400 text-xs hover:underline flex items-center gap-1 hidden xs:flex">Learn more →</a>
                         </div>
                     </div>
