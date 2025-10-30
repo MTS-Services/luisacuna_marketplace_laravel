@@ -134,7 +134,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Game Card 1 -->
                 <div
-                    class="bg-bg-primary border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                     <div class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
                         <img src="{{ asset('assets/images/home_page/game-1.png') }}" alt="">
                     </div>
@@ -147,7 +147,7 @@
 
                 <!-- Game Card 2 -->
                 <div
-                    class="bg-bg-primary border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                     <div
                         class="w-full max-w-[300px] mx-auto mb-4  rounded-lg flex items-center justify-center text-4xl">
                         <img src="{{ asset('assets/images/home_page/game-2.png') }}" alt="">
@@ -161,7 +161,7 @@
 
                 <!-- Game Card 3 -->
                 <div
-                    class="bg-bg-primary border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                     <div
                         class="w-full max-w-[300px] mx-auto mb-4  rounded-lg flex items-center justify-center text-4xl">
                         <img src="{{ asset('assets/images/home_page/game-3.png') }}" alt="">
@@ -175,7 +175,7 @@
 
                 <!-- Game Card 4 -->
                 <div
-                    class="bg-bg-primary border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                     <div class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
                         <img src="{{ asset('assets/images/home_page/game-4.png') }}" alt="">
                     </div>
@@ -188,7 +188,7 @@
 
                 <!-- Game Card 5 -->
                 <div
-                    class="bg-bg-primary border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                     <div
                         class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
                         <img src="{{ asset('assets/images/home_page/game-5.png') }}" alt="">
@@ -202,7 +202,7 @@
 
                 <!-- Game Card 6 -->
                 <div
-                    class="bg-bg-primary border-[#1B0C33] rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                     <div
                         class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
                         <img src="{{ asset('assets/images/home_page/game-6.png') }}" alt="">
@@ -228,7 +228,7 @@
                 <!-- Step 1 -->
                 <div class="text-center">
                     <div
-                        class="w-20 h-20 bg-bg-primary rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
+                        class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
                         <img src="{{ asset('assets/images/home_page/secure_transaction.png') }}" alt="">
                     </div>
                     <h3 class="font-bold text-lg mb-2 text-text-white">Secure Transactions</h3>
@@ -239,7 +239,7 @@
                 <!-- Step 2 -->
                 <div class="text-center relative">
                     <div
-                        class="w-20 h-20 bg-[rgba(133,62,255,0.1)] rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
+                        class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
                         <img src="{{ asset('assets/images/home_page/verified_sellers.png') }}" alt="">
                     </div>
                     <div class="absolute top-1/4 -left-1/4 z-20 hidden md:block">
@@ -253,7 +253,7 @@
                 <!-- Step 3 -->
                 <div class="text-center relative">
                     <div
-                        class="w-20 h-20 bg-[rgba(133,62,255,0.1)] rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
+                        class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
                         <img src="{{ asset('assets/images/home_page/effortless_buying.png') }}" alt="">
                     </div>
                     <div class="absolute top-1/4 -left-1/4 z-20 hidden md:block">
@@ -268,7 +268,7 @@
     </section>
 
     <!-- About Us Section -->
-    <section class="py-20 bg-gradient-to-r from-[#5f3fbc]  to-[#50072c]">
+    <section class="py-20 bg-gradient-to-r from-zinc-500  to-pink-900">
         <div class="container">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div>
