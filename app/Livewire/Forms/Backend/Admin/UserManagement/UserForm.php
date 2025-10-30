@@ -27,8 +27,8 @@ class UserForm extends Form
      #[Validate('required|string|max:255')]
     public $language = '';
 
-    #[Validate('nullable|string|max:255')]
-    public $display_name = '';
+    // #[Validate('nullable|string|max:255')]
+    // public $display_name = '';
 
     #[Validate('required|email|max:255')]
     public $email = '';
@@ -56,7 +56,7 @@ class UserForm extends Form
             'first_name' => 'required|string|max:255',
             'last_name' => 'nullable|string|max:255',
             'username' => 'nullable|string|max:255|regex:/^[A-Za-z0-9_\-\$]+$/',
-            'display_name' => 'nullable|string|max:255',
+            // 'display_name' => 'nullable|string|max:255',
             'date_of_birth' => 'nullable|date',
             'country_id' => 'required|exists:countries,id',
             'language' => 'required|max:255',
@@ -75,7 +75,7 @@ class UserForm extends Form
         $this->first_name = $user->first_name;
         $this->last_name = $user->last_name;
         $this->username = $user->username;
-        $this->display_name = $user->display_name;
+        // $this->display_name = $user->display_name;
         $this->country_id = $user->country_id;
         $this->date_of_birth = $user->date_of_birth;
         $this->email = $user->email;
@@ -88,7 +88,7 @@ class UserForm extends Form
         $this->first_name = '';
         $this->last_name = '';
         $this->username = '';
-        $this->display_name = '';
+        // $this->display_name = '';
         $this->country_id = '';
         $this->date_of_birth = '';
         $this->email = '';

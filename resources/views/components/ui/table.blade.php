@@ -54,8 +54,9 @@
 
             {{-- Reset Button --}}
             <div class="w-full sm:w-auto">
-                <x-ui.button wire:click="{{ $resetFiltersAction }}" type="accent" button class="w-full sm:w-auto">
-                    <flux:icon icon="arrow-path" class="w-4 h-4 stroke-white" />
+                <x-ui.button wire:click="{{ $resetFiltersAction }}" variant="tertiary" class="w-full sm:w-auto py-2!">
+                    <flux:icon icon="arrow-path"
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
                     {{ __('Reset') }}
                 </x-ui.button>
             </div>
@@ -66,7 +67,7 @@
             {{-- Search --}}
             @if ($showSearch)
                 <div class="w-full sm:flex-1 lg:max-w-xs">
-                    <x-input type="text" wire:model.live.debounce.300ms="{{ $searchProperty }}"
+                    <x-ui.input type="text" wire:model.live.debounce.300ms="{{ $searchProperty }}"
                         placeholder="Search..." class="form-input w-full" />
                 </div>
             @endif
@@ -86,14 +87,21 @@
                         @endforeach
                     </select>
 
-                    <button wire:click="confirmBulkAction" class="btn btn-secondary w-full sm:w-auto"
-                        @if (empty($bulkAction)) disabled @endif>
-                        Execute
-                    </button>
+                    @if (empty($bulkAction))
+                        <x-ui.button wire:click="confirmBulkAction" variant="secondary" class="w-full sm:w-auto py-2!"
+                            disabled>
+                            {{ __('Execute') }}
+                        </x-ui.button>
+                    @else
+                        <x-ui.button wire:click="confirmBulkAction" variant="secondary" class="w-full sm:w-auto py-2!">
+                            {{ __('Execute') }}
+                        </x-ui.button>
+                    @endif
                 </div>
             </div>
         @endif
     </div>
+
     {{-- DESKTOP TABLE VIEW (lg and above) --}}
     <div class="hidden lg:block">
         <table class="min-w-full divide-y divide-accent/30">
@@ -200,7 +208,7 @@
                             {{-- <td class="px-4 py-3 text-center">
                                 <div class="relative inline-block text-left" x-data="{ open: false }">
                                     <button type="button" @click="open = !open"
-                                        class="inline-flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 group">
+                                        class="inline-flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-400 transition-all duration-200 group">
                                         <flux:icon icon="cog-6-tooth"
                                             class="w-5 h-5 text-gray-500 group-hover:text-gray-700 dark:text-gray-400 dark:group-hover:text-gray-200 group-hover:rotate-90 transition-all duration-300" />
                                     </button>
@@ -225,14 +233,14 @@
 
                                                 @if (isset($action['route']))
                                                     <a href="{{ route($action['route'], $actionValue) }}" wire:navigate
-                                                        class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                                        class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-400 transition-colors">
                                                         {{ $action['label'] }}
                                                     </a>
                                                 @elseif (isset($action['method']))
                                                     <button type="button"
                                                         wire:click="{{ $action['method'] }}({{ $actionParam }})"
                                                         @click="open = false"
-                                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-400 transition-colors">
                                                         {{ $action['label'] }}
                                                     </button>
                                                 @endif
@@ -259,7 +267,7 @@
                                             x-transition:leave-end="transform opacity-0 scale-95"
                                             class="absolute z-10 mt-2 min-w-32 w-fit max-w-52 origin-top-right right-0 rounded-md shadow-lg text-center"
                                             @click.outside="open = false">
-                                            <div class="rounded-md bg-white shadow-xs">
+                                            <div class="rounded-md bg-bg-primary shadow-xs">
                                                 <div class="py-1">
                                                     @foreach ($actions as $action)
                                                         @if (isset($action['href']) && $action['href'] != null && $action['href'] != '#')
@@ -279,7 +287,7 @@
                                                             <a href="{{ $href }}"
                                                                 title="{{ $action['label'] }}"
                                                                 target="{{ $action['target'] ?? '_self' }}"
-                                                                class="block px-4 py-2 w-full text-sm text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                                                class="block px-4 py-2 w-full text-sm text-left dark:text-zinc-100! dark:hover:text-zinc-900! hover:bg-zinc-300 hover:text-gray-900"
                                                                 wire:navigate>
                                                                 {{ $action['label'] }}
                                                             </a>
@@ -297,7 +305,7 @@
                                                             <a href="{{ route($action['route'], $actionParam) }}"
                                                                 title="{{ $action['label'] }}"
                                                                 target="{{ $action['target'] ?? '_self' }}"
-                                                                class="block px-4 py-2 w-full text-sm text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                                                class="block px-4 py-2 w-full text-sm text-left dark:text-zinc-100! dark:hover:text-zinc-900! hover:bg-zinc-300 hover:text-gray-900"
                                                                 wire:navigate>
                                                                 {{ $action['label'] }}
                                                             </a>
@@ -315,7 +323,7 @@
                                                             @endphp
                                                             <button type="button"
                                                                 wire:click="{{ $action['method'] }}({{ $actionParam }})"
-                                                                class="block px-4 py-2 w-full text-left text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                                                class="block px-4 py-2 w-full text-left text-sm dark:text-zinc-100! dark:hover:text-zinc-900! hover:bg-zinc-300 hover:text-gray-900"
                                                                 @click="open = false">
                                                                 {{ $action['label'] }}
                                                             </button>
@@ -378,7 +386,7 @@
                         @if (count($actions) > 0)
                             <div class="relative" x-data="{ open: false }">
                                 <button type="button" @click="open = !open"
-                                    class="inline-flex items-center justify-center w-9 h-9 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 group">
+                                    class="inline-flex items-center justify-center w-9 h-9 rounded-lg hover:bg-gray-200 dark:hover:bg-zinc-400 transition-all duration-200 group">
                                     <flux:icon icon="ellipsis-vertical"
                                         class="w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-200" />
                                 </button>
@@ -387,7 +395,7 @@
                                     x-transition:enter="transition ease-out duration-100"
                                     x-transition:enter-start="transform opacity-0 scale-95"
                                     x-transition:enter-end="transform opacity-100 scale-100"
-                                    class="absolute right-0 z-20 mt-2 w-48 origin-top-right rounded-lg bg-white dark:bg-gray-800 shadow-xl ring-1 ring-black ring-opacity-5">
+                                    class="absolute right-0 z-20 mt-2 w-48 origin-top-right rounded-lg bg-bg-primary shadow-xl ring-1 ring-black ring-opacity-5">
                                     <div class="py-1">
                                         @foreach ($actions as $action)
                                             @php
@@ -400,14 +408,14 @@
 
                                             @if (isset($action['route']))
                                                 <a href="{{ route($action['route'], $actionValue) }}" wire:navigate
-                                                    class="block px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                    class="block px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300  dark:hover:text-black hover:bg-zinc-300 dark:hover:bg-zinc-400">
                                                     {{ $action['label'] }}
                                                 </a>
                                             @elseif (isset($action['method']))
                                                 <button type="button"
                                                     wire:click="{{ $action['method'] }}({{ $actionParam }})"
                                                     @click="open = false"
-                                                    class="block w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                    class="block w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:hover:text-black  dark:text-gray-300 hover:bg-zinc-300 dark:hover:bg-zinc-400">
                                                     {{ $action['label'] }}
                                                 </button>
                                             @endif
@@ -444,7 +452,7 @@
                 @if (count($hiddenColumns) > 0)
                     {{-- Expand/Collapse Button --}}
                     <button type="button" @click="expanded = !expanded"
-                        class="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors">
+                        class="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-zinc-400/50 transition-colors">
                         <span class="text-sm font-medium text-gray-700 dark:text-gray-300"
                             x-text="expanded ? 'Show Less' : 'Show More'">
                             Show More

@@ -7,15 +7,26 @@ use Livewire\Component;
 class Header extends Component
 {
 
-    public string $pageSlug;
-
-    public function mount($pageSlug = 'home')
+    public $activeDropdown; // Track which dropdown is open
+    
+    // Toggle dropdown
+    public function toggleDropdown($type)
     {
-        $this->pageSlug = $pageSlug;
+        if ($this->activeDropdown === $type) {
+            $this->activeDropdown = ''; // Close if already open
+        } else {
+            $this->activeDropdown = $type; // Open selected dropdown
+        }
+    }
+    
+    // Close dropdown
+    public function closeDropdown()
+    {
+        $this->activeDropdown = '';
     }
 
     public function render()
     {
-        return view('frontend.layouts.partials.header');
+        return view('livewire.frontend.partials.header');
     }
 }

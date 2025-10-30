@@ -3,8 +3,9 @@
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Personal Info ') }}</h2>
             <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.um.user.index') }}">
-                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
+                <x-ui.button href="{{ route('admin.um.user.index') }}" class="w-auto! py-2!">
+                    <flux:icon name="arrow-left"
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                     {{ __('Back') }}
                 </x-ui.button>
             </div>
@@ -14,14 +15,14 @@
     {{-- Tab Navigation Bar --}}
     @include('backend.admin.pages.user-management.user.nav')
 
-    <div class="bg-white shadow rounded-xl p-6 min-h-[500px]">
+    <div class="bg-bg-primary shadow rounded-xl p-6 min-h-[500px]">
         {{-- PERSONAL INFO (Default Tab) --}}
 
         <div class="grid lg:grid-cols-3 gap-6">
 
             {{-- Left Column --}}
             <div class="flex flex-col h-auto p-4 border-r lg:border-r-2 border-gray-100">
-                <h2 class="text-xl text-gray-800 font-semibold mb-6">Profile Image</h2>
+                <h2 class="text-xl text-text-primary font-semibold mb-6">Profile Image</h2>
 
                 <div class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-red-100 overflow-hidden">
                     <img src="{{ asset('storage/' . $user->avatar) }}" alt="Profile Image"
@@ -30,7 +31,7 @@
 
                 <div class="flex flex-col items-center justify-between mb-8">
                     <h3 class="text-2xl font-bold text-center mb-1">{{ $user->username }}</h3>
-                    <p class="text-gray-600">{{ $user->email }}</p>
+                    <p class="text-text-secondary">{{ $user->email }}</p>
                 </div>
 
                 <div class="space-y-4 text-sm">
@@ -42,7 +43,7 @@
                             </path>
                         </svg>
                         <div>
-                            <p class="text-gray-500">Phone</p>
+                            <p class="text-text-secondary">Phone</p>
                             <p class="font-medium text-gray-900">{{ $user->phone }}</p>
                         </div>
                     </div>
@@ -55,7 +56,7 @@
                             </path>
                         </svg>
                         <div>
-                            <p class="text-gray-500">Email</p>
+                            <p class="text-text-secondary">Email</p>
                             <p class="font-medium text-gray-900">{{ $user->email }}</p>
                         </div>
                     </div>
@@ -68,7 +69,7 @@
                             </path>
                         </svg>
                         <div>
-                            <p class="text-gray-500">Account Status</p>
+                            <p class="text-text-secondary">Account Status</p>
                             <span
                                 class="px-3 py-1 rounded-full text-xs font-bold inline-block 
                                     @if ($user->status_label === 'Active') bg-green-100 text-green-700 @else bg-red-100 text-red-700 @endif">
@@ -81,36 +82,30 @@
 
             {{-- Right Column --}}
             <div class="col-span-1 lg:col-span-2 p-4">
-                <h2 class="text-xl font-semibold mb-6 border-b pb-2 text-gray-800">Profile Information</h2>
+                <h2 class="text-xl font-semibold mb-6 border-b pb-2 text-text-primary">Profile Information</h2>
 
                 <div class="grid md:grid-cols-2 gap-8 text-base">
                     {{-- First Name --}}
                     <div>
-                        <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">First Name</p>
+                        <p class="text-text-secondary mb-1 text-sm uppercase tracking-wider">First Name</p>
                         <h3 class="text-lg font-medium text-gray-900">{{ $user->first_name }}</h3>
                     </div>
 
                     {{-- Last Name --}}
                     <div>
-                        <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">Last Name</p>
+                        <p class="text-text-secondary mb-1 text-sm uppercase tracking-wider">Last Name</p>
                         <h3 class="text-lg font-medium text-gray-900">{{ $user->last_name }}</h3>
-                    </div>
-
-                    {{-- Display Name --}}
-                    <div>
-                        <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">Display Name</p>
-                        <h3 class="text-lg font-medium text-gray-900">{{ $user->display_name }}</h3>
                     </div>
 
                     {{-- Date of Birth --}}
                     <div>
-                        <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">Date of Birth</p>
+                        <p class="text-text-secondary mb-1 text-sm uppercase tracking-wider">Date of Birth</p>
                         <h3 class="text-lg font-medium text-gray-900">{{ $user->date_of_birth }}</h3>
                     </div>
 
                     {{-- Country --}}
                     <div>
-                        <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">Country</p>
+                        <p class="text-text-secondary mb-1 text-sm uppercase tracking-wider">Country</p>
                         <h3 class="text-lg font-medium text-gray-900">{{ $user->country->name }}</h3>
                     </div>
                 </div>

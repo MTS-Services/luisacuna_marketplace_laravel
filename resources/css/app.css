@@ -88,6 +88,8 @@
     --color-bg-primary-dark: var(--color-primary-900);
     --color-bg-secondary-dark: var(--color-primary-950);
     --color-bg-tertiary-dark: var(--color-secondary-500);
+
+   
 }
 
 
@@ -122,6 +124,7 @@
     /* ------------------------------------------ */
 
     --color-text-new: var(--color-text-new-light);
+    --color-text-white: var(--color-white-light);
 
     --color-accent: var(--color-accent-light);
     --color-accent-content: var(--color-accent-content-light);
@@ -131,6 +134,12 @@
     --color-text-secondary: var(--color-text-secondary-light);
     --color-text-muted: var(--color-text-muted-light);
 
+    --color-bg-hover:var(--color-zinc-100);
+
+    --color-text-btn-primary: #f8f8f8;
+    --color-text-btn-secondary: var(--color-primary-500);
+    --color-text-btn-tertiary: var(--color-secondary-500);
+
     /* --color-bg-primary: var(--color-primary-900);
     --color-bg-secondary: var(--color-primary-950);
     --color-bg-tertiary: var(--color-secondary-500); */
@@ -139,6 +148,7 @@
     --color-bg-secondary: var(--color-bg-secondary-light);
     --color-bg-tertiary: var(--color-bg-tertiary-light);
 
+     --hover-bg-theme: var(--color-zinc-200);
     --color-bg-black: var(--color-black);
     --color-bg-white: var(--color-white);
 
@@ -168,6 +178,15 @@
         }
     }
 
+
+
+    /* ======================================================
+    	 	 	 	 	 	 # font size
+    ======================================================== */
+
+    --text-40px: 2.5rem;
+    --text-20px: 1.25rem;
+
     /* ======================================================
     	 	 	 	 	 	 # Breakpoints
     ======================================================== */
@@ -182,6 +201,9 @@
     --breakpoint-4xl: 1920px;
     --breakpoint-5xl: 2560px;
 
+
+
+
 }
 
 @layer theme {
@@ -193,6 +215,7 @@
 
     .dark {
         --color-accent: var(--color-accent-dark);
+        
         --color-accent-content: var(--color-accent-content-dark);
         --color-accent-foreground: var(--color-accent-foreground-dark);
 
@@ -204,7 +227,10 @@
         --color-bg-secondary: var(--color-bg-secondary-dark);
         --color-bg-tertiary: var(--color-bg-tertiary-dark);
 
+        --color-bg-hover:var(--color-zinc-800);
+
         --color-text-new: var(--color-text-new-dark);
+        --color-text-white: var(--color-white-dark);
     }
 }
 
@@ -282,12 +308,12 @@
     }
 
     .glass-card {
-        @apply backdrop-blur-md bg-gradient-to-tr from-zinc-50/10 via-accent/5 to-zinc-50/10 shadow-glass-card;
+        @apply backdrop-blur-md bg-gradient-to-tr from-zinc-50/50 via-accent/5 to-zinc-50/50 shadow-glass-card;
     }
 
 
     .sidebar-glass-card {
-        @apply bg-gradient-to-tr from-zinc-800/10 via-accent/10 to-zinc-800/10 shadow-glass-card;
+        @apply bg-gradient-to-tr from-zinc-100/80 via-accent/30 to-zinc-100/80 shadow-glass-card;
     }
 
     .dark .glass-card,
@@ -304,13 +330,24 @@
     }
 
     .navbar_style {
-        @apply relative text-white font-medium transition-colors duration-300 hover:text-purple-400 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:bg-purple-500 after:w-0 hover:after:w-full after:transition-all after:duration-300 [&.active]:text-purple-400 [&.active]:after:w-full;
+        @apply relative text-white dark:text-zinc-500 font-medium transition-colors duration-300 hover:text-purple-400 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:bg-purple-500 after:w-0 hover:after:w-full after:transition-all after:duration-300 [&.active]:text-purple-400 [&.active]:after:w-full;
     }
 
     .navbar_indicator {
         @apply absolute inset-x-0 bottom-0 h-5 bg-purple-500/80 blur-md rounded-full opacity-0 group-hover:opacity-100 [&.active]:opacity-100 transition-opacity duration-300 ease-in-out;
     }
 
+    /* === Global Swiper Pagination Style === */
+    .swiper-pagination-bullet {
+        @apply w-4! h-2.5! bg-bg-secondary! rounded-md! transition-all duration-300 ease-in-out;
+    }
+
+    .swiper-pagination-bullet-active {
+        @apply bg-purple-700! opacity-100;
+    }
+    .mobile-nav-item{
+        @apply text-text-primary hover:bg-bg-secondary block px-3 py-2 rounded-md text-base font-medium;
+    }
 }
 
 @utility container {
@@ -340,63 +377,4 @@ input:focus[data-flux-control],
 textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
-}
-
-.gradient-text {
-    background: linear-gradient(135deg, #853EFF 0%, #FF2E91 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.btn-primary {
-    background: var(--color-primary-500);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-primary:hover {
-    background: var(--color-primary-600);
-    transform: translateY(-2px);
-}
-
-.btn-secondary {
-    background: white;
-    color: var(--color-primary-500);
-    padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    font-weight: 600;
-    border: 2px solid white;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.btn-secondary:hover {
-    background: var(--color-primary-50);
-    color: var(--color-primary-500);
-}
-
-
-.card-game:hover {
-    border-color: rgba(133, 62, 255, 0.5);
-    transform: translateY(-8px);
-    background: rgba(53, 25, 102, 0.7);
-}
-
-.card-game img {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto 1rem;
-    object-fit: contain;
-}
-
-.glass-effect {
-    background: rgba(27, 12, 51, 0.4);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(133, 62, 255, 0.1);
 }

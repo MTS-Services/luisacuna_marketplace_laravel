@@ -3,8 +3,9 @@
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('User Create') }}</h2>
             <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.um.user.index') }}">
-                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
+                <x-ui.button href="{{ route('admin.um.user.index') }}" class="w-auto! py-2!">
+                    <flux:icon name="arrow-left"
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                     {{ __('Back') }}
                 </x-ui.button>
             </div>
@@ -44,11 +45,11 @@
                     <x-ui.input-error :messages="$errors->get('form.username')" />
                 </div>
                 {{-- display name --}}
-                <div class="w-full">
+                {{-- <div class="w-full">
                     <x-ui.label value="Display Name" class="mb-1" />
                     <x-ui.input type="text" placeholder="Display Name" wire:model="form.display_name" />
                     <x-ui.input-error :messages="$errors->get('form.display_name')" />
-                </div>
+                </div> --}}
                 {{-- date_of_birth --}}
                 <div class="w-full">
                     <x-ui.label value="Date Of Birth" class="mb-1" />
@@ -95,21 +96,26 @@
                 </div>
                 <div class="w-full">
                     <x-ui.label value="Password Confirmation" class="mb-1" />
-                    <x-ui.input type="password" placeholder="Password Confirmation" wire:model="form.password_confirmation" />
+                    <x-ui.input type="password" placeholder="Password Confirmation"
+                        wire:model="form.password_confirmation" />
                     <x-ui.input-error :messages="$errors->get('form.password_confirmation')" />
                 </div>
             </div>
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button href="{{ route('admin.um.user.index') }}" type="danger">
-                    <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
+                <x-ui.button href="{{ route('admin.um.user.index') }}" variant="tertiary" class="w-auto! py-2!">
+                    <flux:icon name="x-circle"
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
                     {{ __('Cancel') }}
                 </x-ui.button>
 
-                <x-ui.button type="accent" button>
-                    <span wire:loading.remove wire:target="save" class="text-white">Create User</span>
-                    <span wire:loading wire:target="save" class="text-white">Creating...</span>
+                <x-ui.button class="w-auto! py-2!" type="submit">
+                    <span wire:loading.remove wire:target="save"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">Create
+                        Admin</span>
+                    <span wire:loading wire:target="save"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">Creating...</span>
                 </x-ui.button>
             </div>
         </form>

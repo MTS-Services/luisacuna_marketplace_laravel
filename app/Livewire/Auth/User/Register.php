@@ -90,7 +90,7 @@ class Register extends Component
             'username' => $validated['username'],
             'first_name' => $validated['first_name'] ?? null,
             'last_name' => $validated['last_name'] ?? null,
-            'display_name' => trim(($validated['first_name'] ?? '') . ' ' . ($validated['last_name'] ?? '')) ?: $validated['username'],
+            // 'display_name' => trim(($validated['first_name'] ?? '') . ' ' . ($validated['last_name'] ?? '')) ?: $validated['username'],
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,
             'country_id' => $validated['country_id'],

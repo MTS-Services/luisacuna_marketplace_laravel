@@ -4,10 +4,12 @@ namespace App\Models;
 
 use App\Models\BaseModel;
 use App\Enums\SubmittedKycStatus;
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class SubmittedKyc extends BaseModel
+class SubmittedKyc extends BaseModel implements Auditable
 {
-    //
+    use  AuditableTrait;
 
     protected $fillable = [
         'sort_order',
