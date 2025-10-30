@@ -131,6 +131,7 @@ class Accounts extends Component
                 [
                     'key' => 'name',
                     'label' => 'Game',
+                    'sortable' => true,
                     'format' => fn($item) => '
                 <div class="flex items-center gap-3">
                     <img src="' . ($item->game_image ?? '/default.png') . '" 

@@ -105,6 +105,7 @@ class TopUps extends Component
                 [
                     'key' => 'name',
                     'label' => 'Game',
+                    'sortable' => true,
                     'format' => fn($item) => '
                 <div class="flex items-center gap-3">
                     <div class="flex flex-col">
