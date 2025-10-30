@@ -341,8 +341,8 @@
         </div>
     </div>
     {{-- 22222 --}}
-    <div class="bg-[#0D061A]  min-h-[150px] py-10">
-        <div class="container mx-auto flex justify-between items-start text-white">
+    <div class="bg-bg-primary  min-h-[150px] py-10">
+        <div class="container mx-auto flex justify-between items-start text-text-white">
 
             <div class="flex flex-col space-y-2">
                 <h3 class="text-white text-base font-normal">Select region</h3>
