@@ -12,13 +12,13 @@
             <!-- Navigation Links -->
             <nav
                 class=" peer-checked:flex flex-col lg:flex lg:flex-row gap-6 w-full lg:w-auto  lg:bg-transparent border-t  lg:border-none z-50">
-                <a href="#" class="navbar_style {{request()->has('game-category') && request()->get('game-category') == 'currency' ? 'active' : 'text-text-primary'}}">Currency</a>
-                <a href="#" class="navbar_style {{request()->has('game-category') && request()->get('game-category') == 'gift-card' ? 'active' : 'text-text-primary'}}">Gift Card</a>
-                <a href="#" class="navbar_style {{request()->has('game-category') && request()->get('game-category') == 'boosting' ? 'active' : 'text-text-primary'}}">Boosting</a>
-                <a href="#" class="navbar_style {{request()->has('game-category') && request()->get('game-category') == 'items' ? 'active' : 'text-text-primary'}}">Items</a>
-                <a href="#" class="navbar_style {{request()->has('game-category') && request()->get('game-category') == 'accounts' ? 'active' : 'text-text-primary'}}">Accounts</a>
-                <a href="#" class="navbar_style {{request()->has('game-category') && request()->get('game-category') == 'topups' ? 'active' : 'text-text-primary'}}">Top Ups</a>
-                <a href="#" class="navbar_style {{request()->has('game-category') && request()->get('game-category') == 'coaching' ? 'active' : 'text-text-primary'}}">Coaching</a>
+                <a href="{{route('game.index', ['game-category' => 'currency', 'slug' => $gameSlug])}}" wire:navigate class="navbar_style {{request()->has('game-category') && request()->get('game-category') == 'currency' ? 'active' : 'text-text-primary'}}">Currency</a>
+                <a href="{{route('game.index', ['game-category' => 'gift-cards', 'slug' => $gameSlug])}}" wire:navigate class="navbar_style {{request()->has('game-category') && request()->get('game-category') == 'gift-cards' ? 'active' : 'text-text-primary'}}">Gift Card</a>
+                <a href="{{route('game.index', ['game-category' => 'boosting', 'slug' => $gameSlug])}}" wire:navigate class="navbar_style {{request()->has('game-category') && request()->get('game-category') == 'boosting' ? 'active' : 'text-text-primary'}}">Boosting</a>
+                <a href="{{route('game.index', ['game-category' => 'items', 'slug' => $gameSlug])}}" wire:navigate class="navbar_style {{request()->has('game-category') && request()->get('game-category') == 'items' ? 'active' : 'text-text-primary'}}">Items</a>
+                <a href="{{route('game.index', ['game-category' => 'accounts', 'slug' => $gameSlug])}}" wire:navigate class="navbar_style {{request()->has('game-category') && request()->get('game-category') == 'accounts' ? 'active' : 'text-text-primary'}}">Accounts</a>
+                <a href="{{route('game.index', ['game-category' => 'topups', 'slug' => $gameSlug])}}" wire:navigate class="navbar_style {{request()->has('game-category') && request()->get('game-category') == 'topups' ? 'active' : 'text-text-primary'}}">Top Ups</a>
+                <a href="{{route('game.index', ['game-category' => 'coaching', 'slug' => $gameSlug])}}" wire:navigate class="navbar_style {{request()->has('game-category') && request()->get('game-category') == 'coaching' ? 'active' : 'text-text-primary'}}">Coaching</a>
             </nav>
         </div>
     </div>

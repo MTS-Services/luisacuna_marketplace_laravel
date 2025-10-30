@@ -1,57 +1,57 @@
 <nav class="hidden md:flex gap-8 text-sm items-center">
     <button 
         x-on:click="open = (open == 'currency' ? '' : 'currency'); $wire.toggleDropdown('currency')"
-        class="navbar_style group" :class="{'active' : open == 'currency' }">
+        class="navbar_style group " :class="{'active' : open == 'currency' || {{request()->has('game-category' ) && request()->get('game-category') == 'currency'}} }">
         <span class="relative z-10">Currency</span>
-        <span class="navbar_indicator" :class="{'active' : open == 'currency' }"></span>
+        <span class="navbar_indicator" :class="{'active' : open == 'currency' || {{request()->has('game-category' ) && request()->get('game-category') == 'currency'}} }"></span>
     </button>
 
     {{-- Gift Cards --}}
     <button 
             x-on:click="open = (open == 'gift-cards' ? '' : 'gift-cards'); $wire.toggleDropdown('gift-cards')"
-        class="navbar_style group " :class="{'active' : open == 'gift-cards' }">
+        class="navbar_style group " :class="{'active' : open == 'gift-cards' || {{request()->has('game-category' ) && request()->get('game-category') == 'gift-cards'}} }">
         <span class="relative z-10">Gift Cards</span>
-        <span class="navbar_indicator " :class="{'active' : open == 'gift-cards' }"></span>
+        <span class="navbar_indicator " :class="{'active' : open == 'gift-cards' || {{request()->has('game-category' ) && request()->get('game-category') == 'gift-cards'}} }"></span>
     </button>
 
     {{-- Boosting Dropdown --}}
     <button 
             x-on:click="open = (open == 'boosting' ? '' : 'boosting'); $wire.toggleDropdown('boosting')"
-        class="navbar_style group" :class="{'active' : open == 'boosting' }">
+        class="navbar_style group" :class="{'active' : open == 'boosting' || {{request()->has('game-category' ) && request()->get('game-category') == 'boosting'}} }">
         <span class="relative z-10">Boosting</span>
-        <span class="navbar_indicator" :class="{'active' : open == 'boosting' }"></span>
+        <span class="navbar_indicator" :class="{'active' : open == 'boosting' || {{request()->has('game-category' ) && request()->get('game-category') == 'boosting'}} }"></span>
     </button>
 
     {{-- Items Dropdown --}}
     <button 
             x-on:click="open = (open == 'items' ? '' : 'items'); $wire.toggleDropdown('items')"
-        class="navbar_style group" :class="{'active' : open == 'items' }">
+        class="navbar_style group" :class="{'active' : open == 'items' || {{request()->has('game-category' ) && request()->get('game-category') == 'items'}} }">
         <span class="relative z-10">Items</span>
-        <span class="navbar_indicator" :class="{'active' : open == 'items' }"></span>
+        <span class="navbar_indicator" :class="{'active' : open == 'items' || {{request()->has('game-category' ) && request()->get('game-category') == 'items'}} }"></span>
     </button>
 
     {{-- Accounts Dropdown --}}
     <button 
         x-on:click="open = (open == 'accounts' ? '' : 'accounts'); $wire.toggleDropdown('accounts')"
-        class="navbar_style group" :class="{'active' : open == 'accounts' }">
+        class="navbar_style group" :class="{'active' : open == 'accounts' || {{request()->has('game-category' ) && request()->get('game-category') == 'accounts'}} }">
         <span class="relative z-10">Accounts</span>
-        <span class="navbar_indicator" :class="{'active' : open == 'accounts' }"></span>
+        <span class="navbar_indicator" :class="{'active' : open == 'accounts' || {{request()->has('game-category' ) && request()->get('game-category') == 'accounts'}} }"></span>
     </button>
 
     {{-- Top Ups --}}
     <button 
         x-on:click="open = (open == 'topups' ? '' : 'topups'); $wire.toggleDropdown('topups')"
-        class="navbar_style group" :class="{'active' : open == 'topups' }">
+        class="navbar_style group" :class="{'active' : open == 'topups' || {{request()->has('game-category' ) && request()->get('game-category') == 'topups'}} }">
         <span class="relative z-10">Top Ups</span>
-        <span class="navbar_indicator" :class="{'active' : open == 'topups' }"></span>
+        <span class="navbar_indicator" :class="{'active' : open == 'topups' || {{request()->has('game-category' ) && request()->get('game-category') == 'topups'}} }"></span>
     </button>
 
     {{-- Coaching --}}
     <button 
         x-on:click="open = (open == 'coaching' ? '' : 'coaching'); $wire.toggleDropdown('coaching')"
-        class="navbar_style group" :class="{'active' : open == 'coaching' }">
+        class="navbar_style group" :class="{'active' : open == 'coaching' || {{request()->has('game-category' ) && request()->get('game-category') == 'coaching'}} }">
         <span class="relative z-10">Coaching</span>
-        <span class="navbar_indicator" :class="{'active' : open == 'coaching' }"></span>
+        <span class="navbar_indicator" :class="{'active' : open == 'coaching' || {{request()->has('game-category' ) && request()->get('game-category') == 'coaching'}} }"></span>
     </button>
     <div class="relative hidden xl:block">
         <flux:icon
