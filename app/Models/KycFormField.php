@@ -4,10 +4,11 @@ namespace App\Models;
 
 use App\Enums\KycFormFieldsInputType;
 use App\Models\BaseModel;
-
-class KycFormField extends BaseModel
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
+class KycFormField extends BaseModel implements Auditable
 {
-    //
+    use  AuditableTrait;
 
     protected $fillable = [
         'sort_order',

@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class ExchangeRate extends BaseModel
+class ExchangeRate extends BaseModel implements Auditable
 {
-
+    use  AuditableTrait;
     /**
      * The attributes that are mass assignable.
      *

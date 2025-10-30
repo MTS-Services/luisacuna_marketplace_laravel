@@ -6,9 +6,12 @@ use App\Enums\SellerLevel;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class SellerProfile extends BaseModel
+class SellerProfile extends BaseModel implements Auditable
 {
+    use  AuditableTrait;
     protected $fillable = [
         'user_id',
         'shop_name',
