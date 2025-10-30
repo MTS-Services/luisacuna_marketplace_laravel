@@ -46,7 +46,7 @@ class Create extends Component
                 'first_name' => $this->form->first_name,
                 'last_name' => $this->form->last_name,
                 'username' => $this->form->username,
-                'display_name' => $this->form->display_name,
+                // 'display_name' => $this->form->display_name,
                 'date_of_birth' => $this->form->date_of_birth,
                 'country_id' => $this->form->country_id,
                 'email' => $this->form->email,

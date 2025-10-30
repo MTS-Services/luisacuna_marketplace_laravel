@@ -1,10 +1,10 @@
 
  <div class="container mx-auto">
-     <div class="min-h-screen flex items-center justify-center bg-[#0D061A] text-white">
+     <div class="min-h-[75vh] flex items-center justify-center text-white">
 
          <!-- Correct form submission -->
          <form  wire:submit="sendPasswordResetOtp"
-             class=" w-full min-h-[550px] max-w-lg bg-[#1a0b2e] rounded-2xl p-8 shadow-lg space-y-8">
+             class=" w-full min-h-[55vh] max-w-lg bg-bg-primary rounded-2xl p-8 shadow-lg space-y-8">
 
              <!-- Header -->
              <div class="text-center">
