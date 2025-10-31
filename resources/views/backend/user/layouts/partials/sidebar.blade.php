@@ -1,11 +1,12 @@
 <div class="h-full z-50">
-    <aside x-cloak :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-        class="fixed h-full lg:static inset-y-0 left-0 z-50 w-64 sm:w-72 md:w-80 lg:w-68 bg-bg-primary/50! transition-transform duration-300 ease-in-out lg:translate-x-0 overflow-y-auto">
-
+    <aside x-cloak
+        :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+        class="fixed h-full lg:static inset-y-0 left-0 z-50 w-64 sm:w-72 md:w-80 lg:w-68 bg-bg-primary/80 transition-transform duration-300 ease-in-out lg:translate-x-0 overflow-y-auto">
+        
         <div class="flex flex-col h-full">
             <!-- Mobile Close Button -->
             <div class="lg:hidden flex items-center justify-between px-4 py-3 border-b border-zinc-800">
-                <span class="text-text-white font-semibold text-lg">Menu</span>
+                <span class="text-text-white font-semibold text-lg">{{ __('Menu') }}</span>
                 <button @click="sidebarOpen = false" class="text-text-white hover:text-zinc-300">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -155,6 +156,27 @@
                       <x-phosphor name="cardholder" variant="regular" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
                     <span
                         class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{ __('Wallet') }}</span>
+                </a>
+                <!-- messages Link -->
+                <a href="{{ route('user.messages') }}" wire:navigate
+                    @click="$root.sidebarOpen = false"
+                    class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'messages' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                    <flux:icon name="chat-bubble-bottom-center-text" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
+                    <span class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{ __('Messages') }}</span>
+                </a>
+                <!-- Feedback Link -->
+                <a href="{{ route('user.feedback') }}" wire:navigate
+                    @click="$root.sidebarOpen = false"
+                    class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'feedback' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                    <flux:icon name="star" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
+                    <span class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{ __('Feedback') }}</span>
+                </a>
+                {{-- settings --}}
+                <a href="{{ route('user.account-settings') }}" wire:navigate
+                    @click="$root.sidebarOpen = false"
+                    class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'account-settings' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                    <x-phosphor name="gear" class="w-4 h-4 sm:w-5 sm:h-5 fill-text-text-white" />
+                    <span class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{ __('Account Settings') }}</span>
                 </a>
                 <!-- View Profile Link -->
                 <a href="{{ route('user.profile') }}" wire:navigate @click="$root.sidebarOpen = false"
