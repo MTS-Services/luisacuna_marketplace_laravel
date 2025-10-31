@@ -8,6 +8,6 @@ class FeedbackComponent extends Component
 {
     public function render()
     {
-        return view('livewire.backend.user.feedback.feedback-components');
+        return view('livewire.backend.user.feedback.feedback-component');
     }
 }
