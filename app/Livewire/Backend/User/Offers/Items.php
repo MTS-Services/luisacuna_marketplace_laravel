@@ -227,5 +227,5 @@ class Items extends Component
         ]);
 
         $this->deleteItemId = null;
-    }
+    }   
 }
