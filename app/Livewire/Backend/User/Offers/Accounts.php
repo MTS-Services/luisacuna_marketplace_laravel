@@ -133,14 +133,14 @@ class Accounts extends Component
                     'label' => 'Game',
                     'sortable' => true,
                     'format' => fn($item) => '
-                <div class="flex items-center gap-3">
-                    <img src="' . ($item->game_image ?? '/default.png') . '" 
-                        class="w-14 h-14 rounded-lg object-cover flex-shrink-0" 
-                        alt="' . e($item->name ?? 'Game') . '">
-                    <div class="flex flex-col">
-                        <span class="font-semibold text-text-white text-sm sm:text-base leading-tight"
-                            title="' . e($item->name ?? '-') . '">'
-                        . e(Str::limit($item->name ?? '-', 30)) .
+                      <div class="flex items-center gap-3">
+                        <img src="' . ($item->game_image ?? '/default.png') . '" 
+                            class="w-14 h-14 rounded-lg object-cover flex-shrink-0" 
+                            alt="' . e($item->name ?? 'Game') . '">
+                        <div class="flex flex-col">
+                            <span class="font-semibold text-text-white text-sm sm:text-base leading-tight"
+                                title="' . e($item->name ?? '-') . '">'
+                            . e(Str::limit($item->name ?? '-', 30)) .
                         '</span>
                         <span class="text-text-muted text-xs sm:text-sm"
                             title="' . e($item->subtitle ?? '(No details)') . '">'

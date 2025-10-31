@@ -149,19 +149,14 @@ class SoldOrders extends Component
             [
                 'key' => 'type',
                 'label' => 'Type',
-                'tdClass' => 'text-text-white text-xs sm:text-sm',
             ],
             [
                 'key' => 'buyer',
                 'label' => 'Buyer',
-                'tdClass' => 'text-text-white text-xs sm:text-sm hidden sm:table-cell',
-                'class' => 'hidden sm:table-cell',
             ],
             [
                 'key' => 'ordered_date',
                 'label' => 'Ordered date',
-                'tdClass' => 'text-text-white text-xs sm:text-sm whitespace-nowrap hidden lg:table-cell',
-                'class' => 'whitespace-nowrap hidden lg:table-cell',
             ],
             [
                 'key' => 'status',
@@ -176,8 +171,6 @@ class SoldOrders extends Component
             [
                 'key' => 'quantity',
                 'label' => 'Quantity',
-                'tdClass' => 'text-text-white text-xs sm:text-sm hidden md:table-cell',
-                'class' => 'hidden md:table-cell',
             ],
             [
                 'key' => 'price',
