@@ -234,7 +234,7 @@
                         </div>
                         <span class="border-t-2 border-zinc-500 w-full inline-block"></span>
                         <div class="mt-4">
-                            <a href="{{ route('gift-card.check-out') }}">
+                            <a href="{{ route('game.checkout',['orderId'=>435345]) }}">
                                 <x-ui.button class="">$76.28 | Buy now </x-ui.button>
                             </a>
                         </div>

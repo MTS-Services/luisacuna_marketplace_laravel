@@ -74,7 +74,7 @@
                     <p class="text-text-white text-base font-semibold">$77.07</p>
                 </div>
                 <div class="mt-8 py">
-                    <x-ui.button href="{{ route('gift-card.check-out') }}" class="w-auto py-3!">$76.28 | Buy now
+                    <x-ui.button href="{{ route('game.checkout',['orderId'=>435345]) }}" class="w-auto py-3!">$76.28 | Buy now
                     </x-ui.button>
                 </div>
                 <div class="mt-8">
