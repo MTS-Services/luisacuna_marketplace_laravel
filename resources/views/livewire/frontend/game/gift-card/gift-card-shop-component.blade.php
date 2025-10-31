@@ -70,7 +70,6 @@
                 About 21 results
             </span>
         </div>
-        </div>
     </section>
 
     {{-- main --}}
