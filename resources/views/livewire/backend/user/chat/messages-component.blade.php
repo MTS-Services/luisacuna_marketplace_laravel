@@ -1,11 +1,11 @@
-<div class="min-h-[30vh] bg-bg-secondary">
+<div class="bg-bg-secondary">
     <div class="container-fluid">
         <div class="p-4">
-            <h2 class="text-2xl font-bold text-text-primary mb-4">Messages</h2>
+            <h2 class="text-xl sm:text-2xl lg:text-3xl  text-text-primary font-lato mb-4">Messages</h2>
 
             <!-- Unread message only toggle -->
-            <div class="flex items-center justify-between mb-3">
-                <div class="flex items-center gap-5 border border-zinc-500 px-3 py-1 rounded-md">
+            <div class="flex flex-col sm:flex-row items-center justify-between mb-3 gap-4">
+                <div class="flex items-center gap-5 border border-zinc-500 px-3 py-1 w-full sm:w-auto justify-between rounded-md">
                     <span class="text-sm text-text-secondary">Unread message only</span>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" class="sr-only peer">
@@ -16,7 +16,15 @@
                                 peer-checked:after:translate-x-4">
                         </div>
                     </label>
-
+                </div>
+                <div class="relative w-full sm:w-40 lg:w-44 xl:w-70">
+                    <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
+                        <option value="">All</option>
+                        <option value="boosting">Boosting</option>
+                        <option value="orders">Orders</option>
+                        <option value="support">Support</option>
+                        <option value="pre-purchase">Pre-purchase</option>
+                    </x-ui.select>
                 </div>
             </div>
             <!-- Mark all as read -->
@@ -234,9 +242,9 @@
                     <div class="flex items-end gap-3">
                         <div class="flex-1 relative">
                             <textarea rows="1" placeholder="Say something....."
-                                class="w-full bg-bg-hover text-text-primary px-4 py-3 pr-12 rounded-lg border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-accent resize-none"
+                                class="w-full bg-bg-hover text-text-white px-4 py-3 pr-12 rounded-lg border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-accent resize-none"
                                 style="min-height: 48px; max-height: 120px;"></textarea>
-                            <div class="absolute right-3 bottom-5 flex items-center gap-2">
+                            <div class="absolute right-3 bottom-4 flex items-center gap-2">
                                 <button class="text-text-muted hover:text-text-primary transition-colors">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -252,12 +260,7 @@
                                     </svg>
                                 </button>
                                 <button class="text-text-muted hover:text-text-primary transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24"
-                                        fill="none">
-                                        <path
-                                            d="M21.3112 2.689C21.1226 2.5005 20.8871 2.36569 20.629 2.29846C20.371 2.23122 20.0997 2.234 19.843 2.3065H19.829L1.83461 7.7665C1.54248 7.85069 1.28283 8.02166 1.09007 8.25676C0.897302 8.49185 0.780525 8.77997 0.75521 9.08294C0.729895 9.3859 0.797238 9.6894 0.948314 9.95323C1.09939 10.2171 1.32707 10.4287 1.60117 10.5602L9.56242 14.4377L13.4343 22.3943C13.5547 22.6513 13.7462 22.8685 13.9861 23.0201C14.226 23.1718 14.5042 23.2517 14.788 23.2502C14.8312 23.2502 14.8743 23.2484 14.9174 23.2446C15.2201 23.2201 15.5081 23.1036 15.7427 22.9107C15.9773 22.7178 16.1473 22.4578 16.2299 22.1656L21.6862 4.17119C21.6862 4.1665 21.6862 4.16181 21.6862 4.15712C21.7596 3.90115 21.7636 3.63024 21.6977 3.37223C21.6318 3.11421 21.4984 2.8784 21.3112 2.689ZM14.7965 21.7362L14.7918 21.7493V21.7427L11.0362 14.0271L15.5362 9.52712C15.6709 9.38533 15.7449 9.19651 15.7424 9.00094C15.7399 8.80537 15.6611 8.61852 15.5228 8.48022C15.3845 8.34191 15.1976 8.26311 15.002 8.26061C14.8065 8.2581 14.6177 8.3321 14.4759 8.46681L9.97586 12.9668L2.25742 9.21119H2.25086H2.26399L20.2499 3.75025L14.7965 21.7362Z"
-                                            fill="white" />
-                                    </svg>
+                                    <flux:icon name="paper-airplane" class="w-5 h-5 mb-1 -rotate-45" />
                                 </button>
                             </div>
                         </div>
