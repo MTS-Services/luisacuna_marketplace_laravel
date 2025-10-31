@@ -1,5 +1,5 @@
 <main class="mx-auto">
-    @if($categorySlug == 'gift-cards')
+    @if($categorySlug == 'gift-cards' || $categorySlug == 'top-ups')
 
         <section class="container mt-16">
             <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
@@ -11,7 +11,7 @@
                     {{ucwords(str_replace('-', ' ', $gameSlug)) . ' '. ucwords(str_replace('-', ' ', $categorySlug))}}
                 </h1>
                 <span class=" text-text-primary">></span>
-                <span class=" text-text-primary">Seller list</span>
+                <span class=" text-text-primary">Shop</span>
             </div>
             <div class="mt-8">
                 <div class="flex items-center justify-between">
@@ -455,7 +455,7 @@
                             {{ucwords(str_replace('-', ' ', $gameSlug)) . ' '. ucwords(str_replace('-', ' ', $categorySlug))}}
                         </h1>
                         <span class=" text-text-primary">></span>
-                        <span class=" text-text-primary">Seller list</span>
+                        <span class=" text-text-primary">Shop</span>
                     </div>
 
                     <!-- Filters Section -->

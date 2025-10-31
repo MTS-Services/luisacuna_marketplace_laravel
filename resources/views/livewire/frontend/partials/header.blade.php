@@ -8,7 +8,7 @@
 
         <div class="flex items-center">
             <button class="btn btn-ghost btn-circle hover:bg-purple-500/20">
-                <flux:icon name="chat-bubble-oval-left" class="w-5 h-5 sm:w-6 sm:h-6 text-text-white" />
+                <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-white" />
             </button>
             {{-- Notification --}}
             <button class="btn btn-ghost btn-circle hover:bg-purple-500/20 mr-2" @click="notification = !notification">
