@@ -26,6 +26,11 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
 
     });
 
+
+    Route::get('/loyalty', function () {
+        return view('backend.user.pages.loyalty.loyalty');
+    })->name('loyalty');
+
     Route::get('/profile', function () {
         return view('backend.user.pages.profile');
     })->name('profile');

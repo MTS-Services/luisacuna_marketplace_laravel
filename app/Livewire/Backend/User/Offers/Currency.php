@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Backend\User\Components\Offers;
+namespace App\Livewire\Backend\User\Offers;
 
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -176,7 +176,7 @@ class Currency extends Component
             ],
         ];
 
-        return view('livewire.backend.user.components.offers.currency', [
+        return view('livewire.backend.user.offers.currency', [
             'items' => $items,
             'columns' => $columns,
             'actions' => $actions,
