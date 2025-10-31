@@ -37,6 +37,9 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
     Route::get('/feedback', function () {
         return view('backend.user.pages.feedback.feedback');
     })->name('feedback');
+    Route::get('/account-settings', function () {
+        return view('backend.user.pages.settings.account-settings');
+    })->name('account-settings');
 
     Route::get('/profile', function () {
         return view('backend.user.pages.profile');
