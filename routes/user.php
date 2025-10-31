@@ -35,6 +35,9 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
         Route::get('/my-requests', function () {
             return view('backend.user.pages.boosting.my-requests');
         })->name('my-requests');
+        Route::get('/received-requests', function () {
+            return view('backend.user.pages.boosting.received-requests');
+        })->name('received-requests');
     });
 
 

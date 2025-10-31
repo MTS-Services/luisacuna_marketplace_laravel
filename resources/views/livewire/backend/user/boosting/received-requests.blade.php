@@ -16,20 +16,19 @@
                 </div>
 
                 <!-- Status Filter -->
-                <div class="relative w-full sm:w-40 lg:w-44">
+                <div class="relative w-full sm:w-40 lg:w-60">
                     <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                        <option value="">All Requests</option>
-                        <option value="active">In progress</option>
-                        <option value="paused">Completed</option>
-                        <option value="closed">Disputed</option>
-                        <option value="closed">Canceled</option>
+                        <option value="">Waiting for your offer</option>
+                        <option value="active">Offer submitted</option>
+                        <option value="paused">Won offer</option>
+                        <option value="closed">Lost offer</option>
                     </x-ui.select>
                 </div>
             </div>
             <!-- New Offer Button -->
             <x-ui.button class="w-full sm:w-auto! py-2!">
                 <span
-                    class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Create request') }}</span>
+                    class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Manage Subscriptions') }}</span>
             </x-ui.button>
         </div>
     </div>

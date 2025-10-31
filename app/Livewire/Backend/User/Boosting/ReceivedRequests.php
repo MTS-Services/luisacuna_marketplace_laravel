@@ -6,11 +6,12 @@ use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
 
-class MyRequests extends Component
+class ReceivedRequests extends Component
 {
+
     use WithPagination;
 
-    public $perPage = 4;
+    public $perPage = 6;
     public function render()
     {
         $allItems = collect(
@@ -19,28 +20,64 @@ class MyRequests extends Component
                     'id' => 1,
                     'name' => 'Fortnite VB Skin Gift',
                     'game_image' => asset('assets/images/fortnite.png'),
+                    'buyer' => 'Shadow_Elder',
                     'category'  => 'Battle Royale Rank Boost',
                     'request_creation_date' => 'DD/MM/YYYY',
-                    'available_offers' =>'0',
-                    'status' => 'Cancel',
+                    // 'status' => 'Cancel',
                 ],
                 [
                     'id' => 2,
-                    'name' => 'Fortnite VB Skin Gift',                   
+                    'name' => 'Fortnite VB Skin Gift',
                     'game_image' => asset('assets/images/fortnite.png'),
+                    'buyer' => 'DandyClap',
                     'category' => 'Items',
                     'request_creation_date' => 'DD/MM/YYYY',
-                    'available_offers' =>'1',
-                    'status' => 'Completed',
+                    // 'status' => 'Completed',
                 ],
                 [
                     'id' => 3,
-                    'name' => 'Fortnite VB Skin Gift',                   
+                    'name' => 'Fortnite VB Skin Gift',
                     'game_image' => asset('assets/images/fortnite.png'),
+                    'buyer' => 'SassyLab-6uUz',
                     'category' => 'Items',
                     'request_creation_date' => 'DD/MM/YYYY',
-                    'available_offers' =>'1',
-                    'status' => 'Completed',
+                    // 'status' => 'Completed',
+                ],
+                [
+                    'id' => 4,
+                    'name' => 'Fortnite VB Skin Gift',
+                    'game_image' => asset('assets/images/fortnite.png'),
+                    'buyer' => 'Ample Run-Xvwe',
+                    'category' => 'Items',
+                    'request_creation_date' => 'DD/MM/YYYY',
+                    // 'status' => 'Completed',
+                ],
+                [
+                    'id' => 5,
+                    'name' => 'Fortnite VB Skin Gift',
+                    'game_image' => asset('assets/images/fortnite.png'),
+                    'buyer' => 'keryasie',
+                    'category' => 'Items',
+                    'request_creation_date' => 'DD/MM/YYYY',
+                    // 'status' => 'Completed',
+                ],
+                [
+                    'id' => 6,
+                    'name' => 'Fortnite VB Skin Gift',
+                    'game_image' => asset('assets/images/fortnite.png'),
+                    'buyer' => 'Keevun',
+                    'category' => 'Items',
+                    'request_creation_date' => 'DD/MM/YYYY',
+                    // 'status' => 'Completed',
+                ],
+                [
+                    'id' => 7,
+                    'name' => 'Fortnite VB Skin Gift',
+                    'game_image' => asset('assets/images/fortnite.png'),
+                    'buyer' => 'Keevun',
+                    'category' => 'Items',
+                    'request_creation_date' => 'DD/MM/YYYY',
+                    // 'status' => 'Completed',
                 ],
             ]
         )->map(fn($item) => (object)$item);
@@ -78,6 +115,10 @@ class MyRequests extends Component
                 </div>'
                 ],
                 [
+                    'key' => 'buyer',
+                    'label' => 'Buyer',
+                ],
+                [
                     'key' => 'category',
                     'label' => 'Category',
                 ],
@@ -85,22 +126,17 @@ class MyRequests extends Component
                     'key' => 'request_creation_date',
                     'label' => 'Request creation date',
                 ],
-                [
-                    'key' => 'available_offers',
-                    'label' => 'Available Offers',
-                ],
-                [
-                    'key' => 'status',
-                    'label' => 'Status',
-                    'badge' => true,
-                    'badgeColors' => [
-                        'completed' => 'bg-pink-500',
-                        'cancel' => 'bg-status-paused',
-                    ]
-                ],
+                // [
+                //     'key' => 'status',
+                //     'label' => 'Status',
+                //     'badge' => true,
+                //     'badgeColors' => [
+                //         'completed' => 'bg-pink-500',
+                //         'cancel' => 'bg-status-paused',
+                //     ]
+                // ],
             ];
-
-        return view('livewire.backend.user.boosting.my-requests', [
+        return view('livewire.backend.user.boosting.received-requests', [
             'items' => $items,
             'columns' => $columns,
             'pagination' => $pagination,

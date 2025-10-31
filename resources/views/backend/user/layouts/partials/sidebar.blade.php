@@ -105,8 +105,8 @@
                 </div>
                 <!-- Boosting Link -->
                 <div x-data="{
-                    boostingOpen: {{ in_array($pageSlug, ['my-requests']) ? 'true' : 'false' }},
-                    isActive: {{ in_array($pageSlug, ['my-requests']) ? 'true' : 'false' }}
+                    boostingOpen: {{ in_array($pageSlug, ['my-requests', 'received-requests']) ? 'true' : 'false' }},
+                    isActive: {{ in_array($pageSlug, ['my-requests', 'received-requests']) ? 'true' : 'false' }}
                 }">
                     <!-- Boosting button -->
                     <button x-cloak @click="boostingOpen = !boostingOpen"
@@ -134,8 +134,12 @@
                     <div x-show="boostingOpen" x-collapse x-cloak class="mt-1 ml-6 sm:ml-8 space-y-1">
                         <a href="{{ route('user.my-requests') }}" wire:navigate @click="$root.sidebarOpen = false"
                             class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'my-requests' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
-                            {{ __('my-requests') }}
+                            {{ __('My Requests') }}
                         </a>
+                        <a href="{{ route('user.received-requests') }}" wire:navigate @click="$root.sidebarOpen = false"
+                            class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'received-requests' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                            {{ __('Received Requests') }}
+                        </a> 
                     </div>
                 </div>
                 <!-- Loyalty Link -->
