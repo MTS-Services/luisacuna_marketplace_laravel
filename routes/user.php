@@ -23,6 +23,9 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
         Route::get('/top-ups', function () {
             return view('backend.user.pages.offers.top-ups');
         })->name('top-ups');
+        Route::get('/items', function () {
+            return view('backend.user.pages.offers.items');
+        })->name('items');
 
     });
 
