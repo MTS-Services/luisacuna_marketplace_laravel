@@ -34,6 +34,9 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
     Route::get('/messages', function () {
         return view('backend.user.pages.chat.messages');
     })->name('messages');
+    Route::get('/feedback', function () {
+        return view('backend.user.pages.feedback.feedback');
+    })->name('feedback');
 
     Route::get('/profile', function () {
         return view('backend.user.pages.profile');

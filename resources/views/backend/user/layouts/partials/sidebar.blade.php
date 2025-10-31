@@ -6,7 +6,7 @@
         <div class="flex flex-col h-full">
             <!-- Mobile Close Button -->
             <div class="lg:hidden flex items-center justify-between px-4 py-3 border-b border-zinc-800">
-                <span class="text-text-white font-semibold text-lg">Menu</span>
+                <span class="text-text-white font-semibold text-lg">{{ __('Menu') }}</span>
                 <button @click="sidebarOpen = false" class="text-text-white hover:text-zinc-300">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -114,6 +114,12 @@
                     class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'messages' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                     <flux:icon name="chat-bubble-bottom-center-text" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
                     <span class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{ __('Messages') }}</span>
+                </a>
+                <a href="{{ route('user.feedback') }}" wire:navigate
+                    @click="$root.sidebarOpen = false"
+                    class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'feedback' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                    <flux:icon name="star" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
+                    <span class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{ __('Feedback') }}</span>
                 </a>
                 <!-- View Profile Link -->
                 <a href="{{ route('user.profile') }}" wire:navigate
