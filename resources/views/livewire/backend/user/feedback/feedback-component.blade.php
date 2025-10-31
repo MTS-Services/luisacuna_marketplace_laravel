@@ -1,5 +1,5 @@
 <div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
         <!-- Completed Orders Card -->
         <div class="bg-bg-primary/70 p-6 rounded-2xl  hover:border-zinc-700 transition-all duration-300">
             <div class="flex flex-col space-y-4">
