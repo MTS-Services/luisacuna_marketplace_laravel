@@ -26,7 +26,9 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
         Route::get('/items', function () {
             return view('backend.user.pages.offers.items');
         })->name('items');
-
+        Route::get('/gift-cards', function () {
+            return view('backend.user.pages.offers.gift-cards');
+        })->name('gift-cards');
     });
 
 

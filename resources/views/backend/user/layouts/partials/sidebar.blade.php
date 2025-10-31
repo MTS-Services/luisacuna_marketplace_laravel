@@ -58,8 +58,8 @@
                 </div>
                 <!-- Offers Dropdown -->
                 <div x-data="{
-                    ordersOpen: {{ in_array($pageSlug, ['currency', 'accounts', 'top-ups', 'items']) ? 'true' : 'false' }},
-                    isActive: {{ in_array($pageSlug, ['currency', 'accounts', 'top-ups', 'items']) ? 'true' : 'false' }}
+                    ordersOpen: {{ in_array($pageSlug, ['currency', 'accounts', 'top-ups', 'items', 'gift-cards']) ? 'true' : 'false' }},
+                    isActive: {{ in_array($pageSlug, ['currency', 'accounts', 'top-ups', 'items', 'gift-cards']) ? 'true' : 'false' }}
                 }">
                     <!-- Offers button -->
                     <button x-cloak @click="ordersOpen = !ordersOpen"
@@ -103,6 +103,11 @@
                             @click="$root.sidebarOpen = false"
                             class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'items' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                             {{ __('Items') }}
+                        </a>
+                        <a href="{{ route('user.gift-cards') }}" wire:navigate
+                            @click="$root.sidebarOpen = false"
+                            class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'gift-cards' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                            {{ __('Gift Cards') }}
                         </a>
                     </div>
                 </div>
