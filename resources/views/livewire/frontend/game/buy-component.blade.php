@@ -1,17 +1,22 @@
 <section>
     <div class="max-w-7xl mx-auto px-8 py-8">
         <!-- Breadcrumb -->
-        <a href="{{route('game.index',['gameSlug'=>$gameSlug, 'categorySlug'=>$categorySlug])}}">
+        {{-- <a href="{{route('game.index',['gameSlug'=>$gameSlug, 'categorySlug'=>$categorySlug])}}">
             <div class="flex items-center gap-2 my-8 text-lg font-semibold">
                 <span class=" text-text-primary"><</span>
                 <h1 class="text-blue-100 text-text-primary">
                     All Offers
                 </h1>
             </div>
-        </a>
+        </a> --}}
 
-
-        <!-- Filters Section -->
+        <div class="flex items-center gap-2 mb-8 text-lg font-semibold">
+                <h1 class="text-blue-100 text-text-primary">
+                    {{ucwords(str_replace('-', ' ', $gameSlug)) . ' '. ucwords(str_replace('-', ' ', $categorySlug))}}
+                </h1>
+                <span class=" text-text-primary">></span>
+                <span class=" text-text-primary">Buy Now</span>
+        </div>
         <div>
 
             <div class=" text-white min-h-screen">
@@ -118,10 +123,10 @@
                                 </div>
 
                                 <!-- Buy Button -->
-                                <button
-                                    class="w-full bg-gradient-to-r bg-[#853EFF]  text-gray-100 sm:text-sm md:text-md lg:text-lg py-3 px-4 rounded-full mb-6 transition transform hover:scale-105">
+                                <a href="{{ route('game.checkout', ['orderId' => 12345]) }}" wire:navigate
+                                    class="block text-center w-full bg-gradient-to-r bg-[#853EFF]  text-gray-100 sm:text-sm md:text-md lg:text-lg py-3 px-4 rounded-full mb-6 transition transform hover:scale-105">
                                     $76.28 | Buy now
-                                </button>
+                                </a>
 
                                 <!-- Guarantees -->
                                 <div class="space-y-4">

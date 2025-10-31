@@ -17,6 +17,11 @@
             <x-slot name="sellerSlug">{{$sellerSlug}}</x-slot>
             <livewire:frontend.game.buy-component :gameSlug="$gameSlug" :categorySlug="$categorySlug" :sellerSlug="$sellerSlug" />
         @break
+        @case('game.checkout' && request()->route()->parameter('orderId'))
+            <x-slot name="title">{{ucfirst(str_replace('-',' ',$gameSlug)).' '. ucfirst(str_replace('-',' ',$categorySlug))}} Checkout</x-slot>
+            <x-slot name="pageSlug">{{$gameSlug}}-{{$categorySlug}}-checkout</x-slot>
+            <livewire:frontend.game.checkout-component :gameSlug="$gameSlug" :categorySlug="$categorySlug" :sellerSlug="$sellerSlug" />
+        @break
         {{-- @case('game.index' && request()->has('game-category') && request()->get('game-category') == 'currency')
             <livewire:frontend.game.currency.currency-shop-component :gameSlug="$slug" />
         @break

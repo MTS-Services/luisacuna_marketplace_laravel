@@ -17,4 +17,11 @@ class GameController extends Controller
     public function buy($gameSlug, $categorySlug, $sellerSlug){
         return view($this->masterView, compact('gameSlug', 'categorySlug', 'sellerSlug'));
     }
+
+    public function checkout($orderId){
+        $gameSlug = 'game-1'; // Retrieve gameSlug based on orderId
+        $categorySlug = 'currency'; // Retrieve categorySlug based on orderId
+        $sellerSlug = 'seller-1'; // Retrieve sellerSlug based on orderId
+        return view($this->masterView, compact('gameSlug', 'categorySlug', 'sellerSlug', 'orderId'));
+    }
 }

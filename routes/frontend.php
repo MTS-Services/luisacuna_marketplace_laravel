@@ -41,4 +41,5 @@ Route::get('/top-up', [TopUpController::class, 'topUp'])->name('top-up');
 // Coaching
 Route::get('/coaching', [CoachingController::class, 'coaching'])->name('coaching');
 Route::get('/game/{gameSlug}/{categorySlug}', [GameController::class, 'index'])->name('game.index');
-Route::get('/game/buy/{gameSlug}/{categorySlug}/{sellerSlug}', [GameController::class, 'buy'])->name('game.buy');
+Route::get('/game-buy/{gameSlug}/{categorySlug}/{sellerSlug}', [GameController::class, 'buy'])->name('game.buy');
+Route::get('/game-checkout/{orderId}', [GameController::class, 'checkout'])->name('game.checkout');

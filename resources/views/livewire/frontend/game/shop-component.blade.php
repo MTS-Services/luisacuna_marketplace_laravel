@@ -78,152 +78,126 @@
         <section class="container">
             <div class="md:flex gap-6">
                 <div class="w-full md:w-[65%]  grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-                    <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
-                        <div
-                            class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
-                            <div class="w-6 h-6">
-                                <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
-                                    class="w-full h-full object-cover">
-                            </div>
-                            <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                            <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                            <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
                         </div>
-                    </a>
-                    <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
-                        <div
-                            class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
-                            <div class="w-6 h-6">
-                                <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
-                                    class="w-full h-full object-cover">
-                            </div>
-                            <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                            <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                            <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
                         </div>
-                    </a>
-                    <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
-                        <div
-                            class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
-                            <div class="w-6 h-6">
-                                <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
-                                    class="w-full h-full object-cover">
-                            </div>
-                            <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                            <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                            <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
                         </div>
-                    </a>
-                    <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
-                        <div
-                            class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
-                            <div class="w-6 h-6">
-                                <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
-                                    class="w-full h-full object-cover">
-                            </div>
-                            <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                            <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                            <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
                         </div>
-                    </a>
-                    <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
-                        <div
-                            class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
-                            <div class="w-6 h-6">
-                                <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
-                                    class="w-full h-full object-cover">
-                            </div>
-                            <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                            <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                            <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
                         </div>
-                    </a>
-                    <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
-                        <div
-                            class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
-                            <div class="w-6 h-6">
-                                <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
-                                    class="w-full h-full object-cover">
-                            </div>
-                            <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                            <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                            <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
                         </div>
-                    </a>
-                    <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
-                        <div
-                            class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
-                            <div class="w-6 h-6">
-                                <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
-                                    class="w-full h-full object-cover">
-                            </div>
-                            <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                            <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                            <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
                         </div>
-                    </a>
-                    <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
-                        <div
-                            class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
-                            <div class="w-6 h-6">
-                                <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
-                                    class="w-full h-full object-cover">
-                            </div>
-                            <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                            <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                            <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
                         </div>
-                    </a>
-                    <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
-                        <div
-                            class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
-                            <div class="w-6 h-6">
-                                <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
-                                    class="w-full h-full object-cover">
-                            </div>
-                            <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                            <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                            <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
                         </div>
-                    </a>
-                    <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
-                        <div
-                            class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
-                            <div class="w-6 h-6">
-                                <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
-                                    class="w-full h-full object-cover">
-                            </div>
-                            <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                            <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                            <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
                         </div>
-                    </a>
-                    <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
-                        <div
-                            class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
-                            <div class="w-6 h-6">
-                                <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
-                                    class="w-full h-full object-cover">
-                            </div>
-                            <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                            <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                            <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
                         </div>
-                    </a>
-                    <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
-                        <div
-                            class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
-                            <div class="w-6 h-6">
-                                <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
-                                    class="w-full h-full object-cover">
-                            </div>
-                            <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                            <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                            <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
                         </div>
-                    </a>
-                    
-                    
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    </div>
                 </div>
                 <div class="w-full md:w-[35%] mt-4 md:mt-0">
                     <div class="">
