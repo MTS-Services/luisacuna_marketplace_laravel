@@ -1,6 +1,6 @@
 <header x-data="{ mobileMenuOpen: false, notification: false, dropdown: '' }"
-    class="sticky top-0 z-50 {{ request()->routeIs('home') ? 'bg-gradient-to-r from-purple-950/50 via-text-white to-purple-950/50 glass-card shadow-none!' : 'glass-card' }}">
-    <div class="container px-4 py-4 flex items-center justify-between relative" x-data="{ open: ''  }" x-cloak @click.outside="open=''">
+    class="sticky top-0 z-50  {{ request()->routeIs('home') ? 'bg-gradient-to-r from-purple-950/50 via-text-white to-purple-950/50 glass-card shadow-none!' : 'glass-card' }}">
+    <div class="2xl:container-wide container  px-4 py-4 flex items-center justify-between relative" x-data="{ open: ''  }" x-cloak>
         <div class=""><a href="{{ route('home') }}">
                 <img src="{{ asset('assets/images/header_logo.png') }}" alt=""></a>
         </div>
