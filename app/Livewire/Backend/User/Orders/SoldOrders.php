@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Livewire\Backend\User\Components\Orders;
+namespace App\Livewire\Backend\User\Orders;
 
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class PurchasedOrders extends Component
+class SoldOrders extends Component
 {
     use WithPagination;
 
@@ -23,7 +23,7 @@ class PurchasedOrders extends Component
                 'image' => asset('assets/images/order.png'),
                 'subtitle' => 'Cheapest +75% Discount',
                 'type' => 'Items',
-                'seller' => 'Albert Flores',
+                'buyer' => 'Albert Flores',
                 'ordered_date' => 'February 11, 2014',
                 'status' => 'Completed',
                 'quantity' => 7421,
@@ -35,7 +35,7 @@ class PurchasedOrders extends Component
                 'image' => asset('assets/images/order.png'),
                 'subtitle' => 'Cheapest +75% Discount',
                 'type' => 'Items',
-                'seller' => 'Jenny Wilson',
+                'buyer' => 'Jenny Wilson',
                 'ordered_date' => 'February 28, 2018',
                 'status' => 'Completed',
                 'quantity' => 5832,
@@ -47,7 +47,7 @@ class PurchasedOrders extends Component
                 'image' => asset('assets/images/order.png'),
                 'subtitle' => 'Cheapest +75% Discount',
                 'type' => 'Items',
-                'seller' => 'Albert Flores',
+                'buyer' => 'Albert Flores',
                 'ordered_date' => 'February 11, 2014',
                 'status' => 'Completed',
                 'quantity' => 7421,
@@ -59,7 +59,7 @@ class PurchasedOrders extends Component
                 'image' => asset('assets/images/order.png'),
                 'subtitle' => 'Cheapest +75% Discount',
                 'type' => 'Items',
-                'seller' => 'Jenny Wilson',
+                'buyer' => 'Jenny Wilson',
                 'ordered_date' => 'February 28, 2018',
                 'status' => 'Completed',
                 'quantity' => 5832,
@@ -71,7 +71,7 @@ class PurchasedOrders extends Component
                 'image' => asset('assets/images/order.png'),
                 'subtitle' => 'Cheapest +75% Discount',
                 'type' => 'Items',
-                'seller' => 'Albert Flores',
+                'buyer' => 'Albert Flores',
                 'ordered_date' => 'February 11, 2014',
                 'status' => 'Completed',
                 'quantity' => 7421,
@@ -83,7 +83,7 @@ class PurchasedOrders extends Component
                 'image' => asset('assets/images/order.png'),
                 'subtitle' => 'Cheapest +75% Discount',
                 'type' => 'Items',
-                'seller' => 'Jenny Wilson',
+                'buyer' => 'Jenny Wilson',
                 'ordered_date' => 'February 28, 2018',
                 'status' => 'In Progress',
                 'quantity' => 5832,
@@ -95,7 +95,7 @@ class PurchasedOrders extends Component
                 'image' => asset('assets/images/order.png'),
                 'subtitle' => 'Cheapest +75% Discount',
                 'type' => 'Items',
-                'seller' => 'Jenny Wilson',
+                'buyer' => 'Jenny Wilson',
                 'ordered_date' => 'February 28, 2018',
                 'status' => 'Pending',
                 'quantity' => 5832,
@@ -107,7 +107,7 @@ class PurchasedOrders extends Component
                 'image' => asset('assets/images/order.png'),
                 'subtitle' => 'Cheapest +75% Discount',
                 'type' => 'Items',
-                'seller' => 'Jenny Wilson',
+                'buyer' => 'Jenny Wilson',
                 'ordered_date' => 'February 28, 2018',
                 'status' => 'Pending',
                 'quantity' => 5832,
@@ -140,7 +140,7 @@ class PurchasedOrders extends Component
                         </div>
                         <div class="min-w-0">
                             <h3 class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">' . $order->name . '</h3>
-                            <p class="text-xs text-green-400 truncate hidden xxs:block">' . $order->subtitle . '</p>
+                            <p class="text-xs text-text-white/50 truncate hidden xxs:block">' . $order->subtitle . '</p>
                             <a href="#" class="text-pink-400 text-xs hover:underline flex items-center gap-1 hidden xs:flex">Learn more →</a>
                         </div>
                     </div>
@@ -151,8 +151,8 @@ class PurchasedOrders extends Component
                 'label' => 'Type',
             ],
             [
-                'key' => 'seller',
-                'label' => 'Seller',
+                'key' => 'buyer',
+                'label' => 'Buyer',
             ],
             [
                 'key' => 'ordered_date',
@@ -179,7 +179,7 @@ class PurchasedOrders extends Component
             ],
         ];
 
-        return view('livewire.backend.user.components.orders.purchased-orders', [
+        return view('livewire.backend.user.orders.sold-orders', [
             'items' => $items,
             'columns' => $columns,
             'pagination' => $pagination,
