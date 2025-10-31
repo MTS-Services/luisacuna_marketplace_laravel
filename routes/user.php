@@ -45,6 +45,10 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
         return view('backend.user.pages.loyalty.loyalty');
     })->name('loyalty');
 
+    Route::get('/wallet', function () {
+        return view('backend.user.pages.wallet.wallet');
+    })->name('wallet');
+
     Route::get('/profile', function () {
         return view('backend.user.pages.profile');
     })->name('profile');
