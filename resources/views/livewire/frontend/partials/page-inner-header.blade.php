@@ -11,7 +11,7 @@
             </div>
             <!-- Navigation Links -->
             <nav
-                class=" peer-checked:flex flex-col lg:flex lg:flex-row gap-6 w-full lg:w-auto  lg:bg-transparent border-t  lg:border-none z-50">
+                class=" peer-checked:flex flex-col lg:flex lg:flex-row gap-6 w-full lg:w-auto  lg:bg-transparent border-t  lg:border-none">
                 <a href="{{route('game.index', ['game-category' => 'currency', 'slug' => $gameSlug])}}" wire:navigate class="navbar_style {{request()->has('game-category') && request()->get('game-category') == 'currency' ? 'active' : 'text-text-primary'}}">Currency</a>
                 <a href="{{route('game.index', ['game-category' => 'gift-cards', 'slug' => $gameSlug])}}" wire:navigate class="navbar_style {{request()->has('game-category') && request()->get('game-category') == 'gift-cards' ? 'active' : 'text-text-primary'}}">Gift Card</a>
                 <a href="{{route('game.index', ['game-category' => 'boosting', 'slug' => $gameSlug])}}" wire:navigate class="navbar_style {{request()->has('game-category') && request()->get('game-category') == 'boosting' ? 'active' : 'text-text-primary'}}">Boosting</a>

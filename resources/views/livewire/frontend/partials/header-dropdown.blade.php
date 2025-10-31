@@ -5,14 +5,16 @@
     x-transition
     x-cloak
     x-effect="$wire.setDropdownType(open)"
+
+    
 >
-    <div class="container mx-auto px-4 py-6 relative">
+    <div class="container mx-auto relative" x-on:click.outside="open = ''">
 
         {{-- 🔄 Modern Loader --}}
         <div 
             wire:loading.flex 
             wire:target="setDropdownType, search"
-            class="absolute inset-0 bg-bg-primary/70 backdrop-blur-sm flex flex-col items-center justify-center rounded-lg z-50"
+            class="absolute inset-0 bg-bg-primary/70 backdrop-blur-sm flex flex-col items-center justify-center rounded-lg z-50 mx-4 lg:px-10"
         >
             <div class="relative flex items-center justify-center w-12 h-12">
                 <div class="absolute w-12 h-12 border-4 border-purple-500/30 rounded-full"></div>
@@ -22,7 +24,7 @@
         </div>
 
         {{-- 🌟 Dropdown Content --}}
-        <div class="bg-bg-primary flex flex-col lg:flex-row items-start justify-between rounded-lg py-11 px-4 lg:px-10 shadow-2xl" style="min-height:578px">
+        <div class="bg-bg-primary flex flex-col lg:flex-row items-start justify-between rounded-lg py-11 px-4 lg:px-10 min-h-[578px]" >
             
             {{-- Popular Games Section --}}
             <div class="w-full lg:w-2/3 pt-10 order-2 lg:order-1">
