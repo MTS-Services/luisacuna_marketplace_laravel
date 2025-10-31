@@ -7,7 +7,7 @@
             <livewire:frontend.components.gift-cards.gift-card-seller-list />
         @break
 
-        @case('gift-card.check-out')
+        @case('game.checkout')
             <livewire:frontend.components.gift-cards.check-out />
         @break
 
