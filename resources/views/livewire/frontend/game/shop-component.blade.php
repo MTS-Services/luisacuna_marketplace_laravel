@@ -4,6 +4,9 @@
         <section class="container mt-16">
             <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
             <div class="flex items-center gap-2 mt-8 text-lg font-semibold">
+                <div class="w-4 h-4">
+                    <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
+                </div>
                 <h1 class="text-blue-100 text-text-primary">
                     {{ucwords(str_replace('-', ' ', $gameSlug)) . ' '. ucwords(str_replace('-', ' ', $categorySlug))}}
                 </h1>
@@ -445,6 +448,9 @@
                 <div class="max-w-7xl mx-auto px-8 py-8">
                     <!-- Breadcrumb -->
                     <div class="flex items-center gap-2 mb-8 text-lg font-semibold">
+                        <div class="w-4 h-4">
+                            <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
+                        </div>
                         <h1 class="text-blue-100 text-text-primary">
                             {{ucwords(str_replace('-', ' ', $gameSlug)) . ' '. ucwords(str_replace('-', ' ', $categorySlug))}}
                         </h1>
