@@ -9,7 +9,7 @@ class TopUpController extends Controller
 {
     protected $masterView = 'frontend.pages.topUps';
 
-    public function topUp()
+    public function index()
     {
         return view($this->masterView);
     }

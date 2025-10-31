@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Frontend\Components;
+namespace App\Livewire\Frontend;
 
 use Livewire\Component;
 
@@ -17,7 +17,7 @@ class CurrencyComponent extends Component
             'from' => 1,
             'to' => 2,
         ];
-        return view('livewire.frontend.components.currency-component',[
+        return view('livewire.frontend.currency-component',[
             'pagination' => $pagination,
         ]);
     }
