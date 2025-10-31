@@ -31,6 +31,10 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
         return view('backend.user.pages.loyalty.loyalty');
     })->name('loyalty');
 
+    Route::get('/messages', function () {
+        return view('backend.user.pages.chat.messages');
+    })->name('messages');
+
     Route::get('/profile', function () {
         return view('backend.user.pages.profile');
     })->name('profile');
