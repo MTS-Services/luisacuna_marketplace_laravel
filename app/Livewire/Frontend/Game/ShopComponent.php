@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Livewire\Frontend\Partials;
+namespace App\Livewire\Frontend\Game;
 
 use Livewire\Component;
 
-class PageInnerHeader extends Component
+class ShopComponent extends Component
 {
-
 
     public $gameSlug;
     public $categorySlug;
+   
 
     public function mount($gameSlug, $categorySlug)
     {
@@ -18,6 +18,6 @@ class PageInnerHeader extends Component
     }
     public function render()
     {
-        return view('livewire.frontend.partials.page-inner-header');
+        return view('livewire.frontend.game.shop-component');
     }
 }

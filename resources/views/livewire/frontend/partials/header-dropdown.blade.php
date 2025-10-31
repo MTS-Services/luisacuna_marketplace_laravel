@@ -4,7 +4,7 @@
     x-show="open != ''"
     x-transition
     x-cloak
-    x-effect="$wire.setDropdownType(open)"
+    x-effect="$wire.setGameCategorySlug(open)"
 
     
 >
@@ -13,7 +13,7 @@
         {{-- 🔄 Modern Loader --}}
         <div 
             wire:loading.flex 
-            wire:target="setDropdownType, search"
+            wire:target="setGameCategorySlug, search"
             class="absolute inset-0 bg-bg-primary/70 backdrop-blur-sm flex flex-col items-center justify-center rounded-lg z-50 mx-4 lg:px-10"
         >
             <div class="relative flex items-center justify-center w-12 h-12">
@@ -29,20 +29,20 @@
             {{-- Popular Games Section --}}
             <div class="w-full lg:w-2/3 pt-10 order-2 lg:order-1">
                 <h3 class="text-text-white text-base font-semibold pt-2 mb-6">
-                    Popular {{ ucfirst($dropdownType) }}
+                    Popular {{ ucfirst($gameCategorySlug) }}
                 </h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-2.5">
                     @foreach($this->content['popular'] ?? [] as $item)
-                    <a href="{{route('game.index', ['slug' => $item['slug'], 'game-category' => $dropdownType ])}}"  wire:navigate>
-                        <div class="flex items-center gap-2.5 p-2.5 hover:bg-purple-500/10 rounded-lg transition cursor-pointer">
-                            <div class="w-6 h-6">
-                                <img src="{{ asset('assets/images/game_icon/' . $item['icon']) }}" 
-                                     alt="{{ $item['name'] }}"
-                                     class="w-full h-full object-contain">
+                        <a href="{{route('game.index', ['gameSlug' => $item['slug'], 'categorySlug' => $gameCategorySlug ])}}"  wire:navigate>
+                            <div class="flex items-center gap-2.5 p-2.5 hover:bg-purple-500/10 rounded-lg transition cursor-pointer">
+                                <div class="w-6 h-6">
+                                    <img src="{{ asset('assets/images/game_icon/' . $item['icon']) }}" 
+                                        alt="{{ $item['name'] }}"
+                                        class="w-full h-full object-contain">
+                                </div>
+                                <p class="text-base font-normal text-text-white">{{ $item['name'] }}</p>
                             </div>
-                            <p class="text-base font-normal text-text-white">{{ $item['name'] }}</p>
-                        </div>
-                    </a>
+                        </a>
                     @endforeach
                 </div>
             </div>
@@ -54,7 +54,7 @@
                         <input 
                             type="text" 
                             wire:model.live.debounce.300ms="search"
-                            placeholder="Search for {{ $dropdownType }}" 
+                            placeholder="Search for {{ $gameCategorySlug }}" 
                             class="form-input w-full text-text-white bg-bg-secondary border border-purple-500/20 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500" 
                         />
                     </span>
@@ -62,7 +62,7 @@
                 
                 <div class="space-y-2">
                     <p class="text-xs font-semibold text-text-white/70 px-2.5 uppercase tracking-wide">
-                        All {{ ucfirst($dropdownType) }}
+                        All {{ ucfirst(str_replace('_', ' ', $gameCategorySlug)) }}
                     </p>
                     @foreach($this->content['all'] ?? [] as $item)
                         <p class="text-base font-normal text-text-white p-2.5 hover:bg-purple-500/10 rounded-lg transition cursor-pointer">
