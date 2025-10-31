@@ -1,37 +1,12 @@
-<div>
+<section>
     <div class="container ">
-        <div class="  text-white">
-            <!-- Header -->
-            <header class=" sm:py-4 sm:px-8 lg:py-0 lg:px-0">
-                <div class=" text-white px-18 lg:px-0 md:px-0">
-                    <div
-                        class="max-w-[900px] mx-auto flex flex-col md:flex-row gap-4 md:items-center justify-between w-full sm:px-6 sm:py-6 lg:py-0 lg:px-0 mt-4">
-                        <!-- Logo -->
-                        <div class="flex gap-8">
-                            <div class="h-8 w-8 bg-orange-500 rounded flex items-center justify-center font-medium">
-                                <img src="{{ asset('assets/images/fortnite.png') }}" alt="">
-                            </div>
-                            <span class="text-xl font-medium">Fortnite</span>
-                        </div>
-                        <!-- Navigation Links -->
-                        <nav
-                            class=" peer-checked:flex flex-col lg:flex lg:flex-row gap-6 w-full lg:w-auto  lg:bg-transparent border-t border-gray-800 lg:border-none z-50">
-                            <a href="#" class="navbar_style active">Items</a>
-                            <a href="#" class="navbar_style text-text-primary">Accounts</a>
-                            <a href="#" class="navbar_style text-text-primary">Top Ups</a>
-                            <a href="#" class="navbar_style text-text-primary">Gift Card</a>
-                        </nav>
-                    </div>
-                </div>
-        </div>
-        </header>
-        <!-- Main Content -->
-        <main class="max-w-7xl mx-auto px-8 py-8">
+        <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" />
+        <div class="max-w-7xl mx-auto px-8 py-8">
             <!-- Breadcrumb -->
-            <div class="flex items-center gap-2 mb-8 text-sm">
-                <span class="text-blue-100 text-text-primary">
-                    <img width="25" class="inline-block" src="{{ asset('assets/images/mdb.png') }}" alt="img">
-                    Blade ball tokens</span>
+            <div class="flex items-center gap-2 mb-8 text-lg font-semibold">
+                <h1 class="text-blue-100 text-text-primary">
+                    {{$gameName. ' ' . ucwords(request()->get('game-category'))}}
+                </h1>
                 <span class=" text-text-primary">></span>
                 <span class=" text-text-primary">Seller list</span>
             </div>
@@ -69,74 +44,71 @@
 
                 <!-- Game Tags -->
                 <div class="flex gap-2 flex-wrap">
-                    <button
-                        class="px-3 py-1 bg-slate-800/60 rounded text-sm hover:bg-slate-500 transition text-white">Robux</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Steel
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">Robux</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">Steel
                         A
-                        Brainrot</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Grow
+                        Brainrot</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">Grow
                         A
-                        Garden</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Hunty
-                        Zombie</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">99
+                        Garden</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">Hunty
+                        Zombie</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">99
                         Nights In
-                        The Forest</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">prospecting</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">All
+                        The Forest</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">prospecting</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">All
                         Star
                         Tower
-                        Defense X</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Ink
-                        Game</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Garden
+                        Defense X</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">Ink
+                        Game</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">Garden
                         Tower
-                        Defense</button>
-                </div>
-
-                <div class="flex gap-2 flex-wrap">
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Bubble
+                        Defense</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">Bubble
                         Gum
-                        Simulator</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Dead
-                        Rails</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">TYPE./
-                        ISOUL</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Hypershot</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Build
+                        Simulator</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">Dead
+                        Rails</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">TYPE./
+                        ISOUL</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">Hypershot</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">Build
                         A
-                        Zoo</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Gems</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Rivals</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">MM2</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Blox
-                        Fruit</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Pet
+                        Zoo</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">Gems</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">Rivals</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">MM2</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">Blox
+                        Fruit</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">Pet
                         Simulator
-                        99</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Spin</button>
-                    <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Adopt
-                        Me</button>
+                        99</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">Spin</span>
+                    <span
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">Adopt
+                        Me</span>
                 </div>
 
                 <!-- Right Filters -->
@@ -526,7 +498,6 @@
 
                 <button class="text-text-primary text-sm hover:text-purple-500">Next</button>
             </div>
-        </main>
+        </div>
     </div>
-</div>
-
+</section>
