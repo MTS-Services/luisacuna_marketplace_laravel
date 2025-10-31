@@ -1,8 +1,8 @@
 <main class="mx-auto">
     <section class="container mx-auto">
         {{-- paginate --}}
-        <div class="flex items-center gap-1 mt-10">
-            <div class="w-3 h-3">
+        <div class="flex items-center gap-1 my-10 font-semibold">
+            <div class="w-4 h-4">
                 <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
             </div>
             <div class="text-muted text-base">
@@ -11,9 +11,13 @@
             <div class="px-2 text-text-white text-base">
                 >
             </div>
-            <div class="text-text-white text-base">
+            <h1 class="text-text-white text-base">
                 Top Up
-            </div>
+            </h1>
+        </div>
+
+        <div class="title mb-5">
+            <h2 class="font-semibold text-4xl">Top Ups</h2>
         </div>
 
 
@@ -67,7 +71,7 @@
                                 </div>
                             </div>
                             <div class="">
-                                <x-ui.button class="">
+                                <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                                     See seller list
                                 </x-ui.button>
                             </div>
@@ -85,7 +89,7 @@
                                 </div>
                             </div>
                             <div class="">
-                                <x-ui.button class="">
+                                <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                                     See seller list
                                 </x-ui.button>
                             </div>
@@ -103,7 +107,7 @@
                                 </div>
                             </div>
                             <div class="">
-                                <x-ui.button class="">
+                                <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                                     See seller list
                                 </x-ui.button>
                             </div>
@@ -121,7 +125,7 @@
                                 </div>
                             </div>
                             <div class="">
-                                <x-ui.button class="">
+                                <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                                     See seller list
                                 </x-ui.button>
                             </div>
@@ -139,7 +143,7 @@
                                 </div>
                             </div>
                             <div class="">
-                                <x-ui.button class="">
+                                <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                                     See seller list
                                 </x-ui.button>
                             </div>
@@ -177,7 +181,7 @@
                                 </div>
                             </div>
                             <div class="">
-                                <x-ui.button class="">
+                                <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                                     See seller list
                                 </x-ui.button>
                             </div>
@@ -195,7 +199,7 @@
                                 </div>
                             </div>
                             <div class="">
-                                <x-ui.button class="">
+                                <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                                     See seller list
                                 </x-ui.button>
                             </div>
@@ -213,7 +217,7 @@
                                 </div>
                             </div>
                             <div class="">
-                                <x-ui.button class="">
+                                <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                                     See seller list
                                 </x-ui.button>
                             </div>
@@ -231,7 +235,7 @@
                                 </div>
                             </div>
                             <div class="">
-                                <x-ui.button class="">
+                                <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                                     See seller list
                                 </x-ui.button>
                             </div>
@@ -249,7 +253,7 @@
                                 </div>
                             </div>
                             <div class="">
-                                <x-ui.button class="">
+                                <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                                     See seller list
                                 </x-ui.button>
                             </div>
@@ -284,7 +288,7 @@
                     </div>
                 </div>
                 <div class="">
-                    <x-ui.button class="">
+                    <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                         See seller list
                     </x-ui.button>
                 </div>
@@ -300,7 +304,7 @@
                     </div>
                 </div>
                 <div class="">
-                    <x-ui.button class="">
+                    <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                         See seller list
                     </x-ui.button>
                 </div>
@@ -316,7 +320,7 @@
                     </div>
                 </div>
                 <div class="">
-                    <x-ui.button class="">
+                    <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                         See seller list
                     </x-ui.button>
                 </div>
@@ -332,7 +336,7 @@
                     </div>
                 </div>
                 <div class="">
-                    <x-ui.button class="">
+                    <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                         See seller list
                     </x-ui.button>
                 </div>
@@ -348,7 +352,7 @@
                     </div>
                 </div>
                 <div class="">
-                    <x-ui.button class="">
+                    <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                         See seller list
                     </x-ui.button>
                 </div>
@@ -364,7 +368,7 @@
                     </div>
                 </div>
                 <div class="">
-                    <x-ui.button class="">
+                    <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                         See seller list
                     </x-ui.button>
                 </div>
@@ -380,7 +384,7 @@
                     </div>
                 </div>
                 <div class="">
-                    <x-ui.button class="">
+                    <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                         See seller list
                     </x-ui.button>
                 </div>
@@ -396,7 +400,7 @@
                     </div>
                 </div>
                 <div class="">
-                    <x-ui.button class="">
+                    <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                         See seller list
                     </x-ui.button>
                 </div>
@@ -412,7 +416,7 @@
                     </div>
                 </div>
                 <div class="">
-                    <x-ui.button class="">
+                    <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
                         See seller list
                     </x-ui.button>
                 </div>
@@ -427,7 +431,7 @@
 
     @push('scripts')
         <script>
-            document.addEventListener('livewire:initialized', function() {
+            document.addEventListener('livewire:navigated', function() {
                 const swiper = new Swiper('.popular-toUp', {
                     loop: true,
                     pagination: {
@@ -458,7 +462,7 @@
                 });
 
             });
-            document.addEventListener('livewire:initialized', function() {
+            document.addEventListener('livewire:navigated', function() {
                 const swiper = new Swiper('.popular-launched', {
                     loop: true,
                     pagination: {

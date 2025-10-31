@@ -9,7 +9,7 @@ class ItemsController extends Controller
     
     protected $masterView = 'frontend.pages.items';
 
-    public function items()
+    public function index()
     {
         return view($this->masterView);
     }

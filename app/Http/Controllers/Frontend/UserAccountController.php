@@ -10,7 +10,7 @@ class UserAccountController extends Controller
     
     protected $masterView = 'frontend.pages.userAccount';
 
-    public function account()
+    public function index()
     {
         return view($this->masterView);
     }
