@@ -39,7 +39,7 @@
     <!-- Popular Games Section -->
     <section class="py-20">
         <div class="flex flex-wrap justify-center gap-4 p-6">
-            <a href="{{ route('currency') }}">
+            <a href="{{ route('currency') }}" wire:navigate>
                 <div
                     class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white " fill="currentColor"
@@ -52,7 +52,7 @@
                 </div>
             </a>
             {{-- Gift Card --}}
-            <a href="gift-card">
+            <a href="{{ route('gift-card') }}" wire:navigate>
                 <div
                     class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white " fill="currentColor"
@@ -65,7 +65,7 @@
                 </div>
             </a>
             {{-- Boosting card --}}
-            <a href="{{ route('boost.index') }}">
+            <a href="{{ route('boosting') }}" wire:navigate>
                 <div
                     class="group flex flex-col items-center justify-center gap-2 w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
                     <flux:icon name="rocket-launch" class="w-8 h-8" />
@@ -73,7 +73,7 @@
                 </div>
             </a>
             {{-- Items card --}}
-            <a href="{{ route('items') }}">
+            <a href="{{ route('items') }}" wire:navigate>
                 <div
                     class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white" fill="currentColor"
@@ -86,7 +86,7 @@
                 </div>
             </a>
             {{-- User card --}}
-            <a href="{{ route('accounts') }}">
+            <a href="{{ route('accounts') }}" wire:navigate>
                 <div
                     class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white" fill="currentColor"
@@ -99,16 +99,18 @@
                 </div>
             </a>
             {{-- Top up card --}}
-            <div
-                class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white" fill="currentColor"
-                    viewBox="0 0 256 256">
-                    <path
-                        d="M216,64H56a8,8,0,0,1,0-16H192a8,8,0,0,0,0-16H56A24,24,0,0,0,32,56V184a24,24,0,0,0,24,24H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64Zm0,128H56a8,8,0,0,1-8-8V78.63A23.84,23.84,0,0,0,56,80H216Zm-48-60a12,12,0,1,1,12,12A12,12,0,0,1,168,132Z">
-                    </path>
-                </svg>
-                <span class="text-text-white text-2xl font-medium">Top up</span>
-            </div>
+            <a href="{{ route('top-up') }}" wire:navigate>
+                <div
+                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white" fill="currentColor"
+                        viewBox="0 0 256 256">
+                        <path
+                            d="M216,64H56a8,8,0,0,1,0-16H192a8,8,0,0,0,0-16H56A24,24,0,0,0,32,56V184a24,24,0,0,0,24,24H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64Zm0,128H56a8,8,0,0,1-8-8V78.63A23.84,23.84,0,0,0,56,80H216Zm-48-60a12,12,0,1,1,12,12A12,12,0,0,1,168,132Z">
+                        </path>
+                    </svg>
+                    <span class="text-text-white text-2xl font-medium">Top up</span>
+                </div>
+            </a>
             {{-- Coacing card --}}
             <a href="coaching">
                 <div
@@ -140,7 +142,7 @@
                     </div>
                     <h3 class="font-bold text-lg mb-2 text-text-white">Blade Ball Tokens</h3>
                     <p class="text-sm text-text-secondary mb-4">50 items available</p>
-                    <x-ui.button class="py-2!">
+                    <x-ui.button class="py-2!" href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'blade-ball']) }}" wire:navigate>
                         {{ __('Buy Now') }}
                     </x-ui.button>
                 </div>
@@ -154,7 +156,7 @@
                     </div>
                     <h3 class="font-bold text-lg mb-2 text-text-white">Path Of Exile 2 Currency</h3>
                     <p class="text-sm text-text-secondary mb-4">50 items available</p>
-                    <x-ui.button class="py-2!">
+                    <x-ui.button class="py-2!" href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'path-of-exile']) }}" wire:navigate>
                         {{ __('Buy Now') }}
                     </x-ui.button>
                 </div>
@@ -168,7 +170,7 @@
                     </div>
                     <h3 class="font-bold text-lg mb-2 text-text-white">RuneScape 3 Gold</h3>
                     <p class="text-sm text-text-secondary mb-4">50 items available</p>
-                    <x-ui.button class="py-2!">
+                    <x-ui.button class="py-2!" href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'runescape-3-gold']) }}" wire:navigate>
                         {{ __('Buy Now') }}
                     </x-ui.button>
                 </div>
@@ -181,7 +183,7 @@
                     </div>
                     <h3 class="font-bold text-lg mb-2 text-text-white">New World Coins</h3>
                     <p class="text-sm text-text-secondary mb-4">50 items available</p>
-                    <x-ui.button class="py-2!">
+                    <x-ui.button class="py-2!" href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'new-world']) }}" wire:navigate>
                         {{ __('Buy Now') }}
                     </x-ui.button>
                 </div>
@@ -195,7 +197,7 @@
                     </div>
                     <h3 class="font-bold text-lg mb-2 text-text-white">Lost Ark Gold</h3>
                     <p class="text-sm text-text-secondary mb-4">50 items available</p>
-                    <x-ui.button class="py-2!">
+                    <x-ui.button class="py-2!" href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'lost-ark']) }}" wire:navigate>
                         {{ __('Buy Now') }}
                     </x-ui.button>
                 </div>
@@ -209,7 +211,7 @@
                     </div>
                     <h3 class="font-bold text-lg mb-2 text-text-white">Old School RuneScape Gold</h3>
                     <p class="text-sm text-text-secondary mb-4">50 items available</p>
-                    <x-ui.button class="py-2!">
+                    <x-ui.button class="py-2!" href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'old-school-runescape']) }}" wire:navigate>
                         {{ __('Buy Now') }}
                     </x-ui.button>
                 </div>
