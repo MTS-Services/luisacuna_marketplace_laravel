@@ -31,6 +31,12 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
         })->name('gift-cards');
     });
 
+    Route::group(['prefix' => 'boosting'], function () {
+        Route::get('/my-requests', function () {
+            return view('backend.user.pages.boosting.my-requests');
+        })->name('my-requests');
+    });
+
 
     Route::get('/loyalty', function () {
         return view('backend.user.pages.loyalty.loyalty');
