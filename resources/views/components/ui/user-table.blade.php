@@ -10,7 +10,7 @@
         <thead>
             <tr class="text-sm text-text-white bg-bg-secondary/80! uppercase tracking-wider">
                 @foreach ($columns as $column)
-                    <th class="px-2 sm:px-4 md:px-6 py-5 text-sm md:text-base text-text-white capitalize font-normal {{ $column['class'] ?? '' }}">
+                    <th class="px-2 sm:px-4 md:px-6 py-5 text-sm md:text-base text-text-white capitalize font-normal">
                         @if (isset($column['sortable']) && $column['sortable'])
                             <div class="flex items-center gap-1">
                                 {{ $column['label'] }}
@@ -37,7 +37,7 @@
             @forelse ($data as $index => $item)
                 <tr class="{{ $index % 2 === 0 ? 'bg-bg-primary' : 'bg-bg-secondary' }} hover:bg-bg-hover transition-colors">
                     @foreach ($columns as $column)
-                        <td class="px-2 sm:px-4 md:px-6 py-4 {{ $column['tdClass'] ?? '' }}">
+                        <td class="px-2 sm:px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm">
                             @if (isset($column['format']) && is_callable($column['format']))
                                 {{-- Custom Format Function - --}}
                                 {!! $column['format']($item) !!}
