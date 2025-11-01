@@ -11,10 +11,12 @@ trait AuditColumnsTrait
         $table->unsignedBigInteger('created_by')->nullable();
         $table->unsignedBigInteger('updated_by')->nullable();
         $table->unsignedBigInteger('deleted_by')->nullable();
+        $table->unsignedBigInteger('restored_by')->nullable();
 
         $table->foreign('created_by')->references('id')->on('admins')->onDelete('cascade')->onUpdate('cascade');
         $table->foreign('updated_by')->references('id')->on('admins')->onDelete('cascade')->onUpdate('cascade');
         $table->foreign('deleted_by')->references('id')->on('admins')->onDelete('cascade')->onUpdate('cascade');
+        $table->foreign('restored_by')->references('id')->on('admins')->onDelete('cascade')->onUpdate('cascade');
 
         $table->index('created_by');
         $table->index('updated_by');
@@ -40,6 +42,8 @@ trait AuditColumnsTrait
         $table->string('updater_type')->nullable();
         $table->unsignedBigInteger('deleter_id')->nullable();
         $table->string('deleter_type')->nullable();
+        $table->unsignedBigInteger('restorer_id')->nullable();
+        $table->string('restorer_type')->nullable();
 
         $table->index('creater_id');
         $table->index('updater_id');
@@ -47,6 +51,8 @@ trait AuditColumnsTrait
         $table->index('creater_type');
         $table->index('updater_type');
         $table->index('deleter_type');
+        $table->index('restorer_id');
+        $table->index('restorer_type');
     }
 
     public function dropAuditColumns(Blueprint $table): void
@@ -54,10 +60,13 @@ trait AuditColumnsTrait
         $table->dropForeign(['created_by']);
         $table->dropForeign(['updated_by']);
         $table->dropForeign(['deleted_by']);
+        $table->dropForeign(['restored_by']);
 
         $table->dropColumn('created_by');
         $table->dropColumn('updated_by');
         $table->dropColumn('deleted_by');
+        $table->dropColumn('restored_by');
+
 
         $table->dropIndex(['creater_id']);
         $table->dropIndex(['updater_id']);
@@ -65,5 +74,7 @@ trait AuditColumnsTrait
         $table->dropIndex(['creater_type']);
         $table->dropIndex(['updater_type']);
         $table->dropIndex(['deleter_type']);
+        $table->dropIndex(['restorer_id']);
+        $table->dropIndex(['restorer_type']);
     }
 }

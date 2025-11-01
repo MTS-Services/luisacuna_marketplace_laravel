@@ -41,7 +41,7 @@
         <div class="flex flex-wrap justify-center gap-4 p-6">
             <a href="{{ route('currency') }}">
                 <div
-                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-pink-500 transition-colors duration-300 cursor-pointer">
+                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white " fill="currentColor"
                         viewBox="0 0 256 256">
                         <path
@@ -54,7 +54,7 @@
             {{-- Gift Card --}}
             <a href="gift-card">
                 <div
-                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-pink-500 transition-colors duration-300 cursor-pointer">
+                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white " fill="currentColor"
                         viewBox="0 0 256 256">
                         <path
@@ -67,7 +67,7 @@
             {{-- Boosting card --}}
             <a href="{{ route('boost.index') }}">
                 <div
-                    class="group flex flex-col items-center justify-center gap-2 w-32 h-32 rounded-2xl bg-bg-primary hover:bg-pink-500 transition-colors duration-300 cursor-pointer">
+                    class="group flex flex-col items-center justify-center gap-2 w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
                     <flux:icon name="rocket-launch" class="w-8 h-8" />
                     <span class="text-text-white text-2xl font-medium">Boosting</span>
                 </div>
@@ -75,7 +75,7 @@
             {{-- Items card --}}
             <a href="{{ route('items') }}">
                 <div
-                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-pink-500 transition-colors duration-300 cursor-pointer">
+                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white" fill="currentColor"
                         viewBox="0 0 256 256">
                         <path
@@ -88,7 +88,7 @@
             {{-- User card --}}
             <a href="{{ route('accounts') }}">
                 <div
-                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-pink-500 transition-colors duration-300 cursor-pointer">
+                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white" fill="currentColor"
                         viewBox="0 0 256 256">
                         <path
@@ -100,7 +100,7 @@
             </a>
             {{-- Top up card --}}
             <div
-                class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-pink-500 transition-colors duration-300 cursor-pointer">
+                class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white" fill="currentColor"
                     viewBox="0 0 256 256">
                     <path
@@ -112,7 +112,7 @@
             {{-- Coacing card --}}
             <a href="coaching">
                 <div
-                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-pink-500 transition-colors duration-300 cursor-pointer">
+                    class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 stroke-text-text-white" fill="currentColor"
                         viewBox="0 0 256 256">
                         <path
