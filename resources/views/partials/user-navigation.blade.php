@@ -1,4 +1,4 @@
-<nav class="hidden md:flex gap-8 text-sm items-center" x-data="{ globalSearchModal: false }" x-clock>
+<nav class="hidden md:flex gap-8 text-sm items-center" x-clock>
     @foreach (gameCategories() as $category)
         <button 
             x-on:mouseenter="open = (open == '{{$category['slug']}}' || open == '' || open != '{{$category['slug']}}' ? '{{$category['slug']}}' : '')"
@@ -70,5 +70,4 @@
         <input type="text" placeholder="Search" x-on:click="globalSearchModal = true" x-clock
             class="border dark:border-white border-gray-600 rounded-full py-1.5 pl-8 pr-2 text-sm focus:outline-none focus:border-purple-500 focus:bg-bg-primary transition-all w-22 focus:w-64 bg-transparent placeholder:text-text-primary">
     </div>
-    <livewire:frontend.partials.search-modal>
 </nav>
