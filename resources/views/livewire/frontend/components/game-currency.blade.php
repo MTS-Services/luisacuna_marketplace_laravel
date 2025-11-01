@@ -47,11 +47,11 @@
             </div>
 
             <div class="bg-zinc-700  flex justify-center text-center p-4 rounded-lg text-sm text-text-secondary">
-                <span class="font-bold text-pink-600 mr-1">NOTE!</span> Selecting a server also creates offers for both factions (Horde and Alliance). If you don't need one, delete it afterward.
+                <span class="font-bold text-pink-600  mr-1">NOTE!</span> Selecting a server also creates offers for both factions (Horde and Alliance). If you don't need one, delete it afterward.
             </div>
         </div>
 
-        <div class="flex gap-4 items-center justify-center mt-8">
+        <div class=" flex gap-4 items-center justify-center mt-8">
             <button class="px-6 py-2 rounded-lg bg-zinc-100 hover:bg-zinc-300 transition duration-150 text-zinc-700 font-semibold">
                 Back
             </button>
