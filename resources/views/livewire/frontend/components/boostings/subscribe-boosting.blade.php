@@ -11,9 +11,9 @@
         </div>
     </div>
 
-    <section class="container mx-auto  py-10">
+    <section class="container mx-auto  py-5">
 
-        <div class="bg-bg-primary h-full  w-full py-10">
+        <div class=" h-full  w-full py-10">
             <div class="flex flex-col items-center space-y-4  py-4">
                 <h1 class="text-4xl font-bold ">Start selling</h1>
                 <p class=" text-center fond-bold max-w-lg">Select the services you can provide to receive notifications from the buyers </p>
@@ -24,7 +24,7 @@
 
 
 {{-- button-1 --}}
-    <div class="max-w-5xl mx-auto space-y-6">
+    <div class=" mx-auto space-y-6">
 
         <div class="collapse collapse-arrow bg-zinc-800 text-text-white rounded-xl shadow-2xl">
             <input type="radio" name="game-settings-accordion" checked="checked" />
