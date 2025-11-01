@@ -1,6 +1,6 @@
 <main class="mx-auto">
     @if ($categorySlug == 'gift-cards' || $categorySlug == 'top-ups')
-        <section class="container mt-16">
+        <section class="container mt-2">
             <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
             <div class="flex items-center gap-2 mt-8 text-lg font-semibold">
                 <div class="w-4 h-4">
