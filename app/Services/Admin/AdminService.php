@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Collection;
 class AdminService
 {
     public function __construct(
-        protected AdminRepositoryInterface $adminRepository,
+        protected AdminRepositoryInterface $interface,
         protected CreateAdminAction $createAdminAction,
         protected UpdateAdminAction $updateAdminAction,
         protected DeleteAdminAction $deleteAdminAction,
@@ -24,27 +24,27 @@ class AdminService
 
     public function getAllAdmins(): Collection
     {
-        return $this->adminRepository->all();
+        return $this->interface->all();
     }
 
     public function getAdminsPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        return $this->adminRepository->paginate($perPage, $filters);
+        return $this->interface->paginate($perPage, $filters);
     }
 
     public function getAdminById(int $id): ?Admin
     {
-        return $this->adminRepository->find($id);
+        return $this->interface->find($id);
     }
 
     public function getAdminByEmail(string $email): ?Admin
     {
-        return $this->adminRepository->findByEmail($email);
+        return $this->interface->findByEmail($email);
     }
 
-    public function createAdmin(CreateAdminDTO $dto): Admin
+    public function createAdmin(array $data): Admin
     {
-        return $this->createAdminAction->execute($dto);
+        return $this->createAdminAction->execute($data);
     }
 
     public function updateAdmin(int $id, UpdateAdminDTO $dto): Admin
@@ -64,37 +64,37 @@ class AdminService
 
     public function getActiveAdmins(): Collection
     {
-        return $this->adminRepository->getActive();
+        return $this->interface->getActive();
     }
 
     public function getInactiveAdmins(): Collection
     {
-        return $this->adminRepository->getInactive();
+        return $this->interface->getInactive();
     }
 
     public function searchAdmins(string $query): Collection
     {
-        return $this->adminRepository->search($query);
+        return $this->interface->search($query);
     }
 
     public function bulkDeleteAdmins(array $ids): int
     {
-        return $this->adminRepository->bulkDelete($ids);
+        return $this->interface->bulkDelete($ids);
     }
 
     public function bulkUpdateStatus(array $ids, AdminStatus $status): int
     {
-        return $this->adminRepository->bulkUpdateStatus($ids, $status->value);
+        return $this->interface->bulkUpdateStatus($ids, $status->value);
     }
 
     public function getAdminsCount(array $filters = []): int
     {
-        return $this->adminRepository->count($filters);
+        return $this->interface->count($filters);
     }
 
     public function adminExists(int $id): bool
     {
-        return $this->adminRepository->exists($id);
+        return $this->interface->exists($id);
     }
 
     public function activateAdmin(int $id): bool
@@ -134,16 +134,16 @@ class AdminService
     }
     public function getTrashedAdminsPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        return $this->adminRepository->trashPaginate($perPage, $filters);
+        return $this->interface->trashPaginate($perPage, $filters);
     }
 
     public function bulkRestoreAdmins(array $ids): int
     {
-        return $this->adminRepository->bulkRestore($ids);
+        return $this->interface->bulkRestore($ids);
     }
 
     public function bulkForceDeleteAdmins(array $ids): int
     {
-        return $this->adminRepository->bulkForceDelete($ids);
+        return $this->interface->bulkForceDelete($ids);
     }
 }

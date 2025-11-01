@@ -7,6 +7,7 @@ use App\Enums\AdminStatus;
 use App\Livewire\Forms\Backend\Admin\AdminManagement\AdminForm;
 use App\Services\Admin\AdminService;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -36,25 +37,24 @@ class Create extends Component
     }
     public function save()
     {
-        $this->form->validate();
+       
+
         try {
-            $dto = CreateAdminDTO::fromArray([
-                'name' => $this->form->name,
-                'email' => $this->form->email,
-                'password' => $this->form->password,
-                'phone' => $this->form->phone,
-                'address' => $this->form->address,
-                'status' => $this->form->status,
-                'avatar' => $this->form->avatar,
-            ]);
+            $data =  $this->form->fillables();
+           
+            $admin = $this->adminService->createAdmin($data);
 
-            $admin = $this->adminService->createAdmin($dto);
+            $this->dispatch('Admin is created');
+            $this->success('Admin created successfully');
 
-            $this->dispatch('adminCreated');
-           $this->success('Admin created successfully');
-            // Redirect to user list
+            Log::info('Admin created successfully' . $admin);
+
             return $this->redirect(route('admin.am.admin.index'), navigate: true);
+
         } catch (\Exception $e) {
+
+            Log::error('Failed to create user: ' . $e);
+
             $this->error('Failed to create user: ' . $e->getMessage());
         }
     }

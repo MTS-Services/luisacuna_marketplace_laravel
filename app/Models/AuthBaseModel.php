@@ -33,7 +33,7 @@ class AuthBaseModel extends Authenticatable
         'created_at_formatted',
         'updated_at_formatted',
         'deleted_at_formatted',
-        'last_synced_at_human',
+        // 'last_synced_at_human',
     ];
 
     /* ================================================================
@@ -84,6 +84,7 @@ class AuthBaseModel extends Authenticatable
         return $this->updated_at && $this->updated_at != $this->created_at ? Carbon::parse($this->updated_at)->format('d M, Y h:i A') : 'N/A';
     }
 
+   
     public function getDeletedAtFormattedAttribute(): string
     {
         return $this->deleted_at ? Carbon::parse($this->deleted_at)->format('d M, Y h:i A') : 'N/A';

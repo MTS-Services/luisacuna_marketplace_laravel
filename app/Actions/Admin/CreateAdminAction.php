@@ -7,27 +7,26 @@ use App\Events\Admin\AdminCreated;
 use App\Models\Admin;
 use App\Repositories\Contracts\AdminRepositoryInterface;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Storage;
 
 class CreateAdminAction
 {
     public function __construct(
-        protected AdminRepositoryInterface $adminRepository
+        protected AdminRepositoryInterface $interface
     ) {}
 
 
-    public function execute(CreateAdminDTO $dto): Admin
+    public function execute(array $data): Admin
     {
-        return DB::transaction(function () use ($dto) {
-            $data = $dto->toArray();
-
+        return DB::transaction(function () use ($data) {
+          
             // Handle avatar upload
-            if ($dto->avatar) {
-                $data['avatar'] = $dto->avatar->store('admins', 'public');
+            if ($data['avatar']) {
+                $data['avatar'] = Storage::disk('public')->putFile('admins', $data['avatar']);
             }
 
             // Create user
-            $admin = $this->adminRepository->create($data);
+            $admin = $this->interface->create($data);
 
             // Dispatch event
             event(new AdminCreated($admin));
