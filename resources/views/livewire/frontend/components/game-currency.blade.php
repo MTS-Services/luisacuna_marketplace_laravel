@@ -1,16 +1,16 @@
 <div>
     {{-- To attain knowledge, add things every day; To attain wisdom, subtract things every day. --}}
-    <div class="bg-zinc-800">
+    <div class="bg-bg-primary">
 
 
   <section class="container mx-auto">
-    <div class="min-h-screen  flex flex-col items-center justify-center ">
-    <div class="w-full    rounded-xl  ">
+    <div class=" py-20   flex flex-col items-center justify-center ">
+    <div class="w-full  rounded-xl  ">
 
         <h1 class="text-3xl font-bold text-text-white text-center mb-2">Sell Game Currency</h1>
         <p class="text-text-secondary text-center mb-8">Step 1/3</p>
 
-        <div class="rounded-lg  mb-8 ">
+        <div class="rounded-lg  bg-zinc-800 p-6 mb-8 ">
             <h2 class="text-xl font-semibold text-text-white mb-6 pb-2 border-b border-zinc-700 leading-tight">Item details</h2>
 
             <div class="mb-6">
