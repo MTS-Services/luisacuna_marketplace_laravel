@@ -34,7 +34,7 @@ Route::group(['prefix' => 'boosting', 'as' => 'boost.'], function () {
 //     Route::get('/buy-now/{id?}', [BoostingController::class, 'buyNow'])->name('buy-now');
 //     Route::get('/checkout/{id?}', [BoostingController::class, 'checkout'])->name('checkout');
 
-// });
+ });
 
 Route::get('profile', [UserProfileController::class, 'profile'])->name('profile');
 
