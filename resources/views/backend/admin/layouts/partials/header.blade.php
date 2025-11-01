@@ -36,7 +36,8 @@
                     <flux:icon name="moon" class="w-5 h-5" x-show="$flux.dark" />
                     <flux:icon name="sun" class="w-5 h-5" x-show="!$flux.dark" />
                 </flux:button>
-                {{-- 
+
+                {{--
                 <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
                     <flux:radio value="light" icon="sun" />
                     <flux:radio value="dark" icon="moon" />
@@ -53,6 +54,7 @@
 
                 <!-- Profile -->
                 <div class="relative" x-data="{ open: false }">
+
                     {{-- <button @click="open = !open"
                      class=" flex items-center gap-2 p-1 rounded-xl hover:bg-bg-white/10 transition-colors">
                      <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face&auto=format"
@@ -77,6 +79,7 @@
                             <p class="text-sm text-text-primary font-medium">{{ admin()->name }}</p>
                             <p class="text-xs text-text-secondary">{{ admin()->email }}</p>
                         </div>
+                        
                         {{-- <x-admin.profile-navlink route="#" name="{{ __('Profile') }}" />
                         <x-admin.profile-navlink route="#" name="{{ __('Settings') }}" />
                         <x-admin.profile-navlink route="{{ route('logout') }}" logout='true'
