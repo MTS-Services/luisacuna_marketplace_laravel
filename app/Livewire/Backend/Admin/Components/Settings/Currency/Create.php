@@ -61,7 +61,7 @@ class Create extends Component
 
             return $this->redirect(route('admin.as.currency.index'), navigate: true);
         } catch (\Exception $e) {
-            Log::error("Failed to create data: " . $e);
+            
             $this->error('Failed to create data: ' . $e->getMessage());
         }
     }

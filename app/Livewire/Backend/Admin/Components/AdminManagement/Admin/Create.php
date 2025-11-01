@@ -47,18 +47,21 @@ class Create extends Component
             $this->dispatch('Admin is created');
             $this->success('Admin created successfully');
 
-            Log::info('Admin created successfully' . $admin);
+            Log::info('Admin created successfully' , $admin);
 
             return $this->redirect(route('admin.am.admin.index'), navigate: true);
 
         } catch (\Exception $e) {
 
-            Log::error('Failed to create user: ' . $e);
+            Log::error('Failed to create user: ' , $e);
 
             $this->error('Failed to create user: ' . $e->getMessage());
         }
     }
 
+    public function resetForm(): void{
+        $this->form->reset();
+    }
     public function cancel(): void
     {
         $this->redirect(route('admin.am.admin.index'), navigate: true);

@@ -33,7 +33,7 @@ class AuthBaseModel extends Authenticatable
         'created_at_formatted',
         'updated_at_formatted',
         'deleted_at_formatted',
-        // 'last_synced_at_human',
+        'last_synced_at_human',
     ];
 
     /* ================================================================
@@ -121,6 +121,11 @@ class AuthBaseModel extends Authenticatable
         return auth_storage_url($this->image);
     }
 
+    public function getLastSyncedAtHumanAttribute(){
+
+        return $this->last_synced_at ? $this->last_synced_at->diffForHumans() : 'N/A';
+
+    }
     /* ================================================================
      * *** Scopes ***
      ================================================================ */

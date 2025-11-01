@@ -49,6 +49,8 @@ class AdminForm extends Form
         $this->phone = $admin->phone;
         $this->address = $admin->address;
         $this->status = $admin->status->value;
+        $this->avatar = null;
+        
     }
 
     public function reset(...$properties): void
