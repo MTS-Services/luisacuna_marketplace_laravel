@@ -40,12 +40,10 @@
                         <x-phosphor-magnifying-glass class="w-5 h-5 fill-text-text-white" />
                     </div>
                 </div>
-
             </div>
 
             <!-- Right Side: Search & Actions -->
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
-
                 <!-- Export Button -->
                 <x-ui.button variant="secondary" class="sm:w-auto! py-2!">
                     <x-phosphor-download class="w-5 h-5 fill-accent group-hover:fill-white" />
@@ -59,7 +57,6 @@
                 </x-ui.button>
 
             </div>
-
         </div>
     </div>
     <div>

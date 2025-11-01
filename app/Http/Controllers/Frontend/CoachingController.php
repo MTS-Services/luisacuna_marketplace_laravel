@@ -9,7 +9,7 @@ class CoachingController extends Controller
 {
     protected $masterView = 'frontend.pages.coaching';
 
-    public function coaching()
+    public function index()
     {
         return view($this->masterView);
     }

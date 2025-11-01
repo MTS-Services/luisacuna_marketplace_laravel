@@ -1,8 +1,8 @@
 <main class="overflow-x-hidden">
     {{-- filter section --}}
     <section class="container mx-auto">
-        <div class="flex items-center gap-1 mt-10">
-            <div class="w-3 h-3">
+        <div class="flex items-center gap-1 my-10 font-semibold">
+            <div class="w-4 h-4">
                 <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
             </div>
             <div class="text-muted text-base">
@@ -11,13 +11,13 @@
             <div class="px-2 text-text-white text-base">
                 >
             </div>
-            <div class="text-text-white text-base">
+            <h1 class="text-text-white text-base">
                 Currency
-            </div>
+            </h1>
         </div>
 
 
-        <div class="title mt-14 mb-5">
+        <div class="title mb-5">
             <h2 class="font-semibold text-4xl">Currency</h2>
         </div>
         <div class="flex items-center justify-between gap-4 mt-10 relative" x-data={filter:false}>
@@ -61,7 +61,9 @@
                         <div class="">
                             <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">EA sports FC Coins</h3>
                             <p class="text-pink-500 mb-8">50 offer</p>
-                            <x-ui.button class="">See Seller List</x-ui.button>
+                            <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'exilecon-official-trailer']) }}" wire:navigate>
+                                <x-ui.button class="">See Seller List</x-ui.button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -74,7 +76,9 @@
                         <div class="">
                             <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Blade Ball Tokens</h3>
                             <p class="text-pink-500 mb-8">50 offer</p>
-                            <x-ui.button class="">See Seller List</x-ui.button>
+                            <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'exilecon-official-trailer']) }}" wire:navigate>
+                                <x-ui.button class="">See Seller List</x-ui.button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -87,7 +91,9 @@
                         <div class="">
                             <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">New World Coins</h3>
                             <p class="text-pink-500 mb-8">50 offer</p>
-                            <x-ui.button class="">See Seller List</x-ui.button>
+                            <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'exilecon-official-trailer']) }}" wire:navigate>
+                                <x-ui.button class="">See Seller List</x-ui.button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -100,7 +106,9 @@
                         <div class="">
                             <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Blade Ball Tokens</h3>
                             <p class="text-pink-500 mb-8">50 offer</p>
-                            <x-ui.button class="">See Seller List</x-ui.button>
+                            <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'exilecon-official-trailer']) }}" wire:navigate>
+                                <x-ui.button class="">See Seller List</x-ui.button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -113,7 +121,9 @@
                         <div class="">
                             <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">New World Coins</h3>
                             <p class="text-pink-500 mb-8">50 offer</p>
-                            <x-ui.button class="">See Seller List</x-ui.button>
+                            <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'exilecon-official-trailer']) }}" wire:navigate>
+                                <x-ui.button class="">See Seller List</x-ui.button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -141,7 +151,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Exilecon Official Trailer</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'exilecon-official-trailer']) }}" wire:navigate>
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -152,7 +164,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">RuneScape 3 Gold</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'runescape-3-gold']) }}" wire:navigate>
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -163,7 +177,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Silver Farming</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'silver-farming']) }}" wire:navigate>
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -174,7 +190,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Hand Farmed Low Price Gold</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'hand-farmed-low-price-gold']) }}" wire:navigate>
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -185,7 +203,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">RuneScape 3 Gold</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'runescape-3-gold']) }}" wire:navigate>
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -196,7 +216,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Free Club Coins FC25</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'free-club-coins-fc25']) }}" wire:navigate>
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -207,7 +229,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Worldforge Legends</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'worldforge-legends']) }}" wire:navigate>
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -218,7 +242,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Echoes of the Terra</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'echoes-of-the-terra']) }}" wire:navigate>
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -229,7 +255,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Epochs of Gaia</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'epochs-of-gaia']) }}" wire:navigate>
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -240,7 +268,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Titan Realms</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'titan-realms']) }}" wire:navigate>
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -251,7 +281,9 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Kingdoms Across Skies</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'kingdoms-across-skies']) }}" wire:navigate>
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
@@ -262,17 +294,19 @@
                 <div class="">
                     <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">Realmwalker: New Dawn</h3>
                     <p class="text-pink-500 mb-8">50 offer</p>
-                    <x-ui.button class="">See Seller List</x-ui.button>
+                    <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
+                        <x-ui.button class="">See Seller List</x-ui.button>
+                    </a>
                 </div>
             </div>
         </div>
         <div class="pagination mb-24">
-            <x-frontend.pagination-ui />
+            <x-frontend.pagination-ui :pagination = "$pagination"/>
         </div>
     </section>
     @push('scripts')
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('livewire:navigated', function() {
                 const swiper = new Swiper('.popular-currency', {
                     loop: true,
                     pagination: {

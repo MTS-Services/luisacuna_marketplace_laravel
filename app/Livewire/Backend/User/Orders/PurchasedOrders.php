@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Backend\User\Components\Orders;
+namespace App\Livewire\Backend\User\Orders;
 
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -149,19 +149,14 @@ class PurchasedOrders extends Component
             [
                 'key' => 'type',
                 'label' => 'Type',
-                'tdClass' => 'text-text-white text-xs sm:text-sm',
             ],
             [
                 'key' => 'seller',
                 'label' => 'Seller',
-                'tdClass' => 'text-text-white text-xs sm:text-sm hidden sm:table-cell',
-                'class' => 'hidden sm:table-cell',
             ],
             [
                 'key' => 'ordered_date',
                 'label' => 'Ordered date',
-                'tdClass' => 'text-text-white text-xs sm:text-sm whitespace-nowrap hidden lg:table-cell',
-                'class' => 'whitespace-nowrap hidden lg:table-cell',
             ],
             [
                 'key' => 'status',
@@ -176,8 +171,6 @@ class PurchasedOrders extends Component
             [
                 'key' => 'quantity',
                 'label' => 'Quantity',
-                'tdClass' => 'text-text-white text-xs sm:text-sm hidden md:table-cell',
-                'class' => 'hidden md:table-cell',
             ],
             [
                 'key' => 'price',
@@ -186,7 +179,7 @@ class PurchasedOrders extends Component
             ],
         ];
 
-        return view('livewire.backend.user.components.orders.purchased-orders', [
+        return view('livewire.backend.user.orders.purchased-orders', [
             'items' => $items,
             'columns' => $columns,
             'pagination' => $pagination,

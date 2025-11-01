@@ -23,8 +23,40 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
         Route::get('/top-ups', function () {
             return view('backend.user.pages.offers.top-ups');
         })->name('top-ups');
-
+        Route::get('/items', function () {
+            return view('backend.user.pages.offers.items');
+        })->name('items');
+        Route::get('/gift-cards', function () {
+            return view('backend.user.pages.offers.gift-cards');
+        })->name('gift-cards');
     });
+
+    Route::group(['prefix' => 'boosting'], function () {
+        Route::get('/my-requests', function () {
+            return view('backend.user.pages.boosting.my-requests');
+        })->name('my-requests');
+        Route::get('/received-requests', function () {
+            return view('backend.user.pages.boosting.received-requests');
+        })->name('received-requests');
+    });
+
+
+    Route::get('/loyalty', function () {
+        return view('backend.user.pages.loyalty.loyalty');
+    })->name('loyalty');
+
+    Route::get('/wallet', function () {
+        return view('backend.user.pages.wallet.wallet');
+    })->name('wallet');
+    Route::get('/messages', function () {
+        return view('backend.user.pages.chat.messages');
+    })->name('messages');
+    Route::get('/feedback', function () {
+        return view('backend.user.pages.feedback.feedback');
+    })->name('feedback');
+    Route::get('/account-settings', function () {
+        return view('backend.user.pages.settings.account-settings');
+    })->name('account-settings');
 
     Route::get('/profile', function () {
         return view('backend.user.pages.profile');

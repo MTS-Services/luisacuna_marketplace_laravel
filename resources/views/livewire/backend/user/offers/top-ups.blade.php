@@ -4,7 +4,6 @@
 
             <!-- Left Side: Filters -->
             <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-
                 <!-- Game Filter -->
                 <div class="relative w-full sm:w-40 lg:w-44">
                     <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">

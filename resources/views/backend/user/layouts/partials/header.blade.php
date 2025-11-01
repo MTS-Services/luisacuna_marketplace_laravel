@@ -33,7 +33,7 @@
             <!-- Messages -->
             <button class="text-text-white  p-1 sm:p-1.5 rounded transition-all">
                 {{-- <img src="{{ asset('assets/icons/MessengerLogo.svg') }}" alt="Messages" class="w-5 h-5 sm:w-6 sm:h-6"> --}}
-                <flux:icon name="chat-bubble-oval-left" class="w-5 h-5 sm:w-6 sm:h-6 text-text-white stroke-current" />
+                <flux:icon name="chat-bubble-oval-left" class="w-5 h-5 sm:w-6 sm:h-6 text-text-white" />
             </button>
             <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
                 <flux:radio value="light" icon="sun" />

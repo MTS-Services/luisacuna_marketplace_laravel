@@ -1,6 +1,6 @@
 <header x-data="{ mobileMenuOpen: false, notification: false, dropdown: '' }"
-    class="sticky top-0 z-50 {{ request()->routeIs('home') ? 'bg-gradient-to-r from-purple-950/50 via-text-white to-purple-950/50 glass-card shadow-none!' : 'glass-card' }}">
-    <div class="container px-4 py-4 flex items-center justify-between relative" x-data="{ open: ''  }" x-cloak @click.outside="open=''">
+    class="sticky top-0 z-50  {{ request()->routeIs('home') ? 'bg-gradient-to-r from-purple-950/50 via-text-white to-purple-950/50 glass-card shadow-none!' : 'glass-card' }}">
+    <div class="2xl:container-wide container  px-4 py-4 flex items-center justify-between relative" x-data="{ open: ''  }" x-cloak>
         <div class=""><a href="{{ route('home') }}">
                 <img src="{{ asset('assets/images/header_logo.png') }}" alt=""></a>
         </div>
@@ -8,11 +8,7 @@
 
         <div class="flex items-center">
             <button class="btn btn-ghost btn-circle hover:bg-purple-500/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 256 256">
-                    <path
-                        d="M181.66,106.34a8,8,0,0,1,0,11.32l-32,32a8,8,0,0,1-11.32,0L112,123.31,85.66,149.66a8,8,0,0,1-11.32-11.32l32-32a8,8,0,0,1,11.32,0L144,132.69l26.34-26.35A8,8,0,0,1,181.66,106.34ZM232,128A104,104,0,0,1,79.12,219.82L45.07,231.17a16,16,0,0,1-20.24-20.24l11.35-34.05A104,104,0,1,1,232,128Zm-16,0A88,88,0,1,0,51.81,172.06a8,8,0,0,1,.66,6.54L40,216,77.4,203.52a8,8,0,0,1,6.54.67A88,88,0,0,0,216,128Z">
-                    </path>
-                </svg>
+                <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-white" />
             </button>
             {{-- Notification --}}
             <button class="btn btn-ghost btn-circle hover:bg-purple-500/20 mr-2" @click="notification = !notification">

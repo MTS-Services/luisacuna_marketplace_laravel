@@ -9,7 +9,7 @@ class AccountsController extends Controller
 {
     protected $masterView = 'frontend.pages.accounts';
 
-    public function accounts()
+    public function index()
     {
         return view($this->masterView);
     }

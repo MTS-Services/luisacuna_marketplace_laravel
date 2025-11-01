@@ -3,19 +3,18 @@
 namespace App\Livewire\Frontend\Partials;
 
 use Livewire\Component;
-use Illuminate\Support\Str;
 
 class PageInnerHeader extends Component
 {
 
 
     public $gameSlug;
-    public $gameName;
+    public $categorySlug;
 
-    public function mount($gameSlug)
+    public function mount($gameSlug, $categorySlug)
     {
         $this->gameSlug = $gameSlug;
-        $this->gameName = Str::ucfirst(str_replace('-', ' ', $gameSlug));
+        $this->categorySlug = $categorySlug;
     }
     public function render()
     {
