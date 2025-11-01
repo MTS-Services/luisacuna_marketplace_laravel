@@ -13,6 +13,7 @@ use App\Http\Controllers\Frontend\GiftCardController;
 use App\Http\Controllers\Frontend\UserAccountController;
 use App\Http\Controllers\Frontend\UserProfileController;
 use App\Livewire\Frontend\Components\Boostings\SubscribeBoosting;
+use App\Livewire\Frontend\Components\BulkUpload;
 use NunoMaduro\Collision\Adapters\Phpunit\Subscribers\Subscriber;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -36,6 +37,7 @@ Route::get('profile', [UserProfileController::class, 'profile'])->name('profile'
 Route::get('/items', [ItemsController::class, 'items'])->name('items');
 
 Route::get('subscripe-boostings', SubscribeBoosting::class)->name('subscripe-boostings');
+route::get('bulk-upload',BulkUpload::class)->name('bulk-upload');
 Route::get('/currency', [CurrencyController::class, 'index'])->name('currency');
 Route::get('boosting', [BoostingController::class, 'index'])->name('boosting');
 Route::get('account', [UserAccountController::class, 'index'])->name('account');
