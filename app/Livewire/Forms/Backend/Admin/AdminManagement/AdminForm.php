@@ -21,7 +21,7 @@ class AdminForm extends Form
     public ?string $phone = '';
     public ?string $address = '';
     public string $status = '';
-    public ?UploadedFile $avatar;
+    public ?UploadedFile $avatar = null;
     public bool $remove_avatar = false;
 
 

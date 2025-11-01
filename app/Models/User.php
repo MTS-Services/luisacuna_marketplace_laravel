@@ -71,6 +71,7 @@ class User extends AuthBaseModel implements Auditable
         'created_id',
         'updated_id',
         'deleted_id',
+        'restorer_id',
     ];
 
      protected $auditExclude = [

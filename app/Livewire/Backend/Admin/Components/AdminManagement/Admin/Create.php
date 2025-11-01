@@ -2,10 +2,11 @@
 
 namespace App\Livewire\Backend\Admin\Components\AdminManagement\Admin;
 
-use App\DTOs\Admin\CreateAdminDTO;
+
 use App\Enums\AdminStatus;
 use App\Livewire\Forms\Backend\Admin\AdminManagement\AdminForm;
 use App\Services\Admin\AdminService;
+use App\Services\Admin\service;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -17,11 +18,11 @@ class Create extends Component
 
     public AdminForm $form;
 
-    protected AdminService $adminService;
+    protected AdminService $service;
 
-    public function boot(AdminService $adminService)
+    public function boot(AdminService $service)
     {
-        $this->adminService = $adminService;
+        $this->service = $service;
     }
 
     public function mount(): void
@@ -42,12 +43,13 @@ class Create extends Component
         try {
             $data =  $this->form->fillables();
            
-            $admin = $this->adminService->createAdmin($data);
+            $admin = $this->service->createData($data);
 
             $this->dispatch('Admin is created');
             $this->success('Admin created successfully');
 
-            Log::info('Admin created successfully' , $admin);
+        
+            Log::info('Admin created successfully' , $admin->toArray());
 
             return $this->redirect(route('admin.am.admin.index'), navigate: true);
 

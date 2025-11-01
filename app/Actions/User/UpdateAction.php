@@ -2,7 +2,6 @@
 
 namespace App\Actions\User;
 
-use App\DTOs\User\UpdateUserDTO;
 use App\Events\User\UserUpdated;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
@@ -10,16 +9,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class UpdateUserAction
+class UpdateAction
 {
     public function __construct(
-        protected UserRepositoryInterface $userRepository
+        protected UserRepositoryInterface $interface
     ) {}
 
-    public function execute(int $userId, UpdateUserDTO $dto): User
+    public function execute(int $userId, array $data): User
     {
-        return DB::transaction(function () use ($userId, $dto) {
-            $user = $this->userRepository->find($userId);
+        return DB::transaction(function () use ($userId, $data) {
+            $user = $this->interface->find($userId);
 
             if (!$user) {
                 Log::error('User not found', ['user_id' => $userId]);
@@ -67,7 +66,7 @@ class UpdateUserAction
             Log::info('Data to update', ['data' => $data]);
 
             // Update user
-            $updated = $this->userRepository->update($userId, $data);
+            $updated = $this->interface->update($userId, $data);
             
             if (!$updated) {
                 Log::error('Failed to update user in repository', ['user_id' => $userId]);

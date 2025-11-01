@@ -10,6 +10,7 @@ use App\Enums\UserAccountStatus;
 use App\Services\User\UserService;
 use App\Traits\Livewire\WithNotification;
 use App\Livewire\Forms\Backend\Admin\UserManagement\UserForm;
+use Illuminate\Support\Facades\Log;
 
 class Create extends Component
 {
@@ -18,16 +19,15 @@ class Create extends Component
 
     public UserForm $form;
 
-    protected UserService $userService;
+    protected UserService $service;
 
-    public function boot(UserService $userService)
+    public function boot(UserService $service)
     {
-        $this->userService = $userService;
+        $this->service = $service;
     }
     public function mount(): void
     {
         $this->form->account_status = UserAccountStatus::ACTIVE->value;
-
     }
     public function render()
     {
@@ -40,30 +40,19 @@ class Create extends Component
     public function save()
     {
         $this->form->validate();
-        // dd($this->form);
-        try {
-            $dto = CreateUserDTO::fromArray([
-                'first_name' => $this->form->first_name,
-                'last_name' => $this->form->last_name,
-                'username' => $this->form->username,
-                // 'display_name' => $this->form->display_name,
-                'date_of_birth' => $this->form->date_of_birth,
-                'country_id' => $this->form->country_id,
-                'email' => $this->form->email,
-                'password' => $this->form->password,
-                'phone' => $this->form->phone,
-                'account_status' => $this->form->account_status,
-                'avatar' => $this->form->avatar,
-                'language' => $this->form->language ?? 'en',
-            ]);
 
-            $user = $this->userService->CreateUser($dto);
+        try {
+            $data = $this->form->fillables();
+
+            $user = $this->service->createData($data);
 
             $this->dispatch('User Created');
             $this->success('User created successfully');
             return $this->redirect(route('admin.um.user.index'), navigate: true);
         } catch (\Exception $e) {
-            $this->error('Failed to create user: ' . $e->getMessage());
+            Log::error('Failed to create user:' . $e->getMessage());
+            $this->error('Failed to create user.');
+            dd($e->getMessage());
         }
     }
 

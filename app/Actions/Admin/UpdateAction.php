@@ -2,7 +2,7 @@
 
 namespace App\Actions\Admin;
 
-use App\DTOs\Admin\UpdateAdminDTO;
+
 use App\Events\Admin\AdminUpdated;
 use App\Models\Admin;
 use App\Repositories\Contracts\AdminRepositoryInterface;
@@ -10,16 +10,19 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class UpdateAdminAction
+class UpdateAction
 {
     public function __construct(
-        protected AdminRepositoryInterface $adminRepository
+        protected AdminRepositoryInterface $interface
     ) {}
 
-    public function execute(int $adminId, UpdateAdminDTO $dto): Admin
+    public function execute(int $adminId,  array $data): Admin
     {
-        return DB::transaction(function () use ($adminId, $dto) {
-            $admin = $this->adminRepository->find($adminId);
+        return DB::transaction(function () use ($adminId, $data) {
+
+            // dd($data);
+
+            $admin = $this->interface->find($adminId);
 
             if (!$admin) {
                 Log::error('Admin not found', ['admin_id' => $adminId]);
@@ -29,45 +32,49 @@ class UpdateAdminAction
             // Store old data BEFORE any modifications
             $oldData = $admin->getAttributes();
 
-            Log::info('Admin found', [
-                'admin_id' => $adminId,
-                'admin_data' => $oldData
-            ]);
+            $new_data = [
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'phone' => $data['phone'],
+                'address' => $data['address'],
+                'status' => $data['status'],
+                'updater_id' => $data['updated_by'],
+            ];
 
-            Log::info('UpdateAdminDTO data', [
-                'dto_data' => $dto->toArray()
-            ]);
 
-            // Get data from DTO
-            $data = $dto->toArray();
+            if($data['avatar']) {
 
-            // Handle avatar upload
-            if ($dto->avatar) {
-                Log::info('Processing avatar upload');
+                $new_data['avatar'] = Storage::disk('public')->putFile('admins', $data['avatar']);
 
-                // Delete old avatar
-                if ($admin->avatar) {
-                    Storage::disk('public')->delete($admin->avatar);
-                    Log::info('Old avatar deleted', ['path' => $admin->avatar]);
-                }
+                if (Storage::disk('public')->exists($oldData['avatar'])) {
 
-                $avatarPath = $dto->avatar->store('admins', 'public');
-                $data['avatar'] = $avatarPath;
-
-                Log::info('New avatar uploaded', ['path' => $avatarPath]);
+                    Storage::disk('public')->delete($oldData['avatar']);
+                }   
             }
 
-            // Handle avatar removal
-            if ($dto->removeAvatar && $admin->avatar) {
-                Log::info('Removing avatar', ['path' => $admin->avatar]);
-                Storage::disk('public')->delete($admin->avatar);
-                $data['avatar'] = null;
+
+                
+            // // Handle avatar removal
+            // if ($dto->removeAvatar && $admin->avatar) {
+            //     Log::info('Removing avatar', ['path' => $admin->avatar]);
+            //     Storage::disk('public')->delete($admin->avatar);
+            //     $data['avatar'] = null;
+            // }
+
+            
+
+            if($data['password']) {
+                $new_data['password'] = $data['password'];
             }
 
+
+      
             Log::info('Data to update', ['data' => $data]);
 
             // Update Admin
-            $updated = $this->adminRepository->update($adminId, $data);
+            $updated = $this->interface->update($adminId, $new_data);
+
+           
 
             if (!$updated) {
                 Log::error('Failed to update Admin in repository', ['admin_id' => $adminId]);

@@ -27,11 +27,11 @@ class Edit extends Component
 
 
 
-    protected UserService $userService;
+    protected UserService $service;
 
-    public function boot(UserService $userService)
+    public function boot(UserService $service)
     {
-        $this->userService = $userService;
+        $this->service = $service;
     }
     public function mount(User $user): void
     {
@@ -113,7 +113,7 @@ class Edit extends Component
 
             $dto = UpdateUserDTO::fromArray($dtoData);
 
-            $this->user = $this->userService->updateUser($this->userId, $dto);
+            $this->user = $this->service->updateData($this->userId, $dto);
 
             // $this->existingAvatar = $this->admin->avatar_url;
             $this->form->avatar = null;
