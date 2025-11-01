@@ -2,12 +2,12 @@
 
 namespace App\Livewire\Backend\Admin\Components\Settings\Currency;
 
-use App\DTOs\Currency\UpdateDTO;
 use App\Enums\CurrencyStatus;
 use App\Livewire\Forms\Backend\Admin\Settings\CurrencyForm;
 use App\Models\Currency;
 use App\Services\CurrencyService;
 use App\Traits\Livewire\WithNotification;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Edit extends Component
@@ -15,8 +15,9 @@ class Edit extends Component
     use WithNotification;
 
     public CurrencyForm $form;
-    public Currency $currency;
 
+    #[Locked]
+    public Currency $currency;
     protected CurrencyService $currencyService;
 
     /**
@@ -53,7 +54,9 @@ class Edit extends Component
     {
         $this->form->validate();
         try {
-            $updated = $this->currencyService->updateData($this->currency->id, $this->form->fillables());
+            $data = $this->form->fillables();
+            $data['updated_by'] = admin()->id;
+            $updated = $this->currencyService->updateData($this->currency->id, $data);
 
             $this->dispatch('CurrencyUpdated');
             $this->success('Data updated successfully.');

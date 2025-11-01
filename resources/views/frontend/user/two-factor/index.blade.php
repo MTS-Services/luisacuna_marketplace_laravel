@@ -239,7 +239,7 @@
 
         <!-- Back to Dashboard -->
         <div class="mt-6 text-center">
-            <a href="{{ route('user.dashboard') }}" class="text-accent hover:text-accent-content font-medium">
+            <a href="{{ route('user.purchased-orders') }}" class="text-accent hover:text-accent-content font-medium">
                 ← Back to Dashboard
             </a>
         </div>

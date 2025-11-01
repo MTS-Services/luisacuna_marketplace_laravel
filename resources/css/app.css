@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 @import 'tailwindcss';
 @import '../../vendor/livewire/flux/dist/flux.css';
 @plugin 'daisyui';
@@ -15,12 +16,17 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ================= GOOGLE FONTS ================= */
+
+
 
 :root {
     /* Base Colors */
     --color-black: #000000;
     --color-white: #ffffff;
     --color-bg-base: #1B0C33;
+
+    --color-status-paused: #CB2C30;
 
     /* Primary: Purple */
     --color-primary-50: #f5f3ff;
@@ -123,6 +129,9 @@
     --color-pink-950: var(--color-secondary-950);
     /* ------------------------------------------ */
 
+    --color-status-paused: var(--color-status-paused);
+    --color-status-completed: var(--color-secondary-500);
+
     --color-text-new: var(--color-text-new-light);
     --color-text-white: var(--color-white-light);
 
@@ -134,7 +143,7 @@
     --color-text-secondary: var(--color-text-secondary-light);
     --color-text-muted: var(--color-text-muted-light);
 
-    --color-bg-hover:var(--color-zinc-100);
+    --color-bg-hover: var(--color-zinc-100);
 
     --color-text-btn-primary: #f8f8f8;
     --color-text-btn-secondary: var(--color-primary-500);
@@ -148,7 +157,7 @@
     --color-bg-secondary: var(--color-bg-secondary-light);
     --color-bg-tertiary: var(--color-bg-tertiary-light);
 
-     --hover-bg-theme: var(--color-zinc-200);
+    --hover-bg-theme: var(--color-zinc-200);
     --color-bg-black: var(--color-black);
     --color-bg-white: var(--color-white);
 
@@ -178,6 +187,13 @@
         }
     }
 
+
+
+    /* ======================================================
+    	 	 	 	 	 	 # font family
+    ======================================================== */
+    --font-open-sans: "Open Sans", sans-serif;
+    --font-lato: "Lato", sans-serif;
 
 
     /* ======================================================
@@ -227,7 +243,7 @@
         --color-bg-secondary: var(--color-bg-secondary-dark);
         --color-bg-tertiary: var(--color-bg-tertiary-dark);
 
-        --color-bg-hover:var(--color-zinc-800);
+        --color-bg-hover: var(--color-zinc-800);
 
         --color-text-new: var(--color-text-new-dark);
         --color-text-white: var(--color-white-dark);
@@ -247,6 +263,19 @@
         scrollbar-width: thin;
         scrollbar-color: var(--color-accent) var(--color-accent-content) !important;
         @apply transition-colors duration-200 ease-in-out text-text-primary;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-open-sans;
+    }
+
+    p {
+        @apply font-lato;
     }
 
     .dark * {
@@ -358,6 +387,20 @@
     @variant 2xl {
         max-width: 1240px;
     }
+}
+
+@utility container-wide {
+    margin-inline: auto;
+    padding-inline: var(--container-padding-inline, 1rem);
+    width: 100%;
+    max-width: 1680px;
+}
+
+@utility container-fluid {
+    margin-inline: auto;
+    padding-inline: var(--container-padding-inline, 1rem);
+    width: 100%;
+    max-width: none;
 }
 
 button {

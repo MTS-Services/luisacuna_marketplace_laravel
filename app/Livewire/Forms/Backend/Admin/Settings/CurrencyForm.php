@@ -4,12 +4,15 @@ namespace App\Livewire\Forms\Backend\Admin\Settings;
 
 use App\Enums\CurrencyStatus;
 use App\Models\Currency;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class CurrencyForm extends Form
 {
 
+
+    #[Locked]
     public ?int $id = null;
 
     public string $code = '';

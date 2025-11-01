@@ -52,22 +52,18 @@
                             </span>
                         </div>
                     </div>
-                    <select
-                        class="bg-bg-primary  border border-slate-700 rounded-full px-4 py-2 focus:outline-none focus:border-purple-500">
-                        <option>Device</option>
-                    </select>
-                    <select
-                        class="bg-bg-primary border border-slate-700 rounded-full px-4 py-2 focus:outline-none focus:border-purple-500">
-                        <option>Account type</option>
-                    </select>
-                    <select
-                        class="bg-bg-primary border border-slate-700 rounded-full px-4 py-2 focus:outline-none focus:border-purple-500">
-                        <option>Price</option>
-                    </select>
-                    <select
-                        class="bg-bg-primary border border-slate-700 rounded-full px-4 py-2 focus:outline-none focus:border-purple-500">
-                        <option>Select Delivery Time</option>
-                    </select>
+                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full!">
+                        <option value="">Device</option>
+                    </x-ui.select>
+                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full!">
+                        <option value="">Account type</option>
+                    </x-ui.select>
+                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full!">
+                        <option value="">Price</option>
+                    </x-ui.select>
+                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full!">
+                        <option value="">Select Delivery Time</option>
+                    </x-ui.select>
                     <button class="text-text-primary hover:text-white transition">Clear all</button>
                 </div>
 
@@ -75,49 +71,71 @@
                 <div class="flex gap-2 flex-wrap">
                     <button
                         class="px-3 py-1 bg-slate-800/60 rounded text-sm hover:bg-slate-500 transition text-white">Robux</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Steel A
+                    <button
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Steel
+                        A
                         Brainrot</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Grow A
+                    <button
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Grow
+                        A
                         Garden</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Hunty
+                    <button
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Hunty
                         Zombie</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">99 Nights In
+                    <button
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">99
+                        Nights In
                         The Forest</button>
                     <button
                         class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">prospecting</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">All Star
+                    <button
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">All
+                        Star
                         Tower
                         Defense X</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Ink
+                    <button
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Ink
                         Game</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Garden Tower
+                    <button
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Garden
+                        Tower
                         Defense</button>
                 </div>
 
                 <div class="flex gap-2 flex-wrap">
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Bubble Gum
+                    <button
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Bubble
+                        Gum
                         Simulator</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Dead
+                    <button
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Dead
                         Rails</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">TYPE./
+                    <button
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">TYPE./
                         ISOUL</button>
                     <button
                         class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Hypershot</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Build A
+                    <button
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Build
+                        A
                         Zoo</button>
                     <button
                         class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Gems</button>
                     <button
                         class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Rivals</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">MM2</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Blox
+                    <button
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">MM2</button>
+                    <button
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Blox
                         Fruit</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Pet
+                    <button
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Pet
                         Simulator
                         99</button>
                     <button
                         class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Spin</button>
-                    <button class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Adopt
+                    <button
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Adopt
                         Me</button>
                 </div>
 
@@ -126,10 +144,14 @@
                     <button
                         class="px-4 py-2 border border-green-500 text-green-500 rounded-full text-sm hover:bg-green-500 hover:text-white transition">●
                         Online Seller</button>
-                    <select
-                        class="bg-bg-primary border border-slate-700 rounded-full px-4 py-2 focus:outline-none focus:border-purple-500">
-                        <option>Recommended</option>
-                    </select>
+
+                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full!">
+                        <option value="">All statuses</option>
+                        <option value="completed">Completed</option>
+                        <option value="pending">Pending</option>
+                        <option value="processing">Processing</option>
+                    </x-ui.select>
+
                 </div>
             </div>
 
@@ -192,7 +214,8 @@
                                 None</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                            <span class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
+                            <span
+                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
                             <span
                                 class="text-white text-text-white flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition"><img
                                     src="{{ asset('assets/images/Time Circle.png') }}" alt="img"> Instants</span>
@@ -230,7 +253,8 @@
                                 None</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                            <span class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
+                            <span
+                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
                             <span
                                 class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                     src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
@@ -269,7 +293,8 @@
                                 None</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                            <span class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
+                            <span
+                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
                             <span
                                 class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                     src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
@@ -308,13 +333,15 @@
                                 None</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                            <span class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
+                            <span
+                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
                             <span
                                 class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                     src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
                                 Instants</span>
                         </div>
-                        <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3 text-white text-text-white">
+                        <div
+                            class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3 text-white text-text-white">
                             <img src="{{ asset('assets/images/Arthur.png') }}" alt="Esther"
                                 class="w-10 h-10 rounded-full">
                             <div>
@@ -347,7 +374,8 @@
                                 None</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                            <span class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
+                            <span
+                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
                             <span
                                 class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition"><img
                                     src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
@@ -386,7 +414,8 @@
                                 None</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                            <span class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
+                            <span
+                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
                             <span
                                 class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                     src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
@@ -425,7 +454,8 @@
                                 None</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                            <span class="bg-[#853EFF] px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
+                            <span
+                                class="bg-[#853EFF] px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
                             <span
                                 class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition"><img
                                     src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
@@ -464,7 +494,8 @@
                                 None</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                            <span class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
+                            <span
+                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
                             <span
                                 class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition"><img
                                     src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
@@ -498,4 +529,4 @@
         </main>
     </div>
 </div>
-</div>
+

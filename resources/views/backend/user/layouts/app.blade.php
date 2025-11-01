@@ -10,9 +10,15 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @fluxAppearance
+    
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
 </head>
 
-<body x-data="{ sidebarOpen: false, mobileMenuOpen: false, }" class="h-full max-h-screen antialiased bg-bg-primary">
+<body x-data="{ sidebarOpen: false, mobileMenuOpen: false }" class="h-full max-h-screen antialiased bg-bg-secondary">
 
     <div class="flex flex-col h-screen">
         <livewire:backend.user.partials.header :pageSlug="$pageSlug" />
@@ -20,6 +26,7 @@
         <div class="flex flex-1 overflow-hidden">
             <!-- Sidebar -->
             <livewire:backend.user.partials.sidebar :pageSlug="$pageSlug" />
+            
             <!-- Main content -->
             <div class="flex-1 flex flex-col custom-scrollbar overflow-y-auto">
                 <main class="flex-1 p-4 lg:p-6">
@@ -27,24 +34,28 @@
                         {{ $slot }}
                     </div>
                 </main>
-
             </div>
         </div>
     </div>
 
-    <div x-show="sidebarOpen" @click="sidebarOpen = false"
-        class="fixed inset-0 z-40 lg:hidden transition-opacity"
-        x-transition:enter="transition-opacity ease-linear duration-300" x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-linear duration-300"
-        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+    <!-- Mobile Overlay -->
+    <div x-show="sidebarOpen" 
+         @click="sidebarOpen = false"
+         x-cloak
+         class="fixed inset-0 bg-bg-primary/60 z-40 lg:hidden transition-opacity"
+         x-transition:enter="transition-opacity ease-linear duration-300" 
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100" 
+         x-transition:leave="transition-opacity ease-linear duration-300"
+         x-transition:leave-start="opacity-100" 
+         x-transition:leave-end="opacity-0">
     </div>
+    
     @fluxScripts
 
     <script>
         // Dashboard JavaScript
-
         document.addEventListener('DOMContentLoaded', function() {
-
             // Initialize tooltips
             initTooltips();
 
@@ -56,7 +67,6 @@
 
             // Handle dropdown filters
             initDropdownFilters();
-
         });
 
         // Tooltips initialization
@@ -136,7 +146,6 @@
         function performSearch(query) {
             console.log('Searching for:', query);
             // Implement your search logic here
-            // This could be an AJAX call to search endpoint
         }
 
         // Dropdown filters
@@ -153,7 +162,6 @@
         function applyFilter(filterName, filterValue) {
             console.log(`Applying filter: ${filterName} = ${filterValue}`);
             // Implement your filter logic here
-            // This could reload the page with query parameters or use AJAX
         }
 
         // Smooth scroll to top
@@ -227,6 +235,7 @@
             confirmAction
         };
     </script>
+    
     @stack('scripts')
 </body>
 
