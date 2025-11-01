@@ -12,6 +12,7 @@ trait AuditColumnsTrait
         $table->unsignedBigInteger('updated_by')->nullable();
         $table->unsignedBigInteger('deleted_by')->nullable();
         $table->unsignedBigInteger('restored_by')->nullable();
+        $table->timestamp('restored_at')->nullable();
 
         $table->foreign('created_by')->references('id')->on('admins')->onDelete('cascade')->onUpdate('cascade');
         $table->foreign('updated_by')->references('id')->on('admins')->onDelete('cascade')->onUpdate('cascade');
@@ -45,6 +46,8 @@ trait AuditColumnsTrait
         $table->unsignedBigInteger('restorer_id')->nullable();
         $table->string('restorer_type')->nullable();
 
+        $table->timestamp('restored_at')->nullable();
+
         $table->index('creater_id');
         $table->index('updater_id');
         $table->index('deleter_id');
@@ -66,7 +69,7 @@ trait AuditColumnsTrait
         $table->dropColumn('updated_by');
         $table->dropColumn('deleted_by');
         $table->dropColumn('restored_by');
-
+        $table->dropColumn('restored_at');
 
         $table->dropIndex(['creater_id']);
         $table->dropIndex(['updater_id']);

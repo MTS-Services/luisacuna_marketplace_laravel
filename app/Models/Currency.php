@@ -25,6 +25,8 @@ class Currency extends BaseModel implements Auditable
         'status',
         'is_default',
 
+        'restored_at',
+
         'created_by',
         'updated_by',
         'deleted_by',
@@ -38,6 +40,7 @@ class Currency extends BaseModel implements Auditable
     protected $casts = [
         'is_default' => 'boolean',
         'status' => CurrencyStatus::class,
+        'restored_at' => 'datetime',
         // 'exchange_rate' => 'decimal:15,2',
         // 'decimal_places' => 'integer',
     ];

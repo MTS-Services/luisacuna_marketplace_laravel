@@ -7,7 +7,7 @@
         'w-72 -translate-x-full': !desktop && !mobile_menu_open,
     }">
 
-    <div class="sidebar-glass-card h-full custom-scrollbar rounded-xl overflow-y-auto">
+    <div class="sidebar-glass-card h-full rounded-xl overflow-y-auto">
         <a href="{{ route('admin.dashboard') }}" wire:navigate class="p-4 inline-block">
             <div class="flex items-center gap-4">
                 <div class="w-10 h-10  shadow inset-shadow-lg p-0 rounded-xl flex items-center justify-center">
