@@ -11,14 +11,14 @@
         </a> --}}
 
         <div class="flex items-center gap-2 mb-8 text-lg font-semibold">
-                <div class="w-4 h-4">
-                    <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
-                </div>
-                <h1 class="text-blue-100 text-text-primary">
-                    {{ucwords(str_replace('-', ' ', $gameSlug)) . ' '. ucwords(str_replace('-', ' ', $categorySlug))}}
-                </h1>
-                <span class=" text-text-primary">></span>
-                <span class=" text-text-primary">Buy Now</span>
+            <div class="w-4 h-4">
+                <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
+            </div>
+            <h1 class="text-blue-100 text-text-primary">
+                {{ ucwords(str_replace('-', ' ', $gameSlug)) . ' ' . ucwords(str_replace('-', ' ', $categorySlug)) }}
+            </h1>
+            <span class=" text-text-primary">></span>
+            <span class=" text-text-primary">Buy Now</span>
         </div>
         <div>
 
@@ -247,15 +247,15 @@
                     <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
                         Get
                         fast, secure, and cheap EA Sports FC Coins instantly.</h3>
-                    <div class="flex gap-4 text-sm text-slate-400 py-4">
+                    <div class="flex gap-2 text-sm text-slate-400 py-2">
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white"><img
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white"><img
                                 src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Pickaxes:
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Pickaxes:
                             0-10</span>
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Outfits:
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Outfits:
                             None</span>
                     </div>
                     <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
@@ -285,15 +285,15 @@
                     <h3 class="text-lg font-medium mb-3">Custom Offer! 2,000 Trophies, Prestige, 100K Push. Ultra
                         Fast
                         Delivery. Text me for info. Do not purchase directly.</h3>
-                    <div class="flex gap-4 text-sm text-slate-400 py-4">
+                    <div class="flex gap-2 text-sm text-slate-400 py-4">
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white"><img
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white"><img
                                 src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Pickaxes:
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Pickaxes:
                             0-10</span>
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Outfits:
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Outfits:
                             None</span>
                     </div>
                     <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
@@ -324,15 +324,15 @@
                     <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
                         Get
                         fast, secure, and cheap EA Sports FC Coins instantly.</h3>
-                    <div class="flex gap-4 text-sm text-slate-400 py-4">
+                    <div class="flex gap-2 text-sm text-slate-400 py-4">
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white"><img
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white"><img
                                 src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Pickaxes:
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Pickaxes:
                             0-10</span>
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Outfits:
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Outfits:
                             None</span>
                     </div>
                     <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
@@ -363,15 +363,15 @@
                     <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
                         Get
                         fast, secure, and cheap EA Sports FC Coins instantly.</h3>
-                    <div class="flex gap-4 text-sm text-slate-400 py-4">
+                    <div class="flex gap-2 text-sm text-slate-400 py-4">
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white"><img
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white"><img
                                 src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Pickaxes:
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Pickaxes:
                             0-10</span>
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Outfits:
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Outfits:
                             None</span>
                     </div>
                     <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
@@ -402,15 +402,15 @@
                     <h3 class="text-lg font-medium mb-3">Custom Offer! 2,000 Trophies, Prestige, 100K Push. Ultra
                         Fast
                         Delivery. Text me for info. Do not purchase directly.</h3>
-                    <div class="flex gap-4 text-sm text-slate-400 py-4">
+                    <div class="flex gap-2 text-sm text-slate-400 py-4">
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white"><img
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white"><img
                                 src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Pickaxes:
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Pickaxes:
                             0-10</span>
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Outfits:
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Outfits:
                             None</span>
                     </div>
                     <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
@@ -441,15 +441,15 @@
                     <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
                         Get
                         fast, secure, and cheap EA Sports FC Coins instantly.</h3>
-                    <div class="flex gap-4 text-sm text-slate-400 py-4">
+                    <div class="flex gap-2 text-sm text-slate-400 py-4">
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition   text-white">
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition   text-white">
                             <img src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition  text-white">Pickaxes:
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition  text-white">Pickaxes:
                             0-10</span>
                         <span
-                            class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Outfits:
+                            class="flex items-center gap-1 px-1 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white">Outfits:
                             None</span>
                     </div>
                     <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
@@ -505,5 +505,5 @@
                 input.value = value + 1;
             }
         </script>
-    @endpush 
+    @endpush
 </section>

@@ -1,6 +1,5 @@
 <main class="mx-auto">
-    @if($categorySlug == 'gift-cards' || $categorySlug == 'top-ups')
-
+    @if ($categorySlug == 'gift-cards' || $categorySlug == 'top-ups')
         <section class="container mt-16">
             <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
             <div class="flex items-center gap-2 mt-8 text-lg font-semibold">
@@ -8,7 +7,7 @@
                     <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
                 </div>
                 <h1 class="text-blue-100 text-text-primary">
-                    {{ucwords(str_replace('-', ' ', $gameSlug)) . ' '. ucwords(str_replace('-', ' ', $categorySlug))}}
+                    {{ ucwords(str_replace('-', ' ', $gameSlug)) . ' ' . ucwords(str_replace('-', ' ', $categorySlug)) }}
                 </h1>
                 <span class=" text-text-primary">></span>
                 <span class=" text-text-primary">Shop</span>
@@ -270,8 +269,8 @@
                                 <div class="">
                                     <div class="flex gap-4 items-center mt-4">
                                         <div class="w-14 h-14">
-                                            <img src="{{ asset('assets/images/gift_cards/profile.png') }}" alt=""
-                                                class="w-full h-full">
+                                            <img src="{{ asset('assets/images/gift_cards/profile.png') }}"
+                                                alt="" class="w-full h-full">
                                         </div>
                                         <div class="">
                                             <div class="">
@@ -337,7 +336,8 @@
                             </div>
                         </div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold">Instants</div>
-                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP</div>
+                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP
+                        </div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
                     </div>
@@ -361,7 +361,8 @@
                             </div>
                         </div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold">Instants</div>
-                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP</div>
+                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP
+                        </div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
                     </div>
@@ -385,7 +386,8 @@
                             </div>
                         </div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold">Instants</div>
-                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP</div>
+                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP
+                        </div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
                     </div>
@@ -409,7 +411,8 @@
                             </div>
                         </div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold">Instants</div>
-                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP</div>
+                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP
+                        </div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
                     </div>
@@ -433,14 +436,14 @@
                             </div>
                         </div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold">Instants</div>
-                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP</div>
+                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP
+                        </div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
                     </div>
                 </div>
             </div>
         </section>
-
     @else
         <section>
             <div class="container ">
@@ -449,10 +452,11 @@
                     <!-- Breadcrumb -->
                     <div class="flex items-center gap-2 mb-8 text-lg font-semibold">
                         <div class="w-4 h-4">
-                            <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
+                            <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo"
+                                class="w-full h-full object-cover">
                         </div>
                         <h1 class="text-blue-100 text-text-primary">
-                            {{ucwords(str_replace('-', ' ', $gameSlug)) . ' '. ucwords(str_replace('-', ' ', $categorySlug))}}
+                            {{ ucwords(str_replace('-', ' ', $gameSlug)) . ' ' . ucwords(str_replace('-', ' ', $categorySlug)) }}
                         </h1>
                         <span class=" text-text-primary">></span>
                         <span class=" text-text-primary">Shop</span>
@@ -577,21 +581,23 @@
                     <!-- Product Cards -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <!-- Card 1 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
+                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
+                            wire:navigate>
                             <div
                                 class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
+                                <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate
+                                    Team now!
                                     Get
                                     fast, secure, and cheap EA Sports FC Coins instantly.</h3>
-                                <div class="flex gap-1 text-sm text-text-secondary py-4">
+                                <div class="flex gap-2 text-sm text-text-secondary py-2">
                                     <span
-                                        class="flex items-center gap-1 px-2 py-1  text-white text-text-white bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-text-secondary "><img
+                                        class="flex items-center gap-1 px-0 py-1  text-white text-text-white bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-text-secondary "><img
                                             src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
                                     <span
-                                        class="flex items-center gap-2 px-3 py-1  text-white text-text-white bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition  ">Pickaxes:
+                                        class="flex items-center gap-1 px-0 py-1  text-white text-text-white bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition  ">Pickaxes:
                                         0-10</span>
                                     <span
-                                        class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition   text-white text-text-white">Outfits:
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition   text-white text-text-white">Outfits:
                                         None</span>
                                 </div>
                                 <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
@@ -599,7 +605,8 @@
                                         class="bg-[#853EFF]   px-4 py-2 rounded-full font-bold  text-white text-text-white">$76.28</span>
                                     <span
                                         class=" flex items-center gap-2 px-3 py-1 bg-slate-800/60 text-text-secondary rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img"> Instants</span>
+                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
+                                        Instants</span>
                                 </div>
                                 <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
                                     <img src="{{ asset('assets/images/Victoria.png') }}" alt="Esther"
@@ -607,7 +614,8 @@
                                     <div>
                                         <p class="font-semibold text-text-white">Victoria</p>
                                         <p class="text-sm text-text-secondary "> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3% |
+                                                src="{{ asset('assets/images/thumb up filled.png') }}"
+                                                alt=""> 99.3% |
                                             2434 reviews | 1642 Sold</p>
                                     </div>
                                 </div>
@@ -615,21 +623,23 @@
                         </a>
 
                         <!-- Card 2 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
+                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
+                            wire:navigate>
                             <div
                                 class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">Custom Offer! 2,000 Trophies, Prestige, 100K Push. Ultra
+                                <h3 class="text-lg font-medium mb-3">Custom Offer! 2,000 Trophies, Prestige, 100K Push.
+                                    Ultra
                                     Fast
                                     Delivery. Text me for info. Do not purchase directly.</h3>
-                                <div class="flex gap-4 text-sm text-slate-400 py-4">
+                                <div class="flex gap-2 text-sm text-slate-400 py-2">
                                     <span
-                                        class="flex items-center gap-1 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white "><img
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white "><img
                                             src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
                                     <span
-                                        class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
                                         0-10</span>
                                     <span
-                                        class="flex items-center gap-1 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
                                         None</span>
                                 </div>
                                 <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
@@ -637,7 +647,8 @@
                                         class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
                                     <span
                                         class="text-white text-text-white flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img"> Instants</span>
+                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
+                                        Instants</span>
                                 </div>
                                 <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
                                     <img src="{{ asset('assets/images/Colleen.png') }}" alt="Esther"
@@ -645,7 +656,8 @@
                                     <div>
                                         <p class="font-semibold ">Colleen</p>
                                         <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3%
+                                                src="{{ asset('assets/images/thumb up filled.png') }}"
+                                                alt=""> 99.3%
                                             |
                                             2434 reviews | 1642 Sold</p>
                                     </div>
@@ -654,21 +666,23 @@
                         </a>
 
                         <!-- Card 3 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
+                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
+                            wire:navigate>
                             <div
                                 class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
+                                <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate
+                                    Team now!
                                     Get
                                     fast, secure, and cheap EA Sports FC Coins instantly.</h3>
-                                <div class="flex gap-4 text-sm text-slate-400 py-4">
+                                <div class="flex gap-2 text-sm text-slate-400 py-2">
                                     <span
-                                        class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                             src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
                                     <span
-                                        class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
                                         0-10</span>
                                     <span
-                                        class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
                                         None</span>
                                 </div>
                                 <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
@@ -685,7 +699,8 @@
                                     <div>
                                         <p class="font-semibold ">Esther</p>
                                         <p class="text-sm text-text-secondary "> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3%
+                                                src="{{ asset('assets/images/thumb up filled.png') }}"
+                                                alt=""> 99.3%
                                             |
                                             2434 reviews | 1642 Sold</p>
                                     </div>
@@ -694,21 +709,23 @@
                         </a>
 
                         <!-- Card 4 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
+                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
+                            wire:navigate>
                             <div
                                 class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
+                                <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate
+                                    Team now!
                                     Get
                                     fast, secure, and cheap EA Sports FC Coins instantly.</h3>
-                                <div class="flex gap-4 text-sm text-slate-400 py-4">
+                                <div class="flex gap-2 text-sm text-slate-400 py-2">
                                     <span
-                                        class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                             src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
                                     <span
-                                        class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
                                         0-10</span>
                                     <span
-                                        class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
                                         None</span>
                                 </div>
                                 <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
@@ -725,7 +742,8 @@
                                     <div>
                                         <p class="font-semibold ">Shane</p>
                                         <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3%
+                                                src="{{ asset('assets/images/thumb up filled.png') }}"
+                                                alt=""> 99.3%
                                             |
                                             2434 reviews | 1642 Sold</p>
                                     </div>
@@ -734,21 +752,23 @@
                         </a>
 
                         <!-- Card 5 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
+                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
+                            wire:navigate>
                             <div
                                 class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">Custom Offer! 2,000 Trophies, Prestige, 100K Push. Ultra
+                                <h3 class="text-lg font-medium mb-3">Custom Offer! 2,000 Trophies, Prestige, 100K Push.
+                                    Ultra
                                     Fast
                                     Delivery. Text me for info. Do not purchase directly.</h3>
-                                <div class="flex gap-4 text-sm text-slate-400 py-4">
+                                <div class="flex gap-2 text-sm text-slate-400 py-2">
                                     <span
-                                        class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                             src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
                                     <span
-                                        class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
                                         0-10</span>
                                     <span
-                                        class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
                                         None</span>
                                 </div>
                                 <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
@@ -766,7 +786,8 @@
                                     <div>
                                         <p class="font-semibold ">Arthur</p>
                                         <p class="text-sm text-text-secondary "> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3%
+                                                src="{{ asset('assets/images/thumb up filled.png') }}"
+                                                alt=""> 99.3%
                                             |
                                             2434 reviews | 1642 Sold</p>
                                     </div>
@@ -775,21 +796,23 @@
                         </a>
 
                         <!-- Card 6 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
+                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
+                            wire:navigate>
                             <div
                                 class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
+                                <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate
+                                    Team now!
                                     Get
                                     fast, secure, and cheap EA Sports FC Coins instantly.</h3>
-                                <div class="flex gap-4 text-sm text-slate-400 py-4">
+                                <div class="flex gap-2 text-sm text-slate-400 py-2">
                                     <span
-                                        class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                             src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
                                     <span
-                                        class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
                                         0-10</span>
                                     <span
-                                        class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
                                         None</span>
                                 </div>
                                 <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
@@ -806,7 +829,8 @@
                                     <div>
                                         <p class="font-semibold ">Kristin</p>
                                         <p class="text-sm text-text-secondary "> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3%
+                                                src="{{ asset('assets/images/thumb up filled.png') }}"
+                                                alt=""> 99.3%
                                             |
                                             2434 reviews | 1642 Sold</p>
                                     </div>
@@ -815,21 +839,23 @@
                         </a>
 
                         <!-- Card 7 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
+                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
+                            wire:navigate>
                             <div
                                 class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
+                                <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate
+                                    Team now!
                                     Get
                                     fast, secure, and cheap EA Sports FC Coins instantly.</h3>
-                                <div class="flex gap-4 text-sm text-slate-400 py-4">
+                                <div class="flex gap-2 text-sm text-slate-400 py-2">
                                     <span
-                                        class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                             src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
                                     <span
-                                        class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
                                         0-10</span>
                                     <span
-                                        class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
                                         None</span>
                                 </div>
                                 <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
@@ -846,7 +872,8 @@
                                     <div>
                                         <p class="font-semibold ">Angel</p>
                                         <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3%
+                                                src="{{ asset('assets/images/thumb up filled.png') }}"
+                                                alt=""> 99.3%
                                             |
                                             2434 reviews | 1642 Sold</p>
                                     </div>
@@ -855,21 +882,23 @@
                         </a>
 
                         <!-- Card 8 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
+                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
+                            wire:navigate>
                             <div
                                 class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
+                                <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate
+                                    Team now!
                                     Get
                                     fast, secure, and cheap EA Sports FC Coins instantly.</h3>
-                                <div class="flex gap-4 text-sm text-slate-400 py-4">
+                                <div class="flex gap-2 text-sm text-slate-400 py-2">
                                     <span
-                                        class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                             src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
                                     <span
-                                        class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
                                         0-10</span>
                                     <span
-                                        class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
                                         None</span>
                                 </div>
                                 <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
@@ -886,7 +915,8 @@
                                     <div>
                                         <p class="font-semibold ">Marjorie</p>
                                         <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3%
+                                                src="{{ asset('assets/images/thumb up filled.png') }}"
+                                                alt=""> 99.3%
                                             |
                                             2434 reviews | 1642 Sold</p>
                                     </div>
@@ -895,21 +925,23 @@
                         </a>
 
                         <!-- Card 9 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}" wire:navigate>
+                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
+                            wire:navigate>
                             <div
                                 class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
+                                <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate
+                                    Team now!
                                     Get
                                     fast, secure, and cheap EA Sports FC Coins instantly.</h3>
-                                <div class="flex gap-4 text-sm text-slate-400 py-4">
+                                <div class="flex gap-2 text-sm text-slate-400 py-2">
                                     <span
-                                        class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                             src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
                                     <span
-                                        class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
                                         0-10</span>
                                     <span
-                                        class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
+                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
                                         None</span>
                                 </div>
                                 <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
@@ -926,7 +958,8 @@
                                     <div>
                                         <p class="font-semibold ">Soham</p>
                                         <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3%
+                                                src="{{ asset('assets/images/thumb up filled.png') }}"
+                                                alt=""> 99.3%
                                             |
                                             2434 reviews | 1642 Sold</p>
                                     </div>
