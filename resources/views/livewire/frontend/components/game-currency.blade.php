@@ -14,9 +14,9 @@
             <h2 class="text-xl font-semibold text-text-white mb-6 pb-2 border-b border-zinc-700 leading-tight">Item details</h2>
 
             <div class="mb-6">
-                <label for="region" class="block text-text-secondary text-sm font-medium mb-2">Region:</label>
+                <label for="region" class="block text-text-whate text-sm font-medium mb-2">Region:</label>
                 <div class="relative">
-                    <select id="region" name="region" class="block w-full bg-zinc-900  text-text-white py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-zinc-900  appearance-none">
+                    <select id="region" name="region" class="block w-full bg-bg-primary  text-text-white py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-bg-primary  appearance-none">
                         <option value="ua">UA</option>
                         <option value="eu">EU</option>
                         <option value="us">US</option>
@@ -28,9 +28,9 @@
             </div>
 
             <div class="mb-8">
-                <label for="server" class="block text-text-secondary text-sm font-medium mb-2">Server:</label>
+                <label for="server" class="block text-text-white text-sm font-medium mb-2">Server:</label>
                 <div class="relative">
-                    <select id="server" name="server" class="block w-full bg-zinc-900  text-text-white py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-zinc-900 appearance-none">
+                    <select id="server" name="server" class="block w-full bg-bg-primary  text-text-white py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-bg-primary appearance-none">
                         <option value="aegwynn">Aegwynn</option>
                         <option value="draenor">Aerie peak</option>
                         <option value="gordunni">Andorhal</option>
