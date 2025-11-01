@@ -1,6 +1,7 @@
 <header x-data="{ mobileMenuOpen: false, notification: false, dropdown: '' }"
     class="sticky top-0 z-50  {{ request()->routeIs('home') ? 'bg-gradient-to-r from-purple-950/50 via-text-white to-purple-950/50 glass-card shadow-none!' : 'glass-card' }}">
-    <div class="2xl:container-wide container  px-4 py-4 flex items-center justify-between relative" x-data="{ open: ''  }" x-cloak>
+    <div class="2xl:container-wide container  px-4 py-4 flex items-center justify-between relative"
+        x-data="{ open: '' }" x-cloak>
         <div class=""><a href="{{ route('home') }}">
                 <img src="{{ asset('assets/images/header_logo.png') }}" alt=""></a>
         </div>
@@ -80,7 +81,7 @@
 
 
             <button @click="mobileMenuOpen = !mobileMenuOpen"
-                class="md:hidden ml-2 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-text-white hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-text-white">
+                class="md:hidden ml-2 inline-flex items-center justify-center p-2 rounded-md text-text-secondary hover:text-text-white hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                     stroke="white">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -90,7 +91,7 @@
 
         {{-- Dropdown --}}
         <livewire:frontend.partials.header-dropdown />
-        
+
     </div>
     {{-- Mobile sidebar --}}
     <div x-show="mobileMenuOpen" x-cloak @click.outside="mobileMenuOpen = false"
@@ -101,7 +102,48 @@
     {{-- Notification --}}
     <div x-show="notification" x-cloak @click.outside="notification = false"
         x-transition:enter="transition ease-out duration-100"
-        class="absolute top-18 right-2 w-96 bg-bg-primary backdrop:blure-md z-100 rounded-lg transition-all duration-300 h-[calc(100vh-4.5rem)]">
-        <h2 class="text-xl font-bold mb-4 p-2 text-text-white border-b border-bg-secondary">Notification</h2>
+        class="absolute top-0 right-0 w-3/4 md:max-w-[380px] bg-bg-primary backdrop:blure-md z-100  transition-all duration-300 h-screen text-text-white shadow-lg overflow-y-auto">
+        <div class="mb-2">
+            <!-- Header -->
+            <div class="flex justify-between items-center p-4 pb-0">
+                <h2 class="text-lg font-semibold">Notifications</h2>
+                <button @click="notification = false"
+                    class="absolute top-3 right-3 text-text-secondary hover:text-gray-600">
+                    <flux:icon name="x-mark" class="w-5 h-5 stroke-current" />
+                </button>
+            </div>
+            <div class="mb-3 border-b border-zinc-600">
+                <button class="text-sm text-pink-500 hover:text-text-hover ps-4 pb-2">
+                    Mark all as read
+                </button>
+            </div>
+
+            <!-- Notification List -->
+            <div class="space-y-3 h-full overflow-y-auto pr-1">
+                @for ($i = 0; $i < 5; $i++)
+                    <div class="flex gap-2 hover:bg-bg-hover rounded-xl p-4">
+                        <div>
+                            {{-- Notification icon --}}
+                            <div
+                                class="w-8 h-8 bg-zinc-200 dark:bg-zinc-300/10 rounded-full flex items-center justify-center mb-2">
+                                <flux:icon name="bell" class="w-4 h-4 stroke-purple-500" />
+                            </div>
+                        </div>
+                        <div class="w-full">
+                            <h3 class="font-semibold text-sm">Digimon Super Rumble is HERE!</h3>
+                            <p class="text-sm text-text-secondary/80 mt-1">
+                                Hello dear sellers, just now we've added Digimon Super Rumble game to Accounts and
+                                Currency
+                                categories.
+                                You can start listing your offers any minute now.
+                            </p>
+                        </div>
+                        <div class="w-20">
+                            <span class="text-xs text-pink-500">9m ago</span>
+                        </div>
+                    </div>
+                @endfor
+            </div>
+        </div>
     </div>
 </header>
