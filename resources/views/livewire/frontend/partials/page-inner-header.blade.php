@@ -11,7 +11,7 @@
             </div>
             <!-- Navigation Links -->
             <nav
-                class="py-2 peer-checked:flex flex-col lg:flex lg:flex-row gap-6 w-full lg:w-auto  lg:bg-transparent border-t  lg:border-none">
+                class="py-2 peer-checked:flex flex-col lg:flex lg:flex-row gap-8 w-full lg:w-auto  lg:bg-transparent border-t  lg:border-none">
                 @foreach (gameCategories() as $category)
                         <a href="{{ route('game.index', ['gameSlug' => $gameSlug, 'categorySlug' => $category['slug']]) }}" wire:navigate class="navbar_style {{ $categorySlug == $category['slug'] ? 'active' : 'text-text-primary' }}">{{$category['name']}}</a>
                 @endforeach

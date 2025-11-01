@@ -10,7 +10,7 @@
             </div>
         </a> --}}
 
-        <div class="flex items-center gap-2 mb-8 text-lg font-semibold">
+        <div class="flex items-center gap-2 mb-8 text-md font-semibold">
             <div class="w-4 h-4">
                 <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
             </div>

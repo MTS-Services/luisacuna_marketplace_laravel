@@ -448,9 +448,9 @@
         <section>
             <div class="container ">
                 <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
-                <div class="max-w-7xl mx-auto px-8 py-8">
+                <div class="max-w-7xl mx-auto lg:px-8 lg:py-8">
                     <!-- Breadcrumb -->
-                    <div class="flex items-center gap-2 mb-8 text-lg font-semibold">
+                    <div class="flex items-center gap-2 mb-8 text-md font-semibold">
                         <div class="w-4 h-4">
                             <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo"
                                 class="w-full h-full object-cover">
