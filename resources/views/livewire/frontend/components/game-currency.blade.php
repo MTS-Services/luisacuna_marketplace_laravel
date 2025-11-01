@@ -10,7 +10,7 @@
         <h1 class="text-3xl font-bold text-text-white text-center mb-2">Sell Game Currency</h1>
         <p class="text-text-secondary text-center mb-8">Step 1/3</p>
 
-        <div class="rounded-lg  bg-zinc-800 p-6 mb-8 ">
+        <div class="rounded-lg  bg-zinc-800/50 p-6 mb-8 ">
             <h2 class="text-xl font-semibold text-text-white mb-6 pb-2 border-b border-zinc-700 leading-tight">Item details</h2>
 
             <div class="mb-6">
@@ -46,7 +46,7 @@
                 </div>
             </div>
 
-            <div class="bg-zinc-700  flex justify-center text-center p-4 rounded-lg text-sm text-text-secondary">
+            <div class="bg-zinc-300/10  flex justify-center text-center p-4 rounded-lg text-sm text-text-secondary">
                 <span class="font-bold text-pink-600  mr-1">NOTE!</span> Selecting a server also creates offers for both factions (Horde and Alliance). If you don't need one, delete it afterward.
             </div>
         </div>
