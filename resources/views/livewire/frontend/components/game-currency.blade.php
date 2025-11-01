@@ -16,7 +16,7 @@
             <div class="mb-6">
                 <label for="region" class="block text-text-secondary text-sm font-medium mb-2">Region:</label>
                 <div class="relative">
-                    <select id="region" name="region" class="block w-full bg-zinc-900  text-text-white py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-zinc-600  appearance-none">
+                    <select id="region" name="region" class="block w-full bg-zinc-900  text-text-white py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-zinc-900  appearance-none">
                         <option value="ua">UA</option>
                         <option value="eu">EU</option>
                         <option value="us">US</option>
@@ -30,7 +30,7 @@
             <div class="mb-8">
                 <label for="server" class="block text-text-secondary text-sm font-medium mb-2">Server:</label>
                 <div class="relative">
-                    <select id="server" name="server" class="block w-full bg-zinc-900  text-text-white py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-zinc-600 appearance-none">
+                    <select id="server" name="server" class="block w-full bg-zinc-900  text-text-white py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-zinc-900 appearance-none">
                         <option value="aegwynn">Aegwynn</option>
                         <option value="draenor">Aerie peak</option>
                         <option value="gordunni">Andorhal</option>
@@ -46,7 +46,7 @@
                 </div>
             </div>
 
-            <div class="bg-zinc-700  flex justify-center p-4 rounded-lg text-sm text-text-secondary">
+            <div class="bg-zinc-700  flex justify-center text-center p-4 rounded-lg text-sm text-text-secondary">
                 <span class="font-bold text-pink-600 mr-1">NOTE!</span> Selecting a server also creates offers for both factions (Horde and Alliance). If you don't need one, delete it afterward.
             </div>
         </div>
