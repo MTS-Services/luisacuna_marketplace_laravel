@@ -1,10 +1,9 @@
-
 <div>
     <div class="bg-bg-primary flex items-center justify-center pb-20 pt-8 sm:pb-32 sm:pt-12">
         <!-- Outer container -->
-        <div class=" rounded-3xl lg:p-20 sm:p-10 md:p-12 w-full max-w-7xl flex flex-col items-center shadow-xl">
+        <div class=" rounded-3xl lg:p-20  sm:p-10 md:p-12 w-full max-w-7xl flex flex-col items-center shadow-xl">
             <!-- Header -->
-            <div class="text-center mb-8 sm:mb-10">
+            <div class="text-center mb-8 sm:mb-10 ">
                 <div class="flex items-center justify-center gap-2 text-purple-400 mb-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="#853EFF" class="w-6 h-6 sm:w-7 sm:h-7">
@@ -17,23 +16,23 @@
             </div>
 
             <!-- Card -->
-            <div class="p-6 sm:p-8 md:p-10 bg-[#2d1f43] rounded-3xl w-full">
+            <div class=" sm:p-8 md:p-10 dark:bg-zinc-800/30 rounded-3xl w-full ">
                 <div class="bg-[#3d3152] px-6 sm:px-10 md:px-20 rounded-3xl w-full py-6 sm:py-8 md:py-10">
                     <h2 class="text-white text-base sm:text-lg font-medium mb-6 text-center sm:text-left">
-                        Will you sell on Eldorado as an individual or as a company?
+                        Selling experience:
                     </h2>
 
                     <!-- Radio buttons -->
                     <div class="flex flex-col gap-4">
-                        <label class="flex items-center gap-2 text-gray-300 cursor-pointer">
+                        <label class="flex items-center gap-2 text-white cursor-pointer">
                             <input type="radio" name="seller_type" value="individual" checked
                                 class="accent-[#FF2E91] w-4 h-4">
-                            <span>Individual</span>
+                            <span class="text-text-white">New seller (this is my first selling)</span>
                         </label>
-                        <label class="flex items-center gap-2 text-gray-300 cursor-pointer">
+                        <label class="flex items-center gap-2 cursor-pointer">
                             <input type="radio" name="seller_type" value="company"
                                 class="accent-[#FF2E91] w-4 h-4">
-                            <span>Company</span>
+                            <span class="text-white">Experienced sel ler (I've worked on other platforms)</span>
                         </label>
                     </div>
                 </div>

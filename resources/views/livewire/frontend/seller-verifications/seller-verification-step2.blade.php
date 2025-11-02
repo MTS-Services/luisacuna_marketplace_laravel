@@ -1,4 +1,3 @@
-
 <div>
     <div class="bg-bg-primary flex items-center justify-center pb-20 pt-8 sm:pb-32 sm:pt-12">
         <!-- Outer container -->
@@ -20,22 +19,48 @@
             <div class="p-6 sm:p-8 md:p-10 bg-[#2d1f43] rounded-3xl w-full">
                 <div class="bg-[#3d3152] px-6 sm:px-10 md:px-20 rounded-3xl w-full py-6 sm:py-8 md:py-10">
                     <h2 class="text-white text-base sm:text-lg font-medium mb-6 text-center sm:text-left">
-                        Will you sell on Eldorado as an individual or as a company?
+                        Select the categories you'll be selling in:
                     </h2>
 
                     <!-- Radio buttons -->
                     <div class="flex flex-col gap-4">
-                        <label class="flex items-center gap-2 text-gray-300 cursor-pointer">
+                        <label class="flex items-center gap-2  cursor-pointer">
                             <input type="radio" name="seller_type" value="individual" checked
                                 class="accent-[#FF2E91] w-4 h-4">
-                            <span>Individual</span>
+                            <span class="text-white">Currency</span>
                         </label>
-                        <label class="flex items-center gap-2 text-gray-300 cursor-pointer">
+
+                        <label class="flex items-center gap-2  cursor-pointer">
+                            <input type="radio" name="seller_type" value="individual" checked
+                                class="accent-[#FF2E91] w-4 h-4">
+                            <span class="text-white">Accounts</span>
+                        </label>
+
+                        <label class="flex items-center gap-2  cursor-pointer">
+                            <input type="radio" name="seller_type" value="individual" checked
+                                class="accent-[#FF2E91] w-4 h-4">
+                            <span class="text-white">Items</span>
+                        </label>
+
+                        <label class="flex items-center gap-2  cursor-pointer">
+                            <input type="radio" name="seller_type" value="individual" checked
+                                class="accent-[#FF2E91] w-4 h-4">
+                            <span class="text-white">Top Ups</span>
+                        </label>
+
+                        <label class="flex items-center gap-2  cursor-pointer">
+                            <input type="radio" name="seller_type" value="individual" checked
+                                class="accent-[#FF2E91] w-4 h-4">
+                            <span class="text-white">Boosting</span>
+                        </label>
+
+                        <label class="flex items-center gap-2  cursor-pointer">
                             <input type="radio" name="seller_type" value="company"
                                 class="accent-[#FF2E91] w-4 h-4">
-                            <span>Company</span>
+                            <span class="text-white">Gift Cards</span>
                         </label>
                     </div>
+
                 </div>
             </div>
 

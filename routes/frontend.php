@@ -1,18 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Frontend\HomeController;
-use App\Http\Controllers\Frontend\ItemsController;
-use App\Http\Controllers\Frontend\TopUpController;
 use App\Http\Controllers\Frontend\AccountsController;
 use App\Http\Controllers\Frontend\BoostingController;
 use App\Http\Controllers\Frontend\CoachingController;
 use App\Http\Controllers\Frontend\CurrencyController;
 use App\Http\Controllers\Frontend\GameController;
 use App\Http\Controllers\Frontend\GiftCardController;
+use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\ItemsController;
+use App\Http\Controllers\Frontend\SellerVerificationController;
+use App\Http\Controllers\Frontend\TopUpController;
 use App\Http\Controllers\Frontend\UserAccountController;
 use App\Http\Controllers\Frontend\UserProfileController;
-use App\Http\Controllers\Frontend\SellerVerificationController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 // Route::group(['prefix' => 'boosting', 'as' => 'boost.'], function () {
@@ -40,8 +40,12 @@ Route::get('/accounts', [AccountsController::class, 'index'])->name('accounts');
 Route::get('/top-up', [TopUpController::class, 'index'])->name('top-up');
 Route::get('/gift-card', [GiftCardController::class, 'index'])->name('gift-card');
 Route::get('/coaching', [CoachingController::class, 'index'])->name('coaching');
-Route::get('/seller-verification', [SellerVerificationController::class, 'index'])->name('sellverification1');
-
+Route::get('/seller-verification', [SellerVerificationController::class, 'verify'])->name('sellverification');
+Route::get('/seller-verification2', [SellerVerificationController::class, 'index'])->name('sellverification2');
+Route::get('/seller-verification3', [SellerVerificationController::class, 'three'])->name('sellverification3');
+Route::get('/seller-verification4', [SellerVerificationController::class, 'four'])->name('sellverification4');
+Route::get('/seller-verification5', [SellerVerificationController::class, 'five'])->name('sellverification5');
+Route::get('/seller-verification6', [SellerVerificationController::class, 'six'])->name('sellverification6');
 
 Route::get('/game/{gameSlug}/{categorySlug}', [GameController::class, 'index'])->name('game.index');
 Route::get('/game-buy/{gameSlug}/{categorySlug}/{sellerSlug}', [GameController::class, 'buy'])->name('game.buy');
