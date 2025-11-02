@@ -12,6 +12,7 @@ use App\Http\Controllers\Frontend\GameController;
 use App\Http\Controllers\Frontend\GiftCardController;
 use App\Http\Controllers\Frontend\UserAccountController;
 use App\Http\Controllers\Frontend\UserProfileController;
+use App\Http\Controllers\Frontend\SellerVerificationController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 // Route::group(['prefix' => 'boosting', 'as' => 'boost.'], function () {
@@ -39,6 +40,8 @@ Route::get('/accounts', [AccountsController::class, 'index'])->name('accounts');
 Route::get('/top-up', [TopUpController::class, 'index'])->name('top-up');
 Route::get('/gift-card', [GiftCardController::class, 'index'])->name('gift-card');
 Route::get('/coaching', [CoachingController::class, 'index'])->name('coaching');
+Route::get('/seller-verification', [SellerVerificationController::class, 'index'])->name('sellverification1');
+
 
 Route::get('/game/{gameSlug}/{categorySlug}', [GameController::class, 'index'])->name('game.index');
 Route::get('/game-buy/{gameSlug}/{categorySlug}/{sellerSlug}', [GameController::class, 'buy'])->name('game.buy');
