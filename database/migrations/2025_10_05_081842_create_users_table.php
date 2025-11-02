@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('last_name');
             
              $table->string('google_id')->nullable()->unique();
+             $table->string('facebook_id')->nullable()->unique();
             $table->string('avatar')->nullable();
             $table->date('date_of_birth')->nullable();
 

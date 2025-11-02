@@ -32,6 +32,7 @@ class User extends AuthBaseModel implements Auditable
         'first_name',
         'last_name',
         
+        'facebook_id',
         'google_id',
         'avatar',
         'date_of_birth',
