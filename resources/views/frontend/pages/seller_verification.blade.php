@@ -8,7 +8,7 @@
         @break
 
         @default
-        <livewire:frontend.seller-verifications.seller-verification-step-one/>
+        <livewire:frontend.seller-verifications.seller-verification-step1 />
 
     @endswitch
 </x-frontend::app>
