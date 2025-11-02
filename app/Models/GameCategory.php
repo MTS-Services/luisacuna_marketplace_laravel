@@ -25,6 +25,7 @@ class GameCategory extends BaseModel implements Auditable
         'creater_id',
         'updater_id',
         'deleter_id',
+        'restorer_id',
     ];
 
 

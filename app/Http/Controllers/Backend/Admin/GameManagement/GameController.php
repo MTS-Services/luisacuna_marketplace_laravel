@@ -9,12 +9,12 @@ use App\Services\Game\GameService;
 class GameController extends Controller
 {
     //
-    protected GameService $gameService;
+    protected GameService $service;
 
     public Game $game ;
-    public function __construct(GameService $gameService)
+    public function __construct(GameService $service)
     {
-        $this->gameService = $gameService;
+        $this->service = $service;
     }
     public $masterView = 'backend.admin.pages.game-management.game.index';
     public function index()
@@ -29,7 +29,7 @@ class GameController extends Controller
 
     public function show($id)
     {
-        $this->game = $this->gameService->findOrFail($id);
+        $this->game = $this->service->findOrFail($id);
 
         return view($this->masterView, [
             'game' => $this->game,
@@ -37,7 +37,7 @@ class GameController extends Controller
     }
     public function edit($id)    
     {
-        $this->game = $this->gameService->findOrFail($id);
+        $this->game = $this->service->findOrFail($id);
         return view($this->masterView, [
             'game' => $this->game,
         ]); 

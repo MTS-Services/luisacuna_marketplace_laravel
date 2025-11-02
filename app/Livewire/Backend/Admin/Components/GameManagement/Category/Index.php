@@ -22,16 +22,16 @@ class Index extends Component
 
     // protected $listeners = ['adminCreated' => '$refresh', 'adminUpdated' => '$refresh'];
 
-    protected GameCategoryService $gameCategoryService;
+    protected GameCategoryService $service;
 
-    public function boot(GameCategoryService $gameCategoryService)
+    public function boot(GameCategoryService $service)
     {
-        $this->gameCategoryService = $gameCategoryService;
+        $this->service = $service;
     }
 
     public function render()
     {
-        $categories = $this->gameCategoryService->paginate(
+        $categories = $this->service->paginate(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
@@ -97,8 +97,8 @@ class Index extends Component
         ];
 
         $actions = [
-            ['key' => 'id', 'label' => 'View', 'route' => 'admin.gm.category.view'],
-            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.gm.category.edit'],
+            ['key' => 'id', 'label' => 'View', 'route' => 'admin.gm.category.view', 'encrypt' => true],
+            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.gm.category.edit' , 'encrypt' => true],
             ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete'],
         ];
 
@@ -142,14 +142,18 @@ class Index extends Component
     public function delete()
     {
 
-        try {
+          try {
+
+          
             if (!$this->deleteGameCategoryId) {
                 return;
             }
 
-            $state =   $this->gameCategoryService->deleteCategory($this->deleteGameCategoryId, false);
+            $state =   $this->service->deleteData($this->deleteGameCategoryId, admin()->id);
 
-
+            if ($state) {
+                $this->success('Category deleted successfully');
+            }
 
             $this->showDeleteModal = false;
             $this->deleteGameCategoryId = null;
@@ -190,19 +194,22 @@ class Index extends Component
 
     public function bulkDelete(): void
     {
-        $count = $this->gameCategoryService->bulkDeleteCategories($this->selectedIds);
+
+
+        $count = $this->service->bulkDeleteData($this->selectedIds, admin()->id);
+
         $this->success("{$count} categories deleted successfully");
     }
 
     public function bulkUpdateStatus(GameCategoryStatus $status): void
     {
-        $count = $this->gameCategoryService->bulkUpdateStatus($this->selectedIds, $status);
+        $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
         $this->success("{$count} categories updated successfully");
     }
 
     protected function getSelectableIds(): array
     {
-        return $this->gameCategoryService->paginate(
+        return $this->service->paginate(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

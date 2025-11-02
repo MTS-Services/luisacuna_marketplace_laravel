@@ -14,21 +14,24 @@ use App\Repositories\Contracts\GameRepositoryInterface;
 class GameService
 {
     public function __construct(
-         protected GameRepositoryInterface $gameRepository,
+         protected GameRepositoryInterface $repository,
          protected CreateGameAction $createGameAction , 
          protected DeleteGameAction $deleteGameAction,
          protected UpdateGameAction $updateGameAction
          )
     { }
 
+    public function getAll(){
+        return $this->repository->all();
+    }
     public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null)
     {
-        return $this->gameRepository->paginate($perPage, $filters, $queries ?? []);
+        return $this->repository->paginate($perPage, $filters, $queries ?? []);
     }
     
     public function OnlyTrashedPaginate(int $perPage = 15, array $filters = [], ?array $queries = null) 
     {
-        return $this->gameRepository->OnlyTrashedPaginate($perPage, $filters, $queries ?? []);
+        return $this->repository->OnlyTrashedPaginate($perPage, $filters, $queries ?? []);
     }
 
     public function deleteGame(array $ids, bool $forceDelete = false)
@@ -38,21 +41,21 @@ class GameService
 
     public function bulkUpdateStatus($ids, GameStatus $status)
     {
-        return $this->gameRepository->bulkUpdateStatus($ids, $status);
+        return $this->repository->bulkUpdateStatus($ids, $status);
     }
 
     public function bulkRestoreGame($ids) :bool
     {
-        return $this->gameRepository->bulkRestoreGame($ids);
+        return $this->repository->bulkRestoreGame($ids);
     }
 
     public function restoreGame($id) :bool
     {
-        return $this->gameRepository->restoreGame($id);
+        return $this->repository->restoreGame($id);
     }
     public function findOrFail($id): Game
     {
-        return $this->gameRepository->findOrFail($id);
+        return $this->repository->findOrFail($id);
     }
 
     public function createGame(CreateGameDTO $data): Game

@@ -3,6 +3,9 @@
 namespace App\Services\Game;
 
 use App\Actions\Admin\CreateGameCategoryAction;
+use App\Actions\Game\Category\BulkAction;
+use App\Actions\Game\Category\DeleteAction;
+use App\Actions\Game\Category\RestoreAction;
 use App\DTOs\Game\CreateGameCategoryDTO;
 use App\Enums\GameCategoryStatus;
 use App\Models\GameCategory;
@@ -11,17 +14,27 @@ use App\Repositories\Contracts\GameCategoryRepositoryInterface;
 class GameCategoryService
 {
     public function __construct(
-        protected GameCategoryRepositoryInterface $gameCategoryRepository,
-        protected CreateGameCategoryAction $gameCategoryAction
+        protected GameCategoryRepositoryInterface $interface,
+        protected CreateGameCategoryAction $gameCategoryAction,
+        protected BulkAction $bulkAction,
+        protected DeleteAction $deleteAction,
+        protected RestoreAction $restoreAction,
     )
     {
       
     }
 
-    public function all()
+    public function getAll()
     {
-        return $this->gameCategoryRepository->all();
+        return $this->interface->all();
     }
+
+    public function findData(int $id){
+
+        return $this->interface->find($id);
+
+    }
+
     public function create(CreateGameCategoryDTO $dto): GameCategory
     {
         return $this->gameCategoryAction->execute($dto);
@@ -29,45 +42,72 @@ class GameCategoryService
 
     public function update( $id, array $dto):bool
     {
-        return $this->gameCategoryRepository->update($id, $dto);
+        return $this->interface->update($id, $dto);
     }
 
-    public function deleteCategory($id, bool $force = false):bool
+    public function deleteData($id, ?int $actioner_id = null):bool
     {
-        return $this->gameCategoryRepository->deleteCategory($id, $force);
+        if($actioner_id == null){
+
+            $actioner_id = admin()->id;
+
+        }
+        return $this->deleteAction->execute($id,  false, $actioner_id);
     }
+
+    public function forceDeleteData($id, $force_delete = true, ?int $actioner_id = null):bool
+    {
+        return $this->deleteAction->execute($id, $force_delete, $actioner_id);
+    }
+
     public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null)
     {
-        return $this->gameCategoryRepository->paginate($perPage, $filters, $queries ?? []);
+        return $this->interface->paginate($perPage, $filters, $queries ?? []);
     }
 
     public function paginateOnlyTrashed(int $perPage = 15, array $filters = [], ?array $queries = null)
     {
-        return $this->gameCategoryRepository->paginateOnlyTrashed($perPage, $filters, $queries ?? []);
+        return $this->interface->paginateOnlyTrashed($perPage, $filters, $queries ?? []);
     }   
 
-    public function restoreDelete($id):bool
+    public function restoreData($id, ?int $actioner_id):bool
     {
-        return $this->gameCategoryRepository->restoreDelete($id);
+        return $this->restoreAction->execute($id, $actioner_id);
     }
 
-    public function bulkDeleteCategories(array $ids, bool $forceDelete = false):bool
+    public function bulkDeleteData(array $ids, int $actioner_id):int
     {
-        return $this->gameCategoryRepository->bulkDeleteCategories($ids, $forceDelete);
+        
+        return $this->bulkAction->execute(ids: $ids, action: 'delete', status: null, actionerId: $actioner_id);
+
+        
     }
 
-    public function BulkCategoryRestore(array $ids):bool       
+    public function bulkForceDeleteData(array $ids):int
     {
-        return $this->gameCategoryRepository->BulkCategoryRestore($ids);    
+
+        return $this->bulkAction->execute(ids: $ids, action: 'forceDelete', status: null, actionerId: null);
     }
-    public function bulkUpdateStatus(array $ids, GameCategoryStatus $status):bool
+
+    public function bulkRestoreData(array $ids , int $actioner_id):int        
     {
-        return $this->gameCategoryRepository->bulkUpdateStatus($ids, $status);
+        return $this->bulkAction->execute($ids, 'restore', null, $actioner_id);    
+    }
+    public function bulkUpdateStatus(array $ids, GameCategoryStatus $status , ?int $actioner_id = null):int
+    {
+        if($actioner_id == null){
+            $actioner_id = admin()->id;
+        }   
+
+      
+        return $this->bulkAction->execute($ids, 'status', $status->value, $actioner_id);
     }
 
     public function findOrFail($id): GameCategory
     {
-        return $this->gameCategoryRepository->findOrFail($id);
+        return $this->interface->findOrFail($id);
     }   
+
+    
 }
 

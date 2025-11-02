@@ -4,14 +4,15 @@ namespace App\Livewire\Backend\Admin\Components\GameManagement\Category;
 
 use App\Services\Game\GameCategoryService;
 use App\Traits\Livewire\WithDataTable;
+use App\Traits\Livewire\WithNotification;
 use Livewire\Component;
 
 class Trash extends Component
 {
-    use WithDataTable;
+    use WithDataTable, WithNotification;
 
     public $statusFilter = '';
-    protected GameCategoryService $gameCategoryService;
+    protected GameCategoryService $service;
     public $deleteGameCategoryId;
     public bool $showDeleteModal = false;
     public bool $showRestoreModal = false;
@@ -19,10 +20,10 @@ class Trash extends Component
     public $bulkAction = '';
 
 
-    public function boot(GameCategoryService $gameCategoryService)
+    public function boot(GameCategoryService $service)
     {
 
-        $this->gameCategoryService = $gameCategoryService;
+        $this->service = $service;
     }
     public function render()
     {
@@ -91,7 +92,7 @@ class Trash extends Component
         ];
 
         // $category = GameCategory::onlyTrashed()->get();
-        $categories = $this->gameCategoryService->paginateOnlyTrashed(
+        $categories = $this->service->paginateOnlyTrashed(
 
             perPage: $this->perPage,
             filters: $this->getFilters()
@@ -122,13 +123,25 @@ class Trash extends Component
     {
         $this->showDeleteModal = false;
 
-        $this->gameCategoryService->deleteCategory($this->deleteGameCategoryId, true);
+        $state = $this->service->forceDeleteData($this->deleteGameCategoryId);
+
+        if($state){
+            $this->success('Category permanently deleted successfully');
+        }else{
+            $this->error('Failed to delete this category peremanently ');
+        }
     }
 
     public function restoreDelete($id)
     {
 
-        $this->gameCategoryService->restoreDelete($id, false);
+        $state = $this->service->restoreData($id, admin()->id);
+
+        if($state) {
+            $this->success('Category restored successfully');
+        }else{
+            $this->error('Failed to restore category');
+        }
     }
 
     public function getFilters()
@@ -167,24 +180,29 @@ class Trash extends Component
             $this->selectAll = false;
             $this->bulkAction = '';
         } catch (\Exception $e) {
+            dd($e->getMessage());
             $this->error('Bulk action failed: ' . $e->getMessage());
         }
     }
 
     public function bulkForceDelete(): void
     {
-        $count = $this->gameCategoryService->bulkDeleteCategories($this->selectedIds, true);
+  
+        $count = $this->service->bulkForceDeleteData($this->selectedIds);
+        $this->success("{$count} categories permanently deleted successfully");
     }
 
     public function bulkRestore(): void
     {
-        $count = $this->gameCategoryService->BulkCategoryRestore($this->selectedIds,);
-        // $this->success("{$count} categories updated successfully");
+
+        $count = $this->service->bulkRestoreData($this->selectedIds, admin()->id);
+
+        $this->success("{$count} categories updated successfully");
     }
 
       protected function getSelectableIds(): array
     {
-        return $this->gameCategoryService->paginateOnlyTrashed(
+        return $this->service->paginateOnlyTrashed(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();
