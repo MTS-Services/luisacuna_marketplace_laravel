@@ -18,7 +18,7 @@ class NotificationComponent extends Component
                 [
                     'id' => 1,
                     'title' => 'Digimon Super Rumble is HERE!',
-                    'subtitle' => 'Hello dear sellers, just now we added Digimon Super Rumble game to Accounts and Currency categories. You can start listing your offers any minute now ',
+                    'subtitle' => 'Hello dear sellers, just now we added Digimon Super Rumble game to Accounts and Currency categories. You can start listing your offers any minute now Hello dear sellers, just now we added Digimon Super Rumble game to Accounts and Currency categories. You can start listing your offers any minute now ',
                     'uploaded_at' => '9min ago',
                 ],
                 [
