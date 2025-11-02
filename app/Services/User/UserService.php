@@ -2,14 +2,11 @@
 
 namespace App\Services\User;
 
+use App\Actions\User\CreateAction;
+use App\Actions\User\DeleteAction;
+use App\Actions\User\UpdateAction;
 use App\Models\User;
-use App\Enums\UserStatus;
-use App\DTOs\User\CreateUserDTO;
-use App\DTOs\User\UpdateUserDTO;
 use App\Enums\UserAccountStatus;
-use App\Actions\User\CreateUserAction;
-use App\Actions\User\DeleteUserAction;
-use App\Actions\User\UpdateUserAction;
 use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -17,95 +14,95 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 class UserService
 {
     public function __construct(
-        protected UserRepositoryInterface $userRepository,
-        protected CreateUserAction $createUserAction,
-        protected UpdateUserAction $updateUserAction,
-        protected DeleteUserAction $deleteUserAction,
+        protected UserRepositoryInterface $interface,
+        protected CreateAction $createAction,
+        protected UpdateAction $updateAction,
+        protected DeleteAction $deleteAction,
     ) {}
 
     public function getAllUsers(): Collection
     {
-        return $this->userRepository->all();
+        return $this->interface->all();
     }
 
-    public function getUsersPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function getPaginateDatas(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        return $this->userRepository->paginate($perPage, $filters);
+        return $this->interface->paginate($perPage, $filters);
     }
 
-    public function getTrashedUsersPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function getTrashedPaginateDatas(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        return $this->userRepository->trashPaginate($perPage, $filters);
+        return $this->interface->trashPaginate($perPage, $filters);
     }
 
-    public function getUserById(int $id): ?User
+    public function getDataById(int $id): ?User
     {
-        return $this->userRepository->find($id);
+        return $this->interface->find($id);
     }
 
-    public function getUserByEmail(string $email): ?User
+    public function getDataByEmail(string $email): ?User
     {
-        return $this->userRepository->findByEmail($email);
+        return $this->interface->findByEmail($email);
     }
 
-    public function createUser(CreateUserDTO $dto): User
+    public function createData(array $data): User
     {
-        return $this->createUserAction->execute($dto);
+        return $this->createAction->execute($data);
     }
 
-    public function updateUser(int $id, UpdateUserDTO $dto): User
+    public function updateData(int $id, array $data): User
     {
-        return $this->updateUserAction->execute($id, $dto);
+        return $this->updateAction->execute($id, $data);
     }
 
-    public function deleteUser(int $id, bool $forceDelete = false): bool
+    public function deleteData(int $id, bool $forceDelete = false): bool
     {
-        return $this->deleteUserAction->execute($id, $forceDelete);
+        return $this->deleteAction->execute($id, $forceDelete);
     }
 
-    public function restoreUser(int $id): bool
+    public function restoreData(int $id, int $actioner_id): bool
     {
-        return $this->deleteUserAction->restore($id);
+        return $this->deleteAction->restore($id, $actioner_id);
     }
 
-    public function getActiveUsers(): Collection
+    public function getActiveData(): Collection
     {
-        return $this->userRepository->getActive();
+        return $this->interface->getActive();
     }
 
-    public function getInactiveUsers(): Collection
+    public function getInactiveData(): Collection
     {
-        return $this->userRepository->getInactive();
+        return $this->interface->getInactive();
     }
 
-    public function searchUsers(string $query): Collection
+    public function searchDatas(string $query): Collection
     {
-        return $this->userRepository->search($query);
+        return $this->interface->search($query);
     }
 
-    public function bulkDeleteUsers(array $ids): int
+    public function bulkDeleteDatas(array $ids): int
     {
-        return $this->userRepository->bulkDelete($ids);
+        return $this->interface->bulkDelete($ids);
     }
 
     public function bulkUpdateStatus(array $ids, UserAccountStatus $status): int
     {
-        return $this->userRepository->bulkUpdateStatus($ids, $status->value);
+        return $this->interface->bulkUpdateStatus($ids, $status->value);
     }
 
-    public function getUsersCount(array $filters = []): int
+    public function getDatasCount(array $filters = []): int
     {
-        return $this->userRepository->count($filters);
+        return $this->interface->count($filters);
     }
 
-    public function userExists(int $id): bool
+    public function dataExists(int $id): bool
     {
-        return $this->userRepository->exists($id);
+        return $this->interface->exists($id);
     }
 
-    public function activateUser(int $id): bool
+    public function activateData(int $id): bool
     {
-        $user = $this->getUserById($id);
+        $user = $this->getDataById($id);
         
         if (!$user) {
             return false;
@@ -115,9 +112,9 @@ class UserService
         return true;
     }
 
-    public function deactivateUser(int $id): bool
+    public function deactivateData(int $id): bool
     {
-        $user = $this->getUserById($id);
+        $user = $this->getDataById($id);
         
         if (!$user) {
             return false;
@@ -127,9 +124,9 @@ class UserService
         return true;
     }
 
-    public function suspendUser(int $id): bool
+    public function suspendData(int $id): bool
     {
-        $user = $this->getUserById($id);
+        $user = $this->getDataById($id);
         
         if (!$user) {
             return false;
@@ -138,13 +135,13 @@ class UserService
         $user->suspend();
         return true;
     }
-    public function bulkRestoreUsers(array $ids): int
+    public function bulkRestoreDatas(array $ids, int $actioner_id): int
     {
-        return $this->userRepository->bulkRestore($ids);
+        return $this->interface->bulkRestore($ids, $actioner_id);
     }
 
-    public function bulkForceDeleteUsers(array $ids): int
+    public function bulkForceDeleteDatas(array $ids): int
     {
-        return $this->userRepository->bulkForceDelete($ids);
+        return $this->interface->bulkForceDelete($ids);
     }
 }
