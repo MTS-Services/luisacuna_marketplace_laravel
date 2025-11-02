@@ -6,6 +6,7 @@ use App\Enums\GameStatus;
 use App\Repositories\Contracts\GameRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\Game;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
 
 class GameRepository implements GameRepositoryInterface
@@ -14,6 +15,11 @@ class GameRepository implements GameRepositoryInterface
     public function __construct(public Game $model)
     {
 
+    }
+
+    public function all(): Collection    
+    {
+        return $this->model->all();
     }
     public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator
     {

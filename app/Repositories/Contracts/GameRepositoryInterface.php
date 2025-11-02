@@ -9,7 +9,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 interface GameRepositoryInterface
 {
-    public function getAll():Collection;
+    public function all():Collection;
 
     public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
     
