@@ -33,40 +33,39 @@ class UpdateAction
                 'user_data' => $oldData
             ]);
             
-            Log::info('UpdateUserDTO data', [
-                'dto_data' => $dto->toArray()
-            ]);
 
-            // Get data from DTO
-            $data = $dto->toArray();
+            $new_data = [
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
+                'username' => $data['username'],
+                'country_id' => $data['country_id'],
+                'date_of_birth' => $data['date_of_birth'],
+                'email' => $data['email'],
+                'phone' => $data['phone'],
+                'account_status' => $data['account_status'],                
+                'updater_id' => admin()->id,
+            ];
 
-            // Handle avatar upload
-            if ($dto->avatar) {
-                Log::info('Processing avatar upload');
-                
-                // Delete old avatar
-                if ($user->avatar) {
-                    Storage::disk('public')->delete($user->avatar);
-                    Log::info('Old avatar deleted', ['path' => $user->avatar]);
-                }
-                
-                $avatarPath = $dto->avatar->store('users', 'public');
-                $data['avatar'] = $avatarPath;
-                
-                Log::info('New avatar uploaded', ['path' => $avatarPath]);
+            if($data['password'] != null && $data['password'] != '' && $data['password']){
+
+                $new_data['password'] = $data['password'];
+
+            }
+          
+             if($data['avatar']) {
+
+                $new_data['avatar'] = Storage::disk('public')->putFile('admins', $data['avatar']);
+
+                if (Storage::disk('public')->exists($oldData['avatar'])) {
+
+                    Storage::disk('public')->delete($oldData['avatar']);
+                }   
             }
 
-            // Handle avatar removal
-            if ($dto->removeAvatar && $user->avatar) {
-                Log::info('Removing avatar', ['path' => $user->avatar]);
-                Storage::disk('public')->delete($user->avatar);
-                $data['avatar'] = null;
-            }
-
-            Log::info('Data to update', ['data' => $data]);
+       
 
             // Update user
-            $updated = $this->interface->update($userId, $data);
+            $updated = $this->interface->update($userId, $new_data);
             
             if (!$updated) {
                 Log::error('Failed to update user in repository', ['user_id' => $userId]);
@@ -75,31 +74,9 @@ class UpdateAction
 
             // Refresh the user model
             $user = $user->fresh();
-            
-            Log::info('User after update', [
-                'user_data' => $user->getAttributes()
-            ]);
 
-            // Calculate changes - compare actual attributes, not toArray() which includes relations
-            $newData = $user->getAttributes();
-            $changes = [];
-            
-            foreach ($newData as $key => $value) {
-                if (isset($oldData[$key]) && $oldData[$key] != $value) {
-                    $changes[$key] = [
-                        'old' => $oldData[$key],
-                        'new' => $value
-                    ];
-                }
-            }
-
-            Log::info('Changes detected', ['changes' => $changes]);
-
-            // Dispatch event only if there are actual changes
-            if (!empty($changes)) {
-                event(new UserUpdated($user, $changes));
-            }
-
+            // Dispatch event
+            event(new UserUpdated($user, $oldData));
             return $user;
         });
     }

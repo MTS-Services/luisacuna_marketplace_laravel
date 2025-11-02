@@ -76,7 +76,7 @@ class Edit extends Component
        
             $data = $this->form->fillables();
 
-            $data['updated_by'] = admin()->id;
+            $data['updater_id'] = admin()->id;
 
             $this->admin = $this->service->updateData($this->adminId, $data);
 

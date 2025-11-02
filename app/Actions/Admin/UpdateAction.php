@@ -63,7 +63,7 @@ class UpdateAction
 
             
 
-            if($data['password']) {
+            if($data['password'] && $data['password'] != '' && $data['password'] != null ) {
                 $new_data['password'] = $data['password'];
             }
 

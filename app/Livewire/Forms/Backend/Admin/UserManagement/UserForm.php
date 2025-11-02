@@ -49,7 +49,7 @@ class UserForm extends Form
         $rules = [
             'first_name' => 'required|string|max:255',
             'last_name' => 'nullable|string|max:255',
-            'username' => 'nullable|string|max:255|regex:/^[A-Za-z0-9_\-\$]+$/',
+            'username' => $this->isUpdating() ? 'nullable|string|max:255|regex:/^[A-Za-z0-9_\-\$]+$/|unique:users,username,' . $this->user_id : 'required|string|max:255|unique:users,username|regex:/^[A-Za-z0-9_\-\$]+$/',
             // 'display_name' => 'nullable|string|max:255',
             'date_of_birth' => 'nullable|date',
             'country_id' => 'required|exists:countries,id',
@@ -69,7 +69,7 @@ class UserForm extends Form
         $this->user_id = $user->id;
         $this->first_name = $user->first_name;
         $this->last_name = $user->last_name;
-        $this->username = $user->username;
+        $this->username = $user->username ?? null;
         // $this->display_name = $user->display_name;
         $this->country_id = $user->country_id;
         $this->date_of_birth = $user->date_of_birth;
@@ -110,7 +110,7 @@ class UserForm extends Form
             // 'display_name',
             'date_of_birth' => $this->date_of_birth,
             'country_id' => $this->country_id,
-            // 'language_id' => $this->language,
+            'language_id' => $this->language,
             'email' => $this->email,
             'password' => $this->password,
             'phone' => $this->phone,
