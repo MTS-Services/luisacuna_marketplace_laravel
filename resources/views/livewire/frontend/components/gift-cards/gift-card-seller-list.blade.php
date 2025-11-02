@@ -1,6 +1,6 @@
 <main class="mx-auto">
     {{-- header --}}
-    <section class="container mt-16">
+    <section class="container lg:mt-2">
         {{-- inner nav --}}
         <div class="sm:py-4 sm:px-8 lg:py-0 lg:px-0">
             <div class=" text-text-white px-18 lg:px-0 md:px-0">

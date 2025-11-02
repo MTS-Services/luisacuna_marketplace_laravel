@@ -158,7 +158,7 @@ class CurrencyRepository implements CurrencyRepositoryInterface
         if (!$currency) {
             return false;
         }
-        $currency->update(['restored_by' => $actionerId]);
+        $currency->update(['restored_by' => $actionerId, 'restored_at' => now()]);
 
         return $currency->restore();
     }
@@ -178,7 +178,7 @@ class CurrencyRepository implements CurrencyRepositoryInterface
     public function bulkRestore(array $ids, int $actionerId): int
     {
         return DB::transaction(function () use ($ids, $actionerId) {
-            $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restored_by' => $actionerId]);
+            $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restored_by' => $actionerId, 'restored_at' => now()]);
             return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
         });
     }

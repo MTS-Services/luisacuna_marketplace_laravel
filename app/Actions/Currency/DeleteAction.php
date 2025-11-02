@@ -19,7 +19,6 @@ class DeleteAction
 
             if ($forceDelete) {
                 $currency = $this->interface->findTrashed($id);
-                dd($currency, 'currency');
             } else {
                 $currency = $this->interface->find($id);
             }

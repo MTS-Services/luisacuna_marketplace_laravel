@@ -24,7 +24,7 @@
         </div>
 
         {{-- 🌟 Dropdown Content --}}
-        <div class="bg-bg-primary flex flex-col lg:flex-row items-start justify-between rounded-lg py-11 px-4 lg:px-10 min-h-[578px]" >
+        <div class="bg-bg-primary flex flex-col lg:flex-row items-start justify-between rounded-lg py-11 px-4 lg:px-10 min-h-[578px] max-h-screen overflow-y-auto" >
             
             {{-- Popular Games Section --}}
             <div class="w-full lg:w-2/3 pt-10 order-2 lg:order-1">
