@@ -15,6 +15,7 @@ use App\Http\Controllers\Frontend\UserProfileController;
 use App\Livewire\Frontend\Components\Boostings\SubscribeBoosting;
 use App\Livewire\Frontend\Components\BulkUpload;
 use App\Livewire\Frontend\Components\GameCurrency;
+use App\Livewire\Frontend\Components\SelectGame;
 use NunoMaduro\Collision\Adapters\Phpunit\Subscribers\Subscriber;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -40,6 +41,8 @@ Route::get('/items', [ItemsController::class, 'items'])->name('items');
 Route::get('subscripe-boostings', SubscribeBoosting::class)->name('subscripe-boostings');
 Route::get('bulk-upload',BulkUpload::class)->name('bulk-upload');
 Route::get('game-currency', GameCurrency::class)->name('game-currency');
+Route::get('select-game', SelectGame::class)->name('select-game');
+
 
 Route::get('/currency', [CurrencyController::class, 'index'])->name('currency');
 Route::get('boosting', [BoostingController::class, 'index'])->name('boosting');
