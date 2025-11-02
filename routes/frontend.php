@@ -66,7 +66,6 @@ Route::get('/top-up', [TopUpController::class, 'topUp'])->name('top-up');
 // Route::get('/gift-card', [GiftCardController::class, 'giftCard'])->name('gift-card');
 // Coaching
 Route::get('/coaching', [CoachingController::class, 'coaching'])->name('coaching');
-Route::get('/game/{slug}', [GameController::class, 'index'])->name('game.index');
 Route::get('/currency', [CurrencyController::class, 'index'])->name('currency');
 Route::get('boosting', [BoostingController::class, 'index'])->name('boosting');
 Route::get('account', [UserAccountController::class, 'index'])->name('account');
