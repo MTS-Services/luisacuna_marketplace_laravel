@@ -44,7 +44,7 @@ class BaseModel extends Model
     {
         return $this->belongsTo(Admin::class, 'deleted_by')->select('id', 'name');
     }
-    
+
     public function creater()
     {
         return $this->morphTo();

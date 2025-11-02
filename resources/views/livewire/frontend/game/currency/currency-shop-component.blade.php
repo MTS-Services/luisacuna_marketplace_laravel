@@ -5,7 +5,7 @@
             <!-- Breadcrumb -->
             <div class="flex items-center gap-2 mb-8 text-lg font-semibold">
                 <h1 class="text-blue-100 text-text-primary">
-                    {{$gameName. ' ' . ucwords(request()->get('game-category'))}}
+                    {{ $gameName . ' ' . ucwords(request()->get('game-category')) }}
                 </h1>
                 <span class=" text-text-primary">></span>
                 <span class=" text-text-primary">Seller list</span>
@@ -139,7 +139,7 @@
                         <div class="flex gap-1 text-sm text-text-secondary py-4">
                             <span
                                 class="flex items-center gap-1 px-2 py-1  text-white text-text-white bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-text-secondary "><img
-                                    src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
+                                    src="{{ asset('assets/images/light.png') }}" alt=""> 2222Pc</span>
                             <span
                                 class="flex items-center gap-2 px-3 py-1  text-white text-text-white bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition  ">Pickaxes:
                                 0-10</span>
