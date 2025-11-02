@@ -31,7 +31,8 @@ class User extends AuthBaseModel implements Auditable
         'username',
         'first_name',
         'last_name',
-
+        
+        'google_id',
         'avatar',
         'date_of_birth',
 
@@ -73,9 +74,10 @@ class User extends AuthBaseModel implements Auditable
         'deleter_id',
         'restorer_id',
 
+
     ];
 
-     protected $auditExclude = [
+    protected $auditExclude = [
         'password',
         'remember_token',
         'created_at',
@@ -183,7 +185,7 @@ class User extends AuthBaseModel implements Auditable
             $q->where('username', 'like', "%{$search}%")
                 ->orWhere('first_name', 'like', "%{$search}%")
                 ->orWhere('last_name', 'like', "%{$search}%")
-               
+
                 ->orWhere('email', 'like', "%{$search}%")
                 ->orWhere('phone', 'like', "%{$search}%");
         });
