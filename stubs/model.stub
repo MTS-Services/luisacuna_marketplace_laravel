@@ -11,8 +11,9 @@ class {{ class }} extends BaseModel
  
     protected $fillable = [
         'sort_order',
- 
-      //here AuditColumns 
+
+        'restored_at',
+        //here AuditColumns 
     ];
  
     protected $hidden = [
@@ -20,7 +21,7 @@ class {{ class }} extends BaseModel
     ];
  
     protected $casts = [
-        //
+        'restored_at' => 'datetime',
     ];
  
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
