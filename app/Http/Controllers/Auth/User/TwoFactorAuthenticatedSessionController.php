@@ -14,7 +14,7 @@ class TwoFactorAuthenticatedSessionController extends Controller
     public function store(Request $request)
     {
         $guard = Auth::guard('web');
-        
+
         // Check if there's a challenged user in session
         if (!$request->session()->has('login.id')) {
             return redirect()->route('login')->withErrors([
@@ -50,17 +50,17 @@ class TwoFactorAuthenticatedSessionController extends Controller
         // Check if recovery code is provided
         if ($request->filled('recovery_code')) {
             $result = $this->verifyRecoveryCode($user, $request->input('recovery_code'));
-            
+
             if (!$result['valid']) {
                 return back()->withErrors([
                     'recovery_code' => $result['message'],
                 ]);
             }
-        } 
+        }
         // Check if 2FA code is provided
         elseif ($request->filled('code')) {
             $result = $this->verifyTwoFactorCode($user, $request->input('code'));
-            
+
             if (!$result['valid']) {
                 return back()->withErrors([
                     'code' => $result['message'],
@@ -72,11 +72,11 @@ class TwoFactorAuthenticatedSessionController extends Controller
         $guard->login($user, $request->session()->get('login.remember', false));
 
         $request->session()->regenerate();
-        
+
         // Clear the login session data
         $request->session()->forget(['login.id', 'login.remember']);
 
-        return redirect()->intended(route('user.profile'));
+        return redirect()->intended(route('user.purchased-orders'));
     }
 
     /**
@@ -86,9 +86,9 @@ class TwoFactorAuthenticatedSessionController extends Controller
     {
         try {
             $google2fa = app(Google2FA::class);
-            
+
             $decryptedSecret = decrypt($user->two_factor_secret);
-            
+
             $valid = $google2fa->verifyKey($decryptedSecret, $code);
 
             if (!$valid) {
@@ -123,7 +123,7 @@ class TwoFactorAuthenticatedSessionController extends Controller
             // Clean up the recovery code (remove spaces, dashes, underscores)
             $recoveryCode = str_replace([' ', '-', '_'], '', $recoveryCode);
             $recoveryCode = strtolower(trim($recoveryCode));
-            
+
             Log::info('User recovery code verification attempt', [
                 'user_id' => $user->id,
                 'recovery_code_input' => $recoveryCode,
@@ -142,7 +142,7 @@ class TwoFactorAuthenticatedSessionController extends Controller
             }
 
             // Normalize all codes to lowercase for comparison
-            $normalizedCodes = array_map(function($code) {
+            $normalizedCodes = array_map(function ($code) {
                 return strtolower(str_replace([' ', '-', '_'], '', $code));
             }, $recoveryCodes);
 
@@ -153,7 +153,7 @@ class TwoFactorAuthenticatedSessionController extends Controller
 
             // Check if the code exists in the list (case-insensitive)
             $codeKey = array_search($recoveryCode, $normalizedCodes);
-            
+
             if ($codeKey === false) {
                 Log::warning('User recovery code not found', [
                     'user_id' => $user->id,
@@ -187,7 +187,7 @@ class TwoFactorAuthenticatedSessionController extends Controller
                 'user_id' => $user->id,
                 'exception' => get_class($e),
             ]);
-            
+
             return [
                 'valid' => false,
                 'message' => 'An error occurred while verifying the recovery code.',

@@ -13,4 +13,6 @@ class AccountsController extends Controller
     {
         return view($this->masterView);
     }
+
+
 }

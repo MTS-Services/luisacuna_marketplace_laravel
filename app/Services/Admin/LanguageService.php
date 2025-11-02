@@ -22,7 +22,7 @@ class LanguageService
         protected DeleteLanguageAction $deleteLanguageAction,
     ) {}
 
-    public function getAllLanguages(): Collection
+    public function getAll(): Collection
     {
         return $this->languageRepository->all();
     }

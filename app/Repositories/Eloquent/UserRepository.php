@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -102,7 +103,7 @@ class UserRepository implements UserRepositoryInterface
         return $user->forceDelete();
     }
 
-    public function restore(int $id): bool
+    public function restore(int $id, $actioner_id): bool
     {
         $user = $this->model->withTrashed()->find($id);
 
@@ -110,6 +111,7 @@ class UserRepository implements UserRepositoryInterface
             return false;
         }
 
+        $user->update(['restorer_id' => $actioner_id]);
         return $user->restore();
     }
 
@@ -154,9 +156,15 @@ class UserRepository implements UserRepositoryInterface
         return $this->model->whereIn('id', $ids)->update(['account_status' => $status]);
     }
 
-    public function bulkRestore(array $ids): int
+    public function bulkRestore(array $ids, int $actioner_id): int
     {
-        return $this->model->withTrashed()->whereIn('id', $ids)->restore();
+       return DB::transaction(function() use ($ids, $actioner_id) {
+            
+            $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restorer_id' => $actioner_id]);
+
+             return $this->model->withTrashed()->whereIn('id', $ids)->restore();
+        });
+       
     }
 
     public function bulkForceDelete(array $ids): int

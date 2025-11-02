@@ -84,6 +84,7 @@ class AuthBaseModel extends Authenticatable
         return $this->updated_at && $this->updated_at != $this->created_at ? Carbon::parse($this->updated_at)->format('d M, Y h:i A') : 'N/A';
     }
 
+   
     public function getDeletedAtFormattedAttribute(): string
     {
         return $this->deleted_at ? Carbon::parse($this->deleted_at)->format('d M, Y h:i A') : 'N/A';
@@ -120,6 +121,11 @@ class AuthBaseModel extends Authenticatable
         return auth_storage_url($this->image);
     }
 
+    public function getLastSyncedAtHumanAttribute(){
+
+        return $this->last_synced_at ? $this->last_synced_at->diffForHumans() : 'N/A';
+
+    }
     /* ================================================================
      * *** Scopes ***
      ================================================================ */

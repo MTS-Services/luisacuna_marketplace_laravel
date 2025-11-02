@@ -16,6 +16,7 @@ class CreateAction
     public function execute(array $data): Currency
     {
         return DB::transaction(function () use ($data) {
+            // Create Currency
             $currency = $this->interface->create($data);
             // Dispatch event
             // event(new CurrencyCreated($currency));
