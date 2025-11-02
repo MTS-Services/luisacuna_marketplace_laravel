@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Admin\UserManagement\UserController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AuditingController;
+use App\Http\Controllers\Backend\admin\ProductManagament\ProductTypeController;
 use App\Http\Controllers\Backend\Admin\Settings\CurrencyController;
 use App\Http\Controllers\Backend\Admin\Settings\LanguageController;
 
@@ -74,6 +75,13 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/edit/{id}', 'edit')->name('edit');
             Route::get('/show/{id}', 'show')->name('show');
             Route::get('/trash', 'trash')->name('trash');
+        });
+    });
+
+    Route::group(['prefix' => 'product-management', 'as' => 'pm.'], function () {
+        Route::controller(ProductTypeController::class)->name('productType.')->prefix('productType')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
         });
     });
 

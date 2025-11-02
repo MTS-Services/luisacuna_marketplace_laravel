@@ -7,7 +7,6 @@ use App\Enums\CurrencyStatus;
 use App\Livewire\Forms\Backend\Admin\Settings\CurrencyForm;
 use App\Services\CurrencyService;
 use App\Traits\Livewire\WithNotification;
-use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
