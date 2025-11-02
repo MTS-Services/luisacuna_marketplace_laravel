@@ -116,7 +116,7 @@ class Register extends Component
         Session::regenerate();
 
         // Redirect to profile or dashboard
-        $this->redirect(route('user.profile', absolute: false), navigate: true);
+        $this->redirect(route('user.purchased-orders', absolute: false), navigate: true);
     }
 
     #[Layout('layouts.guest')]
