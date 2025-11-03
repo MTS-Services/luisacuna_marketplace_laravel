@@ -3,53 +3,59 @@
 namespace App\Livewire\Forms\Backend\Admin\UserManagement;
 
 use Livewire\Form;
-
+use App\Enums\UserStatus;
 use App\Enums\UserAccountStatus;
-use App\Livewire\Frontend\Components\UserAccount;
-use Illuminate\Http\UploadedFile;
-use Livewire\Attributes\Locked;
-
+use Livewire\Attributes\Validate;
 
 class UserForm extends Form
 {
-    #[Locked]
-    public ?int $user_id = null;
+    #[Validate('required|string|max:255')]
+    public $first_name = '';
 
-    public string $first_name = '';
+    #[Validate('nullable|string|max:255')]
+    public $last_name = '';
 
-    public ?string $last_name = '';
+    #[Validate('nullable|string|max:255|regex:/^[A-Za-z0-9_\-\$]+$/')]
+    public $username = '';
 
-    public ?string $username = null;
+    #[Validate('nullable|date')]
+    public $date_of_birth = '';
 
-    public ?string $date_of_birth = '';
+    #[Validate('required|exists:countries,id')]
+    public $country_id = '';
 
-    public string $country_id = '';
+     #[Validate('required|string|max:255')]
+    public $language = '';
 
-    public string $language = '';
+    // #[Validate('nullable|string|max:255')]
+    // public $display_name = '';
 
-    public ?string $display_name = '';
+    #[Validate('required|email|max:255')]
+    public $email = '';
 
-    public string $email = '';
+    #[Validate('nullable|string|min:8')]
+    public $password = '';
 
-    public ?string $password = '';
+    #[Validate('nullable|string|min:8|same:password')]
+    public $password_confirmation = '';
 
-    public ?string $password_confirmation = '';  
+    #[Validate('nullable|string|max:20')]
+    public $phone = '';
 
-    public ?string $phone = '';
+    #[Validate('required|string')]
+    public $account_status = '';
 
-    public string $account_status;
+    #[Validate('nullable|image|max:2048')]
+    public $avatar;
 
-    public ?UploadedFile $avatar = null;
-
-    public bool $remove_avatar = false;
-
+    public $remove_avatar = false;
 
     public function rules(): array
     {
         $rules = [
             'first_name' => 'required|string|max:255',
             'last_name' => 'nullable|string|max:255',
-            'username' => $this->isUpdating() ? 'nullable|string|max:255|regex:/^[A-Za-z0-9_\-\$]+$/|unique:users,username,' . $this->user_id : 'required|string|max:255|unique:users,username|regex:/^[A-Za-z0-9_\-\$]+$/',
+            'username' => 'nullable|string|max:255|regex:/^[A-Za-z0-9_\-\$]+$/',
             // 'display_name' => 'nullable|string|max:255',
             'date_of_birth' => 'nullable|date',
             'country_id' => 'required|exists:countries,id',
@@ -66,10 +72,9 @@ class UserForm extends Form
 
     public function setUser($user): void
     {
-        $this->user_id = $user->id;
         $this->first_name = $user->first_name;
         $this->last_name = $user->last_name;
-        $this->username = $user->username ?? null;
+        $this->username = $user->username;
         // $this->display_name = $user->display_name;
         $this->country_id = $user->country_id;
         $this->date_of_birth = $user->date_of_birth;
@@ -99,23 +104,6 @@ class UserForm extends Form
 
     protected function isUpdating(): bool
     {
-        return !empty($this->user_id);
-    }
-
-    public function fillables(): array {
-        return [
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'username' => $this->username,
-            // 'display_name',
-            'date_of_birth' => $this->date_of_birth,
-            'country_id' => $this->country_id,
-            'language_id' => $this->language,
-            'email' => $this->email,
-            'password' => $this->password,
-            'phone' => $this->phone,
-            'account_status' => $this->account_status,
-            'avatar'    => $this->avatar,
-        ];
+        return !empty($this->email);
     }
 }

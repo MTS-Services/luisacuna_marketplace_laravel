@@ -6,7 +6,6 @@ use App\Models\Admin;
 use App\Repositories\Contracts\AdminRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 
 class AdminRepository implements AdminRepositoryInterface
 {
@@ -101,14 +100,13 @@ class AdminRepository implements AdminRepositoryInterface
         return $admin->forceDelete();
     }
 
-    public function restore(int $id, int $actionerId): bool
+    public function restore(int $id): bool
     {
-        $admin = $this->find($id);
+        $admin = $this->model->withTrashed()->find($id);
         
         if (!$admin) {
             return false;
         }
-        $admin->update(['restorer_id' => $actionerId]);
 
         return $admin->restore();
     }
@@ -153,12 +151,9 @@ class AdminRepository implements AdminRepositoryInterface
     {
         return $this->model->whereIn('id', $ids)->update(['status' => $status]);
     }
-    public function bulkRestore(array $ids, int $actionerId): int
+    public function bulkRestore(array $ids): int
     {
-        return DB::transaction(function () use ($ids, $actionerId) {
-            $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restorer_id' => $actionerId]);
-            return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
-        });
+         return $this->model->withTrashed()->whereIn('id', $ids)->restore();
     }
     public function bulkForceDelete(array $ids): int //
     {  
