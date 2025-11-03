@@ -2,19 +2,24 @@
 
 namespace App\Actions\Product;
 
-use App\Models\ProductType;
-use App\Repositories\Contracts\ProductTypeRepositoryInterface;
+
+use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use App\Repositories\Contracts\ProductRepositoryInterface;
 
 class CreateAction
 {
+    /**
+     * Create a new class instance.
+     */
     public function __construct(
-        protected ProductTypeRepositoryInterface $interface
-    ) {}
+        protected ProductRepositoryInterface $interface
+    )
+    {}
 
-    public function execute(array $data): ProductType
+    public function execute(array $data): Product
     {
-       return DB::transaction(function () use ($data) {
+        return DB::transaction(function () use ($data) {
             $productType = $this->interface->create($data);
             return $productType->fresh();
         });

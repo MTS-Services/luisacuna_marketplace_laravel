@@ -25,6 +25,16 @@ class UserService
         return $this->interface->all();
     }
 
+    public function getAllSellersData(): Collection
+    {
+        return $this->interface->getSellers();
+    }
+
+    public function getAllBuyersData(): Collection
+    {
+        return $this->interface->getBuyers();
+    }
+
     public function getPaginateDatas(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return $this->interface->paginate($perPage, $filters);
@@ -103,7 +113,7 @@ class UserService
     public function activateData(int $id): bool
     {
         $user = $this->getDataById($id);
-        
+
         if (!$user) {
             return false;
         }
@@ -115,7 +125,7 @@ class UserService
     public function deactivateData(int $id): bool
     {
         $user = $this->getDataById($id);
-        
+
         if (!$user) {
             return false;
         }
@@ -127,7 +137,7 @@ class UserService
     public function suspendData(int $id): bool
     {
         $user = $this->getDataById($id);
-        
+
         if (!$user) {
             return false;
         }

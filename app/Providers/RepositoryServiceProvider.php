@@ -7,6 +7,7 @@ use App\Repositories\Eloquent\GameRepository;
 use App\Repositories\Eloquent\UserRepository;
 use App\Repositories\Eloquent\AdminRepository;
 use App\Repositories\Eloquent\AuditRepository;
+use App\Repositories\Eloquent\ProductRepository;
 use App\Repositories\Eloquent\CurrencyRepository;
 use App\Repositories\Eloquent\LanguageRepository;
 use App\Repositories\Eloquent\ProductTypeRepository;
@@ -15,6 +16,7 @@ use App\Repositories\Contracts\GameRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\AdminRepositoryInterface;
 use App\Repositories\Contracts\AuditRepositoryInterface;
+use App\Repositories\Contracts\ProductRepositoryInterface;
 use App\Repositories\Contracts\CurrencyRepositoryInterface;
 use App\Repositories\Contracts\LanguageRepositoryInterface;
 use App\Repositories\Contracts\ProductTypeRepositoryInterface;
@@ -60,6 +62,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             ProductTypeRepositoryInterface::class,
             ProductTypeRepository::class
+        );
+        $this->app->bind(
+            ProductRepositoryInterface::class,
+            ProductRepository::class
         );
     }
 

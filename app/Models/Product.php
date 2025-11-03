@@ -3,26 +3,62 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
-use App\Enums\ProductTypeStatus;
+use App\Enums\ProductsStatus;
+use App\Enums\ProductsVisibility;
+use App\Enums\ProductsDeliveryMethod;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 
-class ProductType extends BaseModel
+class Product extends BaseModel
 {
     //
 
     protected $fillable = [
         'sort_order',
-        'name',
+        'seller_id',
+        'game_id',
+        'product_type_id',
+        'title',
         'slug',
         'description',
-        'icon',
-        'requires_delivery_time',
-        'requires_server_info',
-        'requires_character_info',
-        'max_delivery_time_hours',
-        'commission_rate',
+        'price',
+        'currency',
+        'discount_percentage',
+        'discounted_price',
+        'stock_quantity',
+        'min_purchase_quantity',
+        'max_purchase_quantity',
+        'unlimited_stock',
+        'delivery_method',
+        'delivery_time_hours',
+        'auto_delivery_content',
+        'server_id',
+        'platform',
+        'region',
+        'specifications',
+        'requirements',
         'status',
+        'is_featured',
+        'is_hot_deal',
+        'visibility',
+        'total_sales',
+        'total_revenue',
+        'view_count',
+        'favorite_count',
+        'average_rating',
+        'total_reviews',
+        'reviewed_by',
+        'reviewed_at',
+        'rejection_reason',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
+
+
+        'creater_type',
+        'updater_type',
+        'deleter_type',
+        'restorer_type',
 
 
         'creater_id',
@@ -30,10 +66,6 @@ class ProductType extends BaseModel
         'deleter_id',
         'restorer_id',
 
-        'creater_type',
-        'updater_type',
-        'deleter_type',
-        'restorer_type',
         //here AuditColumns 
     ];
 
@@ -42,21 +74,39 @@ class ProductType extends BaseModel
     ];
 
     protected $casts = [
-        'status' => ProductTypeStatus::class,
+        'delivery_method' => ProductsDeliveryMethod::class,
+        'status' => ProductsStatus::class,
+        'visibility' => ProductsVisibility::class,
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    public function products()
+    public function seller()
     {
-        return $this->hasMany(Product::class, 'product_type_id', 'id');
+        return $this->belongsTo(User::class, 'seller_id', 'id');
     }
+    public function game()
+    {
+        return $this->belongsTo(Game::class, 'game_id', 'id');
+    }
+
+    public function productType()
+    {
+        return $this->belongsTo(ProductType::class, 'product_type_id', 'id');
+    }
+    public function reviewedBy()
+    {
+        return $this->belongsTo(User::class, 'reviewed_by', 'id');
+    }
+
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+
+
 
 
 
@@ -67,12 +117,12 @@ class ProductType extends BaseModel
 
     public function scopeActive(Builder $query): Builder
     {
-        return $query->where('status', ProductTypeStatus::ACTIVE);
+        return $query->where('status', ProductsStatus::ACTIVE);
     }
 
     public function scopeInactive(Builder $query): Builder
     {
-        return $query->where('status', ProductTypeStatus::INACTIVE);
+        return $query->where('status', ProductsStatus::INACTIVE);
     }
 
     public function scopeFilter(Builder $query, array $filters): Builder
@@ -89,6 +139,7 @@ class ProductType extends BaseModel
                 $q->where('sluge', 'like', "%{$sluge}%")
             );
     }
+
 
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -109,12 +160,9 @@ class ProductType extends BaseModel
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
-            'commission_rate' => (int) $this->commission_rate,
             'status' => $this->status,
         ];
     }
-
-
 
     public function __construct(array $attributes = [])
     {

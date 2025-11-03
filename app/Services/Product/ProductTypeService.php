@@ -4,11 +4,11 @@ namespace App\Services\Product;
 
 use App\Models\ProductType;
 use App\Enums\ProductTypeStatus;
-use App\Actions\Product\BulkAction;
-use App\Actions\Product\CreateAction;
-use App\Actions\Product\DeleteAction;
-use App\Actions\Product\UpdateAction;
-use App\Actions\Product\RestoreAction;
+use App\Actions\ProductType\BulkAction;
+use App\Actions\ProductType\CreateAction;
+use App\Actions\ProductType\DeleteAction;
+use App\Actions\ProductType\UpdateAction;
+use App\Actions\ProductType\RestoreAction;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Repositories\Contracts\ProductTypeRepositoryInterface;

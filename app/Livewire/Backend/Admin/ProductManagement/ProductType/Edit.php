@@ -46,7 +46,8 @@ class Edit extends Component
         $this->form->validate();
         try {
             $data = $this->form->fillables();
-            $data['updated_by'] = admin()->id;
+            $data['updater_id'] = admin()->id;
+            $data['updater_by'] = admin()->id;
             $updated = $this->service->updateData($this->productType->id, $data);            
 
             $this->dispatch('ProductTypeUpdated');

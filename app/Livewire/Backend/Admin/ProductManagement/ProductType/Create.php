@@ -39,10 +39,10 @@ class Create extends Component
     public function save()
     {
         $this->form->validate();
-        dd($this->form->description);
         try {
             $data = $this->form->fillables();
-            $data['created_by'] = admin()->id;
+            $data['creater_id'] = admin()->id;
+            $data['creater_type'] = admin()->id;
             $this->service->createData($data);
 
             $this->success('Data created successfully.');

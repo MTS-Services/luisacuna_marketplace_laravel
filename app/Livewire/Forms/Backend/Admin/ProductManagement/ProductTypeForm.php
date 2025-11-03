@@ -33,8 +33,8 @@ class ProductTypeForm extends Form
     public function rules(): array
     {
         $slugRule = $this->isUpdating()
-            ? 'required|string|max:10|unique:product_types,slug,' . $this->id
-            : 'required|string|max:10|unique:product_types,slug';
+            ? 'required|string|max:255|unique:product_types,slug,' . $this->id
+            : 'required|string|max:255|unique:product_types,slug';
 
         return [
             'name' => 'required|string|max:255',

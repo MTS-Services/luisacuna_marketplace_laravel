@@ -70,4 +70,9 @@ class Game extends BaseModel implements Auditable
         return $this->belongsTo(GameCategory::class, 'game_category_id', 'id');
     }
 
+    public function product()
+    {
+        return $this->hasMany(Product::class, 'game_id', 'id');
+    }
+
 }
