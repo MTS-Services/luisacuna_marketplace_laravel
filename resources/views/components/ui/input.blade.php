@@ -18,7 +18,7 @@
             ]) !!}>
 
         <span class="absolute top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-400 dark:text-gray-500
-                   right-3 rtl:left-3 rtl:right-auto" {{-- <--- Tailwind RTL Variants (The most reliable fix) --}}
+                   right-3 rtl:left-3 rtl:right-auto"
             @click="show = !show">
 
             <flux:icon icon="eye-closed" class="w-5 h-5" x-show="show" />
