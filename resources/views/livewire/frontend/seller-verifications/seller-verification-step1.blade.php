@@ -17,8 +17,10 @@
 
             <!-- Card -->
             <div class="p-6 sm:p-8 md:p-10 dark:bg-zinc-800/30 rounded-3xl w-full">
-                <div class="bg-bg-name px-6 sm:px-10 md:px-20 rounded-3xl w-full py-6 sm:py-8 md:py-10">
-                    <h2 class="text-white text-base sm:text-lg font-medium mb-6 text-center sm:text-left">
+                <div
+                    class="bg-zinc-300/20 dark:bg-bg-name px-6 sm:px-10 md:px-20 rounded-3xl w-full py-6 sm:py-8 md:py-10">
+                    <h2
+                        class="text-text-black dark:text-text-white text-base sm:text-lg font-medium mb-6 text-center sm:text-left">
                         Will you sell on Eldorado as an individual or as a company?
                     </h2>
 
@@ -27,11 +29,11 @@
                         <label class="flex items-center gap-2  cursor-pointer">
                             <input type="radio" name="seller_type" value="individual" checked
                                 class="accent-[#FF2E91] w-4 h-4">
-                            <span class="text-white">Individual</span>
+                            <span class="text-text-black dark:tex-text-white">Individual</span>
                         </label>
                         <label class="flex items-center gap-2  cursor-pointer">
                             <input type="radio" name="seller_type" value="company" class="accent-[#FF2E91] w-4 h-4">
-                            <span class="text-white">Company</span>
+                            <span class="text-text-black dark:tex-text-white">Company</span>
                         </label>
                     </div>
                 </div>

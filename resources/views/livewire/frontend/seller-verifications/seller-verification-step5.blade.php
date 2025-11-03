@@ -18,8 +18,8 @@
     </div>
 
     <div
-        class="dark:bg-zinc-800/30 bg-opacity-40 backdrop-blur-sm rounded-2xl p-8 shadow-2xl  border-opacity-30 w-full max-w-7xl">
-        <h2 class="text-text-white text-lg font-medium mb-6">Take a selfie with your ID</h2>
+        class="dark:bg-zinc-800/30 bg-zinc-300/20  bg-opacity-40 backdrop-blur-sm rounded-2xl p-8 shadow-2xl  border-opacity-30 w-full max-w-7xl">
+        <h2 class="dark:text-white text-black text-lg font-medium mb-6">Take a selfie with your ID</h2>
 
         <!-- Upload Area -->
         <div class="relative mb-6">
@@ -29,7 +29,7 @@
                     <template x-if="!preview">
                         <div class="text-center">
                             <div class="#">
-                                
+
                                 <img src="{{ asset('assets/images/Rectangle.jpg') }}" alt="img" class="w-full h-auto rounded">
                             </div>
                         </div>

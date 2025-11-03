@@ -21,8 +21,7 @@
                 <!-- Email -->
                 <div class="mb-4 sm:mb-6 px-2 sm:px-6">
                     <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">Email</label>
-                    <x-ui.input type="email" placeholder="example@gmail.com" wire:model="email"
-                     />
+                    <x-ui.input type="email" placeholder="example@gmail.com" wire:model="email" />
                     {{-- Error message --}}
                     @error('email')
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
@@ -35,11 +34,10 @@
                 @enderror
 
                 <!-- Password -->
-                <div class="-mt-10 sm:mb-6 px-2 sm:px-6">
-                    <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">Password</label>
+                <div class="-mt-10 sm:mb-6 lg:py-0 px-2 sm:px-6 mt-2 lg:mt-0 md:mt-0">
+                    <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white ">Password</label>
                     <div class="relative">
-                        <x-ui.input type="password" id="password" placeholder="Aex@8465" wire:model="password"
-                         />
+                        <x-ui.input type="password" id="password" placeholder="Aex@8465" wire:model="password" />
                         <button type="button" onclick="togglePassword()"
                             class="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-text-white">
                             <svg class="w-5 h-5" fill="none" stroke="zinc" viewBox="0 0 24 24">

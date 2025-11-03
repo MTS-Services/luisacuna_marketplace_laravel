@@ -16,7 +16,7 @@
             </div>
 
             <!-- Card -->
-            <div class="dark:bg-zinc-800/30 rounded-3xl p-8 sm:p-10 md:p-12 w-full max-w-7xl shadow-xl">
+            <div class="dark:bg-zinc-800/30 bg-zinc-300/20 rounded-3xl p-8 sm:p-10 md:p-12 w-full max-w-7xl shadow-xl">
                 <form class="space-y-6">
                     <!-- First name -->
                     <div>
