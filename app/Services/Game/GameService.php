@@ -14,7 +14,7 @@ use App\Repositories\Contracts\GameRepositoryInterface;
 class GameService
 {
     public function __construct(
-         protected GameRepositoryInterface $repository,
+         protected GameRepositoryInterface $interface,
          protected CreateGameAction $createGameAction , 
          protected DeleteGameAction $deleteGameAction,
          protected UpdateGameAction $updateGameAction
@@ -22,16 +22,16 @@ class GameService
     { }
 
     public function getAll(){
-        return $this->repository->all();
+        return $this->interface->all();
     }
     public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null)
     {
-        return $this->repository->paginate($perPage, $filters, $queries ?? []);
+        return $this->interface->paginate($perPage, $filters, $queries ?? []);
     }
     
     public function OnlyTrashedPaginate(int $perPage = 15, array $filters = [], ?array $queries = null) 
     {
-        return $this->repository->OnlyTrashedPaginate($perPage, $filters, $queries ?? []);
+        return $this->interface->OnlyTrashedPaginate($perPage, $filters, $queries ?? []);
     }
 
     public function deleteGame(array $ids, bool $forceDelete = false)
@@ -41,21 +41,21 @@ class GameService
 
     public function bulkUpdateStatus($ids, GameStatus $status)
     {
-        return $this->repository->bulkUpdateStatus($ids, $status);
+        return $this->interface->bulkUpdateStatus($ids, $status);
     }
 
     public function bulkRestoreGame($ids) :bool
     {
-        return $this->repository->bulkRestoreGame($ids);
+        return $this->interface->bulkRestoreGame($ids);
     }
 
     public function restoreGame($id) :bool
     {
-        return $this->repository->restoreGame($id);
+        return $this->interface->restoreGame($id);
     }
     public function findOrFail($id): Game
     {
-        return $this->repository->findOrFail($id);
+        return $this->interface->findOrFail($id);
     }
 
     public function createGame(CreateGameDTO $data): Game
