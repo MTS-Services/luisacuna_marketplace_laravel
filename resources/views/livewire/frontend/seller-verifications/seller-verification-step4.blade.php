@@ -3,7 +3,7 @@
         <!-- Outer container -->
         <div class=" rounded-3xl lg:p-10 sm:p-10 md:p-12 w-full  flex flex-col items-center shadow-xl">
             <!-- Header -->
-            <div class="text-center mb-8  sm:m-10">
+            <div class="text-center mb-8 sm:m-10">
                 <div class="flex items-center justify-center gap-2 text-purple-400 mb-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="#853EFF" class="w-6 h-6 sm:w-7 sm:h-7">
@@ -20,32 +20,32 @@
                 <form class="space-y-6">
                     <!-- First name -->
                     <div>
-                        <label class="block text-gray-100 mb-2 text-md font-medium">First name</label>
+                        <label class="block text-text-white mb-2 text-md font-medium">First name</label>
                         <input type="text" placeholder="First name"
-                            class="w-full bg-[#3a2b4f] text-gray-200 rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400" />
+                            class="w-full bg-bg-name text-gray-200 rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400" />
                     </div>
 
                     <!-- Last name -->
                     <div>
-                        <label class="block text-gray-100 mb-2 text-sm font-medium">Last name</label>
+                        <label class="block text-text-white mb-2 text-sm font-medium">Last name</label>
                         <input type="text" placeholder="Last name"
-                            class="w-full bg-[#3a2b4f] text-gray-200 rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400" />
+                            class="w-full bg-bg-name text-gray-200 rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400" />
                     </div>
 
                     <!-- Date of birth -->
                     <div>
-                        <label class="block text-gray-100 mb-2 text-sm font-medium">Date of birth:</label>
+                        <label class="block text-text-white mb-2 text-sm font-medium">Date of birth:</label>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <select
-                                class="bg-[#3a2b4f] text-gray-200 rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500">
+                                class="bg-bg-name text-white rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500">
                                 <option>Year</option>
                             </select>
                             <select
-                                class="bg-[#3a2b4f] text-gray-200 rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500">
+                                class="bg-bg-name text-white rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500">
                                 <option>Month</option>
                             </select>
                             <select
-                                class="bg-[#3a2b4f] text-gray-200 rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500">
+                                class="bg-bg-name text-white rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500">
                                 <option>Day</option>
                             </select>
                         </div>
@@ -53,9 +53,9 @@
 
                     <!-- Nationality -->
                     <div>
-                        <label class="block text-gray-100 mb-2 text-sm font-medium">Nationality:</label>
+                        <label class="block text-text-white mb-2 text-sm font-medium">Nationality:</label>
                         <select
-                            class="w-full bg-[#3a2b4f] text-gray-200 rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500">
+                            class="w-full bg-bg-name text-white rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500">
                             <option>Select nationality</option>
                         </select>
                         <div class="h-[1px] bg-purple-600 mt-2"></div>
@@ -63,16 +63,16 @@
 
                     <!-- Street address -->
                     <div>
-                        <label class="block text-gray-100 mb-2 text-sm font-medium">Street address</label>
+                        <label class="block text-text-white mb-2 text-sm font-medium">Street address</label>
                         <input type="text" placeholder="Street address"
-                            class="w-full bg-[#3a2b4f] text-gray-200 rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400" />
+                            class="w-full bg-bg-name text-gray-200 rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400" />
                     </div>
 
                     <!-- City -->
                     <div>
                         <label class="block text-gray-100 mb-2 text-sm font-medium">City</label>
                         <input type="text" placeholder="City"
-                            class="w-full bg-[#3a2b4f] text-gray-200 rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400" />
+                            class="w-full bg-bg-name text-gray-200 rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400" />
                     </div>
 
                     <!-- Country -->
@@ -80,11 +80,11 @@
                         <label class="block text-gray-100 mb-2 text-sm font-medium">Country</label>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <select
-                                class="bg-[#3a2b4f] text-gray-200 rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500">
+                                class="bg-bg-name text-gray-200 rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500">
                                 <option>Select country</option>
                             </select>
                             <input type="text" placeholder="Postal code"
-                                class="bg-[#3a2b4f] text-gray-200 rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400" />
+                                class="bg-bg-name text-gray-200 rounded-md px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400" />
                         </div>
                     </div>
                 </form>

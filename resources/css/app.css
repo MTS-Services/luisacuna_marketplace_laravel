@@ -140,6 +140,7 @@
 
     --color-text-new: var(--color-text-new-light);
     --color-text-white: var(--color-white-light);
+    --color-text-btn-name: #3d3152;
 
     --color-accent: var(--color-accent-light);
     --color-accent-content: var(--color-accent-content-light);
@@ -168,9 +169,10 @@
     --color-bg-white: var(--color-white);
     --color-bg-base: var(--color-bg-base);
    /* Monir */
-     --color-bg-light: var(--color-bg-primary-light);   
+     --color-bg-light: var(--color-bg-primary-light);
      --color-bg-base-50: var(--color-primary-50);
      --color-bg-active: #00FF00;
+     --color-bg-name: #3d3152;
     /* ======================================================
     	 	 	 	 	 	 # Shadows
     ======================================================== */
@@ -262,12 +264,12 @@
         --color-btn-danger : var(--color-text-danger);
         /* Button Colors */
 
-       
+
 
         /* Monirul */
           --color-bg-base-50: var(--color-bg-primary-dark);
-         --color-bg-light:rgb(255 255 255 / 0.06);    
-        
+         --color-bg-light:rgb(255 255 255 / 0.06);
+
     }
 }
 

@@ -17,7 +17,7 @@
 
             <!-- Card -->
             <div class=" sm:p-8 md:p-10 dark:bg-zinc-800/30 rounded-3xl w-full ">
-                <div class="bg-[#3d3152] px-6 sm:px-10 md:px-20 rounded-3xl w-full py-6 sm:py-8 md:py-10">
+                <div class="bg-bg-name px-6 sm:px-10 md:px-20 rounded-3xl w-full py-6 sm:py-8 md:py-10">
                     <h2 class="text-white text-base sm:text-lg font-medium mb-6 text-center sm:text-left">
                         Selling experience:
                     </h2>

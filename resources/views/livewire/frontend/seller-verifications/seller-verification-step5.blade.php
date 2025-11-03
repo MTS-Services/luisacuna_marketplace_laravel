@@ -29,35 +29,7 @@
                     <template x-if="!preview">
                         <div class="text-center">
                             <div class="#">
-                                <!-- Illustration -->
-                                {{-- <svg class="w-full h-auto" viewBox="0 0 200 150" fill="none">
-                                    <!-- Person holding ID -->
-                                    <rect x="20" y="60" width="50" height="35" rx="4" fill="#8B7AB8" />
-                                    <text x="45" y="75" font-size="8" fill="#5A4A7A" text-anchor="middle">ID
-                                        CARD</text>
-                                    <text x="45" y="83" font-size="6" fill="#5A4A7A" text-anchor="middle">LAST
-                                        NAME</text>
-                                    <text x="45" y="89" font-size="6" fill="#5A4A7A"
-                                        text-anchor="middle">1995-05-05</text>
-                                    <rect x="25" y="65" width="15" height="20" rx="2" fill="#6B5B8B" />
-
-                                    <!-- Person's body -->
-                                    <circle cx="130" cy="60" r="25" fill="#8B7AB8" />
-                                    <path d="M130 85 Q145 90 145 110 L115 110 Q115 90 130 85" fill="#8B7AB8" />
-
-                                    <!-- Face features -->
-                                    <ellipse cx="122" cy="58" rx="3" ry="4"
-                                        fill="#5A4A7A" />
-                                    <ellipse cx="138" cy="58" rx="3" ry="4"
-                                        fill="#5A4A7A" />
-                                    <path d="M125 68 Q130 72 135 68" stroke="#5A4A7A" stroke-width="2" fill="none"
-                                        stroke-linecap="round" />
-
-                                    <!-- Hair -->
-                                    <path
-                                        d="M105 50 Q105 35 130 35 Q155 35 155 50 Q155 45 150 45 Q145 35 130 38 Q115 35 110 45 Q105 45 105 50"
-                                        fill="#5A4A7A" />
-                                </svg> --}}
+                                
                                 <img src="{{ asset('assets/images/Rectangle.jpg') }}" alt="img" class="w-full h-auto rounded">
                             </div>
                         </div>
