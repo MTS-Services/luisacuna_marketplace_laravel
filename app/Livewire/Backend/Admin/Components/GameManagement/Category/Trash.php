@@ -92,13 +92,13 @@ class Trash extends Component
         ];
 
         // $category = GameCategory::onlyTrashed()->get();
-        $categories = $this->service->getTrashedPaginatedData(
+        $datas = $this->service->getTrashedPaginatedData(
 
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
         return view('livewire.backend.admin.components.game-management.category.trash', [
-            'categories' => $categories,
+            'datas' => $datas,
             'statuses' => [],
             'columns' =>  $columns,
             'actions' => $actions,

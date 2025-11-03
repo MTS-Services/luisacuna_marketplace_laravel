@@ -36,9 +36,9 @@ interface UserRepositoryInterface
     
     public function search(string $query): Collection;
     
-    public function bulkDelete(array $ids): int;
+    public function bulkDelete(array $ids, $actioner_id): int;
     
-    public function bulkUpdateStatus(array $ids, string $status): int;
+    public function bulkUpdateStatus(array $ids, string $status, $actioner_id): int;
 
     public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
 

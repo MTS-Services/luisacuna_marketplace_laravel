@@ -2,8 +2,10 @@
 
 namespace App\Services\User;
 
+use App\Actions\User\BulkAction;
 use App\Actions\User\CreateAction;
 use App\Actions\User\DeleteAction;
+use App\Actions\User\RestoreAction;
 use App\Actions\User\UpdateAction;
 use App\Models\User;
 use App\Enums\UserAccountStatus;
@@ -18,6 +20,8 @@ class UserService
         protected CreateAction $createAction,
         protected UpdateAction $updateAction,
         protected DeleteAction $deleteAction,
+        protected BulkAction $bulkAction,
+        protected RestoreAction $restoreAction,
     ) {}
 
     public function getAllUsers(): Collection
@@ -62,7 +66,7 @@ class UserService
 
     public function restoreData(int $id, int $actioner_id): bool
     {
-        return $this->deleteAction->restore($id, $actioner_id);
+        return $this->restoreAction->execute($id, $actioner_id);
     }
 
     public function getActiveData(): Collection
@@ -80,15 +84,29 @@ class UserService
         return $this->interface->search($query);
     }
 
-    public function bulkDeleteDatas(array $ids): int
+    public function bulkDeleteDatas(array $ids, ?int $actionerId = null): int
     {
-        return $this->interface->bulkDelete($ids);
+        if($actionerId == null){
+            $actionerId = admin()->id; 
+        }
+        return $this->bulkAction->execute($ids, 'delete', null, $actionerId);
     }
 
-    public function bulkUpdateStatus(array $ids, UserAccountStatus $status): int
+    public function bulkRestoreDatas(array $ids, int $actioner_id): int
     {
-        return $this->interface->bulkUpdateStatus($ids, $status->value);
+        return $this->bulkAction->execute($ids, 'restore', null, $actioner_id);
     }
+
+
+
+    public function bulkUpdateStatus(array $ids, UserAccountStatus $status, ?int $actionerId = null): int
+    {
+        if($actionerId == null){
+            $actionerId = admin()->id; 
+        }
+        return $this->bulkAction->execute($ids, 'status', $status->value, $actionerId);
+    }
+
 
     public function getDatasCount(array $filters = []): int
     {
@@ -135,13 +153,9 @@ class UserService
         $user->suspend();
         return true;
     }
-    public function bulkRestoreDatas(array $ids, int $actioner_id): int
-    {
-        return $this->interface->bulkRestore($ids, $actioner_id);
-    }
 
     public function bulkForceDeleteDatas(array $ids): int
     {
-        return $this->interface->bulkForceDelete($ids);
+        return $this->bulkAction->execute($ids, 'forceDelete', null, null);
     }
 }

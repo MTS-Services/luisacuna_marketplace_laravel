@@ -30,7 +30,7 @@ class Index extends Component
 
     public function render()
     {
-        $admins = $this->service->getPaginatedDatas(
+        $datas = $this->service->getPaginatedDatas(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
@@ -124,7 +124,7 @@ class Index extends Component
         ];
 
         return view('livewire.backend.admin.components.admin-management.admin.index', [
-            'admins' => $admins,
+            'datas' => $datas,
             'statuses' => AdminStatus::options(),
             'columns' => $columns,
             'actions' => $actions,
@@ -220,7 +220,8 @@ class Index extends Component
 
     protected function bulkDelete(): void
     {
-        $count = $this->service->bulkDeleteDatas($this->selectedIds);
+        $count = $this->service->bulkDeleteDatas($this->selectedIds, admin()->id);
+        
         $this->success("{$count} Admins deleted successfully");
     }
 

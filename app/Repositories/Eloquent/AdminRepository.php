@@ -144,22 +144,27 @@ class AdminRepository implements AdminRepositoryInterface
         return $this->model->search($query)->get();
     }
 
-    public function bulkDelete(array $ids): int
+    public function bulkDelete(array $ids , $actionerId): int
     {
+        $this->model->whereIn('id', $ids)->update(['deleter_id' => $actionerId]);
         return $this->model->whereIn('id', $ids)->delete();
     }
 
-    public function bulkUpdateStatus(array $ids, string $status): int
+    public function bulkUpdateStatus(array $ids, string $status, $actionerId): int
     {
+        $this->model->whereIn('id', $ids)->update(['updater_id' => $actionerId]);
         return $this->model->whereIn('id', $ids)->update(['status' => $status]);
     }
     public function bulkRestore(array $ids, int $actionerId): int
     {
-        return DB::transaction(function () use ($ids, $actionerId) {
+
             $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restorer_id' => $actionerId]);
+
             return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
-        });
+
     }
+
+
     public function bulkForceDelete(array $ids): int //
     {  
         return $this->model->withTrashed()->whereIn('id', $ids)->forceDelete();

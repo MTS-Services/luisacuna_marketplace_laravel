@@ -38,7 +38,7 @@ class UpdateAction
                 'phone' => $data['phone'],
                 'address' => $data['address'],
                 'status' => $data['status'],
-                'updater_id' => $data['updated_by'],
+                'updater_id' => $data['updater_id'],
             ];
 
 

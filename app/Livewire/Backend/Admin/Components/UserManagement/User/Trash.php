@@ -211,7 +211,7 @@ class Trash extends Component
         $count = $this->service->bulkRestoreDatas($this->selectedIds, admin()->id);
         $this->success("{$count} Users restored successfully");
     }
-    protected function bulkForceDeletDatas(): void
+    protected function bulkForceDeleteDatas(): void
     {
         $count = $this->service->bulkForceDeleteDatas($this->selectedIds);
         $this->success("{$count} Users permanently deleted successfully");
