@@ -9,14 +9,15 @@ use App\Services\Game\GameService;
 use App\Traits\Livewire\WithDataTable;
 
 use App\Enums\GameStatus;
+use App\Traits\Livewire\WithNotification;
 
 class Index extends Component
 {
 
-    use withDataTable;
+    use withDataTable, WithNotification;
 
 
-    protected GameService $gameService;
+    protected GameService $service;
     public string $bulkAction = '';
     public $statusFilter = '';
     public $showBulkActionModal = false;
@@ -24,14 +25,14 @@ class Index extends Component
     public $deleteGameId = [];
     
 
-    public function boot(GameService $gameService)  
+    public function boot(GameService $service)  
     {
-        $this->gameService = $gameService;
+        $this->service = $service;
     }
     public function render()
     {   
 
-        $games = $this->gameService->paginate( $this->perPage, $this->filters());
+        $datas = $this->service->getPaginateDatas( $this->perPage, $this->filters());
 
         
         $columns = [
@@ -50,22 +51,7 @@ class Index extends Component
                 'label' => 'Slug',
                 'sortable' => true
             ],
-            // [
-            //     'key' => 'status',
-            //     'label' => 'Status',
-            //     'sortable' => true,
-            //     'format' => function ($admin) {
-            //         $colors = [
-            //             'active' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-            //             'inactive' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-            //             'suspended' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-            //         ];
-            //         $color = $colors[$admin->status->value] ?? 'bg-gray-100 text-gray-800';
-            //         return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' .
-            //             ucfirst($admin->status->value) .
-            //             '</span>';
-            //     }
-            // ],
+      
             [
                 'key' => 'created_at',
                 'label' => 'Created',
@@ -81,6 +67,11 @@ class Index extends Component
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
+                'format' => function ($data) {
+                     return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
+                        $data->status->label() .
+                        '</span>';
+                }
             ],
             [
                 'key' => 'created_by',
@@ -109,7 +100,7 @@ class Index extends Component
 
         return view('livewire.backend.admin.components.game-management.game.index',
         [
-            'games' => $games,
+            'datas' => $datas,
             'columns' => $columns,
             'actions' => $actions,
             'bulkActions' => $bulkActions,

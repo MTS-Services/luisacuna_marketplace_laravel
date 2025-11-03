@@ -9,15 +9,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class UpdateGameAction {
+class UpdateAction {
     public function __construct(protected GameRepositoryInterface $gameRepository)
     {
     }
 
-    public function execute($id , UpdateGameDTO $dto): bool
+    public function execute($id , array $data): ?bool
     {
 
-      return  DB::transaction(function () use($id, $dto){
+      return  DB::transaction(function () use($id, $data){
          
 
         dd($dto);

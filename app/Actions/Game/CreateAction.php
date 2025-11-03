@@ -7,7 +7,7 @@ use App\Models\Game;
 use App\Repositories\Contracts\GameRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 
-class CreateGameAction
+class CreateAction
 {
 
   public function __construct(protected GameRepositoryInterface $gameRepository) {}

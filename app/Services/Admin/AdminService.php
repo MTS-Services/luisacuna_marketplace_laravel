@@ -25,7 +25,7 @@ class AdminService
         protected BulkAction $bulkAction,
     ) {}
 
-    public function getAll(): Collection
+    public function getAllDatas(): Collection
     {
         return $this->interface->all();
     }

@@ -24,7 +24,7 @@ class UserService
         protected RestoreAction $restoreAction,
     ) {}
 
-    public function getAllUsers(): Collection
+    public function getAllDatas(): Collection
     {
         return $this->interface->all();
     }

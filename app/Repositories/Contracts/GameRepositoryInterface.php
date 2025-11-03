@@ -13,23 +13,27 @@ interface GameRepositoryInterface
 
     public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
     
-    public function OnlyTrashedPaginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
+    public function trashPaginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
 
-    public function deleteGame(array $ids, bool $forceDelete = false): bool;
+    public function delete(array $ids, ?int $actioner_id): bool;
 
-    public function bulkRestoreGame($ids): bool;
+    public function bulkRestore(array $ids, ?int $actioner_id ): int;
 
-    public function restoreGame($id): bool; 
+    public function restore($id, $actioner_id): bool; 
 
-    public function bulkUpdateStatus($ids, GameStatus $status): bool;
+    public function bulkUpdateStatus($ids, GameStatus $status, ?int $actioner_id): int;
 
-    public function findOrFail($id): Game;
+    public function bulkDelete(array $ids, ?int $actioner_id): int;
 
-    public function createGame(array $data): Game;
+    public function bulkForceDelete(array $ids): int;
+
+    public function findTrashed($id): ?Game;
+
+    public function create(array $data): Game;
 
     public function find(int $id): ?Game;
 
-    public function updateGame($id, array $data): bool;
+    public function update($id, array $data): bool;
     
 
 }

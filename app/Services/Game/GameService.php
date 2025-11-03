@@ -2,9 +2,9 @@
 
 namespace App\Services\Game;
 
-use App\Actions\Game\CreateGameAction;
-use App\Actions\Game\DeleteGameAction;
-use App\Actions\Game\UpdateGameAction;
+use App\Actions\Game\UpdateAction;
+use App\Actions\Game\CreateAction;
+use App\Actions\Game\DeleteAction;
 use App\DTOs\Game\CreateGameDTO;
 use App\DTOs\Game\UpdateGameDTO;
 use App\Enums\GameStatus;
@@ -15,28 +15,34 @@ class GameService
 {
     public function __construct(
          protected GameRepositoryInterface $interface,
-         protected CreateGameAction $createGameAction , 
-         protected DeleteGameAction $deleteGameAction,
-         protected UpdateGameAction $updateGameAction
+         protected CreateAction $createAction , 
+         protected DeleteAction $deleteAction,
+         protected UpdateAction $updateAction,
          )
     { }
 
-    public function getAll(){
+
+    public function getAllDatas(){
+
         return $this->interface->all();
+
     }
-    public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null)
+    public function getPaginateDatas(int $perPage = 15, array $filters = [], ?array $queries = null)
     {
         return $this->interface->paginate($perPage, $filters, $queries ?? []);
     }
     
-    public function OnlyTrashedPaginate(int $perPage = 15, array $filters = [], ?array $queries = null) 
+    public function getTrashedPaginateData(int $perPage = 15, array $filters = [], ?array $queries = null) 
     {
-        return $this->interface->OnlyTrashedPaginate($perPage, $filters, $queries ?? []);
+        return $this->interface->trashPaginate($perPage, $filters, $queries ?? []);
     }
 
-    public function deleteGame(array $ids, bool $forceDelete = false)
+    public function deleteData($ids, ?int $actioner_id = null)
     {
-        return $this->deleteGameAction->execute($ids, $forceDelete);
+        if($actioner_id == null){
+            $actioner_id = admin()->id;
+        }
+        return $this->deleteAction->execute($id, $actioner_id);
     }
 
     public function bulkUpdateStatus($ids, GameStatus $status)
@@ -58,9 +64,9 @@ class GameService
         return $this->interface->findOrFail($id);
     }
 
-    public function createGame(CreateGameDTO $data): Game
+    public function createData(array $data): ?Game
     {
-        return $this->createGameAction->execute($data);
+        return $this->createAction->execute($data);
     }
 
     public function updateGame($id, UpdateGameDTO $dto): bool
