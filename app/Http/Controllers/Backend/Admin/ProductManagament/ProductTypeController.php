@@ -2,18 +2,39 @@
 
 namespace App\Http\Controllers\Backend\admin\ProductManagament;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Services\Product\ProductTypeService;
 
 class ProductTypeController extends Controller
 {
     protected $masterView = 'backend.admin.pages.product-management.productType';
+
+    public function __construct(protected ProductTypeService $service) {}
 
     public function index()
     {
         return view($this->masterView);
     }
     public function create()
+    {
+        return view($this->masterView);
+    }
+    public function edit(string $encryptedId)
+    {
+        $data = $this->service->findData(decrypt($encryptedId));
+        if (!$data) {
+            abort(404);
+        }
+        return view($this->masterView, [
+            'data' => $data
+        ]);
+    }
+    public function show()
+    {
+        return view($this->masterView);
+    }
+     public function trash()
     {
         return view($this->masterView);
     }

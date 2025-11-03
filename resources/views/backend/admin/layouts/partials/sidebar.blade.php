@@ -117,13 +117,13 @@
                         'name' => 'Product Types',
                         'route' => route('admin.pm.productType.index'),
                         'icon' => 'user',
-                        'active' => 'game-management',
+                        'active' => 'product-management',
                     ],
                     [
                         'name' => 'Products',
                         'route' => route('admin.gm.category.index'),
                         'icon' => 'user',
-                        'active' => 'game-management',
+                        'active' => 'product-management',
                     ],
                     // [
                     //     'name' => 'Pending Users',

@@ -82,6 +82,9 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
         Route::controller(ProductTypeController::class)->name('productType.')->prefix('productType')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/show/{id}', 'show')->name('show');
+            Route::get('/trash', 'trash')->name('trash');
         });
     });
 
