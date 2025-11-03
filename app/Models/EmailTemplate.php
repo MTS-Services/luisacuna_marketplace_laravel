@@ -1,94 +1,80 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\AuditableTrait;
-use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
-class EmailTemplate extends BaseModel implements Auditable
+class EmailTemplate extends Model
 {
-    use  AuditableTrait;
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    use SoftDeletes;
 
     protected $fillable = [
+        'sort_order',
         'key',
         'name',
         'subject',
-        'template',
+        'body',
         'variables',
-
-
-
-        'created_type',
-        'created_id',
-        'updated_type',
-        'updated_id',
-        'deleted_type',
-        'deleted_id',
+        'created_by',
+        'updated_by',
+        'deleted_by',
+        'restored_by',
+        'restored_at',
     ];
-
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
 
     protected $casts = [
         'variables' => 'array',
+        'restored_at' => 'datetime',
     ];
 
+    // 🧠 Relationships
+    public function createdBy() { return $this->belongsTo(Admin::class, 'created_by'); }
+    public function updatedBy() { return $this->belongsTo(Admin::class, 'updated_by'); }
+    public function deletedBy() { return $this->belongsTo(Admin::class, 'deleted_by'); }
+    public function restoredBy() { return $this->belongsTo(Admin::class, 'restored_by'); }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Relationships
-    |--------------------------------------------------------------------------
-    */
-
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Query Scopes
-    |--------------------------------------------------------------------------
-    */
-
-    public function scopeSearch($query, $search)
+    // 🪄 Auto fill created_by / updated_by
+    public static function boot()
     {
-        return $query->where(function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%")
-                ->orWhere('key', 'like', "%{$search}%")
-                ->orWhere('subject', 'like', "%{$search}%");
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (Auth::check()) {
+                $model->created_by = Auth::id();
+            }
+        });
+
+        static::updating(function ($model) {
+            if (Auth::check()) {
+                $model->updated_by = Auth::id();
+            }
+        });
+
+        static::deleting(function ($model) {
+            if (Auth::check()) {
+                $model->deleted_by = Auth::id();
+                $model->saveQuietly();
+            }
+        });
+
+        static::restoring(function ($model) {
+            if (Auth::check()) {
+                $model->restored_by = Auth::id();
+                $model->restored_at = now();
+            }
         });
     }
-    public function scopeFilder($query, array $filters)
+
+    // 🧩 Helper: render with variables
+    public function render(array $data = []): string
     {
-        $query->when($filters['search'] ?? null, fn($q, $search) => $q->search($search));
-        $query->when($filters['key'] ?? null, fn($q, $key) => $q->where('key', $key));
-        $query->when($filters['name'] ?? null, fn($q, $name) => $q->where('name', $name));
-        return $query;
+        $output = $this->body;
+
+        foreach ($data as $key => $value) {
+            $output = str_replace('{{ ' . $key . ' }}', e($value), $output);
+        }
+
+        return $output;
     }
-
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Accessors
-    |--------------------------------------------------------------------------
-    */
-
-
-
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Methods
-    |--------------------------------------------------------------------------
-    */
 }
