@@ -61,7 +61,4 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
     Route::get('/profile', function () {
         return view('backend.user.pages.profile');
     })->name('profile');
-    Route:: get('/notification', function () {
-        return view('backend.user.pages.notification.notification');
-    })->name('notification');
 });

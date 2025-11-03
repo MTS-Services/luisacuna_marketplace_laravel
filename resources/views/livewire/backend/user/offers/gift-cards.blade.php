@@ -2,24 +2,29 @@
     <div class=" p-4 w-full">
         <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-3 lg:gap-4">
 
+            <!-- Left Side: Filters -->
             <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
 
+                <!-- Game Filter -->
                 <div class="relative w-full sm:w-40 lg:w-44">
                     <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                        <option value="">{{ __('All Game') }}</option>
-                        <option value="game1">{{ __('Game 1') }}</option>
-                        <option value="game2">{{ __('Game 2') }}</option>
-                        <option value="game3">{{ __('Game 3') }}</option>
+                        <option value="">All Game</option>
+                        <option value="game1">Game 1</option>
+                        <option value="game2">Game 2</option>
+                        <option value="game3">Game 3</option>
                     </x-ui.select>
                 </div>
             </div>
 
+            <!-- Right Side: Search & Actions -->
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+                <!-- Export Button -->
                 <x-ui.button variant="secondary" class="sm:w-auto! py-2!">
                     <x-phosphor-download class="w-5 h-5 fill-accent group-hover:fill-white" />
                     <span class="text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Export') }}</span>
                 </x-ui.button>
 
+                <!-- New Offer Button -->
                 <x-ui.button class="w-full sm:w-auto! py-2!">
                     <x-phosphor-plus class="w-5 h-5 fill-text-text-white group-hover:fill-accent" />
                     <span class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('New Offer') }}</span>
@@ -30,7 +35,7 @@
     </div>
     <div>
         <x-ui.user-table :data="$items" :columns="$columns" :actions="$actions"
-            emptyMessage="{{ __('No data found. Add your first data to get started.') }}" class="rounded-lg overflow-hidden" />
+            emptyMessage="No data found. Add your first data to get started." class="rounded-lg overflow-hidden" />
         <x-frontend.pagination-ui :pagination="$pagination" />
     </div>
     {{-- Delete Confirmation Modal --}}
@@ -56,11 +61,11 @@
                             </div>
                             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                 <h3 class="text-lg leading-6 font-medium text-text-white" id="modal-title">
-                                    {{ __('Delete Item') }}
+                                    Delete Item
                                 </h3>
                                 <div class="mt-2">
                                     <p class="text-sm text-text-muted">
-                                        {{ __('Are you sure you want to delete this item? This action cannot be undone.') }}
+                                        Are you sure you want to delete this item? This action cannot be undone.
                                     </p>
                                 </div>
                             </div>
@@ -69,11 +74,11 @@
                     <div class="bg-bg-secondary px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-3">
                         <button type="button" wire:click="deleteItem"
                             class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm transition-colors">
-                            {{ __('Delete') }}
+                            Delete
                         </button>
                         <button type="button" wire:click="$set('showDeleteModal', false)"
                             class="mt-3 w-full inline-flex justify-center rounded-lg border border-zinc-700 shadow-sm px-4 py-2 bg-bg-primary text-base font-medium text-text-white hover:bg-bg-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors">
-                            {{ __('Cancel') }}
+                            Cancel
                         </button>
                     </div>
                 </div>
