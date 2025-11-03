@@ -7,7 +7,7 @@
                 {{ __('Go to site') }}
             </x-ui.button>
         </div>
-
+        
         <div class=" mx-auto space-y-6">
             {{-- Profile Section --}}
             <section class="glass-card rounded-2xl p-6">
@@ -16,7 +16,7 @@
                 {{-- Profile Image --}}
                 <div class="flex items-start bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6">
                     <div class="relative">
-                        <img src="{{ auth()->user()->avatar ?? asset('images/default-avatar.png') }}"
+                        <img src="{{ auth()->user()->avatar ?? asset('assets/images/Ellipse474.png') }}"
                             alt="{{ __('Profile') }}" class="w-20 h-20 rounded-full object-cover ring-2 ring-accent/20">
 
                     </div>

@@ -165,7 +165,8 @@
                                     ];
                                     $badgeColor = $badgeColors[strtolower($value)] ?? 'bg-gray-500';
                                 @endphp
-                                <span class="shrink-0 px-3 py-1 text-xs font-semibold rounded-full {{ $badgeColor }} text-white whitespace-nowrap">
+                                <span
+                                    class="shrink-0 px-2 py-1 text-xs font-semibold rounded-full {{ $badgeColor }} text-white whitespace-nowrap">
                                     {{ ucfirst($value) }}
                                 </span>
                             @endif
@@ -179,7 +180,7 @@
                         @if ($colIndex > 0 && !isset($column['badge']))
                             <div class="flex justify-between items-center">
                                 <span class="text-zinc-300 text-sm font-medium">{{ $column['label'] }}</span>
-                                <span class="text-white text-sm font-semibold">
+                                <span class="text-text-white text-sm font-semibold">
                                     @if (isset($column['format']) && is_callable($column['format']))
                                         @php
                                             $formatted = $column['format']($item);
@@ -197,7 +198,7 @@
 
                 {{-- Actions (if needed) --}}
                 @if (count($actions) > 0)
-                    <div class="px-5 pb-5 flex items-center gap-3 pt-3 border-t border-zinc-500/20">
+                    <div class="px-6 pb-5 flex items-center gap-3 pt-3 border-t border-zinc-500/20">
                         @foreach ($actions as $action)
                             @php
                                 $actionValue = data_get($item, $action['param'] ?? 'id');

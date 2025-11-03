@@ -8,7 +8,7 @@
                 <option value="processing">{{ __('Processing') }}</option>
             </x-ui.select>
             <div id="icon-container" class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
-                <flux:icon name="chevron-down" class="w-4 h-4 text-gray-300" stroke="white" />
+                <flux:icon name="chevron-down" class="w-4 h-4 " stroke="white" />
             </div>
         </div>
 
@@ -20,7 +20,7 @@
                 <option value="month">{{ __('This Month') }}</option>
             </x-ui.select>
             <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
-                <flux:icon name="chevron-down" class="w-4 h-4 text-gray-300" stroke="white" />
+                <flux:icon name="chevron-down" class="w-4 h-4 " stroke="white" />
             </div>
         </div>
     </div>

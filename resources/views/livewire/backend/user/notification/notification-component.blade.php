@@ -7,7 +7,7 @@
         @forelse ($items as $item)
             <div class="flex flex-col gap-2 sm:flex-row sm:justify-between sm:gap-5 mt-10 mb-5 p-6 bg-zinc-200/20 rounded-xl">
                 <div class="flex flex-col sm:flex-row gap-5">
-                    <div class="bg-zinc-200/20 flex items-center w-12 h-12 rounded-full text-center shrink-0">
+                    <div class="bg-zinc-300 flex items-center w-12 h-12 rounded-full text-center shrink-0">
                         <x-phosphor name="bell" variant="regular" class="fill-zinc-200 w-full" />
                     </div>
                     <div class="">
