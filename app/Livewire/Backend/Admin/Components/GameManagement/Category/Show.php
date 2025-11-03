@@ -7,10 +7,10 @@ use Livewire\Component;
 
 class Show extends Component
 {
-    public GameCategory $category;
-    public function mount(GameCategory $category): void
+    public GameCategory $data;
+    public function mount(GameCategory $data): void
     {
-        $this->category = $category;
+        $this->data = $data;
     }
     public function render()
     {

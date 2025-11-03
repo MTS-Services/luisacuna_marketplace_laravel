@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Admin\GameManagement;
 use App\Http\Controllers\Controller;
 
 use App\Services\Game\GameCategoryService;
+use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
@@ -26,24 +27,25 @@ class CategoryController extends Controller
         return view($this->masterView);
     }
 
-    public function edit($id)
+    public function edit($id):View
     {
-        $category = $this->service->findOrFail(decrypt($id));
+
+        $data = $this->service->findData(decrypt($id));
         return view($this->masterView , [
-            'category'  => $category
+            'data'  => $data
         ]);
     }
     public function show($id)
     {
         
       
-        $category = $this->service->findData(decrypt($id));
-        if (!$category) {
+        $data = $this->service->findData(decrypt($id));
+        if (!$data) {
             abort(404);
         }
 
         return view($this->masterView , [
-            'category'  => $category
+            'data'  => $data
         ]);
     }
 

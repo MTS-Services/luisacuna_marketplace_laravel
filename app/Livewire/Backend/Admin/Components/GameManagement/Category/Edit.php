@@ -4,26 +4,29 @@ namespace App\Livewire\Backend\Admin\Components\GameManagement\Category;
 
 use App\DTOs\GameCategory\UpdateGameCategoryDTO;
 use App\Enums\GameCategoryStatus;
-use App\Livewire\Forms\Backend\Admin\GameManagement\GameCategory;
-use App\Models\GameCategory as ModelsGameCategory;
+use App\Livewire\Forms\Backend\Admin\GameManagement\GameCategoryForm;
+use App\Models\GameCategory;    
 use App\Services\Game\GameCategoryService;
+use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class Edit extends Component
 {
-    public GameCategory $form;
-    public ModelsGameCategory $ModelsGameCategory;
-    protected GameCategoryService $gameCategoryService;
+    use WithNotification;
+    public GameCategoryForm $form;
+    public GameCategory $category;
+    protected GameCategoryService $service;
     public $categoryId = null;
 
-    public function boot(GamecategoryService $gameCategoryService)
+    public function boot(GamecategoryService $service)
     {
-        $this->gameCategoryService = $gameCategoryService;
+        $this->service = $service;
     }
-    public function mount(ModelsGameCategory $category)
+    public function mount(GameCategory $data)
     {
-        $this->form->setCategory($category);
-        $this->categoryId = $category->id;
+        $this->form->setCategory($data);
+        $this->categoryId = $data->id;
     }
     public function render()
     {
@@ -35,17 +38,19 @@ class Edit extends Component
 
     public function update()
     {
-        $data =  $this->form->validate();
+       $this->form->validate();
 
-        try {
-            $dto = UpdateGameCategoryDTO::formArray($data);
+       try {
 
-            $this->gameCategoryService->update($this->categoryId, $dto->toArray());
+        $data = $this->form->fillables();
+        $this->service->updateData($this->categoryId, $data , admin()->id);
+        $this->success('Game Category Updated Successfully');
+        return $this->redirect(route('admin.gm.category.index'), navigate: true);
 
-            return $this->redirect(route('admin.gm.category.index'), navigate: true);
-        } catch (\Throwable $th) {
-
-            dd($th->getMessage());
-        }
+       } catch (\Exception $e) {
+         Log::error("Error", ['error' => $e->getMessage()]);
+         $this->error('Failed to Upate Game Category');
+       }
+ 
     }
 }

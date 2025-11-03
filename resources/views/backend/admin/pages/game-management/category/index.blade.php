@@ -10,12 +10,12 @@
         @case('admin.gm.category.edit')        
             <x-slot name="title">Game Category Edit</x-slot>
             <x-slot name="breadcrumb">Game Management / Category Edit</x-slot>
-            <livewire:backend.admin.components.game-management.category.edit  :category="$category"/>
+            <livewire:backend.admin.components.game-management.category.edit  :data="$data"/>
         @break
         @case('admin.gm.category.view')        
             <x-slot name="title">Game Category Edit</x-slot>
             <x-slot name="breadcrumb">Game Management / Category Edit</x-slot>
-            <livewire:backend.admin.components.game-management.category.show  :category="$category"/>
+            <livewire:backend.admin.components.game-management.category.show  :data="$data"/>
         @break
 
         @case('admin.gm.category.trash')        

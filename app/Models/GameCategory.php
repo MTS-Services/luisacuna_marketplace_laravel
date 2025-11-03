@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Enums\GameCategoryStatus;
 use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class GameCategory extends BaseModel implements Auditable
 {
- use  AuditableTrait;
+    use  AuditableTrait;
 
 
     protected $fillable = [
@@ -28,10 +29,12 @@ class GameCategory extends BaseModel implements Auditable
         'restorer_id',
     ];
 
-
+    protected $casts = [
+        'status' => GameCategoryStatus::class
+    ];
 
     // Scope    
-public function scopeSearch($query, $search)
+    public function scopeSearch($query, $search)
     {
         return $query->where(function ($q) use ($search) {
             $q->where('name', 'like', "%{$search}%")
@@ -51,5 +54,4 @@ public function scopeSearch($query, $search)
 
         return $query;
     }
-
 }

@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 
 class GameCategoryRepository implements GameCategoryRepositoryInterface
 {
+
+
     public function __construct(protected GameCategory $model)    {
         
     }
@@ -40,7 +42,7 @@ class GameCategoryRepository implements GameCategoryRepositoryInterface
 
     public function update( $id, array $data): bool
     {
-        return $this->model->findOrFail($id)->update($data);
+        return $this->find($id)->update($data);
     }
 
     public function delete($id, int $actionerId): bool

@@ -18,7 +18,7 @@ interface GameCategoryRepositoryInterface
     
     public function create(array $data): GameCategory;
 
-    public function update( $id, array $data): bool;
+    public function update( ?int $id, array $data ): bool;
     
     public function paginateOnlyTrashed(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
 

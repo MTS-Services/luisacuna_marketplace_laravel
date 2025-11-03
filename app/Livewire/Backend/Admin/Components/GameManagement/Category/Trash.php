@@ -63,19 +63,19 @@ class Trash extends Component
                 'key' => 'created_at',
                 'label' => 'Created',
                 'sortable' => true,
-                'format' => function ($category) {
+                'format' => function ($data) {
                     return '<div class="text-sm">' .
-                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $category->created_at->format('M d, Y') . '</div>' .
-                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $category->created_at->format('h:i A') . '</div>' .
+                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $data->created_at->format('M d, Y') . '</div>' .
+                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $data->created_at->format('h:i A') . '</div>' .
                         '</div>';
                 }
             ],
             [
                 'key' => 'created_by',
                 'label' => 'Created By',
-                'format' => function ($category) {
-                    return $category->creater_admin
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $category->creater_admin->name . '</span>'
+                'format' => function ($data) {
+                    return $data->creater_admin
+                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $data->creater_admin->name . '</span>'
                         : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
                 }
             ],
@@ -92,7 +92,7 @@ class Trash extends Component
         ];
 
         // $category = GameCategory::onlyTrashed()->get();
-        $categories = $this->service->paginateOnlyTrashed(
+        $categories = $this->service->getTrashedPaginatedData(
 
             perPage: $this->perPage,
             filters: $this->getFilters()
@@ -202,7 +202,7 @@ class Trash extends Component
 
       protected function getSelectableIds(): array
     {
-        return $this->service->paginateOnlyTrashed(
+        return $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

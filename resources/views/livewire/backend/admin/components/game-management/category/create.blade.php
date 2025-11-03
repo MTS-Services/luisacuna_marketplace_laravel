@@ -60,12 +60,12 @@
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button href="{{ route('admin.gm.category.index') }}" type="danger">
-                    <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
-                    {{ __('Cancel') }}
+                <x-ui.button wire:clinck="resetFrom" type="danger" class="w-auto!">
+                    <flux:icon name="x-circle " class="w-4 h-4 stroke-white" />
+                    {{ __('Reset') }}
                 </x-ui.button>
 
-                <x-ui.button type="accent" button>
+                <x-ui.button type="accent" button class="w-auto!">
                     <span wire:loading.remove wire:target="save" class="text-white">Create Category</span>
                     <span wire:loading wire:target="save" class="text-white">Creating...</span>
                 </x-ui.button>
