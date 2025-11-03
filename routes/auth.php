@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\Admin\TwoFactorController as AdminTwoFactorController;
 use App\Http\Controllers\Auth\Admin\TwoFactorAuthenticatedSessionController as AdminTwoFactorSessionController;
+use App\Http\Controllers\Auth\User\Socialite\FacebookController;
+use App\Http\Controllers\Auth\User\Socialite\GoogleAuthController;
 use App\Http\Controllers\Auth\User\TwoFactorAuthenticatedSessionController as UserTwoFactorSessionController;
 use App\Http\Controllers\Auth\User\VerifyEmailController as UserVerifyEmailController;
 use App\Http\Controllers\Auth\Admin\VerifyEmailController as AdminVerifyEmailController;
@@ -123,3 +125,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
 
     Route::post('logout', Logout::class)->name('logout');
 });
+
+
+Route::get('auth/google', [GoogleAuthController::class, 'redirect'])->name('google.redirect');
+Route::get('auth/google/callback', [GoogleAuthController::class, 'callback'])->name('google.callback');
+
+Route::get('auth/facebook', [FacebookController::class, 'redirectToFacebook'])->name('auth.facebook');
+Route::get('auth/facebook/callback', [FacebookController::class, 'handleFacebookCallback']);
