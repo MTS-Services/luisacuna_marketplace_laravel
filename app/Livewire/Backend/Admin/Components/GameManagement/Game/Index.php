@@ -10,6 +10,7 @@ use App\Traits\Livewire\WithDataTable;
 
 use App\Enums\GameStatus;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Log;
 
 class Index extends Component
 {
@@ -22,7 +23,7 @@ class Index extends Component
     public $statusFilter = '';
     public $showBulkActionModal = false;
     public $showDeleteModal = false;
-    public $deleteGameId = [];
+    public $deleteId = null;
     
 
     public function boot(GameService $service)  
@@ -85,9 +86,9 @@ class Index extends Component
         ];
 
             $actions = [
-                ['key' => 'id', 'label' => 'View', 'route' => 'admin.gm.game.view'],
-                ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.gm.game.edit'],
-                ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete'],
+                ['key' => 'id', 'label' => 'View', 'route' => 'admin.gm.game.view', 'encrypt' => true],
+                ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.gm.game.edit', 'ecrypt' => true],
+                ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete', 'encrypt' => true],
             ];
 
             $bulkActions = [
@@ -121,17 +122,34 @@ class Index extends Component
         ];
     }
 
-     public function confirmDelete($id)
+     public function confirmDelete($encrypted_id)
     {
         $this->showDeleteModal = true;
-        $this->deleteGameId[] = $id;
+        $this->deleteId = $encrypted_id;
     }
 
     public function delete(){
-        $this->showDeleteModal = false;
 
-        $this->gameService->deleteGame($this->deleteGameId, false);
+       
+       try {
+            if (!$this->deleteId) {
+                $this->warning('No data selected');
+                return;
+            }
+            $this->service->deleteData(decrypt($this->deleteId));
+
+            $this->reset(['deleteId', 'showDeleteModal']);
+
+            $this->success('Data deleted successfully');
+
+        } catch (\Exception $e) {
+
+            Log::error("Failed to delete data", ['error' => $e->getMessage()]);
+
+            $this->error('Failed to delete data.');
+        }
     }
+
 
     public function confirmBulkAction(): void
     {
@@ -165,7 +183,17 @@ class Index extends Component
 
     public function bulkDelete(): void
     {
-        $this->gameService->deleteGame($this->selectedIds, false);
+        try {
+           $count =    $this->service->bulkDelete($this->selectedIds,  admin()->id);
+              $this->success("($count) Datas deleted successfully");
+        } catch (\Exception $e) {
+            
+            $this->error('Failed to delete data.');
+
+            log::error('Failed to delete data: ' . $e->getMessage());
+        }
+
+      
 
     }
 
@@ -175,7 +203,7 @@ class Index extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->gameService->paginate(
+        return $this->service->getPaginateDatas(
             perPage: $this->perPage,
             filters: $this->filters()
         )->pluck('id')->toArray();

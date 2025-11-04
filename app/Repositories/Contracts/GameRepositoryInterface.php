@@ -15,7 +15,9 @@ interface GameRepositoryInterface
     
     public function trashPaginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
 
-    public function delete(array $ids, ?int $actioner_id): bool;
+    public function delete(int $id, ?int $actioner_id): bool;
+
+    public function forceDelete($id): bool;
 
     public function bulkRestore(array $ids, ?int $actioner_id ): int;
 

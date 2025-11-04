@@ -19,6 +19,8 @@ class Index extends Component
     public $bulkAction = '';
     public $showBulkActionModal = false;
 
+
+
     // protected $listeners = ['CurrencyCreated' => '$refresh', 'CurrencyUpdated' => '$refresh'];
 
     protected CurrencyService $service;

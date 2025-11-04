@@ -2,25 +2,26 @@
 
 namespace App\Livewire\Backend\Admin\Components\GameManagement\Game;
 
-use App\DTOs\Game\UpdateGameDTO;
 use App\Enums\GameStatus;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameForm;
 use App\Models\Game;
 use App\Services\GameCategoryService;
 use App\Services\GameService;
+use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class Edit extends Component
 {
-    use WithFileUploads;
+    use WithFileUploads, WithNotification;
     public Game $game;
     public GameForm $form;
     protected GameCategoryService $categoryService;
 
     protected GameService $service;
 
-    protected $dataId = null;
+    public $dataId = null;
 
     public function boot(GameCategoryService $categoryService, GameService $service){
 
@@ -31,7 +32,9 @@ class Edit extends Component
 
     }
     public function mount(Game $data){
+
        $this->form->setData($data);
+
        $this->dataId = $data->id;
     }
 
@@ -79,14 +82,17 @@ class Edit extends Component
 
             $this->service->updateData($this->dataId, $data, $actioner_id);
 
+            $this->form->reset();
+
+            $this->success('Game updated successfully.');
+
+            return $this->redirect(route('admin.gm.game.index'), navigate: true);
+
         } catch (\Exception $e) {
-            $this->error('Failed to update game: ' . $e->getMessage());
+            Log::error('Failed to update game: ' , ['error' => $e->getMessage()]);
+            $this->error('Failed to update game');
             return;
         }
-
-        $this->service->updateGame($this->game->id, $dto);
-
-        return $this->redirect(route('admin.gm.game.index'), navigate: true);
     }
 
     public function cancel(){

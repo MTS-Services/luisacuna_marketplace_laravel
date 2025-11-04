@@ -81,12 +81,12 @@ class GameForm extends Form
         $this->status = $data->status->value;
         $this->developer = $data->developer;
         $this->publisher = $data->publisher;
-        $this->logo = $data->logo;
-        $this->banner = $data->banner;
+
+
         $this->release_date = $data->release_date;
         $this->platform = $data->platform;
         $this->description = $data->description;
-        $this->thumbnail = $data->thumbnail;
+
         $this->is_featured = $data->is_featured;
         $this->is_trending = $data->is_trending;
         $this->meta_title = $data->meta_title;
@@ -112,6 +112,8 @@ class GameForm extends Form
         $this->meta_title = null;
         $this->meta_description = null;
         $this->meta_keywords = null;
+
+        $this->resetValidation();
     }
 
     public function fillables():array {

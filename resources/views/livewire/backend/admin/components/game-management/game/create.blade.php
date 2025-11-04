@@ -193,7 +193,7 @@
 
             {{-- Actions --}}
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button wire:click.prevent="resetForm" type="danger" class="w-auto!" button>
+                <x-ui.button wire:click.prevent="resetForm" type="danger" class="w-auto!" button variant="tertiary">
                     <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
                     {{ __('Reset') }}
                 </x-ui.button>

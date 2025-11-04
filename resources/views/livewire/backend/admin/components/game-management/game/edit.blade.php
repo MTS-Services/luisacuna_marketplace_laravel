@@ -12,7 +12,7 @@
     </div>
 
     <div class="glass-card rounded-2xl p-6 mb-6">
-        <form wire:submit="save" enctype="multipart/form-data">
+        <form wire:submit="update" enctype="multipart/form-data">
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
 
 
@@ -199,8 +199,8 @@
                 </x-ui.button>
 
                 <x-ui.button type="accent" class="w-auto!">
-                    <span wire:loading.remove wire:target="save" class="text-white">Create Game</span>
-                    <span wire:loading wire:target="save" class="text-white">Creating...</span>
+                    <span wire:loading.remove wire:target="update" class="text-white">Update</span>
+                    <span wire:loading wire:target="update" class="text-white">Updating...</span>
                 </x-ui.button>
             </div>
         </form>

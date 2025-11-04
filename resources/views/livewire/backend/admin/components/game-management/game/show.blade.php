@@ -165,7 +165,9 @@
                         </tr>
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 w-2/5 text-gray-600 font-semibold">Thumbnail </td>
-                            <td class="p-4 text-gray-900"> @if($data->thumbnail)
+                            <td class="p-4 text-gray-900"> 
+                                
+                                @if($data->thumbnail)
                                 <img src="{{ asset('/storage/'.$data->thumbnail) }}" alt="{{ $data->name }}" class="w-16 h-16 object-cover">
                             @else
                                 N/A

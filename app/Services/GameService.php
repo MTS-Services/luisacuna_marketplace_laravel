@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
-
+use App\Actions\game\BulkAction;
 use App\Actions\Game\CreateAction;
 use App\Actions\Game\UpdateAction;
 use App\Actions\Game\DeleteAction;
+use App\Actions\Game\RestoreAction;
 use App\Enums\GameStatus;
 use App\Models\Game;
 use App\Repositories\Contracts\GameRepositoryInterface;
@@ -17,6 +18,8 @@ class GameService
          protected CreateAction $createAction , 
          protected DeleteAction $deleteAction,
          protected UpdateAction $updateAction,
+         protected RestoreAction $restoreAction,
+         protected BulkAction $bulkAction,
          )
     { }
 
@@ -41,13 +44,29 @@ class GameService
         return $this->interface->trashPaginate($perPage, $filters, $queries ?? []);
     }
 
-    public function deleteData($ids, ?int $actioner_id = null)
+    public function deleteData($id, $forceDelete = false, ?int $actioner_id = null)
     {
         if($actioner_id == null){
             $actioner_id = admin()->id;
         }
-        return $this->deleteAction->execute($id, $actioner_id);
+        return $this->deleteAction->execute($id, $forceDelete ,$actioner_id);
     }
+
+    public function forceDeleteData($id, $force_delete = true, ?int $actioner_id = null):bool{
+
+       return $this->deleteAction->execute($id, $force_delete, $actioner_id);
+
+    }
+
+    public function bulkDelete($ids, $actioner_id = null) :int
+    {
+        if($actioner_id == null){
+            $actioner_id = admin()->id;
+        }
+
+      return  $this->bulkAction->execute($ids, 'delete', null, $actioner_id);
+    }
+
 
     public function bulkUpdateStatus($ids, GameStatus $status)
     {
@@ -59,9 +78,9 @@ class GameService
         return $this->interface->bulkRestoreGame($ids);
     }
 
-    public function restoreGame($id) :bool
+    public function restoreData($id, $actioner_id) :bool
     {
-        return $this->interface->restoreGame($id);
+     return $this->restoreAction->execute($id, $actioner_id);
     }
     public function findOrFail($id): Game
     {

@@ -84,6 +84,7 @@ class GameRepository implements GameRepositoryInterface
     public function update($id, array $data): bool
     {
         $game = $this->find($id);
+
         return $game->update($data);
     }
 
@@ -108,9 +109,16 @@ class GameRepository implements GameRepositoryInterface
         return $game->delete();
     }
 
+    public function forceDelete($id): bool
+    {
+        return $this->findTrashed($id)->forceDelete();
+    }
+
+
     public function bulkDelete($ids, $actioner_id): int
     {
         $this->model->whereIn('id', $ids)->update(['deleter_id' => $actioner_id]);
+        
         return $this->model->whereIn('id', $ids)->delete();
     }
 
@@ -120,8 +128,10 @@ class GameRepository implements GameRepositoryInterface
     }
     public function restore($id, $actioner_id): bool
     {
-        $game = $this->model->findTrashed($id);
+        $game = $this->findTrashed($id);
+
         $game->update(['restorer_id' => $actioner_id]);
+
         return $game->restore();
     }
 
