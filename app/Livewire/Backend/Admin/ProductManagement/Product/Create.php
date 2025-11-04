@@ -62,7 +62,6 @@ class Create extends Component
     {
         
         $this->form->validate();
-        // dd($this->validate());
         
         try {
             $data = $this->form->fillables();

@@ -208,13 +208,14 @@
             </div>
 
             {{-- description --}}
-            <div class="w-full mt-4">
+            <div class="w-full mt-2">
                 <x-ui.label value="Description" class="mb-1" />
-                {{-- <x-ui.text-editor wire:model.live="form.description" id="description"
-                    placeholder="Enter description..." :height="350" /> --}}
-                <input type="textarea" wire:model="form.description" id="description">
+                {{-- <x-ui.text-editor model="content1" wire:model="form.description" id="text-editor-main-content"
+                    placeholder="Enter your main content here..." :height="350" /> --}}
+                <textarea type="textarea" wire:model="form.description" id="" cols="30" rows="10"></textarea>
                 <x-ui.input-error :messages="$errors->get('form.description')" />
             </div>
+           
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">

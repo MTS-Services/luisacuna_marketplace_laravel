@@ -14,16 +14,14 @@ class ProducForm extends Form
     #[Locked]
     public ?int $id = null;
     
-    // String fields - সরাসরি default value দিন
     public string $title = '';
     public string $slug = '';
     public string $description = '';
-    public string $currency = 'USD';  // ✅ Default value এখানে
-    public string $delivery_method = 'manual';  // ✅ Direct value দিন
-    public string $status = 'active';  // ✅ Direct value দিন
-    public string $visibility = 'public';  // ✅ Direct value দিন
+    public string $currency = 'USD';
+    public string $delivery_method = 'manual';
+    public string $status = 'active';
+    public string $visibility = 'public';
     
-    // Integer/Numeric fields
     public ?int $seller_id = null;
     public ?int $game_id = null;
     public ?int $product_type_id = null;
@@ -45,12 +43,11 @@ class ProducForm extends Form
     public float $average_rating = 0;
     public int $total_reviews = 0;
     
-    // Boolean fields
+
     public bool $unlimited_stock = false;
     public bool $is_featured = false;
     public bool $is_hot_deal = false;
-    
-    // Nullable string fields
+
     public ?string $auto_delivery_content = null;
     public ?string $platform = null;
     public ?string $region = null;
@@ -62,7 +59,6 @@ class ProducForm extends Form
     public ?string $meta_description = null;
     public ?string $meta_keywords = null;
 
-    // ❌ Constructor মুছে দিন - এটা লাগবে না
 
     public function rules(): array
     {
@@ -71,51 +67,49 @@ class ProducForm extends Form
             : 'required|string|max:255|unique:products,slug';
 
         return [
-            // Locked fields
+
             'id' => 'nullable|integer',
 
-            // Foreign keys
+
             'seller_id' => 'required|integer|exists:users,id',
             'game_id' => 'required|integer|exists:games,id',
             'product_type_id' => 'required|integer|exists:product_types,id',
             'server_id' => 'nullable|integer|exists:servers,id',
             'reviewed_by' => 'nullable|integer|exists:users,id',
 
-            // Basic info
+
             'title' => 'required|string|max:255',
             'slug' => $slugRule,
             'description' => 'required|string',
 
-            // Pricing
+
             'price' => 'required|numeric|min:0',
             'currency' => 'required|string|size:3',
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
             'discounted_price' => 'nullable|numeric|min:0',
 
-            // Stock
+
             'stock_quantity' => 'required|integer|min:0',
             'min_purchase_quantity' => 'required|integer|min:1',
             'max_purchase_quantity' => 'nullable|integer|min:1',
             'unlimited_stock' => 'boolean',
 
-            // Delivery
             'delivery_method' => 'required|string|in:' . implode(',', array_column(ProductsDeliveryMethod::cases(), 'value')),
             'delivery_time_hours' => 'nullable|integer|min:1',
             'auto_delivery_content' => 'nullable|string',
 
-            // Extra info
             'platform' => 'nullable|string|max:50',
             'region' => 'nullable|string|max:50',
             'specifications' => 'nullable|json',
             'requirements' => 'nullable|json',
 
-            // Status & flags
+
             'status' => 'required|string|in:' . implode(',', array_column(ProductStatus::cases(), 'value')),
             'is_featured' => 'boolean',
             'is_hot_deal' => 'boolean',
             'visibility' => 'required|string|in:' . implode(',', array_column(ProductsVisibility::cases(), 'value')),
 
-            // Stats
+
             'total_sales' => 'nullable|integer|min:0',
             'total_revenue' => 'nullable|numeric|min:0',
             'view_count' => 'nullable|integer|min:0',
@@ -123,11 +117,11 @@ class ProducForm extends Form
             'average_rating' => 'nullable|numeric|min:0|max:5',
             'total_reviews' => 'nullable|integer|min:0',
 
-            // Review info
+
             'reviewed_at' => 'nullable|date',
             'rejection_reason' => 'nullable|string',
 
-            // Meta
+
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
             'meta_keywords' => 'nullable|string',
@@ -189,7 +183,7 @@ class ProducForm extends Form
 
         $this->resetValidation();
         
-        // Default values reset করুন
+
         $this->delivery_method = 'manual';
         $this->status = 'active';
         $this->visibility = 'public';
