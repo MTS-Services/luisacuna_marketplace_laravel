@@ -76,7 +76,7 @@
                             <img src="{{ asset('assets/icons/icons8-google.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
                                 alt="Google" />
                         </a>
-                        <a href="javascript:void(0)"
+                        <a href="{{ route('apple.login') }}"
                             class="w-10 h-10 sm:w-12 sm:h-12 flex z-30 items-center justify-center bg-white rounded-md">
                             <img src="{{ asset('assets/icons/icons8-apple-logo.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
                                 alt="Apple" />

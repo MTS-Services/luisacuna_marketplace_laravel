@@ -27,18 +27,20 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('first_name');
             $table->string('last_name');
-            
-             $table->string('google_id')->nullable()->unique();
-             $table->string('facebook_id')->nullable()->unique();
+
+            $table->string('email')->nullable()->unique();
+
+            $table->string('google_id')->nullable()->unique();
+            $table->string('facebook_id')->nullable()->unique();
+            $table->string('apple_id')->nullable()->unique();
             $table->string('avatar')->nullable();
             $table->date('date_of_birth')->nullable();
 
             $table->string('timezone')->default('UTC');
-            
+
             $table->unsignedBigInteger('language_id')->nullable();
             $table->unsignedBigInteger('currency_id')->nullable();
 
-            $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
 
@@ -70,7 +72,6 @@ return new class extends Migration
             $table->foreign('language_id')->references('id')->on('languages')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade')->onUpdate('cascade');
             $this->addMorphedAuditColumns($table);
-
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
