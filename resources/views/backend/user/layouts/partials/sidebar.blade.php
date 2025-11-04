@@ -27,7 +27,7 @@
                         :class="isActive
                             ?
                             'relative bg-[#1A0D2E] hover:bg-[#1a050f]' :
-                            'relative bg-[#1A0D2E] hover:bg-[#1a050f]'"
+                            'relative bg-[#1A0D2E] hover:bg-[#1a050f63]'"
                         class="w-full bg-pink-400 dark:bg-zinc-950 flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg transition-all text-text-white overflow-hidden border border-zinc-800 hover:border-pink-600 ">
 
                         <!-- Left section -->
@@ -79,7 +79,7 @@
                         :class="isActive
                             ?
                             'relative bg-[#1A0D2E] hover:bg-[#1a050f]' :
-                            'relative bg-[#1A0D2E] hover:bg-[#1a050f]'"
+                            'relative bg-[#1A0D2E] hover:bg-[#1a050f63]'"
                         class="w-full bg-pink-400 dark:bg-zinc-950 flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg transition-all text-text-white overflow-hidden border border-zinc-800 hover:border-pink-500 ">
 
                         <!-- Left section -->
@@ -146,7 +146,7 @@
                         :class="isActive
                             ?
                             'relative bg-[#1A0D2E] hover:bg-[#1a050f]' :
-                            'relative bg-[#1A0D2E] hover:bg-[#1a050f]'"
+                            'relative bg-[#1A0D2E] hover:bg-[#1a050f63]'"
                         class="w-full bg-pink-400 dark:bg-zinc-950 flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg transition-all text-text-white overflow-hidden border border-zinc-800 hover:border-pink-500 ">
 
                         <!-- Left section -->
@@ -198,7 +198,7 @@
                     :class="isActive
                         ?
                         'relative bg-[#1A0D2E] hover:bg-[#1a050f]' :
-                        'relative bg-[#1A0D2E] hover:bg-[#1a050f]'"
+                        'relative bg-[#1A0D2E] hover:bg-[#1a050f63]'"
                     class="relative w-full bg-pink-400 dark:bg-zinc-950 flex items-center justify-start gap-2 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg transition-all text-text-white overflow-hidden border border-zinc-800 hover:border-pink-500">
 
                     <!-- Left highlight bar -->
@@ -216,7 +216,7 @@
                     :class="isActive
                         ?
                         'relative bg-[#1A0D2E] hover:bg-[#1a050f]' :
-                        'relative bg-[#1A0D2E] hover:bg-[#dd016c]'"
+                        'relative bg-[#1A0D2E] hover:bg-[#1a050f63]'"
                     class="relative w-full bg-pink-400 dark:bg-zinc-950 flex items-center justify-start gap-2 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg transition-all text-text-white overflow-hidden border border-zinc-800 hover:border-pink-500 {{ $pageSlug === 'wallet' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950'}}">
                     <span class="absolute left-0 top-0 h-full w-1.5 bg-pink-500 rounded-l-lg"></span>
                     <x-phosphor name="cardholder" variant="regular" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
@@ -229,7 +229,7 @@
                     :class="isActive
                         ?
                         'relative bg-[#1A0D2E] hover:bg-[#1a050f]' :
-                        'relative bg-[#1A0D2E] hover:bg-[#1a050f]'"
+                        'relative bg-[#1A0D2E] hover:bg-[#1a050f63]'"
                     class="relative w-full bg-pink-400 dark:bg-zinc-950 flex items-center justify-start gap-2 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg transition-all text-text-white overflow-hidden border border-zinc-800 hover:border-pink-500 {{ $pageSlug === 'messages' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950'}}">
                     <span class="absolute left-0 top-0 h-full w-1.5 bg-pink-500 rounded-l-lg"></span>
                     <flux:icon name="chat-bubble-bottom-center-text" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
