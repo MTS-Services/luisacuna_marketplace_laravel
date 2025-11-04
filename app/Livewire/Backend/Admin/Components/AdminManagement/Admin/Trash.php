@@ -201,8 +201,8 @@ class Trash extends Component
         try {
             match ($this->bulkAction) {
                 // 'forceDelete' => $this->bulkDelete(),
-                'forceDelete' => $this->bulkForceDeleteAdmins(),
-                'bulkRestore' => $this->bulkRestoreAdmins(),
+                'forceDelete' => $this->bulkForceDeleteDatas(),
+                'bulkRestore' => $this->bulkRestoreDatas(),
                 'activate' => $this->bulkUpdateStatus(AdminStatus::ACTIVE),
                 'deactivate' => $this->bulkUpdateStatus(AdminStatus::INACTIVE),
                 'suspend' => $this->bulkUpdateStatus(AdminStatus::SUSPENDED),
@@ -229,7 +229,7 @@ class Trash extends Component
         $this->success("{$count} Admins updated successfully");
     }
 
-    protected function bulkRestoreAdmins(): void
+    protected function bulkRestoreDatas(): void
     {
         $count = $this->service->bulkRestoreDatas($this->selectedIds, admin()->id);
         $this->success("{$count} Admins restored successfully");

@@ -64,7 +64,7 @@
             </div>
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button href="{{ route('admin.am.admin.index') }}" variant="tertiary" class="w-auto! py-2!">
+                <x-ui.button wire:click="cancel" variant="tertiary" class="w-auto! py-2!">
                     <flux:icon name="x-circle" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                     {{ __('Cancel') }}
                 </x-ui.button>

@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Services\Game;
+namespace App\Services;
 
 use App\Actions\Game\Category\BulkAction;
 use App\Actions\Game\Category\CreateAction;

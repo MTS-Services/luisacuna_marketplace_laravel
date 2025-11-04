@@ -8,18 +8,20 @@ use Livewire\Component;
 
 use App\DTOs\User\UpdateUserDTO;
 use App\Enums\UserAccountStatus;
-use App\Services\User\UserService;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use App\Livewire\Forms\Backend\Admin\UserManagement\UserForm;
+use App\Services\LanguageService;
 
 class Edit extends Component
 {
 
     use WithFileUploads, WithNotification;
 
-
+    public $countries;
+    public $languases;
     public UserForm $form;
     public User $user;
     public $userId;
@@ -27,11 +29,13 @@ class Edit extends Component
 
 
 
-    protected UserService $userService;
+    protected UserService $service;
 
-    public function boot(UserService $userService)
+    protected LanguageService $languageService;
+    public function boot(UserService $service, LanguageService $languageService)
     {
-        $this->userService = $userService;
+        $this->service = $service;
+         $this->languageService = $languageService;
     }
     public function mount(User $user): void
     {
@@ -40,7 +44,9 @@ class Edit extends Component
         $this->form->setUser($user);
         $this->existingAvatar = $user->avatar_url;
         // $this->form->date_of_birth->format('Y-m-d');
-
+        
+        $this->languases();
+        $this->countries();
 
         Log::info('UserEdit mounted', [
             'user_id' => $user->id,
@@ -56,11 +62,25 @@ class Edit extends Component
             ]
         ]);
     }
+    
+    public function languases():void {
+
+        $this->languases = $this->languageService->getLanguages();
+
+    }
+
+    public function countries():void {
+
+        $this->countries = Country::orderBy('name', 'asc')->get();
+
+    }
+
     public function render()
     {
         return view('livewire.backend.admin.components.user-management.user.edit', [
             'statuses' => UserAccountStatus::options(),
-            'countries' => Country::orderBy('name', 'asc')->get(),
+            'countries' => $this->countries,
+            'languages' => $this->languases,
         ]);
     }
 
@@ -84,42 +104,17 @@ class Edit extends Component
             ]
         ]);
 
-        $this->form->validate();
+      
 
         try {
-            $dtoData = [
-                'first_name' => $this->form->first_name,
-                'last_name' => $this->form->last_name,
-                'username' => $this->form->username,
-                // 'display_name' => $this->form->display_name,
-                'date_of_birth' => $this->form->date_of_birth,
-                'country_id' => $this->form->country_id,
-                'email' => $this->form->email,
-                'phone' => $this->form->phone,
-                'account_status' => $this->form->account_status,
-                'remove_avatar' => $this->form->remove_avatar,
-            ];
-            // Only add password if it's provided
-            if (!empty($this->form->password)) {
-                $dtoData['password'] = $this->form->password;
-            };
-
-
-            // Only add avatar if it's provided
-            if ($this->form->avatar) {
-                $dtoData['avatar'] = $this->form->avatar;
-            }
-
-
-            $dto = UpdateUserDTO::fromArray($dtoData);
-
-            $this->user = $this->userService->updateUser($this->userId, $dto);
-
+    
+           $this->form->validate();
             // $this->existingAvatar = $this->admin->avatar_url;
-            $this->form->avatar = null;
-            $this->form->remove_avatar = false;
-            $this->form->password = '';
-            $this->form->password_confirmation = '';
+            $data = $this->form->fillables();
+
+            $data['updater_id'] = admin()->id;
+
+            $users = $this->service->updateData($this->userId, $data);
 
             $this->dispatch('UserUpdated');
             $this->success('User updated successfully');

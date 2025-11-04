@@ -5,7 +5,7 @@ namespace App\Livewire\Backend\Admin\Components\GameManagement\Category;
 use App\DTOs\Game\CreateGameCategoryDTO ;
 use App\Enums\GameCategoryStatus;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameCategoryForm;
-use App\Services\Game\GameCategoryService;
+use App\Services\GameCategoryService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;

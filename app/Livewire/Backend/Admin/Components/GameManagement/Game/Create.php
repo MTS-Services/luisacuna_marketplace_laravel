@@ -6,8 +6,8 @@ namespace App\Livewire\Backend\Admin\Components\GameManagement\Game;
 
 use App\Enums\GameStatus;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameForm;
-use App\Services\Game\GameCategoryService;
-use App\Services\Game\GameService;
+use App\Services\GameCategoryService;
+use App\Services\GameService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;

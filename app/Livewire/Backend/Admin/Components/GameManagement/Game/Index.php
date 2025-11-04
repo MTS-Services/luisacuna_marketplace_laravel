@@ -4,7 +4,7 @@ namespace App\Livewire\Backend\Admin\Components\GameManagement\Game;
 
 use Livewire\Component;
 
-use App\Services\Game\GameService;
+use App\Services\GameService;
 
 use App\Traits\Livewire\WithDataTable;
 

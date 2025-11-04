@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Language;
+namespace App\Services;
 
 use App\Models\Language;
 use App\DTOs\Language\CreateLanguageDTO;

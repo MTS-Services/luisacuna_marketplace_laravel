@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Backend\Admin\Components\GameManagement\Category;
 
-use App\Services\Game\GameCategoryService;
+use App\Services\GameCategoryService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Component;

@@ -3,8 +3,7 @@
 namespace App\Livewire\Backend\Admin\Components\AdminManagement\Admin;
 
 use App\Enums\AdminStatus;
-use App\Models\Admin;
-use App\Services\Admin\AdminService;
+use App\Services\AdminService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -22,11 +21,11 @@ class Index extends Component
 
     protected $listeners = ['adminCreated' => '$refresh', 'adminUpdated' => '$refresh'];
 
-    protected AdminService $adminService;
+    protected AdminService $service;
 
-    public function boot(AdminService $adminService)
+    public function boot(AdminService $service)
     {
-        $this->adminService = $adminService;
+        $this->service = $service;
     }
 
     public function render()
@@ -152,7 +151,7 @@ class Index extends Component
                 return;
             }
 
-            $this->adminService->deleteAdmin($this->deleteAdminId);
+            $this->service->deleteData($this->deleteAdminId);
 
             $this->showDeleteModal = false;
             $this->deleteAdminId = null;
@@ -175,9 +174,9 @@ class Index extends Component
             $adminStatus = AdminStatus::from($status);
 
             match ($adminStatus) {
-                AdminStatus::ACTIVE => $this->adminService->activateAdmin($adminId),
-                AdminStatus::INACTIVE => $this->adminService->deactivateAdmin($adminId),
-                AdminStatus::SUSPENDED => $this->adminService->suspendAdmin($adminId),
+                AdminStatus::ACTIVE => $this->service->activateData($adminId),
+                AdminStatus::INACTIVE => $this->service->deactivateData($adminId),
+                AdminStatus::SUSPENDED => $this->service->suspendData($adminId),
                 default => null,
             };
 
@@ -228,7 +227,7 @@ class Index extends Component
 
     protected function bulkUpdateStatus(AdminStatus $status): void
     {
-        $count = $this->adminService->bulkUpdateStatus($this->selectedIds, $status);
+        $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
         $this->success("{$count} Admins updated successfully");
     }
 
@@ -244,7 +243,7 @@ class Index extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->adminService->getAdminsPaginated(
+        return $this->service->getPaginatedDatas(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

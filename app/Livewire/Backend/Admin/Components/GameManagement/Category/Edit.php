@@ -6,7 +6,7 @@ use App\DTOs\GameCategory\UpdateGameCategoryDTO;
 use App\Enums\GameCategoryStatus;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameCategoryForm;
 use App\Models\GameCategory;    
-use App\Services\Game\GameCategoryService;
+use App\Services\GameCategoryService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;

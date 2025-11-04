@@ -6,8 +6,8 @@ use App\DTOs\Game\UpdateGameDTO;
 use App\Enums\GameStatus;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameForm;
 use App\Models\Game;
-use App\Services\Game\GameCategoryService;
-use App\Services\Game\GameService;
+use App\Services\GameCategoryService;
+use App\Services\GameService;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 

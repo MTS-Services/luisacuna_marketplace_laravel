@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\User;
+namespace App\Services;
 
 use App\Actions\User\BulkAction;
 use App\Actions\User\CreateAction;

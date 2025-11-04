@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Backend\Admin\GameManagement;
 
 use App\Http\Controllers\Controller;
 
-use App\Services\Game\GameCategoryService;
+use App\Services\GameCategoryService;
 use Illuminate\View\View;
 
 class CategoryController extends Controller

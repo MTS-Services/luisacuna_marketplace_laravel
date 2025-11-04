@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services;
 
 use App\Actions\Admin\BulkAction;
 use App\Actions\Admin\CreateAction;
@@ -30,52 +30,52 @@ class AdminService
         return $this->interface->all();
     }
 
-    public function getAdminsPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function getPaginatedDatas(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return $this->interface->paginate($perPage, $filters);
     }
 
-    public function getAdminById(int $id): ?Admin
+    public function findData(int $id): ?Admin
     {
         return $this->interface->find($id);
     }
 
-    public function getAdminByEmail(string $email): ?Admin
+    public function getDataByEmail(string $email): ?Admin
     {
         return $this->interface->findByEmail($email);
     }
 
-    public function createAdmin(CreateAdminDTO $dto): Admin
+    public function createData(array $data): Admin
     {
-        return $this->createAdminAction->execute($dto);
+        return $this->createAction->execute($data);
     }
 
-    public function updateAdmin(int $id, UpdateAdminDTO $dto): Admin
+    public function updateData(int $id, array $data): Admin
     {
-        return $this->updateAdminAction->execute($id, $dto);
+        return $this->updateAction->execute($id, $data);
     }
 
-    public function deleteAdmin(int $id, bool $forceDelete = false): bool
+    public function deleteData(int $id, bool $forceDelete = false): bool
     {
-        return $this->deleteAdminAction->execute($id, $forceDelete);
+        return $this->deleteAction->execute($id, $forceDelete);
     }
 
-    public function restoreAdmin(int $id): bool
+    public function restoreData(int $id, int $actionerId): bool
     {
         return $this->restoreAction->execute($id, $actionerId);
     }
 
-    public function getActiveAdmins(): Collection
+    public function getActiveDatas(): Collection
     {
         return $this->interface->getActive();
     }
 
-    public function getInactiveAdmins(): Collection
+    public function getInactiveDatas(): Collection
     {
         return $this->interface->getInactive();
     }
 
-    public function searchAdmins(string $query): Collection
+    public function searchData(string $query): Collection
     {
         return $this->interface->search($query);
     }
@@ -97,19 +97,19 @@ class AdminService
         return $this->bulkAction->execute(ids: $ids, action: 'status', status: $status->value, actionerId: $actionerId);
     }
 
-    public function getAdminsCount(array $filters = []): int
+    public function getDatasCount(array $filters = []): int
     {
         return $this->interface->count($filters);
     }
 
-    public function adminExists(int $id): bool
+    public function dataExists(int $id): bool
     {
         return $this->interface->exists($id);
     }
 
-    public function activateAdmin(int $id): bool
+    public function activateData(int $id): bool
     {
-        $admin = $this->getAdminById($id);
+        $admin = $this->findData($id);
 
         if (!$admin) {
             return false;
@@ -119,9 +119,9 @@ class AdminService
         return true;
     }
 
-    public function deactivateAdmin(int $id): bool
+    public function deactivateData(int $id): bool
     {
-        $admin = $this->getAdminById($id);
+        $admin = $this->findData($id);
 
         if (!$admin) {
             return false;
@@ -131,9 +131,9 @@ class AdminService
         return true;
     }
 
-    public function suspendAdmin(int $id): bool
+    public function suspendData(int $id): bool
     {
-        $admin = $this->getAdminById($id);
+        $admin = $this->findData($id);
 
         if (!$admin) {
             return false;
@@ -142,17 +142,17 @@ class AdminService
         $admin->suspend();
         return true;
     }
-    public function getTrashedAdminsPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function getTrashedDatasPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return $this->interface->trashPaginate($perPage, $filters);
     }
 
-    public function bulkRestoreAdmins(array $ids): int
+    public function bulkRestoreDatas(array $ids, int $actionerId): int
     {
         return $this->bulkAction->execute($ids, 'restore', null, $actionerId);
     }
 
-    public function bulkForceDeleteAdmins(array $ids): int
+    public function bulkForceDeleteDatas(array $ids): int
     {
         return $this->bulkAction->execute($ids, 'forceDelete', null, null);
     }

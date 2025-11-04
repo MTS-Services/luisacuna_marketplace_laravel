@@ -1,12 +1,11 @@
 <?php 
 
-namespace App\Services\Game;
+namespace App\Services;
 
 
 use App\Actions\Game\CreateAction;
 use App\Actions\Game\UpdateAction;
 use App\Actions\Game\DeleteAction;
-use App\DTOs\Game\UpdateGameDTO;
 use App\Enums\GameStatus;
 use App\Models\Game;
 use App\Repositories\Contracts\GameRepositoryInterface;

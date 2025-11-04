@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Backend\Admin\GameManagement;
 
 use App\Http\Controllers\Controller;
 use App\Models\Game;
-use App\Services\Game\GameService;
+use App\Services\GameService;
 
 class GameController extends Controller
 {
