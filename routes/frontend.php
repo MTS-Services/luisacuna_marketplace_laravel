@@ -13,6 +13,7 @@ use App\Http\Controllers\Frontend\GameController;
 use App\Http\Controllers\Frontend\GiftCardController;
 use App\Http\Controllers\Frontend\UserAccountController;
 use App\Http\Controllers\Frontend\UserProfileController;
+use App\Http\Controllers\Admin\EmailTemplateController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -48,7 +49,7 @@ Route::get('profile', [UserProfileController::class, 'profile'])->name('profile'
 Route::get('/items', [ItemsController::class, 'items'])->name('items');
 
 
-// 
+//
 
 Route::group(['prefix' => 'orders', 'as' => 'om.'], function () {
    Route::get('/', [OrderController::class, 'index'])->name('index');
@@ -57,7 +58,7 @@ Route::group(['prefix' => 'orders', 'as' => 'om.'], function () {
    Route::get('/chat-help-two', [OrderController::class, 'chatHelpTwo'])->name('chat-help-two');
    Route::get('/chat-help-three', [OrderController::class, 'chatHelpThree'])->name('chat-help-three');
    Route::get('/complete', [OrderController::class, 'complete'])->name('complete');
-}); 
+});
 // account
 Route::get('/accounts', [AccountsController::class, 'accounts'])->name('accounts');
 // top up
@@ -67,6 +68,11 @@ Route::get('/top-up', [TopUpController::class, 'topUp'])->name('top-up');
 // Coaching
 Route::get('/coaching', [CoachingController::class, 'coaching'])->name('coaching');
 Route::get('/currency', [CurrencyController::class, 'index'])->name('currency');
+
+// email-temp
+Route::get('/email-templates', [EmailTemplateController::class, 'index'])->name('email_templates.index');
+Route::get('/email-templates/{id}', [EmailTemplateController::class, 'show'])->name('email_templates.show');
+
 Route::get('boosting', [BoostingController::class, 'index'])->name('boosting');
 Route::get('account', [UserAccountController::class, 'index'])->name('account');
 Route::get('/items', [ItemsController::class, 'index'])->name('items');

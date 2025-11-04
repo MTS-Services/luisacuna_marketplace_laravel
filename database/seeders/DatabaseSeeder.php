@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
             KycFormSectionSeeder::class,
             KycFormFieldSeeder::class,
             SubmittedKycSeeder::class,
-            
+
         ]);
 
         // Admin::create([

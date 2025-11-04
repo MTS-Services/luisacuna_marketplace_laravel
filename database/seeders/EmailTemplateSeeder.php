@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\EmailTemplate;
-
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\EmailTemplate;
+use App\Models\Admin;
 
 class EmailTemplateSeeder extends Seeder
 {
@@ -15,37 +13,27 @@ class EmailTemplateSeeder extends Seeder
      */
     public function run(): void
     {
-        EmailTemplate::insert([
+        // Ensure at least one admin exists
+        $admin = Admin::first() ?? Admin::factory()->create();
+
+        // Create multiple email templates
+        EmailTemplate::factory()
+            ->count(10)
+            ->create([
+                'created_by' => $admin->id,
+            ]);
+
+        // Optionally, create specific predefined templates
+        EmailTemplate::updateOrCreate(
+            ['key' => 'user_welcome'],
             [
                 'sort_order' => 1,
-                'key' => 'welcome_email',
-                'name' => 'Welcome Email',
-                'subject' => 'Welcome to Our Platform!',
-                'template' => '<p>Hi {{name}},</p><p>Welcome to our platform!</p>',
-                'variables' => json_encode(['name']),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'sort_order' => 2,
-                'key' => 'password_reset',
-                'name' => 'Password Reset',
-                'subject' => 'Reset Your Password',
-                'template' => '<p>Hi {{name}},</p><p>Click <a href="{{reset_link}}">here</a> to reset your password.</p>',
-                'variables' => json_encode(['name', 'reset_link']),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'sort_order' => 3,
-                'key' => 'order_confirmation',
-                'name' => 'Order Confirmation',
-                'subject' => 'Your Order is Confirmed',
-                'template' => '<p>Hi {{name}},</p><p>Your order #{{order_id}} has been confirmed.</p>',
-                'variables' => json_encode(['name', 'order_id']),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-        ]);
+                'name' => 'User Welcome Email',
+                'subject' => 'Welcome to Our App, {{user_name}}!',
+                'template' => '<p>Hello {{user_name}}, welcome to {{app_name}}!</p>',
+                'variables' => json_encode(['user_name', 'app_name']),
+                'created_by' =>1,
+            ]
+        );
     }
 }

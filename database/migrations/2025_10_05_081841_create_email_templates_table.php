@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('key', 191)->unique(); // slug-like key
             $table->string('name', 255);
             $table->string('subject')->nullable();
-            $table->longText('body')->nullable(); // "template" → more semantic name
+           $table->longText('template')->nullable(); // "template" → more semantic name
             $table->json('variables')->nullable();
 
             // Audit timestamps
@@ -37,3 +37,4 @@ return new class extends Migration
 };
 
 
+$table->longText('template')->nullable();
