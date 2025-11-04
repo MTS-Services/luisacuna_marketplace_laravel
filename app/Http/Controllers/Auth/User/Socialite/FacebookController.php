@@ -51,13 +51,12 @@ class FacebookController extends Controller
                     $user->facebook_id = $facebookId;
                 }
 
-                if ($email && !$user->email_verified_at) {
-                    $user->email_verified_at = now();
-                }
-
-                // ✅ If user didn’t have an email before, add it
+                // ✅ Email add hole email_verified_at o add hobe
                 if (!$user->email && $email) {
                     $user->email = $email;
+                    $user->email_verified_at = now();
+                } elseif ($email && !$user->email_verified_at) {
+                    $user->email_verified_at = now();
                 }
                 
                 if ($user->isDirty()) {
@@ -77,6 +76,7 @@ class FacebookController extends Controller
                 $baseUsername = $this->generateUsername($email, $firstName, $facebookId);
                 $username = $this->ensureUniqueUsername($baseUsername);
 
+                // ✅ Email thakle email_verified_at set hobe, na hole null
                 $user = User::create([
                     'username' => $username,
                     'first_name' => $firstName,
@@ -84,7 +84,7 @@ class FacebookController extends Controller
                     'email' => $email,
                     'facebook_id' => $facebookId,
                     'password' => Hash::make(uniqid()),
-                    'email_verified_at' => $email ? now() : null,
+                    'email_verified_at' => $email ? now() : now(),
                 ]);
             }
 
