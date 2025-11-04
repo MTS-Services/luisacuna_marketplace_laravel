@@ -17,17 +17,9 @@
                     <div class="">
                         <span class="text-base font-semibold">Select region</span>
                     </div>
-                    <div class="hidden md:flex items-center gap-2">
-                        <div class="flex gap-3 justify-end">
+                    {{-- <div class="hidden md:flex items-center gap-2">
 
-                            <x-ui.select id="status-select" class="py-0.5! w-auto! pl-5! rounded-full!">
-                                <option value="">Sort by</option>
-                                <option value="">lowest to highest</option>
-                                <option value="">highest to lowest</option>
-                            </x-ui.select>
-
-                        </div>
-                    </div>
+                    </div> --}}
                     <div class="block md:hidden relative z-10" x-data="{ open: false }">
 
                         <div @click="open = !open" class="cursor-pointer inline-block">
@@ -45,24 +37,31 @@
                             style="display: none;">
                             <a href="#"
                                 class="text-text-white block px-3 py-2 text-sm hover:bg-zinc-700 rounded-lg transition-colors duration-150">
-                                Recommended
+                                Lowest To Highest
                             </a>
                             <a href="#"
                                 class="text-text-white block px-3 py-2 text-sm hover:bg-zinc-700 rounded-lg transition-colors duration-150">
-                                Lowest To Highest
+                                highest to lowest
                             </a>
                         </div>
                     </div>
                 </div>
 
             </div>
-            <div class="mt-3 mb-6">
+            <div class="mt-3 mb-6 flex items-center justify-between">
                 <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70 rounded-full!">
                     <option value="">Global</option>
                     <option value="completed">Completed</option>
                     <option value="pending">Pending</option>
                     <option value="processing">Processing</option>
                 </x-ui.select>
+
+                <x-ui.select id="status-select" class="py-0.5! w-auto! pl-5! hidden md:flex rounded-full!">
+                    <option value="">Sort by</option>
+                    <option value="">lowest to highest</option>
+                    <option value="">highest to lowest</option>
+                </x-ui.select>
+
             </div>
 
             <div class="mb-10">
