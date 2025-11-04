@@ -31,7 +31,7 @@ class User extends AuthBaseModel implements Auditable
         'username',
         'first_name',
         'last_name',
-        
+
         'facebook_id',
         'google_id',
         'avatar',
@@ -194,7 +194,6 @@ class User extends AuthBaseModel implements Auditable
             $q->where('username', 'like', "%{$search}%")
                 ->orWhere('first_name', 'like', "%{$search}%")
                 ->orWhere('last_name', 'like', "%{$search}%")
-
                 ->orWhere('email', 'like', "%{$search}%")
                 ->orWhere('phone', 'like', "%{$search}%");
         });

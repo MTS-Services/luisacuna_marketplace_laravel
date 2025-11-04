@@ -15,7 +15,7 @@ class Index extends Component
     use WithDataTable, WithNotification;
 
 
-    protected UserService $service;
+    protected UserService $userService;
 
     public $statusFilter = '';
     public $deleteUserId;
@@ -23,14 +23,14 @@ class Index extends Component
     public $showDeleteModal = false;
     public $showBulkActionModal = false;
 
-    public function boot(UserService $service)
+    public function boot(UserService $userService)
     {
-        $this->service = $service;
+        $this->userService = $userService;
     }
 
     public function render()
     {
-        $users = $this->service->getPaginateDatas(
+        $users = $this->userService->getUsersPaginated(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
@@ -113,7 +113,7 @@ class Index extends Component
             ['value' => 'suspend', 'label' => 'Suspend'],
         ];
         return view('livewire.backend.admin.components.user-management.user.index', [
-            'datas' => $users,
+            'users' => $users,
             'columns' => $columns,
             'statuses' => UserAccountStatus::options(),
             'actions' => $actions,
@@ -140,7 +140,7 @@ class Index extends Component
             //     return;
             // }
 
-            $this->service->deleteData($this->deleteUserId);
+            $this->userService->deleteUser($this->deleteUserId);
 
             $this->showDeleteModal = false;
             $this->deleteUserId = null;
@@ -163,9 +163,9 @@ class Index extends Component
             $userStatus = UserAccountStatus::from($status);
 
             match ($userStatus) {
-                UserAccountStatus::ACTIVE => $this->service->activateData($userId),
-                UserAccountStatus::INACTIVE => $this->service->deactivateData($userId),
-                UserAccountStatus::SUSPENDED => $this->service->suspendData($userId),
+                UserAccountStatus::ACTIVE => $this->userService->activateUser($userId),
+                UserAccountStatus::INACTIVE => $this->userService->deactivateUser($userId),
+                UserAccountStatus::SUSPENDED => $this->userService->suspendUser($userId),
                 default => null,
             };
 
@@ -209,13 +209,13 @@ class Index extends Component
 
     protected function bulkDelete(): void
     {
-        $count = $this->service->bulkDeleteDatas($this->selectedIds);
+        $count = $this->userService->bulkDeleteUsers($this->selectedIds);
         $this->success("{$count} Users deleted successfully");
     }
 
     protected function bulkUpdateStatus(UserAccountStatus $status): void
     {
-        $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
+        $count = $this->userService->bulkUpdateStatus($this->selectedIds, $status);
         $this->success("{$count} Users updated successfully");
     }
 
@@ -231,7 +231,7 @@ class Index extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->service->getPaginateDatas(
+        return $this->userService->getUsersPaginated(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

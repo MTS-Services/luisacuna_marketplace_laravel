@@ -2,31 +2,32 @@
 
 namespace App\Actions\Admin;
 
-
+use App\DTOs\Admin\CreateAdminDTO;
 use App\Events\Admin\AdminCreated;
 use App\Models\Admin;
 use App\Repositories\Contracts\AdminRepositoryInterface;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
-class CreateAction
+
+class CreateAdminAction
 {
     public function __construct(
-        protected AdminRepositoryInterface $interface
+        protected AdminRepositoryInterface $adminRepository
     ) {}
 
 
-    public function execute(array $data): Admin
+    public function execute(CreateAdminDTO $dto): Admin
     {
-        return DB::transaction(function () use ($data) {
-          
+        return DB::transaction(function () use ($dto) {
+            $data = $dto->toArray();
+
             // Handle avatar upload
-            if ($data['avatar']) {
-                $data['avatar'] = Storage::disk('public')->putFile('admins', $data['avatar']);
+            if ($dto->avatar) {
+                $data['avatar'] = $dto->avatar->store('admins', 'public');
             }
 
             // Create user
-            $admin = $this->interface->create($data);
+            $admin = $this->adminRepository->create($data);
 
             // Dispatch event
             event(new AdminCreated($admin));

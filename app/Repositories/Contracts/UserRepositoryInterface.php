@@ -28,7 +28,7 @@ interface UserRepositoryInterface
     
     public function forceDelete(int $id): bool;
     
-    public function restore(int $id , int $actioner_id): bool;
+    public function restore(int $id): bool;
     
     public function exists(int $id): bool;
     
@@ -46,7 +46,7 @@ interface UserRepositoryInterface
 
     public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
 
-    public function bulkRestore(array $ids, int $actioner_id): int;
+    public function bulkRestore(array $ids): int;
 
     public function bulkForceDelete(array $ids): int;
 }

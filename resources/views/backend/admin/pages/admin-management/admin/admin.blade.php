@@ -11,7 +11,7 @@
         @case('admin.am.admin.edit')
             <x-slot name="title">Admins Edit</x-slot>
             <x-slot name="breadcrumb">Admin Management</x-slot>
-            <livewire:backend.admin.components.admin-management.admin.edit :data="$admin"/>
+            <livewire:backend.admin.components.admin-management.admin.edit :admin="$admin"/>
         @break
 
         @case('admin.am.admin.trash')

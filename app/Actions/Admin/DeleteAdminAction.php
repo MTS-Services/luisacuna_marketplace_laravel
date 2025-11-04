@@ -3,21 +3,20 @@
 namespace App\Actions\Admin;
 
 use App\Events\Admin\AdminDeleted;
-use App\Models\Admin;
 use App\Repositories\Contracts\AdminRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class DeleteAction
+class DeleteAdminAction
 {
     public function __construct(
-        protected AdminRepositoryInterface $interface
+        protected AdminRepositoryInterface $adminRepository
     ) {}
 
     public function execute(int $adminId, bool $forceDelete = false): bool
     {
         return DB::transaction(function () use ($adminId, $forceDelete) {
-            $admin = $this->interface->find($adminId);
+            $admin = $this->adminRepository->find($adminId);
 
             if (!$admin) {
                 throw new \Exception('Admin not found');
@@ -32,15 +31,15 @@ class DeleteAction
                     Storage::disk('public')->delete($admin->avatar);
                 }
 
-                return $this->interface->forceDelete($adminId);
+                return $this->adminRepository->forceDelete($adminId);
             }
 
-            return $this->interface->delete($adminId);
+            return $this->adminRepository->delete($adminId);
         });
     }
 
-    public function restore(int $adminId, int $actionerId): bool
+    public function restore(int $adminId): bool
     {
-        return $this->interface->restore($adminId, $actionerId);
+        return $this->adminRepository->restore($adminId);
     }
 }
