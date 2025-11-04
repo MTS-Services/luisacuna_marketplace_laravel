@@ -4,68 +4,71 @@ namespace App\Livewire\Forms\Backend\Admin\ProductManagement;
 
 use Livewire\Form;
 use App\Models\Product;
-use App\Enums\ProductsStatus;
+use App\Enums\ProductStatus;
 use Livewire\Attributes\Locked;
 use App\Enums\ProductsVisibility;
-use Livewire\Attributes\Validate;
 use App\Enums\ProductsDeliveryMethod;
 
 class ProducForm extends Form
 {
     #[Locked]
     public ?int $id = null;
+    
+    // String fields - সরাসরি default value দিন
     public string $title = '';
     public string $slug = '';
-    public string $seller_id = '';
-    public string $game_id = '';
-    public string $product_type_id = '';
     public string $description = '';
-    public string $price = '';
-    public ?string $currency = '';
-    public ?string $discount_percentage = '';
-    public ?string $discounted_price = '';
-    public ?string $stock_quantity = '';
-    public ?string $min_purchase_quantity = '';
-    public ?string $max_purchase_quantity = '';
-    public ?string $unlimited_stock = '';
-    public string $delivery_method = '';
-    public ?string $delivery_time_hours = '';
-    public ?string $auto_delivery_content = '';
-    public ?string $server_id = '';
-    public ?string $platform = '';
-    public ?string $region = '';
-    public ?string $specifications = '';
-    public ?string $requirements = '';
-    public string $status = '';
-    public ?string $is_featured = '';
-    public ?string $is_hot_deal = '';
-    public string $visibility = '';
-    public ?string $total_sales = '';
-    public ?string $total_revenue = '';
-    public ?string $view_count = '';
-    public ?string $favorite_count = '';
-    public ?string $average_rating = '';
-    public ?string $total_reviews = '';
-    public ?string $reviewed_by = '';
-    public ?string $reviewed_at = '';
-    public ?string $rejection_reason = '';
-    public ?string $meta_title = '';
-    public ?string $meta_description = '';
-    public ?string $meta_keywords = '';
+    public string $currency = 'USD';  // ✅ Default value এখানে
+    public string $delivery_method = 'manual';  // ✅ Direct value দিন
+    public string $status = 'active';  // ✅ Direct value দিন
+    public string $visibility = 'public';  // ✅ Direct value দিন
+    
+    // Integer/Numeric fields
+    public ?int $seller_id = null;
+    public ?int $game_id = null;
+    public ?int $product_type_id = null;
+    public ?int $server_id = null;
+    public ?int $reviewed_by = null;
+    
+    public float $price = 0;
+    public ?float $discount_percentage = null;
+    public ?float $discounted_price = null;
+    
+    public int $stock_quantity = 0;
+    public int $min_purchase_quantity = 1;
+    public ?int $max_purchase_quantity = null;
+    public ?int $delivery_time_hours = 24;
+    public int $total_sales = 0;
+    public float $total_revenue = 0;
+    public int $view_count = 0;
+    public int $favorite_count = 0;
+    public float $average_rating = 0;
+    public int $total_reviews = 0;
+    
+    // Boolean fields
+    public bool $unlimited_stock = false;
+    public bool $is_featured = false;
+    public bool $is_hot_deal = false;
+    
+    // Nullable string fields
+    public ?string $auto_delivery_content = null;
+    public ?string $platform = null;
+    public ?string $region = null;
+    public ?string $specifications = null;
+    public ?string $requirements = null;
+    public ?string $reviewed_at = null;
+    public ?string $rejection_reason = null;
+    public ?string $meta_title = null;
+    public ?string $meta_description = null;
+    public ?string $meta_keywords = null;
 
-    public function __construct()
-    {
-        // ডিফল্ট ভ্যালু সেট করুন
-        $this->delivery_method = ProductsDeliveryMethod::MANUAL->value;
-        $this->status = ProductsStatus::ACTIVE->value;
-        $this->visibility = ProductsVisibility::PUBLIC->value;
-    }
+    // ❌ Constructor মুছে দিন - এটা লাগবে না
 
     public function rules(): array
     {
         $slugRule = $this->isUpdating()
-            ? 'required|string|max:10|unique:products,slug,' . $this->id
-            : 'required|string|max:10|unique:products,slug';
+            ? 'required|string|max:255|unique:products,slug,' . $this->id
+            : 'required|string|max:255|unique:products,slug';
 
         return [
             // Locked fields
@@ -85,13 +88,13 @@ class ProducForm extends Form
 
             // Pricing
             'price' => 'required|numeric|min:0',
-            'currency' => 'nullable|string|size:3',
+            'currency' => 'required|string|size:3',
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
             'discounted_price' => 'nullable|numeric|min:0',
 
             // Stock
-            'stock_quantity' => 'nullable|integer|min:0',
-            'min_purchase_quantity' => 'nullable|integer|min:1',
+            'stock_quantity' => 'required|integer|min:0',
+            'min_purchase_quantity' => 'required|integer|min:1',
             'max_purchase_quantity' => 'nullable|integer|min:1',
             'unlimited_stock' => 'boolean',
 
@@ -107,7 +110,7 @@ class ProducForm extends Form
             'requirements' => 'nullable|json',
 
             // Status & flags
-            'status' => 'required|string|in:' . implode(',', array_column(ProductsStatus::cases(), 'value')),
+            'status' => 'required|string|in:' . implode(',', array_column(ProductStatus::cases(), 'value')),
             'is_featured' => 'boolean',
             'is_hot_deal' => 'boolean',
             'visibility' => 'required|string|in:' . implode(',', array_column(ProductsVisibility::cases(), 'value')),
@@ -139,20 +142,19 @@ class ProducForm extends Form
         $this->product_type_id = $product->product_type_id;
         $this->title = $product->title;
         $this->slug = $product->slug;
-        $this->description = $product->description;
-        $this->price = $product->price;
+        $this->description = $product->description ?? '';
+        $this->price = (float) $product->price;
         $this->currency = $product->currency;
-        $this->discount_percentage = $product->discount_percentage;
-        $this->discounted_price = $product->discounted_price;
-        $this->stock_quantity = $product->stock_quantity;
-        $this->min_purchase_quantity = $product->min_purchase_quantity;
-        $this->max_purchase_quantity = $product->max_purchase_quantity;
-        $this->unlimited_stock = $product->unlimited_stock;
+        $this->discount_percentage = $product->discount_percentage ? (float) $product->discount_percentage : null;
+        $this->discounted_price = $product->discounted_price ? (float) $product->discounted_price : null;
+        $this->stock_quantity = (int) $product->stock_quantity;
+        $this->min_purchase_quantity = (int) $product->min_purchase_quantity;
+        $this->max_purchase_quantity = $product->max_purchase_quantity ? (int) $product->max_purchase_quantity : null;
+        $this->unlimited_stock = (bool) $product->unlimited_stock;
         
-        // ✅ Enum গুলোকে string value তে কনভার্ট করুন
         $this->delivery_method = $product->delivery_method?->value ?? ProductsDeliveryMethod::MANUAL->value;
         
-        $this->delivery_time_hours = $product->delivery_time_hours;
+        $this->delivery_time_hours = $product->delivery_time_hours ? (int) $product->delivery_time_hours : null;
         $this->auto_delivery_content = $product->auto_delivery_content;
         $this->server_id = $product->server_id;
         $this->platform = $product->platform;
@@ -160,21 +162,19 @@ class ProducForm extends Form
         $this->specifications = $product->specifications;
         $this->requirements = $product->requirements;
         
-        // ✅ Enum গুলোকে string value তে কনভার্ট করুন
-        $this->status = $product->status?->value ?? ProductsStatus::ACTIVE->value;
+        $this->status = $product->status?->value ?? ProductStatus::ACTIVE->value;
         
-        $this->is_featured = $product->is_featured;
-        $this->is_hot_deal = $product->is_hot_deal;
+        $this->is_featured = (bool) $product->is_featured;
+        $this->is_hot_deal = (bool) $product->is_hot_deal;
         
-        // ✅ Enum গুলোকে string value তে কনভার্ট করুন
         $this->visibility = $product->visibility?->value ?? ProductsVisibility::PUBLIC->value;
         
-        $this->total_sales = $product->total_sales;
-        $this->total_revenue = $product->total_revenue;
-        $this->view_count = $product->view_count;
-        $this->favorite_count = $product->favorite_count;
-        $this->average_rating = $product->average_rating;
-        $this->total_reviews = $product->total_reviews;
+        $this->total_sales = (int) $product->total_sales;
+        $this->total_revenue = (float) $product->total_revenue;
+        $this->view_count = (int) $product->view_count;
+        $this->favorite_count = (int) $product->favorite_count;
+        $this->average_rating = (float) $product->average_rating;
+        $this->total_reviews = (int) $product->total_reviews;
         $this->reviewed_by = $product->reviewed_by;
         $this->reviewed_at = $product->reviewed_at;
         $this->rejection_reason = $product->rejection_reason;
@@ -185,54 +185,28 @@ class ProducForm extends Form
 
     public function reset(...$properties): void
     {
-        parent::reset(
-            'id',
-            'seller_id',
-            'game_id',
-            'product_type_id',
-            'title',
-            'slug',
-            'description',
-            'price',
-            'currency',
-            'discount_percentage',
-            'discounted_price',
-            'stock_quantity',
-            'min_purchase_quantity',
-            'max_purchase_quantity',
-            'unlimited_stock',
-            'delivery_method',
-            'delivery_time_hours',
-            'auto_delivery_content',
-            'server_id',
-            'platform',
-            'region',
-            'specifications',
-            'requirements',
-            'status',
-            'is_featured',
-            'is_hot_deal',
-            'visibility',
-            'total_sales',
-            'total_revenue',
-            'view_count',
-            'favorite_count',
-            'average_rating',
-            'total_reviews',
-            'reviewed_by',
-            'reviewed_at',
-            'rejection_reason',
-            'meta_title',
-            'meta_description',
-            'meta_keywords'
-        );
+        parent::reset(...$properties);
 
         $this->resetValidation();
         
-        // রিসেট করার পর ডিফল্ট ভ্যালু আবার সেট করুন
-        $this->delivery_method = ProductsDeliveryMethod::MANUAL->value;
-        $this->status = ProductsStatus::ACTIVE->value;
-        $this->visibility = ProductsVisibility::PUBLIC->value;
+        // Default values reset করুন
+        $this->delivery_method = 'manual';
+        $this->status = 'active';
+        $this->visibility = 'public';
+        $this->currency = 'USD';
+        $this->stock_quantity = 0;
+        $this->min_purchase_quantity = 1;
+        $this->delivery_time_hours = 24;
+        $this->unlimited_stock = false;
+        $this->is_featured = false;
+        $this->is_hot_deal = false;
+        $this->price = 0;
+        $this->total_sales = 0;
+        $this->total_revenue = 0;
+        $this->view_count = 0;
+        $this->favorite_count = 0;
+        $this->average_rating = 0;
+        $this->total_reviews = 0;
     }
 
     protected function isUpdating(): bool
@@ -242,45 +216,47 @@ class ProducForm extends Form
 
     public function fillables(): array
     {
-        return [
-            'seller_id',
-            'game_id',
-            'product_type_id',
-            'title',
-            'slug',
-            'description',
-            'price',
-            'currency',
-            'discount_percentage',
-            'discounted_price',
-            'stock_quantity',
-            'min_purchase_quantity',
-            'max_purchase_quantity',
-            'unlimited_stock',
-            'delivery_method',
-            'delivery_time_hours',
-            'auto_delivery_content',
-            'server_id',
-            'platform',
-            'region',
-            'specifications',
-            'requirements',
-            'status',
-            'is_featured',
-            'is_hot_deal',
-            'visibility',
-            'total_sales',
-            'total_revenue',
-            'view_count',
-            'favorite_count',
-            'average_rating',
-            'total_reviews',
-            'reviewed_by',
-            'reviewed_at',
-            'rejection_reason',
-            'meta_title',
-            'meta_description',
-            'meta_keywords',
-        ];
+        return array_filter([
+            'seller_id' => $this->seller_id,
+            'game_id' => $this->game_id,
+            'product_type_id' => $this->product_type_id,
+            'title' => $this->title,
+            'slug' => $this->slug,
+            'description' => $this->description ?: null,
+            'price' => $this->price,
+            'currency' => $this->currency,
+            'discount_percentage' => $this->discount_percentage,
+            'discounted_price' => $this->discounted_price,
+            'stock_quantity' => $this->stock_quantity,
+            'min_purchase_quantity' => $this->min_purchase_quantity,
+            'max_purchase_quantity' => $this->max_purchase_quantity,
+            'unlimited_stock' => $this->unlimited_stock,
+            'delivery_method' => $this->delivery_method,
+            'delivery_time_hours' => $this->delivery_time_hours,
+            'auto_delivery_content' => $this->auto_delivery_content ?: null,
+            'server_id' => $this->server_id,
+            'platform' => $this->platform ?: null,
+            'region' => $this->region ?: null,
+            'specifications' => $this->specifications ?: null,
+            'requirements' => $this->requirements ?: null,
+            'status' => $this->status,
+            'is_featured' => $this->is_featured,
+            'is_hot_deal' => $this->is_hot_deal,
+            'visibility' => $this->visibility,
+            'total_sales' => $this->total_sales,
+            'total_revenue' => $this->total_revenue,
+            'view_count' => $this->view_count,
+            'favorite_count' => $this->favorite_count,
+            'average_rating' => $this->average_rating,
+            'total_reviews' => $this->total_reviews,
+            'reviewed_by' => $this->reviewed_by,
+            'reviewed_at' => $this->reviewed_at,
+            'rejection_reason' => $this->rejection_reason ?: null,
+            'meta_title' => $this->meta_title ?: null,
+            'meta_description' => $this->meta_description ?: null,
+            'meta_keywords' => $this->meta_keywords ?: null,
+        ], function ($value) {
+            return $value !== '' && $value !== null;
+        });
     }
 }

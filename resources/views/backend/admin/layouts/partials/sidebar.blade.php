@@ -117,7 +117,7 @@
                         'name' => 'Product Types',
                         'route' => route('admin.pm.productType.index'),
                         'icon' => 'user',
-                        'active' => 'productType',
+                        'active' => 'product-type',
                     ],
                     [
                         'name' => 'Products',

@@ -104,7 +104,7 @@ class ProductTypeService
 
         return $this->updateAction->execute($id, [
             'status' => $status->value,
-            'updated_by' => $actionerId,
+            'updater_type' => $actionerId,
         ]);
     }
 

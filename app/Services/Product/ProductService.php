@@ -3,7 +3,7 @@
 namespace App\Services\Product;
 
 use App\Models\Product;
-use App\Enums\ProductsStatus;
+use App\Enums\ProductStatus;
 use App\Actions\Product\BulkAction;
 use App\Actions\Product\CreateAction;
 use App\Actions\Product\DeleteAction;
@@ -81,69 +81,70 @@ class ProductService
         return $this->createAction->execute($data);
     }
 
-    // public function updateData(int $id, array $data): array
-    // {
-    //     return $this->updateAction->execute($id, $data);
-    // }
+    public function updateData(int $id, array $data): array
+    {
+        return $this->updateAction->execute($id, $data);
+    }
 
-    // public function deleteData(int $id, bool $forceDelete = false, ?int $actionerId = null): bool
-    // {
-    //     if ($actionerId == null) {
-    //         $actionerId = admin()->id;
-    //     }
-    //     return $this->deleteAction->execute($id, $forceDelete, $actionerId);
-    // }
+    public function deleteData(int $id, bool $forceDelete = false, ?int $actionerId = null): bool
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->deleteAction->execute($id, $forceDelete, $actionerId);
+    }
 
-    // public function restoreData(int $id, ?int $actionerId = null): bool
-    // {
-    //     if ($actionerId == null) {
-    //         $actionerId = admin()->id;
-    //     }
-    //     return $this->restoreAction->execute($id, $actionerId);
-    // }
+    public function restoreData(int $id, ?int $actionerId = null): bool
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->restoreAction->execute($id, $actionerId);
+    }
 
-    // public function updateStatusData(int $id, ProductsStatus $status, ?int $actionerId = null): Product
-    // {
-    //     if ($actionerId == null) {
-    //         $actionerId = admin()->id;
-    //     }
+    public function updateStatusData(int $id, ProductStatus $status, ?int $actionerId = null): Product
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
 
-    //     return $this->updateAction->execute($id, [
-    //         'status' => $status->value,
-    //         'updated_by' => $actionerId,
-    //     ]);
-    // }
+        return $this->updateAction->execute($id, [
+            'status' => $status->value,
+            'updater_type' => $actionerId,
+            // 'updated_by' => $actionerId,
+        ]);
+    }
 
 
-    // public function bulkRestoreData(array $ids, ?int $actionerId = null): int
-    // {
-    //     if ($actionerId == null) {
-    //         $actionerId = admin()->id;
-    //     }
-    //     return $this->bulkAction->execute(ids: $ids, action: 'restore', status: null, actionerId: $actionerId);
-    // }
+    public function bulkRestoreData(array $ids, ?int $actionerId = null): int
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->bulkAction->execute(ids: $ids, action: 'restore', status: null, actionerId: $actionerId);
+    }
 
-    // public function bulkForceDeleteData(array $ids, ?int $actionerId = null): int
-    // {
-    //     if ($actionerId == null) {
-    //         $actionerId = admin()->id;
-    //     }
-    //     return $this->bulkAction->execute(ids: $ids, action: 'forceDelete', status: null, actionerId: $actionerId);
-    // }
+    public function bulkForceDeleteData(array $ids, ?int $actionerId = null): int
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->bulkAction->execute(ids: $ids, action: 'forceDelete', status: null, actionerId: $actionerId);
+    }
 
-    // public function bulkDeleteData(array $ids, ?int $actionerId = null): int
-    // {
-    //     if ($actionerId == null) {
-    //         $actionerId = admin()->id;
-    //     }
-    //     return $this->bulkAction->execute(ids: $ids, action: 'delete', status: null, actionerId: $actionerId);
-    // }
+    public function bulkDeleteData(array $ids, ?int $actionerId = null): int
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->bulkAction->execute(ids: $ids, action: 'delete', status: null, actionerId: $actionerId);
+    }
 
-    // public function bulkUpdateStatus(array $ids, ProductsStatus $status, ?int $actionerId = null): int
-    // {
-    //     if ($actionerId == null) {
-    //         $actionerId = admin()->id;
-    //     }
-    //     return $this->bulkAction->execute(ids: $ids, action: 'status', status: $status->value, actionerId: $actionerId);
-    // }
+    public function bulkUpdateStatus(array $ids, ProductStatus $status, ?int $actionerId = null): int
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->bulkAction->execute(ids: $ids, action: 'status', status: $status->value, actionerId: $actionerId);
+    }
 }

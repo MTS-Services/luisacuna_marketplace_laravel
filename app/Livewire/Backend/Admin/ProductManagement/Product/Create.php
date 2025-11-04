@@ -3,7 +3,7 @@
 namespace App\Livewire\Backend\Admin\ProductManagement\Product;
 
 use Livewire\Component;
-use App\Enums\ProductsStatus;
+use App\Enums\ProductStatus;
 use Livewire\WithFileUploads;
 use App\Enums\ProductsVisibility;
 use App\Services\Game\GameService;
@@ -37,7 +37,7 @@ class Create extends Component
 
     public function mount(): void
     {
-        // $this->form->status = ProductsStatus::ACTIVE->value;
+        // $this->form->status = ProductStatus::ACTIVE->value;
     }
     public function render()
     {
@@ -46,7 +46,7 @@ class Create extends Component
         $users = $this->userService->getAllSellersData('first_name', 'asc');
 
         return view('livewire.backend.admin.product-management.product.create', [
-            'statuses' => ProductsStatus::options(),
+            'statuses' => ProductStatus::options(),
             'deliveryMethods' => ProductsDeliveryMethod::options(),
             'visibilitis' => ProductsVisibility::options(),
             'games' => $games,
@@ -60,8 +60,10 @@ class Create extends Component
      */
     public function save()
     {
+        
         $this->form->validate();
-        dd($this->form->fillables());
+        // dd($this->validate());
+        
         try {
             $data = $this->form->fillables();
             $data['creater_id'] = admin()->id;

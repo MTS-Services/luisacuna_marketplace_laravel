@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum ProductsStatus: string
+enum ProductStatus: string
 {
     case DRAFT = 'draft';
     case PENDING_REVIEW = 'pending_review';

@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\ProductsStatus;
+use App\Enums\ProductStatus;
 use App\Enums\ProductsVisibility;
 use App\Traits\AuditColumnsTrait;
 use App\Enums\ProductsDeliveryMethod;
@@ -41,7 +41,7 @@ return new class extends Migration
             $table->string('region')->nullable();
             $table->json('specifications')->nullable();
             $table->json('requirements')->nullable();
-            $table->string('status')->index()->default(ProductsStatus::PENDING_REVIEW);
+            $table->string('status')->index()->default(ProductStatus::PENDING_REVIEW);
             $table->boolean('is_featured')->index()->default(false);
             $table->boolean('is_hot_deal')->index()->default(false);
             $table->string('visibility')->index()->default(ProductsVisibility::PUBLIC);

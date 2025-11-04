@@ -87,9 +87,8 @@ class Trash extends Component
         ];
 
         $bulkActions = [
-            ['value' => 'delete', 'label' => 'Delete'],
-            ['value' => 'active', 'label' => 'Active'],
-            ['value' => 'inactive', 'label' => 'Inactive'],
+            ['value' => 'forceDelete', 'label' => 'Permanent Delete'],
+            ['value' => 'bulkRestore', 'label' => 'Restore Selected'],
         ];
         return view('livewire.backend.admin.product-management.product-type.trash', [
             'datas' => $datas,

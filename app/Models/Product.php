@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
-use App\Enums\ProductsStatus;
+use App\Enums\ProductStatus;
 use App\Enums\ProductsVisibility;
 use App\Enums\ProductsDeliveryMethod;
 use Illuminate\Database\Eloquent\Builder;
@@ -75,7 +75,7 @@ class Product extends BaseModel
 
     protected $casts = [
         'delivery_method' => ProductsDeliveryMethod::class,
-        'status' => ProductsStatus::class,
+        'status' => ProductStatus::class,
         'visibility' => ProductsVisibility::class,
     ];
 
@@ -117,12 +117,12 @@ class Product extends BaseModel
 
     public function scopeActive(Builder $query): Builder
     {
-        return $query->where('status', ProductsStatus::ACTIVE);
+        return $query->where('status', ProductStatus::ACTIVE);
     }
 
     public function scopeInactive(Builder $query): Builder
     {
-        return $query->where('status', ProductsStatus::INACTIVE);
+        return $query->where('status', ProductStatus::INACTIVE);
     }
 
     public function scopeFilter(Builder $query, array $filters): Builder

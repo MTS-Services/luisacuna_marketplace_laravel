@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">product-management</x-slot>
+    <x-slot name="pageSlug">product-type</x-slot>
     @switch(Route::currentRouteName())
         @case('admin.pm.productType.create')
             <x-slot name="breadcrumb">Product Management > Product Type Create</x-slot>

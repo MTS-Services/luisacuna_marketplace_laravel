@@ -5,9 +5,9 @@
     {{-- Page Header --}}
     <div class="glass-card rounded-2xl p-6 mb-6">
         <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Product Type Create') }}</h2>
+            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Product Create') }}</h2>
             <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.pm.productType.index') }}" class="w-auto! py-2!">
+                <x-ui.button href="{{ route('admin.pm.product.index') }}" class="w-auto! py-2!">
                     <flux:icon name="arrow-left"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                     {{ __('Back') }}
@@ -17,57 +17,6 @@
     </div>
     <div class="glass-card rounded-2xl p-6 mb-6">
         <form wire:submit="save">
-            {{-- <div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                    {{ __('Icon') }}
-                </h3>
-                <x-ui.file-input wire:model="form.icon" label="Icon" accept="image/*" :error="$errors->first('form.icon')"
-                    hint="Upload a Icon (Max: 2MB)" />
-            </div> --}}
-
-            <!-- Add other form fields here -->
-            {{-- <div class="mt-6 space-y-4 grid grid-cols-2 gap-5"> --}}
-            {{-- name --}}
-            {{-- <div class="w-full">
-                    <x-ui.label value="Name" class="mb-1" />
-                    <x-ui.input type="text" placeholder="Name" id="name" wire:model="form.name" />
-                    <x-ui.input-error :messages="$errors->get('form.name')" />
-                </div> --}}
-
-            {{-- slug --}}
-            {{-- <div class="w-full">
-                    <x-ui.label value="Slug" class="mb-1" />
-                    <x-ui.input type="text" placeholder="Slug" id="slug" wire:model="form.slug" />
-                    <x-ui.input-error :messages="$errors->get('form.slug')" />
-                </div> --}}
-
-            {{-- commission_rate --}}
-            {{-- <div class="w-full">
-                    <x-ui.label value="Commission Rate" class="mb-1" />
-                    <x-ui.input type="number" placeholder="Commission Rate" wire:model="form.commission_rate" />
-                    <x-ui.input-error :messages="$errors->get('form.commission_rate')" />
-                </div> --}}
-
-            {{-- status --}}
-            {{-- <div class="w-full">
-                    <x-ui.label value="Status Select" class="mb-1" />
-                    <x-ui.select wire:model="form.status">
-                        @foreach ($statuses as $status)
-                            <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
-                        @endforeach
-                    </x-ui.select>
-                    <x-ui.input-error :messages="$errors->get('form.status')" />
-                </div> --}}
-
-            {{-- </div> --}}
-            {{-- description --}}
-            {{-- <div class="w-full mt-2">
-                <x-ui.label value="Description" class="mb-1" />
-                <x-ui.text-editor model="content1" wire:model.live="form.description" id="text-editor-main-content"
-                    placeholder="Enter your main content here..." :height="350" />
-
-                <x-ui.input-error :messages="$errors->get('form.description')" />
-            </div> --}}
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
 
                 {{-- seller_id --}}
@@ -197,13 +146,6 @@
                     <x-ui.input-error :messages="$errors->get('form.delivery_time_hours')" />
                 </div>
 
-                {{-- server_id --}}
-                {{-- <div class="w-full">
-                    <x-ui.label value="Server ID" class="mb-1" />
-                    <x-ui.input type="number" placeholder="Server ID" wire:model="form.server_id" />
-                    <x-ui.input-error :messages="$errors->get('form.server_id')" />
-                </div> --}}
-
                 {{-- platform --}}
                 <div class="w-full">
                     <x-ui.label value="Platform" class="mb-1" />
@@ -221,14 +163,18 @@
                 {{-- status --}}
                 <div class="w-full">
                     <x-ui.label value="Status" class="mb-1" />
-                    <x-ui.input type="text" placeholder="Status" wire:model="form.status" />
+                    <x-ui.select wire:model="form.status" id="seller_id">
+                        @foreach ($statuses as $status)
+                            <option value="{{ $status['value'] }}">{{ $user['label'] }}</option>
+                        @endforeach
+                    </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.status')" />
                 </div>
 
                 {{-- is_featured --}}
                 <div class="w-full">
                     <x-ui.label value="Is Featured" class="mb-1" />
-                    <input type="checkbox"  wire:model="form.is_featured" />
+                    <input type="checkbox" wire:model="form.is_featured" />
                     <x-ui.input-error :messages="$errors->get('form.is_featured')" />
                 </div>
 
@@ -250,63 +196,7 @@
                     <x-ui.input-error :messages="$errors->get('form.visibility')" />
                 </div>
 
-                {{-- total_sales --}}
-                {{-- <div class="w-full">
-                    <x-ui.label value="Total Sales" class="mb-1" />
-                    <x-ui.input type="number" placeholder="Total Sales" wire:model="form.total_sales" />
-                    <x-ui.input-error :messages="$errors->get('form.total_sales')" />
-                </div> --}}
 
-                {{-- total_revenue --}}
-                {{-- <div class="w-full">
-                    <x-ui.label value="Total Revenue" class="mb-1" />
-                    <x-ui.input type="number" step="0.01" placeholder="Total Revenue"
-                        wire:model="form.total_revenue" />
-                    <x-ui.input-error :messages="$errors->get('form.total_revenue')" />
-                </div> --}}
-
-                {{-- view_count --}}
-                {{-- <div class="w-full">
-                    <x-ui.label value="View Count" class="mb-1" />
-                    <x-ui.input type="number" placeholder="View Count" wire:model="form.view_count" />
-                    <x-ui.input-error :messages="$errors->get('form.view_count')" />
-                </div> --}}
-
-                {{-- favorite_count --}}
-                {{-- <div class="w-full">
-                    <x-ui.label value="Favorite Count" class="mb-1" />
-                    <x-ui.input type="number" placeholder="Favorite Count" wire:model="form.favorite_count" />
-                    <x-ui.input-error :messages="$errors->get('form.favorite_count')" />
-                </div> --}}
-
-                {{-- average_rating --}}
-                {{-- <div class="w-full">
-                    <x-ui.label value="Average Rating" class="mb-1" />
-                    <x-ui.input type="number" step="0.01" placeholder="Average Rating"
-                        wire:model="form.average_rating" />
-                    <x-ui.input-error :messages="$errors->get('form.average_rating')" />
-                </div> --}}
-
-                {{-- total_reviews --}}
-                {{-- <div class="w-full">
-                    <x-ui.label value="Total Reviews" class="mb-1" />
-                    <x-ui.input type="number" placeholder="Total Reviews" wire:model="form.total_reviews" />
-                    <x-ui.input-error :messages="$errors->get('form.total_reviews')" />
-                </div> --}}
-
-                {{-- reviewed_by --}}
-                {{-- <div class="w-full">
-                    <x-ui.label value="Reviewed By" class="mb-1" />
-                    <x-ui.input type="number" placeholder="Reviewed By" wire:model="form.reviewed_by" />
-                    <x-ui.input-error :messages="$errors->get('form.reviewed_by')" />
-                </div> --}}
-
-                {{-- reviewed_at --}}
-                {{-- <div class="w-full">
-                    <x-ui.label value="Reviewed At" class="mb-1" />
-                    <x-ui.input type="datetime-local" wire:model="form.reviewed_at" />
-                    <x-ui.input-error :messages="$errors->get('form.reviewed_at')" />
-                </div> --}}
 
                 {{-- meta_title --}}
                 <div class="w-full">
@@ -320,42 +210,11 @@
             {{-- description --}}
             <div class="w-full mt-4">
                 <x-ui.label value="Description" class="mb-1" />
-                <x-ui.text-editor wire:model.live="form.description" id="description"
-                    placeholder="Enter description..." :height="350" />
+                {{-- <x-ui.text-editor wire:model.live="form.description" id="description"
+                    placeholder="Enter description..." :height="350" /> --}}
+                <input type="textarea" wire:model="form.description" id="description">
                 <x-ui.input-error :messages="$errors->get('form.description')" />
             </div>
-
-            {{-- auto_delivery_content --}}
-            {{-- <div class="w-full mt-4">
-                <x-ui.label value="Auto Delivery Content" class="mb-1" />
-                <x-ui.text-editor wire:model.live="form.auto_delivery_content" id="auto_delivery_content"
-                    placeholder="Enter delivery instructions..." :height="250" />
-                <x-ui.input-error :messages="$errors->get('form.auto_delivery_content')" />
-            </div> --}}
-
-            {{-- rejection_reason --}}
-            {{-- <div class="w-full mt-4">
-                <x-ui.label value="Rejection Reason" class="mb-1" />
-                <x-ui.text-editor wire:model.live="form.rejection_reason" id="rejection_reason"
-                    placeholder="Reason for rejection (if any)" :height="200" />
-                <x-ui.input-error :messages="$errors->get('form.rejection_reason')" />
-            </div> --}}
-
-            {{-- meta_description --}}
-            {{-- <div class="w-full mt-4">
-                <x-ui.label value="Meta Description" class="mb-1" />
-                <x-ui.text-editor wire:model.live="form.meta_description" id="meta_description"
-                    placeholder="Enter meta description..." :height="200" />
-                <x-ui.input-error :messages="$errors->get('form.meta_description')" />
-            </div> --}}
-
-            {{-- meta_keywords --}}
-            {{-- <div class="w-full mt-4">
-                <x-ui.label value="Meta Keywords" class="mb-1" />
-                <x-ui.text-editor wire:model.live="form.meta_keywords" id="meta_keywords"
-                    placeholder="Enter meta keywords..." :height="200" />
-                <x-ui.input-error :messages="$errors->get('form.meta_keywords')" />
-            </div> --}}
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">

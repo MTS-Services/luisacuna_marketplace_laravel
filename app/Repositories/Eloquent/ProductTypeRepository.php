@@ -134,7 +134,7 @@ class ProductTypeRepository implements ProductTypeRepositoryInterface
         if (!$productType) {
             return false;
         }
-        $productType->update(['deleted_by' => $actionerId]);
+        $productType->update(['deleter_type' => $actionerId]);
 
         return $productType->delete();
     }
@@ -162,13 +162,13 @@ class ProductTypeRepository implements ProductTypeRepositoryInterface
     public function bulkDelete(array $ids, int $actionerId): int
     {
         return DB::transaction(function () use ($ids, $actionerId) {
-            $this->model->whereIn('id', $ids)->update(['deleted_by' => $actionerId]);
+            $this->model->whereIn('id', $ids)->update(['deleter_type' => $actionerId]);
             return $this->model->whereIn('id', $ids)->delete();
         });
     }
     public function bulkUpdateStatus(array $ids, string $status, int $actionerId): int
     {
-        return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updated_by' => $actionerId]);
+        return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updater_type' => $actionerId]);
     }
     public function bulkRestore(array $ids, int $actionerId): int
     {

@@ -25,10 +25,10 @@
         :showBulkActions="true" emptyMessage="No data found. Create your first data to get started." />
 
     {{-- Delete Confirmation Modal --}}
-    {{-- <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this data?'" :message="'Are you absolutely sure you want to remove this data? All associated data will be moved to trash.'" :method="'delete'"
-        :button-text="'Delete Data'" /> --}}
+    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this data?'" :message="'Are you absolutely sure you want to remove this data? All associated data will be moved to trash.'" :method="'delete'"
+        :button-text="'Delete Data'" />
 
     {{-- Bulk Action Confirmation Modal --}}
-    {{-- <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="'Confirm Bulk Action'" :message="'Are you sure you want to perform this action on ' . count($selectedIds) . ' selected data(s)?'" :method="'executeBulkAction'"
-        :button-text="'Confirm Action'" /> --}}
+    <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="'Confirm Bulk Action'" :message="'Are you sure you want to perform this action on ' . count($selectedIds) . ' selected data(s)?'" :method="'executeBulkAction'"
+        :button-text="'Confirm Action'" />
 </section>
