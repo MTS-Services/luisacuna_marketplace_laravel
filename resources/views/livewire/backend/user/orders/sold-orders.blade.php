@@ -6,19 +6,19 @@
 
                 <div class="relative w-full sm:w-56">
                     <x-ui.select>
-                        <option value="">All statuses</option>
-                        <option value="completed">Completed</option>
-                        <option value="pending">Pending</option>
-                        <option value="processing">Processing</option>
+                        <option value="">{{ __('All statuses') }}</option>
+                        <option value="completed">{{ __('Completed') }}</option>
+                        <option value="pending">{{ __('Pending') }}</option>
+                        <option value="processing">{{ __('Processing') }}</option>
                     </x-ui.select>
                 </div>
 
                 <div class="relative w-full sm:w-56">
                     <x-ui.select>
-                        <option value="">All Game</option>
-                        <option value="game1">Game 1</option>
-                        <option value="game2">Game 2</option>
-                        <option value="game3">Game 3</option>
+                        <option value="">{{ __('All Game') }}</option>
+                        <option value="game1">{{ __('Game 1') }}</option>
+                        <option value="game2">{{ __('Game 2') }}</option>
+                        <option value="game3">{{ __('Game 3') }}</option>
                     </x-ui.select>
                 </div>
 

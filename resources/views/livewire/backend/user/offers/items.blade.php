@@ -8,10 +8,10 @@
                 <!-- Game Filter -->
                 <div class="relative w-full sm:w-40 lg:w-44">
                     <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                        <option value="">All Game</option>
-                        <option value="game1">Game 1</option>
-                        <option value="game2">Game 2</option>
-                        <option value="game3">Game 3</option>
+                        <option value="">{{ __('All Game') }}</option>
+                        <option value="game1">{{__('Game 1')}}</option>
+                        <option value="game2">{{__('Game 2')}}</option>
+                        <option value="game3">{{__('Game 3')}}</option>
                     </x-ui.select>
                 </div>
             </div>

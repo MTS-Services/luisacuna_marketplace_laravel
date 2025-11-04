@@ -8,30 +8,30 @@
                 <!-- Game Filter -->
                 <div class="relative w-full sm:w-40 lg:w-44">
                     <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                        <option value="">All Game</option>
-                        <option value="game1">Game 1</option>
-                        <option value="game2">Game 2</option>
-                        <option value="game3">Game 3</option>
+                        <option value="">{{ __('All Game') }}</option>
+                        <option value="game1">{{ __('Game 1') }}</option>
+                        <option value="game2">{{ __('Game 2') }}</option>
+                        <option value="game3">{{ __('Game 3') }}</option>
                     </x-ui.select>
                 </div>
 
                 <!-- Status Filter -->
                 <div class="relative w-full sm:w-40 lg:w-44">
                     <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                        <option value="">All</option>
-                        <option value="active">Active offers</option>
-                        <option value="paused">Paused offers</option>
-                        <option value="closed">Closed offers</option>
+                        <option value="">{{ __('All ') }}</option>
+                        <option value="active">{{ __('Active offers') }}</option>
+                        <option value="paused">{{ __('Paused offers') }}</option>
+                        <option value="closed">{{ __('Closed offers') }}</option>
                     </x-ui.select>
                 </div>
 
                 <!-- Recommended Filter -->
                 <div class="relative w-full sm:w-44 lg:w-48">
                     <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                        <option value="">Recommended</option>
-                        <option value="price_low">Price: Low to High</option>
-                        <option value="price_high">Price: High to Low</option>
-                        <option value="newest">Newest First</option>
+                        <option value="">{{ __('Recommended') }}</option>
+                        <option value="price_low">{{ __('Price: Low to High') }}</option>
+                        <option value="price_high">{{ __('Price: High to Low') }}</option>
+                        <option value="newest">{{ __('Newest First') }}</option>
                     </x-ui.select>
                 </div>
                 <div class="relative w-full sm:w-56">
