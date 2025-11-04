@@ -1,17 +1,28 @@
 <section>
     <div class="max-w-7xl mx-auto px-8 py-8">
+        <!-- Breadcrumb -->
+        <a href="{{ route('game.index', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug]) }}">
+            <div class="group flex items-center gap-2 my-8 text-lg font-semibold">
+                <span class="text-text-primary group-hover:text-pink-400 transition-colors duration-300">
+                    < </span>
+                        <h1 class="text-text-white group-hover:text-pink-400 transition-colors duration-300">
+                            All Offers
+                        </h1>
+            </div>
 
+        </a>
 
-        <div class="flex items-center gap-2 mb-8 text-md font-semibold">
+        {{-- <div class="flex items-center gap-2 mb-8 text-md font-semibold">
             <div class="w-4 h-4">
                 <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
             </div>
-            <h1 class="text-blue-100 text-text-primary">
+            <h1 class="text-text-white">
                 {{ ucwords(str_replace('-', ' ', $gameSlug)) . ' ' . ucwords(str_replace('-', ' ', $categorySlug)) }}
             </h1>
+
             <span class=" text-text-primary">></span>
-            <span class=" text-text-primary">{{__('Buy Now')}}</span>
-        </div>
+            <span class=" text-text-primary">Buy Now</span>
+        </div> --}}
         <div>
 
             <div class=" text-white min-h-screen">
