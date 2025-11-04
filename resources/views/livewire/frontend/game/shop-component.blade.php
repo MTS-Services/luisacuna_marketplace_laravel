@@ -19,9 +19,6 @@
                     </div>
                     <div class="hidden md:flex items-center gap-2">
                         <div class="flex gap-3 justify-end">
-                            <button
-                                class="px-4 py-2 border border-green-500 text-green-500 rounded-full text-sm hover:bg-green-500 hover:text-white transition">●
-                                Online Seller</button>
 
                             <x-ui.select id="status-select" class="py-0.5! w-auto! pl-5! rounded-full!">
                                 <option value="">Sort by</option>
@@ -410,13 +407,16 @@
             <div class="mb-10">
                 <h2 class="text-text-white font-semibold trxt-40px">Other sellers (84)</h2>
             </div>
-            <div class="mt-10 mb-6">
+            <div class="mt-10 mb-6 flex items-center justify-between">
                 <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70 rounded-full!">
                     <option value="">Recommended</option>
                     <option value="completed">Completed</option>
                     <option value="pending">Pending</option>
                     <option value="processing">Processing</option>
                 </x-ui.select>
+                <button
+                    class="px-4 py-2 border border-green-500 text-green-500 rounded-full text-sm hover:bg-green-500 hover:text-white transition">●
+                    Online Seller</button>
             </div>
             <div class="min-w-full text-left border-collapse">
                 <div class="flex justify-between text-text-white text-sm">
