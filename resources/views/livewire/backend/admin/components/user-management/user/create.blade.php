@@ -67,11 +67,7 @@
                 </div>
                 <div class="w-full">
                     <x-ui.label value="Langugae" class="mb-1" />
-                    <x-ui.select wire:model="form.language">
-                        @foreach ($languages as $language)
-                            <option value="{{ $language['id'] }}">{{ $language['name'] }}</option>
-                        @endforeach
-                    </x-ui.select>
+                    <x-ui.input type="text" placeholder="Langugae" wire:model="form.language" />
                     <x-ui.input-error :messages="$errors->get('form.language')" />
                 </div>
                 <div class="w-full">
@@ -108,10 +104,10 @@
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button wire:click="resetForm" variant="tertiary" class="w-auto! py-2!">
+                <x-ui.button href="{{ route('admin.um.user.index') }}" variant="tertiary" class="w-auto! py-2!">
                     <flux:icon name="x-circle"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
-                    {{ __('Reset') }}
+                    {{ __('Cancel') }}
                 </x-ui.button>
 
                 <x-ui.button class="w-auto! py-2!" type="submit">

@@ -2,12 +2,11 @@
 
 namespace App\Livewire\Backend\Admin\Components\Settings\Currency;
 
-
+use App\DTOs\Currency\CreateDTO;
 use App\Enums\CurrencyStatus;
 use App\Livewire\Forms\Backend\Admin\Settings\CurrencyForm;
 use App\Services\CurrencyService;
 use App\Traits\Livewire\WithNotification;
-use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
@@ -61,7 +60,6 @@ class Create extends Component
 
             return $this->redirect(route('admin.as.currency.index'), navigate: true);
         } catch (\Exception $e) {
-            
             $this->error('Failed to create data: ' . $e->getMessage());
         }
     }

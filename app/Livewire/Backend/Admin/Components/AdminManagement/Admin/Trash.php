@@ -5,7 +5,7 @@ namespace App\Livewire\Backend\Admin\Components\AdminManagement\Admin;
 use Livewire\Component;
 use App\Enums\AdminStatus;
 use Illuminate\Support\Facades\Log;
-use App\Services\Admin\AdminService;
+use App\Services\AdminService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 
@@ -201,8 +201,8 @@ class Trash extends Component
         try {
             match ($this->bulkAction) {
                 // 'forceDelete' => $this->bulkDelete(),
-                'forceDelete' => $this->bulkForceDeleteDatas(),
-                'bulkRestore' => $this->bulkRestoreDatas(),
+                'forceDelete' => $this->bulkForceDeleteAdmins(),
+                'bulkRestore' => $this->bulkRestoreAdmins(),
                 'activate' => $this->bulkUpdateStatus(AdminStatus::ACTIVE),
                 'deactivate' => $this->bulkUpdateStatus(AdminStatus::INACTIVE),
                 'suspend' => $this->bulkUpdateStatus(AdminStatus::SUSPENDED),
@@ -229,7 +229,7 @@ class Trash extends Component
         $this->success("{$count} Admins updated successfully");
     }
 
-    protected function bulkRestoreDatas(): void
+    protected function bulkRestoreAdmins(): void
     {
         $count = $this->service->bulkRestoreDatas($this->selectedIds, admin()->id);
         $this->success("{$count} Admins restored successfully");

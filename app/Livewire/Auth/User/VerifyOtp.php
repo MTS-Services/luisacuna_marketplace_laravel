@@ -141,6 +141,7 @@ class VerifyOtp extends Component
             $this->dispatch('clear-auth-code');
 
             $this->redirect(route('user.purchased-orders'), navigate: true);
+
         } catch (ValidationException $e) {
             throw $e;
         } catch (\Throwable $e) {

@@ -18,7 +18,7 @@ class Trash extends Component
     use WithDataTable, WithNotification;
 
 
-    protected UserService $service;
+    protected UserService $userService;
 
     public $statusFilter = '';
     public $userId;
@@ -26,13 +26,13 @@ class Trash extends Component
     public $showDeleteModal = false;
     public $showBulkActionModal = false;
 
-    public function boot(UserService $service)
+    public function boot(UserService $userService)
     {
-        $this->service = $service;
+        $this->userService = $userService;
     }
     public function render()
     {
-        $users = $this->service->getTrashedPaginateDatas(
+        $users = $this->userService->getTrashedUsersPaginated(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
@@ -123,7 +123,7 @@ class Trash extends Component
     public function forceDelete(): void
     {
         try {
-            $this->service->deleteData($this->userId, forceDelete: true);
+            $this->userService->deleteUser($this->userId, forceDelete: true);
             $this->showDeleteModal = false;
             $this->resetPage();
 
@@ -137,7 +137,7 @@ class Trash extends Component
     public function restore($userId): void
     {
         try {
-            $this->service->restoreData($userId, admin()->id);
+            $this->userService->restoreUser($userId);
 
             $this->success('User restored successfully');
         } catch (Throwable $e) {
@@ -157,9 +157,9 @@ class Trash extends Component
             $userStatus = UserAccountStatus::from($status);
 
             match ($userStatus) {
-                UserAccountStatus::ACTIVE => $this->service->activateData($userId),
-                UserAccountStatus::INACTIVE => $this->service->deactivateData($userId),
-                UserAccountStatus::SUSPENDED => $this->service->suspendData($userId),
+                UserAccountStatus::ACTIVE => $this->userService->activateUser($userId),
+                UserAccountStatus::INACTIVE => $this->userService->deactivateUser($userId),
+                UserAccountStatus::SUSPENDED => $this->userService->suspendUser($userId),
                 default => null,
             };
 
@@ -186,8 +186,8 @@ class Trash extends Component
 
         try {
             match ($this->bulkAction) {
-                'bulkForceDelete' => $this->bulkForceDeleteDatas(),
-                'bulkRestore' => $this->bulkRestoreDatas(),
+                'bulkForceDelete' => $this->bulkForceDeleteUsers(),
+                'bulkRestore' => $this->bulkRestoreUsers(),
                 'activate' => $this->bulkUpdateStatus(UserAccountStatus::ACTIVE),
                 'deactivate' => $this->bulkUpdateStatus(UserAccountStatus::INACTIVE),
                 'suspend' => $this->bulkUpdateStatus(UserAccountStatus::SUSPENDED),
@@ -203,17 +203,17 @@ class Trash extends Component
     }
     protected function bulkUpdateStatus(UserAccountStatus $status): void
     {
-        $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
+        $count = $this->userService->bulkUpdateStatus($this->selectedIds, $status);
         $this->success("{$count} Users updated successfully");
     }
-    protected function bulkRestoreDatas(): void
+    protected function bulkRestoreUsers(): void
     {
-        $count = $this->service->bulkRestoreDatas($this->selectedIds, admin()->id);
+        $count = $this->userService->bulkRestoreUsers($this->selectedIds);
         $this->success("{$count} Users restored successfully");
     }
     protected function bulkForceDeleteDatas(): void
     {
-        $count = $this->service->bulkForceDeleteDatas($this->selectedIds);
+        $count = $this->userService->bulkForceDeleteUsers($this->selectedIds);
         $this->success("{$count} Users permanently deleted successfully");
     }
 
@@ -237,7 +237,7 @@ class Trash extends Component
 
     public function getSelectableIds(): array
     {
-        return $this->service->getTrashedPaginateDatas(
+        return $this->userService->getTrashedUsersPaginated(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

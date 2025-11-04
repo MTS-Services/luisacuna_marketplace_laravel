@@ -10,83 +10,61 @@ use App\Enums\UserAccountStatus;
 use App\Services\User\UserService;
 use App\Traits\Livewire\WithNotification;
 use App\Livewire\Forms\Backend\Admin\UserManagement\UserForm;
-use App\Models\Language;
-use App\Services\Admin\LanguageService;
-use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\Log;
 
 class Create extends Component
 {
     use WithFileUploads, WithNotification;
 
-    public  $languases = null;
-
-    public  $countries = null;
 
     public UserForm $form;
 
-    protected UserService $service;
+    protected UserService $userService;
 
-    protected LanguageService $languageService;
-
-    public function boot(UserService $service, LanguageService $languageService)
+    public function boot(UserService $userService)
     {
-        $this->service = $service;
-        $this->languageService = $languageService;
-
-        
+        $this->userService = $userService;
     }
     public function mount(): void
     {
         $this->form->account_status = UserAccountStatus::ACTIVE->value;
-        $this->languases();
-        $this->countries();
-    }
-
-    public function languases():void {
-
-        $this->languases = $this->languageService->getAll();
-
-    }
-
-    public function countries():void {
-
-        $this->countries = Country::orderBy('name', 'asc')->get();
 
     }
     public function render()
     {
-
         return view('livewire.backend.admin.components.user-management.user.create', [
             'statuses' => UserAccountStatus::options(),
-            'countries' => $this->countries,
-            'languages' => $this->languases,
+            'countries' => Country::orderBy('name', 'asc')->get(),
         ]);
     }
 
     public function save()
     {
         $this->form->validate();
-
+        // dd($this->form);
         try {
-            $data = $this->form->fillables();
+            $dto = CreateUserDTO::fromArray([
+                'first_name' => $this->form->first_name,
+                'last_name' => $this->form->last_name,
+                'username' => $this->form->username,
+                // 'display_name' => $this->form->display_name,
+                'date_of_birth' => $this->form->date_of_birth,
+                'country_id' => $this->form->country_id,
+                'email' => $this->form->email,
+                'password' => $this->form->password,
+                'phone' => $this->form->phone,
+                'account_status' => $this->form->account_status,
+                'avatar' => $this->form->avatar,
+                'language' => $this->form->language ?? 'en',
+            ]);
 
-            $user = $this->service->createData($data);
+            $user = $this->userService->CreateUser($dto);
 
             $this->dispatch('User Created');
             $this->success('User created successfully');
             return $this->redirect(route('admin.um.user.index'), navigate: true);
         } catch (\Exception $e) {
-            Log::error('Failed to create user:' . $e->getMessage());
-            $this->error('Failed to create user.');
-            dd($e->getMessage());
+            $this->error('Failed to create user: ' . $e->getMessage());
         }
-    }
-
-    public function resetForm():void{
-
-        $this->form->reset();
-        
     }
 
     public function cancel(): void

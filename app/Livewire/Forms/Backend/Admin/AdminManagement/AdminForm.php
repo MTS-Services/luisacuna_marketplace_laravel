@@ -3,27 +3,36 @@
 namespace App\Livewire\Forms\Backend\Admin\AdminManagement;
 
 use App\Enums\AdminStatus;
-use Illuminate\Http\UploadedFile;
-use Livewire\Attributes\Locked;
+use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class AdminForm extends Form
 {
+    #[Validate('required|string|max:255')]
+    public $name = '';
 
+    #[Validate('required|email|max:255')]
+    public $email = '';
 
-    #[Locked]
-    public ?int $id = null;
+    #[Validate('nullable|string|min:8')]
+    public $password = '';
 
-    public string $name = '';
-    public string $email = '';
-    public string $password = '';
-    public ?string $password_confirmation = '';
-    public ?string $phone = '';
-    public ?string $address = '';
-    public string $status = '';
-    public ?UploadedFile $avatar = null;
-    public bool $remove_avatar = false;
+    #[Validate('nullable|string|min:8|same:password')]
+    public $password_confirmation = '';
 
+    #[Validate('nullable|string|max:20')]
+    public $phone = '';
+
+    #[Validate('nullable|string')]
+    public $address = '';
+
+    #[Validate('required|string')]
+    public $status = '';
+
+    #[Validate('nullable|image|max:2048')]
+    public $avatar;
+
+    public $remove_avatar = false;
 
     public function rules(): array
     {
@@ -43,19 +52,15 @@ class AdminForm extends Form
 
     public function setAdmin($admin): void
     {
-        $this->id = $admin->id;
         $this->name = $admin->name;
         $this->email = $admin->email;
         $this->phone = $admin->phone;
         $this->address = $admin->address;
         $this->status = $admin->status->value;
-        $this->avatar = null;
-        
     }
 
     public function reset(...$properties): void
     {
-        $this->id = null;
         $this->name = '';
         $this->email = '';
         $this->password = '';
@@ -71,18 +76,6 @@ class AdminForm extends Form
 
     protected function isUpdating(): bool
     {
-        return !empty($this->id);
-    }
-
-    public function fillables(){
-        return [
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => $this->password,
-            'phone' => $this->phone,
-            'address' => $this->address,
-            'status' => $this->status,
-            'avatar' => $this->avatar
-        ];
+        return !empty($this->email);
     }
 }
