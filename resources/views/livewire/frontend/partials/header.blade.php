@@ -1,5 +1,5 @@
-<header x-data="{ mobileMenuOpen: false, notification: false, dropdown: '', globalSearchModal: false, open: '' }" x-on:mouseleave.away="open = ''"
-    class="sticky top-0 z-50  {{ request()->routeIs('home') ? 'bg-linear-to-r from-purple-950/50 via-text-text-white to-purple-950/50 glass-card shadow-none!' : 'glass-card' }}">
+<header x-data="{ mobileMenuOpen: false, notification: false, dropdown: '', globalSearchModal: false, open: '' }"
+    class="sticky top-0 z-50  {{ request()->routeIs('home') ? 'bg-linear-to-r from-zinc-950/50 via-text-text-white to-zinc-950/50 glass-card shadow-none!' : 'glass-card' }}">
     <div class="2xl:container-wide container  px-4 py-4 flex items-center justify-between relative" x-cloak >
         <div class=""><a href="{{ route('home') }}">
                 <img src="{{ asset('assets/images/header_logo.png') }}" alt=""></a>
@@ -8,13 +8,13 @@
 
         <div class="flex items-center">
             <button @click="globalSearchModal = true"
-                class="md:hidden btn btn-ghost btn-circle hover:bg-purple-500/20 mr-2">
+                class="md:hidden btn btn-ghost btn-circle hover:bg-zinc-500/20 mr-2">
                 <flux:icon name="magnifying-glass" class="w-6 h-6 text-text-text-white" />
             </button>
-            <button class="btn btn-ghost btn-circle hover:bg-purple-500/20">
+            <button class="btn btn-ghost btn-circle hover:bg-zinc-500/20">
                 <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-text-white" />
             </button>
-            <button class="btn btn-ghost btn-circle hover:bg-purple-500/20 mr-2" @click="notification = !notification">
+            <button class="btn btn-ghost btn-circle hover:bg-zinc-500/20 mr-2" @click="notification = !notification">
                 <div class="indicator">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 stroke-text-primary" fill="none"
                         viewBox="0 0 24 24" stroke="white">
@@ -138,7 +138,7 @@
                             {{-- Notification icon --}}
                             <div
                                 class="w-8 h-8 bg-zinc-200 dark:bg-zinc-300/10 rounded-full flex items-center justify-center mb-2">
-                                <flux:icon name="bell" class="w-4 h-4 stroke-purple-500" />
+                                <flux:icon name="bell" class="w-4 h-4 stroke-zinc-500" />
                             </div>
                         </div>
                         <div class="w-full">

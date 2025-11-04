@@ -5,6 +5,7 @@
     x-transition
     x-cloak
     x-effect="$wire.setGameCategorySlug(open)"
+     @mouseleave="open = ''"
 
     
 >
@@ -23,10 +24,10 @@
         </div> --}}
 
         {{-- 🌟 Dropdown Content --}}
-        <div class="bg-zinc-600 flex flex-col lg:flex-row items-start justify-between rounded-lg py-11 px-4 lg:px-10 min-h-[528px] overflow-y-auto" >
+        <div class="dark:bg-zinc-600 bg-bg-primary flex flex-col lg:flex-row items-start justify-between rounded-lg shadow-lg  px-4 lg:px-10 min-h-[420px] overflow-y-auto" >
             
             {{-- Popular Games Section --}}
-            <div class="w-full lg:w-2/3 pt-10 order-2 lg:order-1">
+            <div class="w-full lg:w-2/3 pt-6 order-2 lg:order-1">
                 <h3 class="text-text-white text-base font-semibold pt-2 mb-6">
                     Popular {{ ucfirst($gameCategorySlug) }}
                 </h3>
@@ -48,13 +49,13 @@
 
             {{-- Search and All Games Section --}}
             <div class="w-full lg:w-1/3 p-6 order-1 lg:order-2">
-                <div class="mb-6">
+                <div class="mb-2">
                     <span class="relative">
                         <input 
                             type="text" 
                             wire:model.live.debounce.300ms="search"
                             placeholder="Search for {{ $gameCategorySlug }}" 
-                            class="form-input w-full text-text-white bg-bg-secondary border border-purple-500/20 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500" 
+                            class="form-input w-full text-text-white dark:bg-bg-primary/30 bg-bg-secondary border border-purple-500/20 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500" 
                         />
                     </span>
                 </div>

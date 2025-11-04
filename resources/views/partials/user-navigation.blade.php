@@ -2,7 +2,7 @@
     @foreach (gameCategories() as $category)
         <button 
             x-on:mouseenter="open = (open == '{{$category['slug']}}' || open == '' || open != '{{$category['slug']}}' ? '{{$category['slug']}}' : '')"
-            class="navbar_style group " :class="{'active' : open == '{{$category['slug']}}'  || {{ request()->route('categorySlug') == $category['slug'] ? 'true' : 'false' }} }">
+            class="navbar_style group py-4" :class="{'active' : open == '{{$category['slug']}}'  || {{ request()->route('categorySlug') == $category['slug'] ? 'true' : 'false' }} }">
             <span class="relative z-10">{{$category['name']}}</span>
             <span class="navbar_indicator" :class="{'active' : open == '{{$category['slug']}}'  || {{ request()->route('categorySlug') == $category['slug'] ? 'true' : 'false' }} }"></span>
         </button>
