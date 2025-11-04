@@ -23,11 +23,11 @@
                                 class="px-4 py-2 border border-green-500 text-green-500 rounded-full text-sm hover:bg-green-500 hover:text-white transition">●
                                 Online Seller</button>
 
-                            {{-- <x-ui.select id="status-select" class="py-0.5! w-auto! pl-5! rounded-full!">
+                            <x-ui.select id="status-select" class="py-0.5! w-auto! pl-5! rounded-full!">
                                 <option value="">Sort by</option>
                                 <option value="">lowest to highest</option>
                                 <option value="">highest to lowest</option>
-                            </x-ui.select> --}}
+                            </x-ui.select>
 
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                             </a>
                             <a href="#"
                                 class="text-text-white block px-3 py-2 text-sm hover:bg-zinc-700 rounded-lg transition-colors duration-150">
-                                Lowest Price
+                                Lowest To Highest
                             </a>
                         </div>
                     </div>
@@ -77,127 +77,239 @@
 
         {{-- main --}}
         <section class="container">
-            <div class="md:flex gap-6">
-                <div class="w-full md:w-[65%]  grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+            <div class="md:flex gap-6 h-auto">
+                <div class="w-full md:w-[65%] grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4">
                     <div
-                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
-                        <div class="w-6 h-6">
-                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
-                                class="w-full h-full object-cover">
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="flex items-center justify-between ">
+                            <div class="w-6 h-6">
+                                <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
+                            <div class="">
+                                <a href="" class="bg-zinc-500 text-white py-1 px-2 rounded-2xl">
+                                    <x-phosphor name="fire" variant="regular"
+                                        class="inline-block fill-white" />Popular
+                                </a>
+                            </div>
                         </div>
                         <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
                         <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$40.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
-                        <div class="w-6 h-6">
-                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
-                                class="w-full h-full object-cover">
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="flex items-center justify-between ">
+                            <div class="w-6 h-6">
+                                <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
+                            <div class="">
+                                <a href="" class="bg-zinc-500 text-white py-1 px-2 rounded-2xl">
+                                    <x-phosphor name="fire" variant="regular"
+                                        class="inline-block fill-white" />Popular
+                                </a>
+                            </div>
                         </div>
                         <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
                         <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$50.20</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
-                        <div class="w-6 h-6">
-                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
-                                class="w-full h-full object-cover">
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="flex items-center justify-between ">
+                            <div class="w-6 h-6">
+                                <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
+                            <div class="">
+                                <a href="" class="bg-zinc-500 text-white py-1 px-2 rounded-2xl">
+                                    <x-phosphor name="fire" variant="regular"
+                                        class="inline-block fill-white" />Popular
+                                </a>
+                            </div>
                         </div>
                         <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
                         <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$60.20</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
-                        <div class="w-6 h-6">
-                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
-                                class="w-full h-full object-cover">
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="flex items-center justify-between ">
+                            <div class="w-6 h-6">
+                                <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
+                            <div class="">
+                                <a href="" class="bg-zinc-500 text-white py-1 px-2 rounded-2xl">
+                                    <x-phosphor name="fire" variant="regular"
+                                        class="inline-block fill-white" />Popular
+                                </a>
+                            </div>
                         </div>
                         <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
                         <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$80.20</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
                         </div>
                         <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
                         <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$90.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
                         </div>
                         <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
                         <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$95.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
                         </div>
                         <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
                         <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$100.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
                         </div>
                         <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
                         <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$110.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
                         </div>
                         <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
                         <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$120.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
                         </div>
                         <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
                         <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$130.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
                         </div>
                         <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
                         <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$140.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
                         </div>
                         <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
                         <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                        <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$150.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$160.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$170.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$180.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$190.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$200.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$210.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$220.16</span>
+                    </div>
+                    <div
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="w-6 h-6">
+                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">V-Bucks</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$230.16</span>
                     </div>
                 </div>
                 <div class="w-full md:w-[35%] mt-4 md:mt-0">
