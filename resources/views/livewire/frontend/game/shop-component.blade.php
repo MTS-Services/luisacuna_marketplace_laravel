@@ -29,7 +29,7 @@
                         </div>
                         <div class="flex items-center gap-2">
                             <img src="{{ asset('assets/images/gift_cards/Ellipse 5.png') }}" alt="">
-                            <span class="text-text-white">Lowest Price</span>
+                            <span class="text-text-white">Lowest To Highest</span>
                         </div>
                     </div>
                     <div class="block md:hidden relative z-10" x-data="{ open: false }">
@@ -53,7 +53,7 @@
                             </a>
                             <a href="#"
                                 class="text-text-white block px-3 py-2 text-sm hover:bg-zinc-700 rounded-lg transition-colors duration-150">
-                                Lowest Price
+                                Lowest To Highest
                             </a>
                         </div>
                     </div>
