@@ -17,6 +17,7 @@ class Show extends Component
     }
     public function render()
     {
+
         return view('livewire.backend.admin.components.game-management.game.show');
     }
 }

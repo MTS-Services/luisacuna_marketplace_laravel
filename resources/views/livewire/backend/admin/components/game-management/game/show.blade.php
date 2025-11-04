@@ -72,7 +72,7 @@
                         </tr>
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 w-2/5 text-gray-600 font-semibold">Game Description</td>
-                            <td class="p-4 text-gray-900">{{ $data->Description ?? 'N/A' }}</td>
+                            <td class="p-4 text-gray-900">{{ $data->description ?? 'N/A' }}</td>
                         </tr>
 
 
@@ -123,8 +123,8 @@
                             <td class="p-4 text-gray-900">{{ $data->release_date?? 'N/A' }}</td>
                         </tr>
                         <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Platform</td>
-                            <td class="p-4 text-gray-900">{{ $data->platfrom?? 'N/A' }}</td>
+                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Platform Id</td>
+                            <td class="p-4 text-gray-900">{{ json_encode($data->platform) ?? 'N/A' }}</td>
                         </tr>
 
                         <tr class="hover:bg-white transition-colors">

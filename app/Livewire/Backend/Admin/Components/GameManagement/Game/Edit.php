@@ -16,35 +16,55 @@ class Edit extends Component
     use WithFileUploads;
     public Game $game;
     public GameForm $form;
-    protected GameCategoryService $gameCategoryService;
+    protected GameCategoryService $categoryService;
 
-    protected GameService $gameService;
+    protected GameService $service;
 
-    public function boot(GameCategoryService $gameCategoryService, GameService $gameService){
+    protected $dataId = null;
 
-        $this->gameCategoryService = $gameCategoryService;
+    public function boot(GameCategoryService $categoryService, GameService $service){
 
-        $this->gameService = $gameService;
+        $this->categoryService = $categoryService;
+
+        $this->service = $service;
 
 
     }
-    public function mount(Game $game){
-        $this->game = $game;
+    public function mount(Game $data){
+       $this->form->setData($data);
+       $this->dataId = $data->id;
     }
 
     public function render()
     {
-        $this->form->setGame($this->game);
-
+       $platforms = [
+        [
+            'id' => 1,
+            'name' => 'PC'
+        ], 
+        [
+            'id' => 2,
+            'name' => 'Mobile'
+        ],
+        [
+            'id' => 3,
+            'name' => 'Web'
+        ],
+        [
+            'id' => 4,
+            'name' => 'Console'
+        ]
+       ];
         return view('livewire.backend.admin.components.game-management.game.edit', [
 
             'statuses'   => GameStatus::options(),
             'categories' => $this->categories(),
+            'platforms'  => $platforms,
         ]);
     }
 
     protected function categories(){
-        return $this->gameCategoryService->all()->pluck('name', 'id')->toArray();
+        return $this->categoryService->getAllDatas()->pluck('name', 'id')->toArray();
     }
 
 
@@ -52,31 +72,27 @@ class Edit extends Component
 
         $this->form->validate();
 
-        $dto = UpdateGameDTO::formArray([
-            'game_category_id' => $this->form->game_category_id,
-            'name' => $this->form->name,
-            'status' => $this->form->status,
-            'developer' => $this->form->developer,
-            'publisher' => $this->form->publisher,
-            'release_date' => $this->form->release_date,
-            'platform' => $this->form->platform,
-            'description' => $this->form->description,
+        try {
+            $data = $this->form->fillables();
 
-            'is_featured' => $this->form->is_featured,
-            'is_trending' => $this->form->is_trending,
+            $actioner_id = admin()->id; 
 
-            'logo' => $this->form->logo,
-            'banner' => $this->form->banner,
-            'thumbnail' => $this->form->thumbnail,
-            
-            'meta_title' => $this->form->meta_title,
-            'meta_description' => $this->form->meta_description,
-            'meta_keywords' => $this->form->meta_keywords,
-        ]);
+            $this->service->updateData($this->dataId, $data, $actioner_id);
 
-        $this->gameService->updateGame($this->game->id, $dto);
+        } catch (\Exception $e) {
+            $this->error('Failed to update game: ' . $e->getMessage());
+            return;
+        }
+
+        $this->service->updateGame($this->game->id, $dto);
 
         return $this->redirect(route('admin.gm.game.index'), navigate: true);
+    }
+
+    public function cancel(){
+
+        return $this->redirect(route('admin.gm.game.index'), navigate: true);
+
     }
 
 }

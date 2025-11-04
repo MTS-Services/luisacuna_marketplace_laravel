@@ -36,7 +36,7 @@
                 <div>
                     <x-ui.label for="name" :value="__('Name')" required />
                     <x-ui.input id="name" type="text" class="mt-1 block w-full" wire:model="form.name"
-                        placeholder="category name" />
+                        placeholder="Game name" />
                     <x-ui.input-error :messages="$errors->get('form.name')" class="mt-2" />
                 </div>
 
@@ -74,17 +74,9 @@
                     <x-ui.input-error :messages="$errors->get('form.publisher')" class="mt-2" />
                 </div>
 
-                {{-- Game --}}
-                <div>
-                    <x-ui.label for="game" :value="__('Game')" required />
-                    <x-ui.input id="game" type="text" class="mt-1 block w-full" wire:model="form.game"
-                        placeholder="game name" />
-                    <x-ui.input-error :messages="$errors->get('form.game')" class="mt-2" />
-                </div>
-
                 {{-- Release Date --}}
 
-                <div class="col-span-2">
+                <div>
                     <x-ui.label for="release_date" :value="__('Release Date')" required />
                     <x-ui.input id="release_date" type="date" class="mt-1 block w-full" wire:model="form.release_date"
                         placeholder="release date" />
@@ -93,6 +85,23 @@
                 </div>
 
         
+                {{-- Platforms --}}
+
+                <div>
+                    <x-ui.label for="platform" :value="__('Platforms')" required />
+                    <div class="flex flex-nowrap gap-3">
+                        @foreach ( $platforms as $platform )
+                        <div>
+                            <input type="checkbox" name="" id="checkbox{{$platform['id']}}" wire:model="form.platform" value="{{ $platform['id'] }}">
+                            <label for="checkbox{{$platform['id']}}">{{ $platform['name'] }}</label>
+                        </div>
+                        @endforeach
+                       
+                    </div>
+                    <x-ui.input-error :messages="$errors->get('form.platform')" class="mt-2" />
+                </div>
+
+                {{-- Ends Platforms --}}
                 {{-- Description --}}
 
                 <div class="col-span-2">
@@ -184,7 +193,7 @@
 
             {{-- Actions --}}
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button wire:clilck="resetFrom" type="danger" class="w-auto!">
+                <x-ui.button wire:click.prevent="resetForm" type="danger" class="w-auto!" button>
                     <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
                     {{ __('Reset') }}
                 </x-ui.button>

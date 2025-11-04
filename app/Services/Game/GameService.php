@@ -2,10 +2,10 @@
 
 namespace App\Services\Game;
 
-use App\Actions\Game\UpdateAction;
+
 use App\Actions\Game\CreateAction;
+use App\Actions\Game\UpdateAction;
 use App\Actions\Game\DeleteAction;
-use App\DTOs\Game\CreateGameDTO;
 use App\DTOs\Game\UpdateGameDTO;
 use App\Enums\GameStatus;
 use App\Models\Game;
@@ -74,8 +74,11 @@ class GameService
         return $this->createAction->execute($data);
     }
 
-    public function updateGame($id, UpdateGameDTO $dto): bool
+    public function updateData($id, array $data, ?int $actioner_id = null): bool
     {
-        return $this->updateGameAction->execute($id, $dto);
+        if($actioner_id == null){
+            $actioner_id = admin()->id;
+        }
+        return $this->updateAction->execute($id, $data, $actioner_id);
     }
 }

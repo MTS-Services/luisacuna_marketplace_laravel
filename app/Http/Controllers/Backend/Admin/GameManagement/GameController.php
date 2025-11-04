@@ -37,9 +37,9 @@ class GameController extends Controller
     }
     public function edit($id)    
     {
-        $this->game = $this->service->findOrFail($id);
+        $this->data = $this->service->findData($id);
         return view($this->masterView, [
-            'game' => $this->game,
+            'data' => $this->data,
         ]); 
     }
     public function trash()
