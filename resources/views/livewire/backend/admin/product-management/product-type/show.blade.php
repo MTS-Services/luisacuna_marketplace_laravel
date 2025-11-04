@@ -6,13 +6,6 @@
                 {{ __('Product Type Details') }}
             </h2>
             <div class="flex items-center gap-2 w-full sm:w-auto">
-                <x-ui.button href="{{ route('admin.pm.productType.edit', $data->id) }}" variant="secondary"
-                    class="w-auto py-2!">
-                    <flux:icon name="pencil"
-                        class="w-4 h-4 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
-                    {{ __('Edit') }}
-                </x-ui.button>
-
                 <x-ui.button href="{{ route('admin.pm.productType.index') }}" class="w-auto py-2!">
                     <flux:icon name="arrow-left"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
