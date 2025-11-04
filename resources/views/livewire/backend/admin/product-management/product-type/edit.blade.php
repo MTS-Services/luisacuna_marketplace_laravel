@@ -23,6 +23,9 @@
                 </h3>
                 <x-ui.file-input wire:model="form.icon" label="Icon" accept="image/*" :error="$errors->first('form.icon')"
                     hint="Upload a Icon (Max: 2MB)" />
+                    @if ($form->icon)
+                        <img src="{{ asset('storage/' . $form->icon) }}" alt="Icon" width="40" height="40">
+                    @endif
             </div>
 
             <!-- Add other form fields here -->
@@ -69,7 +72,7 @@
                 <x-ui.input-error :messages="$errors->get('form.description')" />
             </div>
 
-            
+
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
                 <x-ui.button wire:click="resetForm" variant="tertiary" class="w-auto! py-2!">

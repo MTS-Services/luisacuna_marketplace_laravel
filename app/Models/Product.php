@@ -4,14 +4,17 @@ namespace App\Models;
 
 use App\Models\BaseModel;
 use App\Enums\ProductStatus;
+use Laravel\Scout\Searchable;
+use App\Traits\AuditableTrait;
 use App\Enums\ProductsVisibility;
 use App\Enums\ProductsDeliveryMethod;
+use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 
-class Product extends BaseModel
+class Product extends BaseModel implements Auditable
 {
-    //
+    use  AuditableTrait, Searchable;
 
     protected $fillable = [
         'sort_order',
@@ -100,6 +103,10 @@ class Product extends BaseModel
     {
         return $this->belongsTo(User::class, 'reviewed_by', 'id');
     }
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
 
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -163,6 +170,17 @@ class Product extends BaseModel
             'status' => $this->status,
         ];
     }
+
+
+    /**
+     * Include only non-deleted data in search index.
+     */
+    public function shouldBeSearchable(): bool
+    {
+        return is_null($this->deleted_at);
+    }
+
+
 
     public function __construct(array $attributes = [])
     {

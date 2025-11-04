@@ -3,13 +3,17 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
+use Laravel\Scout\Searchable;
+use App\Traits\AuditableTrait;
 use App\Enums\ProductTypeStatus;
+use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 
-class ProductType extends BaseModel
+
+class ProductType extends BaseModel implements Auditable
 {
-    //
+    use AuditableTrait, Searchable;
 
     protected $fillable = [
         'sort_order',

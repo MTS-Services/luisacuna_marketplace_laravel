@@ -13,7 +13,7 @@ class ProducForm extends Form
 {
     #[Locked]
     public ?int $id = null;
-    
+
     public string $title = '';
     public string $slug = '';
     public string $description = '';
@@ -21,17 +21,17 @@ class ProducForm extends Form
     public string $delivery_method = 'manual';
     public string $status = 'active';
     public string $visibility = 'public';
-    
+
     public ?int $seller_id = null;
     public ?int $game_id = null;
     public ?int $product_type_id = null;
     public ?int $server_id = null;
     public ?int $reviewed_by = null;
-    
+
     public float $price = 0;
     public ?float $discount_percentage = null;
     public ?float $discounted_price = null;
-    
+
     public int $stock_quantity = 0;
     public int $min_purchase_quantity = 1;
     public ?int $max_purchase_quantity = null;
@@ -42,7 +42,7 @@ class ProducForm extends Form
     public int $favorite_count = 0;
     public float $average_rating = 0;
     public int $total_reviews = 0;
-    
+
 
     public bool $unlimited_stock = false;
     public bool $is_featured = false;
@@ -58,6 +58,8 @@ class ProducForm extends Form
     public ?string $meta_title = null;
     public ?string $meta_description = null;
     public ?string $meta_keywords = null;
+
+    public $images = [];
 
 
     public function rules(): array
@@ -125,6 +127,8 @@ class ProducForm extends Form
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
             'meta_keywords' => 'nullable|string',
+
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ];
     }
 
@@ -145,9 +149,9 @@ class ProducForm extends Form
         $this->min_purchase_quantity = (int) $product->min_purchase_quantity;
         $this->max_purchase_quantity = $product->max_purchase_quantity ? (int) $product->max_purchase_quantity : null;
         $this->unlimited_stock = (bool) $product->unlimited_stock;
-        
+
         $this->delivery_method = $product->delivery_method?->value ?? ProductsDeliveryMethod::MANUAL->value;
-        
+
         $this->delivery_time_hours = $product->delivery_time_hours ? (int) $product->delivery_time_hours : null;
         $this->auto_delivery_content = $product->auto_delivery_content;
         $this->server_id = $product->server_id;
@@ -155,14 +159,14 @@ class ProducForm extends Form
         $this->region = $product->region;
         $this->specifications = $product->specifications;
         $this->requirements = $product->requirements;
-        
+
         $this->status = $product->status?->value ?? ProductStatus::ACTIVE->value;
-        
+
         $this->is_featured = (bool) $product->is_featured;
         $this->is_hot_deal = (bool) $product->is_hot_deal;
-        
+
         $this->visibility = $product->visibility?->value ?? ProductsVisibility::PUBLIC->value;
-        
+
         $this->total_sales = (int) $product->total_sales;
         $this->total_revenue = (float) $product->total_revenue;
         $this->view_count = (int) $product->view_count;
@@ -182,7 +186,7 @@ class ProducForm extends Form
         parent::reset(...$properties);
 
         $this->resetValidation();
-        
+
 
         $this->delivery_method = 'manual';
         $this->status = 'active';
@@ -249,6 +253,7 @@ class ProducForm extends Form
             'meta_title' => $this->meta_title ?: null,
             'meta_description' => $this->meta_description ?: null,
             'meta_keywords' => $this->meta_keywords ?: null,
+            'images' => $this->images,
         ], function ($value) {
             return $value !== '' && $value !== null;
         });

@@ -17,6 +17,84 @@
     </div>
     <div class="glass-card rounded-2xl p-6 mb-6">
         <form wire:submit="save">
+            {{-- Existing Images Section --}}
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-4">{{ __('Existing Images') }}</h3>
+
+                @if (count($existingImages) > 0)
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        @foreach ($existingImages as $image)
+                            <div class="relative border rounded-lg p-2">
+                                <img src="{{ asset('storage/' . $image['image_path']) }}" alt="Product Image"
+                                    class="w-full h-32 object-cover rounded">
+
+                                {{-- Primary Badge --}}
+                                @if ($image['is_primary'])
+                                    <span
+                                        class="absolute top-4 left-4 bg-green-500 text-white text-xs px-2 py-1 rounded">
+                                        {{ __('Primary') }}
+                                    </span>
+                                @else
+                                    <button type="button" wire:click="setPrimaryImage({{ $image['id'] }})"
+                                        class="absolute top-4 left-4 bg-blue-500 hover:bg-blue-600 text-white text-xs px-2 py-1 rounded">
+                                        {{ __('Set as Primary') }}
+                                    </button>
+                                @endif
+
+                                {{-- Delete Button --}}
+                                <button type="button" wire:click="deleteImage({{ $image['id'] }})"
+                                    wire:confirm="Are you sure you want to delete this image?"
+                                    class="absolute top-4 right-4 bg-red-500 hover:bg-red-600 text-white p-2 rounded-full">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="text-gray-500 text-center py-8 bg-gray-50 rounded-lg">
+                        {{ __('No images found for this product.') }}
+                    </p>
+                @endif
+            </div>
+
+            {{-- New Images Upload Section --}}
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-4">{{ __('New Images') }}</h3>
+
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6">
+
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                        {{ __('Product Image') }}
+                    </h3>
+                    <x-ui.file-input wire:model="form.images" label="Product Image" multiple accept="image/*" :error="$errors->first('form.images')"
+                        hint="" />
+
+                    @error('form.images.*')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+
+                    {{-- Loading Indicator --}}
+                    <div wire:loading wire:target="form.images" class="mt-2 text-blue-500">
+                        {{ __('Uploading...') }}
+                    </div>
+
+                    {{-- Preview New Images --}}
+                    @if ($form->images)
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                            @foreach ($form->images as $image)
+                                <div class="border rounded-lg p-2">
+                                    <img src="{{ $image->temporaryUrl() }}" class="w-full h-32 object-cover rounded">
+                                    <p class="text-xs text-center mt-2 text-green-600">{{ __('New Image') }}</p>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            </div>
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
 
                 {{-- seller_id --}}

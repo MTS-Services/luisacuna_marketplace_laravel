@@ -27,17 +27,79 @@
             {{ $data->title }}
         </h3>
 
+        {{-- Product Images Section --}}
+        <div class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4">{{ __('Product Images') }}</h2>
+
+            @if ($data->images && $data->images->count() > 0)
+
+                {{-- Primary/Main Image --}}
+                @php
+                    $primaryImage = $data->images->where('is_primary', true)->first() ?? $data->images->first();
+                @endphp
+
+                <div class="mb-6">
+                    <h3 class="text-lg font-medium mb-2">{{ __('Primary Image') }}</h3>
+                    <div class="overflow-hidden">
+                        <img src="{{ asset('storage/' . $primaryImage->image_path) }}" alt="{{ $data->name }}"
+                            class="w-auto object-contain bg-gray-100">
+                    </div>
+                </div>
+
+                {{-- All Images Grid --}}
+                @if ($data->images->count() > 1)
+                    <div>
+                        <h3 class="text-lg font-medium mb-2">{{ __('All Images') }} ({{ $data->images->count() }})</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            @foreach ($data->images->sortBy('sort_order') as $image)
+                                <div
+                                    class="relative border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                                    <img src="{{ asset('storage/' . $image->image_path) }}" alt="{{ $data->name }}"
+                                        class="w-full h-48 object-cover cursor-pointer"
+                                        onclick="showImageModal('{{ asset('storage/' . $image->image_path) }}')">
+
+                                    {{-- Primary Badge --}}
+                                    @if ($image->is_primary)
+                                        <span
+                                            class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded">
+                                            {{ __('Primary') }}
+                                        </span>
+                                    @endif
+
+                                    {{-- Sort Order --}}
+                                    <div
+                                        class="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+                                        #{{ $image->sort_order + 1 }}
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            @else
+                <div class="text-center py-12 bg-gray-100 rounded-lg">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                        </path>
+                    </svg>
+                    <p class="mt-2 text-gray-500">{{ __('No images found for this product.') }}</p>
+                </div>
+            @endif
+        </div>
         {{-- Basic Information Section --}}
         <div class="mb-8">
             <h4
                 class="text-lg font-bold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
                 {{ __('Basic Information') }}
             </h4>
+
             <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
                 {{-- Seller --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Seller</p>
+                    <p class="text-gray-500 dark:text-gray-400">{ __('Seller') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ $data->seller?->first_name ?? 'N/A' }}
                     </p>
@@ -45,7 +107,7 @@
 
                 {{-- Game --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Game</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Game') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ $data->game?->name ?? 'N/A' }}
                     </p>
@@ -53,7 +115,7 @@
 
                 {{-- Product Type --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Product Type</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Product Type') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ $data->productType?->name ?? 'N/A' }}
                     </p>
@@ -61,13 +123,13 @@
 
                 {{-- Slug --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Slug</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Slug') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">{{ $data->slug }}</p>
                 </div>
 
                 {{-- Server --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Server</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Server') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ $data->server?->name ?? 'N/A' }}
                     </p>
@@ -75,19 +137,19 @@
 
                 {{-- Platform --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Platform</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Platform') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">{{ $data->platform ?? 'N/A' }}</p>
                 </div>
 
                 {{-- Region --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Region</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Region') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">{{ $data->region ?? 'N/A' }}</p>
                 </div>
 
                 {{-- Status --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Status</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Status') }}</p>
                     <span
                         class="px-3 py-1 rounded-full text-xs font-bold inline-block badge badge-soft {{ $data->status->color() }}">
                         {{ $data->status->label() }}
@@ -107,7 +169,7 @@
 
                 {{-- Price --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Price</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Price') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ number_format($data->price, 2) }} {{ $data->currency }}
                     </p>
@@ -115,14 +177,14 @@
 
                 {{-- Currency --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Currency</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Currency') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">{{ $data->currency }}
                     </p>
                 </div>
 
                 {{-- Discount Percentage --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Discount (%)</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Discount (%)') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ $data->discount_percentage ? number_format($data->discount_percentage, 2) . '%' : '0.00%' }}
                     </p>
@@ -130,7 +192,7 @@
 
                 {{-- Discounted Price --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Discounted Price</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Discounted Price') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ $data->discounted_price ? number_format($data->discounted_price, 2) . ' ' . $data->currency : 'N/A' }}
                     </p>
@@ -149,7 +211,7 @@
 
                 {{-- Stock Quantity --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Stock Quantity</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Stock Quantity') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ $data->unlimited_stock ? 'Unlimited' : $data->stock_quantity }}
                     </p>
@@ -157,7 +219,7 @@
 
                 {{-- Unlimited Stock --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Unlimited Stock</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Unlimited Stock') }}</p>
                     <span class="rounded-full text-xs font-bold inline-block">
                         {{ $data->unlimited_stock ? __('Yes') : __('No') }}
                     </span>
@@ -165,14 +227,14 @@
 
                 {{-- Min Purchase Quantity --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Min Purchase Quantity</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Min Purchase Quantity') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">{{ $data->min_purchase_quantity }}
                     </p>
                 </div>
 
                 {{-- Max Purchase Quantity --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Max Purchase Quantity</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Max Purchase Quantity') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ $data->max_purchase_quantity ?? 'N/A' }}
                     </p>
@@ -191,7 +253,7 @@
 
                 {{-- Delivery Method --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Delivery Method</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Delivery Method') }}</p>
                     <span
                         class="px-3 py-1 rounded-full text-xs font-bold inline-block badge badge-soft {{ $data->delivery_method->color() }}">
                         {{ $data->delivery_method->label() }}
@@ -200,7 +262,7 @@
 
                 {{-- Delivery Time --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Delivery Time</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Delivery Time') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ $data->delivery_time_hours }} {{ __('hours') }}
                     </p>
@@ -211,7 +273,7 @@
             {{-- Auto Delivery Content --}}
             @if ($data->auto_delivery_content)
                 <div class="mt-4">
-                    <p class="text-gray-500 dark:text-gray-400 mb-2">Auto Delivery Content</p>
+                    <p class="text-gray-500 dark:text-gray-400 mb-2">{{ __('Auto Delivery Content') }}</p>
                     <div class="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
                         <pre class="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{{ $data->auto_delivery_content }}</pre>
                     </div>
@@ -229,7 +291,7 @@
 
                 {{-- Total Sales --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Total Sales</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Total Sales') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ number_format($data->total_sales) }}
                     </p>
@@ -237,7 +299,7 @@
 
                 {{-- Total Revenue --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Total Revenue</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Total Revenue') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ number_format($data->total_revenue, 2) }} {{ $data->currency }}
                     </p>
@@ -245,7 +307,7 @@
 
                 {{-- View Count --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">View Count</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('View Count') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ number_format($data->view_count) }}
                     </p>
@@ -253,7 +315,7 @@
 
                 {{-- Favorite Count --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Favorite Count</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Favorite Count') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ number_format($data->favorite_count) }}
                     </p>
@@ -261,7 +323,7 @@
 
                 {{-- Average Rating --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Average Rating</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Average Rating') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ number_format($data->average_rating, 2) }} / 5.00
                     </p>
@@ -269,7 +331,7 @@
 
                 {{-- Total Reviews --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Total Reviews</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Total Reviews') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ number_format($data->total_reviews) }}
                     </p>
@@ -288,15 +350,16 @@
 
                 {{-- Visibility --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Visibility</p>
-                    <span class="px-3 py-1 rounded-full text-xs font-bold inline-block badge badge-soft {{ $data->visibility->color() }}">
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Visibility') }}</p>
+                    <span
+                        class="px-3 py-1 rounded-full text-xs font-bold inline-block badge badge-soft {{ $data->visibility->color() }}">
                         {{ $data->visibility->label() }}
                     </span>
                 </div>
 
                 {{-- Is Featured --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Is Featured</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Is Featured') }}</p>
                     <span class="rounded-full text-xs font-bold inline-block">
                         {{ $data->is_featured ? __('Yes') : __('No') }}
                     </span>
@@ -304,7 +367,7 @@
 
                 {{-- Is Hot Deal --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Is Hot Deal</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Is Hot Deal') }}</p>
                     <span class="rounded-full text-xs font-bold inline-block">
                         {{ $data->is_hot_deal ? __('Yes') : __('No') }}
                     </span>
@@ -323,7 +386,7 @@
 
                 {{-- Reviewed By --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Reviewed By</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Reviewed By') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ $data->reviewer?->name ?? 'N/A' }}
                     </p>
@@ -331,7 +394,7 @@
 
                 {{-- Reviewed At --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Reviewed At</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Reviewed At') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ $data->reviewed_at ? $data->reviewed_at->format('Y-m-d H:i:s') : 'N/A' }}
                     </p>
@@ -342,7 +405,7 @@
             {{-- Rejection Reason --}}
             @if ($data->rejection_reason)
                 <div class="mt-4">
-                    <p class="text-gray-500 dark:text-gray-400 mb-2">Rejection Reason</p>
+                    <p class="text-gray-500 dark:text-gray-400 mb-2">{{ __('Rejection Reason') }}</p>
                     <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 rounded-lg">
                         <p class="text-sm text-red-700 dark:text-red-300">{{ $data->rejection_reason }}</p>
                     </div>
@@ -360,7 +423,7 @@
 
                 {{-- Meta Title --}}
                 <div>
-                    <p class="text-gray-500 dark:text-gray-400 mb-1">Meta Title</p>
+                    <p class="text-gray-500 dark:text-gray-400 mb-1">{{ __('Meta Title') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ $data->meta_title ?? 'N/A' }}
                     </p>
@@ -369,7 +432,7 @@
                 {{-- Meta Description --}}
                 @if ($data->meta_description)
                     <div>
-                        <p class="text-gray-500 dark:text-gray-400 mb-1">Meta Description</p>
+                        <p class="text-gray-500 dark:text-gray-400 mb-1">{{ __('Meta Description') }}</p>
                         <p class="text-gray-700 dark:text-gray-300">{{ $data->meta_description }}</p>
                     </div>
                 @endif
@@ -377,7 +440,7 @@
                 {{-- Meta Keywords --}}
                 @if ($data->meta_keywords)
                     <div>
-                        <p class="text-gray-500 dark:text-gray-400 mb-1">Meta Keywords</p>
+                        <p class="text-gray-500 dark:text-gray-400 mb-1">{{ __('Meta Keywords') }}</p>
                         <p class="text-gray-700 dark:text-gray-300">{{ $data->meta_keywords }}</p>
                     </div>
                 @endif
@@ -421,7 +484,7 @@
 
                 {{-- Created Date --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Created Date</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Created Date') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                         {{ $data->created_at_formatted }}
                     </p>
@@ -429,7 +492,7 @@
 
                 {{-- Updated Date --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Updated Date</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Updated Date') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                         {{ $data->updated_at_formatted ?? 'N/A' }}
                     </p>
@@ -437,7 +500,7 @@
 
                 {{-- Deleted Date --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Deleted Date</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Deleted Date') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                         {{ $data->deleted_at_formatted ?? 'N/A' }}
                     </p>
@@ -445,7 +508,7 @@
 
                 {{-- Restored Date --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Restored Date</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Restored Date') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                         {{ $data->restored_at ? $data->restored_at->format('Y-m-d H:i:s') : 'N/A' }}
                     </p>
@@ -453,7 +516,7 @@
 
                 {{-- Created By Type --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Created By Type</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Created By Type') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                         {{ $data->created_by_type ?? 'N/A' }}
                     </p>
@@ -461,7 +524,7 @@
 
                 {{-- Updated By Type --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Updated By Type</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Updated By Type') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                         {{ $data->updated_by_type ?? 'N/A' }}
                     </p>
@@ -469,7 +532,7 @@
 
                 {{-- Deleted By Type --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">Deleted By Type</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Deleted By Type') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                         {{ $data->deleted_by_type ?? 'N/A' }}
                     </p>

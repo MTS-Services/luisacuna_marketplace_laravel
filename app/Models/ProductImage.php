@@ -1,41 +1,55 @@
 <?php
- 
-namespace {{ namespace }};
- 
-{{ factoryImport }}
+
+namespace App\Models;
+
 use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
- 
-class {{ class }} extends BaseModel implements Auditable
+
+class ProductImage extends BaseModel implements Auditable
 {
-    use   AuditableTrait;
-    {{ factory }}
- 
+    use AuditableTrait;
+
     protected $fillable = [
         'sort_order',
- 
-      //here AuditColumns 
+        'product_id',
+        'image_path',
+        'thumbnail_path',
+        'is_primary',
+
+        'creater_type',
+        'updater_type',
+        'deleter_type',
+        'restorer_type',
+
+
+        'creater_id',
+        'updater_id',
+        'deleter_id',
+        'restorer_id',
     ];
- 
+
     protected $hidden = [
         //
     ];
- 
+
     protected $casts = [
         //
     ];
- 
+
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
- 
-     //
- 
-     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
+
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
- 
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -43,6 +57,4 @@ class {{ class }} extends BaseModel implements Auditable
             //
         ]);
     }
- 
- 
 }

@@ -44,11 +44,9 @@ class ProductRepository implements ProductRepositoryInterface
     }
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-
         $search = $filters['search'] ?? null;
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
-
 
         if ($search) {
             // Scout Search

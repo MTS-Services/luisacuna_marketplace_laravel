@@ -22,6 +22,8 @@ class Edit extends Component
 
 
     public ProducForm $form;
+    public array $existingImages = [];
+    public array $imagesToDelete = [];
 
     #[Locked]
     public Product $product;
@@ -44,12 +46,17 @@ class Edit extends Component
     {
         $this->product = $data;
         $this->form->setData($this->product);
+        $this->product->load('images');
+        $this->existingImages = $this->product->images->toArray();
     }
     public function render()
     {
         $games = $this->gameService->paginate();
         $PTypes = $this->PTypeService->getAll();
         $users = $this->userService->getAllSellersData('first_name', 'asc');
+
+
+
 
         return view('livewire.backend.admin.product-management.product.edit', [
             'statuses' => ProductStatus::options(),
@@ -62,6 +69,32 @@ class Edit extends Component
         ]);
     }
 
+    /**
+     * Mark image for deletion
+     */
+    public function deleteImage($imageId)
+    {
+        $this->imagesToDelete[] = $imageId;
+
+        $this->existingImages = array_filter($this->existingImages, function ($img) use ($imageId) {
+            return $img['id'] != $imageId;
+        });
+
+        $this->success('This is Image deleted successfully.');
+    }
+
+    /**
+     * Set primary image
+     */
+    public function setPrimaryImage($imageId)
+    {
+        foreach ($this->existingImages as &$image) {
+            $image['is_primary'] = ($image['id'] == $imageId);
+        }
+
+        $this->success('Primary image set successfully.');
+    }
+
     public function save()
     {
         $this->form->validate();
@@ -69,6 +102,9 @@ class Edit extends Component
             $data = $this->form->fillables();
             $data['updater_id'] = admin()->id;
             $data['updater_by'] = admin()->id;
+
+            $data['images_to_delete'] = $this->imagesToDelete;
+            $data['existing_images'] = $this->existingImages;
             $updated = $this->service->updateData($this->product->id, $data);
 
             $this->dispatch('ProductUpdated');

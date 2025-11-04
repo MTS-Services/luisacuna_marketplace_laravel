@@ -31,6 +31,7 @@ class Edit extends Component
     {
         $this->productType = $data;
         $this->form->setData($this->productType);
+
     }
 
     public function render()

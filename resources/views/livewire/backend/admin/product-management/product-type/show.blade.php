@@ -37,7 +37,7 @@
 
             {{-- Name --}}
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Name</p>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Name') }}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white">
                     {{ $data->name }}
                 </p>
@@ -45,7 +45,7 @@
 
             {{-- Slug --}}
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Slug</p>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Slug') }}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white">
                     {{ $data->slug }}
                 </p>
@@ -53,15 +53,47 @@
 
             {{-- Commission Rate --}}
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Commission Rate</p>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Commission Rate') }}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white">
                     {{ $data->commission_rate ? number_format($data->commission_rate, 2) . '%' : 'N/A' }}
                 </p>
             </div>
 
+            {{-- Requires Delivery Time --}}
+            <div class="col-span-1">
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Requires Delivery Time') }}</p>
+                <p class="font-mono font-semibold text-gray-900 dark:text-white">
+                    {{ $data->requires_delivery_time ?? 'N/A' }}
+                </p>
+            </div>
+
+            {{-- requires_server_info --}}
+            <div class="col-span-1">
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Requires Server Info') }}</p>
+                <p class="font-mono font-semibold text-gray-900 dark:text-white">
+                    {{ $data->requires_server_info ?? 'N/A' }}
+                </p>
+            </div>
+
+            {{-- requires_character_info --}}
+            <div class="col-span-1">
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Requires qharacter Info') }}</p>
+                <p class="font-mono font-semibold text-gray-900 dark:text-white">
+                    {{ $data->requires_character_info ?? 'N/A' }}
+                </p>
+            </div>
+
+            {{-- max_delivery_time_hours --}}
+            <div class="col-span-1">
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Max Delivery Time Hours') }}</p>
+                <p class="font-mono font-semibold text-gray-900 dark:text-white">
+                    {{ $data->max_delivery_time_hours ?? 'N/A' }}
+                </p>
+            </div>
+
             {{-- Status --}}
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Status</p>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Status') }}</p>
                 <span
                     class="px-3 py-1 rounded-full text-xs font-bold inline-block badge badge-soft {{ $data->status->color() }}">
                     {{ $data->status->label() }}
@@ -70,7 +102,7 @@
 
             {{-- Created Date --}}
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Created Date</p>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Created Date') }}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->created_at_formatted }}
                 </p>
@@ -78,7 +110,7 @@
 
             {{-- Updated Date --}}
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Updated Date</p>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Updated Date') }}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->updated_at_formatted ?? 'N/A' }}
                 </p>
@@ -86,7 +118,7 @@
 
             {{-- Deleted Date --}}
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Deleted Date</p>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Deleted Date') }}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->deleted_at_formatted ?? 'N/A' }}
                 </p>
@@ -94,7 +126,7 @@
 
             {{-- Icon Path --}}
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Icon</p>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Icon') }}</p>
                 <p class="font-mono text-sm text-gray-900 dark:text-white break-all">
                     {{ $data->icon ? basename($data->icon) : 'N/A' }}
                 </p>
@@ -102,7 +134,7 @@
 
             {{-- Created By --}}
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Created By</p>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Created By') }}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->creater_admin?->name ?? 'N/A' }}
                 </p>
@@ -110,7 +142,7 @@
 
             {{-- Updated By --}}
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Updated By</p>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Updated By') }}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->updater_admin?->name ?? 'N/A' }}
                 </p>
@@ -118,22 +150,19 @@
 
             {{-- Deleted By --}}
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Deleted By</p>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Deleted By') }}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->deleter_admin?->name ?? 'N/A' }}
                 </p>
             </div>
 
         </div>
-
         {{-- Description Section --}}
-        @if ($data->description)
-            <div class="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6">
-                <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-3">{{ __('Description') }}</h4>
-                <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
-                    {!! $data->description !!}
-                </div>
+        <div class="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6">
+            <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-3">{{ __('Description') }}</h4>
+            <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
+                {!! $data->description !!}
             </div>
-        @endif
+        </div>
     </div>
 </div>
