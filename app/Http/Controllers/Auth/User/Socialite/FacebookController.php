@@ -72,7 +72,7 @@ class FacebookController extends Controller
 
                 $baseUsername = $this->generateUsername($email, $firstName, $facebookId);
                 $username = $this->ensureUniqueUsername($baseUsername);
-
+                dd($username);
                 $user = User::create([
                     'username' => $username,
                     'first_name' => $firstName,
