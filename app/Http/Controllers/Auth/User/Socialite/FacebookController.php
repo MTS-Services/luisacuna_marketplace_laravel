@@ -35,13 +35,13 @@ class FacebookController extends Controller
     {
         try {
             $facebookUser = Socialite::driver('facebook')->user();
-            
+
             $facebookId = $facebookUser->getId();
             $name = $facebookUser->getName();
             $email = $facebookUser->getEmail();
-            
+
             $user = User::where('facebook_id', $facebookId)->first();
-            
+
             if (!$user && $email) {
                 $user = User::where('email', $email)->first();
             }
@@ -50,12 +50,16 @@ class FacebookController extends Controller
                 if (!$user->facebook_id) {
                     $user->facebook_id = $facebookId;
                 }
-                
-                if (!$user->email && $email) {
-                    $user->email = $email;
+
+                if ($email && !$user->email_verified_at) {
                     $user->email_verified_at = now();
                 }
 
+                // ✅ If user didn’t have an email before, add it
+                if (!$user->email && $email) {
+                    $user->email = $email;
+                }
+                
                 if ($user->isDirty()) {
                     $user->save();
                 }
@@ -63,7 +67,7 @@ class FacebookController extends Controller
                 $rawData = $facebookUser->getRaw();
                 $firstName = $rawData['first_name'] ?? '';
                 $lastName = $rawData['last_name'] ?? '';
-                
+
                 if (empty($firstName)) {
                     $nameParts = explode(' ', $name, 2);
                     $firstName = $nameParts[0];
@@ -87,15 +91,12 @@ class FacebookController extends Controller
             Auth::login($user, true);
 
             return redirect()->intended('user/orders/purchased-orders');
-
         } catch (InvalidStateException $e) {
             Log::error('Facebook Login: Invalid State Exception - ' . $e->getMessage());
             return redirect('/login')->withErrors(['error' => 'Session expired. Please try logging in again.']);
-            
         } catch (ClientException $e) {
             Log::error('Facebook Login: Client Exception - ' . $e->getMessage());
             return redirect('/login')->withErrors(['error' => 'Facebook authentication failed. Please check your app credentials.']);
-            
         } catch (Exception $e) {
             Log::error('Facebook Login: General Exception - ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString()
@@ -115,11 +116,11 @@ class FacebookController extends Controller
         }
 
         $username = preg_replace('/[^a-zA-Z0-9]/', '', $username);
-        
+
         if (strlen($username) < 3) {
             $username = 'fbuser' . substr($facebookId, -6);
         }
-        
+
         return strtolower($username);
     }
 
