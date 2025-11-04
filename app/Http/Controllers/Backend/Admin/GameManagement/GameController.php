@@ -11,7 +11,7 @@ class GameController extends Controller
     //
     protected GameService $service;
 
-    public Game $game ;
+    public Game $data ;
     public function __construct(GameService $service)
     {
         $this->service = $service;
@@ -29,10 +29,10 @@ class GameController extends Controller
 
     public function show($id)
     {
-        $this->game = $this->service->findOrFail($id);
+        $this->data = $this->service->findData($id);
 
         return view($this->masterView, [
-            'game' => $this->game,
+            'data' => $this->data,
         ]);
     }
     public function edit($id)    

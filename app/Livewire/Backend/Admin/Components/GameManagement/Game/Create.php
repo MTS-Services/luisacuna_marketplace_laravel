@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Backend\Admin\Components\GameManagement\Game;
 
-use App\Actions\Game\CreateGameAction;
+
 use App\DTOs\Game\CreateGameDTO;
 use App\Enums\GameStatus;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameForm;
@@ -16,40 +16,42 @@ class Create extends Component
 {
     use WithFileUploads;
 
-    protected GameService $gameService;
+    protected GameService $service;
 
     public GameForm $form;
 
-    protected CreateGameAction $createAdminAction;
-
-    protected GameCategoryService $gameCategoryService;
 
 
-    public function boot(GameService $gameService, CreateGameAction $createAdminAction, GameCategoryService $gameCategoryService)  
+    protected GameCategoryService $categoryService;
+
+
+    public function boot(GameService $service,  GameCategoryService $categoryService)  
     {
-        $this->gameService = $gameService;
+        $this->service = $service;
 
-        $this->createAdminAction = $createAdminAction;
-
-        $this->gameCategoryService = $gameCategoryService;
-
+        $this->categoryService = $categoryService;
 
     }
     public function render()
     {
+        $platforms = ['PC', 'PS5', 'Xbox', 'Android', 'iOS'];
+        
         return view('livewire.backend.admin.components.game-management.game.create', [
 
             'statuses'   => GameStatus::options(),
 
             'categories' => $this->gameCategory(),
 
+            'platforms' => $platforms
+
         ]);
     }
 
     protected function gameCategory():array
     {
-        return $this->gameCategoryService->all()->pluck('name', 'id')->toArray();
+        return $this->categoryService->getAllDatas()->pluck('name', 'id')->toArray();
     }
+
     public function save(){
      
         $data = $this->form->validate();

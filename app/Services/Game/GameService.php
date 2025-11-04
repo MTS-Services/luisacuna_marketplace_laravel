@@ -27,6 +27,11 @@ class GameService
         return $this->interface->all();
 
     }
+
+    public function findData(int $id){
+
+        return $this->interface->find($id);
+    }
     public function getPaginateDatas(int $perPage = 15, array $filters = [], ?array $queries = null)
     {
         return $this->interface->paginate($perPage, $filters, $queries ?? []);

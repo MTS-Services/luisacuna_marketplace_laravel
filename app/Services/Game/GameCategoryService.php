@@ -25,7 +25,7 @@ class GameCategoryService
       
     }
 
-    public function getAll()
+    public function getAllDatas()
     {
         return $this->interface->all();
     }
