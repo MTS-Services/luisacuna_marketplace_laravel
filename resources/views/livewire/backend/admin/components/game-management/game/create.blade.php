@@ -113,66 +113,83 @@
                     hint="Upload a game logo (Max: 2MB)" />
              </div>
 
-
-                <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">Thumbnail</label>
-                    <input type="file" wire:model="form.thumbnail"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                         @error('form.thumbnail') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
-
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                    {{ __('Thumbnail') }}
+                </h3>
+                <x-ui.file-input wire:model="form.thumbnail" label="Game Thumbanail" accept="image/*" :error="$errors->first('form.thumbnail')"
+                    hint="Upload a game thumbnail (Max: 2MB)" />
+             </div>
                 
-                <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">Banner</label>
-                    <input type="file" wire:model="form.banner"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.banner') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
 
+              <div class="col-span-2">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                    {{ __('Banner') }}
+                </h3>
+                <x-ui.file-input wire:model="form.banner" label="Game Banner" accept="image/*" :error="$errors->first('form.banner')"
+                    hint="Upload a game banner (Max: 2MB)" />
+             </div>
+                
                 {{-- Boolean Checkboxes --}}
                 <div class="flex gap-6 mt-3">
-                    <label class="flex items-center gap-2">
-                        <input type="checkbox" wire:model="form.is_featured"> Featured
-                    </label>
-                     @error('form.is_featured') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                    <label class="flex items-center gap-2">
-                        <input type="checkbox" wire:model="form.is_trending"> Trending
-                    </label>
-                       @error('form.is_trending') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+
+                     <div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox"  id="is_featured" wire:model="form.is_featured">
+                             <x-ui.label for="is_featured" :value="__('Featured')" />
+                        </div>
+                        <x-ui.input-error :messages="$errors->get('form.is_featured')" class="mt-2" />
+                    </div>
+
+                     <div>
+                        <div class="flex items-center gap-2">
+                           <input type="checkbox"  id="is_trending" wire:model="form.is_trending">
+                             <x-ui.label for="is_trending" :value="__('Trending')" />
+                        </div>
+                        <x-ui.input-error :messages="$errors->get('form.is_trending')" class="mt-2" />
+                    </div>
                 </div>
 
                 {{-- SEO Fields --}}
                 <div class="col-span-2">
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">Meta Title</label>
-                    <input type="text" wire:model="form.meta_title"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.meta_title') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+
+                    <x-ui.label for="meta_title" :value="__('Meta Title')" />
+
+                   <x-ui.input id="meta_title" type="text" class="mt-1 block w-full" wire:model="form.meta_title"
+                        placeholder="Meta Title" />
+                    <x-ui.input-error :messages="$errors->get('form.meta_title')" class="mt-2" />
+                   
                 </div>
 
                 <div class="col-span-2">
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">Meta Description</label>
-                    <textarea wire:model="form.meta_description" rows="3"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></textarea>
-                        @error('form.meta_description') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                    <x-ui.label for="meta_description" :value="__('Meta Description')" />
+
+
+                     <textarea wire:model="form.meta_description" rows="2"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" placeholder="Meta Description"></textarea>
+
+                    <x-ui.input-error :messages="$errors->get('form.meta_description')" class="mt-2" />
                 </div>
 
                 <div class="col-span-2">
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">Meta Keywords</label>
-                    <textarea wire:model="form.meta_keywords" rows="2"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></textarea>
-                     @error('form.meta_keywords') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                    <x-ui.label for="meta_keywords" :value="__('Meta Keywords')" />
+                    
+                    <x-ui.input id="meta_keywords" type="text" class="mt-1 block w-full" wire:model="form.meta_keywords"
+                        placeholder="Meta Keywords" />
+
+                    <x-ui.input-error :messages="$errors->get('form.meta_keywords')" class="mt-2" />
                 </div>
 
             </div>
 
             {{-- Actions --}}
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button href="{{ route('admin.gm.game.index') }}" type="danger">
+                <x-ui.button wire:clilck="resetFrom" type="danger" class="w-auto!">
                     <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
-                    {{ __('Cancel') }}
+                    {{ __('Reset') }}
                 </x-ui.button>
 
-                <x-ui.button type="accent" button>
+                <x-ui.button type="accent" class="w-auto!">
                     <span wire:loading.remove wire:target="save" class="text-white">Create Game</span>
                     <span wire:loading wire:target="save" class="text-white">Creating...</span>
                 </x-ui.button>
