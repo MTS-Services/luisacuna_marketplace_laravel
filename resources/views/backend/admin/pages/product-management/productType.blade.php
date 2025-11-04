@@ -12,16 +12,23 @@
             <x-slot name="title">Product Type Edit</x-slot>
             <livewire:backend.admin.product-management.product-type.edit :data="$data" />
         @break
+
         @case('admin.pm.productType.trash')
             <x-slot name="breadcrumb">Product Management > Product Type Trash</x-slot>
             <x-slot name="title">Product Type Trash</x-slot>
             <livewire:backend.admin.product-management.product-type.trash />
         @break
 
+        @case('admin.pm.productType.show')
+            <x-slot name="breadcrumb">Product Management > Product Type Details</x-slot>
+            <x-slot name="title">Currency Details</x-slot>
+            <livewire:backend.admin.product-management.product-type.show :data="$data" />
+        @break
+
         @default
             <x-slot name="breadcrumb">Product Management > Product Type List</x-slot>
             <x-slot name="title">Product Type List</x-slot>
-            <livewire:backend.admin.product-management.product-type.index  />
+            <livewire:backend.admin.product-management.product-type.index />
     @endswitch
 
 </x-admin::app>

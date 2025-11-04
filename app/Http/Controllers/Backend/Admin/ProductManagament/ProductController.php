@@ -30,6 +30,16 @@ class ProductController extends Controller
             'data' => $data
         ]);
     }
+    public function show(string $encryptedId)
+    {
+        $data = $this->service->findData(decrypt($encryptedId));
+        if (!$data) {
+            abort(404);
+        }
+        return view($this->masterView, [
+            'data' => $data
+        ]);
+    }
     public function trash()
     {
         return view($this->masterView);

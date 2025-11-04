@@ -23,22 +23,50 @@
     </div>
 
     <div class="bg-white dark:bg-gray-800 shadow rounded-xl p-6 min-h-[500px]">
-        <h3 class="text-2xl font-bold mb-1 text-gray-900 dark:text-white mb-4">
-            {{ $data->name . ' (' . $data->code . ')' }}</h3>
+        <div class="flex items-start gap-4 mb-6">
+            {{-- Icon Display --}}
+            @if ($data->icon)
+                <div class="flex-shrink-0">
+                    <img src="{{ asset('storage/' . $data->icon) }}" alt="{{ $data->name }}"
+                        class="w-16 h-16 rounded-lg object-cover border-2 border-gray-200 dark:border-gray-700">
+                </div>
+            @endif
 
+            <div>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white">
+                    {{ $data->name }}
+                </h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ $data->slug }}</p>
+            </div>
+        </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+            {{-- Name --}}
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Symbol</p>
-                <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">{{ $data->symbol }}</p>
+                <p class="text-gray-500 dark:text-gray-400">Name</p>
+                <p class="font-mono font-semibold text-gray-900 dark:text-white">
+                    {{ $data->name }}
+                </p>
             </div>
 
-            {{-- Country Code --}}
+            {{-- Slug --}}
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Exchange Rate</p>
-                <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
-                    {{ number_format($data->exchange_rate, $data->decimal_places) }}</p>
+                <p class="text-gray-500 dark:text-gray-400">Slug</p>
+                <p class="font-mono font-semibold text-gray-900 dark:text-white">
+                    {{ $data->slug }}
+                </p>
             </div>
+
+            {{-- Commission Rate --}}
+            <div class="col-span-1">
+                <p class="text-gray-500 dark:text-gray-400">Commission Rate</p>
+                <p class="font-mono font-semibold text-gray-900 dark:text-white">
+                    {{ $data->commission_rate ? number_format($data->commission_rate, 2) . '%' : 'N/A' }}
+                </p>
+            </div>
+
+            {{-- Status --}}
             <div class="col-span-1">
                 <p class="text-gray-500 dark:text-gray-400">Status</p>
                 <span
@@ -47,47 +75,72 @@
                 </span>
             </div>
 
-            {{-- Is Default --}}
-            <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Default Currency</p>
-                <span class="rounded-full text-xs font-bold inline-block">
-                    {{ $data->is_default ? __('Yes') : __('No') }}
-                </span>
-            </div>
-
+            {{-- Created Date --}}
             <div class="col-span-1">
                 <p class="text-gray-500 dark:text-gray-400">Created Date</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
-                    {{ $data->created_at_formatted }}</p>
+                    {{ $data->created_at_formatted }}
+                </p>
             </div>
+
+            {{-- Updated Date --}}
             <div class="col-span-1">
                 <p class="text-gray-500 dark:text-gray-400">Updated Date</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
-                    {{ $data->updated_at_formatted ?? 'N/A' }}</p>
+                    {{ $data->updated_at_formatted ?? 'N/A' }}
+                </p>
             </div>
+
+            {{-- Deleted Date --}}
             <div class="col-span-1">
                 <p class="text-gray-500 dark:text-gray-400">Deleted Date</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
-                    {{ $data->deleted_at_formatted ?? 'N/A' }}</p>
+                    {{ $data->deleted_at_formatted ?? 'N/A' }}
+                </p>
             </div>
 
+            {{-- Icon Path --}}
+            <div class="col-span-1">
+                <p class="text-gray-500 dark:text-gray-400">Icon</p>
+                <p class="font-mono text-sm text-gray-900 dark:text-white break-all">
+                    {{ $data->icon ? basename($data->icon) : 'N/A' }}
+                </p>
+            </div>
+
+            {{-- Created By --}}
             <div class="col-span-1">
                 <p class="text-gray-500 dark:text-gray-400">Created By</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
-                    {{ $data->creater_admin?->name ?? 'N/A' }}</p>
+                    {{ $data->creater_admin?->name ?? 'N/A' }}
+                </p>
             </div>
+
+            {{-- Updated By --}}
             <div class="col-span-1">
                 <p class="text-gray-500 dark:text-gray-400">Updated By</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
-                    {{ $data->updater_admin?->name ?? 'N/A' }}</p>
+                    {{ $data->updater_admin?->name ?? 'N/A' }}
+                </p>
             </div>
+
+            {{-- Deleted By --}}
             <div class="col-span-1">
                 <p class="text-gray-500 dark:text-gray-400">Deleted By</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
-                    {{ $data->deleter_admin?->name ?? 'N/A' }}</p>
+                    {{ $data->deleter_admin?->name ?? 'N/A' }}
+                </p>
             </div>
 
-
         </div>
+
+        {{-- Description Section --}}
+        @if ($data->description)
+            <div class="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6">
+                <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-3">{{ __('Description') }}</h4>
+                <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
+                    {!! $data->description !!}
+                </div>
+            </div>
+        @endif
     </div>
 </div>
