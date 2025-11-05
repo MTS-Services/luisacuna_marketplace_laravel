@@ -445,7 +445,6 @@
     </div>
 </section>
 
-@else
 <section>
     <div class="container ">
         <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
