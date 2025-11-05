@@ -36,15 +36,15 @@
                         class="menu menu-sm dropdown-content bg-bg-primary rounded-box z-1 mt-3 w-52 p-2 shadow">
                         @auth
                             @if (auth()->guard('web')->check())
-                                <li class="hover:bg-bg-hover"><a href="{{ route('profile') }}" class="text-text-white" wire:navigate>{{__('Profile')}}</a></li>
+                                <li class="hover:bg-bg-hover"><a href="{{ route('profile') }}" class="text-text-white" wire:navigate>Profile</a></li>
                             @else
-                                <li class="hover:bg-bg-hover"><a href="{{ route('admin.dashboard') }}" class="text-text-white" wire:navigate>{{__('Dashboard')}}</a></li>
+                                <li class="hover:bg-bg-hover"><a href="{{ route('admin.dashboard') }}" class="text-text-white" wire:navigate>Dashboard</a></li>
                             @endif
                             <li class="hover:bg-bg-hover">
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit" class="">
-                                        {{ __('Logout') }}
+                                        {{__('Logout')}}
                                     </button>
                                 </form>
                             </li>
@@ -118,7 +118,7 @@
         <div class="mb-2">
             <!-- Header -->
             <div class="flex justify-between items-center p-4 pb-0">
-                <h2 class="text-lg font-semibold">{{__('Notifications')}}</h2>
+                <h2 class="text-lg font-semibold">Notifications</h2>
                 <button @click="notification = false"
                     class="absolute top-3 right-3 text-text-secondary hover:text-gray-600">
                     <flux:icon name="x-mark" class="w-5 h-5 stroke-current hover:stroke-pink-600" />
@@ -126,7 +126,7 @@
             </div>
             <div class="mb-3 border-b border-zinc-600">
                 <button class="text-sm text-pink-500 hover:text-text-hover ps-4 pb-2">
-                    {{ __('Mark all as read') }}
+                    Mark all as read
                 </button>
             </div>
 
@@ -142,16 +142,16 @@
                             </div>
                         </div>
                         <div class="w-full">
-                            <h3 class="font-semibold text-sm">{{__('Digimon Super Rumble is HERE!')}}</h3>
+                            <h3 class="font-semibold text-sm">Digimon Super Rumble is HERE!</h3>
                             <p class="text-sm text-text-secondary/80 mt-1">
-                                {{ __('Hello dear sellers, just now we'\'ve got a new game! We have added Digimon Super Rumble game to Accounts and
+                                Hello dear sellers, just now we've added Digimon Super Rumble game to Accounts and
                                 Currency
                                 categories.
-                                You can start listing your offers any minute now.') }}
+                                You can start listing your offers any minute now.
                             </p>
                         </div>
                         <div class="w-20">
-                            <span class="text-xs text-pink-500">{{__('9m ago')}}</span>
+                            <span class="text-xs text-pink-500">9m ago</span>
                         </div>
                     </div>
                 @endfor
