@@ -155,7 +155,7 @@ class ProductTypeRepository implements ProductTypeRepositoryInterface
         if (!$productType) {
             return false;
         }
-        $productType->update(['restored_by' => $actionerId, 'restored_at' => now()]);
+        $productType->update(['restorer_type' => $actionerId, 'restored_at' => now()]);
 
         return $productType->restore();
     }
@@ -173,7 +173,7 @@ class ProductTypeRepository implements ProductTypeRepositoryInterface
     public function bulkRestore(array $ids, int $actionerId): int
     {
         return DB::transaction(function () use ($ids, $actionerId) {
-            $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restored_by' => $actionerId, 'restored_at' => now()]);
+            $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restorer_type' => $actionerId, 'restored_at' => now()]);
             return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
         });
     }
