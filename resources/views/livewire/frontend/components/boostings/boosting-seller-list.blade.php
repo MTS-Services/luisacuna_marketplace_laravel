@@ -11,15 +11,15 @@
                             <div class="h-8 w-8 bg-orange-500 rounded flex items-center justify-center font-medium">
                                 <img src="{{ asset('assets/images/fortnite.png') }}" alt="">
                             </div>
-                            <span class="text-xl font-medium">Fortnite</span>
+                            <span class="text-xl font-medium">{{ __('Fortnite') }}</span>
                         </div>
                         <!-- Navigation Links -->
                         <nav
                             class=" peer-checked:flex flex-col lg:flex lg:flex-row gap-6 w-full lg:w-auto  lg:bg-transparent border-t border-gray-800 lg:border-none z-50">
-                            <a href="#" class="navbar_style active">Items</a>
-                            <a href="#" class="navbar_style text-text-primary">Accounts</a>
-                            <a href="#" class="navbar_style text-text-primary">Top Ups</a>
-                            <a href="#" class="navbar_style text-text-primary">Gift Card</a>
+                            <a href="#" class="navbar_style active">{{ __('Items') }}</a>
+                            <a href="#" class="navbar_style text-text-primary">{{ __('Accounts') }}</a>
+                            <a href="#" class="navbar_style text-text-primary">{{ __('Top Ups') }}</a>
+                            <a href="#" class="navbar_style text-text-primary">{{ __('Gift Card') }}</a>
                         </nav>
                     </div>
                 </div>
@@ -31,9 +31,9 @@
             <div class="flex items-center gap-2 mb-8 text-sm">
                 <span class="text-blue-100 text-text-primary">
                     <img width="25" class="inline-block" src="{{ asset('assets/images/mdb.png') }}" alt="img">
-                    Blade ball tokens</span>
+                    {{ __('Blade ball tokens') }}</span>
                 <span class=" text-text-primary">></span>
-                <span class=" text-text-primary">Seller list</span>
+                <span class=" text-text-primary">{{ __('Seller list') }}</span>
             </div>
 
             <!-- Filters Section -->
@@ -53,103 +53,103 @@
                         </div>
                     </div>
                     <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full!">
-                        <option value="">Device</option>
+                        <option value="">{{ __('Device') }}</option>
                     </x-ui.select>
                     <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full!">
-                        <option value="">Account type</option>
+                        <option value="">{{ __('Account type') }}</option>
                     </x-ui.select>
                     <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full!">
-                        <option value="">Price</option>
+                        <option value="">{{ __('Price') }}</option>
                     </x-ui.select>
                     <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full!">
-                        <option value="">Select Delivery Time</option>
+                        <option value="">{{ __('Select Delivery Time') }}</option>
                     </x-ui.select>
-                    <button class="text-text-primary hover:text-white transition">Clear all</button>
+                    <button class="text-text-primary hover:text-white transition">{{ __('Clear all') }}</button>
                 </div>
 
                 <!-- Game Tags -->
                 <div class="flex gap-2 flex-wrap">
                     <button
-                        class="px-3 py-1 bg-slate-800/60 rounded text-sm hover:bg-slate-500 transition text-white">Robux</button>
+                        class="px-3 py-1 bg-slate-800/60 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('Robux') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Steel
-                        A
-                        Brainrot</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('Steel
+                                                                        A
+                                                                        Brainrot') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Grow
-                        A
-                        Garden</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('Grow
+                                                                        A
+                                                                        Garden') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Hunty
-                        Zombie</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('Hunty
+                                                                        Zombie') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">99
-                        Nights In
-                        The Forest</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('99
+                                                                        Nights In
+                                                                        The Forest') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">prospecting</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('prospecting') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">All
-                        Star
-                        Tower
-                        Defense X</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('All
+                                                                        Star
+                                                                        Tower
+                                                                        Defense X') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Ink
-                        Game</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('Ink
+                                                                        Game') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Garden
-                        Tower
-                        Defense</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('Garden
+                                                                        Tower
+                                                                        Defense') }}</button>
                 </div>
 
                 <div class="flex gap-2 flex-wrap">
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Bubble
-                        Gum
-                        Simulator</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('Bubble
+                                                                        Gum
+                                                                        Simulator') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Dead
-                        Rails</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('Dead
+                                                                        Rails') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">TYPE./
-                        ISOUL</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('TYPE./
+                                                                        ISOUL') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Hypershot</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('Minecraft') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Build
-                        A
-                        Zoo</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('Build
+                                                                        A
+                                                                        Zoo') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Gems</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('Gems') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Rivals</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('Rivals') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">MM2</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('MM2') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Blox
-                        Fruit</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('Blox
+                                                                        Fruit') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Pet
-                        Simulator
-                        99</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('Pet
+                                                                        Simulator
+                                                                        99') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Spin</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('Spin') }}</button>
                     <button
-                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">Adopt
-                        Me</button>
+                        class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white">{{ __('Adopt
+                                                                        Me') }}</button>
                 </div>
 
                 <!-- Right Filters -->
                 <div class="flex gap-3 justify-end">
                     <button
-                        class="px-4 py-2 border border-green-500 text-green-500 rounded-full text-sm hover:bg-green-500 hover:text-white transition">●
-                        Online Seller</button>
+                        class="px-4 py-2 border border-green-500 text-green-500 rounded-full text-sm hover:bg-green-500 hover:text-white transition">{{ __('●
+                                                                        Online Seller') }}</button>
 
                     <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full!">
-                        <option value="">All statuses</option>
-                        <option value="completed">Completed</option>
-                        <option value="pending">Pending</option>
-                        <option value="processing">Processing</option>
+                        <option value="">{{ __('All statuses') }}</option>
+                        <option value="completed">{{ __('Completed') }}</option>
+                        <option value="pending">{{ __('Pending') }}</option>
+                        <option value="processing">{{ __('Processing') }}</option>
                     </x-ui.select>
 
                 </div>
@@ -161,35 +161,41 @@
                 <a href="{{ route('boost.buy-now') }}" wire:navigate>
                     <div
                         class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                        <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
-                            Get
-                            fast, secure, and cheap EA Sports FC Coins instantly.</h3>
+                        <h3 class="text-lg font-medium mb-3">
+                            {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now!
+                                                                                    Get
+                                                                                    fast, secure, and cheap EA Sports FC Coins instantly.') }}
+                        </h3>
                         <div class="flex gap-1 text-sm text-text-secondary py-4">
                             <span
                                 class="flex items-center gap-1 px-2 py-1  text-white text-text-white bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-text-secondary "><img
-                                    src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
+                                    src="{{ asset('assets/images/light.png') }}" alt="">
+                                {{ __('Pc') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1  text-white text-text-white bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition  ">Pickaxes:
-                                0-10</span>
+                                class="flex items-center gap-2 px-3 py-1  text-white text-text-white bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition  ">{{ __('Pickaxes:
+                                                                                                0-10') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition   text-white text-text-white">Outfits:
-                                None</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition   text-white text-text-white">{{ __('Outfits:
+                                                                                                None') }}</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
                             <span
-                                class="bg-[#853EFF]   px-4 py-2 rounded-full font-bold  text-white text-text-white">$76.28</span>
+                                class="bg-[#853EFF]   px-4 py-2 rounded-full font-bold  text-white text-text-white">{{ __('$76.28') }}</span>
                             <span
                                 class=" flex items-center gap-2 px-3 py-1 bg-slate-800/60 text-text-secondary rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                    src="{{ asset('assets/images/Time Circle.png') }}" alt="img"> Instants</span>
+                                    src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
+                                {{ __('Instants') }}</span>
                         </div>
                         <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
                             <img src="{{ asset('assets/images/Victoria.png') }}" alt="Esther"
                                 class="w-10 h-10 rounded-full">
                             <div>
-                                <p class="font-semibold text-text-white">Victoria</p>
+                                <p class="font-semibold text-text-white">{{ 'Victoria' }}</p>
                                 <p class="text-sm text-text-secondary "> <img class="inline mr-2"
-                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3% |
-                                    2434 reviews | 1642 Sold</p>
+                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt="">
+                                    {{ __('99.3% |
+                                                                                                            2434 reviews | 1642 Sold') }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -199,36 +205,42 @@
                 <a href="{{ route('boost.buy-now') }}" wire:navigate>
                     <div
                         class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                        <h3 class="text-lg font-medium mb-3">Custom Offer! 2,000 Trophies, Prestige, 100K Push. Ultra
-                            Fast
-                            Delivery. Text me for info. Do not purchase directly.</h3>
+                        <h3 class="text-lg font-medium mb-3">
+                            {{ __('Custom Offer! 2,000 Trophies, Prestige, 100K Push. Ultra
+                                                                                    Fast
+                                                                                    Delivery. Text me for info. Do not purchase directly.') }}
+                        </h3>
                         <div class="flex gap-4 text-sm text-slate-400 py-4">
                             <span
                                 class="flex items-center gap-1 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white "><img
-                                    src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
+                                    src="{{ asset('assets/images/light.png') }}" alt="">
+                                {{ __('Pc') }}</span>
                             <span
-                                class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
-                                0-10</span>
+                                class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes:
+                                                                                                0-10') }}</span>
                             <span
-                                class="flex items-center gap-1 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
-                                None</span>
+                                class="flex items-center gap-1 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits:
+                                                                                                None') }}</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
                             <span
-                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
+                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">{{ __('$76.28') }}</span>
                             <span
                                 class="text-white text-text-white flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition"><img
-                                    src="{{ asset('assets/images/Time Circle.png') }}" alt="img"> Instants</span>
+                                    src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
+                                {{ __('Instants') }}</span>
                         </div>
                         <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
                             <img src="{{ asset('assets/images/Colleen.png') }}" alt="Esther"
                                 class="w-10 h-10 rounded-full">
                             <div>
-                                <p class="font-semibold ">Colleen</p>
+                                <p class="font-semibold ">{{ __('Colleen') }}</p>
                                 <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3%
-                                    |
-                                    2434 reviews | 1642 Sold</p>
+                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt="">
+                                    {{ __('99.3%
+                                                                                                            |
+                                                                                                            2434 reviews | 1642 Sold') }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -238,37 +250,42 @@
                 <a href="{{ route('boost.buy-now') }}" wire:navigate>
                     <div
                         class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                        <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
-                            Get
-                            fast, secure, and cheap EA Sports FC Coins instantly.</h3>
+                        <h3 class="text-lg font-medium mb-3">
+                            {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now!
+                                                                                    Get
+                                                                                    fast, secure, and cheap EA Sports FC Coins instantly.') }}
+                        </h3>
                         <div class="flex gap-4 text-sm text-slate-400 py-4">
                             <span
                                 class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                    src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
+                                    src="{{ asset('assets/images/light.png') }}" alt="">
+                                {{ __('Pc') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
-                                0-10</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes:
+                                                                                                0-10') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
-                                None</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits:
+                                                                                                None') }}</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
                             <span
-                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
+                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">{{ __('$76.28') }}</span>
                             <span
                                 class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                     src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                Instants</span>
+                                {{ __('Instants') }}</span>
                         </div>
                         <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
                             <img src="{{ asset('assets/images/Esther.png') }}" alt="Esther"
                                 class="w-10 h-10 rounded-full">
                             <div>
-                                <p class="font-semibold ">Esther</p>
+                                <p class="font-semibold ">{{ __('Esther') }}</p>
                                 <p class="text-sm text-text-secondary "> <img class="inline mr-2"
-                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3%
-                                    |
-                                    2434 reviews | 1642 Sold</p>
+                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt="">
+                                    {{ __('99.3%
+                                                                                                            |
+                                                                                                            2434 reviews | 1642 Sold') }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -278,37 +295,42 @@
                 <a href="{{ route('boost.buy-now') }}" wire:navigate>
                     <div
                         class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                        <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
-                            Get
-                            fast, secure, and cheap EA Sports FC Coins instantly.</h3>
+                        <h3 class="text-lg font-medium mb-3">
+                            {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now!
+                                                                                    Get
+                                                                                    fast, secure, and cheap EA Sports FC Coins instantly.') }}
+                        </h3>
                         <div class="flex gap-4 text-sm text-slate-400 py-4">
                             <span
                                 class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                    src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
+                                    src="{{ asset('assets/images/light.png') }}" alt="">
+                                {{ __('Pc') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
-                                0-10</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes:
+                                                                                                0-10') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
-                                None</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits:
+                                                                                                None') }}</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
                             <span
-                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
+                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">{{ __('$76.28') }}</span>
                             <span
                                 class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                     src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                Instants</span>
+                                {{ __('Instants') }}</span>
                         </div>
                         <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
                             <img src="{{ asset('assets/images/Shane.png') }}" alt="Esther"
                                 class="w-10 h-10 rounded-full">
                             <div>
-                                <p class="font-semibold ">Shane</p>
+                                <p class="font-semibold ">{{ __('Shane') }}</p>
                                 <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3%
-                                    |
-                                    2434 reviews | 1642 Sold</p>
+                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt="">
+                                    {{ __('99.3%
+                                                                                                            |
+                                                                                                            2434 reviews | 1642 Sold') }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -318,38 +340,43 @@
                 <a href="{{ route('boost.buy-now') }}" wire:navigate>
                     <div
                         class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                        <h3 class="text-lg font-medium mb-3">Custom Offer! 2,000 Trophies, Prestige, 100K Push. Ultra
-                            Fast
-                            Delivery. Text me for info. Do not purchase directly.</h3>
+                        <h3 class="text-lg font-medium mb-3">
+                            {{ __('Custom Offer! 2,000 Trophies, Prestige, 100K Push. Ultra
+                                                                                    Fast
+                                                                                    Delivery. Text me for info. Do not purchase directly.') }}
+                        </h3>
                         <div class="flex gap-4 text-sm text-slate-400 py-4">
                             <span
                                 class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                    src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
+                                    src="{{ asset('assets/images/light.png') }}" alt="">
+                                {{ __('Pc') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
-                                0-10</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes:
+                                                                                                0-10') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
-                                None</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits:
+                                                                                                None') }}</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
                             <span
-                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
+                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">{{ __('$76.28') }}</span>
                             <span
                                 class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                     src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                Instants</span>
+                                {{ __('Instants') }}</span>
                         </div>
                         <div
                             class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3 text-white text-text-white">
                             <img src="{{ asset('assets/images/Arthur.png') }}" alt="Esther"
                                 class="w-10 h-10 rounded-full">
                             <div>
-                                <p class="font-semibold ">Arthur</p>
+                                <p class="font-semibold ">{{ __('Arthur') }}</p>
                                 <p class="text-sm text-text-secondary "> <img class="inline mr-2"
-                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3%
-                                    |
-                                    2434 reviews | 1642 Sold</p>
+                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt="">
+                                    {{ __('99.3%
+                                                                                                            |
+                                                                                                            2434 reviews | 1642 Sold') }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -359,37 +386,42 @@
                 <a href="{{ route('boost.buy-now') }}" wire:navigate>
                     <div
                         class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                        <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
-                            Get
-                            fast, secure, and cheap EA Sports FC Coins instantly.</h3>
+                        <h3 class="text-lg font-medium mb-3">
+                            {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now!
+                                                                                    Get
+                                                                                    fast, secure, and cheap EA Sports FC Coins instantly.') }}
+                        </h3>
                         <div class="flex gap-4 text-sm text-slate-400 py-4">
                             <span
                                 class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                    src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
+                                    src="{{ asset('assets/images/light.png') }}" alt="">
+                                {{ __('Pc') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
-                                0-10</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes:
+                                                                                                0-10') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
-                                None</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits:
+                                                                                                None') }}</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
                             <span
-                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
+                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">{{ __('$76.28') }}</span>
                             <span
                                 class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition"><img
                                     src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                Instants</span>
+                                {{ __('Instants') }}</span>
                         </div>
                         <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
                             <img src="{{ asset('assets/images/Kristin.png') }}" alt="Esther"
                                 class="w-10 h-10 rounded-full">
                             <div>
-                                <p class="font-semibold ">Kristin</p>
+                                <p class="font-semibold ">{{ __('Instants') }}</p>
                                 <p class="text-sm text-text-secondary "> <img class="inline mr-2"
-                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3%
-                                    |
-                                    2434 reviews | 1642 Sold</p>
+                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt="">
+                                    {{ __('99.3%
+                                                                                                            |
+                                                                                                            2434 reviews | 1642 Sold') }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -399,37 +431,42 @@
                 <a href="{{ route('boost.buy-now') }}" wire:navigate>
                     <div
                         class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                        <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
-                            Get
-                            fast, secure, and cheap EA Sports FC Coins instantly.</h3>
+                        <h3 class="text-lg font-medium mb-3">
+                            {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now!
+                                                                                    Get
+                                                                                    fast, secure, and cheap EA Sports FC Coins instantly.') }}
+                        </h3>
                         <div class="flex gap-4 text-sm text-slate-400 py-4">
                             <span
                                 class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                    src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
+                                    src="{{ asset('assets/images/light.png') }}" alt="">
+                                {{ __('Pc') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
-                                0-10</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes:
+                                                                                                0-10') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
-                                None</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits:
+                                                                                                None') }}</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
                             <span
-                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
+                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">{{ __('$76.28') }}</span>
                             <span
                                 class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                     src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                Instants</span>
+                                {{ __('Instants') }}</span>
                         </div>
                         <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
                             <img src="{{ asset('assets/images/Angel.png') }}" alt="Esther"
                                 class="w-10 h-10 rounded-full">
                             <div>
-                                <p class="font-semibold ">Angel</p>
+                                <p class="font-semibold ">{{ __('Angel') }}</p>
                                 <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3%
-                                    |
-                                    2434 reviews | 1642 Sold</p>
+                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt="">
+                                    {{ __('99.3%
+                                                                                                            |
+                                                                                                            2434 reviews | 1642 Sold') }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -439,37 +476,42 @@
                 <a href="{{ route('boost.buy-now') }}" wire:navigate>
                     <div
                         class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                        <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
-                            Get
-                            fast, secure, and cheap EA Sports FC Coins instantly.</h3>
+                        <h3 class="text-lg font-medium mb-3">
+                            {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now!
+                                                                                    Get
+                                                                                    fast, secure, and cheap EA Sports FC Coins instantly.') }}
+                        </h3>
                         <div class="flex gap-4 text-sm text-slate-400 py-4">
                             <span
                                 class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                    src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
+                                    src="{{ asset('assets/images/light.png') }}" alt="">
+                                {{ __('Pc') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
-                                0-10</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes:
+                                                                                                0-10') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
-                                None</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits:
+                                                                                                None') }}</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
                             <span
-                                class="bg-[#853EFF] px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
+                                class="bg-[#853EFF] px-4 py-2 rounded-full font-bold text-white text-text-white">{{ __('$76.28') }}</span>
                             <span
                                 class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition"><img
                                     src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                Instants</span>
+                                {{ __('Instants') }}</span>
                         </div>
                         <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
                             <img src="{{ asset('assets/images/Marjorie.png') }}" alt="Esther"
                                 class="w-10 h-10 rounded-full">
                             <div>
-                                <p class="font-semibold ">Marjorie</p>
+                                <p class="font-semibold ">{{ __('Marjorie') }}</p>
                                 <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3%
-                                    |
-                                    2434 reviews | 1642 Sold</p>
+                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt="">
+                                    {{ __('99.3%
+                                                                                                            |
+                                                                                                            2434 reviews | 1642 Sold') }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -479,54 +521,58 @@
                 <a href="{{ route('boost.buy-now') }}" wire:navigate>
                     <div
                         class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                        <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
-                            Get
-                            fast, secure, and cheap EA Sports FC Coins instantly.</h3>
+                        <h3 class="text-lg font-medium mb-3">
+                            {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now!
+                                                                                    Get
+                                                                                    fast, secure, and cheap EA Sports FC Coins instantly.') }}
+                        </h3>
                         <div class="flex gap-4 text-sm text-slate-400 py-4">
                             <span
                                 class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                    src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
+                                    src="{{ asset('assets/images/light.png') }}" alt="">
+                                {{ _('Pc') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
-                                0-10</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes:
+                                                                                                0-10') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
-                                None</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits:
+                                                                                                None') }}</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
                             <span
-                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
+                                class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">{{ __('$76.28') }}</span>
                             <span
                                 class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition"><img
                                     src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                Instants</span>
+                                {{ __('Instants') }}</span>
                         </div>
                         <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
                             <img src="{{ asset('assets/images/Soham.png') }}" alt="Esther"
                                 class="w-10 h-10 rounded-full">
                             <div>
-                                <p class="font-semibold ">Soham</p>
+                                <p class="font-semibold ">{{ __('Soham') }}</p>
                                 <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3%
-                                    |
-                                    2434 reviews | 1642 Sold</p>
+                                        src="{{ asset('assets/images/thumb up filled.png') }}" alt="">
+                                    {{ __('99.3%
+                                                                                                            |
+                                                                                                            2434 reviews | 1642 Sold') }}
+                                </p>
                             </div>
                         </div>
                     </div>
                 </a>
             </div>
             <div class="flex justify-end items-center space-x-3  p-4 m-10">
-                <button class="text-text-primary text-sm hover:text-purple-500">Previous</button>
+                <button class="text-text-primary text-sm hover:text-purple-500">{{ __('Previous') }}</button>
 
-                <button class="bg-purple-600 text-white text-sm px-3 py-1 rounded">1</button>
-                <button class="text-text-primary text-sm hover:text-purple-500">2</button>
-                <button class="text-text-primary text-sm hover:text-purple-500">3</button>
-                <button class="text-text-primary text-sm hover:text-purple-500">4</button>
-                <button class="text-text-primary text-sm hover:text-purple-500">5</button>
+                <button class="bg-purple-600 text-white text-sm px-3 py-1 rounded">{{ __('1') }}</button>
+                <button class="text-text-primary text-sm hover:text-purple-500">{{ __('2') }}</button>
+                <button class="text-text-primary text-sm hover:text-purple-500">{{ __('3') }}</button>
+                <button class="text-text-primary text-sm hover:text-purple-500">{{ __('4') }}</button>
+                <button class="text-text-primary text-sm hover:text-purple-500">{{ __('5') }}</button>
 
-                <button class="text-text-primary text-sm hover:text-purple-500">Next</button>
+                <button class="text-text-primary text-sm hover:text-purple-500">{{__('Next')}}</button>
             </div>
         </main>
     </div>
 </div>
-

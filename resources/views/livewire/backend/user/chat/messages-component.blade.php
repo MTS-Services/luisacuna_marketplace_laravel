@@ -53,11 +53,11 @@
                     </div>
                     <div class="relative w-full sm:w-40 md:w-44 lg:w-52 xl:w-70">
                         <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg w-full">
-                            <option value="">All</option>
-                            <option value="boosting">Boosting</option>
-                            <option value="orders">Orders</option>
-                            <option value="support">Support</option>
-                            <option value="pre-purchase">Pre-purchase</option>
+                            <option value="">{{ __('All') }}</option>
+                            <option value="boosting">{{ __('Boosting') }}</option>
+                            <option value="orders">{{ __('Orders') }}</option>
+                            <option value="support">{{ __('Support') }}</option>
+                            <option value="pre-purchase">{{ __('Pre-purchase') }}</option>
                         </x-ui.select>
                     </div>
                 </div>
