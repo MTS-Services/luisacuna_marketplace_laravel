@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\PageView;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Eloquent\GameRepository;
 use App\Repositories\Eloquent\UserRepository;
@@ -21,6 +22,8 @@ use App\Repositories\Contracts\CurrencyRepositoryInterface;
 use App\Repositories\Contracts\LanguageRepositoryInterface;
 use App\Repositories\Contracts\ProductTypeRepositoryInterface;
 use App\Repositories\Contracts\GameCategoryRepositoryInterface;
+use App\Repositories\Contracts\PageViewRepositoryInterface;
+use App\Repositories\Eloquent\PageViewRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -66,6 +69,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             ProductRepositoryInterface::class,
             ProductRepository::class
+        );
+        $this->app->bind(
+            PageViewRepositoryInterface::class,
+            PageViewRepository::class
         );
     }
 

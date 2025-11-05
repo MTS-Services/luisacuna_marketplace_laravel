@@ -139,6 +139,34 @@
                     // ],
                 ]" />
 
+                <x-backend.navlink type="dropdown" icon="user-group" name="Review Management" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'Page View',
+                        'route' => route('admin.rm.review.index'),
+                        'icon' => 'user',
+                        'active' => 'rewiew-management',
+                    ],
+                    // [
+                    //     'name' => 'Products',
+                    //     'route' => route('admin.pm.product.index'),
+                    //     'icon' => 'user',
+                    //     'active' => 'product',
+                    // ],
+                    // [
+                    //     'name' => 'Pending Users',
+                    //     'route' => '#',
+                    //     'icon' => 'user-plus',
+                    //     'active' => 'admin-users-pending',
+                    // ],
+                    // [
+                    //     'name' => 'Banned Users',
+                    //     'route' => '#',
+                    //     'icon' => 'user-round-x',
+                    //     'active' => 'admin-users-banned',
+                    // ],
+                ]" />
+
                 <x-backend.navlink type="dropdown" icon="user-group" name="Audit Log Management" :page_slug="$active"
                 :items="[
                     [

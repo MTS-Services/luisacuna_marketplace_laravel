@@ -39,6 +39,8 @@ class DatabaseSeeder extends Seeder
             KycFormFieldSeeder::class,
             SubmittedKycSeeder::class,
             ProductTypeSeeder::class,
+            ProductSeeder::class,
+            PageViewSeeder::class,
             
         ]);
 
