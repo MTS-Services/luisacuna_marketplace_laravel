@@ -64,7 +64,7 @@ class Index extends Component
                 'label' => 'Country Name',
                 'sortable' => true,
                 'format' => function ($user) {
-                    return $user->country->name;
+                    return $user?->country?->name ?? '-';
                 }
             ],
             [
