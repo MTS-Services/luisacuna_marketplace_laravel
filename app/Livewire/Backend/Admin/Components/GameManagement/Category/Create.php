@@ -4,18 +4,21 @@ namespace App\Livewire\Backend\Admin\Components\GameManagement\Category;
 
 use App\DTOs\Game\CreateGameCategoryDTO ;
 use App\Enums\GameCategoryStatus;
-use App\Livewire\Forms\Backend\Admin\GameManagement\GameCategory;
-use App\Services\Game\GameCategoryService;
+use App\Livewire\Forms\Backend\Admin\GameManagement\GameCategoryForm;
+use App\Services\GameCategoryService;
+use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class Create extends Component
 {
-    protected GameCategoryService $gameCategoryService;
-    public GameCategory $form;
+    use WithNotification;
+    protected GameCategoryService $service;
+    public GameCategoryForm $form;
 
-    public function boot(GameCategoryService $gameCategoryService)
+    public function boot(GameCategoryService $service)
     {
-        $this->gameCategoryService = $gameCategoryService;
+        $this->service = $service;
     }
 
     // public function mount(){
@@ -23,8 +26,7 @@ class Create extends Component
     // }
     public function render()
     {
-        // dd($this->form);
-
+ 
         return view('livewire.backend.admin.components.game-management.category.create', [
             'statuses'   => GameCategoryStatus::options(),
         ]);
@@ -33,17 +35,29 @@ class Create extends Component
 
     public function save()
     {
-        $data = $this->form->validate();
+        $this->form->validate();
 
-        try {
-            $data = CreateGameCategoryDTO::formArray($data);
+        $data = $this->form->fillables();
 
-            $data =  $this->gameCategoryService->create($data);
+       
 
-            return $this->redirect(route('admin.gm.category.index'), navigate: true);
-        } catch (\Throwable $th) {
+        try{
 
-            dd($th->getMessage());
+            $this->service->createData($data);
+
+            $this->success('Game category created successfully.');
+
+             return $this->redirect(route('admin.gm.category.index'), navigate: true);
+
+        }catch(\Exception $e){
+            Log::error("Failed to create game category: " , ['error' => $e->getMessage()]);
+            $this->error('Failed to create game category  ');
         }
+
+    }
+
+    public function resetFrom()
+    {
+        $this->form->reset();
     }
 }

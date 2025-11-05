@@ -7,16 +7,31 @@ use App\Models\GameCategory;
 use App\Repositories\Contracts\GameCategoryRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class GameCategoryRepository implements GameCategoryRepositoryInterface
 {
+
+
     public function __construct(protected GameCategory $model)    {
         
     }
 
+    
+
     public function all(): Collection
     {
       return $this->model->all();
+    }
+
+    public function find(int $id): ?GameCategory
+    {
+        return $this->model->find($id);
+    }
+
+    public function findTrashed($id): ?GameCategory
+    {
+        return $this->model->onlyTrashed()->find($id);
     }
 
     public function create(array $data): GameCategory 
@@ -27,19 +42,20 @@ class GameCategoryRepository implements GameCategoryRepositoryInterface
 
     public function update( $id, array $data): bool
     {
-        return $this->model->findOrFail($id)->update($data);
+        return $this->find($id)->update($data);
     }
 
-    public function deleteCategory($id, bool $force = false): bool
+    public function delete($id, int $actionerId): bool
     {
-        if(!$force){
-    
-            return $this->model->findOrFail($id)->delete();
 
+        $this->find($id)->update(['deleter_id' => $actionerId]);
 
-        }
-       
-        return $this->model->withTrashed()->findOrFail($id)->forceDelete();
+        return $this->find($id)->delete();
+    }
+
+    public function forceDelete($id): bool
+    {
+        return $this->model->onlyTrashed()->findOrFail($id)->forceDelete();
     }
     public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator
     {
@@ -75,26 +91,41 @@ class GameCategoryRepository implements GameCategoryRepositoryInterface
         return $query->paginate($perPage);
     }
 
-    public function restoreDelete($id): bool
+    public function restore($id, $actionerId): bool
     {
-        return $this->model->withTrashed()->findOrFail($id)->restore();
+        $this->findTrashed($id)->update(['restorer_id' => $actionerId, 'deleter_id' => null]);
+        return $this->findTrashed($id)->restore();
     }
 
-    public function bulkDeleteCategories(array $ids, bool $forceDelete = false): bool
+    public function bulkDelete(array $ids , int $actionerId): int
     {
-       if(! $forceDelete)  return $this->model->whereIn('id', $ids)->delete();
 
-       return $this->model->withTrashed()->whereIn('id', $ids)->forceDelete();
+       
+        $this->model->whereIn('id', $ids)->update(['deleter_id' => $actionerId]);
+
+        return $this->model->whereIn('id', $ids)->delete();     
     }
-
-    public function BulkCategoryRestore(array $ids): bool
+    public function bulkForceDelete(array $ids): int
     {
-        return $this->model->withTrashed()->whereIn('id', $ids)->restore();
+        return $this->model->onlyTrashed()->whereIn('id', $ids)->forceDelete();
     }
-    public function bulkUpdateStatus(array $ids, GameCategoryStatus $status):bool
+    public function bulkRestore(array $ids, int $actionerId): int
+    {
+
+          return DB::transaction(function () use ($ids, $actionerId) {
+              $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restorer_id' => $actionerId, 'deleter_id' => null]);
+
+              return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
+        });
+
+      
+    }
+    public function bulkUpdateStatus(array $ids, ?string $status, int $actionerId):int
     {
         return $this->model->whereIn('id', $ids)->update(['status' => $status]);
     }
+
+
 
     public function findOrFail($id): GameCategory
     {

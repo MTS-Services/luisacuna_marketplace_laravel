@@ -3,7 +3,7 @@
 namespace App\Livewire\Backend\Admin\Components\GameManagement\Category;
 
 use App\Enums\GameCategoryStatus;
-use App\Services\Game\GameCategoryService;
+use App\Services\GameCategoryService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Component;
@@ -22,20 +22,21 @@ class Index extends Component
 
     // protected $listeners = ['adminCreated' => '$refresh', 'adminUpdated' => '$refresh'];
 
-    protected GameCategoryService $gameCategoryService;
+    protected GameCategoryService $service;
 
-    public function boot(GameCategoryService $gameCategoryService)
+    public function boot(GameCategoryService $service)
     {
-        $this->gameCategoryService = $gameCategoryService;
+        $this->service = $service;
     }
 
     public function render()
     {
-        $categories = $this->gameCategoryService->paginate(
+        $datas = $this->service->getPaginateData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
 
+        $datas->load('createdBy');
 
         $columns = [
             // [
@@ -55,7 +56,7 @@ class Index extends Component
             ],
             // [
             //     'key' => 'status',
-            //     'label' => 'Status',
+            //     'label' => 'Status', 
             //     'sortable' => true,
             //     'format' => function ($admin) {
             //         $colors = [
@@ -84,21 +85,26 @@ class Index extends Component
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
+                'format' => function ($category) {
+                     return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $category->status->color() . '">' .
+                        $category->status->label() .
+                        '</span>';
+                }
             ],
             [
                 'key' => 'created_by',
                 'label' => 'Created By',
                 'format' => function ($category) {
-                    return $category->creater_admin
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $category->creater_admin->name . '</span>'
+                    return $category->createdBy
+                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $category->createdBy?->name . '</span>'
                         : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
                 }
             ],
         ];
 
         $actions = [
-            ['key' => 'id', 'label' => 'View', 'route' => 'admin.gm.category.view'],
-            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.gm.category.edit'],
+            ['key' => 'id', 'label' => 'View', 'route' => 'admin.gm.category.view', 'encrypt' => true],
+            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.gm.category.edit' , 'encrypt' => true],
             ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete'],
         ];
 
@@ -110,7 +116,7 @@ class Index extends Component
 
 
         return view('livewire.backend.admin.components.game-management.category.index', [
-            'categories' => $categories,
+            'categories' => $datas,
             'statuses' => [],
             'columns' =>  $columns,
             'actions' => $actions,
@@ -142,14 +148,18 @@ class Index extends Component
     public function delete()
     {
 
-        try {
+          try {
+
+          
             if (!$this->deleteGameCategoryId) {
                 return;
             }
 
-            $state =   $this->gameCategoryService->deleteCategory($this->deleteGameCategoryId, false);
+            $state =   $this->service->deleteData($this->deleteGameCategoryId, admin()->id);
 
-
+            if ($state) {
+                $this->success('Category deleted successfully');
+            }
 
             $this->showDeleteModal = false;
             $this->deleteGameCategoryId = null;
@@ -190,19 +200,22 @@ class Index extends Component
 
     public function bulkDelete(): void
     {
-        $count = $this->gameCategoryService->bulkDeleteCategories($this->selectedIds);
+
+
+        $count = $this->service->bulkDeleteData($this->selectedIds, admin()->id);
+
         $this->success("{$count} categories deleted successfully");
     }
 
     public function bulkUpdateStatus(GameCategoryStatus $status): void
     {
-        $count = $this->gameCategoryService->bulkUpdateStatus($this->selectedIds, $status);
+        $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
         $this->success("{$count} categories updated successfully");
     }
 
     protected function getSelectableIds(): array
     {
-        return $this->gameCategoryService->paginate(
+        return $this->service->getPaginateData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

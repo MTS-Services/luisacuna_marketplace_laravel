@@ -2,10 +2,12 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Enums\UserType;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -13,9 +15,19 @@ class UserRepository implements UserRepositoryInterface
         protected User $model
     ) {}
 
-    public function all(): Collection
+    public function all(string $sortField = 'created_at', $order = 'desc'): Collection
     {
-        return $this->model->orderBy('created_at', 'desc')->get();
+        return $this->model->orderBy($sortField, $order)->get();
+    }
+
+    public function getSellers(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->whereIn('user_type', [UserType::SELLER, UserType::BOTH])->orderBy($sortField, $order)->get();
+    }
+
+    public function getBuyers(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->whereIn('user_type', [UserType::BUYER, UserType::BOTH])->orderBy($sortField, $order)->get();
     }
 
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
@@ -102,7 +114,7 @@ class UserRepository implements UserRepositoryInterface
         return $user->forceDelete();
     }
 
-    public function restore(int $id): bool
+    public function restore(int $id, $actioner_id): bool
     {
         $user = $this->model->withTrashed()->find($id);
 
@@ -110,6 +122,7 @@ class UserRepository implements UserRepositoryInterface
             return false;
         }
 
+        $user->update(['restorer_id' => $actioner_id]);
         return $user->restore();
     }
 
@@ -144,19 +157,24 @@ class UserRepository implements UserRepositoryInterface
         return $this->model->search($query)->get();
     }
 
-    public function bulkDelete(array $ids): int
+    public function bulkDelete(array $ids, $actioner_id): int
     {
+        $this->model->whereIn('id', $ids)->update(['deleter_id' => $actioner_id]);
         return $this->model->whereIn('id', $ids)->delete();
     }
 
-    public function bulkUpdateStatus(array $ids, string $status): int
+    public function bulkUpdateStatus(array $ids, string $status, $actioner_id): int
     {
-        return $this->model->whereIn('id', $ids)->update(['account_status' => $status]);
+        return $this->model->whereIn('id', $ids)->update(['account_status' => $status, 'updater_id' => $actioner_id]);
     }
 
-    public function bulkRestore(array $ids): int
+    public function bulkRestore(array $ids, int $actioner_id): int
     {
+
+        $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restorer_id' => $actioner_id]);
+
         return $this->model->withTrashed()->whereIn('id', $ids)->restore();
+
     }
 
     public function bulkForceDelete(array $ids): int

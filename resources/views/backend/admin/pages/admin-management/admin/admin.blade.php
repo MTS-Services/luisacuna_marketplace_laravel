@@ -11,7 +11,7 @@
         @case('admin.am.admin.edit')
             <x-slot name="title">Admins Edit</x-slot>
             <x-slot name="breadcrumb">Admin Management</x-slot>
-            <livewire:backend.admin.components.admin-management.admin.edit :admin="$admin"/>
+            <livewire:backend.admin.components.admin-management.admin.edit :data="$data"/>
         @break
 
         @case('admin.am.admin.trash')
@@ -23,7 +23,7 @@
         @case('admin.am.admin.view')
             <x-slot name="title">Admins View</x-slot>
             <x-slot name="breadcrumb">Admin Management</x-slot>
-            <livewire:backend.admin.components.admin-management.admin.view :admin="$admin"/>
+            <livewire:backend.admin.components.admin-management.admin.view :data="$data"/>
         @break
 
         @default
