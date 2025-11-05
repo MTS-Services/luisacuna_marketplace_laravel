@@ -46,7 +46,7 @@
             </button>
             <button wire:navigate wire:click="switchInnerMenu('reviews')"
                 class="{{ $activeInnerMenu === 'reviews' ? 'border-b-3 border-zinc-500' : '' }} group">
-                <span class="relative z-10 text-text-white">Reviews</span>
+                <span class="relative z-10 text-text-white">{{__('Reviews')}}</span>
             </button>
             <button wire:navigate wire:click="switchInnerMenu('about')"
                 class="{{ $activeInnerMenu === 'about' ? 'border-b-3 border-zinc-500' : '' }} group">

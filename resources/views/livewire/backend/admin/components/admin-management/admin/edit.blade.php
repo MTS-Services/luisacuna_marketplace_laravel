@@ -68,10 +68,10 @@
                     <flux:icon name="x-circle" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                     {{ __('Cancel') }}
                 </x-ui.button>
-            
+
                 <x-ui.button  type="submit" class="w-auto! py-2!">
-                    <span wire:loading.remove wire:target="save" class="text-white">Update Admin</span>
-                    <span wire:loading wire:target="save" class="text-white">Updating...</span>
+                    <span wire:loading.remove wire:target="save" class="text-white">{{__('Update Admin')}}</span>
+                    <span wire:loading wire:target="save" class="text-white">{{__('Updating...')}}</span>
                 </x-ui.button>
             </div>
         </form>

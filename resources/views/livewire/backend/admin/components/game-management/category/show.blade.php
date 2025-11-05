@@ -43,16 +43,16 @@
                     <table class="w-full text-sm">
                         <tbody class="divide-y divide-gray-200">
                             <tr class="hover:bg-white transition-colors">
-                                <td class="p-4 w-2/5 text-gray-600 font-semibold">Category Name</td>
+                                <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Category Name') }}</td>
                                 <td class="p-4 text-gray-900">{{ $category->name }}</td>
                             </tr>
                             <tr class="hover:bg-white transition-colors">
-                                <td class="p-4 text-gray-600 font-semibold">Slug</td>
+                                <td class="p-4 text-gray-600 font-semibold">{{ __('Slug') }}</td>
                                 <td class="p-4 text-gray-900">{{ $category->slug }}</td>
                             </tr>
 
                             <tr class="hover:bg-white transition-colors">
-                                <td class="p-4 text-gray-600 font-semibold">Status</td>
+                                <td class="p-4 text-gray-600 font-semibold">{{__('Status')}}</td>
                                 <td class="p-4">
                                     <span
                                         class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
@@ -61,22 +61,22 @@
                                 </td>
                             </tr>
                             <tr class="hover:bg-white transition-colors">
-                                <td class="p-4 w-2/5 text-gray-600 font-semibold">Created By</td>
+                                <td class="p-4 w-2/5 text-gray-600 font-semibold">{{__('Created By')}}</td>
                                 <td class="p-4 text-gray-900">{{ $category->creater_admin->name ?? 'System' }}</td>
                             </tr>
 
                             <tr class="hover:bg-white transition-colors">
-                                <td class="p-4 text-gray-600 font-semibold">Created At</td>
+                                <td class="p-4 text-gray-600 font-semibold">{{__('Created At')}}</td>
                                 <td class="p-4 text-gray-900">{{ $category->created_at_formatted }}</td>
                             </tr>
                             @if ($category->updated_by)
                                 <tr class="hover:bg-white transition-colors">
-                                    <td class="p-4 w-2/5 text-gray-600 font-semibold">Updated By</td>
+                                    <td class="p-4 w-2/5 text-gray-600 font-semibold">{{__('Updated By')}}</td>
                                     <td class="p-4 text-gray-900">{{ $category->updater_admin->name }}</td>
 
                                 </tr>
                                 <tr class="hover:bg-white transition-colors">
-                                    <td class="p-4 w-2/5 text-gray-600 font-semibold">Updated At</td>
+                                    <td class="p-4 w-2/5 text-gray-600 font-semibold">{{__('Updated At')}}</td>
                                     <td class="p-4 text-gray-900">{{ $category->updated_at_formatted }}</td>
 
                                 </tr>

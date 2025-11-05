@@ -6,7 +6,7 @@
                 <span class="text-text-primary group-hover:text-pink-400 transition-colors duration-300">
                     < </span>
                         <h1 class="text-text-white group-hover:text-pink-400 transition-colors duration-300">
-                            All Offers
+                            {{ __('All Offers') }}
                         </h1>
             </div>
 
@@ -50,7 +50,7 @@
                                     <div class="flex justify-between items-center py-3">
                                         <span class="text-text-primary sm:text-2xl md:text-3xl lg:text-4xl">{{ __('Delivery time') }}
                                             </span>
-                                        <span class="text-gray-100 sm:text-sm md:text-md lg:text-lg">15min</span>
+                                        <span class="text-gray-100 sm:text-sm md:text-md lg:text-lg">{{__('15min')}}</span>
                                     </div>
                                 </div>
 

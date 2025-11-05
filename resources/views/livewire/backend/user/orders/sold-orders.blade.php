@@ -34,7 +34,7 @@
             <div class="w-full md:w-auto">
                 <x-ui.button class="w-auto py!">
                     <x-phosphor-download class="w-5 h-5 fill-text-text-white" />
-                    <span>Download invoice</span>
+                    <span>{{__('Download invoice')}}</span>
                 </x-ui.button>
             </div>
 

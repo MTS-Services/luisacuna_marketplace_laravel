@@ -282,7 +282,7 @@
                             <span
                                 class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition"><img
                                     src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                Instants</span>
+                                {{__('Instants')}}</span>
                         </div>
                         <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
                             <img src="{{ asset('assets/images/Victoria.png') }}" alt="Esther"

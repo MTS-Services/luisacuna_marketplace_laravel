@@ -23,7 +23,7 @@
         <div class="container-fluid">
             <div class="p-3 sm:p-4">
                 <div class="flex items-center justify-between mb-3 sm:mb-4">
-                    <h2 class="text-lg sm:text-xl md:text-2xl lg:text-3xl text-text-primary font-lato">Messages</h2>
+                    <h2 class="text-lg sm:text-xl md:text-2xl lg:text-3xl text-text-primary font-lato">{{__('Messages')}}</h2>
 
                     <!-- Mobile Menu Toggle Button -->
                     <button onclick="toggleMobileMenu()"
@@ -32,7 +32,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
-                        Conversations
+                        {{__('Conversations')}}
                     </button>
                 </div>
 
@@ -40,7 +40,7 @@
                 <div class="flex flex-col sm:flex-row items-center justify-between mb-3 gap-3 sm:gap-4">
                     <div
                         class="flex items-center gap-3 sm:gap-5 border border-zinc-500 px-3 py-1 w-full sm:w-auto justify-between rounded-md">
-                        <span class="text-xs sm:text-sm text-text-secondary">Unread message only</span>
+                        <span class="text-xs sm:text-sm text-text-secondary">{{__('Unread message only')}}</span>
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" class="sr-only peer">
                             <div
@@ -63,7 +63,7 @@
                 </div>
                 <!-- Mark all as read -->
                 <a href="#" class="text-xs sm:text-sm text-pink-500 hover:text-pink-400 transition-colors">
-                    Mark all as read
+                    {{ __('Mark all as read') }}
                 </a>
 
             </div>
@@ -78,7 +78,7 @@
                     <div class="p-3 sm:p-4 lg:p-5">
                         <!-- Close Button for Mobile -->
                         <div class="flex items-center justify-between mb-3 md:hidden">
-                            <h3 class="text-text-primary font-semibold text-base">Conversations</h3>
+                            <h3 class="text-text-primary font-semibold text-base">{{__('Conversations')}}</h3>
                             <button onclick="toggleMobileMenu()" class="text-text-muted hover:text-text-primary">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -90,7 +90,7 @@
                         <!-- Browser notification toggle -->
                         <div
                             class="flex items-center justify-between mt-2 sm:mt-4 dark:bg-zinc-50/10 bg-zinc-100 px-2 sm:px-3 py-1">
-                            <span class="text-xs sm:text-sm text-text-secondary">Browser notification</span>
+                            <span class="text-xs sm:text-sm text-text-secondary">{{__('Browser notification')}}</span>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" class="sr-only peer">
                                 <div
@@ -234,11 +234,11 @@
                         <div class="flex items-center gap-2 sm:gap-3">
                             <div
                                 class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-sm sm:text-base">
-                                VS
+                                {{ __('VS') }}
                             </div>
                             <div>
-                                <h3 class="text-text-primary font-semibold text-sm sm:text-base">VC_spams</h3>
-                                <p class="text-text-secondary text-xs sm:text-sm">Available: Back by 10am</p>
+                                <h3 class="text-text-primary font-semibold text-sm sm:text-base">{{__('VC_spams')}}</h3>
+                                <p class="text-text-secondary text-xs sm:text-sm">{{__('Available: Back by 10am')}}</p>
                             </div>
                         </div>
                     </div>
@@ -254,7 +254,7 @@
                             <div class="flex flex-col gap-1 sm:gap-2 max-w-[75%] sm:max-w-md">
                                 <div
                                     class="bg-bg-hover text-text-primary px-3 sm:px-4 py-2 sm:py-3 rounded-2xl rounded-tl-none">
-                                    <p class="text-xs sm:text-sm">Oyster, breakfast burrito, veggies before burrito</p>
+                                    <p class="text-xs sm:text-sm">{{__('Oyster, breakfast burrito, veggies before burrito')}}</p>
                                 </div>
                                 <span class="text-[10px] sm:text-xs text-text-muted">Oct 26,2025</span>
                             </div>
@@ -270,8 +270,8 @@
                             <div class="flex flex-col gap-1 sm:gap-2 max-w-[75%] sm:max-w-md items-end">
                                 <div
                                     class="bg-gradient-to-r from-accent to-accent-foreground text-white px-3 sm:px-4 py-2 sm:py-3 rounded-2xl rounded-tr-none">
-                                    <p class="text-xs sm:text-sm">Confirmed, I am waiting for the delivery. When should
-                                        I expect it?
+                                    <p class="text-xs sm:text-sm">{{ __('Confirmed, I am waiting for the delivery. When should
+                                        I expect it?') }}
                                     </p>
                                 </div>
                                 <span class="text-[10px] sm:text-xs text-text-muted">Oct 26,2025</span>
@@ -287,7 +287,7 @@
                             <div class="flex flex-col gap-1 sm:gap-2 max-w-[75%] sm:max-w-md">
                                 <div
                                     class="bg-bg-hover text-text-primary px-3 sm:px-4 py-2 sm:py-3 rounded-2xl rounded-tl-none">
-                                    <p class="text-xs sm:text-sm">Okay</p>
+                                    <p class="text-xs sm:text-sm">{{__('Okay')}}</p>
                                 </div>
                                 <span class="text-[10px] sm:text-xs text-text-muted">Oct 26,2025</span>
                             </div>
