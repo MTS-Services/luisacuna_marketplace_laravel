@@ -2,16 +2,17 @@
 
 namespace App\Livewire\Backend\Admin\Components\GameManagement\Category;
 
-use App\Services\Game\GameCategoryService;
+use App\Services\GameCategoryService;
 use App\Traits\Livewire\WithDataTable;
+use App\Traits\Livewire\WithNotification;
 use Livewire\Component;
 
 class Trash extends Component
 {
-    use WithDataTable;
+    use WithDataTable, WithNotification;
 
     public $statusFilter = '';
-    protected GameCategoryService $gameCategoryService;
+    protected GameCategoryService $service;
     public $deleteGameCategoryId;
     public bool $showDeleteModal = false;
     public bool $showRestoreModal = false;
@@ -19,10 +20,10 @@ class Trash extends Component
     public $bulkAction = '';
 
 
-    public function boot(GameCategoryService $gameCategoryService)
+    public function boot(GameCategoryService $service)
     {
 
-        $this->gameCategoryService = $gameCategoryService;
+        $this->service = $service;
     }
     public function render()
     {
@@ -62,19 +63,19 @@ class Trash extends Component
                 'key' => 'created_at',
                 'label' => 'Created',
                 'sortable' => true,
-                'format' => function ($category) {
+                'format' => function ($data) {
                     return '<div class="text-sm">' .
-                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $category->created_at->format('M d, Y') . '</div>' .
-                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $category->created_at->format('h:i A') . '</div>' .
+                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $data->created_at->format('M d, Y') . '</div>' .
+                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $data->created_at->format('h:i A') . '</div>' .
                         '</div>';
                 }
             ],
             [
                 'key' => 'created_by',
                 'label' => 'Created By',
-                'format' => function ($category) {
-                    return $category->creater_admin
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $category->creater_admin->name . '</span>'
+                'format' => function ($data) {
+                    return $data->creater_admin
+                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $data->creater_admin->name . '</span>'
                         : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
                 }
             ],
@@ -91,13 +92,13 @@ class Trash extends Component
         ];
 
         // $category = GameCategory::onlyTrashed()->get();
-        $categories = $this->gameCategoryService->paginateOnlyTrashed(
+        $datas = $this->service->getTrashedPaginatedData(
 
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
         return view('livewire.backend.admin.components.game-management.category.trash', [
-            'categories' => $categories,
+            'datas' => $datas,
             'statuses' => [],
             'columns' =>  $columns,
             'actions' => $actions,
@@ -122,13 +123,25 @@ class Trash extends Component
     {
         $this->showDeleteModal = false;
 
-        $this->gameCategoryService->deleteCategory($this->deleteGameCategoryId, true);
+        $state = $this->service->forceDeleteData($this->deleteGameCategoryId);
+
+        if($state){
+            $this->success('Category permanently deleted successfully');
+        }else{
+            $this->error('Failed to delete this category peremanently ');
+        }
     }
 
     public function restoreDelete($id)
     {
 
-        $this->gameCategoryService->restoreDelete($id, false);
+        $state = $this->service->restoreData($id, admin()->id);
+
+        if($state) {
+            $this->success('Category restored successfully');
+        }else{
+            $this->error('Failed to restore category');
+        }
     }
 
     public function getFilters()
@@ -167,24 +180,29 @@ class Trash extends Component
             $this->selectAll = false;
             $this->bulkAction = '';
         } catch (\Exception $e) {
+            dd($e->getMessage());
             $this->error('Bulk action failed: ' . $e->getMessage());
         }
     }
 
     public function bulkForceDelete(): void
     {
-        $count = $this->gameCategoryService->bulkDeleteCategories($this->selectedIds, true);
+  
+        $count = $this->service->bulkForceDeleteData($this->selectedIds);
+        $this->success("{$count} categories permanently deleted successfully");
     }
 
     public function bulkRestore(): void
     {
-        $count = $this->gameCategoryService->BulkCategoryRestore($this->selectedIds,);
-        // $this->success("{$count} categories updated successfully");
+
+        $count = $this->service->bulkRestoreData($this->selectedIds, admin()->id);
+
+        $this->success("{$count} categories updated successfully");
     }
 
       protected function getSelectableIds(): array
     {
-        return $this->gameCategoryService->paginateOnlyTrashed(
+        return $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

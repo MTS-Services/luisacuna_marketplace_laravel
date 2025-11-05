@@ -7,16 +7,16 @@ use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class DeleteUserAction
+class DeleteAction
 {
     public function __construct(
-        protected UserRepositoryInterface $userRepository
+        protected UserRepositoryInterface $interface
     ) {}
 
     public function execute(int $userId, bool $forceDelete = false): bool
     {
         return DB::transaction(function () use ($userId, $forceDelete) {
-            $user = $this->userRepository->find($userId);
+            $user = $this->interface->find($userId);
 
             if (!$user) {
                 throw new \Exception('User not found');
@@ -31,15 +31,15 @@ class DeleteUserAction
                     Storage::disk('public')->delete($user->avatar);
                 }
 
-                return $this->userRepository->forceDelete($userId);
+                return $this->interface->forceDelete($userId);
             }
 
-            return $this->userRepository->delete($userId);
+            return $this->interface->delete($userId);
         });
     }
 
-    public function restore(int $userId): bool
+    public function restore(int $userId, int $actionerId): bool
     {
-        return $this->userRepository->restore($userId);
+        return $this->interface->restore($userId, $actionerId);
     }
 }

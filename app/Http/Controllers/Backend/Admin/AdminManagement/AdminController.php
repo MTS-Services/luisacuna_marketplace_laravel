@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Backend\Admin\AdminManagement;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
-use Illuminate\Http\Request;
+use App\Services\AdminService;
 
 class AdminController extends Controller
 {
 
 
     protected $masterView = 'backend.admin.pages.admin-management.admin.admin';
+
+    public function __construct(protected AdminService $service){}
 
     public function index()
     {
@@ -38,23 +40,23 @@ class AdminController extends Controller
      */
     public function edit(string $id)
     {
-        $admin = Admin::find($id);
-        if (!$admin) {
+        $data = $this->service->findData($id);
+        if (!$data) {
             abort(404);
         }
         return view($this->masterView, [
-            'admin' => $admin
+            'data' => $data
         ]);
     }
 
     public function view(string $id)
     {
-        $admin = Admin::find($id);
-        if (!$admin) {
+       $data = $this->service->findData($id);
+        if (!$data) {
             abort(404);
         }
         return view($this->masterView, [
-            'admin' => $admin
+            'data' => $data
         ]);
     }
 

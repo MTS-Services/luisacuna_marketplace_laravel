@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\Admin;
 use Livewire\Component;
 use App\Enums\UserAccountStatus;
-use App\Services\User\UserService;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
@@ -18,7 +18,7 @@ class Trash extends Component
     use WithDataTable, WithNotification;
 
 
-    protected UserService $userService;
+    protected UserService $service;
 
     public $statusFilter = '';
     public $userId;
@@ -26,13 +26,13 @@ class Trash extends Component
     public $showDeleteModal = false;
     public $showBulkActionModal = false;
 
-    public function boot(UserService $userService)
+    public function boot(UserService $service)
     {
-        $this->userService = $userService;
+        $this->service = $service;
     }
     public function render()
     {
-        $users = $this->userService->getTrashedUsersPaginated(
+        $users = $this->service->getTrashedPaginateDatas(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
@@ -123,7 +123,7 @@ class Trash extends Component
     public function forceDelete(): void
     {
         try {
-            $this->userService->deleteUser($this->userId, forceDelete: true);
+            $this->service->deleteData($this->userId, forceDelete: true);
             $this->showDeleteModal = false;
             $this->resetPage();
 
@@ -137,7 +137,7 @@ class Trash extends Component
     public function restore($userId): void
     {
         try {
-            $this->userService->restoreUser($userId);
+            $this->service->restoreData($userId, admin()->id);
 
             $this->success('User restored successfully');
         } catch (Throwable $e) {
@@ -157,9 +157,9 @@ class Trash extends Component
             $userStatus = UserAccountStatus::from($status);
 
             match ($userStatus) {
-                UserAccountStatus::ACTIVE => $this->userService->activateUser($userId),
-                UserAccountStatus::INACTIVE => $this->userService->deactivateUser($userId),
-                UserAccountStatus::SUSPENDED => $this->userService->suspendUser($userId),
+                UserAccountStatus::ACTIVE => $this->service->activateData($userId),
+                UserAccountStatus::INACTIVE => $this->service->deactivateData($userId),
+                UserAccountStatus::SUSPENDED => $this->service->suspendData($userId),
                 default => null,
             };
 
@@ -186,8 +186,8 @@ class Trash extends Component
 
         try {
             match ($this->bulkAction) {
-                'bulkForceDelete' => $this->bulkForceDeleteUsers(),
-                'bulkRestore' => $this->bulkRestoreUsers(),
+                'bulkForceDelete' => $this->bulkForceDeleteDatas(),
+                'bulkRestore' => $this->bulkRestoreDatas(),
                 'activate' => $this->bulkUpdateStatus(UserAccountStatus::ACTIVE),
                 'deactivate' => $this->bulkUpdateStatus(UserAccountStatus::INACTIVE),
                 'suspend' => $this->bulkUpdateStatus(UserAccountStatus::SUSPENDED),
@@ -203,17 +203,17 @@ class Trash extends Component
     }
     protected function bulkUpdateStatus(UserAccountStatus $status): void
     {
-        $count = $this->userService->bulkUpdateStatus($this->selectedIds, $status);
+        $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
         $this->success("{$count} Users updated successfully");
     }
-    protected function bulkRestoreUsers(): void
+    protected function bulkRestoreDatas(): void
     {
-        $count = $this->userService->bulkRestoreUsers($this->selectedIds);
+        $count = $this->service->bulkRestoreDatas($this->selectedIds, admin()->id);
         $this->success("{$count} Users restored successfully");
     }
-    protected function bulkForceDeleteUsers(): void
+    protected function bulkForceDeleteDatas(): void
     {
-        $count = $this->userService->bulkForceDeleteUsers($this->selectedIds);
+        $count = $this->service->bulkForceDeleteDatas($this->selectedIds);
         $this->success("{$count} Users permanently deleted successfully");
     }
 
@@ -237,7 +237,7 @@ class Trash extends Component
 
     public function getSelectableIds(): array
     {
-        return $this->userService->getTrashedUsersPaginated(
+        return $this->service->getTrashedPaginateDatas(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

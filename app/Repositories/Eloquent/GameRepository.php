@@ -3,18 +3,39 @@
 namespace App\Repositories\Eloquent;
 
 use App\Enums\GameStatus;
-use App\Repositories\Contracts\GameRepositoryInterface;
-use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\Game;
-use Illuminate\Support\Facades\Storage;
+use App\Repositories\Contracts\GameRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 
 class GameRepository implements GameRepositoryInterface
 {
+    public function __construct(public Game $model) {}
 
-    public function __construct(public Game $model)
+    /* -----------------------------------------------------------------
+     |  Basic Fetch Operations
+     |------------------------------------------------------------------ */
+
+    public function all(): Collection
     {
-
+        return $this->model->all();
     }
+
+    public function find($id): ?Game
+    {
+        return $this->model->find($id);
+    }
+
+    public function findTrashed($id): Game
+    {
+        return $this->model->onlyTrashed()->find($id);
+    }
+
+    /* -----------------------------------------------------------------
+     |  Pagination & Filtering
+     |------------------------------------------------------------------ */
+
     public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator
     {
         $query = $this->model->query();
@@ -32,11 +53,11 @@ class GameRepository implements GameRepositoryInterface
         return $query->paginate($perPage);
     }
 
-    public function OnlyTrashedPaginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator
+    public function trashPaginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator
     {
         $query = $this->model->onlyTrashed();
 
-        // Apply filters    
+        // Apply filters
         if (!empty($filters)) {
             $query->filter($filters);
         }
@@ -48,103 +69,73 @@ class GameRepository implements GameRepositoryInterface
 
         return $query->paginate($perPage);
     }
-    public function deleteGame(array $ids, bool $forceDelete = false): bool
+
+    /* -----------------------------------------------------------------
+     |  Create & Update Operations
+     |------------------------------------------------------------------ */
+
+    public function create(array $data): Game
     {
-
-        if ($forceDelete) {
-
-            $games = $this->model->withTrashed()->whereIn('id', $ids)->get();
-
-            foreach ($games as $game) {
-
-                if ($game->logo) {
-
-                    Storage::disk('public')->delete($game->logo);
-                }
-
-                if ($game->banner) {
-
-                    Storage::disk('public')->delete($game->banner);
-                }
-
-                if ($game->thumbnail) {
-
-                    Storage::disk('public')->delete($game->thumbnail);
-                }
-
-                $game->forceDelete();
-            }
-        }
-
-
-        return $this->model->whereIn('id', $ids)->delete();
-    }
-
-
-    public function bulkDeleteGames($ids, bool $forceDelete = false): bool
-    {
-        if (! $forceDelete)  return $this->model->whereIn('id', $ids)->delete();
-
-        $games = $this->model->whereIn('id', $ids)->get();
-
-        foreach ($games as $game) {
-
-            if ($game->logo) {
-
-                Storage::disk('public')->delete($game->logo);
-            }
-
-            if ($game->banner) {
-
-                Storage::disk('public')->delete($game->banner);
-            }
-
-            if ($game->thumbnail) {
-
-                Storage::disk('public')->delete($game->thumbnail);
-            }
-
-            $game->forceDelete();
-        }
-
-        return true;
-    }
-
-    public function bulkRestoreGame($ids): bool
-    {
-        return $this->model->withTrashed()->whereIn('id', $ids)->restore();
-    }
-
-    public function restoreGame($id): bool
-    {
-        return $this->model->withTrashed()->findOrFail($id)->restore();
-    }
-    public function bulkUpdateStatus($ids, GameStatus $status): bool
-    {
-        return $this->model->whereIn('id', $ids)->update(['status' => $status]);
-    }
-
-    public function findOrFail($id): Game
-    {
-        return $this->model->findOrFail($id);
-    }
-
-    public function createGame(array $data): Game
-    {
-
         return $this->model->create($data);
     }
 
-    public function find($id): ?Game
+    public function update($id, array $data): bool
     {
-        return $this->model->find($id);
-    }   
+        $game = $this->find($id);
 
-    public function updateGame($id, array $data): bool
-    {
-        $game = $this->findOrFail($id);
-        
         return $game->update($data);
-      
+    }
+
+    public function bulkUpdateStatus($ids, string $status, $actioner_id): int
+    {
+        return $this->model
+            ->whereIn('id', $ids)
+            ->update([
+                'status' => $status,
+                'updater_id' => $actioner_id,
+            ]);
+    }
+
+    /* -----------------------------------------------------------------
+     |  Soft Delete & Restore Operations
+     |------------------------------------------------------------------ */
+
+    public function delete($id, $actioner_id): bool
+    {
+        $game = $this->find($id);
+        $game->update(['deleter_id' => $actioner_id]);
+        return $game->delete();
+    }
+
+    public function forceDelete($id): bool
+    {
+        return $this->findTrashed($id)->forceDelete();
+    }
+
+
+    public function bulkDelete($ids, $actioner_id): int
+    {
+
+        $this->model->whereIn('id', $ids)->update(['deleter_id' => $actioner_id]);
+        return $this->model->whereIn('id', $ids)->delete();
+    }
+
+    public function bulkForceDelete($ids): int
+    {
+        return $this->model->onlyTrashed()->whereIn('id', $ids)->forceDelete();
+    }
+    public function restore($id, $actioner_id): bool
+    {
+        $game = $this->findTrashed($id);
+
+        $game->update(['restorer_id' => $actioner_id]);
+
+        return $game->restore();
+    }
+
+    public function bulkRestore($ids, $actioner_id): int
+    {
+        $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restorer_id' => $actioner_id]);
+        return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
     }
 }

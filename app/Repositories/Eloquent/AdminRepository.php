@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Repositories\Contracts\AdminRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class AdminRepository implements AdminRepositoryInterface
 {
@@ -100,13 +101,14 @@ class AdminRepository implements AdminRepositoryInterface
         return $admin->forceDelete();
     }
 
-    public function restore(int $id): bool
+    public function restore(int $id, int $actionerId): bool
     {
-        $admin = $this->model->withTrashed()->find($id);
+        $admin = $this->find($id);
         
         if (!$admin) {
             return false;
         }
+        $admin->update(['restorer_id' => $actionerId]);
 
         return $admin->restore();
     }
@@ -142,19 +144,27 @@ class AdminRepository implements AdminRepositoryInterface
         return $this->model->search($query)->get();
     }
 
-    public function bulkDelete(array $ids): int
+    public function bulkDelete(array $ids , $actionerId): int
     {
+        $this->model->whereIn('id', $ids)->update(['deleter_id' => $actionerId]);
         return $this->model->whereIn('id', $ids)->delete();
     }
 
-    public function bulkUpdateStatus(array $ids, string $status): int
+    public function bulkUpdateStatus(array $ids, string $status, $actionerId): int
     {
+        $this->model->whereIn('id', $ids)->update(['updater_id' => $actionerId]);
         return $this->model->whereIn('id', $ids)->update(['status' => $status]);
     }
-    public function bulkRestore(array $ids): int
+    public function bulkRestore(array $ids, int $actionerId): int
     {
-         return $this->model->withTrashed()->whereIn('id', $ids)->restore();
+
+            $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restorer_id' => $actionerId]);
+
+            return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
+
     }
+
+
     public function bulkForceDelete(array $ids): int //
     {  
         return $this->model->withTrashed()->whereIn('id', $ids)->forceDelete();

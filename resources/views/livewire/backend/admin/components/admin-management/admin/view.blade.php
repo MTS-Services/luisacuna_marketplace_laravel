@@ -24,13 +24,13 @@
                 <h2 class="text-xl text-text-primary font-semibold mb-6">Profile Image</h2>
 
                 <div class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-pink-100 overflow-hidden">
-                    <img src="{{ asset('storage/' . $admin->avatar) }}" alt="Profile Image"
+                    <img src="{{ asset('storage/' . $data->avatar) }}" alt="Profile Image"
                         class="w-full h-full object-cover">
                 </div>
 
                 <div class="flex flex-col items-center justify-between mb-8">
-                    <h3 class="text-2xl font-bold text-center mb-1 text-text-primary">{{ $admin->name }}</h3>
-                    <p class="text-text-secondary">{{ $admin->email }}</p>
+                    <h3 class="text-2xl font-bold text-center mb-1 text-text-primary">{{ $data->name }}</h3>
+                    <p class="text-text-secondary">{{ $data->email }}</p>
                 </div>
 
                 <div class="space-y-4 text-sm">
@@ -43,7 +43,7 @@
                         </svg>
                         <div>
                             <p class="text-text-muted">Phone</p>
-                            <p class="font-medium text-text-primary">{{ $admin->phone }}</p>
+                            <p class="font-medium text-text-primary">{{ $data->phone }}</p>
                         </div>
                     </div>
 
@@ -56,7 +56,7 @@
                         </svg>
                         <div>
                             <p class="text-text-muted">Email</p>
-                            <p class="font-medium text-text-primary">{{ $admin->email }}</p>
+                            <p class="font-medium text-text-primary">{{ $data->email }}</p>
                         </div>
                     </div>
 
@@ -71,8 +71,8 @@
                             <p class="text-text-muted">Account Status</p>
                             <span
                                 class="px-3 py-1 rounded-full text-xs font-bold inline-block 
-                                    @if ($admin->status_label === 'Active') bg-zinc-100 text-zinc-700 @else bg-pink-100 text-pink-700 @endif">
-                                {{ $admin->status_label }}
+                                    @if ($data->status_label === 'Active') bg-zinc-100 text-zinc-700 @else bg-pink-100 text-pink-700 @endif">
+                                {{ $data->status_label }}
                             </span>
                         </div>
                     </div>
@@ -87,19 +87,19 @@
                     {{-- Name --}}
                     <div>
                         <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Name</p>
-                        <h3 class="text-lg font-medium text-text-primary">{{ $admin->name }}</h3>
+                        <h3 class="text-lg font-medium text-text-primary">{{ $data->name }}</h3>
                     </div>
 
                     {{-- Email --}}
                     <div>
                         <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Email</p>
-                        <h3 class="text-lg font-medium text-text-primary">{{ $admin->email }}</h3>
+                        <h3 class="text-lg font-medium text-text-primary">{{ $data->email }}</h3>
                     </div>
 
                     {{-- phone --}}
                     <div>
                         <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Phone</p>
-                        <h3 class="text-lg font-medium text-text-primary">{{ $admin->phone }}</h3>
+                        <h3 class="text-lg font-medium text-text-primary">{{ $data->phone }}</h3>
                     </div>
 
                     {{-- Status --}}
@@ -108,8 +108,8 @@
                         {{-- <h3 class="text-lg font-medium text-text-primary">{{ $admin->date_of_birth }}</h3> --}}
                         <h3
                             class="px-3 py-1 rounded-full text-xs font-bold inline-block 
-                                    @if ($admin->status_label === 'Active') bg-zinc-100 text-zinc-700 @else bg-pink-100 text-pink-700 @endif">
-                            {{ $admin->status_label }}
+                                    @if ($data->status_label === 'Active') bg-zinc-100 text-zinc-700 @else bg-pink-100 text-pink-700 @endif">
+                            {{ $data->status_label }}
                         </h3>
                     </div>
                 </div>

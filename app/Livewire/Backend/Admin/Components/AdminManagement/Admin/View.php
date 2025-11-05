@@ -8,10 +8,10 @@ use Livewire\Component;
 class View extends Component
 {
 
-    public Admin $admin;
-    public function mount(Admin $admin): void
+    public Admin $data;
+    public function mount(Admin $data): void
     {
-        $this->admin = $admin;
+        $this->data = $data;
     }
     public function render()
     {
