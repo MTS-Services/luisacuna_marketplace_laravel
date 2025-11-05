@@ -81,18 +81,15 @@ class Index extends Component
                 'label' => 'Created',
                 'sortable' => true,
                 'format' => function ($admin) {
-                    return '<div class="text-sm">' .
-                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $admin->created_at->format('M d, Y') . '</div>' .
-                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $admin->created_at->format('h:i A') . '</div>' .
-                        '</div>';
+                    return $admin->created_at_formatted;
                 }
             ],
             [
                 'key' => 'created_by',
                 'label' => 'Created By',
                 'format' => function ($admin) {
-                    return $admin->createdBy
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $admin->createdBy->name . '</span>'
+                    return optional($admin->createdBy)->name
+                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . e($admin->createdBy->name) . '</span>'
                         : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
                 }
             ],
@@ -138,7 +135,7 @@ class Index extends Component
         $this->deleteAdminId = $adminId;
         $this->showDeleteModal = true;
     }
-    
+
     public function delete(): void
     {
         // dd($this->deleteAdminId);
@@ -224,7 +221,7 @@ class Index extends Component
     protected function bulkDelete(): void
     {
         $count = $this->service->bulkDeleteData($this->selectedIds, admin()->id);
-        
+
         $this->success("{$count} Admins deleted successfully");
     }
 
