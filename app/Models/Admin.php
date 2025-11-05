@@ -8,11 +8,12 @@ use App\Models\AuthBaseModel;
 use App\Traits\AuditableTrait;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
+use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Admin extends AuthBaseModel implements Auditable
 {
-    use TwoFactorAuthenticatable, AuditableTrait;
+    use TwoFactorAuthenticatable, AuditableTrait, Searchable;
     
     protected $guard = 'admin';
 
@@ -96,9 +97,7 @@ class Admin extends AuthBaseModel implements Auditable
             $query->where('status', $status);
         });
 
-        $query->when($filters['search'] ?? null, function ($query, $search) {
-            $query->search($search);
-        });
+ 
 
         return $query;
     }
