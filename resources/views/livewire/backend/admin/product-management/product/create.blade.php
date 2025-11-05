@@ -179,13 +179,13 @@
                     <x-ui.input type="text" placeholder="Region" wire:model="form.region" />
                     <x-ui.input-error :messages="$errors->get('form.region')" />
                 </div>
-
                 {{-- status --}}
                 <div class="w-full">
                     <x-ui.label value="Status" class="mb-1" />
-                    <x-ui.select wire:model="form.status" id="seller_id">
+                    <x-ui.select wire:model="form.status">
+                        
                         @foreach ($statuses as $status)
-                            <option value="{{ $status['value'] }}">{{ $user['label'] }}</option>
+                            <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
                         @endforeach
                     </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.status')" />
