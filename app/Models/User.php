@@ -6,14 +6,15 @@ use App\Enums\OtpType;
 use App\Enums\UserType;
 use App\Enums\UserStatus;
 use App\Enums\userKycStatus;
+use App\Traits\AuditableTrait;
 use Illuminate\Support\Carbon;
 use App\Enums\UserAccountStatus;
-use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use OwenIt\Auditing\Contracts\Auditable;
 
 class User extends AuthBaseModel implements Auditable
 {
@@ -171,6 +172,19 @@ class User extends AuthBaseModel implements Auditable
     public function productReview(): HasOne 
     {
         return $this->hasOne(Product::class, 'user_id', 'id');
+    }
+
+    public function userBans(): HasMany
+    {
+        return $this->hasMany(UserBan::class, 'user_id', 'id');
+    }
+    public function bandedBy(): HasMany
+    {
+        return $this->hasMany(User::class, 'banned_by', 'id');
+    }
+    public function unbandedBy(): HasMany
+    {
+        return $this->hasMany(User::class, 'unbanned_by', 'id');
     }
     /*
     |--------------------------------------------------------------------------
