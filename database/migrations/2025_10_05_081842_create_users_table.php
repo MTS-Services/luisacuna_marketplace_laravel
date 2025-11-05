@@ -22,13 +22,14 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('sort_order')->default(0);
-            $table->unsignedBigInteger('country_id');
+            $table->unsignedBigInteger('country_id')->nullable();
 
             $table->string('username')->unique();
             $table->string('first_name');
             $table->string('last_name');
             
-
+             $table->string('google_id')->nullable()->unique();
+             $table->string('facebook_id')->nullable()->unique();
             $table->string('avatar')->nullable();
             $table->date('date_of_birth')->nullable();
 
@@ -37,11 +38,11 @@ return new class extends Migration
             $table->unsignedBigInteger('language_id')->nullable();
             $table->unsignedBigInteger('currency_id')->nullable();
 
-            $table->string('email')->unique();
+            $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
 
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
 
             $table->string('user_type')->index()->default(UserType::BUYER->value);
@@ -96,5 +97,6 @@ return new class extends Migration
         Schema::dropIfExists('sessions');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('users');
+        Schema::dropIfExists('google_id',);
     }
 };

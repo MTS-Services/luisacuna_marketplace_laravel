@@ -21,12 +21,9 @@
                 <!-- Email -->
                 <div class="mb-4 sm:mb-6 px-2 sm:px-6">
                     <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">Email</label>
-                    <x-ui.input type="email" placeholder="example@gmail.com" wire:model="email"
-                     />
+                    <x-ui.input type="email" placeholder="example@gmail.com" wire:model="email" />
                     {{-- Error message --}}
-                    @error('email')
-                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                    @enderror
+                    <x-ui.input-error :messages="$errors->get('email')" />
                 </div>
 
                 <!-- Error message -->
@@ -35,28 +32,13 @@
                 @enderror
 
                 <!-- Password -->
-                <div class="-mt-10 sm:mb-6 px-2 sm:px-6">
-                    <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">Password</label>
-                    <div class="relative">
-                        <x-ui.input type="password" id="password" placeholder="Aex@8465" wire:model="password"
-                         />
-                        <button type="button" onclick="togglePassword()"
-                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-text-white">
-                            <svg class="w-5 h-5" fill="none" stroke="zinc" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                </path>
-                            </svg>
-                        </button>
-                    </div>
+                <div class="mb-4 sm:mb-6 px-2 sm:px-6">
+                    <x-ui.label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">Password</x-ui.label>
+                    <x-ui.input type="password" id="password" placeholder="Aex@8465" wire:model="password" />
+                    <x-ui.input-error :messages="$errors->get('password')" />
                 </div>
 
                 <!-- Error message -->
-                @error('password')
-                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                @enderror
 
                 <!-- Forgot password -->
                 {{-- <div class="text-right px-2 sm:px-6 mb-6">
@@ -89,18 +71,21 @@
                 <div>
                     <!-- Social login -->
                     <div class="flex justify-center gap-4 mb-2">
-                        <button class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
+                        <a href="{{ route('google.redirect') }}"
+                            class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
                             <img src="{{ asset('assets/icons/icons8-google.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
                                 alt="Google" />
-                        </button>
-                        <button class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
+                        </a>
+                        <a href="javascript:void(0)"
+                            class="w-10 h-10 sm:w-12 sm:h-12 flex z-30 items-center justify-center bg-white rounded-md">
                             <img src="{{ asset('assets/icons/icons8-apple-logo.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
                                 alt="Apple" />
-                        </button>
-                        <button class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
+                        </a>
+
+                        <a href="{{ route('auth.facebook') }}" class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
                             <img src="{{ asset('assets/icons/icons8-facebook.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
                                 alt="Facebook" />
-                        </button>
+                        </a>
                     </div>
 
                     <!-- Sign up link -->

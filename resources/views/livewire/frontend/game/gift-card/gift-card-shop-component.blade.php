@@ -25,7 +25,7 @@
                     </div>
                     <div class="flex items-center gap-2">
                         <img src="{{ asset('assets/images/gift_cards/Ellipse 5.png') }}" alt="">
-                        <span class="text-text-white">Lowest Price</span>
+                        <span class="text-text-white">Lowest To Highest</span>
                     </div>
                 </div>
                 <div class="block md:hidden relative z-10" x-data="{ open: false }">
