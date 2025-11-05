@@ -285,20 +285,20 @@
     <!-- Mobile Navigation Menu -->
     <nav class="lg:hidden mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-zinc-800 flex flex-wrap gap-2 sm:gap-3">
         <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Currency</a>
+            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{__('Currency')}}</a>
         <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Gift
-            Cards</a>
+            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{__('Gift
+            Cards')}}</a>
         <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Boosting</a>
+            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{__('Boosting')}}</a>
         <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Items</a>
+            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{__('Items')}}</a>
         <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Accounts</a>
+            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{__('Accounts')}}</a>
         <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Top
-            Ups</a>
+            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{__('Top
+            Ups')}}</a>
         <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Coaching</a>
+            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{__('Coaching')}}</a>
     </nav>
 </header>
