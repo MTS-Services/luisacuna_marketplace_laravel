@@ -184,8 +184,11 @@ class Index extends Component
     public function bulkDelete(): void
     {
         try {
-           $count =    $this->service->bulkDelete($this->selectedIds,  admin()->id);
+
+              $count =    $this->service->bulkDelete($this->selectedIds,  admin()->id);
+
               $this->success("($count) Datas deleted successfully");
+              
         } catch (\Exception $e) {
             
             $this->error('Failed to delete data.');
@@ -193,12 +196,23 @@ class Index extends Component
             log::error('Failed to delete data: ' . $e->getMessage());
         }
 
-      
-
     }
 
     public function bulkUpdateStatus( GameStatus $status): void{
-        $this->gameService->bulkUpdateStatus($this->selectedIds, $status);
+
+        try {
+
+          $count =  $this->service->bulkUpdateStatus($this->selectedIds, $status, admin()->id);
+
+          $this->success("($count)  Status change successfully");
+
+        } catch (\Exception $e) {
+            
+            $this->error('Failed to change status.');
+        }
+
+       
+
     }
 
     protected function getSelectableIds(): array

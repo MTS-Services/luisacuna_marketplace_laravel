@@ -13,26 +13,26 @@ class Trash extends Component
 {
     use WithDataTable, WithNotification;
 
-
-    public string $bulkAction = '';
-    public $statusFilter = '';
+        public $statusFilter = '';
+    public $showDeleteModal = false;
+    public $selectedId = null;
+    public $bulkAction = '';
     public $showBulkActionModal = false;
 
-    public $showDeleteModal = false;
     public $deleteId = null;
-    
+
     protected GameService $service;
 
-    public function boot(GameService $service)  
+    public function boot(GameService $service)
     {
         $this->service = $service;
     }
     public function render()
-    {   
+    {
 
-        $games = $this->service->getTrashedPaginateData( $this->perPage, $this->filters());
+        $games = $this->service->getTrashedPaginateDatas($this->perPage, $this->filters());
 
-        
+
         $columns = [
             // [
             //     'key' => 'id',
@@ -92,34 +92,35 @@ class Trash extends Component
             ],
         ];
 
-            $actions = [
-                ['key' => 'id', 'label' => 'Restore', 'method' => 'restore', 'encrypt' => true],
-                ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete', 'encrypt' => true],
-            ];
+        $actions = [
+            ['key' => 'id', 'label' => 'Restore', 'method' => 'restore', 'encrypt' => true],
+            ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete', 'encrypt' => true],
+        ];
 
-            $bulkActions = [
-                ['value' => 'restore', 'label' => 'Restore'],
-                ['value' => 'delete', 'label' => 'Delete'],
-            ];
+        $bulkActions = [
+            ['value' => 'restore', 'label' => 'Restore'],
+            ['value' => 'delete', 'label' => 'Delete'],
+        ];
 
 
 
-        return view('livewire.backend.admin.components.game-management.game.trash',
-        [
-            'games' => $games,
-            'columns' => $columns,
-            'actions' => $actions,
-            'bulkActions' => $bulkActions,
-            'bulkAction'  => $this->bulkAction,
-            'statuses' =>  GameStatus::options()
-        ]
-    );
+        return view(
+            'livewire.backend.admin.components.game-management.game.trash',
+            [
+                'games' => $games,
+                'columns' => $columns,
+                'actions' => $actions,
+                'bulkActions' => $bulkActions,
+                'bulkAction'  => $this->bulkAction,
+                'statuses' =>  GameStatus::options()
+            ]
+        );
     }
 
 
     public function filters()
     {
-         return [
+        return [
             'search' => $this->search,
             'status' => $this->statusFilter,
             'sort_field' => $this->sortField,
@@ -131,28 +132,25 @@ class Trash extends Component
     {
 
         try {
-          $this->service->restoreData(decrypt($encrypted_id), admin()->id);
+            $this->service->restoreData(decrypt($encrypted_id), admin()->id);
 
-          $this->success('Data restored successfully');
+            $this->success('Data restored successfully');
         } catch (\Exception $e) {
 
             $this->error('Failed to restore data.');
 
             Log::error('Failed to restore data: ' . $e->getMessage());
-           
         }
-
-
-       
     }
-    
+
     public function confirmDelete($encrypted_id)
     {
         $this->showDeleteModal = true;
         $this->deleteId = $encrypted_id;
     }
 
-    public function delete(){
+    public function delete()
+    {
 
         try {
             if (!$this->deleteId) {
@@ -161,16 +159,14 @@ class Trash extends Component
             }
             $this->service->forceDeleteData(decrypt($this->deleteId), true);
             $this->reset(['deleteId', 'showDeleteModal']);
-    
+
             $this->success('Data deleted successfully');
-            
         } catch (\Exception $e) {
-    
+
             Log::error("Failed to delete data", ['error' => $e->getMessage()]);
-    
+
             $this->error('Failed to delete data.');
         }
-
     }
     public function confirmBulkAction(): void
     {
@@ -188,7 +184,7 @@ class Trash extends Component
 
         try {
             match ($this->bulkAction) {
-                'delete' => $this->bulkDelete(),
+                'delete' => $this->bulkForceDelete(),
                 'restore' => $this->bulkRestore(),
                 default => null,
             };
@@ -201,24 +197,46 @@ class Trash extends Component
         }
     }
 
-    public function bulkDelete(): void
+    public function bulkForceDelete(): void
     {
 
-         $this->gameService->deleteGame($this->selectedIds, true);
-       
+            try {
+              $count = $this->service->bulkForceDelete($this->selectedIds);
+
+              $this->success("{$count} Datas deleted successfully");
+
+            } catch (\Exception $e) {
+                
+                Log::error("Failed to delete data", ['error' => $e->getMessage()]);
+
+                $this->error('Failed to delete data.');
+            }
+
     }
 
     public function bulkRestore(): void
     {
-         $this->gameService->bulkRestoreGame($this->selectedIds);
+        try {
+            if (! count($this->selectedIds)) {
+                $this->warning('No data selected');
+                return;
+            }
+            $count =  $this->service->bulkRestore($this->selectedIds, admin()->id);
+
+            $this->success("{$count} Data restored successfully");
+        } catch (\Exception $e) {
+
+            Log::error("Failed to delete data", ['error' => $e->getMessage()]);
+
+            $this->error('Failed to delete data.');
+        }
     }
 
     protected function getSelectableIds(): array
     {
-        return $this->gameService->OnlyTrashedPaginate(
+        return $this->service->getTrashedPaginateDatas(
             perPage: $this->perPage,
             filters: $this->filters()
         )->pluck('id')->toArray();
     }
-
 }

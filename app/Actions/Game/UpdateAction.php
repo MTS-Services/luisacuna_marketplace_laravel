@@ -2,11 +2,9 @@
 
 namespace App\Actions\Game;
 
-use App\DTOs\Game\UpdateGameDTO;
 use App\Models\Game;
 use App\Repositories\Contracts\GameRepositoryInterface;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -65,18 +63,17 @@ class UpdateAction
 
 
             if ($data['thumbnail']) {
-                
+
                 $new_data['thumbnail']  = Storage::disk('public')->putFile('thumbnails', $data['thumbnail']);
 
                 $old = $old_data['thumbnail'];
-                
+
                 if ($old && Storage::disk('public')->exists($old)) {
                     Storage::disk('public')->delete($old);
                 }
             }
-        
-            return $this->interface->update($id, $new_data);
 
+            return $this->interface->update($id, $new_data);
         });
     }
 }

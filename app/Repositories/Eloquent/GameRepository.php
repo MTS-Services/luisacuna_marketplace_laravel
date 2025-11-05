@@ -11,9 +11,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class GameRepository implements GameRepositoryInterface
 {
-    public function __construct(public Game $model)
-    {
-    }
+    public function __construct(public Game $model) {}
 
     /* -----------------------------------------------------------------
      |  Basic Fetch Operations
@@ -88,7 +86,7 @@ class GameRepository implements GameRepositoryInterface
         return $game->update($data);
     }
 
-    public function bulkUpdateStatus($ids, GameStatus $status, $actioner_id): int
+    public function bulkUpdateStatus($ids, string $status, $actioner_id): int
     {
         return $this->model
             ->whereIn('id', $ids)
@@ -117,8 +115,8 @@ class GameRepository implements GameRepositoryInterface
 
     public function bulkDelete($ids, $actioner_id): int
     {
+
         $this->model->whereIn('id', $ids)->update(['deleter_id' => $actioner_id]);
-        
         return $this->model->whereIn('id', $ids)->delete();
     }
 
