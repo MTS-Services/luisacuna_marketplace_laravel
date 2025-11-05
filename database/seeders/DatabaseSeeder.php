@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Livewire\Backend\Admin\Components\UserManagement\User\Profile\Referral;
 use App\Models\Admin;
+use app\Models\Favorite;
 use App\Models\GameCategory;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -38,6 +39,7 @@ class DatabaseSeeder extends Seeder
             KycFormSectionSeeder::class,
             KycFormFieldSeeder::class,
             SubmittedKycSeeder::class,
+            FavoriteSeeder::class,
 
         ]);
 
