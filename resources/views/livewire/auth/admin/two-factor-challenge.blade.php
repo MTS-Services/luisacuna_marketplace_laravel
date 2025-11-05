@@ -1,13 +1,13 @@
 <div class="max-w-md mx-auto bg-bg-primary dark:bg-bg-secondary rounded-2xl shadow-glass-card p-8 mt-10 glass-card">
-    
+
     <!-- Header -->
     <h2 class="text-2xl font-semibold text-center text-text-primary dark:text-text-primary mb-2 gradient-text">
-        Two-Factor Authentication
+        {{ __('Two-Factor Authentication') }}
     </h2>
 
     <p class="text-sm text-text-secondary dark:text-text-secondary text-center mb-6">
-        Please confirm access to your account by entering the authentication code
-        provided by your authenticator app.
+        {{ __('Please confirm access to your account by entering the authentication code
+        provided by your authenticator app.') }}
     </p>
 
     <!-- Error Messages -->
@@ -32,7 +32,7 @@
         @csrf
         <div>
             <label for="code" class="block text-sm font-medium text-text-primary dark:text-text-primary">
-                Authentication Code
+                {{ __('Authentication Code') }}
             </label>
             <input type="text" id="code" name="code" maxlength="6" placeholder="000000"
                 autocomplete="one-time-code" autofocus inputmode="numeric" pattern="[0-9]*"
@@ -40,12 +40,12 @@
                        focus:ring-2 focus:ring-accent focus:border-accent text-text-primary dark:text-text-primary
                        shadow-sm py-2.5 px-3 text-center text-lg tracking-widest font-mono">
             <p class="mt-1 text-xs text-text-muted dark:text-text-muted">
-                Enter the 6-digit code from your authenticator app
+                {{ __('Enter the 6-digit code from your authenticator app') }}
             </p>
         </div>
 
         <x-ui.button type="submit" variant="primary" :wire="false">
-            Verify Code
+            {{ __('Verify Code') }}
         </x-ui.button>
     </form>
 
@@ -60,7 +60,7 @@
     <div class="mt-6 pt-6 border-t border-zinc-200 dark:border-zinc-800">
         <button type="button" onclick="toggleRecoveryForm()"
             class="w-full text-center text-sm text-accent hover:text-accent-content font-medium transition-colors">
-            Don't have your authenticator? Use a recovery code
+            {{ __('Don\'t have your authenticator? Use a recovery code') }}
         </button>
 
         <!-- Recovery Code Form -->
@@ -68,7 +68,7 @@
             @csrf
             <div>
                 <label for="recovery_code" class="block text-sm font-medium text-text-primary dark:text-text-primary mb-2">
-                    Recovery Code
+                    {{ __('Recovery Code') }}
                 </label>
                 <input type="text" id="recovery_code" name="recovery_code"
                     class="w-full rounded-lg border-zinc-300 dark:border-zinc-700 bg-bg-secondary dark:bg-bg-primary
@@ -76,12 +76,12 @@
                            shadow-sm py-2.5 px-3 font-mono"
                     placeholder="xxxxx-xxxxx">
                 <p class="text-xs text-text-muted dark:text-text-muted mt-2">
-                    Enter one of your recovery codes (stored separately)
+                    {{ __('Enter one of your recovery codes (stored separately)') }}
                 </p>
             </div>
-            
+
             <x-ui.button type="submit" variant="secondary" :wire="false">
-                Verify Recovery Code
+                {{ __('Verify Recovery Code') }}
             </x-ui.button>
         </form>
     </div>
@@ -89,7 +89,7 @@
     <!-- Back to Login -->
     <div class="mt-6 text-center">
         <a href="{{ route('admin.login') }}" class="text-sm text-accent hover:text-accent-content dark:text-accent-foreground transition-colors">
-            ← Back to Login
+            ← {{ __('Back to Login') }}
         </a>
     </div>
 

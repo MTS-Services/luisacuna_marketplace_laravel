@@ -7,18 +7,17 @@
 
             <!-- Header -->
             <div class="text-center">
-                <h2 class="text-4xl font-medium p-4 text-text-white">Confirm your account</h2>
+                <h2 class="text-4xl font-medium p-4 text-text-white">{{ __('Confirm your account') }}</h2>
                 <p class="text-text-whitelg:text-xl text-sm">
-                    We have sent a code in an Email message to ex***@gmail.com To confirm your account, please enter the
-                    code.
+                    {{ __('We have sent a code in an Email message to ex***@gmail.com To confirm your account, please enter the
+                                        code.') }}
                 </p>
             </div>
 
             <!-- Code -->
             <div>
-                <label class="block text-xl font-medium mb-2 text-text-white">Code</label>
-                <x-ui.input type="text" placeholder="Enter your code" wire:model="form.code"
-                     />
+                <label class="block text-xl font-medium mb-2 text-text-white">{{ __('Code') }}</label>
+                <x-ui.input type="text" placeholder="Enter your code" wire:model="form.code" />
             </div>
 
             @error('form.code')
@@ -30,20 +29,20 @@
             <div class="text-right" id="resend-container">
                 @if (isset($resendLimitReached) && $resendLimitReached)
                     <span class="text-md text-red-400 font-semibold">
-                        Don't resend again. Maximum limit reached.
+                        {{ __('Don\'t resend again. Maximum limit reached.') }}
                     </span>
                 @elseif($resendCooldown && $resendCooldown > 0)
                     <span class="text-md text-zinc-400">
-                        Resend available in <span id="countdown"
+                        {{ __('Resend available in') }} <span id="countdown"
                             class="font-semibold text-text-white">{{ $resendCooldown }}</span>s
                         <span class="text-xs text-zinc-500">({{ 6 - ($resendAttempts ?? 0) }} left)</span>
                     </span>
                 @else
                     <button type="button" wire:click="resendOtp" wire:loading.attr="disabled"
                         class="text-md text-zinc-300 hover:underline disabled:opacity-50 disabled:cursor-not-allowed">
-                        <span wire:loading.remove wire:target="resendOtp">Resend <span
+                        <span wire:loading.remove wire:target="resendOtp">{{ __('Resend') }} <span
                                 class="text-xs text-zinc-500">({{ 6 - ($resendAttempts ?? 0) }} left)</span></span>
-                        <span wire:loading wire:target="resendOtp">Sending...</span>
+                        <span wire:loading wire:target="resendOtp">{{__('Sending...')}}</span>
                     </button>
                 @endif
             </div>
