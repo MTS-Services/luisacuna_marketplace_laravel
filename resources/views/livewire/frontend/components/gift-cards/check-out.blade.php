@@ -5,13 +5,13 @@
                 <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
             </div>
             <div class="text-muted text-base">
-                <span class="text-base text-text-white">Gift card</span>
+                <span class="text-base text-text-white">{{__('Gift card')}}</span>
             </div>
             <div class="px-2 text-text-white text-base">
                 >
             </div>
             <div class="text-text-white text-base">
-                Seller list
+                {{ __('Seller list') }}
             </div>
         </div>
     </section>
@@ -27,12 +27,12 @@
                         </div>
                         <div class="">
                             <h2 class="text-text-white text-xl font-normal"><span
-                                    class="text-text-white text-xl font-bold">V-Bucks </span>Fast, cheap pro boost.Any
-                                brawler, any trophies...</h2>
-                            <span class="text-text-white text-sm">Brawl Stars - Boosting</span>
+                                    class="text-text-white text-xl font-bold">{{ __('V-Bucks') }} </span>{{__('Fast, cheap pro boost.Any
+                                brawler, any trophies...')}}</h2>
+                            <span class="text-text-white text-sm">{{__('Brawl Stars - Boosting')}}</span>
                             <div class="flex justify-end gap-8 mt-5">
-                                <h3 class="text-text-white text-xl ">*1</h3>
-                                <h3 class="text-text-white text-2xl font-semibold"> $76.28</h3>
+                                <h3 class="text-text-white text-xl ">{{__('*1')}}</h3>
+                                <h3 class="text-text-white text-2xl font-semibold"> {{__('$76.28')}}</h3>
                             </div>
 
                         </div>
@@ -40,7 +40,7 @@
                     <span class="border-t-2 border-zinc-500 w-full inline-block"></span>
                 </div>
                 <div class="bg-bg-primary p-6 md:p-10 rounded-2xl mt-7">
-                    <h2 class="text-text-white text-2xl font-semibold">Contact information</h2>
+                    <h2 class="text-text-white text-2xl font-semibold">{{__('Contact information')}}</h2>
                     <form action="">
                         <div class="mt-4">
                             <div class="">
@@ -55,32 +55,32 @@
             </div>
             <div class="w-full md:w-[40%] bg-bg-primary py-7 px-6 rounded-2xl">
                 <div class="mb-3">
-                    <h2 class="text-2xl font-semibold">Cart Total</h2>
+                    <h2 class="text-2xl font-semibold">{{__('Cart Total')}}</h2>
                 </div>
                 <div class="flex justify-between mb-3">
-                    <p class="text-text-white text-sm">Cart Subtotal</p>
-                    <p class="text-text-white text-base font-semibold">$76.28</p>
+                    <p class="text-text-white text-sm">{{__('Cart Subtotal')}}</p>
+                    <p class="text-text-white text-base font-semibold">{{__('$76.28')}}</p>
                 </div>
                 <div class="flex justify-between  mb-3">
-                    <p class="text-text-white text-sm">Payment fee</p>
-                    <p class="text-text-white text-base font-semibold">+0.79</p>
+                    <p class="text-text-white text-sm">{{__('Payment fee')}}</p>
+                    <p class="text-text-white text-base font-semibold">{{__('+0.79')}}</p>
                 </div>
                 <div class="flex justify-between  mb-3">
-                    <p class="text-text-white text-sm">Discount</p>
-                    <p class="text-text-white text-base font-semibold">-$00</p>
+                    <p class="text-text-white text-sm">{{__('Discount')}}</p>
+                    <p class="text-text-white text-base font-semibold">{{__('-$00')}}</p>
                 </div>
                 <div class="flex justify-between  mb-3">
-                    <p class="text-text-white text-sm">Cart Total</p>
-                    <p class="text-text-white text-base font-semibold">$77.07</p>
+                    <p class="text-text-white text-sm">{{__('Cart Total')}}</p>
+                    <p class="text-text-white text-base font-semibold">{{__('$77.07')}}</p>
                 </div>
                 <div class="mt-8 py">
-                    <x-ui.button href="{{ route('game.checkout',['orderId'=>435345]) }}" class="w-auto py-3!">$76.28 | Buy now
+                    <x-ui.button href="{{ route('game.checkout',['orderId'=>435345]) }}" class="w-auto py-3!">{{ __('$76.28 | Buy now') }}
                     </x-ui.button>
                 </div>
                 <div class="mt-8">
                     <input type="checkbox" name="" id=""  class="accent-zinc-500 rounded-full">
-                    <label for="" class="text-text-white text-base ">I accept the Terms of Service , Privacy
-                        Notice and Refund Policy.</label>
+                    <label for="" class="text-text-white text-base ">{{__('I accept the Terms of Service , Privacy
+                        Notice and Refund Policy.')}}</label>
                 </div>
             </div>
         </div>
@@ -88,7 +88,7 @@
     {{-- payment methoad --}}
     <section class="container mx-auto mt-10 mb-40">
         <div class="bg-bg-primary p-4 md:p-10 rounded-2xl">
-            <h2 class="text-text-white text-2xl font-semibold mb-6">Payment method</h2>
+            <h2 class="text-text-white text-2xl font-semibold mb-6">{{__('Payment method')}}</h2>
             <div class="">
                 <form action="">
                     <div class="flex items-center justify-between gap-4 border border-zinc-500 rounded-2xl py-5 px-6">
@@ -115,7 +115,7 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-4">
-                            <p class="text-text-white hidden md:block">Credit/Debit Card</p>
+                            <p class="text-text-white hidden md:block">{{__('Credit/Debit Card')}}</p>
                             <input type="checkbox" name="" id=""
                                 class="scale-150 accent-zinc-500 rounded-full">
                         </div>
@@ -133,7 +133,7 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-4">
-                            <p class="text-text-white hidden md:block">Digital Wallet</p>
+                            <p class="text-text-white hidden md:block">{{__('Digital Wallet')}}</p>
                             <input type="checkbox" name="" id=""
                                 class="scale-150 accent-zinc-500 rounded-full">
                         </div>
@@ -163,7 +163,7 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-4">
-                            <p class="text-text-white hidden md:block">Crypto</p>
+                            <p class="text-text-white hidden md:block">{{__('Crypto')}}</p>
                             <input type="checkbox" name="" id=""
                                 class="scale-150 accent-zinc-500 rounded-full">
                         </div>
@@ -180,7 +180,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <x-ui.button type="submit" class="mt-10 w-full! md:w-sm! py-3!">Save Payment Method</x-ui.button>
+                        <x-ui.button type="submit" class="mt-10 w-full! md:w-sm! py-3!">{{__('Save Payment Method')}}</x-ui.button>
                     </div>
                 </form>
             </div>

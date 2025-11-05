@@ -38,7 +38,7 @@ return new class extends Migration
             $table->unsignedBigInteger('language_id')->nullable();
             $table->unsignedBigInteger('currency_id')->nullable();
 
-            $table->string('email')->unique();
+            $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
 

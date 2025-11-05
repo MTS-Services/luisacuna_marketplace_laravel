@@ -3,8 +3,8 @@
     <div class="container mx-auto relative">
 
         {{-- Loading Spinner (Kept from original) --}}
-        <div 
-            wire:loading.flex 
+        <div
+            wire:loading.flex
             wire:target="search"
             class="absolute inset-0 bg-bg-primary/70 backdrop-blur-sm flex flex-col items-center justify-center rounded-lg z-50 mx-4 lg:px-10"
         >
@@ -12,21 +12,21 @@
                 <div class="absolute w-12 h-12 border-4 border-purple-500/30 rounded-full"></div>
                 <div class="absolute w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
-            <p class="text-sm text-purple-300 mt-3 font-medium tracking-wide">Loading content...</p>
+            <p class="text-sm text-purple-300 mt-3 font-medium tracking-wide">{{__('Loading content...')}}</p>
         </div>
 
         {{-- 🌟 Simplified Dropdown Content to match the image structure AND original color scheme --}}
         {{-- Centered modal structure like the image, using dark theme colors --}}
         <div class="bg-bg-primary flex flex-col rounded-lg shadow-2xl rounded-lg py-11 px-4 lg:px-10 h-[578px]" x-on:click.outside="globalSearchModal= false">
-            
+
             {{-- Search Bar Section (Large, centered input) --}}
             <div class="p-4">
                 <div class="relative">
-                    <input 
-                        type="text" 
+                    <input
+                        type="text"
                         wire:model.live.debounce.300ms="search" {{-- Reusing Livewire binding if needed --}}
-                        placeholder="Search Games" 
-                        class="w-full text-text-white bg-bg-primary text-xl border-b border-purple-500/50 focus:outline-none focus:border-purple-500 pb-3 pl-2 pr-10" 
+                        placeholder="Search Games"
+                        class="w-full text-text-white bg-bg-primary text-xl border-b border-purple-500/50 focus:outline-none focus:border-purple-500 pb-3 pl-2 pr-10"
                     />
                     {{-- Search Icon (Magnifying glass) --}}
                     <span class="absolute right-0 top-0 mt-2 mr-2 text-purple-400">
@@ -40,7 +40,7 @@
             {{-- Popular Categories --}}
             <div class="px-4 py-3 flex-1 overflow-y-auto">
                 <h3 class="text-xs font-semibold text-text-white/70 uppercase tracking-wider mb-2 pt-1 px-2.5">
-                    POPULAR CATEGORIES
+                    {{ __('POPULAR CATEGORIES') }}
                 </h3>
                 <div class="space-y-1 pb-4">
                     @php
@@ -64,7 +64,7 @@
                     @foreach($popularCategories as $item)
                         <a href="{{route('game.index', ['gameSlug' => $item['slug'], 'categorySlug' => $item['categorySlug']])}}" wire:navigate class="flex items-center gap-3 p-2 hover:bg-purple-500/10 rounded-lg transition cursor-pointer">
                             <div class="w-6 h-6 flex items-center justify-center">
-                                <img src="{{ asset('assets/images/game_icon/' . $item['icon']) }}" 
+                                <img src="{{ asset('assets/images/game_icon/' . $item['icon']) }}"
                                         alt="{{ $item['name'] }}"
                                         class="w-full h-full object-contain">
                             </div>
@@ -74,7 +74,7 @@
 
                 </div>
             </div>
-            
+
         </div>
     </div>
 </section>

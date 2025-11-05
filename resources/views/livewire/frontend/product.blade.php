@@ -9,7 +9,7 @@
                 {{-- Left Side - "Cars List" Text --}}
                 <div class="flex-1 flex justify-center">
                     <a href="#" wire:navigate class="text-3xl lg:text-4xl font-normal text-gray-900 tracking-wide">
-                        Cars List
+                        {{ __('Cars List') }}
                     </a>
                 </div>
 
@@ -77,7 +77,7 @@
                                 <div class="text-right text-gray-900 font-bold text-lg md:text-xl flex-shrink-0 ml-2">
                                     <!-- Dynamic Price -->
                                     ${{ $product['price_per_day'] }} <span
-                                        class="text-xs sm:text-sm font-medium text-gray-500 ml-1">/Day</span>
+                                        class="text-xs sm:text-sm font-medium text-gray-500 ml-1">{{ __('/Day') }}</span>
                                 </div>
                             </div>
 
@@ -94,7 +94,8 @@
                             <!-- Dynamic Persons Capacity -->
                             <div class="flex items-center">
                                 <flux:icon name="users" class="text-zinc-500 mr-1 w-4 h-4 sm:w-5 sm:h-5" />
-                                <span class="font-semibold text-gray-800">{{ $product['persons'] }}</span> Persons
+                                <span class="font-semibold text-gray-800">{{ $product['persons'] }}</span>
+                                {{ __('Persons') }}
                             </div>
 
                             <!-- Dynamic Features (Assuming the first feature in the array is the main one) -->
@@ -108,7 +109,8 @@
                             <!-- Dynamic Trips Count -->
                             <div class="flex items-center">
                                 <flux:icon name="calendar" class="text-zinc-500 mr-1 w-4 h-4 sm:w-5 sm:h-5" />
-                                <span class="font-semibold text-gray-800">{{ $product['trips'] }}</span> Trips
+                                <span class="font-semibold text-gray-800">{{ $product['trips'] }}</span>
+                                {{ __('Trips') }}
                             </div>
                         </div>
 
@@ -117,12 +119,12 @@
                             <button
                                 class="flex-1 flex items-center justify-center bg-accent text-white py-2! px-2! text-sm rounded-lg font-semibold shadow-md hover:bg-accent/90 transition duration-150 transform hover:scale-[1.01]">
                                 <flux:icon.book-open class="w-5 h-5 mr-2" />
-                                Book
+                                {{ __('Book') }}
                             </button>
 
                             <button
                                 class="flex-1 bg-gray-800 text-white py-2! px-2! text-sm rounded-lg font-semibold shadow-md hover:bg-gray-700 transition duration-150 transform hover:scale-[1.01]">
-                                Get In touch
+                                {{ __('Get In touch') }}
                             </button>
                         </div>
                     </div>
