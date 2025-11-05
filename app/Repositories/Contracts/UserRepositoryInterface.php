@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Collection;
 interface UserRepositoryInterface
 {
     public function all(): Collection;
+
+    public function getSellers(): Collection;
+    
+    public function getBuyers(): Collection;
     
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
     

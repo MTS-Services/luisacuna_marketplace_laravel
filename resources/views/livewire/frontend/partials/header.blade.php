@@ -131,7 +131,7 @@
             </div>
 
             <!-- Notification List -->
-            <div class="space-y-3 h-full overflow-y-auto pr-1">
+            <div class="space-y-2 h-full overflow-y-auto pr-1">
                 @for ($i = 0; $i < 5; $i++)
                     <div class="flex gap-2 md:gap-4 hover:bg-bg-hover rounded-xl p-4">
                         <div>
