@@ -6,19 +6,19 @@
 
                 <div class="relative w-full sm:w-35 lg:w-40 2xl:w-80">
                        <x-ui.select>
-                        <option value="">All Game</option>
-                        <option value="game1">Game 1</option>
-                        <option value="game2">Game 2</option>
-                        <option value="game3">Game 3</option>
+                        <option value="">{{ __('All Game') }}</option>
+                        <option value="game1">{{ __('Game 1') }}</option>
+                        <option value="game2">{{ __('Game 2') }}</option>
+                        <option value="game3">{{ __('Game 3') }}</option>
                     </x-ui.select>
                 </div>
 
                 <div class="relative w-full sm:w-35 lg:w-40 2xl:w-80">
                     <x-ui.select>
-                        <option value="">All</option>
-                        <option value="game1">Active offers</option>
-                        <option value="game2">Paused offers</option>
-                        <option value="game3">Closed offers</option>
+                        <option value="">{{ __('All ') }}</option>
+                        <option value="game1">{{ __('Active offers') }}</option>
+                        <option value="game2">{{ __('Paused offers') }}</option>
+                        <option value="game3">{{ __('Closed offers') }}</option>
                     </x-ui.select>
                 </div>
 
