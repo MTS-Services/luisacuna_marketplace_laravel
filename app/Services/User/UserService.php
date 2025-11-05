@@ -17,7 +17,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 class UserService
 {
     public function __construct(
-        protected UserRepositoryInterface $userRepository,
+        protected UserRepositoryInterface $interface,
         protected CreateUserAction $createUserAction,
         protected UpdateUserAction $updateUserAction,
         protected DeleteUserAction $deleteUserAction,
@@ -25,27 +25,37 @@ class UserService
 
     public function getAllUsers(): Collection
     {
-        return $this->userRepository->all();
+        return $this->interface->all();
     }
 
-    public function getUsersPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function getAllSellersData(): Collection
     {
-        return $this->userRepository->paginate($perPage, $filters);
+        return $this->interface->getSellers();
+    }
+
+    public function getAllBuyersData(): Collection
+    {
+        return $this->interface->getBuyers();
+    }
+
+    public function getPaginateDatas(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        return $this->interface->paginate($perPage, $filters);
     }
 
     public function getTrashedUsersPaginated(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        return $this->userRepository->trashPaginate($perPage, $filters);
+        return $this->interface->trashPaginate($perPage, $filters);
     }
 
     public function getUserById(int $id): ?User
     {
-        return $this->userRepository->find($id);
+        return $this->interface->find($id);
     }
 
     public function getUserByEmail(string $email): ?User
     {
-        return $this->userRepository->findByEmail($email);
+        return $this->interface->findByEmail($email);
     }
 
     public function createUser(CreateUserDTO $dto): User
@@ -70,37 +80,37 @@ class UserService
 
     public function getActiveUsers(): Collection
     {
-        return $this->userRepository->getActive();
+        return $this->interface->getActive();
     }
 
     public function getInactiveUsers(): Collection
     {
-        return $this->userRepository->getInactive();
+        return $this->interface->getInactive();
     }
 
     public function searchUsers(string $query): Collection
     {
-        return $this->userRepository->search($query);
+        return $this->interface->search($query);
     }
 
     public function bulkDeleteUsers(array $ids): int
     {
-        return $this->userRepository->bulkDelete($ids);
+        return $this->interface->bulkDelete($ids);
     }
 
     public function bulkUpdateStatus(array $ids, UserAccountStatus $status): int
     {
-        return $this->userRepository->bulkUpdateStatus($ids, $status->value);
+        return $this->interface->bulkUpdateStatus($ids, $status->value);
     }
 
     public function getUsersCount(array $filters = []): int
     {
-        return $this->userRepository->count($filters);
+        return $this->interface->count($filters);
     }
 
     public function userExists(int $id): bool
     {
-        return $this->userRepository->exists($id);
+        return $this->interface->exists($id);
     }
 
     public function activateUser(int $id): bool
@@ -140,11 +150,11 @@ class UserService
     }
     public function bulkRestoreUsers(array $ids): int
     {
-        return $this->userRepository->bulkRestore($ids);
+        return $this->interface->bulkRestore($ids);
     }
 
     public function bulkForceDeleteUsers(array $ids): int
     {
-        return $this->userRepository->bulkForceDelete($ids);
+        return $this->interface->bulkForceDelete($ids);
     }
 }

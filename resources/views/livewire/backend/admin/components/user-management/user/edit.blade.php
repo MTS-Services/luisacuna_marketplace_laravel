@@ -65,9 +65,13 @@
                     </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.country_id')" />
                 </div>
-                <div class="w-full">
+                 <div class="w-full">
                     <x-ui.label value="Langugae" class="mb-1" />
-                    <x-ui.input type="text" placeholder="Langugae" wire:model="form.language" />
+                    <x-ui.select wire:model="form.language">
+                        @foreach ($languages as $language)
+                            <option value="{{ $language['id'] }}">{{ $language['name'] }}</option>
+                        @endforeach
+                    </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.language')" />
                 </div>
                 <div class="w-full">

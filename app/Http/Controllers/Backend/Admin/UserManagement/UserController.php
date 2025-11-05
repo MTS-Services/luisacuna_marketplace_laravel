@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\Backend\Admin\UserManagement;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Services\User\UserService;
-use Illuminate\Http\Request;
+
+use App\Services\UserService;
+
 
 class UserController extends Controller
 {
     protected $masterView = 'backend.admin.pages.user-management.user.user';
 
-    protected UserService $userService;
-    public function __construct(UserService $userService)
+    protected UserService $service;
+    public function __construct(UserService $service)
     {
-        $this->userService = $userService;
+        $this->service = $service;
     }
 
     public function index()
@@ -27,7 +27,7 @@ class UserController extends Controller
     }
     public function view(string $id)
     {
-        $user = $this->userService->getUserById($id);
+        $user = $this->service->getDataById($id);
         if (!$user) {
             abort(404);
         }
@@ -37,7 +37,7 @@ class UserController extends Controller
     }
     public function edit(string $id)
     {
-        $user = $this->userService->getUserById($id);
+        $user = $this->service->getDataById($id);
         if (!$user) {
             abort(404);
         }
@@ -51,7 +51,7 @@ class UserController extends Controller
     }
     public function profileInfo($id)
     {
-        $user = $this->userService->getUserById($id);
+        $user = $this->service->getDataById($id);
         if (!$user) {
             abort(404);
         }
@@ -61,7 +61,7 @@ class UserController extends Controller
     }
     public function shopInfo($id)
     {
-        $user = $this->userService->getUserById($id);
+        $user = $this->service->getDataById($id);
         if (!$user) {
             abort(404);
         }
@@ -72,7 +72,7 @@ class UserController extends Controller
     public function kycInfo($id)
     {
         
-        $user = $this->userService->getUserById($id);
+        $user = $this->service->getDataById($id);
         if (!$user) {
             abort(404);
         }
@@ -82,7 +82,7 @@ class UserController extends Controller
     }
     public function statistic($id)
     {
-        $user = $this->userService->getUserById($id);
+        $user = $this->service->getDataById($id);
         if (!$user) {
             abort(404);
         }
@@ -92,7 +92,7 @@ class UserController extends Controller
     }
     public function referral($id)
     {
-        $user = $this->userService->getUserById($id);
+        $user = $this->service->getDataById($id);
         if (!$user) {
             abort(404);
         }

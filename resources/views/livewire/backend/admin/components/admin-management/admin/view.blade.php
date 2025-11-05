@@ -24,13 +24,13 @@
                 <h2 class="text-xl text-text-primary font-semibold mb-6">{{__('Profile Image')}}</h2>
 
                 <div class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-pink-100 overflow-hidden">
-                    <img src="{{ asset('storage/' . $admin->avatar) }}" alt="Profile Image"
+                    <img src="{{ asset('storage/' . $data->avatar) }}" alt="Profile Image"
                         class="w-full h-full object-cover">
                 </div>
 
                 <div class="flex flex-col items-center justify-between mb-8">
-                    <h3 class="text-2xl font-bold text-center mb-1 text-text-primary">{{ $admin->name }}</h3>
-                    <p class="text-text-secondary">{{ $admin->email }}</p>
+                    <h3 class="text-2xl font-bold text-center mb-1 text-text-primary">{{ $data->name }}</h3>
+                    <p class="text-text-secondary">{{ $data->email }}</p>
                 </div>
 
                 <div class="space-y-4 text-sm">

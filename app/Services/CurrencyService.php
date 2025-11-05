@@ -28,7 +28,7 @@ class CurrencyService
     *                          Find Methods 
     * ================== ================== ================== */
 
-    public function getAll($sortField = 'created_at', $order = 'desc'): Collection
+    public function getAllDatas($sortField = 'created_at', $order = 'desc'): Collection
     {
         return $this->interface->all($sortField, $order);
     }

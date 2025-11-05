@@ -62,11 +62,11 @@
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button href="{{ route('admin.am.admin.index') }}" variant="tertiary"
+                <x-ui.button wire:click="resetForm" variant="tertiary"
                     class="w-auto! py-2!">
                     <flux:icon name="x-circle"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
-                    {{ __('Cancel') }}
+                    {{ __('Reset') }}
                 </x-ui.button>
 
                 <x-ui.button class="w-auto! py-2!" type="submit">

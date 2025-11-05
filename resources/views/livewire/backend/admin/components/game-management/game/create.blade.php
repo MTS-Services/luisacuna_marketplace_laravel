@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game Create') }}</h2>
             <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.gm.game.index') }}">
+                <x-ui.button href="{{ route('admin.gm.game.index') }}" class="w-auto! py-2!">
                     <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
                     {{ __('Back') }}
                 </x-ui.button>
@@ -18,6 +18,8 @@
 
 
                 {{-- Category --}}
+
+
                 <div>
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">
                         {{ __('Category') }} <span class="text-red-500">*</span>
@@ -28,11 +30,12 @@
                         @foreach ($categories as $index => $value)
                             <option value="{{ $index }}">{{ $value }}</option>
                         @endforeach
-                    </select>
-                    @error('form.game_category_id') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.game_category_id')" class="mt-2" />
                 </div>
 
                 {{-- Name --}}
+
                 <div>
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">
                         {{ __('Name') }} <span class="text-red-500">*</span>
@@ -43,6 +46,8 @@
                 </div>
 
                 {{-- Status --}}
+
+
                 <div>
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">
                         {{ __('Status') }} <span class="text-red-500">*</span>
@@ -53,11 +58,13 @@
                         @foreach ($statuses as $status)
                             <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
                         @endforeach
-                    </select>
-                    @error('form.status') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.status')" class="mt-2" />
                 </div>
 
                 {{-- Developer --}}
+
+
                 <div>
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{__('Developer')}}</label>
                     <input type="text" wire:model="form.developer"
@@ -74,6 +81,7 @@
                 </div>
 
                 {{-- Release Date --}}
+
                 <div>
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{__('Release Date')}}</label>
                     <input type="date" wire:model="form.release_date"
@@ -93,16 +101,19 @@
                                 {{ $platform }}
                             </label>
                         @endforeach
+
                     </div>
-                    @error('form.platform') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                    <x-ui.input-error :messages="$errors->get('form.platform')" class="mt-2" />
                 </div>
 
+                {{-- Ends Platforms --}}
                 {{-- Description --}}
+
                 <div class="col-span-2">
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{__('Description')}}</label>
                     <textarea wire:model="form.description" rows="4"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></textarea>
-                    @error('form.description') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                    <x-ui.input-error :messages="$errors->get('form.description')" class="mt-2" />
                 </div>
 
                 {{-- Images --}}
@@ -126,6 +137,23 @@
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
                          @error('form.thumbnail') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
+
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                    {{ __('Thumbnail') }}
+                </h3>
+                <x-ui.file-input wire:model="form.thumbnail" label="Game Thumbanail" accept="image/*" :error="$errors->first('form.thumbnail')"
+                    hint="Upload a game thumbnail (Max: 2MB)" />
+             </div>
+
+
+              <div class="col-span-2">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                    {{ __('Banner') }}
+                </h3>
+                <x-ui.file-input wire:model="form.banner" label="Game Banner" accept="image/*" :error="$errors->first('form.banner')"
+                    hint="Upload a game banner (Max: 2MB)" />
+             </div>
 
                 {{-- Boolean Checkboxes --}}
                 <div class="flex gap-6 mt-3">
@@ -165,9 +193,9 @@
 
             {{-- Actions --}}
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button href="{{ route('admin.gm.game.index') }}" type="danger">
+                <x-ui.button wire:click.prevent="resetForm" type="danger" class="w-auto! py-2!" button variant="tertiary">
                     <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
-                    {{ __('Cancel') }}
+                    {{ __('Reset') }}
                 </x-ui.button>
 
                 <x-ui.button type="accent" button>

@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Models;
+
+use App\Enums\GameStatus;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
@@ -41,7 +43,8 @@ class Game extends BaseModel implements Auditable
     ];
 
     protected $casts = [
-        'platform' => 'array'
+        'platform' => 'array',
+        'status' => GameStatus::class
     ];
 
     public function scopeSearch($query, $search)
@@ -68,6 +71,11 @@ class Game extends BaseModel implements Auditable
     public function category()
     {
         return $this->belongsTo(GameCategory::class, 'game_category_id', 'id');
+    }
+
+    public function product()
+    {
+        return $this->hasMany(Product::class, 'game_id', 'id');
     }
 
 }

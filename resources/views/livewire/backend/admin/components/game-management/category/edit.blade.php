@@ -1,9 +1,9 @@
 <section>
     <div class="glass-card rounded-2xl p-6 mb-6">
         <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game Category Create') }}</h2>
+            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game Category Edit') }}</h2>
             <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.gm.category.index') }}">
+                <x-ui.button href="{{ route('admin.gm.category.index') }}" class="w-auto! py-2!">
                     <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
                     {{ __('Back') }}
                 </x-ui.button>
@@ -27,7 +27,6 @@
                 </div>
 
 
-
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         {{ __('Status') }} <span class="text-red-500">*</span>
@@ -38,10 +37,8 @@
                         @foreach ($statuses as $status)
                             <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
                         @endforeach
-                    </select>
-                    @error('form.status')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.status')" class="mt-2" />
                 </div>
                 <div class="col-span-2">
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -60,7 +57,7 @@
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button href="{{ route('admin.gm.category.index') }}" type="danger">
+                <x-ui.button href="{{ route('admin.gm.category.index') }}" type="danger" class="w-auto! py-2!" variant="tertiary">
                     <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
                     {{ __('Cancel') }}
                 </x-ui.button>

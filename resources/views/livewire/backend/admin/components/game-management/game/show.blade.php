@@ -83,8 +83,8 @@
                             <td class="p-4 text-gray-600 font-semibold">{{ __('Status') }}</td>
                             <td class="p-4">
                                 <span
-                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                    {{ $game->status }}
+                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $data->status->color() ?? ' bg-blue-100'}} text-blue-800">
+                                    {{ $data->status->label() }}
                                 </span>
                             </td>
                         </tr>
@@ -97,7 +97,7 @@
                             <td class="p-4 text-gray-600 font-semibold">{{ __('Created At') }}</td>
                             <td class="p-4 text-gray-900">{{ $game->created_at_formatted }}</td>
                         </tr>
-                        @if ($game->updated_by)
+                        @if ($data->updated_by)
                             <tr class="hover:bg-white transition-colors">
                                 <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Updated By') }}</td>
                                 <td class="p-4 text-gray-900">{{ $game->updater_admin->name }}</td>
@@ -179,7 +179,7 @@
                             </td>
                         </tr>
 
-                        @if ($game->updated_by)
+                        @if ($data->updated_by)
                             <tr class="hover:bg-white transition-colors">
                                 <td class="p-4 w-2/5 text-gray-600 font-semibold">{{__('Updated By')}}</td>
                                 <td class="p-4 text-gray-900">{{ $game->updater_admin->name }}</td>

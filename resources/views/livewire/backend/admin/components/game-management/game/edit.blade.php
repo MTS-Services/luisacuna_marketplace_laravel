@@ -38,6 +38,7 @@
                 </div>
 
                 {{-- Name --}}
+
                 <div>
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">
                         {{ __('Name') }} <span class="text-red-500">*</span>
@@ -51,6 +52,8 @@
                 </div>
 
                 {{-- Status --}}
+
+
                 <div>
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">
                         {{ __('Status') }} <span class="text-red-500">*</span>
@@ -69,6 +72,8 @@
                 </div>
 
                 {{-- Developer --}}
+
+
                 <div>
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Developer') }}</label>
                     <input type="text" wire:model="form.developer"
@@ -91,6 +96,7 @@
                 </div>
 
                 {{-- Release Date --}}
+
                 <div>
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Release Date') }}</label>
                     <input type="date" wire:model="form.release_date"
@@ -113,6 +119,7 @@
                                 {{ $platform }}
                             </label>
                         @endforeach
+
                     </div>
                     @error('form.platform')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -120,7 +127,9 @@
 
                 </div>
 
+                {{-- Ends Platforms --}}
                 {{-- Description --}}
+
                 <div class="col-span-2">
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Description') }}</label>
 
@@ -133,6 +142,8 @@
                 </div>
 
                 {{-- Images --}}
+
+
                 <div>
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Logo') }}</label>
                     <input type="file" wire:model="form.logo"
@@ -223,6 +234,7 @@
                 <x-ui.button href="{{ route('admin.gm.game.index') }}" type="danger">
 
                     <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
+
                     {{ __('Cancel') }}
 
                 </x-ui.button>
