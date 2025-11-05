@@ -48,7 +48,7 @@ class Index extends Component
             ],
             [
                 'key' => 'commission_rate',
-                'label' => 'Comission Rate',
+                'label' => 'Commission Rate',
                 'sortable' => true
             ],
             [
