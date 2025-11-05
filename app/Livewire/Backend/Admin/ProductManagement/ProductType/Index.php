@@ -43,10 +43,11 @@ class Index extends Component
             [
                 'key' => 'description',
                 'label' => 'Description',
-                'sortable' => true
+                'sortable' => true,
+                'format' => fn($data) => $data->description
             ],
             [
-                'key' => 'comission_rate',
+                'key' => 'commission_rate',
                 'label' => 'Comission Rate',
                 'sortable' => true
             ],

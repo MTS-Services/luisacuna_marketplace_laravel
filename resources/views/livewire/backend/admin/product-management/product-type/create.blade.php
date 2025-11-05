@@ -63,7 +63,7 @@
             {{-- description --}}
             <div class="w-full mt-2">
                 <x-ui.label value="Description" class="mb-1" />
-                <x-ui.text-editor model="content1" wire:model.live="form.description" id="text-editor-main-content"
+                <x-ui.text-editor model="form.description" id="text-editor-main-content"
                     placeholder="Enter your main content here..." :height="350" />
 
                 <x-ui.input-error :messages="$errors->get('form.description')" />
