@@ -80,6 +80,7 @@ class Product extends BaseModel implements Auditable
         'delivery_method' => ProductsDeliveryMethod::class,
         'status' => ProductStatus::class,
         'visibility' => ProductsVisibility::class,
+        'reviewed_at' => 'datetime',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
