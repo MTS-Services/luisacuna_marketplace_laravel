@@ -76,18 +76,16 @@
                             <img src="{{ asset('assets/icons/icons8-google.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
                                 alt="Google" />
                         </a>
-                        <a href="{{ route('auth.facebook') }}"
+                        <a href="javascript:void(0)"
                             class="w-10 h-10 sm:w-12 sm:h-12 flex z-30 items-center justify-center bg-white rounded-md">
                             <img src="{{ asset('assets/icons/icons8-apple-logo.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
                                 alt="Apple" />
                         </a>
 
-                        {{-- <a href="{{ route('auth.facebook') }}"> Facebook</a> --}}
-
-                        <button class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
+                        <a href="{{ route('auth.facebook') }}" class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
                             <img src="{{ asset('assets/icons/icons8-facebook.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
                                 alt="Facebook" />
-                        </button>
+                        </a>
                     </div>
 
                     <!-- Sign up link -->

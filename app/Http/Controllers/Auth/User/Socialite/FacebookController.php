@@ -9,144 +9,121 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
+use Laravel\Socialite\Two\InvalidStateException;
+use GuzzleHttp\Exception\ClientException;
 
 class FacebookController extends Controller
 {
-    /**
-     * Redirect to Facebook for authentication
-     */
     public function redirectToFacebook()
     {
         try {
-            Log::info('Facebook Login: Redirecting to Facebook');
             return Socialite::driver('facebook')
                 ->scopes(['email', 'public_profile'])
                 ->fields(['id', 'name', 'email', 'first_name', 'last_name'])
-                ->with(['auth_type' => 'rerequest'])
+                ->with([
+                    'auth_type' => 'rerequest',
+                    'display' => 'popup'
+                ])
                 ->redirect();
         } catch (Exception $e) {
             Log::error('Facebook Login: Redirect Error - ' . $e->getMessage());
-            return redirect('/login')->withErrors(['error' => 'Failed to connect to Facebook: ' . $e->getMessage()]);
+            return redirect('/login')->withErrors(['error' => 'Failed to connect to Facebook.']);
         }
     }
 
-    /**
-     * Handle Facebook callback
-     */
     public function handleFacebookCallback()
     {
         try {
-            Log::info('Facebook Login: Callback started');
-
-            // Get Facebook user
             $facebookUser = Socialite::driver('facebook')->user();
-            
-            // Debug: Log everything Facebook returns
-            Log::info('Facebook Login: Complete response', [
-                'getRaw' => $facebookUser->getRaw(),
-            ]);
-            
-            Log::info('Facebook Login: User data received', [
-                'id' => $facebookUser->getId(),
-                'name' => $facebookUser->getName(),
-                'email' => $facebookUser->getEmail(),
-            ]);
 
-            // Check if email is provided
+            $facebookId = $facebookUser->getId();
+            $name = $facebookUser->getName();
             $email = $facebookUser->getEmail();
-            if (!$email) {
-                Log::error('Facebook Login: No email provided by Facebook', [
-                    'raw_data' => $facebookUser->getRaw()
-                ]);
-                
-                return redirect('/login')->withErrors([
-                    'error' => 'Email permission is required. Please allow email access when logging in with Facebook, or use a Facebook account with a verified email address.'
-                ]);
+
+            $user = User::where('facebook_id', $facebookId)->first();
+
+            if (!$user && $email) {
+                $user = User::where('email', $email)->first();
             }
 
-            // Find user by Facebook ID or email
-            $user = User::where('facebook_id', $facebookUser->getId())
-                ->orWhere('email', $email)
-                ->first();
-
             if ($user) {
-                Log::info('Facebook Login: Existing user found', ['user_id' => $user->id]);
-                
-                // Update Facebook ID if not set
                 if (!$user->facebook_id) {
-                    $user->facebook_id = $facebookUser->getId();
+                    $user->facebook_id = $facebookId;
+                }
+
+                // ✅ Email add hole email_verified_at o add hobe
+                if (!$user->email && $email) {
+                    $user->email = $email;
+                    $user->email_verified_at = now();
+                } elseif ($email && !$user->email_verified_at) {
+                    $user->email_verified_at = now();
+                }
+                
+                if ($user->isDirty()) {
                     $user->save();
-                    Log::info('Facebook Login: Facebook ID updated for user', ['user_id' => $user->id]);
                 }
             } else {
-                Log::info('Facebook Login: Creating new user');
-                
-                // Split the full name into first and last name
-                $fullName = $facebookUser->getName();
-                $nameParts = explode(' ', $fullName, 2);
-                $firstName = $nameParts[0];
-                $lastName = $nameParts[1] ?? '';
+                $rawData = $facebookUser->getRaw();
+                $firstName = $rawData['first_name'] ?? '';
+                $lastName = $rawData['last_name'] ?? '';
 
-                // Generate unique username from email or name
-                $baseUsername = $this->generateUsername($email, $firstName);
+                if (empty($firstName)) {
+                    $nameParts = explode(' ', $name, 2);
+                    $firstName = $nameParts[0];
+                    $lastName = $nameParts[1] ?? '';
+                }
+
+                $baseUsername = $this->generateUsername($email, $firstName, $facebookId);
                 $username = $this->ensureUniqueUsername($baseUsername);
 
-                Log::info('Facebook Login: Generated username', ['username' => $username]);
-
-                // Create new user
+                // ✅ Email thakle email_verified_at set hobe, na hole null
                 $user = User::create([
                     'username' => $username,
                     'first_name' => $firstName,
                     'last_name' => $lastName,
                     'email' => $email,
-                    'facebook_id' => $facebookUser->getId(),
+                    'facebook_id' => $facebookId,
                     'password' => Hash::make(uniqid()),
-                    'email_verified_at' => now(),
+                    'email_verified_at' => $email ? now() : now(),
                 ]);
-
-                Log::info('Facebook Login: New user created', ['user_id' => $user->id]);
             }
 
-            // Log the user in
-            Auth::login($user);
-            Log::info('Facebook Login: User logged in successfully', ['user_id' => $user->id]);
+            Auth::login($user, true);
 
             return redirect()->intended('user/orders/purchased-orders');
-
-        } catch (\Laravel\Socialite\Two\InvalidStateException $e) {
+        } catch (InvalidStateException $e) {
             Log::error('Facebook Login: Invalid State Exception - ' . $e->getMessage());
             return redirect('/login')->withErrors(['error' => 'Session expired. Please try logging in again.']);
-            
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
+        } catch (ClientException $e) {
             Log::error('Facebook Login: Client Exception - ' . $e->getMessage());
             return redirect('/login')->withErrors(['error' => 'Facebook authentication failed. Please check your app credentials.']);
-            
         } catch (Exception $e) {
             Log::error('Facebook Login: General Exception - ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString()
             ]);
-            return redirect('/login')->withErrors(['error' => 'Unable to login with Facebook: ' . $e->getMessage()]);
+            return redirect('/login')->withErrors(['error' => 'Unable to login with Facebook.']);
         }
     }
 
-    /**
-     * Generate username from email or name
-     */
-    private function generateUsername($email, $firstName)
+    private function generateUsername($email, $firstName, $facebookId)
     {
         if ($email) {
             $username = explode('@', $email)[0];
-        } else {
+        } elseif ($firstName) {
             $username = strtolower($firstName);
+        } else {
+            $username = 'fbuser' . substr($facebookId, -6);
         }
 
         $username = preg_replace('/[^a-zA-Z0-9]/', '', $username);
+
+        if (strlen($username) < 3) {
+            $username = 'fbuser' . substr($facebookId, -6);
+        }
+
         return strtolower($username);
     }
 
-    /**
-     * Ensure username is unique by adding numbers if needed
-     */
     private function ensureUniqueUsername($username)
     {
         $originalUsername = $username;
