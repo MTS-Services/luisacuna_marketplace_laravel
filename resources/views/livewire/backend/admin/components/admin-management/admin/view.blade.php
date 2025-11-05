@@ -42,7 +42,7 @@
                             </path>
                         </svg>
                         <div>
-                            <p class="text-text-muted">Phone</p>
+                            <p class="text-text-muted">{{__('Phone')}}</p>
                             <p class="font-medium text-text-primary">{{ $admin->phone }}</p>
                         </div>
                     </div>

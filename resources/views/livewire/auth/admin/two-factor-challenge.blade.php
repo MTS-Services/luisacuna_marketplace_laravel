@@ -52,7 +52,7 @@
     <!-- Divider -->
     <div class="my-6 flex items-center">
         <div class="flex-grow border-t border-zinc-300 dark:border-zinc-700"></div>
-        <span class="mx-3 text-sm text-text-muted dark:text-text-muted">or</span>
+        <span class="mx-3 text-sm text-text-muted dark:text-text-muted">{{__('or')}}</span>
         <div class="flex-grow border-t border-zinc-300 dark:border-zinc-700"></div>
     </div>
 

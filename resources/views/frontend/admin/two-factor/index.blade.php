@@ -74,10 +74,10 @@
                     <div class="border-t border-text-muted/20 pt-6">
                         <h3 class="text-lg font-semibold mb-4">{{__('Enable Two-Factor Authentication')}}</h3>
                         <p class="text-text-secondary mb-6">
-                            When two-factor authentication is enabled, you will be prompted for a secure, random token
+                        {{ __('When two-factor authentication is enabled, you will be prompted for a secure, random token
                             during authentication.
-                            You may retrieve this token from your phone's Google Authenticator, Authy, or any compatible
-                            authenticator application.
+                            You may retrieve this token from your phone'\s' Google Authenticator, Authy, or any compatible
+                            authenticator application.') }}
                         </p>
 
                         <form method="POST" action="{{ route('admin.two-factor.enable') }}">
@@ -87,7 +87,7 @@
                             </x-ui.button> --}}
                             <button type="submit"
                                 class="px-6 py-3 bg-zinc-600 text-white font-semibold rounded-md hover:bg-zinc-700 transition duration-200">
-                                Enable Two-Factor Authentication
+                                {{ __('Enable Two-Factor Authentication') }}
                             </button>
                         </form>
                     </div>
@@ -95,12 +95,12 @@
                     <!-- QR Code Section -->
                     @if (!auth()->guard('admin')->user()->two_factor_confirmed_at)
                         <div class="border-t border-text-muted/20 pt-6 mb-6">
-                            <h3 class="text-lg font-semibold mb-4">Finish Enabling Two-Factor Authentication</h3>
+                            <h3 class="text-lg font-semibold mb-4">{{__('Finish Enabling Two-Factor Authentication')}}</h3>
 
                             <p class="text-text-secondary mb-4">
-                                To finish enabling two-factor authentication, scan the following QR code using your
-                                phone's authenticator application
-                                or enter the setup key and provide the generated OTP code.
+                                {{ __('To finish enabling two-factor authentication, scan the following QR code using your
+                                phone'\'s authenticator application
+                                or enter the setup key and provide the generated OTP code.') }}
                             </p>
 
                             <!-- QR Code Display -->
@@ -110,7 +110,7 @@
                                     <div class="text-center">
                                         <x-ui.button class="w-auto py-2!" type="button" onclick="loadQRCode()"
                                             variant="primary">
-                                            Show QR Code
+                                            {{ __('Show QR Code') }}
                                         </x-ui.button>
                                         {{-- <button type="button" onclick="loadQRCode()"
                                             class="px-6 py-3 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition">
@@ -127,7 +127,7 @@
 
                                 <div class="mb-4">
                                     <label for="code" class="block text-sm font-medium text-text-primary mb-2">
-                                        Confirm with code from authenticator app
+                                        {{ __('Confirm with code from authenticator app') }}
                                     </label>
                                     <input type="text" id="code" name="code"
                                         class="w-full px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-bg-primary text-text-primary focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-accent-foreground"
@@ -143,7 +143,7 @@
                                 </x-ui.button> --}}
                                 <button type="submit"
                                     class="px-6 py-2 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 transition duration-200">
-                                    Confirm & Enable
+                                    {{ __('Confirm & Enable') }}
                                 </button>
                             </form>
                         </div>
@@ -152,16 +152,16 @@
                     <!-- Recovery Codes Section -->
                     @if (auth()->guard('admin')->user()->two_factor_confirmed_at)
                         <div class="border-t border-text-muted/20 pt-6 mb-6">
-                            <h3 class="text-lg font-semibold mb-4">Recovery Codes</h3>
+                            <h3 class="text-lg font-semibold mb-4">{{__('Recovery Codes')}}</h3>
                             <p class="text-text-secondary mb-4">
-                                Store these recovery codes in a secure password manager. They can be used to recover
+                                {{ __('Store these recovery codes in a secure password manager. They can be used to recover
                                 access to your account
-                                if your two-factor authentication device is lost.
+                                if your two-factor authentication device is lost.') }}
                             </p>
 
                             <x-ui.button class="w-auto py-2! mb-4" type="button" onclick="showRecoveryCodes()"
                                 variant="primary">
-                                Show Recovery Codes
+                                {{ __('Show Recovery Codes') }}
                             </x-ui.button>
 
                             <div id="recoveryCodes" class="hidden mb-4">
@@ -171,9 +171,9 @@
                                         <!-- Codes loaded here via JavaScript -->
                                     </div>
                                 </div>
-                                <p class="text-sm text-text-secondary mt-2">💡 Save these codes in a safe place. Each
+                                <p class="text-sm text-text-secondary mt-2">{{__('💡 Save these codes in a safe place. Each
                                     code
-                                    can only be used once.</p>
+                                    can only be used once.')}}</p>
                             </div>
 
                             <form method="POST" action="{{ route('admin.two-factor.recovery-codes.store') }}"
@@ -181,7 +181,7 @@
                                 @csrf
                                 <x-ui.button class="w-auto py-2!" type="submit" variant="secondary"
                                     onclick="return confirm('This will invalidate all your old recovery codes. Are you sure?')">
-                                    Regenerate Recovery Codes
+                                    {{ __('Regenerate Recovery Codes') }}
                                 </x-ui.button>
                             </form>
                         </div>
@@ -191,11 +191,11 @@
                     @if (is_null(auth()->guard('admin')->user()->two_factor_confirmed_at))
                         <!-- Cancel 2FA Processing -->
                         <div class="border-t border-text-muted/20 pt-6">
-                            <h3 class="text-lg font-semibold mb-4 text-pink-600">Cancel Processing</h3>
+                            <h3 class="text-lg font-semibold mb-4 text-pink-600">{{__('Cancel Processing')}}</h3>
                             <p class="text-text-secondary mb-4">
-                                ⚠️ <strong>Warning:</strong> Canceling two-factor authentication processing will make
+                                ⚠️ <strong>{{__('Warning:')}}</strong> {{ __('Canceling two-factor authentication processing will make
                                 your admin
-                                account significantly less secure.
+                                account significantly less secure.') }}
                             </p>
 
                             <form method="POST" action="{{ route('admin.two-factor.disable') }}">
@@ -208,17 +208,17 @@
                                 <button type="submit"
                                     class="px-6 py-2 bg-pink-600 text-white font-semibold rounded-md hover:bg-pink-700 transition duration-200"
                                     onclick="return confirm('Are you sure you want to cancel Processing for your admin account?')">
-                                    Cancel Processing
+                                    {{ __('Cancel Processing') }}
                                 </button>
                             </form>
                         </div>
                     @else
                         <!-- Disable 2FA -->
                         <div class="border-t border-text-muted/20 pt-6">
-                            <h3 class="text-lg font-semibold mb-4 text-pink-600">Disable Two-Factor Authentication</h3>
+                            <h3 class="text-lg font-semibold mb-4 text-pink-600">{{__('Disable Two-Factor Authentication')}}</h3>
                             <p class="text-text-secondary mb-4">
-                                ⚠️ <strong>Warning:</strong> Disabling two-factor authentication will make your admin
-                                account significantly less secure.
+                                ⚠️ <strong>{{__('Warning:')}}</strong> {{ __('Disabling two-factor authentication will make your admin
+                                account significantly less secure.') }}
                             </p>
 
                             <form method="POST" action="{{ route('admin.two-factor.disable') }}">
@@ -231,7 +231,7 @@
                                 <button type="submit"
                                     class="px-6 py-2 bg-pink-600 text-white font-semibold rounded-md hover:bg-pink-700 transition duration-200"
                                     onclick="return confirm('Are you sure you want to disable two-factor for your admin account?')">
-                                    Disable Two-Factor Authentication
+                                    {{ __('Disable Two-Factor Authentication') }}
                                 </button>
                             </form>
                         </div>
@@ -244,7 +244,7 @@
         <!-- Back to Dashboard -->
         <div class="mt-6 text-center">
             <a href="{{ route('admin.dashboard') }}" class="text-accent hover:text-accent-content font-medium">
-                ← Back to Dashboard
+                {{ __('← Back to Dashboard') }}
             </a>
         </div>
     </div>
