@@ -10,7 +10,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @fluxAppearance
-    
+
     <style>
         [x-cloak] {
             display: none !important;
@@ -21,12 +21,27 @@
 <body x-data="{ sidebarOpen: false, mobileMenuOpen: false }" class="h-full max-h-screen antialiased bg-bg-secondary">
 
     <div class="flex flex-col h-screen">
-        <livewire:backend.user.partials.header :pageSlug="$pageSlug" />
+        @if (
+            !(request()->routeIs('login') ||
+                request()->routeIs('register') ||
+                request()->routeIs('password.request') ||
+                request()->routeIs('password.reset') ||
+                request()->routeIs('verify-reset-otp') ||
+                request()->routeIs('verification.notice') ||
+                request()->routeIs('verify-otp') ||
+                request()->routeIs('verification.verify') ||
+                request()->routeIs('two-factor.*') ||
+                request()->routeIs('two-factor.login') ||
+                request()->routeIs('two-factor.login.store') ||
+                request()->routeIs('admin.*')
+            ))
+            <livewire:frontend.partials.header />
+        @endif
 
         <div class="flex flex-1 overflow-hidden">
             <!-- Sidebar -->
             <livewire:backend.user.partials.sidebar :pageSlug="$pageSlug" />
-            
+
             <!-- Main content -->
             <div class="flex-1 flex flex-col custom-scrollbar overflow-y-auto">
                 <main class="flex-1 p-4 lg:p-6">
@@ -39,18 +54,13 @@
     </div>
 
     <!-- Mobile Overlay -->
-    <div x-show="sidebarOpen" 
-         @click="sidebarOpen = false"
-         x-cloak
-         class="fixed inset-0 bg-bg-primary/60 z-40 lg:hidden transition-opacity"
-         x-transition:enter="transition-opacity ease-linear duration-300" 
-         x-transition:enter-start="opacity-0"
-         x-transition:enter-end="opacity-100" 
-         x-transition:leave="transition-opacity ease-linear duration-300"
-         x-transition:leave-start="opacity-100" 
-         x-transition:leave-end="opacity-0">
+    <div x-show="sidebarOpen" @click="sidebarOpen = false" x-cloak
+        class="fixed inset-0 bg-bg-primary/60 z-40 lg:hidden transition-opacity"
+        x-transition:enter="transition-opacity ease-linear duration-300" x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-linear duration-300"
+        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
     </div>
-    
+
     @fluxScripts
 
     <script>
@@ -235,7 +245,7 @@
             confirmAction
         };
     </script>
-    
+
     @stack('scripts')
 </body>
 
