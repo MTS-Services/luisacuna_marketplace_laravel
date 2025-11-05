@@ -5,11 +5,11 @@
             <div class="flex items-center gap-2 mb-8 text-sm">
                 <span class="text-blue-100 text-text-primary">
                     <img width="25" class="inline-block" src="{{ asset('assets/images/mdb.png') }}" alt="img">
-                    Blade ball tokens</span>
+                    {{__('Blade ball tokens')}}</span>
                 <span class=" text-text-primary">></span>
-                <span class=" text-text-primary">Seller list</span>
+                <span class=" text-text-primary">{{__('Seller list')}}</span>
                 <span class=" text-text-primary">></span>
-                <span class=" text-text-primary">Checkout</span>
+                <span class=" text-text-primary">{{__('Checkout')}}</span>
             </div>
             <!-- Main Container -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -25,18 +25,18 @@
                                         alt="">
                                 </div>
                                 <div>
-                                    <h3 class="text-text-primary font-medium text-xl">EA SPORTS FC COINS <span
-                                            class="text-text-primary text-sm">Fast, cheap pro boost. Any brawler,
-                                            a</span>
+                                    <h3 class="text-text-primary font-medium text-xl">{{ __('EA SPORTS FC COINS') }} <span
+                                            class="text-text-primary text-sm">{{__('Fast, cheap pro boost. Any brawler,
+                                            a')}}</span>
                                     </h3>
 
-                                    <p class="text-text-primary text-xs mt-1">Brand Stars • Boosting</p>
+                                    <p class="text-text-primary text-xs mt-1">{{__('Brand Stars • Boosting')}}</p>
                                 </div>
                             </div>
                             <div class="float-right pt-18 ">
                                 <div class="flex items-center gap-5 mb-2">
-                                    <span class="text-text-primary">*1</span>
-                                    <span class="text-text-primary text-2xl ">$76.28</span>
+                                    <span class="text-text-primary">{{__('*1')}}</span>
+                                    <span class="text-text-primary text-2xl ">{{__('$76.28')}}</span>
                                 </div>
                             </div>
                         </div>
@@ -45,7 +45,7 @@
 
                     <!-- Contact Information -->
                     <div class="bg-bg-primary rounded-lg p-6">
-                        <h2 class="text-text-primary text-xl mb-6">Contact information</h2>
+                        <h2 class="text-text-primary text-xl mb-6">{{__('Contact information')}}</h2>
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-text-primary text-sm mb-2"></label>
@@ -67,40 +67,40 @@
                 <!-- Right Column - Cart Summary -->
                 <div class="lg:col-span-1">
                     <div class="bg-bg-primary rounded-lg p-6 top-8">
-                        <h2 class="text-text-primary text-xl mb-6">Cart Total</h2>
+                        <h2 class="text-text-primary text-xl mb-6">{{__('Cart Total')}}</h2>
 
                         <div class="space-y-4 mb-6">
                             <div class="flex justify-between items-center">
-                                <span class="text-text-primary">Cart Subtotal</span>
-                                <span class="text-text-primary  ">$76.28</span>
+                                <span class="text-text-primary">{{__('Cart Subtotal')}}</span>
+                                <span class="text-text-primary  ">{{__('$76.28')}}</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-text-primary">Payment fee</span>
-                                <span class="text-text-primary  ">+0.79</span>
+                                <span class="text-text-primary">{{__('Shipping')}}</span>
+                                <span class="text-text-primary  ">{{__('+0.79')}}</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-text-primary">Discount</span>
-                                <span class="text-text-primary ">-$90</span>
+                                <span class="text-text-primary">{{__('Discount')}}</span>
+                                <span class="text-text-primary ">{{__('-$90')}}</span>
                             </div>
                             <div class="border-t border-purple-700/50 pt-4 flex justify-between items-center">
-                                <span class="text-text-primary ">Cart Total</span>
-                                <span class="text-text-primary text-2xl ">$77.07</span>
+                                <span class="text-text-primary ">{{__('Cart Total')}}</span>
+                                <span class="text-text-primary text-2xl ">{{__('$77.07')}}</span>
                             </div>
                         </div>
 
                         <!-- Pay Now Button -->
                         <button
                             class="w-full bg-[#853EFF] text-white text-xl py-3 rounded-full transition transform hover:scale-105 mb-4">
-                            $77.07 | Pay Now
+                            {{__('$77.07 | Pay Now')}}
                         </button>
 
                         <!-- Terms Checkbox -->
                         <label class="flex items-start gap-3 cursor-pointer">
                             <input type="checkbox" checked class="w-5 h-5 mt-1 accent-[#853EFF]">
                             <span class="text-purple-300 text-sm">
-                                I accept the <span class="text-purple-200 hover:text-white">Terms of Service</span>,
-                                <span class="text-purple-200 hover:text-white">Privacy Notice</span> and <span
-                                    class="text-purple-200 hover:text-white">Refund Policy</span>.
+                                {{__('I accept the')}} <span class="text-purple-200 hover:text-white">{{__('Terms of Service')}}</span>,
+                                <span class="text-purple-200 hover:text-white">{{__('Privacy Notice')}}</span> {{ __('and') }} <span
+                                    class="text-purple-200 hover:text-white">{{__('Refund Policy .')}}</span>
                             </span>
                         </label>
                     </div>
@@ -109,7 +109,7 @@
             </div>
             <!-- Payment Method -->
             <div class="bg-bg-primary rounded-lg p-6 w-full mt-5">
-                <h2 class="text-text-primary text-xl mb-6">Payment method</h2>
+                <h2 class="text-text-primary text-xl mb-6">{{__('Payment method')}}</h2>
                 <div class="space-y-3">
                     <!-- Credit/Debit Card Option -->
                     <label
@@ -119,7 +119,7 @@
                             <span class="text-purple-300 text-sm"><img
                                     src="{{ asset('assets/images/CreditDebit Card.png') }}" alt=""></span>
                             <div class="flex items-center gap-2">
-                                <span class="text-text-primary">Credit/Debit Card</span>
+                                <span class="text-text-primary">{{__('Credit/Debit Card')}}</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="18"
                                     class="fill-white bg-[#853EFF] rounded-full" viewBox="0 0 256 256">
                                     <path
@@ -138,7 +138,7 @@
                             <span class="text-purple-300 text-sm"><img
                                     src="{{ asset('assets/images/Digital Wallet.png') }}" alt=""></span>
                             <div class="flex items-center gap-2">
-                                <span class="text-text-primary">Digital Wallet</span>
+                                <span class="text-text-primary">{{__('Digital Wallet')}}</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="18"
                                     class="fill-white bg-[#853EFF] rounded-full" viewBox="0 0 256 256">
                                     <path
@@ -157,7 +157,7 @@
                             <span class="text-purple-300 text-sm"><img src="{{ asset('assets/images/Crypto.png') }}"
                                     alt=""></span>
                             <div class="flex items-center gap-2">
-                                <span class="text-text-primary">Crypto</span>
+                                <span class="text-text-primary">{{__('Crypto')}}</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="18"
                                     class="fill-white bg-[#853EFF] rounded-full" viewBox="0 0 256 256">
                                     <path
@@ -191,7 +191,7 @@
                 <!-- Save Payment Method Button -->
                 <button
                     class="mt-8  bg-[#853EFF] text-white text-lg py-3 px-6 rounded-full transition transform hover:scale-105">
-                    Save Payment Method
+                    {{__('Save Payment Method')}}
                 </button>
             </div>
         </div>

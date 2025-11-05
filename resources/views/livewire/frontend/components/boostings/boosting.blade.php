@@ -8,17 +8,17 @@
                     <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
                 </div>
                 <div class="text-muted text-base">
-                    <span class="text-base text-text-white">Home</span>
+                    <span class="text-base text-text-white">{{__('Home')}}</span>
                 </div>
                 <div class="px-2 text-text-white text-base">
                     >
                 </div>
                 <h1 class="text-text-white text-base">
-                    Boosting
+                {{ __('Boosting') }}
                 </h1>
             </div>
             <div class="title mb-5">
-                <h2 class="font-semibold text-4xl">Boosting</h2>
+                <h2 class="font-semibold text-4xl">{{ __('Boosting') }}</h2>
             </div>
 
             <!-- Search + Filter -->
@@ -42,15 +42,15 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2l-7 7v5l-4 4v-9L3 6V4z" />
                     </svg>
-                    <span>Filter</span>
+                    <span>{{__('Filter')}}</span>
                 </button>
                 <div class="absolute top-14 right-0 z-10 shadow-glass-card" x-show="filter" x-transition x-cloak
                     @click.outside="filter = false">
                     {{-- filter Options --}}
                     <div class="bg-bg-primary rounded-md p-4">
                         <div class="flex flex-col gap-2">
-                            <button class="">Option 1</button>
-                            <button class="">Option 1</button>
+                            <button class="">{{__('Option 1')}}</button>
+                            <button class="">{{__('Option 2')}}</button>
                         </div>
                     </div>
                 </div>
@@ -62,9 +62,9 @@
                             <img src="{{ asset('assets/images/class_of_clans.png') }}" alt="Clash of Clans"
                                 class="p-2 w-full h-68 object-cover rounded-xl" />
                             <div class="p-4">
-                                <h3 class="lg:text-3xl sm:text-1xl md:text-2xl font-medium mb-4 dark:text-white">Clash
+                                <h3 class="lg:text-3xl sm:text-1xl md:text-2xl font-medium mb-4 dark:text-white">{{ __('Clash
                                     of
-                                    Clans
+                                    Clans') }}
                                 </h3>
                                 <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                                     {{ __('See Seller List') }}
@@ -79,7 +79,7 @@
                             <div class="p-4">
                                 <h3
                                     class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
-                                    Fortnite
+                                    {{ ('Fortnite') }}
                                 </h3>
                                 <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                                     {{ __('See Seller List') }}
@@ -94,8 +94,8 @@
                             <div class="p-4">
                                 <h3
                                     class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
-                                    Genshin
-                                    Impact</h3>
+                                    {{__('Genshin
+                                    Impact')}}</h3>
                                 <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                                     {{ __('See Seller List') }}
                                 </x-ui.button>
@@ -107,9 +107,9 @@
                             <img src="{{ asset('assets/images/class_of_clans.png') }}" alt="Clash of Clans"
                                 class="p-2 w-full h-68 object-cover rounded-xl" />
                             <div class="p-4">
-                                <h3 class="lg:text-3xl sm:text-1xl md:text-2xl font-medium mb-4 dark:text-white">Clash
+                                <h3 class="lg:text-3xl sm:text-1xl md:text-2xl font-medium mb-4 dark:text-white">{{ __('Clash
                                     of
-                                    Clans
+                                    Clans') }}
                                 </h3>
                                 <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                                     {{ __('See Seller List') }}
@@ -124,7 +124,7 @@
                             <div class="p-4">
                                 <h3
                                     class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
-                                    Fortnite
+                                    {{ __('Fortnite') }}
                                 </h3>
                                 <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                                     {{ __('See Seller List') }}
@@ -143,7 +143,7 @@
 
         <div class="max-w-7xl mx-auto px-12">
             <!-- Popular Boosting -->
-            <h2 class="text-4xl mb-6 dark:text-white">Newly Boosting</h2>
+            <h2 class="text-4xl mb-6 dark:text-white">{{__('Newly Boosting')}}</h2>
             <div class="swiper popular-boosting">
                 <div class="swiper-wrapper py-16">
                     <div class="swiper-slide">
@@ -154,8 +154,8 @@
                             <div class="p-4">
                                 <h3
                                     class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
-                                    DarkWar:
-                                    survival</h3>
+                                    {{__('DarkWar:
+                                    survival')}}</h3>
                                 <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                                     {{ __('See Seller List') }}
                                 </x-ui.button>
@@ -170,7 +170,7 @@
                             <div class="p-4">
                                 <h3
                                     class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
-                                    KingShot
+                                    {{ __('KingShot') }}
                                 </h3>
                                 <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                                     {{ __('See Seller List') }}
@@ -186,8 +186,8 @@
                             <div class="p-4">
                                 <h3
                                     class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
-                                    Last
-                                    war:survival</h3>
+                                    {{__('Last
+                                    war:survival')}}</h3>
                                 <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                                     {{ __('See Seller List') }}
                                 </x-ui.button>
@@ -199,9 +199,9 @@
                             <img src="{{ asset('assets/images/class_of_clans.png') }}" alt="Clash of Clans"
                                 class="p-2 w-full h-68 object-cover rounded-xl" />
                             <div class="p-4">
-                                <h3 class="lg:text-3xl sm:text-1xl md:text-2xl font-medium mb-4 dark:text-white">Clash
+                                <h3 class="lg:text-3xl sm:text-1xl md:text-2xl font-medium mb-4 dark:text-white">{{__('Clash
                                     of
-                                    Clans
+                                    Clans') }}
                                 </h3>
                                 <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                                     {{ __('See Seller List') }}
@@ -216,7 +216,7 @@
                             <div class="p-4">
                                 <h3
                                     class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
-                                    Fortnite
+                                    {{ __('Fortnite') }}
                                 </h3>
                                 <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                                     {{ __('See Seller List') }}
@@ -236,7 +236,7 @@
 
         <div class="max-w-7xl mx-auto px-12 py-6  ">
             <!-- Popular Boosting -->
-            <h2 class="text-4xl mb-6 text-white">All Boosting</h2>
+            <h2 class="text-4xl mb-6 text-white">{{__('Fortnite')}}</h2>
 
             <!-- Cards Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
@@ -246,8 +246,8 @@
                     <img src="{{ asset('assets/images/ApexLegends.jpg') }}" alt="Apex Legends"
                         class="p-2 w-full h-68 object-cover rounded-xl" />
                     <div class="p-4">
-                        <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">Apex
-                            Legends
+                        <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">{{ __('Apex
+                            Legends') }}
                         </h3>
                         <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                             {{ __('See Seller List') }}
@@ -261,7 +261,7 @@
                         class="p-2 w-full h-68 object-cover rounded-xl" />
                     <div class="p-4">
                         <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">
-                            Battlefield
+                            {{ __('Battlefield') }}
                         </h3>
                         <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                             {{ __('See Seller List') }}
@@ -274,8 +274,8 @@
                     <img src="{{ asset('assets/images/Black Desert Online.jpg') }}" alt="Black Desert Online"
                         class="p-2 w-full h-68 object-cover rounded-xl" />
                     <div class="p-4">
-                        <h3 class=" lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">Black
-                            Desert Online</h3>
+                        <h3 class=" lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">{{__('Black
+                            Desert Online')}}</h3>
                         <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                             {{ __('See Seller List') }}
                         </x-ui.button>
@@ -293,9 +293,9 @@
                     <img src="{{ asset('assets/images/Call of Duty.jpg') }}" alt="Call of Duty"
                         class="p-2 w-full h-68 object-cover rounded-xl" />
                     <div class="p-4">
-                        <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">Call
+                        <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">{{__('Call
                             of
-                            Duty</h3>
+                            Duty')}}</h3>
                         <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                             {{ __('See Seller List') }}
                         </x-ui.button>
@@ -307,9 +307,9 @@
                     <img src="{{ asset('assets/images/Clash of Clans.png') }}" alt="Clash of Clans"
                         class="p-2 w-full h-68 object-cover rounded-xl" />
                     <div class="p-4">
-                        <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">Clash
+                        <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">{{__('Clash
                             of
-                            Clans</h3>
+                            Clans')}}</h3>
                         <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                             {{ __('See Seller List') }}
                         </x-ui.button>
@@ -321,9 +321,9 @@
                     <img src="{{ asset('assets/images/Dead By Daylight.jpg') }}" alt="Dead By Daylight"
                         class="p-2 w-full h-68 object-cover rounded-xl" />
                     <div class="p-4">
-                        <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">Dead
+                        <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">{{__('Dead
                             By
-                            Daylight</h3>
+                            Daylight')}}</h3>
                         <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                             {{ __('See Seller List') }}
                         </x-ui.button>
@@ -343,9 +343,9 @@
                     <img src="{{ asset('assets/images/EA Sports FC.jpg') }}" alt="EA Sports FC"
                         class="p-2 w-full h-68 object-cover rounded-xl" />
                     <div class="p-4">
-                        <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">EA
+                        <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">{{__('EA
                             Sports
-                            FC</h3>
+                            FC')}}</h3>
                         <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                             {{ __('See Seller List') }}
                         </x-ui.button>
@@ -357,8 +357,8 @@
                     <img src="{{ asset('assets/images/Elder Scrolls Online.jpg') }}" alt="Elder Scrolls Online"
                         class="p-2 w-full h-68 object-cover rounded-xl" />
                     <div class="p-4">
-                        <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">Elder
-                            Scrolls Online</h3>
+                        <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">{{__('Elder
+                            Scrolls Online')}}</h3>
                         <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                             {{ __('See Seller List') }}
                         </x-ui.button>
@@ -370,9 +370,9 @@
                     <img src="{{ asset('assets/images/Escape from Tarkov.jpg') }}" alt="Escape from Tarkov"
                         class="p-2 w-full h-68 object-cover rounded-xl" />
                     <div class="p-4">
-                        <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">Escape
+                        <h3 class="lg:text-3xl sm:text-1xl md:text-2xl text-xl font-medium mb-4 dark:text-white">{{__('Escape
                             from
-                            Tarkov</h3>
+                            Tarkov')}}</h3>
                         <x-ui.button href="{{ route('game.index',['categorySlug'=>'boosting','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate class="w-full p-6">
                             {{ __('See Seller List') }}
                         </x-ui.button>
@@ -382,7 +382,7 @@
             <div class="flex justify-center mt-8 mb-18">
                 <button
                     class="lg:text-xl sm:text-1xl md:text-2xl w-full sm:w-auto bg-purple-600 hover:bg-purple-700 text-white text-sm py-3 px-18 rounded-full transition">
-                    Load More
+                    {{ __('Load More') }}
                 </button>
 
             </div>

@@ -6,18 +6,18 @@
                 <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
             </div>
             <div class="text-muted text-base">
-                <span class="text-base text-text-white">Home</span>
+                <span class="text-base text-text-white">{{__('Home')}}</span>
             </div>
             <div class="px-2 text-text-white text-base">
                 >
             </div>
             <h1 class="text-text-white text-base">
-                Top Up
+                {{__('Top Up')}}
             </h1>
         </div>
 
         <div class="title mb-5">
-            <h2 class="font-semibold text-4xl">Top Ups</h2>
+            <h2 class="font-semibold text-4xl">{{__('Top Ups')}}</h2>
         </div>
 
 
@@ -25,11 +25,11 @@
         {{-- filter section --}}
         <div class="flex items-center justify-between my-10">
             <div class="w-full">
-                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">Top up</h2>
+                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{ __('Top Up') }}</h2>
                 <p class="text-text-white text-20px pt-3">
-                    Different from gift cards or vouchers, U7BUY provides a Top Up service with which you can add
+                    {{ __('Different from gift cards or vouchers, U7BUY provides a Top Up service with which you can add
                     funds directly to your balance. It contains a large variety, including mobile games, live
-                    streaming, shopping, entertainment, etc.
+                    streaming, shopping, entertainment, etc.') }}
                 </p>
             </div>
             <div class="w-full h-80">
@@ -45,7 +45,7 @@
             <div class="filter flex items-center">
                 <div class="border border-primary rounded-xl h-10 w-30 flex items-center justify-center">
                     <img src="{{ asset('assets/icons/light.png') }}" alt="" class="w-5 h-5">
-                    <p>Filter</p>
+                    <p>{{__('Filter')}}</p>
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@
     <section class="container mx-auto">
         <div class="mt-10">
             <div class="mb-10">
-                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">Popular Now</h2>
+                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{__('Popular Now')}}</h2>
             </div>
             <div class="swiper popular-toUp">
                 <div class="swiper-wrapper py-10">
@@ -67,12 +67,12 @@
                                         class="w-full h-full object-cover rounded-lg">
                                 </div>
                                 <div class="mt-5 mb-8">
-                                    <h2 class="text-2xl text-semibold text-text-white">Clash of Clans</h2>
+                                    <h2 class="text-2xl text-semibold text-text-white">{{__('Clash of Clans')}}</h2>
                                 </div>
                             </div>
                             <div class="">
                                 <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                                    See seller list
+                                    {{ __('See seller list') }}
                                 </x-ui.button>
                             </div>
                         </div>
@@ -85,12 +85,12 @@
                                         class="w-full h-full object-cover rounded-lg">
                                 </div>
                                 <div class="mt-5 mb-8">
-                                    <h2 class="text-2xl text-semibold text-text-white">Fortnite</h2>
+                                    <h2 class="text-2xl text-semibold text-text-white">{{__('Fortnite')}}</h2>
                                 </div>
                             </div>
                             <div class="">
                                 <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                                    See seller list
+                                    {{ __('See seller list') }}
                                 </x-ui.button>
                             </div>
                         </div>
@@ -103,12 +103,12 @@
                                         class="w-full h-full object-cover rounded-lg">
                                 </div>
                                 <div class="mt-5 mb-8">
-                                    <h2 class="text-2xl text-semibold text-text-white">Genshin Impact</h2>
+                                    <h2 class="text-2xl text-semibold text-text-white">{{__('Genshin Impact')}}</h2>
                                 </div>
                             </div>
                             <div class="">
                                 <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                                    See seller list
+                                   {{ __(' See seller list') }}
                                 </x-ui.button>
                             </div>
                         </div>
@@ -121,12 +121,12 @@
                                         class="w-full h-full object-cover rounded-lg">
                                 </div>
                                 <div class="mt-5 mb-8">
-                                    <h2 class="text-2xl text-semibold text-text-white">Genshin Impact</h2>
+                                    <h2 class="text-2xl text-semibold text-text-white">{{__('Genshin Impact')}}</h2>
                                 </div>
                             </div>
                             <div class="">
                                 <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                                    See seller list
+                                    {{ __('See seller list') }}
                                 </x-ui.button>
                             </div>
                         </div>
@@ -139,12 +139,12 @@
                                         class="w-full h-full object-cover rounded-lg">
                                 </div>
                                 <div class="mt-5 mb-8">
-                                    <h2 class="text-2xl text-semibold text-text-white">Genshin Impact</h2>
+                                    <h2 class="text-2xl text-semibold text-text-white">{{__('Genshin Impact')}}</h2>
                                 </div>
                             </div>
                             <div class="">
                                 <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                                    See seller list
+                                    {{ __('See seller list') }}
                                 </x-ui.button>
                             </div>
                         </div>
@@ -165,7 +165,7 @@
     <section class="container mx-auto">
         <div class="mt-10">
             <div class="mb-10">
-                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">Newly Launched</h2>
+                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{__('Newly Launched')}}</h2>
             </div>
             <div class="swiper popular-launched">
                 <div class="swiper-wrapper py-10">
@@ -177,12 +177,12 @@
                                         class="w-full h-full object-cover rounded-lg">
                                 </div>
                                 <div class="mt-5 mb-8">
-                                    <h2 class="text-2xl text-semibold text-text-white">DarkWar: survival</h2>
+                                    <h2 class="text-2xl text-semibold text-text-white">{{__('DarkWar: survival')}}</h2>
                                 </div>
                             </div>
                             <div class="">
                                 <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                                    See seller list
+                                    {{ __('See seller list') }}
                                 </x-ui.button>
                             </div>
                         </div>
@@ -195,12 +195,12 @@
                                         class="w-full h-full object-cover rounded-lg">
                                 </div>
                                 <div class="mt-5 mb-8">
-                                    <h2 class="text-2xl text-semibold text-text-white">Kingshot</h2>
+                                    <h2 class="text-2xl text-semibold text-text-white">{{__('Kingshot')}}</h2>
                                 </div>
                             </div>
                             <div class="">
                                 <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                                    See seller list
+                                    {{ __('See seller list') }}
                                 </x-ui.button>
                             </div>
                         </div>
@@ -213,12 +213,12 @@
                                         class="w-full h-full object-cover rounded-lg">
                                 </div>
                                 <div class="mt-5 mb-8">
-                                    <h2 class="text-2xl text-semibold text-text-white">Last war:survival</h2>
+                                    <h2 class="text-2xl text-semibold text-text-white">{{__('Last war:survival')}}</h2>
                                 </div>
                             </div>
                             <div class="">
                                 <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                                    See seller list
+                                    {{ __('See seller list') }}
                                 </x-ui.button>
                             </div>
                         </div>
@@ -231,12 +231,12 @@
                                         class="w-full h-full object-cover rounded-lg">
                                 </div>
                                 <div class="mt-5 mb-8">
-                                    <h2 class="text-2xl text-semibold text-text-white">Last war:survival</h2>
+                                    <h2 class="text-2xl text-semibold text-text-white">{{__('Last war:survival')}}</h2>
                                 </div>
                             </div>
                             <div class="">
                                 <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                                    See seller list
+                                    {{ __('See seller list') }}
                                 </x-ui.button>
                             </div>
                         </div>
@@ -249,12 +249,12 @@
                                         class="w-full h-full object-cover rounded-lg">
                                 </div>
                                 <div class="mt-5 mb-8">
-                                    <h2 class="text-2xl text-semibold text-text-white">Last war:survival</h2>
+                                    <h2 class="text-2xl text-semibold text-text-white">{{__('Last war:survival')}}</h2>
                                 </div>
                             </div>
                             <div class="">
                                 <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                                    See seller list
+                                    {{ __('See seller list') }}
                                 </x-ui.button>
                             </div>
                         </div>
@@ -274,7 +274,7 @@
     {{-- All Game --}}
     <section class="container mx-auto mt-10">
         <div class="mb-10">
-            <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">All Game</h2>
+            <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{__('All Game')}}</h2>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center gap-6">
             <div class="p-6 bg-bg-primary rounded-2xl">
@@ -284,12 +284,12 @@
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="text-2xl text-semibold text-text-white">League of Legends</h2>
+                        <h2 class="text-2xl text-semibold text-text-white">{{__('League of Legends')}}</h2>
                     </div>
                 </div>
                 <div class="">
                     <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                        See seller list
+                        {{ __('See seller list') }}
                     </x-ui.button>
                 </div>
             </div>
@@ -300,12 +300,12 @@
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="text-2xl text-semibold text-text-white">Arena Breakout</h2>
+                        <h2 class="text-2xl text-semibold text-text-white">{{__('Arena Breakout')}}</h2>
                     </div>
                 </div>
                 <div class="">
                     <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                        See seller list
+                        {{ __('See seller list') }}
                     </x-ui.button>
                 </div>
             </div>
@@ -316,12 +316,12 @@
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="text-2xl text-semibold text-text-white">Monopoly Go</h2>
+                        <h2 class="text-2xl text-semibold text-text-white">{{__('Monopoly Go')}}</h2>
                     </div>
                 </div>
                 <div class="">
                     <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                        See seller list
+                        {{ __('See seller list') }}
                     </x-ui.button>
                 </div>
             </div>
@@ -332,12 +332,12 @@
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="text-2xl text-semibold text-text-white">Anime Strike</h2>
+                        <h2 class="text-2xl text-semibold text-text-white">{{__('Anime Strike')}}</h2>
                     </div>
                 </div>
                 <div class="">
                     <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                        See seller list
+                        {{ __('See seller list') }}
                     </x-ui.button>
                 </div>
             </div>
@@ -348,12 +348,12 @@
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="text-2xl text-semibold text-text-white">Standoff2</h2>
+                        <h2 class="text-2xl text-semibold text-text-white">{{__('Standoff2')}}</h2>
                     </div>
                 </div>
                 <div class="">
                     <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                        See seller list
+                        {{ __('See seller list') }}
                     </x-ui.button>
                 </div>
             </div>
@@ -364,12 +364,12 @@
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="text-2xl text-semibold text-text-white">Fortnite</h2>
+                        <h2 class="text-2xl text-semibold text-text-white">{{__('Fortnite')}}</h2>
                     </div>
                 </div>
                 <div class="">
                     <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                        See seller list
+                        {{ __('See seller list') }}
                     </x-ui.button>
                 </div>
             </div>
@@ -380,12 +380,12 @@
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="text-2xl text-semibold text-text-white">TikTok</h2>
+                        <h2 class="text-2xl text-semibold text-text-white">{{__('TikTok')}}</h2>
                     </div>
                 </div>
                 <div class="">
                     <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                        See seller list
+                        {{ __('See seller list') }}
                     </x-ui.button>
                 </div>
             </div>
@@ -396,12 +396,12 @@
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="text-2xl text-semibold text-text-white">MoCo</h2>
+                        <h2 class="text-2xl text-semibold text-text-white">{{__('MoCo')}}</h2>
                     </div>
                 </div>
                 <div class="">
                     <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                        See seller list
+                        {{ __('See seller list') }}
                     </x-ui.button>
                 </div>
             </div>
@@ -412,12 +412,12 @@
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="text-2xl text-semibold text-text-white">Free Fire</h2>
+                        <h2 class="text-2xl text-semibold text-text-white">{{__('Free Fire')}}</h2>
                     </div>
                 </div>
                 <div class="">
                     <x-ui.button class="" href="{{ route('game.index',['categorySlug'=>'top-ups','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                        See seller list
+                        {{ __('See seller list') }}
                     </x-ui.button>
                 </div>
             </div>
