@@ -7,11 +7,13 @@ use App\Enums\OtpType;
 use App\Models\AuthBaseModel;
 use App\Traits\AuditableTrait;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Scout\Attributes\SearchUsingPrefix;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Admin extends AuthBaseModel implements Auditable
 {
     use TwoFactorAuthenticatable, AuditableTrait;
+    
     protected $guard = 'admin';
 
     protected $fillable = [
@@ -31,28 +33,21 @@ class Admin extends AuthBaseModel implements Auditable
         'last_login_at',
         'last_login_ip',
 
-        'created_by',
-        'updated_by',
-        'deleted_by',
+        'creater_id',
+        'updater_id',
+        'deleter_id',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
+
     protected $hidden = [
+        'id',
         'password',
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+ 
     protected function casts(): array
     {
         return [
@@ -65,6 +60,26 @@ class Admin extends AuthBaseModel implements Auditable
         ];
     }
 
+
+/* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+                Start of RELATIONSHIPS
+     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+
+    //
+
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+                End of RELATIONSHIPS
+     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+
+
+ /* 
+    =#=#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+    |           Query Scopes                                       |
+    =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=#=
+ */
+
+
+
     public function scopeActive($query)
     {
         return $query->where('status', AdminStatus::ACTIVE);
@@ -73,15 +88,6 @@ class Admin extends AuthBaseModel implements Auditable
     public function scopeInactive($query)
     {
         return $query->where('status', AdminStatus::INACTIVE);
-    }
-
-    public function scopeSearch($query, $search)
-    {
-        return $query->where(function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%")
-                ->orWhere('email', 'like', "%{$search}%")
-                ->orWhere('phone', 'like', "%{$search}%");
-        });
     }
 
     public function scopeFilter($query, array $filters)
@@ -96,8 +102,52 @@ class Admin extends AuthBaseModel implements Auditable
 
         return $query;
     }
+ /* 
+    =#=#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+    |          End of Query Scopes                                       |
+    =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=#=
+ */
 
-    // Accessors
+    
+ /* 
+    =#=#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+    |          Scout Search Configuration                                    |
+    =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=#=
+ */
+
+    #[SearchUsingPrefix([ 'name', 'email', 'phone', 'status'])]
+    public function toSearchableArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'status' => $this->status,
+        ];
+    }
+
+    /**
+     * Include only non-deleted data in search index.
+     */
+    public function shouldBeSearchable(): bool
+    {
+        return is_null($this->deleted_at);
+    }
+
+ /*
+    =#=#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+    |        End  Scout Search Configuration                                    |
+    =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=#=
+ */
+
+
+
+     /*
+    =#=#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+    |        Attribute Accessors                                    |
+    =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=#=
+ */
+
     public function getStatusLabelAttribute(): string
     {
         return $this->status->label();
@@ -115,7 +165,11 @@ class Admin extends AuthBaseModel implements Auditable
             : 'https://ui-avatars.com/api/?name=' . urlencode($this->name);
     }
 
-    // Methods
+      /*
+    =#=#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+    |       Methods                                   |
+    =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=#=
+ */
     public function isActive(): bool
     {
         return $this->status === AdminStatus::ACTIVE;
