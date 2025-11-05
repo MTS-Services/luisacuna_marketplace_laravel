@@ -34,7 +34,7 @@ class Edit extends Component
         
         $this->admin = $data;
         $this->adminId = $data->id;
-        $this->form->setAdmin($data);
+        $this->form->setData($data);
         $this->existingAvatar = $data->avatar_url;
 
         Log::info('AdminEdit mounted', [

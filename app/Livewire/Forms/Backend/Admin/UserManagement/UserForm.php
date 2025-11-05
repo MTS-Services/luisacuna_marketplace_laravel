@@ -5,7 +5,6 @@ namespace App\Livewire\Forms\Backend\Admin\UserManagement;
 use Livewire\Form;
 
 use App\Enums\UserAccountStatus;
-use App\Livewire\Frontend\Components\UserAccount;
 use Illuminate\Http\UploadedFile;
 use Livewire\Attributes\Locked;
 
@@ -64,7 +63,7 @@ class UserForm extends Form
         return $rules;
     }
 
-    public function setUser($user): void
+    public function setData($user): void
     {
         $this->user_id = $user->id;
         $this->first_name = $user->first_name;
@@ -72,6 +71,7 @@ class UserForm extends Form
         $this->username = $user->username ?? null;
         // $this->display_name = $user->display_name;
         $this->country_id = $user->country_id;
+        $this->language = $user->language_id;
         $this->date_of_birth = $user->date_of_birth;
         $this->email = $user->email;
         $this->phone = $user->phone;

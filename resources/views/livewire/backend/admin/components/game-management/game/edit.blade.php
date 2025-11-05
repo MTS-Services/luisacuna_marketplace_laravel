@@ -3,8 +3,8 @@
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game Edit') }}</h2>
             <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.gm.game.index') }}">
-                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
+                <x-ui.button href="{{ route('admin.gm.game.index') }}" class="w-auto! py-2!">
+                    <flux:icon name="arrow-left" class=" stroke-white" />
                     {{ __('Back') }}
                 </x-ui.button>
             </div>
@@ -190,15 +190,15 @@
             </div>
 
             {{-- Actions --}}
-            <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button wire:click.prevent="cancel" type="danger" class="w-auto!" button variant="tertiary" >
+            <div class="flex items-center justify-end gap-4 mt-6 ">
+                <x-ui.button wire:click.prevent="cancel" type="danger" class="w-auto! py-2!" button variant="tertiary" >
                     <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
 
                     {{ __('Cancel') }}
                     
                 </x-ui.button>
 
-                <x-ui.button type="accent" class="w-auto!">
+                <x-ui.button type="accent" class="w-auto! py-2!">
                     <span wire:loading.remove wire:target="update" class="text-white">Update</span>
                     <span wire:loading wire:target="update" class="text-white">Updating...</span>
                 </x-ui.button>

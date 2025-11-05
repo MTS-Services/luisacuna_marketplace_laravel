@@ -43,21 +43,19 @@ class Create extends Component
         try {
             $data =  $this->form->fillables();
            
-            $admin = $this->service->createData($data);
+           $this->service->createData($data);
 
             $this->dispatch('Admin is created');
+            
             $this->success('Admin created successfully');
-
-        
-            Log::info('Admin created successfully' , $admin->toArray());
 
             return $this->redirect(route('admin.am.admin.index'), navigate: true);
 
         } catch (\Exception $e) {
 
-            Log::error('Failed to create user: ' , $e);
+            Log::error('Failed to create user: ' . $e->getMessage());
 
-            $this->error('Failed to create user: ' . $e->getMessage());
+            $this->error('Failed to create user: ');
         }
     }
 

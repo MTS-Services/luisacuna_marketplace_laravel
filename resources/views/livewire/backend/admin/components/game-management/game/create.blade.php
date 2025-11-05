@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game Create') }}</h2>
             <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.gm.game.index') }}">
+                <x-ui.button href="{{ route('admin.gm.game.index') }}" class="w-auto! py-2!">
                     <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
                     {{ __('Back') }}
                 </x-ui.button>
@@ -193,12 +193,12 @@
 
             {{-- Actions --}}
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button wire:click.prevent="resetForm" type="danger" class="w-auto!" button variant="tertiary">
+                <x-ui.button wire:click.prevent="resetForm" type="danger" class="w-auto! py-2!" button variant="tertiary">
                     <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
                     {{ __('Reset') }}
                 </x-ui.button>
 
-                <x-ui.button type="accent" class="w-auto!">
+                <x-ui.button type="accent" class="w-auto! py-2!">
                     <span wire:loading.remove wire:target="save" class="text-white">Create Game</span>
                     <span wire:loading wire:target="save" class="text-white">Creating...</span>
                 </x-ui.button>

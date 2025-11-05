@@ -45,7 +45,7 @@ class Create extends Component
 
     public function languases():void {
 
-        $this->languases = $this->languageService->getAll();
+        $this->languases = $this->languageService->getAllDatas();
 
     }
 

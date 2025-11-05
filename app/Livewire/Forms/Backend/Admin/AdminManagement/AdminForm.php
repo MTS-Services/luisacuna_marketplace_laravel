@@ -41,7 +41,7 @@ class AdminForm extends Form
         return $rules;
     }
 
-    public function setAdmin($admin): void
+    public function setData($admin): void
     {
         $this->id = $admin->id;
         $this->name = $admin->name;

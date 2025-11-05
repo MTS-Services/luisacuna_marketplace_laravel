@@ -104,7 +104,7 @@ class GameForm extends Form
         $this->logo = null;
         $this->banner = null;
         $this->release_date = null;
-        $this->platform = null;
+        $this->platform = [];
         $this->description = null;
         $this->thumbnail = null;
         $this->is_featured = null;

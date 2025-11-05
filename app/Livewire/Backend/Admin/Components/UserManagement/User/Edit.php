@@ -41,7 +41,7 @@ class Edit extends Component
     {
         $this->user = $user;
         $this->userId = $user->id;
-        $this->form->setUser($user);
+        $this->form->setData($user);
         $this->existingAvatar = $user->avatar_url;
         // $this->form->date_of_birth->format('Y-m-d');
         
@@ -65,7 +65,7 @@ class Edit extends Component
     
     public function languases():void {
 
-        $this->languases = $this->languageService->getLanguages();
+        $this->languases = $this->languageService->getAllDatas();
 
     }
 

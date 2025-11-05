@@ -11,7 +11,7 @@
                     <flux:icon name="user-plus" class="w-4 h-4 stroke-white" />
                     {{ __('Add') }}
                 </x-ui.button>  --}}
-                <x-ui.button href="{{ route('admin.gm.category.index') }}" type='accent'>
+                <x-ui.button href="{{ route('admin.gm.category.index') }}" type='accent' class="w-auto! py-2!">
                     <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
                     {{ __('Back') }}
                 </x-ui.button>
