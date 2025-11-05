@@ -47,28 +47,28 @@
                 <!-- Game Filter -->
                 <div class="relative w-full sm:w-40 lg:w-44">
                     <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                        <option value="">All</option>
-                        <option value="game1">Purchases</option>
-                        <option value="game2">Salsas</option>
-                        <option value="game3">Withdrawals</option>
+                        <option value="">{{ __('All') }}</option>
+                        <option value="game1">{{ __('Purchases') }}</option>
+                        <option value="game2">{{ __('Salsas') }}</option>
+                        <option value="game3">{{ __('Withdrawals') }}</option>
                     </x-ui.select>
                 </div>
 
                 <!-- Status Filter -->
                 <div class="relative w-full sm:w-40 lg:w-44">
                     <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                        <option value="">Select Month</option>
-                        <option value="January">January</option>
-                        <option value="February">February</option>
-                        <option value="April">April</option>
-                        <option value="May">May</option>
-                        <option value="June">June</option>
-                        <option value="July">July</option>
-                        <option value="August">August</option>
-                        <option value="September">September</option>
-                        <option value="October">October</option>
-                        <option value="November">November</option>
-                        <option value="December">December</option>
+                        <option value="">{{ __('Select Month') }}</option>
+                        <option value="January">{{ __('January') }}</option>
+                        <option value="February">{{ __('February') }}</option>
+                        <option value="April">{{ __('April') }}</option>
+                        <option value="May">{{ __('May') }}</option>
+                        <option value="June">{{ __('June') }}</option>
+                        <option value="July">{{ __('July') }}</option>
+                        <option value="August">{{ __('August') }}</option>
+                        <option value="September">{{ __('September') }}</option>
+                        <option value="October">{{ __('October') }}</option>
+                        <option value="November">{{ __('November') }}</option>
+                        <option value="December">{{ __('December') }}</option>
                     </x-ui.select>
                 </div>
             </div>

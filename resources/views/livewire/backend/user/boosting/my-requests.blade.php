@@ -8,21 +8,21 @@
                 <!-- Game Filter -->
                 <div class="relative w-full sm:w-40 lg:w-44">
                     <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                        <option value="">All Game</option>
-                        <option value="game1">Game 1</option>
-                        <option value="game2">Game 2</option>
-                        <option value="game3">Game 3</option>
+                        <option value="">{{ __('All Game')}}</option>
+                        <option value="game1">{{ __('Game 1')}}</option>
+                        <option value="game2">{{ __('Game 2')}}</option>
+                        <option value="game3">{{ __('Game 3')}}</option>
                     </x-ui.select>
                 </div>
 
                 <!-- Status Filter -->
                 <div class="relative w-full sm:w-40 lg:w-44">
                     <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                        <option value="">All Requests</option>
-                        <option value="active">In progress</option>
-                        <option value="paused">Completed</option>
-                        <option value="closed">Disputed</option>
-                        <option value="closed">Canceled</option>
+                        <option value="">{{ __('All Requests') }}</option>
+                        <option value="active">{{ __('In progress') }}</option>
+                        <option value="paused">{{ __('Completed') }}</option>
+                        <option value="closed">{{ __('Disputed') }}</option>
+                        <option value="closed">{{ __('Cancelled') }}</option>
                     </x-ui.select>
                 </div>
             </div>
