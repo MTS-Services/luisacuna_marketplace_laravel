@@ -24,15 +24,15 @@
                         @endif
                     </th>
                 @endforeach
-                
+
                 @if (count($actions) > 0)
                     <th class="px-2 sm:px-4 md:px-6 py-5 text-sm md:text-base text-text-white capitalize font-normal">
-                        Actions
+                        {{ __('Actions') }}
                     </th>
                 @endif
             </tr>
         </thead>
-        
+
         <tbody class="divide-y divide-zinc-800">
             @forelse ($data as $index => $item)
                 <tr class="{{ $index % 2 === 0 ? 'bg-bg-primary' : 'bg-bg-secondary' }} hover:bg-bg-hover transition-colors">
@@ -63,7 +63,7 @@
                             @endif
                         </td>
                     @endforeach
-                    
+
                     @if (count($actions) > 0)
                         <td class="px-2 sm:px-4 md:px-6 py-3">
                             <div class="flex items-center gap-3 text-text-muted">
@@ -74,24 +74,24 @@
                                         $iconName = $action['icon'] ?? 'question-mark';
                                         $componentName = 'phosphor-' . $iconName;
                                     @endphp
-                                    
+
                                     @if ($isActive)
                                         @if (isset($action['method']))
-                                            <button type="button" 
+                                            <button type="button"
                                                     wire:click="{{ $action['method'] }}({{ is_numeric($actionValue) ? $actionValue : "'{$actionValue}'" }})"
                                                     class="cursor-pointer hover:{{ $action['hoverClass'] ?? 'text-text-primary' }} transition-colors"
                                                     title="{{ $action['label'] ?? '' }}">
                                                 <x-dynamic-component :component="$componentName" class="w-5 h-5" />
                                             </button>
                                         @elseif (isset($action['route']))
-                                            <a href="{{ route($action['route'], $actionValue) }}" 
+                                            <a href="{{ route($action['route'], $actionValue) }}"
                                                wire:navigate
                                                class="cursor-pointer hover:{{ $action['hoverClass'] ?? 'text-text-primary' }} transition-colors"
                                                title="{{ $action['label'] ?? '' }}">
                                                 <x-dynamic-component :component="$componentName" class="w-5 h-5" />
                                             </a>
                                         @elseif (isset($action['href']))
-                                            <a href="{{ $action['href'] }}" 
+                                            <a href="{{ $action['href'] }}"
                                                target="{{ $action['target'] ?? '_self' }}"
                                                class="cursor-pointer hover:{{ $action['hoverClass'] ?? 'text-text-primary' }} transition-colors"
                                                title="{{ $action['label'] ?? '' }}">
@@ -106,7 +106,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="{{ count($columns) + (count($actions) > 0 ? 1 : 0) }}" 
+                    <td colspan="{{ count($columns) + (count($actions) > 0 ? 1 : 0) }}"
                         class="px-4 py-12 text-center text-text-muted">
                         <div class="flex flex-col items-center justify-center gap-2">
                             <svg class="w-12 h-12 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

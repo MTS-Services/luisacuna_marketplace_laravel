@@ -64,7 +64,7 @@
                         class="w-full flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg transition-all text-text-white hover:bg-pink-500/50">
                         <div class="flex items-center space-x-2 sm:space-x-3">
                             <x-phosphor-tag class="w-5 h-5 rotate-90 fill-text-text-white" />
-                            <span class="text-xs sm:text-sm lg:text-base font-medium text-text-white">Offers</span>
+                            <span class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{__('Offers')}}</span>
 
                             <!-- Left indicator bar -->
                             <div x-show="isActive" x-cloak
@@ -115,7 +115,7 @@
                         <div class="flex items-center space-x-2 sm:space-x-3">
                             <x-phosphor name="circles-four" variant="solid"
                                 class="w-5 h-5 rotate-90 fill-text-text-white" />
-                            <span class="text-xs sm:text-sm lg:text-base font-medium text-text-white">Boosting</span>
+                            <span class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{__('Boosting')}}</span>
 
                             <!-- Left indicator bar -->
                             <div x-show="isActive" x-cloak

@@ -1,7 +1,5 @@
 <x-admin::app>
     <x-slot name="pageSlug">{{__('admin-users')}}</x-slot>
-
-
     @switch(Route::currentRouteName())
         @case('admin.um.user.create')
             <x-slot name="title">{{__('User Create')}}</x-slot>
