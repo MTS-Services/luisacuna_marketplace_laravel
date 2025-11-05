@@ -164,6 +164,14 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->hasOne(UserReferral::class, 'user_id', 'id');
     }
+    public function sellerProduct(): HasOne
+    {
+        return $this->hasOne(Product::class, 'user_id', 'id');
+    }
+    public function productReview(): HasOne 
+    {
+        return $this->hasOne(Product::class, 'user_id', 'id');
+    }
     /*
     |--------------------------------------------------------------------------
     | Query Scopes

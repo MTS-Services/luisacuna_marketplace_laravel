@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Enums\UserType;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -13,9 +14,19 @@ class UserRepository implements UserRepositoryInterface
         protected User $model
     ) {}
 
-    public function all(): Collection
+    public function all(string $sortField = 'created_at', $order = 'desc'): Collection
     {
-        return $this->model->orderBy('created_at', 'desc')->get();
+        return $this->model->orderBy($sortField, $order)->get();
+    }
+
+    public function getSellers(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->whereIn('user_type', [UserType::SELLER, UserType::BOTH])->orderBy($sortField, $order)->get();
+    }
+
+    public function getBuyers(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->whereIn('user_type', [UserType::BUYER, UserType::BOTH])->orderBy($sortField, $order)->get();
     }
 
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
