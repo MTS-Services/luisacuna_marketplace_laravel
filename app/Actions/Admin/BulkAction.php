@@ -26,6 +26,7 @@ class BulkAction {
                     return $this->interface->bulkRestore($ids, $actionerId);
                     break;
                 case 'status':
+                
                     return $this->interface->bulkUpdateStatus($ids, $status, $actionerId);
                     break;
                 
