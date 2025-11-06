@@ -25,4 +25,10 @@ class BoostingController extends Controller
     {
         return view($this->masterView);
     }
+
+    public function subscribe()
+    {
+        return view($this->masterView);
+    }
+
 }

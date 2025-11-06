@@ -146,6 +146,8 @@
     --color-bg-hover: var(--color-zinc-100);
 
     --color-text-btn-primary: #f8f8f8;
+
+
     --color-text-btn-secondary: var(--color-primary-500);
     --color-text-btn-tertiary: var(--color-secondary-500);
 
@@ -157,6 +159,8 @@
     --color-bg-secondary: var(--color-bg-secondary-light);
     --color-bg-tertiary: var(--color-bg-tertiary-light);
 
+        --color-bg-container: #1b0c33;
+        --color-bg-border: #2d1f43;
     --hover-bg-theme: var(--color-zinc-200);
     --color-bg-black: var(--color-black);
     --color-bg-white: var(--color-white);

@@ -14,6 +14,10 @@
             <livewire:frontend.components.boostings.boosting-checkout />
         @break
 
+        @case('boost.subscribe')
+            <livewire:frontend.components.boostings.boosting-subscribe />
+        @break
+
         @default
             <livewire:frontend.components.boostings.boosting />
     @endswitch

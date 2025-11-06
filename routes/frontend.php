@@ -12,6 +12,8 @@ use App\Http\Controllers\Frontend\GameController;
 use App\Http\Controllers\Frontend\GiftCardController;
 use App\Http\Controllers\Frontend\UserAccountController;
 use App\Http\Controllers\Frontend\UserProfileController;
+use App\Livewire\Frontend\Components\Boostings\BoostingSubscribe;
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 // Route::group(['prefix' => 'boosting', 'as' => 'boost.'], function () {
@@ -43,3 +45,5 @@ Route::get('/coaching', [CoachingController::class, 'index'])->name('coaching');
 Route::get('/game/{gameSlug}/{categorySlug}', [GameController::class, 'index'])->name('game.index');
 Route::get('/game-buy/{gameSlug}/{categorySlug}/{sellerSlug}', [GameController::class, 'buy'])->name('game.buy');
 Route::get('/game-checkout/{orderId}', [GameController::class, 'checkout'])->name('game.checkout');
+
+Route::get('/boosting-subscribtion', BoostingSubscribe::class)->name('boosting-subscribtion');
