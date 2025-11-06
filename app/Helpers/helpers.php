@@ -124,7 +124,7 @@ if (! function_exists('verify_otp')) {
     function verify_otp($model, string $code, OtpType $type): bool
     {
         $otp = $model->latestOtp($type);
-        
+
         if (!$otp) {
             return false;
         }
@@ -144,7 +144,7 @@ if (! function_exists('has_valid_otp')) {
     function has_valid_otp($model, OtpType $type): bool
     {
         $otp = $model->latestOtp($type);
-        
+
         if (!$otp) {
             return false;
         }
@@ -164,7 +164,7 @@ if (! function_exists('get_otp_remaining_time')) {
     function get_otp_remaining_time($model, OtpType $type): ?int
     {
         $otp = $model->latestOtp($type);
-        
+
         if (!$otp || $otp->isExpired()) {
             return null;
         }
@@ -185,19 +185,19 @@ if (! function_exists('format_otp_time')) {
         if (!$seconds || $seconds <= 0) {
             return 'Expired';
         }
-        
+
         if ($seconds < 60) {
             return $seconds . ' second' . ($seconds > 1 ? 's' : '');
         }
-        
+
         $minutes = floor($seconds / 60);
         $remainingSeconds = $seconds % 60;
-        
+
         if ($remainingSeconds > 0) {
-            return $minutes . ' minute' . ($minutes > 1 ? 's' : '') . ' ' . 
+            return $minutes . ' minute' . ($minutes > 1 ? 's' : '') . ' ' .
                    $remainingSeconds . ' second' . ($remainingSeconds > 1 ? 's' : '');
         }
-        
+
         return $minutes . ' minute' . ($minutes > 1 ? 's' : '');
     }
 }

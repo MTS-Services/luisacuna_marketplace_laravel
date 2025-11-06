@@ -2,7 +2,7 @@
     <section>
         <div class="glass-card rounded-2xl p-6 mb-8">
             <div class="flex items-center justify-center">
-                <h3 class="text-2xl font-bold text-text-primary">Admin Dashboard</h3>
+                <h3 class="text-2xl font-bold text-text-primary">{{__('Admin Dashboard')}}</h3>
             </div>
         </div>
 
@@ -26,7 +26,7 @@
                 <h3 class="text-2xl font-bold text-text-primary mb-1" x-text="stats.users.toLocaleString()">
                     12,384</h3>
                 {{-- Adjusted for light/dark mode text --}}
-                <p class="text-text-secondary text-sm">Total Users</p>
+                <p class="text-text-secondary text-sm">{{__('Total Users')}}</p>
                 <div class="mt-4 h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
                     <div class="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full progress-bar"
                         style="width: 75%;"></div>
@@ -49,7 +49,7 @@
                 <h3 class="text-2xl font-bold text-text-primary mb-1">$<span
                         x-text="stats.revenue.toLocaleString()">48,392</span></h3>
                 {{-- Adjusted for light/dark mode text --}}
-                <p class="text-text-secondary text-sm">Total Revenue</p>
+                <p class="text-text-secondary text-sm">{{__('Total Revenue')}}</p>
                 <div class="mt-4 h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
                     <div class="h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full progress-bar"
                         style="width: 60%;"></div>
@@ -72,7 +72,7 @@
                 <h3 class="text-2xl font-bold text-text-primary mb-1" x-text="stats.orders.toLocaleString()">
                     2,847</h3>
                 {{-- Adjusted for light/dark mode text --}}
-                <p class="text-text-secondary text-sm">Total Orders</p>
+                <p class="text-text-secondary text-sm">{{__('Total Orders')}}</p>
                 <div class="mt-4 h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
                     <div class="h-full bg-gradient-to-r from-purple-400 to-purple-600 rounded-full progress-bar"
                         style="width: 45%;"></div>
@@ -88,14 +88,14 @@
                     </div>
                     <div class="text-yellow-400 text-sm font-medium flex items-center gap-1">
                         <div class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
-                        Live
+                        {{ __('Live') }}
                     </div>
                 </div>
                 {{-- Adjusted for light/dark mode text --}}
                 <h3 class="text-2xl font-bold text-text-primary mb-1" x-text="stats.activeUsers.toLocaleString()">847
                 </h3>
                 {{-- Adjusted for light/dark mode text --}}
-                <p class="text-text-secondary text-sm">Active Users</p>
+                <p class="text-text-secondary text-sm">{{__('Active Users')}}</p>
                 <div class="mt-4 h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
                     <div class="h-full bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full pulse-slow progress-bar"
                         style="width: 85%;"></div>

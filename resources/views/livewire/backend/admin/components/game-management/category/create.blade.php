@@ -17,7 +17,7 @@
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Name <span class="text-red-500">*</span>
+                        {{ __('Name') }} <span class="text-red-500">*</span>
                     </label>
                     <input type="text" wire:model="form.name"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
@@ -30,11 +30,11 @@
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Status <span class="text-red-500">*</span>
+                        {{ __('Status') }} <span class="text-red-500">*</span>
                     </label>
                     <select wire:model="form.status"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                        <option value="">Select Status</option>
+                        <option value="">{{__('Select Status')}}</option>
                         @foreach ($statuses as $status)
                             <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
                         @endforeach
@@ -45,7 +45,7 @@
                 </div>
                 <div class="col-span-2">
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Description <span class="text-red-500">*</span>
+                        {{ __('Description') }} <span class="text-red-500">*</span>
                     </label>
                     <textarea wire:model="form.description" id="" cols="30" rows="10"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></textarea>
@@ -59,7 +59,7 @@
             </div>
 
             <!-- Form Actions -->
-       
+
 
 
               <!-- Form Actions -->
@@ -71,13 +71,9 @@
                     {{ __('Reset') }}
                 </x-ui.button>
 
-                <x-ui.button class="w-auto! py-2!
-                " type="submit" >
-                    <span wire:loading.remove wire:target="save"
-                        class=""> {{ __('Create
-                        Admin') }} </span>
-                    <span wire:loading wire:target="save"
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary"> {{ __('Creating...') }} </span>
+                <x-ui.button type="accent" button>
+                    <span wire:loading.remove wire:target="save" class="text-white">{{__('Create Category')}}</span>
+                    <span wire:loading wire:target="save" class="text-white">{{__('Creating...')}}</span>
                 </x-ui.button>
             </div>
         </form>

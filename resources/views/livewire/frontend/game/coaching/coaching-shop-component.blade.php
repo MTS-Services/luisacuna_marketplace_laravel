@@ -110,7 +110,7 @@
             <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
                 <img src="{{ asset('assets/images/Victoria.png') }}" alt="Esther" class="w-10 h-10 rounded-full">
                 <div>
-                    <p class="font-semibold text-text-white">Victoria</p>
+                    <p class="font-semibold text-text-white">{{__('Victoria')}}</p>
                     <p class="text-sm text-text-secondary">
                         <img class="inline mr-2" src="{{ asset('assets/images/thumb up filled.png') }}" alt="">
                         99.3% | 2434 {{ __('reviews') }} | 1642 {{ __('Sold') }}
@@ -184,7 +184,7 @@
         <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
             <img src="{{ asset('assets/images/Esther.png') }}" alt="Esther" class="w-10 h-10 rounded-full">
             <div>
-                <p class="font-semibold text-text-white">Esther</p>
+                <p class="font-semibold text-text-white">{{__('Esther')}}</p>
                 <p class="text-sm text-text-secondary">
                     <img class="inline mr-2" src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3% |
                     2434 {{ __('reviews') }} | 1642 {{ __('Sold') }}
@@ -220,7 +220,7 @@
         <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
             <img src="{{ asset('assets/images/Shane.png') }}" alt="Shane" class="w-10 h-10 rounded-full">
             <div>
-                <p class="font-semibold text-text-white">Shane</p>
+                <p class="font-semibold text-text-white">{{__('Shane')}}</p>
                 <p class="text-sm text-text-secondary">
                     <img class="inline mr-2" src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3% |
                     2434 {{ __('reviews') }} | 1642 {{ __('Sold') }}
@@ -256,7 +256,7 @@
         <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
             <img src="{{ asset('assets/images/Arthur.png') }}" alt="Arthur" class="w-10 h-10 rounded-full">
             <div>
-                <p class="font-semibold text-text-white">Arthur</p>
+                <p class="font-semibold text-text-white">{{__('Arthur')}}</p>
                 <p class="text-sm text-text-secondary">
                     <img class="inline mr-2" src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3% |
                     2434 {{ __('reviews') }} | 1642 {{ __('Sold') }}
@@ -292,7 +292,7 @@
         <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
             <img src="{{ asset('assets/images/Kristin.png') }}" alt="Kristin" class="w-10 h-10 rounded-full">
             <div>
-                <p class="font-semibold text-text-white">Kristin</p>
+                <p class="font-semibold text-text-white">{{__('Kristin')}}</p>
                 <p class="text-sm text-text-secondary">
                     <img class="inline mr-2" src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3% |
                     2434 {{ __('reviews') }} | 1642 {{ __('Sold') }}
@@ -329,7 +329,7 @@
         <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
             <img src="{{ asset('assets/images/Angel.png') }}" alt="Angel" class="w-10 h-10 rounded-full">
             <div>
-                <p class="font-semibold text-text-white">Angel</p>
+                <p class="font-semibold text-text-white">{{__('Angel')}}</p>
                 <p class="text-sm text-text-secondary">
                     <img class="inline mr-2" src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3% |
                     2434 {{ __('reviews') }} | 1642 {{ __('Sold') }}
@@ -365,7 +365,7 @@
         <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
             <img src="{{ asset('assets/images/Marjorie.png') }}" alt="Marjorie" class="w-10 h-10 rounded-full">
             <div>
-                <p class="font-semibold text-text-white">Marjorie</p>
+                <p class="font-semibold text-text-white">{{__('Marjorie')}}</p>
                 <p class="text-sm text-text-secondary">
                     <img class="inline mr-2" src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3% |
                     2434 {{ __('reviews') }} | 1642 {{ __('Sold') }}
@@ -402,7 +402,7 @@
         <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
             <img src="{{ asset('assets/images/Soham.png') }}" alt="Soham" class="w-10 h-10 rounded-full">
             <div>
-                <p class="font-semibold text-text-white">Soham</p>
+                <p class="font-semibold text-text-white">{{__('Soham')}}</p>
                 <p class="text-sm text-text-secondary">
                     <img class="inline mr-2" src="{{ asset('assets/images/thumb up filled.png') }}" alt=""> 99.3% |
                     2434 {{ __('reviews') }} | 1642 {{ __('Sold') }}

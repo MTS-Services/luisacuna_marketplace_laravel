@@ -1,6 +1,6 @@
 <x-frontend::app>
-    <x-slot name="title">Account</x-slot>
-    <x-slot name="pageSlug">account</x-slot>
+    <x-slot name="title">{{__('Account')}}</x-slot>
+    <x-slot name="pageSlug">{{__('account')}}</x-slot>
     {{-- <x-tiny-m-c-e-config /> --}}
     <livewire:frontend.components.user-account />
     {{-- <livewire:livewire-example /> --}}

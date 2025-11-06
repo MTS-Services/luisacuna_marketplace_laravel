@@ -1,6 +1,6 @@
 <x-frontend::app>
-    <x-slot name="title">Gift Card</x-slot>
-    <x-slot name="pageSlug">gift-card</x-slot>
+    <x-slot name="title">{{__('Gift Card')}}</x-slot>
+    <x-slot name="pageSlug">{{__('gift-card')}}</x-slot>
 
     @switch(Route::currentRouteName())
         @case('gift-card.seller-list')

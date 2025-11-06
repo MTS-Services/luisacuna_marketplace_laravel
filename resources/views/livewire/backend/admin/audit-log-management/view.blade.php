@@ -14,72 +14,68 @@
         </div>
     </div>
     <div class="bg-white dark:bg-gray-800 shadow rounded-xl p-6 min-h-[500px]">
-   
+
         <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Event</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('Event')}}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">{{ $data->event }}</p>
             </div>
-            
+
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Auditable</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('Auditable')}}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->auditable_type }}</p>
             </div>
 
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">IP Address</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('IP Address')}}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->ip_address }}</p>
             </div>
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">User Agent</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('User Agent')}}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->user_agent }}</p>
             </div>
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Tag</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('Tag')}}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->tags }}</p>
             </div>
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">URL</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('URL')}}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->url }}</p>
             </div>
 
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Audit By</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('Audit By')}}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->user?->name }}</p>
             </div>
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Audit Date</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('Audit Date')}}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->created_at_formatted }}</p>
             </div>
-           
-
-           
-
 
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
-            <h3 class="col-span-4 text-2xl font-bold mb-1 text-gray-900 dark:text-white my-4">Old Datas</h3>
+            <h3 class="col-span-4 text-2xl font-bold mb-1 text-gray-900 dark:text-white my-4">{{__('Old Datas')}}</h3>
             @foreach ($data->old_values as $key => $value)
                 <div class="col-span-1">
                     <p class="text-gray-500 dark:text-gray-400">{{Str::ucfirst($key)}}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">{{ $value }}</p>
                 </div>
-                
+
             @endforeach
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
-            <h3 class="col-span-4 text-2xl font-bold mb-1 text-gray-900 dark:text-white my-4">Old Datas</h3>
+            <h3 class="col-span-4 text-2xl font-bold mb-1 text-gray-900 dark:text-white my-4">{{__('Old Datas')}}</h3>
             @if(!empty($data->new_values))
 
                 @foreach ($data->new_values as $key => $value)
@@ -87,12 +83,12 @@
                         <p class="text-gray-500 dark:text-gray-400">{{Str::ucfirst($key)}}</p>
                         <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">{{ $value }}</p>
                     </div>
-                    
+
                 @endforeach
             @else
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">New Values</p>
-                    <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">N/A</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{__('New Values')}}</p>
+                    <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">{{ 'N/A' }}</p>
                 </div>
             @endif
         </div>

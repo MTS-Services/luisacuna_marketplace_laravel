@@ -2,7 +2,7 @@
     <section class=" mx-auto px-4">
         {{-- Header Section --}}
         <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-text-primary">Account settings</h1>
+            <h1 class="text-3xl font-bold text-text-primary">{{ __('Account settings') }}</h1>
             <x-ui.button href="{{ route('user.purchased-orders') }}" class="sm:w-auto! py-2!">
                 {{ __('Go to site') }}
             </x-ui.button>
@@ -11,7 +11,7 @@
         <div class=" mx-auto space-y-6">
             {{-- Profile Section --}}
             <section class="glass-card rounded-2xl p-6">
-                <h2 class="text-xl font-semibold text-text-primary mb-6">Profile</h2>
+                <h2 class="text-xl font-semibold text-text-primary mb-6">{{ __('Profile') }}</h2>
 
                 {{-- Profile Image --}}
                 <div class="flex items-start bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6">
@@ -29,7 +29,7 @@
 
                 {{-- Bio Textarea --}}
                 <div class="mb-6">
-                    <label class="block text-sm font-medium text-text-primary mb-2">Bio</label>
+                    <label class="block text-sm font-medium text-text-primary mb-2">{{ __('Bio') }}</label>
                     <div class="relative">
                         <textarea name="bio" rows="4"
                             class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-hidden focus:ring-2 focus:ring-accent resize-none"
@@ -54,12 +54,12 @@
 
             {{-- Profile Details Section --}}
             <section class="glass-card rounded-2xl p-6">
-                <h2 class="text-xl font-semibold text-text-primary mb-6">Profile</h2>
+                <h2 class="text-xl font-semibold text-text-primary mb-6">{{ __('Profile') }}</h2>
 
                 <form class="space-y-5">
                     {{-- User Name --}}
                     <div>
-                        <label class="block text-sm font-medium text-text-primary mb-2">User name</label>
+                        <label class="block text-sm font-medium text-text-primary mb-2">{{ __('User name') }}</label>
                         <div class="relative">
                             <input type="text" name="username"
                                 value="{{ old('username', auth()->user()->username ?? '') }}"
@@ -77,7 +77,7 @@
 
                     {{-- Company Name --}}
                     <div>
-                        <label class="block text-sm font-medium text-text-primary mb-2">Company</label>
+                        <label class="block text-sm font-medium text-text-primary mb-2">{{ __('Company') }}</label>
                         <div class="relative">
                             <input type="text" name="company"
                                 value="{{ old('company', auth()->user()->company ?? '') }}"
@@ -95,21 +95,22 @@
 
                     {{-- Email --}}
                     <div>
-                        <label class="block text-sm font-medium text-text-primary mb-2">Email</label>
+                        <label class="block text-sm font-medium text-text-primary mb-2">{{ __('Email') }}</label>
                         <div class="relative">
-                            <input type="email" name="email" value="{{ old('email', auth()->user()->email ?? '') }}"
+                            <input type="email" name="email"
+                                value="{{ old('email', auth()->user()->email ?? '') }}"
                                 class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                 placeholder="Enter email">
                             <span
                                 class="absolute top-1/2 -translate-y-1/2 right-3 text-xs text-text-muted bg-bg-primary px-2 py-1 rounded">
-                                This field is linked and can only be filled in once for user
+                                {{ __('This field is linked and can only be filled in once for user') }}
                             </span>
                         </div>
                     </div>
 
                     {{-- Location --}}
                     <div>
-                        <label class="block text-sm font-medium text-text-primary mb-2">Location</label>
+                        <label class="block text-sm font-medium text-text-primary mb-2">{{ __('Location') }}</label>
                         <div class="relative">
                             <input type="text" name="location"
                                 value="{{ old('location', auth()->user()->location ?? '') }}"
@@ -127,7 +128,7 @@
 
                     {{-- URL --}}
                     <div>
-                        <label class="block text-sm font-medium text-text-primary mb-2">URL</label>
+                        <label class="block text-sm font-medium text-text-primary mb-2">{{ __('URL') }}</label>
                         <div class="relative">
                             <input type="url" name="url" value="{{ old('url', auth()->user()->url ?? '') }}"
                                 class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
@@ -141,8 +142,8 @@
                             </button>
                         </div>
                         <p class="text-xs text-text-muted mt-1.5">
-                            You're only e-mails to other. You can type your URL here, and we will redirect them to your
-                            personal website or their site
+                            {{ __('You\'re only e-mails to other. You can type your URL here, and we will redirect them to your
+                                                        personal website or their site') }}
                         </p>
                     </div>
 
@@ -163,8 +164,8 @@
                             </button>
                         </div>
                         <p class="text-xs text-text-muted mt-1.5">
-                            This is the list of social media platforms or accounts you are associated with. Use commas
-                            to distinguish
+                            {{__('This is the list of social media platforms or accounts you are associated with. Use commas
+                            to distinguish')}}
                         </p>
                     </div>
                 </form>
@@ -172,7 +173,7 @@
 
             {{-- Email Notifications Section --}}
             <section class="bg-zinc-50/10 rounded-2xl p-6">
-                <h2 class="text-xl font-semibold text-text-primary mb-6">Email notifications</h2>
+                <h2 class="text-xl font-semibold text-text-primary mb-6">{{__('Email notifications')}}</h2>
 
                 <div class="space-y-4">
                     @php
@@ -211,5 +212,5 @@
                 </div>
             </section>
         </div>
-    </s>
-</section>
+        </s>
+    </section>

@@ -12,15 +12,15 @@
 
                 <!-- Header -->
                 <div class="mb-6 text-center">
-                    <h2 class="text-3xl sm:text-4xl font-medium text-text-white">Sign in</h2>
+                    <h2 class="text-3xl sm:text-4xl font-medium text-text-white">{{__('Sign in')}}</h2>
                     <p class="text-text-white lg:text-xl sm:text-lg mt-2">
-                        Hi! Welcome back, you’ve been missed
+                        {{ __('Hi! Welcome back, you’ve been missed') }}
                     </p>
                 </div>
 
                 <!-- Email -->
                 <div class="mb-4 sm:mb-6 px-2 sm:px-6">
-                    <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">Email</label>
+                    <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">{{__('Email')}}</label>
                     <x-ui.input type="email" placeholder="example@gmail.com" wire:model="email"
                         />
                     {{-- Error message --}}
@@ -36,7 +36,7 @@
 
                 <!-- Password -->
                 <div class=" sm:mb-6 px-2 sm:px-6">
-                    <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">Password</label>
+                    <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">{{__('Password')}}</label>
                     <div class="relative">
                         <x-ui.input type="password" id="password" placeholder="Aex@8465" wire:model="password"
                             />
@@ -67,7 +67,7 @@
                     <div class=" text-right px-2 sm:px-6 mb-2">
                         <a href="{{ route('admin.password.request') }}" wire:navigate
                             class="text-md text-accent hover:underline">
-                            Forgot password?
+                            {{ __('Forgot password?') }}
                         </a>
                     </div>
                 @endif
@@ -76,7 +76,7 @@
                 <div class=" flex justify-center px-2 sm:px-6 mb-2 sm:mb-6">
                     <x-ui.button type="submit"
                         class="w-auto py-2!">
-                        Sign in
+                        {{ __('Sign in') }}
                     </x-ui.button>
                 </div>
 

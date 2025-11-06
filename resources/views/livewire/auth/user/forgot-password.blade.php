@@ -7,15 +7,15 @@
 
             <!-- Header -->
             <div class="text-center">
-                <h2 class="text-4xl font-medium p-4 text-text-white">Forget Your Password?</h2>
+                <h2 class="text-4xl font-medium p-4 text-text-white">{{__('Forget Your Password?')}}</h2>
                 <p class="text-text-white lg:text-xl text-sm">
-                    Enter your email address, we will send a message with a code to reset your password.
+                    {{ __('Enter your email address, we will send a message with a code to reset your password.') }}
                 </p>
             </div>
 
             <!-- Email -->
             <div>
-                <label class="block text-xl font-medium mb-2 text-text-white">Email</label>
+                <label class="block text-xl font-medium mb-2 text-text-white">{{__('Email')}}</label>
                 <x-ui.input type="email" placeholder="example@gmail.com" wire:model="email" />
             </div>
 
@@ -27,13 +27,13 @@
             <!-- Submit button -->
             <div>
                 <x-ui.button type="submit" class="w-auto py-2!">
-                    Reset Password
+                    {{ __('Reset Password') }}
                 </x-ui.button>
             </div>
 
 
             <x-ui.button type="submit" href="{{ route('login') }}"  variant="secondary" class="w-auto py-2!">
-                Back
+                {{ __('Back') }}
             </x-ui.button>
         </form>
     </div>

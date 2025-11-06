@@ -15,19 +15,25 @@
 
             <!-- Add other form fields here -->
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
-
-                 <div>
-                    <x-ui.label for="name" :value="__('Name')" required />
-                    <x-ui.input id="name" type="text" class="mt-1 block w-full" wire:model="form.name"
-                        placeholder="category name" />
-                    <x-ui.input-error :messages="$errors->get('form.name')" class="mt-2" />
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ __('Name') }} <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" wire:model="form.name"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                    @error('form.name')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
 
                 <div>
-                    <x-ui.label for="status" :value="__('Status')" required />
-                    <x-ui.select id="status" class="mt-1 block w-full" wire:model="form.status">
-                        <option value="">{{ __('Select Status') }}</option>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ __('Status') }} <span class="text-red-500">*</span>
+                    </label>
+                    <select wire:model="form.status"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                        <option value="">{{__('Select Status')}}</option>
                         @foreach ($statuses as $status)
                             <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
                         @endforeach
@@ -36,7 +42,7 @@
                 </div>
                 <div class="col-span-2">
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Description <span class="text-red-500">*</span>
+                        {{ __('Description') }} <span class="text-red-500">*</span>
                     </label>
                     <textarea wire:model="form.description" id="" cols="30" rows="10"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></textarea>
@@ -56,9 +62,9 @@
                     {{ __('Cancel') }}
                 </x-ui.button>
 
-                <x-ui.button type="accent" button class="w-auto! py-2!">
-                    <span wire:loading.remove wire:target="update" class="text-white">Update Category</span>
-                    <span wire:loading wire:target="update" class="text-white">Updating...</span>
+                <x-ui.button type="accent" button>
+                    <span wire:loading.remove wire:target="update" class="text-white">{{__('Update Category')}}</span>
+                    <span wire:loading wire:target="update" class="text-white">{{__('Updating...')}}</span>
                 </x-ui.button>
             </div>
         </form>

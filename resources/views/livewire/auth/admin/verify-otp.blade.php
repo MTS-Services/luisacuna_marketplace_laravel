@@ -24,16 +24,16 @@
 
             <!-- Header -->
             <div class="text-center">
-                <h2 class="text-2xl lg:text-5xl md:text-4xl font-medium p-4 text-text-white">Confirm your Gmail</h2>
+                <h2 class="text-2xl lg:text-5xl md:text-4xl font-medium p-4 text-text-white">{{__('Confirm your Gmail')}}</h2>
                 <p class="text-text-white lg:text-xl text-base">
-                    We have sent a code in an Email message to ex**@gmaol.co To confirm your account, please enter the
-                    code.
+                    {{__('We have sent a code in an Email message to ex**@gmaol.co To confirm your account, please enter the
+                    code.')}}
                 </p>
             </div>
 
             <!-- code -->
             <div>
-                <label class="block text-xl font-medium mb-2 text-text-white">Code</label>
+                <label class="block text-xl font-medium mb-2 text-text-white">{{__('Code')}}</label>
                 <x-ui.input wire:model="form.code" type="text" placeholder="input code"/>
 
                 @error('form.code')
@@ -46,17 +46,17 @@
             <div class="text-right px-2 sm:px-6 mb-2" id="resend-container">
                 @if($resendLimitReached)
                     <span class="text-md text-red-400 font-semibold">
-                        Don't resend again. Maximum limit reached.
+                        {{ __('Don\'t resend again. Maximum limit reached.') }}
                     </span>
                 @elseif($resendCooldown && $resendCooldown > 0)
                     <span class="text-md text-gray-400">
-                        Resend available in <span id="countdown" class="font-semibold text-text-white">{{ $resendCooldown }}</span>s
+                        {{ __('Resend available in') }} <span id="countdown" class="font-semibold text-text-white">{{ $resendCooldown }}</span>s
                     </span>
                 @else
-                    <span wire:click="resend" wire:loading.attr="disabled" 
+                    <span wire:click="resend" wire:loading.attr="disabled"
                         class="text-md text-text-white hover:underline cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-                        <span wire:loading.remove wire:target="resend">Resend</span>
-                        <span wire:loading wire:target="resend">Sending...</span>
+                        <span wire:loading.remove wire:target="resend">{{ __('Resend') }}</span>
+                        <span wire:loading wire:target="resend">{{ __('Sending...') }}</span>
                     </span>
                 @endif
             </div>
@@ -65,7 +65,7 @@
             <div>
                 <x-ui.button type="submit"
                     class="w-auto py-2!">
-                    Verify
+                    {{ __('Verify') }}
                 </x-ui.button>
             </div>
         </form>

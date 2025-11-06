@@ -132,7 +132,7 @@
                                 class="w-full flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg transition-all text-text-white hover:bg-pink-500/50">
                                 <div class="flex items-center space-x-2 sm:space-x-3">
                                     <x-phosphor-tag class="w-5 h-5 rotate-90 fill-text-text-white" />
-                                    <span class="text-xs  font-medium text-text-white">Offers</span>
+                                    <span class="text-xs  font-medium text-text-white">{{__('Offers')}}</span>
 
                                     <!-- Left indicator bar -->
                                     <div x-show="isActive" x-cloak
@@ -187,7 +187,7 @@
                                 <div class="flex items-center space-x-2 sm:space-x-3">
                                     <x-phosphor name="circles-four" variant="solid"
                                         class="w-5 h-5 rotate-90 fill-text-text-white" />
-                                    <span class="text-xs  font-medium text-text-white">Boosting</span>
+                                    <span class="text-xs  font-medium text-text-white">{{__('Boosting')}}</span>
 
                                     <!-- Left indicator bar -->
                                     <div x-show="isActive" x-cloak
@@ -264,7 +264,7 @@
                             <a href="{{ route('user.profile') }}" wire:navigate @click="open = false"
                                 class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all {{ $pageSlug === 'profile' ? 'bg-zinc-800 text-white' : 'text-zinc-300 hover:text-white hover:bg-zinc-800/50' }}">
                                 <flux:icon name="user" class="w-4 h-4" />
-                                <span>View Profile</span>
+                                <span>{{__('View Profile')}}</span>
                             </a>
 
                             <form method="POST" action="{{ route('logout') }}">
@@ -272,7 +272,7 @@
                                 <button type="submit"
                                     class="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-all">
                                     <flux:icon name="arrow-right-start-on-rectangle" class="w-4 h-4" />
-                                    <span>Logout</span>
+                                    <span>{{__('Logout')}}</span>
                                 </button>
                             </form>
                         </div>
@@ -285,20 +285,20 @@
     <!-- Mobile Navigation Menu -->
     <nav class="lg:hidden mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-zinc-800 flex flex-wrap gap-2 sm:gap-3">
         <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Currency</a>
+            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{__('Currency')}}</a>
         <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Gift
-            Cards</a>
+            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{__('Gift
+            Cards')}}</a>
         <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Boosting</a>
+            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{__('Boosting')}}</a>
         <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Items</a>
+            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{__('Items')}}</a>
         <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Accounts</a>
+            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{__('Accounts')}}</a>
         <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Top
-            Ups</a>
+            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{__('Top
+            Ups')}}</a>
         <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">Coaching</a>
+            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{__('Coaching')}}</a>
     </nav>
 </header>

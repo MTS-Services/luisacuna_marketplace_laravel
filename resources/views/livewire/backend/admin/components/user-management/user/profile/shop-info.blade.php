@@ -18,12 +18,12 @@
     <div class="bg-white shadow rounded-xl p-6 min-h-[500px]">
         {{-- PERSONAL INFO (Default Tab) --}}
         <div class="col-span-1 lg:col-span-2 p-4">
-            <h2 class="text-xl font-semibold mb-6 border-b pb-2 text-gray-800">Shop Information</h2>
+            <h2 class="text-xl font-semibold mb-6 border-b pb-2 text-gray-800">{{__('Shop Information')}}</h2>
 
             <div class="grid md:grid-cols-3 gap-8 text-base">
                 {{-- Shop Name --}}
                 <div>
-                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">Shop Name</p>
+                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">{{__('Shop Name')}}</p>
                     <h3 class="text-lg font-medium text-gray-900">
                         {{ $user->seller->shop_name ?? 'No shop name found' }}
                     </h3>
@@ -31,20 +31,20 @@
 
                 {{-- Seller Verified --}}
                 <div>
-                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">Seller Verified</p>
+                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">{{__('Seller Verified')}}</p>
                     <h3 class="text-lg font-medium text-gray-900">{{ $user->seller->seller_verified ?? 'N/A' }}</h3>
                 </div>
 
                 {{-- Verified At --}}
                 <div>
-                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">Verified At</p>
+                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">{{__('Verified At')}}</p>
                     <h3 class="text-lg font-medium text-gray-900">{{ $user->seller->seller_verified_at ?? 'N/A' }}
                     </h3>
                 </div>
 
                 {{-- Seller Level --}}
                 <div>
-                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">Seller Level</p>
+                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">{{__('Seller Level')}}</p>
                     <h3
                         class="text-lg font-medium text-gray-900 badge badge-soft {{ $user->seller->seller_level_color ?? 'N/A' }}">
                         {{ $user->seller->seller_level_label ?? 'N/A' }}
@@ -53,7 +53,7 @@
 
                 {{-- commission_rate --}}
                 <div>
-                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">Commission Rate</p>
+                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">{{__('Commission Rate')}}</p>
                     <h3 class="text-lg font-medium text-gray-900">
                         {{ $user->seller->commission_rate ?? 'N/A' }}
                     </h3>
@@ -61,7 +61,7 @@
 
                 {{-- minimum_payout --}}
                 <div>
-                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">Minimum payout</p>
+                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">{{__('Minimum payout')}}</p>
                     <h3 class="text-lg font-medium text-gray-900">
                         {{ $user->seller->minimum_payout ?? 'N/A' }}
                     </h3>
@@ -72,7 +72,7 @@
         <div class="mt-8">
             {{-- description --}}
             <div>
-                <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">Description</p>
+                <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">{{__('Description')}}</p>
                 <p class="text-sm font-medium text-gray-600">{{ $user->seller->shop_description ?? 'N/A' }}
                 </p>
             </div>

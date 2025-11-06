@@ -34,7 +34,7 @@
                 <div class="w-full sm:w-auto">
                     <select wire:model.live="{{ $perPageProperty }}" class="select w-full sm:w-auto min-w-[140px]">
                         @foreach ($perPageOptions as $option)
-                            <option value="{{ $option }}">{{ $option }} per page</option>
+                            <option value="{{ $option }}">{{ $option }} {{__('per page')}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -44,7 +44,7 @@
             @if (!empty($statuses))
                 <div class="w-full sm:w-auto">
                     <select wire:model.live="statusFilter" class="select w-full sm:w-auto min-w-[140px]">
-                        <option value="">All Statuses</option>
+                        <option value="">{{__('All Statuses')}}</option>
                         @foreach ($statuses as $status)
                             <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
                         @endforeach
@@ -82,12 +82,12 @@
         {{-- Bulk Actions Row --}}
         @if ($showBulkActions && count($selectedIds) > 0)
             <div class="glass-card p-4 rounded-lg flex items-center gap-5">
-                {{ count($selectedIds) }} {{ count($selectedIds) === 1 ? 'item' : 'items' }} selected
+                {{ count($selectedIds) }} {{ count($selectedIds) === 1 ? 'item' : 'items' }} {{ __('selected') }}
                 </span>
 
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:flex-1">
                     <select wire:model.live="bulkAction" class="select w-full sm:w-auto min-w-[160px]">
-                        <option value="">Select Action</option>
+                        <option value="">{{__('Select Action')}}</option>
                         @foreach ($bulkActions as $action)
                             <option value="{{ $action['value'] }}">{{ $action['label'] }}</option>
                         @endforeach
@@ -127,13 +127,13 @@
                             @if (in_array('id', array_column($columns, 'key')))
                                 <button type="button" wire:click="sortBy('id')"
                                     class="flex items-center gap-1 hover:text-gray-700 dark:hover:text-gray-200">
-                                    ID
+                                    {{ __('ID') }}
 
                                     <flux:icon icon="{{ $sortDirection === 'asc' ? 'chevron-up' : 'chevron-down' }}"
                                         class="w-4 h-4" />
                                 </button>
                             @else
-                                No.
+                                {{ __('No.') }}
                             @endif
                         </th>
                     @endif
@@ -163,7 +163,7 @@
                     @if (count($actions) > 0)
                         <th scope="col"
                             class="w-24 px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Actions
+                            {{ __('Actions') }}
                         </th>
                     @endif
                 </tr>
@@ -481,7 +481,7 @@
                         class="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-zinc-400/50 transition-colors">
                         <span class="text-sm font-medium text-gray-700 dark:text-gray-300"
                             x-text="expanded ? 'Show Less' : 'Show More'">
-                            Show More
+                            {{ __('Show More') }}
                         </span>
                         {{-- <flux:icon icon="chevron-down"
                             class="w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform duration-200"

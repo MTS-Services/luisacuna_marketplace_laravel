@@ -12,15 +12,16 @@
 
                 <!-- Header -->
                 <div class="mb-6 text-center">
-                    <h2 class="text-3xl sm:text-4xl font-medium text-text-white">Sign in</h2>
+                    <h2 class="text-3xl sm:text-4xl font-medium text-text-white">{{ __('Sign in') }}</h2>
                     <p class="text-text-white lg:text-xl sm:text-lg mt-2">
-                        Hi! Welcome back, you’ve been missed
+                        {{ __('Hi! Welcome back, you’ve been missed') }}
                     </p>
                 </div>
 
                 <!-- Email -->
                 <div class="mb-4 sm:mb-6 px-2 sm:px-6">
-                    <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">Email</label>
+                    <label
+                        class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">{{ __('Email') }}</label>
                     <x-ui.input type="email" placeholder="example@gmail.com" wire:model="email" />
                     {{-- Error message --}}
                     <x-ui.input-error :messages="$errors->get('email')" />
@@ -33,7 +34,8 @@
 
                 <!-- Password -->
                 <div class="mb-4 sm:mb-6 px-2 sm:px-6">
-                    <x-ui.label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">Password</x-ui.label>
+                    <x-ui.label
+                        class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">{{ __('Password') }}</x-ui.label>
                     <x-ui.input type="password" id="password" placeholder="Aex@8465" wire:model="password" />
                     <x-ui.input-error :messages="$errors->get('password')" />
                 </div>
@@ -49,7 +51,7 @@
                     <div class=" text-right px-2 sm:px-6 mb-2">
                         <a href="{{ route('password.request') }}" wire:navigate
                             class="text-md text-accent hover:underline">
-                            Forgot password?
+                            {{ __('Forgot password?') }}
                         </a>
                     </div>
                 @endif
@@ -57,14 +59,14 @@
                 <!-- Sign in button -->
                 <div class=" flex justify-center px-2 sm:px-6">
                     <x-ui.button type="submit" class="w-auto py-2!">
-                        Sign in
+                        {{ __('Sign in') }}
                     </x-ui.button>
                 </div>
 
                 <!-- Divider -->
                 <div class="flex items-center mb-2 px-4">
                     <hr class="flex-1 border-zinc-700" />
-                    <span class="px-3 text-sm sm:text-md text-zinc-500">Or sign in with</span>
+                    <span class="px-3 text-sm sm:text-md text-zinc-500">{{ __('Or sign in with') }}</span>
                     <hr class="flex-1 border-zinc-700" />
                 </div>
 
@@ -78,11 +80,12 @@
                         </a>
                         <a href="javascript:void(0)"
                             class="w-10 h-10 sm:w-12 sm:h-12 flex z-30 items-center justify-center bg-white rounded-md">
-                            <img src="{{ asset('assets/icons/icons8-apple-logo.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
-                                alt="Apple" />
+                            <img src="{{ asset('assets/icons/icons8-apple-logo.svg') }}"
+                                class="w-8 sm:w-10 h-8 sm:h-10" alt="Apple" />
                         </a>
 
-                        <a href="{{ route('auth.facebook') }}" class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
+                        <a href="{{ route('auth.facebook') }}"
+                            class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-md">
                             <img src="{{ asset('assets/icons/icons8-facebook.svg') }}" class="w-8 sm:w-10 h-8 sm:h-10"
                                 alt="Facebook" />
                         </a>
@@ -90,8 +93,9 @@
 
                     <!-- Sign up link -->
                     <div class="text-center text-sm text-text-white">
-                        Don’t have an account?
-                        <a href="{{ route('register') }}" class="text-purple-400 hover:underline">Sign up</a>
+                       {{ __(' Don’t have an account?') }}
+                        <a href="{{ route('register') }}"
+                            class="text-purple-400 hover:underline">{{ __('Sign up') }}</a>
                     </div>
                 </div>
             </div>

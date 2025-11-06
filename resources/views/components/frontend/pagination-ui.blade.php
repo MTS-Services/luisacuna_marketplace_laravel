@@ -5,7 +5,7 @@
         {{-- Previous Button --}}
         <button wire:click="previousPage" @if ($pagination['current_page'] <= 1) disabled @endif
             class="px-3 md:px-4 py-2  text-text-white shadow-2xl rounded-lg text-sm hover:bg-bg-primary/60 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-            Previous
+            {{ __('Previous') }}
         </button>
         {{-- Page Numbers --}}
         @php
@@ -51,7 +51,7 @@
         {{-- Next Button --}}
         <button wire:click="nextPage" @if ($pagination['current_page'] >= $pagination['last_page']) disabled @endif
             class="px-3 md:px-4 py-2  text-text-white shadow-2xl rounded-lg text-sm hover:bg-bg-primary/60 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-            Next
+            {{ __('Next') }}
         </button>
     </div>
 
