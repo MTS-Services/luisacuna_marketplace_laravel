@@ -193,6 +193,31 @@
     "4 offerd": "4 offres",
     "All brands for Coaching": "Toutes les marques pour Coaching",
     "This is the list of social media platforms or accounts you are associated with. Use commas to distinguish": "Voici la liste des plateformes ou comptes de médias sociaux auxquels vous êtes associé(e). Utilisez des virgules pour les séparer",
-    "Email notifications": "notifications par e-mail"
+    "Email notifications": "notifications par e-mail",
+
+
+    "Balance": "Équilibre",
+    "Withdrawals require $10 in completed sales": "Les retraits nécessitent 10 $ de ventes finalisées",
+    "Learn more": "Apprendre encore plus",
+    "Withdraw": "Retirer",
+    "Pending Sales": "Ventes en attente",
+    "Revenue from pending orders. Funds will be added to your balance when orders are Completed.": "Revenus provenant des commandes en attente. Les fonds seront ajoutés à votre solde une fois les commandes finalisées.",
+    "Purchases": "Achats",
+    "Salsas": "Salsas",
+    "Withdrawals": "Retraits",
+    "Select Month": "Sélectionner le mois",
+    "January": "Janvier",
+    "February": "Février",
+    "March": "Mars",
+    "April": "Avril",
+    "May": "Mai",
+    "June": "Juin",
+    "July": "Juillet",
+    "August": "Aout",
+    "September": "Septembre",
+    "October": "Octobre",
+    "November": "Novembre",
+    "December": "Décembre",
+    "Manage Subscriptionsr": "Gérer les abonnements"
     
 }
