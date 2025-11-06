@@ -84,5 +84,111 @@
     "Next": "Suivant",
     "Currency": "Monnaie",
     "Gift Cards": "Cartes cadeaux",
-    "Boosting": "Boosting"
+    "Boosting": "Boosting",
+
+
+
+    "Manage Subscriptions":"Gérer les abonnements",
+
+
+    "Conversations": "Conversations",
+    "Messages": "Messages",
+    "Unread message only": "Message non lu uniquement",
+    "All": "Toute",
+    "Orders" : "Orders",
+    "Pre-purchase" : "Préachat",
+    "Mark all as read": "Marquer tout comme lu",
+    "Browser notification": "Notification du navigateur",
+    "VC_spams": "VC_spams",
+    "Available: Back by 10am": "Disponible : Retour avant 10h",
+
+
+
+    "Completed orders": "Commandes terminées",
+    "Positive feedback": "Commentaires positifs",
+    "Negative feedback": "Commentaires négatifs",
+    "Feedback score": "Note de feedback",
+
+     
+    "How it works?": "Comment ça marche ?",
+    "Bronze": "Bronze",
+    "You need an additional 1,900 points to reach the Silver level.":"Il vous faut 1 900 points supplémentaires pour atteindre le niveau Argent.",
+    "Available points": "Points disponibles",
+    "Collect a minimum of 10,000 points and unlock a $1 reward.": "Cumulez au minimum 10 000 points et débloquez une récompense de 1 $.",
+    "10,000 points": "10 000 points",
+    "$1 Store credit": "1 $ de crédit en magasin",
+    "Redeem":"Racheter",
+    "Achievements completed": "Réalisations accomplies",
+    "completed": "complété",
+    "Write reviews for sellers": "Rédiger des avis pour les vendeurs",
+    "Critic" : "Critique",
+    "Place your first order in each category": "Passez votre première commande dans chaque catégorie",
+    "0 / 1 To unlock": "0 / 1 Débloquer",
+    "Explorer": "Exploratrice",
+    "Speedrunner": "Speedrunner",
+    "Master Trader": "Maître négociateur",
+    "Place 2 Eldorado orders": "Passez 2 commandes Eldorado",
+    "Place 2 orders in one month": "Passer 2 commandes en un mois",
+    "Dedication": "Dévouement",
+    "Purchase at least 2 products per game to earn points": "Achetez au moins 2 produits par jeu pour gagner des points",
+    "Start Your Reward Journey Today": "Commencez votre parcours de récompenses dès aujourd'hui",
+    "Make your first purchase today and start tracking your journey toward exciting rewards. Each order helps you unlock new levels, bonuses, and exclusive offers. Stay motivated and see your progress grow with every step!": "Faites votre premier achat dès aujourd'hui et suivez votre progression vers des récompenses exceptionnelles. Chaque commande vous permet de débloquer de nouveaux niveaux, des bonus et des offres exclusives. Restez motivé et constatez vos progrès à chaque étape !",
+    "Browse for more": "Parcourez plus",
+
+
+
+    "Game 1": "Jeu 1",
+    "Game 2": "Jeu 2",
+    "Game 3": "Jeu 3",
+    "Active offers": "Offres actives",
+    "Paused offers": "Offres en pause",
+    "Closed offers": "Offres fermées",
+    "Price: Low to High": "Prix ​​: du plus bas au plus élevé",
+    "Price: High to Low": "Prix ​​: du plus élevé au plus bas",
+    "Newest First": "Première",
+    "Export": "Exporter",
+    "New Offer": "Nouvelle offre",
+    "Delete Item": "Supprimer l'élément",
+    "Are you sure you want to delete this item? This action cannot be undone.": "Êtes-vous sûr de vouloir supprimer cet élément ? Cette action est irréversible.",
+    "Delete": "Supprimer",
+    "Cancel": "Annuler",
+    "Game": "Jeu",
+    "Quantity": "Quantité",
+    "Recent":  "Récente",
+    "Today": "Aujourd'hui",
+    "This Week": "Cette semaine",
+    "This Month": "Ce mois-ci",
+    
+
+    "Order Name": "Nom de commande",
+    "Order Number": "Numeéro de commande",
+    "Order Status": "Statut de commande",
+    "Order Date": "Date de commande",
+    "Order Price": "Prix ​​de commande",
+    "Order Quantity": "Quantité de commande",
+    "Order Total": "Total de commande",
+    "Type": "Taper",
+    "Product": "Produit",
+    "Total": "Total",
+    "Order": "Commande",
+    "Order ID": "ID de commande",
+    "Seller": "Vendeur",
+    "Ordered date": "Date de commande",
+    "Order status": "Statut de commande",
+    "Price ($)": "Prix ​​($)",
+
+
+
+    "Account settings": "Paramètres du compte",
+    "Go to site": "Aller au site",
+    "Profile": "Profil",
+    "Upload image": "Télécharger une image",
+    "Bio": "Bio",
+    "User name": "Nom d'utilisateur",
+    "Company": "Entreprise",
+    "Email": "E-mail",
+    "This field is linked and can only be filled in once for user": "Ce champ est lié et ne peut être rempli qu'une seule fois par utilisateur",
+    "Location": "Emplacement"
+
+    
 }

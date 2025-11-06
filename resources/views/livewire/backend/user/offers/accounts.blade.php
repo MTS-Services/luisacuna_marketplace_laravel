@@ -18,7 +18,7 @@
                 <!-- Status Filter -->
                 <div class="relative w-full sm:w-40 lg:w-44">
                     <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                        <option value="">{{ __('All ') }}</option>
+                        <option value="">{{ __('All') }}</option>
                         <option value="active">{{ __('Active offers') }}</option>
                         <option value="paused">{{ __('Paused offers') }}</option>
                         <option value="closed">{{ __('Closed offers') }}</option>
@@ -35,7 +35,7 @@
                     </x-ui.select>
                 </div>
                 <div class="relative w-full sm:w-56">
-                    <x-ui.input type="text" placeholder="Search" class="pl-5 py-1.5! text-text-white" />
+                    <x-ui.input type="text" placeholder="{{ __('Search') }}" class="pl-5 py-1.5! text-text-white" />
                     <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                         <x-phosphor-magnifying-glass class="w-5 h-5 fill-text-text-white" />
                     </div>

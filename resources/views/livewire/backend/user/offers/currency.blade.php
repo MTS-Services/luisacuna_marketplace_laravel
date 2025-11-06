@@ -15,7 +15,7 @@
 
                 <div class="relative w-full sm:w-35 lg:w-40 2xl:w-80">
                     <x-ui.select>
-                        <option value="">{{ __('All ') }}</option>
+                        <option value="">{{ __('All') }}</option>
                         <option value="game1">{{ __('Active offers') }}</option>
                         <option value="game2">{{ __('Paused offers') }}</option>
                         <option value="game3">{{ __('Closed offers') }}</option>

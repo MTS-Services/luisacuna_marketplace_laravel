@@ -13,14 +13,14 @@
                     <th class="px-2 sm:px-4 md:px-6 py-5 text-sm md:text-base text-text-white capitalize font-normal">
                         @if (isset($column['sortable']) && $column['sortable'])
                             <div class="flex items-center gap-1">
-                                {{ $column['label'] }}
+                                {{ __($column['label']) }}
                                 <div>
                                     <x-phosphor-caret-up-fill class="w-4 h-4 fill-zinc-500" />
                                     <x-phosphor-caret-down-fill class='w-4 h-4' />
                                 </div>
                             </div>
                         @else
-                            {{ $column['label'] }}
+                            {{ __($column['label']) }}
                         @endif
                     </th>
                 @endforeach
