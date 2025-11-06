@@ -87,7 +87,6 @@ class FacebookController extends Controller
                     'email_verified_at' => $email ? now() : now(),
                 ]);
             }
-
             Auth::login($user, true);
 
             return redirect()->intended('user/orders/purchased-orders');
