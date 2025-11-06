@@ -125,9 +125,9 @@
                 </button>
             </div>
             <div class="mb-3 border-b border-zinc-600">
-                <button class="text-sm text-pink-500 hover:text-text-hover ps-4 pb-2">
+                <a href="{{ route('user.notifications') }}" class="text-sm text-pink-500 hover:text-text-hover ps-4 pb-2">
                     Mark all as read
-                </button>
+                </a>
             </div>
 
             <!-- Notification List -->
