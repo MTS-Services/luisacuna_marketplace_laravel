@@ -71,8 +71,22 @@ Route::get('/coaching', [CoachingController::class, 'coaching'])->name('coaching
 Route::get('/currency', [CurrencyController::class, 'index'])->name('currency');
 
 // email-temp
-Route::get('/email-templates', [EmailTemplateController::class, 'index'])->name('email_templates.index');
-Route::get('/email-templates/{id}', [EmailTemplateController::class, 'show'])->name('email_templates.show');
+// Route::get('/email-templates', [EmailTemplateController::class, 'index'])->name('email_templates.index');
+// Route::get('/email-templates/{id}', [EmailTemplateController::class, 'show'])->name('email_templates.show');
+// / Email Templates Routes
+Route::prefix('email-templates')->group(function () {
+    Route::get('/', [EmailTemplateController::class, 'index'])->name('email_templates.index');
+    Route::get('/create', [EmailTemplateController::class, 'create'])->name('email_templates.create');
+    Route::post('/store', [EmailTemplateController::class, 'store'])->name('email_templates.store');
+    Route::get('/edit/{id}', [EmailTemplateController::class, 'edit'])->name('email_templates.edit');
+    Route::put('/update/{id}', [EmailTemplateController::class, 'update'])->name('email_templates.update');
+    Route::delete('/delete/{id}', [EmailTemplateController::class, 'destroy'])->name('email_templates.delete');
+
+    Route::get('/trash', [EmailTemplateController::class, 'trash'])->name('email_templates.trash');
+    Route::get('/{id}', [EmailTemplateController::class, 'show'])->name('email_templates.show');
+});
+
+
 
 Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite_favorite.index');
 Route::get('/favorite/{id}', [FavoriteController::class, 'show'])->name('favorite_favorite.show');

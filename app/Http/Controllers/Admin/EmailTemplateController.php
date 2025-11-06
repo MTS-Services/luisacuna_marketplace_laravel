@@ -14,10 +14,10 @@ class EmailTemplateController extends Controller
     {
         return view($this->masterView);
     }
-    public function show()
+    public function show($id)
     {
 
-        return view($this->masterView);
+        return view($this->masterView,  compact('id'));
 
     }
 
@@ -26,9 +26,14 @@ class EmailTemplateController extends Controller
 
         return view($this->masterView);
     }
-       public function edit(string $encryptedId)
+       public function edit($id)
     {
 
+        return view($this->masterView, compact('id'));
+    }
+
+    public function trash()
+    {
         return view($this->masterView);
     }
 

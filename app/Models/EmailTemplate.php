@@ -16,7 +16,6 @@ class EmailTemplate extends Model
         'key',
         'name',
         'subject',
-        'body',
         'variables',
         'created_by',
         'updated_by',

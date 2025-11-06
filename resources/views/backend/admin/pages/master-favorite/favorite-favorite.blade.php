@@ -3,18 +3,19 @@
     <x-slot name="pageslug">favorite-favorite</x-slot>
 
     @switch(Route::currentRouteName())
-    
 
-        @case('email_templates.edit')
+
+        @case('favorite_favorite.index')
+       
             <x-slot name="breadcrumb">Email Templates</x-slot>
             <x-slot name="title">Edit Email Template</x-slot>
             <livewire:backend.admin.favorite.edit :data="$id" />
         @break
 
 
-       
 
-        @case('email_templates.show')
+
+        @case('favorite_favorite.show')
             <x-slot name="breadcrumb">Email Templates</x-slot>
             <x-slot name="title">Email Template Details</x-slot>
             <livewire:backend.admin.favorite.show :id="$id" />
