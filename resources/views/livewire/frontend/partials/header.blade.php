@@ -1,6 +1,7 @@
-<header x-data="{ mobileMenuOpen: false, notification: false, dropdown: '', globalSearchModal: false, open: '' }"
+<header x-data="{ mobileMenuOpen: false, notification: false, dropdown: '', globalSearchModal: false, open: '' }" x-cloak
     class="sticky top-0 z-50  {{ request()->routeIs('home') ? 'bg-linear-to-r from-zinc-950/50 via-text-text-white to-zinc-950/50 glass-card shadow-none!' : 'glass-card' }}">
-    <div class="{{ request()->routeIs('user.*') ? '' : '2xl:container-wide container' }} px-4 py-4 flex items-center justify-between relative" x-cloak>
+    <div class="{{ request()->routeIs('user.*') ? '' : '2xl:container-wide container' }} px-4 py-4 flex items-center justify-between relative"
+        x-cloak>
         <div class=""><a href="{{ route('home') }}">
                 <img src="{{ asset('assets/images/header_logo.png') }}" alt=""></a>
         </div>
@@ -15,23 +16,50 @@
                 <button class="btn btn-ghost btn-circle hover:bg-zinc-500/20">
                     <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-text-white" />
                 </button>
+
+                <button class="btn btn-ghost btn-circle hover:bg-zinc-500/20 mr-2" @click="notification = !notification">
+                    <div class="indicator">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 stroke-text-primary" fill="none"
+                            viewBox="0 0 24 24" stroke="white">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span class="badge badge-xs badge-primary indicator-item">1</span>
+                    </div>
+                </button>
             @endauth
-            <button class="btn btn-ghost btn-circle hover:bg-zinc-500/20 mr-2" @click="notification = !notification">
-                <div class="indicator">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 stroke-text-primary" fill="none"
-                        viewBox="0 0 24 24" stroke="white">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg>
-                    <span class="badge badge-xs badge-primary indicator-item">1</span>
+            <div class="flex items-center ml-2" x-data>
+                <!-- Light Mode Button -->
+                <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
+                    class="flex items-center justify-center w-10 h-8 text-lg rounded-l-full transition-colors duration-200 hidden md:flex"
+                    :class="!$flux.dark ?
+                        'bg-zinc-400 text-text-white' :
+                        'bg-transparent text-zinc-600 dark:text-zinc-300'">
+                    <flux:icon name="sun" class="w-5 h-5 stroke-white" />
+                </button>
+
+                <!-- Dark Mode Button -->
+                <button type="button" @click="$flux.dark = true" :aria-pressed="$flux.dark"
+                    class="flex items-center justify-center w-10 h-8 text-lg rounded-r-full transition-colors duration-200 hidden md:flex"
+                    :class="$flux.dark ?
+                        'bg-zinc-400 text-text-white' :
+                        'bg-transparent text-zinc-600 dark:text-zinc-300'">
+                    <flux:icon name="moon" class="w-5 h-5 stroke-current" />
+                </button>
+
+                <div x-show="$flux.dark" class="md:hidden">
+                    <flux:icon name="moon" class="w-5 h-5 stroke-current" @click="$flux.dark = false" />
                 </div>
-            </button>
+                <div x-show="!$flux.dark" class="md:hidden">
+                    <flux:icon name="sun" class="w-5 h-5 stroke-current" @click="$flux.dark = true" />
+                </div>
+            </div>
             @auth
                 <!-- User Profile Dropdown -->
                 <div x-data="{ open: false }" class="relative">
                     <button @click="open = !open"
                         class="flex items-center p-1 sm:p-1.5 rounded-lg text-text-white transition-all focus:outline-none">
-                        <div class="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full shadow-lg overflow-hidden">
+                        <div class="w-7 h-7 sm:w-9 sm:h-9 md:w-14 md:h-14 rounded-full shadow-lg overflow-hidden">
                             <img src="{{ storage_url(auth()->user()->avatar) }}" class="w-full h-full object-cover"
                                 alt="{{ auth()->user()->full_name ?? 'User Avatar' }}">
                         </div>
@@ -45,7 +73,7 @@
                         x-transition:leave="transition ease-in duration-150"
                         x-transition:leave-start="opacity-100 transform scale-100"
                         x-transition:leave-end="opacity-0 transform scale-95"
-                        class="absolute right-0 mt-2 w-56 sm:w-64 bg-bg-primary  rounded-xl shadow-2xl overflow-hidden z-50">
+                        class="absolute right-0 mt-2 w-56 sm:w-64 xl:w-90 2xl:w-96 bg-bg-primary  rounded-xl shadow-2xl overflow-hidden z-50">
 
                         <!-- User Info Header -->
                         <div class="px-4 py-5 shadow-lg bg-bg-secondary">
@@ -124,15 +152,18 @@
 
                                 <!-- Dropdown links -->
                                 <div x-show="ordersOpen" x-collapse x-cloak class="mt-1 ml-6 sm:ml-8 space-y-1">
-                                    <a href="{{ route('user.currency') }}" wire:navigate @click="$root.sidebarOpen = false"
+                                    <a href="{{ route('user.currency') }}" wire:navigate
+                                        @click="$root.sidebarOpen = false"
                                         class="block px-2 sm:px-3 py-2 text-xs  rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'currency' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                                         {{ __('Currency') }}
                                     </a>
-                                    <a href="{{ route('user.accounts') }}" wire:navigate @click="$root.sidebarOpen = false"
+                                    <a href="{{ route('user.accounts') }}" wire:navigate
+                                        @click="$root.sidebarOpen = false"
                                         class="block px-2 sm:px-3 py-2 text-xs  rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'accounts' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                                         {{ __('Accounts') }}
                                     </a>
-                                    <a href="{{ route('user.top-ups') }}" wire:navigate @click="$root.sidebarOpen = false"
+                                    <a href="{{ route('user.top-ups') }}" wire:navigate
+                                        @click="$root.sidebarOpen = false"
                                         class="block px-2 sm:px-3 py-2 text-xs  rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'top-ups' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                                         {{ __('Top Ups') }}
                                     </a>
@@ -253,36 +284,12 @@
                 </div>
             @else
                 <a href="{{ route('login') }}">
-                    <flux:icon name="user-circle" class="w-6 h-6 text-text-text-white ml-2" />
+                    <flux:icon name="user-circle" class="w-6 h-6
+                     text-text-text-white ml-2" />
                 </a>
             @endauth
 
-            <div class="flex items-center ml-2" x-data>
-                <!-- Light Mode Button -->
-                <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
-                    class="flex items-center justify-center w-10 h-8 text-lg rounded-l-full transition-colors duration-200 hidden md:flex"
-                    :class="!$flux.dark ?
-                        'bg-zinc-400 text-text-white' :
-                        'bg-transparent text-zinc-600 dark:text-zinc-300'">
-                    <flux:icon name="sun" class="w-5 h-5 stroke-white" />
-                </button>
 
-                <!-- Dark Mode Button -->
-                <button type="button" @click="$flux.dark = true" :aria-pressed="$flux.dark"
-                    class="flex items-center justify-center w-10 h-8 text-lg rounded-r-full transition-colors duration-200 hidden md:flex"
-                    :class="$flux.dark ?
-                        'bg-zinc-400 text-text-white' :
-                        'bg-transparent text-zinc-600 dark:text-zinc-300'">
-                    <flux:icon name="moon" class="w-5 h-5 stroke-current" />
-                </button>
-
-                <div x-show="$flux.dark" class="md:hidden">
-                    <flux:icon name="moon" class="w-5 h-5 stroke-current" @click="$flux.dark = false" />
-                </div>
-                <div x-show="!$flux.dark" class="md:hidden">
-                    <flux:icon name="sun" class="w-5 h-5 stroke-current" @click="$flux.dark = true" />
-                </div>
-            </div>
 
             {{-- Mobile menu button --}}
             <button @click="mobileMenuOpen = !mobileMenuOpen"
@@ -311,7 +318,7 @@
     {{-- Notification --}}
     <div x-show="notification" x-cloak @click.outside="notification = false"
         x-transition:enter="transition ease-out duration-100"
-        class="absolute top-0 right-0 w-[90%] xs:w-3/4 md:max-w-[380px] bg-bg-primary backdrop:blure-md z-100  transition-all duration-300 h-screen text-text-text-white shadow-lg overflow-y-auto">
+        class="absolute top-0 right-0 w-[90%] xs:w-3/4 md:max-w-[680px] bg-bg-primary backdrop:blure-md z-100   transition-all duration-300 min-h-[98vh] text-text-text-white shadow-lg overflow-y-auto">
         <div class="mb-2">
             <!-- Header -->
             <div class="flex justify-between items-center p-4 pb-0">
@@ -328,8 +335,8 @@
             </div>
 
             <!-- Notification List -->
-            <div class="space-y-3 h-full overflow-y-auto pr-1">
-                @for ($i = 0; $i < 5; $i++)
+            <div class="space-y-4 h-full overflow-y-auto pr-1">
+                @for ($i = 0; $i < 7; $i++)
                     <div class="flex gap-2 md:gap-4 hover:bg-bg-hover rounded-xl p-4">
                         <div>
                             {{-- Notification icon --}}
