@@ -16,8 +16,7 @@
         <div class="container relative z-10 text-center">
             <h1 class="text-5xl md:text-6xl font-bold mb-6 text-text-white">{{ __('Digital Commerce') }}</h1>
             <p class="text-xl text-text-secondary mb-8 max-w-2xl mx-auto">
-                {{ __('The most reliable platform to buy and sell
-                                high-quality digital products.') }}
+                {{ __('The most reliable platform to buy and sell high-quality digital products.') }}
             </p>
 
             <div class="flex flex-col md:flex-row gap-4 justify-center">

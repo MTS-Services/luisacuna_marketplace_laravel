@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MultiLangController;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Frontend\Pages\Home;
 use App\Livewire\Settings\Appearance;
@@ -26,6 +27,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{user}/edit', UserEdit::class)->name('edit');
     });
 });
+
+Route::post('language',[MultiLangController::class,'langChange'])->name('lang.change');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/user.php';
