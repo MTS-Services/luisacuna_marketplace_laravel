@@ -1,5 +1,23 @@
 {
     "Digital Commerce": "Commerce numérique",
     "The most reliable platform to buy and sell high-quality digital products.": "La plateforme la plus fiable pour acheter et vendre des produits numériques de haute qualité.",
-    "Create request": "Créer une demande"
+    "Create request": "Créer une demande",
+    "Manage Subscriptions":"Gérer les abonnements",
+
+
+    "Conversations": "Conversations",
+    "Messages": "Messages",
+    "Unread message only": "Message non lu uniquement",
+    "All": "Toute",
+    "Boosting": "Boosting",
+    "Orders" : "Orders",
+    "Support" : "Soutien",
+    "Pre-purchase" : "Préachat",
+    "Mark all as read": "Marquer tout comme lu",
+    "Browser notification": "Notification du navigateur",
+    "Search": "Recherche",
+    "VC_spams": "VC_spams",
+    "Available: Back by 10am": "Disponible : Retour avant 10h"
+
+
 }

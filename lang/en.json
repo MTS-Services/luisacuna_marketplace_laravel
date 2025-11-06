@@ -1,5 +1,26 @@
 {
     "Digital Commerce": "Digital Commerce",
     "The most reliable platform to buy and sell high-quality digital products.": "The most reliable platform to buy and sell high-quality digital products.",
-    "Create request": "Create request"
+    "Create request": "Create request",
+    "Manage Subscriptions" :"Manage Subscriptions",
+
+
+
+    "Conversations": "Conversations",
+    "Messages": "Messages",
+    "Unread message only": "Unread message only",
+    "All":"All",
+    "Boosting":"Boosting",
+    "Orders" : "Orders",
+    "Support": "Support",
+    "Pre-purchase" : "Pre-purchase",
+    "Mark all as read": "Mark all as read",
+    "Browser notification": "Browser notification",
+    "Search": "Search",
+    "VC_spams": "VC_spams",
+    "Available: Back by 10am": "Available: Back by 10am"
+
+    
+
+
 }
