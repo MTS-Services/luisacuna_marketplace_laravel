@@ -28,6 +28,11 @@
                     </div>
                 </button>
             @endauth
+             <div class="flex flex-row items-center gap-2 w-full xs:w-auto justify-between xs:justify-end">
+                    <span class="hidden sm:flex">
+                        <x-language />
+                    </span>
+                </div>
             <div class="flex items-center ml-2" x-data>
                 <!-- Light Mode Button -->
                 <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
