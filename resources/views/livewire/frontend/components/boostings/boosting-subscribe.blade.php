@@ -1,8 +1,6 @@
 <div>
     {{-- Nothing in the world is as soft and yielding as water. --}}
-
     <div>
-
         <div class="container mx-auto">
             <div class="breadcrumbs text-sm py-4">
                 <ul>
@@ -11,7 +9,6 @@
                 </ul>
             </div>
         </div>
-
         <section class="container mx-auto p-5 sm:p-10 lg:p-20 bg-bg-container rounded-2xl">
             <div class=" h-full  w-full py-10">
                 <div class="flex flex-col items-center space-y-4  py-4">
@@ -75,14 +72,14 @@
                     </div>
                 </div>
 
-                <div class="collapse collapse-arrow bg-zinc-800 text-text-white rounded-xl shadow-2xl">
+                <div class="collapse collapse-arrow bg-bg-border text-text-white rounded-xl shadow-2xl">
                     <input type="radio" name="game-settings-accordion" />
                     <div
                         class="collapse-title text-xl font-semibold flex justify-between items-center py-4 px-6 sm:px-8">
                         <div class="flex items-center space-x-3">
                             <div class="w-12 h-12 rounded-lg flex-shrink-0 overflow-hidden border border-zinc-100">
-                                <img src="{{ asset('assets/images/AlbionOnline.jpg') }}"
-                                    alt="Albion Online Logo" class="w-full h-full object-cover">
+                                <img src="{{ asset('assets/images/AlbionOnline.jpg') }}" alt="Albion Online Logo"
+                                    class="w-full h-full object-cover">
                             </div>
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold text-text-white ">Albion Online</h2>
@@ -122,14 +119,14 @@
                     </div>
                 </div>
 
-                <div class="collapse collapse-arrow bg-zinc-800 text-text-white rounded-xl shadow-2xl">
+                <div class="collapse collapse-arrow bg-bg-border text-text-white rounded-xl shadow-2xl">
                     <input type="radio" name="game-settings-accordion" />
                     <div
                         class="collapse-title text-xl font-semibold flex justify-between items-center py-4 px-6 sm:px-8">
                         <div class="flex items-center space-x-3">
                             <div class="w-12 h-12 rounded-lg flex-shrink-0 overflow-hidden border border-zinc-100">
-                                <img src="{{ asset('assets/images/ApexLegends(2).jpg') }}"
-                                    alt="Apex Legends Logo" class="w-full h-full object-cover">
+                                <img src="{{ asset('assets/images/ApexLegends(2).jpg') }}" alt="Apex Legends Logo"
+                                    class="w-full h-full object-cover">
                             </div>
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold text-text-white">Apex Legends</h2>
@@ -170,14 +167,14 @@
                     </div>
                 </div>
 
-                <div class="collapse collapse-arrow bg-zinc-800 text-text-white rounded-xl shadow-2xl">
+                <div class="collapse collapse-arrow bg-bg-border text-text-white rounded-xl shadow-2xl">
                     <input type="radio" name="game-settings-accordion" />
                     <div
                         class="collapse-title text-xl font-semibold flex justify-between items-center py-4 px-6 sm:px-8">
                         <div class="flex items-center space-x-3">
                             <div class="w-12 h-12 rounded-lg flex-shrink-0 overflow-hidden border border-zinc-100">
-                                <img src="{{ asset('assets/images/ArcheAge.jpg') }}"
-                                    alt="ArcheAge Logo" class="w-full h-full object-cover">
+                                <img src="{{ asset('assets/images/ArcheAge.jpg') }}" alt="ArcheAge Logo"
+                                    class="w-full h-full object-cover">
                             </div>
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold">ArcheAge</h2>
@@ -219,14 +216,14 @@
                     </div>
                 </div>
 
-                <div class="collapse collapse-arrow bg-zinc-800 text-text-white rounded-xl shadow-2xl">
+                <div class="collapse collapse-arrow bg-bg-border text-text-white rounded-xl shadow-2xl">
                     <input type="radio" name="game-settings-accordion" />
                     <div
                         class="collapse-title text-xl font-semibold flex justify-between items-center py-4 px-6 sm:px-8">
                         <div class="flex items-center space-x-3">
                             <div class="w-12 h-12 rounded-lg flex-shrink-0 overflow-hidden border border-zinc-100">
-                                <img src="{{ asset('assets/images/Dota 2.png') }}"
-                                    alt="Black Desert Online Logo" class="w-full h-full object-cover">
+                                <img src="{{ asset('assets/images/Dota 2.png') }}" alt="Black Desert Online Logo"
+                                    class="w-full h-full object-cover">
                             </div>
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold">Black Desert Online</h2>
@@ -268,7 +265,7 @@
                     </div>
                 </div>
 
-                <div class="collapse collapse-arrow bg-zinc-800 text-text-white rounded-xl shadow-2xl">
+                <div class="collapse collapse-arrow bg-bg-border text-text-white rounded-xl shadow-2xl">
                     <input type="radio" name="game-settings-accordion" />
                     <div
                         class="collapse-title text-xl font-semibold flex justify-between items-center py-4 px-6 sm:px-8">
@@ -317,7 +314,7 @@
                     </div>
                 </div>
 
-                <div class="collapse collapse-arrow bg-zinc-800 text-text-white rounded-xl shadow-2xl">
+                <div class="collapse collapse-arrow bg-bg-border text-text-white rounded-xl shadow-2xl">
                     <input type="radio" name="game-settings-accordion" />
                     <div
                         class="collapse-title text-xl font-semibold flex justify-between items-center py-4 px-6 sm:px-8">
@@ -366,7 +363,7 @@
                     </div>
                 </div>
 
-                <div class="collapse collapse-arrow bg-zinc-800 text-text-white rounded-xl shadow-2xl">
+                <div class="collapse collapse-arrow bg-bg-border text-text-white rounded-xl shadow-2xl">
                     <input type="radio" name="game-settings-accordion" />
                     <div
                         class="collapse-title text-xl font-semibold flex justify-between items-center py-4 px-6 sm:px-8">
@@ -415,7 +412,7 @@
                     </div>
                 </div>
 
-                <div class="collapse collapse-arrow bg-zinc-800 text-text-white rounded-xl shadow-2xl">
+                <div class="collapse collapse-arrow bg-bg-border text-text-white rounded-xl shadow-2xl">
                     <input type="radio" name="game-settings-accordion" />
                     <div
                         class="collapse-title text-xl font-semibold flex justify-between items-center py-4 px-6 sm:px-8">
@@ -465,7 +462,7 @@
                 </div>
 
 
-                <div class="collapse collapse-arrow bg-zinc-800 text-text-white rounded-xl shadow-2xl">
+                <div class="collapse collapse-arrow bg-bg-border text-text-white rounded-xl shadow-2xl">
                     <input type="radio" name="game-settings-accordion" />
                     <div
                         class="collapse-title text-xl font-semibold flex justify-between items-center py-4 px-6 sm:px-8">
@@ -514,7 +511,7 @@
                     </div>
                 </div>
 
-                <div class="collapse collapse-arrow bg-zinc-800 text-text-white rounded-xl shadow-2xl">
+                <div class="collapse collapse-arrow bg-bg-border text-text-white rounded-xl shadow-2xl">
                     <input type="radio" name="game-settings-accordion" />
                     <div
                         class="collapse-title text-xl font-semibold flex justify-between items-center py-4 px-6 sm:px-8">
@@ -563,7 +560,7 @@
                     </div>
                 </div>
 
-                <div class="collapse collapse-arrow bg-zinc-800 text-text-white rounded-xl shadow-2xl">
+                <div class="collapse collapse-arrow bg-bg-border text-text-white rounded-xl shadow-2xl">
                     <input type="radio" name="game-settings-accordion" />
                     <div
                         class="collapse-title text-xl font-semibold flex justify-between items-center py-4 px-6 sm:px-8">
@@ -612,7 +609,7 @@
                     </div>
                 </div>
 
-                <div class="collapse collapse-arrow bg-zinc-800 text-text-white rounded-xl shadow-2xl">
+                <div class="collapse collapse-arrow bg-bg-border text-text-white rounded-xl shadow-2xl">
                     <input type="radio" name="game-settings-accordion" />
                     <div
                         class="collapse-title text-xl font-semibold flex justify-between items-center py-4 px-6 sm:px-8">
@@ -662,7 +659,7 @@
                     </div>
                 </div>
 
-                <div class="collapse collapse-arrow bg-zinc-800 text-text-white rounded-xl shadow-2xl">
+                <div class="collapse collapse-arrow bg-bg-border text-text-white rounded-xl shadow-2xl">
                     <input type="radio" name="game-settings-accordion" />
                     <div
                         class="collapse-title text-xl font-semibold flex justify-between items-center py-4 px-6 sm:px-8">
@@ -711,7 +708,7 @@
                     </div>
                 </div>
 
-                <div class="collapse collapse-arrow bg-zinc-800 text-text-white rounded-xl shadow-2xl">
+                <div class="collapse collapse-arrow bg-bg-border text-text-white rounded-xl shadow-2xl">
                     <input type="radio" name="game-settings-accordion" />
                     <div
                         class="collapse-title text-xl font-semibold flex justify-between items-center py-4 px-6 sm:px-8">
@@ -811,9 +808,5 @@
             </button>
         </div>
     </div>
-
-
 </div>
-
-
 </div>
