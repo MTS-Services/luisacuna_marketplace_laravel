@@ -20,7 +20,7 @@
     "Legal": "Légal",
     "Popular Currency": "Devise populaire",
     "See Seller List": "Voir la liste des vendeurs",
-    "Filter": "Filtre", 
+    "Filter": "Filtre",
     "Newly Boosting": "Nouvelle optimisation",
     "Fortnite": "Fortnite",
     "Load More": "Charger plus",
@@ -109,7 +109,7 @@
     "Negative feedback": "Commentaires négatifs",
     "Feedback score": "Note de feedback",
 
-     
+
     "How it works?": "Comment ça marche ?",
     "Bronze": "Bronze",
     "You need an additional 1,900 points to reach the Silver level.":"Il vous faut 1 900 points supplémentaires pour atteindre le niveau Argent.",
@@ -158,7 +158,7 @@
     "Today": "Aujourd'hui",
     "This Week": "Cette semaine",
     "This Month": "Ce mois-ci",
-    
+
 
     "Order Name": "Nom de commande",
     "Order Number": "Numeéro de commande",
@@ -188,7 +188,10 @@
     "Company": "Entreprise",
     "Email": "E-mail",
     "This field is linked and can only be filled in once for user": "Ce champ est lié et ne peut être rempli qu'une seule fois par utilisateur",
-    "Location": "Emplacement"
+    "Location": "Emplacement",
+    "All Currency": "Toutes les devises",
+    "4 offerd": "4 offres",
+    "All brands for Coaching": "Toutes les marques pour Coaching"
 
-    
+
 }

@@ -101,7 +101,7 @@
     "This field is linked and can only be filled in once for user": "This field is linked and can only be filled in once for user",
     "Location": "Location",
 
-  
+
 
 
     "Manage Subscriptions": "Manage Subscriptions",
@@ -175,7 +175,7 @@
     "Today": "Today",
     "This Week": "This Week",
     "This Month": "This Month",
-  
+
 
     "Order Name": "Order Name",
     "Order Number": "Order Number",
@@ -194,8 +194,11 @@
     "Order": "Order",
     "Order ID": "Order ID",
     "Order status": "Order status",
-    "Price ($)": "Price ($)"
-    
+    "Price ($)": "Price ($)",
+    "All Currency": "All Currency",
+    "4 offerd": "4 offerd",
+    "All brands for Coaching": "All brands for Coaching"
+
 
 
 }
