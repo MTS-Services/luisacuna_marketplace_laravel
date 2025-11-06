@@ -24,6 +24,7 @@ class CreateAction
             if ($data['avatar']) {
                 $data['avatar'] = Storage::disk('public')->putFile('admins', $data['avatar']);
             }
+            
 
             // Create user
             $admin = $this->interface->create($data);

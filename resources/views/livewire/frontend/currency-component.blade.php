@@ -6,7 +6,7 @@
                 <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
             </div>
             <div class="text-muted text-base">
-                <span class="text-base text-text-white">{{__('Home')}}</span>
+                <a href="{{ route('home') }}"  class="text-base text-text-white">{{__('Home')}}</a>
             </div>
             <div class="px-2 text-text-white text-base">
                 >
@@ -26,7 +26,7 @@
                     class="form-input w-full rounded-full!" />
             </div>
             <button @click="filter = !filter"
-                class="flex items-center gap-2 border border-purple-500 rounded-full px-5 py-2 hover:bg-purple-600 transition">
+                class="flex items-center gap-2 border border-zinc-500 rounded-full px-5 py-2 hover:bg-zinc-600 transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -54,75 +54,75 @@
             <div class="swiper-wrapper py-10">
                 <div class="swiper-slide">
                     <div class="bg-bg-primary p-6 rounded-2xl">
-                        <div class="images w-full h-68">
+                        <div class="images w-full h-60 sm:h-48 md:h-68">
                             <img src="{{ asset('assets/images/home_page/Rectangle 163.png') }}" alt=""
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="">
-                            <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">{{__('EA sports FC Coins')}}</h3>
+                            <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{__('EA sports FC Coins')}}</h3>
                             <p class="text-pink-500 mb-8">{{__('50 offer')}}</p>
                             <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'exilecon-official-trailer']) }}" wire:navigate>
-                                <x-ui.button class="">{{__('See Seller List')}}</x-ui.button>
+                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{__('See Seller List')}}</x-ui.button>
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="swiper-slide">
                     <div class="bg-bg-primary p-6 rounded-2xl">
-                        <div class="images w-full h-68">
+                        <div class="images w-full h-60 sm:h-48 md:h-68">
                             <img src="{{ asset('assets/images/home_page/Rectangle 163 (1).png') }}" alt=""
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="">
-                            <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">{{__('Blade Ball Tokens')}}</h3>
+                            <h3 class="font-semibold text-xl md:text-2xl mb-3 mt-5  text-text-white">{{__('Blade Ball Tokens')}}</h3>
                             <p class="text-pink-500 mb-8">{{__('50 offer')}}</p>
                             <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'exilecon-official-trailer']) }}" wire:navigate>
-                                <x-ui.button class="">{{__('See Seller List')}}</x-ui.button>
+                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{__('See Seller List')}}</x-ui.button>
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="swiper-slide">
                     <div class="bg-bg-primary p-6 rounded-2xl">
-                        <div class="images w-full min-h-68">
+                        <div class="images w-full h-60 sm:h-48 md:h-68">
                             <img src="{{ asset('assets/images/home_page/Rectangle 163 (2).png') }}" alt=""
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="">
-                            <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">{{__('New World Coins')}}</h3>
+                            <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{__('New World Coins')}}</h3>
                             <p class="text-pink-500 mb-8">{{__('50 offer')}}</p>
                             <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'exilecon-official-trailer']) }}" wire:navigate>
-                                <x-ui.button class="">{{__('See Seller List')}}</x-ui.button>
+                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{__('See Seller List')}}</x-ui.button>
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="swiper-slide">
                     <div class="bg-bg-primary p-6 rounded-2xl">
-                        <div class="images w-full h-68">
+                        <div class="images w-full h-60 sm:h-48 md:h-68">
                             <img src="{{ asset('assets/images/home_page/Rectangle 163 (1).png') }}" alt=""
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="">
-                            <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">{{__('Blade Ball Tokens')}}</h3>
+                            <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{__('Blade Ball Tokens')}}</h3>
                             <p class="text-pink-500 mb-8">{{__('50 offer')}}</p>
                             <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'exilecon-official-trailer']) }}" wire:navigate>
-                                <x-ui.button class="">{{__('See Seller List')}}</x-ui.button>
+                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{__('See Seller List')}}</x-ui.button>
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="swiper-slide">
                     <div class="bg-bg-primary p-6 rounded-2xl">
-                        <div class="images w-full min-h-68">
+                        <div class="images w-full h-60 sm:h-48 md:h-68 md:min-h-48">
                             <img src="{{ asset('assets/images/home_page/Rectangle 163 (2).png') }}" alt=""
                                 class="w-full h-full object-cover rounded-lg">
                         </div>
                         <div class="">
-                            <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">{{__('New World Coins')}}</h3>
+                            <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{__('New World Coins')}}</h3>
                             <p class="text-pink-500 mb-8">{{__('50 offer')}}</p>
                             <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'exilecon-official-trailer']) }}" wire:navigate>
-                                <x-ui.button class="">{{__('See Seller List')}}</x-ui.button>
+                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{__('See Seller List')}}</x-ui.button>
                             </a>
                         </div>
                     </div>
@@ -144,158 +144,158 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-6">
             <div class="bg-bg-primary p-6 rounded-2xl">
-                <div class="images w-full h-68">
+                <div class="images w-full h-60 sm:h-48 md:h-68">
                     <img src="{{ asset('assets/images/currency_page/Rectangle 163.png') }}" alt=""
                         class="w-full h-full object-cover rounded-lg">
                 </div>
                 <div class="">
-                    <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">{{__('Exilecon Official Trailer')}}</h3>
+                    <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{__('Exilecon Official Trailer')}}</h3>
                     <p class="text-pink-500 mb-8">{{__('50 offer')}}</p>
                     <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'exilecon-official-trailer']) }}" wire:navigate>
-                        <x-ui.button class="">{{__('See Seller List')}}</x-ui.button>
+                        <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{__('See Seller List')}}</x-ui.button>
                     </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
-                <div class="images w-full h-68">
+                <div class="images w-full h-60 sm:h-48 md:h-68">
                     <img src="{{ asset('assets/images/currency_page/Rectangle 164.png') }}" alt=""
                         class="w-full h-full object-cover rounded-lg">
                 </div>
                 <div class="">
-                    <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">{{__('RuneScape 3 Gold')}}</h3>
+                    <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{__('RuneScape 3 Gold')}}</h3>
                     <p class="text-pink-500 mb-8">{{__('50 offer')}}</p>
                     <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'runescape-3-gold']) }}" wire:navigate>
-                        <x-ui.button class="">{{__('See Seller List')}}</x-ui.button>
+                        <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{__('See Seller List')}}</x-ui.button>
                     </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
-                <div class="images w-full min-h-68">
+                <div class="images w-full h-60 sm:h-48 md:h-68">
                     <img src="{{ asset('assets/images/currency_page/Rectangle 165.png') }}" alt=""
                         class="w-full h-full object-cover rounded-lg">
                 </div>
                 <div class="">
-                    <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">{{__('Silver Farming')}}</h3>
+                    <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{__('Silver Farming')}}</h3>
                     <p class="text-pink-500 mb-8">{{__('50 offer')}}</p>
                     <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'silver-farming']) }}" wire:navigate>
-                        <x-ui.button class="">{{__('See Seller List')}}</x-ui.button>
+                        <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{__('See Seller List')}}</x-ui.button>
                     </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
-                <div class="images w-full min-h-68">
+                <div class="images w-full h-60 sm:h-48 md:h-68">
                     <img src="{{ asset('assets/images/currency_page/Rectangle 163 (6).png') }}" alt=""
                         class="w-full h-full object-cover rounded-lg">
                 </div>
                 <div class="">
-                    <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">{{__('Hand Farmed Low Price Gold')}}</h3>
+                    <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{__('Hand Farmed Low Price')}}</h3>
                     <p class="text-pink-500 mb-8">{{__('50 offer')}}</p>
                     <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'hand-farmed-low-price-gold']) }}" wire:navigate>
-                        <x-ui.button class="">{{__('See Seller List')}}</x-ui.button>
+                        <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{__('See Seller List')}}</x-ui.button>
                     </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
-                <div class="images w-full min-h-68">
+                <div class="images w-full h-60 sm:h-48 md:h-68">
                     <img src="{{ asset('assets/images/currency_page/Rectangle 163 (7).png') }}" alt=""
                         class="w-full h-full object-cover rounded-lg">
                 </div>
                 <div class="">
-                    <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">{{__('RuneScape 3 Gold')}}</h3>
+                    <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{__('RuneScape 3 Gold')}}</h3>
                     <p class="text-pink-500 mb-8">{{__('50 offer')}}</p>
                     <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'runescape-3-gold']) }}" wire:navigate>
-                        <x-ui.button class="">{{__('See Seller List')}}</x-ui.button>
+                        <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{__('See Seller List')}}</x-ui.button>
                     </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
-                <div class="images w-full min-h-68">
+                <div class="images w-full h-60 sm:h-48 md:h-68">
                     <img src="{{ asset('assets/images/currency_page/Rectangle 163 (8).png') }}" alt=""
                         class="w-full h-full object-cover rounded-lg">
                 </div>
                 <div class="">
-                    <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">{{__('Free Club Coins FC25')}}</h3>
+                    <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{__('Free Club Coins FC25')}}</h3>
                     <p class="text-pink-500 mb-8">{{__('50 offer')}}</p>
                     <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'free-club-coins-fc25']) }}" wire:navigate>
-                        <x-ui.button class="">{{__('See Seller List')}}</x-ui.button>
+                        <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{__('See Seller List')}}</x-ui.button>
                     </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
-                <div class="images w-full min-h-68">
+                <div class="images w-full h-60 sm:h-48 md:h-68">
                     <img src="{{ asset('assets/images/currency_page/Rectangle 163 (9).png') }}" alt=""
                         class="w-full h-full object-cover rounded-lg">
                 </div>
                 <div class="">
-                    <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">{{__('Worldforge Legends')}}</h3>
+                    <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{__('Worldforge Legends')}}</h3>
                     <p class="text-pink-500 mb-8">{{__('50 offer')}}</p>
                     <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'worldforge-legends']) }}" wire:navigate>
-                        <x-ui.button class="">{{__('See Seller List')}}</x-ui.button>
+                        <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{__('See Seller List')}}</x-ui.button>
                     </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
-                <div class="images w-full min-h-68">
+                <div class="images w-full h-60 sm:h-48 md:h-68">
                     <img src="{{ asset('assets/images/currency_page/Rectangle 163 (10).png') }}" alt=""
                         class="w-full h-full object-cover rounded-lg">
                 </div>
                 <div class="">
-                    <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">{{__('Echoes of the Terra')}}</h3>
+                    <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{__('Echoes of the Terra')}}</h3>
                     <p class="text-pink-500 mb-8">{{__('50 offer')}}</p>
                     <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'echoes-of-the-terra']) }}" wire:navigate>
-                        <x-ui.button class="">{{__('See Seller List')}}</x-ui.button>
+                        <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{__('See Seller List')}}</x-ui.button>
                     </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
-                <div class="images w-full min-h-68">
+                <div class="images w-full h-60 sm:h-48 md:h-68">
                     <img src="{{ asset('assets/images/currency_page/Rectangle 163 (11).png') }}" alt=""
                         class="w-full h-full object-cover rounded-lg">
                 </div>
                 <div class="">
-                    <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">{{__('Epochs of Gaia')}}</h3>
+                    <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{__('Epochs of Gaia')}}</h3>
                     <p class="text-pink-500 mb-8">{{__('50 offer')}}</p>
                     <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'epochs-of-gaia']) }}" wire:navigate>
-                        <x-ui.button class="">{{__('See Seller List')}}</x-ui.button>
+                        <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{__('See Seller List')}}</x-ui.button>
                     </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
-                <div class="images w-full min-h-68">
+                <div class="images w-full h-60 sm:h-48 md:h-68">
                     <img src="{{ asset('assets/images/currency_page/Rectangle 163 (12).png') }}" alt=""
                         class="w-full h-full object-cover rounded-lg">
                 </div>
                 <div class="">
-                    <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">{{__('Titan Realms')}}</h3>
+                    <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{__('Titan Realms')}}</h3>
                     <p class="text-pink-500 mb-8">{{__('50 offer')}}</p>
                     <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'titan-realms']) }}" wire:navigate>
-                        <x-ui.button class="">{{__('See Seller List')}}</x-ui.button>
+                        <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{__('See Seller List')}}</x-ui.button>
                     </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
-                <div class="images w-full min-h-68">
+                <div class="images w-full h-60 sm:h-48 md:h-68">
                     <img src="{{ asset('assets/images/currency_page/Rectangle 163 (13).png') }}" alt=""
                         class="w-full h-full object-cover rounded-lg">
                 </div>
                 <div class="">
-                    <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">{{__('Kingdoms Across Skies')}}</h3>
+                    <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{__('Kingdoms Across Skies')}}</h3>
                     <p class="text-pink-500 mb-8">{{__('50 offer')}}</p>
                     <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'kingdoms-across-skies']) }}" wire:navigate>
-                        <x-ui.button class="">{{__('See Seller List')}}</x-ui.button>
+                        <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{__('See Seller List')}}</x-ui.button>
                     </a>
                 </div>
             </div>
             <div class="bg-bg-primary p-6 rounded-2xl">
-                <div class="images w-full min-h-68">
+                <div class="images w-full h-60 sm:h-48 md:h-68">
                     <img src="{{ asset('assets/images/currency_page/Rectangle 163 (14).png') }}" alt=""
                         class="w-full h-full object-cover rounded-lg">
                 </div>
                 <div class="">
-                    <h3 class="font-semibold text-2xl mb-3 mt-5  text-text-white">{{__('Realmwalker: New Dawn')}}</h3>
+                    <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{__('Realmwalker: New Dawn')}}</h3>
                     <p class="text-pink-500 mb-8">{{__('50 offer')}}</p>
                     <a href="{{ route('game.index',['categorySlug'=>'currency','gameSlug'=>'realmwalker-new-dawn']) }}" wire:navigate>
-                        <x-ui.button class="">{{__('See Seller List')}}</x-ui.button>
+                        <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{__('See Seller List')}}</x-ui.button>
                     </a>
                 </div>
             </div>
@@ -325,11 +325,9 @@
                     spaceBetween: 20,
                     breakpoints: {
                         640: {
-                            slidesPerView: 1,
-                        },
-                        768: {
                             slidesPerView: 2,
                         },
+                        
                         1024: {
                             slidesPerView: 3,
                         },
