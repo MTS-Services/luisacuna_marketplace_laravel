@@ -30,7 +30,7 @@ class Index extends Component
 
     public function render()
     {
-        $datas = $this->service->getPaginatedDatas(
+        $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
@@ -81,18 +81,15 @@ class Index extends Component
                 'label' => 'Created',
                 'sortable' => true,
                 'format' => function ($admin) {
-                    return '<div class="text-sm">' .
-                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $admin->created_at->format('M d, Y') . '</div>' .
-                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $admin->created_at->format('h:i A') . '</div>' .
-                        '</div>';
+                    return $admin->created_at_formatted;
                 }
             ],
             [
                 'key' => 'created_by',
                 'label' => 'Created By',
                 'format' => function ($admin) {
-                    return $admin->createdBy
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $admin->createdBy->name . '</span>'
+                    return optional($admin->createdBy)->name
+                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . e($admin->createdBy->name) . '</span>'
                         : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
                 }
             ],
@@ -121,6 +118,7 @@ class Index extends Component
             ['value' => 'activate', 'label' => 'Activate'],
             ['value' => 'deactivate', 'label' => 'Deactivate'],
             ['value' => 'suspend', 'label' => 'Suspend'],
+            ['value' => 'pending', 'label' => 'Pending'],
         ];
 
         return view('livewire.backend.admin.components.admin-management.admin.index', [
@@ -137,7 +135,7 @@ class Index extends Component
         $this->deleteAdminId = $adminId;
         $this->showDeleteModal = true;
     }
-    
+
     public function delete(): void
     {
         // dd($this->deleteAdminId);
@@ -168,15 +166,16 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function changeStatus($adminId, $status): void
+    public function changeStatus($id, $status): void
     {
         try {
             $adminStatus = AdminStatus::from($status);
 
             match ($adminStatus) {
-                AdminStatus::ACTIVE => $this->service->activateData($adminId),
-                AdminStatus::INACTIVE => $this->service->deactivateData($adminId),
-                AdminStatus::SUSPENDED => $this->service->suspendData($adminId),
+                AdminStatus::ACTIVE => $this->service->updateStatusData($id, AdminStatus::ACTIVE),
+                AdminStatus::INACTIVE => $this->service->updateStatusData($id, AdminStatus::INACTIVE),
+                AdminStatus::PENDING => $this->service->updateStatusData($id, AdminStatus::SUSPENDED),
+                AdminStatus::SUSPENDED => $this->service->updateStatusData($id, AdminStatus::PENDING),
                 default => null,
             };
 
@@ -207,6 +206,7 @@ class Index extends Component
                 'activate' => $this->bulkUpdateStatus(AdminStatus::ACTIVE),
                 'deactivate' => $this->bulkUpdateStatus(AdminStatus::INACTIVE),
                 'suspend' => $this->bulkUpdateStatus(AdminStatus::SUSPENDED),
+                'pending' => $this->bulkUpdateStatus(AdminStatus::PENDING),
                 default => null,
             };
 
@@ -220,8 +220,8 @@ class Index extends Component
 
     protected function bulkDelete(): void
     {
-        $count = $this->service->bulkDeleteDatas($this->selectedIds, admin()->id);
-        
+        $count = $this->service->bulkDeleteData($this->selectedIds, admin()->id);
+
         $this->success("{$count} Admins deleted successfully");
     }
 
@@ -243,7 +243,7 @@ class Index extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->service->getPaginatedDatas(
+        return $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

@@ -112,6 +112,51 @@
                             {{ $admin->status_label }}
                         </h3>
                     </div>
+
+                    <div>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Email Verified At</p>
+                        <h3 class="text-lg font-medium text-text-primary">
+                            {{ $data->email_verified_at ? $data->email_verified_at->format('Y-m-d H:i:s') : 'Not Verified' }}
+                        </h3>
+                    </div>
+
+                    {{-- <div>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Phone Verified At</p>
+                        <h3 class="text-lg font-medium text-text-primary">
+                            {{ $data->phone_verified_at ? $data->phone_verified_at->format('Y-m-d H:i:s') : 'Not Verified' }}
+                        </h3>
+                    </div> --}}
+
+                    <div>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Two Factor Enabled</p>
+                        <h3 class="text-lg font-medium text-text-primary">
+                            {{ $data->two_factor_enabled ? 'Yes' : 'No' }}
+                        </h3>
+                    </div>
+
+                    <div>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Last Login At</p>
+                        <h3 class="text-lg font-medium text-text-primary">
+                            {{ $data->last_login_at ? $data->last_login_at->format('Y-m-d H:i:s') : 'Never Logged In' }}
+                        </h3>
+                    </div>
+
+                    <div>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Last Login IP</p>
+                        <h3 class="text-lg font-medium text-text-primary">{{ $data->last_login_ip ?? 'N/A' }}</h3>
+                    </div>
+
+                    <div>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Created At</p>
+                        <h3 class="text-lg font-medium text-text-primary">
+                            {{ $data->created_at->format('Y-m-d H:i:s') }}</h3>
+                    </div>
+
+                    <div>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Updated At</p>
+                        <h3 class="text-lg font-medium text-text-primary">
+                            {{ $data->updated_at->format('Y-m-d H:i:s') }}</h3>
+                    </div>
                 </div>
             </div>
         </div>

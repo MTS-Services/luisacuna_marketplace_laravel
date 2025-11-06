@@ -208,7 +208,7 @@ class Index extends Component
 
     protected function bulkDelete(): void
     {
-       
+        dd($this->selectedIds);
       $count =  $this->service->bulkDeleteData($this->selectedIds);
         $this->success("{$count} Data deleted successfully");
     }

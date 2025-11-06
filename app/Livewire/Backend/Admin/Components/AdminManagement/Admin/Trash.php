@@ -32,7 +32,7 @@ class Trash extends Component
 
     public function render()
     {
-        $admins = $this->service->getTrashedDatasPaginated(
+        $admins = $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
@@ -166,15 +166,16 @@ class Trash extends Component
         $this->resetPage();
     }
 
-    public function changeStatus($adminId, $status): void
+    public function changeStatus($id, $status): void
     {
         try {
             $adminStatus = AdminStatus::from($status);
 
             match ($adminStatus) {
-                AdminStatus::ACTIVE => $this->service->activateData($adminId),
-                AdminStatus::INACTIVE => $this->service->deactivateData($adminId),
-                AdminStatus::SUSPENDED => $this->service->suspendData($adminId),
+                 AdminStatus::ACTIVE => $this->service->updateStatusData($id, AdminStatus::ACTIVE),
+                AdminStatus::INACTIVE => $this->service->updateStatusData($id, AdminStatus::INACTIVE),
+                AdminStatus::SUSPENDED => $this->service->updateStatusData($id, AdminStatus::SUSPENDED),
+                AdminStatus::SUSPENDED => $this->service->updateStatusData($id, AdminStatus::PENDING),
                 default => null,
             };
 
@@ -219,7 +220,7 @@ class Trash extends Component
 
     protected function bulkDelete(): void
     {
-        $count = $this->service->bulkDeleteDatas($this->selectedIds);
+        $count = $this->service->bulkDeleteData($this->selectedIds);
         $this->success("{$count} Admins deleted successfully");
     }
 
@@ -231,12 +232,12 @@ class Trash extends Component
 
     protected function bulkRestoreDatas(): void
     {
-        $count = $this->service->bulkRestoreDatas($this->selectedIds, admin()->id);
+        $count = $this->service->bulkRestoreData($this->selectedIds, admin()->id);
         $this->success("{$count} Admins restored successfully");
     }
     protected function bulkForceDeleteDatas(): void
     {
-        $count = $this->service->bulkForceDeleteDatas($this->selectedIds);
+        $count = $this->service->bulkForceDeleteData($this->selectedIds);
         $this->success("{$count} Admins permanently deleted successfully");
     }
 
@@ -252,7 +253,7 @@ class Trash extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->service->getTrashedDatasPaginated(
+        return $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

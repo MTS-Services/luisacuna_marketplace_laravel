@@ -6,7 +6,7 @@ use App\Models\Admin;
 use App\Repositories\Contracts\AdminRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
+
 
 class AdminRepository implements AdminRepositoryInterface
 {
@@ -14,104 +14,98 @@ class AdminRepository implements AdminRepositoryInterface
         protected Admin $model
     ) {}
 
-    public function all(): Collection
-    {
-        return $this->model->orderBy('created_at', 'desc')->get();
-    }
+    
 
-    public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    /* ================== ================== ==================
+    *                      Find Methods 
+    * ================== ================== ================== */
+
+    public function all(string $sortField = 'created_at', $order = 'desc'): Collection
     {
+
         $query = $this->model->query();
 
-        // Apply filters
-        if (!empty($filters)) {
-            $query->filter($filters);
-        }
+        return $query->orderBy($sortField, $order)->get();
+    }
 
-        // Apply sorting
+    public function find($column_value, string $column_name = 'id', bool $trashed = false): ?Admin
+    {
+        $model = $this->model;
+        if ($trashed) {
+            $model = $model->withTrashed();
+        }
+        return $model->where($column_name, $column_value)->first();
+    }
+
+    
+    public function findTrashed($column_value, string $column_name = 'id'): ?Admin
+    {
+        $model = $this->model->onlyTrashed();
+
+        return $model->where($column_name, $column_value)->first();
+
+    }
+
+
+
+ 
+    public function findByEmail(string $email, $trashed = false): ?Admin
+    {
+        $model = $this->model;
+        if ($trashed) {
+            $model = $model->withTrashed();
+        }
+        return $model->where('email', $email)->first();
+    }
+
+    public function findTrashedByEmail(string $email): ?Admin
+    {
+        return $this->model->onlyTrashed()->where('email', $email)->first();
+    }
+
+    
+        public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        $search = $filters['search'] ?? null;
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
-        $query->orderBy($sortField, $sortDirection);
 
-        return $query->paginate($perPage);
+        if ($search) {
+            // Scout Search
+            return Admin::search($search)
+                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->paginate($perPage);
+        }
+
+        // Normal Eloquent Query
+        return $this->model->query()
+            ->filter($filters)
+            ->orderBy($sortField, $sortDirection)
+            ->paginate($perPage);
     }
+
 
     public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        $query = $this->model->onlyTrashed()->orderBy('deleted_at', 'desc');
-
-        // Apply filters
-        if (!empty($filters)) {
-            $query->filter($filters);
-        }
-
-        // Apply sorting        
+        $search = $filters['search'] ?? null;
         $sortField = $filters['sort_field'] ?? 'deleted_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
-        $query->orderBy($sortField, $sortDirection);
 
+        if ($search) {
+            // 👇 Manually filter trashed + search
+            return Admin::search($search)
+                ->onlyTrashed()
+                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->paginate($perPage);
+        }
+
+        return $this->model->onlyTrashed()
+            ->filter($filters)
+            ->orderBy($sortField, $sortDirection)
+            ->paginate($perPage);
         return $query->paginate($perPage);
     }
 
-    public function find(int $id): ?Admin
-    {
-        return $this->model->withTrashed()->find($id);
-    }
-
-    public function findByEmail(string $email): ?Admin
-    {
-        return $this->model->where('email', $email)->first();
-    }
-
-    public function create(array $data): Admin
-    {
-        return $this->model->create($data);
-    }
-
-    public function update(int $id, array $data): bool
-    {
-        $admin = $this->find($id);
-        
-        if (!$admin) {
-            return false;
-        }
-
-        return $admin->update($data);
-    }
-
-    public function delete(int $id): bool
-    {
-        $admin = $this->find($id);
-        
-        if (!$admin) {
-            return false;
-        }
-
-        return $admin->delete();
-    }
-
-    public function forceDelete(int $id): bool
-    {
-        $admin = $this->model->onlyTrashed()->find($id);
-        
-        if (!$admin) {
-            return false;
-        }
-
-        return $admin->forceDelete();
-    }
-
-    public function restore(int $id, int $actionerId): bool
-    {
-        $admin = $this->find($id);
-        
-        if (!$admin) {
-            return false;
-        }
-        $admin->update(['restorer_id' => $actionerId]);
-
-        return $admin->restore();
-    }
 
     public function exists(int $id): bool
     {
@@ -129,32 +123,79 @@ class AdminRepository implements AdminRepositoryInterface
         return $query->count();
     }
 
-    public function getActive(): Collection
+    public function search(string $query, string $sortField = 'created_at', $order = 'desc'): Collection
     {
-        return $this->model->active()->get();
+        return $this->model->search($query)->orderBy($sortField, $order)->get();
     }
 
-    public function getInactive(): Collection
+
+    /* ================== ================== ==================
+    *                    Data Modification Methods 
+    * ================== ================== ================== */
+
+
+
+    public function create(array $data): Admin
     {
-        return $this->model->inactive()->get();
+        return $this->model->create($data);
     }
 
-    public function search(string $query): Collection
+    public function update(int $id, array $data): bool
     {
-        return $this->model->search($query)->get();
+        $admin = $this->find($id);
+        
+        if (!$admin) {
+            return false;
+        }
+
+        return $admin->update($data);
     }
 
-    public function bulkDelete(array $ids , $actionerId): int
+
+
+    public function delete(int $id, $actionerId): bool
     {
-        $this->model->whereIn('id', $ids)->update(['deleter_id' => $actionerId]);
-        return $this->model->whereIn('id', $ids)->delete();
+        $admin = $this->find($id);
+        
+        if (!$admin) {
+            return false;
+        }
+
+        $admin->update(['deleter_id' => $actionerId]);
+
+        return $admin->delete();
     }
+
+    public function forceDelete(int $id): bool
+    {
+        $admin = $this->findTrashed($id);
+        
+        if (!$admin) {
+            return false;
+        }
+
+        return $admin->forceDelete();
+    }
+
+    public function restore(int $id, int $actionerId): bool
+    {
+        $admin = $this->findTrashed($id);
+        
+        if (!$admin) {
+            return false;
+        }
+        $admin->update(['restorer_id' => $actionerId]);
+
+        return $admin->restore();
+    }
+
 
     public function bulkUpdateStatus(array $ids, string $status, $actionerId): int
     {
-        $this->model->whereIn('id', $ids)->update(['updater_id' => $actionerId]);
-        return $this->model->whereIn('id', $ids)->update(['status' => $status]);
+
+        return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updater_id' => $actionerId]);
     }
+
     public function bulkRestore(array $ids, int $actionerId): int
     {
 
@@ -164,9 +205,47 @@ class AdminRepository implements AdminRepositoryInterface
 
     }
 
+    public function bulkDelete(array $ids, int $actionerId): int{
+        
+         $this->model->whereIn('id', $ids)->update(['deleter_id' => $actionerId]);
 
+         return $this->model->whereIn('id', $ids)->delete();
+    }
     public function bulkForceDelete(array $ids): int //
     {  
         return $this->model->withTrashed()->whereIn('id', $ids)->forceDelete();
     }
+
+
+
+
+    /* ================== ================== ==================
+    *                  Accessor Methods (Optional)
+    * ================== ================== ================== */
+
+
+
+    public function getActive(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->active()->orderBy($sortField, $order)->get();
+    }
+
+    public function getInactive(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->inactive()->orderBy($sortField, $order)->get();
+    }
+
+
+    public function getPending(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->pending()->orderBy($sortField, $order)->get();
+    }
+
+    public function getSuspended(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->suspended()->orderBy($sortField, $order)->get();
+    }
+
+
+
 }

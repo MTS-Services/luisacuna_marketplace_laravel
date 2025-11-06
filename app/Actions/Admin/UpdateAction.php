@@ -16,16 +16,16 @@ class UpdateAction
         protected AdminRepositoryInterface $interface
     ) {}
 
-    public function execute(int $adminId,  array $data): Admin
+    public function execute(int $id,  array $data): Admin
     {
-        return DB::transaction(function () use ($adminId, $data) {
+        return DB::transaction(function () use ($id, $data) {
 
             // dd($data);
 
-            $admin = $this->interface->find($adminId);
+            $admin = $this->interface->find($id);
 
             if (!$admin) {
-                Log::error('Admin not found', ['admin_id' => $adminId]);
+                Log::error('Admin not found', ['admin_id' => $id]);
                 throw new \Exception('Admin not found');
             }
 
@@ -72,12 +72,12 @@ class UpdateAction
             Log::info('Data to update', ['data' => $data]);
 
             // Update Admin
-            $updated = $this->interface->update($adminId, $new_data);
+            $updated = $this->interface->update($id, $new_data);
 
            
 
             if (!$updated) {
-                Log::error('Failed to update Admin in repository', ['admin_id' => $adminId]);
+                Log::error('Failed to update Admin in repository', ['admin_id' => $id]);
                 throw new \Exception('Failed to update Admin');
             }
 
