@@ -6,7 +6,7 @@
                 <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
             </div>
             <div class="text-muted text-base">
-                <span class="text-base text-text-white">{{ __('Home') }}</span>
+                <a href="{{ route('home') }}" class="text-base text-text-white">{{ __('Home') }}</a>
             </div>
             <div class="px-2 text-text-white text-base">
                 >
