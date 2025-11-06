@@ -12,8 +12,8 @@
                     <img src="{{ asset('assets/images/user_profile/Ellipse 474.png') }}" alt="">
                 </div>
                 <div class="">
-                    <h3 class="text-4xl font-semibold mb-2">Starriz.clo</h3>
-                    <span class="text-base-400">Online</span>
+                    <h3 class="text-4xl font-semibold mb-2">{{__('Starriz.clo')}}</h3>
+                    <span class="text-base-400">{{__('Online')}}</span>
                 </div>
             </div>
             <div class="icon">
@@ -23,15 +23,15 @@
         <div class="border-b border-zinc-700 mt-6 mb-4"></div>
         <div class="flex gap-6">
             <a href="#" class=" group">
-                <span class="relative z-10 ">Shop</span>
+                <span class="relative z-10 ">{{__('Shop')}}</span>
                 <span class=""></span>
             </a>
             <a href="#" class=" group">
-                <span class="relative z-10">Reviews</span>
+                <span class="relative z-10">{{__('Reviews')}}</span>
                 <span class=""></span>
             </a>
             <a href="#" class=" group">
-                <span class="relative z-10">About</span>
+                <span class="relative z-10">{{__('About')}}</span>
                 <span class=""></span>
             </a>
         </div>
@@ -40,10 +40,10 @@
     {{-- info --}}
     <section class="container mx-auto mb-30">
         <div class="mb-6">
-            <h3 class="text-4xl text-zinc-50 mb-4">Shop</h3>
+            <h3 class="text-4xl text-zinc-50 mb-4">{{__('Shop')}}</h3>
             {{-- profile nav --}}
             @include('components.frontend.profile-nav')
             {{-- select game --}}
-            
+
     </section>
 </main>

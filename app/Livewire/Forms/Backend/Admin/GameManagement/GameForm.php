@@ -5,6 +5,7 @@ namespace App\Livewire\Forms\Backend\Admin\GameManagement;
 use App\Enums\GameStatus;
 use App\Models\Game;
 use Illuminate\Http\UploadedFile;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -12,56 +13,43 @@ class GameForm extends Form
 {
     // 
 
-    #[Validate( 'required','string',)]
-    public ?string $name = null; 
+    #[Locked]
 
-    #[Validate( 'required','integer')]
-    public ?string $game_category_id = null;
+    public ?int $id = null;
 
-    #[Validate('required', 'in:active,inactive',GameStatus::class)]
-    public ?string $status = null;
+    public ?string $name;
 
-    #[Validate('required', 'string')]
-    public ?string $developer = null;
+    public ?int $game_category_id;
 
-    #[Validate('required', 'string')]
-    public ?string $publisher = null;
+    public ?string $status;
 
-    #[Validate('nullable', 'file', 'image', 'max:10240','mimes:jpg,jpeg,png',)]
-    public ?UploadedFile $logo = null;
-    
-    #[Validate('nullable', 'file', 'image', 'max:10240','mimes:jpg,jpeg,png',)]
-    public ?UploadedFile $banner = null;  
+    public ?string $developer;
 
-    #[Validate('required', 'date', 'after_or_equal:today')]
-    public ?string $release_date = null;
+    public ?string $slug;
 
-    
-    #[Validate('required', 'array')]
+    public ?string $publisher;
+
+    public  ?UploadedFile $logo = null;
+
+    public ?UploadedFile $banner = null;
+
+    public ?UploadedFile $thumbnail = null;
+
+    public ?string $release_date;
+
     public ?array $platform = [];
 
-    
-    #[Validate('required', 'string')]
-    public ?string $description = null;
+    public ?string $description;
 
-    
-    #[Validate('nullable', 'file', 'image', 'max:10240','mimes:jpg,jpeg,png')]
-    public ?UploadedFile $thumbnail = null;
-    
-    #[Validate('required', 'boolean')]
-    public ?bool $is_featured = false; 
+    public ?bool $is_featured;
 
-    #[Validate('required', 'boolean')]
-    public ?bool $is_trending = false;
+    public ?bool $is_trending;
 
-    #[Validate('nullable', 'string')]
-    public ?string $meta_title = null;
+    public ?string $meta_title;
 
-    #[Validate('nullable', 'string')]
-    public ?string $meta_description = null;
+    public ?string $meta_description;
 
-    #[Validate('nullable', 'string')]
-    public ?string $meta_keywords = null;
+    public ?string $meta_keywords;
 
     public function rules() :array 
     {
@@ -69,40 +57,87 @@ class GameForm extends Form
             'name' => 'required|string|max:255',
             'game_category_id' => 'nullable|integer',
             'status' => 'required|string|in:'.implode(',', array_column(GameStatus::cases(), 'value')),
-            'developer' => 'required|string',
-            'publisher' => 'required|string',
+            'developer' => 'nullable|string',
+            'publisher' => 'nullable|string',
             'logo' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
             'banner' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
-            'release_date' => 'required|date|after_or_equal:today',
-            'platform' => 'required|array',
-            'description' => 'required|string',
+            'release_date' => 'nullable|date|after_or_equal:today',
+            'platform' => 'nullable|array',
+            'description' => 'nullable|string',
             'thumbnail' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
-            'is_featured' => 'boolean',
-            'is_trending' => 'boolean',
+            'is_featured' => 'nullable|boolean',
+            'is_trending' => 'nullable|boolean',
             'meta_title' => 'nullable|string',
             'meta_description' => 'nullable|string',
             'meta_keywords' => 'nullable|string',
         ];
     }
 
-    public function setGame(Game $game) :void 
+    public function setData(Game $data) :void 
     {
-        $this->game_category_id = $game->game_category_id;
-        $this->name = $game->name;
-        $this->status = $game->status;
-        $this->developer = $game->developer;
-        $this->publisher = $game->publisher;
-        $this->logo = $game->logo;
-        $this->banner = $game->banner;
-        $this->release_date = $game->release_date;
-        $this->platform = $game->platform;
-        $this->description = $game->description;
-        $this->thumbnail = $game->thumbnail;
-        $this->is_featured = $game->is_featured;
-        $this->is_trending = $game->is_trending;
-        $this->meta_title = $game->meta_title;
-        $this->meta_description = $game->meta_description;
-        $this->meta_keywords = $game->meta_keywords;
+        $this->id = $data->id;
+        $this->game_category_id = $data->game_category_id;
+        $this->name = $data->name;
+        $this->status = $data->status->value;
+        $this->developer = $data->developer;
+        $this->publisher = $data->publisher;
+
+
+        $this->release_date = $data->release_date;
+        $this->platform = $data->platform;
+        $this->description = $data->description;
+
+        $this->is_featured = $data->is_featured;
+        $this->is_trending = $data->is_trending;
+        $this->meta_title = $data->meta_title;
+        $this->meta_description = $data->meta_description;
+        $this->meta_keywords = $data->meta_keywords;
         
     }
+
+    public function reset(...$properties):void {
+        $this->name = null;
+        $this->game_category_id = null;
+        $this->status = null;
+        $this->developer = null;
+        $this->publisher = null;
+        $this->logo = null;
+        $this->banner = null;
+        $this->release_date = null;
+        $this->platform = [];
+        $this->description = null;
+        $this->thumbnail = null;
+        $this->is_featured = null;
+        $this->is_trending = null;
+        $this->meta_title = null;
+        $this->meta_description = null;
+        $this->meta_keywords = null;
+
+        $this->resetValidation();
+    }
+
+    public function fillables():array {
+        return [
+            'name' => $this->name,
+            'game_category_id' => $this->game_category_id,
+            'status' => $this->status,
+            'developer' => $this->developer,
+            'publisher' => $this->publisher,
+            'logo' => $this->logo,
+            'banner' => $this->banner,
+            'release_date' => $this->release_date,
+            'platform' => $this->platform,
+            'description' => $this->description,
+            'thumbnail' => $this->thumbnail,
+            'is_featured' => $this->is_featured,
+            'is_trending' => $this->is_trending,
+            'meta_title' => $this->meta_title,
+            'meta_description' => $this->meta_description,
+            'meta_keywords' => $this->meta_keywords
+        ];
+    }
+
+    public function isUpdating():bool {
+        return isset($this->id);
+    }   
 }

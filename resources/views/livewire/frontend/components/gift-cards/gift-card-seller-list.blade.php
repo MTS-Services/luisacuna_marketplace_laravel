@@ -11,29 +11,29 @@
                         <div class="h-8 w-8 bg-orange-500 rounded flex items-center justify-center font-medium">
                             <img src="{{ asset('assets/images/fortnite.png') }}" alt="">
                         </div>
-                        <span class="text-xl font-medium">Fortnite</span>
+                        <span class="text-xl font-medium">{{__('Fortnite')}}</span>
                     </div>
                     <!-- Navigation Links -->
                     <nav
                         class=" peer-checked:flex flex-col lg:flex lg:flex-row gap-6 w-full lg:w-auto  lg:bg-transparent border-t border-gray-800 lg:border-none z-50">
                         <button wire:navigate wire:click="switchTab('items')"
                             class="navbar_style group {{ $activeTab === 'items' ? 'active' : '' }} ">
-                            <span class="relative z-10">Items</span>
+                            <span class="relative z-10">{{__('Items')}}</span>
                             <span class="navbar_indicator"></span>
                         </button>
                         <button wire:navigate wire:click="switchTab('accounts')"
                             class="navbar_style group {{ $activeTab === 'accounts' ? 'active' : '' }}">
-                            <span class="relative z-10">Accounts</span>
+                            <span class="relative z-10">{{__('Accounts')}}</span>
                             <span class="navbar_indicator"></span>
                         </button>
                         <button wire:navigate wire:click="switchTab('topUps')"
                             class="navbar_style group {{ $activeTab === 'topUps' ? 'active' : '' }}">
-                            <span class="relative z-10">Top Ups</span>
+                            <span class="relative z-10">{{__('Top Ups')}}</span>
                             <span class="navbar_indicator"></span>
                         </button>
                         <button wire:navigate wire:click="switchTab('giftCard')"
                             class="navbar_style group {{ $activeTab === 'giftCard' ? 'active' : '' }}">
-                            <span class="relative z-10">Gift Card</span>
+                            <span class="relative z-10">{{__('Gift Card')}}</span>
                             <span class="navbar_indicator"></span>
                         </button>
                     </nav>
@@ -46,13 +46,13 @@
                 <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
             </div>
             <div class="text-muted text-base">
-                <span class="text-base text-text-white">Gift card</span>
+                <span class="text-base text-text-white">{{__('Gift card')}}</span>
             </div>
             <div class="px-2 text-text-white text-base">
                 >
             </div>
             <div class="text-text-white text-base">
-                Seller list
+                {{__('Seller list')}}
             </div>
         </div>
 
@@ -60,21 +60,21 @@
         <div class="mt-10">
             <div class="flex items-center justify-between">
                 <div class="">
-                    <span class="text-base font-semibold">Select region</span>
+                    <span class="text-base font-semibold">{{__('Select region')}}</span>
                 </div>
                 <div class="hidden md:flex items-center gap-2">
                     <div class="">
                         <span class="text-text-white">
-                            Sort by:
+                           {{ __(' Sort by:') }}
                         </span>
                     </div>
                     <div class="flex items-center gap-2">
                         <img src="{{ asset('assets/images/gift_cards/Ellipse 4.png') }}" alt="">
-                        <span class="text-text-white">Recommended</span>
+                        <span class="text-text-white">{{__('Recommended')}}</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <img src="{{ asset('assets/images/gift_cards/Ellipse 5.png') }}" alt="">
-                        <span class="text-text-white">Lowest Price</span>
+                        <span class="text-text-white">{{__('Lowest Price')}}</span>
                     </div>
                 </div>
                 <div class="block md:hidden relative z-10" x-data="{ open: false }">
@@ -94,11 +94,11 @@
                         style="display: none;">
                         <a href="#"
                             class="text-text-white block px-3 py-2 text-sm hover:bg-zinc-700 rounded-lg transition-colors duration-150">
-                            Recommended
+                            {{ __('Recommended') }}
                         </a>
                         <a href="#"
                             class="text-text-white block px-3 py-2 text-sm hover:bg-zinc-700 rounded-lg transition-colors duration-150">
-                            Lowest Price
+                            {{ __('Lowest Price') }}
                         </a>
                     </div>
                 </div>
@@ -107,16 +107,16 @@
         </div>
         <div class="mt-3 mb-6">
             <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70 rounded-full!">
-                <option value="">Global</option>
-                <option value="completed">Completed</option>
-                <option value="pending">Pending</option>
-                <option value="processing">Processing</option>
+                <option value="">{{__('Global')}}</option>
+                <option value="completed">{{__('Completed')}}</option>
+                <option value="pending">{{__('Pending')}}</option>
+                <option value="processing">{{__('Processing')}}</option>
             </x-ui.select>
         </div>
 
         <div class="mb-10">
             <span class="text-base font-semibold text-text-white">
-                About 21 results
+                {{ __('About 21 results') }}
             </span>
         </div>
         </div>
@@ -132,9 +132,9 @@
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                    <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                    <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    <h3 class="text-base font-semibold text-text-white mt-4">{{__('1000')}}</h3>
+                    <p class="text-xs text-text-white mt-2">{{__('V-Bucks')}}</p>
+                    <span class="text-base font-semibold text-pink-500 mt-4">{{__('$44.16')}}</span>
                 </div>
                 <div
                     class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
@@ -142,9 +142,9 @@
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                    <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                    <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    <h3 class="text-base font-semibold text-text-white mt-4">{{__('1000')}}</h3>
+                    <p class="text-xs text-text-white mt-2">{{__('V-Bucks')}}</p>
+                    <span class="text-base font-semibold text-pink-500 mt-4">{{__('$44.16')}}</span>
                 </div>
                 <div
                     class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
@@ -152,9 +152,9 @@
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                    <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                    <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    <h3 class="text-base font-semibold text-text-white mt-4">{{__('1000')}}</h3>
+                    <p class="text-xs text-text-white mt-2">{{__('V-Bucks')}}</p>
+                    <span class="text-base font-semibold text-pink-500 mt-4">{{__('$44.16')}}</span>
                 </div>
                 <div
                     class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
@@ -162,9 +162,9 @@
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                    <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                    <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    <h3 class="text-base font-semibold text-text-white mt-4">{{__('1000')}}</h3>
+                    <p class="text-xs text-text-white mt-2">{{__('V-Bucks')}}</p>
+                    <span class="text-base font-semibold text-pink-500 mt-4">{{__('$44.16')}}</span>
                 </div>
                 <div
                     class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
@@ -172,9 +172,9 @@
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                    <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                    <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    <h3 class="text-base font-semibold text-text-white mt-4">{{__('1000')}}</h3>
+                    <p class="text-xs text-text-white mt-2">{{__('V-Bucks')}}</p>
+                    <span class="text-base font-semibold text-pink-500 mt-4">{{__('$44.16')}}</span>
                 </div>
                 <div
                     class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
@@ -182,9 +182,9 @@
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                    <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                    <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    <h3 class="text-base font-semibold text-text-white mt-4">{{__('1000')}}</h3>
+                    <p class="text-xs text-text-white mt-2">{{__('V-Bucks')}}</p>
+                    <span class="text-base font-semibold text-pink-500 mt-4">{{__('$44.16')}}</span>
                 </div>
                 <div
                     class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
@@ -192,9 +192,9 @@
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                    <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                    <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    <h3 class="text-base font-semibold text-text-white mt-4">{{__('1000')}}</h3>
+                    <p class="text-xs text-text-white mt-2">{{__('V-Bucks')}}</p>
+                    <span class="text-base font-semibold text-pink-500 mt-4">{{__('$44.16')}}</span>
                 </div>
                 <div
                     class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
@@ -202,9 +202,9 @@
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                    <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                    <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    <h3 class="text-base font-semibold text-text-white mt-4">{{__('1000')}}</h3>
+                    <p class="text-xs text-text-white mt-2">{{__('V-Bucks')}}</p>
+                    <span class="text-base font-semibold text-pink-500 mt-4">{{__('$44.16')}}</span>
                 </div>
                 <div
                     class="bg-bg-primary rounded-2xl p-7 border border-transparent hover:border-pink-500 transition-all duration-300">
@@ -212,9 +212,9 @@
                         <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                             class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                    <p class="text-xs text-text-white mt-2">V-Bucks</p>
-                    <span class="text-base font-semibold text-pink-500 mt-4">$44.16</span>
+                    <h3 class="text-base font-semibold text-text-white mt-4">{{__('1000')}}</h3>
+                    <p class="text-xs text-text-white mt-2">{{__('V-Bucks')}}</p>
+                    <span class="text-base font-semibold text-pink-500 mt-4">{{__('$44.16')}}</span>
                 </div>
             </div>
             <div class="w-full lg:w-[35%] mt-4 md:mt-0">
@@ -225,27 +225,27 @@
                                 <img src="{{ asset('assets/images/gift_cards/V-Bucks1.png') }}" alt=""
                                     class="w-full h-full object-cover">
                             </div>
-                            <p>IOOOV-Bucks</p>
+                            <p>{{__('IOOOV-Bucks')}}</p>
                         </div>
                         <span class="border-t-2 border-zinc-500 w-full inline-block"></span>
                         <div class="flex items-center justify-between py-3">
-                            <p class="text-base text-text-white">IOOOV-Bucks</p>
-                            <p class="text-base text-text-white font-semibold">15 min</p>
+                            <p class="text-base text-text-white">{{__('IOOOV-Bucks')}}</p>
+                            <p class="text-base text-text-white font-semibold">{{__('15 min')}}</p>
                         </div>
                         <span class="border-t-2 border-zinc-500 w-full inline-block"></span>
                         <div class="mt-4">
                             <a href="{{ route('game.checkout',['orderId'=>435345]) }}">
-                                <x-ui.button class="">$76.28 | Buy now </x-ui.button>
+                                <x-ui.button class="">{{__('$76.28 | Buy now')}} </x-ui.button>
                             </a>
                         </div>
                         <div class="flex items-center gap-2 mt-8">
                             <flux:icon name="shield-check" class="w-6 h-6 50" />
-                            <p class="text-text-white text-base font-semibold">Money-back Guarantee</p>
-                            <span class="text-xs text-zinc-200/60">Protected by TradeShield</span>
+                            <p class="text-text-white text-base font-semibold">{{__('Money-back Guarantee')}}</p>
+                            <span class="text-xs text-zinc-200/60">{{__('Protected by TradeShield')}}</span>
                         </div>
                         <div class="flex items-center gap-2 mt-4">
                             <flux:icon name="bolt" class="w-6 h-6 50" />
-                            <p class="text-text-white text-base font-semibold">Fast Checkout Options</p>
+                            <p class="text-text-white text-base font-semibold">{{__('Fast Checkout Options')}}</p>
                             <div class="flex items-center gap-2 w-11 h-7">
                                 <img src="{{ asset('assets/images/gift_cards/google.png') }}" alt=""
                                     class="w-full h-full">
@@ -263,23 +263,23 @@
                                     fill="none" stroke="currentColor" stroke-linecap="round"
                                     stroke-linejoin="round" stroke-width="16" />
                             </svg>
-                            <p class="text-text-white text-base font-semibold">24/7 Live Support</p>
-                            <span class="text-xs text-zinc-200/60">We're always here to help</span>
+                            <p class="text-text-white text-base font-semibold">{{__('24/7 Live Support')}}</p>
+                            <span class="text-xs text-zinc-200/60">{{__("We're always here to help")}}</span>
                         </div>
                     </div>
                     <div class="mt-6">
                         <div class="bg-bg-primary rounded-2xl py-7 px-6">
-                            <h3 class="text-text-white text-base font-semibold mb-2">Delivery instructions</h3>
+                            <h3 class="text-text-white text-base font-semibold mb-2">{{__('Delivery instructions')}}</h3>
                             <div class="flex gap-2">
-                                <span class="text-sm text-text-white">Welcome</span>
+                                <span class="text-sm text-text-white">{{__('Welcome')}}</span>
                                 <span class="inline-block w-px h-3 bg-zinc-500"></span>
-                                <span class="text-sm text-text-white">Why choose us</span>
+                                <span class="text-sm text-text-white">{{__('Why choose us')}}</span>
                             </div>
                             <div class="mt-4">
-                                <p class="text-sm text-text-white">1. V-BUCKS are safe to hold and guaranteed!</p>
-                                <p class="text-sm text-text-white mt-2  mb-4">2. Fast replies and delivery.</p>
+                                <p class="text-sm text-text-white">{{__('1. V-BUCKS are safe to hold and guaranteed!')}}</p>
+                                <p class="text-sm text-text-white mt-2  mb-4">{{__('2. Fast replies and delivery.')}}</p>
 
-                                <a href="#" class="text-base font-semibold text-pink-500">See all</a>
+                                <a href="#" class="text-base font-semibold text-pink-500">{{__('See all')}}</a>
                             </div>
                             <span class="border-t-2 border-zinc-500 w-full inline-block mt-8"></span>
                             <div class="">
@@ -290,15 +290,15 @@
                                     </div>
                                     <div class="">
                                         <div class="">
-                                            <h2 class="text-text-white font-semibold text-base">Devon Lane</h2>
+                                            <h2 class="text-text-white font-semibold text-base">{{__('Devon Lane')}}</h2>
                                         </div>
                                         <div class="flex items-center gap-2">
                                             <x-phosphor name="thumbs-up" variant="solid" class="fill-zinc-600" />
-                                            <span class="text-xs text-text-white">99.3%</span>
+                                            <span class="text-xs text-text-white">{{__('99.3%')}}</span>
                                             <span class="w-px h-4 bg-zinc-200"></span>
-                                            <span class="text-xs text-text-white">2434 reviews</span>
+                                            <span class="text-xs text-text-white">{{__('2434 reviews')}}</span>
                                             <span class="w-px h-4 bg-zinc-200"></span>
-                                            <span class="text-xs text-text-white">1642 Sold</span>
+                                            <span class="text-xs text-text-white">{{__('1642 Sold')}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -313,23 +313,23 @@
     {{-- seller list secton --}}
     <section class="container mt-32">
         <div class="mb-10">
-            <h2 class="text-text-white font-semibold trxt-40px">Other sellers (84)</h2>
+            <h2 class="text-text-white font-semibold trxt-40px">{{__('Other sellers (84)')}}</h2>
         </div>
         <div class="mt-10 mb-6">
             <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70 rounded-full!">
-                <option value="">Recommended</option>
-                <option value="completed">Completed</option>
-                <option value="pending">Pending</option>
-                <option value="processing">Processing</option>
+                <option value="">{{__('Recommended')}}</option>
+                <option value="completed">{{__('Completed')}}</option>
+                <option value="pending">{{__('Pending')}}</option>
+                <option value="processing">{{__('Processing')}}</option>
             </x-ui.select>
         </div>
         <div class="min-w-full text-left border-collapse">
             <div class="flex justify-between text-text-white text-sm">
-                <div class="px-4 py-3">All Sellers (8)</div>
-                <div class="px-4 py-3 hidden md:block">Delivery Time</div>
-                <div class="px-4 py-3 hidden md:block">Delivery Method</div>
-                <div class="px-4 py-3 hidden md:block">Stock</div>
-                <div class="px-4 py-3 hidden md:block">Price</div>
+                <div class="px-4 py-3">{{__('All Sellers (8)')}}</div>
+                <div class="px-4 py-3 hidden md:block">{{__('Delivery Time')}}</div>
+                <div class="px-4 py-3 hidden md:block">{{__('Delivery Method')}}</div>
+                <div class="px-4 py-3 hidden md:block">{{__('Stock')}}</div>
+                <div class="px-4 py-3 hidden md:block">{{__('Price')}}</div>
             </div>
 
             <div class="py-7 space-y-7">
@@ -342,19 +342,19 @@
                                     class="w-full h-full rounded-full">
                             </div>
                             <div>
-                                <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
+                                <h3 class="text-text-white text-base font-semibold">{{__('Devon Lane')}}</h3>
                                 <div class="flex items-center gap-1">
                                     <x-phosphor name="thumbs-up" variant="solid"
                                         class="fill-zinc-600 inline-block" />
-                                    <span class="text-xs text-text-white">99.3%</span>
+                                    <span class="text-xs text-text-white">{{__('99.3%')}}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold">Instants</div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP</div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">{{__('Instants')}}</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">{{__('Login Top UP')}}</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">{{__('$77.07')}}</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">{{__('$77.07')}}</div>
                 </div>
 
                 <div
@@ -366,19 +366,19 @@
                                     class="w-full h-full rounded-full">
                             </div>
                             <div>
-                                <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
+                                <h3 class="text-text-white text-base font-semibold">{{__('Devon Lane')}}</h3>
                                 <div class="flex items-center gap-1">
                                     <x-phosphor name="thumbs-up" variant="solid"
                                         class="fill-zinc-600 inline-block" />
-                                    <span class="text-xs text-text-white">99.3%</span>
+                                    <span class="text-xs text-text-white">{{__('99.3%')}}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold">Instants</div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP</div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">{{__('Instants')}}</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">{{__('Login Top UP')}}</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">{{__('$77.07')}}</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">{{__('$77.07')}}</div>
                 </div>
 
                 <div
@@ -390,19 +390,19 @@
                                     class="w-full h-full rounded-full">
                             </div>
                             <div>
-                                <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
+                                <h3 class="text-text-white text-base font-semibold">{{__('Devon Lane')}}</h3>
                                 <div class="flex items-center gap-1">
                                     <x-phosphor name="thumbs-up" variant="solid"
                                         class="fill-zinc-600 inline-block" />
-                                    <span class="text-xs text-text-white">99.3%</span>
+                                    <span class="text-xs text-text-white">{{__('99.3%')}}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold">Instants</div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP</div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">{{__('Instants')}}</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">{{__('Login Top UP')}}</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">{{__('$77.07')}}</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">{{__('$77.07')}}</div>
                 </div>
 
                 <div
@@ -414,19 +414,19 @@
                                     class="w-full h-full rounded-full">
                             </div>
                             <div>
-                                <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
+                                <h3 class="text-text-white text-base font-semibold">{{__('Devon Lane')}}</h3>
                                 <div class="flex items-center gap-1">
                                     <x-phosphor name="thumbs-up" variant="solid"
                                         class="fill-zinc-600 inline-block" />
-                                    <span class="text-xs text-text-white">99.3%</span>
+                                    <span class="text-xs text-text-white">{{__('99.3%')}}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold">Instants</div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP</div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">{{__('Instants')}}</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">{{__('Login Top UP')}}</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">{{__('$77.07')}}</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">{{__('$77.07')}}</div>
                 </div>
 
                 <div
@@ -438,19 +438,19 @@
                                     class="w-full h-full rounded-full">
                             </div>
                             <div>
-                                <h3 class="text-text-white text-base font-semibold">Devon Lane</h3>
+                                <h3 class="text-text-white text-base font-semibold">{{__('Devon Lane')}}</h3>
                                 <div class="flex items-center gap-1">
                                     <x-phosphor name="thumbs-up" variant="solid"
                                         class="fill-zinc-600 inline-block" />
-                                    <span class="text-xs text-text-white">99.3%</span>
+                                    <span class="text-xs text-text-white">{{__('99.3%')}}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold">Instants</div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">Login Top UP</div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">{{__('Instants')}}</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">{{__('Login Top UP')}}</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">{{__('$77.07')}}</div>
+                    <div class="px-4 py-3 text-text-white text-base font-semibold">{{__('$77.07')}}</div>
                 </div>
             </div>
         </div>

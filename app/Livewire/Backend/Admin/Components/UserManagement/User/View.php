@@ -4,7 +4,7 @@ namespace App\Livewire\Backend\Admin\Components\UserManagement\User;
 
 use App\Models\User;
 use Livewire\Component;
-use App\Services\User\UserService;
+use App\Services\UserService;
 
 class View extends Component
 {

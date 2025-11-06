@@ -19,6 +19,8 @@ class Index extends Component
     public $bulkAction = '';
     public $showBulkActionModal = false;
 
+
+
     // protected $listeners = ['CurrencyCreated' => '$refresh', 'CurrencyUpdated' => '$refresh'];
 
     protected CurrencyService $service;
@@ -206,8 +208,8 @@ class Index extends Component
 
     protected function bulkDelete(): void
     {
-        $count = count($this->selectedIds);
-        $this->service->bulkDeleteData($this->selectedIds);
+       
+      $count =  $this->service->bulkDeleteData($this->selectedIds);
         $this->success("{$count} Data deleted successfully");
     }
 

@@ -4,9 +4,12 @@ namespace {{ namespace }};
  
 {{ factoryImport }}
 use App\Models\BaseModel;
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
  
-class {{ class }} extends BaseModel
+class {{ class }} extends BaseModel implements Auditable
 {
+    use   AuditableTrait;
     {{ factory }}
  
     protected $fillable = [

@@ -5,10 +5,10 @@ namespace App\Livewire\Backend\Admin\Components\AdminManagement\Admin;
 use Livewire\Component;
 use App\Enums\AdminStatus;
 use Illuminate\Support\Facades\Log;
-use App\Services\Admin\AdminService;
+use App\Services\AdminService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
-use PhpParser\Node\Expr\Throw_;
+
 
 class Trash extends Component
 {
@@ -23,16 +23,16 @@ class Trash extends Component
 
     protected $listeners = ['adminCreated' => '$refresh', 'adminUpdated' => '$refresh'];
 
-    protected AdminService $adminService;
+    protected AdminService $service;
 
-    public function boot(AdminService $adminService)
+    public function boot(AdminService $service)
     {
-        $this->adminService = $adminService;
+        $this->service = $service;
     }
 
     public function render()
     {
-        $admins = $this->adminService->getTrashedAdminsPaginated(
+        $admins = $this->service->getTrashedDatasPaginated(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
@@ -139,7 +139,7 @@ class Trash extends Component
     {
 
         try {
-            $this->adminService->deleteAdmin($this->deleteAdminId, forceDelete: true);
+            $this->service->deleteData($this->deleteAdminId, forceDelete: true);
             $this->showDeleteModal = false;
             $this->resetPage();
 
@@ -152,7 +152,7 @@ class Trash extends Component
     public function restore($adminId): void
     {
         try {
-            $this->adminService->restoreAdmin($adminId);
+            $this->service->restoreData($adminId, admin()->id);
             
             $this->success('Admin restored successfully');
         } catch (\Throwable $e) {
@@ -172,9 +172,9 @@ class Trash extends Component
             $adminStatus = AdminStatus::from($status);
 
             match ($adminStatus) {
-                AdminStatus::ACTIVE => $this->adminService->activateAdmin($adminId),
-                AdminStatus::INACTIVE => $this->adminService->deactivateAdmin($adminId),
-                AdminStatus::SUSPENDED => $this->adminService->suspendAdmin($adminId),
+                AdminStatus::ACTIVE => $this->service->activateData($adminId),
+                AdminStatus::INACTIVE => $this->service->deactivateData($adminId),
+                AdminStatus::SUSPENDED => $this->service->suspendData($adminId),
                 default => null,
             };
 
@@ -201,8 +201,8 @@ class Trash extends Component
         try {
             match ($this->bulkAction) {
                 // 'forceDelete' => $this->bulkDelete(),
-                'forceDelete' => $this->bulkForceDeleteAdmins(),
-                'bulkRestore' => $this->bulkRestoreAdmins(),
+                'forceDelete' => $this->bulkForceDeleteDatas(),
+                'bulkRestore' => $this->bulkRestoreDatas(),
                 'activate' => $this->bulkUpdateStatus(AdminStatus::ACTIVE),
                 'deactivate' => $this->bulkUpdateStatus(AdminStatus::INACTIVE),
                 'suspend' => $this->bulkUpdateStatus(AdminStatus::SUSPENDED),
@@ -219,24 +219,24 @@ class Trash extends Component
 
     protected function bulkDelete(): void
     {
-        $count = $this->adminService->bulkDeleteAdmins($this->selectedIds);
+        $count = $this->service->bulkDeleteDatas($this->selectedIds);
         $this->success("{$count} Admins deleted successfully");
     }
 
     protected function bulkUpdateStatus(AdminStatus $status): void
     {
-        $count = $this->adminService->bulkUpdateStatus($this->selectedIds, $status);
+        $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
         $this->success("{$count} Admins updated successfully");
     }
 
-    protected function bulkRestoreAdmins(): void
+    protected function bulkRestoreDatas(): void
     {
-        $count = $this->adminService->bulkRestoreAdmins($this->selectedIds);
+        $count = $this->service->bulkRestoreDatas($this->selectedIds, admin()->id);
         $this->success("{$count} Admins restored successfully");
     }
-    protected function bulkForceDeleteAdmins(): void
+    protected function bulkForceDeleteDatas(): void
     {
-        $count = $this->adminService->bulkForceDeleteAdmins($this->selectedIds);
+        $count = $this->service->bulkForceDeleteDatas($this->selectedIds);
         $this->success("{$count} Admins permanently deleted successfully");
     }
 
@@ -252,7 +252,7 @@ class Trash extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->adminService->getTrashedAdminsPaginated(
+        return $this->service->getTrashedDatasPaginated(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

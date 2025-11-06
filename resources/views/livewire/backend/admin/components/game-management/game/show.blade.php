@@ -44,35 +44,35 @@
                     <tbody class="divide-y divide-gray-200">
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 w-2/5 text-gray-600 font-semibold">Game Name</td>
-                            <td class="p-4 text-gray-900">{{ $game->name }}</td>
+                            <td class="p-4 text-gray-900">{{ $data->name }}</td>
                         </tr>
                          <tr class="hover:bg-white transition-colors">
                             <td class="p-4 w-2/5 text-gray-600 font-semibold">Category Name</td>
-                            <td class="p-4 text-gray-900">{{ $game->category->name ?? 'No Category' }}</td>
+                            <td class="p-4 text-gray-900">{{ $data->category->name ?? 'No Category' }}</td>
                         </tr>
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 text-gray-600 font-semibold">Slug</td>
-                            <td class="p-4 text-gray-900">{{ '/' . $game->slug }}</td>
+                            <td class="p-4 text-gray-900">{{ '/' . $data->slug }}</td>
                         </tr>
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 text-gray-600 font-semibold">Developer</td>
-                            <td class="p-4 text-gray-900">{{ $game->developer ?? 'N/A' }}</td>
+                            <td class="p-4 text-gray-900">{{ $data->developer ?? 'N/A' }}</td>
                         </tr>
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 text-gray-600 font-semibold">Publisher</td>
-                            <td class="p-4 text-gray-900">{{ $game->publisher ?? 'N/A' }}</td>
+                            <td class="p-4 text-gray-900">{{ $data->publisher ?? 'N/A' }}</td>
                         </tr>
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 text-gray-600 font-semibold">Trending</td>
-                            <td class="p-4 text-gray-900">{{ $game->is_trending ? 'Trending' : 'Not Trending' }}</td>
+                            <td class="p-4 text-gray-900">{{ $data->is_trending ? 'Trending' : 'Not Trending' }}</td>
                         </tr>
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 text-gray-600 font-semibold">Featured</td>
-                            <td class="p-4 text-gray-900">{{ $game->is_featured ? 'Featured' : 'Not Featured' }}</td>
+                            <td class="p-4 text-gray-900">{{ $data->is_featured ? 'Featured' : 'Not Featured' }}</td>
                         </tr>
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 w-2/5 text-gray-600 font-semibold">Game Description</td>
-                            <td class="p-4 text-gray-900">{{ $game->Description ?? 'N/A' }}</td>
+                            <td class="p-4 text-gray-900">{{ $data->description ?? 'N/A' }}</td>
                         </tr>
 
 
@@ -83,29 +83,29 @@
                             <td class="p-4 text-gray-600 font-semibold">Status</td>
                             <td class="p-4">
                                 <span
-                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                    {{ $game->status }}
+                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $data->status->color() ?? ' bg-blue-100'}} text-blue-800">
+                                    {{ $data->status->label() }}
                                 </span>
                             </td>
                         </tr>
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 w-2/5 text-gray-600 font-semibold">Created By</td>
-                            <td class="p-4 text-gray-900">{{ $game->creater_admin->name ?? 'System' }}</td>
+                            <td class="p-4 text-gray-900">{{ $data->creater_admin->name ?? 'System' }}</td>
                         </tr>
 
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 text-gray-600 font-semibold">Created At</td>
-                            <td class="p-4 text-gray-900">{{ $game->created_at_formatted }}</td>
+                            <td class="p-4 text-gray-900">{{ $data->created_at_formatted }}</td>
                         </tr>
-                        @if ($game->updated_by)
+                        @if ($data->updated_by)
                             <tr class="hover:bg-white transition-colors">
                                 <td class="p-4 w-2/5 text-gray-600 font-semibold">Updated By</td>
-                                <td class="p-4 text-gray-900">{{ $game->updater_admin->name }}</td>
+                                <td class="p-4 text-gray-900">{{ $data->updater_admin->name }}</td>
 
                             </tr>
                             <tr class="hover:bg-white transition-colors">
                                 <td class="p-4 w-2/5 text-gray-600 font-semibold">Updated At</td>
-                                <td class="p-4 text-gray-900">{{ $game->updated_at_formatted }}</td>
+                                <td class="p-4 text-gray-900">{{ $data->updated_at_formatted }}</td>
 
                             </tr>
                         @endif
@@ -120,36 +120,36 @@
 
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 w-2/5 text-gray-600 font-semibold">Released Date</td>
-                            <td class="p-4 text-gray-900">{{ $game->release_date?? 'N/A' }}</td>
+                            <td class="p-4 text-gray-900">{{ $data->release_date?? 'N/A' }}</td>
                         </tr>
                         <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Platform</td>
-                            <td class="p-4 text-gray-900">{{ $game->platfrom?? 'N/A' }}</td>
+                            <td class="p-4 w-2/5 text-gray-600 font-semibold">Platform Id</td>
+                            <td class="p-4 text-gray-900">{{ json_encode($data->platform) ?? 'N/A' }}</td>
                         </tr>
 
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 w-2/5 text-gray-600 font-semibold">Meta Title</td>
-                            <td class="p-4 text-gray-900">{{ $game->meta_title?? 'N/A' }}</td>
+                            <td class="p-4 text-gray-900">{{ $data->meta_title?? 'N/A' }}</td>
                         </tr>
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 w-2/5 text-gray-600 font-semibold">Meta Description</td>
-                            <td class="p-4 text-gray-900">{{ $game->meta_description?? 'N/A' }}</td>
+                            <td class="p-4 text-gray-900">{{ $data->meta_description?? 'N/A' }}</td>
                         </tr>
                         
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 w-2/5 text-gray-600 font-semibold">Meta Keywords</td>
-                            <td class="p-4 text-gray-900">{{ $game->meta_keywords?? 'N/A' }}</td>
+                            <td class="p-4 text-gray-900">{{ $data->meta_keywords?? 'N/A' }}</td>
                         </tr>
 
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 w-2/5 text-gray-600 font-semibold">Meta Keywords</td>
-                            <td class="p-4 text-gray-900">{{ $game->meta_keywords?? 'N/A' }}</td>
+                            <td class="p-4 text-gray-900">{{ $data->meta_keywords?? 'N/A' }}</td>
                         </tr>
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 w-2/5 text-gray-600 font-semibold">Logo</td>
                             <td class="p-4 text-gray-900">
-                            @if($game->logo)
-                                <img src="{{ asset('/storage/'.$game->logo) }}" alt="{{ $game->name }}" class="w-16 h-16 object-cover">
+                            @if($data->logo)
+                                <img src="{{ asset('/storage/'.$data->logo) }}" alt="{{ $data->name }}" class="w-16 h-16 object-cover">
                             @else
                                 N/A
                             @endif
@@ -157,30 +157,32 @@
                         </tr>
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 w-2/5 text-gray-600 font-semibold">Banner</td>
-                           <td class="p-4 text-gray-900"> @if($game->banner)
-                                <img src="{{ asset('/storage/'.$game->banner) }}" alt="{{ $game->name }}" class="w-16 h-16 object-cover">
+                           <td class="p-4 text-gray-900"> @if($data->banner)
+                                <img src="{{ asset('/storage/'.$data->banner) }}" alt="{{ $data->name }}" class="w-16 h-16 object-cover">
                             @else
                                 N/A
                             @endif</td>
                         </tr>
                         <tr class="hover:bg-white transition-colors">
                             <td class="p-4 w-2/5 text-gray-600 font-semibold">Thumbnail </td>
-                            <td class="p-4 text-gray-900"> @if($game->thumbnail)
-                                <img src="{{ asset('/storage/'.$game->thumbnail) }}" alt="{{ $game->name }}" class="w-16 h-16 object-cover">
+                            <td class="p-4 text-gray-900"> 
+                                
+                                @if($data->thumbnail)
+                                <img src="{{ asset('/storage/'.$data->thumbnail) }}" alt="{{ $data->name }}" class="w-16 h-16 object-cover">
                             @else
                                 N/A
                             @endif</td>
                         </tr>
 
-                        @if ($game->updated_by)
+                        @if ($data->updated_by)
                             <tr class="hover:bg-white transition-colors">
                                 <td class="p-4 w-2/5 text-gray-600 font-semibold">Updated By</td>
-                                <td class="p-4 text-gray-900">{{ $game->updater_admin->name }}</td>
+                                <td class="p-4 text-gray-900">{{ $data->updater_admin->name }}</td>
 
                             </tr>
                             <tr class="hover:bg-white transition-colors">
                                 <td class="p-4 w-2/5 text-gray-600 font-semibold">Updated At</td>
-                                <td class="p-4 text-gray-900">{{ $game->updated_at_formatted }}</td>
+                                <td class="p-4 text-gray-900">{{ $data->updated_at_formatted }}</td>
 
                             </tr>
                         @endif
