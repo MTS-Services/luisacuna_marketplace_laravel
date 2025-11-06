@@ -164,8 +164,7 @@
                             </button>
                         </div>
                         <p class="text-xs text-text-muted mt-1.5">
-                            {{__('This is the list of social media platforms or accounts you are associated with. Use commas
-                            to distinguish')}}
+                            {{__('This is the list of social media platforms or accounts you are associated with. Use commas to distinguish')}}
                         </p>
                     </div>
                 </form>
