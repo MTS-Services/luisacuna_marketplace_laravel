@@ -58,7 +58,7 @@
     <div class="min-h-70"></div>
     {{-- shop --}}
     @if ($activeInnerMenu === 'shop')
-        <section class="container mx-auto mb-30 mt-10 sm:mt-16 md:mt-20 lg:mt-24 xl:mt-30">
+        <section class="container mx-auto mb-30">
             <div class="mb-6">
                 <h3 class="text-4xl mb-4">{{ __('Shop') }}</h3>
                 {{-- profile nav --}}
