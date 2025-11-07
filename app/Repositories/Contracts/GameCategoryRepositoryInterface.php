@@ -1,45 +1,70 @@
-<?php 
+<?php
 
 namespace App\Repositories\Contracts;
 
-use App\Enums\GameCategoryStatus;
-use App\Models\Game;
 use App\Models\GameCategory;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
 interface GameCategoryRepositoryInterface
 {
-    public function all(): Collection;
 
-    public function find(int $id): ?GameCategory;
 
-    public function findTrashed($id): ?GameCategory;
-    
+    /* ================== ================== ==================
+    *                      Find Methods 
+    * ================== ================== ================== */
+
+
+    public function all(string $sortField = 'created_at', $order = 'desc'): Collection;
+
+    public function find($column_value, string $column_name = 'id', bool $trashed = false): ?GameCategory;
+
+    public function findTrashed($column_value, string $column_name = 'id'): ?GameCategory;
+
+    public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
+
+    public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
+
+    public function exists(int $id): bool;
+
+    public function count(array $filters = []): int;
+
+    public function search(string $query, string $sortField = 'created_at', $order = 'desc'): Collection;
+
+
+    /* ================== ================== ==================
+    *                    Data Modification Methods 
+    * ================== ================== ================== */
+
     public function create(array $data): GameCategory;
 
-    public function update( ?int $id, array $data ): bool;
-    
-    public function paginateOnlyTrashed(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
+    public function update(int $id, array $data): bool;
 
-    public function delete($id, int $actionerId): bool ;
+    public function delete(int $id, int $actionerId): bool;
 
-    public function forceDelete($id);
+    public function forceDelete(int $id): bool;
 
-   public function restore($id, ?int $actionerId) :bool;
-
-    public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
+    public function restore(int $id, int $actionerId): bool;
 
     public function bulkDelete(array $ids, int $actionerId): int;
 
+    public function bulkUpdateStatus(array $ids, string $status, int $actionerId): int;
+
     public function bulkRestore(array $ids, int $actionerId): int;
 
-    public function bulkUpdateStatus(array $ids, ?string $status, int $actionerId): int;
+    public function bulkForceDelete(array $ids): int;
 
-    public function bulkForceDelete(array $ids): int ;
 
-    public function findOrFail($id): GameCategory;
 
-    
+
+
+    /* ================== ================== ==================
+    *                  Accessor Methods (Optional)
+    * ================== ================== ================== */
+
+    public function getActive(string $sortField = 'created_at', $order = 'desc'): Collection;
+
+    public function getInactive(string $sortField = 'created_at', $order = 'desc'): Collection;
+
+    public function getSuspended(string $sortField = 'created_at', $order = 'desc'): Collection;
 }
-

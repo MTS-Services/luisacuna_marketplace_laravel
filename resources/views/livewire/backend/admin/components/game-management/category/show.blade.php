@@ -19,77 +19,141 @@
         </div>
     </div>
 
-    <div class=" mx-auto mt-10 bg-white shadow glass-card rounded-2xl p-6 ">
-        <!-- Profile Header -->
-        {{-- <div class="flex flex-col md:flex-row md:items-center md:justify-between border-b pb-6 mb-6">
-            <div class="flex items-center space-x-4">
-                <img src="{{ $existingAvatar ?? '' }}" alt="Profile" class="w-24 h-24 rounded-full object-cover">
-                <div>
-                    <h2 class="text-2xl font-semibold">{{ $admin->name }}</h2>
-                    <p class="text-sm text-gray-500">{{ $admin->email }}</p>
-                    <p class="text-sm text-gray-500 mt-1"><i class="fa-solid fa-location-dot mr-1"></i>
-                        {{ $admin->address }}</p>
-                </div>
+    <div class="container  mx-auto bg-white dark:bg-gray-900 shadow rounded-lg p-6">
+        <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">
+            Game Category Details
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- ID -->
+            <div>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('ID') }}</p>
+                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->id }}</p>
             </div>
 
-
-        </div> --}}
-
-        <!-- Profile Info -->
-        <div class="grid md:grid-cols-1 gap-6 mx-auto">
-            <div class="w-1/2 mx-auto">
-
-                <div class="glass-card rounded-xl border border-gray-200 overflow-hidden">
-                    <table class="w-full text-sm">
-                        <tbody class="divide-y divide-gray-200">
-                            <tr class="hover:bg-white transition-colors">
-                                <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Category Name') }}</td>
-                                <td class="p-4 text-gray-900">{{ $category->name }}</td>
-                            </tr>
-                            <tr class="hover:bg-white transition-colors">
-                                <td class="p-4 text-gray-600 font-semibold">{{ __('Slug') }}</td>
-                                <td class="p-4 text-gray-900">{{ $category->slug }}</td>
-                            </tr>
-
-                            <tr class="hover:bg-white transition-colors">
-                                <td class="p-4 text-gray-600 font-semibold">{{__('Status')}}</td>
-                                <td class="p-4">
-                                    <span
-                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                        {{ $data->status }}
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-white transition-colors">
-                                <td class="p-4 w-2/5 text-gray-600 font-semibold">{{__('Created By')}}</td>
-                                <td class="p-4 text-gray-900">{{ $category->creater_admin->name ?? 'System' }}</td>
-                            </tr>
-
-                            <tr class="hover:bg-white transition-colors">
-                                <td class="p-4 text-gray-600 font-semibold">{{__('Created At')}}</td>
-                                <td class="p-4 text-gray-900">{{ $category->created_at_formatted }}</td>
-                            </tr>
-                            @if ($data->updated_by)
-                                <tr class="hover:bg-white transition-colors">
-                                    <td class="p-4 w-2/5 text-gray-600 font-semibold">{{__('Updated By')}}</td>
-                                    <td class="p-4 text-gray-900">{{ $category->updater_admin->name }}</td>
-
-                                </tr>
-                                <tr class="hover:bg-white transition-colors">
-                                    <td class="p-4 w-2/5 text-gray-600 font-semibold">{{__('Updated At')}}</td>
-                                    <td class="p-4 text-gray-900">{{ $category->updated_at_formatted }}</td>
-
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
+            <!-- Sort Order -->
+            <div>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Sort Order') }}</p>
+                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->sort_order ?? 0 }}</p>
             </div>
 
+            <!-- Name -->
+            <div>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Name') }}</p>
+                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->name }}</p>
+            </div>
+
+            <!-- Slug -->
+            <div>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Slug') }}</p>
+                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->slug }}</p>
+            </div>
+
+            <!-- Meta Title -->
+            <div>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Meta Title') }}</p>
+                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->meta_title ?? 'N/A' }}</p>
+            </div>
+
+            <!-- Meta Description -->
+            <div>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Meta Description') }}</p>
+                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->meta_description ?? 'N/A' }}</p>
+            </div>
+
+            <!-- Icon -->
+            <div>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Icon') }}</p>
+                @if ($data->icon)
+                    <img src="{{ asset('storage/' . $data->icon) }}" alt="Icon"
+                        class="w-16 h-16 rounded-md border mt-2">
+                @else
+                    <p class="text-gray-500">No Icon</p>
+                @endif
+            </div>
+
+            <!-- Is Featured -->
+            <div>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Is Featured') }}</p>
+                <p class="font-semibold text-gray-900 dark:text-white">
+                    {{ $data->is_featured ? 'Yes' : 'No' }}
+                </p>
+            </div>
+
+            <!-- Status -->
+            <div>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Status') }}</p>
+                <p class="font-semibold text-gray-900 dark:text-white capitalize">{{ $data->status->value }}</p>
+            </div>
+
+            <!-- Created By -->
+            <div>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Created By') }}</p>
+                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->created_by ?? 'N/A' }}</p>
+            </div>
+
+            <!-- Updated By -->
+            <div>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Updated By') }}</p>
+                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->updated_by ?? 'N/A' }}</p>
+            </div>
+
+            <!-- Deleted By -->
+            <div>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Deleted By') }}</p>
+                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->deleted_by ?? 'N/A' }}</p>
+            </div>
+
+            <!-- Restored By -->
+            <div>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Restored By') }}</p>
+                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->restored_by ?? 'N/A' }}</p>
+            </div>
+
+            <!-- Created At -->
+            <div>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Created At') }}</p>
+                <p class="font-mono font-semibold text-gray-900 dark:text-white">
+                    {{ $data->created_at ? $data->created_at->format('Y-m-d H:i:s') : 'N/A' }}
+                </p>
+            </div>
+
+            <!-- Updated At -->
+            <div>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Updated At') }}</p>
+                <p class="font-mono font-semibold text-gray-900 dark:text-white">
+                    {{ $data->updated_at ? $data->updated_at->format('Y-m-d H:i:s') : 'N/A' }}
+                </p>
+            </div>
+
+            <!-- Deleted At -->
+            <div>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Deleted At') }}</p>
+                <p class="font-mono font-semibold text-gray-900 dark:text-white">
+                    {{ $data->deleted_at ? $data->deleted_at->format('Y-m-d H:i:s') : 'N/A' }}
+                </p>
+            </div>
+
+            <!-- Restored At -->
+            <div>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Restored At') }}</p>
+                <p class="font-mono font-semibold text-gray-900 dark:text-white">
+                    {{ $data->restored_at ? $data->restored_at->format('Y-m-d H:i:s') : 'N/A' }}
+                </p>
+            </div>
         </div>
 
-
+        <!-- Description Block -->
+        <div class="mt-6">
+            <p class="text-gray-500 dark:text-gray-400">{{ __('Description') }}</p>
+            <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-md text-gray-900 dark:text-white">
+                {!! nl2br(e($data->description)) ?? 'N/A' !!}
+            </div>
+        </div>
     </div>
+
+
+
 
 
 </section>
