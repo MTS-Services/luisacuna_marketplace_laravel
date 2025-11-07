@@ -2,16 +2,16 @@
     <section class=" mx-auto px-4">
         {{-- Header Section --}}
         <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-text-primary">{{ __('Account Settings') }}</h1>
-            <x-ui.button href="{{ route('user.purchased-orders') }}" class="sm:w-auto! py-2!">
+            <h1 class="text-2xl sm:text-3xl font-bold text-text-primary">{{ __('Account Settings') }}</h1>
+            <x-ui.button href="{{ route('user.purchased-orders') }}" class="w-fit! sm:w-auto! py-2!">
                 {{ __('Seller API') }}
             </x-ui.button>
         </div>
 
         <div class=" mx-auto space-y-6">
             {{-- Profile Section --}}
-            <section class="bg-bg-primary glass-card rounded-2xl p-20">
-                <h2 class="text-3xl font-semibold text-text-primary mb-8">{{ __('Profile') }}</h2>
+            <section class="sm:bg-bg-primary rounded-2xl sm:p-15 md:20">
+                <h2 class="text-2xl sm:text-3xl font-semibold text-text-primary mb-8">{{ __('Profile') }}</h2>
 
                 {{-- Profile Image --}}
                 <div class="flex items-start bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6">
@@ -21,7 +21,7 @@
 
                     </div>
                     <div class="flex-col">
-                        <x-ui.button href="" class="sm:w-fit! py-2!">
+                        <x-ui.button href="" class="w-fit! py-2!">
                             {{ __('Upload image') }}
                         </x-ui.button>
                         <div class="">
@@ -34,19 +34,22 @@
 
                 {{-- Bio Textarea --}}
                 <div class="p-6 bg-zinc-50/10 rounded-lg" x-data="{ editMode: false }">
-                    <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Your description') }}</h2>
+                    <div class="flex justify-between items-center gap-6 mb-3">
+                        <h2 class="block text-base font-medium text-text-primary">{{ __('Your description') }}</h2>
+                        <div class="px-2 py-1.5 sm:px-4 sm:py-3 bg-zinc-50/20 justify-end rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition"
+                            @click="editMode = true">
+                            <x-phosphor name="note-pencil" variant="regular" />
+                        </div>
+                    </div>
+
 
                     <!-- Display Mode -->
-                    <div class="flex justify-between items-center gap-6" x-show="!editMode">
+                    <div class="" x-show="!editMode">
                         <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
                             <p class="text-text-white text-xs">{{ __('Hey there!') }}</p>
                             <p class="text-text-white text-xs">
                                 {{ __('At PixelStoreLAT, we bring you the best digital deals, game keys, and in-game items — fast, safe, and hassle-free. Trusted by thousands of gamers worldwide with 97% positive reviews. Level up your experience with us today!') }}
                             </p>
-                        </div>
-                        <div class="px-4 py-3 bg-zinc-50/20 justify-end rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition"
-                            @click="editMode = true">
-                            <x-phosphor name="note-pencil" variant="regular" />
                         </div>
                     </div>
 
@@ -60,7 +63,7 @@
 
                         {{-- Action Buttons --}}
                         <div class="flex justify-start gap-3 mt-6">
-                            <x-ui.button href="" @click="editMode = false" class="sm:w-fit! py-2!">
+                            <x-ui.button href="" @click="editMode = false" class="w-fit! py-2!">
                                 {{ __('Upload image') }}
                             </x-ui.button>
                             <button type="button" @click="editMode = false"
@@ -77,22 +80,22 @@
             </section>
 
             {{-- Profile Details Section --}}
-            <section class="bg-bg-primary glass-card rounded-2xl p-20">
-                <h2 class="text-3xl font-semibold text-text-white mb-8">{{ __('Profile') }}</h2>
+            <section class="sm:bg-bg-primary rounded-2xl  mt-5 sm:p-15 md:20">
+                <h2 class="text-2xl sm:text-3xl font-semibold text-text-white mb-8">{{ __('Profile') }}</h2>
 
                 <form class="space-y-5">
                     {{-- User Name --}}
 
                     {{-- First Name --}}
                     <div x-data="{ editMode: false }">
-                        <div class="p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
+                        <div class="p-3 sm:p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('First name:') }}</h2>
-                            <div class="flex items-center gap-6 w-full">
+                            <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
                                     <p class="text-text-white text-xs">{{ __('luisa') }}</p>
                                 </div>
                                 <div @click="editMode = true"
-                                    class="px-4 py-3 bg-zinc-50/20 rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition">
+                                    class="px-2 py-1.5 sm:px-4 sm:py-3 bg-zinc-50/20 rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition">
                                     <x-phosphor name="note-pencil" variant="regular" />
                                 </div>
                             </div>
@@ -115,7 +118,7 @@
                                 </button>
                             </div>
                             <div class="flex justify-start gap-3 mt-4">
-                                <x-ui.button href="" @click="editMode = false" class="sm:w-fit! py-2!">
+                                <x-ui.button href="" @click="editMode = false" class="w-fit! py-2!">
                                     {{ __('Save changes') }}
                                 </x-ui.button>
                                 <button type="button" @click="editMode = false"
@@ -128,14 +131,14 @@
 
                     {{-- Last name --}}
                     <div x-data="{ editMode: false }">
-                        <div class="p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
+                        <div class="p-3 sm:p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Last name:') }}</h2>
-                            <div class="flex items-center gap-6 w-full">
+                            <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
                                     <p class="text-text-white text-xs">{{ __('Cuna') }}</p>
                                 </div>
                                 <div @click="editMode = true"
-                                    class="px-4 py-3 bg-zinc-50/20 rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition">
+                                    class="px-2 py-1.5 sm:px-4 sm:py-3 bg-zinc-50/20 rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition">
                                     <x-phosphor name="note-pencil" variant="regular" />
                                 </div>
                             </div>
@@ -157,7 +160,7 @@
                                 </button>
                             </div>
                             <div class="flex justify-start gap-3 mt-4">
-                                <x-ui.button href="" @click="editMode = false" class="sm:w-fit! py-2!">
+                                <x-ui.button href="" @click="editMode = false" class="w-fit! py-2!">
                                     {{ __('Save changes') }}
                                 </x-ui.button>
                                 <button type="button" @click="editMode = false"
@@ -170,22 +173,22 @@
 
                     {{-- Email --}}
                     <div x-data="{ editMode: false }">
-                        <div class="p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
+                        <div class="p-3 sm:p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Email:') }}</h2>
-                            <div class="flex items-center gap-6 w-full">
+                            <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full">
                                     <div class="p-3 bg-zinc-50/20 rounded-lg">
                                         <p class="text-text-white text-xs">{{ __('luisacuna2254@gmail.com') }}</p>
                                     </div>
                                     <div class="mt-2">
-                                        <p class="text-text-white text-xl"><span
+                                        <p class="text-text-white text-sm sm:text-xl"><span
                                                 class="text-pink-500">{{ __('Verified') }}</span>
                                             {{ __('This email is linked to your account. It is not visible to other users.') }}
                                         </p>
                                     </div>
                                 </div>
                                 <div @click="editMode = true"
-                                    class="px-4 py-3 bg-zinc-50/20 rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition">
+                                    class="px-2 py-1.5 sm:px-4 sm:py-3 bg-zinc-50/20 rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition">
                                     <x-phosphor name="note-pencil" variant="regular" />
                                 </div>
                             </div>
@@ -204,7 +207,7 @@
                                 </span>
                             </div>
                             <div class="flex justify-start gap-3 mt-4">
-                                <x-ui.button href="" @click="editMode = false" class="sm:w-fit! py-2!">
+                                <x-ui.button href="" @click="editMode = false" class="w-fit! py-2!">
                                     {{ __('Save changes') }}
                                 </x-ui.button>
                                 <button type="button" @click="editMode = false"
@@ -217,21 +220,21 @@
 
                     {{-- Username --}}
                     <div x-data="{ editMode: false }">
-                        <div class="p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
+                        <div class="p-3 sm:p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Username:') }}</h2>
-                            <div class="flex items-center gap-6 w-full">
+                            <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full">
                                     <div class="p-3 bg-zinc-50/20 rounded-lg">
                                         <p class="text-text-white text-xs">{{ __('PixelStoreLAT') }}</p>
                                     </div>
                                     <div class="mt-2">
-                                        <p class="text-text-white text-xl">
+                                        <p class="text-text-white text-sm sm:text-xl">
                                             {{ __('Name that is visible to other "Porkbun" users. You can change your username once every 90 days.') }}
                                         </p>
                                     </div>
                                 </div>
                                 <div @click="editMode = true"
-                                    class="px-4 py-3 bg-zinc-50/20 rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition">
+                                    class="px-2 py-1.5 sm:px-4 sm:py-3 bg-zinc-50/20 rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition">
                                     <x-phosphor name="note-pencil" variant="regular" />
                                 </div>
                             </div>
@@ -253,7 +256,7 @@
                                 </button>
                             </div>
                             <div class="flex justify-start gap-3 mt-4">
-                                <x-ui.button href="" @click="editMode = false" class="sm:w-fit! py-2!">
+                                <x-ui.button href="" @click="editMode = false" class="w-fit! py-2!">
                                     {{ __('Save changes') }}
                                 </x-ui.button>
                                 <button type="button" @click="editMode = false"
@@ -266,21 +269,21 @@
 
                     {{-- Password --}}
                     <div x-data="{ editMode: false }">
-                        <div class="p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
+                        <div class="p-3 sm:p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Password:') }}</h2>
-                            <div class="flex items-center gap-6 w-full">
+                            <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full">
                                     <div class="p-3 bg-zinc-50/20 rounded-lg">
                                         <p class="text-text-white text-xs">{{ __('********') }}</p>
                                     </div>
                                     <div class="mt-2">
-                                        <p class="text-text-white text-xl">
+                                        <p class="text-text-white text-sm sm:text-xl">
                                             {{ __('Password can only be changed if you are using the email/password login flow') }}
                                         </p>
                                     </div>
                                 </div>
                                 <div @click="editMode = true"
-                                    class="px-4 py-3 bg-zinc-50/20 rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition">
+                                    class="px-2 py-1.5 sm:px-4 sm:py-3 bg-zinc-50/20 rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition">
                                     <x-phosphor name="note-pencil" variant="regular" />
                                 </div>
                             </div>
@@ -305,11 +308,11 @@
                                 {{ __('You are only e-mails to other. You can type your URL here, and we will redirect them to your personal website or their site') }}
                             </p>
                             <div class="flex justify-start gap-3 mt-4">
-                                <x-ui.button href="" @click="editMode = false" class="sm:w-fit! py-2!">
+                                <x-ui.button href="" @click="editMode = false" class="w-fit! py-2!">
                                     {{ __('Save changes') }}
                                 </x-ui.button>
                                 <button type="button" @click="editMode = false"
-                                    class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition">
+                                    class="px-6 py-3 bg-zinc-200/50 text-text-white rounded-lg hover:bg-gray-700 transition">
                                     {{ __('Cancel') }}
                                 </button>
                             </div>
@@ -320,25 +323,53 @@
             </section>
 
             {{-- Email Notifications Section --}}
-            <section class="bg-bg-primary rounded-2xl p-20">
-                <h2 class="text-3xl font-semibold text-text-white mb-6">{{ __('Email notifications') }}</h2>
+            <section class="sm:bg-bg-primary rounded-2xl sm:p-15 md:20">
+                <h2 class="text-2xl sm:text-3xl font-semibold text-text-white mb-6">{{ __('Email notifications') }}
+                </h2>
 
                 <div class="space-y-4">
                     @php
                         $notifications = [
-                            ['key' => 'manage_notification', 'label' => 'Manage notification', 'sub_title' => 'When you receive a new order.'],
-                            ['key' => 'new_update', 'label' => 'New update', 'sub_title' => 'When you receive a new message'],
-                            ['key' => 'new_request', 'label' => 'New request', 'sub_title' => 'When your order status changes'],
-                            ['key' => 'message_received', 'label' => 'Message received', 'sub_title' => 'When your dispute is resolved or updated'],
-                            ['key' => 'status_changed', 'label' => 'Status changed', 'sub_title' => 'When your payment is received or refunded'],
-                            ['key' => 'request_rejected', 'label' => 'Request rejected', 'sub_title' => 'When you request a withdrawal, and when it is processed'],
-                            ['key' => 'dispute_created', 'label' => 'Dispute created', 'sub_title' => 'When your verification is processed or updated'],
-                            ['key' => 'payment_received', 'label' => 'Payment received', 'sub_title' => 'When you receive boosting offers or updates'],
-                            // ['key' => 'activity_mention', 'label' => 'Activity mention'],
-                            // ['key' => 'announcement_updates', 'label' => 'Announcement and updates'],
-                            // ['key' => 'profile_updates', 'label' => 'Profile updates'],
-                            // ['key' => 'reminders', 'label' => 'Reminders'],
-                            // ['key' => 'events_offers', 'label' => 'Events & Offers'],
+                            [
+                                'key' => 'manage_notification',
+                                'label' => 'Manage notification',
+                                'sub_title' => 'When you receive a new order.',
+                            ],
+                            [
+                                'key' => 'new_update',
+                                'label' => 'New update',
+                                'sub_title' => 'When you receive a new message',
+                            ],
+                            [
+                                'key' => 'new_request',
+                                'label' => 'New request',
+                                'sub_title' => 'When your order status changes',
+                            ],
+                            [
+                                'key' => 'message_received',
+                                'label' => 'Message received',
+                                'sub_title' => 'When your dispute is resolved or updated',
+                            ],
+                            [
+                                'key' => 'status_changed',
+                                'label' => 'Status changed',
+                                'sub_title' => 'When your payment is received or refunded',
+                            ],
+                            [
+                                'key' => 'request_rejected',
+                                'label' => 'Request rejected',
+                                'sub_title' => 'When you request a withdrawal, and when it is processed',
+                            ],
+                            [
+                                'key' => 'dispute_created',
+                                'label' => 'Dispute created',
+                                'sub_title' => 'When your verification is processed or updated',
+                            ],
+                            [
+                                'key' => 'payment_received',
+                                'label' => 'Payment received',
+                                'sub_title' => 'When you receive boosting offers or updates',
+                            ],
                         ];
                     @endphp
 
@@ -347,14 +378,14 @@
                             class="flex items-center justify-between py-3  border-zinc-200 dark:border-zinc-800 last:border-b-0">
                             <label class="text-xl text-text-white cursor-pointer flex-1">
                                 {{ $notification['label'] }}
-                                <span class="text-sm text-text-muted justify-start block">{{ $notification['sub_title'] }}</span>
+                                <span
+                                    class="text-sm text-text-muted justify-start block">{{ $notification['sub_title'] }}</span>
                             </label>
-                            
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" name="notifications[{{ $notification['key'] }}]"
-                                    class="sr-only peer" checked>
+                                    class="sr-only peer">
                                 <div
-                                    class="w-11 h-6 bg-zinc-300 dark:bg-zinc-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-accent rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent">
+                                    class="w-11 h-6 bg-zinc-200/80 dark:bg-zinc-200/50 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-accent rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent">
                                 </div>
                             </label>
                         </div>
