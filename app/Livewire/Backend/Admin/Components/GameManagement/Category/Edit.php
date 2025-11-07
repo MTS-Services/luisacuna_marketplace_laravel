@@ -2,18 +2,21 @@
 
 namespace App\Livewire\Backend\Admin\Components\GameManagement\Category;
 
-use App\DTOs\GameCategory\UpdateGameCategoryDTO;
-use App\Enums\GameCategoryStatus;
-use App\Livewire\Forms\Backend\Admin\GameManagement\GameCategoryForm;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 use App\Models\GameCategory;    
+use App\Enums\GameCategoryStatus;
+use Illuminate\Support\Facades\Log;
 use App\Services\GameCategoryService;
 use App\Traits\Livewire\WithNotification;
-use Illuminate\Support\Facades\Log;
-use Livewire\Component;
+use App\DTOs\GameCategory\UpdateGameCategoryDTO;
+use App\Livewire\Forms\Backend\Admin\GameManagement\GameCategoryForm;
 
 class Edit extends Component
 {
-    use WithNotification;
+    use WithNotification, WithFileUploads;
+
+
     public GameCategoryForm $form;
     public GameCategory $category;
     protected GameCategoryService $service;
@@ -42,7 +45,7 @@ class Edit extends Component
 
        try {
 
-        $data = $this->form->fillables();
+        $data = $this->form->validate();
         $this->service->updateData($this->categoryId, $data , admin()->id);
         $this->success('Game Category Updated Successfully');
         return $this->redirect(route('admin.gm.category.index'), navigate: true);
