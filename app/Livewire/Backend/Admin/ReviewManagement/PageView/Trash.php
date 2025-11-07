@@ -77,7 +77,7 @@ class Trash extends Component
                 'key' => 'created_by',
                 'label' => 'Created By',
                 'format' => function ($data) {
-                    return $data->createdBy?->name ?? 'System';
+                    return $data->creater_admin?->name ?? 'System';
                 }
             ],
 

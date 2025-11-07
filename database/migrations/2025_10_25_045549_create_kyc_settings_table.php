@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-return new class extends Migration
-{
+return new class extends Migration {
     use AuditColumnsTrait;
     /**
      * Run the migrations.
@@ -16,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('kyc_settings', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->string('type')->index();
             $table->string('status')->index()->default(KycSettingStatus::ACTIVE->value);
             $table->integer('version')->default(1);

@@ -76,7 +76,7 @@
                         <p class="text-text-secondary mb-6">
                         {{ __('When two-factor authentication is enabled, you will be prompted for a secure, random token
                             during authentication.
-                            You may retrieve this token from your phone'\s' Google Authenticator, Authy, or any compatible
+                            You may retrieve this token from your phone\'s Google Authenticator, Authy, or any compatible
                             authenticator application.') }}
                         </p>
 
@@ -99,7 +99,7 @@
 
                             <p class="text-text-secondary mb-4">
                                 {{ __('To finish enabling two-factor authentication, scan the following QR code using your
-                                phone'\'s authenticator application
+                                phone\'s authenticator application
                                 or enter the setup key and provide the generated OTP code.') }}
                             </p>
 

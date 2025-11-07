@@ -1,14 +1,13 @@
 <?php
- 
+
 use App\Traits\AuditColumnsTrait;
 use App\Enums\CountryKycSettingStatus;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
- 
-return new class extends Migration
-{
-     use AuditColumnsTrait;
+
+return new class extends Migration {
+    use AuditColumnsTrait;
     /**
      * Run the migrations.
      */
@@ -16,15 +15,15 @@ return new class extends Migration
     {
         Schema::create('country_kyc_settings', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('kyc_setting_id');
             $table->unsignedBigInteger('country_id');
-    
+
 
             $table->string('type')->index();
             $table->string('status')->index()->default(CountryKycSettingStatus::ACTIVE->value);
             $table->integer('version')->default(1);
-            
+
 
 
 
@@ -35,13 +34,13 @@ return new class extends Migration
 
             $table->softDeletes();
             $table->timestamps();
- 
+
             $this->addAdminAuditColumns($table);
 
 
         });
     }
- 
+
     /**
      * Reverse the migrations.
      */
