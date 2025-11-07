@@ -22,16 +22,25 @@ trait AuditColumnsTrait
         $table->index('created_by');
         $table->index('updated_by');
         $table->index('deleted_by');
+        $table->index('restored_by');
     }
     public function dropAdminAuditColumns(Blueprint $table): void
     {
         $table->dropForeign(['created_by']);
         $table->dropForeign(['updated_by']);
         $table->dropForeign(['deleted_by']);
+        $table->dropForeign(['restored_by']);
 
         $table->dropIndex(['created_by']);
         $table->dropIndex(['updated_by']);
         $table->dropIndex(['deleted_by']);
+        $table->dropIndex(['restored_by']);
+
+        $table->dropColumn('created_by');
+        $table->dropColumn('updated_by');
+        $table->dropColumn('deleted_by');
+        $table->dropColumn('restored_by');
+        $table->dropColumn('restored_at');
     }
 
 
@@ -48,36 +57,29 @@ trait AuditColumnsTrait
 
         $table->timestamp('restored_at')->nullable();
 
-        $table->index('creater_id');
-        $table->index('updater_id');
-        $table->index('deleter_id');
-        $table->index('creater_type');
-        $table->index('updater_type');
-        $table->index('deleter_type');
-        $table->index('restorer_id');
-        $table->index('restorer_type');
+        $table->index(['creater_id', 'creater_type']);
+        $table->index(['updater_id', 'updater_type']);
+        $table->index(['deleter_id', 'deleter_type']);
+        $table->index(['restorer_id', 'restorer_type']);
     }
 
-    public function dropAuditColumns(Blueprint $table): void
+    public function dropMorphedAuditColumns(Blueprint $table): void
     {
-        $table->dropForeign(['created_by']);
-        $table->dropForeign(['updated_by']);
-        $table->dropForeign(['deleted_by']);
-        $table->dropForeign(['restored_by']);
+        $table->dropIndex(['creater_id', 'creater_type']);
+        $table->dropIndex(['updater_id', 'updater_type']);
+        $table->dropIndex(['deleter_id', 'deleter_type']);
+        $table->dropIndex(['restorer_id', 'restorer_type']);
 
-        $table->dropColumn('created_by');
-        $table->dropColumn('updated_by');
-        $table->dropColumn('deleted_by');
-        $table->dropColumn('restored_by');
+        $table->dropColumn('creater_id');
+        $table->dropColumn('creater_type');
+        $table->dropColumn('updater_id');
+        $table->dropColumn('updater_type');
+        $table->dropColumn('deleter_id');
+        $table->dropColumn('deleter_type');
+        $table->dropColumn('restorer_id');
+        $table->dropColumn('restorer_type');
         $table->dropColumn('restored_at');
 
-        $table->dropIndex(['creater_id']);
-        $table->dropIndex(['updater_id']);
-        $table->dropIndex(['deleter_id']);
-        $table->dropIndex(['creater_type']);
-        $table->dropIndex(['updater_type']);
-        $table->dropIndex(['deleter_type']);
-        $table->dropIndex(['restorer_id']);
-        $table->dropIndex(['restorer_type']);
+
     }
 }
