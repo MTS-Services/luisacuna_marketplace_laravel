@@ -88,8 +88,8 @@ class Index extends Component
                 'key' => 'created_by',
                 'label' => 'Created By',
                 'format' => function ($admin) {
-                    return optional($admin->createdBy)->name
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . e($admin->createdBy->name) . '</span>'
+                    return optional($admin->creater_admin)->name
+                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . e($admin->creater_admin->name) . '</span>'
                         : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
                 }
             ],

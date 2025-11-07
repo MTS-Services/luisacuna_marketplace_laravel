@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('user_statistics', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('user_id');
 
             $table->integer('total_orders_as_buyer')->default(0);

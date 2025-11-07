@@ -37,7 +37,7 @@ class Index extends Component
             filters: $this->getFilters()
         );
 
-        $datas->load('createdBy');
+        $datas->load('creater_admin');
 
         $columns = [
             // [
@@ -57,7 +57,7 @@ class Index extends Component
             ],
             // [
             //     'key' => 'status',
-            //     'label' => 'Status', 
+            //     'label' => 'Status',
             //     'sortable' => true,
             //     'format' => function ($admin) {
             //         $colors = [
@@ -96,8 +96,8 @@ class Index extends Component
                 'key' => 'created_by',
                 'label' => 'Created By',
                 'format' => function ($category) {
-                    return $category->createdBy
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $category->createdBy?->name . '</span>'
+                    return $category->creater_admin
+                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $category->creater_admin?->name . '</span>'
                         : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
                 }
             ],
