@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('countries', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->string('name');
             $table->string('code')->unique();
             $table->string('phone_code')->nullable();
             $table->string('currency')->nullable();
             $table->boolean('is_active')->index()->default(true);
-            
+
             $table->timestamps();
             $table->softDeletes();
             $this->addMorphedAuditColumns($table);

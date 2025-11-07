@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('exchange_rates', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('base_currency');
             $table->unsignedBigInteger('target_currency');
             $table->decimal('rate', 10, 6);

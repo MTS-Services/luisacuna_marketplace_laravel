@@ -16,8 +16,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('game_categories', function (Blueprint $table) {
-            $table->id('id', true);
-            $table->integer('sort_order')->default(0);
+            $table->id();
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
 
             $table->string('name')->index();
             $table->string('slug')->unique();

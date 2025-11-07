@@ -1,13 +1,12 @@
 <?php
- 
+
 use App\Traits\AuditColumnsTrait;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
- 
-return new class extends Migration
-{
-     use AuditColumnsTrait;
+
+return new class extends Migration {
+    use AuditColumnsTrait;
     /**
      * Run the migrations.
      */
@@ -15,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('page_views', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->string('viewable_type')->index();
             $table->unsignedBigInteger('viewable_id')->index();
             $table->string('viewer_type')->index()->nullable();
@@ -24,14 +23,14 @@ return new class extends Migration
             $table->text('user_agent')->nullable();
             $table->text('referrer')->nullable();
 
-    
+
             $table->softDeletes();
             $table->timestamps();
-            
-           $this->addMorphedAuditColumns($table);
+
+            $this->addMorphedAuditColumns($table);
         });
     }
- 
+
     /**
      * Reverse the migrations.
      */

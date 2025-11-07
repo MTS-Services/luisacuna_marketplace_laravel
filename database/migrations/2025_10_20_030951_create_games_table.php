@@ -7,15 +7,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
 
     use AuditColumnsTrait, SoftDeletes;
     public function up(): void
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
-            $table->integer('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('game_category_id');
             $table->string('name')->index();
             $table->string('slug')->unique()->index();
