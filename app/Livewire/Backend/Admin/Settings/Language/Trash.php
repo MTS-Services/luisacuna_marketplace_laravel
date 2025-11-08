@@ -117,7 +117,7 @@ class Trash extends Component
     public function confirmDelete($encryptedId): void
     {
         if (!$encryptedId) {
-            $this->error('No Currency selected');
+            $this->error('No Data selected');
             $this->resetPage();
             return;
         }
@@ -132,7 +132,7 @@ class Trash extends Component
             $this->showDeleteModal = false;
             $this->selectedId = null;
             $this->resetPage();
-            $this->success('Currency permanently deleted successfully');
+            $this->success('Currency Data deleted successfully');
         } catch (\Throwable $e) {
             $this->error('Failed to delete currency.');
             Log::error('Failed to delete currency: ' . $e->getMessage());
@@ -145,10 +145,10 @@ class Trash extends Component
         try {
             $this->service->restoreData(decrypt($encryptedId));
 
-            $this->success('Currency restored successfully');
+            $this->success('Data restored successfully');
         } catch (\Throwable $e) {
-            $this->error('Failed to restore currency.');
-            Log::error('Failed to restore currency: ' . $e->getMessage());
+            $this->error('Failed to restore data.');
+            Log::error('Failed to restore data: ' . $e->getMessage());
             throw $e;
         }
     }
@@ -162,7 +162,7 @@ class Trash extends Component
     public function confirmBulkAction(): void
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
-            $this->warning('Please select currency and an action');
+            $this->warning('Please select data and an action');
             return;
         }
 
@@ -194,14 +194,14 @@ class Trash extends Component
     {
         $count = count($this->selectedIds);
         $this->service->bulkRestoreData($this->selectedIds);
-        $this->success("{$count} Currencies restored successfully");
+        $this->success("{$count} Datas restored successfully");
     }
 
     protected function bulkForceDelete(): void
     {
         $count = count($this->selectedIds);
         $this->service->bulkForceDeleteData($this->selectedIds);
-        $this->success("{$count} Currencies permanently deleted successfully");
+        $this->success("{$count} Datas permanently deleted successfully");
     }
 
     protected function getFilters(): array
