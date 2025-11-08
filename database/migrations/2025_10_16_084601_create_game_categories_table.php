@@ -16,20 +16,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('game_categories', function (Blueprint $table) {
-            $table->id('id', true);
-            $table->integer('sort_order')->default(0);
+            $table->id();
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
 
             $table->string('name')->index();
             $table->string('slug')->unique();
             $table->text('description')->nullable();
+            $table->string('meta_title')->nullable();
+            $table->text('meta_description')->nullable();
             $table->string('icon')->nullable();
-            $table->string('status')->default(GameCategoryStatus::ACTIVE);
+            $table->boolean('is_featured')->default(false);
+            $table->string('status')->index()->default(GameCategoryStatus::ACTIVE);
 
 
 
             $table->timestamps();
             $table->softDeletes();
-            $this->addMorphedAuditColumns($table);
+            $this->addAdminAuditColumns($table);
         });
     }
 

@@ -206,9 +206,7 @@
                     <div
                         class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
                         <h3 class="text-lg font-medium mb-3">
-                            {{ __('Custom Offer! 2,000 Trophies, Prestige, 100K Push. Ultra
-                                                                                    Fast
-                                                                                    Delivery. Text me for info. Do not purchase directly.') }}
+                            {{ __('Custom Offer! 2,000 Trophies, Prestige, 100K Push. Ultra Fast Delivery. Text me for info. Do not purchase directly.') }}
                         </h3>
                         <div class="flex gap-4 text-sm text-slate-400 py-4">
                             <span

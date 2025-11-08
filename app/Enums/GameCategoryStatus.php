@@ -20,7 +20,7 @@ enum GameCategoryStatus: string
     {
         return match ($this) {
             self::ACTIVE => 'badge-success',
-            self::INACTIVE => 'badge-error',
+            self::INACTIVE => 'badge-danger',
         };
     }
 

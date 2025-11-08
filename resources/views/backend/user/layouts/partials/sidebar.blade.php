@@ -64,7 +64,7 @@
                         class="w-full flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg transition-all text-text-white hover:bg-pink-500/50">
                         <div class="flex items-center space-x-2 sm:space-x-3">
                             <x-phosphor-tag class="w-5 h-5 rotate-90 fill-text-text-white" />
-                            <span class="text-xs sm:text-sm lg:text-base font-medium text-text-white">Offers</span>
+                            <span class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{__('Offers')}}</span>
 
                             <!-- Left indicator bar -->
                             <div x-show="isActive" x-cloak
@@ -115,7 +115,7 @@
                         <div class="flex items-center space-x-2 sm:space-x-3">
                             <x-phosphor name="circles-four" variant="solid"
                                 class="w-5 h-5 rotate-90 fill-text-text-white" />
-                            <span class="text-xs sm:text-sm lg:text-base font-medium text-text-white">Boosting</span>
+                            <span class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{__('Boosting')}}</span>
 
                             <!-- Left indicator bar -->
                             <div x-show="isActive" x-cloak
@@ -164,6 +164,13 @@
                     <span
                         class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{ __('Messages') }}</span>
                 </a>
+                {{-- notifications --}}
+                <a href="{{ route('user.notifications') }}" wire:navigate @click="$root.sidebarOpen = false"
+                    class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'notifications' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                    <flux:icon name="chat-bubble-bottom-center-text" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
+                    <span
+                        class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{ __('Notifications') }}</span>
+                </a>
                 <!-- Feedback Link -->
                 <a href="{{ route('user.feedback') }}" wire:navigate @click="$root.sidebarOpen = false"
                     class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'feedback' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
@@ -179,7 +186,7 @@
                         class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{ __('Account Settings') }}</span>
                 </a>
                 <!-- View Profile Link -->
-                <a href="{{ route('user.profile') }}" wire:navigate @click="$root.sidebarOpen = false"
+                <a href="{{ route('profile') }}" wire:navigate @click="$root.sidebarOpen = false"
                     class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'profile' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                     <flux:icon name="user" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
                     <span

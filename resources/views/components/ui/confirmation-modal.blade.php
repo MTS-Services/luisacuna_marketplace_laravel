@@ -99,7 +99,7 @@
                         {{-- Cancel Button --}}
                         <button wire:click="$set('{{ $show }}', false)" @click="localShow = false"
                             class="w-full sm:w-auto px-6 py-3 rounded-xl bg-white border border-gray-300 text-gray-800 text-base font-semibold shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition duration-150">
-                            Cancel
+                            {{ __('Cancel') }}
                         </button>
                     </div>
                 </div>

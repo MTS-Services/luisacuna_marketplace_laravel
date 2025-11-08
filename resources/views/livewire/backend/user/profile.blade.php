@@ -1,3 +1,3 @@
 <div>
-    This is User Profile Page
+    {{ __('This is User Profile Page') }}
 </div>

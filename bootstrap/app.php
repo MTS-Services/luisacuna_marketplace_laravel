@@ -3,6 +3,7 @@
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\AdminVerifyMiddleware;
 use App\Http\Middleware\UserVerifyMiddleware;
+use App\Http\Middleware\SetLocaleMiddleware as MultiLangSet;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -21,6 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'adminVerify' => AdminVerifyMiddleware::class,
             'userVerify' => UserVerifyMiddleware::class,
         ]);
+         $middleware->web(MultiLangSet::class);
+        $middleware->api(MultiLangSet::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

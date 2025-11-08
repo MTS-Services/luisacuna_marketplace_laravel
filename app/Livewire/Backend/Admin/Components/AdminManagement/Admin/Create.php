@@ -43,7 +43,8 @@ class Create extends Component
         try {
             $data =  $this->form->fillables();
            
-           $this->service->createData($data);
+            $data['created_by'] = admin()->id;
+            $this->service->createData($data);
 
             $this->dispatch('Admin is created');
             

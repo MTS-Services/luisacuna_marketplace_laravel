@@ -49,7 +49,8 @@
                 {{-- All Images Grid --}}
                 @if ($data->images->count() > 1)
                     <div>
-                        <h3 class="text-lg font-medium mb-2">{{ __('All Images') }} ({{ $data->images->count() }})</h3>
+                        <h3 class="text-lg font-medium mb-2">{{ __('All Images') }} ({{ $data->images->count() }})
+                        </h3>
                         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                             @foreach ($data->images->sortBy('sort_order') as $image)
                                 <div
@@ -99,7 +100,7 @@
 
                 {{-- Seller --}}
                 <div class="col-span-1">
-                    <p class="text-gray-500 dark:text-gray-400">{ __('Seller') }}</p>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Seller') }}</p>
                     <p class="font-mono font-semibold text-gray-900 dark:text-white">
                         {{ $data->seller?->first_name ?? 'N/A' }}
                     </p>

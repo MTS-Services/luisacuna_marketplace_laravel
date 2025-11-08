@@ -18,6 +18,7 @@ class Index extends Component
     public $deleteGameCategoryId = null;
     public $bulkAction = '';
     public $showBulkActionModal = false;
+    public $deleteId = null;
 
 
     // protected $listeners = ['adminCreated' => '$refresh', 'adminUpdated' => '$refresh'];
@@ -31,12 +32,12 @@ class Index extends Component
 
     public function render()
     {
-        $datas = $this->service->getPaginateData(
+        $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
 
-        $datas->load('createdBy');
+        $datas->load('creater_admin');
 
         $columns = [
             // [
@@ -56,7 +57,7 @@ class Index extends Component
             ],
             // [
             //     'key' => 'status',
-            //     'label' => 'Status', 
+            //     'label' => 'Status',
             //     'sortable' => true,
             //     'format' => function ($admin) {
             //         $colors = [
@@ -86,7 +87,7 @@ class Index extends Component
                 'label' => 'Status',
                 'sortable' => true,
                 'format' => function ($category) {
-                     return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $category->status->color() . '">' .
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $category->status->color() . '">' .
                         $category->status->label() .
                         '</span>';
                 }
@@ -95,8 +96,8 @@ class Index extends Component
                 'key' => 'created_by',
                 'label' => 'Created By',
                 'format' => function ($category) {
-                    return $category->createdBy
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $category->createdBy?->name . '</span>'
+                    return $category->creater_admin
+                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $category->creater_admin?->name . '</span>'
                         : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
                 }
             ],
@@ -104,7 +105,7 @@ class Index extends Component
 
         $actions = [
             ['key' => 'id', 'label' => 'View', 'route' => 'admin.gm.category.view', 'encrypt' => true],
-            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.gm.category.edit' , 'encrypt' => true],
+            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.gm.category.edit', 'encrypt' => true],
             ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete'],
         ];
 
@@ -124,10 +125,33 @@ class Index extends Component
         ]);
     }
 
-    public function confirmDelete($id)
+    // public function confirmDelete($id)
+    // {
+    //     $this->showDeleteModal = true;
+    //     $this->deleteGameCategoryId = $id;
+    // }
+
+
+    public function confirmDelete($id): void
     {
+        $this->deleteId = $id;
         $this->showDeleteModal = true;
-        $this->deleteGameCategoryId = $id;
+    }
+
+    public function delete(): void
+    {
+        try {
+            if (!$this->deleteId) {
+                $this->warning('No data selected');
+                return;
+            }
+            $this->service->deleteData($this->deleteId);
+            $this->reset(['deleteId', 'showDeleteModal']);
+
+            $this->success('Data deleted successfully');
+        } catch (\Exception $e) {
+            $this->error('Failed to delete data: ' . $e->getMessage());
+        }
     }
 
     protected function getFilters(): array
@@ -145,28 +169,28 @@ class Index extends Component
         $this->showDeleteModal = false;
         $this->deleteGameCategoryId = null;
     }
-    public function delete()
-    {
+    // public function delete()
+    // {
 
-          try {
+    //     try {
 
-          
-            if (!$this->deleteGameCategoryId) {
-                return;
-            }
 
-            $state =   $this->service->deleteData($this->deleteGameCategoryId, admin()->id);
+    //         if (!$this->deleteGameCategoryId) {
+    //             return;
+    //         }
 
-            if ($state) {
-                $this->success('Category deleted successfully');
-            }
+    //         $state =   $this->service->deleteData($this->deleteGameCategoryId, admin()->id);
 
-            $this->showDeleteModal = false;
-            $this->deleteGameCategoryId = null;
-        } catch (\Exception $e) {
-            $this->error('Failed to delete category: ' . $e->getMessage());
-        }
-    }
+    //         if ($state) {
+    //             $this->success('Category deleted successfully');
+    //         }
+
+    //         $this->showDeleteModal = false;
+    //         $this->deleteGameCategoryId = null;
+    //     } catch (\Exception $e) {
+    //         $this->error('Failed to delete category: ' . $e->getMessage());
+    //     }
+    // }
 
     public function confirmBulkAction(): void
     {
@@ -215,7 +239,7 @@ class Index extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->service->getPaginateData(
+        return $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

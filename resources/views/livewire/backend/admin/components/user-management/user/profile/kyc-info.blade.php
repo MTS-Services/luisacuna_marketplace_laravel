@@ -18,12 +18,12 @@
     <div class="bg-white shadow rounded-xl p-6 min-h-[500px]">
         {{-- PERSONAL INFO (Default Tab) --}}
         <div class="col-span-1 lg:col-span-2 p-4">
-            <h2 class="text-xl font-semibold mb-6 border-b pb-2 text-gray-800">KYC Information</h2>
+            <h2 class="text-xl font-semibold mb-6 border-b pb-2 text-gray-800">{{__('KYC Information')}}</h2>
 
             <div class="grid md:grid-cols-3 gap-8 text-base">
                 {{-- KYC Status --}}
                 <div>
-                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">KYC Status</p>
+                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">{{__('KYC Status')}}</p>
                     <h3 class="text-lg font-medium text-gray-900 badge badge-soft {{ $user->kyc->kyc_status_color ?? 'N/A' }}">
                         {{ $user->kyc->kyc_status_label ?? 'N/A' }}
                     </h3>
@@ -31,13 +31,13 @@
 
                 {{-- kyc_submitted_at --}}
                 <div>
-                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">KYC Submitted At</p>
+                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">{{__('KYC Submitted At')}}</p>
                     <h3 class="text-lg font-medium text-gray-900">{{ $user->kyc->kyc_submitted_at ?? 'N/A' }}</h3>
                 </div>
 
                 {{-- kyc_approved_at --}}
                 <div>
-                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">KYC Approved At</p>
+                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">{{__('KYC Approved At')}}</p>
                     <h3 class="text-lg font-medium text-gray-900">{{ $user->kyc->kyc_approved_at ?? 'N/A' }}
                     </h3>
                 </div>

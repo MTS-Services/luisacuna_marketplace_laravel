@@ -36,7 +36,7 @@ class Index extends Component
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
-        $datas->load('createdBy');
+        $datas->load('creater_admin');
 
         $columns = [
             [
@@ -89,7 +89,7 @@ class Index extends Component
                 'key' => 'created_by',
                 'label' => 'Created By',
                 'format' => function ($data) {
-                    return $data->createdBy?->name ?? 'System';
+                    return $data->creater_admin?->name ?? 'System';
                 }
             ],
         ];
@@ -208,7 +208,7 @@ class Index extends Component
 
     protected function bulkDelete(): void
     {
-       
+        dd($this->selectedIds);
       $count =  $this->service->bulkDeleteData($this->selectedIds);
         $this->success("{$count} Data deleted successfully");
     }

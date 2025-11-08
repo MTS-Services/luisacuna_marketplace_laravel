@@ -14,10 +14,10 @@ class DeleteAction
         protected AdminRepositoryInterface $interface
     ) {}
 
-    public function execute(int $adminId, bool $forceDelete = false): bool
+    public function execute(int $id, bool $forceDelete = false, $actionerId): bool
     {
-        return DB::transaction(function () use ($adminId, $forceDelete) {
-            $admin = $this->interface->find($adminId);
+        return DB::transaction(function () use ($id, $forceDelete, $actionerId) {
+            $admin = $this->interface->find($id);
 
             if (!$admin) {
                 throw new \Exception('Admin not found');
@@ -32,10 +32,10 @@ class DeleteAction
                     Storage::disk('public')->delete($admin->avatar);
                 }
 
-                return $this->interface->forceDelete($adminId);
+                return $this->interface->forceDelete($id);
             }
 
-            return $this->interface->delete($adminId);
+            return $this->interface->delete($id, $actionerId);
         });
     }
 

@@ -22,7 +22,7 @@
 
             {{-- Left Column --}}
             <div class="flex flex-col h-auto p-4 border-r lg:border-r-2 border-gray-100">
-                <h2 class="text-xl text-text-primary font-semibold mb-6">Profile Image</h2>
+                <h2 class="text-xl text-text-primary font-semibold mb-6">{{__('Profile Image')}}</h2>
 
                 <div class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-red-100 overflow-hidden">
                     <img src="{{ asset('storage/' . $user->avatar) }}" alt="Profile Image"
@@ -43,7 +43,7 @@
                             </path>
                         </svg>
                         <div>
-                            <p class="text-text-secondary">Phone</p>
+                            <p class="text-text-secondary">{{__('Phone')}}</p>
                             <p class="font-medium text-gray-900">{{ $user->phone }}</p>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                             </path>
                         </svg>
                         <div>
-                            <p class="text-text-secondary">Email</p>
+                            <p class="text-text-secondary">{{__('Email')}}</p>
                             <p class="font-medium text-gray-900">{{ $user->email }}</p>
                         </div>
                     </div>
@@ -69,9 +69,9 @@
                             </path>
                         </svg>
                         <div>
-                            <p class="text-text-secondary">Account Status</p>
+                            <p class="text-text-secondary">{{__('Account Status')}}</p>
                             <span
-                                class="px-3 py-1 rounded-full text-xs font-bold inline-block 
+                                class="px-3 py-1 rounded-full text-xs font-bold inline-block
                                     @if ($user->status_label === 'Active') bg-green-100 text-green-700 @else bg-red-100 text-red-700 @endif">
                                 {{ $user->status_label }}
                             </span>
@@ -82,30 +82,30 @@
 
             {{-- Right Column --}}
             <div class="col-span-1 lg:col-span-2 p-4">
-                <h2 class="text-xl font-semibold mb-6 border-b pb-2 text-text-primary">Profile Information</h2>
+                <h2 class="text-xl font-semibold mb-6 border-b pb-2 text-text-primary">{{__('Profile Information')}}</h2>
 
                 <div class="grid md:grid-cols-2 gap-8 text-base">
                     {{-- First Name --}}
                     <div>
-                        <p class="text-text-secondary mb-1 text-sm uppercase tracking-wider">First Name</p>
+                        <p class="text-text-secondary mb-1 text-sm uppercase tracking-wider">{{__('First Name')}}</p>
                         <h3 class="text-lg font-medium text-gray-900">{{ $user->first_name }}</h3>
                     </div>
 
                     {{-- Last Name --}}
                     <div>
-                        <p class="text-text-secondary mb-1 text-sm uppercase tracking-wider">Last Name</p>
+                        <p class="text-text-secondary mb-1 text-sm uppercase tracking-wider">{{__('Last Name')}}</p>
                         <h3 class="text-lg font-medium text-gray-900">{{ $user->last_name }}</h3>
                     </div>
 
                     {{-- Date of Birth --}}
                     <div>
-                        <p class="text-text-secondary mb-1 text-sm uppercase tracking-wider">Date of Birth</p>
+                        <p class="text-text-secondary mb-1 text-sm uppercase tracking-wider">{{__('Date of Birth')}}</p>
                         <h3 class="text-lg font-medium text-gray-900">{{ $user->date_of_birth }}</h3>
                     </div>
 
                     {{-- Country --}}
                     <div>
-                        <p class="text-text-secondary mb-1 text-sm uppercase tracking-wider">Country</p>
+                        <p class="text-text-secondary mb-1 text-sm uppercase tracking-wider">{{__('Country')}}</p>
                         <h3 class="text-lg font-medium text-gray-900">{{ $user->country->name }}</h3>
                     </div>
                 </div>
