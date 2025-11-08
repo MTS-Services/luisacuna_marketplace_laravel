@@ -112,7 +112,6 @@
     "Messages": "Messages",
     "Unread message only": "Unread message only",
     "All": "All",
-    "Orders": "Orders",
     "Pre-purchase": "Pre-purchase",
     "Mark all as read": "Mark all as read",
     "Browser notification": "Browser notification",
@@ -200,7 +199,7 @@
     "All brands for Coaching": "All brands for Coaching",
     "This is the list of social media platforms or accounts you are associated with. Use commas to distinguish": "This is the list of social media platforms or accounts you are associated with. Use commas to distinguish",
     "Email notifications": "Email notifications",
-     
+
     "Balance": "Balance",
     "Withdrawals require $10 in completed sales": "Withdrawals require $10 in completed sales",
     "Learn more": "Learn more",
@@ -223,9 +222,32 @@
     "October": "October",
     "November": "November",
     "December": "December",
-    "Manage Subscriptionsr": "Manage Subscriptionsr"
-  
-    
+    "Manage Subscriptionsr": "Manage Subscriptionsr",
+
+
+
+
+
+    "Menu": "Menu",
+    "Orders":"Orders",
+    "Purchased orders": "Purchased orders",
+    "Sold orders": "Sold orders",
+    "Offers": "Offers",
+    "My Requests": "My Requests",
+    "Received Requests": "Received Requests",
+    "Loyalty": "Loyalty",
+    "Wallet": "Wallet",
+    "Notifications": "Notifications",
+    "Feedback": "Feedback",
+    "Account Settings": "Account Settings",
+    "View Profile": "View Profile",
+    "Logout": "Logout",
+    "Footer": "Footer"
+
+
+
+
+
 
 
 

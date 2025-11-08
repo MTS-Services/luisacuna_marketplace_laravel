@@ -95,7 +95,6 @@
     "Messages": "Messages",
     "Unread message only": "Message non lu uniquement",
     "All": "Toute",
-    "Orders" : "Orders",
     "Pre-purchase" : "Préachat",
     "Mark all as read": "Marquer tout comme lu",
     "Browser notification": "Notification du navigateur",
@@ -218,6 +217,25 @@
     "October": "Octobre",
     "November": "Novembre",
     "December": "Décembre",
-    "Manage Subscriptionsr": "Gérer les abonnements"
-    
+    "Manage Subscriptionsr": "Gérer les abonnements",
+    "Menu": "Menu",
+    "Orders": "Ordres",
+    "Purchased orders": "Commandes achetées",
+    "Sold orders": "Commandes vendues",
+    "Offers": "Offres",
+    "My Requests": "Mes demandes",
+    "Received Requests": "Demandes reçues",
+    "Loyalty":"Loyauté",
+    "Wallet": "Portefeuille",
+    "Notifications": "Notifications",
+    "Feedback": "Retour",
+    "Account Settings": "Paramètres du compte",
+    "View Profile": "Voir le profil",
+    "Logout": "Deconnexion",
+    "Footer": "Pied de page"
+
+
+
+
+
 }
