@@ -32,7 +32,9 @@ class User extends AuthBaseModel implements Auditable
         'username',
         'first_name',
         'last_name',
+        'email',
 
+        'apple_id',
         'facebook_id',
         'google_id',
         'avatar',
@@ -42,7 +44,7 @@ class User extends AuthBaseModel implements Auditable
         'language',
         'currency',
 
-        'email',
+
         'email_verified_at',
         'password',
 

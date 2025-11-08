@@ -308,18 +308,4 @@
 
     </div>
 
-    @push('scripts')
-        {{-- Auto slug script --}}
-        <script>
-            document.getElementById('title').addEventListener('input', function() {
-                let slug = this.value
-                    .toLowerCase()
-                    .trim()
-                    .replace(/\s+/g, '-');
-                document.getElementById('slug').value = slug;
-
-                document.getElementById('slug').dispatchEvent(new Event('input'));
-            });
-        </script>
-    @endpush
 </section>

@@ -17,16 +17,16 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('seller_profile_id');
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('game_categories_id');
 
             $table->softDeletes();
             $table->timestamps();
             $this->addMorphedAuditColumns($table);
 
-            $table->unique(['seller_profile_id', 'category_id'], 'seller_category_unique');
+            $table->unique(['seller_profile_id', 'game_categories_id'], 'seller_category_unique');
 
             $table->foreign('seller_profile_id')->references('id')->on('seller_profiles')->onDelete('cascade');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('game_categories_id')->references('id')->on('game_categories')->onDelete('cascade');
         });
     }
 

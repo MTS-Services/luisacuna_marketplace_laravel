@@ -22,7 +22,7 @@ class GameCategoryFactory extends Factory
         return [
             'sort_order' => $faker->numberBetween(1, 1000),
             'name' => $name = ucfirst($faker->unique()->word()),
-            'slug' => Str::slug($name),
+            'slug' => Str::slug($name . '-' . $faker->unique()->word()),
             'description' => $faker->sentence(),
             'meta_title' => $faker->sentence(3),
             'meta_description' => $faker->paragraph(),

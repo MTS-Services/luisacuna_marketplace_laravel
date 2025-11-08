@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\Admin\TwoFactorController as AdminTwoFactorController;
 use App\Http\Controllers\Auth\Admin\TwoFactorAuthenticatedSessionController as AdminTwoFactorSessionController;
+use App\Http\Controllers\Auth\User\Socialite\AppleAuthController;
 use App\Http\Controllers\Auth\User\Socialite\FacebookController;
 use App\Http\Controllers\Auth\User\Socialite\GoogleAuthController;
 use App\Http\Controllers\Auth\User\TwoFactorAuthenticatedSessionController as UserTwoFactorSessionController;
@@ -132,3 +133,6 @@ Route::get('auth/google/callback', [GoogleAuthController::class, 'callback'])->n
 
 Route::get('auth/facebook', [FacebookController::class, 'redirectToFacebook'])->name('auth.facebook');
 Route::get('auth/facebook/callback', [FacebookController::class, 'handleFacebookCallback']);
+
+Route::get('/auth/apple', [AppleAuthController::class, 'redirect'])->name('apple.login');
+Route::get('/auth/apple/callback', [AppleAuthController::class, 'callback'])->name('apple.callback');
