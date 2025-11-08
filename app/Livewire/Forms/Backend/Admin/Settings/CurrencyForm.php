@@ -18,7 +18,7 @@ class CurrencyForm extends Form
     public string $code = '';
     public string $symbol = '';
     public string $name = '';
-    public ?float $exchange_rate = null;
+    public ?float $exchange_rate = 0.00;
     public int $decimal_places = 2;
     public ?string $status = CurrencyStatus::ACTIVE->value;
     public int $is_default = 0;
@@ -90,7 +90,7 @@ class CurrencyForm extends Form
         $this->code = '';
         $this->symbol = '';
         $this->name = '';
-        $this->exchange_rate = null;
+        $this->exchange_rate = 0.00;
         $this->decimal_places = 2;
         $this->status = CurrencyStatus::ACTIVE->value;
         $this->is_default = false;

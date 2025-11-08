@@ -52,14 +52,12 @@ class Edit extends Component
      */
     public function save()
     {
+        $data = $this->form->validate();
         try {
-
-            $data = $this->form->validate();
             $data['updated_by'] = admin()->id;
             $this->service->updateData($this->data->id, $data);
 
             $this->success('Data updated successfully.');
-
             return $this->redirect(route('admin.as.currency.index'), navigate: true);
         } catch (\Exception $e) {
             $this->error('Failed to update data: ' . $e->getMessage());
