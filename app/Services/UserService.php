@@ -28,6 +28,10 @@ class UserService
     {
         return $this->interface->all();
     }
+    public function getAllSellersData(): Collection
+    {
+        return $this->interface->getSellers();
+    }
 
     public function getPaginateDatas(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {

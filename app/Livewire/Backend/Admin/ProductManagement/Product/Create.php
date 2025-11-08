@@ -41,7 +41,7 @@ class Create extends Component
     }
     public function render()
     {
-        $games = $this->gameService->paginate();
+        $games = $this->gameService->getPaginateDatas();
         $PTypes = $this->PTypeService->getAll();
         $users = $this->userService->getAllSellersData('first_name', 'asc');
 
