@@ -15,20 +15,20 @@ class DeleteAction
     public function execute(int $id, bool $forceDelete = false, int $actionerId): bool
     {
         return DB::transaction(function () use ($id, $forceDelete, $actionerId) {
-            $currency = null;
+            $findData = null;
 
             if ($forceDelete) {
-                $currency = $this->interface->findTrashed($id);
+                $findData = $this->interface->findTrashed($id);
             } else {
-                $currency = $this->interface->find($id);
+                $findData = $this->interface->find($id);
             }
 
-            if (!$currency) {
+            if (!$findData) {
                 throw new \Exception('Currency not found');
             }
 
             // Dispatch event before deletion
-            // event(new CurrencyDeleted($currency));
+            // event(new CurrencyDeleted($findData));
 
             if ($forceDelete) {
                 return $this->interface->forceDelete($id);

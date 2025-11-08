@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Backend\Admin\AdminManagement;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
 use App\Services\AdminService;
 
 class AdminController extends Controller
@@ -12,7 +11,9 @@ class AdminController extends Controller
 
     protected $masterView = 'backend.admin.pages.admin-management.admin.admin';
 
-    public function __construct(protected AdminService $service){}
+    public function __construct(protected AdminService $service)
+    {
+    }
 
     public function index()
     {
@@ -30,15 +31,7 @@ class AdminController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function view(string $id)
     {
         $data = $this->service->findData($id);
         if (!$data) {
@@ -49,9 +42,12 @@ class AdminController extends Controller
         ]);
     }
 
-    public function view(string $id)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
-       $data = $this->service->findData($id);
+        $data = $this->service->findData($id);
         if (!$data) {
             abort(404);
         }

@@ -6,7 +6,7 @@
                 {{ __('Currency Details') }}
             </h2>
             <div class="flex items-center gap-2 w-full sm:w-auto">
-                <x-ui.button href="{{ route('admin.as.currency.edit', $data->id) }}" variant="secondary"
+                <x-ui.button href="{{ route('admin.as.currency.edit', encrypt($data->id)) }}" variant="secondary"
                     class="w-auto py-2!">
                     <flux:icon name="pencil" class="w-4 h-4 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
                     {{ __('Edit') }}

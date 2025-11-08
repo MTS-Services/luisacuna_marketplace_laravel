@@ -18,14 +18,14 @@ class UpdateAction
         return DB::transaction(function () use ($id, $data) {
 
             // Fetch Currency
-            $currency = $this->interface->find($id);
+            $findData = $this->interface->find($id);
 
-            if (!$currency) {
+            if (!$findData) {
                 Log::error('Currency not found', ['currency_id' => $id]);
                 throw new \Exception('Currency not found');
             }
 
-            $oldData = $currency->getAttributes();
+            $oldData = $findData->getAttributes();
 
             // Update Currency
             $updated = $this->interface->update($id, $data);
@@ -36,11 +36,11 @@ class UpdateAction
             }
 
             // Refresh model
-            $currency = $currency->fresh();
+            $findData = $findData->fresh();
 
             // Detect changes
             $changes = [];
-            foreach ($currency->getAttributes() as $key => $value) {
+            foreach ($findData->getAttributes() as $key => $value) {
                 if (isset($oldData[$key]) && $oldData[$key] != $value) {
                     $changes[$key] = [
                         'old' => $oldData[$key],
@@ -49,7 +49,7 @@ class UpdateAction
                 }
             }
 
-            return $currency;
+            return $findData;
         });
     }
 }

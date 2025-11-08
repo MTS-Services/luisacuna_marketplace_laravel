@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\Components\Settings\Language;
+namespace App\Livewire\Backend\Admin\Settings\Language;
 
 use App\Enums\LanguageStatus;
-use App\Services\Admin\LanguageService;
+use App\Services\LanguageService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -15,34 +15,34 @@ class Index extends Component
 
     public $statusFilter = '';
     public $showDeleteModal = false;
-    public $deleteAdminId = null;
+    public $deleteId = null;
     public $bulkAction = '';
     public $showBulkActionModal = false;
 
     protected $listeners = ['languageCreated' => '$refresh', 'languageUpdated' => '$refresh'];
 
-    protected LanguageService $languageService;
+    protected LanguageService $service;
 
-    public function boot(LanguageService $languageService)
+    public function boot(LanguageService $service)
     {
-        $this->languageService = $languageService;
+        $this->service = $service;
     }
 
     public function render()
     {
-        $languages = $this->languageService->getLanguagesPaginated(
+        $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
 
         $columns = [
-          
+
             [
                 'key' => 'name',
                 'label' => 'Name',
                 'sortable' => true
             ],
-                [
+            [
                 'key' => 'native_name',
                 'label' => 'Native Name',
                 'sortable' => true
@@ -56,36 +56,25 @@ class Index extends Component
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
-                'format' => function ($laguage) {
-                    $colors = [
-                        'active' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-                        'inactive' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-                        'suspended' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-                    ];
-                    $color = $colors[$laguage->status->value] ?? 'bg-gray-100 text-gray-800';
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' .
-                        ucfirst($laguage->status->value) .
+                'format' => function ($data) {
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
+                        $data->status->label() .
                         '</span>';
                 }
             ],
             [
                 'key' => 'created_at',
-                'label' => 'Created',
+                'label' => 'Created Date',
                 'sortable' => true,
-                'format' => function ($laguage) {
-                    return '<div class="text-sm">' .
-                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $laguage->created_at->format('M d, Y') . '</div>' .
-                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $laguage->created_at->format('h:i A') . '</div>' .
-                        '</div>';
+                'format' => function ($data) {
+                    return $data->created_at_formatted;
                 }
             ],
             [
                 'key' => 'created_by',
                 'label' => 'Created By',
-                'format' => function ($laguage) {
-                    return $laguage->creater_admin
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $laguage->creater_admin->name . '</span>'
-                        : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
+                'format' => function ($data) {
+                    return $data->creater_admin?->name ?? 'System';
                 }
             ],
         ];
@@ -95,16 +84,20 @@ class Index extends Component
                 'key' => 'id',
                 'label' => 'View',
                 'route' => 'admin.as.language.view',
+                'encrypt' => true
             ],
             [
                 'key' => 'id',
                 'label' => 'Edit',
-                'route' => 'admin.as.language.edit'
+                'route' => 'admin.as.language.edit',
+                'encrypt' => true
+
             ],
             [
                 'key' => 'id',
                 'label' => 'Delete',
-                'method' => 'confirmDelete'
+                'method' => 'confirmDelete',
+                'encrypt' => true
             ],
         ];
 
@@ -114,8 +107,8 @@ class Index extends Component
             ['value' => 'inactive', 'label' => 'Inactive'],
         ];
 
-        return view('livewire.backend.admin.components.settings.language.index', [
-            'languages' => $languages,
+        return view('livewire.backend.admin.settings.language.index', [
+            'datas' => $datas,
             'statuses' => LanguageStatus::options(),
             'columns' => $columns,
             'actions' => $actions,
@@ -123,33 +116,25 @@ class Index extends Component
         ]);
     }
 
-    public function confirmDelete($laguageId): void
+    public function confirmDelete($id): void
     {
-        $this->deleteAdminId = $laguageId;
+        $this->deleteId = $id;
         $this->showDeleteModal = true;
     }
-    
-    public function delete(): void
+
+  public function delete(): void
     {
-        // dd($this->deleteAdminId);
         try {
-            if (!$this->deleteAdminId) {
+            if (!$this->deleteId) {
+                $this->warning('No data selected');
                 return;
             }
+            $this->service->deleteData(decrypt($this->deleteId));
+            $this->reset(['deleteId', 'showDeleteModal']);
 
-            if ($this->deleteAdminId == admin()->id) {
-                $this->error('You cannot delete your own account');
-                return;
-            }
-
-            $this->languageService->deleteLanguage($this->deleteAdminId);
-
-            $this->showDeleteModal = false;
-            $this->deleteAdminId = null;
-
-            $this->success('Language deleted successfully');
+            $this->success('Data deleted successfully');
         } catch (\Exception $e) {
-            $this->error('Failed to delete Admin: ' . $e->getMessage());
+            $this->error('Failed to delete data: ' . $e->getMessage());
         }
     }
 
@@ -159,18 +144,18 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function changeStatus($laguageId, $status): void
+    public function changeStatus($id, $status): void
     {
         try {
             $LanguageStatus = LanguageStatus::from($status);
 
             match ($LanguageStatus) {
-                LanguageStatus::ACTIVE => $this->languageService->activateLanguage($laguageId),
-                LanguageStatus::INACTIVE => $this->languageService->deactivateLanguage($laguageId),
+                LanguageStatus::ACTIVE => $this->service->getActiveData($id),
+                LanguageStatus::INACTIVE => $this->service->getInactiveData($id),
                 default => null,
             };
 
-            $this->success('Language status updated successfully');
+            $this->success('Data status updated successfully');
         } catch (\Exception $e) {
             $this->error('Failed to update status: ' . $e->getMessage());
         }
@@ -179,8 +164,8 @@ class Index extends Component
     public function confirmBulkAction(): void
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
-            $this->warning('Please select Admins and an action');
-            Log::info('No Admins selected or no bulk action selected');
+            $this->warning('Please select Datas and an action');
+            Log::info('No Datas selected or no bulk action selected');
             return;
         }
 
@@ -209,14 +194,14 @@ class Index extends Component
 
     protected function bulkDelete(): void
     {
-        $count = $this->languageService->bulkDeleteLanguages($this->selectedIds);
-        $this->success("{$count} Languages deleted successfully");
+        $count = $this->service->bulkDeleteData($this->selectedIds);
+        $this->success("{$count} Datas deleted successfully");
     }
 
     protected function bulkUpdateStatus(LanguageStatus $status): void
     {
-        $count = $this->languageService->bulkUpdateStatus($this->selectedIds, $status);
-        $this->success("{$count} Languages updated successfully");
+        $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
+        $this->success("{$count} Datas updated successfully");
     }
 
     protected function getFilters(): array
@@ -229,12 +214,13 @@ class Index extends Component
         ];
     }
 
-    protected function getSelectableIds(): array
+      protected function getSelectableIds(): array
     {
-        return $this->languageService->getLanguagesPaginated(
+        $data = $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        )->pluck('id')->toArray();
+        );
+        return array_column($data->items(), 'id');
     }
 
     public function updatedStatusFilter(): void

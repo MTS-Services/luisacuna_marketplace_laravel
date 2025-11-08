@@ -18,7 +18,7 @@ class CurrencyForm extends Form
     public string $code = '';
     public string $symbol = '';
     public string $name = '';
-    public ?float $exchange_rate = null;
+    public ?float $exchange_rate = 0.00;
     public int $decimal_places = 2;
     public ?string $status = CurrencyStatus::ACTIVE->value;
     public int $is_default = 0;
@@ -69,16 +69,16 @@ class CurrencyForm extends Form
     /**
      * Fill the form fields from a Language model
      */
-    public function setData(Currency $currency): void
+    public function setData(Currency $data): void
     {
-        $this->id = $currency->id;
-        $this->code = $currency->code;
-        $this->symbol = $currency->symbol;
-        $this->name = $currency->name;
-        $this->exchange_rate = $currency->exchange_rate;
-        $this->decimal_places = $currency->decimal_places;
-        $this->status = $currency->status->value;
-        $this->is_default = $currency->is_default ? 1 : 0;
+        $this->id = $data->id;
+        $this->code = $data->code;
+        $this->symbol = $data->symbol;
+        $this->name = $data->name;
+        $this->exchange_rate = $data->exchange_rate;
+        $this->decimal_places = $data->decimal_places;
+        $this->status = $data->status->value;
+        $this->is_default = $data->is_default ? 1 : 0;
     }
 
     /**
@@ -90,7 +90,7 @@ class CurrencyForm extends Form
         $this->code = '';
         $this->symbol = '';
         $this->name = '';
-        $this->exchange_rate = null;
+        $this->exchange_rate = 0.00;
         $this->decimal_places = 2;
         $this->status = CurrencyStatus::ACTIVE->value;
         $this->is_default = false;
@@ -106,16 +106,16 @@ class CurrencyForm extends Form
         return !empty($this->id);
     }
 
-    public function fillables(): array
-    {
-        return [
-            'code' => $this->code,
-            'symbol' => $this->symbol,
-            'name' => $this->name,
-            'exchange_rate' => $this->exchange_rate,
-            'decimal_places' => $this->decimal_places,
-            'status' => $this->status,
-            'is_default' => $this->is_default,
-        ];
-    }
+    // public function fillables(): array
+    // {
+    //     return [
+    //         'code' => $this->code,
+    //         'symbol' => $this->symbol,
+    //         'name' => $this->name,
+    //         'exchange_rate' => $this->exchange_rate,
+    //         'decimal_places' => $this->decimal_places,
+    //         'status' => $this->status,
+    //         'is_default' => $this->is_default,
+    //     ];
+    // }
 }

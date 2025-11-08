@@ -6,12 +6,12 @@ use Livewire\Component;
 use App\Enums\ProductStatus;
 use Livewire\WithFileUploads;
 use App\Enums\ProductsVisibility;
-use App\Services\Game\GameService;
-use App\Services\User\UserService;
+use App\Services\GameService;
+use App\Services\UserService;
 use App\Enums\ProductsDeliveryMethod;
-use App\Services\Product\ProductService;
+use App\Services\ProductService;
 use App\Traits\Livewire\WithNotification;
-use App\Services\Product\ProductTypeService;
+use App\Services\ProductTypeService;
 use App\Livewire\Forms\Backend\Admin\ProductManagement\ProducForm;
 use App\Models\Admin;
 
@@ -41,7 +41,7 @@ class Create extends Component
     }
     public function render()
     {
-        $games = $this->gameService->paginate();
+        $games = $this->gameService->getPaginateDatas();
         $PTypes = $this->PTypeService->getAll();
         $users = $this->userService->getAllSellersData('first_name', 'asc');
 
@@ -60,16 +60,16 @@ class Create extends Component
      */
     public function save()
     {
-        
+
         $this->form->validate();
-        
+
         try {
             $data = $this->form->fillables();
             $data['creater_id'] = admin()->id;
             $data['creater_type'] = Admin::class;
 
             $data['images'] = $this->form->images;
-            
+
             $this->service->createData($data);
 
             $this->success('Data created successfully.');

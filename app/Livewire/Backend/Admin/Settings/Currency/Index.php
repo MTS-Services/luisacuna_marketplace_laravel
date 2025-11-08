@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\Components\Settings\Currency;
+namespace App\Livewire\Backend\Admin\Settings\Currency;
 
 use App\Enums\CurrencyStatus;
 use App\Services\CurrencyService;
@@ -121,7 +121,7 @@ class Index extends Component
             ['value' => 'inactive', 'label' => 'Inactive'],
         ];
 
-        return view('livewire.backend.admin.components.settings.currency.index', [
+        return view('livewire.backend.admin.settings.currency.index', [
             'datas' => $datas,
             'statuses' => CurrencyStatus::options(),
             'columns' => $columns,
@@ -208,8 +208,7 @@ class Index extends Component
 
     protected function bulkDelete(): void
     {
-        dd($this->selectedIds);
-      $count =  $this->service->bulkDeleteData($this->selectedIds);
+        $count =  $this->service->bulkDeleteData($this->selectedIds);
         $this->success("{$count} Data deleted successfully");
     }
 
@@ -230,12 +229,14 @@ class Index extends Component
         ];
     }
 
-    protected function getSelectableIds(): array
+   protected function getSelectableIds(): array
     {
-        return $this->service->getPaginatedData(
+        $data = $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        )->pluck('id')->toArray();
+        );
+
+        return array_column($data->items(), 'id');
     }
 
     public function updatedStatusFilter(): void

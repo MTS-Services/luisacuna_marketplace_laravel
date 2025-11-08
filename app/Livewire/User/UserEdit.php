@@ -6,7 +6,7 @@ use App\DTOs\User\UpdateUserDTO;
 use App\Enums\UserStatus;
 use App\Livewire\User\Forms\UserForm;
 use App\Models\User;
-use App\Services\User\UserService;
+use App\Services\UserService;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -31,7 +31,7 @@ class UserEdit extends Component
     {
         $this->userService = $userService;
     }
-   
+
     public function mount(User $user): void
     {
         $this->user = $user;
@@ -39,7 +39,7 @@ class UserEdit extends Component
         $this->userId = $user->id;
         $this->form->setUser($user);
         $this->existingAvatar = $user->avatar_url;
-        
+
         Log::info('UserEdit mounted', [
             'user_id' => $user->id,
             'form_data' => [
@@ -102,7 +102,7 @@ class UserEdit extends Component
             Log::info('DTO created, calling service');
 
             $this->user = $this->userService->updateUser($this->userId, $dto);
-            
+
             Log::info('User updated successfully', ['user_id' => $this->user->id]);
 
             $this->existingAvatar = $this->user->avatar_url;

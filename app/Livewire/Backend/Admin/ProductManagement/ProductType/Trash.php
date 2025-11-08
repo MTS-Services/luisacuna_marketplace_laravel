@@ -7,7 +7,7 @@ use App\Enums\ProductTypeStatus;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
-use App\Services\Product\ProductTypeService;
+use App\Services\ProductTypeService;
 
 class Trash extends Component
 {

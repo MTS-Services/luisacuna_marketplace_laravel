@@ -11,7 +11,7 @@ class CategoryController extends Controller
 {
 
     
-    protected $masterView = 'backend.admin.pages.game-management.category.index';
+    protected $masterView = 'backend.admin.pages.game-management.game-category';
     protected GameCategoryService $service;
     public function __construct(GameCategoryService $service)
     {

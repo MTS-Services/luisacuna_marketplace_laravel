@@ -97,7 +97,7 @@ class Trash extends Component
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
-        return view('livewire.backend.admin.components.game-management.category.trash', [
+        return view('livewire.backend.admin.game-management.category.trash', [
             'datas' => $datas,
             'statuses' => [],
             'columns' =>  $columns,

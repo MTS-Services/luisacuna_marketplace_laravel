@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\Components\Settings\Currency;
+namespace App\Livewire\Backend\Admin\Settings\Currency;
 
 use App\Enums\CurrencyStatus;
 use App\Livewire\Forms\Backend\Admin\Settings\CurrencyForm;
@@ -17,15 +17,15 @@ class Edit extends Component
     public CurrencyForm $form;
 
     #[Locked]
-    public Currency $currency;
-    protected CurrencyService $currencyService;
+    public Currency $data;
+    protected CurrencyService $service;
 
     /**
      * Inject the currencyService via the boot method.
      */
-    public function boot(CurrencyService $currencyService): void
+    public function boot(CurrencyService $service): void
     {
-        $this->currencyService = $currencyService;
+        $this->service = $service;
     }
 
     /**
@@ -33,8 +33,8 @@ class Edit extends Component
      */
     public function mount(Currency $data): void
     {
-        $this->currency = $data;
-        $this->form->setData($this->currency);
+        $this->data = $data;
+        $this->form->setData($data);
     }
 
     /**
@@ -42,7 +42,7 @@ class Edit extends Component
      */
     public function render()
     {
-        return view('livewire.backend.admin.components.settings.currency.edit', [
+        return view('livewire.backend.admin.settings.currency.edit', [
             'statuses' => CurrencyStatus::options(),
         ]);
     }
@@ -52,15 +52,12 @@ class Edit extends Component
      */
     public function save()
     {
-        $this->form->validate();
+        $data = $this->form->validate();
         try {
-            $data = $this->form->fillables();
             $data['updated_by'] = admin()->id;
-            $updated = $this->currencyService->updateData($this->currency->id, $data);
+            $this->service->updateData($this->data->id, $data);
 
-            $this->dispatch('CurrencyUpdated');
             $this->success('Data updated successfully.');
-
             return $this->redirect(route('admin.as.currency.index'), navigate: true);
         } catch (\Exception $e) {
             $this->error('Failed to update data: ' . $e->getMessage());

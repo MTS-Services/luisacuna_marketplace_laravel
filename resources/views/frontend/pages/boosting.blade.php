@@ -3,15 +3,15 @@
     <x-slot name="pageSlug">{{__('boosting')}}</x-slot>
     @switch(Route::currentRouteName())
         @case('boost.seller-list')
-            <livewire:frontend.components.boostings.boosting-seller-list />
+            <livewire:frontend.boostings.boosting-seller-list />
         @break
 
         @case('boost.buy-now')
-            <livewire:frontend.components.boostings.boosting-buy-now />
+            <livewire:frontend.boostings.boosting-buy-now />
         @break
 
         @case('boost.checkout')
-            <livewire:frontend.components.boostings.boosting-checkout />
+            <livewire:frontend.boostings.boosting-checkout />
         @break
 
         @case('boost.subscribe')
@@ -19,6 +19,6 @@
         @break
 
         @default
-            <livewire:frontend.components.boostings.boosting />
+            <livewire:frontend.boostings.boosting />
     @endswitch
 </x-frontend::app>

@@ -8,12 +8,12 @@ use App\Enums\ProductStatus;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Locked;
 use App\Enums\ProductsVisibility;
-use App\Services\Game\GameService;
-use App\Services\User\UserService;
+use App\Services\GameService;
+use App\Services\UserService;
 use App\Enums\ProductsDeliveryMethod;
-use App\Services\Product\ProductService;
+use App\Services\ProductService;
 use App\Traits\Livewire\WithNotification;
-use App\Services\Product\ProductTypeService;
+use App\Services\ProductTypeService;
 use App\Livewire\Forms\Backend\Admin\ProductManagement\ProducForm;
 
 class Edit extends Component
@@ -51,7 +51,7 @@ class Edit extends Component
     }
     public function render()
     {
-        $games = $this->gameService->paginate();
+        $games = $this->gameService->getPaginateDatas();
         $PTypes = $this->PTypeService->getAll();
         $users = $this->userService->getAllSellersData('first_name', 'asc');
 

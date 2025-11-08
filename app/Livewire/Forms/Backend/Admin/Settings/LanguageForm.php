@@ -5,34 +5,26 @@ namespace App\Livewire\Forms\Backend\Admin\Settings;
 use App\Enums\LanguageDirection;
 use App\Enums\LanguageStatus;
 use App\Models\Language;
-use Livewire\Attributes\Validate;
+use Livewire\Attributes\Locked;
 use Livewire\Form;
 
 class LanguageForm extends Form
 {
-    public ?int $language_id = null; // Track the language being edited
-    
-     #[Validate('required|string')]
+     #[Locked]
+    public ?int $id = null;
     public string $locale = '';
-    #[Validate('required|string|max:10')]
     public string $country_code = '';
 
-    #[Validate('required|string|max:50')]
     public string $name = '';
 
-    #[Validate('nullable|string|max:255')]
     public string $native_name = '';
 
-    #[Validate('nullable|string|max:255')]
     public string $flag_icon = '';
 
-    #[Validate('required|string')]
     public string $status = '';
 
-    #[Validate('boolean')]
     public int $is_default = 0;
 
-     #[Validate('required|string')]
     public string $direction = '';
 
     /**
@@ -41,15 +33,15 @@ class LanguageForm extends Form
     public function rules(): array
     {
         $localeRule = $this->isUpdating()
-            ? 'required|string|max:10|unique:languages,locale,' . $this->language_id
+            ? 'required|string|max:10|unique:languages,locale,' . $this->id
             : 'required|string|max:10|unique:languages,locale';
 
         $nameRule = $this->isUpdating()
-            ? 'required|string|max:50|unique:languages,name,' . $this->language_id
+            ? 'required|string|max:50|unique:languages,name,' . $this->id
             : 'required|string|max:50|unique:languages,name';
 
         $countryCodeRule = $this->isUpdating()
-            ? 'required|string|size:2|unique:languages,country_code,' . $this->language_id
+            ? 'required|string|size:2|unique:languages,country_code,' . $this->id
             : 'required|string|size:2|unique:languages,country_code';
 
         return [
@@ -85,17 +77,17 @@ class LanguageForm extends Form
     /**
      * Fill the form fields from a Language model
      */
-    public function setLanguage(Language $language): void
+    public function setData(Language $data): void
     {
-        $this->language_id = $language->id;
-        $this->locale = $language->locale;
-        $this->name = $language->name;
-        $this->native_name = $language->native_name ?? '';
-        $this->flag_icon = $language->flag_icon ?? '';
-        $this->status = $language->status->value;
-        $this->direction = $language->direction->value;
-        $this->is_default = $language->is_default;
-        $this->country_code = $language->country_code;
+        $this->id = $data->id;
+        $this->locale = $data->locale;
+        $this->name = $data->name;
+        $this->native_name = $data->native_name ?? '';
+        $this->flag_icon = $data->flag_icon ?? '';
+        $this->status = $data->status->value;
+        $this->direction = $data->direction->value;
+        $this->is_default = $data->is_default;
+        $this->country_code = $data->country_code;
     }
 
     /**
@@ -103,7 +95,7 @@ class LanguageForm extends Form
      */
     public function reset(...$properties): void
     {
-        $this->language_id = null;
+        $this->id = null;
         $this->locale = '';
         $this->name = '';
         $this->native_name = '';

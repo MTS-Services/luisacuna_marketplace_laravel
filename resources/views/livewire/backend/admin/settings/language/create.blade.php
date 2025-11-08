@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Language Create') }}</h2>
             <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.as.language.index') }}">
+                <x-ui.button href="{{ route('admin.as.language.index') }}" class="w-auto! py-2!">
                     <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
                     {{ __('Back') }}
                 </x-ui.button>
@@ -44,7 +44,7 @@
 
                 <!-- Country Code with Flag Preview -->
                 <div>
-                    <x-ui.label for="country_code" :value="__('Country Code')" required />
+                    <x-ui.label for="country_code" :value="__('Country Code')"  />
                     <div class="flex gap-2">
                         <x-ui.input id="country_code" type="text" class="mt-1 block w-full lowercase"
                             wire:model.live.debounce.300ms="form.country_code" placeholder="us, es, fr, bd"
@@ -102,16 +102,22 @@
                 </div>
             </div>
 
-            <!-- Form Actions -->
-            <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button href="{{ route('admin.as.language.index') }}" type="danger">
-                    <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
-                    {{ __('Cancel') }}
+           
+             <div class="flex items-center justify-end gap-4 mt-6">
+                <x-ui.button wire:click="resetForm" variant="tertiary" class="w-auto! py-2!">
+                    <flux:icon name="x-circle"
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
+                    <span wire:loading.remove wire:target="resetForm"
+                        class="text-text-btn-primary group-hover:text-text-btn-tertiary">{{ __('Reset') }}</span>
+                    <span wire:loading wire:target="resetForm"
+                        class="text-text-btn-primary group-hover:text-text-btn-tertiary">{{ __('Reseting...') }}</span>
                 </x-ui.button>
 
-                <x-ui.button type="accent" button>
-                    <span wire:loading.remove wire:target="save" class="text-white">{{ __('Create Language') }}</span>
-                    <span wire:loading wire:target="save" class="text-white">{{ __('Saving...') }}</span>
+                <x-ui.button class="w-auto! py-2!" type="submit">
+                    <span wire:loading.remove wire:target="save"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Create ') }}</span>
+                    <span wire:loading wire:target="save"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Saving...') }}</span>
                 </x-ui.button>
             </div>
         </form>

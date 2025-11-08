@@ -58,7 +58,7 @@ class Edit extends Component
                 'name' => 'Console'
             ]
         ];
-        return view('livewire.backend.admin.components.game-management.game.edit', [
+        return view('livewire.backend.admin.game-management.game.edit', [
 
             'statuses'   => GameStatus::options(),
             'categories' => $this->categories(),

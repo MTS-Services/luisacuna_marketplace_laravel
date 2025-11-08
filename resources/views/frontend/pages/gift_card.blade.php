@@ -4,14 +4,14 @@
 
     @switch(Route::currentRouteName())
         @case('gift-card.seller-list')
-            <livewire:frontend.components.gift-cards.gift-card-seller-list />
+            <livewire:frontend.gift-cards.gift-card-seller-list />
         @break
 
         @case('game.checkout')
-            <livewire:frontend.components.gift-cards.check-out />
+            <livewire:frontend.gift-cards.check-out />
         @break
 
         @default
-            <livewire:frontend.components.gift-cards.gift-card />
+            <livewire:frontend.gift-cards.gift-card />
     @endswitch
 </x-frontend::app>

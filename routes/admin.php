@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Admin\AuditingController;
 use App\Http\Controllers\Backend\Admin\Settings\CurrencyController;
@@ -20,6 +21,13 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
 
     Route::group(['prefix' => 'admin-management', 'as' => 'am.'], function () {
         Route::controller(AdminController::class)->name('admin.')->prefix('admin')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/view/{id}', 'view')->name('view');
+            Route::get('/trash', 'trash')->name('trash');
+        });
+        Route::controller(RoleController::class)->name('role.')->prefix('role')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
@@ -48,7 +56,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/trash', 'trash')->name('trash');
         });
 
-        
+
     });
     Route::group(['prefix' => 'user-management', 'as' => 'um.'], function () {
         Route::controller(UserController::class)->name('user.')->prefix('user')->group(function () {
