@@ -285,9 +285,15 @@
     "All Requests": "All Requests",
     "Category" : "Category",
     "Available Offers": "Available Offers",
-    "Request creation date": "Request creation date"
+    "Request creation date": "Request creation date",
+    "Date created": "Date created",
+    "Ordered ID": "Ordered ID",
+    "Description": "Description",
+    "Unread": "Unread",
+    "Read": "Read"
 
-     
+
+
 
 
 

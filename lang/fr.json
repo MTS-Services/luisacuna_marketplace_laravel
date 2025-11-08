@@ -250,7 +250,13 @@
     "All Requests": "Toutes les demandes",
     "Category" : "Catégories",
     "Available Offers": "Offres disponibles",
-    "Request creation date": "Date de création de la demande"
+    "Request creation date": "Date de création de la demande",
+    "Date created": "Date de création",
+    "Ordered ID": "Carte d'identité commandée",
+    "Unread": "Non lu",
+    "Read": "Lire"
+
+
 }
 
 
