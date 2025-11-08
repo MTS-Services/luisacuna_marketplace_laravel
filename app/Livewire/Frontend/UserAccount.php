@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Frontend\Components;
+namespace App\Livewire\Frontend;
 
 use Livewire\Component;
 
@@ -8,6 +8,6 @@ class UserAccount extends Component
 {
     public function render()
     {
-        return view('livewire.frontend.components.user-account');
+        return view('livewire.frontend.user-account');
     }
 }

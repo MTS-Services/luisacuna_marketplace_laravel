@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Livewire\Frontend\Components\GiftCards;
+namespace App\Livewire\Frontend;
 
 use Livewire\Component;
 
-class GiftCardSellerList extends Component
+class Items extends Component
 {
+
     public $activeTab = 'giftCard';
 
     public function switchTab($tab)
@@ -14,6 +15,6 @@ class GiftCardSellerList extends Component
     }
     public function render()
     {
-        return view('livewire.frontend.components.gift-cards.gift-card-seller-list');
+        return view('livewire.frontend.items');
     }
 }

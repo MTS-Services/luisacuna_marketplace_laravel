@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Frontend\Components;
+namespace App\Livewire\Frontend;
 
 use Livewire\Component;
 
@@ -29,6 +29,6 @@ class Home extends Component
 
     public function render()
     {
-        return view('livewire.frontend.components.home');
+        return view('livewire.frontend.home');
     }
 }
