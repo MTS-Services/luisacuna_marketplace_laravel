@@ -122,27 +122,19 @@ class Index extends Component
         $this->showDeleteModal = true;
     }
 
-    public function delete(): void
+  public function delete(): void
     {
-        // dd($this->deleteId);
         try {
             if (!$this->deleteId) {
+                $this->warning('No data selected');
                 return;
             }
-
-            if ($this->deleteId == admin()->id) {
-                $this->error('You cannot delete your own account');
-                return;
-            }
-
-            $this->service->deleteData($this->deleteId);
-
-            $this->showDeleteModal = false;
-            $this->deleteId = null;
+            $this->service->deleteData(decrypt($this->deleteId));
+            $this->reset(['deleteId', 'showDeleteModal']);
 
             $this->success('Data deleted successfully');
         } catch (\Exception $e) {
-            $this->error('Failed to delete Admin: ' . $e->getMessage());
+            $this->error('Failed to delete data: ' . $e->getMessage());
         }
     }
 

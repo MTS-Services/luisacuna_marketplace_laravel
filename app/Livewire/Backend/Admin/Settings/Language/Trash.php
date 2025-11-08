@@ -15,7 +15,7 @@ class Trash extends Component
 
     public $statusFilter = '';
     public $showDeleteModal = false;
-    public $deleteLanguageId = null;
+    public $selectedId = null;
     public $bulkAction = '';
     public $showBulkActionModal = false;
 
@@ -66,7 +66,7 @@ class Trash extends Component
                         '</span>';
                 }
             ],
-             [
+            [
                 'key' => 'deleted_at',
                 'label' => 'Deleted Date',
                 'sortable' => true,
@@ -88,11 +88,13 @@ class Trash extends Component
                 'key' => 'id',
                 'label' => 'Restore',
                 'method' => 'restore',
+                'encrypt' => true
             ],
             [
                 'key' => 'id',
                 'label' => 'Permanently Delete',
-                'method' => 'confirmDelete'
+                'method' => 'confirmDelete',
+                'encrypt' => true
             ],
         ];
 
@@ -112,35 +114,41 @@ class Trash extends Component
         ]);
     }
 
-    public function confirmDelete($languageId): void
+    public function confirmDelete($encryptedId): void
     {
-        $this->deleteLanguageId = $languageId;
+        if (!$encryptedId) {
+            $this->error('No Currency selected');
+            $this->resetPage();
+            return;
+        }
+        $this->selectedId = $encryptedId;
         $this->showDeleteModal = true;
     }
 
     public function forceDelete(): void
     {
         try {
-            $this->service->deleteLanguage($this->deleteLanguageId, forceDelete: true);
+            $this->service->deleteData(decrypt($this->selectedId), forceDelete: true);
             $this->showDeleteModal = false;
-            $this->deleteLanguageId = null;
+            $this->selectedId = null;
             $this->resetPage();
-
-            $this->success('Language permanently deleted successfully');
+            $this->success('Currency permanently deleted successfully');
         } catch (\Throwable $e) {
-            $this->error('Failed to delete language: ' . $e->getMessage());
+            $this->error('Failed to delete currency.');
+            Log::error('Failed to delete currency: ' . $e->getMessage());
             throw $e;
         }
     }
 
-    public function restore($languageId): void
+    public function restore($encryptedId): void
     {
         try {
-            $this->service->restoreLanguage($languageId);
+            $this->service->restoreData(decrypt($encryptedId));
 
-            $this->success('Language restored successfully');
+            $this->success('Currency restored successfully');
         } catch (\Throwable $e) {
-            $this->error('Failed to restore language: ' . $e->getMessage());
+            $this->error('Failed to restore currency.');
+            Log::error('Failed to restore currency: ' . $e->getMessage());
             throw $e;
         }
     }
@@ -151,28 +159,10 @@ class Trash extends Component
         $this->resetPage();
     }
 
-    public function changeStatus($languageId, $status): void
-    {
-        try {
-            $languageStatus = LanguageStatus::from($status);
-
-            match ($languageStatus) {
-                LanguageStatus::ACTIVE => $this->service->activateLanguage($languageId),
-                LanguageStatus::INACTIVE => $this->service->deactivateLanguage($languageId),
-                default => null,
-            };
-
-            $this->success('Language status updated successfully');
-        } catch (\Exception $e) {
-            $this->error('Failed to update status: ' . $e->getMessage());
-        }
-    }
-
     public function confirmBulkAction(): void
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
-            $this->warning('Please select languages and an action');
-            Log::info('No languages selected or no bulk action selected');
+            $this->warning('Please select currency and an action');
             return;
         }
 
@@ -185,10 +175,8 @@ class Trash extends Component
 
         try {
             match ($this->bulkAction) {
-                'forceDelete' => $this->bulkForceDeleteLanguages(),
-                'bulkRestore' => $this->bulkRestoreLanguages(),
-                'activate' => $this->bulkUpdateStatus(LanguageStatus::ACTIVE),
-                'deactivate' => $this->bulkUpdateStatus(LanguageStatus::INACTIVE),
+                'forceDelete' => $this->bulkForceDelete(),
+                'bulkRestore' => $this->bulkRestore(),
                 default => null,
             };
 
@@ -196,26 +184,24 @@ class Trash extends Component
             $this->selectAll = false;
             $this->bulkAction = '';
         } catch (\Exception $e) {
-            $this->error('Bulk action failed: ' . $e->getMessage());
+            $this->error('Failed to execute bulk action.');
+            Log::error('Failed to execute bulk action: ' . $e->getMessage());
+            throw $e;
         }
     }
 
-    protected function bulkUpdateStatus(LanguageStatus $status): void
+    protected function bulkRestore(): void
     {
-        $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
-        $this->success("{$count} languages updated successfully");
+        $count = count($this->selectedIds);
+        $this->service->bulkRestoreData($this->selectedIds);
+        $this->success("{$count} Currencies restored successfully");
     }
 
-    protected function bulkRestoreLanguages(): void
+    protected function bulkForceDelete(): void
     {
-        $count = $this->service->bulkRestoreLanguages($this->selectedIds);
-        $this->success("{$count} languages restored successfully");
-    }
-
-    protected function bulkForceDeleteLanguages(): void
-    {
-        $count = $this->service->bulkForceDeleteLanguages($this->selectedIds);
-        $this->success("{$count} languages permanently deleted successfully");
+        $count = count($this->selectedIds);
+        $this->service->bulkForceDeleteData($this->selectedIds);
+        $this->success("{$count} Currencies permanently deleted successfully");
     }
 
     protected function getFilters(): array
@@ -230,7 +216,7 @@ class Trash extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->service->getTrashedLanguagesPaginated(
+        return $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();
