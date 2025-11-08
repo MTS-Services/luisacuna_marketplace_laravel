@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\Components\Settings\Currency;
+namespace App\Livewire\Backend\Admin\Settings\Currency;
 
 use App\Enums\CurrencyStatus;
 use App\Services\CurrencyService;
@@ -113,7 +113,7 @@ class Trash extends Component
             ['value' => 'forceDelete', 'label' => 'Permanent Delete'],
         ];
 
-        return view('livewire.backend.admin.components.settings.currency.trash', [
+        return view('livewire.backend.admin.settings.currency.trash', [
             'datas' => $datas,
             'statuses' => CurrencyStatus::options(),
             'columns' => $columns,

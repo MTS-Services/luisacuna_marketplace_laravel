@@ -1,38 +1,38 @@
 <?php
 
-namespace App\Actions\Currency;
+namespace App\Actions\Language;
 
-use App\Models\Currency;
-use App\Repositories\Contracts\CurrencyRepositoryInterface;
+use App\Models\Language;
+use App\Repositories\Contracts\LanguageRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class UpdateAction
 {
     public function __construct(
-        protected CurrencyRepositoryInterface $interface
+        protected LanguageRepositoryInterface $interface
     ) {}
 
-    public function execute(int $id, array $data): Currency
+    public function execute(int $id, array $data): Language
     {
         return DB::transaction(function () use ($id, $data) {
 
-            // Fetch Currency
+            // Fetch Language
             $findData = $this->interface->find($id);
 
             if (!$findData) {
-                Log::error('Currency not found', ['currency_id' => $id]);
-                throw new \Exception('Currency not found');
+                Log::error('Data not found', ['language_id' => $id]);
+                throw new \Exception('Language not found');
             }
 
             $oldData = $findData->getAttributes();
 
-            // Update Currency
+            // Update Language
             $updated = $this->interface->update($id, $data);
 
             if (!$updated) {
-                Log::error('Failed to update Currency', ['currency_id' => $id]);
-                throw new \Exception('Failed to update Currency');
+                Log::error('Failed to update Data', ['language_id' => $id]);
+                throw new \Exception('Failed to update Data');
             }
 
             // Refresh model

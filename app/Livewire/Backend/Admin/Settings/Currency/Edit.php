@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\Components\Settings\Currency;
+namespace App\Livewire\Backend\Admin\Settings\Currency;
 
 use App\Enums\CurrencyStatus;
 use App\Livewire\Forms\Backend\Admin\Settings\CurrencyForm;
@@ -18,14 +18,14 @@ class Edit extends Component
 
     #[Locked]
     public Currency $currency;
-    protected CurrencyService $currencyService;
+    protected CurrencyService $service;
 
     /**
      * Inject the currencyService via the boot method.
      */
-    public function boot(CurrencyService $currencyService): void
+    public function boot(CurrencyService $service): void
     {
-        $this->currencyService = $currencyService;
+        $this->service = $service;
     }
 
     /**
@@ -42,7 +42,7 @@ class Edit extends Component
      */
     public function render()
     {
-        return view('livewire.backend.admin.components.settings.currency.edit', [
+        return view('livewire.backend.admin.settings.currency.edit', [
             'statuses' => CurrencyStatus::options(),
         ]);
     }
@@ -56,7 +56,7 @@ class Edit extends Component
         try {
             $data = $this->form->fillables();
             $data['updated_by'] = admin()->id;
-            $updated = $this->currencyService->updateData($this->currency->id, $data);
+            $updated = $this->service->updateData($this->currency->id, $data);
 
             $this->dispatch('CurrencyUpdated');
             $this->success('Data updated successfully.');

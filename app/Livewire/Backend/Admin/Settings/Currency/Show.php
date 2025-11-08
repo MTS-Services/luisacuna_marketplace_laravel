@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\Components\Settings\Currency;
+namespace App\Livewire\Backend\Admin\Settings\Currency;
 
 use App\Models\Currency;
 use Livewire\Component;

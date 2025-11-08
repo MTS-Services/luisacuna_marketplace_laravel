@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\Components\Settings\Language;
+namespace App\Livewire\Backend\Admin\Settings\Language;
 
 use App\DTOs\Language\UpdateLanguageDTO;
 use App\Enums\LanguageDirections;
@@ -42,7 +42,7 @@ class Edit extends Component
      */
     public function render()
     {
-        return view('livewire.backend.admin.components.settings.language.edit', [
+        return view('livewire.backend.admin.settings.language.edit', [
             'statuses' => LanguageStatus::options(),
             'directions' => LanguageDirections::options(),
         ]);
@@ -80,7 +80,6 @@ class Edit extends Component
             $this->success('Language updated successfully.');
 
             return $this->redirect(route('admin.as.language.index'), navigate: true);
-
         } catch (\Exception $e) {
             $this->error('Failed to update language: ' . $e->getMessage());
         }

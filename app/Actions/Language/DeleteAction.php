@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Actions\Currency;
+namespace App\Actions\Language;
 
 
-use App\Repositories\Contracts\CurrencyRepositoryInterface;
+use App\Repositories\Contracts\LanguageRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 
 class DeleteAction
 {
     public function __construct(
-        protected CurrencyRepositoryInterface $interface
+        protected LanguageRepositoryInterface $interface
     ) {}
 
     public function execute(int $id, bool $forceDelete = false, int $actionerId): bool
@@ -24,11 +24,11 @@ class DeleteAction
             }
 
             if (!$findData) {
-                throw new \Exception('Currency not found');
+                throw new \Exception('Data not found');
             }
 
             // Dispatch event before deletion
-            // event(new CurrencyDeleted($findData));
+            // event(new LanguageDeleted($findData));
 
             if ($forceDelete) {
                 return $this->interface->forceDelete($id);

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\Components\Settings\Language;
+namespace App\Livewire\Backend\Admin\Settings\Language;
 
 use App\Enums\LanguageStatus;
-use App\Services\Admin\LanguageService;
+use App\Services\LanguageService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -30,19 +30,19 @@ class Index extends Component
 
     public function render()
     {
-        $languages = $this->languageService->getLanguagesPaginated(
+        $languages = $this->languageService->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
 
         $columns = [
-          
+
             [
                 'key' => 'name',
                 'label' => 'Name',
                 'sortable' => true
             ],
-                [
+            [
                 'key' => 'native_name',
                 'label' => 'Native Name',
                 'sortable' => true
@@ -114,7 +114,7 @@ class Index extends Component
             ['value' => 'inactive', 'label' => 'Inactive'],
         ];
 
-        return view('livewire.backend.admin.components.settings.language.index', [
+        return view('livewire.backend.admin.settings.language.index', [
             'languages' => $languages,
             'statuses' => LanguageStatus::options(),
             'columns' => $columns,
@@ -128,7 +128,7 @@ class Index extends Component
         $this->deleteAdminId = $laguageId;
         $this->showDeleteModal = true;
     }
-    
+
     public function delete(): void
     {
         // dd($this->deleteAdminId);
@@ -142,7 +142,7 @@ class Index extends Component
                 return;
             }
 
-            $this->languageService->deleteLanguage($this->deleteAdminId);
+            $this->languageService->deleteData($this->deleteAdminId);
 
             $this->showDeleteModal = false;
             $this->deleteAdminId = null;
@@ -165,8 +165,8 @@ class Index extends Component
             $LanguageStatus = LanguageStatus::from($status);
 
             match ($LanguageStatus) {
-                LanguageStatus::ACTIVE => $this->languageService->activateLanguage($laguageId),
-                LanguageStatus::INACTIVE => $this->languageService->deactivateLanguage($laguageId),
+                LanguageStatus::ACTIVE => $this->languageService->getActiveData($laguageId),
+                LanguageStatus::INACTIVE => $this->languageService->getInactiveData($laguageId),
                 default => null,
             };
 
@@ -209,7 +209,7 @@ class Index extends Component
 
     protected function bulkDelete(): void
     {
-        $count = $this->languageService->bulkDeleteLanguages($this->selectedIds);
+        $count = $this->languageService->bulkDeleteData($this->selectedIds);
         $this->success("{$count} Languages deleted successfully");
     }
 
@@ -231,7 +231,7 @@ class Index extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->languageService->getLanguagesPaginated(
+        return $this->languageService->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

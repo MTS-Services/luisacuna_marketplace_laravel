@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\Components\Settings\Language;
+namespace App\Livewire\Backend\Admin\Settings\Language;
 
 use App\Enums\LanguageStatus;
 use App\Services\Admin\LanguageService;
@@ -46,12 +46,12 @@ class Trash extends Component
                 'label' => 'Native Name',
                 'sortable' => true,
                 'format' => function ($language) {
-                    return $language->native_name 
+                    return $language->native_name
                         ? '<span class="text-sm text-gray-900 dark:text-gray-100">' . $language->native_name . '</span>'
                         : '<span class="text-sm text-gray-400 dark:text-gray-500 italic">N/A</span>';
                 }
             ],
-             [
+            [
                 'key' => 'locale',
                 'label' => 'Locale',
                 'sortable' => true
@@ -113,7 +113,7 @@ class Trash extends Component
             ['value' => 'deactivate', 'label' => 'Deactivate'],
         ];
 
-        return view('livewire.backend.admin.components.settings.language.trash', [
+        return view('livewire.backend.admin.settings.language.trash', [
             'languages' => $languages,
             'statuses' => LanguageStatus::options(),
             'columns' => $columns,
@@ -147,7 +147,7 @@ class Trash extends Component
     {
         try {
             $this->languageService->restoreLanguage($languageId);
-            
+
             $this->success('Language restored successfully');
         } catch (\Throwable $e) {
             $this->error('Failed to restore language: ' . $e->getMessage());

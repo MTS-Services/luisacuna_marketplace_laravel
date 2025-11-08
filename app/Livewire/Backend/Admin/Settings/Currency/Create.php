@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\Components\Settings\Currency;
+namespace App\Livewire\Backend\Admin\Settings\Currency;
 
 use App\DTOs\Currency\CreateDTO;
 use App\Enums\CurrencyStatus;
@@ -16,14 +16,14 @@ class Create extends Component
 
     public CurrencyForm $form;
 
-    protected CurrencyService $currencyService;
+    protected CurrencyService $service;
 
     /**
      * Inject the CurrencyService via the boot method.
      */
-    public function boot(CurrencyService $currencyService): void
+    public function boot(CurrencyService $service): void
     {
-        $this->currencyService = $currencyService;
+        $this->service = $service;
     }
 
     /**
@@ -39,7 +39,7 @@ class Create extends Component
      */
     public function render()
     {
-        return view('livewire.backend.admin.components.settings.currency.create', [
+        return view('livewire.backend.admin.settings.currency.create', [
             'statuses' => CurrencyStatus::options(),
         ]);
     }
@@ -49,11 +49,11 @@ class Create extends Component
      */
     public function save()
     {
-        $this->form->validate();
+
         try {
-            $data = $this->form->fillables();
+            $data = $this->form->validate();
             $data['created_by'] = admin()->id;
-            $this->currencyService->createData($data);
+            $this->service->createData($data);
 
             // $this->dispatch('currencyCreated');
             $this->success('Data created successfully.');

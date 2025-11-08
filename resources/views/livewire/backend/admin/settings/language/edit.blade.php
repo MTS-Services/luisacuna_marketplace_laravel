@@ -110,7 +110,7 @@
                 </x-ui.button>
 
                 <x-ui.button type="accent" button>
-                    <span wire:loading.remove wire:target="save" class="text-white">{{ __('Update Language') }}</span>
+                    <span wire:loading.remove wire:target="save" class="text-white">{{ __('Update ') }}</span>
                     <span wire:loading wire:target="save" class="text-white">{{ __('Updating...') }}</span>
                 </x-ui.button>
             </div>
