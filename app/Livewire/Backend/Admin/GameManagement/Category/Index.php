@@ -116,7 +116,7 @@ class Index extends Component
         ];
 
 
-        return view('livewire.backend.admin.components.game-management.category.index', [
+        return view('livewire.backend.admin.game-management.category.index', [
             'categories' => $datas,
             'statuses' => [],
             'columns' =>  $columns,

@@ -105,7 +105,7 @@ class Trash extends Component
 
 
         return view(
-            'livewire.backend.admin.components.game-management.game.trash',
+            'livewire.backend.admin.game-management.game.trash',
             [
                 'games' => $games,
                 'columns' => $columns,
