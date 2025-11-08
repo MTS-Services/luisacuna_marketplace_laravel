@@ -125,7 +125,7 @@
                                 <img src="{{ asset('assets/images/game_icon/' . $item['icon']) }}"
                                     alt="{{ $item['name'] }}" class="w-full h-full object-contain">
                             </div>
-                            <p class="text-base font-normal text-text-white">{{ $item['name'] }}</p>
+                            <p class="text-base lg:text-lg font-normal text-text-white">{{ $item['name'] }}</p>
                         </a>
                     @endforeach
 
