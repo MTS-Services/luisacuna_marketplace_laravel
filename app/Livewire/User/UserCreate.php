@@ -44,7 +44,7 @@ class UserCreate extends Component
         $this->form->validate();
 
         try {
-            $dto = CreateUserDTO::fromArray([
+            $data = CreateUserDTO::fromArray([
                 'name' => $this->form->name,
                 'email' => $this->form->email,
                 'password' => $this->form->password,
@@ -54,7 +54,7 @@ class UserCreate extends Component
                 'avatar' => $this->form->avatar,
             ]);
 
-            $user = $this->userService->createUser($dto);
+            $user = $this->userService->createData($data);
 
             $this->dispatch('userCreated');
             $this->success('User created successfully');

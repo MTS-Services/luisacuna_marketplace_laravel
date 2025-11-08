@@ -8,7 +8,7 @@ use App\Enums\ProductStatus;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Locked;
 use App\Enums\ProductsVisibility;
-use App\Services\Game\GameService;
+use App\Services\GameService;
 use App\Services\UserService;
 use App\Enums\ProductsDeliveryMethod;
 use App\Services\ProductService;
