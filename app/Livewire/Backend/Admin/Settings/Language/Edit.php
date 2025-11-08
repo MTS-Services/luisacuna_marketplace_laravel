@@ -79,8 +79,9 @@ class Edit extends Component
     /**
      * Cancel editing and redirect back to index.
      */
-    public function cancel(): void
+       public function resetForm(): void
     {
-        $this->redirect(route('admin.as.language.index'), navigate: true);
+        $this->form->setData($this->data);
+        $this->form->resetValidation();
     }
 }

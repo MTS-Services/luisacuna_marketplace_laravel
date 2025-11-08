@@ -21,8 +21,9 @@ class LanguageSeeder extends Seeder
                 'name'         => 'English',
                 'native_name'  => 'English',
                 'status'       => LanguageStatus::ACTIVE->value,
-                'is_active'    => true,
+                'is_default'    => true,
                 'direction'    => LanguageDirection::LTR->value,
+                'country_code' => 'en',
                 'flag_icon'    => 'us.svg',
             ],
             [
@@ -31,8 +32,9 @@ class LanguageSeeder extends Seeder
                 'name'         => 'Spanish',
                 'native_name'  => 'Español',
                 'status'       => LanguageStatus::ACTIVE->value,
-                'is_active'    => false,
+                'is_default'    => false,
                 'direction'    => LanguageDirection::LTR->value,
+                'country_code' => 'es',
                 'flag_icon'    => 'us.svg',
             ],
             [
@@ -41,8 +43,9 @@ class LanguageSeeder extends Seeder
                 'name'         => 'Bangla',
                 'native_name'  => 'বাংলা',
                 'status'       => LanguageStatus::ACTIVE->value,
-                'is_active'    => false,
+                'is_default'    => false,
                 'direction'    => LanguageDirection::LTR->value,
+                'country_code' => 'bn',
                 'flag_icon'    => 'us.svg',
             ],
         ];

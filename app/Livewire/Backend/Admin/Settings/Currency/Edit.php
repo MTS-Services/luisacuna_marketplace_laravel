@@ -17,7 +17,7 @@ class Edit extends Component
     public CurrencyForm $form;
 
     #[Locked]
-    public Currency $currency;
+    public Currency $data;
     protected CurrencyService $service;
 
     /**
@@ -33,7 +33,7 @@ class Edit extends Component
      */
     public function mount(Currency $data): void
     {
-        $this->currency = $data;
+        $this->data = $data;
         $this->form->setData($data);
     }
 
@@ -56,7 +56,7 @@ class Edit extends Component
 
             $data = $this->form->validate();
             $data['updated_by'] = admin()->id;
-            $this->service->updateData($this->currency->id, $data);
+            $this->service->updateData($this->data->id, $data);
 
             $this->success('Data updated successfully.');
 
