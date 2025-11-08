@@ -132,10 +132,10 @@ class Trash extends Component
             $this->showDeleteModal = false;
             $this->selectedId = null;
             $this->resetPage();
-            $this->success('Currency Data deleted successfully');
+            $this->success('Data permanently deleted successfully');
         } catch (\Throwable $e) {
-            $this->error('Failed to delete currency.');
-            Log::error('Failed to delete currency: ' . $e->getMessage());
+            $this->error('Failed to delete data.');
+            Log::error('Failed to delete data: ' . $e->getMessage());
             throw $e;
         }
     }
