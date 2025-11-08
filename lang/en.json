@@ -242,8 +242,40 @@
     "Account Settings": "Account Settings",
     "View Profile": "View Profile",
     "Logout": "Logout",
-    "Footer": "Footer"
+    "Footer": "Footer",
 
+
+    "Your description": "Your description",
+    "Hey there!": "Hey there!",
+    "At PixelStoreLAT, we bring you the best digital deals, game keys, and in-game items — fast, safe, and hassle-free. Trusted by thousands of gamers worldwide with 97% positive reviews. Level up your experience with us today!": "At PixelStoreLAT, we bring you the best digital deals, game keys, and in-game items — fast, safe, and hassle-free. Trusted by thousands of gamers worldwide with 97% positive reviews. Level up your experience with us today!",
+    "First name": "First name",
+    "luisa": "luisa",
+    "Save changes": "Save changes",
+    "Last name": "Last name",
+    "luisacuna2254@gmail.com": "luisacuna2254@gmail.com",
+    "This email is linked to your account. It is not visible to other users.": "This email is linked to your account. It is not visible to other users.",
+    "Username": "Username",
+    "PixelStoreLAT": "PixelStoreLAT",
+    "Name that is visible to other \"Porkbun\" users. You can change your username once every 90 days.": "Name that is visible to other \"Porkbun\" users. You can change your username once every 90 days.",
+    "Password": "Password",
+    "Password can only be changed if you are using the email/password login flow": "Password can only be changed if you are using the email/password login flow",
+    "You are only e-mails to other. You can type your URL here, and we will redirect them to your personal website or their site": "You are only e-mails to other. You can type your URL here, and we will redirect them to your personal website or their site",
+     "Manage notification": "Manage notification",
+     "When you receive a new order.": "When you receive a new order.",
+     "New update": "New update",
+     "When you receive a new message": "When you receive a new message",
+     "New request": "New request",
+     "When your order status changes": "When your order status changes",
+     "Message received": "Message received",
+     "When your dispute is resolved or updated": "When your dispute is resolved or updated",
+     "Status changed": "Status changed",
+     "When your payment is received or refunded": "When your payment is received or refunded",
+     "Request rejected": "Request rejected",
+     "When you request a withdrawal, and when it is processed": "When you request a withdrawal, and when it is processed",
+     "Dispute created": "Dispute created",
+     "When your verification is processed or updated": "When your verification is processed or updated",
+     "Payment received": "Payment received",
+     "When you receive boosting offers or updates": "When you receive boosting offers or updates"
 
 
 

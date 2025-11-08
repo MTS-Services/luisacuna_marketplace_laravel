@@ -85,42 +85,32 @@
     "Currency": "Monnaie",
     "Gift Cards": "Cartes cadeaux",
     "Boosting": "Boosting",
-
-
-
-    "Manage Subscriptions":"Gérer les abonnements",
-
-
+    "Manage Subscriptions": "Gérer les abonnements",
     "Conversations": "Conversations",
     "Messages": "Messages",
     "Unread message only": "Message non lu uniquement",
     "All": "Toute",
-    "Pre-purchase" : "Préachat",
+    "Pre-purchase": "Préachat",
     "Mark all as read": "Marquer tout comme lu",
     "Browser notification": "Notification du navigateur",
     "VC_spams": "VC_spams",
     "Available: Back by 10am": "Disponible : Retour avant 10h",
-
-
-
     "Completed orders": "Commandes terminées",
     "Positive feedback": "Commentaires positifs",
     "Negative feedback": "Commentaires négatifs",
     "Feedback score": "Note de feedback",
-
-
     "How it works?": "Comment ça marche ?",
     "Bronze": "Bronze",
-    "You need an additional 1,900 points to reach the Silver level.":"Il vous faut 1 900 points supplémentaires pour atteindre le niveau Argent.",
+    "You need an additional 1,900 points to reach the Silver level.": "Il vous faut 1 900 points supplémentaires pour atteindre le niveau Argent.",
     "Available points": "Points disponibles",
     "Collect a minimum of 10,000 points and unlock a $1 reward.": "Cumulez au minimum 10 000 points et débloquez une récompense de 1 $.",
     "10,000 points": "10 000 points",
     "$1 Store credit": "1 $ de crédit en magasin",
-    "Redeem":"Racheter",
+    "Redeem": "Racheter",
     "Achievements completed": "Réalisations accomplies",
     "completed": "complété",
     "Write reviews for sellers": "Rédiger des avis pour les vendeurs",
-    "Critic" : "Critique",
+    "Critic": "Critique",
     "Place your first order in each category": "Passez votre première commande dans chaque catégorie",
     "0 / 1 To unlock": "0 / 1 Débloquer",
     "Explorer": "Exploratrice",
@@ -133,9 +123,6 @@
     "Start Your Reward Journey Today": "Commencez votre parcours de récompenses dès aujourd'hui",
     "Make your first purchase today and start tracking your journey toward exciting rewards. Each order helps you unlock new levels, bonuses, and exclusive offers. Stay motivated and see your progress grow with every step!": "Faites votre premier achat dès aujourd'hui et suivez votre progression vers des récompenses exceptionnelles. Chaque commande vous permet de débloquer de nouveaux niveaux, des bonus et des offres exclusives. Restez motivé et constatez vos progrès à chaque étape !",
     "Browse for more": "Parcourez plus",
-
-
-
     "Game 1": "Jeu 1",
     "Game 2": "Jeu 2",
     "Game 3": "Jeu 3",
@@ -153,12 +140,10 @@
     "Cancel": "Annuler",
     "Game": "Jeu",
     "Quantity": "Quantité",
-    "Recent":  "Récente",
+    "Recent": "Récente",
     "Today": "Aujourd'hui",
     "This Week": "Cette semaine",
     "This Month": "Ce mois-ci",
-
-
     "Order Name": "Nom de commande",
     "Order Number": "Numeéro de commande",
     "Order Status": "Statut de commande",
@@ -175,9 +160,6 @@
     "Ordered date": "Date de commande",
     "Order status": "Statut de commande",
     "Price ($)": "Prix ​​($)",
-
-
-
     "Account settings": "Paramètres du compte",
     "Go to site": "Aller au site",
     "Profile": "Profil",
@@ -193,8 +175,6 @@
     "All brands for Coaching": "Toutes les marques pour Coaching",
     "This is the list of social media platforms or accounts you are associated with. Use commas to distinguish": "Voici la liste des plateformes ou comptes de médias sociaux auxquels vous êtes associé(e). Utilisez des virgules pour les séparer",
     "Email notifications": "notifications par e-mail",
-
-
     "Balance": "Équilibre",
     "Withdrawals require $10 in completed sales": "Les retraits nécessitent 10 $ de ventes finalisées",
     "Learn more": "Apprendre encore plus",
@@ -225,17 +205,41 @@
     "Offers": "Offres",
     "My Requests": "Mes demandes",
     "Received Requests": "Demandes reçues",
-    "Loyalty":"Loyauté",
+    "Loyalty": "Loyauté",
     "Wallet": "Portefeuille",
     "Notifications": "Notifications",
     "Feedback": "Retour",
     "Account Settings": "Paramètres du compte",
     "View Profile": "Voir le profil",
     "Logout": "Deconnexion",
-    "Footer": "Pied de page"
-
-
-
-
-
+    "Footer": "Pied de page",
+    "Your description": "Votre description",
+    "Hey there!": "Salut!",
+    "At PixelStoreLAT, we bring you the best digital deals, game keys, and in-game items — fast, safe, and hassle-free. Trusted by thousands of gamers worldwide with 97% positive reviews. Level up your experience with us today!": "Chez PixelStoreLAT, profitez des meilleures offres numériques, clés de jeux et objets en jeu ! Rapide, sûr et sans tracas. Des milliers de joueurs du monde entier nous font confiance, avec 97 % d'avis positifs. Améliorez votre expérience de jeu dès aujourd'hui !",
+    "First name": "Prénom",
+    "luisa": "luisa",
+    "Save changes": "Enregistrer les modifications",
+    "Last name": "Nom de famille",
+    "luisacuna2254@gmail.com": "luisacuna2254@gmail.com",
+    "This email is linked to your account. It is not visible to other users.": "Ce courriel est lié à votre compte. Il n'est pas visible par les autres utilisateurs.",
+    "Username": "Nom d'utilisateur",
+    "PixelStoreLAT": "PixelStoreLAT",
+    "Name that is visible to other \"Porkbun\" users. You can change your username once every 90 days.": "Nom visible par les autres utilisateurs de « Porkbun ». Vous pouvez le modifier une fois tous les 90 jours.",
+    "Password": "Mot de passe",
+    "Password can only be changed if you are using the email/password login flow": "Le mot de passe ne peut être modifié que si vous utilisez la procédure de connexion par e-mail et mot de passe.",
+    "Manage notification": "Gérer les notification",
+    "When you receive a new order.": "Lorsque vous recevez une nouvelle commande.",
+    "New update": "Nouvelle mise à jour",
+    "When you receive a new message": "Lorsque vous recevez un nouveau message",
+    "New request": "Nouvelle demande",
+    "When your order status changes": "Lorsque le statut de votre commande change",
+    "Message received": "Message reçu",
+    "When your dispute is resolved or updated": "Lorsque votre litiges est resolu ou mis à jour",
+    "Status changed": "Statut modifié",
+    "Request rejected": "Demande rejetée",
+    "When you request a withdrawal, and when it is processed": "Lorsque vous demandez un retrait et qu'il est traité",
+    "Dispute created": "Litiges crées",
+    "When your verification is processed or updated": "Lorsque votre verification est traité ou mis à jour",
+    "Payment received": "Paiement reçu",
+    "When you receive boosting offers or updates": "Lorsque vous recevez des offres de boosting ou des mises à jour"
 }

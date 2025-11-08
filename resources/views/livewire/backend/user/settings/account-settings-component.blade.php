@@ -89,7 +89,7 @@
                     {{-- First Name --}}
                     <div x-data="{ editMode: false }">
                         <div class="p-3 sm:p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
-                            <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('First name:') }}</h2>
+                            <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('First name') }}:</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
                                     <p class="text-text-white text-xs">{{ __('luisa') }}</p>
@@ -103,7 +103,7 @@
 
                         <div x-show="editMode" x-cloak>
                             <label
-                                class="block text-sm font-medium text-text-primary mb-2">{{ __('User name:') }}</label>
+                                class="block text-sm font-medium text-text-primary mb-2">{{ __('First name') }}:</label>
                             <div class="relative">
                                 <input type="text" name="username"
                                     value="{{ old('username', auth()->user()->username ?? '') }}"
@@ -132,7 +132,7 @@
                     {{-- Last name --}}
                     <div x-data="{ editMode: false }">
                         <div class="p-3 sm:p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
-                            <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Last name:') }}</h2>
+                            <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Last name') }}:</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
                                     <p class="text-text-white text-xs">{{ __('Cuna') }}</p>
@@ -174,7 +174,7 @@
                     {{-- Email --}}
                     <div x-data="{ editMode: false }">
                         <div class="p-3 sm:p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
-                            <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Email:') }}</h2>
+                            <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Email') }}:</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full">
                                     <div class="p-3 bg-zinc-50/20 rounded-lg">
@@ -196,7 +196,7 @@
 
                         <div x-show="editMode" x-cloak>
                             <label
-                                class="block text-sm font-medium text-text-primary mb-2">{{ __('Email:') }}</label>
+                                class="block text-sm font-medium text-text-primary mb-2">{{ __('Email') }}:</label>
                             <div class="relative">
                                 <input type="email" name="email" value="luisacuna2254@gmail.com"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
@@ -221,7 +221,7 @@
                     {{-- Username --}}
                     <div x-data="{ editMode: false }">
                         <div class="p-3 sm:p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
-                            <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Username:') }}</h2>
+                            <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Username') }}:</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full">
                                     <div class="p-3 bg-zinc-50/20 rounded-lg">
@@ -242,7 +242,7 @@
 
                         <div x-show="editMode" x-cloak>
                             <label
-                                class="block text-sm font-medium text-text-primary mb-2">{{ __('Username:') }}</label>
+                                class="block text-sm font-medium text-text-primary mb-2">{{ __('Username') }}:</label>
                             <div class="relative">
                                 <input type="text" name="Username" value="PixelStoreLAT"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
@@ -270,7 +270,7 @@
                     {{-- Password --}}
                     <div x-data="{ editMode: false }">
                         <div class="p-3 sm:p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
-                            <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Password:') }}</h2>
+                            <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Password') }}:</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full">
                                     <div class="p-3 bg-zinc-50/20 rounded-lg">
@@ -376,9 +376,9 @@
                         <div
                             class="flex items-center justify-between py-3  border-zinc-200 dark:border-zinc-800 last:border-b-0">
                             <label class="text-xl text-text-white cursor-pointer flex-1">
-                                {{ $notification['label'] }}
+                                {{ __($notification['label']) }}
                                 <span
-                                    class="text-sm text-text-muted justify-start block">{{ $notification['sub_title'] }}</span>
+                                    class="text-sm text-text-muted justify-start block">{{ __($notification['sub_title']) }}</span>
                             </label>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" name="notifications[{{ $notification['key'] }}]"
