@@ -18,13 +18,13 @@
             <!-- Fields -->
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
                 <div>
-                    <x-ui.label for="name" :value="__('Name')" required />
+                    <x-ui.label for="name" :value="__('Name')" />
                     <x-ui.input id="name" type="text" class="mt-1 block w-full" wire:model="form.name"
                         placeholder="US Dollar, Euro, British Pound, Bangladeshi Taka" />
                     <x-ui.input-error :messages="$errors->get('form.name')" class="mt-2" />
                 </div>
                 <div>
-                    <x-ui.label for="code" :value="__('Code')" required />
+                    <x-ui.label for="code" :value="__('Code')" />
                     <x-ui.input id="code" type="text" class="mt-1 block w-full" wire:model="form.code"
                         placeholder="USD, EUR, GBP, BDT" />
                     <x-ui.input-error :messages="$errors->get('form.code')" class="mt-2" />
@@ -50,7 +50,7 @@
                     <x-ui.input-error :messages="$errors->get('form.decimal_places')" class="mt-2" />
                 </div>
                 <div>
-                    <x-ui.label for="status" :value="__('Status')" required />
+                    <x-ui.label for="status" :value="__('Status')" />
                     <x-ui.select id="status" class="mt-1 block w-full" wire:model="form.status">
                         <option value="">{{ __('Select Status') }}</option>
                         @foreach ($statuses as $status)
@@ -60,7 +60,7 @@
                     <x-ui.input-error :messages="$errors->get('form.status')" class="mt-2" />
                 </div>
                 <div class="form-control w-full">
-                    <x-ui.label for="is_default" :value="__('Is Default Currency?')" required />
+                    <x-ui.label for="is_default" :value="__('Is Default Currency?')" />
 
                     <x-ui.select id="is_default" class="mt-1 block w-full" wire:model="form.is_default">
                         <option value="">{{ __('Select Option') }}</option>

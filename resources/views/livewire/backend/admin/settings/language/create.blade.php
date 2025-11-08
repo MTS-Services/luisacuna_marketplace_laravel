@@ -44,7 +44,7 @@
 
                 <!-- Country Code with Flag Preview -->
                 <div>
-                    <x-ui.label for="country_code" :value="__('Country Code')" required />
+                    <x-ui.label for="country_code" :value="__('Country Code')"  />
                     <div class="flex gap-2">
                         <x-ui.input id="country_code" type="text" class="mt-1 block w-full lowercase"
                             wire:model.live.debounce.300ms="form.country_code" placeholder="us, es, fr, bd"

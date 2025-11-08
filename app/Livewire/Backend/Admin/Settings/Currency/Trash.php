@@ -77,11 +77,11 @@ class Trash extends Component
                 }
             ],
             [
-                'key' => 'created_at',
-                'label' => 'Created Date',
+                'key' => 'deleted_at',
+                'label' => 'Deleted Date',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return $data->created_at_formatted;
+                    return $data->deleted_at_formatted;
                 }
             ],
             [

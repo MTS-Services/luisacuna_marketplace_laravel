@@ -106,16 +106,16 @@ class CurrencyForm extends Form
         return !empty($this->id);
     }
 
-    public function fillables(): array
-    {
-        return [
-            'code' => $this->code,
-            'symbol' => $this->symbol,
-            'name' => $this->name,
-            'exchange_rate' => $this->exchange_rate,
-            'decimal_places' => $this->decimal_places,
-            'status' => $this->status,
-            'is_default' => $this->is_default,
-        ];
-    }
+    // public function fillables(): array
+    // {
+    //     return [
+    //         'code' => $this->code,
+    //         'symbol' => $this->symbol,
+    //         'name' => $this->name,
+    //         'exchange_rate' => $this->exchange_rate,
+    //         'decimal_places' => $this->decimal_places,
+    //         'status' => $this->status,
+    //         'is_default' => $this->is_default,
+    //     ];
+    // }
 }
