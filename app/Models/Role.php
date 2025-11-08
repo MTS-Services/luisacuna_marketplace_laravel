@@ -2,22 +2,37 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Permission\Models\Role as SpatieRole;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class BaseModel extends Model
+class Role extends SpatieRole implements Auditable
 {
-    use HasFactory, SoftDeletes;
+    use AuditableTrait, SoftDeletes, HasFactory;
+
+
+    protected $fillable = [
+        'sort_order',
+        "name",
+        "guard_name",
+
+        "created_by",
+        "updated_by",
+        "deleted_by",
+        "restored_by",
+        "restored_at",
+    ];
 
     /* ================================================================
      * *** PROPERTIES ***
      ================================================================ */
 
     protected $appends = [
+
         'created_at_human',
         'updated_at_human',
         'deleted_at_human',
@@ -28,52 +43,31 @@ class BaseModel extends Model
         'deleted_at_formatted',
         'restored_at_formatted',
     ];
-
     /* ================================================================
-     |  Relationships
-     ================================================================ */
-
+        * *** Relations ***
+        ================================================================ */
 
     public function creater_admin(): BelongsTo
     {
-        return $this->belongsTo(Admin::class, 'created_by')->select(['id', 'name', 'status']);
+        return $this->belongsTo(Admin::class, 'created_by', 'id')->select(['name', 'id', 'status']);
     }
 
     public function updater_admin(): BelongsTo
     {
-        return $this->belongsTo(Admin::class, 'updated_by')->select(['id', 'name', 'status']);
+        return $this->belongsTo(Admin::class, 'updated_by', 'id')->select(['name', 'id', 'status']);
     }
 
     public function deleter_admin(): BelongsTo
     {
-        return $this->belongsTo(Admin::class, 'deleted_by')->select(['id', 'name', 'status']);
+        return $this->belongsTo(Admin::class, 'deleted_by', 'id')->select(['name', 'id', 'status']);
     }
     public function restorer_admin(): BelongsTo
     {
-        return $this->belongsTo(Admin::class, 'restored_by')->select(['id', 'name', 'status']);
-    }
-
-    public function creater(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
-    public function updater(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
-    public function deleter(): MorphTo
-    {
-        return $this->morphTo();
-    }
-    public function restorer(): MorphTo
-    {
-        return $this->morphTo();
+        return $this->belongsTo(Admin::class, 'restored_by', 'id')->select(['name', 'id', 'status']);
     }
 
     /* ================================================================
-     |  Accessors
+     * *** Accessors ***
      ================================================================ */
 
     public function getCreatedAtHumanAttribute(): string
@@ -113,4 +107,10 @@ class BaseModel extends Model
     {
         return dateTimeFormat($this->attributes['restored_at']);
     }
+
+    public function admins(): HasMany
+    {
+        return $this->hasMany(Admin::class, 'role_id', 'id');
+    }
+
 }

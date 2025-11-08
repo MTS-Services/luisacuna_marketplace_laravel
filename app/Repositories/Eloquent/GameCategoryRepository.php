@@ -1,8 +1,7 @@
-<?php 
+<?php
 
 namespace App\Repositories\Eloquent;
 
-use App\Enums\GameCategoryStatus;
 use App\Models\GameCategory;
 use App\Repositories\Contracts\GameCategoryRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -13,122 +12,200 @@ class GameCategoryRepository implements GameCategoryRepositoryInterface
 {
 
 
-    public function __construct(protected GameCategory $model)    {
-        
-    }
+    public function __construct(protected GameCategory $model) {}
 
-    
 
-    public function all(): Collection
+    /* ================== ================== ==================
+    *                      Find Methods 
+    * ================== ================== ================== */
+
+
+
+    public function all(string $sortField = 'created_at', $order = 'desc'): Collection
     {
-      return $this->model->all();
+        $query = $this->model->query();
+        return $query->orderBy($sortField, $order)->get();
     }
 
-    public function find(int $id): ?GameCategory
+    public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?GameCategory
     {
-        return $this->model->find($id);
+        $model = $this->model;
+        if ($trashed) {
+            $model = $model->withTrashed();
+        }
+        return $model->where($column_name, $column_value)->first();
     }
 
-    public function findTrashed($id): ?GameCategory
+    public function findTrashed($column_value, string $column_name = 'id'): ?GameCategory
     {
-        return $this->model->onlyTrashed()->find($id);
+        $model = $this->model->onlyTrashed();
+        return $model->where($column_name, $column_value)->first();
     }
 
-    public function create(array $data): GameCategory 
+
+
+    public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        $search = $filters['search'] ?? null;
+        $sortField = $filters['sort_field'] ?? 'created_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+
+        if ($search) {
+            // Scout Search
+            return GameCategory::search($search)
+                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->paginate($perPage);
+        }
+
+        // Normal Eloquent Query
+        return $this->model->query()
+            ->filter($filters)
+            ->orderBy($sortField, $sortDirection)
+            ->paginate($perPage);
+    }
+
+    /**
+     * Paginate only trashed records with optional search.
+     */
+    public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        $search = $filters['search'] ?? null;
+        $sortField = $filters['sort_field'] ?? 'deleted_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+
+        if ($search) {
+            // 👇 Manually filter trashed + search
+            return GameCategory::search($search)
+                ->onlyTrashed()
+                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->paginate($perPage);
+        }
+
+        return $this->model->onlyTrashed()
+            ->filter($filters)
+            ->orderBy($sortField, $sortDirection)
+            ->paginate($perPage);
+        return $query->paginate($perPage);
+    }
+
+    public function exists(int $id): bool
+    {
+        return $this->model->where('id', $id)->exists();
+    }
+
+    public function count(array $filters = []): int
+    {
+        $query = $this->model->query();
+
+        if (!empty($filters)) {
+            $query->filter($filters);
+        }
+
+        return $query->count();
+    }
+
+    public function search(string $query, string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->search($query)->orderBy($sortField, $order)->get();
+    }
+
+
+    /* ================== ================== ==================
+    *                    Data Modification Methods 
+    * ================== ================== ================== */
+
+    public function create(array $data): GameCategory
     {
         return $this->model->create($data);
     }
-    
 
-    public function update( $id, array $data): bool
+    public function update(int $id, array $data): bool
     {
-        return $this->find($id)->update($data);
-    }
+        $gamecat = $this->find($id);
 
-    public function delete($id, int $actionerId): bool
-    {
-
-        $this->find($id)->update(['deleter_id' => $actionerId]);
-
-        return $this->find($id)->delete();
-    }
-
-    public function forceDelete($id): bool
-    {
-        return $this->model->onlyTrashed()->findOrFail($id)->forceDelete();
-    }
-    public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator
-    {
-     $query = $this->model->query();
-
-        // Apply filters
-        if (!empty($filters)) {
-            $query->filter($filters);
+        if (!$gamecat) {
+            return false;
         }
 
-        // Apply sorting
-        $sortField = $filters['sort_field'] ?? 'created_at';
-        $sortDirection = $filters['sort_direction'] ?? 'desc';
-        $query->orderBy($sortField, $sortDirection);
-
-        return $query->paginate($perPage);
+        return $gamecat->update($data);
     }
 
-    public function paginateOnlyTrashed(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator
+    public function delete(int $id, int $actionerId): bool
     {
-        $query = $this->model->onlyTrashed();
+        $gamecat = $this->find($id);
 
-        // Apply filters
-        if (!empty($filters)) {
-            $query->filter($filters);
+        if (!$gamecat) {
+            return false;
+        }
+        $gamecat->update(['deleted_by' => $actionerId]);
+
+        return $gamecat->delete();
+    }
+
+    public function forceDelete(int $id): bool
+    {
+        $gamecat = $this->findTrashed($id);
+
+        if (!$gamecat) {
+            return false;
         }
 
-        // Apply sorting
-        $sortField = $filters['sort_field'] ?? 'created_at';
-        $sortDirection = $filters['sort_direction'] ?? 'desc';
-        $query->orderBy($sortField, $sortDirection);
-
-        return $query->paginate($perPage);
+        return $gamecat->forceDelete();
     }
 
-    public function restore($id, $actionerId): bool
+    public function restore(int $id, int $actionerId): bool
     {
-        $this->findTrashed($id)->update(['restorer_id' => $actionerId, 'deleter_id' => null]);
-        return $this->findTrashed($id)->restore();
+        $gamecat = $this->findTrashed($id);
+
+        if (!$gamecat) {
+            return false;
+        }
+        $gamecat->update(['restored_by' => $actionerId, 'restored_at' => now()]);
+
+        return $gamecat->restore();
     }
 
-    public function bulkDelete(array $ids , int $actionerId): int
+    public function bulkDelete(array $ids, int $actionerId): int
     {
-
-       
-        $this->model->whereIn('id', $ids)->update(['deleter_id' => $actionerId]);
-
-        return $this->model->whereIn('id', $ids)->delete();     
+        return DB::transaction(function () use ($ids, $actionerId) {
+            $this->model->whereIn('id', $ids)->update(['deleted_by' => $actionerId]);
+            return $this->model->whereIn('id', $ids)->delete();
+        });
     }
-    public function bulkForceDelete(array $ids): int
+
+    public function bulkUpdateStatus(array $ids, string $status, int $actionerId): int
     {
-        return $this->model->onlyTrashed()->whereIn('id', $ids)->forceDelete();
+        return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updated_by' => $actionerId]);
     }
     public function bulkRestore(array $ids, int $actionerId): int
     {
-
-          return DB::transaction(function () use ($ids, $actionerId) {
-              $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restorer_id' => $actionerId, 'deleter_id' => null]);
-
-              return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
+        return DB::transaction(function () use ($ids, $actionerId) {
+            $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restored_by' => $actionerId, 'restored_at' => now()]);
+            return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
         });
-
-      
     }
-    public function bulkUpdateStatus(array $ids, ?string $status, int $actionerId):int
+    public function bulkForceDelete(array $ids): int //
     {
-        return $this->model->whereIn('id', $ids)->update(['status' => $status]);
+        return $this->model->onlyTrashed()->whereIn('id', $ids)->forceDelete();
     }
 
+    /* ================== ================== ==================
+    *                  Accessor Methods (Optional)
+    * ================== ================== ================== */
 
-
-    public function findOrFail($id): GameCategory
+    public function getActive(string $sortField = 'created_at', $order = 'desc'): Collection
     {
-        return $this->model->findOrFail($id);
+        return $this->model->active()->orderBy($sortField, $order)->get();
     }
+
+    public function getInactive(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->inactive()->orderBy($sortField, $order)->get();
+    }
+
+    public function getSuspended(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->suspended()->orderBy($sortField, $order)->get();
+    }
+
 }

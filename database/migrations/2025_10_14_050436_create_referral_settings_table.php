@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('referral_settings', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->string('status')->index()->default(ReferralSettingStatus::ACTIVE->value);
             $table->string('title');
             $table->text('description')->nullable();

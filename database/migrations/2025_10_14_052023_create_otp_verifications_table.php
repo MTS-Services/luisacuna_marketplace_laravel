@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('otp_verifications', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
 
             $table->string('verifiable_type');
             $table->unsignedBigInteger('verifiable_id');

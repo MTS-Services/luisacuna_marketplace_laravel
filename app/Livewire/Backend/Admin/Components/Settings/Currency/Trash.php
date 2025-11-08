@@ -34,7 +34,7 @@ class Trash extends Component
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
-        $datas->load('deletedBy');
+        $datas->load('deleter_admin');
 
         $columns = [
 
@@ -88,7 +88,7 @@ class Trash extends Component
                 'key' => 'deleted_by',
                 'label' => 'Deleted By',
                 'format' => function ($data) {
-                    return $data->deletedBy?->name ?? 'System';
+                    return $data->deleter_admin?->name ?? 'System';
                 }
             ],
         ];

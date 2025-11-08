@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('application_settings', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->string('key')->unique();
             $table->string('env_key')->nullable();
 
