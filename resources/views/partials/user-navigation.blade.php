@@ -3,15 +3,30 @@
         <a href="{{ $category['url'] }}" wire:navigate
             x-on:mouseenter="open = (open == '{{ $category['slug'] }}' || open == '' || open != '{{ $category['slug'] }}' ? '{{ $category['slug'] }}' : '')"
             class="navbar_style group relative"
-            :class="{ 'active': open == '{{ $category['slug'] }}' ||
-                    {{ request()->routeIs($category['slug']) ? 'true' : 'false' }} }">
+            :class="{
+                'active': open == '{{ $category['slug'] }}' ||
+                    {{ request()->routeIs($category['slug']) ? 'true' : 'false' }}
+            }">
             <span class="relative z-10">{{ $category['name'] }}</span>
             <span
                 class="absolute bottom-0 left-0 w-full h-0.5 bg-blue-500 transform scale-x-0 transition-transform duration-300 ease-in-out origin-left"
-                :class="{ '!scale-x-100': open == '{{ $category['slug'] }}' ||
-                        {{ request()->routeIs($category['slug']) ? 'true' : 'false' }} }"></span>
+                :class="{
+                    '!scale-x-100': open == '{{ $category['slug'] }}' ||
+                        {{ request()->routeIs($category['slug']) ? 'true' : 'false' }}
+                }"></span>
         </a>
     @endforeach
+
+    {{-- @foreach (gameCategories() as $category)
+        <a href="{{ $category['url'] }}" wire:navigate
+            x-on:mouseenter="open = (open == '{{ $category['slug'] }}' || open == '' || open != '{{ $category['slug'] }}' ? '{{ $category['slug'] }}' : '')"
+            class="navbar_style group"
+            :class="{ 'active': open == '{{ $category['slug'] }}' ||
+                    {{ request()->route('categorySlug') == $category['slug'] ? 'true' : 'false' }} }">
+            <span class="relative z-10">{{ $category['name'] }}</span>
+            <span class="navbar_indicator" :class="{'active' : open == '{{$category['slug']}}'  || {{ request()->route('categorySlug') == $category['slug'] ? 'true' : 'false' }} }"></span>
+        </a>
+    @endforeach --}}
     {{-- <button 
         x-on:mouseenter="open = (open == 'currency' || open == '' || open != 'currency' ? 'currency' : ''); $wire.toggleDropdown('currency')"
         class="navbar_style group " :class="{'active' : open == 'currency' || {{ request()->has('game-category') && request()->get('game-category') == 'currency' ? 'true' : 'false' }} }">
