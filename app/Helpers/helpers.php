@@ -263,6 +263,7 @@ if (!function_exists('gameCategories')) {
             [
                 'name' => 'Currency',
                 'slug' => 'currency',
+                'url' => route('currency'),
                 'games' => [
                     'popular' => [
                         ['name' => 'New World Coins', 'icon' => 'Frame 100.png', 'slug' => 'new-world-coins'],
@@ -291,6 +292,7 @@ if (!function_exists('gameCategories')) {
             [
                 'name' => 'Gift Cards',
                 'slug' => 'gift-cards',
+                'url' => route('gift-card'),
                 'games' => [
                     'popular' => [
                         ['name' => 'New World Coins', 'icon' => 'Frame 100.png', 'slug' => 'new-world-coins'],
@@ -319,6 +321,7 @@ if (!function_exists('gameCategories')) {
             [
                 'name' => 'Boosting',
                 'slug' => 'boosting',
+                'url' => route('boosting'),
                 'games' => [
                     'popular' => [
                         ['name' => 'New World Coins', 'icon' => 'Frame 100.png', 'slug' => 'new-world-coins'],
@@ -347,6 +350,7 @@ if (!function_exists('gameCategories')) {
             [
                 'name' => 'Items',
                 'slug' => 'items',
+                'url' => route('items'),
                 'games' => [
                     'popular' => [
                         ['name' => 'New World Coins', 'icon' => 'Frame 100.png', 'slug' => 'new-world-coins'],
@@ -375,6 +379,7 @@ if (!function_exists('gameCategories')) {
             [
                 'name' => 'Accounts',
                 'slug' => 'accounts',
+                'url' => route('accounts'),
                 'games' => [
                     'popular' => [
                         ['name' => 'New World Coins', 'icon' => 'Frame 100.png', 'slug' => 'new-world-coins'],
@@ -403,6 +408,7 @@ if (!function_exists('gameCategories')) {
             [
                 'name' => 'Top Ups',
                 'slug' => 'top-ups',
+                'url' => route('top-up'),
                 'games' => [
                     'popular' => [
                         ['name' => 'New World Coins', 'icon' => 'Frame 100.png', 'slug' => 'new-world-coins'],
@@ -431,6 +437,7 @@ if (!function_exists('gameCategories')) {
             [
                 'name' => 'Coaching',
                 'slug' => 'coaching',
+                'url' => route('coaching'),
                 'games' => [
                     'popular' => [
                         ['name' => 'New World Coins', 'icon' => 'Frame 100.png', 'slug' => 'new-world-coins'],

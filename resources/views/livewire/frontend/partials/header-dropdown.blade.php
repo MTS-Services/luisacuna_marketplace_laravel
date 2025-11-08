@@ -10,19 +10,6 @@
     
 >
     <div class="  relative" x-on:click.outside="open = ''">
-        {{-- 🔄 Modern Loader --}}
-        {{-- <div 
-            wire:loading.flex 
-            wire:target="setGameCategorySlug, search"
-            class="absolute inset-0 bg-bg-primary/70 flex flex-col items-center justify-center rounded-lg z-50 mx-4 lg:px-10"
-        >
-            <div class="relative flex items-center justify-center w-12 h-12">
-                <div class="absolute w-12 h-12 border-4 border-purple-500/30 rounded-full"></div>
-                <div class="absolute w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-            <p class="text-sm text-purple-300 mt-3 font-medium tracking-wide">Loading content...</p>
-        </div> --}}
-
         {{-- 🌟 Dropdown Content --}}
         <div class="dark:bg-zinc-600 bg-bg-primary flex flex-col lg:flex-row items-start justify-between rounded-lg shadow-lg  px-4 lg:px-10 min-h-[420px] overflow-y-auto" >
             

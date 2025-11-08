@@ -1,4 +1,4 @@
-<div x-data="{ open: false }" class="relative">
+<div x-data="{ open: false }" class="relative z-40">
     <!-- Trigger Button -->
     <button @click="open = !open" class="flex items-center gap-2 text-text-white hover:text-black">
         <x-phosphor-globe class="w-5 h-5" />

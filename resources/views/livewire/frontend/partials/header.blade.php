@@ -7,17 +7,17 @@
         </div>
         @include('partials.user-navigation')
 
-        <div class="flex items-center">
-            <button @click="globalSearchModal = true"
-                class="md:hidden btn btn-ghost btn-circle hover:bg-zinc-500/20 xl:mr-2">
+        <div class="flex gap-2 items-center">
+            {{-- <button @click="globalSearchModal = true"
+                class="md:hidden btn btn-ghost btn-circle hover:bg-zinc-500/20">
                 <flux:icon name="magnifying-glass" class="w-6 h-6 text-text-text-white" />
-            </button>
+            </button> --}}
             @auth
-                <button class="btn btn-ghost btn-circle hover:bg-zinc-500/20">
+                <button class="btn btn-ghost btn-circle p-1! hover:bg-zinc-500/20">
                     <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-text-white" />
                 </button>
 
-                <button class="btn btn-ghost btn-circle hover:bg-zinc-500/20 mr-2" @click="notification = !notification">
+                <button class="btn btn-ghost btn-circle p-1! hover:bg-zinc-500/20" @click="notification = !notification">
                     <div class="indicator">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 stroke-text-primary" fill="none"
                             viewBox="0 0 24 24" stroke="white">
@@ -28,17 +28,17 @@
                     </div>
                 </button>
             @endauth
-            <div class="mr-4 hidden sm:flex">
+            <div class=" px-1 hidden sm:flex">
                 <x-language />
             </div>
-            <div class="flex items-center ml-2" x-data>
+            <div class="flex items-center " x-data>
 
                 @auth
                     <!-- User Profile Dropdown -->
                     <div x-data="{ open: false }" class="relative">
                         <button @click="open = !open"
-                            class="flex items-center rounded-lg text-text-white transition-all focus:outline-none mr-2">
-                            <div class="w-6 h-6 sm:w-8 sm:h-8 rounded-full shadow-lg overflow-hidden">
+                            class="flex items-center rounded-lg text-text-white transition-all focus:outline-none mr-8">
+                            <div class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full shadow-lg overflow-hidden">
                                 <img src="{{ storage_url(auth()->user()->avatar) }}" class="w-full h-full object-cover"
                                     alt="{{ auth()->user()->full_name ?? 'User Avatar' }}">
                             </div>
@@ -55,11 +55,26 @@
                             class="absolute right-0 mt-2 w-56 sm:w-64 xl:w-90 2xl:w-96 bg-bg-primary  rounded-xl shadow-2xl overflow-hidden z-50">
 
                             <!-- User Info Header -->
-                            <div class="px-4 py-5 shadow-lg bg-bg-secondary">
-                                <p class="text-sm font-semibold text-text-white truncate">
-                                    {{ auth()->user()->full_name }}
-                                </p>
-                                <p class="text-xs text-zinc-400 truncate">{{ auth()->user()->email }}</p>
+                            <div class="px-2 py-5 flex items-center  justify-between shadow-lg bg-bg-secondary">
+                                <div class="flex items-center gap-2">
+                                    <div
+                                        class="w-6 h-6 sm:w-8 sm:h-8 lg:w-13 lg:h-13 rounded-full shadow-lg overflow-hidden">
+                                        <img src="{{ storage_url(auth()->user()->avatar) }}"
+                                            class="w-full h-full object-cover"
+                                            alt="{{ auth()->user()->full_name ?? 'User Avatar' }}">
+                                    </div>
+                                    <div class="flex flex-col gap-1.5">
+                                        <p class="text-base font-semibold text-text-white truncate">
+                                            {{ auth()->user()->full_name }}
+                                        </p>
+                                        <p class="text-xs text-zinc-400 truncate">{{ auth()->user()->email }}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <x-ui.button href="#" class="m-auto! py-2!">
+                                        {{ __('Bookings') }}
+                                    </x-ui.button>
+                                </div>
                             </div>
 
                             <div class="flex-1 px-3 py-4 space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto">
@@ -247,6 +262,7 @@
                                 </div>
                                 <!-- Profile & Logout -->
                                 <div class="space-y-1">
+                                    
                                     <a href="{{ route('profile') }}" wire:navigate @click="open = false"
                                         class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all {{ $pageSlug === 'profile' ? 'bg-zinc-800 text-white' : 'text-zinc-300 hover:text-white hover:bg-zinc-800/50' }}">
                                         <flux:icon name="user" class="w-4 h-4" />
@@ -325,9 +341,9 @@
     </div>
     {{-- Notification --}}
     <div x-show="notification" x-cloak @click.outside="notification = false"
-        x-transition:enter="transition ease-out duration-100"
-        class="absolute top-0 right-0 w-[90%] xs:w-3/4 md:max-w-[680px] bg-bg-primary backdrop:blure-md z-100   transition-all duration-300 min-h-[98vh] text-text-text-white shadow-lg overflow-y-auto">
-        <div class="mb-2">
+        y-transition:enter="transition ease-out duration-100"
+        class="absolute top-20 right-2 w-[90%] xs:w-3/4 md:max-w-[680px] bg-bg-primary rounded-2xl! backdrop:blure-md z-100   transition-all duration-300 max-h-[65vh] text-text-text-white shadow-lg overflow-y-auto">
+        <div class="pb-10 px-6">
             <!-- Header -->
             <div class="flex justify-between items-center p-4 pb-0">
                 <h2 class="text-lg font-semibold">Notifications</h2>
@@ -336,16 +352,15 @@
                     <flux:icon name="x-mark" class="w-5 h-5 stroke-current hover:stroke-pink-600" />
                 </button>
             </div>
-            <div class="mb-3 border-b border-zinc-600">
-                <a href="{{ route('user.notifications') }}"
-                    class="text-sm text-pink-500 hover:text-text-hover ps-4 pb-2">
+            <div class="mb-5 border-b border-zinc-600">
+                <a href="javascript:void(0)" class="text-sm text-pink-500 hover:text-text-hover ps-4 pb-2">
                     Mark all as read
                 </a>
             </div>
 
             <!-- Notification List -->
-            <div class="space-y-4 h-full overflow-y-auto pr-1">
-                @for ($i = 0; $i < 7; $i++)
+            <div class="space-y-4 h-full w-full  overflow-y-auto ">
+                @for ($i = 0; $i < 3; $i++)
                     <div class="flex gap-2 md:gap-4 hover:bg-bg-hover rounded-xl p-4">
                         <div>
                             {{-- Notification icon --}}
@@ -368,6 +383,11 @@
                         </div>
                     </div>
                 @endfor
+                <div class="w-full text-center mt-2">
+                    <x-ui.button href="{{ route('user.notifications') }}" class="w-80! py-2! block! mx-auto!">
+                        {{ __('View all') }}
+                    </x-ui.button>
+                </div>
             </div>
         </div>
     </div>

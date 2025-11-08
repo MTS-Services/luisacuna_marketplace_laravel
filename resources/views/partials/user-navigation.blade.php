@@ -1,11 +1,11 @@
 <nav class="hidden xl:flex gap-8 text-sm items-center" x-clock>
     @foreach (gameCategories() as $category)
-        <button 
+        <a href="{{$category['url']}}" wire:navigate
             x-on:mouseenter="open = (open == '{{$category['slug']}}' || open == '' || open != '{{$category['slug']}}' ? '{{$category['slug']}}' : '')"
             class="navbar_style group" :class="{'active' : open == '{{$category['slug']}}'  || {{ request()->route('categorySlug') == $category['slug'] ? 'true' : 'false' }} }">
             <span class="relative z-10">{{$category['name']}}</span>
             {{-- <span class="navbar_indicator" :class="{'active' : open == '{{$category['slug']}}'  || {{ request()->route('categorySlug') == $category['slug'] ? 'true' : 'false' }} }"></span> --}}
-        </button>
+        </a>
     @endforeach
     {{-- <button 
         x-on:mouseenter="open = (open == 'currency' || open == '' || open != 'currency' ? 'currency' : ''); $wire.toggleDropdown('currency')"

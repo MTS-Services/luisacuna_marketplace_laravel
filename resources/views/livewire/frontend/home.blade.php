@@ -39,7 +39,7 @@
     </section>
     <!-- Popular Games Section -->
     <section class="py-20">
-        <div class="flex flex-wrap justify-center gap-4 p-6">
+        <!--<div class="flex flex-wrap justify-center gap-4 p-6">
             <a href="{{ route('currency') }}" wire:navigate>
                 <div
                     class="group flex flex-col items-center justify-center w-32 h-32 rounded-2xl bg-bg-primary hover:bg-zinc-500/40 transition-colors duration-300 cursor-pointer">
@@ -126,7 +126,7 @@
                 </div>
             </a>
 
-        </div>
+        </div> -->
 
         <div class="container">
             <div class="text-center mb-16">
