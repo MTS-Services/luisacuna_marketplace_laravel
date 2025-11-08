@@ -29,7 +29,7 @@ class Create extends Component
     public function render()
     {
 
-        return view('livewire.backend.admin.components.game-management.category.create', [
+        return view('livewire.backend.admin.game-management.category.create', [
             'statuses'   => GameCategoryStatus::options(),
         ]);
     }

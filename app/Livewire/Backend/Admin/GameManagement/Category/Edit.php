@@ -33,7 +33,7 @@ class Edit extends Component
     }
     public function render()
     {
-        return view('livewire.backend.admin.components.game-management.category.edit', [
+        return view('livewire.backend.admin.game-management.category.edit', [
             'statuses'   => GameCategoryStatus::options(),
         ]);
     }

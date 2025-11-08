@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\Components\Settings\Language;
+namespace App\Livewire\Backend\Admin\Settings\Language;
 
 use App\Enums\LanguageStatus;
-use App\Services\Admin\LanguageService;
+use App\Services\LanguageService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -15,22 +15,22 @@ class Trash extends Component
 
     public $statusFilter = '';
     public $showDeleteModal = false;
-    public $deleteLanguageId = null;
+    public $selectedId = null;
     public $bulkAction = '';
     public $showBulkActionModal = false;
 
     protected $listeners = ['languageCreated' => '$refresh', 'languageUpdated' => '$refresh'];
 
-    protected LanguageService $languageService;
+    protected LanguageService $service;
 
-    public function boot(LanguageService $languageService)
+    public function boot(LanguageService $service)
     {
-        $this->languageService = $languageService;
+        $this->service = $service;
     }
 
     public function render()
     {
-        $languages = $this->languageService->getTrashedLanguagesPaginated(
+        $datas = $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
@@ -46,12 +46,12 @@ class Trash extends Component
                 'label' => 'Native Name',
                 'sortable' => true,
                 'format' => function ($language) {
-                    return $language->native_name 
+                    return $language->native_name
                         ? '<span class="text-sm text-gray-900 dark:text-gray-100">' . $language->native_name . '</span>'
                         : '<span class="text-sm text-gray-400 dark:text-gray-500 italic">N/A</span>';
                 }
             ],
-             [
+            [
                 'key' => 'locale',
                 'label' => 'Locale',
                 'sortable' => true
@@ -60,35 +60,25 @@ class Trash extends Component
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
-                'format' => function ($language) {
-                    $colors = [
-                        '1' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-                        '0' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-                    ];
-                    $color = $colors[$language->status->value] ?? 'bg-gray-100 text-gray-800';
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' .
-                        $language->status->label() .
+                'format' => function ($data) {
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
+                        $data->status->label() .
                         '</span>';
                 }
             ],
             [
                 'key' => 'deleted_at',
-                'label' => 'Deleted At',
+                'label' => 'Deleted Date',
                 'sortable' => true,
-                'format' => function ($language) {
-                    return '<div class="text-sm">' .
-                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $language->deleted_at->format('M d, Y') . '</div>' .
-                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $language->deleted_at->format('h:i A') . '</div>' .
-                        '</div>';
+                'format' => function ($data) {
+                    return $data->deleted_at_formatted;
                 }
             ],
             [
                 'key' => 'deleted_by',
                 'label' => 'Deleted By',
-                'format' => function ($language) {
-                    return $language->deleter_admin
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $language->deleter_admin->name . '</span>'
-                        : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
+                'format' => function ($data) {
+                    return $data->deleter_admin?->name ?? 'System';
                 }
             ],
         ];
@@ -98,11 +88,13 @@ class Trash extends Component
                 'key' => 'id',
                 'label' => 'Restore',
                 'method' => 'restore',
+                'encrypt' => true
             ],
             [
                 'key' => 'id',
                 'label' => 'Permanently Delete',
-                'method' => 'confirmDelete'
+                'method' => 'confirmDelete',
+                'encrypt' => true
             ],
         ];
 
@@ -113,8 +105,8 @@ class Trash extends Component
             ['value' => 'deactivate', 'label' => 'Deactivate'],
         ];
 
-        return view('livewire.backend.admin.components.settings.language.trash', [
-            'languages' => $languages,
+        return view('livewire.backend.admin.settings.language.trash', [
+            'datas' => $datas,
             'statuses' => LanguageStatus::options(),
             'columns' => $columns,
             'actions' => $actions,
@@ -122,35 +114,41 @@ class Trash extends Component
         ]);
     }
 
-    public function confirmDelete($languageId): void
+    public function confirmDelete($encryptedId): void
     {
-        $this->deleteLanguageId = $languageId;
+        if (!$encryptedId) {
+            $this->error('No Data selected');
+            $this->resetPage();
+            return;
+        }
+        $this->selectedId = $encryptedId;
         $this->showDeleteModal = true;
     }
 
     public function forceDelete(): void
     {
         try {
-            $this->languageService->deleteLanguage($this->deleteLanguageId, forceDelete: true);
+            $this->service->deleteData(decrypt($this->selectedId), forceDelete: true);
             $this->showDeleteModal = false;
-            $this->deleteLanguageId = null;
+            $this->selectedId = null;
             $this->resetPage();
-
-            $this->success('Language permanently deleted successfully');
+            $this->success('Data permanently deleted successfully');
         } catch (\Throwable $e) {
-            $this->error('Failed to delete language: ' . $e->getMessage());
+            $this->error('Failed to delete data.');
+            Log::error('Failed to delete data: ' . $e->getMessage());
             throw $e;
         }
     }
 
-    public function restore($languageId): void
+    public function restore($encryptedId): void
     {
         try {
-            $this->languageService->restoreLanguage($languageId);
-            
-            $this->success('Language restored successfully');
+            $this->service->restoreData(decrypt($encryptedId));
+
+            $this->success('Data restored successfully');
         } catch (\Throwable $e) {
-            $this->error('Failed to restore language: ' . $e->getMessage());
+            $this->error('Failed to restore data.');
+            Log::error('Failed to restore data: ' . $e->getMessage());
             throw $e;
         }
     }
@@ -161,28 +159,10 @@ class Trash extends Component
         $this->resetPage();
     }
 
-    public function changeStatus($languageId, $status): void
-    {
-        try {
-            $languageStatus = LanguageStatus::from($status);
-
-            match ($languageStatus) {
-                LanguageStatus::ACTIVE => $this->languageService->activateLanguage($languageId),
-                LanguageStatus::INACTIVE => $this->languageService->deactivateLanguage($languageId),
-                default => null,
-            };
-
-            $this->success('Language status updated successfully');
-        } catch (\Exception $e) {
-            $this->error('Failed to update status: ' . $e->getMessage());
-        }
-    }
-
     public function confirmBulkAction(): void
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
-            $this->warning('Please select languages and an action');
-            Log::info('No languages selected or no bulk action selected');
+            $this->warning('Please select data and an action');
             return;
         }
 
@@ -195,10 +175,8 @@ class Trash extends Component
 
         try {
             match ($this->bulkAction) {
-                'forceDelete' => $this->bulkForceDeleteLanguages(),
-                'bulkRestore' => $this->bulkRestoreLanguages(),
-                'activate' => $this->bulkUpdateStatus(LanguageStatus::ACTIVE),
-                'deactivate' => $this->bulkUpdateStatus(LanguageStatus::INACTIVE),
+                'forceDelete' => $this->bulkForceDelete(),
+                'bulkRestore' => $this->bulkRestore(),
                 default => null,
             };
 
@@ -206,26 +184,24 @@ class Trash extends Component
             $this->selectAll = false;
             $this->bulkAction = '';
         } catch (\Exception $e) {
-            $this->error('Bulk action failed: ' . $e->getMessage());
+            $this->error('Failed to execute bulk action.');
+            Log::error('Failed to execute bulk action: ' . $e->getMessage());
+            throw $e;
         }
     }
 
-    protected function bulkUpdateStatus(LanguageStatus $status): void
+    protected function bulkRestore(): void
     {
-        $count = $this->languageService->bulkUpdateStatus($this->selectedIds, $status);
-        $this->success("{$count} languages updated successfully");
+        $count = count($this->selectedIds);
+        $this->service->bulkRestoreData($this->selectedIds);
+        $this->success("{$count} Datas restored successfully");
     }
 
-    protected function bulkRestoreLanguages(): void
+    protected function bulkForceDelete(): void
     {
-        $count = $this->languageService->bulkRestoreLanguages($this->selectedIds);
-        $this->success("{$count} languages restored successfully");
-    }
-
-    protected function bulkForceDeleteLanguages(): void
-    {
-        $count = $this->languageService->bulkForceDeleteLanguages($this->selectedIds);
-        $this->success("{$count} languages permanently deleted successfully");
+        $count = count($this->selectedIds);
+        $this->service->bulkForceDeleteData($this->selectedIds);
+        $this->success("{$count} Datas permanently deleted successfully");
     }
 
     protected function getFilters(): array
@@ -240,11 +216,14 @@ class Trash extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->languageService->getTrashedLanguagesPaginated(
+        $data = $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        )->pluck('id')->toArray();
+        );
+
+        return array_column($data->items(), 'id');
     }
+
 
     public function updatedStatusFilter(): void
     {

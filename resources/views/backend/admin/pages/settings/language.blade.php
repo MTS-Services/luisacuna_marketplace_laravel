@@ -6,31 +6,31 @@
             <x-slot name="breadcrumb">{{ __('Application Settings > Language Create') }}
             </x-slot>
             <x-slot name="title">{{__('Language Create')}}</x-slot>
-            <livewire:backend.admin.components.settings.language.create />
+            <livewire:backend.admin.settings.language.create />
         @break
 
         @case('admin.as.language.edit')
             <x-slot name="breadcrumb">{{__('Application Settings > Language Edit')}}</x-slot>
             <x-slot name="title">{{__('Language Edit')}}</x-slot>
-            <livewire:backend.admin.components.settings.language.edit :language="$language"/>
+            <livewire:backend.admin.settings.language.edit :data="$data" />
         @break
 
         @case('admin.as.language.trash')
             <x-slot name="breadcrumb">{{__('Application Settings > Language Trash')}}</x-slot>
             <x-slot name="title">{{__('Language Trash')}}</x-slot>
-            <livewire:backend.admin.components.settings.language.trash />
+            <livewire:backend.admin.settings.language.trash />
         @break
 
         @case('admin.as.language.view')
             <x-slot name="breadcrumb">{{__('Application Settings > Language Details')}}</x-slot>
             <x-slot name="title">{{__('Language Details')}}</x-slot>
-            <livewire:backend.admin.components.settings.language.view :language="$language"/>
+            <livewire:backend.admin.settings.language.view :data="$data" />
         @break
 
         @default
             <x-slot name="breadcrumb">{{__('Application Settings > Language List')}}</x-slot>
             <x-slot name="title">{{__('Language List')}}</x-slot>
-            <livewire:backend.admin.components.settings.language.index />
+            <livewire:backend.admin.settings.language.index />
     @endswitch
 
 </x-admin::app>

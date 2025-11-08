@@ -16,7 +16,7 @@ class GameController extends Controller
     {
         $this->service = $service;
     }
-    public $masterView = 'backend.admin.pages.game-management.game.index';
+    public $masterView = 'backend.admin.pages.game-management.game';
     public function index()
     {
         return view($this->masterView);

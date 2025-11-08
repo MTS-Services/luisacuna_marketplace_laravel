@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Admin\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Models\Language;
+use App\Services\LanguageService;
 use Illuminate\Http\Request;
 
 class LanguageController extends Controller
@@ -11,6 +12,7 @@ class LanguageController extends Controller
 
 
     protected $masterView = 'backend.admin.pages.settings.language';
+     public function __construct(protected LanguageService $service) {}
 
     public function index()
     {
@@ -28,35 +30,43 @@ class LanguageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
-
+  
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $encryptedId)
     {
-        $language = Language::find($id);
-        if (!$language) {
+        $data = $this->service->findData(decrypt($encryptedId));
+        if (!$data) {
             abort(404);
         }
         return view($this->masterView, [
-            'language' => $language
+            'data' => $data
         ]);
     }
 
-    public function view(string $id)
+
+     public function view(string $encryptedId)
     {
-        $language = Language::find($id);
-        if (!$language) {
+        $data = $this->service->findData(decrypt($encryptedId));
+        if (!$data) {
             abort(404);
         }
         return view($this->masterView, [
-            'language' => $language
+            'data' => $data
         ]);
     }
+
+    // public function view(string $id)
+    // {
+    //     $data = Language::find($id);
+    //     if (!$data) {
+    //         abort(404);
+    //     }
+    //     return view($this->masterView, [
+    //         'data' => $data
+    //     ]);
+    // }
 
     public function trash()
     {

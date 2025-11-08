@@ -83,19 +83,19 @@
                     // ],
                 ]" />
 
-            <x-backend.navlink type="dropdown" icon="user-group" name="Game Management" :page_slug="$active"
+            <x-backend.navlink type="dropdown" icon="gamepad-directional" name="Game Management" :page_slug="$active"
                 :items="[
-                    [
-                        'name' => 'Games',
-                        'route' => route('admin.gm.game.index'),
-                        'icon' => 'user',
-                        'active' => 'game-management',
-                    ],
                     [
                         'name' => 'Categories',
                         'route' => route('admin.gm.category.index'),
-                        'icon' => 'user',
-                        'active' => 'game-management',
+                        'icon' => 'gamepad-2',
+                        'active' => 'game-category',
+                    ],
+                    [
+                        'name' => 'Games',
+                        'route' => route('admin.gm.game.index'),
+                        'icon' => 'swords',
+                        'active' => 'game',
                     ],
                     // [
                     //     'name' => 'Pending Users',

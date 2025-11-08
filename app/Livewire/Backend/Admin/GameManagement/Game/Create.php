@@ -52,7 +52,7 @@ class Create extends Component
 
         ];
 
-        return view('livewire.backend.admin.components.game-management.game.create', [
+        return view('livewire.backend.admin.game-management.game.create', [
 
             'statuses'   => GameStatus::options(),
 

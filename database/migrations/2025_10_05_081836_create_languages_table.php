@@ -19,11 +19,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('sort_order')->index()->default(0);
             $table->string('locale')->unique()->comment('en, es, fr, bn');
+            $table->string('country_code')->unique()->comment('en, es, fr, bn');
             $table->string('name')->unique()->comment('English, Spanish, France');
             $table->string('native_name')->nullabl()->comment('English, Español');
             $table->string('flag_icon');
             $table->string('status')->index()->default(LanguageStatus::ACTIVE->value);
-            $table->boolean('is_active')->default(false);
+            $table->boolean('is_default')->default(false);
             $table->string('direction')->index()->default(LanguageDirection::LTR->value);
 
             $table->timestamps();

@@ -6,7 +6,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Enums\ProductTypeStatus;
 use App\Livewire\Forms\Backend\Admin\ProductManagement\ProductTypeForm;
-use App\Services\Product\ProductTypeService;
+use App\Services\ProductTypeService;
 use App\Traits\Livewire\WithNotification;
 
 class Create extends Component

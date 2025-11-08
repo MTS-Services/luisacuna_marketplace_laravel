@@ -5,7 +5,7 @@ namespace App\Livewire\Backend\Admin\ReviewManagement\PageView;
 use Livewire\Component;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
-use App\Services\Review\PageViewService;
+use App\Services\PageViewService;
 use App\Traits\Livewire\WithNotification;
 
 class Trash extends Component

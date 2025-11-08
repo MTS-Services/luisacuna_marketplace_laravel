@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Backend\Admin\ReviewManagement;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\Review\PageViewService;
+use App\Services\PageViewService;
 
 class PageViewController extends Controller
 {

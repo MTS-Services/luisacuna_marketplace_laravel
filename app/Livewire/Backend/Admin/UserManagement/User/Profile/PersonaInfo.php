@@ -4,7 +4,7 @@ namespace App\Livewire\Backend\Admin\UserManagement\User\Profile;
 
 use App\Models\User;
 use Livewire\Component;
-use App\Services\User\UserService;
+use App\Services\UserService;
 
 class PersonaInfo extends Component
 {

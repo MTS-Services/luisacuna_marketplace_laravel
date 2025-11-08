@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\Components\Settings\Language;
+namespace App\Livewire\Backend\Admin\Settings\Language;
 
 use App\DTOs\Language\UpdateLanguageDTO;
-use App\Enums\LanguageDirections;
+use App\Enums\LanguageDirection;
 use App\Enums\LanguageStatus;
 use App\Livewire\Forms\Backend\Admin\Settings\LanguageForm;
 use App\Models\Language;
-use App\Services\Admin\LanguageService;
+use App\Services\LanguageService;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Component;
 
@@ -16,25 +16,25 @@ class Edit extends Component
     use WithNotification;
 
     public LanguageForm $form;
-    public Language $language;
+    public Language $data;
 
-    protected LanguageService $languageService;
+    protected LanguageService $service;
 
     /**
      * Inject the LanguageService via the boot method.
      */
-    public function boot(LanguageService $languageService): void
+    public function boot(LanguageService $service): void
     {
-        $this->languageService = $languageService;
+        $this->service = $service;
     }
 
     /**
      * Initialize form with existing language data.
      */
-    public function mount(Language $language): void
+    public function mount(Language $data): void
     {
-        $this->language = $language;
-        $this->form->setLanguage($language);
+        $this->data = $data;
+        $this->form->setData($data);
     }
 
     /**
@@ -42,9 +42,9 @@ class Edit extends Component
      */
     public function render()
     {
-        return view('livewire.backend.admin.components.settings.language.edit', [
+        return view('livewire.backend.admin.settings.language.edit', [
             'statuses' => LanguageStatus::options(),
-            'directions' => LanguageDirections::options(),
+            'directions' => LanguageDirection::options(),
         ]);
     }
 
@@ -53,44 +53,35 @@ class Edit extends Component
      */
     public function save()
     {
-        $this->form->validate();
-
-        // Generate flag icon URL from country code
-        $flagIcon = null;
-        if (!empty($this->form->country_code)) {
-            $flagIcon = 'https://flagcdn.com/' . strtolower($this->form->country_code) . '.svg';
-        }
-
+        $validated = $this->form->validate();
         try {
-            $dto = UpdateLanguageDTO::fromArray([
-                'locale' => $this->form->locale,
-                'name' => $this->form->name,
-                'country_code' => $this->form->country_code,
-                'native_name' => $this->form->native_name,
+
+            $flagIcon = null;
+            if (!empty($validated['country_code'])) {
+                $flagIcon = 'https://flagcdn.com/' . strtolower($validated['country_code']) . '.svg';
+            }
+            $data = array_merge($validated, [
                 'flag_icon' => $flagIcon,
-                'status' => $this->form->status,
-                'is_default' => $this->form->is_default,
-                'direction' => $this->form->direction,
-                'updated_by' => admin()->id
+                'updated_by' => admin()->id,
             ]);
 
-            $updatedLanguage = $this->languageService->updateLanguage($this->language->id, $dto);
 
-            $this->dispatch('languageUpdated');
-            $this->success('Language updated successfully.');
+            $this->service->updateData($this->data->id, $data);
+
+            $this->success('Data updated successfully.');
 
             return $this->redirect(route('admin.as.language.index'), navigate: true);
-
         } catch (\Exception $e) {
-            $this->error('Failed to update language: ' . $e->getMessage());
+            $this->error('Failed to update Data: ' . $e->getMessage());
         }
     }
 
     /**
      * Cancel editing and redirect back to index.
      */
-    public function cancel(): void
+       public function resetForm(): void
     {
-        $this->redirect(route('admin.as.language.index'), navigate: true);
+        $this->form->setData($this->data);
+        $this->form->resetValidation();
     }
 }

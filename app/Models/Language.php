@@ -21,6 +21,7 @@ class Language extends BaseModel implements Auditable
         'status',
         'is_active',
         'direction',
+        'country_code',
 
 
         'created_by',

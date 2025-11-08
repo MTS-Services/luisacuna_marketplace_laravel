@@ -16,10 +16,10 @@ class CreateAction
     public function execute(array $data): Currency
     {
         return DB::transaction(function () use ($data) {
-            $currency = $this->interface->create($data);
+            $findData = $this->interface->create($data);
             // Dispatch event
-            // event(new CurrencyCreated($currency));
-            return $currency->fresh();
+            // event(new CurrencyCreated($findData));
+            return $findData->fresh();
         });
     }
 }

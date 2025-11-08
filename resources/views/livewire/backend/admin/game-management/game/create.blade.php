@@ -18,7 +18,7 @@
                 {{-- Category --}}
                 <div>
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">
-                       {{ __('Category') }} <span class="text-red-500">*</span>
+                        {{ __('Category') }} <span class="text-red-500">*</span>
                     </label>
                     <x-ui.select wire:model="form.game_category_id"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
@@ -33,64 +33,57 @@
                 {{-- Name --}}
 
                 <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">
+                    <x-ui.label class="block text-sm font-medium dark:text-gray-300 mb-2">
                         {{ __('Name') }} <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" wire:model="form.name"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.name')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    </x-ui.label>
+                    <x-ui.input type="text" wire:model="form.name" placeholder="{{ __('Game Name') }}"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
+                    <x-ui.input-error :messages="$errors->get('form.name')" class="mt-2" />
                 </div>
 
                 {{-- Status --}}
 
 
                 <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">
+                    <x-ui.label class="block text-sm font-medium dark:text-gray-300 mb-2">
                         {{ __('Status') }} <span class="text-red-500">*</span>
-                    </label>
+                    </x-ui.label>
                     <x-ui.select wire:model="form.status"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
                         <option value="">{{ __('Select Status') }}</option>
                         @foreach ($statuses as $status)
                             <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
                         @endforeach
-                        </x-ui.select>
-                        <x-ui.input-error :messages="$errors->get('form.status')" class="mt-2" />
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.status')" class="mt-2" />
                 </div>
 
                 {{-- Developer --}}
-
-
                 <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Developer') }}</label>
-                    <input type="text" wire:model="form.developer"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.developer')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <x-ui.label
+                        class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Developer') }}</x-ui.label>
+                    <x-ui.input type="text" wire:model="form.developer"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
+                    <x-ui.input-error :messages="$errors->get('form.developer')" class="mt-2" />
                 </div>
 
                 {{-- Publisher --}}
                 <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Publisher') }}</label>
-                    <input type="text" wire:model="form.publisher"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.publisher')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <x-ui.label
+                        class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Publisher') }}</x-ui.label>
+                    <x-ui.input type="text" wire:model="form.publisher"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
+                    <x-ui.input-error :messages="$errors->get('form.publisher')" class="mt-2" />
                 </div>
 
                 {{-- Release Date --}}
 
                 <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Release Date') }}</label>
-                    <input type="date" wire:model="form.release_date"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.release_date')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <x-ui.label
+                        class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Release Date') }}</x-ui.label>
+                    <x-ui.input type="date" wire:model="form.release_date"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
+                        <x-ui.input-error :messages="$errors->get('form.release_date')" class="mt-2" />
                 </div>
 
                 {{-- Platform (Checkbox) --}}
@@ -100,10 +93,10 @@
                     </label>
                     <div class="flex flex-wrap gap-4">
                         @foreach (['PC', 'PS5', 'Xbox', 'Android', 'iOS'] as $platform)
-                            <label class="flex items-center gap-2">
+                            <x-ui.label class="flex items-center gap-2">
                                 <input type="checkbox" wire:model="form.platform" value="{{ $platform }}">
                                 {{ $platform }}
-                            </label>
+                            </x-ui.label>
                         @endforeach
 
                     </div>
@@ -114,38 +107,36 @@
                 {{-- Description --}}
 
                 <div class="col-span-2">
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Description') }}</label>
-                    <textarea wire:model="form.description" rows="4"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></textarea>
+                    <x-ui.label
+                        class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Description') }}</x-ui.label>
+                    <x-ui.textarea wire:model="form.description" rows="4"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></x-ui.textarea>
                     <x-ui.input-error :messages="$errors->get('form.description')" class="mt-2" />
                 </div>
 
                 {{-- Images --}}
                 <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Logo') }}</label>
-                    <input type="file" wire:model="form.logo"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.logo')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <x-ui.label
+                        class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Logo') }}</x-ui.label>
+                    <x-ui.file-input type="file" wire:model="form.logo"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
+                    <x-ui.input-error :messages="$errors->get('form.')" class="mt-2" />
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Banner') }}</label>
-                    <input type="file" wire:model="form.banner"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.banner')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <x-ui.label
+                        class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Banner') }}</x-ui.label>
+                    <x-ui.file-input type="file" wire:model="form.banner"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
+                    <x-ui.input-error :messages="$errors->get('form.banner')" class="mt-2" />
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Thumbnail') }}</label>
-                    <input type="file" wire:model="form.thumbnail"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.thumbnail')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <x-ui.label
+                        class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Thumbnail') }}</x-ui.label>
+                    <x-ui.file-input type="file" wire:model="form.thumbnail"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
+                    <x-ui.input-error :messages="$errors->get('form.thumbnail')" class="mt-2" />
                 </div>
 
                 <div>
@@ -167,47 +158,39 @@
 
                 {{-- Boolean Checkboxes --}}
                 <div class="flex gap-6 mt-3">
-                    <label class="flex items-center gap-2">
+                    <x-ui.label class="flex items-center gap-2">
                         <input type="checkbox" wire:model="form.is_featured"> {{ __('Featured') }}
-                    </label>
-                    @error('form.is_featured')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                    <label class="flex items-center gap-2">
+                    </x-ui.label>
+                    <x-ui.input-error :messages="$errors->get('form.is_featured')" class="mt-2" />
+                    <x-ui.label class="flex items-center gap-2">
                         <input type="checkbox" wire:model="form.is_trending"> {{ __('Trending') }}
-                    </label>
-                    @error('form.is_trending')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    </x-ui.label>
+                    <x-ui.input-error :messages="$errors->get('form.is_trending')" class="mt-2" />
                 </div>
 
                 {{-- SEO Fields --}}
                 <div class="col-span-2">
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Meta Title') }}</label>
-                    <input type="text" wire:model="form.meta_title"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.meta_title')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <x-ui.label
+                        class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Meta Title') }}</x-ui.label>
+                    <x-ui.input type="text" wire:model="form.meta_title" placeholder="{{ __('Meta Title') }}"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
+                    <x-ui.input-error :messages="$errors->get('form.meta_title')" class="mt-2" />
                 </div>
 
                 <div class="col-span-2">
-                    <label
-                        class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Meta Description') }}</label>
-                    <textarea wire:model="form.meta_description" rows="3"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></textarea>
-                    @error('form.meta_description')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <x-ui.label
+                        class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Meta Description') }}</x-ui.label>
+                    <x-ui.text-editor wire:model="form.meta_description" rows="3"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></x-ui.text-editor>
+                    <x-ui.input-error :messages="$errors->get('form.meta_description')" class="mt-2" />
                 </div>
 
                 <div class="col-span-2">
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Meta Keywords') }}</label>
-                    <textarea wire:model="form.meta_keywords" rows="2"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></textarea>
-                    @error('form.meta_keywords')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <x-ui.label
+                        class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Meta Keywords') }}</x-ui.label>
+                    <x-ui.textarea wire:model="form.meta_keywords" rows="2"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></x-ui.textarea>
+                    <x-ui.input-error :messages="$errors->get('form.meta_keywords')" class="mt-2" />
                 </div>
 
             </div>

@@ -100,7 +100,7 @@ class Index extends Component
 
 
         return view(
-            'livewire.backend.admin.components.game-management.game.index',
+            'livewire.backend.admin.game-management.game.index',
             [
                 'datas' => $datas,
                 'columns' => $columns,

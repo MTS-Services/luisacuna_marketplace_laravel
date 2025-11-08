@@ -119,48 +119,48 @@ class CurrencyRepository implements CurrencyRepositoryInterface
 
     public function update(int $id, array $data): bool
     {
-        $currency = $this->find($id);
+        $findData = $this->find($id);
 
-        if (!$currency) {
+        if (!$findData) {
             return false;
         }
 
-        return $currency->update($data);
+        return $findData->update($data);
     }
 
     public function delete(int $id, int $actionerId): bool
     {
-        $currency = $this->find($id);
+        $findData = $this->find($id);
 
-        if (!$currency) {
+        if (!$findData) {
             return false;
         }
-        $currency->update(['deleted_by' => $actionerId]);
+        $findData->update(['deleted_by' => $actionerId]);
 
-        return $currency->delete();
+        return $findData->delete();
     }
 
     public function forceDelete(int $id): bool
     {
-        $currency = $this->findTrashed($id);
+        $findData = $this->findTrashed($id);
 
-        if (!$currency) {
+        if (!$findData) {
             return false;
         }
 
-        return $currency->forceDelete();
+        return $findData->forceDelete();
     }
 
     public function restore(int $id, int $actionerId): bool
     {
-        $currency = $this->findTrashed($id);
+        $findData = $this->findTrashed($id);
 
-        if (!$currency) {
+        if (!$findData) {
             return false;
         }
-        $currency->update(['restored_by' => $actionerId, 'restored_at' => now()]);
+        $findData->update(['restored_by' => $actionerId, 'restored_at' => now()]);
 
-        return $currency->restore();
+        return $findData->restore();
     }
 
     public function bulkDelete(array $ids, int $actionerId): int

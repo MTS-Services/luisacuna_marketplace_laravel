@@ -3,7 +3,7 @@
 namespace App\Livewire\User;
 
 use App\Enums\UserStatus;
-use App\Services\User\UserService;
+use App\Services\UserService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -64,10 +64,10 @@ class UserList extends Component
             }
 
             $this->userService->deleteUser($this->deleteUserId);
-            
+
             $this->showDeleteModal = false;
             $this->deleteUserId = null;
-            
+
             $this->success('User deleted successfully');
         } catch (\Exception $e) {
             $this->error('Failed to delete user: ' . $e->getMessage());
@@ -98,8 +98,8 @@ class UserList extends Component
     {
         try {
             $userStatus = UserStatus::from($status);
-            
-            match($userStatus) {
+
+            match ($userStatus) {
                 UserStatus::ACTIVE => $this->userService->activateUser($userId),
                 UserStatus::INACTIVE => $this->userService->deactivateUser($userId),
                 UserStatus::SUSPENDED => $this->userService->suspendUser($userId),
@@ -121,7 +121,7 @@ class UserList extends Component
         }
 
         try {
-            match($this->bulkAction) {
+            match ($this->bulkAction) {
                 'delete' => $this->bulkDelete(),
                 'activate' => $this->bulkUpdateStatus(UserStatus::ACTIVE),
                 'deactivate' => $this->bulkUpdateStatus(UserStatus::INACTIVE),
