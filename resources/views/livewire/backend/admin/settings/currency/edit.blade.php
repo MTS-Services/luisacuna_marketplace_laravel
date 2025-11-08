@@ -23,7 +23,7 @@
                     <x-ui.input-error :messages="$errors->get('form.name')" class="mt-2" />
                 </div>
                 <div>
-                    <x-ui.label for="code" :value="__('code')" required />
+                    <x-ui.label for="code" :value="__('Code')" required />
                     <x-ui.input id="code" type="text" class="mt-1 block w-full" wire:model="form.code"
                         placeholder="USD, EUR, GBP, BDT" />
                     <x-ui.input-error :messages="$errors->get('form.code')" class="mt-2" />

@@ -49,14 +49,11 @@ class Create extends Component
      */
     public function save()
     {
-
+        $data = $this->form->validate();
         try {
-            $data = $this->form->validate();
             $data['created_by'] = admin()->id;
             $this->service->createData($data);
-
             $this->success('Data created successfully.');
-
             return $this->redirect(route('admin.as.currency.index'), navigate: true);
         } catch (\Exception $e) {
             $this->error('Failed to create data: ' . $e->getMessage());
