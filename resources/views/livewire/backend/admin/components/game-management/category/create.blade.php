@@ -1,4 +1,7 @@
 <section>
+    @push('styles')
+        <link rel="stylesheet" href="{{ asset('assets/css/ckEditor.css') }}">
+    @endpush
     <div class="glass-card rounded-2xl p-6 mb-6">
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game Category Create') }}</h2>
@@ -17,13 +20,13 @@
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                     {{ __('Icon') }}
                 </h3>
-                <x-ui.file-input wire:model="form.icon" label="Icon" accept="image/*"
-                    :error="$errors->first('form.icon')" hint="Upload a profile picture (Max: 1MB) height: 200px width: 200px" />
+                <x-ui.file-input wire:model="form.icon" label="Icon" accept="image/*" :error="$errors->first('form.icon')"
+                    hint="Upload a profile picture (Max: 1MB) height: 200px width: 200px" />
 
                 @error('form.icon.*')
                     <span class="error">{{ $message }}</span>
                 @enderror
-                
+
             </div>
 
             <!-- Add other form fields here -->
@@ -64,6 +67,15 @@
 
 
             </div>
+
+            {{-- meta description --}}
+            <div class="w-full mt-2">
+                <x-ui.label value="Meta Description" class="mb-1" />
+                <x-ui.text-editor model="form.meta_description" id="text-editor-main-content"
+                    placeholder="Enter your main content here..." :height="350" />
+
+                <x-ui.input-error :messages="$errors->get('form.description')" />
+            </div>
             {{-- description --}}
             <div class="w-full mt-2">
                 <x-ui.label value="Description" class="mb-1" />
@@ -72,20 +84,6 @@
 
                 <x-ui.input-error :messages="$errors->get('form.description')" />
             </div>
-
-            {{-- meta description --}}
-            {{-- <div class="w-full mt-2">
-                <x-ui.label value="Meta Description" class="mb-1" />
-                <x-ui.text-editor model="form.meta_description" id="text-editor-main-content"
-                    placeholder="Enter your main content here..." :height="350" />
-
-                <x-ui.input-error :messages="$errors->get('form.meta_description')" />
-            </div> --}}
-
-            <!-- Form Actions -->
-
-
-
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
                 <x-ui.button wire:click="resetFrom" variant="tertiary" class="w-auto! py-2! ">
