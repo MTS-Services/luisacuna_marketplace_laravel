@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Services\Product;
+namespace App\Services;
 
-use App\Models\ProductType;
-use App\Enums\ProductTypeStatus;
-use App\Actions\ProductType\BulkAction;
-use App\Actions\ProductType\CreateAction;
-use App\Actions\ProductType\DeleteAction;
-use App\Actions\ProductType\UpdateAction;
-use App\Actions\ProductType\RestoreAction;
+use App\Models\Product;
+use App\Enums\ProductStatus;
+use App\Actions\Product\BulkAction;
+use App\Actions\Product\CreateAction;
+use App\Actions\Product\DeleteAction;
+use App\Actions\Product\UpdateAction;
+use App\Actions\Product\RestoreAction;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use App\Repositories\Contracts\ProductTypeRepositoryInterface;
+use App\Repositories\Contracts\ProductRepositoryInterface;
 
-class ProductTypeService
+class ProductService
 {
     /**
      * Create a new class instance.
      */
     public function __construct(
-        protected ProductTypeRepositoryInterface $interface,
+        protected ProductRepositoryInterface $interface,
         protected CreateAction $createAction,
         protected UpdateAction $updateAction,
         protected DeleteAction $deleteAction,
@@ -28,15 +28,18 @@ class ProductTypeService
     ) {}
 
 
+
+
     /* ================== ================== ==================
     *                          Find Methods 
     * ================== ================== ================== */
+
     public function getAll($sortField = 'created_at', $order = 'desc'): Collection
     {
         return $this->interface->all($sortField, $order);
     }
 
-    public function findData($column_value, string $column_name = 'id'): ?ProductType
+    public function findData($column_value, string $column_name = 'id'): ?Product
     {
         return $this->interface->find($column_value, $column_name);
     }
@@ -67,10 +70,13 @@ class ProductTypeService
     }
 
 
+
+
+
     /* ================== ================== ==================
     *                   Action Executions
     * ================== ================== ================== */
-    public function createData(array $data): ProductType
+    public function createData(array $data): Product
     {
         return $this->createAction->execute($data);
     }
@@ -96,7 +102,7 @@ class ProductTypeService
         return $this->restoreAction->execute($id, $actionerId);
     }
 
-    public function updateStatusData(int $id, ProductTypeStatus $status, ?int $actionerId = null): ProductType
+    public function updateStatusData(int $id, ProductStatus $status, ?int $actionerId = null): Product
     {
         if ($actionerId == null) {
             $actionerId = admin()->id;
@@ -105,6 +111,7 @@ class ProductTypeService
         return $this->updateAction->execute($id, [
             'status' => $status->value,
             'updater_type' => $actionerId,
+            // 'updated_by' => $actionerId,
         ]);
     }
 
@@ -133,7 +140,7 @@ class ProductTypeService
         return $this->bulkAction->execute(ids: $ids, action: 'delete', status: null, actionerId: $actionerId);
     }
 
-    public function bulkUpdateStatus(array $ids, ProductTypeStatus $status, ?int $actionerId = null): int
+    public function bulkUpdateStatus(array $ids, ProductStatus $status, ?int $actionerId = null): int
     {
         if ($actionerId == null) {
             $actionerId = admin()->id;

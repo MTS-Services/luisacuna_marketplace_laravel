@@ -7,7 +7,7 @@ use App\Models\ProductType;
 use Livewire\Attributes\Locked;
 use App\Enums\ProductTypeStatus;
 use App\Traits\Livewire\WithNotification;
-use App\Services\Product\ProductTypeService;
+use App\Services\ProductTypeService;
 use App\Livewire\Forms\Backend\Admin\ProductManagement\ProductTypeForm;
 
 class Edit extends Component
