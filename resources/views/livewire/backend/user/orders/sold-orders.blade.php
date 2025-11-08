@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="relative w-full sm:w-56">
-                    <x-ui.input type="text" placeholder="Search" class="pl-5" />
+                    <x-ui.input type="text" placeholder="{{ __('Search') }}" class="pl-5" />
                     <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                         <x-phosphor-magnifying-glass class="w-5 h-5 fill-text-text-white" />
                     </div>
@@ -34,7 +34,7 @@
             <div class="w-full md:w-auto">
                 <x-ui.button class="w-auto py!">
                     <x-phosphor-download class="w-5 h-5 fill-text-text-white" />
-                    <span>Download invoice</span>
+                    <span>{{__('Download invoice')}}</span>
                 </x-ui.button>
             </div>
 

@@ -1,8 +1,8 @@
 <div class="container mx-auto px-4 py-8">
     <div class="mb-6 flex justify-between items-center">
-        <h1 class="text-3xl font-bold">Users</h1>
+        <h1 class="text-3xl font-bold">{{__('Users')}}</h1>
         <a href="{{ route('users.create') }}" wire:navigate class="btn btn-primary">
-            Create User
+            {{__('Create User')}}
         </a>
     </div>
 
@@ -17,7 +17,7 @@
 
                 <div>
                     <select wire:model.live="statusFilter" class="form-select w-full">
-                        <option value="">All Statuses</option>
+                        <option value="">{{__('All Statuses')}}</option>
                         @foreach ($statuses as $status)
                             <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
                         @endforeach
@@ -26,16 +26,16 @@
 
                 <div>
                     <select wire:model.live="perPage" class="form-select w-full">
-                        <option value="10">10 per page</option>
-                        <option value="15">15 per page</option>
-                        <option value="25">25 per page</option>
-                        <option value="50">50 per page</option>
+                        <option value="10">{{__('10 per page')}}</option>
+                        <option value="15">{{__('15 per page')}}</option>
+                        <option value="25">{{__('25 per page')}}</option>
+                        <option value="50">{{__('50 per page')}}</option>
                     </select>
                 </div>
 
                 <div>
                     <button wire:click="resetFilters" class="btn btn-secondary w-full">
-                        Reset Filters
+                        {{ __('Reset Filters') }}
                     </button>
                 </div>
             </div>
@@ -47,19 +47,19 @@
         <div class="card mb-4 bg-blue-50">
             <div class="card-body">
                 <div class="flex items-center gap-4">
-                    <span class="font-medium">{{ count($selectedIds) }} selected</span>
+                    <span class="font-medium">{{ count($selectedIds) }} {{__('selected')}}</span>
 
                     <select wire:model.live="bulkAction" class="form-select">
-                        <option value="">Select Action</option>
-                        <option value="delete">Delete</option>
-                        <option value="activate">Activate</option>
-                        <option value="deactivate">Deactivate</option>
-                        <option value="suspend">Suspend</option>
+                        <option value="">{{__('Select Action')}}</option>
+                        <option value="delete">{{__('Delete')}}</option>
+                        <option value="activate">{{__('Activate')}}</option>
+                        <option value="deactivate">{{__('Deactivate')}}</option>
+                        <option value="suspend">{{__('Suspend')}}</option>
                     </select>
 
                     <button wire:click="executeBulkAction" class="btn btn-primary"
                         @if (empty($bulkAction)) disabled @endif>
-                        Execute
+                        {{__('Execute')}}
                     </button>
                 </div>
             </div>
@@ -76,38 +76,38 @@
                             <input type="checkbox" wire:model.live="selectAll" class="form-checkbox">
                         </th>
                         <th wire:click="sortBy('id')" class="cursor-pointer">
-                            ID
+                            {{ __('ID') }}
                             @if ($sortField === 'id')
                                 <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                             @endif
                         </th>
-                        <th>Avatar</th>
+                        <th>{{__('Avatar')}}</th>
                         <th wire:click="sortBy('name')" class="cursor-pointer">
-                            Name
+                            {{ __('Name') }}
                             @if ($sortField === 'name')
                                 <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                             @endif
                         </th>
                         <th wire:click="sortBy('email')" class="cursor-pointer">
-                            Email
+                            {{ __('Email') }}
                             @if ($sortField === 'email')
                                 <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                             @endif
                         </th>
-                        <th>Phone</th>
+                        <th>{{__('Phone')}}</th>
                         <th wire:click="sortBy('status')" class="cursor-pointer">
-                            Status
+                            {{ __('Status') }}
                             @if ($sortField === 'status')
                                 <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                             @endif
                         </th>
                         <th wire:click="sortBy('created_at')" class="cursor-pointer">
-                            Created At
+                            {{ __('Created At') }}
                             @if ($sortField === 'created_at')
                                 <span>{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                             @endif
                         </th>
-                        <th class="text-right">Actions</th>
+                        <th class="text-right">{{__('Actions')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -135,23 +135,23 @@
                                 <div class="flex justify-end gap-2">
                                     <a href="{{ route('users.edit', $user->id) }}" wire:navigate
                                         class="btn btn-sm btn-info">
-                                        Edit
+                                        {{__('Edit')}}
                                     </a>
 
                                     @if ($user->trashed())
                                         <button wire:click="restore({{ $user->id }})"
                                             class="btn btn-sm btn-success">
-                                            Restore
+                                            {{ __('Restore') }}
                                         </button>
                                         <button wire:click="forceDelete({{ $user->id }})"
                                             wire:confirm="Are you sure you want to permanently delete this user?"
                                             class="btn btn-sm btn-danger">
-                                            Delete Forever
+                                            {{ __('Delete Forever') }}
                                         </button>
                                     @else
                                         <button wire:click="confirmDelete({{ $user->id }})"
                                             class="btn btn-sm btn-danger">
-                                            Delete
+                                            {{ __('Delete') }}
                                         </button>
                                     @endif
                                 </div>
@@ -160,7 +160,7 @@
                     @empty
                         <tr>
                             <td colspan="9" class="text-center py-8 text-gray-500">
-                                No users found
+                                {{__('No users found')}}
                             </td>
                         </tr>
                     @endforelse
@@ -180,18 +180,18 @@
             <div class="modal-backdrop" @click="show = false"></div>
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title">Confirm Delete</h3>
+                    <h3 class="modal-title">{{__('Confirm Delete')}}</h3>
                     <button @click="show = false" class="modal-close">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to delete this user?</p>
+                    <p>{{__('Are you sure you want to delete this user?')}}</p>
                 </div>
                 <div class="modal-footer">
                     <button wire:click="$set('showDeleteModal', false)" class="btn btn-secondary">
-                        Cancel
+                        {{ __('Cancel') }}
                     </button>
                     <button wire:click="delete" class="btn btn-danger">
-                        Delete
+                        {{__('Delete')}}
                     </button>
                 </div>
             </div>

@@ -1,13 +1,12 @@
 <?php
- 
+
 use App\Traits\AuditColumnsTrait;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
- 
-return new class extends Migration
-{
-     use AuditColumnsTrait;
+
+return new class extends Migration {
+    use AuditColumnsTrait;
     /**
      * Run the migrations.
      */
@@ -15,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('kyc_form_fields', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('section_id');
             $table->string('field_key');
             $table->string('label');
@@ -24,16 +23,16 @@ return new class extends Migration
             $table->json('validation_rules')->nullable()->comment('{"min": 2, "max": 20, "regex": "^[A-Z0-9]+$"}');
             $table->json('options')->nullable()->comment('["for dropdown/radio"]');
             $table->string('example');
-            
+
 
             $table->foreign('section_id')->references('id')->on('kyc_form_sections')->cascadeOnDelete()->cascadeOnUpdate();
             $table->softDeletes();
             $table->timestamps();
- 
+
             $this->addAdminAuditColumns($table);
         });
     }
- 
+
     /**
      * Reverse the migrations.
      */

@@ -35,7 +35,7 @@
 
             <div class="pt-4 pb-2">
                 <p class="text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
-                    x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)">Management</p>
+                    x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)">{{__('Management')}}</p>
                 <p class="text-center text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
                     x-show="desktop && !sidebar_expanded">...</p>
             </div>
@@ -111,6 +111,62 @@
                     // ],
                 ]" />
 
+                <x-backend.navlink type="dropdown" icon="user-group" name="Product Management" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'Product Types',
+                        'route' => route('admin.pm.productType.index'),
+                        'icon' => 'user',
+                        'active' => 'product-type',
+                    ],
+                    [
+                        'name' => 'Products',
+                        'route' => route('admin.pm.product.index'),
+                        'icon' => 'user',
+                        'active' => 'product',
+                    ],
+                    // [
+                    //     'name' => 'Pending Users',
+                    //     'route' => '#',
+                    //     'icon' => 'user-plus',
+                    //     'active' => 'admin-users-pending',
+                    // ],
+                    // [
+                    //     'name' => 'Banned Users',
+                    //     'route' => '#',
+                    //     'icon' => 'user-round-x',
+                    //     'active' => 'admin-users-banned',
+                    // ],
+                ]" />
+
+                <x-backend.navlink type="dropdown" icon="user-group" name="Review Management" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'Page View',
+                        'route' => route('admin.rm.review.index'),
+                        'icon' => 'user',
+                        'active' => 'rewiew-management',
+                    ],
+                    // [
+                    //     'name' => 'Products',
+                    //     'route' => route('admin.pm.product.index'),
+                    //     'icon' => 'user',
+                    //     'active' => 'product',
+                    // ],
+                    // [
+                    //     'name' => 'Pending Users',
+                    //     'route' => '#',
+                    //     'icon' => 'user-plus',
+                    //     'active' => 'admin-users-pending',
+                    // ],
+                    // [
+                    //     'name' => 'Banned Users',
+                    //     'route' => '#',
+                    //     'icon' => 'user-round-x',
+                    //     'active' => 'admin-users-banned',
+                    // ],
+                ]" />
+
                 <x-backend.navlink type="dropdown" icon="user-group" name="Audit Log Management" :page_slug="$active"
                 :items="[
                     [
@@ -119,12 +175,12 @@
                         'icon' => 'user',
                         'active' => 'audit-log-management',
                     ],
-                  
+
                 ]" />
-                
+
             <div class="pt-4 pb-2">
                 <p class="text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
-                    x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)">Settings & Tools</p>
+                    x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)">{{__('Settings & Tools')}}</p>
                 <p class="text-center text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
                     x-show="desktop && !sidebar_expanded">...</p>
             </div>

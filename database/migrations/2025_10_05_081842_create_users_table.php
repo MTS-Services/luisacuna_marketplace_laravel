@@ -9,8 +9,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     use AuditColumnsTrait;
 
     /**
@@ -21,7 +20,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('country_id')->nullable();
 
             $table->string('username')->unique();
@@ -44,7 +43,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
 
-            $table->string('phone')->nullable();
+            $table->string('phone')->nullable()->unique();
             $table->timestamp('phone_verified_at')->nullable();
 
             $table->string('user_type')->index()->default(UserType::BUYER->value);
@@ -98,6 +97,6 @@ return new class extends Migration
         Schema::dropIfExists('sessions');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('users');
-        Schema::dropIfExists('google_id',);
+        Schema::dropIfExists('google_id', );
     }
 };

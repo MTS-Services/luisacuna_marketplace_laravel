@@ -14,15 +14,15 @@
 
                         <!-- Header -->
                         <div class="mb-6 text-center">
-                            <h2 class="text-3xl sm:text-4xl font-medium text-text-white">Create Password</h2>
+                            <h2 class="text-3xl sm:text-4xl font-medium text-text-white">{{__('Create Password')}}</h2>
                             <p class="text-text-white lg:text-xl sm:text-lg mt-2">
-                                Hi! Welcome back, you’ve been missed
+                                {{ __('Hi! Welcome back, you’ve been missed') }}
                             </p>
                         </div>
 
                         <!-- Email -->
                         <div class="mb-4 sm:mb-6 px-2 sm:px-6">
-                            <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">Email</label>
+                            <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">{{__('Email')}}</label>
                             <x-ui.input type="email" placeholder="example@gmail.com" disabled wire:model="email"
                                />
                         </div>
@@ -33,7 +33,7 @@
 
                         <!-- Password -->
                         <div class="mb-2 sm:mb-6 px-2 sm:px-6">
-                            <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">Password</label>
+                            <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">{{__('Password')}}</label>
 
                             <div class="relative">
                                 <x-ui.input type="password" id="password" placeholder="Aex@8465" wire:model="password"
@@ -57,8 +57,8 @@
 
                         <!-- Confirm Password -->
                         <div class="mb-2 sm:mb-6 px-2 sm:px-6">
-                            <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">Confirm
-                                Password</label>
+                            <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">{{__('Confirm
+                                Password')}}</label>
 
                             <div class="relative">
                                 <x-ui.input type="password" id="confirmPassword" placeholder="Aex@8465"
@@ -84,7 +84,7 @@
                         <div class="flex justify-center mb-6 px-2 sm:px-6">
                             <button type="submit"
                                 class="bg-zinc-600 hover:bg-zinc-700 transition-colors text-text-white font-medium py-3 w-full sm:w-auto sm:px-24 md:px-48 rounded-full">
-                                Sign in
+                                {{__('Sign in')}}
                             </button>
                         </div>
                     </div>

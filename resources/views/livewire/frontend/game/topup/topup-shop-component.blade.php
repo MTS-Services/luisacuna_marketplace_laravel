@@ -79,7 +79,7 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <a href="{{ route('boost.buy-now') }}" wire:navigate>
         <div class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-            <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
+            <h3 class="text-lg font-medium mb-3">{{ __('Instant EA Sports FC Coins: Build your Ultimate Team now!') }}
                 {{ __('Get fast, secure, and cheap EA Sports FC Coins instantly.') }}</h3>
             <div class="flex gap-1 text-sm text-text-secondary py-4">
                 <span class="flex items-center gap-1 px-2 py-1  text-white text-text-white bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-text-secondary "><img src="{{ asset('assets/images/light.png') }}" alt=""> {{ __('Pc') }}</span>
@@ -102,7 +102,7 @@
 
     <a href="{{ route('boost.buy-now') }}" wire:navigate>
         <div class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-            <h3 class="text-lg font-medium mb-3">Custom Offer! 2,000 Trophies, Prestige, 100K Push. Ultra
+            <h3 class="text-lg font-medium mb-3">{{ __('Custom Offer! 2,000 Trophies, Prestige, 100K Push. Ultra') }}
                 {{ __('Fast Delivery. Text me for info. Do not purchase directly.') }}</h3>
             <div class="flex gap-4 text-sm text-slate-400 py-4">
                 <span class="flex items-center gap-1 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white "><img src="{{ asset('assets/images/light.png') }}" alt=""> {{ __('Pc') }}</span>
@@ -125,7 +125,7 @@
 
     <a href="{{ route('boost.buy-now') }}" wire:navigate>
         <div class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-            <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
+            <h3 class="text-lg font-medium mb-3">{{ __('Instant EA Sports FC Coins: Build your Ultimate Team now!') }}
                 {{ __('Get fast, secure, and cheap EA Sports FC Coins instantly.') }}</h3>
             <div class="flex gap-4 text-sm text-slate-400 py-4">
                 <span class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img src="{{ asset('assets/images/light.png') }}" alt=""> {{ __('Pc') }}</span>
@@ -148,7 +148,7 @@
 
     <a href="{{ route('boost.buy-now') }}" wire:navigate>
         <div class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-            <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
+            <h3 class="text-lg font-medium mb-3">{{ __('Instant EA Sports FC Coins: Build your Ultimate Team now!') }}
                 {{ __('Get fast, secure, and cheap EA Sports FC Coins instantly.') }}</h3>
             <div class="flex gap-4 text-sm text-slate-400 py-4">
                 <span class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img src="{{ asset('assets/images/light.png') }}" alt=""> {{ __('Pc') }}</span>
@@ -171,7 +171,7 @@
 
     <a href="{{ route('boost.buy-now') }}" wire:navigate>
         <div class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-            <h3 class="text-lg font-medium mb-3">Custom Offer! 2,000 Trophies, Prestige, 100K Push. Ultra
+            <h3 class="text-lg font-medium mb-3">{{ __('Custom Offer! 2,000 Trophies, Prestige, 100K Push. Ultra') }}
                 {{ __('Fast Delivery. Text me for info. Do not purchase directly.') }}</h3>
             <div class="flex gap-4 text-sm text-slate-400 py-4">
                 <span class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img src="{{ asset('assets/images/light.png') }}" alt=""> {{ __('Pc') }}</span>
@@ -194,7 +194,7 @@
 
     <a href="{{ route('boost.buy-now') }}" wire:navigate>
         <div class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-            <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
+            <h3 class="text-lg font-medium mb-3">{{ __('Instant EA Sports FC Coins: Build your Ultimate Team now!') }}
                 {{ __('Get fast, secure, and cheap EA Sports FC Coins instantly.') }}</h3>
             <div class="flex gap-4 text-sm text-slate-400 py-4">
                 <span class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img src="{{ asset('assets/images/light.png') }}" alt=""> {{ __('Pc') }}</span>
@@ -217,7 +217,7 @@
 
     <a href="{{ route('boost.buy-now') }}" wire:navigate>
         <div class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-            <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
+            <h3 class="text-lg font-medium mb-3">{{ __('Instant EA Sports FC Coins: Build your Ultimate Team now!') }}
                 {{ __('Get fast, secure, and cheap EA Sports FC Coins instantly.') }}</h3>
             <div class="flex gap-4 text-sm text-slate-400 py-4">
                 <span class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img src="{{ asset('assets/images/light.png') }}" alt=""> {{ __('Pc') }}</span>
@@ -240,7 +240,7 @@
 
     <a href="{{ route('boost.buy-now') }}" wire:navigate>
         <div class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-            <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
+            <h3 class="text-lg font-medium mb-3">{{ __('Instant EA Sports FC Coins: Build your Ultimate Team now!') }}
                 {{ __('Get fast, secure, and cheap EA Sports FC Coins instantly.') }}</h3>
             <div class="flex gap-4 text-sm text-slate-400 py-4">
                 <span class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img src="{{ asset('assets/images/light.png') }}" alt=""> {{ __('Pc') }}</span>
@@ -263,7 +263,7 @@
 
     <a href="{{ route('boost.buy-now') }}" wire:navigate>
         <div class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-            <h3 class="text-lg font-medium mb-3">Instant EA Sports FC Coins: Build your Ultimate Team now!
+            <h3 class="text-lg font-medium mb-3">{{ __('Instant EA Sports FC Coins: Build your Ultimate Team now!') }}
                 {{ __('Get fast, secure, and cheap EA Sports FC Coins instantly.') }}</h3>
             <div class="flex gap-4 text-sm text-slate-400 py-4">
                 <span class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img src="{{ asset('assets/images/light.png') }}" alt=""> {{ __('Pc') }}</span>

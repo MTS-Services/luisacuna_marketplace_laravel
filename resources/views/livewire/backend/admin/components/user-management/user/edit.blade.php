@@ -65,9 +65,13 @@
                     </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.country_id')" />
                 </div>
-                <div class="w-full">
+                 <div class="w-full">
                     <x-ui.label value="Langugae" class="mb-1" />
-                    <x-ui.input type="text" placeholder="Langugae" wire:model="form.language" />
+                    <x-ui.select wire:model="form.language">
+                        @foreach ($languages as $language)
+                            <option value="{{ $language['id'] }}">{{ $language['name'] }}</option>
+                        @endforeach
+                    </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.language')" />
                 </div>
                 <div class="w-full">
@@ -113,10 +117,10 @@
 
                 <x-ui.button class="w-auto! py-2!" type="submit">
                     <span wire:loading.remove wire:target="save"
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary">Update
-                        User</span>
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{__('Update
+                        User')}}</span>
                     <span wire:loading wire:target="save"
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary">Updating...</span>
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{__('Updating...')}}</span>
                 </x-ui.button>
             </div>
         </form>

@@ -3,18 +3,19 @@
 namespace App\Http\Controllers\Backend\Admin\GameManagement;
 
 use App\Http\Controllers\Controller;
-use App\Models\GameCategory;
-use App\Services\Game\GameCategoryService;
+
+use App\Services\GameCategoryService;
+use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
 
     
     protected $masterView = 'backend.admin.pages.game-management.category.index';
-    protected GameCategoryService $gameCategoryService;
-    public function __construct(GameCategoryService $gameCategoryService)
+    protected GameCategoryService $service;
+    public function __construct(GameCategoryService $service)
     {
-        $this->gameCategoryService = $gameCategoryService;
+        $this->service = $service;
     }
     public function index()
     {
@@ -26,18 +27,25 @@ class CategoryController extends Controller
         return view($this->masterView);
     }
 
-    public function edit($id)
+    public function edit($id):View
     {
-        $category = $this->gameCategoryService->findOrFail($id);
+
+        $data = $this->service->findData(decrypt($id));
         return view($this->masterView , [
-            'category'  => $category
+            'data'  => $data
         ]);
     }
     public function show($id)
     {
-        $category = $this->gameCategoryService->findOrFail($id);
+        
+      
+        $data = $this->service->findData(decrypt($id));
+        if (!$data) {
+            abort(404);
+        }
+
         return view($this->masterView , [
-            'category'  => $category
+            'data'  => $data
         ]);
     }
 

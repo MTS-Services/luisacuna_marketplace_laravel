@@ -3,8 +3,7 @@
 namespace App\Livewire\Backend\Admin\Components\AdminManagement\Admin;
 
 use App\Enums\AdminStatus;
-use App\Models\Admin;
-use App\Services\Admin\AdminService;
+use App\Services\AdminService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -22,16 +21,16 @@ class Index extends Component
 
     protected $listeners = ['adminCreated' => '$refresh', 'adminUpdated' => '$refresh'];
 
-    protected AdminService $adminService;
+    protected AdminService $service;
 
-    public function boot(AdminService $adminService)
+    public function boot(AdminService $service)
     {
-        $this->adminService = $adminService;
+        $this->service = $service;
     }
 
     public function render()
     {
-        $admins = $this->adminService->getAdminsPaginated(
+        $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
@@ -82,18 +81,15 @@ class Index extends Component
                 'label' => 'Created',
                 'sortable' => true,
                 'format' => function ($admin) {
-                    return '<div class="text-sm">' .
-                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $admin->created_at->format('M d, Y') . '</div>' .
-                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $admin->created_at->format('h:i A') . '</div>' .
-                        '</div>';
+                    return $admin->created_at_formatted;
                 }
             ],
             [
                 'key' => 'created_by',
                 'label' => 'Created By',
                 'format' => function ($admin) {
-                    return $admin->createdBy
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $admin->createdBy->name . '</span>'
+                    return optional($admin->creater_admin)->name
+                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . e($admin->creater_admin->name) . '</span>'
                         : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
                 }
             ],
@@ -122,10 +118,11 @@ class Index extends Component
             ['value' => 'activate', 'label' => 'Activate'],
             ['value' => 'deactivate', 'label' => 'Deactivate'],
             ['value' => 'suspend', 'label' => 'Suspend'],
+            ['value' => 'pending', 'label' => 'Pending'],
         ];
 
         return view('livewire.backend.admin.components.admin-management.admin.index', [
-            'admins' => $admins,
+            'datas' => $datas,
             'statuses' => AdminStatus::options(),
             'columns' => $columns,
             'actions' => $actions,
@@ -138,7 +135,7 @@ class Index extends Component
         $this->deleteAdminId = $adminId;
         $this->showDeleteModal = true;
     }
-    
+
     public function delete(): void
     {
         // dd($this->deleteAdminId);
@@ -152,7 +149,7 @@ class Index extends Component
                 return;
             }
 
-            $this->adminService->deleteAdmin($this->deleteAdminId);
+            $this->service->deleteData($this->deleteAdminId);
 
             $this->showDeleteModal = false;
             $this->deleteAdminId = null;
@@ -169,15 +166,16 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function changeStatus($adminId, $status): void
+    public function changeStatus($id, $status): void
     {
         try {
             $adminStatus = AdminStatus::from($status);
 
             match ($adminStatus) {
-                AdminStatus::ACTIVE => $this->adminService->activateAdmin($adminId),
-                AdminStatus::INACTIVE => $this->adminService->deactivateAdmin($adminId),
-                AdminStatus::SUSPENDED => $this->adminService->suspendAdmin($adminId),
+                AdminStatus::ACTIVE => $this->service->updateStatusData($id, AdminStatus::ACTIVE),
+                AdminStatus::INACTIVE => $this->service->updateStatusData($id, AdminStatus::INACTIVE),
+                AdminStatus::PENDING => $this->service->updateStatusData($id, AdminStatus::SUSPENDED),
+                AdminStatus::SUSPENDED => $this->service->updateStatusData($id, AdminStatus::PENDING),
                 default => null,
             };
 
@@ -208,6 +206,7 @@ class Index extends Component
                 'activate' => $this->bulkUpdateStatus(AdminStatus::ACTIVE),
                 'deactivate' => $this->bulkUpdateStatus(AdminStatus::INACTIVE),
                 'suspend' => $this->bulkUpdateStatus(AdminStatus::SUSPENDED),
+                'pending' => $this->bulkUpdateStatus(AdminStatus::PENDING),
                 default => null,
             };
 
@@ -221,13 +220,14 @@ class Index extends Component
 
     protected function bulkDelete(): void
     {
-        $count = $this->adminService->bulkDeleteAdmins($this->selectedIds);
+        $count = $this->service->bulkDeleteData($this->selectedIds, admin()->id);
+
         $this->success("{$count} Admins deleted successfully");
     }
 
     protected function bulkUpdateStatus(AdminStatus $status): void
     {
-        $count = $this->adminService->bulkUpdateStatus($this->selectedIds, $status);
+        $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
         $this->success("{$count} Admins updated successfully");
     }
 
@@ -243,7 +243,7 @@ class Index extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->adminService->getAdminsPaginated(
+        return $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

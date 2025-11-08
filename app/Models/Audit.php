@@ -89,7 +89,7 @@ class Audit extends AuditModel
      */
     public function getGuardDisplayNameAttribute(): string
     {
-        return match($this->user_type) {
+        return match ($this->user_type) {
             'App\Models\User' => 'User',
             'App\Models\Admin' => 'Admin',
             default => 'System',
@@ -124,11 +124,11 @@ class Audit extends AuditModel
         if (is_bool($value)) {
             return $value ? 'Yes' : 'No';
         }
-        
+
         if (is_null($value)) {
             return 'N/A';
         }
-        
+
         return $value;
     }
 
@@ -140,7 +140,7 @@ class Audit extends AuditModel
         if ($this->user) {
             return $this->user->name ?? $this->user->email ?? 'Unknown User';
         }
-        
+
         return 'System';
     }
 
@@ -203,51 +203,36 @@ class Audit extends AuditModel
     }
 
 
-     /* ================================================================
-     * *** PROPERTIES ***
-     ================================================================ */
+    /* ================================================================
+    * *** PROPERTIES ***
+    ================================================================ */
 
     protected $appends = [
         'created_at_human',
         'updated_at_human',
         'deleted_at_human',
+        'restored_at_human',
 
         'created_at_formatted',
         'updated_at_formatted',
         'deleted_at_formatted',
+        'restored_at_formatted',
     ];
 
     /* ================================================================
      * *** Relations ***
      ================================================================ */
-
-
-    public function createdBy()
-    {
-        return $this->belongsTo(User::class, 'created_by')->select('id', 'name', 'status');
-    }
-
-    public function updatedBy()
-    {
-        return $this->belongsTo(User::class, 'updated_by')->select('id', 'name', 'status');
-    }
-
-    public function deletedBy()
-    {
-        return $this->belongsTo(User::class, 'deleted_by')->select('id', 'name', 'status');
-    }
-
-    public function creater()
+    public function creater(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function updater()
+    public function updater(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function deleter()
+    public function deleter(): MorphTo
     {
         return $this->morphTo();
     }
@@ -258,36 +243,44 @@ class Audit extends AuditModel
 
     public function getCreatedAtHumanAttribute(): string
     {
-        return $this->created_at->diffForHumans();
+        return dateTimeHumanFormat($this->attributes['created_at']);
     }
 
     public function getUpdatedAtHumanAttribute(): string
     {
-        return $this->updated_at->diffForHumans();
+        return dateTimeHumanFormat($this->attributes['updated_at'], $this->attributes['created_at']);
     }
 
     public function getDeletedAtHumanAttribute(): ?string
     {
-        return $this->deleted_at?->diffForHumans();
+        return dateTimeHumanFormat($this->attributes['deleted_at']);
+    }
+    public function getRestoredAtHumanAttribute(): ?string
+    {
+        return dateTimeHumanFormat($this->attributes['restored_at']);
     }
 
     public function getCreatedAtFormattedAttribute(): string
     {
-        return Carbon::parse($this->created_at)->format('d M, Y h:i A');
+        return dateTimeFormat($this->attributes['created_at']);
     }
 
     public function getUpdatedAtFormattedAttribute(): string
     {
-        return Carbon::parse($this->updated_at)->format('d M, Y h:i A');
+        return dateTimeFormat($this->attributes['updated_at'], $this->attributes['created_at']);
     }
 
     public function getDeletedAtFormattedAttribute(): string
     {
-        return Carbon::parse($this->deleted_at)->format('d M, Y h:i A');
+        return dateTimeFormat($this->attributes['deleted_at']);
+    }
+    public function getRestoredAtFormattedAttribute(): string
+    {
+        return dateTimeFormat($this->attributes['restored_at']);
     }
 
 
-       public function scopeSearch($query, $search)
+    public function scopeSearch($query, $search)
     {
         return $query->where(function ($q) use ($search) {
             $q->where('event', 'like', "%{$search}%")

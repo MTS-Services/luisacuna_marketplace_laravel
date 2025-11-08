@@ -7,32 +7,38 @@ use App\Models\GameCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Faker\Factory as Faker;
+
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\GameCategory>
  */
 class GameCategoryFactory extends Factory
 {
-       protected  $model = GameCategory::class;
+    protected  $model = GameCategory::class;
 
-       
+
     public function definition(): array
     {
-            $faker = Faker::create();
-            return [
-                    'sort_order' => $faker->numberBetween(1, 1000),
-                    'name' => $name = ucfirst($faker->unique()->name()),
-                    'slug' => Str::slug($name),
+        $faker = Faker::create();
+        return [
+            'sort_order' => $faker->numberBetween(1, 1000),
+            'name' => $name = ucfirst($faker->unique()->word()),
+            'slug' => Str::slug($name),
+            'description' => $faker->sentence(),
+            'meta_title' => $faker->sentence(3),
+            'meta_description' => $faker->paragraph(),
+            'icon' => null,
+            'is_featured' => $faker->boolean(),
+            'status' => GameCategoryStatus::ACTIVE->value,
 
+            'created_by' => 1,
+            'updated_by' => 1,
+            'deleted_by' => null,
+            'restored_by' => null,
+            'restored_at' => null,
 
-
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                    'deleted_at' => null,
-
-                    'creater_id' => 1,
-                    'updater_id' => 1,
-                    'deleter_id' => null,
-                    'status' => GameCategoryStatus::ACTIVE->value,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'deleted_at' => null,
         ];
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e5cead9c6ed40e4e9b9d4b07df7ebdf2",
+    "content-hash": "a2c30f9777835a30312900ebc46c72f0",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1438,16 +1438,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v12.36.1",
+            "version": "v12.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "cad110d7685fbab990a6bb8184d0cfd847d7c4d8"
+                "reference": "3c3c4ad30f5b528b164a7c09aa4ad03118c4c125"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/cad110d7685fbab990a6bb8184d0cfd847d7c4d8",
-                "reference": "cad110d7685fbab990a6bb8184d0cfd847d7c4d8",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/3c3c4ad30f5b528b164a7c09aa4ad03118c4c125",
+                "reference": "3c3c4ad30f5b528b164a7c09aa4ad03118c4c125",
                 "shasum": ""
             },
             "require": {
@@ -1653,7 +1653,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-10-29T14:20:57+00:00"
+            "time": "2025-11-04T15:39:33+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -1716,16 +1716,16 @@
         },
         {
             "name": "laravel/scout",
-            "version": "v10.20.0",
+            "version": "v10.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/scout.git",
-                "reference": "a04d7a8eb27b66c8b7edb7e0c6a078e9e78c4f5b"
+                "reference": "412c72f7b0b666afb9b09d0e150a7d5078c7ebd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/scout/zipball/a04d7a8eb27b66c8b7edb7e0c6a078e9e78c4f5b",
-                "reference": "a04d7a8eb27b66c8b7edb7e0c6a078e9e78c4f5b",
+                "url": "https://api.github.com/repos/laravel/scout/zipball/412c72f7b0b666afb9b09d0e150a7d5078c7ebd4",
+                "reference": "412c72f7b0b666afb9b09d0e150a7d5078c7ebd4",
                 "shasum": ""
             },
             "require": {
@@ -1793,7 +1793,7 @@
                 "issues": "https://github.com/laravel/scout/issues",
                 "source": "https://github.com/laravel/scout"
             },
-            "time": "2025-10-14T14:09:26+00:00"
+            "time": "2025-11-04T15:48:12+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -2765,16 +2765,16 @@
         },
         {
             "name": "livewire/volt",
-            "version": "v1.8.0",
+            "version": "v1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/volt.git",
-                "reference": "2d9783a340d612d32f4ffd38070780ca7d7e9205"
+                "reference": "4b289eef2f15398987a923d9f813cad6a6a19ea4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/volt/zipball/2d9783a340d612d32f4ffd38070780ca7d7e9205",
-                "reference": "2d9783a340d612d32f4ffd38070780ca7d7e9205",
+                "url": "https://api.github.com/repos/livewire/volt/zipball/4b289eef2f15398987a923d9f813cad6a6a19ea4",
+                "reference": "4b289eef2f15398987a923d9f813cad6a6a19ea4",
                 "shasum": ""
             },
             "require": {
@@ -2833,7 +2833,7 @@
                 "issues": "https://github.com/livewire/volt/issues",
                 "source": "https://github.com/livewire/volt"
             },
-            "time": "2025-10-29T15:52:35+00:00"
+            "time": "2025-10-30T02:46:00+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -4470,6 +4470,89 @@
                 "source": "https://github.com/ramsey/uuid/tree/4.9.1"
             },
             "time": "2025-09-04T20:59:21+00:00"
+        },
+        {
+            "name": "spatie/laravel-permission",
+            "version": "6.23.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-permission.git",
+                "reference": "9e41247bd512b1e6c229afbc1eb528f7565ae3bb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/9e41247bd512b1e6c229afbc1eb528f7565ae3bb",
+                "reference": "9e41247bd512b1e6c229afbc1eb528f7565ae3bb",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/auth": "^8.12|^9.0|^10.0|^11.0|^12.0",
+                "illuminate/container": "^8.12|^9.0|^10.0|^11.0|^12.0",
+                "illuminate/contracts": "^8.12|^9.0|^10.0|^11.0|^12.0",
+                "illuminate/database": "^8.12|^9.0|^10.0|^11.0|^12.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "laravel/passport": "^11.0|^12.0",
+                "laravel/pint": "^1.0",
+                "orchestra/testbench": "^6.23|^7.0|^8.0|^9.0|^10.0",
+                "phpunit/phpunit": "^9.4|^10.1|^11.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\Permission\\PermissionServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-main": "6.x-dev",
+                    "dev-master": "6.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Spatie\\Permission\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Permission handling for Laravel 8.0 and up",
+            "homepage": "https://github.com/spatie/laravel-permission",
+            "keywords": [
+                "acl",
+                "laravel",
+                "permission",
+                "permissions",
+                "rbac",
+                "roles",
+                "security",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-permission/issues",
+                "source": "https://github.com/spatie/laravel-permission/tree/6.23.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-11-03T20:16:13+00:00"
         },
         {
             "name": "symfony/clock",
@@ -7005,16 +7088,16 @@
         },
         {
             "name": "tinymce/tinymce",
-            "version": "8.2.0",
+            "version": "8.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tinymce/tinymce-dist.git",
-                "reference": "7dcce3851a3c9bec77b73a303c62784a98758d3d"
+                "reference": "18afc89787771029c09238e08ef5c6f6b64169b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/7dcce3851a3c9bec77b73a303c62784a98758d3d",
-                "reference": "7dcce3851a3c9bec77b73a303c62784a98758d3d",
+                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/18afc89787771029c09238e08ef5c6f6b64169b5",
+                "reference": "18afc89787771029c09238e08ef5c6f6b64169b5",
                 "shasum": ""
             },
             "type": "component",
@@ -7058,9 +7141,9 @@
                 "wysiwyg"
             ],
             "support": {
-                "source": "https://github.com/tinymce/tinymce-dist/tree/8.2.0"
+                "source": "https://github.com/tinymce/tinymce-dist/tree/8.2.1"
             },
-            "time": "2025-10-23T01:11:24+00:00"
+            "time": "2025-11-06T00:55:35+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

@@ -178,11 +178,11 @@
                                 class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                     src="{{ asset('assets/images/light.png') }}" alt=""> {{ __('Pc') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
-                                0-10</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{__('Pickaxes:
+                                0-10')}}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
-                                None</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{__('Outfits:
+                                None')}}</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
                             <span
@@ -213,11 +213,11 @@
                                 class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                     src="{{ asset('assets/images/light.png') }}" alt=""> {{ __('Pc') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
-                                0-10</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{__('Pickaxes:
+                                0-10')}}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
-                                None</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{__('Outfits:
+                                None')}}</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
                             <span
@@ -248,11 +248,11 @@
                                 class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                     src="{{ asset('assets/images/light.png') }}" alt=""> {{ __('Pc') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
-                                0-10</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{__('Pickaxes:
+                                0-10')}}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
-                                None</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{__('Outfits:
+                                None')}}</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
                             <span
@@ -283,11 +283,11 @@
                                 class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                     src="{{ asset('assets/images/light.png') }}" alt=""> {{ __('Pc') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
-                                0-10</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{__('Pickaxes:
+                                0-10')}}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
-                                None</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{__('Outfits:
+                                None')}}</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
                             <span
@@ -318,11 +318,11 @@
                                 class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                     src="{{ asset('assets/images/light.png') }}" alt=""> {{ __('Pc') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
-                                0-10</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{__('Pickaxes:
+                                0-10')}}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
-                                None</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{__('Outfits:
+                                None')}}</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
                             <span
@@ -353,11 +353,11 @@
                                 class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                     src="{{ asset('assets/images/light.png') }}" alt=""> {{ __('Pc') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
-                                0-10</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{__('Pickaxes:
+                                0-10')}}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
-                                None</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{__('Outfits:
+                                None')}}</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
                             <span
@@ -388,11 +388,11 @@
                                 class="flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
                                     src="{{ asset('assets/images/light.png') }}" alt=""> {{ __('Pc') }}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Pickaxes:
-                                0-10</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{__('Pickaxes:
+                                0-10')}}</span>
                             <span
-                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">Outfits:
-                                None</span>
+                                class="flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{__('Outfits:
+                                None')}}</span>
                         </div>
                         <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
                             <span

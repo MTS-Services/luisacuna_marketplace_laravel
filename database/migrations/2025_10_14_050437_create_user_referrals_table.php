@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('user_referrals', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('referral_setting_id');
             $table->unsignedBigInteger('referrer_id');
             $table->unsignedBigInteger('referred_by');

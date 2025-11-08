@@ -3,19 +3,46 @@
 
 use App\Enums\OtpType;
 use App\Models\OtpVerification;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 // ==================== Existing Auth Helpers ====================
 
-if (! function_exists('user')) {
+if (!function_exists('timeFormat')) {
+    function timeFormat($time, $compareValue = null)
+    {
+        return $time && $time != $compareValue ? date(('H:i A'), strtotime($time)) : 'N/A';
+    }
+}
+
+if (!function_exists('dateFormat')) {
+    function dateFormat($date, $compareValue = null)
+    {
+        return $date && $date != $compareValue ? date(('d M Y'), strtotime($date)) : 'N/A';
+    }
+}
+if (!function_exists('dateTimeFormat')) {
+    function dateTimeFormat($dateTime, $compareValue = null)
+    {
+        return $dateTime && $dateTime != $compareValue ? dateFormat($dateTime) . ' ' . timeFormat($dateTime) : 'N/A';
+    }
+}
+if (!function_exists('dateTimeHumanFormat')) {
+    function dateTimeHumanFormat($dateTime, $compareValue = null): mixed
+    {
+        return $dateTime && $dateTime != $compareValue ? Carbon::parse($dateTime)->diffForHumans() : 'N/A';
+    }
+}
+
+if (!function_exists('user')) {
     function user()
     {
         return Auth::guard('web')->user();
     }
 }
 
-if (! function_exists('admin')) {
+if (!function_exists('admin')) {
     function admin()
     {
         return Auth::guard('admin')->user();
@@ -24,7 +51,7 @@ if (! function_exists('admin')) {
 
 // ==================== Existing Storage Helpers ====================
 
-if (! function_exists('storage_url')) {
+if (!function_exists('storage_url')) {
     function storage_url($urlOrArray)
     {
         $image = asset('assets/images/no_img.jpg');
@@ -49,7 +76,7 @@ if (! function_exists('storage_url')) {
     }
 }
 
-if (! function_exists('auth_storage_url')) {
+if (!function_exists('auth_storage_url')) {
     function auth_storage_url($url)
     {
         $image = asset('assets/images/other.png');
@@ -59,21 +86,21 @@ if (! function_exists('auth_storage_url')) {
 
 // ==================== Existing Application Setting Helpers ====================
 
-if (! function_exists('site_name')) {
+if (!function_exists('site_name')) {
     function site_name()
     {
         return config('app.name', 'Laravel Application');
     }
 }
 
-if (! function_exists('site_short_name')) {
+if (!function_exists('site_short_name')) {
     function site_short_name()
     {
         return config('app.short_name', 'LA');
     }
 }
 
-if (! function_exists('site_tagline')) {
+if (!function_exists('site_tagline')) {
     function site_tagline()
     {
         return config('app.tagline', 'Laravel Application Tagline');
@@ -82,7 +109,7 @@ if (! function_exists('site_tagline')) {
 
 // ==================== NEW OTP Helpers ====================
 
-if (! function_exists('generate_otp')) {
+if (!function_exists('generate_otp')) {
     /**
      * Generate a random OTP code
      *
@@ -97,7 +124,7 @@ if (! function_exists('generate_otp')) {
     }
 }
 
-if (! function_exists('create_otp')) {
+if (!function_exists('create_otp')) {
     /**
      * Create OTP for a model
      *
@@ -112,7 +139,7 @@ if (! function_exists('create_otp')) {
     }
 }
 
-if (! function_exists('verify_otp')) {
+if (!function_exists('verify_otp')) {
     /**
      * Verify OTP code for a model
      *
@@ -124,7 +151,7 @@ if (! function_exists('verify_otp')) {
     function verify_otp($model, string $code, OtpType $type): bool
     {
         $otp = $model->latestOtp($type);
-        
+
         if (!$otp) {
             return false;
         }
@@ -133,7 +160,7 @@ if (! function_exists('verify_otp')) {
     }
 }
 
-if (! function_exists('has_valid_otp')) {
+if (!function_exists('has_valid_otp')) {
     /**
      * Check if model has valid unexpired OTP
      *
@@ -144,7 +171,7 @@ if (! function_exists('has_valid_otp')) {
     function has_valid_otp($model, OtpType $type): bool
     {
         $otp = $model->latestOtp($type);
-        
+
         if (!$otp) {
             return false;
         }
@@ -153,7 +180,7 @@ if (! function_exists('has_valid_otp')) {
     }
 }
 
-if (! function_exists('get_otp_remaining_time')) {
+if (!function_exists('get_otp_remaining_time')) {
     /**
      * Get remaining time for OTP expiration in seconds
      *
@@ -164,7 +191,7 @@ if (! function_exists('get_otp_remaining_time')) {
     function get_otp_remaining_time($model, OtpType $type): ?int
     {
         $otp = $model->latestOtp($type);
-        
+
         if (!$otp || $otp->isExpired()) {
             return null;
         }
@@ -173,7 +200,7 @@ if (! function_exists('get_otp_remaining_time')) {
     }
 }
 
-if (! function_exists('format_otp_time')) {
+if (!function_exists('format_otp_time')) {
     /**
      * Format OTP remaining time in human-readable format
      *
@@ -185,24 +212,24 @@ if (! function_exists('format_otp_time')) {
         if (!$seconds || $seconds <= 0) {
             return 'Expired';
         }
-        
+
         if ($seconds < 60) {
             return $seconds . ' second' . ($seconds > 1 ? 's' : '');
         }
-        
+
         $minutes = floor($seconds / 60);
         $remainingSeconds = $seconds % 60;
-        
+
         if ($remainingSeconds > 0) {
-            return $minutes . ' minute' . ($minutes > 1 ? 's' : '') . ' ' . 
-                   $remainingSeconds . ' second' . ($remainingSeconds > 1 ? 's' : '');
+            return $minutes . ' minute' . ($minutes > 1 ? 's' : '') . ' ' .
+                $remainingSeconds . ' second' . ($remainingSeconds > 1 ? 's' : '');
         }
-        
+
         return $minutes . ' minute' . ($minutes > 1 ? 's' : '');
     }
 }
 
-if (! function_exists('is_email_verified')) {
+if (!function_exists('is_email_verified')) {
     /**
      * Check if user/admin email is verified
      *
@@ -215,7 +242,7 @@ if (! function_exists('is_email_verified')) {
     }
 }
 
-if (! function_exists('is_phone_verified')) {
+if (!function_exists('is_phone_verified')) {
     /**
      * Check if user/admin phone is verified
      *
@@ -229,11 +256,14 @@ if (! function_exists('is_phone_verified')) {
 }
 
 
-if(! function_exists('gameCategories')) {
-   function gameCategories() {
+if (!function_exists('gameCategories')) {
+    function gameCategories()
+    {
         return [
-            ['name'=>'Currency', 'slug'=>'currency',
-            'games'=>[
+            [
+                'name' => 'Currency',
+                'slug' => 'currency',
+                'games' => [
                     'popular' => [
                         ['name' => 'New World Coins', 'icon' => 'Frame 100.png', 'slug' => 'new-world-coins'],
                         ['name' => 'Worldforge Legends', 'icon' => 'Frame 94.png', 'slug' => 'worldforge-legends'],
@@ -258,8 +288,10 @@ if(! function_exists('gameCategories')) {
                     ]
                 ]
             ],
-            ['name'=>'Gift Cards', 'slug'=>'gift-cards',
-            'games'=>[
+            [
+                'name' => 'Gift Cards',
+                'slug' => 'gift-cards',
+                'games' => [
                     'popular' => [
                         ['name' => 'New World Coins', 'icon' => 'Frame 100.png', 'slug' => 'new-world-coins'],
                         ['name' => 'Worldforge Legends', 'icon' => 'Frame 94.png', 'slug' => 'worldforge-legends'],
@@ -284,8 +316,10 @@ if(! function_exists('gameCategories')) {
                     ]
                 ]
             ],
-            ['name'=>'Boosting', 'slug'=>'boosting',
-            'games'=>[
+            [
+                'name' => 'Boosting',
+                'slug' => 'boosting',
+                'games' => [
                     'popular' => [
                         ['name' => 'New World Coins', 'icon' => 'Frame 100.png', 'slug' => 'new-world-coins'],
                         ['name' => 'Worldforge Legends', 'icon' => 'Frame 94.png', 'slug' => 'worldforge-legends'],
@@ -310,8 +344,10 @@ if(! function_exists('gameCategories')) {
                     ]
                 ]
             ],
-            ['name'=>'Items', 'slug'=>'items',
-            'games'=>[
+            [
+                'name' => 'Items',
+                'slug' => 'items',
+                'games' => [
                     'popular' => [
                         ['name' => 'New World Coins', 'icon' => 'Frame 100.png', 'slug' => 'new-world-coins'],
                         ['name' => 'Worldforge Legends', 'icon' => 'Frame 94.png', 'slug' => 'worldforge-legends'],
@@ -336,8 +372,10 @@ if(! function_exists('gameCategories')) {
                     ]
                 ]
             ],
-             ['name'=>'Accounts', 'slug'=>'accounts',
-            'games'=>[
+            [
+                'name' => 'Accounts',
+                'slug' => 'accounts',
+                'games' => [
                     'popular' => [
                         ['name' => 'New World Coins', 'icon' => 'Frame 100.png', 'slug' => 'new-world-coins'],
                         ['name' => 'Worldforge Legends', 'icon' => 'Frame 94.png', 'slug' => 'worldforge-legends'],
@@ -362,8 +400,10 @@ if(! function_exists('gameCategories')) {
                     ]
                 ]
             ],
-            ['name'=>'Top Ups', 'slug'=>'top-ups',
-            'games'=>[
+            [
+                'name' => 'Top Ups',
+                'slug' => 'top-ups',
+                'games' => [
                     'popular' => [
                         ['name' => 'New World Coins', 'icon' => 'Frame 100.png', 'slug' => 'new-world-coins'],
                         ['name' => 'Worldforge Legends', 'icon' => 'Frame 94.png', 'slug' => 'worldforge-legends'],
@@ -388,8 +428,10 @@ if(! function_exists('gameCategories')) {
                     ]
                 ]
             ],
-            ['name'=>'Coaching', 'slug'=>'coaching',
-            'games'=>[
+            [
+                'name' => 'Coaching',
+                'slug' => 'coaching',
+                'games' => [
                     'popular' => [
                         ['name' => 'New World Coins', 'icon' => 'Frame 100.png', 'slug' => 'new-world-coins'],
                         ['name' => 'Worldforge Legends', 'icon' => 'Frame 94.png', 'slug' => 'worldforge-legends'],

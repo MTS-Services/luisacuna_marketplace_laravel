@@ -21,16 +21,16 @@
 
             {{-- Left Column --}}
             <div class="flex flex-col h-auto p-4 border-r lg:border-r-2 border-zinc-100">
-                <h2 class="text-xl text-text-primary font-semibold mb-6">Profile Image</h2>
+                <h2 class="text-xl text-text-primary font-semibold mb-6">{{__('Profile Image')}}</h2>
 
                 <div class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-pink-100 overflow-hidden">
-                    <img src="{{ asset('storage/' . $admin->avatar) }}" alt="Profile Image"
+                    <img src="{{ asset('storage/' . $data->avatar) }}" alt="Profile Image"
                         class="w-full h-full object-cover">
                 </div>
 
                 <div class="flex flex-col items-center justify-between mb-8">
-                    <h3 class="text-2xl font-bold text-center mb-1 text-text-primary">{{ $admin->name }}</h3>
-                    <p class="text-text-secondary">{{ $admin->email }}</p>
+                    <h3 class="text-2xl font-bold text-center mb-1 text-text-primary">{{ $data->name }}</h3>
+                    <p class="text-text-secondary">{{ $data->email }}</p>
                 </div>
 
                 <div class="space-y-4 text-sm">
@@ -42,7 +42,7 @@
                             </path>
                         </svg>
                         <div>
-                            <p class="text-text-muted">Phone</p>
+                            <p class="text-text-muted">{{__('Phone')}}</p>
                             <p class="font-medium text-text-primary">{{ $admin->phone }}</p>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                             </path>
                         </svg>
                         <div>
-                            <p class="text-text-muted">Email</p>
+                            <p class="text-text-muted">{{__('Email')}}</p>
                             <p class="font-medium text-text-primary">{{ $admin->email }}</p>
                         </div>
                     </div>
@@ -68,9 +68,9 @@
                             </path>
                         </svg>
                         <div>
-                            <p class="text-text-muted">Account Status</p>
+                            <p class="text-text-muted">{{__('Account Status')}}</p>
                             <span
-                                class="px-3 py-1 rounded-full text-xs font-bold inline-block 
+                                class="px-3 py-1 rounded-full text-xs font-bold inline-block
                                     @if ($admin->status_label === 'Active') bg-zinc-100 text-zinc-700 @else bg-pink-100 text-pink-700 @endif">
                                 {{ $admin->status_label }}
                             </span>
@@ -81,36 +81,81 @@
 
             {{-- Right Column --}}
             <div class="col-span-1 lg:col-span-2 p-4">
-                <h2 class="text-xl font-semibold mb-6 border-b border-zinc-100 pb-2 text-text-primary">Profile Information</h2>
+                <h2 class="text-xl font-semibold mb-6 border-b border-zinc-100 pb-2 text-text-primary">{{__('Profile Information')}}</h2>
 
                 <div class="grid md:grid-cols-2 gap-8 text-base">
                     {{-- Name --}}
                     <div>
-                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Name</p>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">{{__('Name')}}</p>
                         <h3 class="text-lg font-medium text-text-primary">{{ $admin->name }}</h3>
                     </div>
 
                     {{-- Email --}}
                     <div>
-                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Email</p>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">{{__('Email')}}</p>
                         <h3 class="text-lg font-medium text-text-primary">{{ $admin->email }}</h3>
                     </div>
 
                     {{-- phone --}}
                     <div>
-                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Phone</p>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">{{__('Phone')}}</p>
                         <h3 class="text-lg font-medium text-text-primary">{{ $admin->phone }}</h3>
                     </div>
 
                     {{-- Status --}}
                     <div>
-                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Status</p>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">{{__('Status')}}</p>
                         {{-- <h3 class="text-lg font-medium text-text-primary">{{ $admin->date_of_birth }}</h3> --}}
                         <h3
-                            class="px-3 py-1 rounded-full text-xs font-bold inline-block 
+                            class="px-3 py-1 rounded-full text-xs font-bold inline-block
                                     @if ($admin->status_label === 'Active') bg-zinc-100 text-zinc-700 @else bg-pink-100 text-pink-700 @endif">
                             {{ $admin->status_label }}
                         </h3>
+                    </div>
+
+                    <div>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Email Verified At</p>
+                        <h3 class="text-lg font-medium text-text-primary">
+                            {{ $data->email_verified_at ? $data->email_verified_at->format('Y-m-d H:i:s') : 'Not Verified' }}
+                        </h3>
+                    </div>
+
+                    {{-- <div>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Phone Verified At</p>
+                        <h3 class="text-lg font-medium text-text-primary">
+                            {{ $data->phone_verified_at ? $data->phone_verified_at->format('Y-m-d H:i:s') : 'Not Verified' }}
+                        </h3>
+                    </div> --}}
+
+                    <div>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Two Factor Enabled</p>
+                        <h3 class="text-lg font-medium text-text-primary">
+                            {{ $data->two_factor_enabled ? 'Yes' : 'No' }}
+                        </h3>
+                    </div>
+
+                    <div>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Last Login At</p>
+                        <h3 class="text-lg font-medium text-text-primary">
+                            {{ $data->last_login_at ? $data->last_login_at->format('Y-m-d H:i:s') : 'Never Logged In' }}
+                        </h3>
+                    </div>
+
+                    <div>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Last Login IP</p>
+                        <h3 class="text-lg font-medium text-text-primary">{{ $data->last_login_ip ?? 'N/A' }}</h3>
+                    </div>
+
+                    <div>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Created At</p>
+                        <h3 class="text-lg font-medium text-text-primary">
+                            {{ $data->created_at->format('Y-m-d H:i:s') }}</h3>
+                    </div>
+
+                    <div>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">Updated At</p>
+                        <h3 class="text-lg font-medium text-text-primary">
+                            {{ $data->updated_at->format('Y-m-d H:i:s') }}</h3>
                     </div>
                 </div>
             </div>

@@ -27,18 +27,18 @@
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Symbol</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('Symbol')}}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">{{ $data->symbol }}</p>
             </div>
 
             {{-- Country Code --}}
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Exchange Rate</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('Exchange Rate')}}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ number_format($data->exchange_rate, $data->decimal_places) }}</p>
             </div>
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Status</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('Status')}}</p>
                 <span
                     class="px-3 py-1 rounded-full text-xs font-bold inline-block badge badge-soft {{ $data->status->color() }}">
                     {{ $data->status->label() }}
@@ -47,40 +47,40 @@
 
             {{-- Is Default --}}
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Default Currency</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('Default Currency')}}</p>
                 <span class="rounded-full text-xs font-bold inline-block">
                     {{ $data->is_default ? __('Yes') : __('No') }}
                 </span>
             </div>
 
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Created Date</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('Created Date')}}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->created_at_formatted }}</p>
             </div>
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Updated Date</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('Updated Date')}}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->updated_at_formatted ?? 'N/A' }}</p>
             </div>
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Deleted Date</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('Deleted Date')}}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->deleted_at_formatted ?? 'N/A' }}</p>
             </div>
 
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Created By</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('Created By')}}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->creater_admin?->name ?? 'N/A' }}</p>
             </div>
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Updated By</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('Updated By')}}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->updater_admin?->name ?? 'N/A' }}</p>
             </div>
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">Deleted By</p>
+                <p class="text-gray-500 dark:text-gray-400">{{__('Deleted By')}}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
                     {{ $data->deleter_admin?->name ?? 'N/A' }}</p>
             </div>

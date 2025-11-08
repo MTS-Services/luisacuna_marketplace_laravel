@@ -18,24 +18,24 @@
     <div class="bg-white shadow rounded-xl p-6 min-h-[500px]">
         {{-- PERSONAL INFO (Default Tab) --}}
         <div class="col-span-1 lg:col-span-2 p-4">
-            <h2 class="text-xl font-semibold mb-6 border-b pb-2 text-gray-800">Referral Information</h2>
+            <h2 class="text-xl font-semibold mb-6 border-b pb-2 text-gray-800">{{__('Referral Information')}}</h2>
 
             <div class="grid md:grid-cols-3 gap-8 text-base">
                 {{-- Referred By --}}
                 <div>
-                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">Referred By</p>
+                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">{{__('Referred By')}}</p>
                     <h3 class="text-lg font-medium text-gray-900">{{ $user->referral->referred_by ?? 'N/A' }}</h3>
                 </div>
 
                 {{-- referral_code --}}
                 <div>
-                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">Referral Code</p>
+                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">{{__('Referral Code')}}</p>
                     <h3 class="text-lg font-medium text-gray-900">{{ $user->referral->referral_code ?? 'N/A' }}</h3>
                 </div>
 
                 {{-- referral_earnings --}}
                 <div>
-                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">Referral_ Earnings</p>
+                    <p class="text-gray-500 mb-1 text-sm uppercase tracking-wider">{{__('Referral_ Earnings')}}</p>
                     <h3 class="text-lg font-medium text-gray-900">{{ $user->referral->referral_earnings ?? 'N/A' }}
                     </h3>
                 </div>

@@ -22,12 +22,12 @@
         previews: [],
         isDragging: false,
         isUpdating: false,
-    
+
         showPreview(event) {
             if (this.isUpdating) return;
             const files = event.target.files;
             if (!files || files.length === 0) return;
-    
+
             if ({{ $multiple ? 'true' : 'false' }}) {
                 const filesData = event.target.files;
                 const newFiles = Array.from(filesData).map(file => ({
@@ -48,30 +48,30 @@
                 };
             }
         },
-    
+
         handleDrop(event) {
             this.isDragging = false;
             const files = event.dataTransfer.files;
             if (!files || files.length === 0) return;
-    
+
             this.$refs.fileInput.files = files;
             this.showPreview({ target: { files } });
         },
-    
+
         updateFileInput(previews = null) {
             this.isUpdating = true;
-    
+
             const dt = new DataTransfer();
             previews = previews ?? this.previews;
-    
+
             // Add files to DataTransfer
             previews.forEach(f => {
                 dt.items.add(f.file);
             });
             this.$refs.fileInput.files = dt.files;
-    
+
             console.log('New files (input.files):', this.$refs.fileInput.files);
-    
+
             this.$nextTick(() => {
                 this.$wire.upload(
                     '{{ $attributes->wire('model')->value() }}',
@@ -81,25 +81,25 @@
                 );
             });
         },
-    
+
         removeFile(index) {
             URL.revokeObjectURL(this.previews[index].url);
             this.previews.splice(index, 1);
             const dt = new DataTransfer();
             this.previews.forEach(f => dt.items.add(f.file));
             this.$refs.fileInput.files = dt.files;
-    
+
             if (this.previews.length > 0) {
                 this.$refs.fileInput.dispatchEvent(new Event('change'));
-    
+
             } else {
                 this.$refs.fileInput.value = '';
                 this.$wire.set('{{ $attributes->wire('model')->value() }}', null);
             }
-    
+
             console.log('Updated previews:', this.previews);
         },
-    
+
         clearFile() {
             this.preview = null;
             this.previews.forEach(f => URL.revokeObjectURL(f.url));
@@ -107,7 +107,7 @@
             this.$refs.fileInput.value = '';
             @this.set('{{ $attributes->wire('model')->value() }}', null);
         },
-    
+
         getFileType(type) {
             if (type.startsWith('image/')) return 'image';
             if (type.startsWith('video/')) return 'video';
@@ -115,7 +115,7 @@
             if (type.includes('pdf')) return 'pdf';
             return 'document';
         },
-    
+
         formatSize(bytes) {
             if (bytes < 1024) return bytes + ' B';
             if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
@@ -150,8 +150,8 @@
                             </div>
                             <div>
                                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                                    <span class="font-semibold text-blue-600 dark:text-blue-400">Click to upload</span>
-                                    or drag and drop
+                                    <span class="font-semibold text-blue-600 dark:text-blue-400">{{__('Click to upload')}}</span>
+                                    {{ __('or drag and drop') }}
                                 </p>
                                 @if ($hint)
                                     <p class="text-xs text-gray-500 mt-1">{{ $hint }}</p>
@@ -247,8 +247,8 @@
                             </div>
                             <div>
                                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                                    <span class="font-semibold text-blue-600 dark:text-blue-400">Click to upload</span>
-                                    or drag and drop
+                                    <span class="font-semibold text-blue-600 dark:text-blue-400">{{__('Click to upload')}}</span>
+                                    {{ __('or drag and drop') }}
                                 </p>
                                 @if ($hint)
                                     <p class="text-xs text-gray-500 mt-1">{{ $hint }}</p>
@@ -262,11 +262,11 @@
                         class="border-t border-gray-200 dark:border-gray-700 p-4">
                         <div class="flex items-center justify-between mb-3">
                             <p class="text-sm text-gray-600 dark:text-gray-400">
-                                <span x-text="previews.length"></span> file(s) selected
+                                <span x-text="previews.length"></span> {{ __('file(s) selected') }}
                             </p>
                             <button type="button" @click="clearFile()"
                                 class="text-xs text-red-600 hover:text-red-700 dark:text-red-400 font-medium">
-                                Clear all
+                                {{ __('Clear all') }}
                             </button>
                         </div>
                         <div class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-6 gap-3">

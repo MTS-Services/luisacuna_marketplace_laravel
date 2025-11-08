@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('email_templates', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sort_order')->default(0);
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->string('key')->unique();
             $table->string('name');
             $table->string('subject')->nullable();

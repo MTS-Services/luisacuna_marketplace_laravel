@@ -19,6 +19,8 @@ class Index extends Component
     public $bulkAction = '';
     public $showBulkActionModal = false;
 
+
+
     // protected $listeners = ['CurrencyCreated' => '$refresh', 'CurrencyUpdated' => '$refresh'];
 
     protected CurrencyService $service;
@@ -34,7 +36,7 @@ class Index extends Component
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
-        $datas->load('createdBy');
+        $datas->load('creater_admin');
 
         $columns = [
             [
@@ -87,7 +89,7 @@ class Index extends Component
                 'key' => 'created_by',
                 'label' => 'Created By',
                 'format' => function ($data) {
-                    return $data->createdBy?->name ?? 'System';
+                    return $data->creater_admin?->name ?? 'System';
                 }
             ],
         ];
@@ -206,8 +208,8 @@ class Index extends Component
 
     protected function bulkDelete(): void
     {
-        $count = count($this->selectedIds);
-        $this->service->bulkDeleteData($this->selectedIds);
+        dd($this->selectedIds);
+      $count =  $this->service->bulkDeleteData($this->selectedIds);
         $this->success("{$count} Data deleted successfully");
     }
 
