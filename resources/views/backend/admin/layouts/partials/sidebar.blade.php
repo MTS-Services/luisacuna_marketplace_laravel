@@ -35,7 +35,7 @@
 
             <div class="pt-4 pb-2">
                 <p class="text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
-                    x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)">{{__('Management')}}</p>
+                    x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)">{{ __('Management') }}</p>
                 <p class="text-center text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
                     x-show="desktop && !sidebar_expanded">...</p>
             </div>
@@ -47,12 +47,12 @@
                         'icon' => 'user-circle',
                         'active' => 'admin',
                     ],
-                    // [
-                    //     'name' => 'Roles',
-                    //     'route' => '#',
-                    //     'icon' => 'shield-exclamation',
-                    //     'active' => 'role',
-                    // ],
+                    [
+                        'name' => 'Roles',
+                        'route' => route('admin.am.role.index'),
+                        'icon' => 'shield-exclamation',
+                        'active' => 'role',
+                    ],
                     // [
                     //     'name' => 'Permissions',
                     //     'route' => '#',
@@ -83,7 +83,7 @@
                     // ],
                 ]" />
 
-                <x-backend.navlink type="dropdown" icon="user-group" name="Game Management" :page_slug="$active"
+            <x-backend.navlink type="dropdown" icon="user-group" name="Game Management" :page_slug="$active"
                 :items="[
                     [
                         'name' => 'Games',
@@ -111,7 +111,7 @@
                     // ],
                 ]" />
 
-                <x-backend.navlink type="dropdown" icon="user-group" name="Product Management" :page_slug="$active"
+            <x-backend.navlink type="dropdown" icon="user-group" name="Product Management" :page_slug="$active"
                 :items="[
                     [
                         'name' => 'Product Types',
@@ -139,7 +139,7 @@
                     // ],
                 ]" />
 
-                <x-backend.navlink type="dropdown" icon="user-group" name="Review Management" :page_slug="$active"
+            <x-backend.navlink type="dropdown" icon="user-group" name="Review Management" :page_slug="$active"
                 :items="[
                     [
                         'name' => 'Page View',
@@ -167,7 +167,7 @@
                     // ],
                 ]" />
 
-                <x-backend.navlink type="dropdown" icon="user-group" name="Audit Log Management" :page_slug="$active"
+            <x-backend.navlink type="dropdown" icon="user-group" name="Audit Log Management" :page_slug="$active"
                 :items="[
                     [
                         'name' => 'Audit Logs',
@@ -175,12 +175,12 @@
                         'icon' => 'user',
                         'active' => 'audit-log-management',
                     ],
-
                 ]" />
 
             <div class="pt-4 pb-2">
                 <p class="text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
-                    x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)">{{__('Settings & Tools')}}</p>
+                    x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)">
+                    {{ __('Settings & Tools') }}</p>
                 <p class="text-center text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
                     x-show="desktop && !sidebar_expanded">...</p>
             </div>
