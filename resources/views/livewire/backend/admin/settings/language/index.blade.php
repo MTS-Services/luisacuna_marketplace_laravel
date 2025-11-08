@@ -21,7 +21,7 @@
     </div>
 
     {{-- Table Component --}}
-    <x-ui.table :data="$languages" :columns="$columns" :actions="$actions" :bulkActions="$bulkActions" :bulkAction="$bulkAction"
+    <x-ui.table :data="$datas" :columns="$columns" :actions="$actions" :bulkActions="$bulkActions" :bulkAction="$bulkAction"
         :statuses="$statuses" :selectedIds="$selectedIds" :mobileVisibleColumns="2" searchProperty="search" perPageProperty="perPage"
         :showBulkActions="true" emptyMessage="No languages found. Create your first language to get started." />
 
