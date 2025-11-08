@@ -7,7 +7,7 @@ use App\Enums\ProductStatus;
 use Livewire\WithFileUploads;
 use App\Enums\ProductsVisibility;
 use App\Services\Game\GameService;
-use App\Services\User\UserService;
+use App\Services\UserService;
 use App\Enums\ProductsDeliveryMethod;
 use App\Services\ProductService;
 use App\Traits\Livewire\WithNotification;
@@ -60,16 +60,16 @@ class Create extends Component
      */
     public function save()
     {
-        
+
         $this->form->validate();
-        
+
         try {
             $data = $this->form->fillables();
             $data['creater_id'] = admin()->id;
             $data['creater_type'] = Admin::class;
 
             $data['images'] = $this->form->images;
-            
+
             $this->service->createData($data);
 
             $this->success('Data created successfully.');

@@ -9,7 +9,7 @@ use Livewire\WithFileUploads;
 use Livewire\Attributes\Locked;
 use App\Enums\ProductsVisibility;
 use App\Services\Game\GameService;
-use App\Services\User\UserService;
+use App\Services\UserService;
 use App\Enums\ProductsDeliveryMethod;
 use App\Services\ProductService;
 use App\Traits\Livewire\WithNotification;

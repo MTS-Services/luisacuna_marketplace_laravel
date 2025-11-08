@@ -5,7 +5,7 @@ namespace App\Livewire\User;
 use App\DTOs\User\CreateUserDTO;
 use App\Enums\UserStatus;
 use App\Livewire\User\Forms\UserForm;
-use App\Services\User\UserService;
+use App\Services\UserService;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Component;
 use Livewire\WithFileUploads;

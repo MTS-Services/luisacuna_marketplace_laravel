@@ -3,7 +3,7 @@
 namespace App\Livewire\Backend\Admin\UserManagement\User\Profile;
 
 use App\Models\User;
-use App\Services\User\UserService;
+use App\Services\UserService;
 use Livewire\Component;
 
 class ShopInfo extends Component
