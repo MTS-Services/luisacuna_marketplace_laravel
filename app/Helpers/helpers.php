@@ -290,8 +290,8 @@ if (!function_exists('gameCategories')) {
                 ]
             ],
             [
-                'name' => 'Gift Cards',
-                'slug' => 'gift-cards',
+                'name' => 'Gift Card',
+                'slug' => 'gift-card',
                 'url' => route('gift-card'),
                 'games' => [
                     'popular' => [
@@ -406,8 +406,8 @@ if (!function_exists('gameCategories')) {
                 ]
             ],
             [
-                'name' => 'Top Ups',
-                'slug' => 'top-ups',
+                'name' => 'Top Up',
+                'slug' => 'top-up',
                 'url' => route('top-up'),
                 'games' => [
                     'popular' => [
