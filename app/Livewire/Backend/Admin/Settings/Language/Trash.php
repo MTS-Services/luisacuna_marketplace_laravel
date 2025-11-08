@@ -216,11 +216,14 @@ class Trash extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->service->getTrashedPaginatedData(
+        $data = $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        )->pluck('id')->toArray();
+        );
+
+        return array_column($data->items(), 'id');
     }
+
 
     public function updatedStatusFilter(): void
     {
