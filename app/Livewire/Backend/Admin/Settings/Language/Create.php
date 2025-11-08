@@ -17,14 +17,14 @@ class Create extends Component
 
     public LanguageForm $form;
 
-    protected LanguageService $languageService;
+    protected LanguageService $service;
 
     /**
      * Inject the LanguageService via the boot method.
      */
-    public function boot(LanguageService $languageService): void
+    public function boot(LanguageService $service): void
     {
-        $this->languageService = $languageService;
+        $this->service = $service;
     }
 
     /**
@@ -53,8 +53,8 @@ class Create extends Component
     public function save()
     {
         
+        $validated = $this->form->validate();
         try {
-            $validated = $this->form->validate();
     
             $flagIcon = null;
             if (!empty($validated['country_code'])) {
@@ -65,13 +65,13 @@ class Create extends Component
                 'created_by' => admin()->id,
             ]);
 
-            $this->languageService->createData($data);
+            $this->service->createData($data);
 
-            $this->success('Language created successfully.');
+            $this->success('Data created successfully.');
 
             return $this->redirect(route('admin.as.language.index'), navigate: true);
         } catch (\Exception $e) {
-            $this->error('Failed to create language: ' . $e->getMessage());
+            $this->error('Failed to create Data: ' . $e->getMessage());
         }
     }
 

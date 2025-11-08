@@ -69,16 +69,16 @@ class CurrencyForm extends Form
     /**
      * Fill the form fields from a Language model
      */
-    public function setData(Currency $currency): void
+    public function setData(Currency $data): void
     {
-        $this->id = $currency->id;
-        $this->code = $currency->code;
-        $this->symbol = $currency->symbol;
-        $this->name = $currency->name;
-        $this->exchange_rate = $currency->exchange_rate;
-        $this->decimal_places = $currency->decimal_places;
-        $this->status = $currency->status->value;
-        $this->is_default = $currency->is_default ? 1 : 0;
+        $this->id = $data->id;
+        $this->code = $data->code;
+        $this->symbol = $data->symbol;
+        $this->name = $data->name;
+        $this->exchange_rate = $data->exchange_rate;
+        $this->decimal_places = $data->decimal_places;
+        $this->status = $data->status->value;
+        $this->is_default = $data->is_default ? 1 : 0;
     }
 
     /**

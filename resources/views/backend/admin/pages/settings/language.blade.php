@@ -12,7 +12,7 @@
         @case('admin.as.language.edit')
             <x-slot name="breadcrumb">{{__('Application Settings > Language Edit')}}</x-slot>
             <x-slot name="title">{{__('Language Edit')}}</x-slot>
-            <livewire:backend.admin.settings.language.edit :language="$language"/>
+            <livewire:backend.admin.settings.language.edit :data="$data" />
         @break
 
         @case('admin.as.language.trash')
@@ -24,7 +24,7 @@
         @case('admin.as.language.view')
             <x-slot name="breadcrumb">{{__('Application Settings > Language Details')}}</x-slot>
             <x-slot name="title">{{__('Language Details')}}</x-slot>
-            <livewire:backend.admin.settings.language.view :language="$language"/>
+            <livewire:backend.admin.settings.language.view :data="$data" />
         @break
 
         @default

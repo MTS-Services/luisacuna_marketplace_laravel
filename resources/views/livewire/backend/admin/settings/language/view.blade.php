@@ -6,14 +6,14 @@
                 {{ __('Language Details') }}
             </h2>
             <div class="flex items-center gap-2 w-full sm:w-auto">
-                <x-ui.button href="{{ route('admin.as.language.edit', $language) }}" type="secondary" class="flex-1 sm:flex-none">
-                    <flux:icon name="pencil" class="w-4 h-4" />
-                    <span class="sm:inline">{{ __('Edit') }}</span>
+                <x-ui.button href="{{ route('admin.as.language.edit', encrypt($data->id)) }}" variant="secondary" class="w-auto! py-2!">
+                    <flux:icon name="pencil" class="w-4 h-4 stroke-text-btn-secondary  group-hover:stroke-text-btn-primary" />
+                    {{ __('Edit') }}
                 </x-ui.button>
 
-                <x-ui.button href="{{ route('admin.as.language.index') }}" class="flex-1 sm:flex-none">
-                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
-                    <span class="sm:inline text-white">{{ __('Back') }}</span>
+               <x-ui.button href="{{ route('admin.as.language.index') }}" class="w-auto! py-2!">
+                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
+                    {{ __('Back') }}
                 </x-ui.button>
             </div>
         </div>
@@ -27,8 +27,8 @@
                 <h2 class="text-xl text-gray-800 dark:text-gray-200 font-semibold mb-6">{{__('Language Flag')}}</h2>
 
                 <div class="w-32 h-24 rounded-lg mx-auto mb-6 border-4 border-blue-100 dark:border-blue-900 overflow-hidden bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
-                    @if($language->flag_icon)
-                        <img src="{{ $language->flag_icon }}" alt="{{ $language->name }} flag"
+                    @if($data->flag_icon)
+                        <img src="{{ $data->flag_icon }}" alt="{{ $data->name }} flag"
                             class="w-full h-full object-cover">
                     @else
                         <div class="text-gray-400 dark:text-gray-500 text-center">
@@ -41,9 +41,9 @@
                 </div>
 
                 <div class="flex flex-col items-center justify-between mb-8">
-                    <h3 class="text-2xl font-bold text-center mb-1 text-gray-900 dark:text-white">{{ $language->name }}</h3>
-                    @if($language->native_name)
-                        <p class="text-gray-600 dark:text-gray-400 text-lg">{{ $language->native_name }}</p>
+                    <h3 class="text-2xl font-bold text-center mb-1 text-gray-900 dark:text-white">{{ $data->name }}</h3>
+                    @if($data->native_name)
+                        <p class="text-gray-600 dark:text-gray-400 text-lg">{{ $data->native_name }}</p>
                     @endif
                 </div>
 
@@ -55,7 +55,7 @@
                         </svg>
                         <div>
                             <p class="text-gray-500 dark:text-gray-400">{{__('Locale')}}</p>
-                            <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">{{ $language->locale }}</p>
+                            <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">{{ $data->locale }}</p>
                         </div>
                     </div>
 
@@ -66,7 +66,7 @@
                         </svg>
                         <div>
                             <p class="text-gray-500 dark:text-gray-400">{{__('Country Code')}}</p>
-                            <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">{{ $language->country_code }}</p>
+                            <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">{{ $data->country_code }}</p>
                         </div>
                     </div>
 
@@ -78,8 +78,8 @@
                         <div>
                             <p class="text-gray-500 dark:text-gray-400">{{__('Text Direction')}}</p>
                             <div class="flex items-center gap-2">
-                                <span class="text-xl">{{ $language->direction->value === 'ltr' ? '→' : '←' }}</span>
-                                <p class="font-semibold text-gray-900 dark:text-white uppercase">{{ $language->direction->value }}</p>
+                                <span class="text-xl">{{ $data->direction->value === 'ltr' ? '→' : '←' }}</span>
+                                <p class="font-semibold text-gray-900 dark:text-white uppercase">{{ $data->direction->value }}</p>
                             </div>
                         </div>
                     </div>
@@ -92,12 +92,12 @@
                         <div>
                             <p class="text-gray-500 dark:text-gray-400">{{__('Status')}}</p>
                             <span class="px-3 py-1 rounded-full text-xs font-bold inline-block
-                                @if ($language->status->value === '1')
+                                @if ($data->status->value === '1')
                                     bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200
                                 @else
                                     bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200
                                 @endif">
-                                {{ $language->status->label() }}
+                                {{ $data->status->label() }}
                             </span>
                         </div>
                     </div>
@@ -110,12 +110,12 @@
                         <div>
                             <p class="text-gray-500 dark:text-gray-400">{{__('Default Language')}}</p>
                             <span class="px-3 py-1 rounded-full text-xs font-bold inline-block
-                                @if ($language->is_default)
+                                @if ($data->is_default)
                                     bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200
                                 @else
                                     bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300
                                 @endif">
-                                {{ $language->is_default ? 'Yes' : 'No' }}
+                                {{ $data->is_default ? 'Yes' : 'No' }}
                             </span>
                         </div>
                     </div>
@@ -130,36 +130,36 @@
                     {{-- Name --}}
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 mb-1 text-sm uppercase tracking-wider">{{__('Language Name')}}</p>
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ $language->name }}</h3>
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ $data->name }}</h3>
                     </div>
 
                     {{-- Native Name --}}
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 mb-1 text-sm uppercase tracking-wider">{{__('Native Name')}}</p>
                         <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-                            {{ $language->native_name ?? 'N/A' }}
+                            {{ $data->native_name ?? 'N/A' }}
                         </h3>
                     </div>
 
                     {{-- Locale --}}
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 mb-1 text-sm uppercase tracking-wider">{{__('Locale Code')}}</p>
-                        <h3 class="text-lg font-mono font-medium text-gray-900 dark:text-white uppercase">{{ $language->locale }}</h3>
+                        <h3 class="text-lg font-mono font-medium text-gray-900 dark:text-white uppercase">{{ $data->locale }}</h3>
                     </div>
 
                     {{-- Country Code --}}
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 mb-1 text-sm uppercase tracking-wider">{{__('Country Code')}}</p>
-                        <h3 class="text-lg font-mono font-medium text-gray-900 dark:text-white uppercase">{{ $language->country_code }}</h3>
+                        <h3 class="text-lg font-mono font-medium text-gray-900 dark:text-white uppercase">{{ $data->country_code }}</h3>
                     </div>
 
                     {{-- Direction --}}
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 mb-1 text-sm uppercase tracking-wider">{{__('Text Direction')}}</p>
                         <div class="flex items-center gap-2">
-                            <span class="text-2xl">{{ $language->direction->value === 'ltr' ? '→' : '←' }}</span>
+                            <span class="text-2xl">{{ $data->direction->value === 'ltr' ? '→' : '←' }}</span>
                             <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-                                {{ $language->direction->label() }}
+                                {{ $data->direction->label() }}
                             </h3>
                         </div>
                     </div>
@@ -168,12 +168,12 @@
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 mb-1 text-sm uppercase tracking-wider">{{__('Status')}}</p>
                         <h3 class="px-3 py-1 rounded-full text-xs font-bold inline-block
-                            @if ($language->status->value === '1')
+                            @if ($data->status->value === '1')
                                 bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200
                             @else
                                 bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200
                             @endif">
-                            {{ $language->status->label() }}
+                            {{ $data->status->label() }}
                         </h3>
                     </div>
 
@@ -181,12 +181,12 @@
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 mb-1 text-sm uppercase tracking-wider">{{__('Default Language')}}</p>
                         <h3 class="px-3 py-1 rounded-full text-xs font-bold inline-block
-                            @if ($language->is_default)
+                            @if ($data->is_default)
                                 bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200
                             @else
                                 bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300
                             @endif">
-                            {{ $language->is_default ? 'Yes' : 'No' }}
+                            {{ $data->is_default ? 'Yes' : 'No' }}
                         </h3>
                     </div>
 
@@ -194,49 +194,49 @@
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 mb-1 text-sm uppercase tracking-wider">{{__('Created At')}}</p>
                         <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-                            {{ $language->created_at->format('M d, Y') }}
+                            {{ $data->created_at->format('M d, Y') }}
                         </h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $language->created_at->format('h:i A') }}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $data->created_at->format('h:i A') }}</p>
                     </div>
 
                     {{-- Updated At --}}
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 mb-1 text-sm uppercase tracking-wider">{{__('Last Updated')}}</p>
                         <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-                            {{ $language->updated_at->format('M d, Y') }}
+                            {{ $data->updated_at->format('M d, Y') }}
                         </h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $language->updated_at->format('h:i A') }}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $data->updated_at->format('h:i A') }}</p>
                     </div>
 
                     {{-- Created By --}}
-                    @if($language->creater_admin)
+                    @if($data->creater_admin)
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 mb-1 text-sm uppercase tracking-wider">{{__('Created By')}}</p>
                         <div class="flex items-center gap-2">
-                            @if($language->creater_admin->avatar)
-                                <img src="{{ asset('storage/' . $language->creater_admin->avatar) }}"
-                                     alt="{{ $language->creater_admin->name }}"
+                            @if($data->creater_admin->avatar)
+                                <img src="{{ asset('storage/' . $data->creater_admin->avatar) }}"
+                                     alt="{{ $data->creater_admin->name }}"
                                      class="w-8 h-8 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600">
                             @endif
                             <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-                                {{ $language->creater_admin->name }}
+                                {{ $data->creater_admin->name }}
                             </h3>
                         </div>
                     </div>
                     @endif
 
                     {{-- Updated By --}}
-                    @if($language->updater_admin)
+                    @if($data->updater_admin)
                     <div>
                         <p class="text-gray-500 dark:text-gray-400 mb-1 text-sm uppercase tracking-wider">{{__('Updated By')}}</p>
                         <div class="flex items-center gap-2">
-                            @if($language->updater_admin->avatar)
-                                <img src="{{ asset('storage/' . $language->updater_admin->avatar) }}"
-                                     alt="{{ $language->updater_admin->name }}"
+                            @if($data->updater_admin->avatar)
+                                <img src="{{ asset('storage/' . $data->updater_admin->avatar) }}"
+                                     alt="{{ $data->updater_admin->name }}"
                                      class="w-8 h-8 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600">
                             @endif
                             <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-                                {{ $language->updater_admin->name }}
+                                {{ $data->updater_admin->name }}
                             </h3>
                         </div>
                     </div>
@@ -244,19 +244,19 @@
                 </div>
 
                 {{-- Additional Info Section --}}
-                @if($language->flag_icon)
+                @if($data->flag_icon)
                 <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                     <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">{{__('Flag Preview')}}</h3>
                     <div class="flex items-center gap-4">
-                        <img src="{{ $language->flag_icon }}"
-                             alt="{{ $language->name }} flag"
+                        <img src="{{ $data->flag_icon }}"
+                             alt="{{ $data->name }} flag"
                              class="w-24 h-16 rounded-lg object-cover border-2 border-gray-200 dark:border-gray-600 shadow-sm">
                         <div>
                             <p class="text-sm text-gray-600 dark:text-gray-400">{{__('Flag URL:')}}</p>
-                            <a href="{{ $language->flag_icon }}"
+                            <a href="{{ $data->flag_icon }}"
                                target="_blank"
                                class="text-sm text-blue-600 dark:text-blue-400 hover:underline break-all">
-                                {{ $language->flag_icon }}
+                                {{ $data->flag_icon }}
                             </a>
                         </div>
                     </div>

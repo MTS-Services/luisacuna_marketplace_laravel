@@ -15,22 +15,22 @@ class Index extends Component
 
     public $statusFilter = '';
     public $showDeleteModal = false;
-    public $deleteAdminId = null;
+    public $deleteId = null;
     public $bulkAction = '';
     public $showBulkActionModal = false;
 
     protected $listeners = ['languageCreated' => '$refresh', 'languageUpdated' => '$refresh'];
 
-    protected LanguageService $languageService;
+    protected LanguageService $service;
 
-    public function boot(LanguageService $languageService)
+    public function boot(LanguageService $service)
     {
-        $this->languageService = $languageService;
+        $this->service = $service;
     }
 
     public function render()
     {
-        $datas = $this->languageService->getPaginatedData(
+        $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
@@ -84,16 +84,20 @@ class Index extends Component
                 'key' => 'id',
                 'label' => 'View',
                 'route' => 'admin.as.language.view',
+                'encrypt' => true
             ],
             [
                 'key' => 'id',
                 'label' => 'Edit',
-                'route' => 'admin.as.language.edit'
+                'route' => 'admin.as.language.edit',
+                'encrypt' => true
+
             ],
             [
                 'key' => 'id',
                 'label' => 'Delete',
-                'method' => 'confirmDelete'
+                'method' => 'confirmDelete',
+                'encrypt' => true
             ],
         ];
 
@@ -112,31 +116,31 @@ class Index extends Component
         ]);
     }
 
-    public function confirmDelete($laguageId): void
+    public function confirmDelete($id): void
     {
-        $this->deleteAdminId = $laguageId;
+        $this->deleteId = $id;
         $this->showDeleteModal = true;
     }
 
     public function delete(): void
     {
-        // dd($this->deleteAdminId);
+        // dd($this->deleteId);
         try {
-            if (!$this->deleteAdminId) {
+            if (!$this->deleteId) {
                 return;
             }
 
-            if ($this->deleteAdminId == admin()->id) {
+            if ($this->deleteId == admin()->id) {
                 $this->error('You cannot delete your own account');
                 return;
             }
 
-            $this->languageService->deleteData($this->deleteAdminId);
+            $this->service->deleteData($this->deleteId);
 
             $this->showDeleteModal = false;
-            $this->deleteAdminId = null;
+            $this->deleteId = null;
 
-            $this->success('Language deleted successfully');
+            $this->success('Data deleted successfully');
         } catch (\Exception $e) {
             $this->error('Failed to delete Admin: ' . $e->getMessage());
         }
@@ -148,18 +152,18 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function changeStatus($laguageId, $status): void
+    public function changeStatus($id, $status): void
     {
         try {
             $LanguageStatus = LanguageStatus::from($status);
 
             match ($LanguageStatus) {
-                LanguageStatus::ACTIVE => $this->languageService->getActiveData($laguageId),
-                LanguageStatus::INACTIVE => $this->languageService->getInactiveData($laguageId),
+                LanguageStatus::ACTIVE => $this->service->getActiveData($id),
+                LanguageStatus::INACTIVE => $this->service->getInactiveData($id),
                 default => null,
             };
 
-            $this->success('Language status updated successfully');
+            $this->success('Data status updated successfully');
         } catch (\Exception $e) {
             $this->error('Failed to update status: ' . $e->getMessage());
         }
@@ -168,8 +172,8 @@ class Index extends Component
     public function confirmBulkAction(): void
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
-            $this->warning('Please select Admins and an action');
-            Log::info('No Admins selected or no bulk action selected');
+            $this->warning('Please select Datas and an action');
+            Log::info('No Datas selected or no bulk action selected');
             return;
         }
 
@@ -198,14 +202,14 @@ class Index extends Component
 
     protected function bulkDelete(): void
     {
-        $count = $this->languageService->bulkDeleteData($this->selectedIds);
-        $this->success("{$count} Languages deleted successfully");
+        $count = $this->service->bulkDeleteData($this->selectedIds);
+        $this->success("{$count} Datas deleted successfully");
     }
 
     protected function bulkUpdateStatus(LanguageStatus $status): void
     {
-        $count = $this->languageService->bulkUpdateStatus($this->selectedIds, $status);
-        $this->success("{$count} Languages updated successfully");
+        $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
+        $this->success("{$count} Datas updated successfully");
     }
 
     protected function getFilters(): array
@@ -220,7 +224,7 @@ class Index extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->languageService->getPaginatedData(
+        return $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

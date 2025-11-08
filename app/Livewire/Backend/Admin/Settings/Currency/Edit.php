@@ -34,7 +34,7 @@ class Edit extends Component
     public function mount(Currency $data): void
     {
         $this->currency = $data;
-        $this->form->setData($this->currency);
+        $this->form->setData($data);
     }
 
     /**

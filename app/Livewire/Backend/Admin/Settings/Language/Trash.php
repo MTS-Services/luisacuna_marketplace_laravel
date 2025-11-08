@@ -3,7 +3,7 @@
 namespace App\Livewire\Backend\Admin\Settings\Language;
 
 use App\Enums\LanguageStatus;
-use App\Services\Admin\LanguageService;
+use App\Services\LanguageService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -21,16 +21,16 @@ class Trash extends Component
 
     protected $listeners = ['languageCreated' => '$refresh', 'languageUpdated' => '$refresh'];
 
-    protected LanguageService $languageService;
+    protected LanguageService $service;
 
-    public function boot(LanguageService $languageService)
+    public function boot(LanguageService $service)
     {
-        $this->languageService = $languageService;
+        $this->service = $service;
     }
 
     public function render()
     {
-        $languages = $this->languageService->getTrashedLanguagesPaginated(
+        $datas = $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
@@ -60,35 +60,25 @@ class Trash extends Component
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
-                'format' => function ($language) {
-                    $colors = [
-                        '1' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-                        '0' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-                    ];
-                    $color = $colors[$language->status->value] ?? 'bg-gray-100 text-gray-800';
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' .
-                        $language->status->label() .
+                'format' => function ($data) {
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
+                        $data->status->label() .
                         '</span>';
                 }
             ],
-            [
+             [
                 'key' => 'deleted_at',
-                'label' => 'Deleted At',
+                'label' => 'Deleted Date',
                 'sortable' => true,
-                'format' => function ($language) {
-                    return '<div class="text-sm">' .
-                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $language->deleted_at->format('M d, Y') . '</div>' .
-                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $language->deleted_at->format('h:i A') . '</div>' .
-                        '</div>';
+                'format' => function ($data) {
+                    return $data->deleted_at_formatted;
                 }
             ],
             [
                 'key' => 'deleted_by',
                 'label' => 'Deleted By',
-                'format' => function ($language) {
-                    return $language->deleter_admin
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $language->deleter_admin->name . '</span>'
-                        : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
+                'format' => function ($data) {
+                    return $data->deleter_admin?->name ?? 'System';
                 }
             ],
         ];
@@ -114,7 +104,7 @@ class Trash extends Component
         ];
 
         return view('livewire.backend.admin.settings.language.trash', [
-            'languages' => $languages,
+            'datas' => $datas,
             'statuses' => LanguageStatus::options(),
             'columns' => $columns,
             'actions' => $actions,
@@ -131,7 +121,7 @@ class Trash extends Component
     public function forceDelete(): void
     {
         try {
-            $this->languageService->deleteLanguage($this->deleteLanguageId, forceDelete: true);
+            $this->service->deleteLanguage($this->deleteLanguageId, forceDelete: true);
             $this->showDeleteModal = false;
             $this->deleteLanguageId = null;
             $this->resetPage();
@@ -146,7 +136,7 @@ class Trash extends Component
     public function restore($languageId): void
     {
         try {
-            $this->languageService->restoreLanguage($languageId);
+            $this->service->restoreLanguage($languageId);
 
             $this->success('Language restored successfully');
         } catch (\Throwable $e) {
@@ -167,8 +157,8 @@ class Trash extends Component
             $languageStatus = LanguageStatus::from($status);
 
             match ($languageStatus) {
-                LanguageStatus::ACTIVE => $this->languageService->activateLanguage($languageId),
-                LanguageStatus::INACTIVE => $this->languageService->deactivateLanguage($languageId),
+                LanguageStatus::ACTIVE => $this->service->activateLanguage($languageId),
+                LanguageStatus::INACTIVE => $this->service->deactivateLanguage($languageId),
                 default => null,
             };
 
@@ -212,19 +202,19 @@ class Trash extends Component
 
     protected function bulkUpdateStatus(LanguageStatus $status): void
     {
-        $count = $this->languageService->bulkUpdateStatus($this->selectedIds, $status);
+        $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
         $this->success("{$count} languages updated successfully");
     }
 
     protected function bulkRestoreLanguages(): void
     {
-        $count = $this->languageService->bulkRestoreLanguages($this->selectedIds);
+        $count = $this->service->bulkRestoreLanguages($this->selectedIds);
         $this->success("{$count} languages restored successfully");
     }
 
     protected function bulkForceDeleteLanguages(): void
     {
-        $count = $this->languageService->bulkForceDeleteLanguages($this->selectedIds);
+        $count = $this->service->bulkForceDeleteLanguages($this->selectedIds);
         $this->success("{$count} languages permanently deleted successfully");
     }
 
@@ -240,7 +230,7 @@ class Trash extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->languageService->getTrashedLanguagesPaginated(
+        return $this->service->getTrashedLanguagesPaginated(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

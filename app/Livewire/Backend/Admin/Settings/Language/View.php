@@ -7,10 +7,10 @@ use Livewire\Component;
 
 class View extends Component
 {
-    public Language $language;
-    public function mount(Language $language): void
+    public Language $data;
+    public function mount(Language $data): void
     {
-        $this->language = $language;
+        $this->data = $data;
     }
     public function render()
     {
