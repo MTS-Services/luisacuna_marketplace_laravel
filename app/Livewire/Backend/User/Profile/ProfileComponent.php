@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Livewire\Frontend;
+namespace App\Livewire\Backend\User\Profile;
 
 use Livewire\Component;
 
-class UserProfileComponent extends Component
+class ProfileComponent extends Component
 {
-
-
 
     public $activeTab = 'currency';
     public $reviewItem = 'all';
@@ -29,6 +27,6 @@ class UserProfileComponent extends Component
 
     public function render()
     {
-        return view('livewire.frontend.user-profile-component');
+        return view('livewire.backend.user.profile.profile-component');
     }
 }

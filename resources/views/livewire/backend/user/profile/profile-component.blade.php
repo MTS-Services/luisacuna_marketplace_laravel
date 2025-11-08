@@ -1,4 +1,4 @@
-<main class=" mx-auto relative">
+<section class=" mx-auto relative">
     <section class="">
         <div class="inner_banner h-16 sm:h-32">
             <img src="{{ asset('assets/images/user_profile/inner_banner.png') }}" alt="" class="w-full h-full">
@@ -970,4 +970,4 @@
             </div>
         </section>
     @endif
-</main>
+</section>

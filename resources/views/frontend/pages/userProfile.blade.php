@@ -2,6 +2,6 @@
     <x-slot name="title">{{ __('User Profile') }}</x-slot>
     <x-slot name="pageSlug">{{ __('user_profile') }}</x-slot>
     {{-- <x-tiny-m-c-e-config /> --}}
-    <livewire:frontend.user-profile-component />
+    <livewire:backend.user.profile.profile-component />
     {{-- <livewire:livewire-example /> --}}
 </x-frontend::app>
