@@ -275,7 +275,19 @@
      "Dispute created": "Dispute created",
      "When your verification is processed or updated": "When your verification is processed or updated",
      "Payment received": "Payment received",
-     "When you receive boosting offers or updates": "When you receive boosting offers or updates"
+     "When you receive boosting offers or updates": "When you receive boosting offers or updates",
+
+
+    "Actions": "Actions",
+    "Delivery time": "Delivery time",
+    "Status": "Statut",
+    "Amount": "Amount",
+    "All Requests": "All Requests",
+    "Category" : "Category",
+    "Available Offers": "Available Offers",
+    "Request creation date": "Request creation date"
+
+     
 
 
 

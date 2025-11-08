@@ -241,5 +241,17 @@
     "Dispute created": "Litiges crées",
     "When your verification is processed or updated": "Lorsque votre verification est traité ou mis à jour",
     "Payment received": "Paiement reçu",
-    "When you receive boosting offers or updates": "Lorsque vous recevez des offres de boosting ou des mises à jour"
+    "When you receive boosting offers or updates": "Lorsque vous recevez des offres de boosting ou des mises à jour",
+
+    "Actions":"Actes",
+    "Delivery time": "Délai de livraison",
+    "Status": "Statut",
+    "Amount": "Montante",
+    "All Requests": "Toutes les demandes",
+    "Category" : "Catégories",
+    "Available Offers": "Offres disponibles",
+    "Request creation date": "Date de création de la demande"
 }
+
+
+
