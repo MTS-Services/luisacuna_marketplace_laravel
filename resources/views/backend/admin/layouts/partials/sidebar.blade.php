@@ -47,12 +47,12 @@
                         'icon' => 'user-circle',
                         'active' => 'admin',
                     ],
-                    // [
-                    //     'name' => 'Roles',
-                    //     'route' => '#',
-                    //     'icon' => 'shield-exclamation',
-                    //     'active' => 'role',
-                    // ],
+                    [
+                        'name' => 'Roles',
+                        'route' => route('admin.am.role.index'),
+                        'icon' => 'shield-exclamation',
+                        'active' => 'role',
+                    ],
                     // [
                     //     'name' => 'Permissions',
                     //     'route' => '#',

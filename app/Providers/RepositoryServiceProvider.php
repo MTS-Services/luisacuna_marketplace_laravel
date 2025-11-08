@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\PageView;
+use App\Repositories\Contracts\RoleRepositoryInterface;
+use App\Repositories\Eloquent\RoleRepository;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Eloquent\GameRepository;
 use App\Repositories\Eloquent\UserRepository;
@@ -73,6 +75,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             PageViewRepositoryInterface::class,
             PageViewRepository::class
+        );
+        $this->app->bind(
+            RoleRepositoryInterface::class,
+            RoleRepository::class
         );
     }
 
