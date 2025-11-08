@@ -30,7 +30,7 @@
                 {{-- name --}}
                 <div class="w-full">
                     <x-ui.label value="Name" class="mb-1" />
-                    <x-ui.input type="text" placeholder="Name" id="name" wire:model="form.name" />
+                    <x-ui.input type="text" placeholder="Name" id="title" wire:model="form.name" />
                     <x-ui.input-error :messages="$errors->get('form.name')" />
                 </div>
 
@@ -92,7 +92,7 @@
 
     @push('scripts')
         {{-- Auto slug script --}}
-        <script>
+        {{-- <script>
             document.getElementById('name').addEventListener('input', function() {
                 let slug = this.value
                     .toLowerCase()
@@ -102,6 +102,6 @@
 
                 document.getElementById('slug').dispatchEvent(new Event('input'));
             });
-        </script>
+        </script> --}}
     @endpush
 </section>
