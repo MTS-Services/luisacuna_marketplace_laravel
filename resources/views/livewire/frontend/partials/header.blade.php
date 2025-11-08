@@ -7,17 +7,17 @@
         </div>
         @include('partials.user-navigation')
 
-        <div class="flex gap-2 items-center">
+        <div class="flex gap-1 items-center">
             {{-- <button @click="globalSearchModal = true"
                 class="md:hidden btn btn-ghost btn-circle hover:bg-zinc-500/20">
                 <flux:icon name="magnifying-glass" class="w-6 h-6 text-text-text-white" />
             </button> --}}
             @auth
-                <button class="btn btn-ghost btn-circle p-1! hover:bg-zinc-500/20">
+                <button class="btn btn-ghost btn-circle  hover:bg-zinc-500/20">
                     <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-text-white" />
                 </button>
 
-                <button class="btn btn-ghost btn-circle p-1! hover:bg-zinc-500/20" @click="notification = !notification">
+                <button class="btn btn-ghost btn-circle  hover:bg-zinc-500/20" @click="notification = !notification">
                     <div class="indicator">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 stroke-text-primary" fill="none"
                             viewBox="0 0 24 24" stroke="white">

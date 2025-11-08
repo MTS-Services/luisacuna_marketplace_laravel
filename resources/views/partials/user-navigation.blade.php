@@ -68,6 +68,6 @@
         />
 
         <input type="text" placeholder="Search" x-on:click="globalSearchModal = true" x-clock
-            class="border dark:border-white border-gray-600 rounded-full py-1.5 pl-8 pr-2 text-sm focus:outline-none focus:border-purple-500 focus:bg-bg-primary transition-all w-22 focus:w-64 bg-transparent placeholder:text-text-primary">
+            class="border dark:border-white border-gray-600 rounded-full py-1.5 pl-8 pr-2 text-sm focus:outline-none focus:border-purple-500 focus:bg-bg-primary transition-all w-22 bg-transparent placeholder:text-text-primary">
     </div>
 </nav>
