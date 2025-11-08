@@ -318,27 +318,6 @@
                             </div>
                         </div>
                     </div>
-
-                    {{-- Social Links --}}
-                    <div>
-                        <label class="block text-sm font-medium text-text-primary mb-2">Social links</label>
-                        <div class="relative">
-                            <input type="text" name="social_links"
-                                value="{{ old('social_links', auth()->user()->social_links ?? '') }}"
-                                class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
-                                placeholder="Add social media links">
-                            <button type="button"
-                                class="absolute top-1/2 -translate-y-1/2 right-3 text-text-muted hover:text-text-primary">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                </svg>
-                            </button>
-                        </div>
-                        <p class="text-xs text-text-muted mt-1.5">
-                            {{__('This is the list of social media platforms or accounts you are associated with. Use commas to distinguish')}}
-                        </p>
-                    </div>
                 </form>
             </section>
 
