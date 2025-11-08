@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Scout\Searchable;
 
 class Permission extends SpatiePermission implements Auditable
 {
-    use AuditableTrait, HasFactory, SoftDeletes;
+    use AuditableTrait, HasFactory, SoftDeletes, Searchable;
     //
 
     protected $fillable = [

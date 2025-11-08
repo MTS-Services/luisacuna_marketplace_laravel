@@ -3,16 +3,19 @@
 namespace App\Models;
 
 use App\Traits\AuditableTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Scout\Attributes\SearchUsingPrefix;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Models\Role as SpatieRole;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 
 class Role extends SpatieRole implements Auditable
 {
-    use AuditableTrait, SoftDeletes, HasFactory;
+    use AuditableTrait, SoftDeletes, HasFactory, Searchable;
 
 
     protected $fillable = [
@@ -111,6 +114,36 @@ class Role extends SpatieRole implements Auditable
     public function admins(): HasMany
     {
         return $this->hasMany(Admin::class, 'role_id', 'id');
+    }
+
+
+    public function scopeFilter(Builder $query, array $filters): Builder
+    {
+        return $query
+            ->when(
+                $filters['name'] ?? null,
+                fn($q, $name) =>
+                $q->where('name', 'like', "%{$name}%")
+            );
+    }
+
+    /* ================================================================
+    |  Scout Search Configuration
+    ================================================================ */
+
+    #[SearchUsingPrefix(['name', 'guard_name'])]
+    public function toSearchableArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'guard_name' => $this->guard_name,
+
+        ];
+    }
+
+    public function shouldBeSearchable(): bool
+    {
+        return is_null($this->deleted_at);
     }
 
 }

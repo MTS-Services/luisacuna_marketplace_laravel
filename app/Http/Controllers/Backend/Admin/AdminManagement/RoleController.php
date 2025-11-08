@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\Backend\Admin\AdminManagement;
 
 use App\Http\Controllers\Controller;
-use App\Services\AdminService;
+use App\Services\RoleService;
+use Illuminate\Http\Request;
 
-class AdminController extends Controller
+class RoleController extends Controller
 {
+    protected $masterView = 'backend.admin.pages.admin-management.role.role';
 
-
-    protected $masterView = 'backend.admin.pages.admin-management.admin.admin';
-
-    public function __construct(protected AdminService $service)
+    public function __construct(protected RoleService $service)
     {
     }
 
@@ -47,7 +46,7 @@ class AdminController extends Controller
      */
     public function edit(string $id)
     {
-        $data = $this->service->findData($id);
+        $data = $this->service->findData(decrypt($id));
         if (!$data) {
             abort(404);
         }
@@ -55,7 +54,6 @@ class AdminController extends Controller
             'data' => $data
         ]);
     }
-
     public function trash()
     {
         return view($this->masterView);
