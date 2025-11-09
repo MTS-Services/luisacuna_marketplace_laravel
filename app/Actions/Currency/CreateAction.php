@@ -10,16 +10,15 @@ class CreateAction
 {
     public function __construct(
         protected CurrencyRepositoryInterface $interface
-    ) {}
+    ) {
+    }
 
 
     public function execute(array $data): Currency
     {
         return DB::transaction(function () use ($data) {
-            $findData = $this->interface->create($data);
-            // Dispatch event
-            // event(new CurrencyCreated($findData));
-            return $findData->fresh();
+            $newData = $this->interface->create($data);
+            return $newData->fresh();
         });
     }
 }

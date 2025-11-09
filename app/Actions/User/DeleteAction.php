@@ -2,7 +2,6 @@
 
 namespace App\Actions\User;
 
-use App\Events\User\UserDeleted;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -22,8 +21,6 @@ class DeleteAction
                 throw new \Exception('User not found');
             }
 
-            // Dispatch event before deletion
-            event(new UserDeleted($user));
 
             if ($forceDelete) {
                 // Delete avatar

@@ -19,6 +19,7 @@ class Admin extends AuthBaseModel implements Auditable
 
     protected $fillable = [
         'sort_order',
+        'role_id',
         'name',
         'email',
         'email_verified_at',
@@ -39,6 +40,9 @@ class Admin extends AuthBaseModel implements Auditable
         'created_by',
         'updated_by',
         'deleted_by',
+        'restored_by',
+        'restored_at',
+        
 
 
     ];
@@ -70,7 +74,10 @@ class Admin extends AuthBaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    //
+    public function role()
+    {
+        return $this->belongsTo(Role::class,'role_id','id');
+    }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS

@@ -1,4 +1,4 @@
-<div x-data="{ open: false }" class="relative">
+<div x-data="{ open: false }" class="relative z-40">
     <!-- Trigger Button -->
     <button @click="open = !open" class="flex items-center gap-2 text-text-white hover:text-black">
         <x-phosphor-globe class="w-5 h-5" />
@@ -19,7 +19,7 @@
             <!-- Header -->
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-base font-semibold flex gap-2 items-center text-text-white">
-                    <x-phosphor-globe class="w-5 h-5" /> Choose your language & currency
+                    <x-phosphor-globe class="w-6 h-6" /> Choose your language & currency
                 </h2>
                 <button @click="open = false">
                     <x-phosphor-x class="w-5 h-5 text-gray-500 hover:text-text-white" />

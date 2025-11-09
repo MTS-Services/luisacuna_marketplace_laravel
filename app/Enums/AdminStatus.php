@@ -22,10 +22,10 @@ enum AdminStatus: string
     public function color(): string
     {
         return match($this) {
-            self::ACTIVE => 'success',
-            self::INACTIVE => 'secondary',
-            self::SUSPENDED => 'danger',
-            self::PENDING => 'warning',
+            self::ACTIVE => 'badge-success',
+            self::INACTIVE => 'badge-secondary',
+            self::SUSPENDED => 'badge-error',
+            self::PENDING => 'badge-warning',
         };
     }
 

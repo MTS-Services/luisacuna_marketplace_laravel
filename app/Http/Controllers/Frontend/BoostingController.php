@@ -13,22 +13,4 @@ class BoostingController extends Controller
     {
         return view($this->masterView);
     }
-    public function sellerList()
-    {
-        return view($this->masterView);
-    }
-    public function buyNow()
-    {
-        return view($this->masterView);
-    }
-    public function checkout()
-    {
-        return view($this->masterView);
-    }
-
-    public function subscribe()
-    {
-        return view($this->masterView);
-    }
-
 }

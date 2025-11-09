@@ -35,8 +35,7 @@ class Index extends Component
         $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        );
-        $datas->load('creater_admin');
+        )->load('creater_admin');
 
         $columns = [
             [
@@ -161,9 +160,9 @@ class Index extends Component
     public function changeStatus($id, $status): void
     {
         try {
-            $currencyStatus = CurrencyStatus::from($status);
+            $dataStatus = CurrencyStatus::from($status);
 
-            match ($currencyStatus) {
+            match ($dataStatus) {
                 CurrencyStatus::ACTIVE => $this->service->updateStatusData($id, CurrencyStatus::ACTIVE),
                 CurrencyStatus::INACTIVE => $this->service->updateStatusData($id, CurrencyStatus::INACTIVE),
                 default => null,

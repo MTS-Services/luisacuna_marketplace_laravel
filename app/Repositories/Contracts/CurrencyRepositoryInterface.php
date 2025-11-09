@@ -10,7 +10,7 @@ interface CurrencyRepositoryInterface
 {
 
     /* ================== ================== ==================
-    *                      Find Methods 
+    *                      Find Methods
     * ================== ================== ================== */
 
     public function all(string $sortField = 'created_at', $order = 'desc'): Collection;
@@ -30,7 +30,7 @@ interface CurrencyRepositoryInterface
     public function search(string $query, string $sortField = 'created_at', $order = 'desc'): Collection;
 
     /* ================== ================== ==================
-    *                    Data Modification Methods 
+    *                    Data Modification Methods
     * ================== ================== ================== */
 
     public function create(array $data): Currency;
@@ -58,6 +58,4 @@ interface CurrencyRepositoryInterface
     public function getActive(string $sortField = 'created_at', $order = 'desc'): Collection;
 
     public function getInactive(string $sortField = 'created_at', $order = 'desc'): Collection;
-
-    public function getSuspended(string $sortField = 'created_at', $order = 'desc'): Collection;
 }

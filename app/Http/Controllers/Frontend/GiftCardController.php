@@ -14,12 +14,4 @@ class GiftCardController extends Controller
     {
         return view($this->masterView);
     }
-    public function sellerList()
-    {
-        return view($this->masterView);
-    }
-    public function checkOut()
-    {
-        return view($this->masterView);
-    }
 }

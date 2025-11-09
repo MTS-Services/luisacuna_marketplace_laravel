@@ -16,7 +16,7 @@ class CurrencyRepository implements CurrencyRepositoryInterface
 
 
     /* ================== ================== ==================
-    *                      Find Methods 
+    *                      Find Methods
     * ================== ================== ================== */
 
     public function all(string $sortField = 'created_at', $order = 'desc'): Collection
@@ -83,7 +83,6 @@ class CurrencyRepository implements CurrencyRepositoryInterface
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
-        return $query->paginate($perPage);
     }
 
     public function exists(int $id): bool
@@ -109,7 +108,7 @@ class CurrencyRepository implements CurrencyRepositoryInterface
 
 
     /* ================== ================== ==================
-    *                    Data Modification Methods 
+    *                    Data Modification Methods
     * ================== ================== ================== */
 
     public function create(array $data): Currency
@@ -199,10 +198,5 @@ class CurrencyRepository implements CurrencyRepositoryInterface
     public function getInactive(string $sortField = 'created_at', $order = 'desc'): Collection
     {
         return $this->model->inactive()->orderBy($sortField, $order)->get();
-    }
-
-    public function getSuspended(string $sortField = 'created_at', $order = 'desc'): Collection
-    {
-        return $this->model->suspended()->orderBy($sortField, $order)->get();
     }
 }
