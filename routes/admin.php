@@ -27,6 +27,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/view/{id}', 'view')->name('view');
             Route::get('/trash', 'trash')->name('trash');
         });
+        
         Route::controller(RoleController::class)->name('role.')->prefix('role')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
