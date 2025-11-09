@@ -10,17 +10,7 @@ use App\Livewire\User\UserCreate;
 use App\Livewire\User\UserEdit;
 use App\Livewire\User\UserList;
 
-// Route::view('dashboard', 'dashboard')
-//     ->middleware(['auth', 'verified'])
-//     ->name('dashboard');
-
 Route::middleware(['auth'])->group(function () {
-    //     Route::redirect('settings', 'settings/profile');
-
-    //     Route::get('settings/profile', Profile::class)->name('settings.profile');
-    //     Route::get('settings/password', Password::class)->name('settings.password');
-    //     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
-
     Route::prefix('users')->name('users.')->group(function () {
         Route::get('/', UserList::class)->name('index');
         Route::get('/create', UserCreate::class)->name('create');
