@@ -3,6 +3,8 @@
 namespace App\Livewire\Backend\Admin\AdminManagement\Admin;
 
 use App\Enums\AdminStatus;
+use App\Models\Admin;
+use App\Models\Role;
 use App\Services\AdminService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
@@ -15,7 +17,7 @@ class Index extends Component
 
     public $statusFilter = '';
     public $showDeleteModal = false;
-    public $deleteAdminId = null;
+    public $deleteId = null;
     public $bulkAction = '';
     public $showBulkActionModal = false;
 
@@ -33,22 +35,26 @@ class Index extends Component
         $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        );
+        )->load('role','creater_admin');
+        
 
         $columns = [
             [
-                'key' => 'id',
-                'label' => 'ID',
-                'sortable' => true
-            ],
-            [
                 'key' => 'avatar',
                 'label' => 'Avatar',
-                'format' => function ($admin) {
-                    return $admin->avatar_url
-                        ? '<img src="' . $admin->avatar_url . '" alt="' . $admin->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
-                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($admin->name, 0, 2)) . '</div>';
+                'format' => function ($data) {
+                    return $data->avatar_url
+                        ? '<img src="' . $data->avatar_url . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
                 }
+            ],
+            [
+                'key' => 'role_id',
+                'label' => 'Role',
+                'format'=> function ($data) {
+                    return $data->role?->name;
+                },
+                'sortable' => true
             ],
             [
                 'key' => 'name',
@@ -60,37 +66,29 @@ class Index extends Component
                 'label' => 'Email',
                 'sortable' => true
             ],
-            [
+           [
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
-                'format' => function ($admin) {
-                    $colors = [
-                        'active' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-                        'inactive' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-                        'suspended' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-                    ];
-                    $color = $colors[$admin->status->value] ?? 'bg-gray-100 text-gray-800';
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' .
-                        ucfirst($admin->status->value) .
+                'format' => function ($data) {
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
+                        $data->status->label() .
                         '</span>';
                 }
             ],
             [
                 'key' => 'created_at',
-                'label' => 'Created',
+                'label' => 'Created Date',
                 'sortable' => true,
-                'format' => function ($admin) {
-                    return $admin->created_at_formatted;
+                'format' => function ($data) {
+                    return $data->created_at_formatted;
                 }
             ],
             [
                 'key' => 'created_by',
                 'label' => 'Created By',
-                'format' => function ($admin) {
-                    return optional($admin->creater_admin)->name
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . e($admin->creater_admin->name) . '</span>'
-                        : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
+                'format' => function ($data) {
+                    return $data->creater_admin?->name ?? 'System';
                 }
             ],
         ];
@@ -100,16 +98,19 @@ class Index extends Component
                 'key' => 'id',
                 'label' => 'View',
                 'route' => 'admin.am.admin.view',
+                'encrypt' => true
             ],
             [
                 'key' => 'id',
                 'label' => 'Edit',
-                'route' => 'admin.am.admin.edit'
+                'route' => 'admin.am.admin.edit',
+                'encrypt' => true
             ],
             [
                 'key' => 'id',
                 'label' => 'Delete',
-                'method' => 'confirmDelete'
+                'method' => 'confirmDelete',
+                'encrypt' => true,
             ],
         ];
 
@@ -130,33 +131,25 @@ class Index extends Component
         ]);
     }
 
-    public function confirmDelete($adminId): void
+       public function confirmDelete($id): void
     {
-        $this->deleteAdminId = $adminId;
+        $this->deleteId = $id;
         $this->showDeleteModal = true;
     }
 
     public function delete(): void
     {
-        // dd($this->deleteAdminId);
         try {
-            if (!$this->deleteAdminId) {
+            if (!$this->deleteId) {
+                $this->warning('No data selected');
                 return;
             }
+            $this->service->deleteData(decrypt($this->deleteId));
+            $this->reset(['deleteId', 'showDeleteModal']);
 
-            if ($this->deleteAdminId == admin()->id) {
-                $this->error('You cannot delete your own account');
-                return;
-            }
-
-            $this->service->deleteData($this->deleteAdminId);
-
-            $this->showDeleteModal = false;
-            $this->deleteAdminId = null;
-
-            $this->success('Admin deleted successfully');
+            $this->success('Data deleted successfully');
         } catch (\Exception $e) {
-            $this->error('Failed to delete Admin: ' . $e->getMessage());
+            $this->error('Failed to delete data: ' . $e->getMessage());
         }
     }
 
@@ -169,9 +162,9 @@ class Index extends Component
     public function changeStatus($id, $status): void
     {
         try {
-            $adminStatus = AdminStatus::from($status);
+            $dataStatus = AdminStatus::from($status);
 
-            match ($adminStatus) {
+             match ($dataStatus) {
                 AdminStatus::ACTIVE => $this->service->updateStatusData($id, AdminStatus::ACTIVE),
                 AdminStatus::INACTIVE => $this->service->updateStatusData($id, AdminStatus::INACTIVE),
                 AdminStatus::PENDING => $this->service->updateStatusData($id, AdminStatus::SUSPENDED),
@@ -179,7 +172,7 @@ class Index extends Component
                 default => null,
             };
 
-            $this->success('Admin status updated successfully');
+            $this->success('Data status updated successfully');
         } catch (\Exception $e) {
             $this->error('Failed to update status: ' . $e->getMessage());
         }
@@ -188,8 +181,8 @@ class Index extends Component
     public function confirmBulkAction(): void
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
-            $this->warning('Please select Admins and an action');
-            Log::info('No Admins selected or no bulk action selected');
+            $this->warning('Please select data and an action');
+            Log::info('No data selected or no bulk action selected');
             return;
         }
 
@@ -220,15 +213,15 @@ class Index extends Component
 
     protected function bulkDelete(): void
     {
-        $count = $this->service->bulkDeleteData($this->selectedIds, admin()->id);
-
-        $this->success("{$count} Admins deleted successfully");
+        $count =  $this->service->bulkDeleteData($this->selectedIds);
+        $this->success("{$count} Data deleted successfully");
     }
 
     protected function bulkUpdateStatus(AdminStatus $status): void
     {
-        $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
-        $this->success("{$count} Admins updated successfully");
+        $count = count($this->selectedIds);
+        $this->service->bulkUpdateStatus($this->selectedIds, $status);
+        $this->success("{$count} Data updated successfully");
     }
 
     protected function getFilters(): array
@@ -241,12 +234,14 @@ class Index extends Component
         ];
     }
 
-    protected function getSelectableIds(): array
+   protected function getSelectableIds(): array
     {
-        return $this->service->getPaginatedData(
+        $data = $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        )->pluck('id')->toArray();
+        );
+
+        return array_column($data->items(), 'id');
     }
 
     public function updatedStatusFilter(): void

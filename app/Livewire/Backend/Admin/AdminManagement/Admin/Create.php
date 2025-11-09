@@ -6,6 +6,7 @@ namespace App\Livewire\Backend\Admin\AdminManagement\Admin;
 use App\Enums\AdminStatus;
 use App\Livewire\Forms\Backend\Admin\AdminManagement\AdminForm;
 use App\Services\AdminService;
+use App\Services\RoleService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -18,10 +19,12 @@ class Create extends Component
     public AdminForm $form;
 
     protected AdminService $service;
+    protected RoleService $roleService;
 
-    public function boot(AdminService $service)
+    public function boot(AdminService $service, RoleService $roleService)   
     {
         $this->service = $service;
+        $this->roleService = $roleService;
     }
 
     public function mount(): void
@@ -31,8 +34,10 @@ class Create extends Component
 
     public function render()
     {
+        $roles = $this->roleService->getAllDatas();
         return view('livewire.backend.admin.admin-management.admin.create', [
             'statuses' => AdminStatus::options(),
+            'roles' => $roles
         ]);
     }
     public function save()

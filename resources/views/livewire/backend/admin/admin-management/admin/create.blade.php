@@ -23,6 +23,17 @@
 
             <!-- Add other form fields here -->
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
+
+                {{-- product_type_id --}}
+                <div class="w-full">
+                    <x-ui.label value="Product Type Select" class="mb-1" />
+                    <x-ui.select wire:model="form.role_id">
+                        @foreach ($roles as $role)
+                            <option value="{{ $role->id }}">{{ $role['name'] }}</option>
+                        @endforeach
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.role_id')" />
+                </div>
                 <div class="w-full">
                     <x-ui.label value="Name" class="mb-1" />
                     <x-ui.input type="text" placeholder="Name" wire:model="form.name" />
@@ -62,8 +73,7 @@
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button wire:click="resetForm" variant="tertiary"
-                    class="w-auto! py-2!">
+                <x-ui.button wire:click="resetForm" variant="tertiary" class="w-auto! py-2!">
                     <flux:icon name="x-circle"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
                     {{ __('Reset') }}
@@ -71,10 +81,10 @@
 
                 <x-ui.button class="w-auto! py-2!" type="submit">
                     <span wire:loading.remove wire:target="save"
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{__('Create
-                        Admin')}}</span>
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Create
+                                                Admin') }}</span>
                     <span wire:loading wire:target="save"
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{__('Creating...')}}</span>
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Creating...') }}</span>
                 </x-ui.button>
             </div>
         </form>

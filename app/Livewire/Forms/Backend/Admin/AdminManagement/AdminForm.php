@@ -13,7 +13,7 @@ class AdminForm extends Form
 
     #[Locked]
     public ?int $id = null;
-
+    public ?int $role_id = null;
     public string $name = '';
     public string $email = '';
     public string $password = '';
@@ -30,6 +30,7 @@ class AdminForm extends Form
         $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
+            'role_id' => 'required|integer|exists:roles,id',
             'password' => $this->isUpdating() ? 'nullable|string|min:8' : 'required|string|min:8',
             'password_confirmation' => 'nullable|string|min:8|same:password',
             'phone' => 'nullable|string|max:20',
@@ -44,6 +45,7 @@ class AdminForm extends Form
     public function setData($data): void
     {
         $this->id = $data->id;
+        $this->role_id = $data->role_id;
         $this->name = $data->name;
         $this->email = $data->email;
         $this->phone = $data->phone;
@@ -56,6 +58,7 @@ class AdminForm extends Form
     public function reset(...$properties): void
     {
         $this->id = null;
+        $this->role_id = null;
         $this->name = '';
         $this->email = '';
         $this->password = '';
