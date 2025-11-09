@@ -33,7 +33,7 @@ class AdminController extends Controller
      */
     public function view(string $id)
     {
-        $data = $this->service->findData($id);
+        $data = $this->service->findData(decrypt($id));
         if (!$data) {
             abort(404);
         }
@@ -47,7 +47,7 @@ class AdminController extends Controller
      */
     public function edit(string $id)
     {
-        $data = $this->service->findData($id);
+        $data = $this->service->findData(decrypt($id));
         if (!$data) {
             abort(404);
         }

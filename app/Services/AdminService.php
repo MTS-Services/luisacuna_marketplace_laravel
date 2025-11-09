@@ -26,7 +26,7 @@ class AdminService
     ) {}
 
     /* ================== ================== ==================
-    *                          Find Methods 
+    *                          Find Methods
     * ================== ================== ================== */
 
     public function getAllDatas($sortfield = 'created_at', $order = 'desc'): Collection
@@ -39,20 +39,10 @@ class AdminService
     {
       return $this->interface->find($column_value, $column_name);
     }
-
-
-    public function getDataByEmail(string $email): ?Admin
-    {
-        return $this->interface->findByEmail($email);
-    }
-
-
     public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return $this->interface->paginate($perPage, $filters);
     }
-
-    
     public function getTrashedPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return $this->interface->trashPaginate($perPage, $filters);
@@ -62,7 +52,7 @@ class AdminService
     {
         return $this->interface->search($query, $sortField, $order);
     }
-    
+
      public function dataExists(int $id): bool
     {
         return $this->interface->exists($id);
@@ -73,12 +63,9 @@ class AdminService
         return $this->interface->count($filters);
     }
 
-
     /* ================== ================== ==================
     *                   Action Executions
     * ================== ================== ================== */
-
-
     public function createData(array $data): Admin
     {
         return $this->createAction->execute($data);
@@ -117,9 +104,6 @@ class AdminService
             'updated_by' => $actionerId,
         ]);
     }
-
-
-
     public function bulkRestoreData(array $ids, ? int $actionerId = null): int
     {
 
@@ -135,28 +119,17 @@ class AdminService
         if($actionerId == null){
           $actionerId = admin()->id;
         }
-
         return $this->bulkAction->execute($ids, 'forceDelete', null, $actionerId);
     }
-
-
-    
     public function bulkDeleteData(array $ids , ?int $actionerId = null): int
     {
         if($actionerId == null){
-          $actionerId = admin()->id; 
+          $actionerId = admin()->id;
         }
-
         return $this->bulkAction->execute($ids, 'delete', null, $actionerId);
     }
-
-
-
     public function bulkUpdateStatus(array $ids, AdminStatus $status, ?int $actionerId = null): int
     {
-
- 
-
         if ($actionerId == null) {
             $actionerId = admin()->id;
         }

@@ -6,7 +6,6 @@ namespace App\Livewire\Backend\Admin\AdminManagement\Admin;
 use App\Enums\AdminStatus;
 use App\Livewire\Forms\Backend\Admin\AdminManagement\AdminForm;
 use App\Services\AdminService;
-use App\Services\Admin\service;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -39,23 +38,18 @@ class Create extends Component
     public function save()
     {
 
-
+        $data =  $this->form->validate();
         try {
-            $data =  $this->form->fillables();
-
             $data['created_by'] = admin()->id;
             $this->service->createData($data);
 
-            $this->dispatch('Admin is created');
-
-            $this->success('Admin created successfully');
-
+            $this->success('Data created successfully');
             return $this->redirect(route('admin.am.admin.index'), navigate: true);
+
         } catch (\Exception $e) {
 
-            Log::error('Failed to create user: ' . $e->getMessage());
-
-            $this->error('Failed to create user: ');
+            Log::error('Failed to create data: ' . $e->getMessage());
+            $this->error('Failed to create data: ');
         }
     }
 

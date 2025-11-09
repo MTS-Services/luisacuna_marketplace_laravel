@@ -6,8 +6,8 @@ use Livewire\Component;
 
 class Boosting extends Component
 {
-    public function render()
-    {
-        return view('livewire.frontend.boostings.boosting');
-    }
+    // public function render()
+    // {
+    //     return view('livewire.frontend.boostings.boosting');
+    // }
 }

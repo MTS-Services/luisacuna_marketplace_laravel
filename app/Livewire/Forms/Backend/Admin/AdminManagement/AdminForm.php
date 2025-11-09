@@ -41,16 +41,16 @@ class AdminForm extends Form
         return $rules;
     }
 
-    public function setData($admin): void
+    public function setData($data): void
     {
-        $this->id = $admin->id;
-        $this->name = $admin->name;
-        $this->email = $admin->email;
-        $this->phone = $admin->phone;
-        $this->address = $admin->address;
-        $this->status = $admin->status->value;
-        $this->avatar = null;
-        
+        $this->id = $data->id;
+        $this->name = $data->name;
+        $this->email = $data->email;
+        $this->phone = $data->phone;
+        $this->address = $data->address;
+        $this->status = $data->status->value;
+        $this->avatar = $data->avatar;
+
     }
 
     public function reset(...$properties): void
@@ -72,17 +72,5 @@ class AdminForm extends Form
     protected function isUpdating(): bool
     {
         return !empty($this->id);
-    }
-
-    public function fillables(){
-        return [
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => $this->password,
-            'phone' => $this->phone,
-            'address' => $this->address,
-            'status' => $this->status,
-            'avatar' => $this->avatar
-        ];
     }
 }

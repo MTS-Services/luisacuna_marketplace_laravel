@@ -10,18 +10,14 @@ interface AdminRepositoryInterface
 {
 
     /* ================== ================== ==================
-    *                      Find Methods 
+    *                      Find Methods
     * ================== ================== ================== */
 
     public function all(string $sortField = 'created_at', $order = 'desc'): Collection;
 
     public function find($column_value, string $column_name = 'id', bool $trashed = false): ?Admin;
 
-    public function findByEmail(string $email, bool $trashed = false): ?Admin;
-
     public function findTrashed($column_value, string $column_name = 'id'): ?Admin;
-
-    public function findTrashedByEmail(string $email): ?Admin;
 
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
 
@@ -35,7 +31,7 @@ interface AdminRepositoryInterface
 
 
     /* ================== ================== ==================
-    *                    Data Modification Methods 
+    *                    Data Modification Methods
     * ================== ================== ================== */
 
 
