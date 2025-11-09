@@ -73,17 +73,22 @@
                     <x-ui.input-error :messages="$errors->get('form.password_confirmation')" />
                 </div>
             </div>
-            <!-- Form Actions -->
+              <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button wire:click="cancel" variant="tertiary" class="w-auto! py-2!">
+                <x-ui.button wire:click="resetForm" variant="tertiary" class="w-auto! py-2!">
                     <flux:icon name="x-circle"
-                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                    {{ __('Cancel') }}
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
+                    <span wire:loading.remove wire:target="resetForm"
+                        class="text-text-btn-primary group-hover:text-text-btn-tertiary">{{ __('Reset') }}</span>
+                    <span wire:loading wire:target="resetForm"
+                        class="text-text-btn-primary group-hover:text-text-btn-tertiary">{{ __('Reseting...') }}</span>
                 </x-ui.button>
 
-                <x-ui.button type="submit" class="w-auto! py-2!">
-                    <span wire:loading.remove wire:target="save" class="text-white">{{ __('Update Admin') }}</span>
-                    <span wire:loading wire:target="save" class="text-white">{{ __('Updating...') }}</span>
+                <x-ui.button class="w-auto! py-2!" type="submit">
+                    <span wire:loading.remove wire:target="save"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Update ') }}</span>
+                    <span wire:loading wire:target="save"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Updating...') }}</span>
                 </x-ui.button>
             </div>
         </form>

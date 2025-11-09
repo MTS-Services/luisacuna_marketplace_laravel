@@ -84,12 +84,9 @@ class Edit extends Component
         $this->form->avatar = null;
     }
 
-    public function resetForm(): void
+      public function resetForm(): void
     {
-        $this->form->reset();
-    }
-    public function cancel(): void
-    {
-        $this->redirect(route('admin.am.admin.index'), navigate: true);
+        $this->form->setData($this->data);
+        $this->form->resetValidation();
     }
 }
