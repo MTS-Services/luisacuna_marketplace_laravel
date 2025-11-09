@@ -1,27 +1,25 @@
 <?php
 
-namespace App\Http\Livewire\Backend\Admin\EmailTemplates;
+
+
+
+namespace App\Livewire\Backend\Admin\EmailTemplates;
 
 use Livewire\Component;
 use App\Models\EmailTemplate;
 
-class Trash extends Component
+class Show extends Component
 {
-    public function restore($id)
-    {
-        EmailTemplate::onlyTrashed()->findOrFail($id)->restore();
-        session()->flash('success', 'Template restored successfully!');
-    }
+    public $template;
 
-    public function deletePermanently($id)
+    // Mount function – যখন কম্পোনেন্ট লোড হবে তখন টেমপ্লেট আইডি অনুযায়ী ডেটা আনবে
+    public function mount($id)
     {
-        EmailTemplate::onlyTrashed()->findOrFail($id)->forceDelete();
-        session()->flash('success', 'Template deleted permanently!');
+        $this->template = EmailTemplate::findOrFail($id);
     }
 
     public function render()
     {
-        $trashed = EmailTemplate::onlyTrashed()->get();
-        return view('livewire.backend.admin.email-templates.trash', compact('trashed'));
+        return view('livewire.backend.admin.email-templates.show');
     }
 }

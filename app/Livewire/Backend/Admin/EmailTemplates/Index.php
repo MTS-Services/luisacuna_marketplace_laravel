@@ -1,22 +1,30 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\EmailTemplates;
 
+namespace App\Livewire\Backend\Admin\EmailTemplates;
 
 use Livewire\Component;
 use App\Models\EmailTemplate;
 
 class Index extends Component
 {
+    public $templates;
+
+    public function mount()
+    {
+        $this->templates = EmailTemplate::latest()->get();
+    }
+
     public function delete($id)
     {
-        EmailTemplate::findOrFail($id)->delete();
-        session()->flash('success', 'Template moved to trash!');
+        $template = EmailTemplate::findOrFail($id);
+        $template->delete(); // Soft delete
+        $this->templates = EmailTemplate::latest()->get();
+        session()->flash('message', 'Template moved to trash successfully!');
     }
 
     public function render()
     {
-        $templates = EmailTemplate::latest()->get();
-        return view('livewire.backend.admin.email-templates.index', compact('templates'));
+        return view('livewire.backend.admin.email-templates.index');
     }
 }

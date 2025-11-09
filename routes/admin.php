@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AuditingController;
 use App\Http\Controllers\Backend\Admin\Settings\CurrencyController;
 use App\Http\Controllers\Backend\Admin\Settings\LanguageController;
+use App\Http\Controllers\Admin\EmailTemplateController;
 
 Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
@@ -24,6 +25,21 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/trash', 'trash')->name('trash');
         });
     });
+
+
+
+    Route::prefix('email-templates')->group(function () {
+    Route::get('/', [EmailTemplateController::class, 'index'])->name('email_templates.index');
+    Route::get('/create', [EmailTemplateController::class, 'create'])->name('email_templates.create');
+    Route::post('/store', [EmailTemplateController::class, 'store'])->name('email_templates.store');
+    Route::get('/edit/{id}', [EmailTemplateController::class, 'edit'])->name('email_templates.edit');
+    Route::put('/update/{id}', [EmailTemplateController::class, 'update'])->name('email_templates.update');
+    Route::delete('/delete/{id}', [EmailTemplateController::class, 'destroy'])->name('email_templates.delete');
+
+    Route::get('/trash', [EmailTemplateController::class, 'trash'])->name('email_templates.trash');
+    Route::get('/{id}', [EmailTemplateController::class, 'show'])->name('email_templates.show');
+});
+
 
 
     // Game  Controller

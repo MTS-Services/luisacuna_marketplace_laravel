@@ -13,7 +13,7 @@ use App\Http\Controllers\Frontend\GameController;
 use App\Http\Controllers\Frontend\GiftCardController;
 use App\Http\Controllers\Frontend\UserAccountController;
 use App\Http\Controllers\Frontend\UserProfileController;
-use App\Http\Controllers\Admin\EmailTemplateController;
+
 use App\Http\Controllers\Admin\FavoriteController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -74,17 +74,10 @@ Route::get('/currency', [CurrencyController::class, 'index'])->name('currency');
 // Route::get('/email-templates', [EmailTemplateController::class, 'index'])->name('email_templates.index');
 // Route::get('/email-templates/{id}', [EmailTemplateController::class, 'show'])->name('email_templates.show');
 // / Email Templates Routes
-Route::prefix('email-templates')->group(function () {
-    Route::get('/', [EmailTemplateController::class, 'index'])->name('email_templates.index');
-    Route::get('/create', [EmailTemplateController::class, 'create'])->name('email_templates.create');
-    Route::post('/store', [EmailTemplateController::class, 'store'])->name('email_templates.store');
-    Route::get('/edit/{id}', [EmailTemplateController::class, 'edit'])->name('email_templates.edit');
-    Route::put('/update/{id}', [EmailTemplateController::class, 'update'])->name('email_templates.update');
-    Route::delete('/delete/{id}', [EmailTemplateController::class, 'destroy'])->name('email_templates.delete');
 
-    Route::get('/trash', [EmailTemplateController::class, 'trash'])->name('email_templates.trash');
-    Route::get('/{id}', [EmailTemplateController::class, 'show'])->name('email_templates.show');
-});
+// 🧠 Email Templates Routes Group
+
+
 
 
 

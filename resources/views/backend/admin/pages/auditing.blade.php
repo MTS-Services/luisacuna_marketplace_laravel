@@ -3,6 +3,7 @@
 
     @switch(Route::currentRouteName())
 
+
         @case('admin.alm.audit.view')
             <x-slot name="title">Auditing Log Details</x-slot>
             <x-slot name="breadcrumb">Auditing Log > Details </x-slot>
