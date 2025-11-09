@@ -34,8 +34,8 @@
                 </div>
             </div>
             <div>
-                <x-ui.button href="#" class="m-auto! py-2!">
-                    {{ __('Bookings') }}
+                <x-ui.button href="{{ route('user.seller.verification') }}" wire:navigate class="m-auto! py-2!">
+                    {{ __('Sell') }}
                 </x-ui.button>
             </div>
         </div>
