@@ -11,6 +11,7 @@ use App\Models\EmailTemplate;
 class Show extends Component
 {
     public $template;
+    protected $service;
 
     // Mount function – যখন কম্পোনেন্ট লোড হবে তখন টেমপ্লেট আইডি অনুযায়ী ডেটা আনবে
     public function mount($id)
