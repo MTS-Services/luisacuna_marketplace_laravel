@@ -3,13 +3,13 @@
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Admin Edit') }}</h2>
             <div class="flex items-center gap-2">
-                 <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.am.admin.index') }}" class="w-auto! py-2!">
-                    <flux:icon name="arrow-left"
-                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                    {{ __('Back') }}
-                </x-ui.button>
-            </div>
+                <div class="flex items-center gap-2">
+                    <x-ui.button href="{{ route('admin.am.admin.index') }}" class="w-auto! py-2!">
+                        <flux:icon name="arrow-left"
+                            class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
+                        {{ __('Back') }}
+                    </x-ui.button>
+                </div>
             </div>
         </div>
     </div>
@@ -26,6 +26,17 @@
 
             <!-- Add other form fields here -->
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
+                <div class="w-full">
+                    <x-ui.label value="Role Select" class="mb-1" />
+                    <x-ui.select wire:model="form.role_id">
+                        <option value="">Select Role</option>
+                        @foreach ($roles as $role)
+                            <option value="{{ $role->id }}">{{ $role['name'] }}</option>
+                        @endforeach
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.role_id')" />
+                </div>
+
                 <div class="w-full">
                     <x-ui.label value="Name" class="mb-1" />
                     <x-ui.input type="text" placeholder="Name" wire:model="form.name" />
@@ -65,13 +76,14 @@
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
                 <x-ui.button wire:click="cancel" variant="tertiary" class="w-auto! py-2!">
-                    <flux:icon name="x-circle" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
+                    <flux:icon name="x-circle"
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                     {{ __('Cancel') }}
                 </x-ui.button>
 
-                <x-ui.button  type="submit" class="w-auto! py-2!">
-                    <span wire:loading.remove wire:target="save" class="text-white">{{__('Update Admin')}}</span>
-                    <span wire:loading wire:target="save" class="text-white">{{__('Updating...')}}</span>
+                <x-ui.button type="submit" class="w-auto! py-2!">
+                    <span wire:loading.remove wire:target="save" class="text-white">{{ __('Update Admin') }}</span>
+                    <span wire:loading wire:target="save" class="text-white">{{ __('Updating...') }}</span>
                 </x-ui.button>
             </div>
         </form>

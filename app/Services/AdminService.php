@@ -81,7 +81,6 @@ class AdminService
         if ($actionerId == null) {
             $actionerId = admin()->id;
         }
-
         return $this->deleteAction->execute($id, $forceDelete, $actionerId);
     }
 

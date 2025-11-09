@@ -143,7 +143,7 @@ class AdminRepository implements AdminRepositoryInterface
             return false;
         }
 
-        $findData->update(['deleter_id' => $actionerId]);
+        $findData->update(['deleted_by' => $actionerId]);
         return $findData->delete();
     }
 
@@ -162,8 +162,7 @@ class AdminRepository implements AdminRepositoryInterface
         if (!$findData) {
             return false;
         }
-        $findData->update(['restorer_id' => $actionerId]);
-
+        $findData->update(['restored_by' => $actionerId,'restored_at' => now()]);
         return $findData->restore();
     }
 
@@ -180,7 +179,7 @@ class AdminRepository implements AdminRepositoryInterface
     public function bulkUpdateStatus(array $ids, string $status, $actionerId): int
     {
 
-        return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updater_id' => $actionerId]);
+        return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updated_by' => $actionerId]);
     }
 
     public function bulkRestore(array $ids, int $actionerId): int

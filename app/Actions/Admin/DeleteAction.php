@@ -11,11 +11,16 @@ class DeleteAction
     public function __construct(
         protected AdminRepositoryInterface $interface
     ) {}
-
-    public function execute(int $id, bool $forceDelete = false, $actionerId): bool
+    public function execute(int $id, bool $forceDelete = false, int $actionerId): bool
     {
         return DB::transaction(function () use ($id, $forceDelete, $actionerId) {
-            $findData = $this->interface->find($id);
+            $findData = null;
+
+            if ($forceDelete) {
+                $findData = $this->interface->findTrashed($id);
+            } else {
+                $findData = $this->interface->find($id);
+            }
 
             if (!$findData) {
                 throw new \Exception('Data not found');
@@ -29,10 +34,5 @@ class DeleteAction
             }
             return $this->interface->delete($id, $actionerId);
         });
-    }
-
-    public function restore(int $adminId, int $actionerId): bool
-    {
-        return $this->interface->restore($adminId, $actionerId);
     }
 }

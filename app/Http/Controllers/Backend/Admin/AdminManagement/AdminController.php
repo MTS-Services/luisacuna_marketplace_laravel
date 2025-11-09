@@ -31,9 +31,9 @@ class AdminController extends Controller
     /**
      * Display the specified resource.
      */
-    public function view(string $id)
+    public function edit(string $encryptedId)
     {
-        $data = $this->service->findData(decrypt($id));
+        $data = $this->service->findData(decrypt($encryptedId));
         if (!$data) {
             abort(404);
         }
@@ -42,12 +42,10 @@ class AdminController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+
+     public function view(string $encryptedId)
     {
-        $data = $this->service->findData(decrypt($id));
+        $data = $this->service->findData(decrypt($encryptedId));
         if (!$data) {
             abort(404);
         }

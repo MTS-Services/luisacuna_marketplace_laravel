@@ -21,7 +21,7 @@ class AdminForm extends Form
     public ?string $phone = '';
     public ?string $address = '';
     public string $status = '';
-    public ?UploadedFile $avatar = null;
+    public ?string $avatar = null;
     public bool $remove_avatar = false;
 
 
@@ -51,7 +51,7 @@ class AdminForm extends Form
         $this->phone = $data->phone;
         $this->address = $data->address;
         $this->status = $data->status->value;
-        $this->avatar = $data->avatar;
+        // $this->avatar = $data->avatar;
 
     }
 
