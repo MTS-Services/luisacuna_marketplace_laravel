@@ -10,11 +10,11 @@
         {{-- Main Navigation Icons --}}
         <div class="flex  items-center">
             @auth
-                <button class="p-1 rounded-full bg-transparent hover:bg-zinc-500/20 transition-colors">
+                <button class="p-1 rounded-full bg-transparent  transition-colors">
                     <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-text-white" />
                 </button>
 
-                <button class="px-1 py-0.5 mt-1 rounded-full bg-transparent hover:bg-zinc-500/20 transition-colors"
+                <button class="px-1 py-0.5 mt-1 rounded-full bg-transparent  transition-colors"
                     @click="notification = !notification">
                     <div class="relative inline-flex">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-text-primary" fill="none"
@@ -36,7 +36,7 @@
                 @auth
                     @include('partials.profile-dropdown')
                 @else
-                    <div class="mr-8">
+                    <div class="mr-3">
                         <a href="{{ route('login') }}">
                             <flux:icon name="user-circle" class="w-7 h-7 text-text-text-white " />
                         </a>

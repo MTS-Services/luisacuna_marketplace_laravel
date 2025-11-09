@@ -1,7 +1,7 @@
 {{-- Profile Dropdown Component - components/profile-dropdown.blade.php --}}
 <div x-data="{ open: false }" class="relative">
     <button @click="open = !open"
-        class="flex items-center rounded-lg text-text-white transition-all focus:outline-none mr-8">
+        class="flex items-center rounded-lg text-text-white transition-all focus:outline-none mr-3 ml-1.5">
         <div class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full shadow-lg overflow-hidden">
             <img src="{{ storage_url(auth()->user()->avatar) }}" class="w-full h-full object-cover"
                 alt="{{ auth()->user()->full_name ?? 'User Avatar' }}">
