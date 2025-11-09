@@ -18,16 +18,16 @@ class Index extends Component
     public $showBulkActionModal = false;
 
 
-    protected AuditService $auditService;
+    protected AuditService $service;
 
-    public function boot(AuditService $auditService)
+    public function boot(AuditService $service)
     {
-        $this->auditService = $auditService;
+        $this->service = $service;
     }
 
     public function render()
     {
-        $datas = $this->auditService->getPaginated(
+        $datas = $this->service->getPaginated(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
@@ -58,7 +58,7 @@ class Index extends Component
                 'label' => 'IP Address',
                 'sortable' => true
             ],
-            
+
             [
                 'key' => 'created_at',
                 'label' => 'Audit Date',
@@ -104,15 +104,14 @@ class Index extends Component
         $this->deleteId = $id;
         $this->showDeleteModal = true;
     }
-    
+
     public function delete(): void
     {
-        // dd($this->deleteAdminId);
         try {
             if (!$this->deleteId) {
                 return;
             }
-            $this->auditService->deleteData($this->deleteId);
+            $this->service->deleteData($this->deleteId);
 
             $this->reset(['showDeleteModal', 'deleteId']);
 
@@ -128,7 +127,7 @@ class Index extends Component
         $this->resetPage();
     }
 
-    
+
 
     public function confirmBulkAction(): void
     {
@@ -160,7 +159,7 @@ class Index extends Component
 
     protected function bulkDelete(): void
     {
-        $count = $this->auditService->bulkDeleteData($this->selectedIds);
+        $count = $this->service->bulkDeleteData($this->selectedIds);
         $this->success("{$count} datas deleted successfully");
     }
 
@@ -175,7 +174,7 @@ class Index extends Component
 
     protected function getSelectableIds(): array
     {
-        return collect($this->auditService->getPaginated(
+        return collect($this->service->getPaginated(
             perPage: $this->perPage,
             filters: $this->getFilters()
         ))->pluck('id')->toArray();
