@@ -1,26 +1,6 @@
 <div>
-    <style>
-        /* Custom Scrollbar */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #52525b;
-            border-radius: 3px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #71717a;
-        }
-    </style>
-
     <div class="bg-bg-secondary">
-        <div class="container-fluid">
+        <div>
             <div class="p-3 sm:p-4">
                 <div class="flex items-center justify-between mb-3 sm:mb-4">
                     <h2 class="text-lg sm:text-xl md:text-2xl lg:text-3xl text-text-primary font-lato">{{__('Messages')}}</h2>
@@ -67,15 +47,15 @@
                 </a>
 
             </div>
-            <div class="flex flex-col md:flex-row h-auto md:h-[72vh] gap-2 px-3 sm:px-4 pb-3 sm:pb-4 relative">
+            <div class="flex flex-col md:flex-row h-auto md:h-[68vh] gap-2 px-3 sm:px-4  relative">
                 <!-- Mobile Overlay -->
                 <div id="mobileOverlay" onclick="toggleMobileMenu()"
                     class="hidden fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"></div>
 
                 <!-- Left Sidebar - Messages List -->
                 <div id="messagesSidebar"
-                    class="fixed md:static inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-50 w-full md:w-64 lg:w-72 xl:w-80 2xl:w-96 bg-bg-primary rounded-lg flex flex-col md:mr-5 mb-3 md:mb-0 max-h-full md:max-h-full">
-                    <div class="p-3 sm:p-4 lg:p-5">
+                    class="fixed md:static inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-30 w-full md:w-64 lg:w-72 xl:w-80 2xl:w-96 bg-bg-primary rounded-lg flex flex-col md:mr-5 mb-1 md:mb-0 max-h-full md:max-h-full">
+                    <div class="p-3 sm:p-4 ">
                         <!-- Close Button for Mobile -->
                         <div class="flex items-center justify-between mb-3 md:hidden">
                             <h3 class="text-text-primary font-semibold text-base">{{__('Conversations')}}</h3>
