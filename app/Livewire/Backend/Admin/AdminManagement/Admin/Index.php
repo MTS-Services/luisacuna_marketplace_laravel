@@ -117,7 +117,7 @@ class Index extends Component
         $bulkActions = [
             ['value' => 'delete', 'label' => 'Delete'],
             ['value' => 'activate', 'label' => 'Activate'],
-            ['value' => 'deactivate', 'label' => 'Deactivate'],
+            ['value' => 'inactive', 'label' => 'Inactive'],
             ['value' => 'suspend', 'label' => 'Suspend'],
             ['value' => 'pending', 'label' => 'Pending'],
         ];
@@ -219,8 +219,7 @@ class Index extends Component
 
     protected function bulkUpdateStatus(AdminStatus $status): void
     {
-        $count = count($this->selectedIds);
-        $this->service->bulkUpdateStatus($this->selectedIds, $status);
+         $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
         $this->success("{$count} Data updated successfully");
     }
 
