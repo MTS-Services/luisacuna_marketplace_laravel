@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\Admin\Settings\LanguageController;
 use App\Http\Controllers\Backend\Admin\GameManagement\GameController;
 use App\Http\Controllers\Backend\Admin\UserManagement\UserController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
+use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductTypeController;
@@ -33,6 +34,12 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/edit/{id}', 'edit')->name('edit');
             Route::get('/view/{id}', 'view')->name('view');
             Route::get('/trash', 'trash')->name('trash');
+        });
+        Route::controller(PermissionController::class)->name('permission.')->prefix('permission')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/view/{id}', 'view')->name('view');
         });
     });
 

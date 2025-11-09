@@ -25,7 +25,9 @@ use App\Repositories\Contracts\LanguageRepositoryInterface;
 use App\Repositories\Contracts\ProductTypeRepositoryInterface;
 use App\Repositories\Contracts\GameCategoryRepositoryInterface;
 use App\Repositories\Contracts\PageViewRepositoryInterface;
+use App\Repositories\Contracts\PermissionRepositoryInterface;
 use App\Repositories\Eloquent\PageViewRepository;
+use App\Repositories\Eloquent\PermissionRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -79,6 +81,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             RoleRepositoryInterface::class,
             RoleRepository::class
+        );
+        $this->app->bind(
+            PermissionRepositoryInterface::class,
+            PermissionRepository::class
         );
     }
 
