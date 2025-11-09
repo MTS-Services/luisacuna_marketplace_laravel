@@ -10,9 +10,9 @@
         {{-- Main Navigation Icons --}}
         <div class="flex  items-center">
             @auth
-                <button class="p-1 rounded-full bg-transparent  transition-colors">
+                <a href="{{ route('user.messages') }}" wire:navigate class="p-1 rounded-full bg-transparent  transition-colors">
                     <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-text-white" />
-                </button>
+                </a>
 
                 <button class="px-1 py-0.5 mt-1 rounded-full bg-transparent  transition-colors"
                     @click="notification = !notification">
