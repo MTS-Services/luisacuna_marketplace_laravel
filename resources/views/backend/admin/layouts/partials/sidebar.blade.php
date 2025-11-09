@@ -53,12 +53,12 @@
                         'icon' => 'shield-exclamation',
                         'active' => 'role',
                     ],
-                    // [
-                    //     'name' => 'Permissions',
-                    //     'route' => '#',
-                    //     'icon' => 'shield-check',
-                    //     'active' => 'permission',
-                    // ],
+                    [
+                        'name' => 'Permissions',
+                        'route' => route('admin.am.permission.index'),
+                        'icon' => 'shield-check',
+                        'active' => 'permission',
+                    ],
                 ]" />
 
             <x-backend.navlink type="dropdown" icon="user-group" name="User Management" :page_slug="$active"

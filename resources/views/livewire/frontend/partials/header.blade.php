@@ -10,11 +10,11 @@
         {{-- Main Navigation Icons --}}
         <div class="flex  items-center">
             @auth
-                <button class="p-1 rounded-full bg-transparent hover:bg-zinc-500/20 transition-colors">
+                <a href="{{ route('user.messages') }}" wire:navigate class="p-1 rounded-full bg-transparent  transition-colors">
                     <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-text-white" />
-                </button>
+                </a>
 
-                <button class="px-1 py-0.5 mt-1 rounded-full bg-transparent hover:bg-zinc-500/20 transition-colors"
+                <button class="px-1 py-0.5 mt-1 rounded-full bg-transparent  transition-colors"
                     @click="notification = !notification">
                     <div class="relative inline-flex">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-text-primary" fill="none"
@@ -36,7 +36,7 @@
                 @auth
                     @include('partials.profile-dropdown')
                 @else
-                    <div class="mr-8">
+                    <div class="mr-3">
                         <a href="{{ route('login') }}">
                             <flux:icon name="user-circle" class="w-7 h-7 text-text-text-white " />
                         </a>
@@ -90,7 +90,7 @@
     {{-- Notification --}}
     <div x-show="notification" x-cloak @click.outside="notification = false"
         y-transition:enter="transition ease-out duration-100"
-        class="absolute top-20 right-2 w-[90%] xs:w-3/4 md:max-w-[600px] bg-bg-primary rounded-2xl! backdrop:blure-md z-100   transition-all duration-300 max-h-[65vh] text-text-text-white shadow-lg overflow-y-auto">
+        class="absolute top-18 right-3 w-[90%] xs:w-3/4 md:max-w-[600px] dark:bg-zinc-800 bg-white rounded-2xl! backdrop:blure-md z-100   transition-all duration-300 max-h-[65vh] text-text-text-white shadow-lg overflow-y-auto">
         <div class="pb-10 px-6">
             <!-- Header -->
             <div class="flex justify-between items-center p-4 pb-0">

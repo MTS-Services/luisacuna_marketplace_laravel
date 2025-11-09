@@ -14,7 +14,7 @@
                 <h2 class="text-2xl sm:text-3xl font-semibold text-text-primary mb-8">{{ __('Profile') }}</h2>
 
                 {{-- Profile Image --}}
-                <div class="flex items-start bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6">
+                <div class="flex items-start bg-zinc-100 dark:bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6">
                     <div class="relative">
                         <img src="{{ auth()->user()->avatar ?? asset('assets/images/user_profile/Ellipse 474.png') }}"
                             alt="Profile" class="w-20 h-20 rounded-full object-cover ring-2 ring-accent/20">
@@ -33,7 +33,7 @@
                 </div>
 
                 {{-- Bio Textarea --}}
-                <div class="p-6 bg-zinc-50/10 rounded-lg" x-data="{ editMode: false }">
+                <div class="p-6 bg-zinc-100 dark:bg-zinc-50/10 rounded-lg" x-data="{ editMode: false }">
                     <div class="flex justify-between items-center gap-6 mb-3">
                         <h2 class="block text-base font-medium text-text-primary">{{ __('Your description') }}</h2>
                         <div class="px-2 py-1.5 sm:px-4 sm:py-3 bg-zinc-50/20 justify-end rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition"
@@ -88,7 +88,7 @@
 
                     {{-- First Name --}}
                     <div x-data="{ editMode: false }">
-                        <div class="p-3 sm:p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
+                        <div class="p-3 sm:p-6 bg-zinc-100 dark:bg-zinc-50/10 rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('First name:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
@@ -131,7 +131,7 @@
 
                     {{-- Last name --}}
                     <div x-data="{ editMode: false }">
-                        <div class="p-3 sm:p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
+                        <div class="p-3 sm:p-6 bg-zinc-100 dark:bg-zinc-50/10 rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Last name:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
@@ -173,7 +173,7 @@
 
                     {{-- Email --}}
                     <div x-data="{ editMode: false }">
-                        <div class="p-3 sm:p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
+                        <div class="p-3 sm:p-6 bg-zinc-100 dark:bg-zinc-50/10 rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Email:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full">
@@ -220,7 +220,7 @@
 
                     {{-- Username --}}
                     <div x-data="{ editMode: false }">
-                        <div class="p-3 sm:p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
+                        <div class="p-3 sm:p-6 bg-zinc-100 dark:bg-zinc-50/10 rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Username:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full">
@@ -269,7 +269,7 @@
 
                     {{-- Password --}}
                     <div x-data="{ editMode: false }">
-                        <div class="p-3 sm:p-6 bg-zinc-50/10 rounded-lg" x-show="!editMode">
+                        <div class="p-3 sm:p-6 bg-zinc-100 dark:bg-zinc-50/10 rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Password:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full">
