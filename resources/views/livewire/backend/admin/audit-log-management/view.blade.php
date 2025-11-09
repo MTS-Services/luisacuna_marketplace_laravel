@@ -89,6 +89,7 @@
                             <span class="w-2 h-2 bg-amber-500 rounded-full mr-3"></span>
                             {{ __('Previous Values') }}
                         </h2>
+                   
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             @foreach ($this->data->new_values as $key => $value)
                                 <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">

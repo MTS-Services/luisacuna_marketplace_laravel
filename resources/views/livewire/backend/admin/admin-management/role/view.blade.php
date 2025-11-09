@@ -53,7 +53,7 @@
                             <p class="dark:text-slate-400 text-sm font-semibold mb-1">{{ __('TAG') }}</p>
                             <p
                                 class=" font-mono text-sm dark:bg-gray-700  bg-white px-3 py-2 rounded border border-slate-200">
-                             
+
                                 {{ $data->tags }} </p>
                         </div>
 
@@ -88,7 +88,7 @@
                             <span class="w-2 h-2 bg-amber-500 rounded-full mr-3"></span>
                             {{ __('Previous Values') }}
                         </h2>
-
+                        
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('Name') }}</p>
