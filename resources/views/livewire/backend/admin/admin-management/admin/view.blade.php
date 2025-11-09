@@ -5,7 +5,13 @@
             <h2 class="text-xl lg:text-2xl font-bold text-text-primary">
                 {{ __('Admin Profile') }}
             </h2>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                <x-ui.button href="{{ route('admin.am.admin.edit', encrypt($data->id)) }}" variant="secondary"
+                    class="w-auto py-2!">
+                    <flux:icon name="pencil" class="w-4 h-4 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
+                    {{ __('Edit') }}
+                </x-ui.button>
+
                 <x-ui.button href="{{ route('admin.am.admin.index') }}" class="w-auto! py-2!">
                     <flux:icon name="arrow-left"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
@@ -43,7 +49,7 @@
                         </svg>
                         <div>
                             <p class="text-text-muted">{{__('Phone')}}</p>
-                            <p class="font-medium text-text-primary">{{ $admin->phone }}</p>
+                            <p class="font-medium text-text-primary">{{ $data->phone }}</p>
                         </div>
                     </div>
 
@@ -56,7 +62,7 @@
                         </svg>
                         <div>
                             <p class="text-text-muted">{{__('Email')}}</p>
-                            <p class="font-medium text-text-primary">{{ $admin->email }}</p>
+                            <p class="font-medium text-text-primary">{{ $data->email }}</p>
                         </div>
                     </div>
 
@@ -71,8 +77,8 @@
                             <p class="text-text-muted">{{__('Account Status')}}</p>
                             <span
                                 class="px-3 py-1 rounded-full text-xs font-bold inline-block
-                                    @if ($admin->status_label === 'Active') bg-zinc-100 text-zinc-700 @else bg-pink-100 text-pink-700 @endif">
-                                {{ $admin->status_label }}
+                                    @if ($data->status_label === 'Active') bg-zinc-100 text-zinc-700 @else bg-pink-100 text-pink-700 @endif">
+                                {{ $data->status_label }}
                             </span>
                         </div>
                     </div>
@@ -87,29 +93,29 @@
                     {{-- Name --}}
                     <div>
                         <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">{{__('Name')}}</p>
-                        <h3 class="text-lg font-medium text-text-primary">{{ $admin->name }}</h3>
+                        <h3 class="text-lg font-medium text-text-primary">{{ $data->name }}</h3>
                     </div>
 
                     {{-- Email --}}
                     <div>
                         <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">{{__('Email')}}</p>
-                        <h3 class="text-lg font-medium text-text-primary">{{ $admin->email }}</h3>
+                        <h3 class="text-lg font-medium text-text-primary">{{ $data->email }}</h3>
                     </div>
 
                     {{-- phone --}}
                     <div>
                         <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">{{__('Phone')}}</p>
-                        <h3 class="text-lg font-medium text-text-primary">{{ $admin->phone }}</h3>
+                        <h3 class="text-lg font-medium text-text-primary">{{ $data->phone }}</h3>
                     </div>
 
                     {{-- Status --}}
                     <div>
                         <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">{{__('Status')}}</p>
-                        {{-- <h3 class="text-lg font-medium text-text-primary">{{ $admin->date_of_birth }}</h3> --}}
+                        {{-- <h3 class="text-lg font-medium text-text-primary">{{ $data->date_of_birth }}</h3> --}}
                         <h3
                             class="px-3 py-1 rounded-full text-xs font-bold inline-block
-                                    @if ($admin->status_label === 'Active') bg-zinc-100 text-zinc-700 @else bg-pink-100 text-pink-700 @endif">
-                            {{ $admin->status_label }}
+                                    @if ($data->status_label === 'Active') bg-zinc-100 text-zinc-700 @else bg-pink-100 text-pink-700 @endif">
+                            {{ $data->status_label }}
                         </h3>
                     </div>
 

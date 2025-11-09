@@ -116,7 +116,6 @@ class Edit extends Component
 
             $users = $this->service->updateData($this->userId, $data);
 
-            $this->dispatch('UserUpdated');
             $this->success('User updated successfully');
             return redirect()->route('admin.um.user.index');
         } catch (\Illuminate\Validation\ValidationException $e) {

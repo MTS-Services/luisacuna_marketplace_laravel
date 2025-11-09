@@ -10,7 +10,8 @@ class DeleteAction
 {
     public function __construct(
         protected CurrencyRepositoryInterface $interface
-    ) {}
+    ) {
+    }
 
     public function execute(int $id, bool $forceDelete = false, int $actionerId): bool
     {
@@ -24,12 +25,8 @@ class DeleteAction
             }
 
             if (!$findData) {
-                throw new \Exception('Currency not found');
+                throw new \Exception('Data not found');
             }
-
-            // Dispatch event before deletion
-            // event(new CurrencyDeleted($findData));
-
             if ($forceDelete) {
                 return $this->interface->forceDelete($id);
             }

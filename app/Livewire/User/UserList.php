@@ -22,8 +22,6 @@ class UserList extends Component
     public $deleteUserId = null;
     public $bulkAction = '';
 
-    protected $listeners = ['userCreated' => '$refresh', 'userUpdated' => '$refresh'];
-
     protected UserService $userService;
     public function boot(
         UserService $userService

@@ -25,7 +25,7 @@ class CurrencyService
     ) {}
 
     /* ================== ================== ==================
-    *                          Find Methods 
+    *                          Find Methods
     * ================== ================== ================== */
 
     public function getAllDatas($sortField = 'created_at', $order = 'desc'): Collection
@@ -104,8 +104,6 @@ class CurrencyService
             'updated_by' => $actionerId,
         ]);
     }
-
-
     public function bulkRestoreData(array $ids, ?int $actionerId = null): int
     {
         if ($actionerId == null) {
@@ -129,7 +127,6 @@ class CurrencyService
         }
         return $this->bulkAction->execute(ids: $ids, action: 'delete', status: null, actionerId: $actionerId);
     }
-
     public function bulkUpdateStatus(array $ids, CurrencyStatus $status, ?int $actionerId = null): int
     {
         if ($actionerId == null) {
@@ -150,9 +147,5 @@ class CurrencyService
     public function getInactiveData($sortField = 'created_at', $order = 'desc'): Collection
     {
         return $this->interface->getInactive($sortField, $order);
-    }
-    public function getSuspendedData($sortField = 'created_at', $order = 'desc'): Collection
-    {
-        return $this->interface->getSuspended($sortField, $order);
     }
 }

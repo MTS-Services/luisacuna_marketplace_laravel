@@ -2,7 +2,6 @@
 
 namespace App\Actions\User;
 
-use App\Events\User\UserCreated;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
@@ -27,8 +26,6 @@ class CreateAction
            
             $user = $this->interface->create($data);
 
-            // Dispatch event
-            event(new UserCreated($user));
 
             return $user->fresh();
         });
