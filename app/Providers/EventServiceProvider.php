@@ -2,20 +2,19 @@
 
 namespace App\Providers;
 
-use App\Events\User\UserCreated;
-use App\Events\User\UserUpdated;
-use App\Listeners\User\LogUserActivity;
-use App\Listeners\User\SendWelcomeEmail;
+use App\Events\Admin\AdminCreated;
+use App\Listeners\Admin\LogAdminActivity;
+use App\Listeners\Admin\SendWelcomeEmail;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
-        UserCreated::class => [
-            SendWelcomeEmail::class,
+        AdminCreated::class => [
+           SendWelcomeEmail::class,
         ],
-        UserUpdated::class => [
-            LogUserActivity::class,
+        AdminCreated::class => [
+            LogAdminActivity::class,
         ],
     ];
 

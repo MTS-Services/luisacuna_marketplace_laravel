@@ -97,7 +97,6 @@ class UserEdit extends Component
 
             Log::info('Creating DTO with data', ['dto_data' => $dtoData]);
 
-            $dto = UpdateUserDTO::fromArray($dtoData);
 
             Log::info('DTO created, calling service');
 
@@ -111,7 +110,6 @@ class UserEdit extends Component
             $this->form->password = '';
             $this->form->password_confirmation = '';
 
-            $this->dispatch('userUpdated');
             $this->success('User updated successfully');
 
             // Redirect to user list
