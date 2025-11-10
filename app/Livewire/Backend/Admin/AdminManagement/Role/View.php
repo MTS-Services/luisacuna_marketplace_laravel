@@ -1,20 +1,22 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\AdminManagement\Admin;
+    namespace App\Livewire\Backend\Admin\AdminManagement\Role;
 
-use App\Models\Admin;
-use Livewire\Component;
+    use App\Models\Role;
+    use Livewire\Component;
 
-class View extends Component
-{
-
-    public Admin $data;
-    public function mount(Admin $data): void
+    class View extends Component
     {
-        $this->data = $data;
+
+        public Role $data;
+        public function mount(Role $data): void
+        {
+            $this->data = $data;
+        }
+        public function render()
+        {
+
+            return view('livewire.backend.admin.admin-management.role.view');
+        }
+
     }
-    public function render()
-    {
-        return view('livewire.backend.admin.admin-management.admin.view');
-    }
-}
