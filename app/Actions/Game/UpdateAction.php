@@ -13,7 +13,7 @@ class UpdateAction
 {
     public function __construct(protected GameRepositoryInterface $interface) {}
 
-    public function execute($id, array $data): ?bool
+    public function execute($id, array $data): ?Game
     {
 
         // return  DB::transaction(function () use ($id, $data, $actioner_id) {
@@ -103,7 +103,9 @@ class UpdateAction
 
                 $file_just_uploaded[] = $data['logo'];
 
-                $file_to_delete[] = $findData->logo;
+                if($findData->logo !== null){
+                    $file_to_delete[] = $findData->logo;
+                }
             }
 
 
@@ -112,8 +114,10 @@ class UpdateAction
                 $data['banner']  = Storage::disk('public')->putFile('banners', $data['banner']);
 
                  $file_just_uploaded[] = $data['banner'];
-                
+                 
+                 if($findData->banner !== null){
                 $file_to_delete[] = $findData->banner;
+            }
             }
 
 
@@ -121,9 +125,12 @@ class UpdateAction
 
                 $data['thumbnail']  = Storage::disk('public')->putFile('thumbnails', $data['thumbnail']);
 
-                $file_just_uploaded[] = $data['banner'];
+                $file_just_uploaded[] = $data['thumbnail'];
                 
-                $file_to_delete[] = $findData->banner;
+                if($findData->thumbnail !== null){
+                    $file_to_delete[] = $findData->thumbnail;
+                }
+               
             }
 
 
@@ -131,11 +138,25 @@ class UpdateAction
             $updated = $this->interface->update($id, $data);
 
             if (!$updated) {
+              
+               foreach ($file_just_uploaded as $file) {
+                    if (Storage::disk('public')->exists($file)) {
+                        Storage::disk('public')->delete($file);
+                    }
+                }
 
                 Log::error('Failed to update data in repository', ['data_id' => $id]);
 
                 throw new \Exception('Failed to update data');
 
+            }else{
+              
+                 foreach ($file_to_delete as $file) {
+                   
+                    if (Storage::disk('public')->exists($file)) {
+                        Storage::disk('public')->delete($file);
+                    }
+               }
             }
 
             return $findData->fresh();

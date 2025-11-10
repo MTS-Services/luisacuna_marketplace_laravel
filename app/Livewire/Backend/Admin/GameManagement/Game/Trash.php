@@ -30,7 +30,7 @@ class Trash extends Component
     public function render()
     {
 
-        $games = $this->service->getTrashedPaginateDatas($this->perPage, $this->filters());
+        $games = $this->service->getTrashedPaginatedData($this->perPage, $this->getFilters());
 
 
         $columns = [
@@ -118,7 +118,7 @@ class Trash extends Component
     }
 
 
-    public function filters()
+    public function getFilters()
     {
         return [
             'search' => $this->search,
@@ -232,9 +232,9 @@ class Trash extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->service->getTrashedPaginateDatas(
+        return $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
-            filters: $this->filters()
+            filters: $this->getFilters()
         )->pluck('id')->toArray();
     }
 }
