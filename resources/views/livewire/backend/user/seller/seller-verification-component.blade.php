@@ -15,103 +15,87 @@
 
         {{-- Category Selection Page --}}
         @if($showCategoryPage)
-            <div class="bg-white rounded-lg shadow-lg p-8">
-                <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Start selling</h1>
-                <h2 class="text-xl text-center text-gray-600 mb-8">Choose category</h2>
+            <div class="w-2xl mx-auto">
+                <h1 class="text-3xl font-bold text-center text-text-white mb-2">Start selling</h1>
+                <h2 class="text-xl text-center text-text-white/60 mb-8">Choose category</h2>
 
                 <div class="space-y-4">
                     <button wire:click="selectCategory('currency')" 
-                            class="w-full flex items-center justify-between p-4 bg-white border-2 border-gray-200 rounded-lg hover:border-cyan-400 transition">
+                            class="w-full flex items-center justify-between p-4 bg-bg-primary hover:bg-bg-hover   transition">
                         <div class="flex items-center space-x-3">
                             <span class="text-3xl">💱</span>
                             <span class="text-lg font-semibold">Currency</span>
                         </div>
-                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
+                       <x-phosphor-caret-right class="w-6 h-6 fill-zinc-500" />
                     </button>
 
                     <button wire:click="selectCategory('accounts')" 
-                            class="w-full flex items-center justify-between p-4 bg-white border-2 border-gray-200 rounded-lg hover:border-cyan-400 transition">
+                            class="w-full flex items-center justify-between p-4 bg-bg-primary hover:bg-bg-hover   transition">
                         <div class="flex items-center space-x-3">
                             <span class="text-3xl">🏆</span>
                             <span class="text-lg font-semibold">Accounts</span>
                         </div>
-                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
+                        <x-phosphor-caret-right class="w-6 h-6 fill-zinc-500" />
                     </button>
 
                     <button disabled 
-                            class="w-full flex items-center justify-between p-4 bg-gray-100 border-2 border-gray-200 rounded-lg opacity-50 cursor-not-allowed">
+                            class="w-full flex items-center justify-between p-4 bg-gray-100   opacity-50 cursor-not-allowed!">
                         <div class="flex items-center space-x-3">
                             <span class="text-3xl grayscale">💰</span>
                             <span class="text-lg font-semibold text-gray-400">Top Ups</span>
                         </div>
-                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
+                        <x-phosphor-caret-right class="w-6 h-6 fill-zinc-500" />
                     </button>
 
                     <button wire:click="selectCategory('items')" 
-                            class="w-full flex items-center justify-between p-4 bg-white border-2 border-gray-200 rounded-lg hover:border-cyan-400 transition">
+                            class="w-full flex items-center justify-between p-4 bg-bg-primary hover:bg-bg-hover   transition">
                         <div class="flex items-center space-x-3">
                             <span class="text-3xl">🔑</span>
                             <span class="text-lg font-semibold">Items</span>
                         </div>
-                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
+                        <x-phosphor-caret-right class="w-6 h-6 fill-zinc-500" />
                     </button>
 
                     <button wire:click="selectCategory('boosting')" 
-                            class="w-full flex items-center justify-between p-4 bg-white border-2 border-gray-200 rounded-lg hover:border-cyan-400 transition">
+                            class="w-full flex items-center justify-between p-4 bg-bg-primary hover:bg-bg-hover   transition">
                         <div class="flex items-center space-x-3">
                             <span class="text-3xl">🔥</span>
                             <span class="text-lg font-semibold">Boosting</span>
                         </div>
-                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
+                        <x-phosphor-caret-right class="w-6 h-6 fill-zinc-500" />
                     </button>
 
                     <button disabled 
-                            class="w-full flex items-center justify-between p-4 bg-gray-100 border-2 border-gray-200 rounded-lg opacity-50 cursor-not-allowed">
+                            class="w-full flex items-center justify-between p-4 bg-gray-100   opacity-50 cursor-not-allowed!">
                         <div class="flex items-center space-x-3">
                             <span class="text-3xl grayscale">🎁</span>
                             <span class="text-lg font-semibold text-gray-400">Gift Card</span>
                         </div>
-                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
+                        <x-phosphor-caret-right class="w-6 h-6 fill-zinc-500" />
                     </button>
 
                     <button wire:click="selectCategory('steam_games')" 
-                            class="w-full flex items-center justify-between p-4 bg-white border-2 border-gray-200 rounded-lg hover:border-cyan-400 transition">
+                            class="w-full flex items-center justify-between p-4 bg-bg-primary hover:bg-bg-hover   transition">
                         <div class="flex items-center space-x-3">
                             <span class="text-lg font-semibold">Steam Games</span>
                         </div>
-                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
+                        <x-phosphor-caret-right class="w-6 h-6 fill-zinc-500" />
                     </button>
 
                     <button wire:click="selectCategory('bulk_upload')" 
-                            class="w-full flex items-center justify-between p-4 bg-white border-2 border-gray-200 rounded-lg hover:border-cyan-400 transition">
+                            class="w-full flex items-center justify-between p-4 bg-bg-primary hover:bg-bg-hover   transition">
                         <div class="flex items-center space-x-3">
                             <span class="text-3xl">⬆️</span>
                             <span class="text-lg font-semibold">Bulk Upload</span>
                         </div>
-                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
+                        <x-phosphor-caret-right class="w-6 h-6 fill-zinc-500" />
                     </button>
                 </div>
             </div>
 
         {{-- Verification Required Page --}}
         @elseif($currentStep == 0)
-            <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+            <div class="text-center">
                 <div class="mb-6">
                     <div class="mx-auto w-32 h-32 flex items-center justify-center">
                         <span class="text-8xl">🔍</span>
@@ -123,10 +107,10 @@
                 <p class="text-gray-600 mb-2">To sell currencies, please verify your identity first.</p>
                 <p class="text-gray-600 mb-8">Our 24/7 support team will review your ID in up to 15 minutes.</p>
 
-                <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                <button class="bg-gray-50 rounded-lg p-6 mb-6 " wire:click="startVerification">
                     <div class="flex items-center space-x-4">
-                        <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
-                            <span class="text-2xl">👤</span>
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center">
+                           <img src="{{ asset('assets/images/verification.svg') }}" alt="">
                         </div>
                         <div class="flex-1 text-left">
                             <p class="font-semibold">Seller Verification</p>
@@ -136,12 +120,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </div>
-                </div>
-
-                <button wire:click="startVerification" 
-                        class="w-full bg-black text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition">
-                    Start Verification
                 </button>
+
 
                 <a href="#" class="block mt-4 text-blue-600 hover:underline">Why do I need to verify my ID?</a>
             </div>
@@ -160,7 +140,7 @@
                 <h2 class="text-2xl font-bold text-center mb-8">Will you sell on Eldorado as an individual or as a company?</h2>
 
                 <div class="max-w-md mx-auto space-y-4 mb-8">
-                    <label class="flex items-center p-4 border-2 rounded-lg cursor-pointer {{ $accountType === 'individual' ? 'border-blue-500 bg-blue-50' : 'border-gray-200' }}">
+                    <label class="flex items-center p-4  rounded-lg cursor-pointer {{ $accountType === 'individual' ? 'border-blue-500 bg-blue-50' : 'border-gray-200' }}">
                         <input type="radio" wire:model="accountType" value="individual" class="w-5 h-5 text-blue-600">
                         <span class="ml-3 text-lg">Individual</span>
                     </label>

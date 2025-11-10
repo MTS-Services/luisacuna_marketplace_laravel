@@ -8,12 +8,6 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 
 class SellerVerificationComponent extends Component
-// {
-//     public function render()
-//     {
-//         return view('livewire.backend.user.seller.seller-verification-component');
-//     }
-// }
 {
     use WithFileUploads;
 
