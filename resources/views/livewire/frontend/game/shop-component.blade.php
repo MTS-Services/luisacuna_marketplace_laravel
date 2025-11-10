@@ -645,7 +645,7 @@
                                 </div>
 
                                 <!-- Dropdown Filters -->
-                                <div class="space-y-4">
+                                <div class="space-y-4 h-[calc(100vh-360px)] overflow-y-auto">
                                     <div>
                                         <label class="text-sm text-gray-400">Short by</label>
                                         <select
