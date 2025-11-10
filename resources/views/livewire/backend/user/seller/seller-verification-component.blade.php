@@ -14,8 +14,8 @@
         @endif
 
         {{-- Category Selection Page --}}
-
-        @if ($showCategoryPage)
+        @if (!$showCategoryPage)
+            {{-- @if ($showCategoryPage) --}}
             <div class="w-2xl mx-auto">
                 <h1 class="text-3xl font-bold text-center text-text-white mb-2">Start selling</h1>
                 <h2 class="text-xl text-center text-text-white/60 mb-8">Choose category</h2>
@@ -130,7 +130,7 @@
             </div>
 
             {{-- Step 1: Individual or Company --}}
-        @elseif($currentStep == 1)
+        @elseif(!$currentStep == 1)
             <div>
                 <div class="text-center mb-8">
                     <div class="flex items-center justify-center mb-2">
@@ -225,7 +225,7 @@
 
             {{-- Step 3: Selling Experience --}}
         @elseif($currentStep == 3)
-            <div class="bg-white rounded-lg shadow-lg p-8">
+            <div>
                 <div class="text-center mb-8">
                     <div class="flex items-center justify-center mb-2">
                         <span class="text-zinc-500 text-2xl">✓</span>
@@ -233,38 +233,38 @@
                     </div>
                     <p class="text-gray-500">Step 2/6</p>
                 </div>
+                <div class="bg-bg-primary max-w-2xl mx-auto py-4 px-8 mb-4">
+                    <h2 class="text-2xl font-bold text-center mb-8">Selling experience:</h2>
+                    <div class="flex flex-col items-start space-y-3">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" wire:model="sellingExperience" value="new"
+                                class="w-5 h-5 text-zinc-600">
+                            <span class="ml-3 text-base">New seller (this is my first selling)</span>
+                        </label>
 
-                <h2 class="text-2xl font-bold text-center mb-8">Selling experience:</h2>
-
-                <div class="max-w-md mx-auto space-y-4 mb-8">
-                    <label
-                        class="flex items-center p-4 border-2 rounded-lg cursor-pointer {{ $sellingExperience === 'new' ? 'border-zinc-500 bg-zinc-50' : 'border-gray-200' }}">
-                        <input type="radio" wire:model="sellingExperience" value="new"
-                            class="w-5 h-5 text-zinc-600">
-                        <span class="ml-3 text-lg">New seller (this is my first selling)</span>
-                    </label>
-
-                    <label
-                        class="flex items-center p-4 border-2 rounded-lg cursor-pointer {{ $sellingExperience === 'experienced' ? 'border-zinc-500 bg-zinc-50' : 'border-gray-200' }}">
-                        <input type="radio" wire:model="sellingExperience" value="experienced"
-                            class="w-5 h-5 text-zinc-600">
-                        <span class="ml-3 text-lg">Experienced seller (I've worked on other platforms)</span>
-                    </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" wire:model="sellingExperience" value="experienced"
+                                class="w-5 h-5 text-zinc-600">
+                            <span class="ml-3 text-base">Experienced seller (I've worked on other platforms)</span>
+                        </label>
+                    </div>
                 </div>
 
                 <div class="flex justify-center space-x-4">
                     <button wire:click="previousStep"
-                        class="px-8 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        class="px-8 py-2  text-text-white rounded-lg dark:bg-zinc-800 hover:bg-zinc-50">
                         BACK
                     </button>
-                    <button wire:click="nextStep" class="px-8 py-2 bg-black text-white rounded-lg hover:bg-gray-800">
+                    <button wire:click="nextStep"
+                        class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
                         NEXT
                     </button>
                 </div>
             </div>
 
             {{-- Step 4: Personal/Company Details --}}
-        @elseif($currentStep == 4)
+            {{-- @elseif($currentStep == 4) --}}
+        @elseif($showCategoryPage)
             <div class="bg-white rounded-lg shadow-lg p-8">
                 <div class="text-center mb-8">
                     <div class="flex items-center justify-center mb-2">
