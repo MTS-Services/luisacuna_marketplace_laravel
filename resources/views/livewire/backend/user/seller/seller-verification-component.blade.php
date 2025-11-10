@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-bg-secondary py-12 px-4">
+<div class="min-h-[70vh] bg-bg-secondary py-12 px-4">
     <div class="max-w-4xl mx-auto">
         
         @if(session('success'))
@@ -102,28 +102,26 @@
                     </div>
                 </div>
                 
-                <h2 class="text-2xl font-bold text-cyan-500 mb-4">Seller verification required</h2>
+                <h2 class="text-2xl font-bold dark:text-text-white text-zinc-500/80 mb-4">Seller verification required</h2>
                 
-                <p class="text-gray-600 mb-2">To sell currencies, please verify your identity first.</p>
-                <p class="text-gray-600 mb-8">Our 24/7 support team will review your ID in up to 15 minutes.</p>
+                <p class="dark:text-text-white text-zinc-500/50 mb-2">To sell currencies, please verify your identity first.</p>
+                <p class="dark:text-text-white text-zinc-500/50 mb-8">Our 24/7 support team will review your ID in up to 15 minutes.</p>
 
-                <button class="bg-gray-50 rounded-lg p-6 mb-6 " wire:click="startVerification">
+                <button class="bg-bg-primary rounded-lg p-6 mb-6 " wire:click="startVerification">
                     <div class="flex items-center space-x-4">
                         <div class="w-12 h-12 rounded-full flex items-center justify-center">
                            <img src="{{ asset('assets/images/verification.svg') }}" alt="">
                         </div>
                         <div class="flex-1 text-left">
                             <p class="font-semibold">Seller Verification</p>
-                            <span class="inline-block px-3 py-1 bg-red-500 text-white text-sm rounded-full">Documents required</span>
+                            <span class="inline-block px-3 py-1 bg-pink-500 text-white text-sm rounded-full">Documents required</span>
                         </div>
-                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
+                        <x-phosphor-caret-right class="w-6 h-6 fill-zinc-500" />
                     </div>
                 </button>
 
 
-                <a href="#" class="block mt-4 text-blue-600 hover:underline">Why do I need to verify my ID?</a>
+                <a href="#" class="block mt-4 text-zinc-600/80 hover:underline">Why do I need to verify my ID?</a>
             </div>
 
         {{-- Step 1: Individual or Company --}}
@@ -152,10 +150,10 @@
                 </div>
 
                 <div class="flex justify-center space-x-4">
-                    <button wire:click="previousStep" 
+                    <a href="{{ route('home') }}" 
                             class="px-8 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
                         BACK
-                    </button>
+                    </a>
                     <button wire:click="nextStep" 
                             class="px-8 py-2 bg-black text-white rounded-lg hover:bg-gray-800">
                         NEXT
