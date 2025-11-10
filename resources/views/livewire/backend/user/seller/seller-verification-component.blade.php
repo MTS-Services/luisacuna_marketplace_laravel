@@ -14,8 +14,8 @@
         @endif
 
         {{-- Category Selection Page --}}
-        {{-- @if (!$showCategoryPage) --}}
-            @if ($showCategoryPage)
+
+        @if ($showCategoryPage)
             <div class="w-2xl mx-auto">
                 <h1 class="text-3xl font-bold text-center text-text-white mb-2">Start selling</h1>
                 <h2 class="text-xl text-center text-text-white/60 mb-8">Choose category</h2>
@@ -130,7 +130,7 @@
             </div>
 
             {{-- Step 1: Individual or Company --}}
-            @elseif($currentStep == 1)
+        @elseif($currentStep == 1)
             <div>
                 <div class="text-center mb-8">
                     <div class="flex items-center justify-center mb-2">
@@ -147,13 +147,13 @@
                     <div class="flex flex-col items-center justify-center space-y-3">
                         <label class="flex items-center cursor-pointer">
                             <input type="radio" wire:model="accountType" value="individual"
-                                class="w-5 h-5 text-blue-600">
+                                class="w-5 h-5 text-zinc-600">
                             <span class="ml-3 text-lg">Individual</span>
                         </label>
 
                         <label class="flex items-center cursor-pointer">
                             <input type="radio" wire:model="accountType" value="company"
-                                class="w-5 h-5 text-blue-600">
+                                class="w-5 h-5 text-zinc-600">
                             <span class="ml-3 text-lg">Company</span>
                         </label>
                     </div>
@@ -163,7 +163,8 @@
                     <a href="{{ route('home') }}" class="px-8 py-2 text-text-white  rounded-lg hover:bg-gray-50">
                         BACK
                     </a>
-                    <button wire:click="nextStep" class="px-6 py-1.5 bg-black dark:bg-gray-800  text-white rounded-lg hover:bg-gray-800">
+                    <button wire:click="nextStep"
+                        class="px-6 py-1.5 bg-black dark:bg-gray-800  text-white rounded-lg hover:bg-gray-800">
                         NEXT
                     </button>
                 </div>
@@ -172,66 +173,51 @@
 
             {{-- Step 2: Select Categories --}}
         @elseif($currentStep == 2)
-         {{-- @elseif($showCategoryPage) --}}
-            <div class="bg-white rounded-lg shadow-lg p-8">
+            <div>
                 <div class="text-center mb-8">
                     <div class="flex items-center justify-center mb-2">
-                        <span class="text-cyan-500 text-2xl">✓</span>
+                        <span class="text-zinc-500 text-2xl">✓</span>
                         <h3 class="text-lg font-semibold ml-2">Seller ID verification</h3>
                     </div>
                     <p class="text-gray-500">Step 1/6</p>
                 </div>
+                <div class="bg-bg-primary max-w-2xl mx-auto py-4 px-8 mb-4">
+                    <h2 class="text-2xl font-bold text-center mb-2">Select the categories you'll be <br> selling in:
+                    </h2>
 
-                <h2 class="text-2xl font-bold text-center mb-8">Select the categories you'll be selling in:</h2>
+                    <div class="space-y-1 mb-2">
+                        @foreach ([
+        'currency' => 'Currency',
+        'accounts' => 'Accounts',
+        'items' => 'Items',
+        'top_ups' => 'Top Ups',
+        'boosting' => 'Boosting',
+        'gift_cards' => 'Gift Cards',
+    ] as $value => $label)
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" wire:model="selectedCategories" value="{{ $value }}"
+                                    class="w-5 h-5 text-zinc-600 bg-bg-white! border-zinc-100 rounded transition-all duration-200 hover:scale-110 hover:bg-zinc-500 focus:ring-zinc-500">
+                                <span class="ml-3 text-zinc-900 dark:text-zinc-100">{{ $label }}</span>
+                            </label>
+                        @endforeach
+                    </div>
 
-                <div class="max-w-md mx-auto space-y-3 mb-8">
-                    <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                        <input type="checkbox" wire:model="selectedCategories" value="currency"
-                            class="w-5 h-5 text-blue-600 rounded">
-                        <span class="ml-3">Currency</span>
-                    </label>
-
-                    <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                        <input type="checkbox" wire:model="selectedCategories" value="accounts"
-                            class="w-5 h-5 text-blue-600 rounded">
-                        <span class="ml-3">Accounts</span>
-                    </label>
-
-                    <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                        <input type="checkbox" wire:model="selectedCategories" value="items"
-                            class="w-5 h-5 text-blue-600 rounded">
-                        <span class="ml-3">Items</span>
-                    </label>
-
-                    <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                        <input type="checkbox" wire:model="selectedCategories" value="top_ups"
-                            class="w-5 h-5 text-blue-600 rounded">
-                        <span class="ml-3">Top Ups</span>
-                    </label>
-
-                    <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                        <input type="checkbox" wire:model="selectedCategories" value="boosting"
-                            class="w-5 h-5 text-blue-600 rounded">
-                        <span class="ml-3">Boosting</span>
-                    </label>
-
-                    <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                        <input type="checkbox" wire:model="selectedCategories" value="gift_cards"
-                            class="w-5 h-5 text-blue-600 rounded">
-                        <span class="ml-3">Gift Cards</span>
-                    </label>
                 </div>
-
                 @error('selectedCategories')
                     <p class="text-red-500 text-center mb-4">{{ $message }}</p>
                 @enderror
 
                 <div class="flex justify-center space-x-4">
-                    <button wire:click="previousStep"
-                        class="px-8 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                    <button wire:click="previousStep" class="px-8 py-2  hover:bg-zinc-50 rounded-lg">
                         BACK
                     </button>
-                    <button wire:click="nextStep" class="px-8 py-2 bg-black text-white rounded-lg hover:bg-gray-800">
+                    <button wire:click="nextStep" class="px-8 py-2 text-white rounded-lg transition"
+                        wire:loading.attr="disabled" wire:target="nextStep"
+                        wire:attr.disabled="!@json(count($selectedCategories) > 0)"
+                        :class="{
+                            'bg-zinc-600 hover:bg-zinc-700': $wire.selectedCategories.length > 0,
+                            'bg-zinc-200 cursor-not-allowed!': $wire.selectedCategories.length === 0
+                        }">
                         NEXT
                     </button>
                 </div>
@@ -242,7 +228,7 @@
             <div class="bg-white rounded-lg shadow-lg p-8">
                 <div class="text-center mb-8">
                     <div class="flex items-center justify-center mb-2">
-                        <span class="text-cyan-500 text-2xl">✓</span>
+                        <span class="text-zinc-500 text-2xl">✓</span>
                         <h3 class="text-lg font-semibold ml-2">Seller ID verification</h3>
                     </div>
                     <p class="text-gray-500">Step 2/6</p>
@@ -252,16 +238,16 @@
 
                 <div class="max-w-md mx-auto space-y-4 mb-8">
                     <label
-                        class="flex items-center p-4 border-2 rounded-lg cursor-pointer {{ $sellingExperience === 'new' ? 'border-blue-500 bg-blue-50' : 'border-gray-200' }}">
+                        class="flex items-center p-4 border-2 rounded-lg cursor-pointer {{ $sellingExperience === 'new' ? 'border-zinc-500 bg-zinc-50' : 'border-gray-200' }}">
                         <input type="radio" wire:model="sellingExperience" value="new"
-                            class="w-5 h-5 text-blue-600">
+                            class="w-5 h-5 text-zinc-600">
                         <span class="ml-3 text-lg">New seller (this is my first selling)</span>
                     </label>
 
                     <label
-                        class="flex items-center p-4 border-2 rounded-lg cursor-pointer {{ $sellingExperience === 'experienced' ? 'border-blue-500 bg-blue-50' : 'border-gray-200' }}">
+                        class="flex items-center p-4 border-2 rounded-lg cursor-pointer {{ $sellingExperience === 'experienced' ? 'border-zinc-500 bg-zinc-50' : 'border-gray-200' }}">
                         <input type="radio" wire:model="sellingExperience" value="experienced"
-                            class="w-5 h-5 text-blue-600">
+                            class="w-5 h-5 text-zinc-600">
                         <span class="ml-3 text-lg">Experienced seller (I've worked on other platforms)</span>
                     </label>
                 </div>
@@ -282,7 +268,7 @@
             <div class="bg-white rounded-lg shadow-lg p-8">
                 <div class="text-center mb-8">
                     <div class="flex items-center justify-center mb-2">
-                        <span class="text-cyan-500 text-2xl">✓</span>
+                        <span class="text-zinc-500 text-2xl">✓</span>
                         <h3 class="text-lg font-semibold ml-2">Seller ID verification</h3>
                     </div>
                     <p class="text-gray-500">Step 3/6</p>
@@ -295,7 +281,7 @@
                         <div>
                             <label class="block text-sm font-semibold mb-2">First name</label>
                             <input type="text" wire:model="firstName"
-                                class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-zinc-500"
                                 placeholder="First name">
                             @error('firstName')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -305,14 +291,14 @@
                         <div>
                             <label class="block text-sm font-semibold mb-2">Middle name (if present)</label>
                             <input type="text" wire:model="middleName"
-                                class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-zinc-500"
                                 placeholder="Middle name">
                         </div>
 
                         <div>
                             <label class="block text-sm font-semibold mb-2">Last name</label>
                             <input type="text" wire:model="lastName"
-                                class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-zinc-500"
                                 placeholder="Last name">
                             @error('lastName')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -486,7 +472,7 @@
             <div class="bg-white rounded-lg shadow-lg p-8">
                 <div class="text-center mb-8">
                     <div class="flex items-center justify-center mb-2">
-                        <span class="text-cyan-500 text-2xl">✓</span>
+                        <span class="text-zinc-500 text-2xl">✓</span>
                         <h3 class="text-lg font-semibold ml-2">Seller ID Verification</h3>
                     </div>
                     <p class="text-gray-500">Step 6/7</p>
@@ -550,7 +536,7 @@
                 <div class="bg-white rounded-lg shadow-lg p-8">
                     <div class="text-center mb-8">
                         <div class="flex items-center justify-center mb-2">
-                            <span class="text-cyan-500 text-2xl">✓</span>
+                            <span class="text-zinc-500 text-2xl">✓</span>
                             <h3 class="text-lg font-semibold ml-2">Seller ID Verification</h3>
                         </div>
                         <p class="text-gray-500">Step 7/7</p>
@@ -576,17 +562,17 @@
                             </ol>
                         </div>
 
-                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+                        <div class="bg-zinc-50 border-l-4 border-zinc-500 p-4 mb-6">
                             <div class="flex">
                                 <div class="flex-shrink-0">
-                                    <svg class="h-5 w-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <svg class="h-5 w-5 text-zinc-500" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
                                             clip-rule="evenodd"></path>
                                     </svg>
                                 </div>
                                 <div class="ml-3">
-                                    <p class="text-sm text-blue-700">
+                                    <p class="text-sm text-zinc-700">
                                         <strong>Note:</strong> If your company's owner is another company, you will need
                                         to upload documents for both entities and the corporate structure, leading to
                                         the UBO
