@@ -25,8 +25,8 @@ class UpdateAction
             $product = $this->interface->find($id);
 
             if (!$product) {
-                Log::error('Product not found', ['product_id' => $id]);
-                throw new \Exception('Product not found');
+                Log::error('Data not found', ['product_id' => $id]);
+                throw new \Exception('data not found');
             }
             $oldData = $product->getAttributes();
 

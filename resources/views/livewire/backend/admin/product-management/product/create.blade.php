@@ -131,12 +131,7 @@
                     <x-ui.input-error :messages="$errors->get('form.max_purchase_quantity')" />
                 </div>
 
-                {{-- unlimited_stock --}}
-                <div class="w-full">
-                    <x-ui.label value="Unlimited Stock" class="mb-1" />
-                    <input type="checkbox" wire:model="form.unlimited_stock" />
-                    <x-ui.input-error :messages="$errors->get('form.unlimited_stock')" />
-                </div>
+
 
                 {{-- delivery_method --}}
                 <div class="w-full">
@@ -182,19 +177,9 @@
                     <x-ui.input-error :messages="$errors->get('form.status')" />
                 </div>
 
-                {{-- is_featured --}}
-                <div class="w-full">
-                    <x-ui.label value="Is Featured" class="mb-1" />
-                    <input type="checkbox" wire:model="form.is_featured" />
-                    <x-ui.input-error :messages="$errors->get('form.is_featured')" />
-                </div>
 
-                {{-- is_hot_deal --}}
-                <div class="w-full">
-                    <x-ui.label value="Is Hot Deal" class="mb-1" />
-                    <input type="checkbox" wire:model="form.is_hot_deal" />
-                    <x-ui.input-error :messages="$errors->get('form.is_hot_deal')" />
-                </div>
+
+
 
                 {{-- visibility --}}
                 <div class="w-full">
@@ -215,6 +200,32 @@
                     <x-ui.input type="text" placeholder="Meta Title" wire:model="form.meta_title" />
                     <x-ui.input-error :messages="$errors->get('form.meta_title')" />
                 </div>
+
+
+                <div class="w-full flex items-center gap-2">
+                    {{-- unlimited_stock --}}
+                    <div class="w-full">
+                        <x-ui.label value="Unlimited Stock" class="mb-1 inline" />
+                        <input type="checkbox" wire:model="form.unlimited_stock" />
+                        <x-ui.input-error :messages="$errors->get('form.unlimited_stock')" />
+                    </div>
+
+
+                    {{-- is_featured --}}
+                    <div class="w-full">
+                        <x-ui.label value="Is Featured" class="mb-1 inline" />
+                        <input type="checkbox" wire:model="form.is_featured" />
+                        <x-ui.input-error :messages="$errors->get('form.is_featured')" />
+                    </div>
+
+                    {{-- is_hot_deal --}}
+                    <div class="w-full">
+                        <x-ui.label value="Is Hot Deal" class="mb-1 inline" />
+                        <input type="checkbox" wire:model="form.is_hot_deal" />
+                        <x-ui.input-error :messages="$errors->get('form.is_hot_deal')" />
+                    </div>
+                </div>
+
 
             </div>
 
@@ -241,7 +252,7 @@
 
                 <x-ui.button class="w-auto! py-2!" type="submit">
                     <span wire:loading.remove wire:target="save"
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Create Product') }}</span>
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Create') }}</span>
                     <span wire:loading wire:target="save"
                         class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Saving...') }}</span>
                 </x-ui.button>

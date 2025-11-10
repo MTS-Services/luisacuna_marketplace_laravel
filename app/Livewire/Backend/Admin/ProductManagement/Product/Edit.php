@@ -52,7 +52,7 @@ class Edit extends Component
     public function render()
     {
         $games = $this->gameService->getPaginateDatas();
-        $PTypes = $this->PTypeService->getAll();
+        $PTypes = $this->PTypeService->getAllDatas();
         $users = $this->userService->getAllSellersData('first_name', 'asc');
 
 
@@ -97,11 +97,11 @@ class Edit extends Component
 
     public function save()
     {
-        $this->form->validate();
+        $data = $this->form->validate();
         try {
-            $data = $this->form->fillables();
+           
             $data['updater_id'] = admin()->id;
-            $data['updater_by'] = admin()->id;
+            $data['updater_type'] = get_class(admin());
 
             $data['images_to_delete'] = $this->imagesToDelete;
             $data['existing_images'] = $this->existingImages;
