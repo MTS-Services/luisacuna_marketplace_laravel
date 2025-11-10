@@ -71,7 +71,7 @@
                 @else
                     <div class="ml-3 flex">
                         <a href="{{ route('login') }}"
-                            class="bg-zinc-500 px-3 py-[3px] text-sm xl:text-base xl:py-[5px] text-white rounded-full">
+                            class="bg-zinc-500 hover:bg-zinc-50 transition-colors duration-300 hover:text-zinc-500 px-3 py-[3px] text-sm xl:text-base xl:py-[5px] text-white rounded-full">
                             {{-- <flux:icon name="user-circle" class="w-7 h-7 text-text-text-white " /> --}}
                             {{ __('Log in') }}
                         </a>
