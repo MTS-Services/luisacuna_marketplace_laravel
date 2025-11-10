@@ -16,12 +16,14 @@ class ProductTypeForm extends Form
 
     public string $name = '';
     public string $slug = '';
-    public ?string $description = null;
+    public ?string $description = '';
     public ?string $icon = null;
 
-    public bool $requires_delivery_time = true;
-    public bool $requires_server_info = false;
-    public bool $requires_character_info = false;
+
+    public int $requires_delivery_time = 1;
+    public int $requires_server_info = 0;
+    public int $requires_character_info = 0;
+
     public int $max_delivery_time_hours = 24;
     public ?float $commission_rate = null;
     public ?string $status = ProductTypeStatus::ACTIVE->value;
@@ -39,7 +41,7 @@ class ProductTypeForm extends Form
         return [
             'name' => 'required|string|max:255',
             'slug' => $slugRule,
-            'description' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
             'icon' => 'nullable|string',
             'requires_delivery_time' => 'required|boolean',
             'requires_server_info' => 'required|boolean',
@@ -61,9 +63,13 @@ class ProductTypeForm extends Form
         $this->slug = $productType->slug;
         $this->description = $productType->description;
         $this->icon = $productType->icon;
+
+
         $this->requires_delivery_time = $productType->requires_delivery_time;
         $this->requires_server_info = $productType->requires_server_info;
         $this->requires_character_info = $productType->requires_character_info;
+
+
         $this->max_delivery_time_hours = $productType->max_delivery_time_hours;
         $this->commission_rate = $productType->commission_rate;
         $this->status = $productType->status->value;

@@ -59,30 +59,6 @@
                 </p>
             </div>
 
-            {{-- Requires Delivery Time --}}
-            <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">{{ __('Requires Delivery Time') }}</p>
-                <p class="font-mono font-semibold text-gray-900 dark:text-white">
-                    {{ $data->requires_delivery_time ?? 'N/A' }}
-                </p>
-            </div>
-
-            {{-- requires_server_info --}}
-            <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">{{ __('Requires Server Info') }}</p>
-                <p class="font-mono font-semibold text-gray-900 dark:text-white">
-                    {{ $data->requires_server_info ?? 'N/A' }}
-                </p>
-            </div>
-
-            {{-- requires_character_info --}}
-            <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">{{ __('Requires qharacter Info') }}</p>
-                <p class="font-mono font-semibold text-gray-900 dark:text-white">
-                    {{ $data->requires_character_info ?? 'N/A' }}
-                </p>
-            </div>
-
             {{-- max_delivery_time_hours --}}
             <div class="col-span-1">
                 <p class="text-gray-500 dark:text-gray-400">{{ __('Max Delivery Time Hours') }}</p>
@@ -90,6 +66,68 @@
                     {{ $data->max_delivery_time_hours ?? 'N/A' }}
                 </p>
             </div>
+
+            {{-- Requires Delivery Time --}}
+            <div class="flex items-center space-x-3">
+                <div>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Requires Delivery Time') }}</p>
+                    <span
+                        class="px-3 py-1 rounded-full text-xs font-bold inline-block
+                                @if ($data->requires_delivery_time) bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200
+                                @else
+                                    bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 @endif">
+                        {{ $data->requires_delivery_time ? 'Yes' : 'No' }}
+                    </span>
+                </div>
+            </div>
+            {{-- <div class="col-span-1">
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Requires Delivery Time') }}</p>
+                <p class="font-mono font-semibold text-gray-900 dark:text-white">
+                    {{ $data->requires_delivery_time ?? 'N/A' }}
+                </p>
+            </div> --}}
+
+            {{-- requires_server_info --}}
+            <div class="flex items-center space-x-3">
+                <div>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Requires Server Info') }}</p>
+                    <span
+                        class="px-3 py-1 rounded-full text-xs font-bold inline-block
+                                @if ($data->requires_server_info) bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200
+                                @else
+                                    bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 @endif">
+                        {{ $data->requires_server_info ? 'Yes' : 'No' }}
+                    </span>
+                </div>
+            </div>
+            {{-- <div class="col-span-1">
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Requires Server Info') }}</p>
+                <p class="font-mono font-semibold text-gray-900 dark:text-white">
+                    {{ $data->requires_server_info ?? 'N/A' }}
+                </p>
+            </div> --}}
+
+            {{-- requires_character_info --}}
+            <div class="flex items-center space-x-3">
+                <div>
+                    <p class="text-gray-500 dark:text-gray-400">{{ __('Requires qharacter Info') }}</p>
+                    <span
+                        class="px-3 py-1 rounded-full text-xs font-bold inline-block
+                                @if ($data->requires_character_info) bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200
+                                @else
+                                    bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 @endif">
+                        {{ $data->requires_character_info ? 'Yes' : 'No' }}
+                    </span>
+                </div>
+            </div>
+            {{-- <div class="col-span-1">
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Requires qharacter Info') }}</p>
+                <p class="font-mono font-semibold text-gray-900 dark:text-white">
+                    {{ $data->requires_character_info ?? 'N/A' }}
+                </p>
+            </div> --}}
+
+
 
             {{-- Status --}}
             <div class="col-span-1">
@@ -124,11 +162,11 @@
                 </p>
             </div>
 
-            {{-- Icon Path --}}
+            {{-- Restored Date --}}
             <div class="col-span-1">
-                <p class="text-gray-500 dark:text-gray-400">{{ __('Icon') }}</p>
-                <p class="font-mono text-sm text-gray-900 dark:text-white break-all">
-                    {{ $data->icon ? basename($data->icon) : 'N/A' }}
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Restored Date') }}</p>
+                <p class="font-mono font-semibold text-gray-900 dark:text-white uppercase">
+                    {{ $data->restored_at_formatted ?? 'N/A' }}
                 </p>
             </div>
 

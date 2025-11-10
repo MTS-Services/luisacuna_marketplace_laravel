@@ -61,13 +61,23 @@ class Index extends Component
                         '</span>';
                 }
             ],
-
             [
-                'key' => 'created_by',
-                'label' => 'Created By',
+                'key' => 'created_at',
+                'label' => 'Created Date',
+                'sortable' => true,
                 'format' => function ($data) {
-                    return $data->creater_admin?->name ?? 'System';
+                    return $data->created_at_formatted;
                 }
+            ],
+            [
+                'key' => 'creater_type',
+                'label' => 'Created By',
+                // 'format' => function ($data) {
+                //     return ($data?->creater)->name
+                //         ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . ($data->creater->name) . '</span>'
+                //         : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
+                // },
+
             ],
         ];
         $actions = [
@@ -130,9 +140,9 @@ class Index extends Component
     public function changeStatus($id, $status): void
     {
         try {
-            $productTypeStatus = ProductTypeStatus::from($status);
+            $dataStatus = ProductTypeStatus::from($status);
 
-            match ($productTypeStatus) {
+            match ($dataStatus) {
                 ProductTypeStatus::ACTIVE => $this->service->updateStatusData($id, ProductTypeStatus::ACTIVE),
                 ProductTypeStatus::INACTIVE => $this->service->updateStatusData($id, ProductTypeStatus::INACTIVE),
                 default => null,
@@ -175,11 +185,15 @@ class Index extends Component
         }
     }
 
-
+    // protected function bulkDelete(): void
+    // {
+    //     $count = count($this->selectedIds);
+    //     $this->service->bulkDeleteData($this->selectedIds);
+    //     $this->success("{$count} Data deleted successfully");
+    // }
     protected function bulkDelete(): void
     {
-        $count = count($this->selectedIds);
-        $this->service->bulkDeleteData($this->selectedIds);
+        $count =  $this->service->bulkDeleteData($this->selectedIds);
         $this->success("{$count} Data deleted successfully");
     }
 

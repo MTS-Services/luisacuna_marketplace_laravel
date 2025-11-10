@@ -43,11 +43,9 @@ class ProductTypeRepository implements ProductTypeRepositoryInterface
     }
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-
         $search = $filters['search'] ?? null;
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
-
 
         if ($search) {
             // Scout Search
@@ -84,7 +82,6 @@ class ProductTypeRepository implements ProductTypeRepositoryInterface
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
-        return $query->paginate($perPage);
     }
     public function exists(int $id): bool
     {
@@ -108,8 +105,6 @@ class ProductTypeRepository implements ProductTypeRepositoryInterface
     }
 
 
-
-
     /* ================== ================== ==================
     *                    Data Modification Methods 
     * ================== ================== ================== */
@@ -119,46 +114,55 @@ class ProductTypeRepository implements ProductTypeRepositoryInterface
     }
     public function update(int $id, array $data): bool
     {
-        $productType = $this->find($id);
+        $findData = $this->find($id);
 
-        if (!$productType) {
+        if (!$findData) {
             return false;
         }
 
-        return $productType->update($data);
+        return $findData->update($data);
     }
     public function delete(int $id, int $actionerId): bool
     {
-        $productType = $this->find($id);
+        $findData = $this->find($id);
 
-        if (!$productType) {
+        if (!$findData) {
             return false;
         }
-        $productType->update(['deleter_type' => $actionerId]);
+        $findData->update([
+            'deleter_id' => $actionerId,
+            'deleter_type' => get_class($findData),
+            'deleted_at' => now(),
+        ]);
 
-        return $productType->delete();
+        return $findData->delete();
     }
     public function forceDelete(int $id): bool
     {
-        $productType = $this->findTrashed($id);
+        $findData = $this->findTrashed($id);
 
-        if (!$productType) {
+        if (!$findData) {
             return false;
         }
 
-        return $productType->forceDelete();
+        return $findData->forceDelete();
     }
     public function restore(int $id, int $actionerId): bool
     {
-        $productType = $this->findTrashed($id);
+        $findData = $this->findTrashed($id);
 
-        if (!$productType) {
+        if (!$findData) {
             return false;
         }
-        $productType->update(['restorer_type' => $actionerId, 'restored_at' => now()]);
+        $findData->update([
+            'restorer_id' => $actionerId,
+            'restorer_type' => get_class($findData),
+            'restored_at' => now(),
+        ]);
 
-        return $productType->restore();
+        return $findData->restore();
     }
+
     public function bulkDelete(array $ids, int $actionerId): int
     {
         return DB::transaction(function () use ($ids, $actionerId) {
@@ -166,6 +170,7 @@ class ProductTypeRepository implements ProductTypeRepositoryInterface
             return $this->model->whereIn('id', $ids)->delete();
         });
     }
+
     public function bulkUpdateStatus(array $ids, string $status, int $actionerId): int
     {
         return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updater_type' => $actionerId]);

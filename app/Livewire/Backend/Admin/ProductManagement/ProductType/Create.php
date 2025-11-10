@@ -21,9 +21,9 @@ class Create extends Component
         $this->service = $service;
     }
 
-    public function mount(): void
+   public function mount(): void
     {
-        // $this->status = ProductTypeStatus::ACTIVE->value;
+        $this->form->status = ProductTypeStatus::ACTIVE->value;
     }
     public function render()
     {
@@ -38,15 +38,13 @@ class Create extends Component
      */
     public function save()
     {
-        $this->form->validate();
+        $data = $this->form->validate();
         try {
-            $data = $this->form->fillables();
+            
             $data['creater_id'] = admin()->id;
             $data['creater_type'] = admin()->id;
             $this->service->createData($data);
-
             $this->success('Data created successfully.');
-
             return $this->redirect(route('admin.pm.productType.index'), navigate: true);
         } catch (\Exception $e) {
             $this->error('Failed to create data: ' . $e->getMessage());

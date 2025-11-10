@@ -9,10 +9,11 @@ use App\Enums\ProductTypeStatus;
 use App\Traits\Livewire\WithNotification;
 use App\Services\ProductTypeService;
 use App\Livewire\Forms\Backend\Admin\ProductManagement\ProductTypeForm;
+use Livewire\WithFileUploads;
 
 class Edit extends Component
 {
-    use WithNotification;
+    use WithNotification, WithFileUploads;
 
     public ProductTypeForm $form;
 
