@@ -1,8 +1,8 @@
 {{-- Profile Dropdown Component - components/profile-dropdown.blade.php --}}
 <div x-data="{ open: false }" class="relative">
     <button @click="open = !open"
-        class="flex items-center rounded-lg text-text-white transition-all focus:outline-none mr-8">
-        <div class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full shadow-lg overflow-hidden">
+        class="flex items-center rounded-lg text-text-white transition-all focus:outline-none mr-3 ml-1.5">
+        <div class="w-7 h-7 lg:w-9 lg:h-9 rounded-full shadow-lg overflow-hidden">
             <img src="{{ storage_url(auth()->user()->avatar) }}" class="w-full h-full object-cover"
                 alt="{{ auth()->user()->full_name ?? 'User Avatar' }}">
         </div>
@@ -21,7 +21,7 @@
         <!-- User Info Header -->
         <div class="px-2 py-5 flex items-center justify-between shadow-lg bg-bg-secondary">
             <div class="flex items-center gap-2">
-                <div class="w-6 h-6 sm:w-8 sm:h-8 lg:w-13 lg:h-13 rounded-full shadow-lg overflow-hidden">
+                <div class="w-10 h-10 lg:w-14 lg:h-14 rounded-full shadow-lg overflow-hidden">
                     <img src="{{ storage_url(auth()->user()->avatar) }}"
                         class="w-full h-full object-cover"
                         alt="{{ auth()->user()->full_name ?? 'User Avatar' }}">
@@ -34,8 +34,8 @@
                 </div>
             </div>
             <div>
-                <x-ui.button href="#" class="m-auto! py-2!">
-                    {{ __('Bookings') }}
+                <x-ui.button href="{{ route('user.seller.verification') }}" wire:navigate class="m-auto! py-1! lg:py-2!">
+                    {{ __('Sell') }}
                 </x-ui.button>
             </div>
         </div>

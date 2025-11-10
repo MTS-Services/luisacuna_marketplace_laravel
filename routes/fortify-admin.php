@@ -20,39 +20,31 @@ Route::middleware(['auth:admin'])->group(function () {
     // Enable 2FA
     Route::post('/admin/two-factor-authentication', [TwoFactorAuthenticationController::class, 'store'])
         ->name('admin.two-factor.enable');
-
     // Confirm 2FA
     Route::post('/admin/confirmed-two-factor-authentication', function (Illuminate\Http\Request $request) {
         $user = $request->user('admin');
-        
+
         $confirmed = app(\Laravel\Fortify\Actions\ConfirmTwoFactorAuthentication::class)(
             $user,
             $request->input('code')
         );
-
         if (!$confirmed) {
             return back()->withErrors(['code' => 'The provided code was invalid.']);
         }
-
         return back()->with('status', 'two-factor-authentication-confirmed');
     })->name('admin.two-factor.confirm');
-
     // Disable 2FA
     Route::delete('/admin/two-factor-authentication', [TwoFactorAuthenticationController::class, 'destroy'])
         ->name('admin.two-factor.disable');
-
     // QR Code
     Route::get('/admin/two-factor-qr-code', [TwoFactorQrCodeController::class, 'show'])
         ->name('admin.two-factor.qr-code');
-
     // Secret Key
     Route::get('/admin/two-factor-secret-key', [TwoFactorSecretKeyController::class, 'show'])
         ->name('admin.two-factor.secret-key');
-
     // Recovery Codes
     Route::get('/admin/two-factor-recovery-codes', [RecoveryCodeController::class, 'index'])
         ->name('admin.two-factor.recovery-codes');
-
     Route::post('/admin/two-factor-recovery-codes', [RecoveryCodeController::class, 'store'])
         ->name('admin.two-factor.recovery-codes.store');
 });
@@ -61,20 +53,17 @@ Route::middleware(['auth:web'])->group(function () {
     // Enable 2FA
     Route::post('user/two-factor-authentication', [TwoFactorAuthenticationController::class, 'store'])
         ->name('user.two-factor.enable');
-
     // Confirm 2FA
     Route::post('user/confirmed-two-factor-authentication', function (Illuminate\Http\Request $request) {
         $user = $request->user();
-        
+
         $confirmed = app(\Laravel\Fortify\Actions\ConfirmTwoFactorAuthentication::class)(
             $user,
             $request->input('code')
         );
-
         if (!$confirmed) {
             return back()->withErrors(['code' => 'The provided code was invalid.']);
         }
-
         return back()->with('status', 'two-factor-authentication-confirmed');
     })->name('user.two-factor.confirm');
 

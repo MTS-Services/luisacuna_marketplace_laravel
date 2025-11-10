@@ -56,7 +56,6 @@ class UserCreate extends Component
 
             $user = $this->userService->createData($data);
 
-            $this->dispatch('userCreated');
             $this->success('User created successfully');
 
             // Redirect to user list

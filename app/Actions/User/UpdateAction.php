@@ -2,7 +2,6 @@
 
 namespace App\Actions\User;
 
-use App\Events\User\UserUpdated;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
@@ -75,8 +74,6 @@ class UpdateAction
             // Refresh the user model
             $user = $user->fresh();
 
-            // Dispatch event
-            event(new UserUpdated($user, $oldData));
             return $user;
         });
     }

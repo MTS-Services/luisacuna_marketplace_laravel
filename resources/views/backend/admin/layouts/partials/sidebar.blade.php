@@ -30,8 +30,8 @@
         <nav class="p-2 space-y-2">
             <x-backend.navlink type="single" icon="layout-dashboard" name="Dashboard" :route="route('admin.dashboard')"
                 active="admin-dashboard" :page_slug="$active" />
-            <x-backend.navlink type="single" icon="chart-pie" name="Analytics" active="analytics" :page_slug="$active" />
-            <x-backend.navlink type="single" icon="inbox" name="Inbox" active="inbox" :page_slug="$active" />
+            {{-- <x-backend.navlink type="single" icon="chart-pie" name="Analytics" active="analytics" :page_slug="$active" />
+            <x-backend.navlink type="single" icon="inbox" name="Inbox" active="inbox" :page_slug="$active" /> --}}
 
             <div class="pt-4 pb-2">
                 <p class="text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
@@ -53,12 +53,12 @@
                         'icon' => 'shield-exclamation',
                         'active' => 'role',
                     ],
-                    // [
-                    //     'name' => 'Permissions',
-                    //     'route' => '#',
-                    //     'icon' => 'shield-check',
-                    //     'active' => 'permission',
-                    // ],
+                    [
+                        'name' => 'Permissions',
+                        'route' => route('admin.am.permission.index'),
+                        'icon' => 'shield-check',
+                        'active' => 'permission',
+                    ],
                 ]" />
 
             <x-backend.navlink type="dropdown" icon="user-group" name="User Management" :page_slug="$active"

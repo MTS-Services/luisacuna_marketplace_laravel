@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
+use Illuminate\Database\Eloquent\Builder;
 
 class Permission extends SpatiePermission implements Auditable
 {
@@ -108,5 +110,36 @@ class Permission extends SpatiePermission implements Auditable
         return dateTimeFormat($this->attributes['restored_at']);
     }
 
+    public function scopeFilter(Builder $query, array $filters): Builder
+    {
+        return $query
+            ->when(
+                $filters['name'] ?? null,
+                fn($q, $name) =>
+                $q->where('name', 'like', "%{$name}%")
+            )->when(
+                $filters['prefix'] ?? null,
+                fn($q, $prefix) =>
+                $q->where('prefix', 'like', "%{$prefix}%")
+            );
+    }
 
+    /* ================================================================
+    |  Scout Search Configuration
+    ================================================================ */
+
+    #[SearchUsingPrefix(['name', 'prefix'])]
+    public function toSearchableArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'prefix' => $this->prefix,
+
+        ];
+    }
+
+    public function shouldBeSearchable(): bool
+    {
+        return is_null($this->deleted_at);
+    }
 }

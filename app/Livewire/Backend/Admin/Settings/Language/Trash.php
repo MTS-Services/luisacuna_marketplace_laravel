@@ -33,7 +33,7 @@ class Trash extends Component
         $datas = $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        );
+        )->load('deleter_admin');
 
         $columns = [
             [

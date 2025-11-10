@@ -5,7 +5,6 @@ namespace App\Actions\Role;
 use App\Models\Role;
 use App\Repositories\Contracts\RoleRepositoryInterface;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class CreateAction
 {

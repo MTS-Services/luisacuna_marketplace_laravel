@@ -13,7 +13,7 @@ class AdminForm extends Form
 
     #[Locked]
     public ?int $id = null;
-
+    public ?int $role_id = null;
     public string $name = '';
     public string $email = '';
     public string $password = '';
@@ -21,7 +21,7 @@ class AdminForm extends Form
     public ?string $phone = '';
     public ?string $address = '';
     public string $status = '';
-    public ?UploadedFile $avatar = null;
+    public ?string $avatar = null;
     public bool $remove_avatar = false;
 
 
@@ -30,6 +30,7 @@ class AdminForm extends Form
         $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
+            'role_id' => 'required|integer|exists:roles,id',
             'password' => $this->isUpdating() ? 'nullable|string|min:8' : 'required|string|min:8',
             'password_confirmation' => 'nullable|string|min:8|same:password',
             'phone' => 'nullable|string|max:20',
@@ -41,21 +42,23 @@ class AdminForm extends Form
         return $rules;
     }
 
-    public function setData($admin): void
+    public function setData($data): void
     {
-        $this->id = $admin->id;
-        $this->name = $admin->name;
-        $this->email = $admin->email;
-        $this->phone = $admin->phone;
-        $this->address = $admin->address;
-        $this->status = $admin->status->value;
-        $this->avatar = null;
-        
+        $this->id = $data->id;
+        $this->role_id = $data->role_id;
+        $this->name = $data->name;
+        $this->email = $data->email;
+        $this->phone = $data->phone;
+        $this->address = $data->address;
+        $this->status = $data->status->value;
+        // $this->avatar = $data->avatar;
+
     }
 
     public function reset(...$properties): void
     {
         $this->id = null;
+        $this->role_id = null;
         $this->name = '';
         $this->email = '';
         $this->password = '';
@@ -72,17 +75,5 @@ class AdminForm extends Form
     protected function isUpdating(): bool
     {
         return !empty($this->id);
-    }
-
-    public function fillables(){
-        return [
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => $this->password,
-            'phone' => $this->phone,
-            'address' => $this->address,
-            'status' => $this->status,
-            'avatar' => $this->avatar
-        ];
     }
 }

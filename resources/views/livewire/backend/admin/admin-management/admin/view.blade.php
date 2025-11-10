@@ -21,10 +21,9 @@
 
             {{-- Left Column --}}
             <div class="flex flex-col h-auto p-4 border-r lg:border-r-2 border-zinc-100">
-                <h2 class="text-xl text-text-primary font-semibold mb-6">{{__('Profile Image')}}</h2>
-
+                <h2 class="text-xl text-text-primary font-semibold mb-6">{{ __('Profile Image') }}</h2>
                 <div class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-pink-100 overflow-hidden">
-                    <img src="{{ asset('storage/' . $data->avatar) }}" alt="Profile Image"
+                    <img src="{{ storage_url($data->avatar) }}" alt="Profile Image"
                         class="w-full h-full object-cover">
                 </div>
 
@@ -42,8 +41,8 @@
                             </path>
                         </svg>
                         <div>
-                            <p class="text-text-muted">{{__('Phone')}}</p>
-                            <p class="font-medium text-text-primary">{{ $admin->phone }}</p>
+                            <p class="text-text-muted">{{ __('Phone') }}</p>
+                            <p class="font-medium text-text-primary">{{ $data->phone }}</p>
                         </div>
                     </div>
 
@@ -55,8 +54,8 @@
                             </path>
                         </svg>
                         <div>
-                            <p class="text-text-muted">{{__('Email')}}</p>
-                            <p class="font-medium text-text-primary">{{ $admin->email }}</p>
+                            <p class="text-text-muted">{{ __('Email') }}</p>
+                            <p class="font-medium text-text-primary">{{ $data->email }}</p>
                         </div>
                     </div>
 
@@ -68,11 +67,11 @@
                             </path>
                         </svg>
                         <div>
-                            <p class="text-text-muted">{{__('Account Status')}}</p>
+                            <p class="text-text-muted">{{ __('Account Status') }}</p>
                             <span
                                 class="px-3 py-1 rounded-full text-xs font-bold inline-block
-                                    @if ($admin->status_label === 'Active') bg-zinc-100 text-zinc-700 @else bg-pink-100 text-pink-700 @endif">
-                                {{ $admin->status_label }}
+                                    @if ($data->status_label === 'Active') bg-zinc-100 text-zinc-700 @else bg-pink-100 text-pink-700 @endif">
+                                {{ $data->status_label }}
                             </span>
                         </div>
                     </div>
@@ -81,35 +80,36 @@
 
             {{-- Right Column --}}
             <div class="col-span-1 lg:col-span-2 p-4">
-                <h2 class="text-xl font-semibold mb-6 border-b border-zinc-100 pb-2 text-text-primary">{{__('Profile Information')}}</h2>
+                <h2 class="text-xl font-semibold mb-6 border-b border-zinc-100 pb-2 text-text-primary">
+                    {{ __('Profile Information') }}</h2>
 
                 <div class="grid md:grid-cols-2 gap-8 text-base">
                     {{-- Name --}}
                     <div>
-                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">{{__('Name')}}</p>
-                        <h3 class="text-lg font-medium text-text-primary">{{ $admin->name }}</h3>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">{{ __('Name') }}</p>
+                        <h3 class="text-lg font-medium text-text-primary">{{ $data->name }}</h3>
                     </div>
 
                     {{-- Email --}}
                     <div>
-                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">{{__('Email')}}</p>
-                        <h3 class="text-lg font-medium text-text-primary">{{ $admin->email }}</h3>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">{{ __('Email') }}</p>
+                        <h3 class="text-lg font-medium text-text-primary">{{ $data->email }}</h3>
                     </div>
 
                     {{-- phone --}}
                     <div>
-                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">{{__('Phone')}}</p>
-                        <h3 class="text-lg font-medium text-text-primary">{{ $admin->phone }}</h3>
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">{{ __('Phone') }}</p>
+                        <h3 class="text-lg font-medium text-text-primary">{{ $data->phone }}</h3>
                     </div>
 
                     {{-- Status --}}
                     <div>
-                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">{{__('Status')}}</p>
-                        {{-- <h3 class="text-lg font-medium text-text-primary">{{ $admin->date_of_birth }}</h3> --}}
+                        <p class="text-text-muted mb-1 text-sm uppercase tracking-wider">{{ __('Status') }}</p>
+                        {{-- <h3 class="text-lg font-medium text-text-primary">{{ $data->date_of_birth }}</h3> --}}
                         <h3
                             class="px-3 py-1 rounded-full text-xs font-bold inline-block
-                                    @if ($admin->status_label === 'Active') bg-zinc-100 text-zinc-700 @else bg-pink-100 text-pink-700 @endif">
-                            {{ $admin->status_label }}
+                                    @if ($data->status_label === 'Active') bg-zinc-100 text-zinc-700 @else bg-pink-100 text-pink-700 @endif">
+                            {{ $data->status_label }}
                         </h3>
                     </div>
 

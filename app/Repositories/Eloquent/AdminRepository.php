@@ -6,19 +6,21 @@ use App\Models\Admin;
 use App\Repositories\Contracts\AdminRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 
 class AdminRepository implements AdminRepositoryInterface
 {
     public function __construct(
         protected Admin $model
-    ) {}
+    ) {
+    }
 
-    
+
 
     /* ================== ================== ==================
-    *                      Find Methods 
-    * ================== ================== ================== */
+     *                      Find Methods
+     * ================== ================== ================== */
 
     public function all(string $sortField = 'created_at', $order = 'desc'): Collection
     {
@@ -37,7 +39,7 @@ class AdminRepository implements AdminRepositoryInterface
         return $model->where($column_name, $column_value)->first();
     }
 
-    
+
     public function findTrashed($column_value, string $column_name = 'id'): ?Admin
     {
         $model = $this->model->onlyTrashed();
@@ -45,26 +47,7 @@ class AdminRepository implements AdminRepositoryInterface
         return $model->where($column_name, $column_value)->first();
 
     }
-
-
-
- 
-    public function findByEmail(string $email, $trashed = false): ?Admin
-    {
-        $model = $this->model;
-        if ($trashed) {
-            $model = $model->withTrashed();
-        }
-        return $model->where('email', $email)->first();
-    }
-
-    public function findTrashedByEmail(string $email): ?Admin
-    {
-        return $this->model->onlyTrashed()->where('email', $email)->first();
-    }
-
-    
-        public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         $search = $filters['search'] ?? null;
         $sortField = $filters['sort_field'] ?? 'created_at';
@@ -103,7 +86,6 @@ class AdminRepository implements AdminRepositoryInterface
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
-        return $query->paginate($perPage);
     }
 
 
@@ -130,8 +112,8 @@ class AdminRepository implements AdminRepositoryInterface
 
 
     /* ================== ================== ==================
-    *                    Data Modification Methods 
-    * ================== ================== ================== */
+     *                    Data Modification Methods
+     * ================== ================== ================== */
 
 
 
@@ -142,86 +124,80 @@ class AdminRepository implements AdminRepositoryInterface
 
     public function update(int $id, array $data): bool
     {
-        $admin = $this->find($id);
-        
-        if (!$admin) {
+        $findData = $this->find($id);
+
+        if (!$findData) {
             return false;
         }
 
-        return $admin->update($data);
+        return $findData->update($data);
     }
 
 
 
     public function delete(int $id, $actionerId): bool
     {
-        $admin = $this->find($id);
-        
-        if (!$admin) {
+        $findData = $this->find($id);
+
+        if (!$findData) {
             return false;
         }
 
-        $admin->update(['deleter_id' => $actionerId]);
-
-        return $admin->delete();
+        $findData->update(['deleted_by' => $actionerId]);
+        return $findData->delete();
     }
 
     public function forceDelete(int $id): bool
     {
-        $admin = $this->findTrashed($id);
-        
-        if (!$admin) {
+        $findData = $this->findTrashed($id);
+        if (!$findData) {
             return false;
         }
-
-        return $admin->forceDelete();
+        return $findData->forceDelete();
     }
 
     public function restore(int $id, int $actionerId): bool
     {
-        $admin = $this->findTrashed($id);
-        
-        if (!$admin) {
+        $findData = $this->findTrashed($id);
+        if (!$findData) {
             return false;
         }
-        $admin->update(['restorer_id' => $actionerId]);
+        $findData->update(['restored_by' => $actionerId,'restored_at' => now()]);
+        return $findData->restore();
+    }
 
-        return $admin->restore();
+    public function bulkDelete(array $ids, int $actionerId): int
+    {
+
+        return DB::transaction(function () use ($ids, $actionerId) {
+            $this->model->whereIn('id', $ids)->update(['deleted_by' => $actionerId]);
+            return $this->model->whereIn('id', $ids)->delete();
+        });
     }
 
 
     public function bulkUpdateStatus(array $ids, string $status, $actionerId): int
     {
 
-        return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updater_id' => $actionerId]);
+        return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updated_by' => $actionerId]);
     }
 
     public function bulkRestore(array $ids, int $actionerId): int
     {
 
-            $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restorer_id' => $actionerId]);
-
+        return DB::transaction(function () use ($ids, $actionerId) {
+            $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restored_by' => $actionerId, 'restored_at' => now()]);
             return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
+        });
 
-    }
-
-    public function bulkDelete(array $ids, int $actionerId): int{
-        
-         $this->model->whereIn('id', $ids)->update(['deleter_id' => $actionerId]);
-
-         return $this->model->whereIn('id', $ids)->delete();
     }
     public function bulkForceDelete(array $ids): int //
-    {  
+    {
         return $this->model->withTrashed()->whereIn('id', $ids)->forceDelete();
     }
-
-
-
-
     /* ================== ================== ==================
-    *                  Accessor Methods (Optional)
-    * ================== ================== ================== */
+     *                  Accessor Methods (Optional)
+     * ================== ================== ================== */
 
 
 

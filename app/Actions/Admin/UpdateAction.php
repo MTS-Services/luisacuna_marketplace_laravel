@@ -22,23 +22,24 @@ class UpdateAction
 
             // dd($data);
 
-            $admin = $this->interface->find($id);
+            $findData = $this->interface->find($id);
 
-            if (!$admin) {
-                Log::error('Admin not found', ['admin_id' => $id]);
-                throw new \Exception('Admin not found');
+            if (!$findData) {
+                Log::error('Data not found', ['admin_id' => $id]);
+                throw new \Exception('Data not found');
             }
 
             // Store old data BEFORE any modifications
-            $oldData = $admin->getAttributes();
+            $oldData = $findData->getAttributes();
 
             $new_data = [
                 'name' => $data['name'],
+                'role_id' => $data['role_id'],
                 'email' => $data['email'],
                 'phone' => $data['phone'],
                 'address' => $data['address'],
                 'status' => $data['status'],
-                'updater_id' => $data['updater_id'],
+                'updated_by' => $data['updated_by'],
             ];
 
 
@@ -55,9 +56,9 @@ class UpdateAction
 
                 
             // // Handle avatar removal
-            // if ($dto->removeAvatar && $admin->avatar) {
-            //     Log::info('Removing avatar', ['path' => $admin->avatar]);
-            //     Storage::disk('public')->delete($admin->avatar);
+            // if ($dto->removeAvatar && $data->avatar) {
+            //     Log::info('Removing avatar', ['path' => $data->avatar]);
+            //     Storage::disk('public')->delete($data->avatar);
             //     $data['avatar'] = null;
             // }
 
@@ -77,19 +78,19 @@ class UpdateAction
            
 
             if (!$updated) {
-                Log::error('Failed to update Admin in repository', ['admin_id' => $id]);
-                throw new \Exception('Failed to update Admin');
+                Log::error('Failed to update Data in repository', ['admin_id' => $id]);
+                throw new \Exception('Failed to update Data');
             }
 
             // Refresh the Admin model
-            $admin = $admin->fresh();
+            $data = $findData->fresh();
 
-            Log::info('Admin after update', [
-                'admin_data' => $admin->getAttributes()
+            Log::info('Data after update', [
+                'admin_data' => $data->getAttributes()
             ]);
 
             // Calculate changes - compare actual attributes, not toArray() which includes relations
-            $newData = $admin->getAttributes();
+            $newData = $data->getAttributes();
             $changes = [];
 
             foreach ($newData as $key => $value) {
@@ -105,10 +106,10 @@ class UpdateAction
 
             // Dispatch event only if there are actual changes
             if (!empty($changes)) {
-                event(new AdminUpdated($admin, $changes));
+                event(new AdminUpdated($data, $changes));
             }
 
-            return $admin;
+            return $data;
 
             // 
         });
