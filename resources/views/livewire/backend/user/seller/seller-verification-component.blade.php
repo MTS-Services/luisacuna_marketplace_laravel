@@ -14,7 +14,7 @@
         @endif
 
         {{-- Category Selection Page --}}
-        @if (!$showCategoryPage)
+        @if ($showCategoryPage)
             {{-- @if ($showCategoryPage) --}}
             <div class="w-2xl mx-auto">
                 <h1 class="text-3xl font-bold text-center text-text-white mb-2">Start selling</h1>
@@ -130,7 +130,7 @@
             </div>
 
             {{-- Step 1: Individual or Company --}}
-        @elseif(!$currentStep == 1)
+        @elseif($currentStep == 1)
             <div>
                 <div class="text-center mb-8">
                     <div class="flex items-center justify-center mb-2">
@@ -164,7 +164,7 @@
                         BACK
                     </a>
                     <button wire:click="nextStep"
-                        class="px-6 py-1.5 bg-black dark:bg-gray-800  text-white rounded-lg hover:bg-gray-800">
+                        class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
                         NEXT
                     </button>
                 </div>
@@ -187,13 +187,13 @@
 
                     <div class="space-y-1 mb-2">
                         @foreach ([
-        'currency' => 'Currency',
-        'accounts' => 'Accounts',
-        'items' => 'Items',
-        'top_ups' => 'Top Ups',
-        'boosting' => 'Boosting',
-        'gift_cards' => 'Gift Cards',
-    ] as $value => $label)
+                            'currency' => 'Currency',
+                            'accounts' => 'Accounts',
+                            'items' => 'Items',
+                            'top_ups' => 'Top Ups',
+                            'boosting' => 'Boosting',
+                            'gift_cards' => 'Gift Cards',
+                        ] as $value => $label)
                             <label class="flex items-center cursor-pointer">
                                 <input type="checkbox" wire:model="selectedCategories" value="{{ $value }}"
                                     class="w-5 h-5 text-zinc-600 bg-bg-white! border-zinc-100 rounded transition-all duration-200 hover:scale-110 hover:bg-zinc-500 focus:ring-zinc-500">
@@ -445,10 +445,8 @@
             </div>
 
             {{-- Step 5: Upload ID Document --}}
-        {{-- @elseif($currentStep == 5) --}}
-        @elseif($showCategoryPage)
-
-            @if (!$accountType === 'individual')
+            @elseif($currentStep == 5)
+            @if ($accountType === 'individual')
                 <div>
                     <div class="text-center mb-8">
                         <div class="flex items-center justify-center mb-2">
@@ -515,8 +513,7 @@
 
 
                     <div class="flex justify-center space-x-4">
-                        <button wire:click="previousStep"
-                            class="px-8 py-2 rounded-lg hover:bg-gray-50">
+                        <button wire:click="previousStep" class="px-8 py-2 rounded-lg hover:bg-gray-50">
                             BACK
                         </button>
                         <button wire:click="nextStep"
@@ -542,8 +539,7 @@
                             {{-- Placeholder for the ID illustration image from the provided screenshot --}}
                             <div class="flex justify-center mb-6">
                                 <img src="{{ asset('assets/images/ubo-verification-image.webp') }}"
-                                    alt="Ultimate beneficial owner ID illustration" class="mx-auto"
-                                   >
+                                    alt="Ultimate beneficial owner ID illustration" class="mx-auto">
                             </div>
 
                             <ul class="space-y-2 font-lato mb-6">
@@ -590,9 +586,8 @@
                         </div>
                     </div>
 
-                       <div class="flex justify-center space-x-4">
-                        <button wire:click="previousStep"
-                            class="px-8 py-2 rounded-lg hover:bg-gray-50">
+                    <div class="flex justify-center space-x-4">
+                        <button wire:click="previousStep" class="px-8 py-2 rounded-lg hover:bg-gray-50">
                             BACK
                         </button>
                         <button wire:click="nextStep"
@@ -603,8 +598,8 @@
                 </div>
             @endif
             {{-- Step 6: Selfie with ID (Individual) or Company Documents --}}
-            @elseif($currentStep == 6)
-            @if (!$accountType === 'individual')
+        @elseif($currentStep == 6)
+            @if ($accountType === 'individual')
                 <div>
                     <div class="text-center mb-8">
                         <div class="flex items-center justify-center mb-2">
