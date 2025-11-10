@@ -137,7 +137,7 @@
                         <span class="text-zinc-500 text-2xl">✓</span>
                         <h3 class="text-lg text-text-white font-semibold ml-2">Seller ID Verification</h3>
                     </div>
-                    <p class="text-text-white">Step 1/5</p>
+                    <p class="text-text-white">Step 1/7</p>
                 </div>
                 <div class="bg-bg-primary max-w-2xl mx-auto py-6 mb-4">
                     <h2 class="text-lg font-bold text-center mb-4">
@@ -179,7 +179,7 @@
                         <span class="text-zinc-500 text-2xl">✓</span>
                         <h3 class="text-lg font-semibold ml-2">Seller ID verification</h3>
                     </div>
-                    <p class="text-text-white">Step 1/6</p>
+                    <p class="text-text-white">Step 1/7</p>
                 </div>
                 <div class="bg-bg-primary max-w-2xl mx-auto py-4 px-8 mb-4">
                     <h2 class="text-2xl font-bold text-center mb-2">Select the categories you'll be <br> selling in:
@@ -187,13 +187,13 @@
 
                     <div class="space-y-1 mb-2">
                         @foreach ([
-                            'currency' => 'Currency',
-                            'accounts' => 'Accounts',
-                            'items' => 'Items',
-                            'top_ups' => 'Top Ups',
-                            'boosting' => 'Boosting',
-                            'gift_cards' => 'Gift Cards',
-                        ] as $value => $label)
+        'currency' => 'Currency',
+        'accounts' => 'Accounts',
+        'items' => 'Items',
+        'top_ups' => 'Top Ups',
+        'boosting' => 'Boosting',
+        'gift_cards' => 'Gift Cards',
+    ] as $value => $label)
                             <label class="flex items-center cursor-pointer">
                                 <input type="checkbox" wire:model="selectedCategories" value="{{ $value }}"
                                     class="w-5 h-5 text-zinc-600 bg-bg-white! border-zinc-100 rounded transition-all duration-200 hover:scale-110 hover:bg-zinc-500 focus:ring-zinc-500">
@@ -231,7 +231,7 @@
                         <span class="text-zinc-500 text-2xl">✓</span>
                         <h3 class="text-lg font-semibold ml-2">Seller ID verification</h3>
                     </div>
-                    <p class="text-text-white">Step 2/6</p>
+                    <p class="text-text-white">Step 2/7</p>
                 </div>
                 <div class="bg-bg-primary max-w-2xl mx-auto py-4 px-8 mb-4">
                     <h2 class="text-2xl font-bold text-center mb-8">Selling experience:</h2>
@@ -270,7 +270,7 @@
                         <span class="text-zinc-500 text-2xl">✓</span>
                         <h3 class="text-lg font-semibold ml-2">Seller ID verification</h3>
                     </div>
-                    <p class="text-text-white">Step 3/6</p>
+                    <p class="text-text-white">Step 3/7</p>
                 </div>
 
                 @if ($accountType == 'individual')
@@ -445,15 +445,15 @@
             </div>
 
             {{-- Step 5: Upload ID Document --}}
-            @elseif($currentStep == 5)
-            @if ($accountType === 'individual')
+        @elseif($currentStep == 5)
+            @if ($accountType == 'individual')
                 <div>
                     <div class="text-center mb-8">
                         <div class="flex items-center justify-center mb-2">
                             <span class="text-zinc-500 text-2xl">✓</span>
                             <h3 class="text-lg font-semibold ml-2">Seller ID Verification</h3>
                         </div>
-                        <p class="text-text-white">Step 6/7</p>
+                        <p class="text-text-white">Step 4/7</p>
                     </div>
                     <div class="dark:bg-bg-primary bg-bg-white max-w-2xl mx-auto py-6  mb-6">
                         <h2 class="text-xl font-semibold text-center mb-8">Take a photo of your ID and eldorado.gg in
@@ -512,7 +512,7 @@
                     </div>
 
 
-                    <div class="flex justify-center space-x-4">
+                    <div class="flex justify-center space-x-4 mt-4">
                         <button wire:click="previousStep" class="px-8 py-2 rounded-lg hover:bg-gray-50">
                             BACK
                         </button>
@@ -525,9 +525,12 @@
             @else
                 {{-- Content for Company Account (Ultimate Beneficial Owner ID Upload) --}}
                 <div>
-                    {{-- The image shows 'Step 6/7' for this screen --}}
                     <div class="text-center mb-8">
-                        <p class="text-text-white">Step 6/7</p>
+                        <div class="flex items-center justify-center mb-2">
+                            <span class="text-zinc-500 text-2xl">✓</span>
+                            <h3 class="text-lg font-semibold ml-2">Seller ID Verification</h3>
+                        </div>
+                        <p class="text-text-white">Step 4/7</p>
                     </div>
 
                     <div class="dark:bg-bg-primary bg-bg-white max-w-2xl mx-auto py-6 mb-6">
@@ -599,7 +602,7 @@
             @endif
             {{-- Step 6: Selfie with ID (Individual) or Company Documents --}}
         @elseif($currentStep == 6)
-            @if ($accountType === 'individual')
+            @if ($accountType == 'individual')
                 <div>
                     <div class="text-center mb-8">
                         <div class="flex items-center justify-center mb-2">
