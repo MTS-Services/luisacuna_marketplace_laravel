@@ -179,7 +179,7 @@
                         <span class="text-zinc-500 text-2xl">✓</span>
                         <h3 class="text-lg font-semibold ml-2">Seller ID verification</h3>
                     </div>
-                    <p class="text-gray-500">Step 1/6</p>
+                    <p class="text-text-white">Step 1/6</p>
                 </div>
                 <div class="bg-bg-primary max-w-2xl mx-auto py-4 px-8 mb-4">
                     <h2 class="text-2xl font-bold text-center mb-2">Select the categories you'll be <br> selling in:
@@ -231,7 +231,7 @@
                         <span class="text-zinc-500 text-2xl">✓</span>
                         <h3 class="text-lg font-semibold ml-2">Seller ID verification</h3>
                     </div>
-                    <p class="text-gray-500">Step 2/6</p>
+                    <p class="text-text-white">Step 2/6</p>
                 </div>
                 <div class="bg-bg-primary max-w-2xl mx-auto py-4 px-8 mb-4">
                     <h2 class="text-2xl font-bold text-center mb-8">Selling experience:</h2>
@@ -265,124 +265,127 @@
             {{-- Step 4: Personal/Company Details --}}
             {{-- @elseif($currentStep == 4) --}}
         @elseif($showCategoryPage)
-            <div class="bg-white rounded-lg shadow-lg p-8">
+            <div>
                 <div class="text-center mb-8">
                     <div class="flex items-center justify-center mb-2">
                         <span class="text-zinc-500 text-2xl">✓</span>
                         <h3 class="text-lg font-semibold ml-2">Seller ID verification</h3>
                     </div>
-                    <p class="text-gray-500">Step 3/6</p>
+                    <p class="text-text-white">Step 3/6</p>
                 </div>
 
-                @if ($accountType === 'individual')
-                    <h2 class="text-2xl font-bold text-center mb-8">Enter your details</h2>
+                @if (!$accountType === 'individual')
+                    <div class="dark:bg-bg-primary bg-bg-white max-w-2xl mx-auto py-4 px-8 mb-4">
+                        <h2 class="text-2xl font-semibold text-center font-lato mb-8">Enter your details</h2>
 
-                    <div class="max-w-md mx-auto space-y-4 mb-8">
-                        <div>
-                            <label class="block text-sm font-semibold mb-2">First name</label>
-                            <input type="text" wire:model="firstName"
-                                class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-zinc-500"
-                                placeholder="First name">
-                            @error('firstName')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold mb-2">Middle name (if present)</label>
-                            <input type="text" wire:model="middleName"
-                                class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-zinc-500"
-                                placeholder="Middle name">
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold mb-2">Last name</label>
-                            <input type="text" wire:model="lastName"
-                                class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-zinc-500"
-                                placeholder="Last name">
-                            @error('lastName')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold mb-2">Date of birth:</label>
-                            <div class="grid grid-cols-3 gap-3">
-                                <select wire:model="birthYear" class="p-3 border rounded-lg">
-                                    <option value="">Year</option>
-                                    @for ($year = date('Y') - 18; $year >= 1950; $year--)
-                                        <option value="{{ $year }}">{{ $year }}</option>
-                                    @endfor
-                                </select>
-                                <select wire:model="birthMonth" class="p-3 border rounded-lg">
-                                    <option value="">Month</option>
-                                    @for ($month = 1; $month <= 12; $month++)
-                                        <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}">
-                                            {{ $month }}</option>
-                                    @endfor
-                                </select>
-                                <select wire:model="birthDay" class="p-3 border rounded-lg">
-                                    <option value="">Day</option>
-                                    @for ($day = 1; $day <= 31; $day++)
-                                        <option value="{{ str_pad($day, 2, '0', STR_PAD_LEFT) }}">{{ $day }}
-                                        </option>
-                                    @endfor
-                                </select>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold mb-2">Nationality:</label>
-                            <select wire:model="nationality" class="w-full p-3 border rounded-lg">
-                                <option value="">Select nationality</option>
-                                <option value="BD">Bangladesh</option>
-                                <option value="US">United States</option>
-                                <option value="UK">United Kingdom</option>
-                                <option value="IN">India</option>
-                            </select>
-                            @error('nationality')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold mb-2">Street address</label>
-                            <input type="text" wire:model="streetAddress" class="w-full p-3 border rounded-lg"
-                                placeholder="Street address">
-                            @error('streetAddress')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold mb-2">City</label>
-                            <input type="text" wire:model="city" class="w-full p-3 border rounded-lg"
-                                placeholder="City">
-                            @error('city')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-3">
+                        <div class="max-w-md mx-auto space-y-4 mb-8">
                             <div>
-                                <label class="block text-sm font-semibold mb-2">Country</label>
-                                <select wire:model="country" class="w-full p-3 border rounded-lg">
-                                    <option value="">Select country</option>
+                                <x-ui.label class="mb-2">First name</x-ui.label>
+                                <x-ui.input type="text" wire:model="firstName"
+                                    class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-zinc-500"
+                                    placeholder="First name"/>
+                                @error('firstName')
+                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <x-ui.label class="mb-2">Middle name (if present)</x-ui.label>
+                                <x-ui.input type="text" wire:model="middleName"
+                                    class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-zinc-500"
+                                    placeholder="Middle name"/>
+                            </div>
+
+                            <div>
+                                <x-ui.label class="mb-2">Last name</x-ui.label>
+                                <x-ui.input type="text" wire:model="lastName"
+                                    class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-zinc-500"
+                                    placeholder="Last name"/>
+                                @error('lastName')
+                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <x-ui.label class="mb-2">Date of birth:</x-ui.label>
+                                <div class="grid grid-cols-3 gap-3">
+                                    <x-ui.select wire:model="birthYear" class="p-3 border rounded-lg">
+                                        <option value="">Year</option>
+                                        @for ($year = date('Y') - 18; $year >= 1950; $year--)
+                                            <option value="{{ $year }}">{{ $year }}</option>
+                                        @endfor
+                                    </x-ui.select>
+                                    <x-ui.select wire:model="birthMonth" class="p-3 border rounded-lg">
+                                        <option value="">Month</option>
+                                        @for ($month = 1; $month <= 12; $month++)
+                                            <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}">
+                                                {{ $month }}</option>
+                                        @endfor
+                                    </x-ui.select>
+                                    <x-ui.select wire:model="birthDay" class="p-3 border rounded-lg">
+                                        <option value="">Day</option>
+                                        @for ($day = 1; $day <= 31; $day++)
+                                            <option value="{{ str_pad($day, 2, '0', STR_PAD_LEFT) }}">
+                                                {{ $day }}
+                                            </option>
+                                        @endfor
+                                    </x-ui.select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <x-ui.label class="mb-2">Nationality:</x-ui.label>
+                                <x-ui.select wire:model="nationality" class="w-full p-3 border rounded-lg">
+                                    <option value="">Select nationality</option>
                                     <option value="BD">Bangladesh</option>
                                     <option value="US">United States</option>
                                     <option value="UK">United Kingdom</option>
-                                </select>
-                                @error('country')
+                                    <option value="IN">India</option>
+                                </x-ui.select>
+                                @error('nationality')
                                     <span class="text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
                             </div>
+
                             <div>
-                                <label class="block text-sm font-semibold mb-2">Postal code</label>
-                                <input type="text" wire:model="postalCode" class="w-full p-3 border rounded-lg"
-                                    placeholder="Postal code">
-                                @error('postalCode')
+                                <x-ui.label class="mb-2">Street address</x-ui.label>
+                                <x-ui.input type="text" wire:model="streetAddress" class="w-full p-3 border rounded-lg"
+                                    placeholder="Street address"/>
+                                @error('streetAddress')
                                     <span class="text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
+                            </div>
+
+                            <div>
+                                <x-ui.label class="mb-2">City</x-ui.label>
+                                <x-ui.input type="text" wire:model="city" class="w-full p-3 border rounded-lg"
+                                    placeholder="City"/>
+                                @error('city')
+                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <x-ui.label class="mb-2">Country</x-ui.label>
+                                    <x-ui.select wire:model="country" class="w-full p-3 border rounded-lg">
+                                        <option value="">Select country</option>
+                                        <option value="BD">Bangladesh</option>
+                                        <option value="US">United States</option>
+                                        <option value="UK">United Kingdom</option>
+                                    </x-ui.select>
+                                    @error('country')
+                                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <x-ui.label class="mb-2">Postal code</x-ui.label>
+                                    <x-ui.input type="text" wire:model="postalCode"
+                                        class="w-full p-3 border rounded-lg" placeholder="Postal code"/>
+                                    @error('postalCode')
+                                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -458,10 +461,10 @@
 
                 <div class="flex justify-center space-x-4">
                     <button wire:click="previousStep"
-                        class="px-8 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        class="px-8 py-2  rounded-lg hover:bg-gray-50">
                         BACK
                     </button>
-                    <button wire:click="nextStep" class="px-8 py-2 bg-black text-white rounded-lg hover:bg-gray-800">
+                    <button wire:click="nextStep" class="px-8 py-2 bg-zinc-600 text-white rounded-lg hover:bg-zinc-700">
                         NEXT STEP
                     </button>
                 </div>
@@ -475,7 +478,7 @@
                         <span class="text-zinc-500 text-2xl">✓</span>
                         <h3 class="text-lg font-semibold ml-2">Seller ID Verification</h3>
                     </div>
-                    <p class="text-gray-500">Step 6/7</p>
+                    <p class="text-text-white">Step 6/7</p>
                 </div>
 
                 <h2 class="text-2xl font-bold text-center mb-8">Take a photo of ultimate beneficial owner ID</h2>
@@ -488,7 +491,7 @@
                             </div>
                             <p class="text-sm font-semibold mb-1">NAME</p>
                             <p class="text-sm font-semibold mb-1">LAST NAME</p>
-                            <p class="text-xs text-gray-500">1983-06-05</p>
+                            <p class="text-xs text-text-white">1983-06-05</p>
                         </div>
                     </div>
 
@@ -509,11 +512,11 @@
                             <p class="text-green-600 mt-2">✓ File selected: {{ $idDocument->getClientOriginalName() }}
                             </p>
                         @else
-                            <p class="text-gray-500 mt-2">No file selected</p>
+                            <p class="text-text-white mt-2">No file selected</p>
                         @endif
                     </div>
 
-                    <p class="text-xs text-gray-500 text-center">Must be JPEG, PNG or HEIC and cannot exceed 10MB.</p>
+                    <p class="text-xs text-text-white text-center">Must be JPEG, PNG or HEIC and cannot exceed 10MB.</p>
                     @error('idDocument')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
@@ -539,7 +542,7 @@
                             <span class="text-zinc-500 text-2xl">✓</span>
                             <h3 class="text-lg font-semibold ml-2">Seller ID Verification</h3>
                         </div>
-                        <p class="text-gray-500">Step 7/7</p>
+                        <p class="text-text-white">Step 7/7</p>
                     </div>
 
                     <h2 class="text-2xl font-bold text-center mb-6">Upload company documents</h2>
@@ -597,11 +600,11 @@
                                     @endforeach
                                 </div>
                             @else
-                                <p class="text-gray-500 mt-2 text-center">No files selected</p>
+                                <p class="text-text-white mt-2 text-center">No files selected</p>
                             @endif
                         </div>
 
-                        <p class="text-xs text-gray-500 text-center">
+                        <p class="text-xs text-text-white text-center">
                             Must be JPEG, PNG, HEIC, PDF, DOCX and cannot exceed 10MB.
                         </p>
                     </div>
