@@ -445,145 +445,147 @@
             </div>
 
             {{-- Step 5: Upload ID Document --}}
-        {{-- @elseif($currentStep == 5) --}}
-        @elseif($showCategoryPage)
-
-            <div class="bg-white rounded-lg shadow-lg p-8">
-                <div class="text-center mb-8">
-                    <div class="flex items-center justify-center mb-2">
-                        <span class="text-zinc-500 text-2xl">✓</span>
-                        <h3 class="text-lg font-semibold ml-2">Seller ID Verification</h3>
-                    </div>
-                    <p class="text-text-white">Step 6/7</p>
-                </div>
-
-                <h2 class="text-2xl font-bold text-center mb-8">Take a photo of ultimate beneficial owner ID</h2>
-
-                <div class="max-w-md mx-auto mb-8">
-                    <div class="border-4 border-dashed border-yellow-300 rounded-lg p-8 mb-6">
-                        <div class="text-center">
-                            <div class="mb-4">
-                                <span class="text-6xl">🆔</span>
-                            </div>
-                            <p class="text-sm font-semibold mb-1">NAME</p>
-                            <p class="text-sm font-semibold mb-1">LAST NAME</p>
-                            <p class="text-xs text-text-white">1983-06-05</p>
-                        </div>
-                    </div>
-
-                    <ul class="space-y-2 text-sm text-gray-600 mb-6">
-                        <li>• Accepted documents: Driver's license, Government issued ID or Passport, international
-                            student ID.</li>
-                        <li>• Make sure personal details on the document are clearly visible and easy to read.</li>
-                    </ul>
-
-                    <div class="mb-4">
-                        <input type="file" wire:model="idDocument" accept="image/*" class="hidden"
-                            id="idDocument">
-                        <label for="idDocument"
-                            class="block w-full p-3 border-2 border-gray-300 rounded-lg text-center cursor-pointer hover:bg-gray-50">
-                            <span class="text-gray-700 font-semibold">Choose file</span>
-                        </label>
-                        @if ($idDocument)
-                            <p class="text-green-600 mt-2">✓ File selected: {{ $idDocument->getClientOriginalName() }}
-                            </p>
-                        @else
-                            <p class="text-text-white mt-2">No file selected</p>
-                        @endif
-                    </div>
-
-                    <p class="text-xs text-text-white text-center">Must be JPEG, PNG or HEIC and cannot exceed 10MB.
-                    </p>
-                    @error('idDocument')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="flex justify-center space-x-4">
-                    <button wire:click="previousStep"
-                        class="px-8 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                        BACK
-                    </button>
-                    <button wire:click="nextStep" class="px-8 py-2 bg-black text-white rounded-lg hover:bg-gray-800">
-                        NEXT
-                    </button>
-                </div>
-            </div>
-
-            {{-- Step 6: Upload Company Documents (only for company) --}}
-        @elseif($currentStep == 6)
-            @if ($accountType === 'company')
-                <div class="bg-white rounded-lg shadow-lg p-8">
+        @elseif($currentStep == 5)
+            @if ($accountType === 'individual')
+                <div>
                     <div class="text-center mb-8">
                         <div class="flex items-center justify-center mb-2">
                             <span class="text-zinc-500 text-2xl">✓</span>
                             <h3 class="text-lg font-semibold ml-2">Seller ID Verification</h3>
                         </div>
-                        <p class="text-text-white">Step 7/7</p>
+                        <p class="text-text-white">Step 6/7</p>
                     </div>
+                    <div class="dark:bg-bg-primary bg-bg-white max-w-2xl mx-auto py-6  mb-6">
+                        <h2 class="text-xl font-semibold text-center mb-8">Take a photo of your ID and eldorado.gg in
+                            <br>
+                            background
+                        </h2>
 
-                    <h2 class="text-2xl font-bold text-center mb-6">Upload company documents</h2>
+                        <div class="px-8">
+                            <div class="flex justify-center mb-4">
+                                <img src="{{ asset('assets/images/verification-id-background.webp') }}"
+                                    alt="" class="mx-auto">
+                            </div>
 
-                    <div class="max-w-2xl mx-auto mb-8">
-                        <p class="text-gray-600 mb-6 text-center">
-                            Please upload documents to prove that the individual who submitted the ID is an owner of
-                            your company.
-                        </p>
+                            <ul class="space-y-2  font-lato mb-6 ">
+                                <li class="flex items-start">
+                                    <span class="mr-2">•</span>
+                                    <span class=" font-semibold">
+                                        Accepted documents: Driver's license, Government issued ID or Passport,
+                                        interna-tional student ID.
+                                    </span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="mr-2 ">•</span>
+                                    <span class=" font-semibold">
+                                        Make sure personal details on the document are clearly visible and easy to read.
+                                    </span>
+                                </li>
+                            </ul>
 
-                        <div class="bg-gray-50 rounded-lg p-6 mb-6">
-                            <ol class="space-y-3 text-sm text-gray-700">
-                                <li>1. Proof of ownership (an extract from a corporate registry or shareholder register)
-                                    (required)</li>
-                                <li>2. Articles of Association (required)</li>
-                                <li>3. Proof of registered company address (utility bill or bank statement, not older
-                                    than 3 months) (required)</li>
-                                <li>4. Misc docs (corporate structure, incorporation document, misc. company documents,
-                                    etc) (optional)</li>
-                            </ol>
-                        </div>
+                            <div
+                                class="flex items-center  max-w-88 mx-auto bg-white border border-zinc-100 rounded-lg overflow-hidden">
+                                <input type="file" wire:model="idDocument" accept="image/*" class="hidden"
+                                    id="idDocument">
 
-                        <div class="bg-zinc-50 border-l-4 border-zinc-500 p-4 mb-6">
-                            <div class="flex">
-                                <div class="flex-shrink-0">
-                                    <svg class="h-5 w-5 text-zinc-500" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                </div>
-                                <div class="ml-3">
-                                    <p class="text-sm text-zinc-700">
-                                        <strong>Note:</strong> If your company's owner is another company, you will need
-                                        to upload documents for both entities and the corporate structure, leading to
-                                        the UBO
-                                    </p>
+                                <label for="idDocument"
+                                    class="shrink-0 px-6 py-1.5 bg-black text-white font-semibold rounded-l-lg hover:bg-gray-800 cursor-pointer transition duration-150 ease-in-out">
+                                    Choose file
+                                </label>
+
+                                <div class="p-2 text-sm text-gray-500 truncate">
+                                    @if ($idDocument)
+                                        {{ $idDocument->getClientOriginalName() }}
+                                    @else
+                                        No file selected
+                                    @endif
                                 </div>
                             </div>
+                            <p class="text-xs text-text-white text-center mt-2">Must be JPEG, PNG or HEIC and cannot
+                                exceed
+                                10MB.
+                            </p>
+                            @error('idDocument')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
+                    </div>
 
-                        <div class="mb-4">
-                            <input type="file" wire:model="companyDocuments"
-                                accept=".jpg,.jpeg,.png,.heic,.pdf,.docx" multiple class="hidden"
-                                id="companyDocuments">
-                            <label for="companyDocuments"
-                                class="block w-full p-4 border-2 border-dashed border-gray-300 rounded-lg text-center cursor-pointer hover:bg-gray-50">
-                                <span class="text-gray-700 font-semibold">CHOOSE FILES</span>
-                            </label>
-                            @if (!empty($companyDocuments))
-                                <div class="mt-3 space-y-2">
-                                    @foreach ($companyDocuments as $index => $doc)
-                                        <p class="text-green-600 text-sm">✓ File {{ $index + 1 }}:
-                                            {{ $doc->getClientOriginalName() }}</p>
-                                    @endforeach
+
+                    <div class="flex justify-center space-x-4">
+                        <button wire:click="previousStep"
+                            class="px-8 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            BACK
+                        </button>
+                        <button wire:click="nextStep"
+                            class="px-8 py-2 bg-black text-white rounded-lg hover:bg-gray-800">
+                            NEXT
+                        </button>
+                    </div>
+                </div>
+            @else
+                {{-- Content for Company Account (Ultimate Beneficial Owner ID Upload) --}}
+                <div>
+                    {{-- The image shows 'Step 6/7' for this screen --}}
+                    <div class="text-center mb-8">
+                        <p class="text-text-white">Step 6/7</p>
+                    </div>
+
+                    <div class="dark:bg-bg-primary bg-bg-white max-w-2xl mx-auto py-6 mb-6">
+                        <h2 class="text-xl font-semibold text-center mb-8">
+                            Take a photo of ultimate beneficial owner ID
+                        </h2>
+
+                        <div class="px-8">
+                            {{-- Placeholder for the ID illustration image from the provided screenshot --}}
+                            <div class="flex justify-center mb-6">
+                                <img src="{{ asset('assets/images/beneficial-owner-id.png') }}"
+                                    alt="Ultimate beneficial owner ID illustration" class="mx-auto"
+                                    style="border: 2px dashed #fcd34d; padding: 10px; border-radius: 8px;">
+                            </div>
+
+                            <ul class="space-y-2 font-lato mb-6">
+                                <li class="flex items-start">
+                                    <span class="mr-2">•</span>
+                                    <span>
+                                        Accepted documents: **Driver's license, Government issued ID or Passport,
+                                        international student ID.**
+                                    </span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="mr-2">•</span>
+                                    <span>
+                                        Make sure personal details on the document are **clearly visible and easy to
+                                        read.**
+                                    </span>
+                                </li>
+                            </ul>
+
+                            <div
+                                class="flex items-center max-w-88 mx-auto bg-white border border-zinc-100 rounded-lg overflow-hidden">
+                                <input type="file" wire:model="ultimateBeneficialOwnerIdDocument" accept="image/*"
+                                    class="hidden" id="ultimateBeneficialOwnerIdDocument">
+
+                                <label for="ultimateBeneficialOwnerIdDocument"
+                                    class="shrink-0 px-6 py-1.5 bg-black text-white font-semibold rounded-l-lg hover:bg-gray-800 cursor-pointer transition duration-150 ease-in-out">
+                                    Choose file
+                                </label>
+
+                                <div class="p-2 text-sm text-gray-500 truncate">
+                                    @if (isset($ultimateBeneficialOwnerIdDocument))
+                                        {{ $ultimateBeneficialOwnerIdDocument->getClientOriginalName() }}
+                                    @else
+                                        No file selected
+                                    @endif
                                 </div>
-                            @else
-                                <p class="text-text-white mt-2 text-center">No files selected</p>
-                            @endif
+                            </div>
+                            <p class="text-xs text-text-white text-center mt-2">
+                                Must be JPEG, PNG or HEIC and cannot exceed 10MB.
+                            </p>
+                            @error('ultimateBeneficialOwnerIdDocument')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
-
-                        <p class="text-xs text-text-white text-center">
-                            Must be JPEG, PNG, HEIC, PDF, DOCX and cannot exceed 10MB.
-                        </p>
                     </div>
 
                     <div class="flex justify-center space-x-4">
@@ -591,17 +593,172 @@
                             class="px-8 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
                             BACK
                         </button>
-                        <button wire:click="submit"
+                        <button wire:click="nextStep"
                             class="px-8 py-2 bg-black text-white rounded-lg hover:bg-gray-800">
-                            SUBMIT
+                            NEXT
+                        </button>
+                    </div>
+                </div>
+            @endif
+            {{-- Step 6: Selfie with ID (Individual) or Company Documents --}}
+            {{-- @elseif($currentStep == 6) --}}
+        @elseif($showCategoryPage)
+            @if (!$accountType === 'individual')
+                <div>
+                    <div class="text-center mb-8">
+                        <div class="flex items-center justify-center mb-2">
+                            <span class="text-zinc-500 text-2xl">✓</span>
+                            <h3 class="text-lg font-semibold ml-2 text-text-white">ID Verification</h3>
+                        </div>
+                        <p class="text-text-white">Step 6/6</p>
+                    </div>
+
+                    <div class="dark:bg-bg-primary bg-bg-white max-w-2xl mx-auto py-6 px-8 mb-6">
+                        <h2 class="text-xl leading-2 font-semibold text-center mb-4">Take a selfie with your ID</h2>
+
+                        <div class="flex justify-center mb-6">
+                            <img src="{{ asset('assets/images/verification-selfie.webp') }}"
+                                alt="Selfie with ID illustration" class="mx-auto"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        </div>
+
+                        <ul class="space-y-3 text-gray-700 mb-6 max-w-md mx-auto">
+                            <li class="flex items-start">
+                                <span class="mr-2">•</span>
+                                <span>Please upload a photo where you are holding your ID next to your face.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="mr-2">•</span>
+                                <span>Both your face and ID document must be clearly visible.</span>
+                            </li>
+                        </ul>
+
+                        <div
+                            class="flex items-center max-w-md mx-auto bg-white border border-zinc-200 rounded-lg overflow-hidden">
+                            <input type="file" wire:model="selfieWithId" accept="image/*" class="hidden"
+                                id="selfieWithId">
+
+                            <label for="selfieWithId"
+                                class="shrink-0 px-6 py-2 bg-black text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
+                                Choose file
+                            </label>
+                        </div>
+
+                        <p class="text-xs text-center text-gray-500 mt-3">
+                            Must be JPEG, PNG or HEIC and cannot exceed 10MB.
+                        </p>
+
+                        @error('selfieWithId')
+                            <p class="text-red-500 text-sm text-center mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="flex justify-center space-x-4">
+                        <button wire:click="previousStep"
+                            class="px-8 py-2 text-text-white rounded-lg hover:bg-gray-50">
+                            BACK
+                        </button>
+                        <button wire:click="submit" class="px-8 py-2 bg-zinc-500  rounded-lg hover:bg-zinc-700"
+                            wire:loading.attr="disabled">
+                            <span wire:loading.remove wire:target="submit" class="text-white">SUBMIT DOCUMENTS</span>
+                            <span wire:loading wire:target="submit">Submitting...</span>
                         </button>
                     </div>
                 </div>
             @else
-                {{-- If individual, submit directly --}}
-                <script>
-                    window.livewire.find('{{ $_instance->getId() }}').submit();
-                </script>
+                {{-- Step 6: Company Documents Upload --}}
+                <div>
+                    <div class="text-center mb-8">
+                        <div class="flex items-center justify-center mb-2">
+                            <span class="text-zinc-500 text-2xl">✓</span>
+                            <h3 class="text-lg font-semibold ml-2">Seller ID Verification</h3>
+                        </div>
+                        <p class="text-text-white">Step 7/7</p>
+                    </div>
+                    <div class="dark:bg-bg-primary bg-bg-white max-w-2xl mx-auto py-6 px-8 mb-6">
+                        <h2 class="text-2xl font-bold text-center mb-6">Upload company documents</h2>
+
+                        <div class="max-w-2xl mx-auto mb-8">
+                            <p class="text-gray-600 mb-6 text-center">
+                                Please upload documents to prove that the individual who submitted the ID is an owner of
+                                your company.
+                            </p>
+
+                            <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                                <ol class="space-y-3 text-sm text-gray-700">
+                                    <li>1. Proof of ownership (an extract from a corporate registry or shareholder
+                                        register)
+                                        (required)</li>
+                                    <li>2. Articles of Association (required)</li>
+                                    <li>3. Proof of registered company address (utility bill or bank statement, not
+                                        older
+                                        than 3 months) (required)</li>
+                                    <li>4. Misc docs (corporate structure, incorporation document, misc. company
+                                        documents,
+                                        etc) (optional)</li>
+                                </ol>
+                            </div>
+
+                            <div class="bg-zinc-50 border-l-4 border-zinc-500 p-4 mb-6">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <svg class="h-5 w-5 text-zinc-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm text-zinc-700">
+                                            <strong>Note:</strong> If your company's owner is another company, you will
+                                            need
+                                            to upload documents for both entities and the corporate structure, leading
+                                            to
+                                            the UBO
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <input type="file" wire:model="companyDocuments"
+                                    accept=".jpg,.jpeg,.png,.heic,.pdf,.docx" multiple class="hidden"
+                                    id="companyDocuments">
+                                <label for="companyDocuments"
+                                    class="shrink-0 px-6 py-2 bg-black flex justify-center w-40 rounded-lg mx-auto text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
+                                    Choose file
+                                </label>
+                                @if (!empty($companyDocuments))
+                                    <div class="mt-3 space-y-2">
+                                        @foreach ($companyDocuments as $index => $doc)
+                                            <p class="text-green-600 text-sm">✓ File {{ $index + 1 }}:
+                                                {{ $doc->getClientOriginalName() }}</p>
+                                        @endforeach
+                                    </div>
+                                @else
+                                @endif
+                            </div>
+
+                            <p class="text-xs text-text-white text-center">
+                                Must be JPEG, PNG, HEIC, PDF, DOCX and cannot exceed 10MB.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center space-x-4">
+                        <button wire:click="previousStep"
+                            class="px-8 py-2  text-gray-700 rounded-lg hover:bg-gray-50">
+                            BACK
+                        </button>
+                        <button wire:click="submit"
+                            class="px-8 py-2 bg-zinc-500 text-white rounded-lg hover:bg-zinc-700"
+                            wire:loading.attr="disabled">
+                            <span wire:loading.remove wire:target="submit" class="text-white">SUBMIT</span>
+                            <span wire:loading wire:target="submit">Submitting...</span>
+                        </button>
+                    </div>
+                </div>
+
             @endif
         @endif
     </div>
