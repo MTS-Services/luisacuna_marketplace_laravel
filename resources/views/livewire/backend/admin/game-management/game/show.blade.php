@@ -1,205 +1,122 @@
-<section>
-    <div class="glass-card rounded-2xl p-6 mb-6">
-        <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game View') }}</h2>
-            <div class="flex items-center gap-2">
-                {{-- <x-ui.button href="{{ route('admin.am.admin.trash') }}" type='secondary'>
-                    <flux:icon name="trash" class="w-4 h-4 stroke-white" />
-                    {{ __('Trash') }}
-                </x-ui.button> --}}
-                {{-- <x-ui.button href="{{ route('admin.am.admin.create') }}">
-                    <flux:icon name="user-plus" class="w-4 h-4 stroke-white" />
-                    {{ __('Add') }}
-                </x-ui.button>  --}}
-                <x-ui.button href="{{ route('admin.gm.game.index') }}" type='accent'>
-                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
-                    {{ __('Back') }}
-                </x-ui.button>
-            </div>
-        </div>
-    </div>
+<div>
+    {{-- Page Header --}}
 
-    <div class=" mx-auto mt-10 bg-white shadow glass-card rounded-2xl p-6 ">
-        <!-- Profile Header -->
-        {{-- <div class="flex flex-col md:flex-row md:items-center md:justify-between border-b pb-6 mb-6">
-            <div class="flex items-center space-x-4">
-                <img src="{{ $existingAvatar ?? '' }}" alt="Profile" class="w-24 h-24 rounded-full object-cover">
-                <div>
-                    <h2 class="text-2xl font-semibold">{{ $admin->name }}</h2>
-                    <p class="text-sm text-gray-500">{{ $admin->email }}</p>
-                    <p class="text-sm text-gray-500 mt-1"><i class="fa-solid fa-location-dot mr-1"></i>
-                        {{ $admin->address }}</p>
+    <div class="bg-bg-secondary w-full rounded">
+        <div class="mx-auto">
+            <div class="glass-card rounded-2xl p-4 lg:p-6 mb-6">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <h2 class="text-xl lg:text-2xl font-bold text-text-black dark:text-text-white">
+                        {{ __('Audit Log Details') }}
+                    </h2>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <x-ui.button href="{{ route('admin.alm.audit.index') }}" class="w-auto py-2!">
+                            <flux:icon name="arrow-left"
+                                class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
+                            {{ __('Back') }}
+                        </x-ui.button>
+                    </div>
                 </div>
             </div>
+            <!-- Main Card -->
+            <div class="bg-bg-primary rounded-2xl shadow-lg overflow-hidden border border-gray-500/20">
+                <!-- Event Header Section -->
+                <div class="dark:bg-bg-container1 bg-bg-secondary px-8 py-8">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 
+                        <div>
+                            <p class="text-blue-400 text-sm font-semibold mb-2">{{ __('Event') }}</p>
 
-        </div> --}}
+                            <p class="text-text-white text-2xl font-bold">{{ $data->event }}</p>
+                        </div>
 
-        <!-- Profile Info -->
-        <div class="grid md:grid-cols-2 gap-6 mx-auto">
+                        <div>
+                            <p class="text-blue-400 text-sm font-semibold mb-2">{{ __('AUDITABLE') }}</p>
+                            <p class="text-text-white font-mono text-lg">{{ $data->auditable_type }}</p>
+                        </div>
 
+                        <div>
+                            <p class="text-blue-400 text-sm font-semibold mb-2">{{ __('IP ADDRESS') }}</p>
+                            <p class="text-text-white font-mono text-lg">{{ $data->ip_address }}</p>
+                        </div>
 
-            <div class="glass-card rounded-xl border border-gray-200 overflow-hidden">
-                <table class="w-full text-sm">
-                    <tbody class="divide-y divide-gray-200">
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Game Name') }}</td>
-                            <td class="p-4 text-gray-900">{{ $game->name }}</td>
-                        </tr>
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Category Name') }}</td>
-                            <td class="p-4 text-gray-900">{{ $game->category->name ?? 'No Category' }}</td>
-                        </tr>
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 text-gray-600 font-semibold">{{ __('Slug') }}</td>
-                            <td class="p-4 text-gray-900">{{ '/' . $game->slug }}</td>
-                        </tr>
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 text-gray-600 font-semibold">{{ __('Developer') }}</td>
-                            <td class="p-4 text-gray-900">{{ $game->developer ?? 'N/A' }}</td>
-                        </tr>
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 text-gray-600 font-semibold">{{ __('Publisher') }}</td>
-                            <td class="p-4 text-gray-900">{{ $game->publisher ?? 'N/A' }}</td>
-                        </tr>
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 text-gray-600 font-semibold">{{ __('Trending') }}</td>
-                            <td class="p-4 text-gray-900">{{ $game->is_trending ? 'Trending' : 'Not Trending' }}</td>
-                        </tr>
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 text-gray-600 font-semibold">{{ __('Featured') }}</td>
-                            <td class="p-4 text-gray-900">{{ $game->is_featured ? 'Featured' : 'Not Featured' }}</td>
-                        </tr>
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Game Description') }}</td>
-                            <td class="p-4 text-gray-900">{{ $game->Description ?? 'N/A' }}</td>
-                        </tr>
+                        <div>
+                            <p class="text-blue-400 text-sm font-semibold mb-2">{{ __('USER AGENT') }}</p>
+                            <p class="text-text-white text-lg font-semibold">{{ $data->user_agent }}</p>
+                        </div>
 
+                    </div>
+                </div>
 
+                <!-- Metadata Section -->
+                <div class="border-b border-gray-300 px-8 py-6 bg-bg-primary">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 
+                        <div>
+                            <p class="dark:text-slate-400 text-sm font-semibold mb-1">{{ __('PLATFORM') }}</p>
+                            <p
+                                class=" font-mono text-sm dark:bg-gray-700  bg-white px-3 py-2 rounded border border-slate-200">
+                                {{ $data->platform }} </p>
+                        </div>
 
+                        <div>
+                            <p class="dark:text-slate-400 text-sm font-semibold mb-1">{{ __('STATUS') }}</p>
+                            <p
+                                class="font-mono text-sm bg-white px-3 py-2 rounded border dark:bg-gray-700 border-slate-200 truncate">
+                                {{ $data->status }}</p>
+                        </div>
 
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 text-gray-600 font-semibold">{{ __('Status') }}</td>
-                            <td class="p-4">
-                                <span
-                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $data->status->color() ?? ' bg-blue-100'}} text-blue-800">
-                                    {{ $data->status->label() }}
-                                </span>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Created By') }}</td>
-                            <td class="p-4 text-gray-900">{{ $game->creater_admin->name ?? 'System' }}</td>
-                        </tr>
+                        <div>
+                            <p class="dark:text-slate-400 text-sm font-semibold mb-1">{{ __('DELETED AT') }}</p>
+                            <p class=" text-sm bg-white px-3 py-2 rounded dark:bg-gray-700  border border-slate-200">
+                                {{ $data->deleted_at }}
+                            </p>
+                        </div>
 
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 text-gray-600 font-semibold">{{ __('Created At') }}</td>
-                            <td class="p-4 text-gray-900">{{ $game->created_at_formatted }}</td>
-                        </tr>
-                        @if ($data->updated_by)
-                            <tr class="hover:bg-white transition-colors">
-                                <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Updated By') }}</td>
-                                <td class="p-4 text-gray-900">{{ $game->updater_admin->name }}</td>
+                        <div>
+                            <p class="dark:text-slate-400 text-sm font-semibold mb-1">{{ __('AUDIT DATE') }}</p>
+                            <p
+                                class=" font-mono text-sm bg-white dark:bg-gray-700  px-3 py-2 rounded border border-slate-200">
+                                {{ $data->created_at }}
+                            </p>
+                        </div>
+                    </div>
 
-                            </tr>
-                            <tr class="hover:bg-white transition-colors">
-                                <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Updated At') }}</td>
-                                <td class="p-4 text-gray-900">{{ $game->updated_at_formatted }}</td>
+                </div>
 
-                            </tr>
-                        @endif
-                    </tbody>
-                </table>
+                <!-- Old Data Section -->
+                <div class="px-8 py-8">
+                    <div class="mb-10">
+                        <h2 class="text-lg font-bold text-text-secondary mb-6 flex items-center">
+                            <span class="w-2 h-2 bg-amber-500 rounded-full mr-3"></span>
+                            {{ __('Previous Values') }}
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('ID') }}</p>
+
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->id }}</p>
+                            </div>
+
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('USER_ID') }}</p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->user_id }}</p>
+                            </div>
+
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('CURRENCY_ID') }}</p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->currency_id }}</p>
+                            </div>
+
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('TOTAL_ORDERS_AS_BUYER') }}
+                                </p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->total_orders_as_buyer }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
-
-
-            <div class="glass-card rounded-xl border border-gray-200 overflow-hidden">
-                <table class="w-full text-sm">
-                    <tbody class="divide-y divide-gray-200">
-
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Released Date') }}</td>
-                            <td class="p-4 text-gray-900">{{ $game->release_date ?? 'N/A' }}</td>
-                        </tr>
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Platform') }}</td>
-                            <td class="p-4 text-gray-900">{{ $game->platfrom ?? 'N/A' }}</td>
-                        </tr>
-
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Meta Title') }}</td>
-                            <td class="p-4 text-gray-900">{{ $game->meta_title ?? 'N/A' }}</td>
-                        </tr>
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Meta Description') }}</td>
-                            <td class="p-4 text-gray-900">{{ $game->meta_description ?? 'N/A' }}</td>
-                        </tr>
-
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Meta Keywords') }}</td>
-                            <td class="p-4 text-gray-900">{{ $game->meta_keywords ?? 'N/A' }}</td>
-                        </tr>
-
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Meta Keywords') }}</td>
-                            <td class="p-4 text-gray-900">{{ $game->meta_keywords ?? 'N/A' }}</td>
-                        </tr>
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Logo') }}</td>
-                            <td class="p-4 text-gray-900">
-                                @if ($game->logo)
-                                    <img src="{{ asset('/storage/' . $game->logo) }}" alt="{{ $game->name }}"
-                                        class="w-16 h-16 object-cover">
-                                @else
-                                    {{ __('N/A') }}
-                                @endif
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Banner') }}</td>
-                            <td class="p-4 text-gray-900">
-                                @if ($game->banner)
-                                    <img src="{{ asset('/storage/' . $game->banner) }}" alt="{{ $game->name }}"
-                                        class="w-16 h-16 object-cover">
-                                @else
-                                    {{ __('N/A') }}
-                                @endif
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-white transition-colors">
-                            <td class="p-4 w-2/5 text-gray-600 font-semibold">{{ __('Thumbnail') }} </td>
-                            <td class="p-4 text-gray-900">
-                                @if ($game->thumbnail)
-                                    <img src="{{ asset('/storage/' . $game->thumbnail) }}" alt="{{ $game->name }}"
-                                        class="w-16 h-16 object-cover">
-                                @else
-                                    {{ __('N/A') }}
-                                @endif
-                            </td>
-                        </tr>
-
-                        @if ($data->updated_by)
-                            <tr class="hover:bg-white transition-colors">
-                                <td class="p-4 w-2/5 text-gray-600 font-semibold">{{__('Updated By')}}</td>
-                                <td class="p-4 text-gray-900">{{ $game->updater_admin->name }}</td>
-
-                            </tr>
-                            <tr class="hover:bg-white transition-colors">
-                                <td class="p-4 w-2/5 text-gray-600 font-semibold">{{__('Updated At')}}</td>
-                                <td class="p-4 text-gray-900">{{ $game->updated_at_formatted }}</td>
-
-                            </tr>
-                        @endif
-                    </tbody>
-                </table>
-            </div>
-
-
         </div>
-
-
     </div>
-
-
-</section>
+</div>

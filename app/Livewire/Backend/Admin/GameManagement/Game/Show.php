@@ -7,8 +7,6 @@ use Livewire\Component;
 
 class Show extends Component
 {
-
-
     public Game $data;
     public function mount(Game $data)
     {
