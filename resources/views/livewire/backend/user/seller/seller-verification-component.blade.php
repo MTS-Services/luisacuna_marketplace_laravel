@@ -445,8 +445,10 @@
             </div>
 
             {{-- Step 5: Upload ID Document --}}
-        @elseif($currentStep == 5)
-            @if ($accountType === 'individual')
+        {{-- @elseif($currentStep == 5) --}}
+        @elseif($showCategoryPage)
+
+            @if (!$accountType === 'individual')
                 <div>
                     <div class="text-center mb-8">
                         <div class="flex items-center justify-center mb-2">
@@ -514,11 +516,11 @@
 
                     <div class="flex justify-center space-x-4">
                         <button wire:click="previousStep"
-                            class="px-8 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            class="px-8 py-2 rounded-lg hover:bg-gray-50">
                             BACK
                         </button>
                         <button wire:click="nextStep"
-                            class="px-8 py-2 bg-black text-white rounded-lg hover:bg-gray-800">
+                            class="px-8 py-2 bg-zinc-500 text-white rounded-lg hover:bg-zinc-700">
                             NEXT
                         </button>
                     </div>
@@ -539,9 +541,9 @@
                         <div class="px-8">
                             {{-- Placeholder for the ID illustration image from the provided screenshot --}}
                             <div class="flex justify-center mb-6">
-                                <img src="{{ asset('assets/images/beneficial-owner-id.png') }}"
+                                <img src="{{ asset('assets/images/ubo-verification-image.webp') }}"
                                     alt="Ultimate beneficial owner ID illustration" class="mx-auto"
-                                    style="border: 2px dashed #fcd34d; padding: 10px; border-radius: 8px;">
+                                   >
                             </div>
 
                             <ul class="space-y-2 font-lato mb-6">
@@ -588,21 +590,20 @@
                         </div>
                     </div>
 
-                    <div class="flex justify-center space-x-4">
+                       <div class="flex justify-center space-x-4">
                         <button wire:click="previousStep"
-                            class="px-8 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            class="px-8 py-2 rounded-lg hover:bg-gray-50">
                             BACK
                         </button>
                         <button wire:click="nextStep"
-                            class="px-8 py-2 bg-black text-white rounded-lg hover:bg-gray-800">
+                            class="px-8 py-2 bg-zinc-500 text-white rounded-lg hover:bg-zinc-700">
                             NEXT
                         </button>
                     </div>
                 </div>
             @endif
             {{-- Step 6: Selfie with ID (Individual) or Company Documents --}}
-            {{-- @elseif($currentStep == 6) --}}
-        @elseif($showCategoryPage)
+            @elseif($currentStep == 6)
             @if (!$accountType === 'individual')
                 <div>
                     <div class="text-center mb-8">
