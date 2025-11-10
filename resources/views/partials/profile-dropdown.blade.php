@@ -21,7 +21,7 @@
         <!-- User Info Header -->
         <div class="px-2 py-5 flex items-center justify-between shadow-lg bg-bg-secondary">
             <div class="flex items-center gap-2">
-                <div class="w-10 h-10 rounded-full shadow-lg overflow-hidden">
+                <div class="w-10 h-10 lg:w-14 lg:h-14 rounded-full shadow-lg overflow-hidden">
                     <img src="{{ storage_url(auth()->user()->avatar) }}"
                         class="w-full h-full object-cover"
                         alt="{{ auth()->user()->full_name ?? 'User Avatar' }}">
