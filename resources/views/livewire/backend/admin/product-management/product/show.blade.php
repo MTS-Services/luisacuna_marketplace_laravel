@@ -9,7 +9,7 @@
                         {{ __('Audit Log Details') }}
                     </h2>
                     <div class="flex items-center gap-2 w-full sm:w-auto">
-                        <x-ui.button href="{{ route('admin.alm.audit.index') }}" class="w-auto py-2!">
+                        <x-ui.button href="{{ route('admin.pm.product.index') }}" class="w-auto py-2!">
                             <flux:icon name="arrow-left"
                                 class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                             {{ __('Back') }}
@@ -19,68 +19,7 @@
             </div>
             <!-- Main Card -->
             <div class="bg-bg-primary rounded-2xl shadow-lg overflow-hidden border border-gray-500/20">
-                <!-- Event Header Section -->
-                <div class="dark:bg-bg-container1 bg-bg-secondary px-8 py-8">
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 
-                        <div>
-                            <p class="text-blue-400 text-sm font-semibold mb-2">{{ __('SORT ORDER') }}</p>
-
-                            <p class="text-text-white text-2xl font-bold">{{ $data->sort_order }}</p>
-                        </div>
-
-                        <div>
-                            <p class="text-blue-400 text-sm font-semibold mb-2">{{ __('SELLER ID') }}</p>
-                            <p class="text-text-white font-mono text-lg">{{ $data->seller_id }}</p>
-                        </div>
-
-                        <div>
-                            <p class="text-blue-400 text-sm font-semibold mb-2">{{ __('GAME ID') }}</p>
-                            <p class="text-text-white font-mono text-lg">{{ $data->game_id }}</p>
-                        </div>
-
-                        <div>
-                            <p class="text-blue-400 text-sm font-semibold mb-2">{{ __('PRODUCT TYPE') }}</p>
-                            <p class="text-text-white text-lg font-semibold">{{ $data->product_type_id }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Metadata Section -->
-                <div class="border-b border-gray-300 px-8 py-6 bg-bg-primary">
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-
-                        <div>
-                            <p class="dark:text-slate-400 text-sm font-semibold mb-1">{{ __('TITLE') }}</p>
-                            <p
-                                class=" font-mono text-sm dark:bg-gray-700  bg-white px-3 py-2 rounded border border-slate-200">
-
-                                {{ $data->title }} </p>
-                        </div>
-
-                        <div>
-                            <p class="dark:text-slate-400 text-sm font-semibold mb-1">{{ __('SLUG') }}</p>
-                            <p
-                                class="font-mono text-sm bg-white px-3 py-2 rounded border dark:bg-gray-700 border-slate-200 truncate">
-                                {{ $data->slug }}</p>
-                        </div>
-
-                        <div>
-                            <p class="dark:text-slate-400 text-sm font-semibold mb-1">{{ __('Description') }}</p>
-                            <p class=" text-sm bg-white px-3 py-2 rounded dark:bg-gray-700  border border-slate-200">
-                                {{ $data->description }}
-                            </p>
-                        </div>
-
-                        <div>
-                            <p class="dark:text-slate-400 text-sm font-semibold mb-1">{{ __('PRICE') }}</p>
-                            <p
-                                class=" font-mono text-sm bg-white dark:bg-gray-700  px-3 py-2 rounded border border-slate-200">
-                                {{ $data->price }}</p>
-
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Old Data Section -->
                 <div class="px-8 py-8">
