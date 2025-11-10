@@ -1,6 +1,6 @@
 <div x-data="{ open: false }" class="relative z-40">
     <!-- Trigger Button -->
-    <button @click="open = !open" class="flex items-center gap-2 text-text-white hover:text-black">
+    <button @click="open = !open" class="flex items-center gap-1 text-text-white hover:text-black">
         <x-phosphor-globe class="w-5 h-5" />
         <span>
             {{ strtoupper(session('locale', 'en')) == 'EN' ? 'En' : 'Fr' }} | 
