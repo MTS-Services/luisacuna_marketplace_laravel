@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Actions\Role;
+namespace App\Actions\Permission;
 
-use App\Models\Role;
-use App\Repositories\Contracts\RoleRepositoryInterface;
+use App\Models\Permission;
+use App\Repositories\Contracts\PermissionRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 
 class CreateAction
 {
     public function __construct(
-        protected RoleRepositoryInterface $interface
-    ) {
-    }
+        protected PermissionRepositoryInterface $interface
+    ) {}
 
 
-    public function execute(array $data): Role
+    public function execute(array $data): Permission
     {
         return DB::transaction(function () use ($data) {
             $data = $this->interface->create($data);
