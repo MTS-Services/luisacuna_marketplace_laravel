@@ -74,43 +74,44 @@
                             </div>
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('CREATED_AT') }}</p>
-                                <p class="text-slate-400 text-lg font-bold">{{ $data->created_at ?? 'N/A' }}</p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->created_at_formatted ?? 'N/A' }}</p>
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('UPDATED AT') }}
                                 </p>
-                                <p class="text-slate-400 text-lg font-bold">{{ $data->updated_at ?? 'N/A' }}</p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->updated_at_formatted ?? 'N/A' }}</p>
                             </div>
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('DELETED AT') }}
                                 </p>
-                                <p class="text-slate-400 text-lg font-bold">{{ $data->deleted_at ?? 'N/A' }}</p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->deleted_at_formatted ?? 'N/A' }}</p>
                             </div>
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('RESTORE AT') }}
                                 </p>
-                                <p class="text-slate-400 text-lg font-bold">{{ $data->restore_at ?? 'N/A' }}</p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->restored_at_formatted ?? 'N/A' }}</p>
                             </div>
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('CREATED BY') }} </p>
                                 <p class="text-slate-400 text-lg font-bold">
-                                    {{ getAuditorName($data->creater) ?? 'N/A' }}</p>
+                                    {{ getAuditorName($data->creater) }}</p>
                             </div>
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('UPDATED BY') }} </p>
-                                {{-- <p class="text-slate-400 text-lg font-bold">
-                                    {{ getAuditorName($data->updater) ?? 'N/A' }}</p> --}}
+                                <p class="text-slate-400 text-lg font-bold">
+                                  
+                                    {{ getAuditorName($data->updater) }}</p>
                             </div>
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('DELETED BY') }} </p>
-                                {{-- <p class="text-slate-400 text-lg font-bold">
-                                    {{ getAuditorName($data->deleter) ?? 'N/A' }}</p> --}}
+                                <p class="text-slate-400 text-lg font-bold">
+                                    {{ getAuditorName($data->deleter) }}</p>
                             </div>
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('RESTORED BY') }} </p>
-                                {{-- <p class="text-slate-400 text-lg font-bold">
-                                    {{ getAuditorName($data->restorer) ?? 'N/A' }}</p> --}}
+                                <p class="text-slate-400 text-lg font-bold">
+                                    {{ getAuditorName($data->restorer) }}</p>
                             </div>
 
                         </div>

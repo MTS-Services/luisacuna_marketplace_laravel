@@ -131,7 +131,7 @@ class ProductTypeRepository implements ProductTypeRepositoryInterface
         }
         $findData->update([
             'deleter_id' => $actionerId,
-            'deleter_type' => get_class($findData),
+            'deleter_type' => get_class(admin()),
             'deleted_at' => now(),
         ]);
 
@@ -156,7 +156,7 @@ class ProductTypeRepository implements ProductTypeRepositoryInterface
         }
         $findData->update([
             'restorer_id' => $actionerId,
-            'restorer_type' => get_class($findData),
+            'restorer_type' => get_class(admin()),
             'restored_at' => now(),
         ]);
 
@@ -166,7 +166,11 @@ class ProductTypeRepository implements ProductTypeRepositoryInterface
     public function bulkDelete(array $ids, int $actionerId): int
     {
         return DB::transaction(function () use ($ids, $actionerId) {
-            $this->model->whereIn('id', $ids)->update(['deleter_type' => $actionerId]);
+            $this->model->whereIn('id', $ids)->update([
+                'deleter_id' => $actionerId,
+                'deleter_type' => get_class(admin()),
+                'deleted_at' => now(),
+            ]);
             return $this->model->whereIn('id', $ids)->delete();
         });
     }
@@ -178,7 +182,11 @@ class ProductTypeRepository implements ProductTypeRepositoryInterface
     public function bulkRestore(array $ids, int $actionerId): int
     {
         return DB::transaction(function () use ($ids, $actionerId) {
-            $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restorer_type' => $actionerId, 'restored_at' => now()]);
+            $this->model->onlyTrashed()->whereIn('id', $ids)->update([
+                'restorer_id' => $actionerId, 
+                'restorer_type' => get_class(admin()),
+                'restored_at' => now()
+            ]);
             return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
         });
     }
