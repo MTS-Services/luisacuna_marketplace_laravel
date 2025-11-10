@@ -19,24 +19,12 @@
         </div>
     </div>
 
-    <div class="container  mx-auto bg-white dark:bg-gray-900 shadow rounded-lg p-6">
+    <div class="mx-auto bg-white dark:bg-gray-900 shadow rounded-lg p-6">
         <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">
             Game Category Details
         </h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- ID -->
-            <div>
-                <p class="text-gray-500 dark:text-gray-400">{{ __('ID') }}</p>
-                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->id }}</p>
-            </div>
-
-            <!-- Sort Order -->
-            <div>
-                <p class="text-gray-500 dark:text-gray-400">{{ __('Sort Order') }}</p>
-                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->sort_order ?? 0 }}</p>
-            </div>
-
             <!-- Name -->
             <div>
                 <p class="text-gray-500 dark:text-gray-400">{{ __('Name') }}</p>
@@ -55,12 +43,6 @@
                 <p class="font-semibold text-gray-900 dark:text-white">{{ $data->meta_title ?? 'N/A' }}</p>
             </div>
 
-            <!-- Meta Description -->
-            <div>
-                <p class="text-gray-500 dark:text-gray-400">{{ __('Meta Description') }}</p>
-                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->meta_description ?? 'N/A' }}</p>
-            </div>
-
             <!-- Icon -->
             <div>
                 <p class="text-gray-500 dark:text-gray-400">{{ __('Icon') }}</p>
@@ -73,11 +55,11 @@
             </div>
 
             <!-- Is Featured -->
-            <div>
-                <p class="text-gray-500 dark:text-gray-400">{{ __('Is Featured') }}</p>
-                <p class="font-semibold text-gray-900 dark:text-white">
-                    {{ $data->is_featured ? 'Yes' : 'No' }}
-                </p>
+            <div class="col-span-1">
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Default Currency') }}</p>
+                <span class="rounded-full text-xs font-bold inline-block">
+                    {{ $data->is_default ? __('Yes') : __('No') }}
+                </span>
             </div>
 
             <!-- Status -->
@@ -89,56 +71,56 @@
             <!-- Created By -->
             <div>
                 <p class="text-gray-500 dark:text-gray-400">{{ __('Created By') }}</p>
-                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->created_by ?? 'N/A' }}</p>
+                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->creater_admin?->name ?? 'N/A' }}</p>
             </div>
 
             <!-- Updated By -->
             <div>
                 <p class="text-gray-500 dark:text-gray-400">{{ __('Updated By') }}</p>
-                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->updated_by ?? 'N/A' }}</p>
+                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->updater_admin?->name ?? 'N/A' }}</p>
             </div>
 
             <!-- Deleted By -->
             <div>
                 <p class="text-gray-500 dark:text-gray-400">{{ __('Deleted By') }}</p>
-                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->deleted_by ?? 'N/A' }}</p>
+                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->deleter_admin?->name ?? 'N/A' }}</p>
             </div>
 
             <!-- Restored By -->
             <div>
                 <p class="text-gray-500 dark:text-gray-400">{{ __('Restored By') }}</p>
-                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->restored_by ?? 'N/A' }}</p>
+                <p class="font-semibold text-gray-900 dark:text-white">{{ $data->restorer_admin?->name ?? 'N/A' }}</p>
             </div>
 
             <!-- Created At -->
             <div>
-                <p class="text-gray-500 dark:text-gray-400">{{ __('Created At') }}</p>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Created Date') }}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white">
-                    {{ $data->created_at ? $data->created_at->format('Y-m-d H:i:s') : 'N/A' }}
+                    {{ $data->created_at_formatted ?? 'N/A' }}
                 </p>
             </div>
 
             <!-- Updated At -->
             <div>
-                <p class="text-gray-500 dark:text-gray-400">{{ __('Updated At') }}</p>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Updated Date') }}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white">
-                    {{ $data->updated_at ? $data->updated_at->format('Y-m-d H:i:s') : 'N/A' }}
+                    {{ $data->updated_at_formatted ?? 'N/A' }}
                 </p>
             </div>
 
             <!-- Deleted At -->
             <div>
-                <p class="text-gray-500 dark:text-gray-400">{{ __('Deleted At') }}</p>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Deleted Date') }}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white">
-                    {{ $data->deleted_at ? $data->deleted_at->format('Y-m-d H:i:s') : 'N/A' }}
+                    {{ $data->deleted_at_formatted ?? 'N/A' }}
                 </p>
             </div>
 
             <!-- Restored At -->
             <div>
-                <p class="text-gray-500 dark:text-gray-400">{{ __('Restored At') }}</p>
+                <p class="text-gray-500 dark:text-gray-400">{{ __('Restored Date') }}</p>
                 <p class="font-mono font-semibold text-gray-900 dark:text-white">
-                    {{ $data->restored_at ? $data->restored_at->format('Y-m-d H:i:s') : 'N/A' }}
+                    {{ $data->restored_at_formatted ?? 'N/A' }}
                 </p>
             </div>
         </div>
@@ -147,7 +129,14 @@
         <div class="mt-6">
             <p class="text-gray-500 dark:text-gray-400">{{ __('Description') }}</p>
             <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-md text-gray-900 dark:text-white">
-                {!! nl2br(e($data->description)) ?? 'N/A' !!}
+                {!! $data->description !!}
+            </div>
+        </div>
+        <!-- Description Block -->
+        <div class="mt-6">
+            <p class="text-gray-500 dark:text-gray-400">{{ __('Meta Description') }}</p>
+            <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-md text-gray-900 dark:text-white">
+                {!! $data->meta_description !!}
             </div>
         </div>
     </div>
