@@ -3,8 +3,8 @@
     <button @click="open = !open" class="flex items-center gap-2 text-text-white hover:text-black">
         <x-phosphor-globe class="w-5 h-5" />
         <span>
-            {{ strtoupper(session('locale', 'en')) == 'EN' ? 'English' : 'French' }} | 
-            {{ session('currency', 'USD') }}
+            {{ strtoupper(session('locale', 'en')) == 'EN' ? 'En' : 'Fr' }} | 
+            {{ session('currency', 'USD-$') }}
         </span>
         <x-phosphor-caret-down class="w-4 h-4" />
     </button>
@@ -43,8 +43,8 @@
                     <div>
                         <x-ui.label class="mb-1!">Currency</x-ui.label>
                         <x-ui.select name="currency" class="text-text-white!">
-                            <option value="USD" selected>USD</option>
-                            <option value="EUR" selected>EUR</option>
+                            <option value="USD-$" selected>USD-$</option>
+                            <option value="EUR-€" selected>EUR-€</option>
                         </x-ui.select>
                     </div>
 
