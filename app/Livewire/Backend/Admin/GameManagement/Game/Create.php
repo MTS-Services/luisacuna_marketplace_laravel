@@ -78,11 +78,18 @@ class Create extends Component
 
             $data = $this->form->fillables();
 
+            $data['creater_id'] = admin()->id;
+
+            $data['creater_type'] = get_class(admin());
+
             $this->service->createData($data);
+
+            $this->resetForm();
 
             $this->success('Game created successfully.');
 
             return $this->redirect(route('admin.gm.game.index'), navigate: true);
+            
         } catch (\Throwable $th) {
 
             Log::error("Failed to create game: ", ['error' => $th->getMessage()]);

@@ -117,7 +117,7 @@ class GameForm extends Form
     }
 
     public function fillables():array {
-        return [
+        return array_filter([
             'name' => $this->name,
             'game_category_id' => $this->game_category_id,
             'status' => $this->status,
@@ -134,7 +134,9 @@ class GameForm extends Form
             'meta_title' => $this->meta_title,
             'meta_description' => $this->meta_description,
             'meta_keywords' => $this->meta_keywords
-        ];
+        ], function ($value) {
+            return $value !== '' && $value !== null;
+        });
     }
 
     public function isUpdating():bool {

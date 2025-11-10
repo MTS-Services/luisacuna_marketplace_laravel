@@ -3,7 +3,7 @@
      <div class="glass-card rounded-2xl p-4 lg:p-6 mb-6">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <h2 class="text-xl lg:text-2xl font-bold text-text-primary">
-                {{ __('Game Category List') }}
+                {{ __('Game List') }}
             </h2>
             <div class="flex items-center gap-2 w-full sm:w-auto">
                 <x-ui.button href="{{ route('admin.gm.game.trash') }}" variant='tertiary' class="w-auto py-2!">
@@ -27,9 +27,9 @@
         :showBulkActions="true" emptyMessage="No Game  found. Create your first admin to get started." />
 
     {{-- Delete Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this Game?'" :message="'Are you absolutely sure you want to remove this Game Category? All data will be permanently deleted.'" :method="'delete'"
-        :button-text="'Delete Game '" />
-
+    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this Game?'" :message="'Are you absolutely sure  want to remove this data? All associated data will be moved to trash.'" :method="'delete'"
+        :button-text="'Delete Game'" />
+        
     {{-- Bulk Action Confirmation Modal --}}
     <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="'Confirm Bulk Action'" :message="'Are you sure you want to perform this action on ' . count($selectedIds) . ' selected category(ies)?'" :method="'executeBulkAction'"
         :button-text="'Confirm Action'" />

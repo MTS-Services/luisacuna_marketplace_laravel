@@ -10,12 +10,12 @@
          @case('admin.gm.game.view')
             <x-slot name="title">{{__('Game View')}}</x-slot>
             <x-slot name="breadcrumb">{{__('Game Management / Game View')}}</x-slot>
-            <livewire:backend.admin.game-management.game.show :game="$game" />
+            <livewire:backend.admin.game-management.game.show :data="$data" />
         @break
          @case('admin.gm.game.edit')
             <x-slot name="title">{{__('Game Edit')}}</x-slot>
             <x-slot name="breadcrumb">{{__('Game Management / Game Edit')}}</x-slot>
-            <livewire:backend.admin.game-management.game.edit :game="$game" />
+            <livewire:backend.admin.game-management.game.edit :data="$data" />
         @break
 
          @case('admin.gm.game.trash')

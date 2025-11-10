@@ -21,7 +21,7 @@ class Edit extends Component
 
     protected GameService $service;
 
-    public $dataId = null;
+    public $data = null;
 
     public function boot(GameCategoryService $categoryService, GameService $service)
     {
@@ -35,7 +35,7 @@ class Edit extends Component
 
         $this->form->setData($data);
 
-        $this->dataId = $data->id;
+        $this->data = $data;
     }
 
     public function render()
@@ -72,7 +72,7 @@ class Edit extends Component
     }
 
 
-    public function update()
+    public function save()
     {
 
         $this->form->validate();
@@ -80,9 +80,10 @@ class Edit extends Component
         try {
             $data = $this->form->fillables();
 
-            $actioner_id = admin()->id;
+            $data['updater_id'] = admin()->id;
+            $data['upater_type'] = get_class(admin());
 
-            $this->service->updateData($this->dataId, $data, $actioner_id);
+            $this->service->updateData($this->data->id, $data);
 
             $this->form->reset();
 

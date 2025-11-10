@@ -29,7 +29,10 @@ class GameController extends Controller
 
     public function show($id)
     {
-        $this->data = $this->service->findData($id);
+        $this->data = $this->service->findData(decrypt($id));
+        if (!$this->data) {
+            abort(404);
+        }
 
         return view($this->masterView, [
             'data' => $this->data,

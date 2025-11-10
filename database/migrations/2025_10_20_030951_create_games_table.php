@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sort_order')->default(0)->index();
+            $table->unsignedBigInteger('sort_order')->default(0);
             $table->unsignedBigInteger('game_category_id');
             $table->string('name')->index();
             $table->string('slug')->unique()->index();
@@ -28,10 +28,12 @@ return new class extends Migration {
             $table->string('thumbnail')->nullable();
             $table->boolean('is_featured')->default(false);
             $table->boolean('is_trending')->default(false);
+            $table->string('status')->default(GameStatus::ACTIVE)->index();
+          
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
             $table->text('meta_keywords')->nullable();
-            $table->string('status')->default(GameStatus::ACTIVE);
+          
             $table->timestamps();
             $table->softDeletes();
             $this->addMorphedAuditColumns($table);

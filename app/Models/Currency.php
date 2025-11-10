@@ -6,7 +6,6 @@ use App\Enums\CurrencyStatus;
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Searchable;
-use Laravel\Scout\Attributes\SearchUsingFullText;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
