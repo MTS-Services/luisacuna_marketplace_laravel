@@ -584,7 +584,7 @@
                         <span class=" text-text-primary">{{ __('Shop') }}</span>
                     </div>
 
-                    <!-- Filters Section -->
+                    {{-- <!-- Filters Section -->
                     <div class="mb-8 space-y-4">
                         <div class="flex gap-4 flex-wrap">
                             <div class="flex-1 min-w-64">
@@ -698,6 +698,132 @@
                             </x-ui.select>
 
                         </div>
+                    </div> --}}
+
+                    {{-- Mobile Device Filter --}}
+                    <div class="flex items-center justify-between gap-4 mb-8 relative" x-data="{ filter: false }">
+                        <div class="flex-1 min-w-64">
+                            <div class="relative">
+                                <input type="text" placeholder="Search"
+                                    class="w-full bg-bg-primary border border-slate-700 rounded-full px-4 py-2 pl-10 focus:outline-none focus:border-purple-500">
+                                <span class="absolute left-3 top-2.5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full!" x-on:click="filter = !filter">
+                            <option value="">{{ __('Device') }}</option>
+                        </x-ui.select>
+                        <div x-show="filter" class="glass-card text-white p-6 rounded-lg w-full absolute top-16 right-0 z-10">
+                            <!-- Header -->
+                            <div class="flex justify-between items-center border-b border-gray-700 pb-4 mb-4">
+                                <h2 class="text-lg font-semibold">Seller list</h2>
+                                <div class="text-gray-500 text-xl">—</div>
+                            </div>
+
+                            <!-- Toggle Buttons -->
+                            <div class="flex justify-center mb-6 space-x-3">
+                                <button class="px-5 py-2 rounded-full bg-purple-600 text-white font-semibold">Instant
+                                    delivery</button>
+                                <button
+                                    class="px-5 py-2 rounded-full bg-transparent border border-green-500 text-green-400 font-semibold">Online
+                                    Seller</button>
+                            </div>
+
+                            <!-- Dropdown Filters -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="text-sm text-gray-400">Short by</label>
+                                    <select
+                                        class="w-full bg-transparent border-b border-purple-500 py-2 focus:outline-none">
+                                        <option class="bg-gray-800">Fastest Delivery</option>
+                                        <option class="bg-gray-800">Top Selling</option>
+                                        <option class="bg-gray-800">Cheapest Price</option>
+                                        <option class="bg-gray-800">Recent Sales</option>
+                                        <option class="bg-gray-800">Highest Price</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="text-sm text-gray-400">Platform</label>
+                                    <select
+                                        class="w-full bg-transparent border-b border-purple-500 py-2 focus:outline-none">
+                                        <option class="bg-gray-800">ANDROID</option>
+                                        <option class="bg-gray-800">PS</option>
+                                        <option class="bg-gray-800">XBOX</option>
+                                        <option class="bg-gray-800">IOS</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="text-sm text-gray-400">Contain Rare Skin</label>
+                                    <select
+                                        class="w-full bg-transparent border-b border-purple-500 py-2 focus:outline-none">
+                                        <option class="bg-gray-800">OG</option>
+                                        <option class="bg-gray-800">Renegade Raider</option>
+                                        <option class="bg-gray-800">Travis Scott</option>
+                                        <option class="bg-gray-800">Black Knight</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="text-sm text-gray-400">Pickaxes</label>
+                                    <select
+                                        class="w-full bg-transparent border-b border-purple-500 py-2 focus:outline-none">
+                                        <option class="bg-gray-800">0-10</option>
+                                        <option class="bg-gray-800">11-30</option>
+                                        <option class="bg-gray-800">31-50</option>
+                                        <option class="bg-gray-800">51-100</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="text-sm text-gray-400">V-Bucks</label>
+                                    <select
+                                        class="w-full bg-transparent border-b border-purple-500 py-2 focus:outline-none">
+                                        <option class="bg-gray-800">None</option>
+                                        <option class="bg-gray-800">1-1000</option>
+                                        <option class="bg-gray-800">1001-5000</option>
+                                        <option class="bg-gray-800">5001-10000</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="text-sm text-gray-400">Outfits</label>
+                                    <select
+                                        class="w-full bg-transparent border-b border-purple-500 py-2 focus:outline-none">
+                                        <option class="bg-gray-800">None</option>
+                                        <option class="bg-gray-800">Random</option>
+                                        <option class="bg-gray-800">1-10</option>
+                                        <option class="bg-gray-800">11-20</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="text-sm text-gray-400">Price (USD)</label>
+                                    <select
+                                        class="w-full bg-transparent border-b border-purple-500 py-2 focus:outline-none">
+                                        <option class="bg-gray-800">≤ $5.00</option>
+                                        <option class="bg-gray-800">$5.00 - $15.00</option>
+                                        <option class="bg-gray-800">$15.00 - $50.00</option>
+                                        <option class="bg-gray-800">$50.00 - $100.00</option>
+                                        <option class="bg-gray-800">$100.00+</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="flex justify-between mt-8">
+                                <button
+                                    class="w-[45%] py-2 bg-transparent border border-purple-400 text-purple-400 rounded-full font-medium">Reset</button>
+                                <button
+                                    class="w-[45%] py-2 bg-purple-600 hover:bg-purple-700 rounded-full font-medium">Confirm</button>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Product Cards -->
@@ -785,292 +911,20 @@
                             </div>
                         </a>
 
-                        <!-- Card 3 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
-                            wire:navigate>
-                            <div
-                                class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">
-                                    {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now! Get fast, secure, and cheap EA Sports FC Coins instantly.') }}
-                                </h3>
-                                <div class="flex gap-2 text-sm text-slate-400 py-2">
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/light.png') }}" alt="">
-                                        {{ __('Pc') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes: 0-10') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits: None') }}</span>
-                                </div>
-                                <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                                    <span
-                                        class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
-                                    <span
-                                        class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                        {{ __('Instants') }}</span>
-                                </div>
-                                <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/Esther.png') }}" alt="Esther"
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-semibold ">{{ __('Esther') }}</p>
-                                        <p class="text-sm text-text-secondary "> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}"
-                                                alt="">
-                                            {{ __('99.3% | 2434 reviews | 1642 Sold') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
 
-                        <!-- Card 4 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
-                            wire:navigate>
-                            <div
-                                class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">
-                                    {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now! Get fast, secure, and cheap EA Sports FC Coins instantly.') }}
-                                </h3>
-                                <div class="flex gap-2 text-sm text-slate-400 py-2">
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes: 0-10') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits: None') }}</span>
-                                </div>
-                                <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                                    <span
-                                        class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
-                                    <span
-                                        class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                        {{ __('Instants') }}</span>
-                                </div>
-                                <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/Shane.png') }}" alt="Esther"
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-semibold ">{{ __('Shane') }}</p>
-                                        <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}"
-                                                alt="">
-                                            {{ __('99.3% | 2434 reviews | 1642 Sold') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Card 5 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
-                            wire:navigate>
-                            <div
-                                class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">
-                                    {{ __('Custom Offer! 2,000 Trophies, Prestige, 100K Push. Ultra Fast Delivery. Text me for info. Do not purchase directly.') }}
-                                </h3>
-                                <div class="flex gap-2 text-sm text-slate-400 py-2">
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/light.png') }}" alt="">
-                                        {{ __('Pc') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes:0-10') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits: None') }}</span>
-                                </div>
-                                <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                                    <span
-                                        class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
-                                    <span
-                                        class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                        {{ __('Instants') }}</span>
-                                </div>
-                                <div
-                                    class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3 text-white text-text-white">
-                                    <img src="{{ asset('assets/images/Arthur.png') }}" alt="Esther"
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-semibold ">{{ __('Arthur') }}</p>
-                                        <p class="text-sm text-text-secondary "> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}"
-                                                alt="">
-                                            {{ __('99.3% | 2434 reviews | 1642 Sold') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Card 6 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
-                            wire:navigate>
-                            <div
-                                class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">
-                                    {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now! Get fast, secure, and cheap EA Sports FC Coins instantly.') }}
-                                </h3>
-                                <div class="flex gap-2 text-sm text-slate-400 py-2">
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/light.png') }}" alt="">
-                                        {{ __('Pc') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes: 0-10') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits: None') }}</span>
-                                </div>
-                                <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                                    <span
-                                        class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
-                                    <span
-                                        class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                        {{ __('Instants') }}</span>
-                                </div>
-                                <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/Kristin.png') }}" alt="Esther"
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-semibold ">{{ __('Kristin') }}</p>
-                                        <p class="text-sm text-text-secondary "> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}"
-                                                alt="">
-                                            {{ __('99.3% | 2434 reviews | 1642 Sold') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Card 7 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
-                            wire:navigate>
-                            <div
-                                class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">
-                                    {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now! Get fast, secure, and cheap EA Sports FC Coins instantly.') }}
-                                </h3>
-                                <div class="flex gap-2 text-sm text-slate-400 py-2">
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/light.png') }}"
-                                            alt="">{{ __(' Pc') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes: 0-10') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits: None') }}</span>
-                                </div>
-                                <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                                    <span
-                                        class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
-                                    <span
-                                        class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                        {{ __('Instants') }}</span>
-                                </div>
-                                <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/Angel.png') }}" alt="Esther"
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-semibold ">{{ __('Angel') }}</p>
-                                        <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}"
-                                                alt="">
-                                            {{ __('99.3% | 2434 reviews | 1642 Sold') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Card 8 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
-                            wire:navigate>
-                            <div
-                                class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">
-                                    {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now! Get fast, secure, and cheap EA Sports FC Coins instantly.') }}
-                                </h3>
-                                <div class="flex gap-2 text-sm text-slate-400 py-2">
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/light.png') }}" alt="">
-                                        {{ __('Pc') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes: 0-10') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits: None') }}</span>
-                                </div>
-                                <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                                    <span
-                                        class="bg-[#853EFF] px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
-                                    <span
-                                        class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                        {{ __('Instants') }}</span>
-                                </div>
-                                <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/Marjorie.png') }}" alt="Esther"
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-semibold ">{{ __('Marjorie') }}</p>
-                                        <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}"
-                                                alt="">
-                                            {{ __('99.3% | 2434 reviews | 1642 Sold') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Card 9 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
-                            wire:navigate>
-                            <div
-                                class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">
-                                    {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now! Get fast, secure, and cheap EA Sports FC Coins instantly.') }}
-                                </h3>
-                                <div class="flex gap-2 text-sm text-slate-400 py-2">
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/light.png') }}" alt="">
-                                        {{ __('Pc') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes: 0-10') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits: None') }}</span>
-                                </div>
-                                <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                                    <span
-                                        class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
-                                    <span
-                                        class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                        {{ __('Instants') }}</span>
-                                </div>
-                                <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/Soham.png') }}" alt="Esther"
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-semibold ">{{ __('Soham') }}</p>
-                                        <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}"
-                                                alt="">
-                                            {{ __('99.3% | 2434 reviews | 1642 Sold') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
+                    <div class=" flex items-center justify-center ">
+                        <!-- Product Cards -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                        </div>
                     </div>
                     <div class="flex justify-end items-center space-x-3  p-4 m-10">
                         <button class="text-text-primary text-sm hover:text-purple-500">{{ __('Previous') }}</button>
