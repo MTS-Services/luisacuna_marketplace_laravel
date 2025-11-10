@@ -12,7 +12,7 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
             return view('backend.user.pages.orders.sold-orders');
         })->name('sold-orders');
     });
-
+    
     Route::group(['prefix' => 'offers'], function () {
         Route::get('/currency', function () {
             return view('backend.user.pages.offers.currency');
