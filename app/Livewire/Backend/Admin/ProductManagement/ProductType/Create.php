@@ -42,7 +42,7 @@ class Create extends Component
         try {
             
             $data['creater_id'] = admin()->id;
-            $data['creater_type'] = admin()->id;
+            $data['creater_type'] = get_class(admin());
             $this->service->createData($data);
             $this->success('Data created successfully.');
             return $this->redirect(route('admin.pm.productType.index'), navigate: true);
