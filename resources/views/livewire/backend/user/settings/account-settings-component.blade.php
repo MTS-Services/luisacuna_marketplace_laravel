@@ -7,21 +7,32 @@
                 {{ __('Seller API') }}
             </x-ui.button>
         </div>
+        {{-- All errors --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li class="text-xs !text-red-600 dark:!text-red-400 space-y-1">{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <div class=" mx-auto space-y-6">
             {{-- Profile Section --}}
             <section class="sm:bg-bg-primary rounded-2xl sm:p-15 md:20">
                 <h2 class="text-2xl sm:text-3xl font-semibold text-text-primary mb-8">{{ __('Profile') }}</h2>
 
+
                 {{-- Profile Image --}}
-                <div class="flex items-start bg-zinc-100 dark:bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6">
+                {{-- <div class="flex items-start bg-zinc-100 dark:bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6">
                     <div class="relative">
                         <img src="{{ auth()->user()->avatar ?? asset('assets/images/user_profile/Ellipse 474.png') }}"
                             alt="Profile" class="w-20 h-20 rounded-full object-cover ring-2 ring-accent/20">
 
                     </div>
                     <div class="flex-col">
-                        <x-ui.button href="" class="w-fit! py-2!">
+                        <x-ui.button  wire:click="updateProfile" class="w-fit! py-2!">
                             {{ __('Upload image') }}
                         </x-ui.button>
                         <div class="">
@@ -30,16 +41,73 @@
                         </div>
 
                     </div>
+                </div> --}}
+                {{-- <form wire:submit.prevent="updateProfile"> --}}
+                {{-- <div x-data="imageUploader()"
+                        class="flex items-center bg-zinc-100 dark:bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6 w-full text-white">
+
+                        <!-- Profile Image -->
+                        <div class="relative">
+                            <img :src="previewUrl || defaultUrl" alt="Profile" 
+                                class="w-20 h-20 rounded-full object-cover ring-2 ring-purple-400/30">
+                        </div>
+
+                        <!-- Upload Section -->
+                        <div class="flex flex-col justify-center">
+                            <label for="imageUpload"
+                                class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-full cursor-pointer transition text-sm w-fit">
+                                Upload image
+                            </label>
+
+                            <input id="imageUpload" wire:model="form.avatar" type="file" accept="image/jpeg, image/png, image/heic"
+                                class="hidden" @change="updatePreview">
+
+                            <span class="text-sm text-text-secondary mt-2">
+                                Must be JPEG, PNG or HEIC and cannot exceed 10MB.
+                            </span>
+                        </div>
+                    </div> --}}
+
+                <div x-data="imageUploader()"
+                    class="flex items-center bg-zinc-100 dark:bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6 w-full text-white">
+
+                    <!-- Profile Image -->
+                    <div class="relative">
+                        <img :src="previewUrl || defaultUrl" alt="Profile"
+                            class="w-20 h-20 rounded-full object-cover ring-2 ring-purple-400/30">
+                    </div>
+
+                    <!-- Upload Section -->
+                    <div class="flex flex-col justify-center">
+                        <label for="imageUpload"
+                            class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-full cursor-pointer transition text-sm w-fit">
+                            Upload image
+                        </label>
+
+                        <!-- IMPORTANT: wire:model must stay here -->
+                        <input id="imageUpload" type="file" accept="image/jpeg,image/png,image/heic" class="hidden"
+                            wire:model="form.avatar" @change="updatePreview">
+
+                        <span class="text-sm text-text-secondary mt-2">
+                            Must be JPEG, PNG or HEIC and cannot exceed 10MB.
+                        </span>
+
+                        <!-- Show Livewire validation error -->
+                        @error('form.avatar')
+                            <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
+
 
                 {{-- Bio Textarea --}}
                 <div class="p-6 bg-zinc-100 dark:bg-zinc-50/10 rounded-lg" x-data="{ editMode: false }">
                     <div class="flex justify-between items-center gap-6 mb-3">
                         <h2 class="block text-base font-medium text-text-primary">{{ __('Your description') }}</h2>
-                        <div class="px-2 py-1.5 sm:px-4 sm:py-3 bg-zinc-50/20 justify-end rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition"
+                        <p class="px-2 py-1.5 sm:px-4 sm:py-3 bg-zinc-50/20 justify-end rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition"
                             @click="editMode = true">
                             <x-phosphor name="note-pencil" variant="regular" />
-                        </div>
+                        </p>
                     </div>
 
 
@@ -50,33 +118,27 @@
                             <p class="text-text-white text-xs">
                                 {{ __('At PixelStoreLAT, we bring you the best digital deals, game keys, and in-game items — fast, safe, and hassle-free. Trusted by thousands of gamers worldwide with 97% positive reviews. Level up your experience with us today!') }}
                             </p>
+                            {{-- <textarea rows="4" class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-hidden focus:ring-2 focus:ring-accent resize-none">{{ user()->description }}</textarea> --}}
                         </div>
                     </div>
 
                     <!-- Edit Mode -->
                     <div x-show="editMode" x-cloak>
                         <div class="relative">
-                            <textarea rows="4"
+                            <textarea rows="4" wire:model.defer="form.description"
                                 class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-hidden focus:ring-2 focus:ring-accent resize-none"
-                                placeholder="Write a short bio about yourself...">{{ old('bio', 'I am a marketing expert with passion to serve you with impactful content') }}</textarea>
+                                placeholder="Write a short bio about yourself..." wire:model="form.description"></textarea>
                         </div>
-
-                        {{-- Action Buttons --}}
-                        <div class="flex justify-start gap-3 mt-6">
-                            <x-ui.button href="" @click="editMode = false" class="w-fit! py-2!">
-                                {{ __('Upload image') }}
-                            </x-ui.button>
-                            <button type="button" @click="editMode = false"
-                                class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition">
-                                {{ __('Cancel') }}
-                            </button>
-                        </div>
+                    </div>
+                    {{-- Action Buttons --}}
+                    <div class="flex justify-start gap-3 mt-6">
+                        <x-ui.button wire:click="updateProfile" @click="editMode = false" class="w-fit! py-2!">
+                            {{ __('Save changes') }}
+                        </x-ui.button>
                     </div>
                 </div>
 
-
-
-
+                {{-- </form> --}}
             </section>
 
             {{-- Profile Details Section --}}
@@ -92,7 +154,7 @@
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('First name:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
-                                    <p class="text-text-white text-xs">{{ __('luisa') }}</p>
+                                    <p class="text-text-white text-xs">{{ user()->first_name }}</p>
                                 </div>
                                 <div @click="editMode = true"
                                     class="px-2 py-1.5 sm:px-4 sm:py-3 bg-zinc-50/20 rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition">
@@ -100,15 +162,17 @@
                                 </div>
                             </div>
                         </div>
-
+                        @error('form.first_name')
+                            <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                        @enderror
                         <div x-show="editMode" x-cloak>
                             <label
-                                class="block text-sm font-medium text-text-primary mb-2">{{ __('User name:') }}</label>
+                                class="block text-sm font-medium text-text-primary mb-2">{{ __('First name:') }}</label>
                             <div class="relative">
-                                <input type="text" name="username"
-                                    value="{{ old('username', auth()->user()->username ?? '') }}"
+                                <input type="text" value="{{ old('first_name', auth()->user()->first_name ?? '') }}"
+                                    wire:model.defer="form.first_name"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
-                                    placeholder="Enter username">
+                                    placeholder="Enter first_name">
                                 <button type="button"
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-text-muted hover:text-text-primary">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,7 +182,7 @@
                                 </button>
                             </div>
                             <div class="flex justify-start gap-3 mt-4">
-                                <x-ui.button href="" @click="editMode = false" class="w-fit! py-2!">
+                                <x-ui.button wire:click="updateProfile" @click="editMode = false" class="w-fit! py-2!">
                                     {{ __('Save changes') }}
                                 </x-ui.button>
                                 <button type="button" @click="editMode = false"
@@ -135,7 +199,7 @@
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Last name:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
-                                    <p class="text-text-white text-xs">{{ __('Cuna') }}</p>
+                                    <p class="text-text-white text-xs">{{ user()->last_name }}</p>
                                 </div>
                                 <div @click="editMode = true"
                                     class="px-2 py-1.5 sm:px-4 sm:py-3 bg-zinc-50/20 rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition">
@@ -143,12 +207,16 @@
                                 </div>
                             </div>
                         </div>
+                        @error('form.last_name')
+                            <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                        @enderror
 
                         <div x-show="editMode" x-cloak>
                             <label
                                 class="block text-sm font-medium text-text-primary mb-2">{{ __('Last name:') }}</label>
                             <div class="relative">
-                                <input type="text" name="company" value="Cuna"
+                                <input type="text" name="company" value="{{ user()->last_name }}"
+                                    wire:model.defer="form.last_name"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                     placeholder="Enter company name">
                                 <button type="button"
@@ -160,7 +228,8 @@
                                 </button>
                             </div>
                             <div class="flex justify-start gap-3 mt-4">
-                                <x-ui.button href="" @click="editMode = false" class="w-fit! py-2!">
+                                <x-ui.button wire:click="updateProfile" @click="editMode = false"
+                                    class="w-fit! py-2!">
                                     {{ __('Save changes') }}
                                 </x-ui.button>
                                 <button type="button" @click="editMode = false"
@@ -178,7 +247,7 @@
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full">
                                     <div class="p-3 bg-zinc-50/20 rounded-lg">
-                                        <p class="text-text-white text-xs">{{ __('luisacuna2254@gmail.com') }}</p>
+                                        <p class="text-text-white text-xs">{{ user()->email }}</p>
                                     </div>
                                     <div class="mt-2">
                                         <p class="text-text-white text-sm sm:text-xl"><span
@@ -193,12 +262,15 @@
                                 </div>
                             </div>
                         </div>
+                        @error('form.email')
+                            <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                        @enderror
 
                         <div x-show="editMode" x-cloak>
                             <label
                                 class="block text-sm font-medium text-text-primary mb-2">{{ __('Email:') }}</label>
                             <div class="relative">
-                                <input type="email" name="email" value="luisacuna2254@gmail.com"
+                                <input type="email" name="email" value="" wire:model.defer="form.email"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                     placeholder="Enter email">
                                 <span
@@ -207,7 +279,8 @@
                                 </span>
                             </div>
                             <div class="flex justify-start gap-3 mt-4">
-                                <x-ui.button href="" @click="editMode = false" class="w-fit! py-2!">
+                                <x-ui.button wire:click="updateProfile" @click="editMode = false"
+                                    class="w-fit! py-2!">
                                     {{ __('Save changes') }}
                                 </x-ui.button>
                                 <button type="button" @click="editMode = false"
@@ -219,13 +292,15 @@
                     </div>
 
                     {{-- Username --}}
-                    <div x-data="{ editMode: false }">
+                    <div x-data="{
+                        editMode: @error('form.username') true @else false @enderror
+                    }">
                         <div class="p-3 sm:p-6 bg-zinc-100 dark:bg-zinc-50/10 rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Username:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full">
                                     <div class="p-3 bg-zinc-50/20 rounded-lg">
-                                        <p class="text-text-white text-xs">{{ __('PixelStoreLAT') }}</p>
+                                        <p class="text-text-white text-xs">{{ user()->username }}</p>
                                     </div>
                                     <div class="mt-2">
                                         <p class="text-text-white text-sm sm:text-xl">
@@ -239,12 +314,16 @@
                                 </div>
                             </div>
                         </div>
+                        @error('form.username')
+                            <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                        @enderror
 
                         <div x-show="editMode" x-cloak>
                             <label
                                 class="block text-sm font-medium text-text-primary mb-2">{{ __('Username:') }}</label>
                             <div class="relative">
                                 <input type="text" name="Username" value="PixelStoreLAT"
+                                    wire:model.defer="form.username"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                     placeholder="Enter location">
                                 <button type="button"
@@ -256,7 +335,8 @@
                                 </button>
                             </div>
                             <div class="flex justify-start gap-3 mt-4">
-                                <x-ui.button href="" @click="editMode = false" class="w-fit! py-2!">
+                                <x-ui.button wire:click="updateProfile" @click="editMode = false"
+                                    class="w-fit! py-2!">
                                     {{ __('Save changes') }}
                                 </x-ui.button>
                                 <button type="button" @click="editMode = false"
@@ -308,7 +388,8 @@
                                 {{ __('You are only e-mails to other. You can type your URL here, and we will redirect them to your personal website or their site') }}
                             </p>
                             <div class="flex justify-start gap-3 mt-4">
-                                <x-ui.button href="" @click="editMode = false" class="w-fit! py-2!">
+                                <x-ui.button wire:click="updateProfile" @click="editMode = false"
+                                    class="w-fit! py-2!">
                                     {{ __('Save changes') }}
                                 </x-ui.button>
                                 <button type="button" @click="editMode = false"
@@ -393,5 +474,29 @@
                 </div>
             </section>
         </div>
-        </s>
+
+
+        <script>
+            function imageUploader() {
+                return {
+                    defaultUrl: "{{ storage_url(user()->avatar) ?? asset('assets/images/user_profile/Ellipse 474.png') }}", // fallback or dynamic image
+                    previewUrl: null,
+
+                    updatePreview(event) {
+                        const file = event.target.files[0];
+                        if (!file) return;
+
+                        if (file.size > 10 * 1024 * 1024) {
+                            alert('File size cannot exceed 10MB.');
+                            event.target.value = '';
+                            return;
+                        }
+
+                        const reader = new FileReader();
+                        reader.onload = (e) => this.previewUrl = e.target.result;
+                        reader.readAsDataURL(file);
+                    }
+                }
+            }
+        </script>
     </section>
