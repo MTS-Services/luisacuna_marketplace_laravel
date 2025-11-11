@@ -78,7 +78,7 @@ class ProductService
         return $this->createAction->execute($data);
     }
 
-    public function updateData(int $id, array $data): array
+    public function updateData(int $id, array $data): Product
     {
     
         return $this->updateAction->execute($id, $data);

@@ -17,22 +17,11 @@
     </div>
     <div class="glass-card rounded-2xl p-6 mb-6">
         <form wire:submit="save">
-            <div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                    {{ __('Product Image') }}
-                </h3>
-                <x-ui.file-input wire:model="form.images" label="Product Image" multiple accept="image/*"
-                    :error="$errors->first('form.images')" hint="" />
-
-                @error('form.images.*')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
 
                 {{-- seller_id --}}
                 <div class="w-full">
-                    <x-ui.label value="Seller ID" for="seller_id" class="mb-1" />
+                    <x-ui.label value="Seller" for="seller_id" class="mb-1" />
                     <x-ui.select wire:model="form.seller_id" id="seller_id">
                         @foreach ($users as $user)
                             <option value="{{ $user->id }}">{{ $user->first_name }}</option>

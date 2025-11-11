@@ -67,8 +67,6 @@ class Create extends Component
             $data['creater_id'] = admin()->id;
             $data['creater_type'] = get_class(admin());
 
-            $data['images'] = $this->form->images;
-
             $this->service->createData($data);
 
             $this->success('Data created successfully.');
