@@ -98,10 +98,13 @@ class Trash extends Component
         ]);
     }
 
+
+
+
     public function confirmDelete($encryptedId): void
     {
         if (!$encryptedId) {
-            $this->error('No Product selected');
+            $this->error('No Data selected');
             $this->resetPage();
             return;
         }
@@ -116,10 +119,10 @@ class Trash extends Component
             $this->showDeleteModal = false;
             $this->selectedId = null;
             $this->resetPage();
-            $this->success('Product permanently deleted successfully');
+            $this->success('Data permanently deleted successfully');
         } catch (\Throwable $e) {
-            $this->error('Failed to delete Product.');
-            Log::error('Failed to delete Product: ' . $e->getMessage());
+            $this->error('Failed to delete data.');
+            Log::error('Failed to delete data: ' . $e->getMessage());
             throw $e;
         }
     }
@@ -129,13 +132,14 @@ class Trash extends Component
         try {
             $this->service->restoreData(decrypt($encryptedId));
 
-            $this->success('Product restored successfully');
+            $this->success('Data restored successfully');
         } catch (\Throwable $e) {
-            $this->error('Failed to restore Product.');
-            Log::error('Failed to restore Product: ' . $e->getMessage());
+            $this->error('Failed to restore data.');
+            Log::error('Failed to restore data: ' . $e->getMessage());
             throw $e;
         }
     }
+
     public function resetFilters(): void
     {
         $this->reset(['search', 'statusFilter', 'perPage', 'sortField', 'sortDirection', 'selectedIds', 'selectAll', 'bulkAction']);
@@ -145,7 +149,7 @@ class Trash extends Component
     public function confirmBulkAction(): void
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
-            $this->warning('Please select Product and an action');
+            $this->warning('Please select data and an action');
             return;
         }
 
@@ -177,14 +181,14 @@ class Trash extends Component
     {
         $count = count($this->selectedIds);
         $this->service->bulkRestoreData($this->selectedIds);
-        $this->success("{$count} Products restored successfully");
+        $this->success("{$count} Datas restored successfully");
     }
 
     protected function bulkForceDelete(): void
     {
         $count = count($this->selectedIds);
         $this->service->bulkForceDeleteData($this->selectedIds);
-        $this->success("{$count} Products permanently deleted successfully");
+        $this->success("{$count} Datas permanently deleted successfully");
     }
 
     protected function getFilters(): array
@@ -199,10 +203,12 @@ class Trash extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->service->getTrashedPaginatedData(
+        $data = $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        )->pluck('id')->toArray();
+        );
+
+        return array_column($data->items(), 'id');
     }
 
     public function updatedStatusFilter(): void

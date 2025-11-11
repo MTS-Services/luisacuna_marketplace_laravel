@@ -38,6 +38,12 @@ class ProductType extends BaseModel implements Auditable
         'updater_type',
         'deleter_type',
         'restorer_type',
+
+
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'restored_at',
         //here AuditColumns 
     ];
 
@@ -88,9 +94,9 @@ class ProductType extends BaseModel implements Auditable
                 $q->where('status', $status)
             )
             ->when(
-                $filters['sluge'] ?? null,
-                fn($q, $sluge) =>
-                $q->where('sluge', 'like', "%{$sluge}%")
+                $filters['slug'] ?? null,
+                fn($q, $slug) =>
+                $q->where('slug', 'like', "%{$slug}%")
             );
     }
 

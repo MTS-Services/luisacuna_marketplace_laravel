@@ -22,8 +22,6 @@ class Edit extends Component
 
 
     public ProducForm $form;
-    public array $existingImages = [];
-    public array $imagesToDelete = [];
 
     #[Locked]
     public Product $product;
@@ -46,13 +44,11 @@ class Edit extends Component
     {
         $this->product = $data;
         $this->form->setData($this->product);
-        $this->product->load('images');
-        $this->existingImages = $this->product->images->toArray();
     }
     public function render()
     {
         $games = $this->gameService->getPaginateDatas();
-        $PTypes = $this->PTypeService->getAll();
+        $PTypes = $this->PTypeService->getAllDatas();
         $users = $this->userService->getAllSellersData('first_name', 'asc');
 
 
@@ -69,45 +65,17 @@ class Edit extends Component
         ]);
     }
 
-    /**
-     * Mark image for deletion
-     */
-    public function deleteImage($imageId)
-    {
-        $this->imagesToDelete[] = $imageId;
-
-        $this->existingImages = array_filter($this->existingImages, function ($img) use ($imageId) {
-            return $img['id'] != $imageId;
-        });
-
-        $this->success('This is Image deleted successfully.');
-    }
-
-    /**
-     * Set primary image
-     */
-    public function setPrimaryImage($imageId)
-    {
-        foreach ($this->existingImages as &$image) {
-            $image['is_primary'] = ($image['id'] == $imageId);
-        }
-
-        $this->success('Primary image set successfully.');
-    }
-
     public function save()
     {
-        $this->form->validate();
+        $data = $this->form->validate();
         try {
-            $data = $this->form->fillables();
-            $data['updater_id'] = admin()->id;
-            $data['updater_by'] = admin()->id;
 
-            $data['images_to_delete'] = $this->imagesToDelete;
-            $data['existing_images'] = $this->existingImages;
+            $data['updater_id'] = admin()->id;
+            $data['updater_type'] = get_class(admin());
+
             $updated = $this->service->updateData($this->product->id, $data);
 
-            $this->dispatch('ProductUpdated');
+            $this->dispatch('dataUpdated');
             $this->success('Data updated successfully.');
 
             return $this->redirect(route('admin.pm.product.index'), navigate: true);

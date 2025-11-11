@@ -42,7 +42,7 @@ class Create extends Component
     public function render()
     {
         $games = $this->gameService->getPaginateDatas();
-        $PTypes = $this->PTypeService->getAll();
+        $PTypes = $this->PTypeService->getAllDatas();
         $users = $this->userService->getAllSellersData('first_name', 'asc');
 
         return view('livewire.backend.admin.product-management.product.create', [
@@ -61,14 +61,11 @@ class Create extends Component
     public function save()
     {
 
-        $this->form->validate();
+        $data = $this->form->validate();
 
         try {
-            $data = $this->form->fillables();
             $data['creater_id'] = admin()->id;
-            $data['creater_type'] = Admin::class;
-
-            $data['images'] = $this->form->images;
+            $data['creater_type'] = get_class(admin());
 
             $this->service->createData($data);
 

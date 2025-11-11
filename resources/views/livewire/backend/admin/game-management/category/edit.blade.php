@@ -105,25 +105,38 @@
                 </div>
 
 
+                <div class="form-control w-full">
+                    <x-ui.label for="is_default" :value="__('Is Default Category?')" />
+
+                    <x-ui.select id="is_default" class="mt-1 block w-full" wire:model="form.is_default">
+                        <option value="">{{ __('Select Option') }}</option>
+                        <option value="1">{{ __('Yes') }}</option>
+                        <option value="0">{{ __('No') }}</option>
+                    </x-ui.select>
+
+                    <x-ui.input-error :messages="$errors->get('form.is_default')" class="mt-2" />
+                </div>
+
+
 
             </div>
-            {{-- description --}}
+
+            {{-- meta description --}}
             <div class="w-full mt-2">
-                <x-ui.label value="Description" class="mb-1" />
-                <x-ui.text-editor model="form.description" id="text-editor-main-content"
+                <x-ui.label value="Meta Description" class="mb-1" />
+                <x-ui.text-editor model="form.meta_description" id="meta_description"
                     placeholder="Enter your main content here..." :height="350" />
 
                 <x-ui.input-error :messages="$errors->get('form.description')" />
             </div>
-
-            {{-- meta description --}}
-            {{-- <div class="w-full mt-2">
-                <x-ui.label value="Meta Description" class="mb-1" />
-                <x-ui.text-editor model="form.meta_description" id="text-editor-main-content"
+            {{-- description --}}
+            <div class="w-full mt-2">
+                <x-ui.label value="Description" class="mb-1" />
+                <x-ui.text-editor model="form.description" id="description"
                     placeholder="Enter your main content here..." :height="350" />
 
-                <x-ui.input-error :messages="$errors->get('form.meta_description')" />
-            </div> --}}
+                <x-ui.input-error :messages="$errors->get('form.description')" />
+            </div>
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">

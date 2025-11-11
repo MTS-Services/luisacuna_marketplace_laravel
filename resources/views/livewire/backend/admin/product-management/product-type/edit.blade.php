@@ -23,9 +23,9 @@
                 </h3>
                 <x-ui.file-input wire:model="form.icon" label="Icon" accept="image/*" :error="$errors->first('form.icon')"
                     hint="Upload a Icon (Max: 2MB)" />
-                    @if ($form->icon)
-                        <img src="{{ asset('storage/' . $form->icon) }}" alt="Icon" width="40" height="40">
-                    @endif
+                @if ($form->icon)
+                    <img src="{{ asset('storage/' . $form->icon) }}" alt="Icon" width="40" height="40">
+                @endif
             </div>
 
             <!-- Add other form fields here -->
@@ -51,6 +51,14 @@
                     <x-ui.input-error :messages="$errors->get('form.commission_rate')" />
                 </div>
 
+                {{-- max_delivery_time_hours --}}
+                <div class="w-full">
+                    <x-ui.label value="Max Delivery Time Hours" class="mb-1" />
+                    <x-ui.input type="number" placeholder="Max Delivery Time Hours"
+                        wire:model="form.max_delivery_time_hours" />
+                    <x-ui.input-error :messages="$errors->get('form.max_delivery_time_hours')" />
+                </div>
+
                 {{-- status --}}
                 <div class="w-full">
                     <x-ui.label value="Status Select" class="mb-1" />
@@ -61,12 +69,52 @@
                     </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.status')" />
                 </div>
+                {{-- requires_delivery_time --}}
+                <div class="form-control w-full">
+                    <x-ui.label for="requires_delivery_time" :value="__('Requires Delivery Time?')" />
+
+                    <x-ui.select id="requires_delivery_time" class="mt-1 block w-full"
+                        wire:model="form.requires_delivery_time">
+                        <option value="">{{ __('Select Option') }}</option>
+                        <option value="1">{{ __('Yes') }}</option>
+                        <option value="0">{{ __('No') }}</option>
+                    </x-ui.select>
+
+                    <x-ui.input-error :messages="$errors->get('form.requires_delivery_time')" class="mt-2" />
+                </div>
+
+                {{-- requires_server_info --}}
+                <div class="form-control w-full">
+                    <x-ui.label for="requires_server_info" :value="__('Requires Server Info?')" />
+
+                    <x-ui.select id="requires_server_info" class="mt-1 block w-full"
+                        wire:model="form.requires_server_info">
+                        <option value="">{{ __('Select Option') }}</option>
+                        <option value="1">{{ __('Yes') }}</option>
+                        <option value="0">{{ __('No') }}</option>
+                    </x-ui.select>
+
+                    <x-ui.input-error :messages="$errors->get('form.requires_server_info')" class="mt-2" />
+                </div>
+                {{-- requires_character_info --}}
+                <div class="form-control w-full">
+                    <x-ui.label for="requires_character_info" :value="__('Requires Character Info?')" />
+
+                    <x-ui.select id="requires_character_info" class="mt-1 block w-full"
+                        wire:model="form.requires_character_info">
+                        <option value="">{{ __('Select Option') }}</option>
+                        <option value="1">{{ __('Yes') }}</option>
+                        <option value="0">{{ __('No') }}</option>
+                    </x-ui.select>
+
+                    <x-ui.input-error :messages="$errors->get('form.requires_character_info')" class="mt-2" />
+                </div>
 
             </div>
             {{-- description --}}
             <div class="w-full mt-2">
                 <x-ui.label value="Description" class="mb-1" />
-                <x-ui.text-editor model="content1" wire:model.live="form.description" id="text-editor-main-content"
+                <x-ui.text-editor model="form.description" wire:model.live="form.description" id="text-editor-main-content"
                     placeholder="Enter your main content here..." :height="350" />
 
                 <x-ui.input-error :messages="$errors->get('form.description')" />
@@ -86,7 +134,7 @@
 
                 <x-ui.button class="w-auto! py-2!" type="submit">
                     <span wire:loading.remove wire:target="save"
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Update Currency') }}</span>
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Update Product Type') }}</span>
                     <span wire:loading wire:target="save"
                         class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Updating...') }}</span>
                 </x-ui.button>

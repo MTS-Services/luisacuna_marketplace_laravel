@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Contracts;
 
-use App\Models\Game;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -33,7 +32,7 @@ interface ProductRepositoryInterface
     /* ================== ================== ==================
     *                    Data Modification Methods 
     * ================== ================== ================== */
-    public function create(array $data);
+    public function create(array $data): Product;
 
     public function update(int $id, array $data): bool;
 
@@ -50,7 +49,6 @@ interface ProductRepositoryInterface
     public function bulkRestore(array $ids, int $actionerId): int;
 
     public function bulkForceDelete(array $ids): int;
-
 
 
     /* ================== ================== ==================

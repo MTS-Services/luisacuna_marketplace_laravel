@@ -69,7 +69,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make("user@dev{$i}.com"), // default password
                 'phone' => $faker->phoneNumber,
                 'phone_verified_at' => now(),
-                'user_type' => UserType::BUYER->value,
+                'user_type' => UserType::SELLER->value,
                 'account_status' => UserAccountStatus::PENDING_VERIFICATION->value,
                 'language_id' => 1,
                 'currency_id' => 1,
