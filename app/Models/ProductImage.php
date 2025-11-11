@@ -27,6 +27,7 @@ class ProductImage extends BaseModel implements Auditable
         'updater_id',
         'deleter_id',
         'restorer_id',
+
     ];
 
     protected $hidden = [

@@ -31,7 +31,7 @@ interface ProductTypeRepositoryInterface
     /* ================== ================== ==================
     *                    Data Modification Methods 
     * ================== ================== ================== */
-    public function create(array $data);
+    public function create(array $data): ProductType;
 
     public function update(int $id, array $data): bool;
 

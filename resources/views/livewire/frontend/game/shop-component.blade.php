@@ -1,5 +1,5 @@
 <main class="mx-auto">
-    @if ($categorySlug == 'gift-cards' || $categorySlug == 'top-ups')
+    @if ($categorySlug == 'gift-card' || $categorySlug == 'top-up')
         <section class="container mt-2">
             <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
             <div class="flex items-center gap-2 mt-8 text-lg font-semibold">
@@ -83,7 +83,7 @@
                                     class="w-full h-full object-cover">
                             </div>
                             <div class="">
-                                <a href="" class="bg-zinc-500 text-white py-1 px-2 rounded-2xl">
+                                <a href="" class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl">
                                     <x-phosphor name="fire" variant="regular"
                                         class="inline-block fill-white" />{{ __('Popular') }}
                                 </a>
@@ -101,7 +101,7 @@
                                     class="w-full h-full object-cover">
                             </div>
                             <div class="">
-                                <a href="" class="bg-zinc-500 text-white py-1 px-2 rounded-2xl">
+                                <a href="" class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl">
                                     <x-phosphor name="fire" variant="regular"
                                         class="inline-block fill-white" />{{ __('Popular') }}
                                 </a>
@@ -119,7 +119,7 @@
                                     class="w-full h-full object-cover">
                             </div>
                             <div class="">
-                                <a href="" class="bg-zinc-500 text-white py-1 px-2 rounded-2xl">
+                                <a href="" class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl">
                                     <x-phosphor name="fire" variant="regular"
                                         class="inline-block fill-white" />{{ __('Popular') }}
                                 </a>
@@ -137,7 +137,7 @@
                                     class="w-full h-full object-cover">
                             </div>
                             <div class="">
-                                <a href="" class="bg-zinc-500 text-white py-1 px-2 rounded-2xl">
+                                <a href="" class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl">
                                     <x-phosphor name="fire" variant="regular"
                                         class="inline-block fill-white" />{{ __('Popular') }}
                                 </a>
@@ -421,7 +421,7 @@
                     <option value="processing">{{ __('Processing') }}</option>
                 </x-ui.select>
                 <button
-                    class="px-4 py-2 border border-green-500 text-green-500 rounded-full text-sm hover:bg-green-500 hover:text-white transition">
+                    class="px-4 py-2 border border-green-500 text-green-500 rounded-full text-sm hover:bg-green hover:text-white transition">
                     {{ __('● Online Seller') }} </button>
             </div>
             <div class="min-w-full text-left border-collapse">
@@ -586,11 +586,12 @@
 
                     <!-- Filters Section -->
                     <div class="mb-8 space-y-4">
-                        <div class="flex gap-4 flex-wrap">
-                            <div class="flex-1 min-w-64">
+                        <div class="flex gap-4 justify-between md:justify-start md:flex-wrap relative"
+                            x-data={filter:false}>
+                            <div class="flex-1 w-auto md:min-w-64">
                                 <div class="relative">
                                     <input type="text" placeholder="Search"
-                                        class="w-full bg-bg-primary border border-slate-700 rounded-full px-4 py-2 pl-10 focus:outline-none focus:border-purple-500">
+                                        class="w-full bg-bg-primary border border-slate-700 rounded-full px-4 py-2 pl-10 focus:outline-none focus:border-zinc-500">
                                     <span class="absolute left-3 top-2.5">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -600,488 +601,256 @@
                                     </span>
                                 </div>
                             </div>
-                            <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full!">
+                            <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full! hidden md:flex">
                                 <option value="">{{ __('Device') }}</option>
                             </x-ui.select>
-                            <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full!">
+                            <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full! hidden md:flex">
                                 <option value="">{{ __('Account type') }}</option>
                             </x-ui.select>
-                            <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full!">
+                            <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full! hidden md:flex">
                                 <option value="">{{ __('Price') }}</option>
                             </x-ui.select>
-                            <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full!">
+                            <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full! hidden md:flex">
                                 <option value="">{{ __('Select Delivery Time') }}</option>
                             </x-ui.select>
                             <button
-                                class="text-text-primary hover:text-white transition">{{ __('Clear all') }}</button>
+                                class="text-text-primary hover:text-text-primary/80 transition hidden md:flex">{{ __('Clear all') }}</button>
+                            <button @click="filter = !filter"
+                                class="flex items-center gap-2 border border-zinc-500 rounded-full px-5 py-2 hover:bg-zinc-600  transition md:hidden group" :class="{ 'bg-zinc-600': filter }">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:stroke-white transition-color duration-300" :class="{ 'stroke-white': filter }" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2l-7 7v5l-4 4v-9L3 6V4z" />
+                                </svg>
+                                <span class="group-hover:text-white transition-color duration-300" :class="{ 'text-white': filter }">{{ __('Filter') }}</span>
+                            </button>
+
+                            <div x-show="filter"
+                                class="glass-card bg-bg-primary/50 text-text-white p-6 rounded-lg w-full absolute top-16 right-0 z-10 md:hidden">
+                                <!-- Header -->
+                                <div class="flex justify-between items-center border-b border-gray-700 pb-4 mb-4">
+                                    <h2 class="text-lg font-semibold">Seller list</h2>
+                                </div>
+
+                                <!-- Toggle Buttons -->
+                                <div class="flex justify-between mb-6 space-x-3">
+                                    <button
+                                        class="px-5 py-2 rounded-full bg-bg-secondary text-text-white font-semibold">Instant
+                                        delivery</button>
+                                    <button
+                                        class="px-5 py-2 rounded-full bg-bg-secondary/70 text-text-white font-semibold flex items-center gap-2">
+                                        <span class="w-4 h-4 bg-green rounded-full"></span>
+                                        <span>Online Seller</span>
+                                    </button>
+                                </div>
+
+                                <!-- Dropdown Filters -->
+                                <div class="space-y-4 h-[calc(100vh-360px)] overflow-y-auto">
+                                    <div>
+                                        <label class="text-sm text-gray-400">Short by</label>
+                                        <select
+                                            class="w-full bg-transparent border-b border-zinc-500 py-2 focus:outline-none">
+                                            <option class="bg-bg-primary">Fastest Delivery</option>
+                                            <option class="bg-bg-primary">Top Selling</option>
+                                            <option class="bg-bg-primary">Cheapest Price</option>
+                                            <option class="bg-bg-primary">Recent Sales</option>
+                                            <option class="bg-bg-primary">Highest Price</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="text-sm text-gray-400">Platform</label>
+                                        <select
+                                            class="w-full bg-transparent border-b border-zinc-500 py-2 focus:outline-none">
+                                            <option class="bg-bg-primary">ANDROID</option>
+                                            <option class="bg-bg-primary">PS</option>
+                                            <option class="bg-bg-primary">XBOX</option>
+                                            <option class="bg-bg-primary">IOS</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="text-sm text-gray-400">Contain Rare Skin</label>
+                                        <select
+                                            class="w-full bg-transparent border-b border-zinc-500 py-2 focus:outline-none">
+                                            <option class="bg-bg-primary">OG</option>
+                                            <option class="bg-bg-primary">Renegade Raider</option>
+                                            <option class="bg-bg-primary">Travis Scott</option>
+                                            <option class="bg-bg-primary">Black Knight</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="text-sm text-gray-400">Pickaxes</label>
+                                        <select
+                                            class="w-full bg-transparent border-b border-zinc-500 py-2 focus:outline-none">
+                                            <option class="bg-bg-primary">0-10</option>
+                                            <option class="bg-bg-primary">11-30</option>
+                                            <option class="bg-bg-primary">31-50</option>
+                                            <option class="bg-bg-primary">51-100</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="text-sm text-gray-400">V-Bucks</label>
+                                        <select
+                                            class="w-full bg-transparent border-b border-zinc-500 py-2 focus:outline-none">
+                                            <option class="bg-bg-primary">None</option>
+                                            <option class="bg-bg-primary">1-1000</option>
+                                            <option class="bg-bg-primary">1001-5000</option>
+                                            <option class="bg-bg-primary">5001-10000</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="text-sm text-gray-400">Outfits</label>
+                                        <select
+                                            class="w-full bg-transparent border-b border-zinc-500 py-2 focus:outline-none">
+                                            <option class="bg-bg-primary">None</option>
+                                            <option class="bg-bg-primary">Random</option>
+                                            <option class="bg-bg-primary">1-10</option>
+                                            <option class="bg-bg-primary">11-20</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="text-sm text-gray-400">Price (USD)</label>
+                                        <select
+                                            class="w-full bg-transparent border-b border-zinc-500 py-2 focus:outline-none">
+                                            <option class="bg-bg-primary">≤ $5.00</option>
+                                            <option class="bg-bg-primary">$5.00 - $15.00</option>
+                                            <option class="bg-bg-primary">$15.00 - $50.00</option>
+                                            <option class="bg-bg-primary">$50.00 - $100.00</option>
+                                            <option class="bg-bg-primary">$100.00+</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Buttons -->
+                                <div class="flex justify-between gap-4 mt-8">
+                                    <x-ui.button class="py-2" variant='secondary'>
+                                        {{ __('Reset') }}
+                                    </x-ui.button>
+                                    {{-- <button
+                                    class="w-[45%] py-2 bg-transparent border border-purple-400 text-purple-400 rounded-full font-medium">Reset</button>
+                                <button
+                                    class="w-[45%] py-2 bg-purple-600 hover:bg-purple-700 rounded-full font-medium">Confirm</button> --}}
+                                    <x-ui.button class="py-2">
+                                        {{ __('Confirm') }}
+                                    </x-ui.button>
+                                </div>
+                                <div>
+
+                                </div>
+                                <div>
+
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Game Tags -->
-                        <div class="flex gap-2 flex-wrap">
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('Robux') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('Steel
-                                                                                                                                                                A
-                                                                                                                                                                Brainrot') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('Grow
-                                                                                                                                                                A
-                                                                                                                                                                Garden') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('Hunty
-                                                                                                                                                                Zombie') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('99
-                                                                                                                                                                Nights In
-                                                                                                                                                                The Forest') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('prospecting') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('All
-                                                                                                                                                                Star
-                                                                                                                                                                Tower
-                                                                                                                                                                Defense X') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('Ink
-                                                                                                                                                                Game') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('Garden
-                                                                                                                                                                Tower
-                                                                                                                                                                Defense') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('Bubble
-                                                                                                                                                                Gum
-                                                                                                                                                                Simulator') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('Dead
-                                                                                                                                                                Rails') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('TYPE./
-                                                                                                                                                                ISOUL') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('Hypershot') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('Build
-                                                                                                                                                                A
-                                                                                                                                                                Zoo') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('Gems') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('Rivals') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('MM2') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('Blox
-                                                                                                                                                                Fruit') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('Pet
-                                                                                                                                                                Simulator
-                                                                                                                                                                99') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('Spin') }}</span>
-                            <span
-                                class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-500 transition text-white cursor-pointer">{{ __('Adopt
-                                                                                                                                                                Me') }}</span>
+
+                        <div x-data="{
+                            showAll: false,
+                            limit: 5,
+                            tags: [
+                                'Robux',
+                                'Steal A Brainrot',
+                                'Grow A Garden',
+                                'Hunty Zombie',
+                                '99 Nights In The Forest',
+                                'Prospecting',
+                                'All Star Tower Defense X',
+                                'Ink Game',
+                                'Garden Tower Defense',
+                                'Bubble Gum Simulator',
+                                'Dead Rails',
+                                'TYPE./ ISOUL',
+                                'Hypershot',
+                                'Build A Zoo',
+                                'Gems',
+                                'Rivals',
+                                'MM2',
+                                'Blox Fruit',
+                                'Pet Simulator 99',
+                                'Spin',
+                                'Adopt Me'
+                            ]
+                        }" class="w-full">
+                            <div class="flex flex-wrap gap-2 sm:gap-3 transition-all duration-300">
+                                <!-- Mobile View -->
+                                <template x-if="window.innerWidth < 640">
+                                    <template x-for="(tag, index) in (showAll ? tags : tags.slice(0, limit))"
+                                        :key="index">
+                                        <span
+                                            class="px-3 py-1 bg-bg-primary rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-white"
+                                            x-text="tag" @click="$dispatch('tag-selected', tag)"></span>
+                                    </template>
+                                </template>
+
+                                <!-- Desktop View -->
+                                <template x-if="window.innerWidth >= 640">
+                                    <template x-for="(tag, index) in tags" :key="index">
+                                        <span
+                                            class="px-3 py-1 bg-bg-primary rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-white"
+                                            x-text="tag" @click="$dispatch('tag-selected', tag)"></span>
+                                    </template>
+                                </template>
+
+                                <!-- Toggle Button (Mobile Only) -->
+                                <button @click="showAll = !showAll"
+                                    class="flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary transition sm:hidden">
+                                    <svg :class="{ 'rotate-180': showAll }"
+                                        class="w-6 h-6 transition-transform duration-300" fill="none"
+                                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
+
+
+
+
+
 
                         <!-- Right Filters -->
-                        <div class="flex gap-3 justify-end">
+                        <div class="gap-3 justify-end hidden md:flex">
                             <button
-                                class="px-4 py-2 border border-green-500 text-green-500 rounded-full text-sm hover:bg-green-500 hover:text-white transition">{{ __('● Online Seller') }}</button>
+                                class="px-4 py-2 border border-green text-green rounded-full text-sm hover:bg-green hover:text-white transition">{{ __('● Online Seller') }}</button>
 
-                            <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full!">
-                                <option value="">{{ __('All statuses') }}</option>
-                                <option value="completed">{{ __('Completed') }}</option>
-                                <option value="pending">{{ __('Pending') }}</option>
-                                <option value="processing">{{ __('Processing') }}</option>
-                            </x-ui.select>
-
+                            <button class="px-5 py-2 rounded-full bg-bg-primary text-text-white font-semibold">Instant
+                                delivery</button>
                         </div>
                     </div>
 
-                    <!-- Product Cards -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Card 1 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
-                            wire:navigate>
-                            <div
-                                class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">
-                                    {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now! Get fast, secure, and cheap EA Sports FC Coins instantly.') }}
-                                </h3>
-                                <div class="flex gap-2 text-sm text-text-secondary py-2">
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1  text-white text-text-white bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-text-secondary "><img
-                                            src="{{ asset('assets/images/light.png') }}" alt="">
-                                        {{ __('Pc') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1  text-white text-text-white bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition  ">{{ __('Pickaxes: 0-10') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition   text-white text-text-white">{{ __('Outfits: None') }}</span>
-                                </div>
-                                <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                                    <span
-                                        class="bg-[#853EFF]   px-4 py-2 rounded-full font-bold  text-white text-text-white">$76.28</span>
-                                    <span
-                                        class=" flex items-center gap-2 px-3 py-1 bg-slate-800/60 text-text-secondary rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                        {{ __('Instants') }}</span>
-                                </div>
-                                <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/Victoria.png') }}" alt="Esther"
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-semibold text-text-white">{{ __('Victoria') }}
-                                        </p>
-                                        <p class="text-sm text-text-secondary "> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}"
-                                                alt="">
-                                            {{ __('99.3% | 2434 reviews | 1642 Sold') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
 
-                        <!-- Card 2 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
-                            wire:navigate>
-                            <div
-                                class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">
-                                    {{ __('Custom Offer! 2,000 Trophies, Prestige, 100K Push. Ultra Fast Delivery. Text me for info. Do not purchase directly.') }}
-                                </h3>
-                                <div class="flex gap-2 text-sm text-slate-400 py-2">
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white "><img
-                                            src="{{ asset('assets/images/light.png') }}" alt="">
-                                        {{ __('Pc') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes: 0-10') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits: None') }}</span>
-                                </div>
-                                <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                                    <span
-                                        class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
-                                    <span
-                                        class="text-white text-text-white flex items-center gap-1 px-2 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                        {{ __('Instants') }}</span>
-                                </div>
-                                <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/Colleen.png') }}" alt="Esther"
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-semibold ">{{ __('Colleen') }}</p>
-                                        <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}"
-                                                alt="">
-                                            {{ __('99.3% |  2434 reviews | 1642 Sold') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
 
-                        <!-- Card 3 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
-                            wire:navigate>
-                            <div
-                                class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">
-                                    {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now! Get fast, secure, and cheap EA Sports FC Coins instantly.') }}
-                                </h3>
-                                <div class="flex gap-2 text-sm text-slate-400 py-2">
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/light.png') }}" alt="">
-                                        {{ __('Pc') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes: 0-10') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits: None') }}</span>
-                                </div>
-                                <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                                    <span
-                                        class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
-                                    <span
-                                        class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                        {{ __('Instants') }}</span>
-                                </div>
-                                <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/Esther.png') }}" alt="Esther"
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-semibold ">{{ __('Esther') }}</p>
-                                        <p class="text-sm text-text-secondary "> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}"
-                                                alt="">
-                                            {{ __('99.3% | 2434 reviews | 1642 Sold') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
 
-                        <!-- Card 4 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
-                            wire:navigate>
-                            <div
-                                class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">
-                                    {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now! Get fast, secure, and cheap EA Sports FC Coins instantly.') }}
-                                </h3>
-                                <div class="flex gap-2 text-sm text-slate-400 py-2">
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/light.png') }}" alt=""> Pc</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes: 0-10') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits: None') }}</span>
-                                </div>
-                                <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                                    <span
-                                        class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
-                                    <span
-                                        class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                        {{ __('Instants') }}</span>
-                                </div>
-                                <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/Shane.png') }}" alt="Esther"
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-semibold ">{{ __('Shane') }}</p>
-                                        <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}"
-                                                alt="">
-                                            {{ __('99.3% | 2434 reviews | 1642 Sold') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Card 5 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
-                            wire:navigate>
-                            <div
-                                class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">
-                                    {{ __('Custom Offer! 2,000 Trophies, Prestige, 100K Push. Ultra Fast Delivery. Text me for info. Do not purchase directly.') }}
-                                </h3>
-                                <div class="flex gap-2 text-sm text-slate-400 py-2">
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/light.png') }}" alt="">
-                                        {{ __('Pc') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes:0-10') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits: None') }}</span>
-                                </div>
-                                <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                                    <span
-                                        class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
-                                    <span
-                                        class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                        {{ __('Instants') }}</span>
-                                </div>
-                                <div
-                                    class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3 text-white text-text-white">
-                                    <img src="{{ asset('assets/images/Arthur.png') }}" alt="Esther"
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-semibold ">{{ __('Arthur') }}</p>
-                                        <p class="text-sm text-text-secondary "> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}"
-                                                alt="">
-                                            {{ __('99.3% | 2434 reviews | 1642 Sold') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Card 6 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
-                            wire:navigate>
-                            <div
-                                class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">
-                                    {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now! Get fast, secure, and cheap EA Sports FC Coins instantly.') }}
-                                </h3>
-                                <div class="flex gap-2 text-sm text-slate-400 py-2">
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/light.png') }}" alt="">
-                                        {{ __('Pc') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes: 0-10') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits: None') }}</span>
-                                </div>
-                                <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                                    <span
-                                        class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
-                                    <span
-                                        class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                        {{ __('Instants') }}</span>
-                                </div>
-                                <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/Kristin.png') }}" alt="Esther"
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-semibold ">{{ __('Kristin') }}</p>
-                                        <p class="text-sm text-text-secondary "> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}"
-                                                alt="">
-                                            {{ __('99.3% | 2434 reviews | 1642 Sold') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Card 7 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
-                            wire:navigate>
-                            <div
-                                class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">
-                                    {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now! Get fast, secure, and cheap EA Sports FC Coins instantly.') }}
-                                </h3>
-                                <div class="flex gap-2 text-sm text-slate-400 py-2">
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/light.png') }}"
-                                            alt="">{{ __(' Pc') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes: 0-10') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits: None') }}</span>
-                                </div>
-                                <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                                    <span
-                                        class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
-                                    <span
-                                        class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                        {{ __('Instants') }}</span>
-                                </div>
-                                <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/Angel.png') }}" alt="Esther"
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-semibold ">{{ __('Angel') }}</p>
-                                        <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}"
-                                                alt="">
-                                            {{ __('99.3% | 2434 reviews | 1642 Sold') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Card 8 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
-                            wire:navigate>
-                            <div
-                                class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">
-                                    {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now! Get fast, secure, and cheap EA Sports FC Coins instantly.') }}
-                                </h3>
-                                <div class="flex gap-2 text-sm text-slate-400 py-2">
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/light.png') }}" alt="">
-                                        {{ __('Pc') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes: 0-10') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits: None') }}</span>
-                                </div>
-                                <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                                    <span
-                                        class="bg-[#853EFF] px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
-                                    <span
-                                        class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                        {{ __('Instants') }}</span>
-                                </div>
-                                <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/Marjorie.png') }}" alt="Esther"
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-semibold ">{{ __('Marjorie') }}</p>
-                                        <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}"
-                                                alt="">
-                                            {{ __('99.3% | 2434 reviews | 1642 Sold') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Card 9 -->
-                        <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
-                            wire:navigate>
-                            <div
-                                class="bg-bg-primary rounded-lg p-8 border border-slate-800 hover:border-purple-400 transition">
-                                <h3 class="text-lg font-medium mb-3">
-                                    {{ __('Instant EA Sports FC Coins: Build your Ultimate Team now! Get fast, secure, and cheap EA Sports FC Coins instantly.') }}
-                                </h3>
-                                <div class="flex gap-2 text-sm text-slate-400 py-2">
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white"><img
-                                            src="{{ asset('assets/images/light.png') }}" alt="">
-                                        {{ __('Pc') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Pickaxes: 0-10') }}</span>
-                                    <span
-                                        class="flex items-center gap-1 px-0 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition text-white text-text-white">{{ __('Outfits: None') }}</span>
-                                </div>
-                                <div class="border-slate-700 pt-14 flex items-center justify-between py-4 ">
-                                    <span
-                                        class="bg-[#853EFF] text-white px-4 py-2 rounded-full font-bold text-white text-text-white">$76.28</span>
-                                    <span
-                                        class="text-slate-100 flex items-center gap-2 px-3 py-1 bg-slate-800/60 rounded-full text-sm hover:bg-slate-700 transition"><img
-                                            src="{{ asset('assets/images/Time Circle.png') }}" alt="img">
-                                        {{ __('Instants') }}</span>
-                                </div>
-                                <div class="border-t border-[#853EFF] pt-4 mt-4 flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/Soham.png') }}" alt="Esther"
-                                        class="w-10 h-10 rounded-full">
-                                    <div>
-                                        <p class="font-semibold ">{{ __('Soham') }}</p>
-                                        <p class="text-sm text-text-secondary"> <img class="inline mr-2"
-                                                src="{{ asset('assets/images/thumb up filled.png') }}"
-                                                alt="">
-                                            {{ __('99.3% | 2434 reviews | 1642 Sold') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
+                    <div class=" flex items-center justify-center ">
+                        <!-- Product Cards -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 w-full">
+                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                        </div>
                     </div>
+
+
                     <div class="flex justify-end items-center space-x-3  p-4 m-10">
-                        <button class="text-text-primary text-sm hover:text-purple-500">{{ __('Previous') }}</button>
+                        <button class="text-text-primary text-sm hover:text-zinc-500">{{ __('Previous') }}</button>
 
-                        <button class="bg-purple-600 text-white text-sm px-3 py-1 rounded">1</button>
-                        <button class="text-text-primary text-sm hover:text-purple-500">2</button>
-                        <button class="text-text-primary text-sm hover:text-purple-500">3</button>
-                        <button class="text-text-primary text-sm hover:text-purple-500">4</button>
-                        <button class="text-text-primary text-sm hover:text-purple-500">5</button>
+                        <button class="bg-zinc-600 text-white text-sm px-3 py-1 rounded">1</button>
+                        <button class="text-text-primary text-sm hover:text-zinc-500">2</button>
+                        <button class="text-text-primary text-sm hover:text-zinc-500">3</button>
+                        <button class="text-text-primary text-sm hover:text-zinc-500">4</button>
+                        <button class="text-text-primary text-sm hover:text-zinc-500">5</button>
 
-                        <button class="text-text-primary text-sm hover:text-purple-500">{{ __('Next') }}</button>
+                        <button class="text-text-primary text-sm hover:text-zinc-500">{{ __('Next') }}</button>
                     </div>
                 </div>
             </div>

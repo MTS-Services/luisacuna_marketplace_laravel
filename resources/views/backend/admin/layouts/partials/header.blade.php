@@ -24,9 +24,9 @@
 
             <div class="flex items-center gap-3">
                 {{-- <x-admin.search-form placeholder="Search here..." /> --}}
-                <flux:input type="search" placeholder="{{ __('Search here...') }}"
+                {{-- <flux:input type="search" placeholder="{{ __('Search here...') }}"
                     class="w-32 sm:w-48 lg:w-64 px-3! py-2! rounded-xl! bg-bg-black/10! dark:bg-bg-white/10! border-0! focus:ring-2! focus:ring-white/20! focus:outline-none! transition-all duration-200"
-                    icon="magnifying-glass" />
+                    icon="magnifying-glass" /> --}}
 
                 {{-- --}}
                 <flux:button x-data x-on:click="$flux.dark = !$flux.dark" variant="subtle"

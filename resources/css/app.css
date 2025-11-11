@@ -27,6 +27,8 @@
     --color-bg-base: #1B0C33;
 
     --color-status-paused: #CB2C30;
+    --color-green: #12D212;
+    --color-orange: #F97316;
 
     /* Primary: Purple */
     --color-primary-50: #f5f3ff;
@@ -164,6 +166,8 @@
     --hover-bg-theme: var(--color-zinc-200);
     --color-bg-black: var(--color-black);
     --color-bg-white: var(--color-white);
+    --color-green: var(--color-green);
+    --color-orange: var(--color-orange);
 
     /* ======================================================
     	 	 	 	 	 	 # Shadows

@@ -9,10 +9,11 @@ use App\Enums\ProductTypeStatus;
 use App\Traits\Livewire\WithNotification;
 use App\Services\ProductTypeService;
 use App\Livewire\Forms\Backend\Admin\ProductManagement\ProductTypeForm;
+use Livewire\WithFileUploads;
 
 class Edit extends Component
 {
-    use WithNotification;
+    use WithNotification, WithFileUploads;
 
     public ProductTypeForm $form;
 
@@ -48,7 +49,7 @@ class Edit extends Component
         try {
             $data = $this->form->fillables();
             $data['updater_id'] = admin()->id;
-            $data['updater_by'] = admin()->id;
+            $data['updater_type'] = get_class(admin());
             $updated = $this->service->updateData($this->productType->id, $data);            
 
             $this->dispatch('ProductTypeUpdated');
