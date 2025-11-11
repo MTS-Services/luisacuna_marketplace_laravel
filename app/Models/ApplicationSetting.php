@@ -19,7 +19,7 @@ class ApplicationSetting extends Model
     const REGISTRATION_APPROVAL_MANUAL = 1;
 
     // Constants for environment
-    const ENVIRONMENT_DEVELOPMENT = 'development';
+    const ENVIRONMENT_DEVELOPMENT = 'local';
     const ENVIRONMENT_PRODUCTION = 'production';
 
     // Constants for debug
@@ -165,7 +165,7 @@ class ApplicationSetting extends Model
     public static function getEnvironmentInfos()
     {
         return [
-            self::ENVIRONMENT_DEVELOPMENT => __('Development'),
+            self::ENVIRONMENT_DEVELOPMENT => __('Local'),
             self::ENVIRONMENT_PRODUCTION => __('Production'),
         ];
     }

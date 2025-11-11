@@ -21,7 +21,7 @@ class ApplicationSettings extends Form
 
         return [
             'app_name' => 'nullable|string|min:3|max:255',
-            'short_name' => 'nullable|string|min:3|max:255',
+            'short_name' => 'nullable|string|min:2|max:255',
             'timezone' => 'nullable|string',
             'date_format' => 'nullable|string',
             'time_format' => 'nullable|string',
