@@ -1,6 +1,6 @@
 <header x-data="{ mobileMenuOpen: false, notification: false, dropdown: '', globalSearchModal: false, open: '' }" x-cloak
     class="sticky top-0 z-50  {{ request()->routeIs('home') ? 'bg-linear-to-r from-zinc-950/50 via-text-text-white to-zinc-950/50 glass-card shadow-none!' : 'glass-card' }}">
-    <div class="{{ request()->routeIs('user.*') ? '' : '2xl:container-wide container' }} px-4 py-4 flex items-center justify-between relative"
+    <div class=" px-4 py-4 flex items-center justify-between relative"
         x-cloak>
         <div class="xl:flex hidden">
             <a href="{{ route('home') }}">
