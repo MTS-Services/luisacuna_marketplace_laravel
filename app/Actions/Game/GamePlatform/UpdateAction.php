@@ -2,12 +2,12 @@
 namespace App\Actions\Game\GamePlatform;
 
 use App\Models\GamePlatform;
-use App\Repositories\Contracts\GamePlatformInterface;
+use App\Repositories\Contracts\GamePlatformRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class UpdateAction {
-    public function __construct(protected GamePlatformInterface $interface) {}
+    public function __construct(protected GamePlatformRepositoryInterface $interface) {}
 
     public function execute(int $id, array $data): GamePlatform
     {

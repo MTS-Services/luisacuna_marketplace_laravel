@@ -18,7 +18,7 @@ use App\Repositories\Eloquent\ProductTypeRepository;
 use App\Repositories\Eloquent\GameCategoryRepository;
 use App\Repositories\Eloquent\GamePlatformRepository;
 
-use App\Repositories\Contracts\GamePlatformRepositoryInterface;
+
 use App\Repositories\Contracts\GameRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\AdminRepositoryInterface;
@@ -28,6 +28,7 @@ use App\Repositories\Contracts\CurrencyRepositoryInterface;
 use App\Repositories\Contracts\LanguageRepositoryInterface;
 use App\Repositories\Contracts\ProductTypeRepositoryInterface;
 use App\Repositories\Contracts\GameCategoryRepositoryInterface;
+use App\Repositories\Contracts\GamePlatformRepositoryInterface;
 use App\Repositories\Contracts\PageViewRepositoryInterface;
 use App\Repositories\Contracts\PermissionRepositoryInterface;
 use App\Repositories\Eloquent\PageViewRepository;
@@ -62,7 +63,6 @@ class RepositoryServiceProvider extends ServiceProvider
         );
 
         //GamePlatform Repository
-
         $this->app->bind(
             GamePlatformRepositoryInterface::class,
             GamePlatformRepository::class

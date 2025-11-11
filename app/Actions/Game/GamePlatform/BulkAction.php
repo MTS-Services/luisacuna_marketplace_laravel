@@ -1,11 +1,11 @@
 <?php 
 namespace App\Actions\Game\GamePlatform;
 
-use App\Repositories\Contracts\GamePlatformInterface;
+use App\Repositories\Contracts\GamePlatformRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 
 class BulkAction {
-    public function __construct(protected GamePlatformInterface $interface) {}
+    public function __construct(protected GamePlatformRepositoryInterface $interface) {}
 
 
 

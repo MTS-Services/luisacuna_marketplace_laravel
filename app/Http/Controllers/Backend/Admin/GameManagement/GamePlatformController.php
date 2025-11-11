@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Backend\Admin\GameManagement;
 
 use App\Http\Controllers\Controller;
-use App\Models\Game;
-use App\Services\GameService;
+use App\Models\GamePlatform;
+use App\Services\GamePlatformService;
 use Illuminate\Http\Request;
 
 class GamePlatformController extends Controller
 {
-       //
-    protected GameService $service;
+    //
+    protected GamePlatformService $service;
 
-    public Game $data ;
-    public function __construct(GameService $service)
+    public GamePlatform $data;
+    public function __construct(GamePlatformService $service)
     {
         $this->service = $service;
     }
@@ -39,16 +39,20 @@ class GamePlatformController extends Controller
             'data' => $this->data,
         ]);
     }
-    public function edit($id)    
+    public function edit($id)
     {
         $this->data = $this->service->findData($id);
+
+        if (!$this->data) {
+            abort(404);
+        }
+
         return view($this->masterView, [
             'data' => $this->data,
-        ]); 
+        ]);
     }
     public function trash()
     {
         return view($this->masterView);
     }
-
 }

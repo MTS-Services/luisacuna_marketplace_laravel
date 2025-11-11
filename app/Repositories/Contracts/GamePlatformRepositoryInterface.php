@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 namespace App\Repositories\Contracts;
 
 use App\Models\GamePlatform;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 interface GamePlatformRepositoryInterface
 {
