@@ -24,7 +24,7 @@
                 <!-- Old Data Section -->
                 <div class="px-8 py-8">
                     <div class="mb-10">
-                         
+
 
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
@@ -33,14 +33,15 @@
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
-                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('Discount Percentage') }}</p>
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('Discount Percentage') }}
+                                </p>
                                 <p class="text-slate-400 text-lg font-bold">{{ $data->discount_percentage }}</p>
 
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('Discounted Price') }}</p>
-                                <p class="text-slate-400 text-lg font-bold">{{ $data->discounted_price }}</p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->discounted_price ?? 'N/A' }}</p>
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
@@ -62,7 +63,7 @@
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('UNLIMITED STOCK') }}
                                 </p>
-                                <p class="text-slate-400 text-lg font-bold">{{ $data->unlimited_stock }}</p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->unlimited_stock ?? 'N/A' }}</p>
                             </div>
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('DELIVERY METHOD') }}
@@ -74,7 +75,7 @@
                                 </p>
                                 <p class="text-slate-400 text-lg font-bold">{{ $data->delivery_time_hours }}</p>
                             </div>
-                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('AUTO DELIVERY') }}
                                 </p>
                                 <p class="text-slate-400 text-lg font-bold">{{ $data->auto_delivery_content }}</p>
@@ -109,7 +110,7 @@
                                 </p>
                                 <p class="text-slate-400 text-lg font-bold">{{ $data->status }}</p>
                             </div>
-                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('Visibility') }}
                                 </p>
                                 <p class="text-slate-400 text-lg font-bold">{{ $data->visibility }}</p>
@@ -124,7 +125,7 @@
                                 </p>
                                 <p class="text-slate-400 text-lg font-bold">{{ $data->view_count }}</p>
                             </div>
-                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('FAVORITE COUNT') }}
                                 </p>
                                 <p class="text-slate-400 text-lg font-bold">{{ $data->favorite_count }}</p>
@@ -149,12 +150,12 @@
                                 </p>
                                 <p class="text-slate-400 text-lg font-bold">{{ $data->rejection_reason }}</p>
                             </div>
-                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('META TITLE') }}
                                 </p>
                                 <p class="text-slate-400 text-lg font-bold">{{ $data->meta_title }}</p>
                             </div>
-                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('META DESCRIPTION') }}
                                 </p>
                                 <p class="text-slate-400 text-lg font-bold">{{ $data->meta_description }}</p>

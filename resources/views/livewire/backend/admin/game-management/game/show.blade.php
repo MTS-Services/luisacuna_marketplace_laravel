@@ -25,10 +25,16 @@
                     <div class="mb-10">
 
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
-                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('PLATFORM') }}</p>
 
-                                <p class="text-slate-400 text-lg font-bold">{{ $data->platform }}</p>
+                            <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('NAME') }}</p>
+
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->name }}</p>
+                            </div>
+
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('SLUG') }}</p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->slug }}</p>
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
@@ -37,19 +43,50 @@
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
-                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('DELETED_AT') }}</p>
-                                <p class="text-slate-400 text-lg font-bold">{{ $data->deleted_at }}</p>
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('CATEGORY') }}
+                                </p>
+                                <p class="text-slate-400 text-lg font-bold">{{$data->category->name}}</p>
+                            </div>
+                            
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('CREATED AT') }}
+                                </p>
+                                <p class="text-slate-400 text-lg font-bold">{{$data->created_at_human}}</p>
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
-                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('CATEGORY') }}
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('UPDATED AT') }}
                                 </p>
-                                <p class="text-slate-400 text-lg font-bold">{{ $data->category }}</p>
+                                <p class="text-slate-400 text-lg font-bold">{{$data->updated_at_human}}</p>
+                            </div>
+
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('DESCRIPTION') }}
+                                </p>
+                                <p class="text-slate-400 text-lg font-bold">{{$data->description}}</p>
+                            </div>
+
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('SORT ORDER') }}
+                                </p>
+                                <p class="text-slate-400 text-lg font-bold">{{$data->sort_order}}</p>
+                            </div>
+
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('IS FEATURED') }}
+                                </p>
+                                <p class="text-slate-400 text-lg font-bold">{{$data->is_featured ==  1 ? 'Yes' : 'No'}}</p>
+                            </div>
+
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('IS TRENDING') }}
+                                </p>
+                                <p class="text-slate-400 text-lg font-bold">{{$data->is_trending == 1 ? 'Yes' : 'No'}}</p>
                             </div>
                         </div>
+
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

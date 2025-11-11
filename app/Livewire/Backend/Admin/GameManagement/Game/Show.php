@@ -10,8 +10,8 @@ class Show extends Component
     public Game $data;
     public function mount(Game $data)
     {
-
         $this->data = $data->load('category');
+        
     }
     public function render()
     {
