@@ -1,84 +1,93 @@
 <header x-data="{ mobileMenuOpen: false, notification: false, dropdown: '', globalSearchModal: false, open: '' }" x-cloak
     class="sticky top-0 z-50  {{ request()->routeIs('home') ? 'bg-linear-to-r from-zinc-950/50 via-text-text-white to-zinc-950/50 glass-card shadow-none!' : 'glass-card' }}">
-    <div class="{{ request()->routeIs('user.*') ? '' : '2xl:container-wide container' }} px-4 py-4 flex items-center justify-between relative"
+    <div class=" px-4 py-4 flex items-center justify-between relative"
         x-cloak>
-        <div class=""><a href="{{ route('home') }}">
+        <div class="xl:flex hidden">
+            <a href="{{ route('home') }}">
                 <img src="{{ asset('assets/images/header_logo.png') }}" alt=""></a>
         </div>
+        {{-- Mobile menu button --}}
+        <button @click="mobileMenuOpen = !mobileMenuOpen"
+            class="xl:hidden  inline-flex items-center justify-center p-2 rounded-md text-text-secondary hover:text-text-text-white hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-text-text-text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
         @include('partials.user-navigation')
 
         {{-- Main Navigation Icons --}}
-        <div class="flex  items-center">
+        <div class="flex gap-1  xl:gap-2 items-center">
             @auth
-                <a href="{{ route('user.messages') }}" wire:navigate class="p-1 rounded-full bg-transparent  transition-colors">
+                <a href="{{ route('user.messages') }}" wire:navigate
+                    class=" rounded-full bg-transparent  transition-colors">
                     <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-text-white" />
                 </a>
 
-                <button class="px-1 py-0.5 mt-1 rounded-full bg-transparent  transition-colors"
+                <button class="py-0.5 mt-1 rounded-full bg-transparent transition-colors"
                     @click="notification = !notification">
                     <div class="relative inline-flex">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-text-primary" fill="none"
-                            viewBox="0 0 24 24" stroke="white">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                        </svg>
+                        <x-phosphor-bell class="w-6 h-6 text-text-primary" />
+
                         <span
-                            class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 text-[10px] text-white">1</span>
+                            class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 text-[10px] text-white">
+                            1
+                        </span>
                     </div>
                 </button>
+
             @endauth
 
-            <div class="px-1 hidden sm:flex">
+            <div class=" hidden sm:flex">
                 <x-language />
             </div>
 
             <div class="flex items-center" x-data>
+
+                <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-full">
+                    <!-- Light/Dark Mode Toggle -->
+                    <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
+                        class="flex items-center justify-center w-8 h-6 text-lg rounded-l-full transition-colors duration-200 hidden lg:flex"
+                        :class="!$flux.dark ? 'bg-zinc-400 text-text-white' : 'bg-transparent text-zinc-600 dark:text-zinc-300'">
+                        <flux:icon name="sun" class="w-5 h-5 stroke-white" />
+                    </button>
+
+                    <button type="button" @click="$flux.dark = true" :aria-pressed="$flux.dark"
+                        class="flex items-center justify-center w-8 h-6 text-lg rounded-r-full transition-colors duration-200 hidden lg:flex"
+                        :class="$flux.dark ? 'bg-zinc-400 text-text-white' : 'bg-transparent text-zinc-600 dark:text-zinc-300'">
+                        <flux:icon name="moon" class="w-5 h-5 stroke-current" />
+                    </button>
+
+                    <div x-show="$flux.dark" class="lg:hidden">
+                        <flux:icon name="moon" class="w-5 h-5 stroke-current" @click="$flux.dark = false" />
+                    </div>
+                    <div x-show="!$flux.dark" class="lg:hidden">
+                        <flux:icon name="sun" class="w-5 h-5 stroke-current" @click="$flux.dark = true" />
+                    </div>
+                </div>
+
                 @auth
                     @include('partials.profile-dropdown')
                 @else
-                    <div class="mr-3">
-                        <a href="{{ route('login') }}">
-                            <flux:icon name="user-circle" class="w-7 h-7 text-text-text-white " />
+                    <div class="ml-3 flex">
+                        <a href="{{ route('login') }}"
+                            class="bg-zinc-500 hover:bg-zinc-50 transition-colors duration-300 hover:text-zinc-500 px-3 py-[3px] text-sm xl:text-base xl:py-[5px] text-white rounded-full">
+                            {{-- <flux:icon name="user-circle" class="w-7 h-7 text-text-text-white " /> --}}
+                            {{ __('Log in') }}
                         </a>
+
                     </div>
                 @endauth
-
-                <!-- Light/Dark Mode Toggle -->
-                <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
-                    class="flex items-center justify-center w-10 h-8 text-lg rounded-l-full transition-colors duration-200 hidden md:flex"
-                    :class="!$flux.dark ? 'bg-zinc-400 text-text-white' : 'bg-transparent text-zinc-600 dark:text-zinc-300'">
-                    <flux:icon name="sun" class="w-5 h-5 stroke-white" />
-                </button>
-
-                <button type="button" @click="$flux.dark = true" :aria-pressed="$flux.dark"
-                    class="flex items-center justify-center w-10 h-8 text-lg rounded-r-full transition-colors duration-200 hidden md:flex"
-                    :class="$flux.dark ? 'bg-zinc-400 text-text-white' : 'bg-transparent text-zinc-600 dark:text-zinc-300'">
-                    <flux:icon name="moon" class="w-5 h-5 stroke-current" />
-                </button>
-
-                <div x-show="$flux.dark" class="md:hidden">
-                    <flux:icon name="moon" class="w-5 h-5 stroke-current" @click="$flux.dark = false" />
-                </div>
-                <div x-show="!$flux.dark" class="md:hidden">
-                    <flux:icon name="sun" class="w-5 h-5 stroke-current" @click="$flux.dark = true" />
-                </div>
             </div>
 
-            {{-- Mobile menu button --}}
-            <button @click="mobileMenuOpen = !mobileMenuOpen"
-                class="xl:hidden ml-2 inline-flex items-center justify-center p-2 rounded-md text-text-secondary hover:text-text-text-white hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-text-text-text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
+
         </div>
     </div>
     {{-- Mobile sidebar --}}
     <div x-show="mobileMenuOpen" x-cloak @click.outside="mobileMenuOpen = false"
         x-transition:enter="transition ease-out duration-100"
-        class="absolute top-18 right-0 w-3/4 max-w-[380px] bg-bg-primary backdrop:blure-md z-100 rounded-lg transition-all duration-300 h-auto p-4 shadow-lg overflow-y-auto ">
-        <div class="flex justify-between items-center bg-bg-secondary p-2 rounded-lg mb-2">
+        class="absolute top-18 right-0 w-full h-screen bg-bg-primary backdrop:blure-md z-100 rounded-lg transition-all duration-300  p-4 shadow-lg overflow-y-auto ">
+        <div class="flex justify-between items-center bg-bg-hover p-2 rounded-lg mb-2">
             <h2 class="text-lg font-semibold">Category</h2>
             <button @click="mobileMenuOpen = false">
                 <flux:icon name="x-mark" class="w-5 h-5 stroke-current hover:stroke-pink-600" />

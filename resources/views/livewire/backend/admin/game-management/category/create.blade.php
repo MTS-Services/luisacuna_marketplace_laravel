@@ -65,6 +65,19 @@
                 </div>
 
 
+                <div class="form-control w-full">
+                    <x-ui.label for="is_default" :value="__('Is Default Category?')" />
+
+                    <x-ui.select id="is_default" class="mt-1 block w-full" wire:model="form.is_default">
+                        <option value="">{{ __('Select Option') }}</option>
+                        <option value="1">{{ __('Yes') }}</option>
+                        <option value="0">{{ __('No') }}</option>
+                    </x-ui.select>
+
+                    <x-ui.input-error :messages="$errors->get('form.is_default')" class="mt-2" />
+                </div>
+
+
 
             </div>
 

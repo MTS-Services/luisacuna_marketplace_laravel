@@ -28,6 +28,7 @@ class GameController extends Controller
     }
 
     public function show($id)
+
     {
         $this->data = $this->service->findData(decrypt($id));
         if (!$this->data) {
@@ -38,12 +39,12 @@ class GameController extends Controller
             'data' => $this->data,
         ]);
     }
-    public function edit($id)    
+    public function edit($id)
     {
         $this->data = $this->service->findData($id);
         return view($this->masterView, [
             'data' => $this->data,
-        ]); 
+        ]);
     }
     public function trash()
     {

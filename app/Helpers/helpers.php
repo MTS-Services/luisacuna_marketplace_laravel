@@ -465,4 +465,10 @@ if (!function_exists('gameCategories')) {
             ]
         ];
     }
+
+if (!function_exists('getAuditorName')) {
+    function getAuditorName($model){
+        return $model && $model->name ? $model->name : $model->first_name . ' ' . $model->last_name ?? 'N/A';
+    }
+}
 }

@@ -83,7 +83,6 @@ class ProductRepository implements ProductRepositoryInterface
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
-        return $query->paginate($perPage);
     }
     public function exists(int $id): bool
     {
@@ -116,50 +115,62 @@ class ProductRepository implements ProductRepositoryInterface
     }
     public function update(int $id, array $data): bool
     {
-        $product = $this->find($id);
+        $findData = $this->find($id);
 
-        if (!$product) {
+        if (!$findData) {
             return false;
         }
 
-        return $product->update($data);
+        return $findData->update($data);
     }
     public function delete(int $id, int $actionerId): bool
     {
-        $product = $this->find($id);
+        $findData = $this->find($id);
 
-        if (!$product) {
+        if (!$findData) {
             return false;
         }
-        $product->update(['deleter_type' => $actionerId]);
+        $findData->update([
+            'deleter_id' => $actionerId,
+            'deleter_type' => get_class(admin()),
+            'deleted_at' => now(),
+        ]);
 
-        return $product->delete();
+        return $findData->delete();
     }
     public function forceDelete(int $id): bool
     {
-        $product = $this->findTrashed($id);
+        $findData = $this->findTrashed($id);
 
-        if (!$product) {
+        if (!$findData) {
             return false;
         }
 
-        return $product->forceDelete();
+        return $findData->forceDelete();
     }
     public function restore(int $id, int $actionerId): bool
     {
-        $product = $this->findTrashed($id);
+        $findData = $this->findTrashed($id);
 
-        if (!$product) {
+        if (!$findData) {
             return false;
         }
-        $product->update(['restorer_type' => $actionerId, 'restored_at' => now()]);
+        $findData->update([
+            'restorer_id' => $actionerId,
+            'restorer_type' => get_class(admin()),
+            'restored_at' => now(),
+        ]);
 
-        return $product->restore();
+        return $findData->restore();
     }
     public function bulkDelete(array $ids, int $actionerId): int
     {
         return DB::transaction(function () use ($ids, $actionerId) {
-            $this->model->whereIn('id', $ids)->update(['deleter_type' => $actionerId]);
+            $this->model->whereIn('id', $ids)->update([
+                'deleter_id' => $actionerId,
+                'deleter_type' => get_class(admin()),
+                'deleted_at' => now(),
+            ]);
             return $this->model->whereIn('id', $ids)->delete();
         });
     }
@@ -170,7 +181,11 @@ class ProductRepository implements ProductRepositoryInterface
     public function bulkRestore(array $ids, int $actionerId): int
     {
         return DB::transaction(function () use ($ids, $actionerId) {
-            $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restorer_type' => $actionerId, 'restored_at' => now()]);
+            $this->model->onlyTrashed()->whereIn('id', $ids)->update([
+                'restorer_id' => $actionerId,
+                'restorer_type' => get_class(admin()),
+                'restored_at' => now()
+            ]);
             return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
         });
     }

@@ -12,6 +12,8 @@ use App\Http\Controllers\Frontend\GameController;
 use App\Http\Controllers\Frontend\GiftCardController;
 use App\Http\Controllers\Frontend\UserAccountController;
 use App\Http\Controllers\Frontend\UserProfileController;
+use App\Livewire\Frontend\Components\Boostings\BoostingSubscribe;
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/profile', [UserProfileController::class, 'profile'])->name('profile');

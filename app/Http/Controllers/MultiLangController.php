@@ -18,7 +18,7 @@ class MultiLangController extends Controller
             abort(400);
         }
         
-        if (!in_array($currency, ['USD','EUR'])) {
+        if (!in_array($currency, ['USD-$','EUR-€'])) {
             abort(400);
         }
 
