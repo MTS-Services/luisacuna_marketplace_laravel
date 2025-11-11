@@ -136,22 +136,26 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Game Card 1 -->
-                <div
-                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
-                    <div class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
-                        <img src="{{ asset('assets/images/home_page/game-1.png') }}" alt="">
+                @foreach ($games as $game)
+                    <div
+                        class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                        <div
+                            class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
+                            <img src="{{ asset($game->logo) }}" alt="{{ $game->name }}">
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-text-white">{{ $game->name }}</h3>
+                        <p class="text-sm text-text-secondary mb-4">{{ __('50 items available') }}</p>
+                        <x-ui.button class="py-2!"
+                            href="{{ route('game.index', ['categorySlug' => 'currency', 'gameSlug' => 'blade-ball']) }}"
+                            wire:navigate>
+                            {{ __('Buy Now') }}
+                        </x-ui.button>
                     </div>
-                    <h3 class="font-bold text-lg mb-2 text-text-white">{{ __('Blade Ball Tokens') }}</h3>
-                    <p class="text-sm text-text-secondary mb-4">{{ __('50 items available') }}</p>
-                    <x-ui.button class="py-2!"
-                        href="{{ route('game.index', ['categorySlug' => 'currency', 'gameSlug' => 'blade-ball']) }}"
-                        wire:navigate>
-                        {{ __('Buy Now') }}
-                    </x-ui.button>
-                </div>
+                @endforeach
+
 
                 <!-- Game Card 2 -->
-                <div
+                {{-- <div
                     class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                     <div
                         class="w-full max-w-[300px] mx-auto mb-4  rounded-lg flex items-center justify-center text-4xl">
@@ -164,10 +168,10 @@
                         wire:navigate>
                         {{ __('Buy Now') }}
                     </x-ui.button>
-                </div>
+                </div> --}}
 
                 <!-- Game Card 3 -->
-                <div
+                {{-- <div
                     class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                     <div
                         class="w-full max-w-[300px] mx-auto mb-4  rounded-lg flex items-center justify-center text-4xl">
@@ -180,10 +184,10 @@
                         wire:navigate>
                         {{ __('Buy Now') }}
                     </x-ui.button>
-                </div>
+                </div> --}}
 
                 <!-- Game Card 4 -->
-                <div
+                {{-- <div
                     class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                     <div
                         class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
@@ -196,10 +200,10 @@
                         wire:navigate>
                         {{ __('Buy Now') }}
                     </x-ui.button>
-                </div>
+                </div> --}}
 
                 <!-- Game Card 5 -->
-                <div
+                {{-- <div
                     class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                     <div
                         class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
@@ -212,10 +216,10 @@
                         wire:navigate>
                         {{ __('Buy Now') }}
                     </x-ui.button>
-                </div>
+                </div> --}}
 
                 <!-- Game Card 6 -->
-                <div
+                {{-- <div
                     class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                     <div
                         class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
@@ -228,7 +232,7 @@
                         wire:navigate>
                         {{ __('Buy Now') }}
                     </x-ui.button>
-                </div>
+                </div> --}}
             </div>
         </div>
     </section>
