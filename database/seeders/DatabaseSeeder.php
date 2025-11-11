@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             ReferralSettingSeeder::class,
             UserSeeder::class,
             GameCategorySeeder::class,
+            GamePlatformSeeder::class,
             GameSeeder::class,
 
             SellerProfileSeeder::class,
@@ -41,6 +42,7 @@ class DatabaseSeeder extends Seeder
             ProductTypeSeeder::class,
             ProductSeeder::class,
             PageViewSeeder::class,
+
             
         ]);
 

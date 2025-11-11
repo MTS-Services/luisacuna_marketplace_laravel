@@ -30,7 +30,7 @@ class Trash extends Component
     public function render()
     {
 
-        $games = $this->service->getTrashedPaginatedData($this->perPage, $this->getFilters());
+        $datas = $this->service->getTrashedPaginatedData($this->perPage, $this->getFilters());
 
 
         $columns = [
@@ -107,11 +107,11 @@ class Trash extends Component
         return view(
             'livewire.backend.admin.game-management.game.trash',
             [
-                'games' => $games,
+                'data' => $datas,
                 'columns' => $columns,
                 'actions' => $actions,
                 'bulkActions' => $bulkActions,
-                'bulkAction'  => $this->bulkAction,
+              
                 'statuses' =>  GameStatus::options()
             ]
         );
@@ -157,7 +157,7 @@ class Trash extends Component
                 $this->warning('No data selected');
                 return;
             }
-            $this->service->forceDeleteData(decrypt($this->deleteId), true);
+            $this->service->deleteData(decrypt($this->deleteId), true);
             $this->reset(['deleteId', 'showDeleteModal']);
 
             $this->success('Data deleted successfully');
@@ -201,7 +201,7 @@ class Trash extends Component
     {
 
         try {
-            $count = $this->service->bulkForceDelete($this->selectedIds);
+            $count = $this->service->bulkForceDeleteData($this->selectedIds);
 
             $this->success("{$count} Datas deleted successfully");
         } catch (\Exception $e) {
@@ -219,9 +219,10 @@ class Trash extends Component
                 $this->warning('No data selected');
                 return;
             }
-            $count =  $this->service->bulkRestore($this->selectedIds, admin()->id);
+            $count =  $this->service->bulkRestoreData($this->selectedIds, admin()->id);
 
             $this->success("{$count} Data restored successfully");
+
         } catch (\Exception $e) {
 
             Log::error("Failed to delete data", ['error' => $e->getMessage()]);

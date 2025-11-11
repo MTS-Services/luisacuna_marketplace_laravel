@@ -99,6 +99,7 @@ class Index extends Component
             ['value' => 'delete', 'label' => 'Delete'],
             ['value' => 'activate', 'label' => 'Activate'],
             ['value' => 'inactivate', 'label' => 'Inactive'],
+            ['value' => 'upcoming', 'label' => 'Upcoming'],
         ];
 
 

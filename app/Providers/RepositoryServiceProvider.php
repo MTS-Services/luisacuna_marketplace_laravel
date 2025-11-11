@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Game;
 use App\Models\PageView;
 use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Eloquent\RoleRepository;
@@ -15,6 +16,9 @@ use App\Repositories\Eloquent\CurrencyRepository;
 use App\Repositories\Eloquent\LanguageRepository;
 use App\Repositories\Eloquent\ProductTypeRepository;
 use App\Repositories\Eloquent\GameCategoryRepository;
+use App\Repositories\Eloquent\GamePlatformRepository;
+
+use App\Repositories\Contracts\GamePlatformRepositoryInterface;
 use App\Repositories\Contracts\GameRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\AdminRepositoryInterface;
@@ -28,6 +32,7 @@ use App\Repositories\Contracts\PageViewRepositoryInterface;
 use App\Repositories\Contracts\PermissionRepositoryInterface;
 use App\Repositories\Eloquent\PageViewRepository;
 use App\Repositories\Eloquent\PermissionRepository;
+
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -49,11 +54,20 @@ class RepositoryServiceProvider extends ServiceProvider
             GameCategoryRepository::class,
         );
 
-        // Game Category Repository
+
+        // Game  Repository
         $this->app->bind(
             GameRepositoryInterface::class,
             GameRepository::class,
         );
+
+        //GamePlatform Repository
+
+        $this->app->bind(
+            GamePlatformRepositoryInterface::class,
+            GamePlatformRepository::class
+        );
+
         $this->app->bind(
             LanguageRepositoryInterface::class,
             LanguageRepository::class

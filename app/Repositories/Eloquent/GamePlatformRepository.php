@@ -2,16 +2,17 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Models\Game;
-use App\Repositories\Contracts\GameRepositoryInterface;
-use Illuminate\Database\Eloquent\Collection;
+use App\Models\GamePlatform;
+use App\Repositories\Contracts\GamePlatformRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
+
 use Illuminate\Support\Facades\DB;
 
-class GameRepository implements GameRepositoryInterface
+class GamePlatformRepository implements GamePlatformRepositoryInterface
 {
-     public function __construct(
-        protected Game $model
+    public function __construct(
+        protected GamePlatform $model
     ) {}
 
 
@@ -25,7 +26,7 @@ class GameRepository implements GameRepositoryInterface
         return $query->orderBy($sortField, $order)->get();
     }
 
-    public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?Game
+    public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?GamePlatform
     {
         $model = $this->model;
         if ($trashed) {
@@ -34,7 +35,7 @@ class GameRepository implements GameRepositoryInterface
         return $model->where($column_name, $column_value)->first();
     }
 
-    public function findTrashed($column_value, string $column_name = 'id'): ?Game
+    public function findTrashed($column_value, string $column_name = 'id'): ?GamePlatform
     {
         $model = $this->model->onlyTrashed();
         return $model->where($column_name, $column_value)->first();
@@ -50,7 +51,7 @@ class GameRepository implements GameRepositoryInterface
 
         if ($search) {
             // Scout Search
-            return Game::search($search)
+            return GamePlatform::search($search)
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
         }
@@ -73,7 +74,7 @@ class GameRepository implements GameRepositoryInterface
 
         if ($search) {
             // 👇 Manually filter trashed + search
-            return Game::search($search)
+            return GamePlatform::search($search)
                 ->onlyTrashed()
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
@@ -111,7 +112,7 @@ class GameRepository implements GameRepositoryInterface
     *                    Data Modification Methods
     * ================== ================== ================== */
 
-    public function create(array $data): Game
+    public function create(array $data): GamePlatform
     {
         return $this->model->create($data);
     }
@@ -165,20 +166,19 @@ class GameRepository implements GameRepositoryInterface
     public function bulkDelete(array $ids, int $actionerId): int
     {
         return DB::transaction(function () use ($ids, $actionerId) {
-            $this->model->whereIn('id', $ids)->update(['deleter_id' => $actionerId]);
+            $this->model->whereIn('id', $ids)->update(['deleted_by' => $actionerId]);
             return $this->model->whereIn('id', $ids)->delete();
         });
     }
 
     public function bulkUpdateStatus(array $ids, string $status, int $actionerId): int
     {
-        return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updater_id' => $actionerId]);
+        return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updated_by' => $actionerId]);
     }
-    
     public function bulkRestore(array $ids, int $actionerId): int
     {
         return DB::transaction(function () use ($ids, $actionerId) {
-            $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restorer_id' => $actionerId, 'restored_at' => now()]);
+            $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restored_by' => $actionerId, 'restored_at' => now()]);
             return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
         });
     }
@@ -199,10 +199,5 @@ class GameRepository implements GameRepositoryInterface
     public function getInactive(string $sortField = 'created_at', $order = 'desc'): Collection
     {
         return $this->model->inactive()->orderBy($sortField, $order)->get();
-    }
-
-    public function getUpcoming(string $sortField = 'created_at', $order = 'desc'): Collection
-    {
-        return $this->model->upcoming()->orderBy($sortField, $order)->get();
     }
 }

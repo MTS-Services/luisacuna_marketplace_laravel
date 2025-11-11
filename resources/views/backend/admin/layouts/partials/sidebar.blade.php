@@ -92,6 +92,12 @@
                         'active' => 'game-category',
                     ],
                     [
+                        'name' => 'Platforms',
+                        'route' => route('admin.gm.platform.index'),
+                        'icon' => 'swords',
+                        'active' => 'game-platform',
+                    ],
+                    [
                         'name' => 'Games',
                         'route' => route('admin.gm.game.index'),
                         'icon' => 'swords',
