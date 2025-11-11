@@ -229,6 +229,11 @@
                                 <p class="text-slate-400 text-lg font-bold">
                                     {{ getAuditorName($data->deleter) }}</p>
                             </div>
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('RESTORED BY') }} </p>
+                                <p class="text-slate-400 text-lg font-bold">
+                                    {{ getAuditorName($data->restorer) }}</p>
+                            </div>
                         </div>
                     </div>
 
