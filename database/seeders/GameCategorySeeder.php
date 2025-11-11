@@ -13,7 +13,7 @@ class GameCategorySeeder extends Seeder
     public function run(): void
     {
 
-        GameCategory::factory(10)->create();
+        GameCategory::factory(100)->create();
        
     }
 }
