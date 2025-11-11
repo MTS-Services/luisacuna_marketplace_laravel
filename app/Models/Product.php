@@ -25,7 +25,7 @@ class Product extends BaseModel implements Auditable
         'slug',
         'description',
         'price',
-        'currency',
+        'currency_id',
         'discount_percentage',
         'discounted_price',
         'stock_quantity',
@@ -108,6 +108,11 @@ class Product extends BaseModel implements Auditable
     {
         return $this->hasMany(ProductImage::class);
     }
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class, 'currency_id', 'id');
+    }
+
 
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

@@ -34,7 +34,7 @@ class ProductSeeder extends Seeder
                 'slug' => Str::slug($title) . '-' . $i,
                 'description' => $faker->paragraph(),
                 'price' => $price,
-                'currency' => 'USD',
+                'currency_id' => 1,
                 'discount_percentage' => rand(0, 50),
                 'discounted_price' => null,
                 'stock_quantity' => rand(1, 100),
