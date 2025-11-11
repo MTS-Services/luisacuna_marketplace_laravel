@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-          $this->call([
+        $this->call([
             CountrySeeder::class,
             AdminSeeder::class,
             LanguageSeeder::class,
@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             GameCategorySeeder::class,
             GameSeeder::class,
+            ApplicationSettingSeeder::class,
 
             SellerProfileSeeder::class,
             UserStatisticsSeeder::class,
@@ -41,7 +42,8 @@ class DatabaseSeeder extends Seeder
             ProductTypeSeeder::class,
             ProductSeeder::class,
             PageViewSeeder::class,
-            
+
+
         ]);
 
         // Admin::create([
