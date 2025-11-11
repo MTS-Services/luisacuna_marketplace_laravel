@@ -31,7 +31,7 @@ class ProductTypeService
     /* ================== ================== ==================
     *                          Find Methods 
     * ================== ================== ================== */
-    public function getAll($sortField = 'created_at', $order = 'desc'): Collection
+    public function getAllDatas($sortField = 'created_at', $order = 'desc'): Collection
     {
         return $this->interface->all($sortField, $order);
     }
@@ -75,7 +75,7 @@ class ProductTypeService
         return $this->createAction->execute($data);
     }
 
-    public function updateData(int $id, array $data): array
+    public function updateData(int $id, array $data): ProductType
     {
         return $this->updateAction->execute($id, $data);
     }
@@ -104,11 +104,9 @@ class ProductTypeService
 
         return $this->updateAction->execute($id, [
             'status' => $status->value,
-            'updater_type' => $actionerId,
+            'updated_by' => $actionerId,
         ]);
     }
-
-
     public function bulkRestoreData(array $ids, ?int $actionerId = null): int
     {
         if ($actionerId == null) {
@@ -132,7 +130,6 @@ class ProductTypeService
         }
         return $this->bulkAction->execute(ids: $ids, action: 'delete', status: null, actionerId: $actionerId);
     }
-
     public function bulkUpdateStatus(array $ids, ProductTypeStatus $status, ?int $actionerId = null): int
     {
         if ($actionerId == null) {
@@ -140,4 +137,24 @@ class ProductTypeService
         }
         return $this->bulkAction->execute(ids: $ids, action: 'status', status: $status->value, actionerId: $actionerId);
     }
+
+    /* ================== ================== ==================
+    *                   Accessors (optionals)
+    * ================== ================== ================== */
+
+    public function getActiveData($sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->interface->getActive($sortField, $order);
+    }
+
+    public function getInactiveData($sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->interface->getInactive($sortField, $order);
+    }
+
+    public function getSuspendData($sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->interface->getSuspended($sortField, $order);
+    }
+
 }

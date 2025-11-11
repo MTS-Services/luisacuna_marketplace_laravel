@@ -42,11 +42,6 @@ class Index extends Component
                 'sortable' => true
             ],
             [
-                'key' => 'description',
-                'label' => 'Description',
-                'sortable' => true
-            ],
-            [
                 'key' => 'price',
                 'label' => 'Price',
                 'sortable' => true
@@ -63,11 +58,13 @@ class Index extends Component
             ],
 
             [
-                'key' => 'created_by',
+                'key' => 'creater_id',
                 'label' => 'Created By',
                 'format' => function ($data) {
-                    return $data->creater_admin?->name ?? 'System';
-                }
+                    return $data->creater
+                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . getAuditorName($data->creater) . '</span>'
+                        : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
+                },
             ],
         ];
         $actions = [

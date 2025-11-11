@@ -15,8 +15,8 @@ class CreateAction
     public function execute(array $data): ProductType
     {
        return DB::transaction(function () use ($data) {
-            $productType = $this->interface->create($data);
-            return $productType->fresh();
+            $newData = $this->interface->create($data);
+            return $newData->fresh();
         });
     }
 }
