@@ -1,5 +1,5 @@
 <main class="mx-auto">
-    @if ($categorySlug == 'gift-cards' || $categorySlug == 'top-ups')
+    @if ($categorySlug == 'gift-card' || $categorySlug == 'top-up')
         <section class="container mt-2">
             <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
             <div class="flex items-center gap-2 mt-8 text-lg font-semibold">
@@ -829,7 +829,7 @@
                                     <template x-for="(tag, index) in (showAll ? tags : tags.slice(0, limit))"
                                         :key="index">
                                         <span
-                                            class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-600 transition cursor-pointer"
+                                            class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-600 transition cursor-pointer text-text-white"
                                             x-text="tag" @click="$dispatch('tag-selected', tag)"></span>
                                     </template>
                                 </template>
