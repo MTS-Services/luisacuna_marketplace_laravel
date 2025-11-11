@@ -5,7 +5,9 @@ namespace App\Livewire\Backend\Admin\GameManagement\Game;
 use App\Enums\GameStatus;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameForm;
 use App\Models\Game;
+use App\Models\GamePlatform;
 use App\Services\GameCategoryService;
+use App\Services\GamePlatformService;
 use App\Services\GameService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -21,14 +23,17 @@ class Edit extends Component
 
     protected GameService $service;
 
+    protected GamePlatformService $gamePlatformService;
     public $data = null;
 
-    public function boot(GameCategoryService $categoryService, GameService $service)
+    public function boot(GameCategoryService $categoryService, GameService $service, GamePlatformService $gamePlatformService)
     {
 
         $this->categoryService = $categoryService;
 
         $this->service = $service;
+
+        $this->gamePlatformService = $gamePlatformService;
     }
     public function mount(Game $data)
     {
@@ -40,30 +45,18 @@ class Edit extends Component
 
     public function render()
     {
-        $platforms = [
-            [
-                'id' => 1,
-                'name' => 'PC'
-            ],
-            [
-                'id' => 2,
-                'name' => 'Mobile'
-            ],
-            [
-                'id' => 3,
-                'name' => 'Web'
-            ],
-            [
-                'id' => 4,
-                'name' => 'Console'
-            ]
-        ];
+       
         return view('livewire.backend.admin.game-management.game.edit', [
 
             'statuses'   => GameStatus::options(),
             'categories' => $this->categories(),
-            'platforms'  => $platforms,
+            'platforms'  => $this->getPlatforms(),
         ]);
+    }
+
+       protected function getPlatforms(): array
+    {
+        return $this->gamePlatformService->getAllDatas()->pluck('name', 'id')->toArray();
     }
 
     protected function categories()

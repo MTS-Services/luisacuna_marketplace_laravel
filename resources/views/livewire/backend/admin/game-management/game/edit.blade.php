@@ -113,10 +113,10 @@
                         {{ __('Platform') }} <span class="text-red-500">*</span>
                     </label>
                     <div class="flex flex-wrap gap-4">
-                        @foreach (['PC', 'PS5', 'Xbox', 'Android', 'iOS'] as $platform)
+                        @foreach ($platforms as $id => $name)
                             <label class="flex items-center gap-2">
-                                <input type="checkbox" wire:model="form.platform" value="{{ $platform }}">
-                                {{ $platform }}
+                                <input type="checkbox" wire:model="form.platform" value="{{ $id }}">
+                                {{ $name }}
                             </label>
                         @endforeach
 

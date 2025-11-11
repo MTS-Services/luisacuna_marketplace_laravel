@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Backend\Admin\GameManagement;
 use App\Http\Controllers\Controller;
 use App\Models\GamePlatform;
 use App\Services\GamePlatformService;
-use Illuminate\Http\Request;
+
 
 class GamePlatformController extends Controller
 {
@@ -41,7 +41,7 @@ class GamePlatformController extends Controller
     }
     public function edit($id)
     {
-        $this->data = $this->service->findData($id);
+        $this->data = $this->service->findData(decrypt($id));
 
         if (!$this->data) {
             abort(404);

@@ -73,13 +73,13 @@ class Index extends Component
             [
                 'key' => 'id',
                 'label' => 'Show',
-                'route' => 'admin.as.currency.show',
+                'route' => 'admin.gm.platform.view',
                 'encrypt' => true
             ],
             [
                 'key' => 'id',
                 'label' => 'Edit',
-                'route' => 'admin.as.currency.edit',
+                'route' => 'admin.gm.platform.edit',
                 'encrypt' => true
             ],
             [
