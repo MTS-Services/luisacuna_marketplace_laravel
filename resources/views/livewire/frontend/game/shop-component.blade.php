@@ -584,7 +584,7 @@
                         <span class=" text-text-primary">{{ __('Shop') }}</span>
                     </div>
 
-                    {{-- <!-- Filters Section -->
+                    <!-- Filters Section -->
                     <div class="mb-8 space-y-4">
                         <div class="flex gap-4 justify-between md:justify-start md:flex-wrap relative"
                             x-data={filter:false}>
@@ -614,7 +614,7 @@
                                 <option value="">{{ __('Select Delivery Time') }}</option>
                             </x-ui.select>
                             <button
-                                class="text-text-primary hover:text-white transition hidden md:flex">{{ __('Clear all') }}</button>
+                                class="text-text-primary hover:text-text-primary/80 transition hidden md:flex">{{ __('Clear all') }}</button>
                             <button @click="filter = !filter"
                                 class="flex items-center gap-2 border border-purple-500 rounded-full px-5 py-2 hover:bg-purple-600 transition md:hidden">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
@@ -829,7 +829,7 @@
                                     <template x-for="(tag, index) in (showAll ? tags : tags.slice(0, limit))"
                                         :key="index">
                                         <span
-                                            class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-600 transition cursor-pointer text-text-white"
+                                            class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-600 transition cursor-pointer text-white"
                                             x-text="tag" @click="$dispatch('tag-selected', tag)"></span>
                                     </template>
                                 </template>
@@ -838,7 +838,7 @@
                                 <template x-if="window.innerWidth >= 640">
                                     <template x-for="(tag, index) in tags" :key="index">
                                         <span
-                                            class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-600 transition cursor-pointer"
+                                            class="px-3 py-1 bg-slate-800/40 rounded text-sm hover:bg-slate-600 transition cursor-pointer text-white"
                                             x-text="tag" @click="$dispatch('tag-selected', tag)"></span>
                                     </template>
                                 </template>
@@ -868,132 +868,6 @@
                             <button class="px-5 py-2 rounded-full bg-bg-primary text-text-white font-semibold">Instant
                                 delivery</button>
                         </div>
-                    </div> --}}
-
-                    {{-- Mobile Device Filter --}}
-                    <div class="flex items-center justify-between gap-4 mb-8 relative" x-data="{ filter: false }">
-                        <div class="flex-1 min-w-64">
-                            <div class="relative">
-                                <input type="text" placeholder="Search"
-                                    class="w-full bg-bg-primary border border-slate-700 rounded-full px-4 py-2 pl-10 focus:outline-none focus:border-purple-500">
-                                <span class="absolute left-3 top-2.5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
-                        <x-ui.select id="status-select" class="py-0.5! w-auto! rounded-full!" x-on:click="filter = !filter">
-                            <option value="">{{ __('Device') }}</option>
-                        </x-ui.select>
-                        <div x-show="filter" class="glass-card text-white p-6 rounded-lg w-full absolute top-16 right-0 z-10">
-                            <!-- Header -->
-                            <div class="flex justify-between items-center border-b border-gray-700 pb-4 mb-4">
-                                <h2 class="text-lg font-semibold">Seller list</h2>
-                                <div class="text-gray-500 text-xl">—</div>
-                            </div>
-
-                            <!-- Toggle Buttons -->
-                            <div class="flex justify-center mb-6 space-x-3">
-                                <button class="px-5 py-2 rounded-full bg-purple-600 text-white font-semibold">Instant
-                                    delivery</button>
-                                <button
-                                    class="px-5 py-2 rounded-full bg-transparent border border-green-500 text-green-400 font-semibold">Online
-                                    Seller</button>
-                            </div>
-
-                            <!-- Dropdown Filters -->
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="text-sm text-gray-400">Short by</label>
-                                    <select
-                                        class="w-full bg-transparent border-b border-purple-500 py-2 focus:outline-none">
-                                        <option class="bg-gray-800">Fastest Delivery</option>
-                                        <option class="bg-gray-800">Top Selling</option>
-                                        <option class="bg-gray-800">Cheapest Price</option>
-                                        <option class="bg-gray-800">Recent Sales</option>
-                                        <option class="bg-gray-800">Highest Price</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label class="text-sm text-gray-400">Platform</label>
-                                    <select
-                                        class="w-full bg-transparent border-b border-purple-500 py-2 focus:outline-none">
-                                        <option class="bg-gray-800">ANDROID</option>
-                                        <option class="bg-gray-800">PS</option>
-                                        <option class="bg-gray-800">XBOX</option>
-                                        <option class="bg-gray-800">IOS</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label class="text-sm text-gray-400">Contain Rare Skin</label>
-                                    <select
-                                        class="w-full bg-transparent border-b border-purple-500 py-2 focus:outline-none">
-                                        <option class="bg-gray-800">OG</option>
-                                        <option class="bg-gray-800">Renegade Raider</option>
-                                        <option class="bg-gray-800">Travis Scott</option>
-                                        <option class="bg-gray-800">Black Knight</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label class="text-sm text-gray-400">Pickaxes</label>
-                                    <select
-                                        class="w-full bg-transparent border-b border-purple-500 py-2 focus:outline-none">
-                                        <option class="bg-gray-800">0-10</option>
-                                        <option class="bg-gray-800">11-30</option>
-                                        <option class="bg-gray-800">31-50</option>
-                                        <option class="bg-gray-800">51-100</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label class="text-sm text-gray-400">V-Bucks</label>
-                                    <select
-                                        class="w-full bg-transparent border-b border-purple-500 py-2 focus:outline-none">
-                                        <option class="bg-gray-800">None</option>
-                                        <option class="bg-gray-800">1-1000</option>
-                                        <option class="bg-gray-800">1001-5000</option>
-                                        <option class="bg-gray-800">5001-10000</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label class="text-sm text-gray-400">Outfits</label>
-                                    <select
-                                        class="w-full bg-transparent border-b border-purple-500 py-2 focus:outline-none">
-                                        <option class="bg-gray-800">None</option>
-                                        <option class="bg-gray-800">Random</option>
-                                        <option class="bg-gray-800">1-10</option>
-                                        <option class="bg-gray-800">11-20</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label class="text-sm text-gray-400">Price (USD)</label>
-                                    <select
-                                        class="w-full bg-transparent border-b border-purple-500 py-2 focus:outline-none">
-                                        <option class="bg-gray-800">≤ $5.00</option>
-                                        <option class="bg-gray-800">$5.00 - $15.00</option>
-                                        <option class="bg-gray-800">$15.00 - $50.00</option>
-                                        <option class="bg-gray-800">$50.00 - $100.00</option>
-                                        <option class="bg-gray-800">$100.00+</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Buttons -->
-                            <div class="flex justify-between mt-8">
-                                <button
-                                    class="w-[45%] py-2 bg-transparent border border-purple-400 text-purple-400 rounded-full font-medium">Reset</button>
-                                <button
-                                    class="w-[45%] py-2 bg-purple-600 hover:bg-purple-700 rounded-full font-medium">Confirm</button>
-                            </div>
-                        </div>
                     </div>
 
 
@@ -1001,8 +875,7 @@
 
                     <div class=" flex items-center justify-center ">
                         <!-- Product Cards -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-                            <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
                             <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
                             <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
                             <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
