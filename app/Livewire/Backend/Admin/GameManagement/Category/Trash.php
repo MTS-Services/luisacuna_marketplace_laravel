@@ -60,23 +60,18 @@ class Trash extends Component
             //     }
             // ],
             [
-                'key' => 'created_at',
-                'label' => 'Created',
+                'key' => 'deleted_at',
+                'label' => 'Deleted Date',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return '<div class="text-sm">' .
-                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $data->created_at->format('M d, Y') . '</div>' .
-                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $data->created_at->format('h:i A') . '</div>' .
-                        '</div>';
+                    return $data->deleted_at_formatted;
                 }
             ],
             [
-                'key' => 'created_by',
-                'label' => 'Created By',
+                'key' => 'deleted_by',
+                'label' => 'Deleted By',
                 'format' => function ($data) {
-                    return $data->creater_admin
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $data->creater_admin->name . '</span>'
-                        : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
+                    return $data->deleter_admin?->name ?? 'System';
                 }
             ],
         ];

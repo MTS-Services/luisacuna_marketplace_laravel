@@ -28,7 +28,7 @@ class DeleteAction
             }
 
             if (!$product) {
-                throw new \Exception('Product not found');
+                throw new \Exception('data not found');
             }
 
 

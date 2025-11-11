@@ -18,16 +18,16 @@ class DeleteAction
     public function execute(int $id, bool $forceDelete = false, int $actionerId)
     {
         return DB::transaction(function () use ($id, $forceDelete, $actionerId) {
-            $productType = null;
+            $findData = null;
 
             if ($forceDelete) {
-                $productType = $this->interface->findTrashed($id);
+                $findData = $this->interface->findTrashed($id);
             } else {
-                $productType = $this->interface->find($id);
+                $findData = $this->interface->find($id);
             }
 
-            if (!$productType) {
-                throw new \Exception('Product Type not found');
+            if (!$findData) {
+                throw new \Exception('Data not found');
             }
 
 

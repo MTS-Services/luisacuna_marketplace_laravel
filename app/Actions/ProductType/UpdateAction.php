@@ -19,39 +19,17 @@ class UpdateAction
     public function execute(int $id, array $data)
     {
         return DB::transaction(function () use ($id, $data) {
-
-            // fatch Product Type
-            $productType = $this->interface->find($id);
-
-            if (!$productType) {
-                Log::error('Product Type not found', ['product_type_id' => $id]);
-                throw new \Exception('Product Type not found');
+            $findData = $this->interface->find($id);
+            if (!$findData) {
+                Log::error('Data not found', ['data_id' => $id]);
+                throw new \Exception('Data not found');
             }
-
-            $oldData = $productType->getAttributes();
-
-            // Update Product Type
             $updated = $this->interface->update($id, $data);
-
             if (!$updated) {
-                Log::error('Failed to update Product Type', ['product_type_id' => $id]);
-                throw new \Exception('Failed to update Product Type');
+                Log::error('Failed to update data in repository', ['data_id' => $id]);
+                throw new \Exception('Failed to update data');
             }
-
-            // Refresh model
-            $productType = $productType->fresh();
-
-            // Detect changes
-            $changes = [];
-            foreach ($productType->getAttributes() as $key => $value) {
-                if (isset($oldData[$key]) && $oldData[$key] != $value) {
-                    $changes[$key] = [
-                        'from' => $oldData[$key],
-                        'to' => $value,
-                    ];
-                }
-            }
-            return [$productType, $changes];
+            return $findData->fresh();
         });
     }
 }

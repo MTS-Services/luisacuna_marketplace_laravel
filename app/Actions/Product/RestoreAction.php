@@ -2,6 +2,7 @@
 
 namespace App\Actions\Product;
 
+use Illuminate\Support\Facades\DB;
 use App\Repositories\Contracts\ProductRepositoryInterface;
 
 class RestoreAction
@@ -11,11 +12,11 @@ class RestoreAction
      */
     public function __construct(
         protected ProductRepositoryInterface $interface
-    )
-    {}
-
+    ) {}
     public function execute(int $id, int $actionerId)
     {
-        return $this->interface->restore($id, $actionerId);
+        return DB::transaction(function () use ($id, $actionerId) {
+            return $this->interface->restore($id, $actionerId);
+        });
     }
 }
