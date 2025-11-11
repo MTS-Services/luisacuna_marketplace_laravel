@@ -34,7 +34,6 @@
                             </div>
                             <!-- Info Cards -->
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full">
-
                                 <div
                                     class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
                                     <p class="text-text-white text-xs font-semibold mb-2">{{ __('NAME') }}</p>
@@ -58,6 +57,7 @@
                                     <p class="text-text-white text-xs font-semibold mb-2">{{ __('DESCRIPTION') }}</p>
                                     <p class="text-slate-400 text-lg font-bold">{{ $data->description ?? 'N/A' }}</p>
                                 </div>
+                                
                                 <div
                                     class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
                                     <p class="text-text-white text-xs font-semibold mb-2">{{ __('META TITLE') }}</p>
@@ -71,7 +71,6 @@
                                     <p class="text-slate-400 text-lg font-bold">{{ $data->meta_description ?? 'N/A' }}
                                     </p>
                                 </div>
-
                             </div>
                         </div>
 
@@ -103,9 +102,6 @@
                                 <p class="text-slate-400 text-lg font-bold">{{ $data->updated_at_formatted }}</p>
                             </div>
                         </div>
-
-                         
-
                     </div>
                 </div>
             </div>

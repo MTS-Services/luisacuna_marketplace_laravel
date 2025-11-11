@@ -24,6 +24,12 @@
                 <div class="px-8 py-8">
                     <div class="mb-10">
 
+                        <div class="    rounded-lg p-4 grid gap-4 mb-4">
+                                <p class="text-text-white text-xs font-medium mb-2">{{ __('DESCRIPTION') }}
+                                </p>
+                                <p class="text-slate-400 text-lg font-bold">{{$data->description}}</p>
+                            </div>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
@@ -43,27 +49,9 @@
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
-                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('CATEGORY') }}
-                                </p>
-                                <p class="text-slate-400 text-lg font-bold">{{$data->category->name}}</p>
-                            </div>
-                            
-                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
-                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('CREATED AT') }}
-                                </p>
-                                <p class="text-slate-400 text-lg font-bold">{{$data->created_at_human}}</p>
-                            </div>
-
-                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('UPDATED AT') }}
                                 </p>
                                 <p class="text-slate-400 text-lg font-bold">{{$data->updated_at_human}}</p>
-                            </div>
-
-                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
-                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('DESCRIPTION') }}
-                                </p>
-                                <p class="text-slate-400 text-lg font-bold">{{$data->description}}</p>
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
@@ -79,12 +67,24 @@
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('CATEGORY') }}
+                                </p>
+                                <p class="text-slate-400 text-lg font-bold">{{$data->category->name}}</p>
+                            </div>
+
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('CREATED AT') }}
+                                </p>
+                                <p class="text-slate-400 text-lg font-bold">{{$data->created_at_human}}</p>
+                            </div>
+
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('IS TRENDING') }}
                                 </p>
                                 <p class="text-slate-400 text-lg font-bold">{{$data->is_trending == 1 ? 'Yes' : 'No'}}</p>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
             </div>

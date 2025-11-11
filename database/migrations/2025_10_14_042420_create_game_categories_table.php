@@ -28,8 +28,6 @@ return new class extends Migration
             $table->boolean('is_featured')->default(false);
             $table->string('status')->index()->default(GameCategoryStatus::ACTIVE);
 
-
-
             $table->timestamps();
             $table->softDeletes();
             $this->addAdminAuditColumns($table);
