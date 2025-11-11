@@ -69,6 +69,11 @@ class Product extends BaseModel implements Auditable
         'deleter_id',
         'restorer_id',
 
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'restored_at',
+
         //here AuditColumns 
     ];
 
