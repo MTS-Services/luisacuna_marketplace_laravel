@@ -9,7 +9,7 @@
                         {{ __('Audit Log Details') }}
                     </h2>
                     <div class="flex items-center gap-2 w-full sm:w-auto">
-                        <x-ui.button href="{{ route('admin.alm.audit.index') }}" class="w-auto py-2!">
+                        <x-ui.button href="{{ route('admin.gm.category.index') }}" class="w-auto py-2!">
                             <flux:icon name="arrow-left"
                                 class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                             {{ __('Back') }}

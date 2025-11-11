@@ -4,13 +4,13 @@ namespace App\Models;
 
 use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
-use App\Enums\GameCategoryStatus;
+use App\Enums\CategoryStatus;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 
-class GameCategory extends BaseModel implements Auditable
+class Category extends BaseModel implements Auditable
 {
     use  AuditableTrait;
 
@@ -34,7 +34,7 @@ class GameCategory extends BaseModel implements Auditable
     ];
 
     protected $casts = [
-        'status' => GameCategoryStatus::class
+        'status' => CategoryStatus::class
     ];
 
     // Scope    
@@ -47,7 +47,7 @@ class GameCategory extends BaseModel implements Auditable
      
     public function games(): HasMany
     {
-        return $this->hasMany(Game::class, 'game_category_id', 'id');
+        return $this->hasMany(Game::class, 'category_id', 'id');
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -63,12 +63,12 @@ class GameCategory extends BaseModel implements Auditable
 
     public function scopeActive(Builder $query): Builder
     {
-        return $query->where('status', GameCategoryStatus::ACTIVE);
+        return $query->where('status', CategoryStatus::ACTIVE);
     }
 
     public function scopeInactive(Builder $query): Builder
     {
-        return $query->where('status', GameCategoryStatus::INACTIVE);
+        return $query->where('status', CategoryStatus::INACTIVE);
     }
 
 

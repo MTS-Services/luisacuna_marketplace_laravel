@@ -2,25 +2,26 @@
 
 namespace App\Livewire\Backend\Admin\GameManagement\Category;
 
-use App\Services\GameCategoryService;
+use Livewire\Component;
+use App\Services\CategoryService;
+use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
-use Livewire\Component;
 
 class Trash extends Component
 {
     use WithDataTable, WithNotification;
 
     public $statusFilter = '';
-    protected GameCategoryService $service;
-    public $deleteGameCategoryId;
+    protected CategoryService $service;
+    public $selectedId;
     public bool $showDeleteModal = false;
     public bool $showRestoreModal = false;
     public $showBulkActionModal = false;
     public $bulkAction = '';
 
 
-    public function boot(GameCategoryService $service)
+    public function boot(CategoryService $service)
     {
 
         $this->service = $service;
@@ -77,13 +78,13 @@ class Trash extends Component
         ];
 
         $actions = [
-            ['key' => 'id', 'label' => 'Restore', 'method' => 'restoreDelete'],
-            ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete'],
+            ['key' => 'id', 'label' => 'Restore', 'method' => 'restore'],
+            ['key' => 'id', 'label' => 'Permanently Delete', 'method' => 'forceDelete'],
         ];
 
         $bulkActions = [
             ['value' => 'restore', 'label' => 'Restore'],
-            ['value' => 'delete', 'label' => 'Delete'],
+            ['value' => 'delete', 'label' => 'Permanently Delete'],
         ];
 
         // $category = GameCategory::onlyTrashed()->get();
@@ -101,59 +102,55 @@ class Trash extends Component
         ]);
     }
 
-    public function confirmDelete($id)
+    public function confirmDelete($encryptedId): void
     {
-
+        if (!$encryptedId) {
+            $this->error('No Data selected');
+            $this->resetPage();
+            return;
+        }
+        $this->selectedId = $encryptedId;
         $this->showDeleteModal = true;
-        $this->deleteGameCategoryId = $id;
     }
 
-
-    public function cancelDelete()
+    public function forceDelete(): void
     {
-        $this->showDeleteModal = false;
-    }
-
-    public function delete()
-    {
-        $this->showDeleteModal = false;
-
-        $state = $this->service->forceDeleteData($this->deleteGameCategoryId);
-
-        if ($state) {
-            $this->success('Category permanently deleted successfully');
-        } else {
-            $this->error('Failed to delete this category peremanently ');
+        try {
+            $this->service->deleteData(($this->selectedId), forceDelete: true);
+            $this->showDeleteModal = false;
+            $this->selectedId = null;
+            $this->resetPage();
+            $this->success('Data permanently deleted successfully');
+        } catch (\Throwable $e) {
+            $this->error('Failed to delete data.');
+            Log::error('Failed to delete data: ' . $e->getMessage());
+            throw $e;
         }
     }
 
-    public function restoreDelete($id)
+    public function restore($encryptedId): void
     {
+        try {
+            $this->service->restoreData(($encryptedId));
 
-        $state = $this->service->restoreData($id, admin()->id);
-
-        if ($state) {
-            $this->success('Category restored successfully');
-        } else {
-            $this->error('Failed to restore category');
+            $this->success('Data restored successfully');
+        } catch (\Throwable $e) {
+            $this->error('Failed to restore data.');
+            Log::error('Failed to restore data: ' . $e->getMessage());
+            throw $e;
         }
     }
 
-    public function getFilters()
+    public function resetFilters(): void
     {
-        return [
-            'search' => $this->search,
-            'sort_field' => $this->sortField,
-            'sort_direction' => $this->sortDirection,
-        ];
+        $this->reset(['search', 'statusFilter', 'perPage', 'sortField', 'sortDirection', 'selectedIds', 'selectAll', 'bulkAction']);
+        $this->resetPage();
     }
-
-
 
     public function confirmBulkAction(): void
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
-            $this->warning('Please select categories and an action');
+            $this->warning('Please select data and an action');
             return;
         }
 
@@ -166,8 +163,8 @@ class Trash extends Component
 
         try {
             match ($this->bulkAction) {
-                'delete' => $this->bulkForceDelete(),
-                'restore' => $this->bulkRestore(),
+                'forceDelete' => $this->bulkForceDelete(),
+                'bulkRestore' => $this->bulkRestore(),
                 default => null,
             };
 
@@ -175,31 +172,48 @@ class Trash extends Component
             $this->selectAll = false;
             $this->bulkAction = '';
         } catch (\Exception $e) {
-            dd($e->getMessage());
-            $this->error('Bulk action failed: ' . $e->getMessage());
+            $this->error('Failed to execute bulk action.');
+            Log::error('Failed to execute bulk action: ' . $e->getMessage());
+            throw $e;
         }
     }
 
-    public function bulkForceDelete(): void
+    protected function bulkRestore(): void
     {
-
-        $count = $this->service->bulkForceDeleteData($this->selectedIds);
-        $this->success("{$count} categories permanently deleted successfully");
+        $count = count($this->selectedIds);
+        $this->service->bulkRestoreData($this->selectedIds);
+        $this->success("{$count} Datas restored successfully");
     }
 
-    public function bulkRestore(): void
+    protected function bulkForceDelete(): void
     {
+        $count = count($this->selectedIds);
+        $this->service->bulkForceDeleteData($this->selectedIds);
+        $this->success("{$count} Datas permanently deleted successfully");
+    }
 
-        $count = $this->service->bulkRestoreData($this->selectedIds, admin()->id);
-
-        $this->success("{$count} categories updated successfully");
+    protected function getFilters(): array
+    {
+        return [
+            'search' => $this->search,
+            'status' => $this->statusFilter,
+            'sort_field' => $this->sortField,
+            'sort_direction' => $this->sortDirection,
+        ];
     }
 
     protected function getSelectableIds(): array
     {
-        return $this->service->getTrashedPaginatedData(
+        $data = $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        )->pluck('id')->toArray();
+        );
+
+        return array_column($data->items(), 'id');
+    }
+
+    public function updatedStatusFilter(): void
+    {
+        $this->resetPage();
     }
 }

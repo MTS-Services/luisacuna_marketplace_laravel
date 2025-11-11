@@ -19,7 +19,7 @@ class GameSeeder extends Seeder
         Game::insert([
             [
                 'sort_order' => 1,
-                'game_category_id' => 1,
+                'category_id' => 1,
                 'name' => 'Blade Ball Tokens',
                 'slug' => 'blade-ball-tokens',
                 'description' => 'Blade Ball Tokens',
@@ -43,7 +43,7 @@ class GameSeeder extends Seeder
             ],
             [
                 'sort_order' => 2,
-                'game_category_id' => 1,
+                'category_id' => 1,
                 'name' => 'Path Of Exile 2 Currency',
                 'slug' => 'path-of-exile-2-currency',
                 'description' => 'Path Of Exile 2 Currency',
@@ -67,7 +67,7 @@ class GameSeeder extends Seeder
             ],
             [
                 'sort_order' => 3,
-                'game_category_id' => 1,
+                'category_id' => 1,
                 'name' => 'RuneScape 3 Gold',
                 'slug' => 'rune-scape-3-gold',
                 'description' => 'RuneScape 3 Gold',
@@ -91,7 +91,7 @@ class GameSeeder extends Seeder
             ],
             [
                 'sort_order' => 4,
-                'game_category_id' => 1,
+                'category_id' => 1,
                 'name' => 'New World Coins',
                 'slug' => 'new-world-coins',
                 'description' => 'New World Coins',
@@ -115,7 +115,7 @@ class GameSeeder extends Seeder
             ],
             [
                 'sort_order' => 5,
-                'game_category_id' => 1,
+                'category_id' => 1,
                 'name' => 'Lost Ark Gold',
                 'slug' => 'lost-ark-gold',
                 'description' => 'Lost Ark Gold',
@@ -139,7 +139,7 @@ class GameSeeder extends Seeder
             ],
             [
                 'sort_order' => 6,
-                'game_category_id' => 1,
+                'category_id' => 1,
                 'name' => 'Old School RuneScape Gold',
                 'slug' => 'old-school-runescape-gold',
                 'description' => 'Old School RuneScape Gold',

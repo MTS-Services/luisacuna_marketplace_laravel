@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\GameCategory;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
-use App\Enums\GameCategoryStatus;
+use App\Enums\CategoryStatus;
 // use Faker\Factory as Faker;
-class GameCategorySeeder extends Seeder
+class CategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,7 +17,7 @@ class GameCategorySeeder extends Seeder
         // GameCategory::factory(100)->create();
        
 
-        GameCategory::insert([
+        Category::insert([
             [
                 'sort_order' => 1,
                 'name' => 'Robux',
@@ -27,7 +27,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'Robux',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -41,7 +41,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'Steal A Brainrot',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -55,7 +55,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'Grow A Garden',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -69,7 +69,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'Hunty Zombie',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -83,7 +83,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => '99 Nights In The Forest',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -97,7 +97,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'Prospecting',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -111,7 +111,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'All Star Tower Defense X',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -125,7 +125,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'Ink Game',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -139,7 +139,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'Garden Tower Defense',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -153,7 +153,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'Bubble Gum Simulator',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -167,7 +167,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'Dead Rails',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -181,7 +181,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'TYPE./ ISOUL',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -195,7 +195,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'Hypershot',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -209,7 +209,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'Build A Zoo',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -223,7 +223,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'Gems',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -237,7 +237,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'Rivals',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -251,7 +251,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'MM2',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -265,7 +265,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'Blox Fruit',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -279,7 +279,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'Pet Simulator 99',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -293,7 +293,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'Spin',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -307,7 +307,7 @@ class GameCategorySeeder extends Seeder
                 'meta_description' => 'Adopt Me',
                 'icon' => '',
                 'is_featured' => 1,
-                'status' => GameCategoryStatus::ACTIVE->value,
+                'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
