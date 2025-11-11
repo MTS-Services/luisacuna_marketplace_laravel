@@ -110,9 +110,9 @@
                 <div class="col-span-2">
                     <x-ui.label
                         class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Description') }}</x-ui.label>
-                    <x-ui.text-editor wire:model="form.description" rows="3"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></x-ui.text-editor>
-                      {{-- <textarea wire:model="form.description" rows="3"  class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></textarea> --}}
+                    {{-- <x-ui.text-editor wire:model="form.description" rows="3"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></x-ui.text-editor> --}}
+                      <textarea wire:model="form.description" rows="3"  class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></textarea>
                     <x-ui.input-error :messages="$errors->get('form.description')" class="mt-2" />
                 </div>
 

@@ -165,7 +165,7 @@ class GameRepository implements GameRepositoryInterface
     public function bulkDelete(array $ids, int $actionerId): int
     {
         return DB::transaction(function () use ($ids, $actionerId) {
-            $this->model->whereIn('id', $ids)->update(['deleted_by' => $actionerId]);
+            $this->model->whereIn('id', $ids)->update(['deleter_id' => $actionerId]);
             return $this->model->whereIn('id', $ids)->delete();
         });
     }

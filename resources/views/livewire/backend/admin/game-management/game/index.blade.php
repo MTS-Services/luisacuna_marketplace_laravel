@@ -31,6 +31,6 @@
         :button-text="'Delete Game'" />
         
     {{-- Bulk Action Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="'Confirm Bulk Action'" :message="'Are you sure you want to perform this action on ' . count($selectedIds) . ' selected category(ies)?'" :method="'executeBulkAction'"
+    <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="'Confirm Bulk Action'" :message="'Are you sure you want to perform this action on ' . count($selectedIds) . ' selected data(s)?'" :method="'executeBulkAction'"
         :button-text="'Confirm Action'" />
 </section>

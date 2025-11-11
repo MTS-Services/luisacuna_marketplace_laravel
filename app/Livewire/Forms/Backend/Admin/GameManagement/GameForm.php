@@ -61,7 +61,7 @@ class GameForm extends Form
             'publisher' => 'nullable|string',
             'logo' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
             'banner' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
-            'release_date' => 'nullable|date|after_or_equal:today',
+            'release_date' => 'nullable|date',
             'platform' => 'nullable|array',
             'description' => 'nullable|string',
             'thumbnail' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
