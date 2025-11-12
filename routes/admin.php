@@ -67,6 +67,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/trash', 'trash')->name('trash');
         });
     });
+    
     Route::group(['prefix' => 'user-management', 'as' => 'um.'], function () {
         Route::controller(UserController::class)->name('user.')->prefix('user')->group(function () {
             Route::get('/', 'index')->name('index');
