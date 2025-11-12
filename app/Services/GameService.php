@@ -10,6 +10,8 @@ use App\Actions\Game\RestoreAction;
 use App\Enums\GameStatus;
 use App\Models\Game;
 use App\Repositories\Contracts\GameRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 class GameService
 {
@@ -23,86 +25,128 @@ class GameService
     ) {}
 
 
-    public function getAllDatas()
-    {
+    /* ================== ================== ==================
+    *                          Find Methods
+    * ================== ================== ================== */
 
-        return $this->interface->all();
+    public function getAllDatas($sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->interface->all($sortField, $order);
     }
 
-    public function findData(int $id)
+    public function findData($column_value, string $column_name = 'id'): ?Game
     {
-
-        return $this->interface->find($id);
-    }
-    public function getPaginateDatas(int $perPage = 15, array $filters = [], ?array $queries = null)
-    {
-        return $this->interface->paginate($perPage, $filters, $queries ?? []);
+        return $this->interface->find($column_value, $column_name);
     }
 
-    public function getTrashedPaginateDatas(int $perPage = 15, array $filters = [], ?array $queries = null)
+    public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        return $this->interface->trashPaginate($perPage, $filters, $queries ?? []);
+        return $this->interface->paginate($perPage, $filters);
     }
 
-    public function deleteData($id, $forceDelete = false, ?int $actioner_id = null)
+    public function getTrashedPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        if ($actioner_id == null) {
-            $actioner_id = admin()->id;
-        }
-        return $this->deleteAction->execute($id, $forceDelete, $actioner_id);
+        return $this->interface->trashPaginate($perPage, $filters);
     }
 
-    public function forceDeleteData($id, $force_delete = true, ?int $actioner_id = null): bool
+    public function searchData(string $query, $sortField = 'created_at', $order = 'desc'): Collection
     {
-
-        return $this->deleteAction->execute($id, $force_delete, $actioner_id);
+        return $this->interface->search($query, $sortField, $order);
     }
 
-    public function bulkDelete($ids, $actioner_id = null): int
+    public function dataExists(int $id): bool
     {
-        if ($actioner_id == null) {
-            $actioner_id = admin()->id;
-        }
-
-        return  $this->bulkAction->execute($ids, 'delete', null, $actioner_id);
+        return $this->interface->exists($id);
     }
 
-    public function bulkForceDelete($ids)
+    public function getDataCount(array $filters = []): int
     {
-
-        return  $this->bulkAction->execute($ids, 'forceDelete',);
-    }
-    public function bulkUpdateStatus($ids, GameStatus $status, $actioner_id = null): int
-    {
-        if ($actioner_id == null) {
-            $actioner_id = admin()->id;
-        }
-        return $this->bulkAction->execute($ids, 'status', $status->value, $actioner_id);
+        return $this->interface->count($filters);
     }
 
-    public function bulkRestore($ids, ?int $actioner_id = null): int
-    {
-        if ($actioner_id == null) {
-            $actioner_id = admin()->id;
-        }
-        return $this->bulkAction->execute($ids, 'restore', null, $actioner_id);
-    }
+    /* ================== ================== ==================
+    *                   Action Executions
+    * ================== ================== ================== */
 
-    public function restoreData($id, $actioner_id): bool
-    {
-        return $this->restoreAction->execute($id, $actioner_id);
-    }
-
-    public function createData(array $data): ?Game
+    public function createData(array $data): Game
     {
         return $this->createAction->execute($data);
     }
 
-    public function updateData($id, array $data, ?int $actioner_id = null): bool
+    public function updateData(int $id, array $data): ?Game
     {
-        if ($actioner_id == null) {
-            $actioner_id = admin()->id;
+        return $this->updateAction->execute($id, $data);
+    
+    }
+
+    public function deleteData(int $id, bool $forceDelete = false, ?int $actionerId = null): bool
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
         }
-        return $this->updateAction->execute($id, $data, $actioner_id);
+        return $this->deleteAction->execute($id, $forceDelete, $actionerId);
+    }
+
+    public function restoreData(int $id, ?int $actionerId = null): bool
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->restoreAction->execute($id, $actionerId);
+    }
+
+    public function updateStatusData(int $id, GameStatus $status, ?int $actionerId = null): ? Game
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->updateAction->execute($id, [
+            'status' => $status->value,
+            'updater_id' => $actionerId,
+        ]);
+    }
+    public function bulkRestoreData(array $ids, ?int $actionerId = null): int
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->bulkAction->execute(ids: $ids, action: 'restore', status: null, actionerId: $actionerId);
+    }
+
+    public function bulkForceDeleteData(array $ids, ?int $actionerId = null): int
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->bulkAction->execute(ids: $ids, action: 'forceDelete', status: null, actionerId: $actionerId);
+    }
+
+    public function bulkDeleteData(array $ids, ?int $actionerId = null): int
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->bulkAction->execute(ids: $ids, action: 'delete', status: null, actionerId: $actionerId);
+    }
+    public function bulkUpdateStatus(array $ids, GameStatus $status, ?int $actionerId = null): int
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->bulkAction->execute(ids: $ids, action: 'status', status: $status->value, actionerId: $actionerId);
+    }
+
+    /* ================== ================== ==================
+    *                   Accessors (optionals)
+    * ================== ================== ================== */
+
+    public function getActiveData($sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->interface->getActive($sortField, $order);
+    }
+
+    public function getInactiveData($sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->interface->getInactive($sortField, $order);
     }
 }

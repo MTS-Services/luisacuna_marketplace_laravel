@@ -7,11 +7,13 @@ enum GameStatus :string
     //
     case ACTIVE = 'active';
     case INACTIVE = 'inactive';
+    case UPCOMING = 'upcoming';
 
     public function label(): string{
         return match($this){
                 self::ACTIVE => 'Active',
                 self::INACTIVE => 'Inactive',
+                self::UPCOMING => 'Upcoming',
         };
     }
 
@@ -19,6 +21,7 @@ enum GameStatus :string
         return match($this){
                 self::ACTIVE => 'badge-success',
                 self::INACTIVE => 'badge-error',
+                self::UPCOMING => 'badge-warning',
         };
     }
 

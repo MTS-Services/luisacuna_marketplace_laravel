@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game Edit') }}</h2>
             <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.gm.game.index') }}">
+                <x-ui.button href="{{ route('admin.gm.game.index') }}" class="w-auto! py-2!">
 
                     <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
                     {{ __('Back') }}
@@ -14,7 +14,7 @@
     </div>
 
     <div class="glass-card rounded-2xl p-6 mb-6">
-        <form wire:submit="update" enctype="multipart/form-data">
+        <form wire:submit="save" enctype="multipart/form-data">
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
 
 
@@ -113,10 +113,10 @@
                         {{ __('Platform') }} <span class="text-red-500">*</span>
                     </label>
                     <div class="flex flex-wrap gap-4">
-                        @foreach (['PC', 'PS5', 'Xbox', 'Android', 'iOS'] as $platform)
+                        @foreach ($platforms as $id => $name)
                             <label class="flex items-center gap-2">
-                                <input type="checkbox" wire:model="form.platform" value="{{ $platform }}">
-                                {{ $platform }}
+                                <input type="checkbox" wire:model="form.platform" value="{{ $id }}">
+                                {{ $name }}
                             </label>
                         @endforeach
 
@@ -141,39 +141,7 @@
 
                 </div>
 
-                {{-- Images --}}
-
-
-                <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Logo') }}</label>
-                    <input type="file" wire:model="form.logo"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.logo')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Banner') }}</label>
-                    <input type="file" wire:model="form.banner"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.banner')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Thumbnail') }}</label>
-                    <input type="file" wire:model="form.thumbnail"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                    @error('form.thumbnail')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-
-                </div>
-
+ 
                 {{-- Boolean Checkboxes --}}
                 <div class="flex gap-6 mt-3">
                     <label class="flex items-center gap-2">
@@ -227,11 +195,35 @@
 
                 </div>
 
+                {{-- Images --}}
+                <div>
+                    <x-ui.label
+                        class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Logo') }}</x-ui.label>
+                    <x-ui.file-input type="file" wire:model="form.logo"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
+                    <x-ui.input-error :messages="$errors->get('form.logo')" class="mt-2" />
+                </div>
+
+                <div>
+                    <x-ui.label
+                        class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Thumbnail') }}</x-ui.label>
+                    <x-ui.file-input type="file" wire:model="form.thumbnail"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
+                    <x-ui.input-error :messages="$errors->get('form.thumbnail')" class="mt-2" />
+                </div>
+
+
+                <div class="col-span-2">
+                    
+                    <x-ui.file-input wire:model="form.banner" label="Game Banner" accept="image/*" :error="$errors->first('form.banner')"
+                        hint="Upload a game banner (Max: 2MB)" />
+                </div>
+
             </div>
 
             {{-- Actions --}}
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button href="{{ route('admin.gm.game.index') }}" type="danger">
+                <x-ui.button href="{{ route('admin.gm.game.index') }}" type="danger" variant="tertiary" class="w-auto! py-2!">
 
                     <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
 
@@ -239,9 +231,9 @@
 
                 </x-ui.button>
 
-                <x-ui.button type="accent" button>
-                    <span wire:loading.remove wire:target="update" class="text-white">{{ __('Update Game') }}</span>
-                    <span wire:loading wire:target="update" class="text-white">{{ __('Updating...') }}</span>
+                <x-ui.button type="accent" button class="w-auto! py-2!">
+                    <span wire:loading.remove wire:target="save" class="text-white">{{ __('Update Game') }}</span>
+                    <span wire:loading wire:target="save" class="text-white">{{ __('Updating...') }}</span>
                 </x-ui.button>
             </div>
         </form>

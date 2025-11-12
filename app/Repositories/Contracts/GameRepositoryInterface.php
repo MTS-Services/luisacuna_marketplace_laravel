@@ -9,31 +9,57 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 interface GameRepositoryInterface
 {
-    public function all(): Collection;
 
-    public function paginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
+   /* ================== ================== ==================
+    *                      Find Methods
+    * ================== ================== ================== */
 
-    public function trashPaginate(int $perPage = 15, array $filters = [], ?array $queries = null): LengthAwarePaginator;
+    public function all(string $sortField = 'created_at', $order = 'desc'): Collection;
 
-    public function delete(int $id, ?int $actioner_id): bool;
+    public function find($column_value, string $column_name = 'id', bool $trashed = false): ?Game;
 
-    public function forceDelete($id): bool;
+    public function findTrashed($column_value, string $column_name = 'id'): ?Game;
 
-    public function bulkRestore(array $ids, ?int $actioner_id): int;
+    public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
 
-    public function restore($id, $actioner_id): bool;
+    public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
 
-    public function bulkUpdateStatus($ids, string $status, ?int $actioner_id): int;
+    public function exists(int $id): bool;
 
-    public function bulkDelete(array $ids, ?int $actioner_id): int;
+    public function count(array $filters = []): int;
 
-    public function bulkForceDelete(array $ids): int;
+    public function search(string $query, string $sortField = 'created_at', $order = 'desc'): Collection;
 
-    public function findTrashed($id): ?Game;
+    /* ================== ================== ==================
+    *                    Data Modification Methods
+    * ================== ================== ================== */
+
 
     public function create(array $data): Game;
 
-    public function find(int $id): ?Game;
+    public function update(int $id, array $data): bool;
 
-    public function update($id, array $data): bool;
+    public function delete(int $id, int $actionerId): bool;
+
+    public function forceDelete(int $id): bool;
+
+    public function restore(int $id, int $actionerId): bool;
+
+    public function bulkDelete(array $ids, int $actionerId): int;
+
+    public function bulkUpdateStatus(array $ids, string $status, int $actionerId): int;
+
+    public function bulkRestore(array $ids, int $actionerId): int;
+
+    public function bulkForceDelete(array $ids): int;
+
+    /* ================== ================== ==================
+    *                  Accessor Methods (Optional)
+    * ================== ================== ================== */
+
+    public function getActive(string $sortField = 'created_at', $order = 'desc'): Collection;
+
+    public function getInactive(string $sortField = 'created_at', $order = 'desc'): Collection;
+
+    public function getUpcoming(string $sortField = 'created_at', $order = 'desc'): Collection;
 }

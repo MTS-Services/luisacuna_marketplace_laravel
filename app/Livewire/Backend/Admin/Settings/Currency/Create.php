@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Backend\Admin\Settings\Currency;
 
-use App\DTOs\Currency\CreateDTO;
 use App\Enums\CurrencyStatus;
 use App\Livewire\Forms\Backend\Admin\Settings\CurrencyForm;
 use App\Services\CurrencyService;

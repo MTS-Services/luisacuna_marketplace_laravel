@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Livewire\Backend\Admin\Components\UserManagement\User\Profile\Referral;
 use App\Models\Admin;
-use App\Models\Category;
-use App\Models\User;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -26,6 +24,7 @@ class DatabaseSeeder extends Seeder
             EmailTemplateSeeder::class,
             ReferralSettingSeeder::class,
             UserSeeder::class,
+            GamePlatformSeeder::class,
             CategorySeeder::class,
             GameSeeder::class,
             ApplicationSettingSeeder::class,
@@ -42,8 +41,7 @@ class DatabaseSeeder extends Seeder
             ProductTypeSeeder::class,
             ProductSeeder::class,
             PageViewSeeder::class,
-
-
+            RankSeeder::class,
         ]);
 
         // Admin::create([

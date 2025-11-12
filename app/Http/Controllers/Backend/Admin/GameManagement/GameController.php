@@ -31,7 +31,9 @@ class GameController extends Controller
 
     {
         $this->data = $this->service->findData(decrypt($id));
-        
+        if (!$this->data) {
+            abort(404);
+        }
 
         return view($this->masterView, [
             'data' => $this->data,

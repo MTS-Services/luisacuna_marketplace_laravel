@@ -6,7 +6,8 @@ namespace App\Livewire\Backend\Admin\GameManagement\Game;
 
 use App\Enums\GameStatus;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameForm;
-use App\Services\GameCategoryService;
+use App\Services\CategoryService;
+use App\Services\GamePlatformService;
 use App\Services\GameService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -21,36 +22,21 @@ class Create extends Component
 
     public GameForm $form;
 
-    protected GameCategoryService $categoryService;
+    protected CategoryService $categoryService;
 
+    protected GamePlatformService $gamePlatformService;
 
-    public function boot(GameService $service,  GameCategoryService $categoryService)
+    public function boot(GameService $service,  CategoryService $categoryService, GamePlatformService $gamePlatformService)
     {
         $this->service = $service;
 
         $this->categoryService = $categoryService;
+
+        $this->gamePlatformService = $gamePlatformService;
     }
     public function render()
     {
-        $platforms = [
-            [
-                'id' => 1,
-                'name' => 'PC'
-            ],
-            [
-                'id' => 2,
-                'name' => 'Playstation'
-            ],
-            [
-                'id' => 3,
-                'name' => 'Xbox'
-            ],
-            [
-                'id' => 4,
-                'name' => 'Nintendo'
-            ],
-
-        ];
+        $platforms = $this->getPlatforms();
 
         return view('livewire.backend.admin.game-management.game.create', [
 
@@ -63,9 +49,13 @@ class Create extends Component
         ]);
     }
 
+    protected function getPlatforms(): array
+    {
+        return $this->gamePlatformService->getAllDatas()->pluck('name', 'id')->toArray();
+    }
     protected function gameCategory(): array
     {
-        return $this->categoryService->getAllDatas()->pluck('name', 'id')->toArray();
+        return $this->categoryService->getActiveData()->pluck('name', 'id')->toArray();
     }
 
     public function save()
@@ -78,11 +68,18 @@ class Create extends Component
 
             $data = $this->form->fillables();
 
+            $data['creater_id'] = admin()->id;
+
+            $data['creater_type'] = get_class(admin());
+
             $this->service->createData($data);
+
+            $this->resetForm();
 
             $this->success('Game created successfully.');
 
             return $this->redirect(route('admin.gm.game.index'), navigate: true);
+            
         } catch (\Throwable $th) {
 
             Log::error("Failed to create game: ", ['error' => $th->getMessage()]);
