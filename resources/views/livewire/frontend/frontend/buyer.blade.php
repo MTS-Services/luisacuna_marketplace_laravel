@@ -1,9 +1,7 @@
 <div>
+<div class="bg-bg-primary text-white font-sans min-h-screen">
 
-
-<div class="bg-black text-white font-sans min-h-screen">
-
-    <div class="max-w-4xl mx-auto py-12 px-6">
+    <div class="max-w-7xl mx-auto py-12 px-6">
 
         <div class="text-center mb-10">
             <h1 class="text-3xl font-bold mb-2">Trade Protect For Buyers</h1>
