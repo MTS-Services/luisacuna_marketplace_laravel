@@ -4,7 +4,7 @@
     @endpush
     <div class="glass-card rounded-2xl p-6 mb-6">
         <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game Category Create') }}</h2>
+            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Category Create') }}</h2>
             <div class="flex items-center gap-2">
                 <x-ui.button href="{{ route('admin.gm.category.index') }}" class="w-auto! py-2!">
                     <flux:icon name="arrow-left" class="stroke-white" />
@@ -106,7 +106,7 @@
                 </x-ui.button>
 
                 <x-ui.button type="accent" class="w-auto! py-2!">
-                    <span wire:loading.remove wire:target="save" class="text-white">{{ __('Create Category') }}</span>
+                    <span wire:loading.remove wire:target="save" class="text-white">{{ __('Create') }}</span>
                     <span wire:loading wire:target="save" class="text-white">{{ __('Creating...') }}</span>
                 </x-ui.button>
             </div>

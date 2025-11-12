@@ -17,7 +17,6 @@ class ProducForm extends Form
     public string $title = '';
     public string $slug = '';
     public string $description = '';
-    public string $currency = 'USD';
     public string $delivery_method = 'manual';
     public string $status = 'active';
     public string $visibility = 'public';
@@ -25,6 +24,7 @@ class ProducForm extends Form
     public ?int $seller_id = null;
     public ?int $game_id = null;
     public ?int $product_type_id = null;
+    public ?int $currency_id = null;
     public ?int $server_id = null;
     public ?int $reviewed_by = null;
 
@@ -76,6 +76,7 @@ class ProducForm extends Form
             'seller_id' => 'required|integer|exists:users,id',
             'game_id' => 'required|integer|exists:games,id',
             'product_type_id' => 'required|integer|exists:product_types,id',
+            'currency_id' => 'required|integer|exists:currencies,id',
             'server_id' => 'nullable|integer|exists:servers,id',
             'reviewed_by' => 'nullable|integer|exists:users,id',
 
@@ -86,7 +87,6 @@ class ProducForm extends Form
 
 
             'price' => 'required|numeric|min:0',
-            'currency' => 'required|string|size:3',
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
             'discounted_price' => 'nullable|numeric|min:0',
 
@@ -142,7 +142,7 @@ class ProducForm extends Form
         $this->slug = $product->slug;
         $this->description = $product->description ?? '';
         $this->price = (float) $product->price;
-        $this->currency = $product->currency;
+        $this->currency_id = $product->currency_id;
         $this->discount_percentage = $product->discount_percentage ? (float) $product->discount_percentage : null;
         $this->discounted_price = $product->discounted_price ? (float) $product->discounted_price : null;
         $this->stock_quantity = (int) $product->stock_quantity;
@@ -191,7 +191,6 @@ class ProducForm extends Form
         $this->delivery_method = 'manual';
         $this->status = 'active';
         $this->visibility = 'public';
-        $this->currency = 'USD';
         $this->stock_quantity = 0;
         $this->min_purchase_quantity = 1;
         $this->delivery_time_hours = 24;
@@ -222,7 +221,7 @@ class ProducForm extends Form
             'slug' => $this->slug,
             'description' => $this->description ?: null,
             'price' => $this->price,
-            'currency' => $this->currency,
+            'currency_id' => $this->currency_id,
             'discount_percentage' => $this->discount_percentage,
             'discounted_price' => $this->discounted_price,
             'stock_quantity' => $this->stock_quantity,

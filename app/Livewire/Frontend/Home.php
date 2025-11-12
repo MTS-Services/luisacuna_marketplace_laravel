@@ -3,6 +3,7 @@
 namespace App\Livewire\Frontend;
 
 use Livewire\Component;
+use App\Services\GameService;
 
 class Home extends Component
 {
@@ -18,6 +19,12 @@ class Home extends Component
 
     public $content = '<p>This is the initial content of the editor.</p>';
 
+    protected GameService $gameService;
+    public function boot(GameService $gameService)
+    {
+        $this->gameService = $gameService;
+    }
+
     public function saveContent()
     {
         dd($this->content);
@@ -29,6 +36,9 @@ class Home extends Component
 
     public function render()
     {
-        return view('livewire.frontend.home');
+        $games = $this->gameService->getAllDatas();
+        return view('livewire.frontend.home', [
+            'games' => $games,
+        ]);
     }
 }

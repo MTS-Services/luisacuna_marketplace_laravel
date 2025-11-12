@@ -21,11 +21,11 @@ return new class extends Migration {
             $table->unsignedBigInteger('seller_id')->index();
             $table->unsignedBigInteger('game_id')->index();
             $table->unsignedBigInteger('product_type_id')->index();
+            $table->unsignedBigInteger('currency_id')->index();
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('description');
             $table->decimal('price', 10, 2)->index();
-            $table->string('currency')->default('USD');
             $table->decimal('discount_percentage', 5, 2)->default(0.00);
             $table->decimal('discounted_price', 10, 2)->nullable();
             $table->integer('stock_quantity')->default(1);
@@ -65,6 +65,7 @@ return new class extends Migration {
             $table->foreign('game_id')->references('id')->on('games')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('product_type_id')->references('id')->on('product_types')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('reviewed_by')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('currency_id')->references('id')->on('currencies')->cascadeOnDelete()->cascadeOnUpdate();
             $table->softDeletes();
             $table->timestamps();
 

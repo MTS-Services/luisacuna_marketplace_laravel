@@ -52,6 +52,17 @@
                     <x-ui.input-error :messages="$errors->get('form.product_type_id')" />
                 </div>
 
+                {{-- currency --}}
+                <div class="w-full">
+                    <x-ui.label value="currencies" for="currency_id" class="mb-1" />
+                    <x-ui.select wire:model="form.currency_id" id="currency_id">
+                        @foreach ($currencies as $currency)
+                            <option value="{{ $currency->id }}">{{ $currency->name }}</option>
+                        @endforeach
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.currency_id')" />
+                </div>
+
                 {{-- title --}}
                 <div class="w-full">
                     <x-ui.label value="Title" class="mb-1" />

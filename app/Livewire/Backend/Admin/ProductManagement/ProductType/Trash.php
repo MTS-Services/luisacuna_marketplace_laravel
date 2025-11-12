@@ -44,7 +44,8 @@ class Trash extends Component
             [
                 'key' => 'description',
                 'label' => 'Description',
-                'sortable' => true
+                'sortable' => true,
+                'format' => fn($data) => $data->description
             ],
             [
                 'key' => 'commission_rate',
@@ -65,11 +66,11 @@ class Trash extends Component
             [
                 'key' => 'deleter_type',
                 'label' => 'Deleted By',
-                // 'format' => function ($data) {
-                //     return ($data?->creater)->name
-                //         ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . ($data->creater->name) . '</span>'
-                //         : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
-                // },
+                'format' => function ($data) {
+                    return ($data?->deleter)->name
+                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . ($data->deleter->name) . '</span>'
+                        : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
+                },
             ],
         ];
 
