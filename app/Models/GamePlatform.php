@@ -22,6 +22,8 @@ class GamePlatform extends BaseModel implements Auditable
         'name',
         'slug',
         'status',
+        'icon',
+        'color_code_hex',
 
         
         'created_by',

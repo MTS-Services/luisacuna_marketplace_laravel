@@ -1,7 +1,7 @@
 <section>
     <div class="glass-card rounded-2xl p-6 mb-6">
         <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Currency Edit') }}</h2>
+            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Platform Edit') }}</h2>
             <div class="flex items-center gap-2">
                 <x-ui.button href="{{ route('admin.gm.platform.index') }}" class="w-auto py-2!">
                     <flux:icon name="arrow-left"

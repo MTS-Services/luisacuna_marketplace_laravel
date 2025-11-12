@@ -6,16 +6,15 @@ use Livewire\Component;
 
 use App\Services\GameService;
 
-use App\Traits\Livewire\WithDataTable;
-
 use App\Enums\GameStatus;
+use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
-use Illuminate\Support\Facades\Log;
+
 
 class Index extends Component
 {
 
-    use withDataTable, WithNotification;
+    use WithDataTable, WithNotification;
 
 
     protected GameService $service;
@@ -35,12 +34,12 @@ class Index extends Component
 
         $datas = $this->service->getPaginatedData(
             $this->perPage,
-            $this->getfilters()
+            $this->getfilters(),
         )->load('creater_admin');
 
 
         $columns = [
-         
+                
             [
                 'key' => 'name',
                 'label' => 'Name',

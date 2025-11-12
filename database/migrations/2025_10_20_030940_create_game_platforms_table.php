@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('slug')->unique();
             $table->string('status')->default(GamePlatformStatus::ACTIVE->value);
+            $table->string('icon')->nullable();
+            $table->string('color_code_hex')->nullable();
 
             $table->softDeletes();
             $table->timestamps();

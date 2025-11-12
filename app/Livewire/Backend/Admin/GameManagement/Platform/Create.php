@@ -10,11 +10,12 @@ use App\Services\GamePlatformService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Str;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Create extends Component
 {
 
-    use WithNotification;
+    use WithNotification, WithFileUploads;
 
     public GamePlatformForm $form;
 
@@ -58,7 +59,9 @@ class Create extends Component
 
         try {
             $data = $this->form->fillables();
+
             if (! isset($data['slug'])) $data['slug'] = Str::slug($data['name']);
+            
             $data['created_by'] = admin()->id;
 
             $this->service->createData($data);
