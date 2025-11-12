@@ -6,7 +6,7 @@
             <div class="glass-card rounded-2xl p-4 lg:p-6 mb-6">
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <h2 class="text-xl lg:text-2xl font-bold text-text-black dark:text-text-white">
-                        {{ __('Audit Log Details') }}
+                        {{ __('` Details') }}
                     </h2>
                     <div class="flex items-center gap-2 w-full sm:w-auto">
                         <x-ui.button href="{{ route('admin.gm.category.index') }}" class="w-auto py-2!">
@@ -78,24 +78,24 @@
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('CREATED BY') }}</p>
                                 <p class="text-slate-400 text-lg font-bold">
-                                    {{ $data->creater_admin->name }}</p>
+                                    {{ $data->creater_admin->name ?? 'N/A' }}</p>
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('UPDATED BY') }}</p>
                                 <p class="text-slate-400 text-lg font-bold">
-                                    {{ $data->updater_admin->name }}</p>
+                                    {{ $data->updater_admin->name ?? 'N/A' }}</p>
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('DELETED BY') }}</p>
                                 <p class="text-slate-400 text-lg font-bold">
-                                    {{ $data->deleter_admin->name }}</p>
+                                    {{ $data->deleter_admin->name ?? 'N/A' }}</p>
                             </div>
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('RESTORED BY') }} </p>
                                 <p class="text-slate-400 text-lg font-bold">
-                                    {{ $data->restorer_admin->name }}</p>
+                                    {{ $data->restorer_admin->name ?? 'N/A' }}</p>
                             </div>
                         </div>
                         <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200 mt-4">
