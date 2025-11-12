@@ -203,7 +203,7 @@
                         </div>
                     </div>
                 </div>
-            </div> --}}
+            </div> 
             <div class="bg-bg-primary rounded-2xl shadow-lg overflow-hidden border border-gray-500/20">
 
                 <!-- Product Data Section -->
