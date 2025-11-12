@@ -78,13 +78,23 @@ class Trash extends Component
         ];
 
         $actions = [
-            ['key' => 'id', 'label' => 'Restore', 'method' => 'restore'],
-            ['key' => 'id', 'label' => 'Permanently Delete', 'method' => 'forceDelete'],
+            [
+                'key' => 'id',
+                'label' => 'Restore',
+                'method' => 'restore',
+                'encrypt' => true
+            ],
+            [
+                'key' => 'id',
+                'label' => 'Permanently Delete',
+                'method' => 'confirmDelete',
+                'encrypt' => true
+            ],
         ];
 
         $bulkActions = [
-            ['value' => 'restore', 'label' => 'Restore'],
-            ['value' => 'delete', 'label' => 'Permanently Delete'],
+            ['value' => 'forceDelete', 'label' => 'Permanently Delete'],
+            ['value' => 'bulkRestore', 'label' => 'Restore'],
         ];
 
         // $category = GameCategory::onlyTrashed()->get();
@@ -116,7 +126,7 @@ class Trash extends Component
     public function forceDelete(): void
     {
         try {
-            $this->service->deleteData(($this->selectedId), forceDelete: true);
+            $this->service->deleteData(decrypt($this->selectedId), forceDelete: true);
             $this->showDeleteModal = false;
             $this->selectedId = null;
             $this->resetPage();
@@ -131,7 +141,7 @@ class Trash extends Component
     public function restore($encryptedId): void
     {
         try {
-            $this->service->restoreData(($encryptedId));
+            $this->service->restoreData(decrypt($encryptedId));
 
             $this->success('Data restored successfully');
         } catch (\Throwable $e) {
@@ -211,6 +221,7 @@ class Trash extends Component
 
         return array_column($data->items(), 'id');
     }
+
 
     public function updatedStatusFilter(): void
     {
