@@ -13,38 +13,51 @@ class   DeleteAction
 
     public function execute($id,bool $forceDelete = false, ?int $actionerId = null): bool
     {
-        return DB::transaction(function () use ($id, $forceDelete , $actionerId ) {
+     return DB::transaction(function () use ($id, $forceDelete, $actionerId) {
+            $findData = null;
+
+            $isDeleted = false;
 
             if ($forceDelete) {
+                $findData = $this->interface->findTrashed($id);
+            } else {
+                $findData = $this->interface->find($id);
+            }
 
-                $old_images = $this->interface->findTrashed($id)->getAttributes();
+            if (!$findData) {
+                throw new \Exception('Data not found');
+            }
 
-                $isDeleted =  $this->interface->forceDelete($id);
+            if ($forceDelete) {
+                
+                $isDeleted = $this->interface->forceDelete($id);
 
                 if ($isDeleted) {
 
-                    $old = $old_images['logo'];
+                    $old = $findData->logo;
+
                     if ($old && Storage::disk('public')->exists($old)) {
                         Storage::disk('public')->delete($old);
                     }
 
-                    $old = $old_images['banner'];
+                    $old = $findData->banner;
                     if ($old && Storage::disk('public')->exists($old)) {
                         Storage::disk('public')->delete($old);
                     }
-
-                    $old = $old_images['thumbnail'];
+                    
+                    $old = $findData->thumbnail;
                     if ($old && Storage::disk('public')->exists($old)) {
                         Storage::disk('public')->delete($old);
                     }
-
                     return true;
                 }
-                return false;
+
+                return $isDeleted;
+
             }
-
-
+                
             return $this->interface->delete($id, $actionerId);
         });
+
     }
 }

@@ -20,7 +20,7 @@
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">
                         {{ __('Category') }} <span class="text-red-500">*</span>
                     </label>
-                    <x-ui.select wire:model="form.game_category_id"
+                    <x-ui.select wire:model="form.category_id"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
                         <option value="">{{ __('Select Category') }}</option>
                         @foreach ($categories as $index => $value)
@@ -92,10 +92,10 @@
                         {{ __('Platform') }} <span class="text-red-500">*</span>
                     </label>
                     <div class="flex flex-wrap gap-4">
-                        @foreach (['PC', 'PS5', 'Xbox', 'Android', 'iOS'] as $platform)
+                        @foreach ($platforms as $id => $name)
                             <x-ui.label class="flex items-center gap-2">
-                                <input type="checkbox" wire:model="form.platform" value="{{ $platform }}">
-                                {{ $platform }}
+                                <input type="checkbox" wire:model="form.platform" value="{{ $id }}">
+                                {{ $name }}
                             </x-ui.label>
                         @endforeach
 
@@ -104,13 +104,15 @@
                 </div>
 
                 {{-- Ends Platforms --}}
+
                 {{-- Description --}}
 
                 <div class="col-span-2">
                     <x-ui.label
                         class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Description') }}</x-ui.label>
-                    <x-ui.textarea wire:model="form.description" rows="4"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></x-ui.textarea>
+                    {{-- <x-ui.text-editor wire:model="form.description" rows="3"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></x-ui.text-editor> --}}
+                      <textarea wire:model="form.description" rows="3"  class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></textarea>
                     <x-ui.input-error :messages="$errors->get('form.description')" class="mt-2" />
                 </div>
 
@@ -120,15 +122,7 @@
                         class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Logo') }}</x-ui.label>
                     <x-ui.file-input type="file" wire:model="form.logo"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
-                    <x-ui.input-error :messages="$errors->get('form.')" class="mt-2" />
-                </div>
-
-                <div>
-                    <x-ui.label
-                        class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Banner') }}</x-ui.label>
-                    <x-ui.file-input type="file" wire:model="form.banner"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
-                    <x-ui.input-error :messages="$errors->get('form.banner')" class="mt-2" />
+                    <x-ui.input-error :messages="$errors->get('form.logo')" class="mt-2" />
                 </div>
 
                 <div>
@@ -139,19 +133,9 @@
                     <x-ui.input-error :messages="$errors->get('form.thumbnail')" class="mt-2" />
                 </div>
 
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                        {{ __('Thumbnail') }}
-                    </h3>
-                    <x-ui.file-input wire:model="form.thumbnail" label="Game Thumbanail" accept="image/*"
-                        :error="$errors->first('form.thumbnail')" hint="Upload a game thumbnail (Max: 2MB)" />
-                </div>
-
 
                 <div class="col-span-2">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                        {{ __('Banner') }}
-                    </h3>
+                    
                     <x-ui.file-input wire:model="form.banner" label="Game Banner" accept="image/*" :error="$errors->first('form.banner')"
                         hint="Upload a game banner (Max: 2MB)" />
                 </div>
@@ -180,16 +164,18 @@
                 <div class="col-span-2">
                     <x-ui.label
                         class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Meta Description') }}</x-ui.label>
-                    <x-ui.text-editor wire:model="form.meta_description" rows="3"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></x-ui.text-editor>
+                    <textarea wire:model="form.meta_description" rows="3"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></textarea>
                     <x-ui.input-error :messages="$errors->get('form.meta_description')" class="mt-2" />
                 </div>
 
                 <div class="col-span-2">
                     <x-ui.label
                         class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Meta Keywords') }}</x-ui.label>
-                    <x-ui.textarea wire:model="form.meta_keywords" rows="2"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></x-ui.textarea>
+                    {{-- <x-ui.textarea wire:model="form.meta_keywords" rows="2"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></x-ui.textarea> --}}
+                    <textarea wire:model="form.meta_keywords" rows="2"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></textarea>
                     <x-ui.input-error :messages="$errors->get('form.meta_keywords')" class="mt-2" />
                 </div>
 
@@ -203,7 +189,7 @@
                     {{ __('Reset') }}
                 </x-ui.button>
 
-                <x-ui.button type="accent" button>
+                <x-ui.button type="accent" button class="w-auto! py-2!">
                     <span wire:loading.remove wire:target="save" class="text-white">{{ __('Create Game') }}</span>
                     <span wire:loading wire:target="save" class="text-white">{{ __('Creating...') }}</span>
                 </x-ui.button>

@@ -5,7 +5,9 @@ namespace App\Livewire\Backend\Admin\GameManagement\Game;
 use App\Enums\GameStatus;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameForm;
 use App\Models\Game;
-use App\Services\GameCategoryService;
+
+use App\Services\CategoryService;
+use App\Services\GamePlatformService;
 use App\Services\GameService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -17,62 +19,50 @@ class Edit extends Component
     use WithFileUploads, WithNotification;
     public Game $game;
     public GameForm $form;
-    protected GameCategoryService $categoryService;
+    protected CategoryService $categoryService;
 
     protected GameService $service;
 
-    public $dataId = null;
+    protected GamePlatformService $gamePlatformService;
+    public $data = null;
 
-    public function boot(GameCategoryService $categoryService, GameService $service)
+    public function boot(CategoryService $categoryService, GameService $service, GamePlatformService $gamePlatformService)
     {
-
         $this->categoryService = $categoryService;
-
         $this->service = $service;
+        $this->gamePlatformService = $gamePlatformService;
     }
     public function mount(Game $data)
     {
 
         $this->form->setData($data);
 
-        $this->dataId = $data->id;
+        $this->data = $data;
     }
 
     public function render()
     {
-        $platforms = [
-            [
-                'id' => 1,
-                'name' => 'PC'
-            ],
-            [
-                'id' => 2,
-                'name' => 'Mobile'
-            ],
-            [
-                'id' => 3,
-                'name' => 'Web'
-            ],
-            [
-                'id' => 4,
-                'name' => 'Console'
-            ]
-        ];
+       
         return view('livewire.backend.admin.game-management.game.edit', [
 
             'statuses'   => GameStatus::options(),
             'categories' => $this->categories(),
-            'platforms'  => $platforms,
+            'platforms'  => $this->getPlatforms(),
         ]);
+    }
+
+       protected function getPlatforms(): array
+    {
+        return $this->gamePlatformService->getActiveData()->pluck('name', 'id')->toArray();
     }
 
     protected function categories()
     {
-        return $this->categoryService->getAllDatas()->pluck('name', 'id')->toArray();
+        return $this->categoryService->getActiveData()->pluck('name', 'id')->toArray();
     }
 
 
-    public function update()
+    public function save()
     {
 
         $this->form->validate();
@@ -80,9 +70,10 @@ class Edit extends Component
         try {
             $data = $this->form->fillables();
 
-            $actioner_id = admin()->id;
+            $data['updater_id'] = admin()->id;
+            $data['upater_type'] = get_class(admin());
 
-            $this->service->updateData($this->dataId, $data, $actioner_id);
+            $this->service->updateData($this->data->id, $data);
 
             $this->form->reset();
 

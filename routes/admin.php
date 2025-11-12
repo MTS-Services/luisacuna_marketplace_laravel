@@ -11,9 +11,11 @@ use App\Http\Controllers\Backend\Admin\UserManagement\UserController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
+use App\Http\Controllers\Backend\Admin\GameManagement\GamePlatformController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductTypeController;
 use App\Http\Controllers\Backend\Admin\ReviewManagement\PageViewController;
+use App\Http\Controllers\Backend\Admin\RewardManagement\RankController;
 use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\Settings\GeneralSettingsController;
 
@@ -48,10 +50,17 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
     });
 
 
-    // Game  Controller
+    // Game  
     Route::group(['prefix' => 'game-management', 'as' => 'gm.'], function () {
-
         Route::controller(CategoryController::class)->name('category.')->prefix('category')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/view/{id}', 'show')->name('view');
+            Route::get('/trash', 'trash')->name('trash');
+        });
+
+        Route::controller(GamePlatformController::class)->name('platform.')->prefix('game-platform')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
@@ -68,6 +77,21 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
         });
     });
     
+    // Rank 
+
+    Route::group(['prefix' => 'reward-management', 'as' => 'rm.'], function () {
+        
+        Route::controller(RankController::class)->name('rank.')->prefix('rank')->group(function () {
+
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/view/{id}', 'show')->name('view');
+            Route::get('/trash', 'trash')->name('trash');
+        });
+    });
+
+
     Route::group(['prefix' => 'user-management', 'as' => 'um.'], function () {
         Route::controller(UserController::class)->name('user.')->prefix('user')->group(function () {
             Route::get('/', 'index')->name('index');

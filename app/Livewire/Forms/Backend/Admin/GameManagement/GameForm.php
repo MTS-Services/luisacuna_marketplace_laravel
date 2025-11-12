@@ -6,7 +6,6 @@ use App\Enums\GameStatus;
 use App\Models\Game;
 use Illuminate\Http\UploadedFile;
 use Livewire\Attributes\Locked;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class GameForm extends Form
@@ -19,7 +18,7 @@ class GameForm extends Form
 
     public ?string $name;
 
-    public ?int $game_category_id;
+    public ?int $category_id;
 
     public ?string $status;
 
@@ -41,9 +40,9 @@ class GameForm extends Form
 
     public ?string $description;
 
-    public ?bool $is_featured;
+    public ?bool $is_featured = false;
 
-    public ?bool $is_trending;
+    public ?bool $is_trending = false;
 
     public ?string $meta_title;
 
@@ -55,13 +54,13 @@ class GameForm extends Form
     {
         return [
             'name' => 'required|string|max:255',
-            'game_category_id' => 'nullable|integer',
+            'category_id' => 'nullable|integer',
             'status' => 'required|string|in:'.implode(',', array_column(GameStatus::cases(), 'value')),
             'developer' => 'nullable|string',
             'publisher' => 'nullable|string',
             'logo' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
             'banner' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
-            'release_date' => 'nullable|date|after_or_equal:today',
+            'release_date' => 'nullable|date',
             'platform' => 'nullable|array',
             'description' => 'nullable|string',
             'thumbnail' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
@@ -76,7 +75,7 @@ class GameForm extends Form
     public function setData(Game $data) :void 
     {
         $this->id = $data->id;
-        $this->game_category_id = $data->game_category_id;
+        $this->category_id = $data->category_id;
         $this->name = $data->name;
         $this->status = $data->status->value;
         $this->developer = $data->developer;
@@ -97,7 +96,7 @@ class GameForm extends Form
 
     public function reset(...$properties):void {
         $this->name = null;
-        $this->game_category_id = null;
+        $this->category_id = null;
         $this->status = null;
         $this->developer = null;
         $this->publisher = null;
@@ -117,9 +116,9 @@ class GameForm extends Form
     }
 
     public function fillables():array {
-        return [
+        return array_filter([
             'name' => $this->name,
-            'game_category_id' => $this->game_category_id,
+            'category_id' => $this->category_id,
             'status' => $this->status,
             'developer' => $this->developer,
             'publisher' => $this->publisher,
@@ -134,7 +133,9 @@ class GameForm extends Form
             'meta_title' => $this->meta_title,
             'meta_description' => $this->meta_description,
             'meta_keywords' => $this->meta_keywords
-        ];
+        ], function ($value) {
+            return $value !== '' && $value !== null;
+        });
     }
 
     public function isUpdating():bool {

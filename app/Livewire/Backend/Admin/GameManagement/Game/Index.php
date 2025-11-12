@@ -6,16 +6,15 @@ use Livewire\Component;
 
 use App\Services\GameService;
 
-use App\Traits\Livewire\WithDataTable;
-
 use App\Enums\GameStatus;
+use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
-use Illuminate\Support\Facades\Log;
+
 
 class Index extends Component
 {
 
-    use withDataTable, WithNotification;
+    use WithDataTable, WithNotification;
 
 
     protected GameService $service;
@@ -33,37 +32,21 @@ class Index extends Component
     public function render()
     {
 
-        $datas = $this->service->getPaginateDatas($this->perPage, $this->filters());
+        $datas = $this->service->getPaginatedData(
+            $this->perPage,
+            $this->getfilters(),
+        )->load('creater_admin');
 
 
         $columns = [
-            // [
-            //     'key' => 'id',
-            //     'label' => 'ID',
-            //     'sortable' => true
-            // ],
+                
             [
                 'key' => 'name',
                 'label' => 'Name',
                 'sortable' => true
             ],
-            [
-                'key' => 'slug',
-                'label' => 'Slug',
-                'sortable' => true
-            ],
 
-            [
-                'key' => 'created_at',
-                'label' => 'Created',
-                'sortable' => true,
-                'format' => function ($arg) {
-                    return '<div class="text-sm">' .
-                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $arg->created_at->format('M d, Y') . '</div>' .
-                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $arg->created_at->format('h:i A') . '</div>' .
-                        '</div>';
-                }
-            ],
+        
             [
                 'key' => 'status',
                 'label' => 'Status',
@@ -74,27 +57,51 @@ class Index extends Component
                         '</span>';
                 }
             ],
+                [
+                'key' => 'created_at',
+                'label' => 'Created Date',
+                'sortable' => true,
+                'format' => function ($data) {
+
+                    return $data->created_at_formatted;
+
+                }
+            ],
             [
-                'key' => 'created_by',
+                'key' => 'creater_id',
                 'label' => 'Created By',
-                'format' => function ($arg) {
-                    return $arg->creater_admin
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $arg->creater_admin->name . '</span>'
-                        : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
+                'format' => function ($data) {
+                    return $data->creater?->name ?? 'System';
                 }
             ],
         ];
 
         $actions = [
-            ['key' => 'id', 'label' => 'View', 'route' => 'admin.gm.game.view', 'encrypt' => true],
-            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.gm.game.edit', 'ecrypt' => true],
-            ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete', 'encrypt' => true],
+            [
+                'key' => 'id', 
+                'label' => 'View', 
+                'route' => 'admin.gm.game.view', 
+                'encrypt' => true
+            ],
+            [
+                'key' => 'id', 
+                'label' => 'Edit', 
+                'route' => 'admin.gm.game.edit', 
+                'ecrypt' => true
+            ],
+            [
+                'key' => 'id', 
+                'label' => 'Delete', 
+                'method' => 'confirmDelete', 
+                'encrypt' => true
+            ],
         ];
 
         $bulkActions = [
             ['value' => 'delete', 'label' => 'Delete'],
             ['value' => 'activate', 'label' => 'Activate'],
             ['value' => 'inactivate', 'label' => 'Inactive'],
+            ['value' => 'upcoming', 'label' => 'Upcoming'],
         ];
 
 
@@ -106,14 +113,63 @@ class Index extends Component
                 'columns' => $columns,
                 'actions' => $actions,
                 'bulkActions' => $bulkActions,
-                'bulkAction'  => $this->bulkAction,
                 'statuses' =>  GameStatus::options()
             ]
         );
     }
 
+    // Confirm Delete form Single Delete
 
-    public function filters()
+    public function confirmDelete($encrypted_id)
+    {
+        $this->deleteId = $encrypted_id;
+        $this->showDeleteModal = true;
+    }
+
+    public function delete(): void
+    {
+        try {
+            if (!$this->deleteId) {
+                $this->warning('No data selected');
+                return;
+            }
+            $this->service->deleteData(decrypt($this->deleteId));
+            $this->reset(['deleteId', 'showDeleteModal']);
+
+            $this->success('Data deleted successfully');
+        } catch (\Exception $e) {
+
+            $this->error('Failed to delete data: ' . $e->getMessage());
+        }
+    }
+
+    public function resetFilters(): void
+    {
+        $this->reset(['search', 'statusFilter', 'perPage', 'sortField', 'sortDirection', 'selectedIds', 'selectAll', 'bulkAction']);
+        $this->resetPage();
+    }
+
+
+    public function changeStatus($id, $status): void
+    {
+        try {
+            $dataStatus = GameStatus::from($status);
+
+            match ($dataStatus) {
+                GameStatus::ACTIVE => $this->service->updateStatusData($id, GameStatus::ACTIVE),
+                GameStatus::INACTIVE => $this->service->updateStatusData($id, GameStatus::INACTIVE),
+                GameStatus::UPCOMING => $this->service->updateStatusData($id, GameStatus::UPCOMING),
+                default => null,
+            };
+
+            $this->success('Data status updated successfully');
+        } catch (\Exception $e) {
+            $this->error('Failed to update status: ' . $e->getMessage());
+        }
+    }
+
+
+    public function getfilters()
     {
         return [
             'search' => $this->search,
@@ -123,33 +179,6 @@ class Index extends Component
         ];
     }
 
-    public function confirmDelete($encrypted_id)
-    {
-        $this->showDeleteModal = true;
-        $this->deleteId = $encrypted_id;
-    }
-
-    public function delete()
-    {
-
-
-        try {
-            if (!$this->deleteId) {
-                $this->warning('No data selected');
-                return;
-            }
-            $this->service->deleteData(decrypt($this->deleteId));
-
-            $this->reset(['deleteId', 'showDeleteModal']);
-
-            $this->success('Data deleted successfully');
-        } catch (\Exception $e) {
-
-            Log::error("Failed to delete data", ['error' => $e->getMessage()]);
-
-            $this->error('Failed to delete data.');
-        }
-    }
 
 
     public function confirmBulkAction(): void
@@ -186,7 +215,7 @@ class Index extends Component
     {
         try {
 
-            $count =    $this->service->bulkDelete($this->selectedIds,  admin()->id);
+            $count =    $this->service->bulkDeleteData($this->selectedIds,  admin()->id);
 
             $this->success("($count) Datas deleted successfully");
         } catch (\Exception $e) {
@@ -205,17 +234,19 @@ class Index extends Component
             $count =  $this->service->bulkUpdateStatus($this->selectedIds, $status, admin()->id);
 
             $this->success("($count)  Status change successfully");
+
         } catch (\Exception $e) {
 
             $this->error('Failed to change status.');
         }
     }
 
+
     protected function getSelectableIds(): array
     {
-        return $this->service->getPaginateDatas(
+        return $this->service->getPaginatedData(
             perPage: $this->perPage,
-            filters: $this->filters()
+            filters: $this->getFilters()
         )->pluck('id')->toArray();
     }
 }

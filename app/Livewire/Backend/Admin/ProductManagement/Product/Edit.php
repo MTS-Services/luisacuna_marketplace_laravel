@@ -50,7 +50,7 @@ class Edit extends Component
     }
     public function render()
     {
-        $games = $this->gameService->getPaginateDatas();
+        $games = $this->gameService->getPaginatedData();
         $PTypes = $this->PTypeService->getAllDatas();
         $users = $this->userService->getAllSellersData('first_name', 'asc');
         $currencies = $this->currencyService->getAllDatas();

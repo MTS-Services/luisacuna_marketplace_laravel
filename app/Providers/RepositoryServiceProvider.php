@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
-use App\Models\PageView;
+use App\Models\Game;
+
+
 use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Eloquent\RoleRepository;
 use Illuminate\Support\ServiceProvider;
@@ -14,6 +16,10 @@ use App\Repositories\Eloquent\ProductRepository;
 use App\Repositories\Eloquent\CurrencyRepository;
 use App\Repositories\Eloquent\LanguageRepository;
 use App\Repositories\Eloquent\ProductTypeRepository;
+
+use App\Repositories\Eloquent\GamePlatformRepository;
+
+
 use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Contracts\GameRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
@@ -23,11 +29,13 @@ use App\Repositories\Contracts\ProductRepositoryInterface;
 use App\Repositories\Contracts\CurrencyRepositoryInterface;
 use App\Repositories\Contracts\LanguageRepositoryInterface;
 use App\Repositories\Contracts\ProductTypeRepositoryInterface;
+use App\Repositories\Contracts\GamePlatformRepositoryInterface;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\PageViewRepositoryInterface;
 use App\Repositories\Contracts\PermissionRepositoryInterface;
 use App\Repositories\Eloquent\PageViewRepository;
 use App\Repositories\Eloquent\PermissionRepository;
+
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -49,11 +57,19 @@ class RepositoryServiceProvider extends ServiceProvider
             CategoryRepository::class,
         );
 
-        // Game Category Repository
+
+        // Game  Repository
         $this->app->bind(
             GameRepositoryInterface::class,
             GameRepository::class,
         );
+
+        //GamePlatform Repository
+        $this->app->bind(
+            GamePlatformRepositoryInterface::class,
+            GamePlatformRepository::class
+        );
+
         $this->app->bind(
             LanguageRepositoryInterface::class,
             LanguageRepository::class

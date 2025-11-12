@@ -30,71 +30,60 @@ class Trash extends Component
     public function render()
     {
 
-        $games = $this->service->getTrashedPaginateDatas($this->perPage, $this->filters());
+        $datas = $this->service->getTrashedPaginatedData($this->perPage, $this->getFilters());
+
 
 
         $columns = [
-            // [
-            //     'key' => 'id',
-            //     'label' => 'ID',
-            //     'sortable' => true
-            // ],
+
             [
                 'key' => 'name',
                 'label' => 'Name',
                 'sortable' => true
             ],
-            [
-                'key' => 'slug',
-                'label' => 'Slug',
-                'sortable' => true
-            ],
-            // [
-            //     'key' => 'status',
-            //     'label' => 'Status',
-            //     'sortable' => true,
-            //     'format' => function ($admin) {
-            //         $colors = [
-            //             'active' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-            //             'inactive' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-            //             'suspended' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-            //         ];
-            //         $color = $colors[$admin->status->value] ?? 'bg-gray-100 text-gray-800';
-            //         return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' .
-            //             ucfirst($admin->status->value) .
-            //             '</span>';
-            //     }
-            // ],
-            [
-                'key' => 'created_at',
-                'label' => 'Created',
-                'sortable' => true,
-                'format' => function ($arg) {
-                    return '<div class="text-sm">' .
-                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $arg->created_at->format('M d, Y') . '</div>' .
-                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $arg->created_at->format('h:i A') . '</div>' .
-                        '</div>';
-                }
-            ],
+
+
             [
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
+                'format' => function ($data) {
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
+                        $data->status->label() .
+                        '</span>';
+                }
             ],
             [
-                'key' => 'created_by',
+                'key' => 'created_at',
+                'label' => 'Created Date',
+                'sortable' => true,
+                'format' => function ($data) {
+
+                    return $data->created_at_formatted;
+                }
+            ],
+            [
+                'key' => 'creater_id',
                 'label' => 'Created By',
-                'format' => function ($arg) {
-                    return $arg->creater_admin
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $arg->creater_admin->name . '</span>'
-                        : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
+                'format' => function ($data) {
+                    return $data->creater?->name ?? 'System';
                 }
             ],
         ];
 
         $actions = [
-            ['key' => 'id', 'label' => 'Restore', 'method' => 'restore', 'encrypt' => true],
-            ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete', 'encrypt' => true],
+            [
+                'key' => 'id',
+                'label' => 'Restore',
+                'method' => 'restore',
+                'encrypt' => true
+            ],
+            [
+                'key' => 'id',
+                'label' => 'Delete',
+                'method' => 'confirmDelete',
+                'encrypt' => true
+            ],
         ];
 
         $bulkActions = [
@@ -107,18 +96,17 @@ class Trash extends Component
         return view(
             'livewire.backend.admin.game-management.game.trash',
             [
-                'games' => $games,
+                'data' => $datas,
                 'columns' => $columns,
                 'actions' => $actions,
                 'bulkActions' => $bulkActions,
-                'bulkAction'  => $this->bulkAction,
                 'statuses' =>  GameStatus::options()
             ]
         );
     }
 
 
-    public function filters()
+    public function getFilters()
     {
         return [
             'search' => $this->search,
@@ -157,7 +145,7 @@ class Trash extends Component
                 $this->warning('No data selected');
                 return;
             }
-            $this->service->forceDeleteData(decrypt($this->deleteId), true);
+            $this->service->deleteData(decrypt($this->deleteId), true);
             $this->reset(['deleteId', 'showDeleteModal']);
 
             $this->success('Data deleted successfully');
@@ -201,7 +189,7 @@ class Trash extends Component
     {
 
         try {
-            $count = $this->service->bulkForceDelete($this->selectedIds);
+            $count = $this->service->bulkForceDeleteData($this->selectedIds);
 
             $this->success("{$count} Datas deleted successfully");
         } catch (\Exception $e) {
@@ -219,7 +207,7 @@ class Trash extends Component
                 $this->warning('No data selected');
                 return;
             }
-            $count =  $this->service->bulkRestore($this->selectedIds, admin()->id);
+            $count =  $this->service->bulkRestoreData($this->selectedIds, admin()->id);
 
             $this->success("{$count} Data restored successfully");
         } catch (\Exception $e) {
@@ -232,9 +220,9 @@ class Trash extends Component
 
     protected function getSelectableIds(): array
     {
-        return $this->service->getTrashedPaginateDatas(
+        return $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
-            filters: $this->filters()
+            filters: $this->getFilters()
         )->pluck('id')->toArray();
     }
 }
