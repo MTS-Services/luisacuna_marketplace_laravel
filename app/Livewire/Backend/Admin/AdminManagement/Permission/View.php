@@ -16,6 +16,6 @@ class View extends Component
     }
     public function render()
     {
-        return view('livewire.backend.admin.admin-management.admin.view');
+        return view('livewire.backend.admin.admin-management.permission.view');
     }
 }
