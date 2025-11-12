@@ -484,7 +484,7 @@ if (!function_exists('gameCategories')) {
                 ]
             ]
         ];
-    }
+    }}
 
 if (!function_exists('getAuditorName')) {
     function getAuditorName($model){
