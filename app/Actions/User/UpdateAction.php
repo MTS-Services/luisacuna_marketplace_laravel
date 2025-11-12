@@ -42,7 +42,7 @@ class UpdateAction
                 'email' => $data['email'],
                 'phone' => $data['phone'],
                 'account_status' => $data['account_status'],                
-                'updater_id' => admin()->id,
+                'updater_id' => user()->id,
             ];
 
             if($data['password'] != null && $data['password'] != '' && $data['password']){
@@ -53,9 +53,9 @@ class UpdateAction
           
              if($data['avatar']) {
 
-                $new_data['avatar'] = Storage::disk('public')->putFile('admins', $data['avatar']);
+                $new_data['avatar'] = Storage::disk('public')->putFile('users', $data['avatar']);
 
-                if (Storage::disk('public')->exists($oldData['avatar'])) {
+                if ( $oldData['avatar'] && Storage::disk('public')->exists($oldData['avatar'])) {
 
                     Storage::disk('public')->delete($oldData['avatar']);
                 }   

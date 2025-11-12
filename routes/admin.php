@@ -14,12 +14,15 @@ use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductTypeController;
 use App\Http\Controllers\Backend\Admin\ReviewManagement\PageViewController;
+use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
+use App\Http\Controllers\Backend\Admin\Settings\GeneralSettingsController;
 
 Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
         return view('backend.admin.pages.dashboard');
     })->name('dashboard');
 
+    
     Route::group(['prefix' => 'admin-management', 'as' => 'am.'], function () {
         Route::controller(AdminController::class)->name('admin.')->prefix('admin')->group(function () {
             Route::get('/', 'index')->name('index');
@@ -95,6 +98,10 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/show/{id}', 'show')->name('show');
             Route::get('/trash', 'trash')->name('trash');
         });
+
+        Route::controller(GeneralSettingsController::class)->prefix('general-settings')->group(function () {
+            Route::get('/', 'index')->name('general-settings');
+        });
     });
 
     Route::group(['prefix' => 'product-management', 'as' => 'pm.'], function () {
@@ -120,7 +127,6 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/create', 'create')->name('create');
             Route::get('/show/{id}', 'show')->name('show');
             Route::get('/trash', 'trash')->name('trash');
-
         });
     });
 
