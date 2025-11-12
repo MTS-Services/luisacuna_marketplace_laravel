@@ -35,7 +35,9 @@
                 </div>
             </div>
             <div class="icon">
-                <x-flux::icon name="pencil-square" class="w-6 h-6 inline-block" stroke="white" />
+                <a href="{{ route('user.account-settings') }}" wire:navigate>
+                    <x-flux::icon name="pencil-square" class="w-6 h-6 inline-block stroke-text-text-white" stroke="currentColor" />
+                </a>
             </div>
         </div>
         <div class="border-b border-zinc-700 mt-6 mb-4"></div>

@@ -586,7 +586,7 @@
 
                     <!-- Filters Section -->
                     <div class="mb-8 space-y-4">
-                        <div class="flex gap-4 justify-between md:justify-start md:flex-wrap relative"
+                        <div class="flex gap-4 justify-between items-center md:justify-start md:flex-wrap relative"
                             x-data={filter:false}>
                             <div class="flex-1 w-auto md:min-w-64">
                                 <div class="relative">

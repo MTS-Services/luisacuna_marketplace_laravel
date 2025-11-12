@@ -240,12 +240,24 @@
                     //     'icon' => 'bell',
                     //     'active' => 'settings-notifications',
                     // ],
-                    [
-                        'name' => 'Database',
-                        'route' => '#',
-                        'icon' => 'database',
-                        'active' => 'settings-database',
+                    // [
+                    //     'name' => 'Database',
+                    //     'route' => route('admin.app-settings.database'),
+                    //     'icon' => 'database',
+                    //     'active' => 'settings-database',
+                    // ],
+                     [
+                        'name' => 'General Settings',
+                        'route' => route('admin.as.general-settings'),
+                        'icon' => 'cog-8-tooth',
+                        'active' => 'general-settings',
                     ],
+                    // [
+                    //     'name' => 'SMTP',
+                    //     'route' => route('admin.app-settings.smtp'),
+                    //     'icon' => 'envelope',
+                    //     'active' => 'app-smtp-settings',
+                    // ],
                 ]" />
 
             <div class="space-y-2">
