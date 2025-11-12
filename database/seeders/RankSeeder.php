@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Rank;
+
 use Illuminate\Database\Seeder;
 
 class RankSeeder extends Seeder
@@ -13,5 +14,6 @@ class RankSeeder extends Seeder
     public function run(): void
     {
         //
+        Rank::factory(10)->create();
     }
 }

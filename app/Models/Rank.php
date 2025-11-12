@@ -1,7 +1,8 @@
 <?php
  
 namespace App\Models;
- 
+
+use App\Enums\RankStatus;
 use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,16 +16,33 @@ class Rank extends BaseModel implements Auditable
  
     protected $fillable = [
         'sort_order',
+        'name',
+        'slug',
+        'minimum_points',
+        'maximum_points',
+        'icon',
+        'status',
+        'initial_assign',
+
+        'created_by',
+        'updated_by', 
+        'deleted_by',
+        'restored_by',
+
  
       //here AuditColumns 
     ];
  
     protected $hidden = [
         //
+        'id',
+
     ];
  
     protected $casts = [
         //
+        'status'    => RankStatus::class,
+        'restored_at' => 'datetime',
     ];
  
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

@@ -27,7 +27,6 @@ class GamePlatformFactory extends Factory
             // 
             'name' => $name,
             'slug' => Str::slug($name),
-         
             'status' => fake()->randomElement(GamePlatformStatus::cases()),
             'created_by' => Admin::inRandomorder()->value('id'),
         ];

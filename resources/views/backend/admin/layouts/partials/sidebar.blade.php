@@ -145,6 +145,35 @@
                     // ],
                 ]" />
 
+            <x-backend.navlink type="dropdown" icon="user-group" name="Reward Management" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'Ranks',
+                        'route' => route('admin.rm.rank.index'),
+                        'icon' => 'user',
+                        'active' => 'reward-management',
+                    ],
+                    // [
+                    //     'name' => 'Products',
+                    //     'route' => route('admin.pm.product.index'),
+                    //     'icon' => 'user',
+                    //     'active' => 'product',
+                    // ],
+                    // [
+                    //     'name' => 'Pending Users',
+                    //     'route' => '#',
+                    //     'icon' => 'user-plus',
+                    //     'active' => 'admin-users-pending',
+                    // ],
+                    // [
+                    //     'name' => 'Banned Users',
+                    //     'route' => '#',
+                    //     'icon' => 'user-round-x',
+                    //     'active' => 'admin-users-banned',
+                    // ],
+                ]" 
+            />
+
             <x-backend.navlink type="dropdown" icon="user-group" name="Review Management" :page_slug="$active"
                 :items="[
                     [
@@ -171,7 +200,8 @@
                     //     'icon' => 'user-round-x',
                     //     'active' => 'admin-users-banned',
                     // ],
-                ]" />
+                ]" 
+            />
 
             <x-backend.navlink type="dropdown" icon="user-group" name="Audit Log Management" :page_slug="$active"
                 :items="[
