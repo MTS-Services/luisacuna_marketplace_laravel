@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->string('key')->unique();
             $table->string('env_key')->nullable();
+             $table->text('value')->nullable();
 
 
             $table->softDeletes();

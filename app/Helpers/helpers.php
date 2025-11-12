@@ -254,7 +254,27 @@ if (!function_exists('is_phone_verified')) {
         return !is_null($model?->phone_verified_at);
     }
 }
+if (!function_exists('availableTimezones')) {
+    function availableTimezones()
+    {
+        $timezones = [];
+        $timezoneIdentifiers = DateTimeZone::listIdentifiers();
 
+        foreach ($timezoneIdentifiers as $timezoneIdentifier) {
+            $timezone = new DateTimeZone($timezoneIdentifier);
+            $offset = $timezone->getOffset(new DateTime());
+            $offsetPrefix = $offset < 0 ? '-' : '+';
+            $offsetFormatted = gmdate('H:i', abs($offset));
+
+            $timezones[] = [
+                'timezone' => $timezoneIdentifier,
+                'name' => "(UTC $offsetPrefix$offsetFormatted) $timezoneIdentifier",
+            ];
+        }
+
+        return $timezones;
+    }
+}
 
 if (!function_exists('gameCategories')) {
     function gameCategories()
@@ -470,5 +490,4 @@ if (!function_exists('getAuditorName')) {
     function getAuditorName($model){
         return $model && $model->name ? $model->name : (isset($model->first_name) ? $model->first_name . ' ' . $model->last_name : 'N/A');
     }
-}
 }
