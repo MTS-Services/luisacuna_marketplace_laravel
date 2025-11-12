@@ -42,7 +42,7 @@ class GamePlatformForm extends Form
         $this->name = $data->name;
         $this->status = $data->status->value;
         $this->color_code_hex = $data->color_code_hex;
-        $this->icon = $data->icon;
+        $this->icon_url = $data->icon ?? null;
         
     }
 
@@ -50,6 +50,9 @@ class GamePlatformForm extends Form
         $this->name = null;
         $this->status = null;
         $this->id = null;
+        $this->color_code_hex = null;
+        $this->icon = null;
+        $this->icon_url = null;
         $this->resetValidation();
     }
 

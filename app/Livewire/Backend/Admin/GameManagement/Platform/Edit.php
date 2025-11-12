@@ -9,11 +9,12 @@ use App\Services\GamePlatformService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Str;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Edit extends Component
 {
 
-    use WithNotification;
+    use WithNotification, WithFileUploads;
     public GamePlatformForm $form;
     public GamePlatform $data;
     protected GamePlatformService $service;
@@ -46,6 +47,7 @@ class Edit extends Component
         $this->form->validate();
         try {
             $data = $this->form->fillables();
+
             $data['updated_by'] = admin()->id;
 
             if(! isset($data['slug'])) $data['slug'] = Str::slug($data['name']);

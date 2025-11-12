@@ -25,7 +25,7 @@
 
             </div>
 
-            <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
+            <div class="mt-6 space-y-4 grid grid-cols-3 gap-5">
                 <div>
                     <x-ui.label for="name" :value="__('Platform Name')" required />
                     <x-ui.input id="name" type="text" class="mt-1 block w-full" wire:model="form.name"

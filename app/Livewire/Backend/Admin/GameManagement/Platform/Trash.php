@@ -8,6 +8,7 @@ use App\Services\GamePlatformService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class Trash extends Component
@@ -37,10 +38,27 @@ class Trash extends Component
             filters: $this->getFilters()
         )->load('creater_admin');
         $columns = [
+             [
+                'key' => 'icon',
+                'label' => 'Icon',
+                'format' => function($data){
+
+                    return '<img src="'.Storage::url($data->icon).'" alt="'.$data->name.'" class="w-10 h-10 rounded-full object-cover shadow-sm">';
+
+                }
+            ],
             [
                 'key' => 'name',
                 'label' => 'Name',
                 'sortable' => true
+            ],
+            [
+                'key' => 'color_code_hex',
+                'label' => 'Color',
+                'sortable' => true,
+                'format' => function ($data) {
+                    return  $data->color_code_hex ?? 'N/A';
+                }
             ],
             [
                 'key' => 'status',

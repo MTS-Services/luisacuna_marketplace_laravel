@@ -15,13 +15,31 @@
     <div class="glass-card rounded-2xl p-6 mb-6">
         <form wire:submit="save">
             <!-- Fields -->
-            <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
+            
+            <div class="mt-6 space-y-4  gap-5">
+                
+                <x-ui.file-input wire:model="form.icon" label="Icon" accept="image/*" :error="$errors->first('form.icon')"
+                    hint="Upload a profile picture (Max: 1MB) height: 200px width: 200px" />
+
+               <x-ui.input-error :messages="$errors->get('form.icon')" class="mt-2" />
+
+            </div>
+
+            <div class="mt-6 space-y-4 grid grid-cols-3 gap-5">
                 <div>
                     <x-ui.label for="name" :value="__('Platform Name')" required />
                     <x-ui.input id="name" type="text" class="mt-1 block w-full" wire:model="form.name"
                         placeholder="Platform Name" />
                     <x-ui.input-error :messages="$errors->get('form.name')" class="mt-2" />
                 </div>
+                
+                <div>
+                   <x-ui.label for="name" :value="__('Color Code Hex')" required />
+                    <x-ui.input id="name" type="text" class="mt-1 block w-full" wire:model="form.color_code_hex"
+                        placeholder="Color Code Hex" />
+                    <x-ui.input-error :messages="$errors->get('form.color_code_hex')" class="mt-2" />
+                </div>
+                
                 <div>
                     <x-ui.label for="status" :value="__('Status')" required />
                     <x-ui.select id="status" class="mt-1 block w-full" wire:model="form.status">
