@@ -235,7 +235,7 @@ class Index extends Component
 
    protected function getSelectableIds(): array
     {
-        $data = $this->service->getTrashedPaginatedData(
+        $data = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );

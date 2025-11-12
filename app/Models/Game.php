@@ -32,7 +32,9 @@ class Game extends BaseModel implements Auditable
         'meta_description',
         'meta_keywords',
         'status',
-        'game_category_id',
+        // 'game_category_id',
+        'status',   
+        'category_id',
         'sort_order',
 
 
@@ -63,7 +65,7 @@ class Game extends BaseModel implements Auditable
     //
     public function category()
     {
-        return $this->belongsTo(GameCategory::class, 'game_category_id', 'id');
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
     public function product()

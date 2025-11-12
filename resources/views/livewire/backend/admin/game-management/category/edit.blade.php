@@ -4,7 +4,7 @@
     @endpush
     <div class="glass-card rounded-2xl p-6 mb-6">
         <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game Category Edit') }}</h2>
+            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Category Edit') }}</h2>
             <div class="flex items-center gap-2">
                 <x-ui.button href="{{ route('admin.gm.category.index') }}" class="w-auto! py-2!">
                     <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="glass-card rounded-2xl p-6 mb-6">
-        <form wire:submit="update">
+        <form wire:submit="save">
 
             <!-- Add other form fields here -->
             {{-- <div>
@@ -35,22 +35,6 @@
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                     {{ __('Icon') }}
                 </h3>
-
-                {{-- Show existing icon from database (only in edit mode) --}}
-                @if ($form->isUpdating() && $form->id)
-                    @php
-                        $category = \App\Models\GameCategory::find($form->id);
-                    @endphp
-
-                    @if ($category && $category->icon)
-                        <div class="mb-3">
-                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Current Icon:</p>
-                            <img src="{{ asset('storage/' . $category->icon) }}" alt="{{ $category->name }}"
-                                class="h-24 w-24 object-cover rounded border-2 border-gray-300 dark:border-gray-600">
-                        </div>
-                    @endif
-                @endif
-
                 <x-ui.file-input wire:model="form.icon" label="Icon" accept="image/*" :error="$errors->first('form.icon')"
                     hint="Upload an icon (Max: 1MB, Max dimensions: 200x200px)" />
 
@@ -147,7 +131,7 @@
                 </x-ui.button>
 
                 <x-ui.button type="accent" class="w-auto! py-2!">
-                    <span wire:loading.remove wire:target="save" class="text-white">{{ __('Update Category') }}</span>
+                    <span wire:loading.remove wire:target="save" class="text-white">{{ __('Update') }}</span>
                     <span wire:loading wire:target="save" class="text-white">{{ __('Updating...') }}</span>
                 </x-ui.button>
             </div>

@@ -24,8 +24,8 @@ class DatabaseSeeder extends Seeder
             EmailTemplateSeeder::class,
             ReferralSettingSeeder::class,
             UserSeeder::class,
-            GameCategorySeeder::class,
             GamePlatformSeeder::class,
+            CategorySeeder::class,
             GameSeeder::class,
             ApplicationSettingSeeder::class,
 

@@ -43,8 +43,8 @@ class Trash extends Component
                 'sortable' => true
             ],
             [
-                'key' => 'description',
-                'label' => 'Description',
+                'key' => 'price',
+                'label' => 'Price',
                 'sortable' => true
             ],
             [
@@ -64,11 +64,13 @@ class Trash extends Component
             ],
 
             [
-                'key' => 'created_by',
-                'label' => 'Created By',
+                'key' => 'deleter_type',
+                'label' => 'Deleted By',
                 'format' => function ($data) {
-                    return $data->creater_admin?->name ?? 'System';
-                }
+                    return ($data?->deleter)->name
+                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . ($data->deleter->name) . '</span>'
+                        : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
+                },
             ],
         ];
         $actions = [

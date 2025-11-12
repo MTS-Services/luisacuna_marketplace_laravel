@@ -14,8 +14,8 @@ return new class extends Migration {
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sort_order')->default(0);
-            $table->unsignedBigInteger('game_category_id');
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
+            $table->unsignedBigInteger('category_id');
             $table->string('name')->index();
             $table->string('slug')->unique()->index();
             $table->text('description')->nullable();
@@ -38,7 +38,7 @@ return new class extends Migration {
             $table->softDeletes();
             $this->addMorphedAuditColumns($table);
 
-            $table->foreign('game_category_id')->references('id')->on('game_categories')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

@@ -40,9 +40,6 @@ class ProductType extends BaseModel implements Auditable
         'restorer_type',
 
 
-        'created_at',
-        'updated_at',
-        'deleted_at',
         'restored_at',
         //here AuditColumns 
     ];

@@ -136,99 +136,22 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Game Card 1 -->
-                <div
-                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
-                    <div class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
-                        <img src="{{ asset('assets/images/home_page/game-1.png') }}" alt="">
-                    </div>
-                    <h3 class="font-bold text-lg mb-2 text-text-white">{{ __('Blade Ball Tokens') }}</h3>
-                    <p class="text-sm text-text-secondary mb-4">{{ __('50 items available') }}</p>
-                    <x-ui.button class="py-2!"
-                        href="{{ route('game.index', ['categorySlug' => 'currency', 'gameSlug' => 'blade-ball']) }}"
-                        wire:navigate>
-                        {{ __('Buy Now') }}
-                    </x-ui.button>
-                </div>
-
-                <!-- Game Card 2 -->
-                <div
-                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                @foreach ($games as $game)
                     <div
-                        class="w-full max-w-[300px] mx-auto mb-4  rounded-lg flex items-center justify-center text-4xl">
-                        <img src="{{ asset('assets/images/home_page/game-2.png') }}" alt="">
+                        class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
+                        <div
+                            class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
+                            <img src="{{ asset($game->logo) }}" alt="{{ $game->name }}">
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-text-white">{{ $game->name }}</h3>
+                        <p class="text-sm text-text-secondary mb-4">{{ __('50 items available') }}</p>
+                        <x-ui.button class="py-2!"
+                            href="{{ route('game.index', ['categorySlug' => 'currency', 'gameSlug' => 'blade-ball']) }}"
+                            wire:navigate>
+                            {{ __('Buy Now') }}
+                        </x-ui.button>
                     </div>
-                    <h3 class="font-bold text-lg mb-2 text-text-white">{{ __('Path Of Exile 2 Currency') }}</h3>
-                    <p class="text-sm text-text-secondary mb-4">{{ __('50 items available') }}</p>
-                    <x-ui.button class="py-2!"
-                        href="{{ route('game.index', ['categorySlug' => 'currency', 'gameSlug' => 'path-of-exile']) }}"
-                        wire:navigate>
-                        {{ __('Buy Now') }}
-                    </x-ui.button>
-                </div>
-
-                <!-- Game Card 3 -->
-                <div
-                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
-                    <div
-                        class="w-full max-w-[300px] mx-auto mb-4  rounded-lg flex items-center justify-center text-4xl">
-                        <img src="{{ asset('assets/images/home_page/game-3.png') }}" alt="">
-                    </div>
-                    <h3 class="font-bold text-lg mb-2 text-text-white">{{ __('RuneScape 3 Gold') }}</h3>
-                    <p class="text-sm text-text-secondary mb-4">{{ __('50 items available') }}</p>
-                    <x-ui.button class="py-2!"
-                        href="{{ route('game.index', ['categorySlug' => 'currency', 'gameSlug' => 'runescape-3-gold']) }}"
-                        wire:navigate>
-                        {{ __('Buy Now') }}
-                    </x-ui.button>
-                </div>
-
-                <!-- Game Card 4 -->
-                <div
-                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
-                    <div
-                        class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
-                        <img src="{{ asset('assets/images/home_page/game-4.png') }}" alt="">
-                    </div>
-                    <h3 class="font-bold text-lg mb-2 text-text-white">{{ __('New World Coins') }}</h3>
-                    <p class="text-sm text-text-secondary mb-4">{{ __('50 items available') }}</p>
-                    <x-ui.button class="py-2!"
-                        href="{{ route('game.index', ['categorySlug' => 'currency', 'gameSlug' => 'new-world']) }}"
-                        wire:navigate>
-                        {{ __('Buy Now') }}
-                    </x-ui.button>
-                </div>
-
-                <!-- Game Card 5 -->
-                <div
-                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
-                    <div
-                        class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
-                        <img src="{{ asset('assets/images/home_page/game-5.png') }}" alt="">
-                    </div>
-                    <h3 class="font-bold text-lg mb-2 text-text-white">{{ __('Lost Ark Gold') }}</h3>
-                    <p class="text-sm text-text-secondary mb-4">{{ __('50 items available') }}</p>
-                    <x-ui.button class="py-2!"
-                        href="{{ route('game.index', ['categorySlug' => 'currency', 'gameSlug' => 'lost-ark']) }}"
-                        wire:navigate>
-                        {{ __('Buy Now') }}
-                    </x-ui.button>
-                </div>
-
-                <!-- Game Card 6 -->
-                <div
-                    class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
-                    <div
-                        class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
-                        <img src="{{ asset('assets/images/home_page/game-6.png') }}" alt="">
-                    </div>
-                    <h3 class="font-bold text-lg mb-2 text-text-white">{{ __('Old School RuneScape Gold') }}</h3>
-                    <p class="text-sm text-text-secondary mb-4">{{ __('50 items available') }}</p>
-                    <x-ui.button class="py-2!"
-                        href="{{ route('game.index', ['categorySlug' => 'currency', 'gameSlug' => 'old-school-runescape']) }}"
-                        wire:navigate>
-                        {{ __('Buy Now') }}
-                    </x-ui.button>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
