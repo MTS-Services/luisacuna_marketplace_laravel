@@ -5,7 +5,7 @@
             <div class="glass-card rounded-2xl p-4 lg:p-6 mb-6">
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <h2 class="text-xl lg:text-2xl font-bold text-text-black dark:text-text-white">
-                        {{ __('Product Type Details') }}
+                        {{ __('Product Category Details') }}
                     </h2>
                     <div class="flex items-center gap-2 w-full sm:w-auto">
                         <x-ui.button href="{{ route('admin.pm.productType.index') }}" class="w-auto py-2!">
@@ -22,6 +22,8 @@
                 <!-- Old Data Section -->
                 <div class="px-8 py-8">
                     <div class="mb-10">
+
+
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <img src="{{ asset('storage/' . $data->icon) }}" alt="Icon" width="40"
@@ -41,21 +43,30 @@
                                 <p class="text-text-white text-xs font-semibold mb-2">
                                     {{ __('REQUIRES DELIVERY TIME') }}
                                 </p>
-                                <p class="text-slate-400 text-lg font-bold">
-                                    {{ $data->requires_delivery_time == 1 ? 'True' : 'False' }}</p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->description }}</p>
+                            </div>
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('ICON') }}
+                                </p>
+
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->icon ?? 'N/A' }}</p>
+                            </div>
+                            <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">
+                                    {{ __('REQUIRES DELIVERY TIME') }}
+                                </p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->requires_delivery_time }}</p>
                             </div>
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('REQUIRES SERVER INFO') }}
                                 </p>
-                                <p class="text-slate-400 text-lg font-bold">
-                                    {{ $data->requires_server_info == 1 ? 'True' : 'False' }}</p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->requires_server_info == 1 ? 'Yes' : 'No' }}</p>
                             </div>
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">
                                     {{ __('REQUIRES CHARACTER INFO') }}
                                 </p>
-                                <p class="text-slate-400 text-lg font-bold">
-                                    {{ $data->requires_character_info == 1 ? 'True' : 'False' }}</p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->requires_character_info == 1 ? 'Yes' : 'No' }}</p>
                             </div>
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('MAX DELIVERY TIME') }}
@@ -100,7 +111,7 @@
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('UPDATED BY') }} </p>
                                 <p class="text-slate-400 text-lg font-bold">
-                                  
+
                                     {{ getAuditorName($data->updater) }}</p>
                             </div>
                             <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">

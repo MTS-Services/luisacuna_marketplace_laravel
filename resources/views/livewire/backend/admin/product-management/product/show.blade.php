@@ -6,10 +6,10 @@
             <div class="glass-card rounded-2xl p-4 lg:p-6 mb-6">
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <h2 class="text-xl lg:text-2xl font-bold text-text-black dark:text-text-white">
-                        {{ __('Audit Log Details') }}
+                        {{ __('Product Details') }}
                     </h2>
                     <div class="flex items-center gap-2 w-full sm:w-auto">
-                        <x-ui.button href="{{ route('admin.alm.audit.index') }}" class="w-auto py-2!">
+                        <x-ui.button href="{{ route('admin.pm.product.index') }}" class="w-auto py-2!">
                             <flux:icon name="arrow-left"
                                 class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                             {{ __('Back') }}
@@ -76,15 +76,18 @@
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
-                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('MIN PURCHASE QUANTITY') }}
+                                <p class="text-text-white text-xs font-semibold mb-2">
+                                    {{ __('MIN PURCHASE QUANTITY') }}
                                 </p>
                                 <p class="text-slate-400 text-lg font-bold">{{ $data->min_purchase_quantity }}</p>
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
-                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('MAX PURCHASE QUANTITY') }}
+                                <p class="text-text-white text-xs font-semibold mb-2">
+                                    {{ __('MAX PURCHASE QUANTITY') }}
                                 </p>
-                                <p class="text-slate-400 text-lg font-bold">{{ $data->max_purchase_quantity ?? 'N/A' }}
+                                <p class="text-slate-400 text-lg font-bold">
+                                    {{ $data->max_purchase_quantity ?? 'N/A' }}
                                 </p>
                             </div>
 
@@ -127,13 +130,15 @@
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('IS FEATURED') }}</p>
-                                <p class="text-slate-400 text-lg font-bold">{{ $data->is_featured ? 'True' : 'False' }}
+                                <p class="text-slate-400 text-lg font-bold">
+                                    {{ $data->is_featured ? 'True' : 'False' }}
                                 </p>
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('IS HOT DEAL') }}</p>
-                                <p class="text-slate-400 text-lg font-bold">{{ $data->is_hot_deal ? 'True' : 'False' }}
+                                <p class="text-slate-400 text-lg font-bold">
+                                    {{ $data->is_hot_deal ? 'True' : 'False' }}
                                 </p>
                             </div>
 
@@ -272,4 +277,5 @@
             </div>
         </div>
     </div>
+
 </div>
