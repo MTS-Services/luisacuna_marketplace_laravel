@@ -3,8 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Game;
-
-
+use App\Models\Rank;
 use App\Repositories\Contracts\RoleRepositoryInterface;
 use App\Repositories\Eloquent\RoleRepository;
 use Illuminate\Support\ServiceProvider;
@@ -33,9 +32,10 @@ use App\Repositories\Contracts\GamePlatformRepositoryInterface;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\PageViewRepositoryInterface;
 use App\Repositories\Contracts\PermissionRepositoryInterface;
+use App\Repositories\Contracts\RankRepositoryInterface;
 use App\Repositories\Eloquent\PageViewRepository;
 use App\Repositories\Eloquent\PermissionRepository;
-
+use App\Repositories\Eloquent\RankRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -70,6 +70,12 @@ class RepositoryServiceProvider extends ServiceProvider
             GamePlatformRepository::class
         );
 
+        // Rank
+
+        $this->app->bind(
+            RankRepositoryInterface::class,
+            RankRepository::class,
+        );
         $this->app->bind(
             LanguageRepositoryInterface::class,
             LanguageRepository::class
