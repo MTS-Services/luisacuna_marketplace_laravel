@@ -4,16 +4,16 @@
 
     use App\Http\Controllers\Controller;
 
-    use App\Services\GameCategoryService;
+    use App\Services\CategoryService;
     use Illuminate\View\View;
 
     class CategoryController extends Controller
     {
 
 
-        protected $masterView = 'backend.admin.pages.game-management.game-category';
-        protected GameCategoryService $service;
-        public function __construct(GameCategoryService $service)
+        protected $masterView = 'backend.admin.pages.game-management.category';
+        protected CategoryService $service;
+        public function __construct(CategoryService $service)
         {
             $this->service = $service;
         }

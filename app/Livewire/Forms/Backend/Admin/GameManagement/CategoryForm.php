@@ -2,12 +2,12 @@
 
 namespace App\Livewire\Forms\Backend\Admin\GameManagement;
 
-use App\Enums\GameCategoryStatus;
-use App\Models\GameCategory;
+use App\Enums\CategoryStatus;
+use App\Models\Category;
 use Livewire\Attributes\Locked;
 use Livewire\Form;
 
-class GameCategoryForm extends Form
+class CategoryForm extends Form
 {
 
     #[Locked]
@@ -30,14 +30,14 @@ class GameCategoryForm extends Form
     public function rules(): array
     {
         $slugRule = $this->isUpdating()
-            ? 'required|string|max:255|unique:game_categories,slug,' . $this->id
-            : 'required|string|max:255|unique:game_categories,slug';
+            ? 'required|string|max:255|unique:categories,slug,' . $this->id
+            : 'required|string|max:255|unique:categories,slug';
 
         return [
             'name' => 'required|string|max:255',
             'slug' => $slugRule,
             'description' => 'nullable|string',
-            'status' => 'required|string|in:' . implode(',', array_column(GameCategoryStatus::cases(), 'value')),
+            'status' => 'required|string|in:' . implode(',', array_column(CategoryStatus::cases(), 'value')),
             'meta_title' => 'nullable|string',
             'meta_description' => 'nullable|string',
             'icon' => 'nullable|image|max:1024|dimensions:max_width=200,max_height=200',
@@ -45,7 +45,7 @@ class GameCategoryForm extends Form
         ];
     }
 
-    public function setCategory(GameCategory $data)
+    public function setData(Category $data)
     {
         $this->id = $data->id;
         $this->name = $data->name;
@@ -64,7 +64,7 @@ class GameCategoryForm extends Form
         $this->name = '';
         $this->slug = '';
         $this->description = '';
-        $this->status = GameCategoryStatus::ACTIVE->value;
+        $this->status = CategoryStatus::ACTIVE->value;
         $this->meta_title = '';
         $this->meta_description = '';
         $this->icon = null;

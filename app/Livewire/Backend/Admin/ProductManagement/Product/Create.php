@@ -14,6 +14,7 @@ use App\Traits\Livewire\WithNotification;
 use App\Services\ProductTypeService;
 use App\Livewire\Forms\Backend\Admin\ProductManagement\ProducForm;
 use App\Models\Admin;
+use App\Services\CurrencyService;
 
 class Create extends Component
 {
@@ -26,13 +27,15 @@ class Create extends Component
     protected GameService $gameService;
     protected ProductTypeService $PTypeService;
     protected UserService $userService;
+    protected CurrencyService $currencyService;
 
-    public function boot(ProductService $service, GameService $gameService, ProductTypeService $PTypeService, UserService $userService)
+    public function boot(ProductService $service, GameService $gameService, ProductTypeService $PTypeService, UserService $userService, CurrencyService $currencyService)
     {
         $this->service = $service;
         $this->gameService = $gameService;
         $this->PTypeService = $PTypeService;
         $this->userService = $userService;
+        $this->currencyService = $currencyService;
     }
 
     public function mount(): void
@@ -44,6 +47,7 @@ class Create extends Component
         $games = $this->gameService->getPaginateDatas();
         $PTypes = $this->PTypeService->getAllDatas();
         $users = $this->userService->getAllSellersData('first_name', 'asc');
+        $currencies = $this->currencyService->getAllDatas();
 
         return view('livewire.backend.admin.product-management.product.create', [
             'statuses' => ProductStatus::options(),
@@ -51,7 +55,8 @@ class Create extends Component
             'visibilitis' => ProductsVisibility::options(),
             'games' => $games,
             'PTypes' => $PTypes,
-            'users' => $users
+            'users' => $users,
+            'currencies' => $currencies,
         ]);
     }
 

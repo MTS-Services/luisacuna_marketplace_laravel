@@ -2,24 +2,22 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Models\GameCategory;
-use App\Repositories\Contracts\GameCategoryRepositoryInterface;
+use App\Models\Category;
+use App\Repositories\Contracts\CategoryRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
-class GameCategoryRepository implements GameCategoryRepositoryInterface
+class CategoryRepository implements CategoryRepositoryInterface
 {
 
 
-    public function __construct(protected GameCategory $model) {}
+    public function __construct(protected Category $model) {}
 
 
     /* ================== ================== ==================
     *                      Find Methods 
     * ================== ================== ================== */
-
-
 
     public function all(string $sortField = 'created_at', $order = 'desc'): Collection
     {
@@ -27,7 +25,7 @@ class GameCategoryRepository implements GameCategoryRepositoryInterface
         return $query->orderBy($sortField, $order)->get();
     }
 
-    public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?GameCategory
+    public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?Category
     {
         $model = $this->model;
         if ($trashed) {
@@ -36,7 +34,7 @@ class GameCategoryRepository implements GameCategoryRepositoryInterface
         return $model->where($column_name, $column_value)->first();
     }
 
-    public function findTrashed($column_value, string $column_name = 'id'): ?GameCategory
+    public function findTrashed($column_value, string $column_name = 'id'): ?Category
     {
         $model = $this->model->onlyTrashed();
         return $model->where($column_name, $column_value)->first();
@@ -52,7 +50,7 @@ class GameCategoryRepository implements GameCategoryRepositoryInterface
 
         if ($search) {
             // Scout Search
-            return GameCategory::search($search)
+            return Category::search($search)
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
         }
@@ -75,7 +73,7 @@ class GameCategoryRepository implements GameCategoryRepositoryInterface
 
         if ($search) {
             // 👇 Manually filter trashed + search
-            return GameCategory::search($search)
+            return Category::search($search)
                 ->onlyTrashed()
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
@@ -85,7 +83,6 @@ class GameCategoryRepository implements GameCategoryRepositoryInterface
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
-        return $query->paginate($perPage);
     }
 
     public function exists(int $id): bool
@@ -114,55 +111,55 @@ class GameCategoryRepository implements GameCategoryRepositoryInterface
     *                    Data Modification Methods 
     * ================== ================== ================== */
 
-    public function create(array $data): GameCategory
+    public function create(array $data): Category
     {
         return $this->model->create($data);
     }
 
     public function update(int $id, array $data): bool
     {
-        $gamecat = $this->find($id);
+        $findData = $this->find($id);
 
-        if (!$gamecat) {
+        if (!$findData) {
             return false;
         }
 
-        return $gamecat->update($data);
+        return $findData->update($data);
     }
 
     public function delete(int $id, int $actionerId): bool
     {
-        $gamecat = $this->find($id);
+        $findData = $this->find($id);
 
-        if (!$gamecat) {
+        if (!$findData) {
             return false;
         }
-        $gamecat->update(['deleted_by' => $actionerId]);
+        $findData->update(['deleted_by' => $actionerId]);
 
-        return $gamecat->delete();
+        return $findData->delete();
     }
 
     public function forceDelete(int $id): bool
     {
-        $gamecat = $this->findTrashed($id);
+        $findData = $this->findTrashed($id);
 
-        if (!$gamecat) {
+        if (!$findData) {
             return false;
         }
 
-        return $gamecat->forceDelete();
+        return $findData->forceDelete();
     }
 
     public function restore(int $id, int $actionerId): bool
     {
-        $gamecat = $this->findTrashed($id);
+        $findData = $this->findTrashed($id);
 
-        if (!$gamecat) {
+        if (!$findData) {
             return false;
         }
-        $gamecat->update(['restored_by' => $actionerId, 'restored_at' => now()]);
+        $findData->update(['restored_by' => $actionerId, 'restored_at' => now()]);
 
-        return $gamecat->restore();
+        return $findData->restore();
     }
 
     public function bulkDelete(array $ids, int $actionerId): int

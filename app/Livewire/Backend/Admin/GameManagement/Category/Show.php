@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Backend\Admin\GameManagement\Category;
 
-use App\Models\GameCategory;
+use App\Models\Category;
 use Livewire\Component;
 
 class Show extends Component
 {
-    public GameCategory $data;
-    public function mount(GameCategory $data): void
+    public Category $data;
+    public function mount(Category $data): void
     {
         $this->data = $data;
     }

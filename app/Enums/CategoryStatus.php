@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum GameCategoryStatus: string
+enum CategoryStatus: string
 {
     //
     case ACTIVE = 'active';

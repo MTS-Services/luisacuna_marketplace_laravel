@@ -131,8 +131,7 @@ class ProductTypeRepository implements ProductTypeRepositoryInterface
         }
         $findData->update([
             'deleter_id' => $actionerId,
-            'deleter_type' => get_class(admin()),
-            'deleted_at' => now(),
+            'deleter_type' => get_class(admin())
         ]);
 
         return $findData->delete();
@@ -168,8 +167,7 @@ class ProductTypeRepository implements ProductTypeRepositoryInterface
         return DB::transaction(function () use ($ids, $actionerId) {
             $this->model->whereIn('id', $ids)->update([
                 'deleter_id' => $actionerId,
-                'deleter_type' => get_class(admin()),
-                'deleted_at' => now(),
+                'deleter_type' => get_class(admin())
             ]);
             return $this->model->whereIn('id', $ids)->delete();
         });

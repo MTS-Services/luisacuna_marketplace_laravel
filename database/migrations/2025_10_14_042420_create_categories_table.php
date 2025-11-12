@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\GameCategoryStatus;
+use App\Enums\CategoryStatus;
 use App\Traits\AuditColumnsTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Migrations\Migration;
@@ -15,7 +15,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('game_categories', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
 
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->text('meta_description')->nullable();
             $table->string('icon')->nullable();
             $table->boolean('is_featured')->default(false);
-            $table->string('status')->index()->default(GameCategoryStatus::ACTIVE);
+            $table->string('status')->index()->default(CategoryStatus::ACTIVE);
 
             $table->timestamps();
             $table->softDeletes();
@@ -39,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('game_categories');
+        Schema::dropIfExists('categories');
     }
 };

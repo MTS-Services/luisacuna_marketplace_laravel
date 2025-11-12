@@ -2,11 +2,12 @@
 
 namespace App\Livewire\Backend\Admin\GameManagement\Category;
 
-use App\Enums\GameCategoryStatus;
-use App\Services\GameCategoryService;
+use Livewire\Component;
+use App\Enums\CategoryStatus;
+use App\Services\CategoryService;
+use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
-use Livewire\Component;
 
 class Index extends Component
 {
@@ -15,7 +16,7 @@ class Index extends Component
 
     public $statusFilter = '';
     public $showDeleteModal = false;
-    public $deleteGameCategoryId = null;
+    public $deleteCategoryId = null;
     public $bulkAction = '';
     public $showBulkActionModal = false;
     public $deleteId = null;
@@ -23,9 +24,9 @@ class Index extends Component
 
     // protected $listeners = ['adminCreated' => '$refresh', 'adminUpdated' => '$refresh'];
 
-    protected GameCategoryService $service;
+    protected CategoryService $service;
 
-    public function boot(GameCategoryService $service)
+    public function boot(CategoryService $service)
     {
         $this->service = $service;
     }
@@ -75,10 +76,10 @@ class Index extends Component
                 'key' => 'created_at',
                 'label' => 'Created',
                 'sortable' => true,
-                'format' => function ($category) {
+                'format' => function ($data) {
                     return '<div class="text-sm">' .
-                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $category->created_at->format('M d, Y') . '</div>' .
-                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $category->created_at->format('h:i A') . '</div>' .
+                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $data->created_at->format('M d, Y') . '</div>' .
+                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $data->created_at->format('h:i A') . '</div>' .
                         '</div>';
                 }
             ],
@@ -86,18 +87,18 @@ class Index extends Component
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
-                'format' => function ($category) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $category->status->color() . '">' .
-                        $category->status->label() .
+                'format' => function ($data) {
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
+                        $data->status->label() .
                         '</span>';
                 }
             ],
             [
                 'key' => 'created_by',
                 'label' => 'Created By',
-                'format' => function ($category) {
-                    return $category->creater_admin
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $category->creater_admin?->name . '</span>'
+                'format' => function ($data) {
+                    return $data->creater_admin
+                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $data->creater_admin?->name . '</span>'
                         : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
                 }
             ],
@@ -125,14 +126,7 @@ class Index extends Component
         ]);
     }
 
-    // public function confirmDelete($id)
-    // {
-    //     $this->showDeleteModal = true;
-    //     $this->deleteGameCategoryId = $id;
-    // }
-
-
-    public function confirmDelete($id): void
+   public function confirmDelete($id): void
     {
         $this->deleteId = $id;
         $this->showDeleteModal = true;
@@ -145,7 +139,7 @@ class Index extends Component
                 $this->warning('No data selected');
                 return;
             }
-            $this->service->deleteData($this->deleteId);
+            $this->service->deleteData(($this->deleteId));
             $this->reset(['deleteId', 'showDeleteModal']);
 
             $this->success('Data deleted successfully');
@@ -154,48 +148,34 @@ class Index extends Component
         }
     }
 
-    protected function getFilters(): array
+    public function resetFilters(): void
     {
-        return [
-            'search' => $this->search,
-            'status' => $this->statusFilter,
-            'sort_field' => $this->sortField,
-            'sort_direction' => $this->sortDirection,
-        ];
+        $this->reset(['search', 'statusFilter', 'perPage', 'sortField', 'sortDirection', 'selectedIds', 'selectAll', 'bulkAction']);
+        $this->resetPage();
     }
 
-    public function cancelDelete()
+    public function changeStatus($id, $status): void
     {
-        $this->showDeleteModal = false;
-        $this->deleteGameCategoryId = null;
+        try {
+            $dataStatus = CategoryStatus::from($status);
+
+            match ($dataStatus) {
+                CategoryStatus::ACTIVE => $this->service->updateStatusData($id, CategoryStatus::ACTIVE),
+                CategoryStatus::INACTIVE => $this->service->updateStatusData($id, CategoryStatus::INACTIVE),
+                default => null,
+            };
+
+            $this->success('Data status updated successfully');
+        } catch (\Exception $e) {
+            $this->error('Failed to update status: ' . $e->getMessage());
+        }
     }
-    // public function delete()
-    // {
-
-    //     try {
-
-
-    //         if (!$this->deleteGameCategoryId) {
-    //             return;
-    //         }
-
-    //         $state =   $this->service->deleteData($this->deleteGameCategoryId, admin()->id);
-
-    //         if ($state) {
-    //             $this->success('Category deleted successfully');
-    //         }
-
-    //         $this->showDeleteModal = false;
-    //         $this->deleteGameCategoryId = null;
-    //     } catch (\Exception $e) {
-    //         $this->error('Failed to delete category: ' . $e->getMessage());
-    //     }
-    // }
 
     public function confirmBulkAction(): void
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
-            $this->warning('Please select categories and an action');
+            $this->warning('Please select data and an action');
+            Log::info('No data selected or no bulk action selected');
             return;
         }
 
@@ -209,8 +189,8 @@ class Index extends Component
         try {
             match ($this->bulkAction) {
                 'delete' => $this->bulkDelete(),
-                'activate' => $this->bulkUpdateStatus(GameCategoryStatus::ACTIVE),
-                'inactivate' => $this->bulkUpdateStatus(GameCategoryStatus::INACTIVE),
+                'active' => $this->bulkUpdateStatus(CategoryStatus::ACTIVE),
+                'inactive' => $this->bulkUpdateStatus(CategoryStatus::INACTIVE),
                 default => null,
             };
 
@@ -222,26 +202,41 @@ class Index extends Component
         }
     }
 
-    public function bulkDelete(): void
+    protected function bulkDelete(): void
     {
-
-
-        $count = $this->service->bulkDeleteData($this->selectedIds, admin()->id);
-
-        $this->success("{$count} categories deleted successfully");
+        $count =  $this->service->bulkDeleteData($this->selectedIds);
+        $this->success("{$count} Data deleted successfully");
     }
 
-    public function bulkUpdateStatus(GameCategoryStatus $status): void
+    protected function bulkUpdateStatus(CategoryStatus $status): void
     {
-        $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
-        $this->success("{$count} categories updated successfully");
+        $count = count($this->selectedIds);
+        $this->service->bulkUpdateStatus($this->selectedIds, $status);
+        $this->success("{$count} Data updated successfully");
     }
 
-    protected function getSelectableIds(): array
+    protected function getFilters(): array
     {
-        return $this->service->getPaginatedData(
+        return [
+            'search' => $this->search,
+            'status' => $this->statusFilter,
+            'sort_field' => $this->sortField,
+            'sort_direction' => $this->sortDirection,
+        ];
+    }
+
+   protected function getSelectableIds(): array
+    {
+        $data = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        )->pluck('id')->toArray();
+        );
+
+        return array_column($data->items(), 'id');
+    }
+
+    public function updatedStatusFilter(): void
+    {
+        $this->resetPage();
     }
 }

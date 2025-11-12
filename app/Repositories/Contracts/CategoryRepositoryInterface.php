@@ -2,11 +2,11 @@
 
 namespace App\Repositories\Contracts;
 
-use App\Models\GameCategory;
+use App\Models\Category;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
-interface GameCategoryRepositoryInterface
+interface CategoryRepositoryInterface
 {
 
 
@@ -14,12 +14,11 @@ interface GameCategoryRepositoryInterface
     *                      Find Methods 
     * ================== ================== ================== */
 
-
     public function all(string $sortField = 'created_at', $order = 'desc'): Collection;
 
-    public function find($column_value, string $column_name = 'id', bool $trashed = false): ?GameCategory;
+    public function find($column_value, string $column_name = 'id', bool $trashed = false): ?Category;
 
-    public function findTrashed($column_value, string $column_name = 'id'): ?GameCategory;
+    public function findTrashed($column_value, string $column_name = 'id'): ?Category;
 
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
 
@@ -36,7 +35,7 @@ interface GameCategoryRepositoryInterface
     *                    Data Modification Methods 
     * ================== ================== ================== */
 
-    public function create(array $data): GameCategory;
+    public function create(array $data): Category;
 
     public function update(int $id, array $data): bool;
 
@@ -55,9 +54,6 @@ interface GameCategoryRepositoryInterface
     public function bulkForceDelete(array $ids): int;
 
 
-
-
-
     /* ================== ================== ==================
     *                  Accessor Methods (Optional)
     * ================== ================== ================== */
@@ -67,4 +63,5 @@ interface GameCategoryRepositoryInterface
     public function getInactive(string $sortField = 'created_at', $order = 'desc'): Collection;
 
     public function getSuspended(string $sortField = 'created_at', $order = 'desc'): Collection;
+
 }

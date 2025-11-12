@@ -45,8 +45,10 @@ class Edit extends Component
 
     public function save()
     {
-        $this->form->validate();
+       $data = $this->form->validate();
         try {
+            $admin = admin();
+            
             $data = $this->form->fillables();
             $data['updater_id'] = admin()->id;
             $data['updater_type'] = get_class(admin());

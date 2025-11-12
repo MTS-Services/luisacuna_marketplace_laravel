@@ -5,15 +5,16 @@ namespace App\Livewire\Backend\Admin\ProductManagement\Product;
 use App\Models\Product;
 use Livewire\Component;
 use App\Enums\ProductStatus;
-use Livewire\WithFileUploads;
-use Livewire\Attributes\Locked;
-use App\Enums\ProductsVisibility;
 use App\Services\GameService;
 use App\Services\UserService;
-use App\Enums\ProductsDeliveryMethod;
+use Livewire\WithFileUploads;
+use Livewire\Attributes\Locked;
 use App\Services\ProductService;
-use App\Traits\Livewire\WithNotification;
+use App\Enums\ProductsVisibility;
+use App\Services\CurrencyService;
 use App\Services\ProductTypeService;
+use App\Enums\ProductsDeliveryMethod;
+use App\Traits\Livewire\WithNotification;
 use App\Livewire\Forms\Backend\Admin\ProductManagement\ProducForm;
 
 class Edit extends Component
@@ -29,14 +30,16 @@ class Edit extends Component
     protected GameService $gameService;
     protected ProductTypeService $PTypeService;
     protected UserService $userService;
+    protected CurrencyService $currencyService;
 
 
-    public function boot(ProductService $service, GameService $gameService, ProductTypeService $PTypeService, UserService $userService)
+    public function boot(ProductService $service, GameService $gameService, ProductTypeService $PTypeService, UserService $userService, CurrencyService $currencyService)
     {
         $this->service = $service;
         $this->gameService = $gameService;
         $this->PTypeService = $PTypeService;
         $this->userService = $userService;
+        $this->currencyService = $currencyService;
     }
 
 
@@ -50,6 +53,7 @@ class Edit extends Component
         $games = $this->gameService->getPaginateDatas();
         $PTypes = $this->PTypeService->getAllDatas();
         $users = $this->userService->getAllSellersData('first_name', 'asc');
+        $currencies = $this->currencyService->getAllDatas();
 
 
 
@@ -60,8 +64,8 @@ class Edit extends Component
             'visibilitis' => ProductsVisibility::options(),
             'games' => $games,
             'PTypes' => $PTypes,
-            'users' => $users
-
+            'users' => $users,
+            'currencies' => $currencies,
         ]);
     }
 
