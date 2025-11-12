@@ -203,7 +203,7 @@
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
             <div class="bg-bg-primary rounded-2xl shadow-lg overflow-hidden border border-gray-500/20">
 
                 <!-- Product Data Section -->
@@ -262,15 +262,18 @@
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
-                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('MIN PURCHASE QUANTITY') }}
+                                <p class="text-text-white text-xs font-semibold mb-2">
+                                    {{ __('MIN PURCHASE QUANTITY') }}
                                 </p>
                                 <p class="text-slate-400 text-lg font-bold">{{ $data->min_purchase_quantity }}</p>
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
-                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('MAX PURCHASE QUANTITY') }}
+                                <p class="text-text-white text-xs font-semibold mb-2">
+                                    {{ __('MAX PURCHASE QUANTITY') }}
                                 </p>
-                                <p class="text-slate-400 text-lg font-bold">{{ $data->max_purchase_quantity ?? 'N/A' }}
+                                <p class="text-slate-400 text-lg font-bold">
+                                    {{ $data->max_purchase_quantity ?? 'N/A' }}
                                 </p>
                             </div>
 
@@ -313,13 +316,15 @@
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('IS FEATURED') }}</p>
-                                <p class="text-slate-400 text-lg font-bold">{{ $data->is_featured ? 'True' : 'False' }}
+                                <p class="text-slate-400 text-lg font-bold">
+                                    {{ $data->is_featured ? 'True' : 'False' }}
                                 </p>
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('IS HOT DEAL') }}</p>
-                                <p class="text-slate-400 text-lg font-bold">{{ $data->is_hot_deal ? 'True' : 'False' }}
+                                <p class="text-slate-400 text-lg font-bold">
+                                    {{ $data->is_hot_deal ? 'True' : 'False' }}
                                 </p>
                             </div>
 
@@ -453,4 +458,5 @@
             </div>
         </div>
     </div>
+
 </div>
