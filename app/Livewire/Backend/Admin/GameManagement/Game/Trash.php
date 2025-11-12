@@ -33,68 +33,57 @@ class Trash extends Component
         $datas = $this->service->getTrashedPaginatedData($this->perPage, $this->getFilters());
 
 
+
         $columns = [
-            // [
-            //     'key' => 'id',
-            //     'label' => 'ID',
-            //     'sortable' => true
-            // ],
+
             [
                 'key' => 'name',
                 'label' => 'Name',
                 'sortable' => true
             ],
-            [
-                'key' => 'slug',
-                'label' => 'Slug',
-                'sortable' => true
-            ],
-            // [
-            //     'key' => 'status',
-            //     'label' => 'Status',
-            //     'sortable' => true,
-            //     'format' => function ($admin) {
-            //         $colors = [
-            //             'active' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-            //             'inactive' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-            //             'suspended' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-            //         ];
-            //         $color = $colors[$admin->status->value] ?? 'bg-gray-100 text-gray-800';
-            //         return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' .
-            //             ucfirst($admin->status->value) .
-            //             '</span>';
-            //     }
-            // ],
-            [
-                'key' => 'created_at',
-                'label' => 'Created',
-                'sortable' => true,
-                'format' => function ($arg) {
-                    return '<div class="text-sm">' .
-                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $arg->created_at->format('M d, Y') . '</div>' .
-                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $arg->created_at->format('h:i A') . '</div>' .
-                        '</div>';
-                }
-            ],
+
+
             [
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
+                'format' => function ($data) {
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
+                        $data->status->label() .
+                        '</span>';
+                }
             ],
             [
-                'key' => 'created_by',
+                'key' => 'created_at',
+                'label' => 'Created Date',
+                'sortable' => true,
+                'format' => function ($data) {
+
+                    return $data->created_at_formatted;
+                }
+            ],
+            [
+                'key' => 'creater_id',
                 'label' => 'Created By',
-                'format' => function ($arg) {
-                    return $arg->creater_admin
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $arg->creater_admin->name . '</span>'
-                        : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
+                'format' => function ($data) {
+                    return $data->creater?->name ?? 'System';
                 }
             ],
         ];
 
         $actions = [
-            ['key' => 'id', 'label' => 'Restore', 'method' => 'restore', 'encrypt' => true],
-            ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete', 'encrypt' => true],
+            [
+                'key' => 'id',
+                'label' => 'Restore',
+                'method' => 'restore',
+                'encrypt' => true
+            ],
+            [
+                'key' => 'id',
+                'label' => 'Delete',
+                'method' => 'confirmDelete',
+                'encrypt' => true
+            ],
         ];
 
         $bulkActions = [
@@ -111,7 +100,6 @@ class Trash extends Component
                 'columns' => $columns,
                 'actions' => $actions,
                 'bulkActions' => $bulkActions,
-              
                 'statuses' =>  GameStatus::options()
             ]
         );
@@ -150,6 +138,13 @@ class Trash extends Component
     }
 
     public function delete()
+/*************  ✨ Windsurf Command 🌟  *************/
+    /**
+     * Delete a game data
+     *
+     * @return void
+     */
+    public function delete()
     {
 
         try {
@@ -162,13 +157,22 @@ class Trash extends Component
 
             $this->success('Data deleted successfully');
         } catch (\Exception $e) {
+            // Log the error message
 
             Log::error("Failed to delete data", ['error' => $e->getMessage()]);
 
+            // Display the error message to the user
             $this->error('Failed to delete data.');
         }
     }
+
+    /**
+     * Confirm the bulk action
+     *
+     * @return void
+     */
     public function confirmBulkAction(): void
+/*******  f43a0f48-6c09-47ac-87b8-cbb62e8401a2  *******/
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
             $this->warning('Please select Games and an action');
@@ -222,7 +226,6 @@ class Trash extends Component
             $count =  $this->service->bulkRestoreData($this->selectedIds, admin()->id);
 
             $this->success("{$count} Data restored successfully");
-
         } catch (\Exception $e) {
 
             Log::error("Failed to delete data", ['error' => $e->getMessage()]);

@@ -40,33 +40,14 @@ class Index extends Component
 
 
         $columns = [
-            // [
-            //     'key' => 'id',
-            //     'label' => 'ID',
-            //     'sortable' => true
-            // ],
+         
             [
                 'key' => 'name',
                 'label' => 'Name',
                 'sortable' => true
             ],
-            [
-                'key' => 'slug',
-                'label' => 'Slug',
-                'sortable' => true
-            ],
 
-            [
-                'key' => 'created_at',
-                'label' => 'Created',
-                'sortable' => true,
-                'format' => function ($data) {
-                    return '<div class="text-sm">' .
-                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $data->created_at->format('M d, Y') . '</div>' .
-                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $data->created_at->format('h:i A') . '</div>' .
-                        '</div>';
-                }
-            ],
+        
             [
                 'key' => 'status',
                 'label' => 'Status',
@@ -77,22 +58,44 @@ class Index extends Component
                         '</span>';
                 }
             ],
-            [
-                'key' => 'created_by',
-                'label' => 'Created By',
-                'stortable' => true,
+                [
+                'key' => 'created_at',
+                'label' => 'Created Date',
+                'sortable' => true,
                 'format' => function ($data) {
-                    return $data->creater_admin
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $data->creater_admin->name . '</span>'
-                        : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
+
+                    return $data->created_at_formatted;
+
+                }
+            ],
+            [
+                'key' => 'creater_id',
+                'label' => 'Created By',
+                'format' => function ($data) {
+                    return $data->creater?->name ?? 'System';
                 }
             ],
         ];
 
         $actions = [
-            ['key' => 'id', 'label' => 'View', 'route' => 'admin.gm.game.view', 'encrypt' => true],
-            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.gm.game.edit', 'ecrypt' => true],
-            ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete', 'encrypt' => true],
+            [
+                'key' => 'id', 
+                'label' => 'View', 
+                'route' => 'admin.gm.game.view', 
+                'encrypt' => true
+            ],
+            [
+                'key' => 'id', 
+                'label' => 'Edit', 
+                'route' => 'admin.gm.game.edit', 
+                'ecrypt' => true
+            ],
+            [
+                'key' => 'id', 
+                'label' => 'Delete', 
+                'method' => 'confirmDelete', 
+                'encrypt' => true
+            ],
         ];
 
         $bulkActions = [
@@ -120,9 +123,7 @@ class Index extends Component
 
     public function confirmDelete($encrypted_id)
     {
-
         $this->deleteId = $encrypted_id;
-
         $this->showDeleteModal = true;
     }
 

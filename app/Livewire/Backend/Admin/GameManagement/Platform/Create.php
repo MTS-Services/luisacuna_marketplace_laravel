@@ -18,14 +18,15 @@ class Create extends Component
 
     public GamePlatformForm $form;
 
-    public GamePlatformService $service;
+    protected GamePlatformService $service;
 
 
 
-    public function boot(GamePlatformService $service): void
+    public function boot(GamePlatformService $service ): void
     {
        
         $this->service = $service;
+       
     }
 
     /**

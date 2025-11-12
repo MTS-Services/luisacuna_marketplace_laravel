@@ -6,7 +6,6 @@ use App\Enums\GameStatus;
 use App\Models\Game;
 use Illuminate\Http\UploadedFile;
 use Livewire\Attributes\Locked;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class GameForm extends Form
@@ -41,9 +40,9 @@ class GameForm extends Form
 
     public ?string $description;
 
-    public ?bool $is_featured;
+    public ?bool $is_featured = false;
 
-    public ?bool $is_trending;
+    public ?bool $is_trending = false;
 
     public ?string $meta_title;
 

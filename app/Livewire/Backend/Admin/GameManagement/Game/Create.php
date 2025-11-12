@@ -56,7 +56,7 @@ class Create extends Component
     }
     protected function gameCategory(): array
     {
-        return $this->categoryService->getAllDatas()->pluck('name', 'id')->toArray();
+        return $this->categoryService->getActiveData()->pluck('name', 'id')->toArray();
     }
 
     public function save()

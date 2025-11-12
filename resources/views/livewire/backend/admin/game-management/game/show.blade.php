@@ -46,11 +46,7 @@
                         class="w-auto object-contain bg-gray-100">
                 </div>
             </div>
-            <!-- Main Card -->
-            <div class="bg-bg-primary rounded-2xl shadow-lg overflow-hidden border border-gray-500/20">
-                <!-- Event Header Section -->
-                <div class="dark:bg-bg-container1 bg-bg-secondary px-8 py-8">
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            
 
         </div>
 

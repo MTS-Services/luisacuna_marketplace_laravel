@@ -22,11 +22,12 @@ class GamePlatformFactory extends Factory
     public function definition(): array
     {
         $faker = Faker::create();
-        $name =$faker->unique()->name();
+        $name =substr($faker->unique()->name(),0,3);
         return [
             // 
             'name' => $name,
             'slug' => Str::slug($name),
+         
             'status' => fake()->randomElement(GamePlatformStatus::cases()),
             'created_by' => Admin::inRandomorder()->value('id'),
         ];

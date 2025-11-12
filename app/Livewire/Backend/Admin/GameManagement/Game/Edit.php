@@ -56,12 +56,12 @@ class Edit extends Component
 
        protected function getPlatforms(): array
     {
-        return $this->gamePlatformService->getAllDatas()->pluck('name', 'id')->toArray();
+        return $this->gamePlatformService->getActiveData()->pluck('name', 'id')->toArray();
     }
 
     protected function categories()
     {
-        return $this->categoryService->getAllDatas()->pluck('name', 'id')->toArray();
+        return $this->categoryService->getActiveData()->pluck('name', 'id')->toArray();
     }
 
 
