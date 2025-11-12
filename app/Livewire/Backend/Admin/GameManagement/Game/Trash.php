@@ -138,13 +138,6 @@ class Trash extends Component
     }
 
     public function delete()
-/*************  ✨ Windsurf Command 🌟  *************/
-    /**
-     * Delete a game data
-     *
-     * @return void
-     */
-    public function delete()
     {
 
         try {
@@ -157,22 +150,13 @@ class Trash extends Component
 
             $this->success('Data deleted successfully');
         } catch (\Exception $e) {
-            // Log the error message
 
             Log::error("Failed to delete data", ['error' => $e->getMessage()]);
 
-            // Display the error message to the user
             $this->error('Failed to delete data.');
         }
     }
-
-    /**
-     * Confirm the bulk action
-     *
-     * @return void
-     */
     public function confirmBulkAction(): void
-/*******  f43a0f48-6c09-47ac-87b8-cbb62e8401a2  *******/
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
             $this->warning('Please select Games and an action');

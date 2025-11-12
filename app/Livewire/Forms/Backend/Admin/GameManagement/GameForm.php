@@ -18,7 +18,7 @@ class GameForm extends Form
 
     public ?string $name;
 
-    public ?int $game_category_id;
+    public ?int $category_id;
 
     public ?string $status;
 
@@ -54,7 +54,7 @@ class GameForm extends Form
     {
         return [
             'name' => 'required|string|max:255',
-            'game_category_id' => 'nullable|integer',
+            'category_id' => 'nullable|integer',
             'status' => 'required|string|in:'.implode(',', array_column(GameStatus::cases(), 'value')),
             'developer' => 'nullable|string',
             'publisher' => 'nullable|string',
@@ -75,7 +75,7 @@ class GameForm extends Form
     public function setData(Game $data) :void 
     {
         $this->id = $data->id;
-        $this->game_category_id = $data->game_category_id;
+        $this->category_id = $data->category_id;
         $this->name = $data->name;
         $this->status = $data->status->value;
         $this->developer = $data->developer;
@@ -96,7 +96,7 @@ class GameForm extends Form
 
     public function reset(...$properties):void {
         $this->name = null;
-        $this->game_category_id = null;
+        $this->category_id = null;
         $this->status = null;
         $this->developer = null;
         $this->publisher = null;
@@ -118,7 +118,7 @@ class GameForm extends Form
     public function fillables():array {
         return array_filter([
             'name' => $this->name,
-            'game_category_id' => $this->game_category_id,
+            'category_id' => $this->category_id,
             'status' => $this->status,
             'developer' => $this->developer,
             'publisher' => $this->publisher,

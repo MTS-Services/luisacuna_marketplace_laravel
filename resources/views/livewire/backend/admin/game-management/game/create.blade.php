@@ -20,7 +20,7 @@
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">
                         {{ __('Category') }} <span class="text-red-500">*</span>
                     </label>
-                    <x-ui.select wire:model="form.game_category_id"
+                    <x-ui.select wire:model="form.category_id"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
                         <option value="">{{ __('Select Category') }}</option>
                         @foreach ($categories as $index => $value)

@@ -6,8 +6,7 @@ namespace App\Livewire\Backend\Admin\GameManagement\Game;
 
 use App\Enums\GameStatus;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameForm;
-use App\Models\GamePlatform;
-use App\Services\GameCategoryService;
+use App\Services\CategoryService;
 use App\Services\GamePlatformService;
 use App\Services\GameService;
 use App\Traits\Livewire\WithNotification;
@@ -23,11 +22,11 @@ class Create extends Component
 
     public GameForm $form;
 
-    protected GameCategoryService $categoryService;
+    protected CategoryService $categoryService;
 
     protected GamePlatformService $gamePlatformService;
 
-    public function boot(GameService $service,  GameCategoryService $categoryService, GamePlatformService $gamePlatformService)
+    public function boot(GameService $service,  CategoryService $categoryService, GamePlatformService $gamePlatformService)
     {
         $this->service = $service;
 

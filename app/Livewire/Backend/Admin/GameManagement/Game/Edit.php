@@ -5,8 +5,8 @@ namespace App\Livewire\Backend\Admin\GameManagement\Game;
 use App\Enums\GameStatus;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameForm;
 use App\Models\Game;
-use App\Models\GamePlatform;
-use App\Services\GameCategoryService;
+
+use App\Services\CategoryService;
 use App\Services\GamePlatformService;
 use App\Services\GameService;
 use App\Traits\Livewire\WithNotification;
@@ -19,20 +19,17 @@ class Edit extends Component
     use WithFileUploads, WithNotification;
     public Game $game;
     public GameForm $form;
-    protected GameCategoryService $categoryService;
+    protected CategoryService $categoryService;
 
     protected GameService $service;
 
     protected GamePlatformService $gamePlatformService;
     public $data = null;
 
-    public function boot(GameCategoryService $categoryService, GameService $service, GamePlatformService $gamePlatformService)
+    public function boot(CategoryService $categoryService, GameService $service, GamePlatformService $gamePlatformService)
     {
-
         $this->categoryService = $categoryService;
-
         $this->service = $service;
-
         $this->gamePlatformService = $gamePlatformService;
     }
     public function mount(Game $data)

@@ -17,10 +17,10 @@
     {{-- Table Component --}}
     <x-ui.table :data="$data" :columns="$columns" :actions="$actions" :bulkActions="$bulkActions" :bulkAction="$bulkAction"
         :statuses="$statuses" :selectedIds="$selectedIds" :mobileVisibleColumns="2" searchProperty="search" perPageProperty="perPage"
-        :showBulkActions="true" emptyMessage="No Game  found. Create your first admin to get started." />
+        :showBulkActions="true" emptyMessage="No Game  found. Create your first Game to get started." />
 
     {{-- Delete Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this Game?'" :message="'Are you absolutely sure you want to remove this Games? All data will be permanently deleted.'" :method="'delete'"
+    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this Game?'" :message="'Are you absolutely sure you want to remove this data? All data will be permanently deleted.'" :method="'delete'"
         :button-text="'Delete Game '" />
 
     {{-- Bulk Action Confirmation Modal --}}

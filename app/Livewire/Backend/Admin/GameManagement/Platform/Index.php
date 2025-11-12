@@ -72,7 +72,7 @@ class Index extends Component
         $actions = [
             [
                 'key' => 'id',
-                'label' => 'Show',
+                'label' => 'View',
                 'route' => 'admin.gm.platform.view',
                 'encrypt' => true
             ],
