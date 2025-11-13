@@ -1,6 +1,6 @@
 <div>
     {{-- Page Header --}}
-{{--
+    {{--
     <div class="bg-bg-secondary w-full rounded">
         <div class="mx-auto">
             <div class="glass-card rounded-2xl p-4 lg:p-6 mb-6">
@@ -93,129 +93,119 @@
 
     <div>
 
-    {{-- Page Header --}}
-    <div class="glass-card rounded-2xl p-4 lg:p-6 mb-6">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <h2 class="text-xl lg:text-2xl font-bold text-text-primary">
-                {{ __('Rank') }}
-            </h2>
-            <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.rm.rank.index') }}" class="w-auto! py-2!">
-                    <flux:icon name="arrow-left"
-                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                    {{ __('Back') }}
-                </x-ui.button>
+        {{-- Page Header --}}
+        <div class="glass-card rounded-2xl p-4 lg:p-6 mb-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <h2 class="text-xl lg:text-2xl font-bold text-text-primary">
+                    {{ __('Rank') }}
+                </h2>
+                <div class="flex items-center gap-2">
+                    <x-ui.button href="{{ route('admin.rm.rank.index') }}" class="w-auto! py-2!">
+                        <flux:icon name="arrow-left"
+                            class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
+                        {{ __('Back') }}
+                    </x-ui.button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="glass-card shadow-glass-card rounded-xl p-6 min-h-[500px]">
-        {{-- PERSONAL INFO (Default Tab) --}}
+        <div class="glass-card shadow-glass-card rounded-xl p-6 min-h-[500px]">
 
-        <div class="grid lg:grid-cols-3 gap-6">
-
-            {{-- Left Column --}}
-            <div class="flex flex-col h-auto p-4   ">
-                <h2 class="text-xl text-text-primary font-semibold mb-6">{{ __('Rank Image') }}</h2>
-                <div class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-pink-100 overflow-hidden">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNu9uulWIgqP6ax8ikiM4eQUf2cNqGtOMkaQ&s" alt="Rank Image" class="w-full h-full object-cover">
-                </div>
-
-                <div class="flex flex-col items-center justify-between mb-8">
-                    <h3 class="text-2xl font-bold text-center mb-1 text-text-primary">{{ $data->name }}</h3>
-                    <p class="text-text-secondary">{{ $data->email }}</p>
-                </div>
-                </div>
-            </div>
 
             {{-- Right Column --}}
-            <div class="col-span-1 lg:col-span-2 p-4">
-                <h2 class="text-xl font-semibold mb-6 border-b border-zinc-100 pb-2 text-text-primary">
-                    {{ __('Rank Information') }}</h2>
+            <div class="col-span-1 lg:col-span-2 p-4"> 
 
                 <div class="bg-bg-primary rounded-2xl shadow-lg overflow-hidden border border-gray-500/20">
 
-                <!-- Old data Section -->
-                <div class="px-6 py-10">
-                    <div class="space-y-10">
-                        <!-- Profile + Status Section -->
-                        <div class="flex flex-col lg:flex-row items-center lg:items-start gap-10">
+                    <!-- Old data Section -->
+                    <div class="px-6 py-10">
+                        <div class="space-y-10">
+                            <!-- Profile + Status Section -->
+                            <div class="flex flex-col lg:flex-row items-center lg:items-start gap-10">
 
-                            <!-- Info Cards -->
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full">
+                                <!-- Info Cards -->
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full">
 
-                                <div
-                                    class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
-                                    <p class="text-text-white text-xs font-semibold mb-2">{{ __('dataNAME') }}</p>
-                                    <p class="text-slate-400 text-lg font-bold ">{{ $data->name }}</p>
+                                    <div
+                                        class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
+                                        <p class="text-text-white text-xs font-semibold mb-2">{{ __('dataNAME') }}</p>
+                                        <p class="text-slate-400 text-lg font-bold ">{{ $data->name }}</p>
+                                    </div>
+
+                                    <div
+                                        class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
+                                        <p class="text-text-white text-xs font-semibold mb-2">{{ __('dataSLUG') }}</p>
+                                        <p class="text-slate-400 text-lg font-bold ">{{ $data->slug }}</p>
+                                    </div>
+
+                                    <div
+                                        class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
+                                        <p class="text-text-white text-xs font-semibold mb-2">
+                                            {{ __('MINIMUM POINTS') }}</p>
+                                        <p class="text-slate-400 text-lg font-bold">{{ $data->minimum_points }}</p>
+                                    </div>
+
+                                    <div
+                                        class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
+                                        <p class="text-text-white text-xs font-semibold mb-2">
+                                            {{ __('MAXIMUM POINTS') }}</p>
+                                        <p class="text-slate-400 text-lg font-bold">
+                                            {{ $data->maximum_points ?? 'N/A' }}</p>
+                                    </div>
+
+                                    <div
+                                        class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
+                                        <p class="text-text-white text-xs font-semibold mb-2">{{ __('STATUS') }}</p>
+                                        <p class="text-slate-400 text-lg font-bold">{{ $data->status ?? 'N/A' }}</p>
+                                    </div>
+
+                                    <div
+                                        class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
+                                        <p class="text-text-white text-xs font-semibold mb-2">
+                                            {{ __('INITIAL ASSIGN') }}</p>
+                                        <p class="text-slate-400 text-lg font-bold">
+                                            {{ $data->initial_assign ?? 'N/A' }}</p>
+                                    </div>
+
+                                    <div
+                                        class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
+                                        <p class="text-text-white text-xs font-semibold mb-2">{{ __('language') }}
+                                        </p>
+                                        <p class="text-slate-400 text-lg font-bold">
+                                            {{ $data->language_id === 1 ? 'Yes' : 'No' }}
+                                        </p>
+                                    </div>
+
+                                    <div
+                                        class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
+                                        <p class="text-text-white text-xs font-semibold mb-2">{{ __('CREATED') }}
+                                        </p>
+                                        <p class="text-slate-400 text-lg font-bold">
+                                            {{ $data->created_at_formatted ?? 'N/A' }}
+                                        </p>
+                                    </div>
+
+                                    <div
+                                        class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
+                                        <p class="text-text-white text-xs font-semibold mb-2">{{ __('UPDATED') }}
+                                        </p>
+                                        <p class="text-slate-400 text-lg font-bold">
+                                            {{ $data->updated_at_formatted ?? 'N/A' }}
+                                        </p>
+                                    </div>
+
+                                    <div
+                                        class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
+                                        <p class="text-text-white text-xs font-semibold mb-2">{{ __('CREATED BY') }}
+                                        </p>
+                                        <p class="text-slate-400 text-lg font-bold">{{ $data->created_by ?? 'N/A' }}
+                                        </p>
+                                    </div>
+
                                 </div>
-
-                                <div
-                                    class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
-                                    <p class="text-text-white text-xs font-semibold mb-2">{{ __('dataSLUG') }}</p>
-                                    <p class="text-slate-400 text-lg font-bold ">{{ $data->slug }}</p>
-                                </div>
-
-                                <div
-                                    class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
-                                    <p class="text-text-white text-xs font-semibold mb-2">{{ __('MINIMUM POINTS') }}</p>
-                                    <p class="text-slate-400 text-lg font-bold">{{ $data->minimum_points }}</p>
-                                </div>
-
-                                <div
-                                    class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
-                                    <p class="text-text-white text-xs font-semibold mb-2">{{ __('MAXIMUM POINTS') }}</p>
-                                    <p class="text-slate-400 text-lg font-bold">{{ $data->maximum_points ?? 'N/A' }}</p>
-                                </div>
-
-                                <div
-                                    class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
-                                    <p class="text-text-white text-xs font-semibold mb-2">{{ __('STATUS') }}</p>
-                                    <p class="text-slate-400 text-lg font-bold">{{ $data->status ?? 'N/A' }}</p>
-                                </div>
-
-                                <div
-                                    class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
-                                    <p class="text-text-white text-xs font-semibold mb-2">{{ __('INITIAL ASSIGN') }}</p>
-                                    <p class="text-slate-400 text-lg font-bold">{{ $data->initial_assign ?? 'N/A' }}</p>
-                                </div>
-
-                                <div
-                                    class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
-                                    <p class="text-text-white text-xs font-semibold mb-2">{{ __('language') }}
-                                    </p>
-                                    <p class="text-slate-400 text-lg font-bold">{{ $data->language_id === 1 ? 'Yes' : 'No' }}
-                                    </p>
-                                </div>
-
-                                <div
-                                    class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
-                                    <p class="text-text-white text-xs font-semibold mb-2">{{ __('CREATED') }}
-                                    </p>
-                                    <p class="text-slate-400 text-lg font-bold">{{ $data->created_at_formatted ?? 'N/A' }}
-                                    </p>
-                                </div>
-
-                                <div
-                                    class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
-                                    <p class="text-text-white text-xs font-semibold mb-2">{{ __('UPDATED') }}
-                                    </p>
-                                    <p class="text-slate-400 text-lg font-bold">{{ $data->updated_at_formatted ?? 'N/A' }}
-                                    </p>
-                                </div>
-
-                                 <div
-                                    class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
-                                    <p class="text-text-white text-xs font-semibold mb-2">{{ __('CREATED BY') }}
-                                    </p>
-                                    <p class="text-slate-400 text-lg font-bold">{{ $data->created_by ?? 'N/A' }}
-                                    </p>
-                                </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
         </div>
     </div>
