@@ -4,10 +4,10 @@
             <div class="w-full max-w-7xl">
                 <!-- Header Section -->
                 <div class="text-center mb-12">
-                    <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    <h1 class="text-4xl md:text-5xl font-bold text-text-white mb-4">
                         Frequently Asked Questions
                     </h1>
-                    <p class="text-gray-300 text-lg">
+                    <p class="text-text-secondary text-lg">
                         Everything you need to know about buying and selling on Swapy.gg.
                     </p>
                 </div>
@@ -15,11 +15,11 @@
                 <!-- Tab Navigation -->
                 <div class="flex justify-center gap-4 mb-12">
                     <button
-                        class="px-8 py-3 rounded-full bg-purple-600 text-white font-medium hover:bg-purple-700 transition-colors">
+                        class="px-8 py-3 rounded-full bg-bg-border2 text-white font-medium hover:bg-purple-700 transition-colors">
                         For Buyers
                     </button>
                     <button
-                        class="px-8 py-3 rounded-full bg-transparent text-gray-300 font-medium hover:text-white transition-colors">
+                        class="px-8 py-3 rounded-full bg-transparent text-gray-400 font-medium hover:text-white transition-colors">
                         For Sellers
                     </button>
                 </div>
@@ -29,18 +29,14 @@
 
                     <!-- Item 1 - Expanded -->
                     <div
-                        class="bg-bg-border2 bg-opacity-5 backdrop-blur rounded-2xl overflow-hidden border  border-opacity-10 ">
+                        class="dark:bg-bg-border2 border bg-bg-primary bg-opacity-5 backdrop-blur rounded-2xl overflow-hidden">
                         <button class="w-full px-8 py-6 flex items-center justify-between text-left ">
                             <span class="text-xl font-medium text-text-white">How do I buy a product?</span>
-
-
-
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor"
                                 class="size-6 w-6 h-6 text-white flex-shrink-0 transform rotate-180">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
-
                         </button>
                         <div class="px-8 pb-6 text-gray-300">
                             <p>Browse or search for your desired digital product. Click on the product, review the
@@ -51,77 +47,57 @@
 
                     <!-- Item 2 -->
                     <div
-                        class="bg-bg-border2 bg-opacity-5 backdrop-blur rounded-2xl overflow-hidden border  border-opacity-10 ">
+                        class="dark:bg-bg-border2 border bg-bg-primary bg-opacity-5 backdrop-blur rounded-2xl overflow-hidden">
                         <button class="w-full px-8 py-6 flex items-center justify-between text-left ">
                             <span class="text-xl font-medium text-text-white">What payment methods are accepted?</span>
-
-
-
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor"
                                 class="size-6 w-6 h-6 text-white flex-shrink-0 transform rotate-180">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
-
                         </button>
-
                     </div>
 
                     <!-- Item 3 -->
                     <div
-                        class="bg-bg-border2 bg-opacity-5 backdrop-blur rounded-2xl overflow-hidden border  border-opacity-10 ">
+                        class="dark:bg-bg-border2 border bg-bg-primary bg-opacity-5 backdrop-blur rounded-2xl overflow-hidden ">
                         <button class="w-full px-8 py-6 flex items-center justify-between text-left ">
                             <span class="text-xl font-medium text-text-white">What is the buyer protection
                                 policy?</span>
-
-
-
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor"
                                 class="size-6 w-6 h-6 text-white flex-shrink-0 transform rotate-180">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
-
                         </button>
-
                     </div>
 
                     <!-- Item 4 -->
                     <div
-                        class="bg-bg-border2 bg-opacity-5 backdrop-blur rounded-2xl overflow-hidden border  border-opacity-10 ">
+                        class="dark:bg-bg-border2 border bg-bg-primary bg-opacity-5 backdrop-blur rounded-2xl overflow-hidden ">
                         <button class="w-full px-8 py-6 flex items-center justify-between text-left ">
                             <span class="text-xl font-medium text-text-white">How do I receive my purchased digital
                                 product?</span>
-
-
-
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor"
                                 class="size-6 w-6 h-6 text-white flex-shrink-0 transform rotate-180">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
-
                         </button>
-
                     </div>
 
                     <!-- Item 5 -->
                     <div
-                        class="bg-bg-border2 bg-opacity-5 backdrop-blur rounded-2xl overflow-hidden border  border-opacity-10 ">
+                        class="dark:bg-bg-border2 border bg-bg-primary bg-opacity-5 backdrop-blur rounded-2xl overflow-hidden">
                         <button class="w-full px-8 py-6 flex items-center justify-between text-left ">
                             <span class="text-xl font-medium text-text-white">What if the seller doesn't deliver the
                                 product?</span>
-
-
-
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor"
                                 class="size-6 w-6 h-6 text-white flex-shrink-0 transform rotate-180">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
-
                         </button>
-
                     </div>
                 </div>
             </div>

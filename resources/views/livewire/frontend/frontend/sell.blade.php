@@ -1,6 +1,6 @@
 <div>
 
-    <div class="bg-bg-primary">
+    <div class="bg-bg-primary pt-6">
 
         <div class="text-center mb-10">
             <h1 class="text-3xl font-bold mb-2">Trade Protect For Buyers</h1>
@@ -21,10 +21,32 @@
                 <div class="relative">
                     <!-- Vertical Line -->
                     <div
-                        class="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-pink-500 via-purple-500 to-pink-500 transform -translate-x-1/2">
+                        class="absolute left-1/2 top-0 bottom-0 w-px transform -translate-x-1/2 ">
                         <!-- Animated dashes -->
                         <div class="absolute top-0 left-0 w-full h-full opacity-50"
                             style="backgroundImage: repeating-linear-gradient(to bottom, transparent, transparent 20px, rgba(236, 72, 153, 0.5) 20px, rgba(236, 72, 153, 0.5) 40px); width: 2px;">
+                        </div>
+                    </div>
+
+                    <!-- Timeline Container -->
+                <div class="relative">
+                    <!-- Vertical Line -->
+
+                    <div class="absolute left-1/2 top-0 bottom-0 w-px transform -translate-x-1/2">
+                        <!-- Gradient dashed border -->
+                        <div
+                            class="w-full h-full bg-gradient-to-b from-pink-500 via-purple-500 to-pink-200 [mask-image:repeating-linear-gradient(to_bottom,black_0_10px,transparent_10px_20px)]">
+                        </div>
+                    </div>
+
+                    <!-- Timeline Items -->
+                    <div class="relative">
+                    <!-- Vertical Line -->
+
+                    <div class="absolute left-1/2 top-0 bottom-0 w-px transform -translate-x-1/2">
+                        <!-- Gradient dashed border -->
+                        <div
+                            class="w-full h-full bg-gradient-to-b from-pink-500 via-purple-500 to-pink-200 [mask-image:repeating-linear-gradient(to_bottom,black_0_10px,transparent_10px_20px)]">
                         </div>
                     </div>
 
@@ -34,11 +56,12 @@
                         <div class="relative">
                             <div class="grid grid-cols-2 gap-8 items-center">
                                 <div class="text-left">
-                                    <div class="text-7xl font-bold  text-[#FF3D99] from-purple-500 to-pink-500 mb-8">
+                                    <div
+                                        class="text-7xl font-bold bg-gradient-to-r from-pink-500 via-purple-800 to-blue-400 bg-clip-text text-transparent inline-block mb-8">
                                         01
                                     </div>
                                     <h2 class="text-3xl font-bold text-pink-500 mb-4">Find Your Desired Product</h2>
-                                    <p class="text-gray-300 leading-relaxed text-lg">
+                                    <p class="text-gray-500 leading-relaxed text-lg">
                                         Begin by browsing our extensive categories or use the search bar to find the
                                         specific digital product you're looking for. You can filter results by game,
                                         region, price, and delivery time to pinpoint the perfect item.
@@ -65,12 +88,13 @@
                                     </div>
                                 </div>
                                 <div class="text-left">
-                                    <div class="text-7xl font-bold  bg-clip-text text-[#FF3D99] mb-8">
+                                    <div
+                                        class="text-7xl font-bold bg-gradient-to-r from-pink-500 via-purple-800 to-blue-400 bg-clip-text text-transparent inline-block mb-8">
                                         02
                                     </div>
                                     <h2 class="text-3xl font-bold text-pink-500 mb-4">Review Product Details & Seller
                                         Info</h2>
-                                    <p class="text-gray-300 leading-relaxed text-lg">
+                                    <p class="text-gray-500 leading-relaxed text-lg">
                                         Click on a product to view its full description, delivery time, and
                                         requirements. Pay attention to the seller's rating and reviews to ensure you're
                                         buying from a reputable source. If you have questions, use the 'Message Seller'
@@ -84,11 +108,12 @@
                         <div class="relative">
                             <div class="grid grid-cols-2 gap-8 items-center">
                                 <div class="text-left">
-                                    <div class="text-7xl font-bold text-[#FF3D99] mb-8">
+                                    <div
+                                        class="text-7xl font-bold bg-gradient-to-r from-pink-500 via-purple-800 to-blue-400 bg-clip-text text-transparent inline-block mb-8">
                                         03
                                     </div>
                                     <h2 class="text-3xl font-bold text-pink-500 mb-4">Add to Cart & Checkout</h2>
-                                    <p class="text-gray-300 leading-relaxed text-lg">
+                                    <p class="text-gray-500 leading-relaxed text-lg">
                                         Once you've found the right product, click 'Buy Now.' You'll be directed to the
                                         checkout page where you can review your order summary and add any optional notes
                                         for the seller.
@@ -115,12 +140,13 @@
                                     </div>
                                 </div>
                                 <div class="text-left">
-                                    <div class="text-7xl font-bold text-[#FF3D99] to-pink-500 mb-8">
+                                    <div
+                                        class="text-7xl font-bold bg-gradient-to-r from-pink-500 via-purple-800 to-blue-400 bg-clip-text text-transparent inline-block mb-8">
                                         04
                                     </div>
                                     <h2 class="text-3xl font-bold text-pink-500 mb-4">Review Product Details & Seller
                                         Info</h2>
-                                    <p class="text-gray-300 leading-relaxed text-lg">
+                                    <p class="text-gray-500 leading-relaxed text-lg">
                                         Click on a product to view its full description, delivery time, and
                                         requirements. Pay attention to the seller's rating and reviews to ensure you're
                                         buying from a reputable source. If you have questions, use the 'Message Seller'
@@ -134,11 +160,13 @@
                         <div class="relative">
                             <div class="grid grid-cols-2 gap-8 items-center">
                                 <div class="text-left">
-                                    <div class="text-7xl font-bold text-[#FF3D99] mb-8">
+                                    <div
+                                        class="text-7xl font-bold bg-gradient-to-r from-pink-500 via-purple-800 to-blue-400 bg-clip-text text-transparent inline-block mb-8">
                                         05
                                     </div>
+
                                     <h2 class="text-3xl font-bold text-pink-500 mb-4">Add to Cart & Checkout</h2>
-                                    <p class="text-gray-300 leading-relaxed text-lg">
+                                    <p class="text-gray-500 leading-relaxed text-lg">
                                         Once you've found the right product, click 'Buy Now.' You'll be directed to the
                                         checkout page where you can review your order summary and add any optional notes
                                         for the seller.
@@ -165,12 +193,13 @@
                                     </div>
                                 </div>
                                 <div class="text-left">
-                                    <div class="text-7xl font-bold text-[#FF3D99] to-pink-500 mb-8">
+                                    <div
+                                        class="text-7xl font-bold bg-gradient-to-r from-pink-500 via-purple-800 to-blue-400 bg-clip-text text-transparent inline-block mb-8">
                                         06
                                     </div>
                                     <h2 class="text-3xl font-bold text-pink-500 mb-4">Review Product Details & Seller
                                         Info</h2>
-                                    <p class="text-gray-300 leading-relaxed text-lg">
+                                    <p class="text-gray-500 leading-relaxed text-lg">
                                         Click on a product to view its full description, delivery time, and
                                         requirements. Pay attention to the seller's rating and reviews to ensure you're
                                         buying from a reputable source. If you have questions, use the 'Message Seller'
@@ -179,30 +208,12 @@
                                 </div>
                             </div>
                         </div>
-
-
-
                     </div>
-
-
                 </div>
-
-                {{-- <div class="mt-20 p-10 text-left rounded-lg bg-purple-900/50 shadow-2xl">
-                    <h2 class="text-3xl font-extrabold mb-4 tracking-wider">Your Purchase is Protected!</h2>
-                    <p class="text-purple-200 mb-6 max-w-3xl ">
-                        Digital Commerce priorities your security. Our escrow system safeguards your payment until you
-                        confirm delivery, and our Buyer Protection Policy ensures fair resolution in case of any issues.
-                        Buy with absolute confidence!
-                    </p>
-                    <button
-                        class="px-8 py-3 bg-white text-purple-900 font-bold rounded-full hover:bg-gray-200 transition duration-300 shadow-md">
-                        Read Buyer Protection Now
-                    </button>
-                </div> --}}
-
+                </div>
+                </div>
                 <div class=" text-white font-[Inter]">
-
-                    <div class="max-w-7xl mx-auto px-6 py-20">
+                    <div class="max-w-7xl mx-auto px-6 md:px-12 md:py-10">
                         <div class="border border-pink-600/60 rounded-2xl p-8 md:p-10 ">
                             <h2 class="text-pink-500 text-2xl font-semibold mb-4">Why Sell with Swapy.gg?</h2>
                             <h3 class="text-lg font-semibold text-gray-100 mb-4">Heading: Benefits of Selling on
@@ -230,13 +241,9 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
 
     </div>
-
 </div>
