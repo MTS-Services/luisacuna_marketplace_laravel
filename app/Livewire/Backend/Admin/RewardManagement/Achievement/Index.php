@@ -47,7 +47,7 @@ class Index extends Component
                 }
             ],
             [
-                'key' => 'category_id-',
+                'key' => 'category_id',
                 'label' => 'Category',
                 'sortable' => true,
                 'format' => function ($data) {
@@ -95,13 +95,13 @@ class Index extends Component
             [
                 'key' => 'id',
                 'label' => 'Show',
-                'route' => 'admin.as.currency.show',
+                'route' => 'admin.rm.achievement.view',
                 'encrypt' => true
             ],
             [
                 'key' => 'id',
                 'label' => 'Edit',
-                'route' => 'admin.as.currency.edit',
+                'route' => 'admin.rm.achievement.edit',
                 'encrypt' => true
             ],
             [

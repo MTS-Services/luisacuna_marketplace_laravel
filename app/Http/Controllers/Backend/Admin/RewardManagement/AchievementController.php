@@ -29,36 +29,31 @@ class AchievementController extends Controller
      * Display the specified resource.
      */
 
-    
-    // public function show(string $encryptedId)
-    // {
-    //     $data = $this->service->findData(decrypt($encryptedId));
-    //     if (!$data) {
-    //         abort(404);
-    //     }
-    //     return view($this->masterView, [
-    //         'data' => $data
-    //     ]);
-    // }
 
-
-
+    public function show(string $encryptedId)
+    {
+        $data = $this->service->findData(decrypt($encryptedId));
+        if (!$data) {
+            abort(404);
+        }
+        return view($this->masterView, [
+            'data' => $data
+        ]);
+    }
     /**
      * Show the form for editing the specified resource.
      */
 
-
-
-    // public function edit(string $encryptedId)
-    // {
-    //     $data = $this->service->findData(decrypt($encryptedId));
-    //     if (!$data) {
-    //         abort(404);
-    //     }
-    //     return view($this->masterView, [
-    //         'data' => $data
-    //     ]);
-    // }
+    public function edit(string $encryptedId)
+    {
+        $data = $this->service->findData(decrypt($encryptedId));
+        if (!$data) {
+            abort(404);
+        }
+        return view($this->masterView, [
+            'data' => $data
+        ]);
+    }
 
     public function trash()
     {

@@ -19,7 +19,7 @@
             <livewire:backend.admin.reward-management.achievement.trash />
         @break
 
-        @case('admin.rm.achievement.show')
+        @case('admin.rm.achievement.view')
             <x-slot name="breadcrumb">{{ __('Reward Management > Achievement Details') }}</x-slot>
             <x-slot name="title">{{ __('Achievement Details') }}</x-slot>
             <livewire:backend.admin.reward-management.achievement.show :data="$data" />

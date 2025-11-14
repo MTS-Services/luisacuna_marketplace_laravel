@@ -15,6 +15,14 @@
     <div class="glass-card rounded-2xl p-6 mb-6">
         <form wire:submit="save">
 
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                    {{ __('Icon') }}
+                </h3>
+                <x-ui.file-input wire:model="form.icon" label="Icon" accept="image/*" :error="$errors->first('form.icon')"
+                    hint="Upload a icon (Max: 2MB)" />
+            </div>
+
             <!-- Fields -->
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
                 <div>
