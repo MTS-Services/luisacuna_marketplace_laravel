@@ -2,16 +2,16 @@
 
 namespace App\Services;
 
-use App\Actions\Rank\BulkAction;
-use App\Actions\Rank\DeleteAction;
-use App\Actions\Rank\CreateAction;
-use App\Actions\Rank\RestoreAction;
-use App\Actions\Rank\UpdateAction;
-use App\Enums\RankStatus;
 use App\Models\Rank;
+use App\Enums\RankStatus;
+use App\Actions\Rank\BulkAction;
+use App\Actions\Rank\CreateAction;
+use App\Actions\Rank\DeleteAction;
+use App\Actions\Rank\UpdateAction;
+use App\Actions\Rank\RestoreAction;
+use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Contracts\RankRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
 
 
 class RankService

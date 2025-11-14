@@ -2,48 +2,50 @@
 
 namespace App\Livewire\Backend\Admin\RewardManagement\Rank;
 
+use App\Models\Rank;
 use Livewire\Component;
 use App\Enums\RankStatus;
 use App\Services\RankService;
+use Livewire\Attributes\Locked;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use App\Livewire\Forms\Backend\Admin\RewardManagement\RankForm;
 
-class Create extends Component
+class Edit extends Component
 {
+
     use WithNotification, WithFileUploads;
     public RankForm $form;
 
 
-
+    #[Locked]
+    public Rank $data;
     protected RankService $service;
-
-    /**
-     * Inject the CurrencyService via the boot method.
-     */
 
     public function boot(RankService $service)
     {
         $this->service = $service;
     }
 
+
     /**
      * Initialize default form values.
      */
-    public function mount(): void
+    public function mount(Rank $data): void
     {
-        $this->form->status = RankStatus::ACTIVE->value;
+        $this->data = $data;
+        $this->form->setData($data);
     }
-
 
 
 
     public function render()
     {
-        return view('livewire.backend.admin.reward-management.rank.create', [
+        return view('livewire.backend.admin.reward-management.rank.edit', [
             'statuses' => RankStatus::options(),
         ]);
     }
+
 
 
     /**
@@ -53,12 +55,13 @@ class Create extends Component
     {
         $data = $this->form->validate();
         try {
-            $data['created_by'] = admin()->id;
-            $this->service->createData($data);
-            $this->success('Data created successfully.');
+            $data['updated_by'] = admin()->id;
+            $this->service->updateData($this->data->id, $data);
+
+            $this->success('Data updated successfully.');
             return $this->redirect(route('admin.rm.rank.index'), navigate: true);
         } catch (\Exception $e) {
-            $this->error('Failed to create data: ' . $e->getMessage());
+            $this->error('Failed to update data: ' . $e->getMessage());
         }
     }
 

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\RewardManagement\Achievement;
+namespace App\Livewire\Backend\Admin\RewardManagement\Rank;
 
+use App\Models\Rank;
 use Livewire\Component;
-use App\Enums\AchievementStatus;
+use App\Enums\RankStatus;
+use App\Services\RankService;
 use Illuminate\Support\Facades\Log;
-use App\Services\AchievementService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 
@@ -18,11 +19,13 @@ class Trash extends Component
     public $bulkAction = '';
     public $showBulkActionModal = false;
 
+
+
     use WithDataTable, WithNotification;
 
-    protected AchievementService $service;
+    protected RankService $service;
 
-    public function boot(AchievementService $service)
+    public function boot(RankService $service)
     {
         $this->service = $service;
     }
@@ -34,36 +37,22 @@ class Trash extends Component
             filters: $this->getFilters()
         );
 
+
         $columns = [
+
             [
-                'key' => 'title',
-                'label' => 'Title',
-                'sortable' => true
-            ],
-            [
-                'key' => 'rank_id',
-                'label' => 'Rank',
-                'sortable' => true,
+                'key' => 'icon',
+                'label' => 'Icon',
                 'format' => function ($data) {
-                    return optional($data->rank)->name ?? 'N/A';
+
+                    return $data->icon;
+                    // return '<img src="'.Storage::url($data->icon).'" alt="'.$data->name.'" class="w-10 h-10 rounded-full object-cover shadow-sm">';
+
                 }
             ],
             [
-                'key' => 'category_id',
-                'label' => 'Category',
-                'sortable' => true,
-                'format' => function ($data) {
-                    return optional($data->category)->name ?? 'N/A';
-                }
-            ],
-            [
-                'key' => 'target_value',
-                'label' => 'Target Value',
-                'sortable' => true
-            ],
-            [
-                'key' => 'point_reward',
-                'label' => 'Point Reward',
+                'key' => 'name',
+                'label' => 'Name',
                 'sortable' => true
             ],
             [
@@ -112,14 +101,16 @@ class Trash extends Component
             ['value' => 'bulkRestore', 'label' => 'Restore'],
             ['value' => 'forceDelete', 'label' => 'Permanent Delete'],
         ];
-        return view('livewire.backend.admin.reward-management.achievement.trash',[
+
+        return view('livewire.backend.admin.reward-management.rank.trash', [
             'datas' => $datas,
-            'statuses' => AchievementStatus::options(),
+            'statuses' => RankStatus::options(),
             'columns' => $columns,
             'actions' => $actions,
             'bulkActions' => $bulkActions
         ]);
     }
+
 
 
     public function confirmDelete($encryptedId): void

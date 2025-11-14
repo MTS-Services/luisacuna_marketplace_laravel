@@ -2,11 +2,12 @@
 
 namespace App\Livewire\Backend\Admin\RewardManagement\Rank;
 
+use Livewire\Component;
 use App\Enums\RankStatus;
+use App\Services\RankService;
+use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
-use Livewire\Component;
-use App\Services\RankService;
 use Illuminate\Container\Attributes\Storage;
 
 class Index extends Component
@@ -88,19 +89,13 @@ class Index extends Component
             [
                 'key' => 'id',
                 'label' => 'Edit',
-                'route' => 'admin.gm.platform.edit',
+                'route' => 'admin.rm.rank.edit',
                 'encrypt' => true
             ],
             [
                 'key' => 'id',
                 'label' => 'Delete',
                 'method' => 'confirmDelete',
-                'encrypt' => true
-            ],
-            [
-                'key' => 'id',
-                'label' => 'create',
-                'method' => 'admin.rm.rank.create',
                 'encrypt' => true
             ],
         ];
