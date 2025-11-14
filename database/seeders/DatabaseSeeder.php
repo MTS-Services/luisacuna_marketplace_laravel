@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             PageViewSeeder::class,
             RankSeeder::class,
+            AchievementSeeder::class,
         ]);
 
         // Admin::create([

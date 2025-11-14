@@ -3,27 +3,32 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
+use Laravel\Scout\Searchable;
 use App\Traits\AuditableTrait;
-use App\Enums\CategoryStatus;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Enums\AchievementStatus;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 
-class Category extends BaseModel implements Auditable
+class Achievement extends BaseModel implements Auditable
 {
-    use  AuditableTrait;
-
+    use   Searchable, AuditableTrait;
+    //
 
     protected $fillable = [
-        'name',
-        'slug',
-        'description',
-        'meta_title',
-        'meta_description',
+        'sort_order',
+        'rank_id',
         'icon',
-        'is_featured',
+        'title',
+        'description',
+        'category_id',
+        'target_value',
+        'point_reward',
         'status',
+
+
+
+
 
         'created_by',
         'updated_by',
@@ -31,27 +36,32 @@ class Category extends BaseModel implements Auditable
         'restored_by',
         'restored_at',
 
+        //here AuditColumns 
+
+
+    ];
+
+    protected $hidden = [
+        //
     ];
 
     protected $casts = [
-        'status' => CategoryStatus::class
+        'status' => AchievementStatus::class,
+        'restored_at' => 'datetime',
     ];
-
-    // Scope    
-
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     
-    public function games(): HasMany
+    public function rank()
     {
-        return $this->hasMany(Game::class, 'category_id', 'id');
+        return $this->belongsTo(Rank::class, 'rank_id', 'id');
     }
-    public function achievements(): HasMany
+
+    public function category()
     {
-        return $this->hasMany(Achievement::class, 'category_id', 'id');
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -60,22 +70,18 @@ class Category extends BaseModel implements Auditable
 
 
 
-
     /* ================================================================
      |  Query Scopes
      ================================================================ */
-
     public function scopeActive(Builder $query): Builder
     {
-        return $query->where('status', CategoryStatus::ACTIVE);
+        return $query->where('status', AchievementStatus::ACTIVE);
     }
 
     public function scopeInactive(Builder $query): Builder
     {
-        return $query->where('status', CategoryStatus::INACTIVE);
+        return $query->where('status', AchievementStatus::INACTIVE);
     }
-
-
     public function scopeFilter(Builder $query, array $filters): Builder
     {
         return $query
@@ -85,31 +91,46 @@ class Category extends BaseModel implements Auditable
                 $q->where('status', $status)
             )
             ->when(
-                $filters['name'] ?? null,
-                fn($q, $name) =>
-                $q->where('name', 'like', "%{$name}%")
+                $filters['title'] ?? null,
+                fn($q, $title) =>
+                $q->where('title', 'like', "%{$title}%")
             )
             ->when(
-                $filters['is_default'] ?? null,
-                fn($q, $isDefault) =>
-                $q->where('is_default', $isDefault)
+                $filters['description'] ?? null,
+                fn($q, $description) =>
+                $q->where('description', 'like', "%{$description}%")
+            )
+            ->when(
+                $filters['rank_id'] ?? null,
+                fn($q, $rank_id) =>
+                $q->where('rank_id', 'like', "%{$rank_id}%")
+            )
+            ->when(
+                $filters['category_id'] ?? null,
+                fn($q, $category_id) =>
+                $q->where('category_id', 'like', "%{$category_id}%")
             );
     }
+
 
     /* ================================================================
      |  Query Scopes
      ================================================================ */
 
 
-    #[SearchUsingPrefix(['id', 'name', 'description', 'meta_title'])]
+    /* ================================================================
+     |  Scout Search Configuration
+     ================================================================ */
+
+    #[SearchUsingPrefix(['id', 'title', 'description', 'target_value', 'point_reward', 'status'])]
     public function toSearchableArray(): array
     {
         return [
-            'name' => $this->name,
+            'title' => $this->title,
             'description' => $this->description,
-            'meta_title' => $this->meta_title,
+            'target_value' => (int) $this->target_value,
+            'point_reward' => (int) $this->point_reward,
             'status' => $this->status,
-            'is_default' => $this->is_default,
         ];
     }
 
@@ -120,18 +141,6 @@ class Category extends BaseModel implements Auditable
     {
         return is_null($this->deleted_at);
     }
-
-
-
-    public function scopeSearch($query, $search)
-    {
-        return $query->where(function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%")
-                ->orWhere('description', 'like', "%{$search}%");
-        });
-    }
-
-
 
     public function __construct(array $attributes = [])
     {
