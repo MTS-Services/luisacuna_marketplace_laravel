@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Actions\game\BulkAction;
+use App\Actions\Game\BulkAction;
 use App\Actions\Game\CreateAction;
 use App\Actions\Game\UpdateAction;
 use App\Actions\Game\DeleteAction;
@@ -76,7 +76,7 @@ class GameService
     public function updateData(int $id, array $data): ?Game
     {
         return $this->updateAction->execute($id, $data);
-    
+
     }
 
     public function deleteData(int $id, bool $forceDelete = false, ?int $actionerId = null): bool
