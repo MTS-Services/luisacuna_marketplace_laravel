@@ -25,7 +25,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
         return view('backend.admin.pages.dashboard');
     })->name('dashboard');
 
-    
+
     Route::group(['prefix' => 'admin-management', 'as' => 'am.'], function () {
         Route::controller(AdminController::class)->name('admin.')->prefix('admin')->group(function () {
             Route::get('/', 'index')->name('index');
@@ -51,7 +51,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
     });
 
 
-    // Game  
+    // Game
     Route::group(['prefix' => 'game-management', 'as' => 'gm.'], function () {
         Route::controller(CategoryController::class)->name('category.')->prefix('category')->group(function () {
             Route::get('/', 'index')->name('index');
@@ -60,7 +60,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/view/{id}', 'show')->name('view');
             Route::get('/trash', 'trash')->name('trash');
         });
-
+        
         Route::controller(GamePlatformController::class)->name('platform.')->prefix('game-platform')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
@@ -77,13 +77,10 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/trash', 'trash')->name('trash');
         });
     });
-    
-    // Rank 
 
+    // Rank
     Route::group(['prefix' => 'reward-management', 'as' => 'rm.'], function () {
-        
         Route::controller(RankController::class)->name('rank.')->prefix('rank')->group(function () {
-
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');

@@ -6,6 +6,7 @@ use App\Http\Controllers\Frontend\ItemsController;
 use App\Http\Controllers\Frontend\TopUpController;
 use App\Http\Controllers\Frontend\AccountsController;
 use App\Http\Controllers\Frontend\BoostingController;
+use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\Frontend\CoachingController;
 use App\Http\Controllers\Frontend\CurrencyController;
 use App\Http\Controllers\Frontend\GameController;
@@ -29,3 +30,11 @@ Route::get('/coaching', [CoachingController::class, 'index'])->name('coaching');
 Route::get('/game/{gameSlug}/{categorySlug}', [GameController::class, 'index'])->name('game.index');
 Route::get('/game-buy/{gameSlug}/{categorySlug}/{sellerSlug}', [GameController::class, 'buy'])->name('game.buy');
 Route::get('/game-checkout/{orderId}', [GameController::class, 'checkout'])->name('game.checkout');
+
+Route::controller(FrontendController::class)->group(function () {
+    Route::get('/how-to-buy', 'howToBuy')->name('how-to-buy');
+    Route::get('/buyer-protection', 'buyerProtection')->name('buyer-protection');
+    Route::get('/how-to-sell', 'howToSell')->name('how-to-sell');
+    Route::get('/seller-protection', 'sellerProtection')->name('seller-protection');
+    Route::get('/faq', 'faq')->name('faq');
+});

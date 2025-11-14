@@ -27,7 +27,7 @@ class Index extends Component
         $this->service = $service;
     }
     public function render()
-    {   
+    {
            $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
@@ -82,7 +82,7 @@ class Index extends Component
             [
                 'key' => 'id',
                 'label' => 'View',
-                'route' => 'admin.gm.platform.view',
+                'route' => 'admin.rm.rank.view',
                 'encrypt' => true
             ],
             [
@@ -97,6 +97,12 @@ class Index extends Component
                 'method' => 'confirmDelete',
                 'encrypt' => true
             ],
+            [
+                'key' => 'id',
+                'label' => 'create',
+                'method' => 'admin.rm.rank.create',
+                'encrypt' => true
+            ],
         ];
 
         $bulkActions = [
@@ -104,8 +110,8 @@ class Index extends Component
             ['value' => 'active', 'label' => 'Active'],
             ['value' => 'inactive', 'label' => 'Inactive'],
         ];
-        
-        return view('livewire.backend.admin.reward-management.rank.index',   [      
+
+        return view('livewire.backend.admin.reward-management.rank.index',   [
             'datas' => $datas,
             'statuses' => RankStatus::options(),
             'columns' => $columns,
@@ -113,7 +119,7 @@ class Index extends Component
             'bulkActions' => $bulkActions,
         ]);
     }
-    
+
     public function confirmDelete($id): void
     {
         $this->deleteId = $id;
