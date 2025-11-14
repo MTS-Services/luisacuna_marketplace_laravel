@@ -53,13 +53,13 @@
                 </div>
                 <div>
                     <x-ui.label for="target_value" :value="__('Target Value')" />
-                    <x-ui.input id="target_value" type="text" class="mt-1 block w-full"
+                    <x-ui.input id="target_value" type="number" class="mt-1 block w-full"
                         wire:model="form.target_value" placeholder="Enter Target Value" />
                     <x-ui.input-error :messages="$errors->get('form.target_value')" class="mt-2" />
                 </div>
                 <div>
                     <x-ui.label for="point_reward" :value="__('Point Reward')" />
-                    <x-ui.input id="point_reward" type="text" class="mt-1 block w-full"
+                    <x-ui.input id="point_reward" type="number" class="mt-1 block w-full"
                         wire:model="form.point_reward" placeholder="Enter Point Reward" />
                     <x-ui.input-error :messages="$errors->get('form.point_reward')" class="mt-2" />
                 </div>
