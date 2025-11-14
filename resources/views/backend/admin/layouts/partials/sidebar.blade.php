@@ -153,12 +153,12 @@
                         'icon' => 'user',
                         'active' => 'reward-management',
                     ],
-                    // [
-                    //     'name' => 'Products',
-                    //     'route' => route('admin.pm.product.index'),
-                    //     'icon' => 'user',
-                    //     'active' => 'product',
-                    // ],
+                    [
+                        'name' => 'Achievements',
+                        'route' => route('admin.rm.achievement.index'),
+                        'icon' => 'user',
+                        'active' => 'reward-management',
+                    ],
                     // [
                     //     'name' => 'Pending Users',
                     //     'route' => '#',
