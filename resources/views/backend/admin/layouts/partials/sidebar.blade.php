@@ -151,14 +151,14 @@
                         'name' => 'Ranks',
                         'route' => route('admin.rm.rank.index'),
                         'icon' => 'user',
-                        'active' => 'reward-management',
+                        'active' => 'rank',
                     ],
-                    // [
-                    //     'name' => 'Products',
-                    //     'route' => route('admin.pm.product.index'),
-                    //     'icon' => 'user',
-                    //     'active' => 'product',
-                    // ],
+                    [
+                        'name' => 'Achievements',
+                        'route' => route('admin.rm.achievement.index'),
+                        'icon' => 'user',
+                        'active' => 'achievement',
+                    ],
                     // [
                     //     'name' => 'Pending Users',
                     //     'route' => '#',

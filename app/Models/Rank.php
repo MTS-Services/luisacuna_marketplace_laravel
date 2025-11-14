@@ -5,11 +5,12 @@ namespace App\Models;
 use App\Enums\RankStatus;
 use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Laravel\Scout\Attributes\SearchUsingPrefix;
-use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Searchable\Searchable;
+use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\Builder;
+use Laravel\Scout\Attributes\SearchUsingPrefix;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
  
 class Rank extends BaseModel implements Auditable
 {
@@ -52,7 +53,10 @@ class Rank extends BaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
  
-     //
+     public function achievements(): HasMany
+     {
+         return $this->hasMany(Achievement::class, 'rank_id', 'id');
+     }
  
      /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
