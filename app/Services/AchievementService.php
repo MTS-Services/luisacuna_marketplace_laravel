@@ -2,27 +2,32 @@
 
 namespace App\Services;
 
-use App\Actions\Game\BulkAction;
-use App\Actions\Game\CreateAction;
-use App\Actions\Game\UpdateAction;
-use App\Actions\Game\DeleteAction;
-use App\Actions\Game\RestoreAction;
-use App\Enums\GameStatus;
-use App\Models\Game;
-use App\Repositories\Contracts\GameRepositoryInterface;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Models\Achievement;
+use App\Enums\AchievementStatus;
+use App\Actions\Achievement\BulkAction;
+use App\Actions\Achievement\CreateAction;
+use App\Actions\Achievement\DeleteAction;
+use App\Actions\Achievement\UpdateAction;
+use App\Actions\Achievement\RestoreAction;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Repositories\Contracts\AchievementRepositoryInterface;
 
-class GameService
+class AchievementService
 {
+    /**
+     * Create a new class instance.
+     */
     public function __construct(
-        protected GameRepositoryInterface $interface,
+        protected AchievementRepositoryInterface $interface,
         protected CreateAction $createAction,
-        protected DeleteAction $deleteAction,
         protected UpdateAction $updateAction,
+        protected DeleteAction $deleteAction,
         protected RestoreAction $restoreAction,
-        protected BulkAction $bulkAction,
+        protected BulkAction $bulkAction
     ) {}
+
+
 
 
     /* ================== ================== ==================
@@ -34,7 +39,7 @@ class GameService
         return $this->interface->all($sortField, $order);
     }
 
-    public function findData($column_value, string $column_name = 'id'): ?Game
+    public function findData($column_value, string $column_name = 'id'): ?Achievement
     {
         return $this->interface->find($column_value, $column_name);
     }
@@ -68,15 +73,14 @@ class GameService
     *                   Action Executions
     * ================== ================== ================== */
 
-    public function createData(array $data): Game
+    public function createData(array $data): Achievement
     {
         return $this->createAction->execute($data);
     }
 
-    public function updateData(int $id, array $data): ?Game
+    public function updateData(int $id, array $data): Achievement
     {
         return $this->updateAction->execute($id, $data);
-
     }
 
     public function deleteData(int $id, bool $forceDelete = false, ?int $actionerId = null): bool
@@ -95,14 +99,15 @@ class GameService
         return $this->restoreAction->execute($id, $actionerId);
     }
 
-    public function updateStatusData(int $id, GameStatus $status, ?int $actionerId = null): ? Game
+    public function updateStatusData(int $id, AchievementStatus $status, ?int $actionerId = null): Achievement
     {
         if ($actionerId == null) {
             $actionerId = admin()->id;
         }
+
         return $this->updateAction->execute($id, [
             'status' => $status->value,
-            'updater_id' => $actionerId,
+            'updated_by' => $actionerId,
         ]);
     }
     public function bulkRestoreData(array $ids, ?int $actionerId = null): int
@@ -128,7 +133,7 @@ class GameService
         }
         return $this->bulkAction->execute(ids: $ids, action: 'delete', status: null, actionerId: $actionerId);
     }
-    public function bulkUpdateStatus(array $ids, GameStatus $status, ?int $actionerId = null): int
+    public function bulkUpdateStatus(array $ids, AchievementStatus $status, ?int $actionerId = null): int
     {
         if ($actionerId == null) {
             $actionerId = admin()->id;
