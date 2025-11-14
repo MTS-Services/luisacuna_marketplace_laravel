@@ -21,7 +21,7 @@
 
             <div class="flex flex-col md:flex-row gap-4 justify-center">
                 <div>
-                    <x-ui.button class="py-2">
+                    <x-ui.button class="py-2" href="#popular-games" :wire="false">
                         <flux:icon name="user"
                             class="w-5 h-5 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                         {{ __('Explore Products') }}
@@ -38,7 +38,7 @@
         </div>
     </section>
     <!-- Popular Games Section -->
-    <section class="py-20">
+    <section class="py-20" id="popular-games">
         <!--<div class="flex flex-wrap justify-center gap-4 p-6">
             <a href="{{ route('currency') }}" wire:navigate>
                 <div

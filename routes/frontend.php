@@ -31,10 +31,10 @@ Route::get('/game/{gameSlug}/{categorySlug}', [GameController::class, 'index'])-
 Route::get('/game-buy/{gameSlug}/{categorySlug}/{sellerSlug}', [GameController::class, 'buy'])->name('game.buy');
 Route::get('/game-checkout/{orderId}', [GameController::class, 'checkout'])->name('game.checkout');
 
-Route::controller(FrontendController::class)->name('frontend.')->prefix('frontend')->group(function () {
-    Route::get('/buy', 'buy')->name('buy');
-    Route::get('/buyer', 'buyer')->name('buyer');
-    Route::get('/sell', 'sell')->name('sell');
-    Route::get('/seller', 'seller')->name('seller');
+Route::controller(FrontendController::class)->group(function () {
+    Route::get('/how-to-buy', 'howToBuy')->name('how-to-buy');
+    Route::get('/buyer-protection', 'buyerProtection')->name('buyer-protection');
+    Route::get('/how-to-sell', 'howToSell')->name('how-to-sell');
+    Route::get('/seller-protection', 'sellerProtection')->name('seller-protection');
     Route::get('/faq', 'faq')->name('faq');
 });

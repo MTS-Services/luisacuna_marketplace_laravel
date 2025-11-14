@@ -4,12 +4,10 @@ namespace App\Livewire\Frontend\Frontend;
 
 use Livewire\Component;
 
-class Sell extends Component
+class SellerProtection extends Component
 {
     public function render()
     {
-        
-
-        return view('livewire.frontend.frontend.sell');
+        return view('livewire.frontend.frontend.seller-protection');
     }
 }

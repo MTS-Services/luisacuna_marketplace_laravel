@@ -1,33 +1,33 @@
 <x-frontend::app>
     @switch(Route::currentRouteName())
-        @case('frontend.buy')
+        @case('how-to-buy')
             <x-slot name="title">{{ __('frontend') }}</x-slot>
             <x-slot name="pageSlug">{{ __('frontend') }}</x-slot>
-            <livewire:Frontend.Frontend.Buy />
+            <livewire:frontend.frontend.how-to-buy />
         @break
 
-        @case('frontend.buyer')
+        @case('buyer-protection')
             <x-slot name="title">{{ __('frontend') }}</x-slot>
             <x-slot name="pageSlug">{{ __('frontend') }}</x-slot>
-            <livewire:Frontend.Frontend.Buyer />
+            <livewire:frontend.frontend.buyer-protection />
         @break
 
-        @case('frontend.sell')
+        @case('how-to-sell')
             <x-slot name="title">{{ __('frontend') }}</x-slot>
             <x-slot name="pageSlug">{{ __('frontend') }}</x-slot>
-            <livewire:Frontend.Frontend.Sell />
+            <livewire:frontend.frontend.how-to-sell />
         @break
 
-        @case('frontend.seller')
+        @case('seller-protection')
             <x-slot name="title">{{ __('frontend') }}</x-slot>
             <x-slot name="pageSlug">{{ __('frontend') }}</x-slot>
-            <livewire:Frontend.Frontend.Sellers />
+            <livewire:frontend.frontend.seller-protection />
         @break
 
-        @case('frontend.faq')
+        @case('faq')
             <x-slot name="title">{{ __('frontend') }}</x-slot>
             <x-slot name="pageSlug">{{ __('frontend') }}</x-slot>
-            <livewire:Frontend.Frontend.Faq />
+            <livewire:frontend.frontend.faq />
         @break
 
         @default

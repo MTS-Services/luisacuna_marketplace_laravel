@@ -9,22 +9,22 @@ class FrontendController extends Controller
 {
      protected $masterView = 'frontend.pages.frontend';
 
-        public function buy()
+        public function howToBuy()
         {
             return view($this->masterView);
         }
 
-        public function buyer()
+        public function buyerProtection()
         {
             return view($this->masterView);
         }
 
-        public function sell()
+        public function howtoSell()
         {
             return view($this->masterView);
         }
 
-        public function seller()
+        public function sellerProtection()
         {
             return view($this->masterView);
         }
@@ -35,3 +35,4 @@ class FrontendController extends Controller
         }
 
 }
+

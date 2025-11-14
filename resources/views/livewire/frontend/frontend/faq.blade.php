@@ -56,6 +56,11 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
                         </button>
+                        <div class="px-8 pb-6 text-gray-300">
+                            <p>Browse or search for your desired digital product. Click on the product, review the
+                                details, click "Buy Now," proceed to checkout, and select your preferred payment method.
+                            </p>
+                        </div>
                     </div>
 
                     <!-- Item 3 -->
@@ -70,6 +75,11 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
                         </button>
+                        <div class="px-8 pb-6 text-gray-300">
+                            <p>Browse or search for your desired digital product. Click on the product, review the
+                                details, click "Buy Now," proceed to checkout, and select your preferred payment method.
+                            </p>
+                        </div>
                     </div>
 
                     <!-- Item 4 -->
@@ -84,6 +94,11 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
                         </button>
+                        <div class="px-8 pb-6 text-gray-300">
+                            <p>Browse or search for your desired digital product. Click on the product, review the
+                                details, click "Buy Now," proceed to checkout, and select your preferred payment method.
+                            </p>
+                        </div>
                     </div>
 
                     <!-- Item 5 -->
@@ -98,6 +113,11 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
                         </button>
+                        <div class="px-8 pb-6 text-gray-300">
+                            <p>Browse or search for your desired digital product. Click on the product, review the
+                                details, click "Buy Now," proceed to checkout, and select your preferred payment method.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
