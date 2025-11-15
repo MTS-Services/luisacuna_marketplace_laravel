@@ -3,6 +3,7 @@
 namespace App\Repositories\Contracts;
 
 use App\Models\Rank;
+use App\Models\UserRank;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -49,6 +50,8 @@ interface RankRepositoryInterface
     public function bulkRestore(array $ids, int $actionerId): int;
 
     public function bulkForceDelete(array $ids): int;
+
+    public function assignRankToUser(int $userId, int $rankId): UserRank;
 
     /* ================== ================== ==================
     *                  Accessor Methods (Optional)

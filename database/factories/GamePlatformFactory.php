@@ -6,7 +6,6 @@ use App\Enums\GamePlatformStatus;
 use App\Models\Admin;
 use App\Models\GamePlatform;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use Faker\Factory as Faker;
 
 /**
@@ -22,6 +21,8 @@ class GamePlatformFactory extends Factory
     protected $model =  GamePlatform::class;
     public function definition(): array
     {
+        $faker = Faker::create();
+        $name =substr($faker->unique()->name(),0,10);
         return [
             'name' => fake()->name(),
             'slug' => fake()->unique()->slug(),
