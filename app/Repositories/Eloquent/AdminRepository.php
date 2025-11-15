@@ -4,10 +4,11 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Admin;
 use App\Repositories\Contracts\AdminRepositoryInterface;
+
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Log;
 
 class AdminRepository implements AdminRepositoryInterface
 {
@@ -124,7 +125,7 @@ class AdminRepository implements AdminRepositoryInterface
         if(isset($data['role_id'])){
 
            $this->model->assignRole($created->role->name);
-           
+
         }
         return $created ;
     }
@@ -137,7 +138,15 @@ class AdminRepository implements AdminRepositoryInterface
             return false;
         }
 
-        return $findData->update($data);
+         $updated = $findData->update($data);
+
+         if($updated && isset($data['role_id'])){
+
+            $this->model->syncRoles($this->model->find($id)->role->name);
+
+         }
+
+         return $updated;
     }
 
 
