@@ -188,6 +188,10 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->hasMany(User::class, 'unbanned_by', 'id');
     }
+    public function userRank(): HasMany
+    {
+        return $this->hasMany(UserRank::class, 'user_id', 'id');
+    }
     /*
     |--------------------------------------------------------------------------
     | Query Scopes
