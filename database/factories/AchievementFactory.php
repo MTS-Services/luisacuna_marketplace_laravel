@@ -19,12 +19,7 @@ class AchievementFactory extends Factory
     public function definition(): array
     {
         return [
-            "rank_id" => Rank::inRandomOrder()->value('id'),
-            "title" => "Achievement Title",
-            "description" => "Achievement Description",
-            "category_id" => Category::inRandomOrder()->value('id'),
-            "target_value" => rand(1, 100),
-            "point_reward" => rand(50, 200),
+            //
         ];
     }
 }
