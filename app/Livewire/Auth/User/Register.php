@@ -2,12 +2,17 @@
 
 namespace App\Livewire\Auth\User;
 
+use App\Enums\RankStatus;
 use App\Models\User;
 use App\Models\Country;
 use App\Enums\UserType;
 use App\Enums\UserAccountStatus;
+use App\Models\Rank;
+use App\Models\UserRank;
+use App\Services\RankService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rules;
@@ -29,9 +34,12 @@ class Register extends Component
 
     public $countries = [];
 
-    /**
-     * Mount component and load countries
-     */
+    protected RankService $rankService;
+
+    public function boot(RankService $rankService)
+    {
+        $this->rankService = $rankService;
+    }
     public function mount(): void
     {
         $this->countries = Country::select('id', 'name')
@@ -84,33 +92,41 @@ class Register extends Component
     public function register(): void
     {
         $validated = $this->validate();
+        $rankService = $this->rankService;
 
         // Create user with all required fields
-        $user = User::create([
-            'username' => $validated['username'],
-            'first_name' => $validated['first_name'] ?? null,
-            'last_name' => $validated['last_name'] ?? null,
-            // 'display_name' => trim(($validated['first_name'] ?? '') . ' ' . ($validated['last_name'] ?? '')) ?: $validated['username'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'] ?? null,
-            'country_id' => $validated['country_id'],
-            'password' => Hash::make($validated['password']),
-            'user_type' => UserType::BUYER,
-            'account_status' => UserAccountStatus::PENDING_VERIFICATION,
-            'terms_accepted_at' => now(),
-            'privacy_accepted_at' => now(),
-            'last_login_at' => now(),
-            'last_login_ip' => request()->ip(),
-        ]);
+        DB::transaction(function () use ($validated, $rankService) {
+            $user = User::create([
+                'username' => $validated['username'],
+                'first_name' => $validated['first_name'] ?? null,
+                'last_name' => $validated['last_name'] ?? null,
+                // 'display_name' => trim(($validated['first_name'] ?? '') . ' ' . ($validated['last_name'] ?? '')) ?: $validated['username'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'] ?? null,
+                'country_id' => $validated['country_id'],
+                'password' => Hash::make($validated['password']),
+                'user_type' => UserType::BUYER,
+                'account_status' => UserAccountStatus::PENDING_VERIFICATION,
+                'terms_accepted_at' => now(),
+                'privacy_accepted_at' => now(),
+                'last_login_at' => now(),
+                'last_login_ip' => request()->ip(),
+            ]);
+            $rank = Rank::where('initial_assign', RankStatus::ACTIVE->value)->first();
 
-        // Load country relationship for newly created user
-        $user->load('country');
+            $rankService->assignRankToUser($user->id, $rank->id);
 
-        // Fire registered event
-        event(new Registered($user));
+            // Load country relationship for newly created user
+            $user->load('country');
 
-        // Log the user in
-        Auth::login($user);
+            // Fire registered event
+            event(new Registered($user));
+
+            // Log the user in
+            Auth::login($user);
+        });
+
+        // Login user
 
         // Regenerate session
         Session::regenerate();

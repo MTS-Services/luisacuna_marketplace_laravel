@@ -3,6 +3,7 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Rank;
+use App\Models\UserRank;
 use App\Repositories\Contracts\RankRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -11,9 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class RankRepository implements RankRepositoryInterface
 {
-    public function __construct(
-        protected Rank $model
-    ) {}
+    public function __construct(protected Rank $model, protected UserRank $userRank) {}
 
 
     /* ================== ================== ==================
@@ -211,6 +210,15 @@ class RankRepository implements RankRepositoryInterface
     public function bulkForceDelete(array $ids): int //
     {
         return $this->model->onlyTrashed()->whereIn('id', $ids)->forceDelete();
+    }
+
+    public function assignRankToUser(int $userId, int $rankId): UserRank 
+    {
+        $value = $this->userRank->updateOrCreate(
+            ['user_id' => $userId],
+            ['rank_level' => $rankId]
+        );
+        return $value;
     }
 
     /* ================== ================== ==================
