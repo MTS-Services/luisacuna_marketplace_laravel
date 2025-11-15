@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +21,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        Gate::before(function ($admin, $ability) {
+            return $admin->hasRole('Super Admin') ? true : null;
+        });
+
         Blade::componentNamespace('App\View\Components\Layout\Admin', 'admin');
         Blade::componentNamespace('App\View\Components\Layout\User', 'user');
         Blade::componentNamespace('App\View\Components\Layout\Frontend', 'frontend');

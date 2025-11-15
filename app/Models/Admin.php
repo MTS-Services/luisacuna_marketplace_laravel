@@ -10,10 +10,11 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends AuthBaseModel implements Auditable
 {
-    use TwoFactorAuthenticatable, AuditableTrait, Searchable;
+    use TwoFactorAuthenticatable, AuditableTrait, Searchable, HasRoles;
     
     protected $guard = 'admin';
 
@@ -266,4 +267,6 @@ class Admin extends AuthBaseModel implements Auditable
             'phone_verified_at' => now(),
         ])->save();
     }
+
+ 
 }

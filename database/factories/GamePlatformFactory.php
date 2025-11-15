@@ -8,6 +8,7 @@ use App\Models\GamePlatform;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Faker\Factory as Faker;
+
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\GamePlatform>
  */
@@ -18,15 +19,12 @@ class GamePlatformFactory extends Factory
      *
      * @return array<string, mixed>
      */
-     protected $model =  GamePlatform::class;
+    protected $model =  GamePlatform::class;
     public function definition(): array
     {
-        $faker = Faker::create();
-        $name =substr($faker->unique()->name(),0,3);
         return [
-            // 
-            'name' => $name,
-            'slug' => Str::slug($name),
+            'name' => fake()->name(),
+            'slug' => fake()->unique()->slug(),
             'status' => fake()->randomElement(GamePlatformStatus::cases()),
             'created_by' => Admin::inRandomorder()->value('id'),
         ];

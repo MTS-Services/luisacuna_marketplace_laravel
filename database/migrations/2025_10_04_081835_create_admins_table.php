@@ -17,6 +17,7 @@ return new class extends Migration
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->index()->default(0);
+          
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -33,6 +34,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
             $this->addAdminAuditColumns($table);
+          
         });
     }
 
