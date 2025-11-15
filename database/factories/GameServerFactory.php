@@ -19,8 +19,8 @@ class GameServerFactory extends Factory
     {
         return [
             'name'  => $this->faker->unique()->name(),
-            'region' => $this->faker->randomElement(['Asia', 'Europe', 'US', 'Africa']),
-            'type'   => $this->faker->randomElement(['Free', 'Paid', 'Premium']),
+            // 'region' => $this->faker->randomElement(['Asia', 'Europe', 'US', 'Africa']),
+            // 'type'   => $this->faker->randomElement(['Free', 'Paid', 'Premium']),
             'status' => $this->faker->randomElement(GameServerStatus::cases()),
         ];
     }

@@ -18,8 +18,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0);
             $table->string('name')->index();
-            $table->string('region');
-            $table->string('type');
+            // $table->string('region');
+            // $table->string('type');
             $table->string('status')->default(GameServerStatus::ACTIVE)->index();
             $table->string('icon')->nullable();
 

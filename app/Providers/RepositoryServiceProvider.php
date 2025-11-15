@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Game;
-use App\Models\Rank;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Eloquent\GameRepository;
 use App\Repositories\Eloquent\RankRepository;
@@ -39,6 +37,9 @@ use App\Repositories\Contracts\AchievementRepositoryInterface;
 use App\Repositories\Contracts\ProductTypeRepositoryInterface;
 use App\Repositories\Contracts\GamePlatformRepositoryInterface;
 
+use App\Repositories\Contracts\GameServerRepositoryInterface;
+use App\Repositories\Eloquent\GameServerRepository;
+
 class RepositoryServiceProvider extends ServiceProvider
 {
     public function register(): void
@@ -72,12 +73,22 @@ class RepositoryServiceProvider extends ServiceProvider
             GamePlatformRepository::class
         );
 
+
+        //Game Server Repository
+        $this->app->bind(
+           
+            GameServerRepositoryInterface::class,
+            GameServerRepository::class,
+          
+        );
+
         // Rank
 
         $this->app->bind(
             RankRepositoryInterface::class,
             RankRepository::class,
         );
+
         $this->app->bind(
             LanguageRepositoryInterface::class,
             LanguageRepository::class
