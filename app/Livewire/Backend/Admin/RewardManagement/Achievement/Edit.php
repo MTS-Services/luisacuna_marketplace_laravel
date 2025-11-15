@@ -43,11 +43,11 @@ class Edit extends Component
      */
     public function mount(Achievement $data): void
     {
-         $this->data = $data;
+        $this->data = $data;
         $this->form->setData($data);
     }
 
-    
+
     public function render()
     {
         $ranks = $this->rank->getAllDatas();
@@ -60,8 +60,8 @@ class Edit extends Component
         ]);
     }
 
-     /**
-     * Handle form submission to create a new currency.
+    /**
+     * Handle form submission to create a new Achievement.
      */
     public function save()
     {
@@ -82,6 +82,7 @@ class Edit extends Component
      */
     public function resetForm(): void
     {
-        $this->form->reset();
+        $this->form->setData($this->data);
+        $this->form->resetValidation();
     }
 }
