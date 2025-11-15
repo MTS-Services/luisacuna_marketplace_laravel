@@ -70,6 +70,7 @@ class Edit extends Component
      */
     public function resetForm(): void
     {
-        $this->form->reset();
+        $this->form->setData($this->data);
+        $this->form->resetValidation();
     }
 }
