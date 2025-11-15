@@ -148,7 +148,9 @@
     --color-bg-hover: var(--color-zinc-100);
 
     --color-text-btn-primary: #f8f8f8;
-
+    --color-text-baground3: #FF2E91;
+    --color-text-purple: #6b21a8;
+    --color-text-pink: #ec4899;
 
     --color-text-btn-secondary: var(--color-primary-500);
     --color-text-btn-tertiary: var(--color-secondary-500);
@@ -162,7 +164,14 @@
     --color-bg-tertiary: var(--color-bg-tertiary-light);
 
         --color-bg-container1: #1b0c33;
+        --color-bg-container2: #6d28d9;
         --color-bg-border2: #2d1f43;
+        --color-bg-pink-500: #ec4899 !important;
+        --color-bg-purple-800: #5b21b6 !important;
+        --color-bg-blue-400: #60a5fa !important;
+
+
+
     --hover-bg-theme: var(--color-zinc-200);
     --color-bg-black: var(--color-black);
     --color-bg-white: var(--color-white);
