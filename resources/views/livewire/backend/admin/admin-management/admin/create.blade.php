@@ -24,16 +24,16 @@
             <!-- Add other form fields here -->
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
 
-                {{-- product_type_id --}}
+                {{-- Admin role  --}}
                 <div class="w-full">
-                    <x-ui.label value="Product Type Select" class="mb-1" />
+                    <x-ui.label value="Assign Role" class="mb-1" />
                     <x-ui.select wire:model="form.role_id">
                         @foreach ($roles as $role)
                             <option value="{{ $role->id }}">{{ $role['name'] }}</option>
                         @endforeach
                     </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.role_id')" />
-                </div>
+                </div> 
                 <div class="w-full">
                     <x-ui.label value="Name" class="mb-1" />
                     <x-ui.input type="text" placeholder="Name" wire:model="form.name" />

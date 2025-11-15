@@ -21,7 +21,7 @@ class AdminForm extends Form
     public ?string $phone = '';
     public ?string $address = '';
     public string $status = '';
-    public ?string $avatar = null;
+    public ?UploadedFile $avatar = null;
     public bool $remove_avatar = false;
 
 
@@ -36,7 +36,7 @@ class AdminForm extends Form
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string',
             'status' => 'required|string|in:' . implode(',', array_column(AdminStatus::cases(), 'value')),
-            'avatar' => 'nullable|image|max:2048',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ];
 
         return $rules;

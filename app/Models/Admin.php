@@ -267,4 +267,6 @@ class Admin extends AuthBaseModel implements Auditable
             'phone_verified_at' => now(),
         ])->save();
     }
+
+ 
 }

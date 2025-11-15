@@ -119,7 +119,14 @@ class AdminRepository implements AdminRepositoryInterface
 
     public function create(array $data): Admin
     {
-        return $this->model->create($data);
+        $created =  $this->model->create($data);
+
+        if(isset($data['role_id'])){
+
+           $this->model->assignRole($created->role->name);
+           
+        }
+        return $created ;
     }
 
     public function update(int $id, array $data): bool

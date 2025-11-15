@@ -22,6 +22,11 @@ class GamePlatformFactory extends Factory
     protected $model =  GamePlatform::class;
     public function definition(): array
     {
+<<<<<<< Updated upstream
+=======
+        $faker = Faker::create();
+        $name =substr($faker->unique()->name(),0,10);
+>>>>>>> Stashed changes
         return [
             'name' => fake()->name(),
             'slug' => fake()->unique()->slug(),
