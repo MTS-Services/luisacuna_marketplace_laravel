@@ -115,7 +115,8 @@ class RankSeeder extends Seeder
                 'status'         => $i === 1 ? RankStatus::ACTIVE->value : RankStatus::INACTIVE->value,
                 'minimum_points' => rand(500, 1000),
                 'created_by'     => Admin::inRandomOrder()->value('id'),
-                'icon'           => "storage/ranks/{$imageName}",
+                'icon'           => "ranks/{$imageName}",
+                'initial_assign' => $i === 1 ? 1 : 0
             ]);
         }
     }

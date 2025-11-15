@@ -1,4 +1,3 @@
-
 <div class="min-h-screen py-8 px-4">
     <div class="">
         {{-- Top Cards Section --}}
@@ -9,22 +8,22 @@
                     <h3 class="text-text-primary font-open-sans text-lg">{{ __('How it works?') }}</h3>
                     <div class="flex items-center gap-2 bg-zinc-50/10 px-3 py-1.5 rounded-full">
                         <x-phosphor-coin class="fill-yellow-500 w-5 h-5" weight="fill" />
-                        <span class="text-text-white font-semibold">500</span>
+                        <span class="text-text-white font-semibold">{{ user()->rank_points }}</span>
                     </div>
                 </div>
 
                 <div class="flex justify-center mb-6">
                     <div class="relative">
-                        <div class="w-26 h-26 rounded-full flex items-center justify-center shadow-lg">
-                            <img src="{{ asset('assets/images/loyalty_card.png') }}" alt=""
-                                class="w-full h-full">
+                        <div class="w-26 h-26 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
+                            <img src="{{ storage_url($rank->icon) }}" alt="" class="w-full h-full">
                         </div>
                     </div>
                 </div>
-
                 <div class="text-center mb-4">
-                    <h4 class="text-text-white font-semibold text-xl mb-2">{{ __('Bronze') }}</h4>
-                    <div class="text-text-white text-sm">500/2400</div>
+                    <h4 class="text-text-white font-semibold text-xl mb-2">{{ $rank->name }}</h4>
+                    <div class="text-text-white text-sm">
+                        {{ user()->rank_points . ' / ' . ($rank->maximum_points === null ? user()->rank_points . '+' : $rank->maximum_points) }}
+                    </div>
                     <div class="w-70 xl:w-90 mx-auto bg-white rounded-full h-2 mt-2">
                         <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full" style="width: 20%">
                         </div>
@@ -32,7 +31,8 @@
                 </div>
 
                 <p class="text-text-white text-center text-sm">
-                    {{ __('You need an additional 1,900 points to reach the Silver level.') }}
+                    {{ __('You need an additional') }} {{ $rank->maximum_points - $rank->minimum_points }}
+                    {{ __('points to reach the Silver level.') }}
                 </p>
             </div>
 
@@ -42,7 +42,7 @@
                     <h3 class="text-text-white font-semibold text-xl mb-4">{{ __('Available points') }}</h3>
                     <div class="flex items-center gap-2">
                         <x-phosphor-coin class="fill-yellow-500 w-6 h-6" weight="fill" />
-                        <span class="text-text-white font-bold text-3xl">500</span>
+                        <span class="text-text-white font-bold text-3xl">{{ user()->rank_points }}</span>
                     </div>
                 </div>
 
@@ -75,91 +75,35 @@
         {{-- Achievement Cards Grid --}}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             {{-- Critic Achievement --}}
-            <div class="glass-card rounded-2xl p-6 border border-primary-700/30">
-                <div class="flex items-center gap-4 mb-4">
-                    <div class="w-20 h-20 rounded-xl bg-primary-800/50 flex items-center justify-center flex-shrink-0">
-                        <img src="{{ asset('assets/images/loyalty_icon.png') }}" alt="" class="w-full h-full">
+            @forelse ($achievements as $achievement)
+                <div class="glass-card rounded-2xl p-6 border border-primary-700/30">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div
+                            class="w-20 h-20 rounded-xl bg-primary-800/50 flex items-center justify-center flex-shrink-0">
+                            <img src="{{ storage_url($achievement->icon) }}" alt=""
+                                class="w-full h-full">
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-text-white font-semibold font-lato text-lg sm:text-3xl mb-1">
+                                {{ $achievement->title }}</h4>
+                            <p class="text-text-white text-sm sm:text-base">{{ $achievement->description }}</p>
+                        </div>
                     </div>
-                    <div class="flex-1">
-                        <h4 class="text-text-white font-semibold font-lato text-lg sm:text-3xl mb-1">{{ __('Critic') }}</h4>
-                        <p class="text-text-white text-sm sm:text-base">{{ __('Write reviews for sellers') }}</p>
+                    <div class="flex items-center justify-between text-sm mb-2">
+                        <span class="text-text-white text-base sm:text-xl">{{ __('0 / 1 To unlock') }}</span>
+                        <div class="flex items-center gap-1">
+                            <x-phosphor-coin class="fill-yellow-500 w-4 h-4" weight="fill" />
+                            <span class="text-text-white font-semibold text-base sm:text-xl">+{{ $achievement->point_reward }}</span>
+                        </div>
                     </div>
-                </div>
-                <div class="flex items-center justify-between text-sm mb-2">
-                    <span class="text-text-white text-base sm:text-xl">{{ __('0 / 1 To unlock') }}</span>
-                    <div class="flex items-center gap-1">
-                        <x-phosphor-coin class="fill-yellow-500 w-4 h-4" weight="fill" />
-                        <span class="text-text-white font-semibold text-base sm:text-xl">+500</span>
-                    </div>
-                </div>
-                <div class="w-full bg-white rounded-full h-2">
-                    <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full" style="width: 0%"></div>
-                </div>
-            </div>
-            <div class="glass-card rounded-2xl p-6 border border-primary-700/30">
-                <div class="flex items-center gap-4 mb-4">
-                    <div class="w-20 h-20 rounded-xl bg-primary-800/50 flex items-center justify-center flex-shrink-0">
-                        <img src="{{ asset('assets/images/loyalty_icon.png') }}" alt="" class="w-full h-full">
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="text-text-white font-semibold font-lato text-lg sm:text-3xl mb-1">{{ __('Explorer') }}</h4>
-                        <p class="text-text-white text-sm sm:text-base">{{ __('Place your first order in each category') }}</p>
+                    <div class="w-full bg-white rounded-full h-2">
+                        <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full" style="width: 10%">
+                        </div>
                     </div>
                 </div>
-                <div class="flex items-center justify-between text-sm mb-2">
-                    <span class="text-text-white text-base sm:text-xl">{{ __('0 / 1 To unlock') }}</span>
-                    <div class="flex items-center gap-1">
-                        <x-phosphor-coin class="fill-yellow-500 w-4 h-4" weight="fill" />
-                        <span class="text-text-white font-semibold text-base sm:text-xl">+500</span>
-                    </div>
-                </div>
-                <div class="w-full bg-white rounded-full h-2">
-                    <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full" style="width: 0%"></div>
-                </div>
-            </div>
-            <div class="glass-card rounded-2xl p-6 border border-primary-700/30">
-                <div class="flex items-center gap-4 mb-4">
-                    <div class="w-20 h-20 rounded-xl bg-primary-800/50 flex items-center justify-center flex-shrink-0">
-                        <img src="{{ asset('assets/images/loyalty_icon.png') }}" alt="" class="w-full h-full">
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="text-text-white font-semibold font-lato text-lg sm:text-3xl mb-1">{{ __('Speedrunner') }}</h4>
-                        <p class="text-text-white text-sm sm:text-base">{{ __('Place 2 orders in one month') }}</p>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between text-sm mb-2">
-                    <span class="text-text-white text-base sm:text-xl">{{ __('0 / 1 To unlock') }}</span>
-                    <div class="flex items-center gap-1">
-                        <x-phosphor-coin class="fill-yellow-500 w-4 h-4" weight="fill" />
-                        <span class="text-text-white font-semibold text-base sm:text-xl">+500</span>
-                    </div>
-                </div>
-                <div class="w-full bg-white rounded-full h-2">
-                    <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full" style="width: 0%"></div>
-                </div>
-            </div>
-
-            <div class="glass-card rounded-2xl p-6 border border-primary-700/30">
-                <div class="flex items-center gap-4 mb-4">
-                    <div class="w-20 h-20 rounded-xl bg-primary-800/50 flex items-center justify-center flex-shrink-0">
-                        <img src="{{ asset('assets/images/loyalty_icon.png') }}" alt="" class="w-full h-full">
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="text-text-white font-semibold font-lato text-lg sm:text-3xl mb-1">{{ __('Master Trader') }}</h4>
-                        <p class="text-text-white text-sm sm:text-base">{{ __('Place 2 Eldorado orders') }}</p>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between text-sm mb-2">
-                    <span class="text-text-white text-base sm:text-xl">{{ __('0 / 1 To unlock') }}</span>
-                    <div class="flex items-center gap-1">
-                        <x-phosphor-coin class="fill-yellow-500 w-4 h-4" weight="fill" />
-                        <span class="text-text-white font-semibold text-base sm:text-xl">+500</span>
-                    </div>
-                </div>
-                <div class="w-full bg-white rounded-full h-2">
-                    <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full" style="width: 0%"></div>
-                </div>
-            </div>
+            @empty
+                <p class="text-text-white text-sm">No achievements</p>
+            @endforelse
         </div>
 
         {{-- Dedication Section --}}
@@ -171,8 +115,7 @@
         </div>
 
         {{-- CTA Card --}}
-        <div
-            class="glass-card rounded-2xl p-8 py-12 bg-gradient-to-r from-pink-500/20 to-pink-800 text-center">
+        <div class="glass-card rounded-2xl p-8 py-12 bg-gradient-to-r from-pink-500/20 to-pink-800 text-center">
             <h2 class="text-text-white font-open-sans text-3xl xl:text-4xl font-bold mb-6">
                 {{ __('Start Your Reward Journey Today') }}
             </h2>
