@@ -144,6 +144,12 @@ class Index extends Component
                 $this->warning('No data selected');
                 return;
             }
+
+            if(decrypt($this->deleteId) == admin()->id){
+                $this->warning('You cannot delete your own account');
+                $this->deleteId = null;
+                return;
+            }
             $this->service->deleteData(decrypt($this->deleteId));
             $this->reset(['deleteId', 'showDeleteModal']);
 
@@ -213,12 +219,25 @@ class Index extends Component
 
     protected function bulkDelete(): void
     {
+
+        if(in_array(admin()->id, $this->selectedIds)){
+            $this->warning('You cannot delete your own account');
+            $this->selectedIds = [];
+            return;
+        }
+
         $count =  $this->service->bulkDeleteData($this->selectedIds);
+
         $this->success("{$count} Data deleted successfully");
     }
 
     protected function bulkUpdateStatus(AdminStatus $status): void
     {
+        if(in_array(admin()->id, $this->selectedIds)){
+            $this->warning('You cannot change your own account');
+            $this->selectedIds = [];
+            return;
+        }
          $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
         $this->success("{$count} Data updated successfully");
     }

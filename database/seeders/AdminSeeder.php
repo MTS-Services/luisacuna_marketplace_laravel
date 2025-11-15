@@ -32,6 +32,6 @@ class AdminSeeder extends Seeder
             'phone_verified_at' => Carbon::now(),
             'password' => Hash::make('admin@dev.com'),
         ]);
-        $superadmin->assignRole('Admin');
+        $admin->assignRole('Admin');
     }
 }

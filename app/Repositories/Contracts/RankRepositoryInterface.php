@@ -16,6 +16,8 @@ interface RankRepositoryInterface
 
     public function find($column_value, string $column_name = 'id', bool $trashed = false): ?Rank;
 
+    public function findAll($column_value, string $column_name = 'id',  bool $trashed = false): Collection ;
+
     public function findTrashed($column_value, string $column_name = 'id'): ?Rank;
 
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;

@@ -58,7 +58,7 @@
 
                 
 
-                <div>
+                {{-- <div>
                     <x-ui.label for="initial_assign" :value="__('Initial Assign')" />
                     <x-ui.select id="initial_assign" class="mt-1 block w-full" wire:model="form.initial_assign">
                         <option value="">{{ __('Select Option') }}</option>
@@ -66,7 +66,7 @@
                         <option value="0">{{ __('No') }}</option>
                     </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.initial_assign')" class="mt-2" />
-                </div>
+                </div> --}}
                 <div>
                     <x-ui.label for="status" :value="__('Status')" />
                     <x-ui.select id="status" class="mt-1 block w-full" wire:model="form.status">

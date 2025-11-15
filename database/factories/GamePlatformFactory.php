@@ -6,8 +6,7 @@ use App\Enums\GamePlatformStatus;
 use App\Models\Admin;
 use App\Models\GamePlatform;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-use Faker\Factory as Faker;
+
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\GamePlatform>
