@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Actions\Rank\AssignRankAction;
 use App\Models\Rank;
 use App\Enums\RankStatus;
 use App\Actions\Rank\BulkAction;
@@ -9,6 +10,7 @@ use App\Actions\Rank\CreateAction;
 use App\Actions\Rank\DeleteAction;
 use App\Actions\Rank\UpdateAction;
 use App\Actions\Rank\RestoreAction;
+use App\Models\UserRank;
 use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Contracts\RankRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -22,7 +24,8 @@ class RankService
         protected UpdateAction $updateAction,
         protected DeleteAction $deleteAction,
         protected RestoreAction $restoreAction,
-        protected BulkAction $bulkAction
+        protected BulkAction $bulkAction,
+        protected AssignRankAction $assignRankAction,
         )
     {
     }   
@@ -75,6 +78,10 @@ class RankService
         return $this->createAction->execute($data);
     }
 
+    public function assignRankToUser(int $userId, int $rankId): UserRank
+    {
+        return $this->assignRankAction->execute($userId, $rankId);
+    }
     public function updateData(int $id, array $data): Rank
     {
         return $this->updateAction->execute($id, $data);

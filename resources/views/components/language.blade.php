@@ -34,8 +34,14 @@
                     <div>
                         <x-ui.label class="mb-1!">Language</x-ui.label>
                         <x-ui.select name="lang" class="text-text-white!">
-                            <option value="en" {{ session('locale', 'en') == 'en' ? 'selected' : '' }}>English</option>
-                            <option value="fr" {{ session('locale', 'en') == 'fr' ? 'selected' : '' }}>French</option>
+                            <option value="en" {{ session('locale', 'en') == 'en' ? 'selected' : '' }}>{{ __('English (EN)') }}</option>
+                            <option value="fr" {{ session('locale', 'en') == 'fr' ? 'selected' : '' }}>{{ __('Français (FR)') }}</option>
+                            <option value="de" {{ session('locale', 'en') == 'de' ? 'selected' : '' }}>{{ __('Deutsch (DE)') }}</option>
+                            <option value="es" {{ session('locale', 'en') == 'es' ? 'selected' : '' }}>{{ __('Español (ES)') }}</option>
+                            <option value="jp" {{ session('locale', 'en') == 'jp' ? 'selected' : '' }}>{{ __('日本語 (JP)') }}</option>
+                            <option value="it" {{ session('locale', 'en') == 'it' ? 'selected' : '' }}>{{ __('Italiano (IT)') }}</option>
+                            <option value="id" {{ session('locale', 'en') == 'id' ? 'selected' : '' }}>{{ __('Bahasa Indonesia (ID)') }}</option>
+                            <option value="br" {{ session('locale', 'en') == 'br' ? 'selected' : '' }}>{{ __('Português (BR)') }}</option>
                         </x-ui.select>
                     </div>
 
