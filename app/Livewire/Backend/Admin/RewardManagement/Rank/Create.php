@@ -8,6 +8,8 @@ use App\Services\RankService;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use App\Livewire\Forms\Backend\Admin\RewardManagement\RankForm;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class Create extends Component
 {
@@ -52,13 +54,62 @@ class Create extends Component
     public function save()
     {
         $data = $this->form->validate();
+
         try {
+
             $data['created_by'] = admin()->id;
+
+            //Check if minmimum points is less then maximum points
+
+            if ($this->form->minimum_points > $this->form->maximum_points) {
+
+
+                $this->error('Minimum points should be less then maximum points');
+
+                return;
+            }
+
+            //Check the Ranking insert logic
+            $old_points = $this->service->getAllDatas('minimum_points', 'asc');
+        
+            if (count($old_points)) {
+
+                $minimumRanks = $old_points->first();
+                $maximumRank = $old_points->last();
+
+                $min = $this->form->minimum_points;
+
+                $valid = (
+                    $min < $minimumRanks->minimum_points ||
+                    ($min > $maximumRank->maximum_points && $min > $maximumRank->minimum_points)
+                );
+
+                if (! $valid) {
+                    $minAllowed = $maximumRank->maximum_points ?? $maximumRank->minimum_points;
+                    $maxAllowed = $minimumRanks->minimum_points ?? 0;
+                    $this->error(
+                        "The Rank minimum points should be greater than {$minAllowed} "
+                            . "or less than {$maxAllowed}."
+                    );
+                    return;
+                }
+            }
+
+            // End
+
+
+
             $this->service->createData($data);
+
             $this->success('Data created successfully.');
+
             return $this->redirect(route('admin.rm.rank.index'), navigate: true);
         } catch (\Exception $e) {
-            $this->error('Failed to create data: ' . $e->getMessage());
+
+            Log::error("Failed to create Rank data", [
+                'error' => $e->getMessage(),
+            ]);
+            $this->error('Failed to create data ');
         }
     }
 
