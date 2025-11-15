@@ -47,6 +47,7 @@ class DatabaseSeeder extends Seeder
             RankSeeder::class,
             UserRankSeeder::class,
             AchievementSeeder::class,
+            GameServerSeeder::class,
         ]);
 
         // Admin::create([
