@@ -38,8 +38,7 @@ class RankForm extends Form
             'minimum_points' => 'required|integer',
             'maximum_points' => 'nullable|integer',
             'icon' => 'nullable|string',
-            'status' => 'required|string|in:' . implode(',', array_column(RankStatus::cases(), 'value')),
-            'initial_assign' => 'required|boolean',
+            'status' => 'required|string|in:' . implode(',', array_column(RankStatus::cases(), 'value')), 
         ];
     }
 

@@ -35,6 +35,17 @@ class RankRepository implements RankRepositoryInterface
         return $model->where($column_name, $column_value)->first();
     }
 
+    public function findAll($column_value, string $column_name = 'id',  bool $trashed = false): Collection
+    {
+        $model = $this->model;
+
+        if ($trashed) {
+            $model = $model->withTrashed();
+        }
+        
+        return $model->where($column_name, $column_value)->get();
+    } 
+
     public function findTrashed($column_value, string $column_name = 'id'): ?Rank
     {
         $model = $this->model->onlyTrashed();
@@ -114,6 +125,21 @@ class RankRepository implements RankRepositoryInterface
 
     public function create(array $data): Rank
     {
+
+        if(empty($data['minimum_points'])) {
+
+            $data['initial_assign'] = true;
+
+            $default = $this->find(true, 'initial_assign') ;
+
+            if($default) {
+                $default->update(['initial_assign' => false]);
+            }
+         
+        }
+
+      
+        
         return $this->model->create($data);
     }
 
