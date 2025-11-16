@@ -16,7 +16,7 @@ class Admin extends AuthBaseModel implements Auditable
 {
     use TwoFactorAuthenticatable, AuditableTrait, Searchable, HasRoles;
     
-    protected $guard = 'admin';
+    protected $guard_name = 'admin';
 
     protected $fillable = [
         'sort_order',
@@ -35,8 +35,6 @@ class Admin extends AuthBaseModel implements Auditable
         'two_factor_recovery_codes',
         'last_login_at',
         'last_login_ip',
-
-        
 
         'created_by',
         'updated_by',
