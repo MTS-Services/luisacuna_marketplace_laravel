@@ -27,7 +27,7 @@
             </div>
 
             <!-- Form -->
-            <form method="POST" action="{{ route('lang.change') }}">
+            {{-- <form method="POST" action="{{ route('lang.change') }}">
                 @csrf
                 <div class="space-y-4">
                     <!-- Language -->
@@ -68,7 +68,8 @@
                         </x-ui.button>
                     </div>
                 </div>
-            </form>
+            </form> --}}
+            <x-language-switcher />
         </div>
     </div>
 </div>

@@ -192,48 +192,77 @@
 
             <div class="space-y-1">
                 {{-- Language Selector --}}
-                <div x-data="{ open: false }"
-                    class="relative flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all text-zinc-300 hover:text-white hover:bg-zinc-800/50">
-
-                    <button @click="open = !open" class="flex items-center gap-1 text-text-white hover:text-black">
+                {{-- Language Selector with Centered Popup --}}
+                <div x-data="{ open: false }">
+                    <!-- Trigger Button -->
+                    <button @click="open = !open"
+                        class="text-xs font-medium flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 bg-pink-300 dark:bg-zinc-950 w-full">
                         <x-phosphor-globe class="w-5 h-5" />
-                        <span>
+                        <span class="flex items-center justify-between gap-1 text-text-white w-full">
                             {{ strtoupper(session('locale', 'en')) == 'EN' ? 'En' : 'Fr' }} |
                             {{ session('currency', 'USD-$') }}
+                            <x-phosphor-caret-right class="w-4 h-4" />
                         </span>
-                        <x-phosphor-caret-down class="w-4 h-4" />
                     </button>
 
-                    <!-- Popup -->
-                    <div x-show="open" x-transition.opacity.duration.200ms
-                        class="absolute z-40 top-12 left-0 w-full mt-2 bg-zinc-950 rounded-lg shadow-lg p-3">
+                    <!-- Centered Popup Modal - Rendered at body level using Portal -->
+                    <template x-teleport="body">
+                        <div x-show="open" x-cloak @click.self="open = false" @keydown.escape.window="open = false"
+                            x-transition.opacity.duration.200ms
+                            style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999;"
+                            class="flex items-center justify-center bg-black/50 backdrop-blur-sm">
 
-                        <div class="flex justify-between items-center mb-2">
-                            <h2 class="text-white">Test</h2>
+                            <!-- Popup Content -->
+                            <div x-show="open" @click.away="open = false"
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 transform scale-95 translate-y-4"
+                                x-transition:enter-end="opacity-100 transform scale-100 translate-y-0"
+                                x-transition:leave="transition ease-in duration-200"
+                                x-transition:leave-start="opacity-100 transform scale-100 translate-y-0"
+                                x-transition:leave-end="opacity-0 transform scale-95 translate-y-4"
+                                class="relative w-11/12 max-w-md rounded-lg shadow-2xl p-4 dark:bg-zinc-950 bg-bg-primary m-4">
 
-                            <!-- ❌ Close Button -->
-                            <button @click="open = false" class="text-zinc-400 hover:text-white">
-                                <x-phosphor-x class="w-5 h-5" />
-                            </button>
+                                <div class="flex justify-between items-center mb-4">
+                                    <h2 class="text-sm font-semibold flex gap-2 items-center text-text-white">
+                                        <x-phosphor-globe class="w-6 h-6" /> Choose your language & currency
+                                    </h2>
+                                    <button @click="open = false"
+                                        class="hover:bg-zinc-800/50 rounded-lg p-1 transition-all">
+                                        <x-phosphor-x class="w-5 h-5 text-gray-500 hover:text-text-white" />
+                                    </button>
+                                </div>
+
+                                <x-language-switcher />
+                            </div>
                         </div>
-
-                        <p class="text-sm text-zinc-400">Popup content here…</p>
-                    </div>
-
+                    </template>
                 </div>
+
 
 
 
 
                 {{-- Theme Switcher --}}
 
-                <div
-                    class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all  text-zinc-300 hover:text-white hover:bg-zinc-800/50">
-                    <x-phosphor-globe class="w-5 h-5" />
-                    <span class="text-xs font-medium text-text-white">Dark Theme</span>
+                <div x-data="{ on: false }" class="flex items-center gap-3">
+
+                    <span class="flex items-center gap-2 text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 3c.132 0 .263.003.393.01a7.5 7.5 0 008.106 8.106A9 9 0 1112 3z" />
+                        </svg>
+                        Dark theme
+                    </span>
+
+                    <!-- Perfect Switch -->
+                    <button @click="on = !on" :class="on ? 'bg-purple-600' : 'bg-gray-400'"
+                        class="relative w-12 h-6 rounded-full transition-all duration-300 flex items-center">
+                        <span :class="on ? 'translate-x-6' : 'translate-x-1'"
+                            class="absolute w-4 h-4 bg-white rounded-full transition-all duration-300"></span>
+                    </button>
 
                 </div>
-
 
 
 

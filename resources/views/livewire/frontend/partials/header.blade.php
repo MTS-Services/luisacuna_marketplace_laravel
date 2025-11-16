@@ -25,22 +25,23 @@
             </div>
 
             @auth
-                <a href="{{ route('user.messages') }}" wire:navigate
+                <div class="flex items-center justify-center gap-1">
+                    <a href="{{ route('user.messages') }}" wire:navigate
                     class=" rounded-full bg-transparent  transition-colors">
                     <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-text-white" />
-                </a>
+                     </a>
+                    <button class="py-0.5 mt-1 rounded-full bg-transparent transition-colors"
+                        @click="notification = !notification">
+                        <div class="relative inline-flex">
+                            <x-phosphor-bell class="w-6 h-6 text-text-primary" />
 
-                <button class="py-0.5 mt-1 rounded-full bg-transparent transition-colors"
-                    @click="notification = !notification">
-                    <div class="relative inline-flex">
-                        <x-phosphor-bell class="w-6 h-6 text-text-primary" />
-
-                        <span
-                            class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 text-[10px] text-white">
-                            1
-                        </span>
-                    </div>
-                </button>
+                            <span
+                                class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 text-[10px] text-white">
+                                1
+                            </span>
+                        </div>
+                    </button>
+                </div>
 
             @endauth
 
