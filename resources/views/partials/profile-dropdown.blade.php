@@ -9,12 +9,9 @@
     </button>
 
     <!-- Dropdown Menu -->
-    <div x-show="open" x-cloak @click.away="open = false"
-        x-transition:enter="transition ease-out duration-200"
-        x-transition:enter-start="opacity-0 transform scale-95"
-        x-transition:enter-end="opacity-100 transform scale-100"
-        x-transition:leave="transition ease-in duration-150"
-        x-transition:leave-start="opacity-100 transform scale-100"
+    <div x-show="open" x-cloak @click.away="open = false" x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100"
+        x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-100"
         x-transition:leave-end="opacity-0 transform scale-95"
         class="absolute right-0 mt-2 w-56 sm:w-64 xl:w-90 2xl:w-96 bg-bg-primary rounded-xl shadow-2xl overflow-hidden z-50">
 
@@ -22,8 +19,7 @@
         <div class="px-2 py-5 flex items-center justify-between shadow-lg bg-bg-secondary">
             <div class="flex items-center gap-2">
                 <div class="w-10 h-10 lg:w-14 lg:h-14 rounded-full shadow-lg overflow-hidden">
-                    <img src="{{ storage_url(auth()->user()->avatar) }}"
-                        class="w-full h-full object-cover"
+                    <img src="{{ storage_url(auth()->user()->avatar) }}" class="w-full h-full object-cover"
                         alt="{{ auth()->user()->full_name ?? 'User Avatar' }}">
                 </div>
                 <div class="flex flex-col gap-1.5">
@@ -34,7 +30,8 @@
                 </div>
             </div>
             <div>
-                <x-ui.button href="{{ route('user.seller.verification') }}" wire:navigate class="m-auto! py-1! lg:py-2!">
+                <x-ui.button href="{{ route('user.seller.verification') }}" wire:navigate
+                    class="m-auto! py-1! lg:py-2!">
                     {{ __('Sell') }}
                 </x-ui.button>
             </div>
@@ -63,13 +60,11 @@
                 </button>
 
                 <div x-show="ordersOpen" x-collapse x-cloak class="mt-1 ml-6 sm:ml-8 space-y-1">
-                    <a href="{{ route('user.purchased-orders') }}" wire:navigate
-                        @click="$root.sidebarOpen = false"
+                    <a href="{{ route('user.purchased-orders') }}" wire:navigate @click="$root.sidebarOpen = false"
                         class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'purchased_orders' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('Purchased orders') }}
                     </a>
-                    <a href="{{ route('user.sold-orders') }}" wire:navigate
-                        @click="$root.sidebarOpen = false"
+                    <a href="{{ route('user.sold-orders') }}" wire:navigate @click="$root.sidebarOpen = false"
                         class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'sold_orders' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('Sold orders') }}
                     </a>
@@ -98,28 +93,23 @@
                 </button>
 
                 <div x-show="ordersOpen" x-collapse x-cloak class="mt-1 ml-6 sm:ml-8 space-y-1">
-                    <a href="{{ route('user.currency') }}" wire:navigate
-                        @click="$root.sidebarOpen = false"
+                    <a href="{{ route('user.currency') }}" wire:navigate @click="$root.sidebarOpen = false"
                         class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'currency' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('Currency') }}
                     </a>
-                    <a href="{{ route('user.accounts') }}" wire:navigate
-                        @click="$root.sidebarOpen = false"
+                    <a href="{{ route('user.accounts') }}" wire:navigate @click="$root.sidebarOpen = false"
                         class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'accounts' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('Accounts') }}
                     </a>
-                    <a href="{{ route('user.top-ups') }}" wire:navigate
-                        @click="$root.sidebarOpen = false"
+                    <a href="{{ route('user.top-ups') }}" wire:navigate @click="$root.sidebarOpen = false"
                         class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'top-ups' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('Top Ups') }}
                     </a>
-                    <a href="{{ route('user.items') }}" wire:navigate
-                        @click="$root.sidebarOpen = false"
+                    <a href="{{ route('user.items') }}" wire:navigate @click="$root.sidebarOpen = false"
                         class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'items' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('Items') }}
                     </a>
-                    <a href="{{ route('user.gift-cards') }}" wire:navigate
-                        @click="$root.sidebarOpen = false"
+                    <a href="{{ route('user.gift-cards') }}" wire:navigate @click="$root.sidebarOpen = false"
                         class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'gift-cards' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('Gift Cards') }}
                     </a>
@@ -149,13 +139,11 @@
                 </button>
 
                 <div x-show="boostingOpen" x-collapse x-cloak class="mt-1 ml-6 sm:ml-8 space-y-1">
-                    <a href="{{ route('user.my-requests') }}" wire:navigate
-                        @click="$root.sidebarOpen = false"
+                    <a href="{{ route('user.my-requests') }}" wire:navigate @click="$root.sidebarOpen = false"
                         class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'my-requests' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('My Requests') }}
                     </a>
-                    <a href="{{ route('user.received-requests') }}" wire:navigate
-                        @click="$root.sidebarOpen = false"
+                    <a href="{{ route('user.received-requests') }}" wire:navigate @click="$root.sidebarOpen = false"
                         class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'received-requests' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('Received Requests') }}
                     </a>
@@ -172,16 +160,14 @@
             <!-- Wallet Link -->
             <a href="{{ route('user.wallet') }}" wire:navigate @click="$root.sidebarOpen = false"
                 class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'wallet' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
-                <x-phosphor name="cardholder" variant="regular"
-                    class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
+                <x-phosphor name="cardholder" variant="regular" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
                 <span class="text-xs font-medium text-text-white">{{ __('Wallet') }}</span>
             </a>
 
             <!-- Messages Link -->
             <a href="{{ route('user.messages') }}" wire:navigate @click="$root.sidebarOpen = false"
                 class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'messages' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
-                <flux:icon name="chat-bubble-bottom-center-text"
-                    class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
+                <flux:icon name="chat-bubble-bottom-center-text" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
                 <span class="text-xs font-medium text-text-white">{{ __('Messages') }}</span>
             </a>
 
@@ -193,8 +179,7 @@
             </a>
 
             <!-- Settings Link -->
-            <a href="{{ route('user.account-settings') }}" wire:navigate
-                @click="$root.sidebarOpen = false"
+            <a href="{{ route('user.account-settings') }}" wire:navigate @click="$root.sidebarOpen = false"
                 class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'account-settings' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                 <x-phosphor name="gear" class="w-4 h-4 sm:w-5 sm:h-5 fill-text-text-white" />
                 <span class="text-xs font-medium text-text-white">{{ __('Account Settings') }}</span>
@@ -206,6 +191,18 @@
 
             <!-- Profile & Logout -->
             <div class="space-y-1">
+                <div
+                    class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all  text-zinc-300 hover:text-white hover:bg-zinc-800/50">
+                    <button @click="open = !open" class="flex items-center gap-1 text-text-white hover:text-black">
+                        <x-phosphor-globe class="w-5 h-5" />
+                        <span>
+                            {{ strtoupper(session('locale', 'en')) == 'EN' ? 'En' : 'Fr' }} |
+                            {{ session('currency', 'USD-$') }}
+                        </span>
+                        <x-phosphor-caret-down class="w-4 h-4" />
+                    </button>
+                </div>
+
                 <a href="{{ route('profile') }}" wire:navigate @click="open = false"
                     class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all {{ $pageSlug === 'profile' ? 'bg-zinc-800 text-white' : 'text-zinc-300 hover:text-white hover:bg-zinc-800/50' }}">
                     <flux:icon name="user" class="w-4 h-4" />
