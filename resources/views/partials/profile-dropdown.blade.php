@@ -189,11 +189,12 @@
                 <div class="border-t border-zinc-800"></div>
             </div>
 
-           
+
             <div class="space-y-1">
                 {{-- Language Selector --}}
-                <div
-                    class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all  text-zinc-300 hover:text-white hover:bg-zinc-800/50">
+                <div x-data="{ open: false }"
+                    class="relative flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all text-zinc-300 hover:text-white hover:bg-zinc-800/50">
+
                     <button @click="open = !open" class="flex items-center gap-1 text-text-white hover:text-black">
                         <x-phosphor-globe class="w-5 h-5" />
                         <span>
@@ -202,16 +203,35 @@
                         </span>
                         <x-phosphor-caret-down class="w-4 h-4" />
                     </button>
+
+                    <!-- Popup -->
+                    <div x-show="open" x-transition.opacity.duration.200ms
+                        class="absolute z-40 top-12 left-0 w-full mt-2 bg-zinc-950 rounded-lg shadow-lg p-3">
+
+                        <div class="flex justify-between items-center mb-2">
+                            <h2 class="text-white">Test</h2>
+
+                            <!-- ❌ Close Button -->
+                            <button @click="open = false" class="text-zinc-400 hover:text-white">
+                                <x-phosphor-x class="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <p class="text-sm text-zinc-400">Popup content here…</p>
+                    </div>
+
                 </div>
+
+
 
 
                 {{-- Theme Switcher --}}
 
                 <div
                     class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all  text-zinc-300 hover:text-white hover:bg-zinc-800/50">
-                     <x-phosphor-globe class="w-5 h-5" />
+                    <x-phosphor-globe class="w-5 h-5" />
                     <span class="text-xs font-medium text-text-white">Dark Theme</span>
-                   
+
                 </div>
 
 
@@ -219,7 +239,7 @@
 
                 {{-- Theme Switcher End --}}
 
-                 <!-- Profile & Logout -->
+                <!-- Profile & Logout -->
 
 
                 <a href="{{ route('profile') }}" wire:navigate @click="open = false"
