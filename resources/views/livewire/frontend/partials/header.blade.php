@@ -24,7 +24,7 @@
                 <x-language />
             </div>
 
-                 @auth
+            @auth
                 <a href="{{ route('user.messages') }}" wire:navigate
                     class=" rounded-full bg-transparent  transition-colors">
                     <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-text-white" />
@@ -43,7 +43,7 @@
                 </button>
 
             @endauth
-            
+
             <div class="flex items-center" x-data>
 
                 <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-full">

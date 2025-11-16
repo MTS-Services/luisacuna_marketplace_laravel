@@ -189,8 +189,9 @@
                 <div class="border-t border-zinc-800"></div>
             </div>
 
-            <!-- Profile & Logout -->
+           
             <div class="space-y-1">
+                {{-- Language Selector --}}
                 <div
                     class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all  text-zinc-300 hover:text-white hover:bg-zinc-800/50">
                     <button @click="open = !open" class="flex items-center gap-1 text-text-white hover:text-black">
@@ -202,6 +203,24 @@
                         <x-phosphor-caret-down class="w-4 h-4" />
                     </button>
                 </div>
+
+
+                {{-- Theme Switcher --}}
+
+                <div
+                    class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all  text-zinc-300 hover:text-white hover:bg-zinc-800/50">
+                     <x-phosphor-globe class="w-5 h-5" />
+                    <span class="text-xs font-medium text-text-white">Dark Theme</span>
+                   
+                </div>
+
+
+
+
+                {{-- Theme Switcher End --}}
+
+                 <!-- Profile & Logout -->
+
 
                 <a href="{{ route('profile') }}" wire:navigate @click="open = false"
                     class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all {{ $pageSlug === 'profile' ? 'bg-zinc-800 text-white' : 'text-zinc-300 hover:text-white hover:bg-zinc-800/50' }}">
