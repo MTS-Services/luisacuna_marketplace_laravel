@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\DeliveryMethodStatus;
 use App\Models\DeliveryMethod;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -15,21 +16,15 @@ class DeliveryMethodFactory extends Factory
 
     public function definition(): array
     {
-        $name = $this->faker->unique()->randomElement([
-            'Door Delivery',
-            'Express Delivery',
-            'Pickup Point',
-            'Courier Service',
-            'Same Day Delivery'
-        ]);
+        $name = $this->faker->words(2, true);
 
         return [
             'name' => $name,
             'slug' => Str::slug($name),
-            'image' => $this->faker->imageUrl(400, 400, 'delivery'),
-            'status' => 'active', // or DeliveryMethodStatus::ACTIVE if enum
+            'image' => 'https://placehold.co/400x400',
+            'status' => DeliveryMethodStatus::ACTIVE->value,
 
-            'created_by' => 1,    // replace with actual admin ID
+            'created_by' => 1,
         ];
     }
 }

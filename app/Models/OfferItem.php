@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
+use Illuminate\Database\Eloquent\Builder;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class OfferItem extends BaseModel implements Auditable
@@ -52,7 +53,22 @@ class OfferItem extends BaseModel implements Auditable
     {
         parent::__construct($attributes);
         $this->appends = array_merge(parent::getAppends(), [
-            //
+            'delivery_time_formatted',
         ]);
+    }
+    public function getDeliveryTimeFormattedAttribute($value)
+    {
+         return dateTimeFormat($this->attributes['delivery_time']);
+    }
+
+
+    public function scopeFilter(Builder $query, array $filters): Builder
+    {
+        return $query
+            ->when(
+                $filters['sluge'] ?? null,
+                fn($q, $sluge) =>
+                $q->where('sluge', 'like', "%{$sluge}%")
+            );
     }
 }

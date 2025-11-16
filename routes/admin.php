@@ -13,6 +13,7 @@ use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\GameManagement\GamePlatformController;
 use App\Http\Controllers\Backend\Admin\GameManagement\GameServerController;
+use App\Http\Controllers\Backend\Admin\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductTypeController;
 use App\Http\Controllers\Backend\Admin\ReviewManagement\PageViewController;
@@ -173,6 +174,12 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/edit/{id}', 'edit')->name('edit');
             Route::get('/view/{id}', 'view')->name('view');
             Route::get('/trash', 'trash')->name('trash');
+        });
+    });
+
+    Route::group(['offer-management', 'as' => 'om.'], function () {
+        Route::controller(OfferController::class)->name('offer.')->prefix('offer')->group(function () {
+            Route::get('/', 'index')->name('index');
         });
     });
 });

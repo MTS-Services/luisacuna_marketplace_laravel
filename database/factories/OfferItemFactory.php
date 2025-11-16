@@ -13,14 +13,14 @@ class OfferItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'sort_order' => $this->faker->numberBetween(0, 10),
+            'sort_order' => $this->faker->numberBetween(1, 10),
 
             'title' => $this->faker->sentence(4),
             'description' => $this->faker->paragraph(),
-            'image' => $this->faker->imageUrl(500, 500, 'product'),
+            'image' => 'https://placehold.co/400x400',
 
             'delivery_time' => $this->faker->dateTimeBetween('+1 day', '+7 days'),
-            'delivery_method_id' => DeliveryMethod::factory(), // auto creates delivery method
+            'delivery_method_id' => DeliveryMethod::factory(),
 
             'quantity' => $this->faker->numberBetween(1, 10),
             'terms_condition' => $this->faker->boolean(),
