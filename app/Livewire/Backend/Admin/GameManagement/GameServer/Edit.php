@@ -4,17 +4,18 @@ namespace App\Livewire\Backend\Admin\GameManagement\GameServer;
 
 use App\Enums\GameServerStatus;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameServerForm;
+use App\Models\GameServer;
 use App\Services\GameServerService;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Component;
-use Livewire\Features\SupportFileUploads\WithFileUploads;
+use Livewire\WithFileUploads;
 
-class Create extends Component
+class Edit extends Component
 {
-   use WithNotification, WithFileUploads;
+ use WithNotification, WithFileUploads;
 
     public GameServerForm $form;
-
+    public GameServer $data;
     protected GameServerService $service;
 
     /**
@@ -28,9 +29,10 @@ class Create extends Component
     /**
      * Initialize default form values.
      */
-    public function mount(): void
+    public function mount(GameServer $data): void
     {
-         $this->form->status = GameServerStatus::ACTIVE->value;
+        $this->form->setData($data);
+        $this->data = $data;
     }
 
     /**
@@ -38,7 +40,7 @@ class Create extends Component
      */
     public function render()
     {
-        return view('livewire.backend.admin.game-management.game-server.create', [
+        return view('livewire.backend.admin.game-management.game-server.edit', [
             'statuses' => GameServerStatus::options(),
         ]);
     }
@@ -49,24 +51,25 @@ class Create extends Component
     public function save()
     {
         $data = $this->form->validate();
+       
         try {
-            $data['created_by'] = admin()->id;
+            $data['updated_by'] = admin()->id;
+            $this->service->updateData($this->data->id, $data);
 
-            $this->service->createData($data);
-
-            $this->success('Data created successfully.');
+            $this->success('Data updated successfully.');
             return $this->redirect(route('admin.gm.server.index'), navigate: true);
         } catch (\Exception $e) {
-
-            $this->error('Failed to create data: ' . $e->getMessage());
+            $this->error('Failed to update data: ' . $e->getMessage());
         }
     }
 
     /**
      * Cancel creation and redirect back to index.
      */
-    public function resetForm(): void
+    public function cancel(): void
     {
         $this->form->reset();
+
+        $this->redirect(route('admin.gm.server.index'), navigate: true);
     }
 }

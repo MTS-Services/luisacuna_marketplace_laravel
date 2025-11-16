@@ -6,15 +6,10 @@
                 {{ __('Currency List') }}
             </h2>
             <div class="flex items-center gap-2 w-full sm:w-auto">
-                <x-ui.button href="{{ route('admin.gm.server.trash') }}" variant='tertiary' class="w-auto py-2!">
-                    <flux:icon name="trash"
+                <x-ui.button href="{{ route('admin.gm.server.index') }}" variant='tertiary' class="w-auto py-2!">
+                    <flux:icon name="arrow-left"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
-                    {{ __('Trash') }}
-                </x-ui.button>
-                <x-ui.button href="{{ route('admin.gm.server.create') }}" class="w-auto py-2!">
-                    <flux:icon name="plus"
-                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                    {{ __('Add') }}
+                    {{ __('Back') }}
                 </x-ui.button>
             </div>
         </div>
@@ -26,7 +21,7 @@
         :showBulkActions="true" emptyMessage="No data found. Create your first data to get started." />
 
     {{-- Delete Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this data?'" :message="'Are you absolutely sure you want to remove this data? All associated data will be moved to trash.'" :method="'delete'"
+    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this data?'" :message="'Are you absolutely sure you want to remove this data? All associated data will be moved to trash.'" :method="'forceDelete'"
         :button-text="'Delete Data'" />
 
     {{-- Bulk Action Confirmation Modal --}}
