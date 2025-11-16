@@ -247,18 +247,15 @@
                 <div x-data="{ on: false }" class="text-xs font-medium flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 bg-pink-300 dark:bg-zinc-950 w-full justify-between">
 
                     <span class="flex items-center gap-2 text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 3c.132 0 .263.003.393.01a7.5 7.5 0 008.106 8.106A9 9 0 1112 3z" />
-                        </svg>
+                       
+                       <flux:icon name="moon" class="w-5 h-5 stroke-current" />
                         Dark theme
                     </span>
 
                     <!-- Perfect Switch -->
                     <button @click="on = !on" :class="on ? 'bg-bg-primary' : 'bg-white'"
                         class="relative w-12 h-6 rounded-full transition-all duration-300 flex items-center">
-                        <span :class="on ? 'translate-x-6' : 'translate-x-1'"
+                        <span :class="on ? 'translate-x-7' : 'translate-x-1'"
                             class="absolute w-4 h-4 bg-zinc-500 rounded-full transition-all duration-300"></span>
                     </button>
 
