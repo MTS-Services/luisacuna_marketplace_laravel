@@ -38,7 +38,9 @@ use App\Repositories\Contracts\ProductTypeRepositoryInterface;
 use App\Repositories\Contracts\GamePlatformRepositoryInterface;
 
 use App\Repositories\Contracts\GameServerRepositoryInterface;
+use App\Repositories\Contracts\OfferItemRepositoryInterface;
 use App\Repositories\Eloquent\GameServerRepository;
+use App\Repositories\Eloquent\OfferItemRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -124,6 +126,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             AchievementRepositoryInterface::class,
             AchievementRepository::class
+        );
+        $this->app->bind(
+            OfferItemRepositoryInterface::class,
+            OfferItemRepository::class
         );
     }
 

@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Admin;
-
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -48,6 +46,8 @@ class DatabaseSeeder extends Seeder
             UserRankSeeder::class,
             AchievementSeeder::class,
             GameServerSeeder::class,
+            DeliveryMethodSeeder::class,
+            OfferItemSeeder::class,
         ]);
 
         // Admin::create([
