@@ -22,6 +22,7 @@ class AdminSeeder extends Seeder
             'phone' => '0000000000',
             'phone_verified_at' => Carbon::now(),
             'password' => Hash::make('superadmin@dev.com'),
+            'role_id' => 1,
         ]);
         $superadmin->assignRole('Super Admin');
         $admin = Admin::create([
@@ -31,6 +32,7 @@ class AdminSeeder extends Seeder
             'phone' => '0000000000',
             'phone_verified_at' => Carbon::now(),
             'password' => Hash::make('admin@dev.com'),
+            'role_id' => 2,
         ]);
         $admin->assignRole('Admin');
     }
