@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use App\Livewire\Forms\Backend\Admin\UserManagement\UserForm;
+use App\Services\CurrencyService;
 use App\Services\LanguageService;
 
 class Edit extends Component
@@ -25,24 +26,26 @@ class Edit extends Component
     public UserForm $form;
     public User $user;
     public $userId;
-    public $existingAvatar;
+    public $existingFile;
 
 
 
     protected UserService $service;
 
+    protected CurrencyService $currencyService;
     protected LanguageService $languageService;
-    public function boot(UserService $service, LanguageService $languageService)
+    public function boot(UserService $service, LanguageService $languageService, CurrencyService $currencyService)
     {
         $this->service = $service;
-        $this->languageService = $languageService;
+        $this->languageService = $languageService;  
+        $this->currencyService = $currencyService;
     }
     public function mount(User $user): void
     {
         $this->user = $user;
         $this->userId = $user->id;
         $this->form->setData($user);
-        $this->existingAvatar = $user->avatar_url;
+        $this->existingFile = $this->user->avatar;
         // $this->form->date_of_birth->format('Y-m-d');
 
         $this->languases();
@@ -81,6 +84,7 @@ class Edit extends Component
             'statuses' => UserAccountStatus::options(),
             'countries' => $this->countries,
             'languages' => $this->languases,
+             'currencies' => $this->currencyService->getAllDatas(),
         ]);
     }
 
@@ -144,5 +148,14 @@ class Edit extends Component
     public function cancel(): void
     {
         $this->redirect(route('admin.um.user.index'), navigate: true);
+    }
+
+    public function resetForm(){
+        $this->form->reset();
+        $this->form->setData($this->data);
+
+        // Reset existing files display
+        $this->existingFile = $this->data->avatar;
+        $this->dispatch('file-input-reset');
     }
 }

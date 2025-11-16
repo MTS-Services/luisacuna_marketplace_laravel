@@ -21,7 +21,7 @@ class View extends Component
     {
 
         return view('livewire.backend.admin.user-management.user.view', [
-            'user' => $this->user
+            'data' => $this->user
         ]);
     }
 }
