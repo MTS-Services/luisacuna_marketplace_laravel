@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class OfferItem extends BaseModel implements Auditable
@@ -40,9 +42,14 @@ class OfferItem extends BaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    public function deliveryMethod()
+    public function deliveryMethod():BelongsTo
     {
         return $this->belongsTo(DeliveryMethod::class, 'delivery_method_id');
+    }
+
+    public function offerItemDiscounts():HasMany
+    {
+        return $this->hasMany(OfferItemDiscount::class, 'offer_item_id');
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
