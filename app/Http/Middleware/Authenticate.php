@@ -25,7 +25,6 @@ class Authenticate
             // Default to user login
             return redirect()->route('login');
         }
-
         return $next($request);
     }
 }

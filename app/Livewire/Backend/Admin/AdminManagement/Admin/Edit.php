@@ -18,14 +18,14 @@ class Edit extends Component
 
     public AdminForm $form;
     public Admin $data;
-    public $existingAvatar;
-    public $dataId;
+    public $existingFile;
+    public $existingFiles;
 
     protected AdminService $service;
-        protected RoleService $roleService;
+    protected RoleService $roleService;
 
 
-     public function boot(AdminService $service, RoleService $roleService)
+    public function boot(AdminService $service, RoleService $roleService)
     {
         $this->service = $service;
         $this->roleService = $roleService;
@@ -33,11 +33,10 @@ class Edit extends Component
 
     public function mount(Admin $data): void
     {
-
         $this->data = $data;
-        $this->dataId = $data->id;
         $this->form->setData($data);
-        $this->existingAvatar = $data->avatar_url;
+        $this->existingFile = $data->avatar;
+        $this->existingFiles = $data->images->pluck('image')->toArray();
     }
 
     public function render()
@@ -52,16 +51,14 @@ class Edit extends Component
     public function save()
     {
         $data =  $this->form->validate();
-
         try {
-
             $data['updated_by'] = admin()->id;
 
-            $this->data = $this->service->updateData($this->dataId, $data);
+            $this->data = $this->service->updateData($this->data->id, $data);
             Log::info('Data updated successfully', ['data_id' => $this->data->id]);
 
             $this->success('Data updated successfully');
-            
+
             return $this->redirect(route('admin.am.admin.index'), navigate: true);
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validation failed', [
@@ -77,16 +74,14 @@ class Edit extends Component
         }
     }
 
-    public function removeAvatar(): void
+    public function resetForm(): void
     {
-        $this->form->remove_avatar = true;
-        $this->existingAvatar = null;
-        $this->form->avatar = null;
-    }
-
-      public function resetForm(): void
-    {
+        $this->form->reset();
         $this->form->setData($this->data);
-        $this->form->resetValidation();
+
+        // Reset existing files display
+        $this->existingFile = $this->data->avatar;
+        $this->existingFiles = $this->data->images->pluck('image')->toArray();
+        $this->dispatch('file-input-reset');
     }
 }

@@ -20,9 +20,13 @@ class AdminForm extends Form
     public ?string $password_confirmation = '';
     public ?string $phone = '';
     public ?string $address = '';
-    public string $status = '';
+    public string $status = AdminStatus::ACTIVE->value;
     public ?UploadedFile $avatar = null;
-    public bool $remove_avatar = false;
+    public $avatars = null;
+
+    // Track removed files
+    public bool $remove_file = false;
+    public array $removed_files = [];
 
 
     public function rules(): array
@@ -37,6 +41,13 @@ class AdminForm extends Form
             'address' => 'nullable|string',
             'status' => 'required|string|in:' . implode(',', array_column(AdminStatus::cases(), 'value')),
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'avatars' => 'nullable|array',
+            'avatars.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+
+            // Track removed files
+            'remove_file' => 'nullable|boolean',
+            'removed_files' => 'nullable|array',
+            'removed_files.*' => 'nullable|string',
         ];
 
         return $rules;
@@ -51,8 +62,6 @@ class AdminForm extends Form
         $this->phone = $data->phone;
         $this->address = $data->address;
         $this->status = $data->status->value;
-        // $this->avatar = $data->avatar;
-
     }
 
     public function reset(...$properties): void
@@ -67,8 +76,8 @@ class AdminForm extends Form
         $this->address = '';
         $this->status = AdminStatus::ACTIVE->value;
         $this->avatar = null;
-        $this->remove_avatar = false;
-
+        $this->remove_file = false;
+        $this->removed_files = [];
         $this->resetValidation();
     }
 
