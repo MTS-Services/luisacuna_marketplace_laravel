@@ -34,5 +34,22 @@ class FrontendController extends Controller
             return view($this->masterView);
         }
 
+        public function contactUs()
+        {
+
+            return view($this->masterView);
+        }
+
+
+        public function termsAndConditions()
+        {
+            return view($this->masterView);
+        }
+
+        public function refunPolicy()
+        {
+            return view($this->masterView);
+        }
+
 }
 
