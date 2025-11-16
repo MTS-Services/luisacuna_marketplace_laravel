@@ -20,7 +20,9 @@
         "livewire/flux": "^2.1.1",
         "livewire/volt": "^1.7.0",
         "owen-it/laravel-auditing": "^14.0",
+        "shakurov/coinbase": "^0.8.0",
         "spatie/laravel-permission": "^6.23",
+        "stripe/stripe-php": "^18.2",
         "tinymce/tinymce": "^8.2"
     },
     "require-dev": {

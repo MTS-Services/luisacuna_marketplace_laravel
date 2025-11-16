@@ -79,39 +79,39 @@ class BaseModel extends Model
 
     public function getCreatedAtHumanAttribute(): string
     {
-        return dateTimeHumanFormat($this->attributes['created_at']);
+        return $this->created_at ? dateTimeHumanFormat($this->attributes['created_at']) : "N/A";
     }
 
     public function getUpdatedAtHumanAttribute(): string
     {
-        return dateTimeHumanFormat($this->attributes['updated_at'], $this->attributes['created_at']);
+        return $this->updated_at ? dateTimeHumanFormat($this->attributes['updated_at'], $this->attributes['created_at']) : "N/A";
     }
 
     public function getDeletedAtHumanAttribute(): ?string
     {
-        return dateTimeHumanFormat($this->attributes['deleted_at']);
+        return $this->deleted_at ? dateTimeHumanFormat($this->attributes['deleted_at']) : "N/A";
     }
     public function getRestoredAtHumanAttribute(): ?string
     {
-        return dateTimeHumanFormat($this->attributes['restored_at']);
+        return $this->restored_at ? dateTimeHumanFormat($this->attributes['restored_at']) : "N/A";
     }
 
     public function getCreatedAtFormattedAttribute(): string
     {
-        return dateTimeFormat($this->attributes['created_at']);
+        return $this->created_at ? dateTimeFormat($this->attributes['created_at']) : "N/A";
     }
 
     public function getUpdatedAtFormattedAttribute(): string
     {
-        return dateTimeFormat($this->attributes['updated_at'], $this->attributes['created_at']);
+        return $this->updated_at ? dateTimeFormat($this->attributes['updated_at'], $this->attributes['created_at']) : "N/A";
     }
 
     public function getDeletedAtFormattedAttribute(): string
     {
-        return dateTimeFormat($this->attributes['deleted_at']);
+        return $this->deleted_at ? dateTimeFormat($this->attributes['deleted_at']) : "N/A";
     }
     public function getRestoredAtFormattedAttribute(): string
     {
-        return dateTimeFormat($this->attributes['restored_at']);
+        return $this->restored_at ? dateTimeFormat($this->attributes['restored_at']) : "N/A";
     }
 }
