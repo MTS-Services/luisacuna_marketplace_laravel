@@ -178,7 +178,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
     });
 
     Route::group(['offer-management', 'as' => 'om.'], function () {
-        Route::controller(OfferController::class)->name('offer.')->prefix('offer')->group(function () {
+        Route::controller(OfferController::class)->name('offer.')->prefix('offer-management')->group(function () {
             Route::get('/', 'index')->name('index');
         });
     });
