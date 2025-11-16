@@ -244,7 +244,7 @@
 
                 {{-- Theme Switcher --}}
 
-                <div x-data="{ on: false }" class="flex items-center gap-3">
+                <div x-data="{ on: false }" class="text-xs font-medium flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 bg-pink-300 dark:bg-zinc-950 w-full justify-between">
 
                     <span class="flex items-center gap-2 text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
@@ -256,10 +256,10 @@
                     </span>
 
                     <!-- Perfect Switch -->
-                    <button @click="on = !on" :class="on ? 'bg-purple-600' : 'bg-gray-400'"
+                    <button @click="on = !on" :class="on ? 'bg-bg-primary' : 'bg-white'"
                         class="relative w-12 h-6 rounded-full transition-all duration-300 flex items-center">
                         <span :class="on ? 'translate-x-6' : 'translate-x-1'"
-                            class="absolute w-4 h-4 bg-white rounded-full transition-all duration-300"></span>
+                            class="absolute w-4 h-4 bg-zinc-500 rounded-full transition-all duration-300"></span>
                     </button>
 
                 </div>
