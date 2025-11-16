@@ -19,7 +19,6 @@ class AdminForm extends Form
     public string $password = '';
     public ?string $password_confirmation = '';
     public ?string $phone = '';
-    public ?string $address = '';
     public string $status = AdminStatus::ACTIVE->value;
     public ?UploadedFile $avatar = null;
     public $avatars = null;
@@ -38,7 +37,6 @@ class AdminForm extends Form
             'password' => $this->isUpdating() ? 'nullable|string|min:8' : 'required|string|min:8',
             'password_confirmation' => 'nullable|string|min:8|same:password',
             'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
             'status' => 'required|string|in:' . implode(',', array_column(AdminStatus::cases(), 'value')),
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'avatars' => 'nullable|array',
@@ -60,7 +58,6 @@ class AdminForm extends Form
         $this->name = $data->name;
         $this->email = $data->email;
         $this->phone = $data->phone;
-        $this->address = $data->address;
         $this->status = $data->status->value;
     }
 
@@ -73,7 +70,6 @@ class AdminForm extends Form
         $this->password = '';
         $this->password_confirmation = '';
         $this->phone = '';
-        $this->address = '';
         $this->status = AdminStatus::ACTIVE->value;
         $this->avatar = null;
         $this->remove_file = false;
