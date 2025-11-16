@@ -15,17 +15,17 @@
     </div>
     <div class="glass-card rounded-2xl p-6 mb-6">
         <form wire:submit="save">
-            <div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                    {{ __('Profile Picture') }}
-                </h3>
-
-                <x-ui.file-input wire:model="form.avatar" label="Avatar" accept="image/*" :error="$errors->first('form.avatar')"
-                    hint="Upload a profile picture (Max: 2MB, Formats: JPG, PNG, GIF, WebP)" />
-            </div>
-
             <!-- Add other form fields here -->
-            <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
+            <div class="space-y-4 grid grid-cols-2 gap-5">
+                <div class="w-full col-span-2">
+                    <x-ui.file-input wire:model="form.avatar" label="Profile Picture" accept="image/*" :error="$errors->first('form.avatar')"
+                        hint="Upload a profile picture (Max: 2MB)" :existingFiles="$existingFile" removeModel="form.remove_file" />
+                </div>
+                <div class="w-full col-span-2">
+                    <x-ui.file-input wire:model="form.avatars" label="Profile Pictures" accept="image/*"
+                        :error="$errors->first('form.avatars')" hint="Upload profile pictures (Max: 2MB each)" multiple :existingFiles="$existingFiles"
+                        removeModel="form.removed_files" />
+                </div>
                 <div class="w-full">
                     <x-ui.label value="Role Select" class="mb-1" />
                     <x-ui.select wire:model="form.role_id">
@@ -73,7 +73,7 @@
                     <x-ui.input-error :messages="$errors->get('form.password_confirmation')" />
                 </div>
             </div>
-              <!-- Form Actions -->
+            <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
                 <x-ui.button wire:click="resetForm" variant="tertiary" class="w-auto! py-2!">
                     <flux:icon name="x-circle"

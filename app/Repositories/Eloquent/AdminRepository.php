@@ -3,19 +3,20 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Admin;
+use App\Models\TestMultiImage;
 use App\Repositories\Contracts\AdminRepositoryInterface;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Arr;
 
 class AdminRepository implements AdminRepositoryInterface
 {
     public function __construct(
         protected Admin $model
-    ) {
-    }
+    ) {}
 
 
 
@@ -46,7 +47,6 @@ class AdminRepository implements AdminRepositoryInterface
         $model = $this->model->onlyTrashed();
 
         return $model->where($column_name, $column_value)->first();
-
     }
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
@@ -120,33 +120,78 @@ class AdminRepository implements AdminRepositoryInterface
 
     public function create(array $data): Admin
     {
-        $created =  $this->model->create($data);
-
-        if(isset($data['role_id'])){
-
-           $this->model->assignRole($created->role->name);
-
-        }
-        return $created ;
+        return DB::transaction(function () use ($data) {
+            $created =  $this->model->create($data);
+            if (!empty($data['avatars'])) {
+                foreach ($data['avatars'] as $avatar) {
+                    TestMultiImage::create([
+                        'admin_id' => $created->id,
+                        'image' => $avatar
+                    ]);
+                }
+            }
+            if (isset($data['role_id'])) {
+                $this->model->assignRole($created->role->name);
+            }
+            return $created;
+        });
     }
 
     public function update(int $id, array $data): bool
     {
-        $findData = $this->find($id);
+        return DB::transaction(function () use ($id, $data) {
+            $findData = $this->find($id);
+            if (!$findData) {
+                return false;
+            }
 
-        if (!$findData) {
-            return false;
-        }
+            // --- Database Logic for Pivot Table (Multiple Images) ---
 
-         $updated = $findData->update($data);
+            // 1. Extract and unset multiple image specific keys
+            $newAvatarPaths = Arr::get($data, 'avatars', []);
+            $removedFiles = Arr::get($data, 'removed_files', []);
 
-         if($updated && isset($data['role_id'])){
+            // unset($data['avatars']);
+            // unset($data['removed_files']);
+            // unset($data['role_id']); // Remove role_id if not a direct Admin attribute
 
-            $this->model->syncRoles($this->model->find($id)->role->name);
+            // 2. Update the primary Admin record
+            $updated = $findData->update($data);
 
-         }
+            if (!$updated) {
+                // Throwing an exception here will roll back the transaction
+                throw new \Exception("Admin record update failed.");
+            }
 
-         return $updated;
+            // 3. Handle deletion of pivot records
+            if (!empty($removedFiles)) {
+                // The Action deleted the files from disk; we delete the DB records
+                TestMultiImage::where('admin_id', $findData->id)
+                    ->whereIn('image', $removedFiles)
+                    ->forceDelete();
+            }
+
+            // 4. Handle creation of new pivot records
+            if (!empty($newAvatarPaths)) {
+                $multiImageInserts = array_map(function ($path) use ($findData) {
+                    return [
+                        'admin_id' => $findData->id,
+                        'image' => $path,
+                        'created_at' => now(), // Add timestamps if required
+                        'updated_at' => now(),
+                    ];
+                }, $newAvatarPaths);
+
+                // Use insert for efficiency
+                TestMultiImage::insert($multiImageInserts);
+            }
+
+            // 5. Role synchronization (based on your original code)
+            if (isset($data['role_id'])) {
+                $findData->syncRoles(Arr::get($data, 'role_id'));
+            }
+            return $updated;
+        });
     }
 
 
@@ -178,7 +223,7 @@ class AdminRepository implements AdminRepositoryInterface
         if (!$findData) {
             return false;
         }
-        $findData->update(['restored_by' => $actionerId,'restored_at' => now()]);
+        $findData->update(['restored_by' => $actionerId, 'restored_at' => now()]);
         return $findData->restore();
     }
 
@@ -205,7 +250,6 @@ class AdminRepository implements AdminRepositoryInterface
             $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restored_by' => $actionerId, 'restored_at' => now()]);
             return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
         });
-
     }
     public function bulkForceDelete(array $ids): int //
     {
@@ -237,7 +281,4 @@ class AdminRepository implements AdminRepositoryInterface
     {
         return $this->model->suspended()->orderBy($sortField, $order)->get();
     }
-
-
-
 }

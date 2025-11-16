@@ -13,28 +13,18 @@
     </div>
     <div class="glass-card rounded-2xl p-6 mb-6">
         <form wire:submit="save">
-            <div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                    {{ __('Profile Picture') }}
-                </h3>
-                <x-ui.file-input wire:model="form.avatar" label="Avatar" accept="image/*" :error="$errors->first('form.avatar')"
-                    hint="Upload a profile picture (Max: 2MB)" />
-            </div>
-
             <!-- Add other form fields here -->
-            <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
-
-                {{-- Admin role  --}}
-                <div class="w-full">
-                    <x-ui.label value="Assign Role" class="mb-1" />
-                    <x-ui.select wire:model="form.role_id">
-                        @foreach ($roles as $role)
-                            <option value="{{ $role->id }}">{{ $role['name'] }}</option>
-                        @endforeach
-                    </x-ui.select>
-                    <x-ui.input-error :messages="$errors->get('form.role_id')" />
-                </div> 
-                <div class="w-full">
+            <div class="space-y-4 grid grid-cols-2 gap-5">
+                <div class="w-full col-span-2">
+                    <x-ui.file-input wire:model="form.avatar" label="Profile Picture" accept="image/*" :error="$errors->first('form.avatar')"
+                        hint="Upload a profile picture (Max: 2MB)" />
+                        
+                </div>
+                <div class="w-full col-span-2">
+                    <x-ui.file-input wire:model="form.avatars" label="Profile Pictures" accept="image/*" :error="$errors->first('form.avatars')"
+                        hint="Upload a profile picture (Max: 2MB)" multiple />
+                </div>
+                <div class="w-full col-span-2">
                     <x-ui.label value="Name" class="mb-1" />
                     <x-ui.input type="text" placeholder="Name" wire:model="form.name" />
                     <x-ui.input-error :messages="$errors->get('form.name')" />
@@ -48,6 +38,16 @@
                     <x-ui.label value="Phone" class="mb-1" />
                     <x-ui.input type="tel" placeholder="Phone Input" wire:model="form.phone" />
                     <x-ui.input-error :messages="$errors->get('form.phone')" />
+                </div>
+                <div class="w-full">
+                    <x-ui.label value="Assign Role" class="mb-1" />
+                    <x-ui.select wire:model="form.role_id">
+                        <option value="">{{ __('Select Role') }}</option>
+                        @foreach ($roles as $role)
+                            <option value="{{ $role->id }}">{{ $role['name'] }}</option>
+                        @endforeach
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.role_id')" />
                 </div>
                 <div class="w-full">
                     <x-ui.label value="Status Select" class="mb-1" />

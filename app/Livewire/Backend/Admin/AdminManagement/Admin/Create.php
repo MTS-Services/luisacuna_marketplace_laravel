@@ -21,15 +21,10 @@ class Create extends Component
     protected AdminService $service;
     protected RoleService $roleService;
 
-    public function boot(AdminService $service, RoleService $roleService)   
+    public function boot(AdminService $service, RoleService $roleService)
     {
         $this->service = $service;
         $this->roleService = $roleService;
-    }
-
-    public function mount(): void
-    {
-        $this->form->status = AdminStatus::ACTIVE->value;
     }
 
     public function render()
@@ -42,29 +37,23 @@ class Create extends Component
     }
     public function save()
     {
-
         $data =  $this->form->validate();
         try {
-            
             $data['created_by'] = admin()->id;
             $this->service->createData($data);
 
             $this->success('Data created successfully');
             return $this->redirect(route('admin.am.admin.index'), navigate: true);
-
         } catch (\Exception $e) {
 
             Log::error('Failed to create data: ' . $e->getMessage());
-            $this->error('Failed to create data: ');
+            $this->error('Failed to create data.');
         }
     }
 
     public function resetForm(): void
     {
         $this->form->reset();
-    }
-    public function cancel(): void
-    {
-        $this->redirect(route('admin.am.admin.index'), navigate: true);
+        $this->dispatch('file-input-reset');
     }
 }

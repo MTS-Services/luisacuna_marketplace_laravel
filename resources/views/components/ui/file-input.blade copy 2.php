@@ -54,7 +54,7 @@
                 }
             }
         },
-    
+
         getFullUrl(path) {
             if (!path) return '';
             if (path.startsWith('http://') || path.startsWith('https://')) {
@@ -62,36 +62,36 @@
             }
             return `/storage/${path}`;
         },
-    
+
         getFileNameFromPath(path) {
             if (!path) return 'Unknown';
             return path.split('/').pop();
         },
-    
+
         getTypeFromPath(path) {
             if (!path) return 'application/octet-stream';
             const ext = path.split('.').pop().toLowerCase();
-            const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico', 'tiff', 'tif', 'avif', 'heif', 'heic'];
-            const videoExts = ['mp4', 'webm', 'ogg', 'mov', 'avi', 'flv', 'wmv', 'mkv', 'm4v', '3gp'];
-            const audioExts = ['mp3', 'wav', 'ogg', 'aac', 'm4a', 'flac', 'oga', 'mid', 'midi'];
-    
+            const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'];
+            const videoExts = ['mp4', 'webm', 'ogg', 'mov', 'avi'];
+            const audioExts = ['mp3', 'wav', 'ogg', 'aac'];
+            
             if (imageExts.includes(ext)) return 'image/' + ext;
             if (videoExts.includes(ext)) return 'video/' + ext;
             if (audioExts.includes(ext)) return 'audio/' + ext;
             if (ext === 'pdf') return 'application/pdf';
             return 'application/octet-stream';
         },
-    
+
         syncRemovedFiles() {
             @if($removeModel)
-            {{-- this.$wire.set('{{ $removeModel }}', this.removedFiles); --}}
-            @if($multiple)
-            // For multiple files, send array
-            this.$wire.set('{{ $removeModel }}', this.removedFiles);
-            @else
-            // For single file, send boolean
-            this.$wire.set('{{ $removeModel }}', this.removedFiles.length > 0);
-            @endif
+                {{-- this.$wire.set('{{ $removeModel }}', this.removedFiles); --}}
+                @if($multiple)
+                    // For multiple files, send array
+                    this.$wire.set('{{ $removeModel }}', this.removedFiles);
+                @else
+                    // For single file, send boolean
+                    this.$wire.set('{{ $removeModel }}', this.removedFiles.length > 0);
+                @endif
             @endif
         },
     
@@ -178,7 +178,7 @@
                 this.$wire.set('{{ $attributes->wire('model')->value() }}', null);
             }
         },
-    
+
         removeExistingFile(index) {
             const removedFile = this.existingPreviews[index];
             this.removedFiles.push(removedFile.path);
@@ -199,7 +199,7 @@
                     this.removedFiles = [this.preview.path];
                 }
             }
-    
+            
             this.preview = null;
             this.previews.forEach(f => {
                 if (f.url && !f.isExisting) {
@@ -212,7 +212,7 @@
             this.$wire.set('{{ $attributes->wire('model')->value() }}', null);
             this.syncRemovedFiles();
         },
-    
+
         clearAllExisting() {
             this.existingPreviews.forEach(f => {
                 if (f.path && !this.removedFiles.includes(f.path)) {
@@ -236,12 +236,13 @@
             if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
             return (bytes / 1048576).toFixed(1) + ' MB';
         }
-    }" @file-input-reset.window="init()">
+    }">
+
+    
 
         <div @dragover.prevent="isDragging = true" @dragleave.prevent="isDragging = false"
             @drop.prevent="handleDrop($event)"
-            :class="isDragging || preview || previews.length > 0 || existingPreviews.length > 0 ?
-                'border-zinc-600! bg-zinc-50 dark:bg-zinc-900/20' : 'border-gray-300 dark:border-gray-600'"
+            :class="isDragging || preview || previews.length > 0 || existingPreviews.length > 0 ? 'border-zinc-600! bg-zinc-50 dark:bg-zinc-900/20' : 'border-gray-300 dark:border-gray-600'"
             class="border-2 border-dashed rounded-xl transition-all duration-300 bg-bg-primary! hover:border-accent hover:shadow-lg cursor-pointer relative overflow-hidden w-full p-2">
 
             <input type="file" id="{{ $inputId }}" {{ $attributes->wire('model') }}
@@ -264,8 +265,7 @@
                             </div>
                             <div>
                                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                                    <span
-                                        class="font-semibold text-blue-600 dark:text-blue-400">{{ __('Click to upload') }}</span>
+                                    <span class="font-semibold text-blue-600 dark:text-blue-400">{{ __('Click to upload') }}</span>
                                     {{ __('or drag and drop') }}
                                 </p>
                                 @if ($hint)
@@ -283,13 +283,10 @@
                                 <div class="relative rounded-lg overflow-hidden">
                                     <img :src="preview.url" :alt="preview.name"
                                         class="w-full h-64 object-contain bg-gray-100 dark:bg-gray-900">
-                                    <div
-                                        class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
                                         <div class="p-4 text-white w-full">
                                             <p class="text-sm font-medium truncate" x-text="preview.name"></p>
-                                            <p class="text-xs opacity-90"
-                                                x-text="preview.size > 0 ? formatSize(preview.size) : 'Existing file'">
-                                            </p>
+                                            <p class="text-xs opacity-90" x-text="preview.size > 0 ? formatSize(preview.size) : 'Existing file'"></p>
                                         </div>
                                     </div>
                                     <button type="button" @click="clearFile()"
@@ -318,11 +315,9 @@
                             </template>
 
                             <!-- Other Files -->
-                            <template
-                                x-if="preview && getFileType(preview.type) !== 'image' && getFileType(preview.type) !== 'video'">
+                            <template x-if="preview && getFileType(preview.type) !== 'image' && getFileType(preview.type) !== 'video'">
                                 <div class="flex items-center gap-4 p-6 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                                    <div
-                                        class="flex-shrink-0 w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                                    <div class="flex-shrink-0 w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
                                         <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none"
                                             stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -364,8 +359,7 @@
                             </div>
                             <div>
                                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                                    <span
-                                        class="font-semibold text-blue-600 dark:text-blue-400">{{ __('Click to upload') }}</span>
+                                    <span class="font-semibold text-blue-600 dark:text-blue-400">{{ __('Click to upload') }}</span>
                                     {{ __('or drag and drop') }}
                                 </p>
                                 @if ($hint)
@@ -392,21 +386,15 @@
                                 <div class="relative group">
                                     <!-- Image Thumbnail -->
                                     <template x-if="getFileType(file.type) === 'image'">
-                                        <div
-                                            class="relative aspect-square rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900">
-                                            <img :src="file.url" :alt="file.name"
-                                                class="w-full h-full object-cover">
-                                            <div
-                                                class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
-                                                <p class="text-white text-xs p-2 truncate w-full" x-text="file.name">
-                                                </p>
+                                        <div class="relative aspect-square rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900">
+                                            <img :src="file.url" :alt="file.name" class="w-full h-full object-cover">
+                                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
+                                                <p class="text-white text-xs p-2 truncate w-full" x-text="file.name"></p>
                                             </div>
                                             <button type="button" @click="removeExistingFile(index)"
                                                 class="absolute top-1 right-1 p-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-all">
-                                                <svg class="w-3 h-3" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </button>
                                         </div>
@@ -414,43 +402,32 @@
 
                                     <!-- Video Thumbnail -->
                                     <template x-if="getFileType(file.type) == 'video'">
-                                        <div
-                                            class="relative aspect-square rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900">
+                                        <div class="relative aspect-square rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900">
                                             <video :src="file.url" class="w-full h-full object-cover"></video>
-                                            <div
-                                                class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
-                                                <p class="text-white text-xs p-2 truncate w-full" x-text="file.name">
-                                                </p>
+                                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
+                                                <p class="text-white text-xs p-2 truncate w-full" x-text="file.name"></p>
                                             </div>
                                             <button type="button" @click="removeExistingFile(index)"
                                                 class="absolute top-1 right-1 p-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-all">
-                                                <svg class="w-3 h-3" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </button>
                                         </div>
                                     </template>
 
                                     <!-- File Icon -->
-                                    <template
-                                        x-if="getFileType(file.type) !== 'image' && getFileType(file.type) !== 'video'">
-                                        <div
-                                            class="relative aspect-square rounded-lg bg-gray-50 dark:bg-gray-900 p-3 flex flex-col items-center justify-center">
-                                            <svg class="w-8 h-8 text-zinc-600 mb-2" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
+                                    <template x-if="getFileType(file.type) !== 'image' && getFileType(file.type) !== 'video'">
+                                        <div class="relative aspect-square rounded-lg bg-gray-50 dark:bg-gray-900 p-3 flex flex-col items-center justify-center">
+                                            <svg class="w-8 h-8 text-zinc-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                                             </svg>
-                                            <p class="text-xs text-gray-600 dark:text-gray-400 text-center truncate w-full"
-                                                x-text="file.name"></p>
+                                            <p class="text-xs text-gray-600 dark:text-gray-400 text-center truncate w-full" x-text="file.name"></p>
                                             <button type="button" @click="removeExistingFile(index)"
                                                 class="absolute top-1 right-1 p-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-lg transition-all">
-                                                <svg class="w-3 h-3" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </button>
                                         </div>
@@ -467,8 +444,7 @@
                             <p class="text-sm text-gray-600 dark:text-gray-400">
                                 <span x-text="previews.length"></span> {{ __('new file(s) selected') }}
                             </p>
-                            <button type="button"
-                                @click="previews = []; $refs.fileInput.value = ''; $wire.set('{{ $attributes->wire('model')->value() }}', null);"
+                            <button type="button" @click="previews = []; $refs.fileInput.value = ''; $wire.set('{{ $attributes->wire('model')->value() }}', null);"
                                 class="text-xs text-red-600 hover:text-red-700 dark:text-red-400 font-medium">
                                 {{ __('Clear new files') }}
                             </button>
@@ -478,21 +454,15 @@
                                 <div class="relative group">
                                     <!-- Image Thumbnail -->
                                     <template x-if="getFileType(file.type) === 'image'">
-                                        <div
-                                            class="relative aspect-square rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900">
-                                            <img :src="file.url" :alt="file.name"
-                                                class="w-full h-full object-cover">
-                                            <div
-                                                class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
-                                                <p class="text-white text-xs p-2 truncate w-full" x-text="file.name">
-                                                </p>
+                                        <div class="relative aspect-square rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900">
+                                            <img :src="file.url" :alt="file.name" class="w-full h-full object-cover">
+                                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
+                                                <p class="text-white text-xs p-2 truncate w-full" x-text="file.name"></p>
                                             </div>
                                             <button type="button" @click="removeFile(index)"
                                                 class="absolute top-1 right-1 p-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-all">
-                                                <svg class="w-3 h-3" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </button>
                                         </div>
@@ -500,44 +470,32 @@
 
                                     <!-- Video Thumbnail -->
                                     <template x-if="getFileType(file.type) == 'video'">
-                                        <div
-                                            class="relative aspect-square rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900">
-                                            <video :src="file.url" controls
-                                                class="w-full h-full object-cover"></video>
-                                            <div
-                                                class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
-                                                <p class="text-white text-xs p-2 truncate w-full" x-text="file.name">
-                                                </p>
+                                        <div class="relative aspect-square rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900">
+                                            <video :src="file.url" controls class="w-full h-full object-cover"></video>
+                                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
+                                                <p class="text-white text-xs p-2 truncate w-full" x-text="file.name"></p>
                                             </div>
                                             <button type="button" @click="removeFile(index)"
                                                 class="absolute top-1 right-1 p-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-all">
-                                                <svg class="w-3 h-3" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </button>
                                         </div>
                                     </template>
 
                                     <!-- File Icon -->
-                                    <template
-                                        x-if="getFileType(file.type) !== 'image' && getFileType(file.type) !== 'video'">
-                                        <div
-                                            class="relative aspect-square rounded-lg bg-gray-50 dark:bg-gray-900 p-3 flex flex-col items-center justify-center">
-                                            <svg class="w-8 h-8 text-zinc-600 mb-2" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
+                                    <template x-if="getFileType(file.type) !== 'image' && getFileType(file.type) !== 'video'">
+                                        <div class="relative aspect-square rounded-lg bg-gray-50 dark:bg-gray-900 p-3 flex flex-col items-center justify-center">
+                                            <svg class="w-8 h-8 text-zinc-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                                             </svg>
-                                            <p class="text-xs text-gray-600 dark:text-gray-400 text-center truncate w-full"
-                                                x-text="file.name"></p>
+                                            <p class="text-xs text-gray-600 dark:text-gray-400 text-center truncate w-full" x-text="file.name"></p>
                                             <button type="button" @click="removeFile(index)"
                                                 class="absolute top-1 right-1 p-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-lg transition-all">
-                                                <svg class="w-3 h-3" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </button>
                                         </div>
