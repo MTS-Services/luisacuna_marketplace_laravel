@@ -18,7 +18,13 @@
 
         {{-- Main Navigation Icons --}}
         <div class="flex gap-1  xl:gap-2 items-center">
-            @auth
+       
+
+            <div class=" hidden sm:flex">
+                <x-language />
+            </div>
+
+                 @auth
                 <a href="{{ route('user.messages') }}" wire:navigate
                     class=" rounded-full bg-transparent  transition-colors">
                     <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-text-white" />
@@ -37,11 +43,7 @@
                 </button>
 
             @endauth
-
-            <div class=" hidden sm:flex">
-                <x-language />
-            </div>
-
+            
             <div class="flex items-center" x-data>
 
                 <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-full">
