@@ -46,23 +46,23 @@ class UpdateAction
                     if ($oldAvatarPath && Storage::disk('public')->exists($oldAvatarPath)) {
                         Storage::disk('public')->delete($oldAvatarPath);
                     }
-                    
                     // Store the new file and track path for rollback
                     $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
                     $fileName = $prefix . '-' . $uploadedAvatar->getClientOriginalName();
-                    
+
                     $newSingleAvatarPath = Storage::disk('public')->putFileAs('admins', $uploadedAvatar, $fileName);
                     $newData['avatar'] = $newSingleAvatarPath;
-                } 
-                elseif (Arr::get($data, 'remove_file')) {
+                } elseif (Arr::get($data, 'remove_file')) {
                     if ($oldAvatarPath && Storage::disk('public')->exists($oldAvatarPath)) {
                         Storage::disk('public')->delete($oldAvatarPath);
                     }
                     $newData['avatar'] = null;
                 }
                 // Cleanup temporary/file object keys
+                if (!$newData['remove_file'] && !$newSingleAvatarPath) {
+                    $newData['avatar'] = $oldAvatarPath ?? null;
+                }
                 unset($newData['remove_file']);
-                
 
                 // --- 2. Password Handling ---
                 $newPassword = Arr::get($data, 'password');
@@ -71,9 +71,9 @@ class UpdateAction
                 } else {
                     unset($newData['password']);
                 }
-                
+
                 // --- 3. Multiple Avatars Handling (Pivot Table) ---
-                
+
                 // a. Prepare new file uploads
                 $newAvatars = Arr::get($data, 'avatars');
 
@@ -87,7 +87,7 @@ class UpdateAction
                         }
                         return null;
                     }, $newAvatars);
-                    
+
                     $uploadedPaths = array_filter($uploadedPaths);
                 }
 
@@ -104,11 +104,11 @@ class UpdateAction
                         }
                     }
                     // The repository will use $newData['removed_files'] to delete DB records
-                    $newData['removed_files'] = $removedFiles; 
+                    $newData['removed_files'] = $removedFiles;
                 } else {
                     unset($newData['removed_files']);
                 }
-                
+
                 // --- 4. Update Admin ---
                 Log::info('Data sent to repository', ['data' => $newData]);
 
@@ -139,7 +139,7 @@ class UpdateAction
             });
         } catch (\Exception $e) {
             // --- FILE ROLLBACK MECHANISM: Delete files uploaded in this transaction ---
-            
+
             // 1. Rollback single avatar file
             if ($newSingleAvatarPath && Storage::disk('public')->exists($newSingleAvatarPath)) {
                 Storage::disk('public')->delete($newSingleAvatarPath);
@@ -155,7 +155,7 @@ class UpdateAction
                 }
                 Log::warning('File Rollback: Deleted ' . count($uploadedPaths) . ' new multiple avatar files.');
             }
-            
+
             // Re-throw the exception to communicate failure
             throw $e;
         }
