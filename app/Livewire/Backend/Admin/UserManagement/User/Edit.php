@@ -24,8 +24,8 @@ class Edit extends Component
     public $countries;
     public $languases;
     public UserForm $form;
-    public User $user;
-    public $userId;
+    public User $data;
+    public $dataId;
     public $existingFile;
 
 
@@ -40,30 +40,17 @@ class Edit extends Component
         $this->languageService = $languageService;  
         $this->currencyService = $currencyService;
     }
-    public function mount(User $user): void
+    public function mount(User $data): void
     {
-        $this->user = $user;
-        $this->userId = $user->id;
-        $this->form->setData($user);
-        $this->existingFile = $this->user->avatar;
+        $this->data = $data;
+        $this->dataId = $data->id;
+
+        $this->form->setData($data);
+        $this->existingFile = $this->data->avatar;
         // $this->form->date_of_birth->format('Y-m-d');
 
         $this->languases();
         $this->countries();
-
-        Log::info('UserEdit mounted', [
-            'user_id' => $user->id,
-            'form_data' => [
-                'first_name' => $this->form->first_name,
-                'last_name' => $this->form->last_name,
-                'username' => $this->form->username,
-                // 'display_name' => $this->form->display_name,
-                'date_of_birth' => $this->form->date_of_birth,
-                'country_id' => $this->form->country_id,
-                'email' => $this->form->email,
-                'account_status' => $this->form->account_status,
-            ]
-        ]);
     }
 
     public function languases(): void
@@ -90,58 +77,37 @@ class Edit extends Component
 
     public function save()
     {
-        Log::info('Save method called', [
-            'user_id' => $this->userId,
-            'form_data' => [
-                'first_name' => $this->form->first_name,
-                'last_name' => $this->form->last_name,
-                'username' => $this->form->username,
-                // 'display_name' => $this->form->display_name,
-                'date_of_birth' => $this->form->date_of_birth,
-                'country_id' => $this->form->country_id,
-                'email' => $this->form->email,
-                'password' => $this->form->password ? 'SET' : 'NOT SET',
-                'phone' => $this->form->phone,
-                'account_status' => $this->form->account_status,
-                'avatar' => $this->form->avatar ? 'FILE' : 'NULL',
-                'remove_avatar' => $this->form->remove_avatar,
-            ]
-        ]);
 
 
+     $data =   $this->form->validate();
 
         try {
 
-            $this->form->validate();
-            // $this->existingAvatar = $this->admin->avatar_url;
-            $data = $this->form->fillables();
-
             $data['updater_id'] = admin()->id;
 
-            $users = $this->service->updateData($this->userId, $data);
+           $this->service->updateData($this->data->id, $data);
 
-            $this->success('User updated successfully');
+            Log::info('Data updated successfully', ['data_id' => $this->data->id]);
+
+            $this->success('Data updated successfully');
+
             return redirect()->route('admin.um.user.index');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            Log::error('Validation failed', [
-                'errors' => $e->errors()
-            ]);
-            throw $e;
+
         } catch (\Exception $e) {
             Log::error('Failed to update User', [
-                'user_id' => $this->userId,
+                'user_id' => $this->dataId,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
             $this->error('Failed to update User: ' . $e->getMessage());
-            //  session()->flash('error', 'Failed to update User: ' . $e->getMessage());
+            
         }
     }
     public function removeAvatar(): void
     {
         Log::info('removeAvatar called', ['user_id' => $this->userId]);
         $this->form->remove_avatar = true;
-        $this->existingAvatar = null;
+        $this->existingFile = null;
         $this->form->avatar = null;
     }
 

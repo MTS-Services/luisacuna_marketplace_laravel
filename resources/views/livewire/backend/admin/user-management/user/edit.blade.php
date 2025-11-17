@@ -18,7 +18,7 @@
                     {{ __('Profile Picture') }}
                 </h3>
                 <x-ui.file-input wire:model="form.avatar" label="Avatar" accept="image/*" :error="$errors->first('form.avatar')"
-                    hint="Upload a profile picture (Max: 2MB)" :existingFile="$existingFile" removeModel="form.remove_file" />
+                    hint="Upload a profile picture (Max: 2MB)" :existingFiles="$existingFile"  removeModel="form.remove_file" />
             </div>
 
             <!-- Add other form fields here -->

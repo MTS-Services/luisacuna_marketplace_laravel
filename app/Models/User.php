@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
+
 class User extends AuthBaseModel implements Auditable
 {
     use  TwoFactorAuthenticatable, AuditableTrait;

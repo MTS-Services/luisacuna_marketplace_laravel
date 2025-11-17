@@ -10,7 +10,7 @@
         @case('admin.um.user.edit')
             <x-slot name="title">{{__('User Edit')}}</x-slot>
             <x-slot name="breadcrumb">{{__('User Management')}}</x-slot>
-            <livewire:backend.admin.user-management.user.edit :user="$user" />
+            <livewire:backend.admin.user-management.user.edit :data="$user" />
         @break
 
         @case('admin.um.user.view')

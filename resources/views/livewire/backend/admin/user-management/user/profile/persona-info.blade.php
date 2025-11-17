@@ -223,11 +223,12 @@
                             <p class="text-slate-400 text-lg font-bold">{{ $user->creater?->name ?? 'N/A' }}
                             </p>
                         </div>
-
+ 
                         <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
                             <p class="text-text-white text-xs font-semibold mb-2">{{ __('UPDATED BY') }}
                             </p>
-                            <p class="text-slate-400 text-lg font-bold">{{ $user->updater?->name ?? 'N/A' }}
+                            <p class="text-slate-400 text-lg font-bold">
+                                {{-- {{ getAuditorName($user->updater) ?? 'N/A' }} --}}
                             </p>
                         </div>
 

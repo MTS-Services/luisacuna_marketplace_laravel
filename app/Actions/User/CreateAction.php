@@ -2,6 +2,7 @@
 
 namespace App\Actions\User;
 
+use App\Events\User\UserCreated;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
@@ -17,17 +18,20 @@ class CreateAction
     {
         return DB::transaction(function () use ($data) {
 
-                if ($data['avatar']) {
-                     $data['avatar'] = Storage::disk('public')->putFile('admins', $data['avatar']);
-                }
+              if ($data['avatar']) {
+                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+                $fileName = $prefix . '-' . $data['avatar']->getClientOriginalName();
+                $data['avatar'] = Storage::disk('public')->putFileAs('users', $data['avatar'], $fileName);
+            }
 
 
             // Create user
            
-            $user = $this->interface->create($data);
+            $newData = $this->interface->create($data);
 
+            event(new UserCreated($newData));
 
-            return $user->fresh();
+            return $newData->fresh();
         });
     }
 }

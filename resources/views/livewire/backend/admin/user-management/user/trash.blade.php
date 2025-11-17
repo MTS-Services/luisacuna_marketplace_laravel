@@ -4,7 +4,7 @@
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('User Trash List') }}</h2>
             <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.um.user.index') }}">
+                <x-ui.button href="{{ route('admin.um.user.index') }}" class="w-auto! py-2!">
                     <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
                     {{ __('Back') }}
                 </x-ui.button>

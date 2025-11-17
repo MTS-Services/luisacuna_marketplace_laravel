@@ -14,7 +14,7 @@ class UserForm extends Form
     #[Locked]
     public ?int $user_id = null;
 
-    public string $first_name = '';
+    public ?string $first_name = '';
 
     public ?string $last_name = '';
 
@@ -22,13 +22,13 @@ class UserForm extends Form
 
     public ?string $date_of_birth = '';
 
-    public string $country_id = '';
+    public ?int $country_id = null;
 
-    public string $language = '';
+    public ?int $language = null;
 
     public ?string $display_name = '';
 
-    public string $email = '';
+    public ?string $email = '';
 
     public ?string $password = '';
 
@@ -63,6 +63,8 @@ class UserForm extends Form
             'phone' => 'nullable|string|max:20',
             'account_status' => 'required|string|in:' . implode(',', array_column(UserAccountStatus::cases(), 'value')),
             'avatar' => 'nullable|image|max:2048',
+             // Track removed files
+            'remove_file' => 'nullable|boolean',
         ];
 
         return $rules;
