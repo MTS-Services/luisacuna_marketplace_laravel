@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Enums\GameCategoryStatus;
-use App\Models\GameCategory;
+use App\Enums\CategoryStatus;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Faker\Factory as Faker;
@@ -11,9 +11,9 @@ use Faker\Factory as Faker;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\GameCategory>
  */
-class GameCategoryFactory extends Factory
+class CategoryFactory extends Factory
 {
-    protected  $model = GameCategory::class;
+    protected  $model = Category::class;
 
 
     public function definition(): array
@@ -28,7 +28,7 @@ class GameCategoryFactory extends Factory
             'meta_description' => $faker->paragraph(),
             'icon' => null,
             'is_featured' => $faker->boolean(),
-            'status' => GameCategoryStatus::ACTIVE->value,
+            'status' => CategoryStatus::ACTIVE->value,
 
             'created_by' => 1,
             'updated_by' => 1,
