@@ -58,7 +58,7 @@
                         <li><a href="{{ route('faq') }}" wire:navigate
                                 class="hover:text-purple-400 transition text-text-secondary text-md">{{ __('FAQ') }}</a>
                         </li>
-                        <li><a href="#"
+                        <li><a href="{{ route('contact-us') }}" wire:navigate
                                 class="hover:text-purple-400 transition text-text-secondary text-md">{{ __('Contact Us') }}</a>
                         </li>
                     </ul>
@@ -67,13 +67,13 @@
                 <div>
                     <h4 class="font-bold mb-4 text-text-white text-xl">{{ __('Legal') }}</h4>
                     <ul class="space-y-2 text-sm text-text-secondary">
-                        <li><a href="#"
+                        <li><a href="{{ route('terms-and-conditions') }}" wire:navigate
                                 class="hover:text-purple-400 transition text-text-secondary text-md">{{ __('Terms & Conditions') }}</a>
                         </li>
-                        <li><a href="#"
+                        {{-- <li><a href="#" wire:navigate
                                 class="hover:text-purple-400 transition text-text-secondary text-md">{{ __('Privacy Policy') }}</a>
-                        </li>
-                        <li><a href="#"
+                        </li> --}}
+                        <li><a href="{{ route('refund-policy') }}" wire:navigate
                                 class="hover:text-purple-400 transition text-text-secondary text-md">{{ __('Refund Policy') }}</a>
                         </li>
                     </ul>

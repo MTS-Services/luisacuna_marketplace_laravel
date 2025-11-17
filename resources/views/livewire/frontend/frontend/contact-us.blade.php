@@ -6,11 +6,11 @@
 
         <!-- Heading -->
         <h1 class="text-center text-3xl sm:text-4xl font-bold mb-4">
-            Get In Touch
+            {{__('Get In Touch')}}
         </h1>
         <p class="text-center text-gray-400 max-w-2xl mx-auto mb-12">
-            Get in touch with the Swapy.gg Team to achieve business partnership,
-            solve any issues, or share your feedback with us.
+        {{__('Get in touch with the Swapy.gg Team to achieve business partnership,
+            solve any issues, or share your feedback with us.')}}
         </p>
 
         <!-- Grid -->
@@ -18,11 +18,11 @@
 
             <!-- Box 1 -->
             <div class="bg-bg-primary rounded-xl p-18 shadow-md text-center">
-                <h2 class="text-xl font-semibold mb-4">Marketing Sponsorship</h2>
+                <h2 class="text-xl font-semibold mb-4">{{__('Marketing Sponsorship')}}</h2>
 
                 <p class="text-gray-400 mb-6 leading-relaxed">
-                    Get in touch with the Swapy.gg Team to achieve business partnership,
-                    solve any issues, or share your feedback with us.
+                    {{__('Get in touch with the Swapy.gg Team to achieve business partnership,
+                    solve any issues, or share your feedback with us.')}}
                 </p>
 
                 <!-- Centered icon + email -->
@@ -46,9 +46,9 @@
 
             <!-- Box 2 -->
             <div class="bg-bg-primary rounded-xl p-18 shadow-md text-center">
-                <h2 class="text-xl font-semibold mb-4">Digital Distribution</h2>
+                <h2 class="text-xl font-semibold mb-4">{{__('Digital Distribution')}}</h2>
                 <p class="text-gray-400 mb-6 leading-relaxed">
-                    Increase your sales for Direct Top-Ups, Gift Cards, or Video Game Keys through Swapy.gg. Contact us at.
+                    {{__('Increase your sales for Direct Top-Ups, Gift Cards, or Video Game Keys through Swapy.gg. Contact us at.')}}
                 </p>
 
                 <!-- Centered icon + email -->
@@ -71,9 +71,9 @@
 
             <!-- Box 3 -->
             <div class="bg-bg-primary rounded-xl p-18 shadow-md text-center">
-                <h2 class="text-xl font-semibold mb-4">Careers at Swapy.gg</h2>
+                <h2 class="text-xl font-semibold mb-4">{{__('Careers at Swapy.gg')}}</h2>
                 <p class="text-gray-400 mb-6 leading-relaxed">
-                    Want to be part of the Swapy.gg global team? If you're passionate about gaming and skilled at writing engaging blog posts, contact us at.
+                    {{__("Want to be part of the Swapy.gg global team? If you're passionate about gaming and skilled at writing engaging blog posts, contact us at.")}}
                 </p>
                 <!-- Centered icon + email -->
                 <div class="flex items-center justify-center gap-2">
@@ -95,9 +95,9 @@
 
             <!-- Box 4 -->
             <div class="bg-bg-primary rounded-xl p-18 shadow-md text-center">
-                <h2 class="text-xl font-semibold mb-4">Legal Department</h2>
+                <h2 class="text-xl font-semibold mb-4">{{__('Legal Department')}}</h2>
                 <p class="text-gray-400 mb-6 leading-relaxed">
-                    For any questions regarding legal matters or other general inquiries, please contact us at:.
+                    {{__('For any questions regarding legal matters or other general inquiries, please contact us at:.')}}
                 </p>
                 <!-- Centered icon + email -->
                 <div class="flex items-center justify-center gap-2">
