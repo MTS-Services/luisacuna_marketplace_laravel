@@ -98,6 +98,12 @@
     --color-bg-tertiary-dark: var(--color-secondary-500);
 
 
+    /* Seller Profile Colors Collection  */
+
+    --color-light-black: #FFFFFF14;
+    --color-light-black-200: #FFFFFF14;
+
+    /* Seller Profile Colors Sollection */
 }
 
 
@@ -163,14 +169,17 @@
     --color-bg-secondary: var(--color-bg-secondary-light);
     --color-bg-tertiary: var(--color-bg-tertiary-light);
 
-        --color-bg-container1: #1b0c33;
-        --color-bg-container2: #6d28d9;
-        --color-bg-border2: #2d1f43;
-        --color-bg-pink-500: #ec4899 !important;
-        --color-bg-purple-800: #5b21b6 !important;
-        --color-bg-blue-400: #60a5fa !important;
+    --color-bg-container1: #1b0c33;
+    --color-bg-container2: #6d28d9;
+    --color-bg-border2: #2d1f43;
+    --color-bg-pink-500: #ec4899 !important;
+    --color-bg-purple-800: #5b21b6 !important;
+    --color-bg-blue-400: #60a5fa !important;
 
-
+    /* Seller Profile Custom Colors */
+    --color-bg-light-black: var(--color-bg-primary);
+    --color-bg-light-black-200: var(--color-bg-secondary);
+    /* Seller Profile Custom Colors */
 
     --hover-bg-theme: var(--color-zinc-200);
     --color-bg-black: var(--color-black);
@@ -264,6 +273,11 @@
 
         --color-text-new: var(--color-text-new-dark);
         --color-text-white: var(--color-white-dark);
+
+    /* Seller Profile Custom Colors */
+    --color-bg-light-black: var(--color-light-black);
+    --color-bg-light-black-200: var(--color-light-black-200);
+    /* Seller Profile Custom Colors */
     }
 }
 

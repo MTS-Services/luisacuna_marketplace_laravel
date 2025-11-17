@@ -14,7 +14,7 @@ class UserForm extends Form
     #[Locked]
     public ?int $user_id = null;
 
-    public string $first_name = '';
+    public ?string $first_name = '';
 
     public ?string $last_name = '';
 
@@ -22,13 +22,13 @@ class UserForm extends Form
 
     public ?string $date_of_birth = '';
 
-    public string $country_id = '';
+    public ?int $country_id = null;
 
-    public string $language = '';
+    public ?int $language = null;
 
     public ?string $display_name = '';
 
-    public string $email = '';
+    public ?string $email = '';
 
     public ?string $password = '';
 
@@ -38,9 +38,13 @@ class UserForm extends Form
 
     public string $account_status;
 
+    public ?int $currency_id = null;
+
     public ?UploadedFile $avatar = null;
 
     public bool $remove_avatar = false;
+
+    public ?bool $remove_file = false;
 
 
     public function rules(): array
@@ -54,10 +58,13 @@ class UserForm extends Form
             'country_id' => 'required|exists:countries,id',
             'language' => 'required|max:255',
             'email' => 'required|email|max:255',
+            'currency_id'   => 'required|exists:currencies,id',
             'password' => $this->isUpdating() ? 'nullable|string|min:8' : 'required|string|min:8|confirmed',
             'phone' => 'nullable|string|max:20',
             'account_status' => 'required|string|in:' . implode(',', array_column(UserAccountStatus::cases(), 'value')),
             'avatar' => 'nullable|image|max:2048',
+             // Track removed files
+            'remove_file' => 'nullable|boolean',
         ];
 
         return $rules;
@@ -76,6 +83,7 @@ class UserForm extends Form
         $this->email = $user->email;
         $this->phone = $user->phone;
         $this->account_status = $user->account_status->value;
+        $this->currency_id = $user->currency_id;
     }
 
     public function reset(...$properties): void
@@ -93,6 +101,7 @@ class UserForm extends Form
         $this->account_status = UserAccountStatus::ACTIVE->value;
         $this->avatar = null;
         $this->remove_avatar = false;
+        $this->currency_id = null;
 
         $this->resetValidation();
     }
@@ -116,6 +125,7 @@ class UserForm extends Form
             'phone' => $this->phone,
             'account_status' => $this->account_status,
             'avatar'    => $this->avatar,
+            'currency_id' => $this->currency_id,
         ];
     }
 }

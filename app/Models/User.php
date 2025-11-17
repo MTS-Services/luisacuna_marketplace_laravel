@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
+
 class User extends AuthBaseModel implements Auditable
 {
     use  TwoFactorAuthenticatable, AuditableTrait;
@@ -41,8 +42,8 @@ class User extends AuthBaseModel implements Auditable
         'date_of_birth',
 
         'timezone',
-        'language',
-        'currency',
+        'language_id',
+        'currency_id',
 
 
         'email_verified_at',
@@ -162,6 +163,11 @@ class User extends AuthBaseModel implements Auditable
     public function language(): BelongsTo
     {
         return $this->belongsTo(Language::class, 'language_id', 'id');
+    }
+
+    public function currency(): BelongsTo
+    {
+        return $this->belongsTo(Currency::class, 'currency_id', 'id');
     }
     public function userReferral(): HasOne
     {

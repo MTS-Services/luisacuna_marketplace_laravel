@@ -10,30 +10,32 @@ use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
-class Index extends Component
-{
-    use WithDataTable, WithNotification;
+class Trash extends Component
+{ use WithDataTable, WithNotification;
 
     public $statusFilter = '';
     public $showDeleteModal = false;
-    public $deleteId = null;
+    public $selectedId = null;
     public $bulkAction = '';
     public $showBulkActionModal = false;
 
-  
+    protected $listeners = ['CurrencyDeleted' => '$refresh', 'CurrencyRestored' => '$refresh', 'CurrencyUpdated' => '$refresh'];
+
     protected GameServerService $service;
+
     public function boot(GameServerService $service)
     {
         $this->service = $service;
     }
+
     public function render()
     {
-        $datas = $this->service->getPaginatedData(
+        $datas = $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        )->load('creater_admin');
+        )->load('deleter_admin');
 
-        $columns = [
+       $columns = [
             [
                 'key' => 'icon',
                 'label' => 'Icon',
@@ -65,10 +67,10 @@ class Index extends Component
                 }
             ],
             [
-                'key' => 'created_by',
-                'label' => 'Created By',
+                'key' => 'deleted_by',
+                'label' => 'Deleted By',
                 'format' => function ($data) {
-                    return $data->creater_admin?->name ?? 'System';
+                    return $data->deleter_admin?->name ?? 'System';
                 }
             ],
         ];
@@ -76,32 +78,24 @@ class Index extends Component
         $actions = [
             [
                 'key' => 'id',
-                'label' => 'Show',
-                'route' => 'admin.gm.server.view',
+                'label' => 'Restore',
+                'method' => 'restore',
                 'encrypt' => true
             ],
             [
                 'key' => 'id',
-                'label' => 'Edit',
-                'route' => 'admin.gm.server.edit',
-                'encrypt' => true
-            ],
-            [
-                'key' => 'id',
-                'label' => 'Delete',
+                'label' => 'Permanent Delete',
                 'method' => 'confirmDelete',
                 'encrypt' => true
             ],
         ];
 
         $bulkActions = [
-            ['value' => 'delete', 'label' => 'Delete'],
-            ['value' => 'active', 'label' => 'Active'],
-            ['value' => 'inactive', 'label' => 'Inactive'],
+            ['value' => 'bulkRestore', 'label' => 'Restore'],
+            ['value' => 'forceDelete', 'label' => 'Permanent Delete'],
         ];
 
-
-        return view('livewire.backend.admin.game-management.game-server.index', [
+        return view('livewire.backend.admin.game-management.game-server.trash', [
             'datas' => $datas,
             'statuses' => GameServerStatus::options(),
             'columns' => $columns,
@@ -110,25 +104,42 @@ class Index extends Component
         ]);
     }
 
-    public function confirmDelete($id): void
+      public function confirmDelete($encryptedId): void
     {
-        $this->deleteId = $id;
+        if (!$encryptedId) {
+            $this->error('No Data selected');
+            $this->resetPage();
+            return;
+        }
+        $this->selectedId = $encryptedId;
         $this->showDeleteModal = true;
     }
 
-    public function delete(): void
+    public function forceDelete(): void
     {
         try {
-            if (!$this->deleteId) {
-                $this->warning('No data selected');
-                return;
-            }
-            $this->service->deleteData(decrypt($this->deleteId));
-            $this->reset(['deleteId', 'showDeleteModal']);
+            $this->service->deleteData(decrypt($this->selectedId), forceDelete: true);
+            $this->showDeleteModal = false;
+            $this->selectedId = null;
+            $this->resetPage();
+            $this->success('Data permanently deleted successfully');
+        } catch (\Throwable $e) {
+            $this->error('Failed to delete data.');
+            Log::error('Failed to delete data: ' . $e->getMessage());
+            throw $e;
+        }
+    }
 
-            $this->success('Data deleted successfully');
-        } catch (\Exception $e) {
-            $this->error('Failed to delete data: ' . $e->getMessage());
+    public function restore($encryptedId): void
+    {
+        try {
+            $this->service->restoreData(decrypt($encryptedId));
+
+            $this->success('Data restored successfully');
+        } catch (\Throwable $e) {
+            $this->error('Failed to restore data.');
+            Log::error('Failed to restore data: ' . $e->getMessage());
+            throw $e;
         }
     }
 
@@ -138,28 +149,10 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function changeStatus($id, $status): void
-    {
-        try {
-            $dataStatus = GameServerStatus::from($status);
-
-            match ($dataStatus) {
-                GameServerStatus::ACTIVE => $this->service->updateStatusData($id, GameServerStatus::ACTIVE),
-                GameServerStatus::INACTIVE => $this->service->updateStatusData($id, GameServerStatus::INACTIVE),
-                default => null,
-            };
-
-            $this->success('Data status updated successfully');
-        } catch (\Exception $e) {
-            $this->error('Failed to update status: ' . $e->getMessage());
-        }
-    }
-
     public function confirmBulkAction(): void
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
             $this->warning('Please select data and an action');
-            Log::info('No data selected or no bulk action selected');
             return;
         }
 
@@ -172,9 +165,8 @@ class Index extends Component
 
         try {
             match ($this->bulkAction) {
-                'delete' => $this->bulkDelete(),
-                'active' => $this->bulkUpdateStatus(GameServerStatus::ACTIVE),
-                'inactive' => $this->bulkUpdateStatus(GameServerStatus::INACTIVE),
+                'forceDelete' => $this->bulkForceDelete(),
+                'bulkRestore' => $this->bulkRestore(),
                 default => null,
             };
 
@@ -182,21 +174,24 @@ class Index extends Component
             $this->selectAll = false;
             $this->bulkAction = '';
         } catch (\Exception $e) {
-            $this->error('Bulk action failed: ' . $e->getMessage());
+            $this->error('Failed to execute bulk action.');
+            Log::error('Failed to execute bulk action: ' . $e->getMessage());
+            throw $e;
         }
     }
 
-    protected function bulkDelete(): void
-    {
-        $count =  $this->service->bulkDeleteData($this->selectedIds);
-        $this->success("{$count} Data deleted successfully");
-    }
-
-    protected function bulkUpdateStatus(GameServerStatus $status): void
+    protected function bulkRestore(): void
     {
         $count = count($this->selectedIds);
-        $this->service->bulkUpdateStatus($this->selectedIds, $status);
-        $this->success("{$count} Data updated successfully");
+        $this->service->bulkRestoreData($this->selectedIds);
+        $this->success("{$count} Datas restored successfully");
+    }
+
+    protected function bulkForceDelete(): void
+    {
+        $count = count($this->selectedIds);
+        $this->service->bulkForceDeleteData($this->selectedIds);
+        $this->success("{$count} Datas permanently deleted successfully");
     }
 
     protected function getFilters(): array
@@ -209,9 +204,9 @@ class Index extends Component
         ];
     }
 
-   protected function getSelectableIds(): array
+     protected function getSelectableIds(): array
     {
-        $data = $this->service->getPaginatedData(
+        $data = $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
