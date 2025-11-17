@@ -1,4 +1,4 @@
-<div class="min-h-[70vh] bg-bg-secondary py-12 px-4 container">
+<div class="min-h-[70vh] bg-bg-secondary py-12 px-4">
     <div class="max-w-4xl mx-auto">
 
         @if (session('success'))
@@ -96,92 +96,71 @@
 
             {{-- Verification Required Page --}}
         @elseif($currentStep == 0)
-            <div class="text-center w-full rounded-2xl bg-bg-primary p-20">
+            <div class="text-center">
                 <div class="mb-6">
-                    <div class="mx-auto flex flex-row items-center justify-center">
-                        <span class="text-8xl pr-2.5">
-                            <flux:icon name="shield-check" class="stroke-zinc-500"></flux:icon>
-                        </span>
-                        <p class="font-semibold text-base ">Seller ID verification</p>
-                    </div>
-                    <div class="text-sm text-text-primary font-normal pt-2">
-                        Step <span>1</span>/<span>7</span>
+                    <div class="mx-auto w-32 h-32 flex items-center justify-center">
+                        <span class="text-8xl">🔍</span>
                     </div>
                 </div>
 
-                <div class="px-15 py-10 bg-bg-secondary dark:bg-bg-light-black rounded-3xl">
-                    <div class="p-5 bg-bg-light-black shadow rounded-3xl">
-                        <h2 class="font-semibold text-text-primary text-2xl pb-5 text-left">Will you sell on Eldorado as
-                            an
-                            individual or as a company?</h2>
+                <h2 class="text-2xl font-bold dark:text-text-white text-zinc-500/80 mb-4">Seller verification required
+                </h2>
 
-                        <div class="flex items-center gap-2 mb-3">
-                            <input type="radio" name="accountType" id="individal" class="accent-pink-500">
-                            <label for="individal">Individal</label>
+                <p class="dark:text-text-white text-zinc-500/50 mb-2">To sell currencies, please verify your identity
+                    first.</p>
+                <p class="dark:text-text-white text-zinc-500/50 mb-8">Our 24/7 support team will review your ID in up to
+                    15 minutes.</p>
+
+                <button class="bg-bg-primary rounded-lg p-6 mb-6 " wire:click="startVerification">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center">
+                            <img src="{{ asset('assets/images/verification.svg') }}" alt="">
                         </div>
-
-                        <div class="flex items-center gap-2">
-                            <input type="radio" name="accountType" id="company" class="accent-pink-500">
-                            <label for="company">Company</label>
+                        <div class="flex-1 text-left">
+                            <p class="font-semibold">Seller Verification</p>
+                            <span class="inline-block px-3 py-1 bg-pink-500 text-white text-sm rounded-full">Documents
+                                required</span>
                         </div>
+                        <x-phosphor-caret-right class="w-6 h-6 fill-zinc-500" />
                     </div>
-                </div>
+                </button>
 
-                <div class="flex justify-center space-x-4 pt-10">
-                    <a href="{{ route('home') }}" class="px-8 py-2 text-text-white  rounded-lg hover:bg-gray-50">
-                        BACK
-                    </a>
-                    <button wire:click="nextStep"
-                        class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
-                        NEXT
-                    </button>
-                </div>
 
+                <a href="#" class="block mt-4 text-zinc-600/80 hover:underline">Why do I need to verify my ID?</a>
             </div>
-
-
-
 
             {{-- Step 1: Individual or Company --}}
         @elseif($currentStep == 1)
-            <div class="text-center w-full rounded-2xl bg-bg-primary p-20">
-                <div class="mb-6">
-                    <div class="mx-auto flex flex-row items-center justify-center">
-                        <span class="text-8xl pr-2.5">
-                            <flux:icon name="shield-check" class="stroke-zinc-500"></flux:icon>
-                        </span>
-                        <p class="font-semibold text-base ">Seller ID verification</p>
+            <div>
+                <div class="text-center mb-8">
+                    <div class="flex items-center justify-center mb-2">
+                        <span class="text-zinc-500 text-2xl">✓</span>
+                        <h3 class="text-lg text-text-white font-semibold ml-2">Seller ID Verification</h3>
                     </div>
-                    <div class="text-sm text-text-primary font-normal pt-2">
-                        Step <span>2</span>/<span>7</span>
+                    <p class="text-text-white">Step 1/7</p>
+                </div>
+                <div class="bg-bg-primary max-w-2xl mx-auto py-6 mb-4">
+                    <h2 class="text-lg font-bold text-center mb-4">
+                        Will you sell on Eldorado as an individual or as a <br> company?
+                    </h2>
+
+                    <div class="flex flex-col items-center justify-center space-y-3">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" wire:model="accountType" value="individual"
+                                class="w-5 h-5 text-zinc-600">
+                            <span class="ml-3 text-lg">Individual</span>
+                        </label>
+
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" wire:model="accountType" value="company"
+                                class="w-5 h-5 text-zinc-600">
+                            <span class="ml-3 text-lg">Company</span>
+                        </label>
                     </div>
                 </div>
 
-                <div class="px-15 py-10 bg-bg-secondary dark:bg-bg-light-black rounded-3xl">
-                    <div class="p-5 bg-bg-light-black shadow rounded-3xl">
-                        <h2 class="font-semibold text-text-primary text-2xl pb-5 text-left">Select the categories you'll
-                            be selling in:</h2>
-
-                        @foreach ([
-        'currency' => 'Currency',
-        'accounts' => 'Accounts',
-        'items' => 'Items',
-        'top_ups' => 'Top Ups',
-        'boosting' => 'Boosting',
-        'gift_cards' => 'Gift Cards',
-    ] as $value => $label)
-                            <div class="flex items-center gap-2 mb-3">
-                                <input type="radio" name="{{ $value }}" id="individal"
-                                    value="{{ $value }}" class="accent-pink-500">
-                                <label for="{{ $value }}">{{ $label }}</label>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                <div class="flex justify-center space-x-4 pt-10">
-                    <a wire:click.prevent="previousStep"
-                        class="px-8 py-2 text-text-white  rounded-lg hover:bg-gray-50">
+                <div class="flex justify-center space-x-4">
+                    <a href="{{ route('home') }}" class="px-8 py-2 text-text-white  rounded-lg hover:bg-gray-50">
                         BACK
                     </a>
                     <button wire:click="nextStep"
@@ -194,46 +173,54 @@
 
             {{-- Step 2: Select Categories --}}
         @elseif($currentStep == 2)
-            <div class="text-center w-full rounded-2xl bg-bg-primary p-20">
-                <div class="mb-6">
-                    <div class="mx-auto flex flex-row items-center justify-center">
-                        <span class="text-8xl pr-2.5">
-                            <flux:icon name="shield-check" class="stroke-zinc-500"></flux:icon>
-                        </span>
-                        <p class="font-semibold text-base ">Seller ID verification</p>
+            <div>
+                <div class="text-center mb-8">
+                    <div class="flex items-center justify-center mb-2">
+                        <span class="text-zinc-500 text-2xl">✓</span>
+                        <h3 class="text-lg font-semibold ml-2">Seller ID verification</h3>
                     </div>
-                    <div class="text-sm text-text-primary font-normal pt-2">
-                        Step <span>3</span>/<span>7</span>
-                    </div>
+                    <p class="text-text-white">Step 1/7</p>
                 </div>
+                <div class="bg-bg-primary max-w-2xl mx-auto py-4 px-8 mb-4">
+                    <h2 class="text-2xl font-bold text-center mb-2">Select the categories you'll be <br> selling in:
+                    </h2>
 
-                <div class="px-15 py-10 bg-bg-secondary dark:bg-bg-light-black rounded-3xl">
-                    <div class="p-5 bg-bg-light-black shadow rounded-3xl">
-                        <h2 class="font-semibold text-text-primary text-2xl pb-5 text-left">Selling experience:</h2>
-
-                        <div class="flex items-center gap-2 mb-3">
-                            <input type="radio" name="sellingExperience" id="individal" class="accent-pink-500">
-                            <label for="individal">New Seller (This is my first selling)</label>
-                        </div>
-
-                        <div class="flex items-center gap-2">
-                            <input type="radio" name="sellingExperience" id="company" class="accent-pink-500">
-                            <label for="company">Experieced Seller (I have worked on others platform)</label>
-                        </div>
+                    <div class="space-y-1 mb-2">
+                        @foreach ([
+        'currency' => 'Currency',
+        'accounts' => 'Accounts',
+        'items' => 'Items',
+        'top_ups' => 'Top Ups',
+        'boosting' => 'Boosting',
+        'gift_cards' => 'Gift Cards',
+    ] as $value => $label)
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" wire:model="selectedCategories" value="{{ $value }}"
+                                    class="w-5 h-5 text-zinc-600 bg-bg-white! border-zinc-100 rounded transition-all duration-200 hover:scale-110 hover:bg-zinc-500 focus:ring-zinc-500">
+                                <span class="ml-3 text-zinc-900 dark:text-zinc-100">{{ $label }}</span>
+                            </label>
+                        @endforeach
                     </div>
-                </div>
 
-                <div class="flex justify-center space-x-4 pt-10">
-                    <a wire:click.prevent="previousStep"
-                        class="px-8 py-2 text-text-white  rounded-lg hover:bg-gray-50">
+                </div>
+                @error('selectedCategories')
+                    <p class="text-red-500 text-center mb-4">{{ $message }}</p>
+                @enderror
+
+                <div class="flex justify-center space-x-4">
+                    <button wire:click="previousStep" class="px-8 py-2  hover:bg-zinc-50 rounded-lg">
                         BACK
-                    </a>
-                    <button wire:click="nextStep"
-                        class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
+                    </button>
+                    <button wire:click="nextStep" class="px-8 py-2 text-white rounded-lg transition"
+                        wire:loading.attr="disabled" wire:target="nextStep"
+                        wire:attr.disabled="!@json(count($selectedCategories) > 0)"
+                        :class="{
+                            'bg-zinc-600 hover:bg-zinc-700': $wire.selectedCategories.length > 0,
+                            'bg-zinc-200 cursor-not-allowed!': $wire.selectedCategories.length === 0
+                        }">
                         NEXT
                     </button>
                 </div>
-
             </div>
 
             {{-- Step 3: Selling Experience --}}
@@ -244,176 +231,33 @@
                         <span class="text-zinc-500 text-2xl">✓</span>
                         <h3 class="text-lg font-semibold ml-2">Seller ID verification</h3>
                     </div>
-                    <p class="text-text-white">Step 4/7</p>
+                    <p class="text-text-white">Step 2/7</p>
+                </div>
+                <div class="bg-bg-primary max-w-2xl mx-auto py-4 px-8 mb-4">
+                    <h2 class="text-2xl font-bold text-center mb-8">Selling experience:</h2>
+                    <div class="flex flex-col items-start space-y-3">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" wire:model="sellingExperience" value="new"
+                                class="w-5 h-5 text-zinc-600">
+                            <span class="ml-3 text-base">New seller (this is my first selling)</span>
+                        </label>
+
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" wire:model="sellingExperience" value="experienced"
+                                class="w-5 h-5 text-zinc-600">
+                            <span class="ml-3 text-base">Experienced seller (I've worked on other platforms)</span>
+                        </label>
+                    </div>
                 </div>
 
-                @if ($accountType = 'individual')
-                    <div class="dark:bg-bg-primary bg-bg-white max-w-2xl mx-auto py-4 px-8 mb-6">
-                        <h2 class="text-2xl font-semibold text-center font-lato mb-8">Enter your details</h2>
-
-                        <div class="max-w-md mx-auto space-y-4 mb-8">
-                            <div>
-                                <x-ui.label class="mb-2">First name</x-ui.label>
-                                <x-ui.input type="text" wire:model="firstName" placeholder="First name" />
-                                <x-ui.input-error :messages="$errors->get('firstName')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">Middle name (if present)</x-ui.label>
-                                <x-ui.input type="text" wire:model="middleName" placeholder="Middle name" />
-                                <x-ui.input-error :messages="$errors->get('middleName')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">Last name</x-ui.label>
-                                <x-ui.input type="text" wire:model="lastName" placeholder="Last name" />
-                                <x-ui.input-error :messages="$errors->get('lastName')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">Date of birth:</x-ui.label>
-                                <div class="grid grid-cols-3 gap-3">
-                                    <x-ui.select wire:model="birthYear" class="p-3 border rounded-lg">
-                                        <option value="">Year</option>
-                                        @for ($year = date('Y') - 18; $year >= 1950; $year--)
-                                            <option value="{{ $year }}">{{ $year }}</option>
-                                        @endfor
-                                    </x-ui.select>
-                                    <x-ui.select wire:model="birthMonth" class="p-3 border rounded-lg">
-                                        <option value="">Month</option>
-                                        @for ($month = 1; $month <= 12; $month++)
-                                            <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}">
-                                                {{ $month }}</option>
-                                        @endfor
-                                    </x-ui.select>
-                                    <x-ui.select wire:model="birthDay" class="p-3 border rounded-lg">
-                                        <option value="">Day</option>
-                                        @for ($day = 1; $day <= 31; $day++)
-                                            <option value="{{ str_pad($day, 2, '0', STR_PAD_LEFT) }}">
-                                                {{ $day }}</option>
-                                        @endfor
-                                    </x-ui.select>
-                                </div>
-                                <x-ui.input-error :messages="$errors->get('birthYear')" />
-                                <x-ui.input-error :messages="$errors->get('birthMonth')" />
-                                <x-ui.input-error :messages="$errors->get('birthDay')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">Nationality:</x-ui.label>
-                                <x-ui.select wire:model="nationality" class="w-full p-3 border rounded-lg">
-                                    <option value="">Select nationality</option>
-                                    <option value="BD">Bangladesh</option>
-                                    <option value="US">United States</option>
-                                    <option value="UK">United Kingdom</option>
-                                    <option value="IN">India</option>
-                                </x-ui.select>
-                                <x-ui.input-error :messages="$errors->get('nationality')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">Street address</x-ui.label>
-                                <x-ui.input type="text" wire:model="streetAddress"
-                                    class="w-full p-3 border rounded-lg" placeholder="Street address" />
-                                <x-ui.input-error :messages="$errors->get('streetAddress')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">City</x-ui.label>
-                                <x-ui.input type="text" wire:model="city" class="w-full p-3 border rounded-lg"
-                                    placeholder="City" />
-                                <x-ui.input-error :messages="$errors->get('city')" />
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <x-ui.label class="mb-2">Country</x-ui.label>
-                                    <x-ui.select wire:model="country" class="w-full p-3 border rounded-lg">
-                                        <option value="">Select country</option>
-                                        <option value="BD">Bangladesh</option>
-                                        <option value="US">United States</option>
-                                        <option value="UK">United Kingdom</option>
-                                    </x-ui.select>
-                                    <x-ui.input-error :messages="$errors->get('country')" />
-                                </div>
-                                <div>
-                                    <x-ui.label class="mb-2">Postal code</x-ui.label>
-                                    <x-ui.input type="text" wire:model="postalCode"
-                                        class="w-full p-3 border rounded-lg" placeholder="Postal code" />
-                                    <x-ui.input-error :messages="$errors->get('postalCode')" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @else
-                    <div class="dark:bg-bg-primary bg-bg-white max-w-2xl mx-auto py-4 px-8 mb-6">
-                        <h2 class="text-2xl font-bold text-center mb-8">Enter your company details</h2>
-
-                        <div class="max-w-md mx-auto space-y-4 mb-8">
-                            <div>
-                                <x-ui.label class="mb-2">Company name</x-ui.label>
-                                <x-ui.input type="text" wire:model="companyName"
-                                    class="w-full p-3 border rounded-lg" placeholder="Company name" />
-                                <x-ui.input-error :messages="$errors->get('companyName')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">Company code/ID</x-ui.label>
-                                <x-ui.input type="text" wire:model="companyCode"
-                                    class="w-full p-3 border rounded-lg" placeholder="Company code/ID" />
-                                <x-ui.input-error :messages="$errors->get('companyCode')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">VAT/Tax number (optional)</x-ui.label>
-                                <x-ui.input type="text" wire:model="vatNumber"
-                                    class="w-full p-3 border rounded-lg" placeholder="VAT/Tax number (optional)" />
-                                <x-ui.input-error :messages="$errors->get('vatNumber')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">Street address</x-ui.label>
-                                <x-ui.input type="text" wire:model="companyStreetAddress"
-                                    class="w-full p-3 border rounded-lg" placeholder="Street address" />
-                                <x-ui.input-error :messages="$errors->get('companyStreetAddress')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">City</x-ui.label>
-                                <x-ui.input type="text" wire:model="companyCity"
-                                    class="w-full p-3 border rounded-lg" placeholder="City" />
-                                <x-ui.input-error :messages="$errors->get('companyCity')" />
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <x-ui.label class="mb-2">Country</x-ui.label>
-                                    <x-ui.select wire:model="companyCountry" class="w-full p-3 border rounded-lg">
-                                        <option value="">Select country</option>
-                                        <option value="BD">Bangladesh</option>
-                                        <option value="US">United States</option>
-                                    </x-ui.select>
-                                    <x-ui.input-error :messages="$errors->get('companyCountry')" />
-                                </div>
-                                <div>
-                                    <x-ui.label class="mb-2">Postal code</x-ui.label>
-                                    <x-ui.input type="text" wire:model="companyPostalCode"
-                                        class="w-full p-3 border rounded-lg" placeholder="Postal code" />
-                                    <x-ui.input-error :messages="$errors->get('companyPostalCode')" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
-
                 <div class="flex justify-center space-x-4">
-                    <button wire:click="previousStep" class="px-8 py-2  rounded-lg hover:bg-gray-50">
+                    <button wire:click="previousStep"
+                        class="px-8 py-2  text-text-white rounded-lg dark:bg-zinc-800 hover:bg-zinc-50">
                         BACK
                     </button>
                     <button wire:click="nextStep"
-                        class="px-8 py-2 bg-zinc-600 text-white rounded-lg hover:bg-zinc-700">
-                        NEXT STEP
+                        class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
+                        NEXT
                     </button>
                 </div>
             </div>
