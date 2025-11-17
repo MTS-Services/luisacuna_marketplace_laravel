@@ -16,7 +16,7 @@
         {{-- Category Selection Page --}}
         @if ($showCategoryPage)
             {{-- @if ($showCategoryPage) --}}
-            <div class="w-2xl mx-auto">
+            <div class="w-full mx-auto">
                 <h1 class="text-3xl font-bold text-center text-text-white mb-2">Start selling</h1>
                 <h2 class="text-xl text-center text-text-white/60 mb-8">Choose category</h2>
 
@@ -131,8 +131,7 @@
 
             {{-- Step 1: Individual or Company --}}
         @elseif($currentStep == 1)
-
-            <div class="text-center w-full rounded-2xl bg-bg-primary p-20">
+            <div class="text-center w-full rounded-2xl bg-bg-primary px-5 py-8 lg:p-20">
                 <div class="mb-6">
                     <div class="mx-auto flex flex-row items-center justify-center">
                         <span class="text-8xl pr-2.5">
@@ -145,9 +144,10 @@
                     </div>
                 </div>
 
-                <div class="px-15 py-10 bg-bg-secondary dark:bg-bg-light-black rounded-3xl">
-                    <div class="p-5 bg-bg-light-black shadow rounded-3xl">
-                        <h2 class="font-semibold text-text-primary text-2xl pb-5 text-left">Will you sell on Eldorado as
+                <div class="p-5 lg:px-15 lg:py-10 bg-bg-secondary dark:bg-bg-light-black rounded-2xl">
+                    <div class="p-5 bg-bg-light-black shadow rounded-2xl">
+                        <h2 class="font-semibold text-text-primary text-base lg:text-2xl pb-5 text-left">Will you sell
+                            on Eldorado as
                             an
                             individual or as a company?</h2>
 
@@ -177,9 +177,7 @@
 
             {{-- Step 2: Select Categories --}}
         @elseif($currentStep == 2)
-            
-
-            <div class="text-center w-full rounded-2xl bg-bg-primary p-20">
+            <div class="text-center w-full rounded-2xl bg-bg-primary px-5 py-8 lg:p-20">
                 <div class="mb-6">
                     <div class="mx-auto flex flex-row items-center justify-center">
                         <span class="text-8xl pr-2.5">
@@ -192,20 +190,21 @@
                     </div>
                 </div>
 
-                <div class="px-15 py-10 bg-bg-secondary dark:bg-bg-light-black rounded-3xl">
-                    <div class="p-5 bg-bg-light-black shadow rounded-3xl">
-                        <h2 class="font-semibold text-text-primary text-2xl pb-5 text-left">Select the categories
+                <div class="p-5 lg:px-15 lg:py-10 bg-bg-secondary dark:bg-bg-light-black rounded-2xl">
+                    <div class="p-5 bg-bg-light-black shadow rounded-2xl">
+                        <h2 class="font-semibold text-text-primary text-base lg:text-2xl pb-5 text-left">Select the
+                            categories
                             you'll
                             be selling in:</h2>
 
                         @foreach ([
-        'currency' => 'Currency',
-        'accounts' => 'Accounts',
-        'items' => 'Items',
-        'top_ups' => 'Top Ups',
-        'boosting' => 'Boosting',
-        'gift_cards' => 'Gift Cards',
-    ] as $value => $label)
+                    'currency' => 'Currency',
+                    'accounts' => 'Accounts',
+                    'items' => 'Items',
+                    'top_ups' => 'Top Ups',
+                    'boosting' => 'Boosting',
+                    'gift_cards' => 'Gift Cards',
+                ] as $value => $label)
                             <div class="flex items-center gap-3 mb-3">
                                 <label class="relative inline-flex items-center">
                                     <input type="checkbox" wire:model="selectedCategories"
@@ -244,44 +243,7 @@
 
             {{-- Step 3: Selling Experience --}}
         @elseif($currentStep == 3)
-            {{-- <div>
-                <div class="text-center mb-8">
-                    <div class="flex items-center justify-center mb-2">
-                        <span class="text-zinc-500 text-2xl">✓</span>
-                        <h3 class="text-lg font-semibold ml-2">Seller ID verification</h3>
-                    </div>
-                    <p class="text-text-white">Step 2/7</p>
-                </div>
-                <div class="bg-bg-primary max-w-2xl mx-auto py-4 px-8 mb-4">
-                    <h2 class="text-2xl font-bold text-center mb-8">Selling experience:</h2>
-                    <div class="flex flex-col items-start space-y-3">
-                        <label class="flex items-center cursor-pointer">
-                            <input type="radio" wire:model="sellingExperience" value="new"
-                                class="w-5 h-5 text-zinc-600">
-                            <span class="ml-3 text-base">New seller (this is my first selling)</span>
-                        </label>
-
-                        <label class="flex items-center cursor-pointer">
-                            <input type="radio" wire:model="sellingExperience" value="experienced"
-                                class="w-5 h-5 text-zinc-600">
-                            <span class="ml-3 text-base">Experienced seller (I've worked on other platforms)</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="flex justify-center space-x-4">
-                    <button wire:click="previousStep"
-                        class="px-8 py-2  text-text-white rounded-lg dark:bg-zinc-800 hover:bg-zinc-50">
-                        BACK
-                    </button>
-                    <button wire:click="nextStep"
-                        class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
-                        NEXT
-                    </button>
-                </div>
-            </div> --}}
-
-            <div class="text-center w-full rounded-2xl bg-bg-primary p-20">
+            <div class="text-center w-full rounded-2xl bg-bg-primary px-5 py-8 lg:p-20">
                 <div class="mb-6">
                     <div class="mx-auto flex flex-row items-center justify-center">
                         <span class="text-8xl pr-2.5">
@@ -294,9 +256,11 @@
                     </div>
                 </div>
 
-                <div class="px-15 py-10 bg-bg-secondary dark:bg-bg-light-black rounded-3xl">
-                    <div class="p-5 bg-bg-light-black shadow rounded-3xl">
-                        <h2 class="font-semibold text-text-primary text-2xl pb-5 text-left">Selling experience:</h2>
+                <div class="p-5 lg:px-15 lg:py-10 bg-bg-secondary dark:bg-bg-light-black rounded-2xl">
+
+                    <div class="p-5 bg-bg-light-black shadow rounded-2xl">
+                        <h2 class="font-semibold text-text-primary text-base  lg:text-2xl pb-5 text-left">Selling
+                            experience:</h2>
 
                         <div class="flex items-center gap-2 mb-3">
                             <input type="radio" wire:model="sellingExperience" value="new" id="new"
@@ -327,187 +291,7 @@
 
             {{-- Step 4: Personal/Company Details --}}
         @elseif($currentStep == 4)
-            {{-- <div>
-                <div class="text-center mb-8">
-                    <div class="flex items-center justify-center mb-2">
-                        <span class="text-zinc-500 text-2xl">✓</span>
-                        <h3 class="text-lg font-semibold ml-2">Seller ID verification</h3>
-                    </div>
-                    <p class="text-text-white">Step 3/7</p>
-                </div>
-
-                @if ($accountType == 'individual')
-                    <div class="dark:bg-bg-primary bg-bg-white max-w-2xl mx-auto py-4 px-8 mb-6">
-                        <h2 class="text-2xl font-semibold text-center font-lato mb-8">Enter your details</h2>
-
-                        <div class="max-w-md mx-auto space-y-4 mb-8">
-                            <div>
-                                <x-ui.label class="mb-2">First name</x-ui.label>
-                                <x-ui.input type="text" wire:model="firstName" placeholder="First name" />
-                                <x-ui.input-error :messages="$errors->get('firstName')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">Middle name (if present)</x-ui.label>
-                                <x-ui.input type="text" wire:model="middleName" placeholder="Middle name" />
-                                <x-ui.input-error :messages="$errors->get('middleName')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">Last name</x-ui.label>
-                                <x-ui.input type="text" wire:model="lastName" placeholder="Last name" />
-                                <x-ui.input-error :messages="$errors->get('lastName')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">Date of birth:</x-ui.label>
-                                <div class="grid grid-cols-3 gap-3">
-                                    <x-ui.select wire:model="birthYear" class="p-3 border rounded-lg">
-                                        <option value="">Year</option>
-                                        @for ($year = date('Y') - 18; $year >= 1950; $year--)
-                                            <option value="{{ $year }}">{{ $year }}</option>
-                                        @endfor
-                                    </x-ui.select>
-                                    <x-ui.select wire:model="birthMonth" class="p-3 border rounded-lg">
-                                        <option value="">Month</option>
-                                        @for ($month = 1; $month <= 12; $month++)
-                                            <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}">
-                                                {{ $month }}</option>
-                                        @endfor
-                                    </x-ui.select>
-                                    <x-ui.select wire:model="birthDay" class="p-3 border rounded-lg">
-                                        <option value="">Day</option>
-                                        @for ($day = 1; $day <= 31; $day++)
-                                            <option value="{{ str_pad($day, 2, '0', STR_PAD_LEFT) }}">
-                                                {{ $day }}</option>
-                                        @endfor
-                                    </x-ui.select>
-                                </div>
-                                <x-ui.input-error :messages="$errors->get('birthYear')" />
-                                <x-ui.input-error :messages="$errors->get('birthMonth')" />
-                                <x-ui.input-error :messages="$errors->get('birthDay')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">Nationality:</x-ui.label>
-                                <x-ui.select wire:model="nationality" class="w-full p-3 border rounded-lg">
-                                    <option value="">Select nationality</option>
-                                    <option value="BD">Bangladesh</option>
-                                    <option value="US">United States</option>
-                                    <option value="UK">United Kingdom</option>
-                                    <option value="IN">India</option>
-                                </x-ui.select>
-                                <x-ui.input-error :messages="$errors->get('nationality')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">Street address</x-ui.label>
-                                <x-ui.input type="text" wire:model="streetAddress"
-                                    class="w-full p-3 border rounded-lg" placeholder="Street address" />
-                                <x-ui.input-error :messages="$errors->get('streetAddress')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">City</x-ui.label>
-                                <x-ui.input type="text" wire:model="city" class="w-full p-3 border rounded-lg"
-                                    placeholder="City" />
-                                <x-ui.input-error :messages="$errors->get('city')" />
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <x-ui.label class="mb-2">Country</x-ui.label>
-                                    <x-ui.select wire:model="country" class="w-full p-3 border rounded-lg">
-                                        <option value="">Select country</option>
-                                        <option value="BD">Bangladesh</option>
-                                        <option value="US">United States</option>
-                                        <option value="UK">United Kingdom</option>
-                                    </x-ui.select>
-                                    <x-ui.input-error :messages="$errors->get('country')" />
-                                </div>
-                                <div>
-                                    <x-ui.label class="mb-2">Postal code</x-ui.label>
-                                    <x-ui.input type="text" wire:model="postalCode"
-                                        class="w-full p-3 border rounded-lg" placeholder="Postal code" />
-                                    <x-ui.input-error :messages="$errors->get('postalCode')" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @else
-                    <div class="dark:bg-bg-primary bg-bg-white max-w-2xl mx-auto py-4 px-8 mb-6">
-                        <h2 class="text-2xl font-bold text-center mb-8">Enter your company details</h2>
-
-                        <div class="max-w-md mx-auto space-y-4 mb-8">
-                            <div>
-                                <x-ui.label class="mb-2">Company name</x-ui.label>
-                                <x-ui.input type="text" wire:model="companyName"
-                                    class="w-full p-3 border rounded-lg" placeholder="Company name" />
-                                <x-ui.input-error :messages="$errors->get('companyName')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">Company code/ID</x-ui.label>
-                                <x-ui.input type="text" wire:model="companyCode"
-                                    class="w-full p-3 border rounded-lg" placeholder="Company code/ID" />
-                                <x-ui.input-error :messages="$errors->get('companyCode')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">VAT/Tax number (optional)</x-ui.label>
-                                <x-ui.input type="text" wire:model="vatNumber"
-                                    class="w-full p-3 border rounded-lg" placeholder="VAT/Tax number (optional)" />
-                                <x-ui.input-error :messages="$errors->get('vatNumber')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">Street address</x-ui.label>
-                                <x-ui.input type="text" wire:model="companyStreetAddress"
-                                    class="w-full p-3 border rounded-lg" placeholder="Street address" />
-                                <x-ui.input-error :messages="$errors->get('companyStreetAddress')" />
-                            </div>
-
-                            <div>
-                                <x-ui.label class="mb-2">City</x-ui.label>
-                                <x-ui.input type="text" wire:model="companyCity"
-                                    class="w-full p-3 border rounded-lg" placeholder="City" />
-                                <x-ui.input-error :messages="$errors->get('companyCity')" />
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <x-ui.label class="mb-2">Country</x-ui.label>
-                                    <x-ui.select wire:model="companyCountry" class="w-full p-3 border rounded-lg">
-                                        <option value="">Select country</option>
-                                        <option value="BD">Bangladesh</option>
-                                        <option value="US">United States</option>
-                                    </x-ui.select>
-                                    <x-ui.input-error :messages="$errors->get('companyCountry')" />
-                                </div>
-                                <div>
-                                    <x-ui.label class="mb-2">Postal code</x-ui.label>
-                                    <x-ui.input type="text" wire:model="companyPostalCode"
-                                        class="w-full p-3 border rounded-lg" placeholder="Postal code" />
-                                    <x-ui.input-error :messages="$errors->get('companyPostalCode')" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
-
-                <div class="flex justify-center space-x-4">
-                    <button wire:click="previousStep" class="px-8 py-2  rounded-lg hover:bg-gray-50">
-                        BACK
-                    </button>
-                    <button wire:click="nextStep"
-                        class="px-8 py-2 bg-zinc-600 text-white rounded-lg hover:bg-zinc-700">
-                        NEXT STEP
-                    </button>
-                </div>
-            </div> --}}
-
-            <div class="text-center w-full rounded-2xl bg-bg-primary p-20">
+            <div class="text-center w-full rounded-2xl bg-bg-primary px-5 py-8 lg:p-20">
                 <div class="mb-6">
                     <div class="mx-auto flex flex-row items-center justify-center">
                         <span class="text-8xl pr-2.5">
@@ -520,9 +304,11 @@
                     </div>
                 </div>
 
-                <div class="px-15 py-10 bg-bg-secondary dark:bg-bg-light-black rounded-3xl">
+                <div class="p-5 lg:px-15 lg:py-10 bg-bg-secondary dark:bg-bg-light-black rounded-2xl">
+
                     @if ($accountType == 'individual')
-                        <h2 class="text-2xl font-semibold text-center font-lato mb-8">Enter your details</h2>
+
+
 
                         <div class="w-full mx-auto space-y-4 mb-8">
                             <div>
@@ -618,8 +404,6 @@
                             </div>
                         </div>
                     @else
-                        <h2 class="text-2xl font-bold text-center mb-8">Enter your company details</h2>
-
                         <div class="max-w-md mx-auto space-y-4 mb-8">
                             <div>
                                 <x-ui.label class="mb-2">Company name</x-ui.label>
@@ -693,7 +477,7 @@
 
             {{-- Step 5: Upload ID Document --}}
         @elseif($currentStep == 5)
-            <div class="text-center w-full rounded-2xl bg-bg-primary p-20">
+            <div class="text-center w-full rounded-2xl bg-bg-primary px-5 py-8 lg:p-20">
                 <div class="mb-6">
                     <div class="mx-auto flex flex-row items-center justify-center">
                         <span class="text-8xl pr-2.5">
@@ -706,9 +490,11 @@
                     </div>
                 </div>
 
-                <div class="px-15 py-10 bg-bg-secondary dark:bg-bg-light-black rounded-3xl">
+                <div class="p-5 lg:px-15 lg:py-10 bg-bg-secondary dark:bg-bg-light-black rounded-2xl">
+
                     @if ($accountType == 'individual')
-                        <h2 class="text-xl font-semibold text-center mb-8">Take a photo of your ID and eldorado.gg in
+                        <h2 class="text-base lg:text-xl font-semibold  mb-8 text-left">Take a photo of your
+                            ID and eldorado.gg in
                             <br>
                             background
                         </h2>
@@ -736,16 +522,16 @@
                             </ul>
 
                             <div
-                                class="flex items-center  max-w-88 mx-auto bg-white border border-zinc-100 rounded-lg overflow-hidden">
+                                class="flex items-center  max-w-88 mx-auto  rounded-lg overflow-hidden">
                                 <input type="file" wire:model="idDocument" accept="image/*" class="hidden"
                                     id="idDocument">
 
                                 <label for="idDocument"
-                                    class="shrink-0 px-6 py-1.5 bg-black text-white font-semibold rounded-l-lg hover:bg-gray-800 cursor-pointer transition duration-150 ease-in-out">
+                                    class="shrink-0 px-6 py-1.5 bg-zinc-600 text-white font-semibold rounded-3xl hover:bg-gray-800 cursor-pointer transition duration-150 ease-in-out">
                                     Choose file
                                 </label>
 
-                                <div class="p-2 text-sm text-gray-500 truncate">
+                                <div class="p-2 text-sm text-primary-100 truncate w-full bg-bg-light-black shadow rounded-sm ml-2 text-left">
                                     @if ($idDocument)
                                         {{ $idDocument->getClientOriginalName() }}
                                     @else
@@ -753,6 +539,7 @@
                                     @endif
                                 </div>
                             </div>
+                            
                             <p class="text-xs text-text-white text-center mt-2">Must be JPEG, PNG or HEIC and cannot
                                 exceed
                                 10MB.
@@ -762,7 +549,7 @@
                             @enderror
                         </div>
                     @else
-                        <h2 class="text-xl font-semibold text-center mb-8">
+                        <h2 class="text-base lg:text-xl font-semibold  mb-8 text-left">
                             Take a photo of ultimate beneficial owner ID
                         </h2>
 
@@ -791,16 +578,16 @@
                             </ul>
 
                             <div
-                                class="flex items-center max-w-88 mx-auto bg-white border border-zinc-100 rounded-lg overflow-hidden">
+                                class="flex items-center max-w-88 mx-auto border border-zinc-100 rounded-lg overflow-hidden">
                                 <input type="file" wire:model="ultimateBeneficialOwnerIdDocument" accept="image/*"
                                     class="hidden" id="ultimateBeneficialOwnerIdDocument">
 
                                 <label for="ultimateBeneficialOwnerIdDocument"
-                                    class="shrink-0 px-6 py-1.5 bg-black text-white font-semibold rounded-l-lg hover:bg-gray-800 cursor-pointer transition duration-150 ease-in-out">
+                                    class="shrink-0 px-6 py-1.5 bg-zinc-600 text-white font-semibold rounded-3xl hover:bg-gray-800 cursor-pointer transition duration-150 ease-in-out">
                                     Choose file
                                 </label>
 
-                                <div class="p-2 text-sm text-gray-500 truncate">
+                                <div class="p-2 text-sm text-primary-100 truncate w-full bg-bg-light-black shadow rounded-sm ml-2 text-left">
                                     @if (isset($ultimateBeneficialOwnerIdDocument))
                                         {{ $ultimateBeneficialOwnerIdDocument->getClientOriginalName() }}
                                     @else
@@ -833,7 +620,7 @@
 
             {{-- Step 6: Selfie with ID (Individual) or Company Documents --}}
         @elseif($currentStep == 6)
-            <div class="text-center w-full rounded-2xl bg-bg-primary p-20">
+            <div class="text-center w-full rounded-2xl bg-bg-primary px-5 py-8 lg:p-20">
                 <div class="mb-6">
                     <div class="mx-auto flex flex-row items-center justify-center">
                         <span class="text-8xl pr-2.5">
@@ -846,9 +633,10 @@
                     </div>
                 </div>
 
-                <div class="px-15 py-10 bg-bg-secondary dark:bg-bg-light-black rounded-3xl">
+                <div class="p-5 lg:px-15 lg:py-10 bg-bg-secondary dark:bg-bg-light-black rounded-2xl">
                     @if ($accountType == 'individual')
-                        <h2 class="text-xl leading-2 font-semibold text-center mb-4">Take a selfie with your ID</h2>
+                        <h2 class="text-base lg:text-xl leading-2 font-semibold  mb-4 text-left">Take a selfie with
+                            your ID</h2>
 
                         <div class="flex justify-center mb-6">
                             <img src="{{ asset('assets/images/verification-selfie.webp') }}"
@@ -868,14 +656,22 @@
                         </ul>
 
                         <div
-                            class="flex items-center max-w-md mx-auto bg-white border border-zinc-200 rounded-lg overflow-hidden">
+                            class="flex items-center max-w-md mx-auto  rounded-lg overflow-hidden">
                             <input type="file" wire:model="selfieWithId" accept="image/*" class="hidden"
                                 id="selfieWithId">
 
                             <label for="selfieWithId"
-                                class="shrink-0 px-6 py-2 bg-black text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
+                                class="shrink-0 px-6 py-2 bg-zinc-600 rounded-3xl text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
                                 Choose file
                             </label>
+                            
+                                <div class="p-2 text-sm w-full text-primary-100 truncate w-full bg-bg-light-black shadow rounded-sm ml-2 text-left">
+                                    @if ($selfieWithId)
+                                        {{ $idDocument->getClientOriginalName() }}
+                                    @else
+                                        No file selected
+                                    @endif
+                                </div>
                         </div>
 
                         <p class="text-xs text-center text-gray-500 mt-3">
@@ -886,7 +682,7 @@
                             <p class="text-red-500 text-sm text-center mt-2">{{ $message }}</p>
                         @enderror
                     @else
-                        <h2 class="text-2xl font-bold text-center mb-6">Upload company documents</h2>
+                        <h2 class="text-base lg:text-2xl font-bold text-left mb-6">Upload company documents</h2>
 
                         <div class="max-w-2xl mx-auto mb-8">
                             <p class="text-gray-600 mb-6 text-center">
@@ -935,7 +731,7 @@
                                     accept=".jpg,.jpeg,.png,.heic,.pdf,.docx" multiple class="hidden"
                                     id="companyDocuments">
                                 <label for="companyDocuments"
-                                    class="shrink-0 px-6 py-2 bg-black flex justify-center w-40 rounded-lg mx-auto text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
+                                    class="shrink-0 px-6 py-2 bg-zinc-600 flex justify-center w-40 rounded-lg mx-auto text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
                                     Choose file
                                 </label>
                                 @if (!empty($companyDocuments))
@@ -957,7 +753,8 @@
                 </div>
 
                 <div class="flex justify-center space-x-4 pt-10">
-                    <button wire:click="previousStep" class="px-8 py-2  hover:text-gray-700 rounded-lg hover:bg-gray-50">
+                    <button wire:click="previousStep"
+                        class="px-8 py-2  hover:text-gray-700 rounded-lg hover:bg-gray-50">
                         BACK
                     </button>
                     <button wire:click="submit" class="px-8 py-2 bg-zinc-500 text-white rounded-lg hover:bg-zinc-700"
