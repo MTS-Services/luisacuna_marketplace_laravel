@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Backend\Admin\GameManagement;
 use App\Http\Controllers\Controller;
 use App\Models\GamePlatform;
 use App\Services\GamePlatformService;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-
-class GamePlatformController extends Controller
+class GamePlatformController extends Controller implements HasMiddleware
 {
+    public $masterView = 'backend.admin.pages.game-management.platform';
     //
     protected GamePlatformService $service;
 
@@ -17,7 +19,22 @@ class GamePlatformController extends Controller
     {
         $this->service = $service;
     }
-    public $masterView = 'backend.admin.pages.game-management.platform';
+
+    public static function middleware(): array
+        {
+            return [
+                'auth:admin', // Applies 'auth:admin' to all methods
+
+                // Permission middlewares using the Middleware class
+                new Middleware('permission:admin-list', only: ['index']),
+                new Middleware('permission:admin-create', only: ['create']),
+                new Middleware('permission:admin-edit', only: ['edit']),
+                new Middleware('permission:admin-show', only: ['show']),
+                new Middleware('permission:admin-trash', only: ['trash']),
+            ];
+        }
+
+
     public function index()
     {
         return view($this->masterView);

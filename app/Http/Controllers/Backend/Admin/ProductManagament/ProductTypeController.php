@@ -6,11 +6,30 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\ProductTypeService;
 
-class ProductTypeController extends Controller
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
+
+class ProductTypeController extends Controller implements HasMiddleware
 {
     protected $masterView = 'backend.admin.pages.product-management.productType';
 
     public function __construct(protected ProductTypeService $service) {}
+
+
+    public static function middleware(): array
+        {
+            return [
+                'auth:admin', // Applies 'auth:admin' to all methods
+
+                // Permission middlewares using the Middleware class
+                new Middleware('permission:admin-list', only: ['index']),
+                new Middleware('permission:admin-create', only: ['create']),
+                new Middleware('permission:admin-edit', only: ['edit']),
+                new Middleware('permission:admin-show', only: ['show']),
+                new Middleware('permission:admin-trash', only: ['trash']),
+            ];
+        }
+
 
     public function index()
     {
