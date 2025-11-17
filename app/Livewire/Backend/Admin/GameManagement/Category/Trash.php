@@ -29,11 +29,16 @@ class Trash extends Component
     public function render()
     {
         $columns = [
-            // [
-            //     'key' => 'id',
-            //     'label' => 'ID',
-            //     'sortable' => true
-            // ],
+          
+              [
+                'key' => 'icon',
+                'label' => 'icon',
+                'format' => function ($data) {
+                    return $data->icon
+                        ? '<img src="' . $data->icon . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
+                }
+            ],
             [
                 'key' => 'name',
                 'label' => 'Name',
@@ -44,25 +49,19 @@ class Trash extends Component
                 'label' => 'Slug',
                 'sortable' => true
             ],
-            // [
-            //     'key' => 'status',
-            //     'label' => 'Status',
-            //     'sortable' => true,
-            //     'format' => function ($admin) {
-            //         $colors = [
-            //             'active' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-            //             'inactive' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-            //             'suspended' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-            //         ];
-            //         $color = $colors[$admin->status->value] ?? 'bg-gray-100 text-gray-800';
-            //         return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' .
-            //             ucfirst($admin->status->value) .
-            //             '</span>';
-            //     }
-            // ],
+            [
+                'key' => 'status',
+                'label' => 'Status',
+                'sortable' => true,
+                'format' => function ($data) {
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
+                        $data->status->label() .
+                        '</span>';
+                }
+            ],
             [
                 'key' => 'deleted_at',
-                'label' => 'Deleted Date',
+                'label' => 'Deleted',
                 'sortable' => true,
                 'format' => function ($data) {
                     return $data->deleted_at_formatted;
