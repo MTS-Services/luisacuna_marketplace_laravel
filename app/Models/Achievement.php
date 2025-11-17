@@ -12,8 +12,7 @@ use Laravel\Scout\Attributes\SearchUsingPrefix;
 
 class Achievement extends BaseModel implements Auditable
 {
-    use   Searchable, AuditableTrait;
-    //
+    use Searchable, AuditableTrait;
 
     protected $fillable = [
         'sort_order',
@@ -25,10 +24,6 @@ class Achievement extends BaseModel implements Auditable
         'target_value',
         'point_reward',
         'status',
-
-
-
-
 
         'created_by',
         'updated_by',

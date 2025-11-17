@@ -19,9 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('sort_order')->default(0);
             $table->string('name')->unique();
             $table->string('slug')->unique();
-            $table->unsignedBigInteger('minimum_points');
+            $table->unsignedBigInteger('minimum_points')->nullable();
             $table->unsignedBigInteger('maximum_points')->nullable();
-            $table->string('icon');
+            $table->string('icon')->nullable();
             $table->string('status')->default(RankStatus::ACTIVE->value);
             $table->boolean('initial_assign')->default(false);
             $table->softDeletes();

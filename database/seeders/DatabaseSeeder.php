@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Admin;
-
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,7 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleSeeder::class,
-            // PermissionSeeder::class,
+            PermissionSeeder::class,
             CountrySeeder::class,
             AdminSeeder::class,
             RoleHasPermissionSeeder::class,
@@ -47,6 +45,9 @@ class DatabaseSeeder extends Seeder
             RankSeeder::class,
             UserRankSeeder::class,
             AchievementSeeder::class,
+            GameServerSeeder::class,
+            DeliveryMethodSeeder::class,
+            OfferItemSeeder::class,
         ]);
 
         // Admin::create([

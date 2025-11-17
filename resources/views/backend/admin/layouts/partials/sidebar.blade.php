@@ -92,6 +92,12 @@
                         'active' => 'game-category',
                     ],
                     [
+                        'name' => 'Game Servers',
+                        'route' => route('admin.gm.server.index'),
+                        'icon' => 'swords',
+                        'active' => 'game-server',
+                    ],
+                    [
                         'name' => 'Platforms',
                         'route' => route('admin.gm.platform.index'),
                         'icon' => 'swords',
@@ -143,6 +149,15 @@
                     //     'icon' => 'user-round-x',
                     //     'active' => 'admin-users-banned',
                     // ],
+                ]" />
+            <x-backend.navlink type="dropdown" icon="gift" name="Offer Item Management" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'Offer Items',
+                        'route' => route('admin.om.offer.index'),
+                        'icon' => 'gift',
+                        'active' => 'offer-item',
+                    ],
                 ]" />
 
             <x-backend.navlink type="dropdown" icon="user-group" name="Reward Management" :page_slug="$active"

@@ -23,13 +23,12 @@ class RankFactory extends Factory
         $faker = Faker::create();
         $name =substr($faker->unique()->name(),0,10);
         return [
-            //
             'name'  => $name,
             'slug'  => Str::slug($name),
             'status' => fake()->randomElement(RankStatus::cases()),
             'minimum_points' => $faker->numberBetween(500, 1000),
             'created_by' => Admin::inRandomorder()->value('id'),
-            'icon' => $faker->imageUrl(200, 200),
+            'icon' => 'https://placehold.co/800?text=Hello+World&font=roboto',
 
         ];
     }

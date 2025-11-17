@@ -6,6 +6,7 @@ use App\Enums\AdminStatus;
 use App\Enums\OtpType;
 use App\Models\AuthBaseModel;
 use App\Traits\AuditableTrait;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
@@ -16,7 +17,7 @@ class Admin extends AuthBaseModel implements Auditable
 {
     use TwoFactorAuthenticatable, AuditableTrait, Searchable, HasRoles;
     
-    protected $guard = 'admin';
+    protected $guard_name = 'admin';
 
     protected $fillable = [
         'sort_order',
@@ -35,8 +36,6 @@ class Admin extends AuthBaseModel implements Auditable
         'two_factor_recovery_codes',
         'last_login_at',
         'last_login_ip',
-
-        
 
         'created_by',
         'updated_by',
@@ -78,6 +77,11 @@ class Admin extends AuthBaseModel implements Auditable
     public function role()
     {
         return $this->belongsTo(Role::class,'role_id','id');
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(TestMultiImage::class,'admin_id','id');
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

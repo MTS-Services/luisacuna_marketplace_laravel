@@ -30,6 +30,24 @@
             <livewire:frontend.frontend.faq />
         @break
 
+        @case('terms-and-conditions')
+            <x-slot name="title">{{ __('Terms & Conditions') }}</x-slot>
+            <x-slot name="pageSlug">{{ __('terms-and-conditions') }}</x-slot>
+            <livewire:frontend.frontend.terms-conditions />
+        @break
+
+        @case('refund-policy')
+            <x-slot name="title">{{ __('refund policy') }}</x-slot>
+            <x-slot name="pageSlug">{{ __('refund-policy') }}</x-slot>
+            <livewire:frontend.frontend.refund-policy />
+        @break
+
+        @case('contact-us')
+            <x-slot name="title">{{ __('Contact') }}</x-slot>
+            <x-slot name="pageSlug">{{ __('Contact Us') }}</x-slot>
+            <livewire:frontend.frontend.contact-us />
+        @break
+
         @default
     @endswitch
 

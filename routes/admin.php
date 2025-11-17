@@ -12,6 +12,8 @@ use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\GameManagement\GamePlatformController;
+use App\Http\Controllers\Backend\Admin\GameManagement\GameServerController;
+use App\Http\Controllers\Backend\Admin\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductTypeController;
 use App\Http\Controllers\Backend\Admin\ReviewManagement\PageViewController;
@@ -53,6 +55,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
 
     // Game
     Route::group(['prefix' => 'game-management', 'as' => 'gm.'], function () {
+      
         Route::controller(CategoryController::class)->name('category.')->prefix('category')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
@@ -61,6 +64,10 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/trash', 'trash')->name('trash');
         });
         
+        Route::controller(GameServerController::class)->name('server.')->prefix('game-server')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+        });
         Route::controller(GamePlatformController::class)->name('platform.')->prefix('game-platform')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
@@ -167,6 +174,12 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/edit/{id}', 'edit')->name('edit');
             Route::get('/view/{id}', 'view')->name('view');
             Route::get('/trash', 'trash')->name('trash');
+        });
+    });
+
+    Route::group(['offer-management', 'as' => 'om.'], function () {
+        Route::controller(OfferController::class)->name('offer.')->prefix('offer-management')->group(function () {
+            Route::get('/', 'index')->name('index');
         });
     });
 });

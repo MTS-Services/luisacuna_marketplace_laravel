@@ -4,59 +4,30 @@ namespace Database\Seeders;
 
 use App\Enums\AchievementStatus;
 use App\Models\Achievement;
+use App\Models\Category;
+use App\Models\Rank;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Str;
+use Faker\Factory as Faker;
 
 class AchievementSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        Achievement::insert([
-            [
-                'sort_order'   => 1,
-                'rank_id'      => 1,
-                'icon'         => 'icons/achievement1.png',
-                'title'        => 'First Achievement',
-                'description'  => 'This is the first sample achievement.',
-                'category_id'  => 1,
-                'target_value' => 100,
-                'point_reward' => 50,
-                'status'       => AchievementStatus::ACTIVE->value,
-                'created_by'   => 1,
-                'created_at'   => now(),
-                'updated_at'   => now(),
-            ],
-            [
-                'sort_order'   => 2,
-                'rank_id'      => 1,
-                'icon'         => 'icons/achievement2.png',
-                'title'        => 'Pro Level Achievement',
-                'description'  => 'This is the second sample achievement.',
-                'category_id'  => 1,
-                'target_value' => 200,
-                'point_reward' => 100,
-                'status'       => AchievementStatus::ACTIVE->value,
-                'created_by'   => 1,
-                'created_at'   => now(),
-                'updated_at'   => now(),
-            ],
-            [
-                'sort_order'   => 3,
-                'rank_id'      => 1,
-                'icon'         => null,
-                'title'        => 'Beginner Milestone',
-                'description'  => 'Achievement for beginners.',
-                'category_id'  => 1,
-                'target_value' => 50,
-                'point_reward' => 25,
-                'status'       => AchievementStatus::ACTIVE->value,
-                'created_by'   => 1,
-                'created_at'   => now(),
-                'updated_at'   => now(),
-            ]
-        ]);
+        $facker = Faker::create();
+        $ranks = Rank::all();
+        $categories = Category::all();
+        for ($i = 1; $i <= $ranks->count(); $i++) {
+            for ($j = 1; $j <= $categories->count(); $j++) {
+                Achievement::create([
+                    "rank_id" => $i,
+                    "title" => $facker->name(),
+                    "description" => $facker->sentence(15),
+                    "category_id" => $j,
+                    "target_value" => rand(1, 100),
+                    "point_reward" => rand(50, 200),
+                ]);
+            }
+        }
     }
 }
