@@ -96,38 +96,50 @@
 
             {{-- Verification Required Page --}}
         @elseif($currentStep == 0)
-            <div class="text-center">
+            <div class="text-center w-full rounded-2xl bg-bg-primary p-20">
                 <div class="mb-6">
-                    <div class="mx-auto w-32 h-32 flex items-center justify-center">
-                        <span class="text-8xl">🔍</span>
+                    <div class="mx-auto flex flex-row items-center justify-center">
+                        <span class="text-8xl pr-2.5">
+                            <flux:icon name="shield-check" class="stroke-zinc-500"></flux:icon>
+                        </span>
+                        <p class="font-semibold text-base ">Seller ID verification</p>
+                    </div>
+                    <div class="text-sm text-text-primary font-normal pt-2">
+                        Step <span>1</span>/<span>7</span>
                     </div>
                 </div>
 
-                <h2 class="text-2xl font-bold dark:text-text-white text-zinc-500/80 mb-4">Seller verification required
-                </h2>
+                <div class="px-15 py-10 bg-bg-secondary dark:bg-bg-light-black rounded-3xl" >
+                    <div class="p-5 bg-bg-light-black shadow rounded-3xl">
+                        <h2 class="font-semibold text-text-primary text-2xl pb-5">Will you sell on Eldorado as an
+                            individual or as a company?</h2>
 
-                <p class="dark:text-text-white text-zinc-500/50 mb-2">To sell currencies, please verify your identity
-                    first.</p>
-                <p class="dark:text-text-white text-zinc-500/50 mb-8">Our 24/7 support team will review your ID in up to
-                    15 minutes.</p>
+                        <div class="flex items-center gap-2 mb-3">
+                            <input type="radio" name="accountType" id="individal" class="accent-pink-500">
+                            <label for="individal">Individal</label>
+                        </div>
 
-                <button class="bg-bg-primary rounded-lg p-6 mb-6 " wire:click="startVerification">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-12 h-12 rounded-full flex items-center justify-center">
-                            <img src="{{ asset('assets/images/verification.svg') }}" alt="">
+                        <div class="flex items-center gap-2">
+                            <input type="radio" name="accountType" id="company" class="accent-pink-500">
+                            <label for="company">Company</label>
                         </div>
-                        <div class="flex-1 text-left">
-                            <p class="font-semibold">Seller Verification</p>
-                            <span class="inline-block px-3 py-1 bg-pink-500 text-white text-sm rounded-full">Documents
-                                required</span>
-                        </div>
-                        <x-phosphor-caret-right class="w-6 h-6 fill-zinc-500" />
                     </div>
-                </button>
+                </div>
 
-
-                <a href="#" class="block mt-4 text-zinc-600/80 hover:underline">Why do I need to verify my ID?</a>
+              <div class="flex justify-center space-x-4 pt-10">
+                    <a href="{{ route('home') }}" class="px-8 py-2 text-text-white  rounded-lg hover:bg-gray-50">
+                        BACK
+                    </a>
+                    <button wire:click="nextStep"
+                        class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
+                        NEXT
+                    </button>
+                </div>
+                
             </div>
+
+
+
 
             {{-- Step 1: Individual or Company --}}
         @elseif($currentStep == 1)
@@ -144,17 +156,26 @@
                         Will you sell on Eldorado as an individual or as a <br> company?
                     </h2>
 
-                    <div class="flex flex-col items-center justify-center space-y-3">
+                    <div class="flex flex-col items-center justify-center space-y-3 pl-2">
                         <label class="flex items-center cursor-pointer">
-                            <input type="radio" wire:model="accountType" value="individual"
-                                class="w-5 h-5 text-zinc-600">
-                            <span class="ml-3 text-lg">Individual</span>
+                            <input type="radio" wire:model="accountType" value="individual" class="peer sr-only">
+
+                            <!-- Custom radio circle -->
+                            <div
+                                class="w-5 h-5 rounded-full border-2 border-zinc-600
+                peer-checked:border-zinc-600
+                peer-checked:bg-zinc-600
+                transition">
+                            </div>
+
+                            <span class="ml-3 text-base text-primary font-normal">Individual</span>
                         </label>
+
 
                         <label class="flex items-center cursor-pointer">
                             <input type="radio" wire:model="accountType" value="company"
                                 class="w-5 h-5 text-zinc-600">
-                            <span class="ml-3 text-lg">Company</span>
+                            <span class="ml-3 text-base text-primary font-normal ">Company</span>
                         </label>
                     </div>
                 </div>
