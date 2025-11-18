@@ -2,11 +2,12 @@
 
 namespace App\Livewire\Backend\Admin\GameManagement\Platform;
 
-use App\Enums\GamePlatformStatus;
-use App\Livewire\Forms\Backend\Admin\GameManagement\GamePlatformForm;
-use App\Models\GamePlatform;
-use App\Services\GamePlatformService;
+use App\Enums\PlatformStatus;
+use App\Livewire\Forms\PlatformForm;
+use App\Models\Platform;
+use App\Services\PlatformService;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -15,26 +16,28 @@ class Edit extends Component
 {
 
     use WithNotification, WithFileUploads;
-    public GamePlatformForm $form;
-    public GamePlatform $data;
-    protected GamePlatformService $service;
+    public PlatformForm $form;
+    public ?string $existingFile;
+    public Platform $data;
+    protected PlatformService $service;
 
-    public function boot(GamePlatformService $service)
+    public function boot(PlatformService $service)
     {
         $this->service = $service;
     }
-    public function mount(GamePlatform $data)
+    public function mount(Platform $data)
     {
         $this->data = $data;
-
+        $this->existingFile = $data->icon;
         $this->form->setData($data);
+
     }
     public function render()
     {
         return view(
             'livewire.backend.admin.game-management.platform.edit',
             [
-                'statuses' => GamePlatformStatus::options(),
+                'statuses' => PlatformStatus::options(),
             ]
         );
     }
@@ -44,14 +47,11 @@ class Edit extends Component
      */
     public function save()
     {
-        $this->form->validate();
+        $data = $this->form->validate();
         try {
-            $data = $this->form->fillables();
-
+          
             $data['updated_by'] = admin()->id;
 
-            if(! isset($data['slug'])) $data['slug'] = Str::slug($data['name']);
-           
             $this->service->updateData($this->data->id, $data);
 
             $this->success('Data updated successfully.');
@@ -59,7 +59,8 @@ class Edit extends Component
             return $this->redirect(route('admin.gm.platform.index'), navigate: true);
         } catch (\Exception $e) {
 
-          
+            Log::error("Faild to Update Data". $e->getMessage());
+            
             $this->error('Failed to update data');
         }
     }
@@ -74,5 +75,15 @@ class Edit extends Component
 
         return $this->redirect(route('admin.as.currency.index'), navigate: true);
 
+    }
+
+       public function resetForm(): void
+    {
+        $this->form->reset();
+        $this->form->setData($this->data);
+        // $this->existingFile = $this->data->icon;
+        $this->existingFile = $this->data->avatar;
+    
+        $this->dispatch('file-input-reset');
     }
 }

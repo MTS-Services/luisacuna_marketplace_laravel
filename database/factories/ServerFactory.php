@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\ServerStatus;
+use App\Models\Admin;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,6 +21,7 @@ class ServerFactory extends Factory
         return [
             'name'  => $this->faker->unique()->name(),
             'status' => $this->faker->randomElement(ServerStatus::cases()),
+             'created_by' => Admin::inRandomorder()->value('id'),
         ];
     }
 }

@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\GamePlatform;
+use App\Models\Platform;
 use Illuminate\Database\Seeder;
 
-class GamePlatformSeeder extends Seeder
+class PlatformSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,6 +13,6 @@ class GamePlatformSeeder extends Seeder
     public function run(): void
     {
         //
-        GamePlatform::factory(10)->create();
+        Platform::factory(10)->create();
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Backend\Admin\GameManagement\Platform;
 
-use App\Enums\GamePlatformStatus;
-use App\Models\GamePlatform;
-use App\Services\GamePlatformService;
+use App\Enums\PlatformStatus;
+use App\Models\Platform;
+use App\Services\PlatformService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -22,8 +22,8 @@ class Trash extends Component
     public $bulkAction = '';
     public $showBulkActionModal = false;
     public $selectedId = null ;
-    protected GamePlatformService $service;
-    public function boot(GamePlatformService $service)
+    protected PlatformService $service;
+    public function boot(PlatformService $service)
     {
 
         $this->service = $service;
@@ -38,13 +38,13 @@ class Trash extends Component
             filters: $this->getFilters()
         )->load('creater_admin');
         $columns = [
-             [
-                'key' => 'icon',
-                'label' => 'Icon',
-                'format' => function($data){
-
-                    return '<img src="'.Storage::url($data->icon).'" alt="'.$data->name.'" class="w-10 h-10 rounded-full object-cover shadow-sm">';
-
+           [
+                'key' => 'avatar',
+                'label' => 'Avatar',
+                'format' => function ($data) {
+                    return $data->icon
+                        ? '<img src="' . Storage::url($data->icon) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
                 }
             ],
             [
@@ -53,11 +53,11 @@ class Trash extends Component
                 'sortable' => true
             ],
             [
-                'key' => 'color_code_hex',
+                'key' => 'color',
                 'label' => 'Color',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return  $data->color_code_hex ?? 'N/A';
+                    return  $data->color ?? 'N/A';
                 }
             ],
             [
@@ -71,18 +71,18 @@ class Trash extends Component
                 }
             ],
             [
-                'key' => 'created_at',
-                'label' => 'Created Date',
+                'key' => 'deleted_at',
+                'label' => 'Deleted',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return $data->created_at_formatted;
+                    return $data->deleted_at_formatted;
                 }
             ],
             [
-                'key' => 'created_by',
-                'label' => 'Created By',
+                'key' => 'deleted_by',
+                'label' => 'Deleted By',
                 'format' => function ($data) {
-                    return $data->creater_admin?->name ?? 'System';
+                    return $data->deleter_admin?->name ?? 'System';
                 }
             ],
         ];
@@ -110,7 +110,7 @@ class Trash extends Component
         return view('livewire.backend.admin.game-management.platform.trash', [
            
             'datas' => $datas,
-            'statuses' => GamePlatformStatus::options(),
+            'statuses' => PlatformStatus::options(),
             'columns' => $columns,
             'actions' => $actions,
             'bulkActions' => $bulkActions,

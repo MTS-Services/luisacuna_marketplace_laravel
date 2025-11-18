@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CategorySeeder::class,
             ServerSeeder::class,
-            GamePlatformSeeder::class,
+            PlatformSeeder::class,
             GameSeeder::class,
             ApplicationSettingSeeder::class,
 
