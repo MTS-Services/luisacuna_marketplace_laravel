@@ -2,18 +2,20 @@
     class="sticky top-0 z-50  {{ request()->routeIs('home') ? 'bg-linear-to-r from-zinc-950/50 via-text-text-white to-zinc-950/50 glass-card shadow-none!' : 'glass-card' }}">
     <div class=" px-4 py-4 flex items-center justify-between relative"
         x-cloak>
-        <div class="xl:flex hidden">
+      <div class="flex flex-row-reverse items-center justify-center">
+          <div class="flex ml-4 lg:ml-0 scale-75 xl:scale-100">
             <a href="{{ route('home') }}">
                 <img src="{{ asset('assets/images/header_logo.png') }}" alt=""></a>
         </div>
         {{-- Mobile menu button --}}
         <button @click="mobileMenuOpen = !mobileMenuOpen"
-            class="xl:hidden  inline-flex items-center justify-center p-2 rounded-md text-text-secondary hover:text-text-text-white hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-text-text-text-white">
+            class="xl:hidden  bg-bg-light-black inline-flex items-center justify-center p-2 rounded-md text-text-secondary hover:text-text-text-white hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-text-text-text-white">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
         </button>
+      </div>
         @include('partials.user-navigation')
 
         {{-- Main Navigation Icons --}}
@@ -47,7 +49,7 @@
 
             <div class="flex items-center" x-data>
 
-                <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-full">
+                <div class="flex bg-zinc-200 dark:bg-zinc-800 lg:p-1 rounded-full">
                     <!-- Light/Dark Mode Toggle -->
                     <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
                         class="flex items-center justify-center w-8 h-6 text-lg rounded-l-full transition-colors duration-200 hidden lg:flex"
@@ -61,12 +63,12 @@
                         <flux:icon name="moon" class="w-5 h-5 stroke-current" />
                     </button>
 
-                    <div x-show="$flux.dark" class="lg:hidden">
+                    {{-- <div x-show="$flux.dark" class="lg:hidden">
                         <flux:icon name="moon" class="w-5 h-5 stroke-current" @click="$flux.dark = false" />
                     </div>
                     <div x-show="!$flux.dark" class="lg:hidden">
                         <flux:icon name="sun" class="w-5 h-5 stroke-current" @click="$flux.dark = true" />
-                    </div>
+                    </div> --}}
                 </div>
 
                 @auth
