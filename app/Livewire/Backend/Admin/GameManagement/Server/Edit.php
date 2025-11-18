@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Backend\Admin\GameManagement\GameServer;
 
-use App\Enums\GameServerStatus;
-use App\Livewire\Forms\Backend\Admin\GameManagement\GameServerForm;
-use App\Models\GameServer;
-use App\Services\GameServerService;
+use App\Enums\ServerStatus;
+use App\Livewire\Forms\Backend\Admin\GameManagement\ServerForm;
+use App\Models\Server;
+use App\Services\ServerService;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -14,14 +14,14 @@ class Edit extends Component
 {
  use WithNotification, WithFileUploads;
 
-    public GameServerForm $form;
-    public GameServer $data;
-    protected GameServerService $service;
+    public ServerForm $form;
+    public Server $data;
+    protected ServerService $service;
 
     /**
      * Inject the CurrencyService via the boot method.
      */
-    public function boot(GameServerService $service): void
+    public function boot(ServerService $service): void
     {
         $this->service = $service;
     }
@@ -29,7 +29,7 @@ class Edit extends Component
     /**
      * Initialize default form values.
      */
-    public function mount(GameServer $data): void
+    public function mount(Server $data): void
     {
         $this->form->setData($data);
         $this->data = $data;
@@ -41,7 +41,7 @@ class Edit extends Component
     public function render()
     {
         return view('livewire.backend.admin.game-management.game-server.edit', [
-            'statuses' => GameServerStatus::options(),
+            'statuses' => ServerStatus::options(),
         ]);
     }
 

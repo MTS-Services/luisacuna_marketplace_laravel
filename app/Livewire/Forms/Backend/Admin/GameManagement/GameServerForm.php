@@ -8,7 +8,7 @@ use Illuminate\Http\UploadedFile;
 use Livewire\Attributes\Locked;
 use Livewire\Form;
 
-class GameServerForm extends Form
+class ServerForm extends Form
 {
 
 

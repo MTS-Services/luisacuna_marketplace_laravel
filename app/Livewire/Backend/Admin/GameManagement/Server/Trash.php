@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Backend\Admin\GameManagement\GameServer;
 
-use App\Enums\GameServerStatus;
+use App\Enums\ServerStatus;
 use App\Models\GameServer;
-use App\Services\GameServerService;
+use App\Services\ServerService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -21,9 +21,9 @@ class Trash extends Component
 
     protected $listeners = ['CurrencyDeleted' => '$refresh', 'CurrencyRestored' => '$refresh', 'CurrencyUpdated' => '$refresh'];
 
-    protected GameServerService $service;
+    protected ServerService $service;
 
-    public function boot(GameServerService $service)
+    public function boot(ServerService $service)
     {
         $this->service = $service;
     }
@@ -97,7 +97,7 @@ class Trash extends Component
 
         return view('livewire.backend.admin.game-management.game-server.trash', [
             'datas' => $datas,
-            'statuses' => GameServerStatus::options(),
+            'statuses' => ServerStatus::options(),
             'columns' => $columns,
             'actions' => $actions,
             'bulkActions' => $bulkActions,

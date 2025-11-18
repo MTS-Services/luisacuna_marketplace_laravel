@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Actions\GameServer;
+namespace App\Actions\Server;
 
-use App\Models\GameServer;
-use App\Repositories\Contracts\GameServerRepositoryInterface;
+use App\Models\Server;
+use App\Repositories\Contracts\ServerRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class UpdateAction
 {
     public function __construct(
-        protected GameServerRepositoryInterface $interface
+        protected ServerRepositoryInterface $interface
     ) {
     }
 
-    public function execute(int $id, array $data): GameServer
+    public function execute(int $id, array $data): Server
     {
         return DB::transaction(function () use ($id, $data) {
             $findData = $this->interface->find($id);

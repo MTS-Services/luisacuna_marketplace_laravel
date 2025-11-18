@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Actions\GameServer;
+namespace App\Actions\Server;
 
 
-use App\Models\GameServer;
-use App\Repositories\Contracts\GameServerRepositoryInterface;
+use App\Models\Server;
+use App\Repositories\Contracts\ServerRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 
 class CreateAction
 {
     public function __construct(
-        protected GameServerRepositoryInterface $interface
+        protected ServerRepositoryInterface $interface
     ) {
     }
 
 
-    public function execute(array $data): GameServer
+    public function execute(array $data): Server
     {
         return DB::transaction(function () use ($data) {
             $newData = $this->interface->create($data);
