@@ -49,13 +49,9 @@ class DatabaseSeeder extends Seeder
            
             DeliveryMethodSeeder::class,
             OfferItemSeeder::class,
+            // GameServerSeeder::class,
+            // DeliveryMethodSeeder::class,
+            // OfferItemSeeder::class,
         ]);
-
-        // Admin::create([
-        //     'name' => 'Admin',
-        //     'email' => 'admin@dev.com',
-        //     'password' => 'admin@dev.com',
-        //     'email_verified_at' => now(),
-        // ]);
     }
 }
