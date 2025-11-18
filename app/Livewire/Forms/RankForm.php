@@ -1,7 +1,7 @@
 <?php
- 
+
 namespace App\Livewire\Forms;
- 
+
 
 use Livewire\Form;
 use App\Models\Rank;
@@ -9,27 +9,26 @@ use App\Enums\RankStatus;
 use App\Rules\PointRange;
 use Livewire\Attributes\Locked;
 use Illuminate\Http\UploadedFile;
- 
+
 class RankForm extends Form
 {
     #[Locked]
     public ?int $id = null;
- 
+
     public string $name = '';
- 
+
     public string $slug = '';
- 
+
     public ?int $minimum_points = null;
- 
+
     public ?int $maximum_points = null;
- 
-    public ?UploadedFile $icon = null;
- 
+
+
     public string $status = RankStatus::ACTIVE->value;
- 
- 
+
+    public ?UploadedFile $icon = null;
     public bool $remove_icon = false;
- 
+
     /**
      * Get the validation rules.
      *
@@ -64,7 +63,7 @@ class RankForm extends Form
             ],
             'icon' => [
                 'nullable',
-                'string',
+                'image',
                 'max:2048',
             ],
             'remove_icon' => [
@@ -77,7 +76,7 @@ class RankForm extends Form
                 'in:' . implode(',', array_column(RankStatus::cases(), 'value')),
             ],
         ];
- 
+
         // Add range overlap validation only if points are provided
         if ($this->minimum_points !== null) {
             $rules['minimum_points'][] = new PointRange(
@@ -86,10 +85,10 @@ class RankForm extends Form
                 $this->id
             );
         }
- 
+
         return $rules;
     }
- 
+
     /**
      * Get custom validation messages.
      *
@@ -111,7 +110,7 @@ class RankForm extends Form
             'status.in' => 'The selected status is invalid.',
         ];
     }
- 
+
     /**
      * Get custom attribute names for validation errors.
      *
@@ -128,7 +127,7 @@ class RankForm extends Form
             'status' => 'status',
         ];
     }
- 
+
     /**
      * Set the rank data for editing.
      *
@@ -142,11 +141,11 @@ class RankForm extends Form
         $this->slug = $rank->slug;
         $this->minimum_points = $rank->minimum_points;
         $this->maximum_points = $rank->maximum_points;
-        $this->icon = $rank->icon ?? '';
+        // $this->icon = $rank->icon ?? '';
         $this->remove_icon = false;
         $this->status = $rank->status->value ?? RankStatus::ACTIVE->value;
     }
- 
+
     /**
      * Get all form data as an array for service layer.
      *
@@ -159,11 +158,11 @@ class RankForm extends Form
             'slug' => $this->slug,
             'minimum_points' => $this->minimum_points,
             'maximum_points' => $this->maximum_points,
-             'icon' => $this->icon ?: null,
+            'icon' => $this->icon ?: null,
             'status' => $this->status,
         ];
     }
- 
+
     /**
      * Reset the form to its initial state.
      *
@@ -178,10 +177,10 @@ class RankForm extends Form
         $this->maximum_points = null;
         $this->icon = null;
         $this->status = RankStatus::ACTIVE->value;
- 
+
         $this->resetValidation();
     }
- 
+
     /**
      * Check if the form is in update mode.
      *
