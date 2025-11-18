@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\Backend\Admin\GameManagement;
 
 use App\Http\Controllers\Controller;
-use App\Models\GamePlatform;
-use App\Services\GamePlatformService;
+use App\Models\Platform;
+use App\Services\PlatformService;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class GamePlatformController extends Controller implements HasMiddleware
+class PlatformController extends Controller implements HasMiddleware
 {
     public $masterView = 'backend.admin.pages.game-management.platform';
     //
-    protected GamePlatformService $service;
+    protected PlatformService $service;
 
-    public GamePlatform $data;
-    public function __construct(GamePlatformService $service)
+    public Platform $data;
+    public function __construct(PlatformService $service)
     {
         $this->service = $service;
     }

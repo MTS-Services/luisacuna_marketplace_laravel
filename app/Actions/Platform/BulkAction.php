@@ -1,5 +1,5 @@
 <?php 
-namespace App\Actions\Game\GamePlatform;
+namespace App\Actions\Platform;
 
 use App\Repositories\Contracts\GamePlatformRepositoryInterface;
 use Illuminate\Support\Facades\DB;

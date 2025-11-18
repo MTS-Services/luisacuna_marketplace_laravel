@@ -6,15 +6,15 @@ namespace App\Services;
 use App\Repositories\Contracts\GamePlatformRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use App\Actions\Game\GamePlatform\CreateAction;
-use App\Actions\Game\GamePlatform\UpdateAction;
-use App\Actions\Game\GamePlatform\DeleteAction;
-use App\Actions\Game\GamePlatform\RestoreAction;
-use App\Actions\Game\GamePlatform\BulkAction;
-use App\Enums\GamePlatformStatus;
-use App\Models\GamePlatform;
+use App\Actions\Platform\CreateAction;
+use App\Actions\Platform\UpdateAction;
+use App\Actions\Platform\DeleteAction;
+use App\Actions\Platform\RestoreAction;
+use App\Actions\Platform\BulkAction;
+use App\Enums\PlatformStatus;
+use App\Models\Platform;
 
-class GamePlatformService
+class PlatformService
 {   
     public function __construct(
         protected GamePlatformRepositoryInterface $interface,
@@ -36,7 +36,7 @@ class GamePlatformService
         return $this->interface->all($sortField, $order);
     }
 
-    public function findData($column_value, string $column_name = 'id'): ?GamePlatform
+    public function findData($column_value, string $column_name = 'id'): ?Platform
     {
         return $this->interface->find($column_value, $column_name);
     }
@@ -70,12 +70,12 @@ class GamePlatformService
     *                   Action Executions
     * ================== ================== ================== */
 
-    public function createData(array $data): GamePlatform
+    public function createData(array $data): Platform
     {
         return $this->createAction->execute($data);
     }
 
-    public function updateData(int $id, array $data): GamePlatform
+    public function updateData(int $id, array $data): Platform
     {
         return $this->updateAction->execute($id, $data);
     }
@@ -96,7 +96,7 @@ class GamePlatformService
         return $this->restoreAction->execute($id, $actionerId);
     }
 
-    public function updateStatusData(int $id, GamePlatformStatus $status, ?int $actionerId = null): GamePlatform
+    public function updateStatusData(int $id, PlatformStatus $status, ?int $actionerId = null): Platform
     {
         if ($actionerId == null) {
             $actionerId = admin()->id;
@@ -130,7 +130,7 @@ class GamePlatformService
         }
         return $this->bulkAction->execute(ids: $ids, action: 'delete', status: null, actionerId: $actionerId);
     }
-    public function bulkUpdateStatus(array $ids, GamePlatformStatus $status, ?int $actionerId = null): int
+    public function bulkUpdateStatus(array $ids, PlatformStatus $status, ?int $actionerId = null): int
     {
         if ($actionerId == null) {
             $actionerId = admin()->id;

@@ -1,7 +1,7 @@
 <?php 
-namespace App\Actions\Game\GamePlatform;
+namespace App\Actions\Platform;
 
-use App\Models\GamePlatform;
+use App\Models\Platform;
 use App\Repositories\Contracts\GamePlatformRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class CreateAction {
     public function __construct(protected GamePlatformRepositoryInterface $interface) {}
-     public function execute(array $data): GamePlatform
+     public function execute(array $data): Platform
     {
         return DB::transaction(function () use ($data) {
 

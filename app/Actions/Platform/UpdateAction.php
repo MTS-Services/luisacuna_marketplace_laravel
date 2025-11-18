@@ -1,7 +1,7 @@
 <?php 
-namespace App\Actions\Game\GamePlatform;
+namespace App\Actions\Platform;
 
-use App\Models\GamePlatform;
+use App\Models\Platform;
 use App\Repositories\Contracts\GamePlatformRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class UpdateAction {
     public function __construct(protected GamePlatformRepositoryInterface $interface) {}
 
-    public function execute(int $id, array $data): GamePlatform
+    public function execute(int $id, array $data): Platform
     {
         return DB::transaction(function () use ($id, $data) {
 
