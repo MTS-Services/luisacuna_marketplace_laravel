@@ -20,7 +20,7 @@ class CreateAction
             if ($data['icon']) {
                 $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
                 $fileName = $prefix . '-' . $data['icon']->getClientOriginalName();
-                $data['icon'] = Storage::disk('public')->putFileAs('icons', $data['icon'], $fileName);
+                $data['icon'] = Storage::disk('public')->putFileAs('ranks', $data['icon'], $fileName);
             }
 
             

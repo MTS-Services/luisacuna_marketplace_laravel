@@ -8,6 +8,7 @@ use App\Models\Rank;
 use App\Enums\RankStatus;
 use App\Rules\PointRange;
 use Livewire\Attributes\Locked;
+use Illuminate\Http\UploadedFile;
  
 class RankForm extends Form
 {
@@ -22,11 +23,10 @@ class RankForm extends Form
  
     public ?int $maximum_points = null;
  
-    public string $icon = '';
+    public ?UploadedFile $icon = null;
  
     public string $status = RankStatus::ACTIVE->value;
  
-    public bool $initial_assign = false;
  
     public bool $remove_icon = false;
  
@@ -65,7 +65,7 @@ class RankForm extends Form
             'icon' => [
                 'nullable',
                 'string',
-                'max:500',
+                'max:2048',
             ],
             'remove_icon' => [
                 'nullable',
@@ -161,7 +161,6 @@ class RankForm extends Form
             'maximum_points' => $this->maximum_points,
              'icon' => $this->icon ?: null,
             'status' => $this->status,
-            'initial_assign' => $this->initial_assign,
         ];
     }
  
@@ -177,9 +176,8 @@ class RankForm extends Form
         $this->slug = '';
         $this->minimum_points = null;
         $this->maximum_points = null;
-        $this->icon = '';
+        $this->icon = null;
         $this->status = RankStatus::ACTIVE->value;
-        $this->initial_assign = false;
  
         $this->resetValidation();
     }

@@ -20,7 +20,7 @@ class Achievement extends BaseModel implements Auditable
         'icon',
         'title',
         'description',
-        'category_id',
+        'achievement_type_id',
         'target_value',
         'point_reward',
         'status',
@@ -54,9 +54,9 @@ class Achievement extends BaseModel implements Auditable
         return $this->belongsTo(Rank::class, 'rank_id', 'id');
     }
 
-    public function category()
+    public function achievementType()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        return $this->belongsTo(AchievementType::class, 'achievement_type_id', 'id');
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

@@ -25,7 +25,7 @@ class RankController extends Controller implements HasMiddleware
                 new Middleware('permission:admin-list', only: ['index']),
                 new Middleware('permission:admin-create', only: ['create']),
                 new Middleware('permission:admin-edit', only: ['edit']),
-                new Middleware('permission:admin-show', only: ['show']),
+                new Middleware('permission:admin-show', only: ['view']),
                 new Middleware('permission:admin-trash', only: ['trash']),
             ];
         }
