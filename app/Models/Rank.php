@@ -26,7 +26,6 @@ class Rank extends BaseModel implements Auditable
         'maximum_points',
         'icon',
         'status',
-        'initial_assign',
 
         'created_by',
         'updated_by', 

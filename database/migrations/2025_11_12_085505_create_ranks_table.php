@@ -23,7 +23,6 @@ return new class extends Migration
             $table->unsignedBigInteger('maximum_points')->nullable();
             $table->string('icon')->nullable();
             $table->string('status')->default(RankStatus::ACTIVE->value);
-            $table->boolean('initial_assign')->default(false);
             $table->softDeletes();
             $table->timestamps();
 

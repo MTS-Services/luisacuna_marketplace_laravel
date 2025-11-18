@@ -17,6 +17,7 @@ class Edit extends Component
     use WithNotification, WithFileUploads;
     public RankForm $form;
 
+    public $existingFile;
 
     #[Locked]
     public Rank $data;
@@ -35,6 +36,7 @@ class Edit extends Component
     {
         $this->data = $data;
         $this->form->setData($data);
+        $this->existingFile = $data->icon;
     }
 
 
@@ -71,6 +73,9 @@ class Edit extends Component
     public function resetForm(): void
     {
         $this->form->setData($this->data);
+
+        $this->existingFile = $this->data->icon;
+
         $this->form->resetValidation();
     }
 }

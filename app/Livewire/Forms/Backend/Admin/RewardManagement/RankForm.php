@@ -5,8 +5,9 @@ namespace App\Livewire\Forms\Backend\Admin\RewardManagement;
 use Livewire\Form;
 use App\Models\Rank;
 use App\Enums\RankStatus;
+use Illuminate\Http\UploadedFile;
 use Livewire\Attributes\Locked;
-use Livewire\Attributes\Validate;
+
 
 class RankForm extends Form
 {
@@ -20,9 +21,9 @@ class RankForm extends Form
     public ?int $maximum_points = null;
 
 
-    public string $icon = '';
+    public ?UploadedFile $icon = null;
+    public bool $remove_icon = false;
     public string $status = RankStatus::ACTIVE->value;
-    public bool $initial_assign = false;
 
 
 
@@ -37,7 +38,8 @@ class RankForm extends Form
             'slug' => 'required|string|max:255|unique:ranks,slug,' . $this->id,
             'minimum_points' => 'required|integer',
             'maximum_points' => 'nullable|integer',
-            'icon' => 'nullable|string',
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'remove_icon'      => 'boolean',
             'status' => 'required|string|in:' . implode(',', array_column(RankStatus::cases(), 'value')), 
         ];
     }
@@ -54,9 +56,7 @@ class RankForm extends Form
         $this->slug = $data->slug;
         $this->minimum_points = $data->minimum_points;
         $this->maximum_points = $data->maximum_points;
-        $this->icon = $data->icon;
         $this->status = $data->status->value;
-        $this->initial_assign = $data->initial_assign;
     }
 
 
@@ -72,8 +72,7 @@ class RankForm extends Form
         $this->slug = '';
         $this->minimum_points = null;
         $this->maximum_points = null;
-        $this->icon = '';
+        $this->icon = null;
         $this->status = RankStatus::ACTIVE->value;
-        $this->initial_assign = false;
     }
 }
