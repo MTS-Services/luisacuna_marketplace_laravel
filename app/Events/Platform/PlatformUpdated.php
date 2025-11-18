@@ -2,6 +2,7 @@
 
 namespace App\Events\Platform;
 
+use App\Models\Platform;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -17,7 +18,10 @@ class PlatformUpdated
     /**
      * Create a new event instance.
      */
-    public function __construct()
+    public function __construct(
+        public Platform $platform,
+        public ?array $changes
+    )
     {
         //
     }

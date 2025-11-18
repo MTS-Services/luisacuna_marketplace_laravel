@@ -33,10 +33,10 @@
                     <x-ui.input-error :messages="$errors->get('form.name')" class="mt-2" />
                 </div>
                 <div>
-                   <x-ui.label for="name" :value="__('Color Code Hex')" required />
-                    <x-ui.input id="name" type="text" class="mt-1 block w-full" wire:model="form.color_code_hex"
-                        placeholder="Color Code Hex" />
-                    <x-ui.input-error :messages="$errors->get('form.color_code_hex')" class="mt-2" />
+                   <x-ui.label for="name" :value="__('Color')" required />
+                    <x-ui.input id="name" type="text" class="mt-1 block w-full" wire:model="form.color"
+                        placeholder="#ffffff" />
+                    <x-ui.input-error :messages="$errors->get('form.color')" class="mt-2" />
                 </div>
                 <div>
                     <x-ui.label for="status" :value="__('Status')" required />
@@ -53,7 +53,7 @@
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button wire:click="resetForm" variant="tertiary" class="w-auto! py-2!">
+                <x-ui.button wire:click.prevent="resetForm" variant="tertiary" class="w-auto! py-2!">
                     <flux:icon name="x-circle"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
                     <span wire:loading.remove wire:target="resetForm"

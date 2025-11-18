@@ -18,8 +18,8 @@ enum PlatformStatus: string
     public function color(): string
     {
         return match($this) {
-            self::ACTIVE => 'badge-success',
-            self::INACTIVE => 'badge-danger',
+            self::ACTIVE => 'badge badge-success',
+            self::INACTIVE => 'badge badge-warning',
         };
     }
  

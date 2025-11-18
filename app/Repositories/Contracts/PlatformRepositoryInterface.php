@@ -2,11 +2,11 @@
 
 namespace App\Repositories\Contracts;
 
-use App\Models\GamePlatform;
+use App\Models\Platform;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
-interface GamePlatformRepositoryInterface
+interface PlatformRepositoryInterface
 {
      /* ================== ================== ==================
     *                      Find Methods
@@ -14,9 +14,9 @@ interface GamePlatformRepositoryInterface
 
     public function all(string $sortField = 'created_at', $order = 'desc'): Collection;
 
-    public function find($column_value, string $column_name = 'id', bool $trashed = false): ?GamePlatform;
+    public function find($column_value, string $column_name = 'id', bool $trashed = false): ?Platform;
 
-    public function findTrashed($column_value, string $column_name = 'id'): ?GamePlatform;
+    public function findTrashed($column_value, string $column_name = 'id'): ?Platform;
 
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
 
@@ -32,7 +32,7 @@ interface GamePlatformRepositoryInterface
     *                    Data Modification Methods
     * ================== ================== ================== */
 
-    public function create(array $data): GamePlatform;
+    public function create(array $data): Platform;
 
     public function update(int $id, array $data): bool;
 

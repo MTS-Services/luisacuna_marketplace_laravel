@@ -1,12 +1,12 @@
 <?php 
 namespace App\Actions\Platform;
 
-use App\Repositories\Contracts\GamePlatformRepositoryInterface;
+use App\Repositories\Contracts\PlatformRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class DeleteAction {
-    public function __construct(protected GamePlatformRepositoryInterface $interface) {}
+    public function __construct(protected PlatformRepositoryInterface $interface) {}
      public function execute(int $id, bool $forceDelete = false, int $actionerId): bool
     {
         return DB::transaction(function () use ($id, $forceDelete, $actionerId) {

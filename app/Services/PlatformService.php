@@ -3,7 +3,7 @@
 namespace App\Services;
 
 
-use App\Repositories\Contracts\GamePlatformRepositoryInterface;
+use App\Repositories\Contracts\PlatformRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use App\Actions\Platform\CreateAction;
@@ -17,7 +17,7 @@ use App\Models\Platform;
 class PlatformService
 {   
     public function __construct(
-        protected GamePlatformRepositoryInterface $interface,
+        protected PlatformRepositoryInterface $interface,
         protected CreateAction $createAction,
         protected UpdateAction $updateAction,
         protected DeleteAction $deleteAction,
