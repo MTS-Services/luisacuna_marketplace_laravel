@@ -19,32 +19,28 @@ class Game extends BaseModel implements Auditable
         'name',
         'slug',
         'description',
-        'developer',
-        'publisher',
-        'release_date',
-        'platform',
+        
         'logo',
-        'banner',
-        'thumbnail',
-        'is_featured',
-        'is_trending',
+        
         'meta_title',
         'meta_description',
         'meta_keywords',
         'status',
-        // 'game_category_id',
-        'status',   
-        'category_id',
+       
+     
+       
         'sort_order',
 
 
-        'creater_type',
-        'updater_type',
-        'deleter_type',
-        'creater_id',
-        'updater_id',
-        'deleter_id',
-        'roster_id',
+        'created_by',
+        'updated_by',
+        'deleted_by',
+        'restored_by',
+
+        'created_at',
+        'deleted_at',
+        'restored_at',
+        'updated_at',
 
     ];
 
@@ -53,7 +49,7 @@ class Game extends BaseModel implements Auditable
     ];
 
     protected $casts = [
-        'platform' => 'array',
+        // 'platform' => 'array',
         'status' => GameStatus::class,
         'restored_at' => 'datetime',
     ];
@@ -104,17 +100,6 @@ class Game extends BaseModel implements Auditable
                 $q->where('status', $status)
             );
 
-        // $query->when(
-        //     $filters['status'] ?? null,
-        //     fn($query, $status) => $query->where('status', $status), function ($query, $status) {
-        //     $query->where('status', $status);
-        // });
-
-        // $query->when($filters['search'] ?? null, function ($query, $search) {
-        //     $query->search($search);
-        // });
-
-        // return $query;
     }
 
     // public function scopeSearch($query, $search)
@@ -136,8 +121,6 @@ class Game extends BaseModel implements Auditable
         return [
             'name' => $this->name,
             'status' => $this->status,
-            'is_trending' => $this->is_trending,
-            'is_featured' => $this->is_featured,
         ];
     }
     /**
