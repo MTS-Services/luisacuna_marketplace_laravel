@@ -40,11 +40,13 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
             return view('backend.user.pages.boosting.received-requests');
         })->name('received-requests');
     });
+
     Route::group(['prefix' => 'seller'], function () {
         Route::get('/verification', function () {
             return view('backend.user.pages.seller.seller-verification');
         })->name('seller.verification');
     });
+    
 
 
     Route::get('/loyalty', function () {

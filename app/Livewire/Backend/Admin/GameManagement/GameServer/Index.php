@@ -35,6 +35,12 @@ class Index extends Component
 
         $columns = [
             [
+                'key' => 'icon',
+                'label' => 'Icon',
+                'format'    => function ($data) {
+                    return $data->icon;
+                }
+            ],  [
                 'key' => 'name',
                 'label' => 'Name',
                 'sortable' => true
@@ -71,13 +77,13 @@ class Index extends Component
             [
                 'key' => 'id',
                 'label' => 'Show',
-                'route' => 'admin.as.currency.show',
+                'route' => 'admin.gm.server.view',
                 'encrypt' => true
             ],
             [
                 'key' => 'id',
                 'label' => 'Edit',
-                'route' => 'admin.as.currency.edit',
+                'route' => 'admin.gm.server.edit',
                 'encrypt' => true
             ],
             [

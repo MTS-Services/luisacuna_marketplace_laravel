@@ -1,0 +1,36 @@
+<form method="POST" action="{{ route('lang.change') }}">
+    @csrf
+    <div class="space-y-4">
+        <div>
+            <x-ui.label class="mb-1!">{{ __('Language') }}</x-ui.label>
+            <x-ui.select name="lang" class="text-text-white!">
+                @foreach ($languages as $language)
+                    <option value="{{ $language->locale }}"
+                        {{ session('locale', 'en') == $language->locale ? 'selected' : '' }}>
+                        {{ $language->native_name }} ({{ strtoupper($language->locale) }})</option>
+                @endforeach
+            </x-ui.select>
+        </div>
+
+        <!-- Currency Selection (Only EUR for french) -->
+        <div>
+            <x-ui.label class="mb-1!">{{ __('Currency') }}</x-ui.label>
+            <x-ui.select name="currency" class="text-text-white!">
+                <option value="USD-$" selected>USD-$</option>
+                <option value="EUR-€" selected>EUR-€</option>
+            </x-ui.select>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex flex-col gap-2 mt-4">
+            <x-ui.button type="submit" class="w-auto! py-2! rounded-lg! ">
+                {{ __('Save') }}
+            </x-ui.button>
+        </div>
+        <div class="flex flex-col gap-2 mt-4">
+            <x-ui.button @click="open = false" variant="secondary" class="w-auto! py-2! rounded-lg!">
+                {{ __('Close') }}
+            </x-ui.button>
+        </div>
+    </div>
+</form>

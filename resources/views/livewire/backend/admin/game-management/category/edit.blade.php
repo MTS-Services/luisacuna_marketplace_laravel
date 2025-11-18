@@ -16,40 +16,17 @@
     <div class="glass-card rounded-2xl p-6 mb-6">
         <form wire:submit="save">
 
-            <!-- Add other form fields here -->
-            {{-- <div>
+               <div>
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                     {{ __('Icon') }}
                 </h3>
-                <x-ui.file-input wire:model="form.icon" label="Icon" accept="image/*" :error="$errors->first('form.icon')"
-                    hint="Upload a profile picture (Max: 1MB) height: 200px width: 200px" />
-
-                @error('form.icon.*')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-
-            </div> --}}
-
-
-            <div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                    {{ __('Icon') }}
-                </h3>
-                <x-ui.file-input wire:model="form.icon" label="Icon" accept="image/*" :error="$errors->first('form.icon')"
-                    hint="Upload an icon (Max: 1MB, Max dimensions: 200x200px)" />
+                <x-ui.file-input wire:model="form.icon" label="Profile Picture" accept="image/*" :error="$errors->first('form.icon')"
+                        hint="Upload a profile picture (Max: 2MB)" :existingFiles="$existingFile" removeModel="form.remove_file" />
 
                 @error('form.icon')
                     <span class="text-red-600 text-sm mt-1 block">{{ $message }}</span>
                 @enderror
 
-                {{-- Show preview of newly uploaded icon (before saving) --}}
-                @if ($form->icon && is_object($form->icon))
-                    <div class="mt-3">
-                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">New Icon Preview:</p>
-                        <img src="{{ $form->icon->temporaryUrl() }}" alt="New icon preview"
-                            class="h-24 w-24 object-cover rounded border-2 border-green-300 dark:border-green-600">
-                    </div>
-                @endif
             </div>
 
 
@@ -58,7 +35,7 @@
                 {{-- title --}}
                 <div class="w-full">
                     <x-ui.label value="Name" class="mb-1" />
-                    <x-ui.input type="text" placeholder="Name" id="title" wire:model="form.name" />
+                    <x-ui.input type="text" placeholder="Name" id="name" wire:model="form.name" />
                     <x-ui.input-error :messages="$errors->get('form.name')" />
                 </div>
 
@@ -89,20 +66,6 @@
                 </div>
 
 
-                <div class="form-control w-full">
-                    <x-ui.label for="is_default" :value="__('Is Default Category?')" />
-
-                    <x-ui.select id="is_default" class="mt-1 block w-full" wire:model="form.is_default">
-                        <option value="">{{ __('Select Option') }}</option>
-                        <option value="1">{{ __('Yes') }}</option>
-                        <option value="0">{{ __('No') }}</option>
-                    </x-ui.select>
-
-                    <x-ui.input-error :messages="$errors->get('form.is_default')" class="mt-2" />
-                </div>
-
-
-
             </div>
 
             {{-- meta description --}}
@@ -111,23 +74,14 @@
                 <x-ui.text-editor model="form.meta_description" id="meta_description"
                     placeholder="Enter your main content here..." :height="350" />
 
-                <x-ui.input-error :messages="$errors->get('form.description')" />
+                <x-ui.input-error :messages="$errors->get('form.meta_description')" />
             </div>
-            {{-- description --}}
-            <div class="w-full mt-2">
-                <x-ui.label value="Description" class="mb-1" />
-                <x-ui.text-editor model="form.description" id="description"
-                    placeholder="Enter your main content here..." :height="350" />
-
-                <x-ui.input-error :messages="$errors->get('form.description')" />
-            </div>
-
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button href="{{ route('admin.gm.category.index') }}" type="danger" class="w-auto! py-2!"
+                <x-ui.button wire:click.prevent="resetForm" type="danger" class="w-auto! py-2!"
                     variant="tertiary">
                     <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
-                    {{ __('Cancel') }}
+                    {{ __('Reset') }}
                 </x-ui.button>
 
                 <x-ui.button type="accent" class="w-auto! py-2!">
@@ -137,4 +91,22 @@
             </div>
         </form>
     </div>
+        @push('scripts')
+        {{-- Auto slug script --}}
+        <script>
+            document.addEventListener('livewire:navigated', function() {
+                document.getElementById('name').addEventListener('input', function() {
+                    let slug = this.value
+                        .toLowerCase()
+                        .trim()
+                        .replace(/\s+/g, '-')
+                        .replace(/[^a-z0-9]+/g, '-')    
+                        .replace(/^-+|-+$/g, '');  
+                    document.getElementById('slug').value = slug;
+
+                    document.getElementById('slug').dispatchEvent(new Event('input'));
+                });
+            })
+        </script>
+    @endpush
 </section>

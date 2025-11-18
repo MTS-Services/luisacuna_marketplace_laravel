@@ -8,6 +8,7 @@ use App\Services\CategoryService;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Storage;
 
 class Index extends Component
 {
@@ -41,11 +42,16 @@ class Index extends Component
         $datas->load('creater_admin');
 
         $columns = [
-            // [
-            //     'key' => 'id',
-            //     'label' => 'ID',
-            //     'sortable' => true
-            // ],
+          
+              [
+                'key' => 'icon',
+                'label' => 'icon',
+                'format' => function ($data) {
+                    return $data->icon
+                        ? '<img src="' .Storage::url($data->icon ). '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
+                }
+            ],
             [
                 'key' => 'name',
                 'label' => 'Name',
@@ -55,33 +61,6 @@ class Index extends Component
                 'key' => 'slug',
                 'label' => 'Slug',
                 'sortable' => true
-            ],
-            // [
-            //     'key' => 'status',
-            //     'label' => 'Status',
-            //     'sortable' => true,
-            //     'format' => function ($admin) {
-            //         $colors = [
-            //             'active' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-            //             'inactive' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-            //             'suspended' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-            //         ];
-            //         $color = $colors[$admin->status->value] ?? 'bg-gray-100 text-gray-800';
-            //         return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' .
-            //             ucfirst($admin->status->value) .
-            //             '</span>';
-            //     }
-            // ],
-            [
-                'key' => 'created_at',
-                'label' => 'Created',
-                'sortable' => true,
-                'format' => function ($data) {
-                    return '<div class="text-sm">' .
-                        '<div class="font-medium text-gray-900 dark:text-gray-100">' . $data->created_at->format('M d, Y') . '</div>' .
-                        '<div class="text-xs text-gray-500 dark:text-gray-400">' . $data->created_at->format('h:i A') . '</div>' .
-                        '</div>';
-                }
             ],
             [
                 'key' => 'status',
@@ -94,12 +73,18 @@ class Index extends Component
                 }
             ],
             [
+                'key' => 'created_at',
+                'label' => 'Created',
+                'sortable' => true,
+                'format' => function ($data) {
+                    return $data->created_at_formatted;
+                }
+            ],
+            [
                 'key' => 'created_by',
                 'label' => 'Created By',
                 'format' => function ($data) {
-                    return $data->creater_admin
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . $data->creater_admin?->name . '</span>'
-                        : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
+                    return $data->creater_admin?->name ?? 'System';
                 }
             ],
         ];
@@ -112,14 +97,14 @@ class Index extends Component
 
         $bulkActions = [
             ['value' => 'delete', 'label' => 'Delete'],
-            ['value' => 'activate', 'label' => 'Activate'],
-            ['value' => 'inactivate', 'label' => 'Inactive'],
+            ['value' => 'active', 'label' => 'Activate'],
+            ['value' => 'inactive', 'label' => 'Inactive'],
         ];
 
 
         return view('livewire.backend.admin.game-management.category.index', [
             'categories' => $datas,
-            'statuses' => [],
+            'statuses' => CategoryStatus::options(),
             'columns' =>  $columns,
             'actions' => $actions,
             'bulkActions' => $bulkActions,

@@ -5,12 +5,28 @@ namespace App\Http\Controllers\Backend\Admin\RewardManagement;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\AchievementService;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class AchievementController extends Controller
+class AchievementController extends Controller implements HasMiddleware
 {
     protected $masterView = 'backend.admin.pages.reward-management.achievement';
 
     public function __construct(protected AchievementService $service){}
+
+    public static function middleware(): array
+        {
+            return [
+                'auth:admin', // Applies 'auth:admin' to all methods
+
+                // Permission middlewares using the Middleware class
+                new Middleware('permission:admin-list', only: ['index']),
+                new Middleware('permission:admin-create', only: ['create']),
+                new Middleware('permission:admin-edit', only: ['edit']),
+                new Middleware('permission:admin-show', only: ['show']),
+                new Middleware('permission:admin-trash', only: ['trash']),
+            ];
+        }
 
     public function index()
     {

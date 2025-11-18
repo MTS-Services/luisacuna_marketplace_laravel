@@ -11,6 +11,7 @@ use App\Services\UserService;
 use App\Traits\Livewire\WithNotification;
 use App\Livewire\Forms\Backend\Admin\UserManagement\UserForm;
 use App\Models\Language;
+use App\Services\CurrencyService;
 use App\Services\LanguageService;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Log;
@@ -29,10 +30,13 @@ class Create extends Component
 
     protected LanguageService $languageService;
 
-    public function boot(UserService $service, LanguageService $languageService)
+    protected CurrencyService $currencyService;
+
+    public function boot(UserService $service, LanguageService $languageService, CurrencyService $currencyService)
     {
         $this->service = $service;
         $this->languageService = $languageService;
+        $this->currencyService = $currencyService;
     }
     public function mount(): void
     {
@@ -59,6 +63,7 @@ class Create extends Component
             'statuses' => UserAccountStatus::options(),
             'countries' => $this->countries,
             'languages' => $this->languases,
+            'currencies' => $this->currencyService->getAllDatas(),
         ]);
     }
 

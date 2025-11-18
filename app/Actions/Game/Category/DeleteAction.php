@@ -4,6 +4,7 @@ namespace App\Actions\Game\Category;
 
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class DeleteAction
 {
@@ -26,6 +27,7 @@ class DeleteAction
                 throw new \Exception('Data not found');
             }
             if ($forceDelete) {
+                 Storage::disk('public')->delete($findData->icon);
                 return $this->interface->forceDelete($id);
             }
             return $this->interface->delete($id, $actionerId);

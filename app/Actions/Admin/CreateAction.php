@@ -13,14 +13,29 @@ class CreateAction
 {
     public function __construct(
         protected AdminRepositoryInterface $interface
-    ) {
-    }
+    ) {}
     public function execute(array $data): Admin
     {
         return DB::transaction(function () use ($data) {
             if ($data['avatar']) {
-                $data['avatar'] = Storage::disk('public')->putFile('admins', $data['avatar']);
+                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+                $fileName = $prefix . '-' . $data['avatar']->getClientOriginalName();
+                $data['avatar'] = Storage::disk('public')->putFileAs('admins', $data['avatar'], $fileName);
             }
+
+            if ($data['avatars']) {
+                $data['avatars'] = array_map(function ($avatar) {
+                    $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+                    $fileName = $prefix . '-' . $avatar->getClientOriginalName();
+                    return Storage::disk('public')->putFileAs('admins', $avatar, $fileName);
+                }, $data['avatars']);
+
+                if (!is_array($data['avatars'])) {
+                    $data['avatars'] = [$data['avatars']];
+                }
+                $data['avatars'] = $data['avatars'] ?? [];
+            }
+
             $newData = $this->interface->create($data);
             // Dispatch event
             event(new AdminCreated($newData));
