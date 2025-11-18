@@ -17,11 +17,11 @@ return new class extends Migration
         Schema::create('achievements', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
+            $table->unsignedBigInteger('achievement_type_id');
             $table->unsignedBigInteger('rank_id');
             $table->string('icon')->nullable();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('category_id');
             $table->integer('target_value')->nullable();
             $table->integer('point_reward')->nullable();
             $table->string('status')->default(AchievementStatus::ACTIVE)->index();
@@ -30,7 +30,7 @@ return new class extends Migration
 
 
             $table->foreign('rank_id')->references('id')->on('ranks')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('achievement_type_id')->references('id')->on('achievement_types')->cascadeOnDelete()->cascadeOnUpdate();
             $table->softDeletes();
             $table->timestamps();
 

@@ -36,14 +36,14 @@
                     <x-ui.input-error :messages="$errors->get('form.rank_id')" class="mt-2" />
                 </div>
                 <div>
-                    <x-ui.label for="category_id" :value="__('Category')" />
-                    <x-ui.select id="category_id" class="mt-1 block w-full" wire:model="form.category_id">
-                        <option value="">{{ __('Select Category') }}</option>
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    <x-ui.label for="achievement_type_id" :value="__('Achievement Type')" />
+                    <x-ui.select id="achievement_type_id" class="mt-1 block w-full" wire:model="form.achievement_type_id">
+                        <option value="">{{ __('Select Achievement Type') }}</option>
+                        @foreach ($achievementTypes as $achievementType)
+                            <option value="{{ $achievementType->id }}">{{ $achievementType->name }}</option>
                         @endforeach
                     </x-ui.select>
-                    <x-ui.input-error :messages="$errors->get('form.category_id')" class="mt-2" />
+                    <x-ui.input-error :messages="$errors->get('form.achievement_type_id')" class="mt-2" />
                 </div>
                 <div>
                     <x-ui.label for="title" :value="__('Title')" />

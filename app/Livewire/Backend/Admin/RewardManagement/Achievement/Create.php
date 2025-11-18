@@ -7,9 +7,10 @@ use App\Services\RankService;
 use App\Enums\AchievementStatus;
 use App\Services\CategoryService;
 use App\Services\AchievementService;
+use App\Services\AchievementTypeService;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
-use App\Livewire\Forms\Backend\Admin\RewardManagement\AchievementForm;
+use App\Livewire\Forms\AchievementForm;
 
 
 class Create extends Component
@@ -19,17 +20,18 @@ class Create extends Component
 
     protected AchievementService $service;
     protected RankService $rank;
-    protected CategoryService $category;
+    protected  AchievementTypeService $achievementType;
 
 
     /**
      * Inject the CurrencyService via the boot method.
      */
-    public function boot(AchievementService $service, RankService $rank, CategoryService $category)
+    public function boot(AchievementService $service, RankService $rank, AchievementTypeService $achievementType)
     {
         $this->service = $service;
         $this->rank = $rank;
-        $this->category = $category;
+        $this->achievementType = $achievementType;
+
     }
 
 
@@ -43,13 +45,13 @@ class Create extends Component
     public function render()
     {
         $ranks = $this->rank->getAllDatas();
-        $categories = $this->category->getAllDatas();
+        $achievementTypes = $this->achievementType->getAllDatas();
 
 
         return view('livewire.backend.admin.reward-management.achievement.create', [
             'statuses' => AchievementStatus::options(),
             'ranks' => $ranks,
-            'categories' => $categories,
+            'achievementTypes' => $achievementTypes,
         ]);
     }
 

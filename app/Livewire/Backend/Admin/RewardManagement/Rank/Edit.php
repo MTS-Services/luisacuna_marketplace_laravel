@@ -9,7 +9,7 @@ use App\Services\RankService;
 use Livewire\Attributes\Locked;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
-use App\Livewire\Forms\Backend\Admin\RewardManagement\RankForm;
+use App\Livewire\Forms\RankForm;
 
 class Edit extends Component
 {
@@ -17,6 +17,7 @@ class Edit extends Component
     use WithNotification, WithFileUploads;
     public RankForm $form;
 
+    public $existingFile;
 
     #[Locked]
     public Rank $data;
@@ -35,6 +36,7 @@ class Edit extends Component
     {
         $this->data = $data;
         $this->form->setData($data);
+        $this->existingFile = $data->icon;
     }
 
 
@@ -71,6 +73,9 @@ class Edit extends Component
     public function resetForm(): void
     {
         $this->form->setData($this->data);
+
+        $this->existingFile = $this->data->icon;
+
         $this->form->resetValidation();
     }
 }
