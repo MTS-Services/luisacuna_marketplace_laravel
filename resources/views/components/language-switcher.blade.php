@@ -7,7 +7,7 @@
                 @foreach ($languages as $language)
                     <option value="{{ $language->locale }}"
                         {{ session('locale', 'en') == $language->locale ? 'selected' : '' }}>
-                        {{ $language->name }} ({{ strtoupper($language->locale) }})</option>
+                        {{ $language->native_name }} ({{ strtoupper($language->locale) }})</option>
                 @endforeach
             </x-ui.select>
         </div>
