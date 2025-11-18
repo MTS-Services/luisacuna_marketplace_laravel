@@ -9,7 +9,7 @@ use App\Services\RankService;
 use Livewire\Attributes\Locked;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
-use App\Livewire\Forms\Backend\Admin\RewardManagement\RankForm;
+use App\Livewire\Forms\RankForm;
 
 class Edit extends Component
 {

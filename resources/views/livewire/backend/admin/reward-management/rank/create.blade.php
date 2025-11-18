@@ -42,18 +42,20 @@
                     <x-ui.input-error :messages="$errors->get('form.slug')" />
                 </div>
 
-                <div>
-                    <x-ui.label for="maximum_points" :value="__('Maximum Points')" />
-                    <x-ui.input id="maximum_points" type="number" class="mt-1 block w-full"
-                        wire:model="form.maximum_points" placeholder="Enter maximum points" />
-                    <x-ui.input-error :messages="$errors->get('form.maximum_points')" class="mt-2" />
-                </div>
+
 
                 <div>
                     <x-ui.label for="minimum_points" :value="__('Minimum Points')" />
                     <x-ui.input id="minimum_points" type="number" class="mt-1 block w-full"
                         wire:model="form.minimum_points" placeholder="Enter minimum points" />
                     <x-ui.input-error :messages="$errors->get('form.minimum_points')" class="mt-2" />
+                </div>
+
+                <div>
+                    <x-ui.label for="maximum_points" :value="__('Maximum Points')" />
+                    <x-ui.input id="maximum_points" type="number" class="mt-1 block w-full"
+                        wire:model="form.maximum_points" placeholder="Enter maximum points" />
+                    <x-ui.input-error :messages="$errors->get('form.maximum_points')" class="mt-2" />
                 </div>
 
                 <div>
@@ -97,8 +99,8 @@
                     .toLowerCase()
                     .trim()
                     .replace(/\s+/g, '-')
-                    .replace(/[^a-z0-9]+/g, '-')   
-                    .replace(/^-+|-+$/g, ''); 
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-+|-+$/g, '');
                 document.getElementById('slug').value = slug;
 
                 document.getElementById('slug').dispatchEvent(new Event('input'));
