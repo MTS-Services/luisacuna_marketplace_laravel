@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\Contracts\GameServerRepositoryInterface;
+use App\Repositories\Contracts\ServerRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use App\Actions\GameServer\CreateAction;
@@ -10,13 +10,13 @@ use App\Actions\GameServer\UpdateAction;
 use App\Actions\GameServer\DeleteAction;
 use App\Actions\GameServer\RestoreAction;
 use App\Actions\GameServer\BulkAction;
-use App\Enums\GameServerStatus;
-use App\Models\GameServer;
+use App\Enums\ServerStatus;
+use App\Models\Server;
 
-class GameServerService
+class ServerService
 {
       public function __construct(
-        protected GameServerRepositoryInterface $interface,
+        protected ServerRepositoryInterface $interface,
         protected CreateAction $createAction,
         protected UpdateAction $updateAction,
         protected DeleteAction $deleteAction,
@@ -33,7 +33,7 @@ class GameServerService
         return $this->interface->all($sortField, $order);
     }
 
-    public function findData($column_value, string $column_name = 'id'): ?GameServer
+    public function findData($column_value, string $column_name = 'id'): ?Server
     {
         return $this->interface->find($column_value, $column_name);
     }
@@ -67,12 +67,12 @@ class GameServerService
     *                   Action Executions
     * ================== ================== ================== */
 
-    public function createData(array $data): GameServer
+    public function createData(array $data): Server
     {
         return $this->createAction->execute($data);
     }
 
-    public function updateData(int $id, array $data): GameServer
+    public function updateData(int $id, array $data): Server
     {
         return $this->updateAction->execute($id, $data);
     }
@@ -93,7 +93,7 @@ class GameServerService
         return $this->restoreAction->execute($id, $actionerId);
     }
 
-    public function updateStatusData(int $id, GameServerStatus $status, ?int $actionerId = null): GameServer
+    public function updateStatusData(int $id, ServerStatus $status, ?int $actionerId = null): Server
     {
         if ($actionerId == null) {
             $actionerId = admin()->id;
@@ -127,7 +127,7 @@ class GameServerService
         }
         return $this->bulkAction->execute(ids: $ids, action: 'delete', status: null, actionerId: $actionerId);
     }
-    public function bulkUpdateStatus(array $ids, GameServerStatus $status, ?int $actionerId = null): int
+    public function bulkUpdateStatus(array $ids, ServerStatus $status, ?int $actionerId = null): int
     {
         if ($actionerId == null) {
             $actionerId = admin()->id;
