@@ -1,37 +1,35 @@
 <header x-data="{ mobileMenuOpen: false, notification: false, dropdown: '', globalSearchModal: false, open: '' }" x-cloak
     class="sticky top-0 z-50  {{ request()->routeIs('home') ? 'bg-linear-to-r from-zinc-950/50 via-text-text-white to-zinc-950/50 glass-card shadow-none!' : 'glass-card' }}">
-    <div class=" px-4 py-4 flex items-center justify-between relative"
-        x-cloak>
-      <div class="flex flex-row-reverse items-center justify-center">
-          <div class="flex ml-4 lg:ml-0 scale-75 xl:scale-100">
-            <a href="{{ route('home') }}">
-                <img src="{{ asset('assets/images/header_logo.png') }}" alt=""></a>
+    <div class=" px-4 py-4 flex items-center justify-between relative" x-cloak>
+        <div class="flex flex-row-reverse items-center justify-center">
+            <div class="flex ml-4 lg:ml-0 scale-75 xl:scale-100">
+                <a href="{{ route('home') }}" wire:navigate>
+                    <img src="{{ asset('assets/images/header_logo.png') }}" alt="{{ __('Logo') }}"></a>
+            </div>
+            {{-- Mobile menu button --}}
+            <button @click="mobileMenuOpen = !mobileMenuOpen"
+                class="xl:hidden  bg-bg-light-black inline-flex items-center justify-center p-2 rounded-md text-text-secondary hover:text-text-text-white hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-text-text-text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
         </div>
-        {{-- Mobile menu button --}}
-        <button @click="mobileMenuOpen = !mobileMenuOpen"
-            class="xl:hidden  bg-bg-light-black inline-flex items-center justify-center p-2 rounded-md text-text-secondary hover:text-text-text-white hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-text-text-text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-        </button>
-      </div>
         @include('partials.user-navigation')
 
         {{-- Main Navigation Icons --}}
         <div class="flex gap-1  xl:gap-2 items-center">
-       
 
-            <div class=" hidden sm:flex">
+            <div class="hidden lg:flex">
                 <x-language />
             </div>
 
             @auth
                 <div class="flex items-center justify-center gap-1">
                     <a href="{{ route('user.messages') }}" wire:navigate
-                    class=" rounded-full bg-transparent  transition-colors">
-                    <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-text-white" />
-                     </a>
+                        class=" rounded-full bg-transparent  transition-colors">
+                        <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-text-white" />
+                    </a>
                     <button class="py-0.5 mt-1 rounded-full bg-transparent transition-colors"
                         @click="notification = !notification">
                         <div class="relative inline-flex">
