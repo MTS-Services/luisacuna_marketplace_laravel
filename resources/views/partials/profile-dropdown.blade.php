@@ -244,26 +244,23 @@
 
                 {{-- Theme Switcher --}}
 
-                <div x-data="{ on: false }" class="text-xs font-medium flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 bg-pink-300 dark:bg-zinc-950 w-full justify-between">
+                <div x-model="$flux.appearance" x-data
+                    class="text-xs font-medium flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 bg-pink-300 dark:bg-zinc-950 w-full justify-between">
 
-                    <span class="flex items-center gap-2 text-white">
-                       
-                       <flux:icon name="moon" class="w-5 h-5 stroke-current" />
+                    <span class="flex items-center gap-2 text-text-white">
+
+                        <flux:icon name="moon" class="w-5 h-5 stroke-current" />
                         Dark theme
                     </span>
 
                     <!-- Perfect Switch -->
-                    <button @click="on = !on" :class="on ? 'bg-bg-primary' : 'bg-white'"
-                        class="relative w-12 h-6 rounded-full transition-all duration-300 flex items-center">
-                        <span :class="on ? 'translate-x-7' : 'translate-x-1'"
-                            class="absolute w-4 h-4 bg-zinc-500 rounded-full transition-all duration-300"></span>
+                    <button x-on:click="$flux.dark = !$flux.dark"
+                        class="relative w-12 h-6 rounded-full transition-all duration-300 flex items-center border border-zinc-600 bg-transparent dark:bg-white">
+                        <span
+                            class="translate-x-1 dark:translate-x-7 absolute w-4 h-4 bg-zinc-500 rounded-full transition-all duration-300">
+                        </span>
                     </button>
-
                 </div>
-
-
-
-                {{-- Theme Switcher End --}}
 
                 <!-- Profile & Logout -->
 

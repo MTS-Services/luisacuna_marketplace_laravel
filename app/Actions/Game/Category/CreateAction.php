@@ -16,7 +16,15 @@ class CreateAction
     {
 
         return DB::transaction(function () use ($data) {
+
+            if ($data['icon']) {
+                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+                $fileName = $prefix . '-' . $data['icon']->getClientOriginalName();
+                $data['icon'] = Storage::disk('public')->putFileAs('icons', $data['icon'], $fileName);
+            }
+
             $newData = $this->interface->create($data);
+
             return $newData->fresh();
         });
     }

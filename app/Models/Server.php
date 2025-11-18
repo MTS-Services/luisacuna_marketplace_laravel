@@ -2,7 +2,7 @@
  
 namespace App\Models;
 
-use App\Enums\GameServerStatus;
+use App\Enums\ServerStatus;
 use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use OwenIt\Auditing\Contracts\Auditable;
  
-class GameServer extends BaseModel implements Auditable
+class Server extends BaseModel implements Auditable
 {
     use   AuditableTrait;
     /** @use HasFactory<\Database\Factories\GameServerFactory> */
@@ -21,8 +21,6 @@ class GameServer extends BaseModel implements Auditable
         'name',
         'status',
         'icon',
-        'type',
-        'region',
 
         'created_at',
         'updated_at',
@@ -42,7 +40,7 @@ class GameServer extends BaseModel implements Auditable
  
     protected $casts = [
         //
-        'status' => GameServerStatus::class,
+        'status' => ServerStatus::class,
         'restored_at' => 'datetime',
     ];
  
@@ -59,12 +57,12 @@ class GameServer extends BaseModel implements Auditable
 
     public function scopeActive(Builder $query): Builder
     {
-        return $query->where('status', GameServerStatus::ACTIVE);
+        return $query->where('status', ServerStatus::ACTIVE);
     }
 
     public function scopeInactive(Builder $query): Builder
     {
-        return $query->where('status', GameServerStatus::INACTIVE);
+        return $query->where('status', ServerStatus::INACTIVE);
     }
 
     public function scopeFilter(Builder $query, array $filters): Builder

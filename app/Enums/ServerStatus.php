@@ -2,7 +2,7 @@
  
 namespace App\Enums;
  
-enum GameServerStatus: string
+enum ServerStatus: string
 {
     case ACTIVE = 'active';
     case INACTIVE = 'inactive';
