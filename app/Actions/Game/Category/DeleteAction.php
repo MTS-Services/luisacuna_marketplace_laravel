@@ -27,7 +27,12 @@ class DeleteAction
                 throw new \Exception('Data not found');
             }
             if ($forceDelete) {
-                 Storage::disk('public')->delete($findData->icon);
+                if($findData->icon && Storage::disk('public')->exists($findData->icon)) {
+
+                    Storage::disk('public')->delete($findData->icon);
+
+                }
+                
                 return $this->interface->forceDelete($id);
             }
             return $this->interface->delete($id, $actionerId);

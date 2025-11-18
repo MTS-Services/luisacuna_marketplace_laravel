@@ -75,7 +75,7 @@ class Index extends Component
             ],
             [
                 'key' => 'restored_by',
-                'label' => 'Created By',
+                'label' => 'Restored By',
                 'format' => function ($data) {
                     return $data->restorer_admin?->name ?? 'N/A';
                 }

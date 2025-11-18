@@ -39,8 +39,8 @@
                <div>
                     <x-ui.label
                         class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Icon') }}</x-ui.label>
-                    <x-ui.file-input type="file" wire:model="form.icon"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
+                    <x-ui.file-input wire:model="form.icon" accept="image/*" :error="$errors->first('form.icon')"
+                        hint="Upload a profile picture (Max: 1MB) height: 200px width: 200px" />
                     <x-ui.input-error :messages="$errors->get('form.icon')" class="mt-2" />
                 </div>
             </div>

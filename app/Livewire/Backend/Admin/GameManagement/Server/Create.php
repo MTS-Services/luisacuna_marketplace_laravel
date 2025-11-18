@@ -6,6 +6,7 @@ use App\Enums\ServerStatus;
 use App\Livewire\Forms\Backend\Admin\GameManagement\ServerForm;
 use App\Services\ServerService;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
@@ -49,16 +50,19 @@ class Create extends Component
     public function save()
     {
         $data = $this->form->validate();
+
         try {
             $data['created_by'] = admin()->id;
 
             $this->service->createData($data);
 
             $this->success('Data created successfully.');
+
             return $this->redirect(route('admin.gm.server.index'), navigate: true);
         } catch (\Exception $e) {
 
-            $this->error('Failed to create data: ' . $e->getMessage());
+            Log::error('Failed to create data: ' . $e->getMessage());
+            $this->error('Failed to create data');
         }
     }
 

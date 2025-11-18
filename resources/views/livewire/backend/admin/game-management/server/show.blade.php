@@ -51,7 +51,7 @@
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('STATUS') }}</p>
-                                <p class=" text-sm rounded-3xl font-bold {{ $data->status->color() }}">{{ $data->status->label() }}</p>
+                                <p class="text-sm rounded-3xl font-bold {{ $data->status->color() }}">{{ $data->status->label() }}</p>
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
