@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Actions\GameServer;
+namespace App\Actions\Server;
 
-use App\Models\GameServer;
-use App\Repositories\Contracts\GameServerRepositoryInterface;
+use App\Models\Server;
+use App\Repositories\Contracts\ServerRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 
 class RestoreAction
 {
     public function __construct(
-        protected GameServerRepositoryInterface $interface
+        protected ServerRepositoryInterface $interface
     ) {}
 
     public function execute(int $id, ?int $actionerId): bool

@@ -58,6 +58,9 @@ gameplatform-trash,admin,gameplatform
 gameserver-show,admin,gameserver
 gameserver-trash,admin,gameserver
 
+#language-list,admin,language
+#language-create,admin,language
+
 offer-list,admin,offer
 
 product-list,admin,product

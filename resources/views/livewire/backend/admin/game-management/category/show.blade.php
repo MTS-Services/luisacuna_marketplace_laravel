@@ -31,8 +31,11 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('Icon') }}</p>
-
+                                @if($data->icon)
                                 <img src="{{ Storage::url($data->icon) ?? 'N/A'}}" alt="" class="rounded overflow-hidden h-10 w-10">
+                                @else
+                                <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">{{  strtoupper(substr($data->name, 0, 2))  }}</div>
+                                @endif
                             </div> 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('Name') }}</p>

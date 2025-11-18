@@ -12,7 +12,7 @@ use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\GameManagement\GamePlatformController;
-use App\Http\Controllers\Backend\Admin\GameManagement\GameServerController;
+use App\Http\Controllers\Backend\Admin\GameManagement\ServerController; 
 use App\Http\Controllers\Backend\Admin\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductTypeController;
@@ -64,7 +64,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/trash', 'trash')->name('trash');
         });
         
-        Route::controller(GameServerController::class)->name('server.')->prefix('game-server')->group(function () {
+        Route::controller(ServerController::class)->name('server.')->prefix('game-server')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');

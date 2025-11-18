@@ -39,6 +39,7 @@ class CreateAction
             $newData = $this->interface->create($data);
             // Dispatch event
             event(new AdminCreated($newData));
+            
             return $newData->fresh();
         });
     }
