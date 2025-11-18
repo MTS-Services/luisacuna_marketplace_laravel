@@ -2,12 +2,11 @@
 
 namespace App\Livewire\Backend\Admin\GameManagement\Platform;
 
-use App\Enums\GamePlatformStatus;
-
-use App\Livewire\Forms\Backend\Admin\GameManagement\GamePlatformForm;
-
-use App\Services\GamePlatformService;
+use App\Enums\PlatformStatus;
+use App\Livewire\Forms\PlatformForm;
+use App\Services\PlatformService;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -17,13 +16,13 @@ class Create extends Component
 
     use WithNotification, WithFileUploads;
 
-    public GamePlatformForm $form;
+    public PlatformForm $form;
 
-    protected GamePlatformService $service;
+    protected PlatformService $service;
 
 
 
-    public function boot(GamePlatformService $service ): void
+    public function boot(PlatformService $service ): void
     {
        
         $this->service = $service;
@@ -35,7 +34,7 @@ class Create extends Component
      */
     public function mount(): void
     {
-        $this->form->status = GamePlatformStatus::ACTIVE->value;
+        $this->form->status = PlatformStatus::ACTIVE->value;
     }
 
     /**
@@ -45,7 +44,7 @@ class Create extends Component
     {
         return view('livewire.backend.admin.game-management.platform.create', [
 
-            'statuses' => GamePlatformStatus::options(),
+            'statuses' => PlatformStatus::options(),
 
         ]);
     }
@@ -55,12 +54,9 @@ class Create extends Component
      */
     public function save()
     {
-        $this->form->validate();
+       $data =  $this->form->validate();
 
         try {
-            $data = $this->form->fillables();
-
-            if (! isset($data['slug'])) $data['slug'] = Str::slug($data['name']);
             
             $data['created_by'] = admin()->id;
 
@@ -69,8 +65,11 @@ class Create extends Component
             $this->success('Data created successfully.');
 
             return $this->redirect(route('admin.gm.platform.index'), navigate: true);
+
         } catch (\Exception $e) {
 
+            Log::error('Failed to create data: ' . $e->getMessage());
+            
             $this->error('Failed to create data');
         }
     }
@@ -80,6 +79,7 @@ class Create extends Component
      */
     public function resetForm(): void
     {
-        $this->form->reset();
+       $this->form->reset();
+       $this->dispatch('file-input-reset');
     }
 }

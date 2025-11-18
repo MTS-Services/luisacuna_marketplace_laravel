@@ -11,7 +11,7 @@ use App\Http\Controllers\Backend\Admin\UserManagement\UserController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
-use App\Http\Controllers\Backend\Admin\GameManagement\GamePlatformController;
+use App\Http\Controllers\Backend\Admin\GameManagement\PlatformController;
 use App\Http\Controllers\Backend\Admin\GameManagement\ServerController; 
 use App\Http\Controllers\Backend\Admin\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductController;
@@ -21,6 +21,7 @@ use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\RankController;
 use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\Settings\GeneralSettingsController;
+use App\Models\Platform;
 
 Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
@@ -71,7 +72,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/view/{id}', 'show')->name('view');
             Route::get('/trash', 'trash')->name('trash');
         });
-        Route::controller(GamePlatformController::class)->name('platform.')->prefix('game-platform')->group(function () {
+        Route::controller(PlatformController::class)->name('platform.')->prefix('game-platform')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');

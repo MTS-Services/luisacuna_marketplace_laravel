@@ -2,17 +2,17 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Models\GamePlatform;
-use App\Repositories\Contracts\GamePlatformRepositoryInterface;
+use App\Models\Platform;
+use App\Repositories\Contracts\PlatformRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
 use Illuminate\Support\Facades\DB;
 
-class GamePlatformRepository implements GamePlatformRepositoryInterface
+class PlatformRepository implements PlatformRepositoryInterface
 {
     public function __construct(
-        protected GamePlatform $model
+        protected Platform $model
     ) {}
 
 
@@ -26,7 +26,7 @@ class GamePlatformRepository implements GamePlatformRepositoryInterface
         return $query->orderBy($sortField, $order)->get();
     }
 
-    public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?GamePlatform
+    public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?Platform
     {
         $model = $this->model;
         if ($trashed) {
@@ -35,7 +35,7 @@ class GamePlatformRepository implements GamePlatformRepositoryInterface
         return $model->where($column_name, $column_value)->first();
     }
 
-    public function findTrashed($column_value, string $column_name = 'id'): ?GamePlatform
+    public function findTrashed($column_value, string $column_name = 'id'): ?Platform
     {
         $model = $this->model->onlyTrashed();
         return $model->where($column_name, $column_value)->first();
@@ -51,7 +51,7 @@ class GamePlatformRepository implements GamePlatformRepositoryInterface
 
         if ($search) {
             // Scout Search
-            return GamePlatform::search($search)
+            return Platform::search($search)
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
         }
@@ -74,7 +74,7 @@ class GamePlatformRepository implements GamePlatformRepositoryInterface
 
         if ($search) {
             // 👇 Manually filter trashed + search
-            return GamePlatform::search($search)
+            return Platform::search($search)
                 ->onlyTrashed()
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
@@ -112,7 +112,7 @@ class GamePlatformRepository implements GamePlatformRepositoryInterface
     *                    Data Modification Methods
     * ================== ================== ================== */
 
-    public function create(array $data): GamePlatform
+    public function create(array $data): Platform
     {
         return $this->model->create($data);
     }

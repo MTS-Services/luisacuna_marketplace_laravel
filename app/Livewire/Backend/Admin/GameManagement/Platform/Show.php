@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Backend\Admin\GameManagement\Platform;
 
-use App\Models\GamePlatform;
+use App\Models\Platform;
 use Livewire\Component;
 
 class Show extends Component
 {
-    public GamePlatform $data;
-    public function mount(GamePlatform $data): void{
+    public Platform $data;
+    public function mount(Platform $data): void{
         $this->data = $data;
     }
     public function render()

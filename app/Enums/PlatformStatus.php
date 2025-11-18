@@ -2,7 +2,7 @@
  
 namespace App\Enums;
  
-enum GamePlatformStatus: string
+enum PlatformStatus: string
 {
      case ACTIVE = 'active';
      case INACTIVE = 'inactive';
@@ -18,8 +18,8 @@ enum GamePlatformStatus: string
     public function color(): string
     {
         return match($this) {
-            self::ACTIVE => 'badge-success',
-            self::INACTIVE => 'badge-danger',
+            self::ACTIVE => 'badge badge-success',
+            self::INACTIVE => 'badge badge-warning',
         };
     }
  
