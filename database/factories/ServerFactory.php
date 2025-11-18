@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Enums\GameServerStatus;
+use App\Enums\ServerStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\GameServer>
  */
-class GameServerFactory extends Factory
+class ServerFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,9 +19,7 @@ class GameServerFactory extends Factory
     {
         return [
             'name'  => $this->faker->unique()->name(),
-            // 'region' => $this->faker->randomElement(['Asia', 'Europe', 'US', 'Africa']),
-            // 'type'   => $this->faker->randomElement(['Free', 'Paid', 'Premium']),
-            'status' => $this->faker->randomElement(GameServerStatus::cases()),
+            'status' => $this->faker->randomElement(ServerStatus::cases()),
         ];
     }
 }

@@ -54,5 +54,6 @@ class Create extends Component
     public function resetFrom()
     {
         $this->form->reset();
+        $this->dispatch('file-input-reset');
     }
 }

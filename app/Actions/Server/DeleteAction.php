@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Actions\GameServer;
+namespace App\Actions\Server;
 
 
-use App\Repositories\Contracts\GameServerRepositoryInterface;
+use App\Repositories\Contracts\ServerRepositoryInterface;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpKernel\HttpCache\Store;
 
 class DeleteAction
 {
     public function __construct(
-        protected GameServerRepositoryInterface $interface
+        protected ServerRepositoryInterface $interface
     ) {
     }
 
@@ -28,7 +30,12 @@ class DeleteAction
                 throw new \Exception('Data not found');
             }
             if ($forceDelete) {
+
+                if( $findData->icon && Storage::disk('public')->exists($findData->icon)){
+                      Storage::disk('public')->delete($findData->icon);
+                }
                 return $this->interface->forceDelete($id);
+
             }
             return $this->interface->delete($id, $actionerId);
         });

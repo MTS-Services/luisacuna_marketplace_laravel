@@ -1,29 +1,35 @@
 <?php
 
-namespace App\Actions\Game\Category;
+namespace App\Actions\Server;
 
-use App\Models\Category;
+use App\Models\Server;
+use App\Repositories\Contracts\ServerRepositoryInterface;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Repositories\Contracts\CategoryRepositoryInterface;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UpdateAction
 {
+    public function __construct(
+        protected ServerRepositoryInterface $interface
+    ) {
+    }
 
-    public function __construct(protected CategoryRepositoryInterface $interface) {}
-    public function execute(int $id, array $data): Category
+    public function execute(int $id, array $data): Server
     {
-          $newSingleIconPath = null;
+        $newSingleIconPath = null;
+
         return DB::transaction(function () use ($id, $data, &$newSingleIconPath) {
 
             $findData = $this->interface->find($id);
+
             if (!$findData) {
                 Log::error('Data not found', ['data_id' => $id]);
                 throw new \Exception('Data not found');
             }
+
             
                 $oldData = $findData->getAttributes();
                 $newData = $data;
@@ -31,8 +37,8 @@ class UpdateAction
                 // --- 1. Single Avatar Handling ---
                 $oldIconPath = Arr::get($oldData, 'icon');
                 $uploadedIcon = Arr::get($data, 'icon');
-                
-            if ($uploadedIcon instanceof UploadedFile) {
+
+                if ($uploadedIcon instanceof UploadedFile) {
                     // Delete old file permanently (File deletion is non-reversible)
                     if ($oldIconPath && Storage::disk('public')->exists($oldIconPath)) {
                         Storage::disk('public')->delete($oldIconPath);
@@ -42,7 +48,9 @@ class UpdateAction
                     $fileName = $prefix . '-' . $uploadedIcon->getClientOriginalName();
 
                     $newSingleIconPath = Storage::disk('public')->putFileAs('icons', $uploadedIcon, $fileName);
+
                     $newData['icon'] = $newSingleIconPath;
+
                 } elseif (Arr::get($data, 'remove_file')) {
                     if ($oldIconPath && Storage::disk('public')->exists($oldIconPath)) {
                         Storage::disk('public')->delete($oldIconPath);
@@ -51,11 +59,12 @@ class UpdateAction
                 }
                 // Cleanup temporary/file object keys
                 if (!$newData['remove_file'] && !$newSingleIconPath) {
-                    $newData['icon'] = $oldIconPath ?? null;
+                    $newData['icon'] = $oldAvatarPath ?? null;
                 }
                 unset($newData['remove_file']);
 
-              $updated = $this->interface->update($id, $newData);
+               
+            $updated = $this->interface->update($id, $newData);
 
             if (!$updated) {
 
@@ -63,6 +72,7 @@ class UpdateAction
 
                 throw new \Exception('Failed to update data');
             }
+
             return $findData->fresh();
         });
     }

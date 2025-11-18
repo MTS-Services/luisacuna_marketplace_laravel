@@ -107,7 +107,9 @@
                 let slug = this.value
                     .toLowerCase()
                     .trim()
-                    .replace(/\s+/g, '-');
+                    .replace(/\s+/g, '-')
+                    .replace(/[^a-z0-9]+/g, '-')   
+                    .replace(/^-+|-+$/g, ''); 
                 document.getElementById('slug').value = slug;
 
                 document.getElementById('slug').dispatchEvent(new Event('input'));

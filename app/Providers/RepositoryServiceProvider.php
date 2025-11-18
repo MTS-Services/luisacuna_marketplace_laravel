@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Server;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Eloquent\GameRepository;
 use App\Repositories\Eloquent\RankRepository;
@@ -14,7 +15,7 @@ use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\CurrencyRepository;
 use App\Repositories\Eloquent\LanguageRepository;
 use App\Repositories\Eloquent\PageViewRepository;
-
+use App\Repositories\Eloquent\ServerRepository;
 use App\Repositories\Eloquent\PermissionRepository;
 
 
@@ -37,9 +38,8 @@ use App\Repositories\Contracts\AchievementRepositoryInterface;
 use App\Repositories\Contracts\ProductTypeRepositoryInterface;
 use App\Repositories\Contracts\GamePlatformRepositoryInterface;
 
-use App\Repositories\Contracts\GameServerRepositoryInterface;
+use App\Repositories\Contracts\ServerRepositoryInterface;
 use App\Repositories\Contracts\OfferItemRepositoryInterface;
-use App\Repositories\Eloquent\GameServerRepository;
 use App\Repositories\Eloquent\OfferItemRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -79,8 +79,8 @@ class RepositoryServiceProvider extends ServiceProvider
         //Game Server Repository
         $this->app->bind(
            
-            GameServerRepositoryInterface::class,
-            GameServerRepository::class,
+            ServerRepositoryInterface::class,
+            ServerRepository::class,
           
         );
 

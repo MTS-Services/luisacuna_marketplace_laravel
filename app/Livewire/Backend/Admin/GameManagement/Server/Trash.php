@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\GameManagement\GameServer;
+namespace App\Livewire\Backend\Admin\GameManagement\Server;
 
-use App\Enums\GameServerStatus;
-use App\Models\GameServer;
-use App\Services\GameServerService;
+use App\Enums\ServerStatus;
+use App\Services\ServerService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class Trash extends Component
@@ -19,11 +19,9 @@ class Trash extends Component
     public $bulkAction = '';
     public $showBulkActionModal = false;
 
-    protected $listeners = ['CurrencyDeleted' => '$refresh', 'CurrencyRestored' => '$refresh', 'CurrencyUpdated' => '$refresh'];
+    protected ServerService $service;
 
-    protected GameServerService $service;
-
-    public function boot(GameServerService $service)
+    public function boot(ServerService $service)
     {
         $this->service = $service;
     }
@@ -36,18 +34,20 @@ class Trash extends Component
         )->load('deleter_admin');
 
        $columns = [
-            [
+             [
                 'key' => 'icon',
-                'label' => 'Icon',
-                'format'    => function ($data) {
-                    return $data->icon;
+                'label' => 'icon',
+                'format' => function ($data) {
+                    return $data->icon
+                        ? '<img src="' .Storage::url($data->icon ). '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
                 }
-            ],  [
+            ],
+             [
                 'key' => 'name',
                 'label' => 'Name',
                 'sortable' => true
             ],
-           
             [
                 'key' => 'status',
                 'label' => 'Status',
@@ -59,11 +59,11 @@ class Trash extends Component
                 }
             ],
             [
-                'key' => 'created_at',
-                'label' => 'Created Date',
+                'key' => 'deleted_at',
+                'label' => 'Deleted',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return $data->created_at_formatted;
+                    return $data->deleted_at_formatted;
                 }
             ],
             [
@@ -95,9 +95,9 @@ class Trash extends Component
             ['value' => 'forceDelete', 'label' => 'Permanent Delete'],
         ];
 
-        return view('livewire.backend.admin.game-management.game-server.trash', [
+        return view('livewire.backend.admin.game-management.server.trash', [
             'datas' => $datas,
-            'statuses' => GameServerStatus::options(),
+            'statuses' => ServerStatus::options(),
             'columns' => $columns,
             'actions' => $actions,
             'bulkActions' => $bulkActions,

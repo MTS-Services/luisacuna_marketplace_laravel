@@ -8,6 +8,7 @@ use App\Services\CategoryService;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Storage;
 
 class Index extends Component
 {
@@ -47,7 +48,7 @@ class Index extends Component
                 'label' => 'icon',
                 'format' => function ($data) {
                     return $data->icon
-                        ? '<img src="' . $data->icon . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        ? '<img src="' .Storage::url($data->icon ). '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
                         : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
                 }
             ],
