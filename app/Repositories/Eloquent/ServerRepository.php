@@ -2,17 +2,17 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Models\GameServer;
-use App\Repositories\Contracts\GameServerRepositoryInterface;
+use App\Models\Server;
+use App\Repositories\Contracts\ServerRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
-class GameServerRepository implements GameServerRepositoryInterface
+class ServerRepository implements ServerRepositoryInterface
 {
        public function __construct(
 
-        protected GameServer $model
+        protected Server $model
 
     ) {}
 
@@ -27,7 +27,7 @@ class GameServerRepository implements GameServerRepositoryInterface
         return $query->orderBy($sortField, $order)->get();
     }
 
-    public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?GameServer
+    public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?Server
     {
         $model = $this->model;
         if ($trashed) {
@@ -36,7 +36,7 @@ class GameServerRepository implements GameServerRepositoryInterface
         return $model->where($column_name, $column_value)->first();
     }
 
-    public function findTrashed($column_value, string $column_name = 'id'): ?GameServer
+    public function findTrashed($column_value, string $column_name = 'id'): ?Server
     {
         $model = $this->model->onlyTrashed();
         return $model->where($column_name, $column_value)->first();
@@ -52,7 +52,7 @@ class GameServerRepository implements GameServerRepositoryInterface
 
         if ($search) {
             // Scout Search
-            return GameServer::search($search)
+            return Server::search($search)
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
         }
@@ -75,7 +75,7 @@ class GameServerRepository implements GameServerRepositoryInterface
 
         if ($search) {
             // 👇 Manually filter trashed + search
-            return GameServer::search($search)
+            return Server::search($search)
                 ->onlyTrashed()
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
@@ -113,7 +113,7 @@ class GameServerRepository implements GameServerRepositoryInterface
     *                    Data Modification Methods
     * ================== ================== ================== */
 
-    public function create(array $data): GameServer
+    public function create(array $data): Server
     {
         return $this->model->create($data);
     }

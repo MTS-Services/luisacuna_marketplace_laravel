@@ -15,12 +15,10 @@ class CategoryForm extends Form
 
     public string $name;
     public string $slug;
-    public ?string $description;
     public string $status;
     public ?string $meta_title;
     public ?string $meta_description;
-    public bool $is_featured = false;
-
+ 
     public $icon = null;
     // Track removed files
     public bool $remove_file = false;

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\GameManagement\GameServer;
+namespace App\Livewire\Backend\Admin\GameManagement\Server;
 
-use App\Enums\GameServerStatus;
-use App\Models\GameServer;
-use App\Services\GameServerService;
+use App\Enums\ServerStatus;
+use App\Services\ServerService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class Index extends Component
@@ -21,8 +21,8 @@ class Index extends Component
     public $showBulkActionModal = false;
 
   
-    protected GameServerService $service;
-    public function boot(GameServerService $service)
+    protected ServerService $service;
+    public function boot(ServerService $service)
     {
         $this->service = $service;
     }
@@ -34,18 +34,20 @@ class Index extends Component
         )->load('creater_admin');
 
         $columns = [
-            [
+             [
                 'key' => 'icon',
-                'label' => 'Icon',
-                'format'    => function ($data) {
-                    return $data->icon;
+                'label' => 'icon',
+                'format' => function ($data) {
+                    return $data->icon
+                        ? '<img src="' .Storage::url($data->icon ). '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
                 }
-            ],  [
+            ],
+             [
                 'key' => 'name',
                 'label' => 'Name',
                 'sortable' => true
             ],
-           
             [
                 'key' => 'status',
                 'label' => 'Status',
@@ -69,6 +71,13 @@ class Index extends Component
                 'label' => 'Created By',
                 'format' => function ($data) {
                     return $data->creater_admin?->name ?? 'System';
+                }
+            ],
+            [
+                'key' => 'restored_by',
+                'label' => 'Restored By',
+                'format' => function ($data) {
+                    return $data->restorer_admin?->name ?? 'N/A';
                 }
             ],
         ];
@@ -101,9 +110,9 @@ class Index extends Component
         ];
 
 
-        return view('livewire.backend.admin.game-management.game-server.index', [
+        return view('livewire.backend.admin.game-management.server.index', [
             'datas' => $datas,
-            'statuses' => GameServerStatus::options(),
+            'statuses' => ServerStatus::options(),
             'columns' => $columns,
             'actions' => $actions,
             'bulkActions' => $bulkActions,
@@ -141,11 +150,11 @@ class Index extends Component
     public function changeStatus($id, $status): void
     {
         try {
-            $dataStatus = GameServerStatus::from($status);
+            $dataStatus = ServerStatus::from($status);
 
             match ($dataStatus) {
-                GameServerStatus::ACTIVE => $this->service->updateStatusData($id, GameServerStatus::ACTIVE),
-                GameServerStatus::INACTIVE => $this->service->updateStatusData($id, GameServerStatus::INACTIVE),
+                ServerStatus::ACTIVE => $this->service->updateStatusData($id, ServerStatus::ACTIVE),
+                ServerStatus::INACTIVE => $this->service->updateStatusData($id, ServerStatus::INACTIVE),
                 default => null,
             };
 
@@ -173,8 +182,8 @@ class Index extends Component
         try {
             match ($this->bulkAction) {
                 'delete' => $this->bulkDelete(),
-                'active' => $this->bulkUpdateStatus(GameServerStatus::ACTIVE),
-                'inactive' => $this->bulkUpdateStatus(GameServerStatus::INACTIVE),
+                'active' => $this->bulkUpdateStatus(ServerStatus::ACTIVE),
+                'inactive' => $this->bulkUpdateStatus(ServerStatus::INACTIVE),
                 default => null,
             };
 
@@ -192,7 +201,7 @@ class Index extends Component
         $this->success("{$count} Data deleted successfully");
     }
 
-    protected function bulkUpdateStatus(GameServerStatus $status): void
+    protected function bulkUpdateStatus(ServerStatus $status): void
     {
         $count = count($this->selectedIds);
         $this->service->bulkUpdateStatus($this->selectedIds, $status);

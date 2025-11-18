@@ -92,10 +92,10 @@
                         'active' => 'game-category',
                     ],
                     [
-                        'name' => 'Game Servers',
+                        'name' => 'Servers',
                         'route' => route('admin.gm.server.index'),
                         'icon' => 'swords',
-                        'active' => 'game-server',
+                        'active' => 'server',
                     ],
                     [
                         'name' => 'Platforms',

@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\Backend\Admin\GameManagement;
 
 use App\Http\Controllers\Controller;
-use App\Services\GameServerService;
+use App\Services\ServerService;
 use GuzzleHttp\Middleware;
 
-class GameServerController extends Controller
+class ServerController extends Controller
 {
-    public function __construct(protected GameServerService $service)
+    public function __construct(protected ServerService $service)
     {
 
     }
 
     //
-    public $master = 'backend.admin.pages.game-management.game_server';
+    public $master = 'backend.admin.pages.game-management.server';
 
     public static function middleware(): array
         {
