@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\RankStatus;
 use App\Traits\AuditColumnsTrait;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,15 +13,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ranks', function (Blueprint $table) {
+        Schema::create('achievement_types', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sort_order')->default(0);
-            $table->string('name')->unique();
-            $table->string('slug')->unique();
-            $table->unsignedBigInteger('minimum_points')->nullable();
-            $table->unsignedBigInteger('maximum_points')->nullable();
-            $table->string('icon')->nullable();
-            $table->string('status')->default(RankStatus::ACTIVE->value);
+            $table->unsignedBigInteger('sort_order')->default(0)->index();
+            $table->string('name');
+
+
             $table->softDeletes();
             $table->timestamps();
 
@@ -35,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ranks');
+        Schema::dropIfExists('achievement_types');
     }
 };

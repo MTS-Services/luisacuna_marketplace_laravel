@@ -20,8 +20,8 @@
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                     {{ __('Icon') }}
                 </h3>
-                <x-ui.file-input wire:model="form.icon" label="Icon" accept="image/*" :error="$errors->first('form.icon')"
-                    hint="Upload a icon (Max: 2MB)" />
+                    <x-ui.file-input wire:model="form.icon" label="Icon" accept="image/*" :error="$errors->first('form.icon')"
+                    hint="Upload a icon (Max: 2MB)" :existingFiles="$existingFile" removeModel="form.remove_icon" />
             </div>
 
 
@@ -56,17 +56,6 @@
                     <x-ui.input-error :messages="$errors->get('form.minimum_points')" class="mt-2" />
                 </div>
 
-                
-
-                <div>
-                    <x-ui.label for="initial_assign" :value="__('Initial Assign')" />
-                    <x-ui.select id="initial_assign" class="mt-1 block w-full" wire:model="form.initial_assign">
-                        <option value="">{{ __('Select Option') }}</option>
-                        <option value="1">{{ __('Yes') }}</option>
-                        <option value="0">{{ __('No') }}</option>
-                    </x-ui.select>
-                    <x-ui.input-error :messages="$errors->get('form.initial_assign')" class="mt-2" />
-                </div>
                 <div>
                     <x-ui.label for="status" :value="__('Status')" />
                     <x-ui.select id="status" class="mt-1 block w-full" wire:model="form.status">
