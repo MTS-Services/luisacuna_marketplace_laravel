@@ -75,6 +75,15 @@
                     <x-ui.input-error :messages="$errors->get('form.language')" />
                 </div>
                 <div class="w-full">
+                    <x-ui.label value="Default Currency" class="mb-1" />
+                    <x-ui.select wire:model="form.currency_id">
+                        @foreach ($currencies as $currency)
+                            <option value="{{ $currency['id'] }}">{{ $currency['name'] }}</option>
+                        @endforeach
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.currency_id')" />
+                </div>
+                <div class="w-full">
                     <x-ui.label value="Email" class="mb-1" />
                     <x-ui.input type="email" placeholder="Email" wire:model="form.email" />
                     <x-ui.input-error :messages="$errors->get('form.email')" />

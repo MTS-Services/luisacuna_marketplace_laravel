@@ -1,7 +1,7 @@
 <section>
     <div class="glass-card rounded-2xl p-6 mb-6">
         <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game Server Create') }}</h2>
+            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game Server Edit') }}</h2>
             <div class="flex items-center gap-2">
                 <x-ui.button href="{{ route('admin.gm.server.index') }}" class="w-auto py-2!">
                     <flux:icon name="arrow-left"
@@ -47,18 +47,18 @@
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button wire:click="resetForm" variant="tertiary" class="w-auto! py-2!">
+                <x-ui.button wire:click="cancel" variant="tertiary" class="w-auto! py-2!">
                     <flux:icon name="x-circle"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
-                    <span wire:loading.remove wire:target="resetForm"
-                        class="text-text-btn-primary group-hover:text-text-btn-tertiary">{{ __('Reset') }}</span>
-                    <span wire:loading wire:target="resetForm"
-                        class="text-text-btn-primary group-hover:text-text-btn-tertiary">{{ __('Reseting...') }}</span>
+                    <span wire:loading.remove wire:target="cancel"
+                        class="text-text-btn-primary group-hover:text-text-btn-tertiary">{{ __('Cancel') }}</span>
+                    <span wire:loading wire:target="cancel"
+                        class="text-text-btn-primary group-hover:text-text-btn-tertiary">{{ __('Canceling...') }}</span>
                 </x-ui.button>
 
                 <x-ui.button class="w-auto! py-2!" type="submit">
                     <span wire:loading.remove wire:target="save"
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Create ') }}</span>
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Save ') }}</span>
                     <span wire:loading wire:target="save"
                         class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Saving...') }}</span>
                 </x-ui.button>

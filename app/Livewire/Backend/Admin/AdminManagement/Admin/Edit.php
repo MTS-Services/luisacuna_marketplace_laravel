@@ -55,11 +55,13 @@ class Edit extends Component
             $data['updated_by'] = admin()->id;
 
             $this->data = $this->service->updateData($this->data->id, $data);
+
             Log::info('Data updated successfully', ['data_id' => $this->data->id]);
 
             $this->success('Data updated successfully');
 
             return $this->redirect(route('admin.am.admin.index'), navigate: true);
+            
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validation failed', [
                 'errors' => $e->errors()

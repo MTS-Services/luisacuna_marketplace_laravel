@@ -4,14 +4,32 @@ namespace App\Http\Controllers\Backend\Admin\AdminManagement;
 
 use App\Http\Controllers\Controller;
 use App\Services\PermissionService;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class PermissionController extends Controller
+class AdminController extends Controller implements HasMiddleware
 {
     protected $masterView = 'backend.admin.pages.admin-management.permission.permission';
 
     public function __construct(protected PermissionService $service)
     {
     }
+
+    public static function middleware(): array
+    {
+        return [
+            'auth:admin', // Applies 'auth:admin' to all methods
+
+            // Permission middlewares using the Middleware class
+            new Middleware('permission:admin-list', only: ['index']),
+            new Middleware('permission:admin-create', only: ['create']),
+            new Middleware('permission:admin-edit', only: ['edit']),
+            new Middleware('permission:admin-view', only: ['view']),
+            new Middleware('permission:admin-trash', only: ['trash']),
+        ];
+    }
+
+
 
     public function index()
     {

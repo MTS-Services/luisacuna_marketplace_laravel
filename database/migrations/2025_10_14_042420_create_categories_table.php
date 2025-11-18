@@ -20,13 +20,14 @@ return new class extends Migration
             $table->unsignedBigInteger('sort_order')->default(0)->index();
 
             $table->string('name')->index();
-            $table->string('slug')->unique();
-            $table->text('description')->nullable();
+            $table->string('slug')->unique()->index();
+
+            $table->string('icon')->nullable();
+            $table->string('status')->index()->default(CategoryStatus::ACTIVE);
+
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
-            $table->string('icon')->nullable();
-            $table->boolean('is_featured')->default(false);
-            $table->string('status')->index()->default(CategoryStatus::ACTIVE);
+    
 
             $table->timestamps();
             $table->softDeletes();

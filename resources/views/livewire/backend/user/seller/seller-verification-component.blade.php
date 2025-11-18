@@ -16,7 +16,7 @@
         {{-- Category Selection Page --}}
         @if ($showCategoryPage)
             {{-- @if ($showCategoryPage) --}}
-            <div class="w-2xl mx-auto">
+            <div class="w-full mx-auto">
                 <h1 class="text-3xl font-bold text-center text-text-white mb-2">Start selling</h1>
                 <h2 class="text-xl text-center text-text-white/60 mb-8">Choose category</h2>
 
@@ -131,36 +131,40 @@
 
             {{-- Step 1: Individual or Company --}}
         @elseif($currentStep == 1)
-            <div>
-                <div class="text-center mb-8">
-                    <div class="flex items-center justify-center mb-2">
-                        <span class="text-zinc-500 text-2xl">✓</span>
-                        <h3 class="text-lg text-text-white font-semibold ml-2">Seller ID Verification</h3>
+            <div class="text-center w-full rounded-2xl bg-bg-primary px-5 py-8 lg:p-20">
+                <div class="mb-6">
+                    <div class="mx-auto flex flex-row items-center justify-center">
+                        <span class="text-8xl pr-2.5">
+                            <flux:icon name="shield-check" class="stroke-zinc-500"></flux:icon>
+                        </span>
+                        <p class="font-semibold text-base ">Seller ID verification</p>
                     </div>
-                    <p class="text-text-white">Step 1/7</p>
-                </div>
-                <div class="bg-bg-primary max-w-2xl mx-auto py-6 mb-4">
-                    <h2 class="text-lg font-bold text-center mb-4">
-                        Will you sell on Eldorado as an individual or as a <br> company?
-                    </h2>
-
-                    <div class="flex flex-col items-center justify-center space-y-3">
-                        <label class="flex items-center cursor-pointer">
-                            <input type="radio" wire:model="accountType" value="individual"
-                                class="w-5 h-5 text-zinc-600">
-                            <span class="ml-3 text-lg">Individual</span>
-                        </label>
-
-                        <label class="flex items-center cursor-pointer">
-                            <input type="radio" wire:model="accountType" value="company"
-                                class="w-5 h-5 text-zinc-600">
-                            <span class="ml-3 text-lg">Company</span>
-                        </label>
+                    <div class="text-sm text-text-primary font-normal pt-2">
+                        Step <span>0</span>/<span>7</span>
                     </div>
                 </div>
 
-                <div class="flex justify-center space-x-4">
-                    <a href="{{ route('home') }}" class="px-8 py-2 text-text-white  rounded-lg hover:bg-gray-50">
+                <div class="p-5 lg:px-15 lg:py-10 bg-bg-secondary dark:bg-bg-light-black rounded-2xl">
+                    <div class="p-5 bg-bg-light-black shadow rounded-2xl">
+                        <h2 class="font-semibold text-text-primary text-base lg:text-2xl pb-5 text-left">Will you sell
+                            on Eldorado as
+                            an
+                            individual or as a company?</h2>
+
+                        <div class="flex items-center gap-2 mb-3">
+                            <input type="radio" name="accountType" id="individal" class="accent-pink-500">
+                            <label for="individal">Individal</label>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <input type="radio" name="accountType" id="company" class="accent-pink-500">
+                            <label for="company">Company</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center space-x-4 pt-10">
+                    <a href="{{ route('home') }}" class="px-8 py-2  hover:text-gray-700 rounded-lg hover:bg-gray-50">
                         BACK
                     </a>
                     <button wire:click="nextStep"
@@ -173,41 +177,52 @@
 
             {{-- Step 2: Select Categories --}}
         @elseif($currentStep == 2)
-            <div>
-                <div class="text-center mb-8">
-                    <div class="flex items-center justify-center mb-2">
-                        <span class="text-zinc-500 text-2xl">✓</span>
-                        <h3 class="text-lg font-semibold ml-2">Seller ID verification</h3>
+            <div class="text-center w-full rounded-2xl bg-bg-primary px-5 py-8 lg:p-20">
+                <div class="mb-6">
+                    <div class="mx-auto flex flex-row items-center justify-center">
+                        <span class="text-8xl pr-2.5">
+                            <flux:icon name="shield-check" class="stroke-zinc-500"></flux:icon>
+                        </span>
+                        <p class="font-semibold text-base ">Seller ID verification</p>
                     </div>
-                    <p class="text-text-white">Step 1/7</p>
+                    <div class="text-sm text-text-primary font-normal pt-2">
+                        Step <span>1</span>/<span>7</span>
+                    </div>
                 </div>
-                <div class="bg-bg-primary max-w-2xl mx-auto py-4 px-8 mb-4">
-                    <h2 class="text-2xl font-bold text-center mb-2">Select the categories you'll be <br> selling in:
-                    </h2>
 
-                    <div class="space-y-1 mb-2">
+                <div class="p-5 lg:px-15 lg:py-10 bg-bg-secondary dark:bg-bg-light-black rounded-2xl">
+                    <div class="p-5 bg-bg-light-black shadow rounded-2xl">
+                        <h2 class="font-semibold text-text-primary text-base lg:text-2xl pb-5 text-left">Select the
+                            categories
+                            you'll
+                            be selling in:</h2>
+
                         @foreach ([
-        'currency' => 'Currency',
-        'accounts' => 'Accounts',
-        'items' => 'Items',
-        'top_ups' => 'Top Ups',
-        'boosting' => 'Boosting',
-        'gift_cards' => 'Gift Cards',
-    ] as $value => $label)
-                            <label class="flex items-center cursor-pointer">
-                                <input type="checkbox" wire:model="selectedCategories" value="{{ $value }}"
-                                    class="w-5 h-5 text-zinc-600 bg-bg-white! border-zinc-100 rounded transition-all duration-200 hover:scale-110 hover:bg-zinc-500 focus:ring-zinc-500">
-                                <span class="ml-3 text-zinc-900 dark:text-zinc-100">{{ $label }}</span>
-                            </label>
+                    'currency' => 'Currency',
+                    'accounts' => 'Accounts',
+                    'items' => 'Items',
+                    'top_ups' => 'Top Ups',
+                    'boosting' => 'Boosting',
+                    'gift_cards' => 'Gift Cards',
+                ] as $value => $label)
+                            <div class="flex items-center gap-3 mb-3">
+                                <label class="relative inline-flex items-center">
+                                    <input type="checkbox" wire:model="selectedCategories"
+                                        value="{{ $value }}" class="peer sr-only">
+                                    <div
+                                        class="w-4 h-4 rounded-full border border-zinc-400 peer-checked:bg-pink-500 peer-checked:border-pink-500 transition-colors">
+                                    </div>
+                                    <span class="ml-2 cursor-pointer">{{ $label }}</span>
+                                </label>
+                            </div>
                         @endforeach
                     </div>
-
                 </div>
                 @error('selectedCategories')
                     <p class="text-red-500 text-center mb-4">{{ $message }}</p>
                 @enderror
 
-                <div class="flex justify-center space-x-4">
+                <div class="flex justify-center space-x-4 pt-10">
                     <button wire:click="previousStep" class="px-8 py-2  hover:bg-zinc-50 rounded-lg">
                         BACK
                     </button>
@@ -216,68 +231,86 @@
                         wire:attr.disabled="!@json(count($selectedCategories) > 0)"
                         :class="{
                             'bg-zinc-600 hover:bg-zinc-700': $wire.selectedCategories.length > 0,
-                            'bg-zinc-200 cursor-not-allowed!': $wire.selectedCategories.length === 0
+                            'bg-zinc-200 text-zinc-950 cursor-not-allowed!': $wire.selectedCategories.length === 0
                         }">
                         NEXT
                     </button>
                 </div>
+
             </div>
+
+
 
             {{-- Step 3: Selling Experience --}}
         @elseif($currentStep == 3)
-            <div>
-                <div class="text-center mb-8">
-                    <div class="flex items-center justify-center mb-2">
-                        <span class="text-zinc-500 text-2xl">✓</span>
-                        <h3 class="text-lg font-semibold ml-2">Seller ID verification</h3>
+            <div class="text-center w-full rounded-2xl bg-bg-primary px-5 py-8 lg:p-20">
+                <div class="mb-6">
+                    <div class="mx-auto flex flex-row items-center justify-center">
+                        <span class="text-8xl pr-2.5">
+                            <flux:icon name="shield-check" class="stroke-zinc-500"></flux:icon>
+                        </span>
+                        <p class="font-semibold text-base ">Seller ID verification</p>
                     </div>
-                    <p class="text-text-white">Step 2/7</p>
-                </div>
-                <div class="bg-bg-primary max-w-2xl mx-auto py-4 px-8 mb-4">
-                    <h2 class="text-2xl font-bold text-center mb-8">Selling experience:</h2>
-                    <div class="flex flex-col items-start space-y-3">
-                        <label class="flex items-center cursor-pointer">
-                            <input type="radio" wire:model="sellingExperience" value="new"
-                                class="w-5 h-5 text-zinc-600">
-                            <span class="ml-3 text-base">New seller (this is my first selling)</span>
-                        </label>
-
-                        <label class="flex items-center cursor-pointer">
-                            <input type="radio" wire:model="sellingExperience" value="experienced"
-                                class="w-5 h-5 text-zinc-600">
-                            <span class="ml-3 text-base">Experienced seller (I've worked on other platforms)</span>
-                        </label>
+                    <div class="text-sm text-text-primary font-normal pt-2">
+                        Step <span>2</span>/<span>7</span>
                     </div>
                 </div>
 
-                <div class="flex justify-center space-x-4">
-                    <button wire:click="previousStep"
-                        class="px-8 py-2  text-text-white rounded-lg dark:bg-zinc-800 hover:bg-zinc-50">
+                <div class="p-5 lg:px-15 lg:py-10 bg-bg-secondary dark:bg-bg-light-black rounded-2xl">
+
+                    <div class="p-5 bg-bg-light-black shadow rounded-2xl">
+                        <h2 class="font-semibold text-text-primary text-base  lg:text-2xl pb-5 text-left">Selling
+                            experience:</h2>
+
+                        <div class="flex items-center gap-2 mb-3">
+                            <input type="radio" wire:model="sellingExperience" value="new" id="new"
+                                class="accent-pink-500">
+                            <label for="new">New Seller (This is my first selling)</label>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <input type="radio" wire:model="sellingExperience" value="experienced" id="company"
+                                class="accent-pink-500">
+                            <label for="company">Experieced Seller (I have worked on others platform)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center space-x-4 pt-10">
+                    <a wire:click.prevent="previousStep"
+                        class="px-8 py-2 text-text-white  rounded-lg hover:bg-gray-50">
                         BACK
-                    </button>
+                    </a>
                     <button wire:click="nextStep"
                         class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
                         NEXT
                     </button>
                 </div>
+
             </div>
 
             {{-- Step 4: Personal/Company Details --}}
         @elseif($currentStep == 4)
-            <div>
-                <div class="text-center mb-8">
-                    <div class="flex items-center justify-center mb-2">
-                        <span class="text-zinc-500 text-2xl">✓</span>
-                        <h3 class="text-lg font-semibold ml-2">Seller ID verification</h3>
+            <div class="text-center w-full rounded-2xl bg-bg-primary px-5 py-8 lg:p-20">
+                <div class="mb-6">
+                    <div class="mx-auto flex flex-row items-center justify-center">
+                        <span class="text-8xl pr-2.5">
+                            <flux:icon name="shield-check" class="stroke-zinc-500"></flux:icon>
+                        </span>
+                        <p class="font-semibold text-base ">Seller ID verification</p>
                     </div>
-                    <p class="text-text-white">Step 3/7</p>
+                    <div class="text-sm text-text-primary font-normal pt-2">
+                        Step <span>4</span>/<span>7</span>
+                    </div>
                 </div>
 
-                @if ($accountType == 'individual')
-                    <div class="dark:bg-bg-primary bg-bg-white max-w-2xl mx-auto py-4 px-8 mb-6">
-                        <h2 class="text-2xl font-semibold text-center font-lato mb-8">Enter your details</h2>
+                <div class="p-5 lg:px-15 lg:py-10 bg-bg-secondary dark:bg-bg-light-black rounded-2xl">
 
-                        <div class="max-w-md mx-auto space-y-4 mb-8">
+                    @if ($accountType == 'individual')
+
+
+
+                        <div class="w-full mx-auto space-y-4 mb-8">
                             <div>
                                 <x-ui.label class="mb-2">First name</x-ui.label>
                                 <x-ui.input type="text" wire:model="firstName" placeholder="First name" />
@@ -370,11 +403,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @else
-                    <div class="dark:bg-bg-primary bg-bg-white max-w-2xl mx-auto py-4 px-8 mb-6">
-                        <h2 class="text-2xl font-bold text-center mb-8">Enter your company details</h2>
-
+                    @else
                         <div class="max-w-md mx-auto space-y-4 mb-8">
                             <div>
                                 <x-ui.label class="mb-2">Company name</x-ui.label>
@@ -429,34 +458,43 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endif
+                    @endif
+                </div>
 
-
-                <div class="flex justify-center space-x-4">
-                    <button wire:click="previousStep" class="px-8 py-2  rounded-lg hover:bg-gray-50">
+                <div class="flex justify-center space-x-4 pt-10">
+                    <a wire:click.prevent="previousStep"
+                        class="px-8 py-2 text-text-white  rounded-lg hover:bg-gray-50">
                         BACK
-                    </button>
+                    </a>
                     <button wire:click="nextStep"
-                        class="px-8 py-2 bg-zinc-600 text-white rounded-lg hover:bg-zinc-700">
-                        NEXT STEP
+                        class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
+                        NEXT
                     </button>
                 </div>
+
             </div>
+
 
             {{-- Step 5: Upload ID Document --}}
         @elseif($currentStep == 5)
-            @if ($accountType == 'individual')
-                <div>
-                    <div class="text-center mb-8">
-                        <div class="flex items-center justify-center mb-2">
-                            <span class="text-zinc-500 text-2xl">✓</span>
-                            <h3 class="text-lg font-semibold ml-2">Seller ID Verification</h3>
-                        </div>
-                        <p class="text-text-white">Step 4/7</p>
+            <div class="text-center w-full rounded-2xl bg-bg-primary px-5 py-8 lg:p-20">
+                <div class="mb-6">
+                    <div class="mx-auto flex flex-row items-center justify-center">
+                        <span class="text-8xl pr-2.5">
+                            <flux:icon name="shield-check" class="stroke-zinc-500"></flux:icon>
+                        </span>
+                        <p class="font-semibold text-base ">Seller ID verification</p>
                     </div>
-                    <div class="dark:bg-bg-primary bg-bg-white max-w-2xl mx-auto py-6  mb-6">
-                        <h2 class="text-xl font-semibold text-center mb-8">Take a photo of your ID and eldorado.gg in
+                    <div class="text-sm text-text-primary font-normal pt-2">
+                        Step <span>5</span>/<span>7</span>
+                    </div>
+                </div>
+
+                <div class="p-5 lg:px-15 lg:py-10 bg-bg-secondary dark:bg-bg-light-black rounded-2xl">
+
+                    @if ($accountType == 'individual')
+                        <h2 class="text-base lg:text-xl font-semibold  mb-8 text-left">Take a photo of your
+                            ID and eldorado.gg in
                             <br>
                             background
                         </h2>
@@ -484,16 +522,16 @@
                             </ul>
 
                             <div
-                                class="flex items-center  max-w-88 mx-auto bg-white border border-zinc-100 rounded-lg overflow-hidden">
+                                class="flex items-center  max-w-88 mx-auto  rounded-lg overflow-hidden">
                                 <input type="file" wire:model="idDocument" accept="image/*" class="hidden"
                                     id="idDocument">
 
                                 <label for="idDocument"
-                                    class="shrink-0 px-6 py-1.5 bg-black text-white font-semibold rounded-l-lg hover:bg-gray-800 cursor-pointer transition duration-150 ease-in-out">
+                                    class="shrink-0 px-6 py-1.5 bg-zinc-600 text-white font-semibold rounded-3xl hover:bg-gray-800 cursor-pointer transition duration-150 ease-in-out">
                                     Choose file
                                 </label>
 
-                                <div class="p-2 text-sm text-gray-500 truncate">
+                                <div class="p-2 text-sm text-primary-100 truncate w-full bg-bg-light-black shadow rounded-sm ml-2 text-left">
                                     @if ($idDocument)
                                         {{ $idDocument->getClientOriginalName() }}
                                     @else
@@ -501,6 +539,7 @@
                                     @endif
                                 </div>
                             </div>
+                            
                             <p class="text-xs text-text-white text-center mt-2">Must be JPEG, PNG or HEIC and cannot
                                 exceed
                                 10MB.
@@ -509,32 +548,8 @@
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
-                    </div>
-
-
-                    <div class="flex justify-center space-x-4 mt-4">
-                        <button wire:click="previousStep" class="px-8 py-2 rounded-lg hover:bg-gray-50">
-                            BACK
-                        </button>
-                        <button wire:click="nextStep"
-                            class="px-8 py-2 bg-zinc-500 text-white rounded-lg hover:bg-zinc-700">
-                            NEXT
-                        </button>
-                    </div>
-                </div>
-            @else
-                {{-- Content for Company Account (Ultimate Beneficial Owner ID Upload) --}}
-                <div>
-                    <div class="text-center mb-8">
-                        <div class="flex items-center justify-center mb-2">
-                            <span class="text-zinc-500 text-2xl">✓</span>
-                            <h3 class="text-lg font-semibold ml-2">Seller ID Verification</h3>
-                        </div>
-                        <p class="text-text-white">Step 4/7</p>
-                    </div>
-
-                    <div class="dark:bg-bg-primary bg-bg-white max-w-2xl mx-auto py-6 mb-6">
-                        <h2 class="text-xl font-semibold text-center mb-8">
+                    @else
+                        <h2 class="text-base lg:text-xl font-semibold  mb-8 text-left">
                             Take a photo of ultimate beneficial owner ID
                         </h2>
 
@@ -563,16 +578,16 @@
                             </ul>
 
                             <div
-                                class="flex items-center max-w-88 mx-auto bg-white border border-zinc-100 rounded-lg overflow-hidden">
+                                class="flex items-center max-w-88 mx-auto border border-zinc-100 rounded-lg overflow-hidden">
                                 <input type="file" wire:model="ultimateBeneficialOwnerIdDocument" accept="image/*"
                                     class="hidden" id="ultimateBeneficialOwnerIdDocument">
 
                                 <label for="ultimateBeneficialOwnerIdDocument"
-                                    class="shrink-0 px-6 py-1.5 bg-black text-white font-semibold rounded-l-lg hover:bg-gray-800 cursor-pointer transition duration-150 ease-in-out">
+                                    class="shrink-0 px-6 py-1.5 bg-zinc-600 text-white font-semibold rounded-3xl hover:bg-gray-800 cursor-pointer transition duration-150 ease-in-out">
                                     Choose file
                                 </label>
 
-                                <div class="p-2 text-sm text-gray-500 truncate">
+                                <div class="p-2 text-sm text-primary-100 truncate w-full bg-bg-light-black shadow rounded-sm ml-2 text-left">
                                     @if (isset($ultimateBeneficialOwnerIdDocument))
                                         {{ $ultimateBeneficialOwnerIdDocument->getClientOriginalName() }}
                                     @else
@@ -587,33 +602,41 @@
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
-                    </div>
-
-                    <div class="flex justify-center space-x-4">
-                        <button wire:click="previousStep" class="px-8 py-2 rounded-lg hover:bg-gray-50">
-                            BACK
-                        </button>
-                        <button wire:click="nextStep"
-                            class="px-8 py-2 bg-zinc-500 text-white rounded-lg hover:bg-zinc-700">
-                            NEXT
-                        </button>
-                    </div>
+                    @endif
                 </div>
-            @endif
+
+                <div class="flex justify-center space-x-4 pt-10">
+                    <a wire:click.prevent="previousStep"
+                        class="px-8 py-2 text-text-white  rounded-lg hover:bg-gray-50">
+                        BACK
+                    </a>
+                    <button wire:click="nextStep"
+                        class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
+                        NEXT
+                    </button>
+                </div>
+
+            </div>
+
             {{-- Step 6: Selfie with ID (Individual) or Company Documents --}}
         @elseif($currentStep == 6)
-            @if ($accountType == 'individual')
-                <div>
-                    <div class="text-center mb-8">
-                        <div class="flex items-center justify-center mb-2">
-                            <span class="text-zinc-500 text-2xl">✓</span>
-                            <h3 class="text-lg font-semibold ml-2 text-text-white">ID Verification</h3>
-                        </div>
-                        <p class="text-text-white">Step 6/6</p>
+            <div class="text-center w-full rounded-2xl bg-bg-primary px-5 py-8 lg:p-20">
+                <div class="mb-6">
+                    <div class="mx-auto flex flex-row items-center justify-center">
+                        <span class="text-8xl pr-2.5">
+                            <flux:icon name="shield-check" class="stroke-zinc-500"></flux:icon>
+                        </span>
+                        <p class="font-semibold text-base ">Seller ID verification</p>
                     </div>
+                    <div class="text-sm text-text-primary font-normal pt-2">
+                        Step <span>5</span>/<span>7</span>
+                    </div>
+                </div>
 
-                    <div class="dark:bg-bg-primary bg-bg-white max-w-2xl mx-auto py-6 px-8 mb-6">
-                        <h2 class="text-xl leading-2 font-semibold text-center mb-4">Take a selfie with your ID</h2>
+                <div class="p-5 lg:px-15 lg:py-10 bg-bg-secondary dark:bg-bg-light-black rounded-2xl">
+                    @if ($accountType == 'individual')
+                        <h2 class="text-base lg:text-xl leading-2 font-semibold  mb-4 text-left">Take a selfie with
+                            your ID</h2>
 
                         <div class="flex justify-center mb-6">
                             <img src="{{ asset('assets/images/verification-selfie.webp') }}"
@@ -633,14 +656,22 @@
                         </ul>
 
                         <div
-                            class="flex items-center max-w-md mx-auto bg-white border border-zinc-200 rounded-lg overflow-hidden">
+                            class="flex items-center max-w-md mx-auto  rounded-lg overflow-hidden">
                             <input type="file" wire:model="selfieWithId" accept="image/*" class="hidden"
                                 id="selfieWithId">
 
                             <label for="selfieWithId"
-                                class="shrink-0 px-6 py-2 bg-black text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
+                                class="shrink-0 px-6 py-2 bg-zinc-600 rounded-3xl text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
                                 Choose file
                             </label>
+                            
+                                <div class="p-2 text-sm w-full text-primary-100 truncate w-full bg-bg-light-black shadow rounded-sm ml-2 text-left">
+                                    @if ($selfieWithId)
+                                        {{ $idDocument->getClientOriginalName() }}
+                                    @else
+                                        No file selected
+                                    @endif
+                                </div>
                         </div>
 
                         <p class="text-xs text-center text-gray-500 mt-3">
@@ -650,32 +681,8 @@
                         @error('selfieWithId')
                             <p class="text-red-500 text-sm text-center mt-2">{{ $message }}</p>
                         @enderror
-                    </div>
-
-                    <div class="flex justify-center space-x-4">
-                        <button wire:click="previousStep"
-                            class="px-8 py-2 text-text-white rounded-lg hover:bg-gray-50">
-                            BACK
-                        </button>
-                        <button wire:click="submit" class="px-8 py-2 bg-zinc-500  rounded-lg hover:bg-zinc-700"
-                            wire:loading.attr="disabled">
-                            <span wire:loading.remove wire:target="submit" class="text-white">SUBMIT DOCUMENTS</span>
-                            <span wire:loading wire:target="submit">Submitting...</span>
-                        </button>
-                    </div>
-                </div>
-            @else
-                {{-- Step 6: Company Documents Upload --}}
-                <div>
-                    <div class="text-center mb-8">
-                        <div class="flex items-center justify-center mb-2">
-                            <span class="text-zinc-500 text-2xl">✓</span>
-                            <h3 class="text-lg font-semibold ml-2">Seller ID Verification</h3>
-                        </div>
-                        <p class="text-text-white">Step 7/7</p>
-                    </div>
-                    <div class="dark:bg-bg-primary bg-bg-white max-w-2xl mx-auto py-6 px-8 mb-6">
-                        <h2 class="text-2xl font-bold text-center mb-6">Upload company documents</h2>
+                    @else
+                        <h2 class="text-base lg:text-2xl font-bold text-left mb-6">Upload company documents</h2>
 
                         <div class="max-w-2xl mx-auto mb-8">
                             <p class="text-gray-600 mb-6 text-center">
@@ -724,7 +731,7 @@
                                     accept=".jpg,.jpeg,.png,.heic,.pdf,.docx" multiple class="hidden"
                                     id="companyDocuments">
                                 <label for="companyDocuments"
-                                    class="shrink-0 px-6 py-2 bg-black flex justify-center w-40 rounded-lg mx-auto text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
+                                    class="shrink-0 px-6 py-2 bg-zinc-600 flex justify-center w-40 rounded-lg mx-auto text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
                                     Choose file
                                 </label>
                                 @if (!empty($companyDocuments))
@@ -742,23 +749,23 @@
                                 Must be JPEG, PNG, HEIC, PDF, DOCX and cannot exceed 10MB.
                             </p>
                         </div>
-                    </div>
-
-                    <div class="flex justify-center space-x-4">
-                        <button wire:click="previousStep"
-                            class="px-8 py-2  text-gray-700 rounded-lg hover:bg-gray-50">
-                            BACK
-                        </button>
-                        <button wire:click="submit"
-                            class="px-8 py-2 bg-zinc-500 text-white rounded-lg hover:bg-zinc-700"
-                            wire:loading.attr="disabled">
-                            <span wire:loading.remove wire:target="submit" class="text-white">SUBMIT</span>
-                            <span wire:loading wire:target="submit">Submitting...</span>
-                        </button>
-                    </div>
+                    @endif
                 </div>
 
-            @endif
+                <div class="flex justify-center space-x-4 pt-10">
+                    <button wire:click="previousStep"
+                        class="px-8 py-2  hover:text-gray-700 rounded-lg hover:bg-gray-50">
+                        BACK
+                    </button>
+                    <button wire:click="submit" class="px-8 py-2 bg-zinc-500 text-white rounded-lg hover:bg-zinc-700"
+                        wire:loading.attr="disabled">
+                        <span wire:loading.remove wire:target="submit" class="text-white">SUBMIT</span>
+                        <span wire:loading wire:target="submit">Submitting...</span>
+                    </button>
+                </div>
+
+            </div>
+
         @endif
     </div>
 </div>

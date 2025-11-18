@@ -16,13 +16,12 @@ class Category extends BaseModel implements Auditable
 
 
     protected $fillable = [
+        'sort_order',
         'name',
         'slug',
-        'description',
         'meta_title',
         'meta_description',
         'icon',
-        'is_featured',
         'status',
 
         'created_by',
@@ -33,6 +32,10 @@ class Category extends BaseModel implements Auditable
 
     ];
 
+    protected $hidden = [
+        'id',    
+      
+    ];
     protected $casts = [
         'status' => CategoryStatus::class
     ];
@@ -88,11 +91,6 @@ class Category extends BaseModel implements Auditable
                 $filters['name'] ?? null,
                 fn($q, $name) =>
                 $q->where('name', 'like', "%{$name}%")
-            )
-            ->when(
-                $filters['is_default'] ?? null,
-                fn($q, $isDefault) =>
-                $q->where('is_default', $isDefault)
             );
     }
 
@@ -101,15 +99,13 @@ class Category extends BaseModel implements Auditable
      ================================================================ */
 
 
-    #[SearchUsingPrefix(['id', 'name', 'description', 'meta_title'])]
+    #[SearchUsingPrefix(['id', 'name', 'meta_title'])]
     public function toSearchableArray(): array
     {
         return [
             'name' => $this->name,
-            'description' => $this->description,
             'meta_title' => $this->meta_title,
             'status' => $this->status,
-            'is_default' => $this->is_default,
         ];
     }
 
