@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\GameManagement\GameServer;
+namespace App\Livewire\Backend\Admin\GameManagement\Server;
 
 use App\Enums\ServerStatus;
-use App\Models\GameServer;
 use App\Services\ServerService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
@@ -18,8 +17,6 @@ class Trash extends Component
     public $selectedId = null;
     public $bulkAction = '';
     public $showBulkActionModal = false;
-
-    protected $listeners = ['CurrencyDeleted' => '$refresh', 'CurrencyRestored' => '$refresh', 'CurrencyUpdated' => '$refresh'];
 
     protected ServerService $service;
 
@@ -95,7 +92,7 @@ class Trash extends Component
             ['value' => 'forceDelete', 'label' => 'Permanent Delete'],
         ];
 
-        return view('livewire.backend.admin.game-management.game-server.trash', [
+        return view('livewire.backend.admin.game-management.server.trash', [
             'datas' => $datas,
             'statuses' => ServerStatus::options(),
             'columns' => $columns,
