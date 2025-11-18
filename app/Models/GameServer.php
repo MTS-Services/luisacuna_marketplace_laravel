@@ -24,7 +24,10 @@ class GameServer extends BaseModel implements Auditable
         'type',
         'region',
 
-         'created_by',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'created_by',
         'updated_by',
         'deleted_by',
         'restored_by',
@@ -98,5 +101,11 @@ class GameServer extends BaseModel implements Auditable
     {
         return is_null($this->deleted_at);
     }
- 
+     public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->appends = array_merge(parent::getAppends(), [
+            //
+        ]);
+    }
 }

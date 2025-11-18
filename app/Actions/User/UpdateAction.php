@@ -2,11 +2,15 @@
 
 namespace App\Actions\User;
 
+use App\Events\User\UserUpdated;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UpdateAction
 {
@@ -14,67 +18,95 @@ class UpdateAction
         protected UserRepositoryInterface $interface
     ) {}
 
-    public function execute(int $userId, array $data): User
+    public function execute(int $id, array $data): User
     {
-        return DB::transaction(function () use ($userId, $data) {
-            $user = $this->interface->find($userId);
+        $newSingleAvatarPath = null;
+        $uploadedPaths = []; // Multiple avatar paths
 
-            if (!$user) {
-                Log::error('User not found', ['user_id' => $userId]);
-                throw new \Exception('User not found');
+        try {
+            return DB::transaction(function () use ($id, $data, &$newSingleAvatarPath, &$uploadedPaths) {
+
+                $user = $this->interface->find($id);
+
+                if (!$user) {
+                    Log::error('User not found', ['user_id' => $userId]);
+                    throw new \Exception('User not found');
+                }
+
+                $oldData = $user->getAttributes();
+                $newData = $data;
+
+                // --- 1. Single Avatar Handling ---
+                $oldAvatarPath = Arr::get($oldData, 'avatar');
+                $uploadedAvatar = Arr::get($data, 'avatar');
+
+                if ($uploadedAvatar instanceof UploadedFile) {
+                    // Delete old file permanently (File deletion is non-reversible)
+                    if ($oldAvatarPath && Storage::disk('public')->exists($oldAvatarPath)) {
+                        Storage::disk('public')->delete($oldAvatarPath);
+                    }
+                    // Store the new file and track path for rollback
+                    $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+                    $fileName = $prefix . '-' . $uploadedAvatar->getClientOriginalName();
+
+                    $newSingleAvatarPath = Storage::disk('public')->putFileAs('users', $uploadedAvatar, $fileName);
+                    $newData['avatar'] = $newSingleAvatarPath;
+                } elseif (Arr::get($data, 'remove_file')) {
+                    if ($oldAvatarPath && Storage::disk('public')->exists($oldAvatarPath)) {
+                        Storage::disk('public')->delete($oldAvatarPath);
+                    }
+                    $newData['avatar'] = null;
+                }
+                // Cleanup temporary/file object keys
+                if (!$newData['remove_file'] && !$newSingleAvatarPath) {
+                    $newData['avatar'] = $oldAvatarPath ?? null;
+                }
+                unset($newData['remove_file']);
+
+                // --- 2. Password Handling ---
+                $newPassword = Arr::get($data, 'password');
+                if (!empty($newPassword)) {
+                    $newData['password'] = Hash::make($newPassword);
+                } else {
+                    unset($newData['password']);
+                }
+
+                $updated = $this->interface->update($id, $newData);
+
+                if (!$updated) {
+                    throw new \Exception('Failed to update Data');
+                }
+                // Refresh model and dispatch event
+                $user = $user->fresh();
+                $newAttributes = $user->getAttributes();
+                $changes = [];
+
+                foreach ($newAttributes as $key => $value) {
+                    if (in_array($key, ['created_at', 'updated_at', 'id'])) continue;
+                    $oldValue = Arr::get($oldData, $key);
+                    if ($oldValue !== $value) {
+                        $changes[$key] = ['old' => $oldValue, 'new' => $value];
+                    }
+                }
+
+                if (!empty($changes)) {
+                    event(new UserUpdated($user, $changes));
+                }
+
+                return $user;
+            });
+        } catch (\Exception $e) {
+
+            // --- FILE ROLLBACK MECHANISM: Delete files uploaded in this transaction ---
+
+            // 1. Rollback single avatar file
+            if ($newSingleAvatarPath && Storage::disk('public')->exists($newSingleAvatarPath)) {
+                Storage::disk('public')->delete($newSingleAvatarPath);
+                Log::warning('File Rollback: Deleted single new avatar file.', ['path' => $newSingleAvatarPath]);
             }
 
-            // Store old data BEFORE any modifications
-            $oldData = $user->getAttributes();
-            
-            Log::info('User found', [
-                'user_id' => $userId,
-                'user_data' => $oldData
-            ]);
-            
-
-            $new_data = [
-                'first_name' => $data['first_name'],
-                'last_name' => $data['last_name'],
-                'username' => $data['username'],
-                'country_id' => $data['country_id'],
-                'date_of_birth' => $data['date_of_birth'],
-                'email' => $data['email'],
-                'phone' => $data['phone'],
-                'account_status' => $data['account_status'],                
-                'updater_id' => user()->id,
-            ];
-
-            if($data['password'] != null && $data['password'] != '' && $data['password']){
-
-                $new_data['password'] = $data['password'];
-
-            }
-          
-             if($data['avatar']) {
-
-                $new_data['avatar'] = Storage::disk('public')->putFile('users', $data['avatar']);
-
-                if ( $oldData['avatar'] && Storage::disk('public')->exists($oldData['avatar'])) {
-
-                    Storage::disk('public')->delete($oldData['avatar']);
-                }   
-            }
-
-       
-
-            // Update user
-            $updated = $this->interface->update($userId, $new_data);
-            
-            if (!$updated) {
-                Log::error('Failed to update user in repository', ['user_id' => $userId]);
-                throw new \Exception('Failed to update user');
-            }
-
-            // Refresh the user model
-            $user = $user->fresh();
-
-            return $user;
-        });
+            // Re-throw the exception to communicate failure
+            throw $e;
+        }
     }
 }

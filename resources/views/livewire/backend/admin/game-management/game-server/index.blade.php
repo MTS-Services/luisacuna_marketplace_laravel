@@ -6,7 +6,7 @@
                 {{ __('Currency List') }}
             </h2>
             <div class="flex items-center gap-2 w-full sm:w-auto">
-                <x-ui.button href="{{ route('admin.as.currency.trash') }}" variant='tertiary' class="w-auto py-2!">
+                <x-ui.button href="{{ route('admin.gm.server.trash') }}" variant='tertiary' class="w-auto py-2!">
                     <flux:icon name="trash"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
                     {{ __('Trash') }}

@@ -51,7 +51,9 @@ class Create extends Component
         $data = $this->form->validate();
         try {
             $data['created_by'] = admin()->id;
+
             $this->service->createData($data);
+
             $this->success('Data created successfully.');
             return $this->redirect(route('admin.gm.server.index'), navigate: true);
         } catch (\Exception $e) {
