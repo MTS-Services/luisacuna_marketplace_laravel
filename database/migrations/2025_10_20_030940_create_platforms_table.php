@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\GamePlatformStatus;
+use App\Enums\PlatformStatus;
 use App\Traits\AuditColumnsTrait;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,18 +14,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('game_platforms', function (Blueprint $table) {
+        Schema::create('platforms', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
+
             $table->string('name')->unique();
-            $table->string('slug')->unique();
-            $table->string('status')->default(GamePlatformStatus::ACTIVE->value);
+            $table->string('status')->default(PlatformStatus::ACTIVE->value);
             $table->string('icon')->nullable();
-            $table->string('color_code_hex')->nullable();
+            $table->string('color')->nullable();
 
             $table->softDeletes();
             $table->timestamps();
-           // $this->addMorphedAuditColumns($table);
             $this->addAdminAuditColumns($table);
         });
     }

@@ -2,7 +2,7 @@
  
 namespace App\Enums;
  
-enum GamePlatformStatus: string
+enum PlatformStatus: string
 {
      case ACTIVE = 'active';
      case INACTIVE = 'inactive';

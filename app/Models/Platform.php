@@ -2,7 +2,7 @@
  
 namespace App\Models;
 
-use App\Enums\GamePlatformStatus;
+use App\Enums\PlatformStatus;
 use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,7 +11,7 @@ use Laravel\Scout\Searchable;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use OwenIt\Auditing\Contracts\Auditable;
  
-class GamePlatform extends BaseModel implements Auditable
+class Platform extends BaseModel implements Auditable
 {
     use   AuditableTrait , Searchable;
     /** @use HasFactory<\Database\Factories\GamePlatformFactory> */
@@ -20,10 +20,9 @@ class GamePlatform extends BaseModel implements Auditable
     protected $fillable = [
         'sort_order',
         'name',
-        'slug',
         'status',
         'icon',
-        'color_code_hex',
+        'color',
 
         
         'created_by',
@@ -31,6 +30,9 @@ class GamePlatform extends BaseModel implements Auditable
         'deleted_by',
         'restored_by',
         'restored_at',
+        'created_at',
+        'deleted_at',
+        'updated_at',
       //here AuditColumns 
     ];
  
@@ -41,7 +43,7 @@ class GamePlatform extends BaseModel implements Auditable
     ];
  
     protected $casts = [
-         'status' => GamePlatformStatus::class,
+         'status' => PlatformStatus::class,
         'restored_at' => 'datetime',
     ];
  
@@ -61,12 +63,12 @@ class GamePlatform extends BaseModel implements Auditable
 
     public function scopeActive(Builder $query): Builder
     {
-        return $query->where('status', GamePlatformStatus::ACTIVE);
+        return $query->where('status', PlatformStatus::ACTIVE);
     }
 
     public function scopeInactive(Builder $query): Builder
     {
-        return $query->where('status', GamePlatformStatus::INACTIVE);
+        return $query->where('status', PlatformStatus::INACTIVE);
     }
 
     public function scopeFilter(Builder $query, array $filters): Builder
