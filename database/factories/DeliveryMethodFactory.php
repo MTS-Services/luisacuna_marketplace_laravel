@@ -20,7 +20,7 @@ class DeliveryMethodFactory extends Factory
 
         return [
             'name' => $name,
-            'slug' => Str::slug($name),
+            'slug' => Str::slug($name)->unique(),
             'image' => 'https://placehold.co/400x400',
             'status' => DeliveryMethodStatus::ACTIVE->value,
 
