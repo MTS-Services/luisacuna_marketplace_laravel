@@ -28,6 +28,8 @@ class RankForm extends Form
  
     public bool $initial_assign = false;
  
+    public bool $remove_icon = false;
+ 
     /**
      * Get the validation rules.
      *
@@ -64,6 +66,10 @@ class RankForm extends Form
                 'nullable',
                 'string',
                 'max:500',
+            ],
+            'remove_icon' => [
+                'nullable',
+                'boolean',
             ],
             'status' => [
                 'required',
@@ -137,8 +143,8 @@ class RankForm extends Form
         $this->minimum_points = $rank->minimum_points;
         $this->maximum_points = $rank->maximum_points;
         $this->icon = $rank->icon ?? '';
+        $this->remove_icon = false;
         $this->status = $rank->status->value ?? RankStatus::ACTIVE->value;
-        $this->initial_assign = false;
     }
  
     /**
@@ -153,7 +159,7 @@ class RankForm extends Form
             'slug' => $this->slug,
             'minimum_points' => $this->minimum_points,
             'maximum_points' => $this->maximum_points,
-            'icon' => $this->icon ?: null,
+             'icon' => $this->icon ?: null,
             'status' => $this->status,
             'initial_assign' => $this->initial_assign,
         ];
