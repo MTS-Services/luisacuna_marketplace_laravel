@@ -4,7 +4,7 @@
         <div class="max-w-7xl mx-auto py-12 px-6">
 
             <div class="text-center mb-10">
-                <h1 class="text-3xl font-bold mb-2">{{ __('Terms & Conditions') }}</h1>
+                <h1 class="text-3xl font-bold mb-2">{{ __('Refund Policy') }}</h1>
                 <p class="text-gray-500 text-sm">{{ __('Update Time : 2025-09-10 16:41:31') }}</p>
             </div>
 
@@ -71,10 +71,6 @@
                     </p>
                 </section>
 
-
-
-
-
             </div>
 
             <div class="flex float-right space-x-4 ">
@@ -97,9 +93,6 @@
                     </svg>
                     {{ __('Start Shopping Now') }}
                 </button>
-
-
-
             </div>
         </div>
     </div>

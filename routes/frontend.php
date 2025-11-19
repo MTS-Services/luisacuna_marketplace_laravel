@@ -41,4 +41,5 @@ Route::controller(FrontendController::class)->group(function () {
     Route::get('/contact-us', 'contactUs')->name('contact-us');
     Route::get('/terms-and-conditions', 'termsAndConditions')->name('terms-and-conditions');
     Route::get('/refund-policy', 'refunPolicy')->name('refund-policy');
+    Route::get('/privacy-policy', 'privacyPolicy')->name('privacy-policy');
 });
