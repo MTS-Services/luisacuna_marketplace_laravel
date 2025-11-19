@@ -112,9 +112,9 @@ class Register extends Component
                 'last_login_at' => now(),
                 'last_login_ip' => request()->ip(),
             ]);
-            $rank = Rank::where('initial_assign', RankStatus::ACTIVE->value)->first();
+            // $rank = Rank::where('initial_assign', RankStatus::ACTIVE->value)->first();
 
-            $rankService->assignRankToUser($user->id, $rank->id);
+            // $rankService->assignRankToUser($user->id, $rank->id);
 
             // Load country relationship for newly created user
             $user->load('country');

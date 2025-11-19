@@ -20,7 +20,7 @@
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                     {{ __('Icon') }}
                 </h3>
-                    <x-ui.file-input wire:model="form.icon" label="Icon" accept="image/*" :error="$errors->first('form.icon')"
+                <x-ui.file-input wire:model="form.icon" label="Icon" accept="image/*" :error="$errors->first('form.icon')"
                     hint="Upload a icon (Max: 2MB)" :existingFiles="$existingFile" removeModel="form.remove_icon" />
             </div>
 
@@ -43,17 +43,17 @@
                 </div>
 
                 <div>
-                    <x-ui.label for="maximum_points" :value="__('Maximum Points')" />
-                    <x-ui.input id="maximum_points" type="number" class="mt-1 block w-full"
-                        wire:model="form.maximum_points" placeholder="Enter maximum points" />
-                    <x-ui.input-error :messages="$errors->get('form.maximum_points')" class="mt-2" />
-                </div>
-
-                <div>
                     <x-ui.label for="minimum_points" :value="__('Minimum Points')" />
                     <x-ui.input id="minimum_points" type="number" class="mt-1 block w-full"
                         wire:model="form.minimum_points" placeholder="Enter minimum points" />
                     <x-ui.input-error :messages="$errors->get('form.minimum_points')" class="mt-2" />
+                </div>
+
+                <div>
+                    <x-ui.label for="maximum_points" :value="__('Maximum Points')" />
+                    <x-ui.input id="maximum_points" type="number" class="mt-1 block w-full"
+                        wire:model="form.maximum_points" placeholder="Enter maximum points" />
+                    <x-ui.input-error :messages="$errors->get('form.maximum_points')" class="mt-2" />
                 </div>
 
                 <div>

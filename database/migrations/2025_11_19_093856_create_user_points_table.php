@@ -7,27 +7,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    use AuditColumnsTrait;
+     use AuditColumnsTrait;
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('user_ranks', function (Blueprint $table) {
+        Schema::create('user_points', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('user_id')->unique();
-            $table->unsignedBigInteger('rank_level');
-            $table->boolean('is_active')->default(true);
-            $table->timestamp('activated_at');
-
+            $table->bigInteger('points');
+            $table->string('note')->nullable();
 
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('rank_level')->references('id')->on('ranks')->onDelete('cascade');
-
             $table->softDeletes();
             $table->timestamps();
+
+           $this->addMorphedAuditColumns($table);
         });
     }
 
@@ -36,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_ranks');
+        Schema::dropIfExists('user_points');
     }
 };
