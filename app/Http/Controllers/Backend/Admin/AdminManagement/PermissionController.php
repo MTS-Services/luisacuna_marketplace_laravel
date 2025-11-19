@@ -7,13 +7,11 @@ use App\Services\PermissionService;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class AdminController extends Controller implements HasMiddleware
+class PermissionController extends Controller implements HasMiddleware
 {
     protected $masterView = 'backend.admin.pages.admin-management.permission.permission';
 
-    public function __construct(protected PermissionService $service)
-    {
-    }
+    public function __construct(protected PermissionService $service) {}
 
     public static function middleware(): array
     {
@@ -72,4 +70,3 @@ class AdminController extends Controller implements HasMiddleware
         ]);
     }
 }
-

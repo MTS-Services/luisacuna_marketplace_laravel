@@ -9,9 +9,10 @@ use Livewire\Attributes\Locked;
 use App\Enums\AchievementStatus;
 use App\Services\CategoryService;
 use App\Services\AchievementService;
+use App\Livewire\Forms\AchievementForm;
+use App\Services\AchievementTypeService;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
-use App\Livewire\Forms\Backend\Admin\RewardManagement\AchievementForm;
 
 class Edit extends Component
 {
@@ -19,22 +20,24 @@ class Edit extends Component
     use WithNotification, WithFileUploads;
     public AchievementForm $form;
 
+     public $existingFile;
+
 
     #[Locked]
     public Achievement $data;
     protected AchievementService $service;
     protected RankService $rank;
-    protected CategoryService $category;
+    protected AchievementTypeService $achievementTypeService;
 
 
     /**
      * Inject the CurrencyService via the boot method.
      */
-    public function boot(AchievementService $service, RankService $rank, CategoryService $category)
+    public function boot(AchievementService $service, RankService $rank, AchievementTypeService $achievementTypeService)
     {
         $this->service = $service;
         $this->rank = $rank;
-        $this->category = $category;
+        $this->achievementTypeService = $achievementTypeService;
     }
 
 
@@ -45,18 +48,19 @@ class Edit extends Component
     {
         $this->data = $data;
         $this->form->setData($data);
+        $this->existingFile = $data->icon;
     }
 
 
     public function render()
     {
         $ranks = $this->rank->getAllDatas();
-        $categories = $this->category->getAllDatas();
+        $achievementTypes = $this->achievementTypeService->getAllDatas();
 
         return view('livewire.backend.admin.reward-management.achievement.edit', [
             'statuses' => AchievementStatus::options(),
             'ranks' => $ranks,
-            'categories' => $categories
+            'achievementTypes' => $achievementTypes
         ]);
     }
 
@@ -83,6 +87,9 @@ class Edit extends Component
     public function resetForm(): void
     {
         $this->form->setData($this->data);
+
+        $this->existingFile = $this->data->icon;
+
         $this->form->resetValidation();
     }
 }

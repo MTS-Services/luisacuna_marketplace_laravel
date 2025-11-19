@@ -5,11 +5,11 @@ namespace App\Services;
 use App\Repositories\Contracts\ServerRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use App\Actions\GameServer\CreateAction;
-use App\Actions\GameServer\UpdateAction;
-use App\Actions\GameServer\DeleteAction;
-use App\Actions\GameServer\RestoreAction;
-use App\Actions\GameServer\BulkAction;
+use App\Actions\Server\CreateAction;
+use App\Actions\Server\UpdateAction;
+use App\Actions\Server\DeleteAction;
+use App\Actions\Server\RestoreAction;
+use App\Actions\Server\BulkAction;
 use App\Enums\ServerStatus;
 use App\Models\Server;
 

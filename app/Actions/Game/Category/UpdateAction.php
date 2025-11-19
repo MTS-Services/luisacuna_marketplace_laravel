@@ -12,58 +12,89 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UpdateAction
 {
-
     public function __construct(protected CategoryRepositoryInterface $interface) {}
+
     public function execute(int $id, array $data): Category
     {
-          $newSingleIconPath = null;
-        return DB::transaction(function () use ($id, $data, &$newSingleIconPath) {
+        $newSingleIconPath = null;
 
-            $findData = $this->interface->find($id);
-            if (!$findData) {
-                Log::error('Data not found', ['data_id' => $id]);
-                throw new \Exception('Data not found');
-            }
-            
+        try {
+
+            return DB::transaction(function () use ($id, $data, &$newSingleIconPath) {
+
+                $findData = $this->interface->find($id);
+
+                if (!$findData) {
+                    Log::error('Category not found', [
+                        'category_id' => $id
+                    ]);
+                    throw new \Exception('Category not found');
+                }
+
                 $oldData = $findData->getAttributes();
                 $newData = $data;
 
-                // --- 1. Single Avatar Handling ---
+                // ---- SINGLE ICON HANDLING ----
                 $oldIconPath = Arr::get($oldData, 'icon');
                 $uploadedIcon = Arr::get($data, 'icon');
-                
-            if ($uploadedIcon instanceof UploadedFile) {
-                    // Delete old file permanently (File deletion is non-reversible)
+
+                if ($uploadedIcon instanceof UploadedFile) {
+
+                    // Delete old file permanently
                     if ($oldIconPath && Storage::disk('public')->exists($oldIconPath)) {
                         Storage::disk('public')->delete($oldIconPath);
                     }
-                    // Store the new file and track path for rollback
+
                     $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
                     $fileName = $prefix . '-' . $uploadedIcon->getClientOriginalName();
 
-                    $newSingleIconPath = Storage::disk('public')->putFileAs('icons', $uploadedIcon, $fileName);
+                    $newSingleIconPath = Storage::disk('public')
+                        ->putFileAs('icons', $uploadedIcon, $fileName);
+
                     $newData['icon'] = $newSingleIconPath;
+
                 } elseif (Arr::get($data, 'remove_file')) {
+
+                    // Delete requested file
                     if ($oldIconPath && Storage::disk('public')->exists($oldIconPath)) {
                         Storage::disk('public')->delete($oldIconPath);
                     }
+
                     $newData['icon'] = null;
                 }
-                // Cleanup temporary/file object keys
-                if (!$newData['remove_file'] && !$newSingleIconPath) {
+
+                // Cleanup icon values
+                if (empty($newData['remove_file']) && !$newSingleIconPath) {
                     $newData['icon'] = $oldIconPath ?? null;
                 }
+
                 unset($newData['remove_file']);
 
-              $updated = $this->interface->update($id, $newData);
+                // ---- UPDATE ----
+                $updated = $this->interface->update($id, $newData);
 
-            if (!$updated) {
+                if (!$updated) {
+                    Log::error('Failed to update category', [
+                        'category_id' => $id,
+                        'new_data' => $newData
+                    ]);
 
-                Log::error('Failed to update data in repository', ['data_id' => $id]);
+                    throw new \Exception('Failed to update category');
+                }
 
-                throw new \Exception('Failed to update data');
-            }
-            return $findData->fresh();
-        });
+                return $findData->fresh();
+            });
+
+        } catch (\Throwable $e) {
+
+            // ---- ERROR LOGGING ----
+            Log::error('Category update failed', [
+                'category_id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            throw $e; // Re-throw so controller can catch it
+        }
     }
 }

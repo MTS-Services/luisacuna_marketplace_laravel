@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Backend\Admin\GameManagement\Platform;
 
-use App\Enums\GamePlatformStatus;
-use App\Models\GamePlatform;
-use App\Services\GamePlatformService;
+use App\Enums\PlatformStatus;
+use App\Services\PlatformService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+
 
 class Index extends Component
 {
@@ -22,8 +22,8 @@ class Index extends Component
     public $bulkAction = '';
     public $showBulkActionModal = false;
 
-    protected GamePlatformService $service;
-    public function boot(GamePlatformService $service)
+    protected PlatformService $service;
+    public function boot(PlatformService $service)
     {
 
         $this->service = $service;
@@ -42,12 +42,12 @@ class Index extends Component
         $columns = [
 
               [
-                'key' => 'icon',
-                'label' => 'Icon',
-                'format' => function($data){
-
-                    return '<img src="'.Storage::url($data->icon).'" alt="'.$data->name.'" class="w-10 h-10 rounded-full object-cover shadow-sm">';
-
+                'key' => 'avatar',
+                'label' => 'Avatar',
+                'format' => function ($data) {
+                    return $data->icon
+                        ? '<img src="' . Storage::url($data->icon) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
                 }
             ],
             [
@@ -56,11 +56,11 @@ class Index extends Component
                 'sortable' => true
             ],
             [
-                'key' => 'color_code_hex',
+                'key' => 'color',
                 'label' => 'Color',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return  $data->color_code_hex ?? 'N/A';
+                    return  $data->color ?? 'N/A';
                 }
             ],
             [
@@ -119,7 +119,7 @@ class Index extends Component
         return view('livewire.backend.admin.game-management.platform.index', [
            
             'datas' => $datas,
-            'statuses' => GamePlatformStatus::options(),
+            'statuses' => PlatformStatus::options(),
             'columns' => $columns,
             'actions' => $actions,
             'bulkActions' => $bulkActions,
@@ -157,11 +157,11 @@ class Index extends Component
     public function changeStatus($id, $status): void
     {
         try {
-            $dataStatus = GamePlatformStatus::from($status);
+            $dataStatus = PlatformStatus::from($status);
 
             match ($dataStatus) {
-                GamePlatformStatus::ACTIVE => $this->service->updateStatusData($id, GamePlatformStatus::ACTIVE),
-                GamePlatformStatus::INACTIVE => $this->service->updateStatusData($id, GamePlatformStatus::INACTIVE),
+                PlatformStatus::ACTIVE => $this->service->updateStatusData($id, PlatformStatus::ACTIVE),
+                PlatformStatus::INACTIVE => $this->service->updateStatusData($id, PlatformStatus::INACTIVE),
                 default => null,
             };
 
@@ -189,8 +189,8 @@ class Index extends Component
         try {
             match ($this->bulkAction) {
                 'delete' => $this->bulkDelete(),
-                'active' => $this->bulkUpdateStatus(GamePlatformStatus::ACTIVE),
-                'inactive' => $this->bulkUpdateStatus(GamePlatformStatus::INACTIVE),
+                'active' => $this->bulkUpdateStatus(PlatformStatus::ACTIVE),
+                'inactive' => $this->bulkUpdateStatus(PlatformStatus::INACTIVE),
                 default => null,
             };
 
@@ -208,7 +208,7 @@ class Index extends Component
         $this->success("{$count} Data deleted successfully");
     }
 
-    protected function bulkUpdateStatus(GamePlatformStatus $status): void
+    protected function bulkUpdateStatus(PlatformStatus $status): void
     {
         $count = count($this->selectedIds);
         $this->service->bulkUpdateStatus($this->selectedIds, $status);

@@ -37,15 +37,21 @@ class Index extends Component
 
         $columns = [
 
-              [
-                'key' => 'icon',
-                'label' => 'Icon',
-                'format' => function($data){
-
-                    return $data->icon;
-                    // return '<img src="'.Storage::url($data->icon).'" alt="'.$data->name.'" class="w-10 h-10 rounded-full object-cover shadow-sm">';
-
-                }
+              
+            [
+                'key' => 'name',
+                'label' => 'Name',
+                'sortable' => true
+            ],
+            [
+                'key' => 'minimum_points',
+                'label' => 'Minimum Points',
+                'sortable' => true
+            ],
+            [
+                'key' => 'maximum_points',
+                'label' => 'Maximum Points',
+                'sortable' => true
             ],
             [
                 'key' => 'name',

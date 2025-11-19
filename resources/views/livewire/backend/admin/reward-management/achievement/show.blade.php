@@ -23,6 +23,14 @@
                 <!-- Product Data Section -->
                 <div class="px-8 py-8">
                     <div class="mb-10">
+                        <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
+                            <p class="text-text-white text-xs font-semibold mb-2 capitalize">{{ __('Image') }}</p>
+
+                            <div class="flex items-center justify-center">
+                                <img src="{{ storage_url($data->icon) }}" alt="{{ $data->name }}" class="max-w-full">
+                            </div>
+                        </div>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
@@ -36,8 +44,8 @@
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
-                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('CATEGORY') }}</p>
-                                <p class="text-slate-400 text-lg font-bold">{{ $data->category->name }}</p>
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('Achievement Type') }}</p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->achievement->name ?? 'N/A' }}</p>
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">

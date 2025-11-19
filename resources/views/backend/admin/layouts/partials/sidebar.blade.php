@@ -92,10 +92,10 @@
                         'active' => 'game-category',
                     ],
                     [
-                        'name' => 'Game Servers',
+                        'name' => 'Servers',
                         'route' => route('admin.gm.server.index'),
                         'icon' => 'swords',
-                        'active' => 'game-server',
+                        'active' => 'server',
                     ],
                     [
                         'name' => 'Platforms',
@@ -167,6 +167,12 @@
                         'route' => route('admin.rm.rank.index'),
                         'icon' => 'user',
                         'active' => 'rank',
+                    ],
+                    [
+                        'name' => 'Achievement Types',
+                        'route' => route('admin.rm.achievementType.index'),
+                        'icon' => 'user',
+                        'active' => 'achievement-type',
                     ],
                     [
                         'name' => 'Achievements',
