@@ -119,15 +119,15 @@
                     <h3 class="text-lg font-bold ">{{ __('3.2') }}</h3>
                     <p class="#">
                         {{ __('Swapy.gg reserves the right to make any changes and modifications to the service terms, including introducing new terms and removing previous terms, for the following reasons:
-                                                                        (a) Changes in the scope of economic activities conducted; 
-                                                                        (b) Updates to applicable laws that necessitate adjustments to these service terms, including judicial precedents from general courts or new resolutions, decisions, recommendations, or other binding regulations issued by authorities; 
-                                                                        (c) To ensure the normal operation of the platform; 
-                                                                        (d) To showcase new products, services, or highlight new product categories posted by sellers; 
-                                                                        (e) Changes in product functionality, services, or service delivery methods due to technical enhancements; 
-                                                                        (f) To enhance the security of users utilizing the platform and conducting transactions; 
-                                                                        (g) Changes in the fees and commission amounts charged by Swapy.gg due to economic factors; 
-                                                                        (h) To prevent criminal activity; 
-                                                                        (i) Other reasons not explicitly listed but which Swapy.gg deems necessary for adjustment based on prevailing circumstances.') }}
+        (a) Changes in the scope of economic activities conducted; 
+        (b) Updates to applicable laws that necessitate adjustments to theseincluding judicial precedents from general courts or new resolutirecommendations, or other binding regulations issued by authorities; 
+        (c) To ensure the normal operation of the platform; 
+        (d) To showcase new products, services, or highlight new product categsellers; 
+        (e) Changes in product functionality, services, or service deliverytechnical enhancements; 
+        (f) To enhance the security of users utilizing the platformtransactions; 
+        (g) Changes in the fees and commission amounts charged by Swapy.gg factors; 
+        (h) To prevent criminal activity; 
+        (i) Other reasons not explicitly listed but which Swapy.gg deemadjustment based on prevailing circumstances.') }}
                     </p>
                 </section>
 
