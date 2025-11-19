@@ -169,6 +169,12 @@
                         'active' => 'rank',
                     ],
                     [
+                        'name' => 'Achievement Types',
+                        'route' => route('admin.rm.achievementType.index'),
+                        'icon' => 'user',
+                        'active' => 'achievement-type',
+                    ],
+                    [
                         'name' => 'Achievements',
                         'route' => route('admin.rm.achievement.index'),
                         'icon' => 'user',
