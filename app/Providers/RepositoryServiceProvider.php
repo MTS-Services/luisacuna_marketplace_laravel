@@ -39,8 +39,10 @@ use App\Repositories\Contracts\GamePlatformRepositoryInterface;
 
 use App\Repositories\Contracts\GameServerRepositoryInterface;
 use App\Repositories\Contracts\OfferItemRepositoryInterface;
+use App\Repositories\Contracts\RarityRepositoryInterface;
 use App\Repositories\Eloquent\GameServerRepository;
 use App\Repositories\Eloquent\OfferItemRepository;
+use App\Repositories\Eloquent\RaritytRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -78,10 +80,10 @@ class RepositoryServiceProvider extends ServiceProvider
 
         //Game Server Repository
         $this->app->bind(
-           
+
             GameServerRepositoryInterface::class,
             GameServerRepository::class,
-          
+
         );
 
         // Rank
@@ -130,6 +132,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             OfferItemRepositoryInterface::class,
             OfferItemRepository::class
+        );
+        $this->app->bind(
+            RarityRepositoryInterface::class,
+            RaritytRepository::class
         );
     }
 

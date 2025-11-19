@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Rarity;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -48,6 +50,7 @@ class DatabaseSeeder extends Seeder
             GameServerSeeder::class,
             DeliveryMethodSeeder::class,
             OfferItemSeeder::class,
+            Rarity::class
         ]);
 
         // Admin::create([

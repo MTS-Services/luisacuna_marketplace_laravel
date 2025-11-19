@@ -11,13 +11,13 @@ class GameServerController extends Controller
     public $master = 'backend.admin.pages.game-management.game_server';
 
     public function index(){
-        
+
         return view($this->master);
     }
 
     public function create(){
-        
+
         return view($this->master);
-    
-    }   
+
+    }
 }
