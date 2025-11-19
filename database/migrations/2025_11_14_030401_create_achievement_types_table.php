@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('achievement_types', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-            $table->string('name');
+            $table->string('name')->unique();
+            $table->boolean('is_active')->index()->default(false);
 
 
             $table->softDeletes();
