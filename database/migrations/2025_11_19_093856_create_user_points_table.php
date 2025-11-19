@@ -13,17 +13,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('achievement_types', function (Blueprint $table) {
+        Schema::create('user_points', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-            $table->string('name')->unique();
-            $table->boolean('is_active')->index()->default(false);
+            $table->unsignedBigInteger('user_id')->unique();
+            $table->bigInteger('points');
+            $table->string('note')->nullable();
 
 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
 
-            $this->addAdminAuditColumns($table);
+           $this->addMorphedAuditColumns($table);
         });
     }
 
@@ -32,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('achievement_types');
+        Schema::dropIfExists('user_points');
     }
 };
