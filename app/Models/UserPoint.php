@@ -5,18 +5,20 @@ namespace App\Models;
 use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class UserRank extends BaseModel implements Auditable
+class UserPoint extends BaseModel implements Auditable
 {
-    use   AuditableTrait;
+    use SoftDeletes, AuditableTrait;
     //
 
     protected $fillable = [
         'sort_order',
         'user_id',
-        'rank_level',
-        'is_active',
-        'activated_at',
+        'points',
+
+
+
 
         'creater_type',
         'updater_type',
@@ -32,7 +34,7 @@ class UserRank extends BaseModel implements Auditable
     ];
 
     protected $casts = [
-        //
+        'points' => 'integer',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -43,20 +45,17 @@ class UserRank extends BaseModel implements Auditable
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
-    public function rank()
-    {
-        return $this->belongsTo(Rank::class, 'rank_level', 'id');
-    }
+
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->appends = array_merge(parent::getAppends(), [
-            //
-        ]);
-    }
+    // public function __construct(array $attributes = [])
+    // {
+    //     parent::__construct($attributes);
+    //     $this->appends = array_merge(parent::getAppends(), [
+    //         //
+    //     ]);
+    // }
 }

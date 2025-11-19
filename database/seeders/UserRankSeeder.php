@@ -22,7 +22,10 @@ class UserRankSeeder extends Seeder
         User::all()->each(function ($user) use ($ranks) {
             UserRank::updateOrCreate(
                 ['user_id' => $user->id],
-                ['rank_level' => collect($ranks)->random()]
+                [
+                    'rank_level' => collect($ranks)->random(),
+                    'activated_at' => now(),
+                ]
             );
         });
     }

@@ -22,7 +22,6 @@ return new class extends Migration {
 
             $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('country_id')->nullable();
-            $table->unsignedBigInteger('rank_points')->default(0);
 
 
             $table->string('username')->unique();

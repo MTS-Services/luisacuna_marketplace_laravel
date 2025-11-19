@@ -36,8 +36,70 @@ class PointRange implements ValidationRule
             $fail($this->getInvalidRangeMessage());
             return;
         }
+
+        // **NIYOM 1: Prothom rank 0 theke shuru hote hobe**
+        $existingRanksCount = Rank::when($this->ignoreId, function ($query) {
+            return $query->where('id', '!=', $this->ignoreId);
+        })->count();
+
+        if ($existingRanksCount === 0 && $this->min !== 0) {
+            $fail('The first rank must start from 0 points.');
+            return;
+        }
+
+        // **NIYOM 2: Porer rank ager rank er maximum + 1 theke shuru hobe**
+        if ($existingRanksCount > 0) {
+            $previousRank = Rank::when($this->ignoreId, function ($query) {
+                return $query->where('id', '!=', $this->ignoreId);
+            })
+            ->where('maximum_points', '<', $this->min)
+            ->orderBy('maximum_points', 'desc')
+            ->first();
+
+            if ($previousRank) {
+                $expectedMin = $previousRank->maximum_points + 1;
+                
+                if ($this->min !== $expectedMin) {
+                    $fail(sprintf(
+                        'The minimum points must be exactly %s (one point after the previous rank "%s" which ends at %s). Current minimum is %s.',
+                        number_format($expectedMin),
+                        $previousRank->name,
+                        number_format($previousRank->maximum_points),
+                        number_format($this->min)
+                    ));
+                    return;
+                }
+            } elseif ($this->min !== 0) {
+                // Jodi kono previous rank na thake tahole 0 theke start hobe
+                $fail('No previous rank found. The rank must start from 0 points.');
+                return;
+            }
+        }
+
+        // **NIYOM 3: Porer rank check - kono gap thakbe na**
+        $nextRank = Rank::when($this->ignoreId, function ($query) {
+            return $query->where('id', '!=', $this->ignoreId);
+        })
+        ->where('minimum_points', '>', $this->max)
+        ->orderBy('minimum_points', 'asc')
+        ->first();
+
+        if ($nextRank) {
+            $expectedNextMin = $this->max + 1;
+            
+            if ($nextRank->minimum_points !== $expectedNextMin) {
+                $fail(sprintf(
+                    'The maximum points must be exactly %s (one point before the next rank "%s" which starts at %s). Setting maximum to %s would create a gap.',
+                    number_format($nextRank->minimum_points - 1),
+                    $nextRank->name,
+                    number_format($nextRank->minimum_points),
+                    number_format($this->max)
+                ));
+                return;
+            }
+        }
  
-        // Check for overlapping ranges with optimized single query
+        // Existing overlap check (backup safety check)
         $overlappingRank = $this->findOverlappingRank();
  
         if ($overlappingRank) {
