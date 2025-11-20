@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\RankStatus;
-use App\Models\BaseModel;
+use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use Spatie\Searchable\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -12,7 +12,7 @@ use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
  
-class Rank extends BaseModel implements Auditable
+class Rank extends AuditBaseModel implements Auditable
 {
     use   AuditableTrait;
     /** @use HasFactory<\Database\Factories\RankFactory> */

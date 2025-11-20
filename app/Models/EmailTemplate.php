@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class EmailTemplate extends BaseModel implements Auditable
+class EmailTemplate extends AuditBaseModel implements Auditable
 {
     use  AuditableTrait;
     /**

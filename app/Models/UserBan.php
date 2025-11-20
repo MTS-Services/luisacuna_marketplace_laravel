@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
+use App\Models\AuditBaseModel;
 use App\Enums\UserBanType;
 use Laravel\Scout\Searchable;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 
-class UserBan extends BaseModel implements Auditable
+class UserBan extends AuditBaseModel implements Auditable
 {
     use   AuditableTrait, Searchable;
     //

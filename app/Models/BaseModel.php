@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class BaseModel extends Model
+class BaseModel extends Model implements Auditable
 {
-    use HasFactory, SoftDeletes, Searchable;
+    use HasFactory, Searchable, AuditableTrait;
 
     /* ================================================================
      * *** PROPERTIES ***
@@ -21,57 +22,16 @@ class BaseModel extends Model
     protected $appends = [
         'created_at_human',
         'updated_at_human',
-        'deleted_at_human',
-        'restored_at_human',
 
         'created_at_formatted',
         'updated_at_formatted',
-        'deleted_at_formatted',
-        'restored_at_formatted',
     ];
 
     /* ================================================================
      |  Relationships
      ================================================================ */
 
-
-    public function creater_admin(): BelongsTo
-    {
-        return $this->belongsTo(Admin::class, 'created_by')->select(['id', 'name', 'status']);
-    }
-
-    public function updater_admin(): BelongsTo
-    {
-        return $this->belongsTo(Admin::class, 'updated_by')->select(['id', 'name', 'status']);
-    }
-
-    public function deleter_admin(): BelongsTo
-    {
-        return $this->belongsTo(Admin::class, 'deleted_by')->select(['id', 'name', 'status']);
-    }
-    public function restorer_admin(): BelongsTo
-    {
-        return $this->belongsTo(Admin::class, 'restored_by')->select(['id', 'name', 'status']);
-    }
-
-    public function creater(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
-    public function updater(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
-    public function deleter(): MorphTo
-    {
-        return $this->morphTo();
-    }
-    public function restorer(): MorphTo
-    {
-        return $this->morphTo();
-    }
+    //  
 
     /* ================================================================
      |  Accessors
@@ -87,15 +47,6 @@ class BaseModel extends Model
         return $this->updated_at ? dateTimeHumanFormat($this->attributes['updated_at'], $this->attributes['created_at']) : "N/A";
     }
 
-    public function getDeletedAtHumanAttribute(): ?string
-    {
-        return $this->deleted_at ? dateTimeHumanFormat($this->attributes['deleted_at']) : "N/A";
-    }
-    public function getRestoredAtHumanAttribute(): ?string
-    {
-        return $this->restored_at ? dateTimeHumanFormat($this->attributes['restored_at']) : "N/A";
-    }
-
     public function getCreatedAtFormattedAttribute(): string
     {
         return $this->created_at ? dateTimeFormat($this->attributes['created_at']) : "N/A";
@@ -104,14 +55,5 @@ class BaseModel extends Model
     public function getUpdatedAtFormattedAttribute(): string
     {
         return $this->updated_at ? dateTimeFormat($this->attributes['updated_at'], $this->attributes['created_at']) : "N/A";
-    }
-
-    public function getDeletedAtFormattedAttribute(): string
-    {
-        return $this->deleted_at ? dateTimeFormat($this->attributes['deleted_at']) : "N/A";
-    }
-    public function getRestoredAtFormattedAttribute(): string
-    {
-        return $this->restored_at ? dateTimeFormat($this->attributes['restored_at']) : "N/A";
     }
 }

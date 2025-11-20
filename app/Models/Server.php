@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use App\Enums\ServerStatus;
-use App\Models\BaseModel;
+use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use OwenIt\Auditing\Contracts\Auditable;
  
-class Server extends BaseModel implements Auditable
+class Server extends AuditBaseModel implements Auditable
 {
     use   AuditableTrait;
     /** @use HasFactory<\Database\Factories\GameServerFactory> */

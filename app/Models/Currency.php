@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use App\Enums\CurrencyStatus;
-use App\Models\BaseModel;
+use App\Models\AuditBaseModel;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Searchable;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class Currency extends BaseModel implements Auditable
+class Currency extends AuditBaseModel implements Auditable
 {
     use Searchable, AuditableTrait;
 

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PlatformStatus;
-use App\Models\BaseModel;
+use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,11 +11,9 @@ use Laravel\Scout\Searchable;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use OwenIt\Auditing\Contracts\Auditable;
  
-class Platform extends BaseModel implements Auditable
+class Platform extends AuditBaseModel implements Auditable
 {
     use   AuditableTrait , Searchable;
-    /** @use HasFactory<\Database\Factories\GamePlatformFactory> */
-    use HasFactory;
  
     protected $fillable = [
         'sort_order',

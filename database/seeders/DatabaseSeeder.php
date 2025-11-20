@@ -13,6 +13,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+
+            PaymentGatewaySeeder::class,
+            WithdrawalGatewaySeeder::class,
+
             RoleSeeder::class,
             PermissionSeeder::class,
             CountrySeeder::class,

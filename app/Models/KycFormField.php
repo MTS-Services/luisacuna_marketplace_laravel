@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use App\Enums\KycFormFieldsInputType;
-use App\Models\BaseModel;
+use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
-class KycFormField extends BaseModel implements Auditable
+class KycFormField extends AuditBaseModel implements Auditable
 {
     use  AuditableTrait;
 
