@@ -128,17 +128,17 @@ class AchievementTypeRepository implements AchievementTypeRepositoryInterface
     public function create(array $data): AchievementType
     {
 
-        if(empty($data['minimum_points'])) {
+        // if(empty($data['minimum_points'])) {
 
-            $data['initial_assign'] = true;
+        //     $data['initial_assign'] = true;
 
-            $default = $this->find(true, 'initial_assign') ;
+        //     $default = $this->find(true, 'initial_assign') ;
 
-            if($default) {
-                $default->update(['initial_assign' => false]);
-            }
+        //     if($default) {
+        //         $default->update(['initial_assign' => false]);
+        //     }
          
-        }
+        // }
 
       
         

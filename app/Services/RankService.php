@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Services;
 
@@ -17,7 +17,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 
 class RankService
-{   
+{
     public function __construct(
         protected RankRepositoryInterface $interface,
         protected CreateAction $createAction,
@@ -26,9 +26,7 @@ class RankService
         protected RestoreAction $restoreAction,
         protected BulkAction $bulkAction,
         protected AssignRankAction $assignRankAction,
-        )
-    {
-    }   
+    ) {}
 
     /* ================== ================== ==================
     *                          Find Methods
@@ -67,6 +65,24 @@ class RankService
     public function getDataCount(array $filters = []): int
     {
         return $this->interface->count($filters);
+    }
+
+
+
+
+    // get next available rank
+    public function getNextRank($currentRankId)
+    {
+        return $this->interface->getNextRank($currentRankId);
+    }
+
+    public function calculatePointsNeeded($userPoints, $nextRank)
+    {
+        if (!$nextRank) {
+            return 0;
+        }
+
+        return max(0, $nextRank->minimum_points - $userPoints);
     }
 
     /* ================== ================== ==================
@@ -158,6 +174,4 @@ class RankService
     {
         return $this->interface->getInactive($sortField, $order);
     }
-
-
 }
