@@ -8,7 +8,8 @@
                     <h3 class="text-text-primary font-open-sans text-lg">{{ __('How it works?') }}</h3>
                     <div class="flex items-center gap-2 bg-zinc-50/10 px-3 py-1.5 rounded-full">
                         <x-phosphor-coin class="fill-yellow-500 w-5 h-5" weight="fill" />
-                        <span class="text-text-white font-semibold">{{ user()->rank_points }}</span>
+                        {{-- <span class="text-text-white font-semibold">{{ user()->rank_points }}</span> --}}
+                        <span class="text-text-white font-semibold">{{ user()->userPoint->points ?? 0 }}</span>
                     </div>
                 </div>
 
@@ -20,9 +21,9 @@
                     </div>
                 </div>
                 <div class="text-center mb-4">
-                    <h4 class="text-text-white font-semibold text-xl mb-2">{{ $rank->name }}</h4>
+                    <h4 class="text-text-white font-semibold text-xl mb-2">{{ $currentRank->name ?? 'N/A' }}</h4>
                     <div class="text-text-white text-sm">
-                        {{ user()->rank_points . ' / ' . ($rank->maximum_points === null ? user()->rank_points . '+' : $rank->maximum_points) }}
+                        {{ user()->userPoint->points . ' / ' . ($currentRank->maximum_points === null ? user()->rank_points . '-' : $currentRank->maximum_points) }}
                     </div>
                     <div class="w-70 xl:w-90 mx-auto bg-white rounded-full h-2 mt-2">
                         <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full" style="width: 20%">
@@ -30,10 +31,18 @@
                     </div>
                 </div>
 
-                <p class="text-text-white text-center text-sm">
-                    {{ __('You need an additional') }} {{ $rank->maximum_points - $rank->minimum_points }}
-                    {{ __('points to reach the Silver level.') }}
-                </p>
+                @if ($nextRank)
+                    <p class="text-text-white text-center text-sm">
+                        {{ __('You need an additional') }}
+                        {{ $pointsNeeded }}
+                        {{ __('points to reach the') }} {{ $nextRank->name }} {{ __('level.') }}
+                    </p>
+                @else
+                    <p class="text-text-white text-center text-sm">
+                        {{ __('Congratulations! You have reached the highest rank.') }}
+                    </p>
+                @endif
+
             </div>
 
             {{-- Available Points Card --}}
@@ -42,7 +51,7 @@
                     <h3 class="text-text-white font-semibold text-xl mb-4">{{ __('Available points') }}</h3>
                     <div class="flex items-center gap-2">
                         <x-phosphor-coin class="fill-yellow-500 w-6 h-6" weight="fill" />
-                        <span class="text-text-white font-bold text-3xl">{{ user()->rank_points }}</span>
+                        <span class="text-text-white font-bold text-3xl">{{ user()->userPoint->points ?? 0 }}</span>
                     </div>
                 </div>
 
@@ -69,7 +78,7 @@
             <div class="flex items-center gap-3 mb-2">
                 <h2 class="text-text-white font-open-sans text-2xl font-bold">{{ __('Achievements completed') }}</h2>
             </div>
-            <p class="text-text-white text-sm ">0 / 10 {{ __('completed') }}</p>
+            <p class="text-text-white text-sm ">0 / {{ count($achievements) }} {{ __('completed') }}</p>
         </div>
 
         {{-- Achievement Cards Grid --}}

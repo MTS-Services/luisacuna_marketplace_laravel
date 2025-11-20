@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface RankRepositoryInterface
 {
-     /* ================== ================== ==================
+    /* ================== ================== ==================
     *                      Find Methods
     * ================== ================== ================== */
 
@@ -17,7 +17,7 @@ interface RankRepositoryInterface
 
     public function find($column_value, string $column_name = 'id', bool $trashed = false): ?Rank;
 
-    public function findAll($column_value, string $column_name = 'id',  bool $trashed = false): Collection ;
+    public function findAll($column_value, string $column_name = 'id',  bool $trashed = false): Collection;
 
     public function findTrashed($column_value, string $column_name = 'id'): ?Rank;
 
@@ -30,6 +30,12 @@ interface RankRepositoryInterface
     public function count(array $filters = []): int;
 
     public function search(string $query, string $sortField = 'created_at', $order = 'desc'): Collection;
+
+    // next available rank
+    // public function getNextRank($currentRankId): ?Rank;
+
+    public function getNextRank($currentRankId);
+
 
     /* ================== ================== ==================
     *                    Data Modification Methods

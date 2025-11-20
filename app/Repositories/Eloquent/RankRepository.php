@@ -41,9 +41,9 @@ class RankRepository implements RankRepositoryInterface
         if ($trashed) {
             $model = $model->withTrashed();
         }
-        
+
         return $model->where($column_name, $column_value)->get();
-    } 
+    }
 
     public function findTrashed($column_value, string $column_name = 'id'): ?Rank
     {
@@ -118,6 +118,22 @@ class RankRepository implements RankRepositoryInterface
     }
 
 
+    // next available rank
+    public function getNextRank($currentRankId)
+    {
+        $currentRank = $this->model->find($currentRankId);
+
+        if (!$currentRank) {
+            return null;
+        }
+
+        return $this->model
+            ->where('minimum_points', '>', $currentRank->maximum_points ?? $currentRank->minimum_points)
+            ->orderBy('minimum_points', 'asc')
+            ->first();
+    }
+
+
     /* ================== ================== ==================
     *                    Data Modification Methods
     * ================== ================== ================== */
@@ -134,11 +150,11 @@ class RankRepository implements RankRepositoryInterface
         //     if($default) {
         //         $default->update(['initial_assign' => false]);
         //     }
-         
+
         // }
 
-      
-        
+
+
         return $this->model->create($data);
     }
 
@@ -212,7 +228,7 @@ class RankRepository implements RankRepositoryInterface
         return $this->model->onlyTrashed()->whereIn('id', $ids)->forceDelete();
     }
 
-    public function assignRankToUser(int $userId, int $rankId): UserRank 
+    public function assignRankToUser(int $userId, int $rankId): UserRank
     {
         $value = $this->userRank->updateOrCreate(
             ['user_id' => $userId],
