@@ -19,7 +19,7 @@
         @endforeach
     </div>
    
-    <div class="relative flex items-center ml-auto" :style="searchActive ? 'width: 48rem' : 'width: 5.5rem'"
+    <div class="relative flex items-center ml-auto" :style="searchActive ? 'width: 50rem' : 'width: 5.5rem'"
         style="transition: width 300ms ease-in-out">
 
         <flux:icon name="magnifying-glass"
@@ -37,7 +37,7 @@
         x-transition:leave="transition ease-in duration-150"
         x-transition:leave-start="opacity-100 transform translate-y-0"
         x-transition:leave-end="opacity-0 transform translate-y-2" class="absolute top-full right-0 mt-1 z-50"
-        style="width: 48rem" x-on:click.outside="globalSearch = false; searchActive = false">
+        style="width: 50rem" x-on:click.outside="globalSearch = false; searchActive = false">
 
         <div class="bg-bg-primary flex flex-col rounded-lg shadow-2xl py-4 px-4 max-h-[70vh]">
             {{-- Loading Spinner --}}
