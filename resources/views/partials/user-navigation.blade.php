@@ -24,4 +24,6 @@
             class="border dark:border-white border-gray-600 rounded-full py-1.5 pl-8 pr-2 text-sm focus:outline-none focus:border-purple-500 focus:bg-bg-primary transition-all w-22 bg-transparent placeholder:text-text-primary">
     </div>
 
+
+      <livewire:frontend.partials.search-modal />
 </nav>
