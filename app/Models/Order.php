@@ -1,0 +1,115 @@
+<?php
+
+namespace App\Models;
+
+use App\Enums\OrderStatus;
+use App\Models\AuditBaseModel;
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
+
+class Order extends AuditBaseModel implements Auditable
+{
+    use AuditableTrait;
+
+    protected $fillable = [
+        'sort_order',
+        'order_id',
+        'user_id',
+        'source_id',
+        'source_type',
+        'status',
+        'total_amount',
+        'tax_amount',
+        'grand_total',
+        'currency',
+        'payment_method',
+        'notes',
+
+        'creater_id',
+        'creater_type',
+        'updater_id',
+        'updater_type',
+        'deleter_id',
+        'deleter_type',
+        'restorer_id',
+        'restorer_type',
+    ];
+
+    protected $hidden = [
+        //
+    ];
+
+    protected $casts = [
+        'sort_order' => 'integer',
+        'customer_id' => 'integer',
+        'source_id' => 'integer',
+        'status' => OrderStatus::class,
+        'total_amount' => 'decimal:2',
+        'tax_amount' => 'decimal:2',
+        'grand_total' => 'decimal:2',
+        'completed_at' => 'datetime',
+    ];
+
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+                Start of RELATIONSHIPS
+     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function source()
+    {
+        return $this->morphTo('source');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'order_id');
+    }
+
+    public function latestPayment()
+    {
+        return $this->hasOne(Payment::class, 'order_id')->latestOfMany();
+    }
+
+    public function successfulPayment()
+    {
+        return $this->hasOne(Payment::class, 'order_id')
+            ->where('status', \App\Enums\PaymentStatus::COMPLETED)
+            ->latestOfMany();
+    }
+
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+                End of RELATIONSHIPS
+     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+                Start of HELPER METHODS
+     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+
+    public function hasSuccessfulPayment(): bool
+    {
+        return $this->successfulPayment()->exists();
+    }
+
+    public function getTotalPaid(): float
+    {
+        return (float) $this->payments()
+            ->where('status', \App\Enums\PaymentStatus::COMPLETED)
+            ->sum('amount');
+    }
+
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+                End of HELPER METHODS
+     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->appends = array_merge(parent::getAppends(), [
+            //
+        ]);
+    }
+} 

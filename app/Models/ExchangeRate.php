@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class ExchangeRate extends BaseModel implements Auditable
+class ExchangeRate extends AuditBaseModel implements Auditable
 {
     use  AuditableTrait;
     /**

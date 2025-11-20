@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class OtpVerification extends BaseModel implements Auditable
+class OtpVerification extends AuditBaseModel implements Auditable
 {
     use  AuditableTrait;
      protected $fillable = [

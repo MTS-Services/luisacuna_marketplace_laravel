@@ -2,11 +2,11 @@
  
 namespace App\Models;
  
-use App\Models\BaseModel;
+use App\Models\BaseMoAuditBaseModeldel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
  
-class DeliveryMethod extends BaseModel implements Auditable
+class DeliveryMethod extends AuditBaseModel implements Auditable
 {
     use   AuditableTrait;
     //

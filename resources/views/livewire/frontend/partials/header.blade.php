@@ -157,5 +157,5 @@
     <livewire:frontend.partials.header-dropdown />
 
     {{-- Global Search Modal --}}
-    <livewire:frontend.partials.search-modal>
+    {{-- <livewire:frontend.partials.search-modal> --}}
 </header>
