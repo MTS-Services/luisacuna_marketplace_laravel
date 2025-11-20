@@ -19,7 +19,7 @@ class OfferController extends Controller implements HasMiddleware
                 'auth:admin', // Applies 'auth:admin' to all methods
 
                 // Permission middlewares using the Middleware class
-                new Middleware('permission:admin-list', only: ['index']),
+                new Middleware('permission:offer-list', only: ['index']),
             ];
         }
     public function index()

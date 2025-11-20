@@ -13,21 +13,21 @@ class AchievementTypeController extends Controller
 
     protected $masterView = 'backend.admin.pages.reward-management.achievement-type';
 
-    public function __construct(protected AchievementTypeService $service){}
+    public function __construct(protected AchievementTypeService $service) {}
 
     public static function middleware(): array
-        {
-            return [
-                'auth:admin', // Applies 'auth:admin' to all methods
+    {
+        return [
+            'auth:admin', // Applies 'auth:admin' to all methods
 
-                // Permission middlewares using the Middleware class
-                new Middleware('permission:admin-list', only: ['index']),
-                new Middleware('permission:admin-create', only: ['create']),
-                new Middleware('permission:admin-edit', only: ['edit']),
-                new Middleware('permission:admin-show', only: ['show']),
-                new Middleware('permission:admin-trash', only: ['trash']),
-            ];
-        }
+            // Permission middlewares using the Middleware class
+            new Middleware('permission:achievement-type-list', only: ['index']),
+            new Middleware('permission:achievement-type-create', only: ['create']),
+            new Middleware('permission:achievement-type-edit', only: ['edit']),
+            new Middleware('permission:achievement-type-show', only: ['show']),
+            new Middleware('permission:achievement-type-trash', only: ['trash']),
+        ];
+    }
 
 
 
