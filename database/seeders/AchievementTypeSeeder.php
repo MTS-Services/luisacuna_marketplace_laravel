@@ -18,6 +18,7 @@ class AchievementTypeSeeder extends Seeder
             [
                 'sort_order' => 1,
                 'name' => 'Gold Achievement',
+                'is_active' => true,
                 'created_by' => 1,
                 'updated_by' => 1,
                 'created_at' => Carbon::now(),
@@ -26,6 +27,7 @@ class AchievementTypeSeeder extends Seeder
             [
                 'sort_order' => 2,
                 'name' => 'Silver Achievement',
+                'is_active' => true,
                 'created_by' => 1,
                 'updated_by' => 1,
                 'created_at' => Carbon::now(),
@@ -34,6 +36,7 @@ class AchievementTypeSeeder extends Seeder
             [
                 'sort_order' => 3,
                 'name' => 'Bronze Achievement',
+                'is_active' => true,
                 'created_by' => 1,
                 'updated_by' => 1,
                 'created_at' => Carbon::now(),

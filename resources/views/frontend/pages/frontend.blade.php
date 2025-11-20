@@ -36,6 +36,12 @@
             <livewire:frontend.frontend.terms-conditions />
         @break
 
+        @case('privacy-policy')
+            <x-slot name="title">{{ __('Privacy Policy') }}</x-slot>
+            <x-slot name="pageSlug">{{ __('privacy-policy') }}</x-slot>
+            <livewire:frontend.frontend.privacy-policy />
+        @break
+
         @case('refund-policy')
             <x-slot name="title">{{ __('refund policy') }}</x-slot>
             <x-slot name="pageSlug">{{ __('refund-policy') }}</x-slot>

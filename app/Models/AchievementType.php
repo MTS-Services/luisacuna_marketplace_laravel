@@ -16,6 +16,7 @@ class AchievementType extends BaseModel implements Auditable
     protected $fillable = [
         'sort_order',
         'name',
+        'is_active',
 
 
 
