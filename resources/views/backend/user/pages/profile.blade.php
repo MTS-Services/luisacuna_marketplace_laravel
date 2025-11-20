@@ -1,5 +1,5 @@
 <x-user::app>
-    <x-slot name="pageSlug">{{__('profile')}}</x-slot>
+    <x-slot name="pageSlug">{{ __('profile') }}</x-slot>
 
     <div>
         {{ __('User Profile') }}
