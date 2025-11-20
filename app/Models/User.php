@@ -137,6 +137,19 @@ class User extends AuthBaseModel implements Auditable
         ];
     }
 
+    // Booting Method
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            // Only set UUID if empty
+            if (empty($user->uuid)) {
+                $user->uuid = (string) generate_uuid();
+            }
+        });
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Relationships
