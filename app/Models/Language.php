@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class Language extends BaseModel implements Auditable
+class Language extends AuditBaseModel implements Auditable
 {
     use  AuditableTrait;
     

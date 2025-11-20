@@ -9,7 +9,7 @@ use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 
-class Game extends BaseModel implements Auditable
+class Game extends AuditBaseModel implements Auditable
 {
     use  AuditableTrait, Searchable;
     //

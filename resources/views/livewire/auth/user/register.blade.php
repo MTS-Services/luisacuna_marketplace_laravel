@@ -1,182 +1,112 @@
-<div class="min-h-[80vh] flex items-center justify-center bg-bg-secondary py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-3xl w-full">
-        <!-- Header Section -->
-        <div class="text-center mb-8">
-            <div
-                class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-zinc-400 to-zinc-800 rounded-2xl mb-4 shadow-lg">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                </svg>
+<div>
+    <div class="bg-bg-secondary min-h-screen flex items-center justify-center ">
+        <div class="w-full  max-w-lg bg-gradient-to-br bg-bg-primary rounded-2xl  px-8 py-22 shadow-2xl ">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-medium text-white mb-4">Create Password</h1>
+                <p class="text-gray-300">Hi! Welcome back, you've been missed</p>
             </div>
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                {{ __('Create an account') }}
-            </h2>
-            <p class="text-gray-600 dark:text-gray-400">
-                {{ __('Join us today and get started in minutes') }}
+
+
+
+              <form class="space-y-6">
+            <!-- Password Input -->
+            <div>
+                <label class="block text-white font-medium mb-2">Password</label>
+                <input
+                    type="password"
+                    placeholder="••••••••"
+                    id="password"
+                    class="w-full bg-purple-300/10 bg-opacity-50 text-white placeholder-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+                >
+            </div>
+
+            <!-- Confirm Password Input -->
+            <div>
+                <label class="block text-white font-medium mb-2">Confirm password</label>
+                <input
+                    type="password"
+                    placeholder="••••••••"
+                    id="confirmPassword"
+                    class="w-full bg-purple-300/10 bg-opacity-50 text-white placeholder-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+                >
+            </div>
+
+            <!-- Show Password Checkbox -->
+            <div class="flex items-center gap-2">
+                <input
+                    type="checkbox"
+                    id="showPassword"
+                    class="w-4 h-4 rounded accent-purple-500 cursor-pointer"
+                >
+                <label for="showPassword" class="text-white font-medium cursor-pointer">Show password</label>
+            </div>
+
+            <!-- Sign In Button -->
+                <button type="submit"
+                    class="w-full bg-gradient-to-r  text-white font-medium py-3 mt-4 rounded-full bg-zinc-700 transition shadow-lg">
+                    Sign up
+                </button>
+
+        </form>
+
+
+            <!-- Divider -->
+            <div class="my-8 flex items-center">
+                <div class="flex-1 border-t "></div>
+                <p class="px-3 text-text-white text-sm">Or sign in with</p>
+                <div class="flex-1 border-t "></div>
+            </div>
+
+            <!-- Social Login Buttons -->
+            <div class="flex justify-center gap-4 mb-6">
+                <!-- Google -->
+                <button class="bg-white rounded-lg p-3 hover:bg-gray-100 transition shadow-md">
+                    <svg class="w-6 h-6" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Google G logo -->
+                        <path
+                            d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l-3.76 3.76C27.95 15.38 26.08 14.5 24 14.5c-5.22 0-9.5 4.28-9.5 9.5s4.28 9.5 9.5 9.5c4.05 0 7.5-2.55 8.78-6.1h-8.78v-5h14.26c.17.84.26 1.71.26 2.6 0 8.28-5.73 14.5-14.52 14.5-8.25 0-14.98-6.73-14.98-15s6.73-15 14.98-15z"
+                            fill="blue" />
+
+                        <!-- Red section -->
+                        <path
+                            d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l-3.76 3.76C27.95 15.38 26.08 14.5 24 14.5c-5.22 0-9.5 4.28-9.5 9.5 0 1.67.44 3.24 1.21 4.6l-3.84 2.94C10.53 29.55 9.5 26.89 9.5 24c0-8.27 6.73-15 14.5-15z"
+                            fill="red" />
+
+                        <!-- Yellow section -->
+                        <path
+                            d="M11.87 31.54C10.53 29.55 9.5 26.89 9.5 24c0-1.27.17-2.49.48-3.65l3.84 2.94c-.27.86-.42 1.78-.42 2.71 0 1.9.57 3.67 1.53 5.15l-3.06 2.39z"
+                            fill="yellow" />
+
+                        <!-- Green section -->
+                        <path
+                            d="M24 38.5c-3.67 0-6.98-1.39-9.5-3.66l3.06-2.39c1.8 1.45 4.08 2.32 6.44 2.32 2.18 0 4.16-.75 5.75-2l3.14 2.36C30.66 37.06 27.51 38.5 24 38.5z"
+                            fill="green" />
+                    </svg>
+                </button>
+
+                <!-- Apple -->
+                <button class="bg-white rounded-lg p-3 hover:bg-gray-100 transition shadow-md">
+                    <svg class="w-6 h-6" fill="black" viewBox="0 0 24 24">
+                        <path
+                            d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.06 2.29.77 3.06.8.98-.04 1.88-.63 2.99-.52 1.45.12 2.51.72 3.15 1.81-2.94 1.82-2.45 5.76.48 6.75-.48 1.45-1.47 2.38-2.68 2.93zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+                    </svg>
+                </button>
+
+                <!-- Facebook -->
+                <button class="bg-white rounded-lg p-3 hover:bg-gray-100 transition shadow-md">
+                    <svg class="w-6 h-6 text-blue-600" fill="black" viewBox="0 0 24 24">
+                        <path
+                            d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Sign Up Link -->
+            <p class="text-center text-text-white">
+                Have an account already?
+                <a href="#" class="text-purple-700 transition font-medium">Sign in</a>
             </p>
-        </div>
-
-        <!-- Card Container -->
-        <div class="bg-bg-primary shadow-2xl rounded-3xl overflow-hidden border border-zinc-100 dark:border-zinc-950">
-            <div class="p-8 sm:p-10">
-                <!-- Session Status -->
-                <x-auth-session-status class="mb-6" :status="session('status')" />
-
-                <form method="POST" wire:submit="register" class="space-y-6">
-
-
-                    <!-- Name Fields Grid -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- First Name -->
-                        <div>
-                            <x-ui.label for="first_name" :value="__('First name')" />
-                            <x-ui.input wire:model="first_name" id="first_name" type="text" autocomplete="given-name"
-                                :placeholder="__('John')" class="mt-1" />
-                            <x-ui.input-error :messages="$errors->get('first_name')" class="mt-1" />
-                        </div>
-
-                        <!-- Last Name -->
-                        <div>
-                            <x-ui.label for="last_name" :value="__('Last name')" />
-                            <x-ui.input wire:model="last_name" id="last_name" type="text" autocomplete="family-name"
-                                :placeholder="__('Doe')" class="mt-1" />
-                            <x-ui.input-error :messages="$errors->get('last_name')" class="mt-1" />
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Username Field -->
-                        <div class="relative">
-                            <x-ui.label for="username" :value="__('Username')" />
-                            <div class="relative">
-                                <x-ui.input wire:model.live="username" id="username" type="text" autofocus
-                                    autocomplete="username" :placeholder="__('johndoe')" />
-                            </div>
-                            <x-ui.input-error :messages="$errors->get('username')" class="mt-1" />
-                        </div>
-                        <!-- Email Field -->
-                        <div class="relative">
-                            <x-ui.label for="email" :value="__('Email address')" />
-                            <div class="relative">
-                                <x-ui.input wire:model="email" id="email" type="email" autocomplete="email"
-                                    placeholder="john@example.com" />
-                            </div>
-                            <x-ui.input-error :messages="$errors->get('email')" class="mt-1" />
-                        </div>
-                    </div>
-
-                    <!-- Phone and Country Grid -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Phone -->
-                        <div>
-                            <x-ui.label for="phone" :value="__('Phone number')" />
-                            <div class="relative">
-                                <x-ui.input wire:model="phone" id="phone" type="tel" autocomplete="tel"
-                                    :placeholder="__('+1 (555) 123-4567')" />
-                            </div>
-                            <x-ui.input-error :messages="$errors->get('phone')" class="mt-1" />
-                        </div>
-
-                        <!-- Country -->
-                        <div>
-                            <x-ui.label for="country_id" :value="__('Country')" />
-                            <div class="relative">
-
-                                <x-ui.select wire:model="country_id" id="country_id">
-                                    <option value="">{{ __('Select your country') }}</option>
-                                    @foreach ($countries as $country)
-                                        <option value="{{ $country->id }}"> {{ $country->name }}</option>
-                                    @endforeach
-                                </x-ui.select>
-                            </div>
-                            <x-ui.input-error :messages="$errors->get('country_id')" class="mt-1" />
-                        </div>
-                    </div>
-
-                    <!-- Password Fields Grid -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Password -->
-                        <div>
-                            <x-ui.label for="password" :value="__('Password')" />
-                            <div class="relative">
-                                <x-ui.input wire:model="password" id="password" type="password"
-                                    autocomplete="new-password" :placeholder="__('••••••••')" class="pl-10" />
-                            </div>
-                            <x-ui.input-error :messages="$errors->get('password')" class="mt-1" />
-                        </div>
-
-                        <!-- Confirm Password -->
-                        <div>
-                            <x-ui.label for="password_confirmation" :value="__('Confirm password')" />
-                            <div class="relative">
-                                <x-ui.input wire:model="password_confirmation" id="password_confirmation"
-                                    type="password" autocomplete="new-password" :placeholder="__('••••••••')" class="pl-10" />
-                            </div>
-                            <x-ui.input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
-                        </div>
-                    </div>
-
-                    <!-- Terms and Privacy Section -->
-                    <div
-                        class="bg-gray-50 dark:bg-gray-900/50 rounded-xl p-4 space-y-3 border border-gray-200 dark:border-gray-700">
-                        <!-- Terms Checkbox -->
-                        <div class="flex items-start">
-                            <div class="flex items-center h-5 mt-0.5">
-                                <input wire:model="terms_accepted" id="terms_accepted" type="checkbox"
-                                    class="w-4 h-4 text-zinc-600 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-zinc-500 dark:focus:ring-zinc-600 focus:ring-2 transition-colors cursor-pointer" />
-                            </div>
-                            <label for="terms_accepted"
-                                class="ms-3 text-sm text-gray-700 dark:text-gray-300 cursor-pointer select-none">
-                                {{ __('I agree to the') }}
-                                <a href="#"
-                                    class="font-semibold text-zinc-600 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-400 underline decoration-2 underline-offset-2 transition-colors">
-                                    {{ __('Terms of Service') }}
-                                </a>
-                            </label>
-                        </div>
-                        <x-ui.input-error :messages="$errors->get('terms_accepted')" />
-
-                        <!-- Privacy Checkbox -->
-                        <div class="flex items-start">
-                            <div class="flex items-center h-5 mt-0.5">
-                                <input wire:model="privacy_accepted" id="privacy_accepted" type="checkbox"
-                                    class="w-4 h-4 text-zinc-600 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-zinc-500 dark:focus:ring-zinc-600 focus:ring-2 transition-colors cursor-pointer" />
-                            </div>
-                            <label for="privacy_accepted"
-                                class="ms-3 text-sm text-gray-700 dark:text-gray-300 cursor-pointer select-none">
-                                {{ __('I agree to the') }}
-                                <a href="#"
-                                    class="font-semibold text-zinc-600 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-400 underline decoration-2 underline-offset-2 transition-colors">
-                                    {{ __('Privacy Policy') }}
-                                </a>
-                            </label>
-                        </div>
-                        <x-ui.input-error :messages="$errors->get('privacy_accepted')" />
-                    </div>
-
-                    <!-- Submit Button -->
-                    <div class="pt-2">
-                        <x-ui.button type="submit" variant="primary" class="w-auto py-2!">
-                            {{ __('Create account') }}
-                        </x-ui.button>
-
-                    </div>
-                </form>
-            </div>
-
-            <!-- Footer Section -->
-            <div
-                class="px-8 sm:px-10 py-6 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-200 dark:border-gray-700">
-                <div class="text-center">
-                    <p class="text-sm text-gray-600 dark:text-gray-400">
-                        {{ __('Already have an account?') }}
-                        <a href="{{ route('login') }}" wire:navigate
-                            class="font-semibold text-zinc-600 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-400 transition-colors ml-1">
-                            {{ __('Log in') }} →
-                        </a>
-                    </p>
-                </div>
-            </div>
         </div>
     </div>
 </div>

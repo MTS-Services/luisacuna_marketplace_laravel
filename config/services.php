@@ -54,4 +54,15 @@ return [
         'key_id' => env('APPLE_KEY_ID'),
         'private_key' => env('APPLE_PRIVATE_KEY'),
     ],
+
+    'stripe' => [
+        'key' => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
+        'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
+    ],
+
+    'coinbase' => [
+        'api_key' => env('COINBASE_API_KEY'),
+        'webhook_secret' => env('COINBASE_WEBHOOK_SECRET'),
+    ],
 ];

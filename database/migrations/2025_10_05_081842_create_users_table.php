@@ -49,6 +49,7 @@ return new class extends Migration {
 
             $table->string('user_type')->index()->default(UserType::BUYER->value);
             $table->string('account_status')->index()->default(UserAccountStatus::PENDING_VERIFICATION->value);
+            $table->text('reason')->nullable();
             $table->string('kyc_status')->index()->default(KycSettingStatus::INACTIVE->value);
 
             $table->timestamp('last_login_at')->nullable();

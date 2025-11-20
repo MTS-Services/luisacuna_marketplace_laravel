@@ -22,8 +22,6 @@
     ];
 @endphp
 
-{{ Log::info($href) }}
-
 @if (!empty($permission))
     @if (Auth::user()->can($permission))
         @if ($href != 'javascript:void(0)')

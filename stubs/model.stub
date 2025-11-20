@@ -3,11 +3,11 @@
 namespace {{ namespace }};
  
 {{ factoryImport }}
-use App\Models\BaseModel;
+use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
  
-class {{ class }} extends BaseModel implements Auditable
+class {{ class }} extends AuditBaseModel implements Auditable
 {
     use   AuditableTrait;
     {{ factory }}

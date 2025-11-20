@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
+use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class TestMultiImage extends BaseModel implements Auditable
+class TestMultiImage extends AuditBaseModel implements Auditable
 {
     use AuditableTrait;
 

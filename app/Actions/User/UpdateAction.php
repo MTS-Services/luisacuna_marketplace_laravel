@@ -2,6 +2,7 @@
 
 namespace App\Actions\User;
 
+use App\Events\User\AccountStatusChnage;
 use App\Events\User\UserUpdated;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
@@ -76,6 +77,20 @@ class UpdateAction
                 if (!$updated) {
                     throw new \Exception('Failed to update Data');
                 }
+
+
+                // --- Track account_status change BEFORE update ---
+                $oldAccountStatus = Arr::get($oldData, 'account_status');
+                $newAccountStatus = Arr::get($data, 'account_status');
+                $reason = Arr::get($data, 'reason');
+
+                // Status change check and reason not null
+                if ($oldAccountStatus !== $newAccountStatus && $reason) {
+                    // Event fire
+                    event(new AccountStatusChnage($user, $oldAccountStatus, $newAccountStatus, $reason));
+                }
+
+
                 // Refresh model and dispatch event
                 $user = $user->fresh();
                 $newAttributes = $user->getAttributes();
