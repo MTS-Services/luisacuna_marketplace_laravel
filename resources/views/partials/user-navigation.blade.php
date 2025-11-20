@@ -1,9 +1,8 @@
-<nav class="hidden xl:flex gap-8 text-sm items-center relative" x-data="{ open: '', searchActive: false }" x-cloak>
-
-    <!-- Categories -->
+<nav class="hidden xl:flex gap-8 text-sm items-center relative" x-data="{searchActive: false }" x-cloak>
     <div x-show="!searchActive" class="flex gap-8" x-transition:opacity.duration.300ms>
         @foreach (gameCategories() as $category)
-            <a href="{{ $category['url'] }}" wire:navigate x-on:mouseenter="open = '{{ $category['slug'] }}'"
+            <a href="{{ $category['url'] }}" wire:navigate
+                x-on:mouseenter="open = (open == '{{ $category['slug'] }}' || open == '' || open != '{{ $category['slug'] }}' ? '{{ $category['slug'] }}' : '')"
                 class="navbar_style group relative"
                 :class="{
                     'active': open == '{{ $category['slug'] }}' ||
@@ -19,40 +18,36 @@
             </a>
         @endforeach
     </div>
-
-    <div class="relative flex items-center ml-auto" 
-        :style="searchActive ? 'width: 44rem' : 'width: 5.5rem'"
+   
+    <div class="relative flex items-center ml-auto" :style="searchActive ? 'width: 48rem' : 'width: 5.5rem'"
         style="transition: width 300ms ease-in-out">
 
         <flux:icon name="magnifying-glass"
             class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 stroke-text-primary pointer-events-none z-10" />
 
-        <input type="text" 
-            placeholder="Search" 
-            x-on:click="searchActive = true; open = ''; globalSearch = true"
+        <input type="text" placeholder="Search" x-on:click="searchActive = true; open = ''; globalSearch = true"
             x-on:blur="setTimeout(() => { searchActive = false }, 200)"
             class="border dark:border-white border-gray-600 rounded-full py-2 pl-8 pr-2 text-sm focus:outline-none focus:border-purple-500 focus:bg-bg-primary w-full bg-transparent placeholder:text-text-primary">
     </div>
 
     <!-- Search Modal Dropdown -->
-    <div x-show="searchActive && globalSearch" 
-        x-transition:enter="transition ease-out duration-200"
+    <div x-show="searchActive && globalSearch" x-transition:enter="transition ease-out duration-200"
         x-transition:enter-start="opacity-0 transform translate-y-2"
         x-transition:enter-end="opacity-100 transform translate-y-0"
         x-transition:leave="transition ease-in duration-150"
         x-transition:leave-start="opacity-100 transform translate-y-0"
-        x-transition:leave-end="opacity-0 transform translate-y-2"
-        class="absolute top-full right-0 mt-1 z-50"
-        style="width: 44rem"
-        x-on:click.outside="globalSearch = false; searchActive = false">
-        
+        x-transition:leave-end="opacity-0 transform translate-y-2" class="absolute top-full right-0 mt-1 z-50"
+        style="width: 48rem" x-on:click.outside="globalSearch = false; searchActive = false">
+
         <div class="bg-bg-primary flex flex-col rounded-lg shadow-2xl py-4 px-4 max-h-[70vh]">
             {{-- Loading Spinner --}}
             <div wire:loading.flex wire:target="search"
                 class="absolute inset-0 bg-bg-primary/70 backdrop-blur-sm flex flex-col items-center justify-center rounded-lg z-50">
                 <div class="relative flex items-center justify-center w-12 h-12">
                     <div class="absolute w-12 h-12 border-4 border-purple-500/30 rounded-full"></div>
-                    <div class="absolute w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+                    <div
+                        class="absolute w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin">
+                    </div>
                 </div>
                 <p class="text-sm text-purple-300 mt-3 font-medium tracking-wide">{{ __('Loading content...') }}</p>
             </div>
@@ -155,5 +150,4 @@
             </div>
         </div>
     </div>
-
 </nav>
