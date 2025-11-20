@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Actions\Rarity;
 
@@ -8,8 +8,6 @@ use App\Repositories\Contracts\RankRepositoryInterface;
 class BulkAction{
 
     public function __construct(protected RankRepositoryInterface $interface){}
-    
-
 
     public function execute(array $ids, string $action, ?string $status = null, int $actionerId): bool
     {

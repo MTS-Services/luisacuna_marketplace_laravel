@@ -39,6 +39,7 @@ class AdminController extends Controller implements HasMiddleware
     /**
      * Show the form for creating a new resource.
      */
+
     public function create()
     {
         return view($this->masterView);
@@ -47,17 +48,19 @@ class AdminController extends Controller implements HasMiddleware
     /**
      * Display the specified resource.
      */
+
     public function edit(string $encryptedId)
     {
         $data = $this->service->findData(decrypt($encryptedId));
         if (!$data) {
             abort(404);
         }
+
         return view($this->masterView, [
             'data' => $data
         ]);
-    }
 
+    }
 
      public function view(string $encryptedId)
     {
@@ -74,4 +77,5 @@ class AdminController extends Controller implements HasMiddleware
     {
         return view($this->masterView);
     }
+
 }

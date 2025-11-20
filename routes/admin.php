@@ -10,15 +10,16 @@ use App\Http\Controllers\Backend\Admin\GameManagement\GameController;
 use App\Http\Controllers\Backend\Admin\UserManagement\UserController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
+use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
+use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
+use App\Http\Controllers\Backend\Admin\GameManagement\RarityController;
 use App\Http\Controllers\Backend\Admin\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\RankController;
-use App\Http\Controllers\Backend\Admin\GameManagement\ServerController; 
-use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
+use App\Http\Controllers\Backend\Admin\GameManagement\ServerController;
 use App\Http\Controllers\Backend\Admin\GameManagement\PlatformController;
 use App\Http\Controllers\Backend\Admin\Settings\GeneralSettingsController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductController;
 use App\Http\Controllers\Backend\Admin\ReviewManagement\PageViewController;
-use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductTypeController;
@@ -57,7 +58,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
 
     // Game
     Route::group(['prefix' => 'game-management', 'as' => 'gm.'], function () {
-      
+
         Route::controller(CategoryController::class)->name('category.')->prefix('category')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
@@ -65,7 +66,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/view/{id}', 'show')->name('view');
             Route::get('/trash', 'trash')->name('trash');
         });
-        
+
         Route::controller(ServerController::class)->name('server.')->prefix('game-server')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
@@ -88,6 +89,15 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/edit/{id}', 'edit')->name('edit');
             Route::get('/trash', 'trash')->name('trash');
         });
+
+        Route::controller(RarityController::class)->name('rarity.')->prefix('rarity')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/show/{id}', 'show')->name('show');
+            Route::get('/trash', 'trash')->name('trash');
+        });
+
     });
 
     // Rank
@@ -106,8 +116,8 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/view/{id}', 'show')->name('view');
             Route::get('/trash', 'trash')->name('trash');
         });
-        Route::controller(AchievementController::class)->name('achievement.')->prefix('achievement')->group(function () {
 
+        Route::controller(AchievementController::class)->name('achievement.')->prefix('achievement')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
@@ -131,6 +141,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/referral/{id}', 'referral')->name('referral');
         });
     });
+
     Route::group(['prefix' => 'application-settings', 'as' => 'as.'], function () {
         Route::controller(LanguageController::class)->name('language.')->prefix('language')->group(function () {
             Route::get('/', 'index')->name('index');

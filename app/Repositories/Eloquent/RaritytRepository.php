@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Repositories\Contracts\RarityRepositoryInterface;
+use  App\Models\Achievement;
 
 class RaritytRepository  implements RarityRepositoryInterface
 {
@@ -21,179 +22,182 @@ class RaritytRepository  implements RarityRepositoryInterface
     /* ================== ================== ==================
     *                      Find Methods
     * ================== ================== ================== */
-    // public function all(string $sortField = 'created_at', $order = 'desc'): Collection
-    // {
-    //     $query = $this->model->query();
-    //     return $query->orderBy($sortField, $order)->get();
-    // }
 
-    // public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?Achievement
-    // {
-    //     $model = $this->model;
-    //     if ($trashed) {
-    //         $model = $model->withTrashed();
-    //     }
-    //     return $model->where($column_name, $column_value)->first();
-    // }
-    // public function findTrashed($column_value, string $column_name = 'id'): ?Achievement
-    // {
-    //     $model = $this->model->onlyTrashed();
-    //     return $model->where($column_name, $column_value)->first();
-    // }
-    // public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
-    // {
-    //     $search = $filters['search'] ?? null;
-    //     $sortField = $filters['sort_field'] ?? 'created_at';
-    //     $sortDirection = $filters['sort_direction'] ?? 'desc';
+    public function all(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        $query = $this->model->query();
+        return $query->orderBy($sortField, $order)->get();
+    }
 
-    //     if ($search) {
-    //         // Scout Search
-    //         return Achievement::search($search)
-    //             ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
-    //             ->paginate($perPage);
-    //     }
+    public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?Achievement
+    {
+        $model = $this->model;
+        if ($trashed) {
+            $model = $model->withTrashed();
+        }
+        return $model->where($column_name, $column_value)->first();
+    }
+    public function findTrashed($column_value, string $column_name = 'id'): ?Achievement
+    {
+        $model = $this->model->onlyTrashed();
+        return $model->where($column_name, $column_value)->first();
+    }
+    public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        $search = $filters['search'] ?? null;
+        $sortField = $filters['sort_field'] ?? 'created_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
 
-    //     // Normal Eloquent Query
-    //     return $this->model->query()
-    //         ->filter($filters)
-    //         ->orderBy($sortField, $sortDirection)
-    //         ->paginate($perPage);
-    // }
+        if ($search) {
+            // Scout Search
+            return Achievement::search($search)
+                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->paginate($perPage);
+        }
 
-    // /**
-    //  * Paginate only trashed records with optional search.
-    //  */
-    // public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
-    // {
-    //     $search = $filters['search'] ?? null;
-    //     $sortField = $filters['sort_field'] ?? 'deleted_at';
-    //     $sortDirection = $filters['sort_direction'] ?? 'desc';
+        // Normal Eloquent Query
+        return $this->model->query()
+            ->filter($filters)
+            ->orderBy($sortField, $sortDirection)
+            ->paginate($perPage);
+    }
 
-    //     if ($search) {
-    //         // 👇 Manually filter trashed + search
-    //         return Achievement::search($search)
-    //             ->onlyTrashed()
-    //             ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
-    //             ->paginate($perPage);
-    //     }
+    /**
+     * Paginate only trashed records with optional search.
+     */
+    public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        $search = $filters['search'] ?? null;
+        $sortField = $filters['sort_field'] ?? 'deleted_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
 
-    //     return $this->model->onlyTrashed()
-    //         ->filter($filters)
-    //         ->orderBy($sortField, $sortDirection)
-    //         ->paginate($perPage);
-    // }
+        if ($search) {
+            //  Manually filter trashed + search
+            return Achievement::search($search)
+                ->onlyTrashed()
+                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->paginate($perPage);
+        }
 
-    // public function exists(int $id): bool
-    // {
-    //     return $this->model->where('id', $id)->exists();
-    // }
+        return $this->model->onlyTrashed()
+            ->filter($filters)
+            ->orderBy($sortField, $sortDirection)
+            ->paginate($perPage);
+    }
 
-    // public function count(array $filters = []): int
-    // {
-    //     $query = $this->model->query();
+    public function exists(int $id): bool
+    {
+        return $this->model->where('id', $id)->exists();
+    }
 
-    //     if (!empty($filters)) {
-    //         $query->filter($filters);
-    //     }
+    public function count(array $filters = []): int
+    {
+        $query = $this->model->query();
 
-    //     return $query->count();
-    // }
+        if (!empty($filters)) {
+            $query->filter($filters);
+        }
 
-    // public function search(string $query, string $sortField = 'created_at', $order = 'desc'): Collection
-    // {
-    //     return $this->model->search($query)->orderBy($sortField, $order)->get();
-    // }
+        return $query->count();
+    }
+
+    public function search(string $query, string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->search($query)->orderBy($sortField, $order)->get();
+    }
 
      /* ================== ================== ==================
     *                    Data Modification Methods
     * ================== ================== ================== */
 
-    // public function create(array $data): Achievement
-    // {
-    //     return $this->model->create($data);
-    // }
+    public function create(array $data): Achievement
+    {
+        return $this->model->create($data);
+    }
 
-    // public function update(int $id, array $data): bool
-    // {
-    //     $findData = $this->find($id);
+    public function update(int $id, array $data): bool
+    {
+        $findData = $this->find($id);
 
-    //     if (!$findData) {
-    //         return false;
-    //     }
+        if (!$findData) {
+            return false;
+        }
 
-    //     return $findData->update($data);
-    // }
+        return $findData->update($data);
+    }
 
-    // public function delete(int $id, int $actionerId): bool
-    // {
-    //     $findData = $this->find($id);
+    public function delete(int $id, int $actionerId): bool
+    {
+        $findData = $this->find($id);
 
-    //     if (!$findData) {
-    //         return false;
-    //     }
-    //     $findData->update(['deleted_by' => $actionerId]);
+        if (!$findData) {
+            return false;
+        }
+        $findData->update(['deleted_by' => $actionerId]);
 
-    //     return $findData->delete();
-    // }
+        return $findData->delete();
+    }
 
-    // public function forceDelete(int $id): bool
-    // {
-    //     $findData = $this->findTrashed($id);
+    public function forceDelete(int $id): bool
+    {
+        $findData = $this->findTrashed($id);
 
-    //     if (!$findData) {
-    //         return false;
-    //     }
+        if (!$findData) {
+            return false;
+        }
 
-    //     return $findData->forceDelete();
-    // }
+        return $findData->forceDelete();
+    }
 
-    // public function restore(int $id, int $actionerId): bool
-    // {
-    //     $findData = $this->findTrashed($id);
+    public function restore(int $id, int $actionerId): bool
+    {
+        $findData = $this->findTrashed($id);
 
-    //     if (!$findData) {
-    //         return false;
-    //     }
-    //     $findData->update(['restored_by' => $actionerId, 'restored_at' => now()]);
+        if (!$findData) {
+            return false;
+        }
+        $findData->update(['restored_by' => $actionerId, 'restored_at' => now()]);
 
-    //     return $findData->restore();
-    // }
+        return $findData->restore();
+    }
 
-    // public function bulkDelete(array $ids, int $actionerId): int
-    // {
-    //     return DB::transaction(function () use ($ids, $actionerId) {
-    //         $this->model->whereIn('id', $ids)->update(['deleted_by' => $actionerId]);
-    //         return $this->model->whereIn('id', $ids)->delete();
-    //     });
-    // }
+    public function bulkDelete(array $ids, int $actionerId): int
+    {
+        return DB::transaction(function () use ($ids, $actionerId) {
+            $this->model->whereIn('id', $ids)->update(['deleted_by' => $actionerId]);
+            return $this->model->whereIn('id', $ids)->delete();
+        });
+    }
 
-    // public function bulkUpdateStatus(array $ids, string $status, int $actionerId): int
-    // {
-    //     return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updated_by' => $actionerId]);
-    // }
-    // public function bulkRestore(array $ids, int $actionerId): int
-    // {
-    //     return DB::transaction(function () use ($ids, $actionerId) {
-    //         $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restored_by' => $actionerId, 'restored_at' => now()]);
-    //         return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
-    //     });
-    // }
-    // public function bulkForceDelete(array $ids): int //
-    // {
-    //     return $this->model->onlyTrashed()->whereIn('id', $ids)->forceDelete();
-    // }
+    public function bulkUpdateStatus(array $ids, string $status, int $actionerId): int
+    {
+        return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updated_by' => $actionerId]);
+    }
+    public function bulkRestore(array $ids, int $actionerId): int
+    {
+        return DB::transaction(function () use ($ids, $actionerId) {
+            $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restored_by' => $actionerId, 'restored_at' => now()]);
+            return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
+        });
+    }
+    public function bulkForceDelete(array $ids): int //
+    {
+        return $this->model->onlyTrashed()->whereIn('id', $ids)->forceDelete();
+    }
 
     /* ================== ================== ==================
     *                  Accessor Methods (Optional)
     * ================== ================== ================== */
 
-    // public function getActive(string $sortField = 'created_at', $order = 'desc'): Collection
-    // {
-    //     return $this->model->active()->orderBy($sortField, $order)->get();
-    // }
+    public function getActive(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->active()->orderBy($sortField, $order)->get();
+    }
 
-    // public function getInactive(string $sortField = 'created_at', $order = 'desc'): Collection
-    // {
-    //     return $this->model->inactive()->orderBy($sortField, $order)->get();
-    // }
+    public function getInactive(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->inactive()->orderBy($sortField, $order)->get();
+    }
 }
+
+
