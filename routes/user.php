@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
 use App\Livewire\Backend\User\Components\Profile;
 use Illuminate\Support\Facades\Route;
 
@@ -12,7 +13,7 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
             return view('backend.user.pages.orders.sold-orders');
         })->name('sold-orders');
     });
-    
+
     Route::group(['prefix' => 'offers'], function () {
         Route::get('/currency', function () {
             return view('backend.user.pages.offers.currency');
@@ -71,4 +72,11 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
     Route::get('/profile', function () {
         return view('backend.user.pages.profile');
     })->name('profile');
+
+    Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
+    Route::post('/payment/card', [PaymentController::class, 'processCard'])->name('payment.card');
+    Route::post('/payment/digital-wallet', [PaymentController::class, 'processDigitalWallet'])->name('payment.digital-wallet');
+    Route::post('/payment/crypto', [PaymentController::class, 'processCrypto'])->name('payment.crypto');
+    Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+    Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
 });

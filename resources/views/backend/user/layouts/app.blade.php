@@ -61,6 +61,18 @@
         x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
     </div>
 
+
+    <div id="navigation-loader" x-transition.opacity
+        class="fixed inset-0 z-50 flex items-center justify-center bg-bg-primary/50 backdrop-blur-md">
+        <div class="flex space-x-2">
+            <div class="w-4 h-4 rounded-full bg-accent animate-[bounce-dot_1.2s_infinite]"
+                style="animation-delay: -0.8s;"></div>
+            <div class="w-4 h-4 rounded-full bg-accent-foreground animate-[bounce-dot_1.2s_infinite]"
+                style="animation-delay: -0.4s;"></div>
+            <div class="w-4 h-4 rounded-full bg-accent animate-[bounce-dot_1.2s_infinite]"></div>
+        </div>
+    </div>
+
     @fluxScripts
 
     <script>
@@ -244,6 +256,16 @@
             copyToClipboard,
             confirmAction
         };
+
+        document.addEventListener('livewire:navigate', (event) => {
+            document.getElementById('navigation-loader').classList.remove('hidden');
+        });
+        document.addEventListener('livewire:navigating', () => {
+            document.getElementById('navigation-loader').classList.remove('hidden');
+        });
+        document.addEventListener('livewire:navigated', () => {
+            document.getElementById('navigation-loader').classList.add('hidden');
+        });
     </script>
 
     @stack('scripts')

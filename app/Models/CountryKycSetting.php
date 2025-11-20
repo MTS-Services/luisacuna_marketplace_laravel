@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
+use App\Models\AuditBaseModel;
 use App\Enums\CountryKycSettingType;
 use App\Enums\CountryKycSettingStatus;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class CountryKycSetting extends BaseModel implements Auditable
+class CountryKycSetting extends AuditBaseModel implements Auditable
 {
     use  AuditableTrait;
 

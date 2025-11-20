@@ -4,12 +4,12 @@ namespace App\Models;
 
 use App\Enums\SellerLevel;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\BaseModel;
+use App\Models\AuditBaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class SellerProfile extends BaseModel implements Auditable
+class SellerProfile extends AuditBaseModel implements Auditable
 {
     use  AuditableTrait;
     protected $fillable = [

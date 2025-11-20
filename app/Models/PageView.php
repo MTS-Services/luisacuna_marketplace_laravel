@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
+use App\Models\AuditBaseModel;
 use Laravel\Scout\Searchable;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 
-class PageView extends BaseModel implements Auditable
+class PageView extends AuditBaseModel implements Auditable
 {
     use   AuditableTrait, Searchable;
     //
