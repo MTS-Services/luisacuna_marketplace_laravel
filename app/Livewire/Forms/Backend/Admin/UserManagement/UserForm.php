@@ -32,11 +32,13 @@ class UserForm extends Form
 
     public ?string $password = '';
 
-    public ?string $password_confirmation = '';  
+    public ?string $password_confirmation = '';
 
     public ?string $phone = '';
 
     public string $account_status;
+
+    public ?string $reason = null;
 
     public ?int $currency_id = null;
 
@@ -47,8 +49,13 @@ class UserForm extends Form
     public ?bool $remove_file = false;
 
 
+    public ?string $originalAccountStatus = null;
+
+
     public function rules(): array
     {
+        $reasonRule = $this->isAccountStatusChanged() ? 'required|string|max:500' : 'nullable|string|max:500';
+
         $rules = [
             'first_name' => 'required|string|max:255',
             'last_name' => 'nullable|string|max:255',
@@ -62,8 +69,9 @@ class UserForm extends Form
             'password' => $this->isUpdating() ? 'nullable|string|min:8' : 'required|string|min:8|confirmed',
             'phone' => 'nullable|string|max:20',
             'account_status' => 'required|string|in:' . implode(',', array_column(UserAccountStatus::cases(), 'value')),
+            'reason' => $reasonRule,
             'avatar' => 'nullable|image|max:2048',
-             // Track removed files
+            // Track removed files
             'remove_file' => 'nullable|boolean',
         ];
 
@@ -83,7 +91,9 @@ class UserForm extends Form
         $this->email = $user->email;
         $this->phone = $user->phone;
         $this->account_status = $user->account_status->value;
+        $this->originalAccountStatus = $user->account_status->value;
         $this->currency_id = $user->currency_id;
+        $this->reason = null;
     }
 
     public function reset(...$properties): void
@@ -99,6 +109,8 @@ class UserForm extends Form
         $this->password_confirmation = '';
         $this->phone = '';
         $this->account_status = UserAccountStatus::ACTIVE->value;
+        $this->originalAccountStatus = null;
+        $this->reason = null;
         $this->avatar = null;
         $this->remove_avatar = false;
         $this->currency_id = null;
@@ -111,7 +123,29 @@ class UserForm extends Form
         return !empty($this->user_id);
     }
 
-    public function fillables(): array {
+    // protected function isAccountStatusChanged(): bool
+    // {
+    //     // Update user account_status change  check if account_status was changed
+    //     return $this->isUpdating() &&
+    //         $this->originalAccountStatus !== null &&
+    //         $this->originalAccountStatus !== $this->account_status;
+    // }
+
+    // Public helper method - Blade এ ব্যবহার করার জন্য
+    public function shouldShowReasonField(): bool
+    {
+        return $this->isAccountStatusChanged();
+    }
+
+    private function isAccountStatusChanged(): bool
+    {
+        return $this->isUpdating() &&
+            $this->originalAccountStatus !== null &&
+            $this->originalAccountStatus !== $this->account_status;
+    }
+
+    public function fillables(): array
+    {
         return [
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
@@ -127,5 +161,8 @@ class UserForm extends Form
             'avatar'    => $this->avatar,
             'currency_id' => $this->currency_id,
         ];
+        if ($this->isAccountStatusChanged() && $this->reason) {
+            $data['reason'] = $this->reason;
+        }
     }
 }

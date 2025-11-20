@@ -8,9 +8,6 @@ use App\Services\UserService;
 
 class LoyaltyComponent extends Component
 {
-    // public $user = null;
-    // public $rank = null;
-    // public $achievements = [];
 
 
     public $user = null;
@@ -30,10 +27,6 @@ class LoyaltyComponent extends Component
     }
     public function mount()
     {
-        // $this->user = user()->load('userRank.rank.achievements');
-        // $this->rank = $this->user?->userRank?->first()->rank;
-        // $this->achievements = $this->rank?->achievements;
-
         $this->user = user()->load('userRank.rank.achievements', 'userPoint');
         $this->rank = $this->user?->userRank?->first()?->rank;
         $this->currentRank = $this->rank;
@@ -48,9 +41,6 @@ class LoyaltyComponent extends Component
     }
     public function render()
     {
-        // $user = $this->userService->getAllDatas();
-        return view('livewire.backend.user.loyalty.loyalty-component', [
-            // 'user' => $user
-        ]);
+        return view('livewire.backend.user.loyalty.loyalty-component');
     }
 }
