@@ -21,11 +21,11 @@ class LanguageController extends Controller implements HasMiddleware
                 'auth:admin', // Applies 'auth:admin' to all methods
 
                 // Permission middlewares using the Middleware class
-                new Middleware('permission:admin-list', only: ['index']),
-                new Middleware('permission:admin-create', only: ['create']),
-                new Middleware('permission:admin-edit', only: ['edit']),
-                new Middleware('permission:admin-view', only: ['view']),
-                new Middleware('permission:admin-trash', only: ['trash']),
+                new Middleware('permission:language-setting-list', only: ['index']),
+                new Middleware('permission:language-setting-create', only: ['create']),
+                new Middleware('permission:language-setting-edit', only: ['edit']),
+                new Middleware('permission:language-setting-view', only: ['view']),
+                new Middleware('permission:language-setting-trash', only: ['trash']),
             ];
         }
 

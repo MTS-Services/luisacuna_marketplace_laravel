@@ -14,16 +14,16 @@ class PageViewController extends Controller implements HasMiddleware
     public function __construct(protected PageViewService $service) {}
 
     public static function middleware(): array
-        {
-            return [
-                'auth:admin', // Applies 'auth:admin' to all methods
+    {
+        return [
+            'auth:admin', // Applies 'auth:admin' to all methods
 
-                // Permission middlewares using the Middleware class
-                new Middleware('permission:admin-list', only: ['index']),  
-                new Middleware('permission:admin-show', only: ['show']),
-                new Middleware('permission:admin-trash', only: ['trash']),
-            ];
-        }
+            // Permission middlewares using the Middleware class
+            new Middleware('permission:review-list', only: ['index']),
+            new Middleware('permission:review-show', only: ['show']),
+            new Middleware('permission:review-trash', only: ['trash']),
+        ];
+    }
 
     public function index()
     {

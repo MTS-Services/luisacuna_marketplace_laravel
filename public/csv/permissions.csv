@@ -37,88 +37,91 @@ credit-trash,admin,Credit
 credit-restore,admin,Credit
 credit-permanent-delete,admin,Credit
 
-category-list,admin,category
-category-create,admin,category
-category-edit,admin,category
-category-show,admin,category
-category-trash,admin,category
+category-list,admin,Category
+category-create,admin,Category
+category-edit,admin,Category
+category-show,admin,Category
+category-trash,admin,Category
 
-game-list,admin,game
-game-create,admin,game
-game-edit,admin,game
-game-show,admin,game
-game-trash,admin,game
+game-list,admin,Game
+game-create,admin,Game
+game-edit,admin,Game
+game-show,admin,Game
+game-trash,admin,Game
 
-gameplatform-list,admin,gameplatform
-gameplatform-create,admin,gameplatform
-gameplatform-edit,admin,gameplatform
-gameplatform-show,admin,gameplatform
-gameplatform-trash,admin,gameplatform
+platform-list,admin,Platform
+platform-create,admin,Platform
+platform-edit,admin,Platform
+platform-show,admin,Platform
+platform-trash,admin,Platform
 
-gameserver-show,admin,gameserver
-gameserver-trash,admin,gameserver
+server-show,admin,Server
+server-trash,admin,Server
 
-#language-list,admin,language
-#language-create,admin,language
+language-list,admin,Language
+language-create,admin,Language
+language-edit,admin,Language
+language-show,admin,Language
+language-trash,admin,Language
 
-offer-list,admin,offer
+offer-list,admin,Offer
 
-product-list,admin,product
-product-create,admin,product
-product-edit,admin,product
-product-show,admin,product
-product-trash,admin,product
+product-list,admin,Product
+product-create,admin,Product
+product-edit,admin,Product
+product-show,admin,Product
+product-trash,admin,Product
 
-producttype-list,admin,producttype
-producttype-create,admin,producttype
-producttype-edit,admin,producttype
-producttype-show,admin,producttype
-producttype-trash,admin,producttype
+product-type-list,admin,ProductType
+product-type-create,admin,ProductType
+product-type-edit,admin,ProductType
+product-type-show,admin,ProductType
+product-type-trash,admin,ProductType
 
-pageview-list,admin,pageview
-pageview-show,admin,pageview
-pageview-trash,admin,pageview
+review-list,admin,Review
+review-show,admin,Review
+review-trash,admin,Review
 
-achievement-list,admin,achievement
-achievement-create,admin,achievement
-achievement-edit,admin,achievement
-achievement-show,admin,achievement
-achievement-trash,admin,achievement
+achievement-list,admin,Achievement
+achievement-create,admin,Achievement
+achievement-edit,admin,Achievement
+achievement-show,admin,Achievement
+achievement-trash,admin,Achievement
 
-rank-list,admin,rank
-rank-create,admin,rank
-rank-edit,admin,rank
-rank-show,admin,rank
-rank-trash,admin,rank
+rank-list,admin,Rank
+rank-create,admin,Rank
+rank-edit,admin,Rank
+rank-show,admin,Rank
+rank-trash,admin,Rank
 
-currency-list,admin,currency
-currency-create,admin,currency
-currency-edit,admin,currency
-currency-show,admin,currency
-currency-trash,admin,currency
+currency-list,admin,Currency
+currency-create,admin,Currency
+currency-edit,admin,Currency
+currency-show,admin,Currency
+currency-trash,admin,Currency
 
-generalsettings-list,admin,generalsettings
-generalsettings-create,admin,generalsettings
-generalsettings-edit,admin,generalsettings
-generalsettings-show,admin,generalsettings
-generalsettings-trash,admin,generalsettings
+general-setting-list,admin,GeneralSettings
+general-setting-create,admin,GeneralSettings
+general-setting-edit,admin,GeneralSettings
+general-setting-show,admin,GeneralSettings
+general-setting-trash,admin,GeneralSettings
 
-language-list,admin,language
-language-create,admin,language
-language-edit,admin,language
-language-show,admin,language
-language-trash,admin,language
+language-setting-list,admin,LanguageSettings
+language-setting-create,admin,LanguageSettings
+language-setting-edit,admin,LanguageSettings
+language-setting-show,admin,LanguageSettings
+language-setting-trash,admin,LanguageSettings
 
-user-list,admin,user
-user-create,admin,user
-user-edit,admin,user
-user-view,admin,user
-user-trash,admin,user
-user-profileInfo,admin,user
-user-shopInfo,admin,user
-user-kycInfo,admin,user
-user-statistic,admin,user
-user-referral,admin,user
+user-list,admin,User
+user-create,admin,User
+user-edit,admin,User
+user-view,admin,User
+user-trash,admin,User
+user-profileInfo,admin,User
+user-shopInfo,admin,User
+user-kycInfo,admin,User
+user-statistic,admin,User
+user-referral,admin,User
 
 auditing-list,admin,auditing
 auditing-view,admin,auditing

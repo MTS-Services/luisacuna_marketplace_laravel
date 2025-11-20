@@ -46,18 +46,21 @@
                         'route' => route('admin.am.admin.index'),
                         'icon' => 'user-circle',
                         'active' => 'admin',
+                        'permission' => 'admin-list',
                     ],
                     [
                         'name' => 'Roles',
                         'route' => route('admin.am.role.index'),
                         'icon' => 'shield-exclamation',
                         'active' => 'role',
+                        'permission' => 'role-list',
                     ],
                     [
                         'name' => 'Permissions',
                         'route' => route('admin.am.permission.index'),
                         'icon' => 'shield-check',
                         'active' => 'permission',
+                        'permission' => 'permission-list',
                     ],
                 ]" />
 
@@ -68,6 +71,7 @@
                         'route' => route('admin.um.user.index'),
                         'icon' => 'user',
                         'active' => 'admin-users',
+                        'permission' => 'user-list',
                     ],
                     // [
                     //     'name' => 'Pending Users',
@@ -90,24 +94,28 @@
                         'route' => route('admin.gm.category.index'),
                         'icon' => 'gamepad-2',
                         'active' => 'game-category',
+                        'permission' => 'category-list',
                     ],
                     [
                         'name' => 'Servers',
                         'route' => route('admin.gm.server.index'),
                         'icon' => 'swords',
                         'active' => 'server',
+                        'permission' => 'server-list',
                     ],
                     [
                         'name' => 'Platforms',
                         'route' => route('admin.gm.platform.index'),
                         'icon' => 'swords',
                         'active' => 'game-platform',
+                        'permission' => 'platform-list',
                     ],
                     [
                         'name' => 'Games',
                         'route' => route('admin.gm.game.index'),
                         'icon' => 'swords',
                         'active' => 'game',
+                        'permission' => 'game-list',
                     ],
                     // [
                     //     'name' => 'Pending Users',
@@ -167,18 +175,21 @@
                         'route' => route('admin.rm.rank.index'),
                         'icon' => 'user',
                         'active' => 'rank',
+                        'permission' => 'rank-list',
                     ],
                     [
                         'name' => 'Achievement Types',
                         'route' => route('admin.rm.achievementType.index'),
                         'icon' => 'user',
                         'active' => 'achievement-type',
+                        'permission' => 'achievement-type-list',
                     ],
                     [
                         'name' => 'Achievements',
                         'route' => route('admin.rm.achievement.index'),
                         'icon' => 'user',
-                        'active' => 'achievement',
+                        'active' => 'achievement',                
+                        'permission' => 'achievement-list',
                     ],
                     // [
                     //     'name' => 'Pending Users',
@@ -192,8 +203,7 @@
                     //     'icon' => 'user-round-x',
                     //     'active' => 'admin-users-banned',
                     // ],
-                ]" 
-            />
+                ]" />
 
             <x-backend.navlink type="dropdown" icon="user-group" name="Review Management" :page_slug="$active"
                 :items="[
@@ -221,8 +231,7 @@
                     //     'icon' => 'user-round-x',
                     //     'active' => 'admin-users-banned',
                     // ],
-                ]" 
-            />
+                ]" />
 
             <x-backend.navlink type="dropdown" icon="user-group" name="Audit Log Management" :page_slug="$active"
                 :items="[
@@ -297,7 +306,7 @@
                     //     'icon' => 'database',
                     //     'active' => 'settings-database',
                     // ],
-                     [
+                    [
                         'name' => 'General Settings',
                         'route' => route('admin.as.general-settings'),
                         'icon' => 'cog-8-tooth',

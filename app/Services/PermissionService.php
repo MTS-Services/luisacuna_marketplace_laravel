@@ -61,6 +61,11 @@ class PermissionService
         return $this->interface->count($filters);
     }
 
+    public function getAllGroupedByPrefix($sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->interface->allGroupedByPrefix($sortField, $order);
+    }
+
     /* ================== ================== ==================
     *                   Action Executions
     * ================== ================== ================== */

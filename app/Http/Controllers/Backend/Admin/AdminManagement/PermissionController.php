@@ -19,11 +19,11 @@ class PermissionController extends Controller implements HasMiddleware
             'auth:admin', // Applies 'auth:admin' to all methods
 
             // Permission middlewares using the Middleware class
-            new Middleware('permission:admin-list', only: ['index']),
-            new Middleware('permission:admin-create', only: ['create']),
-            new Middleware('permission:admin-edit', only: ['edit']),
-            new Middleware('permission:admin-view', only: ['view']),
-            new Middleware('permission:admin-trash', only: ['trash']),
+            new Middleware('permission:permission-list', only: ['index']),
+            new Middleware('permission:permission-create', only: ['create']),
+            new Middleware('permission:permission-edit', only: ['edit']),
+            new Middleware('permission:permission-view', only: ['view']),
+            new Middleware('permission:permission-trash', only: ['trash']),
         ];
     }
 
