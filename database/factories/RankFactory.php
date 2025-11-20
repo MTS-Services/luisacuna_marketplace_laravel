@@ -27,6 +27,7 @@ class RankFactory extends Factory
             'slug'  => Str::slug($name),
             'status' => fake()->randomElement(RankStatus::cases()),
             'minimum_points' => $faker->numberBetween(500, 1000),
+            'maximum_points' => $faker->numberBetween(1000, 1500),
             'created_by' => Admin::inRandomorder()->value('id'),
             'icon' => 'https://placehold.co/800?text=Hello+World&font=roboto',
 

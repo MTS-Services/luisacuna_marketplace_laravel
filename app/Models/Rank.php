@@ -56,6 +56,10 @@ class Rank extends AuditBaseModel implements Auditable
      {
          return $this->hasMany(Achievement::class, 'rank_id', 'id');
      }
+     public function userRanks(): HasMany
+     {
+         return $this->hasMany(UserRank::class, 'rank_level', 'id');
+     }
  
      /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS

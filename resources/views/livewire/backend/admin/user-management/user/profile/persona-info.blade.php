@@ -83,6 +83,46 @@
                             <p class="text-slate-400 text-lg font-bold ">{{ $user->last_name ?? 'N/A' }}</p>
                         </div>
 
+                        {{-- others table --}}
+
+                        <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
+                            <p class="text-text-white text-xs font-semibold mb-2">{{ __('USER POINTS') }}</p>
+                            <p class="text-slate-400 text-lg font-bold ">{{ $user->userPoint->points ?? 0 }}</p>
+                        </div>
+
+
+                        <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
+                            <p class="text-text-white text-xs font-semibold mb-2">{{ __('POINT NOTE') }}</p>
+                            <p class="text-slate-400 text-lg font-bold ">{{ $user->userPoint->note ?? 'N/A' }}</p>
+                        </div>
+
+                        <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
+                            <p class="text-text-white text-xs font-semibold mb-2">{{ __('CURRENT RANK') }}</p>
+                            <p class="text-slate-400 text-lg font-bold ">{{ $user->userRank->rank->name ?? 'N/A' }}
+                            </p>
+                        </div>
+
+
+                        <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
+                            <p class="text-text-white text-xs font-semibold mb-2">{{ __('RANK STATUS') }}</p>
+                            <p class="text-slate-400 text-lg font-bold ">
+                                @if ($user->userRank && $user->userRank->is_active)
+                                    <span class="">{{ __('Active') }}</span>
+                                @else
+                                    <span class="">{{ __('Inactive') }}</span>
+                                @endif
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
+                            <p class="text-text-white text-xs font-semibold mb-2">{{ __('RANK ACTIVATED AT') }}</p>
+                            <p class="text-slate-400 text-lg font-bold ">
+                                {{ $user->userRank->activated_at ?? 'N/A' }}
+                            </p>
+                        </div>
+                        {{-- others table --}}
+
+
                         <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
                             <p class="text-text-white text-xs font-semibold mb-2">{{ __('EMAIL') }}</p>
                             <p class="text-slate-400 text-lg font-bold">{{ $user->email ?? 'N/A' }}</p>
@@ -220,29 +260,31 @@
                         <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
                             <p class="text-text-white text-xs font-semibold mb-2">{{ __('CREATED BY') }}
                             </p>
-                            <p class="text-slate-400 text-lg font-bold">{{ $user->creater?->name ?? 'N/A' }}
+                            <p class="text-slate-400 text-lg font-bold">{{ getAuditorName($user->creater) }}
                             </p>
                         </div>
- 
+
                         <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
                             <p class="text-text-white text-xs font-semibold mb-2">{{ __('UPDATED BY') }}
                             </p>
                             <p class="text-slate-400 text-lg font-bold">
-                                {{-- {{ getAuditorName($user->updater) ?? 'N/A' }} --}}
+                                {{ getAuditorName($user->updater) ?? 'N/A' }}
                             </p>
                         </div>
 
                         <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
                             <p class="text-text-white text-xs font-semibold mb-2">{{ __('DELETED BY') }}
                             </p>
-                            <p class="text-slate-400 text-lg font-bold">{{ $user->deleter?->name ?? 'N/A' }}
+                            <p class="text-slate-400 text-lg font-bold"></p>
+                            {{ $user->deleted_at ? getAuditorName($user->deleter) : 'N/A' }}
                             </p>
                         </div>
 
                         <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
                             <p class="text-text-white text-xs font-semibold mb-2">{{ __('RESTORER BY') }}
                             </p>
-                            <p class="text-slate-400 text-lg font-bold">{{ $user->restorer?->name ?? 'N/A' }}
+                            <p class="text-slate-400 text-lg font-bold"></p>
+                            {{ $user->restored_at ? getAuditorName($user->restorer) : 'N/A' }}
                             </p>
                         </div>
 
@@ -274,6 +316,8 @@
                             <p class="text-slate-400 text-lg font-bold">{{ $user->restored_at_formatted ?? 'N/A' }}
                             </p>
                         </div>
+
+
 
                     </div>
                 </div>
