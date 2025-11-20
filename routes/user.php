@@ -1,10 +1,15 @@
 <?php
 
+use App\Http\Controllers\Frontend\UserProfileController;
 use App\Http\Controllers\PaymentController;
 use App\Livewire\Backend\User\Components\Profile;
 use Illuminate\Support\Facades\Route;
 
+
+Route::get('/users/{username}', [UserProfileController::class, 'profile'])->middleware('auth:web')->name('profile');
+
 Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(function () {
+
     Route::group(['prefix' => 'orders'], function () {
         Route::get('/purchased-orders', function () {
             return view('backend.user.pages.orders.purchased-orders');
@@ -46,7 +51,7 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
             return view('backend.user.pages.seller.seller-verification');
         })->name('seller.verification');
     });
-    
+
 
 
     Route::get('/loyalty', function () {
