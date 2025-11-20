@@ -39,7 +39,7 @@ class LoyaltyComponent extends Component
         $this->currentRank = $this->rank;
         $this->achievements = $this->rank?->achievements;
 
-        // Next rank এবং points needed calculate করুন
+        // Next rank and points needed calculate 
         if ($this->currentRank) {
             $this->nextRank = $this->rankService->getNextRank($this->currentRank->id);
             $userPoints = $this->user->userPoint->points ?? 0;
