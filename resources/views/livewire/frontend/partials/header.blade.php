@@ -20,7 +20,7 @@
         {{-- Main Navigation Icons --}}
         <div class="flex gap-1  xl:gap-2 items-center">
 
-            <div class="hidden lg:flex">
+            <div class="hidden xl:flex">
                 <x-language />
             </div>
 
@@ -50,13 +50,13 @@
                 <div class="flex bg-zinc-200 dark:bg-zinc-800 lg:p-1 rounded-full">
                     <!-- Light/Dark Mode Toggle -->
                     <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
-                        class="flex items-center justify-center w-8 h-6 text-lg rounded-l-full transition-colors duration-200 hidden lg:flex"
+                        class="flex items-center justify-center w-8 h-6 text-lg rounded-l-full transition-colors duration-200 hidden xl:flex"
                         :class="!$flux.dark ? 'bg-zinc-400 text-text-white' : 'bg-transparent text-zinc-600 dark:text-zinc-300'">
                         <flux:icon name="sun" class="w-5 h-5 stroke-white" />
                     </button>
 
                     <button type="button" @click="$flux.dark = true" :aria-pressed="$flux.dark"
-                        class="flex items-center justify-center w-8 h-6 text-lg rounded-r-full transition-colors duration-200 hidden lg:flex"
+                        class="flex items-center justify-center w-8 h-6 text-lg rounded-r-full transition-colors duration-200 hidden xl:flex"
                         :class="$flux.dark ? 'bg-zinc-400 text-text-white' : 'bg-transparent text-zinc-600 dark:text-zinc-300'">
                         <flux:icon name="moon" class="w-5 h-5 stroke-current" />
                     </button>
