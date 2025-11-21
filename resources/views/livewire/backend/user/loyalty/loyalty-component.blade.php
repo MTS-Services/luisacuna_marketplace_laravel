@@ -45,15 +45,11 @@
                         {{ __('points to reach the') }} {{ $nextRank?->name }} {{ __('level.') }}
                     </p>
                 @endif
-                {{-- <p class="text-text-white text-center text-sm">
-                        {{ __('Congratulations! You have reached the highest rank.') }}
-                    </p> --}}
-                {{-- @endif --}}
 
             </div>
 
             {{-- Available Points Card --}}
-            <div class="rounded-3xl p-8 bg-pink-200 dark:bg-pink-900">
+            <div class="rounded-3xl p-10 bg-pink-200 dark:bg-pink-900">
                 <div class="mb-6">
                     <h3 class="text-text-white font-semibold text-xl mb-4">{{ __('Available points') }}</h3>
                     <div class="flex items-center gap-2">
@@ -95,15 +91,15 @@
             @if ($achievements)
                 @forelse ($achievements as $achievement)
                     <div class="glass-card rounded-2xl p-6 border border-primary-700/30">
-                        <div class="flex items-center gap-4 mb-4">
+                        <div class="flex items-center gap-4 mb-9">
                             <div
                                 class="w-20 h-20 rounded-xl bg-primary-800/50 flex items-center justify-center flex-shrink-0">
-                                <img src="{{ storage_url($achievement->icon) }}" alt="" class="w-full h-full">
+                                <img src="{{ storage_url($achievement->icon) }}" alt="" class="w-full h-full rounded-xl">
                             </div>
                             <div class="flex-1">
                                 <h4 class="text-text-white font-semibold font-lato text-lg sm:text-3xl mb-1">
                                     {{ $achievement->title }}</h4>
-                                <p class="text-text-white text-sm sm:text-base">{{ $achievement->description }}</p>
+                                <p class="text-text-white text-sm sm:text-base">{!! $achievement->description !!}</p>
                             </div>
                         </div>
                         <div class="flex items-center justify-between text-sm mb-2">
