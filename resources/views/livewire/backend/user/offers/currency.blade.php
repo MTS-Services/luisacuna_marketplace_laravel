@@ -5,7 +5,7 @@
             <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
 
                 <div class="relative w-full sm:w-35 lg:w-40 2xl:w-80">
-                       <x-ui.select>
+                    <x-ui.select>
                         <option value="">{{ __('All Game') }}</option>
                         <option value="game1">{{ __('Game 1') }}</option>
                         <option value="game2">{{ __('Game 2') }}</option>
@@ -27,11 +27,12 @@
             <div class="w-full md:w-auto flex  items-center gap-2 justify-between">
                 <x-ui.button class="w-auto! py-2! " variant="secondary">
                     <x-phosphor-download class="w-5 h-5 fill-accent group-hover:fill-white" />
-                   <span  class="text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Export') }}</span>
+                    <span class="text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Export') }}</span>
                 </x-ui.button>
                 <x-ui.button class="w-auto! py-2!">
                     <x-phosphor-plus class="w-5 h-5 fill-text-text-white group-hover:fill-accent" />
-                    <span  class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('New Offer') }}</span>
+                    <a wire.navigate href="{{ route('user.offers') }}" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('New Offer') }}</a>
+
                 </x-ui.button>
             </div>
 

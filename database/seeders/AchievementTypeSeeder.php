@@ -17,7 +17,7 @@ class AchievementTypeSeeder extends Seeder
         AchievementType::insert([
             [
                 'sort_order' => 1,
-                'name' => 'Gold Achievement',
+                'name' => 'First Login',
                 'is_active' => true,
                 'created_by' => 1,
                 'updated_by' => 1,
@@ -26,7 +26,7 @@ class AchievementTypeSeeder extends Seeder
             ],
             [
                 'sort_order' => 2,
-                'name' => 'Silver Achievement',
+                'name' => 'Profile Complete',
                 'is_active' => true,
                 'created_by' => 1,
                 'updated_by' => 1,
@@ -35,8 +35,17 @@ class AchievementTypeSeeder extends Seeder
             ],
             [
                 'sort_order' => 3,
-                'name' => 'Bronze Achievement',
+                'name' => 'First Purchase',
                 'is_active' => true,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'sort_order' => 4,
+                'name' => 'Referral Bonus',
+                'is_active' => false,
                 'created_by' => 1,
                 'updated_by' => 1,
                 'created_at' => Carbon::now(),

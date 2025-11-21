@@ -27,7 +27,7 @@
                 <!-- New Offer Button -->
                 <x-ui.button class="w-full sm:w-auto! py-2!">
                     <x-phosphor-plus class="w-5 h-5 fill-text-text-white group-hover:fill-accent" />
-                    <span class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('New Offer') }}</span>
+                    <span wire:click="user.seller.verification" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('New Offer') }}</span>
                 </x-ui.button>
 
             </div>
