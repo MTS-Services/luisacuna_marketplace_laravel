@@ -33,6 +33,7 @@ class User extends AuthBaseModel implements Auditable
         'username',
         'first_name',
         'last_name',
+        'uuid',
         'email',
 
         'apple_id',
@@ -135,6 +136,19 @@ class User extends AuthBaseModel implements Auditable
             'account_status'         => UserAccountStatus::class,
             'kyc_status'             => userKycStatus::class,
         ];
+    }
+
+    // Booting Method
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            // Only set UUID if empty
+            if (empty($user->uuid)) {
+                $user->uuid = (string) \generate_uuid();
+            }
+        });
     }
 
     /*

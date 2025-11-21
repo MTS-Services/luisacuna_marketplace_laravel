@@ -79,8 +79,8 @@ if (!function_exists('storage_url')) {
 if (!function_exists('auth_storage_url')) {
     function auth_storage_url($url)
     {
-        $image = asset('assets/images/other.png');
-        return $url ? $url : $image;
+        $image = asset('assets/images/default_profile.jpg');
+        return $url ? $url : $image;/*  */
     }
 }
 
@@ -484,10 +484,12 @@ if (!function_exists('gameCategories')) {
                 ]
             ]
         ];
-    }}
+    }
+}
 
 if (!function_exists('getAuditorName')) {
-    function getAuditorName($model){
+    function getAuditorName($model)
+    {
         return $model && $model->name ? $model->name : (isset($model->first_name) ? $model->first_name . ' ' . $model->last_name : 'N/A');
     }
 }

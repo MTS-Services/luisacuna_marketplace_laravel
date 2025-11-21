@@ -7,6 +7,7 @@ namespace App\Livewire\Backend\Admin\AdminManagement\Role;
 
 
 use App\Livewire\Forms\RoleForm;
+use App\Services\PermissionService;
 use App\Services\RoleService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -20,25 +21,26 @@ class Create extends Component
     public RoleForm $form;
 
     protected RoleService $service;
+    protected PermissionService $permissionService;
 
-    public function boot(RoleService $service)
+    public function boot(RoleService $service, PermissionService $permissionService)
     {
         $this->service = $service;
+        $this->permissionService = $permissionService;
     }
-
-    public function mount(): void
-    {
-
-    }
-
+    
     public function render()
     {
-        return view('livewire.backend.admin.admin-management.role.create');
+        $permissions = $this->permissionService->getAllGroupedByPrefix('prefix', 'asc');
+        return view(
+            'livewire.backend.admin.admin-management.role.create',
+            [
+                'permissions' => $permissions,
+            ]
+        );
     }
     public function save()
     {
-
-
         $data = $this->form->validate();
         try {
             $data['created_by'] = admin()->id;

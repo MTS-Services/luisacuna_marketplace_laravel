@@ -17,18 +17,18 @@ class ProductTypeController extends Controller implements HasMiddleware
 
 
     public static function middleware(): array
-        {
-            return [
-                'auth:admin', // Applies 'auth:admin' to all methods
+    {
+        return [
+            'auth:admin', // Applies 'auth:admin' to all methods
 
-                // Permission middlewares using the Middleware class
-                new Middleware('permission:admin-list', only: ['index']),
-                new Middleware('permission:admin-create', only: ['create']),
-                new Middleware('permission:admin-edit', only: ['edit']),
-                new Middleware('permission:admin-show', only: ['show']),
-                new Middleware('permission:admin-trash', only: ['trash']),
-            ];
-        }
+            // Permission middlewares using the Middleware class
+            new Middleware('permission:product-type-list', only: ['index']),
+            new Middleware('permission:product-type-create', only: ['create']),
+            new Middleware('permission:product-type-edit', only: ['edit']),
+            new Middleware('permission:product-type-show', only: ['show']),
+            new Middleware('permission:product-type-trash', only: ['trash']),
+        ];
+    }
 
 
     public function index()

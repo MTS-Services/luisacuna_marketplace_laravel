@@ -11,6 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('uuid_sequences', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+        });
+
         Schema::create('order_sequences', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
@@ -32,6 +37,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('uuid_sequences');
         Schema::dropIfExists('order_sequences');
         Schema::dropIfExists('transaction_sequences');
         Schema::dropIfExists('payment_sequences');

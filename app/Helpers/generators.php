@@ -278,3 +278,12 @@ if (!function_exists('generate_payment_id')) {
         return $prefix . $timestamp . str_pad(base62_encode($sequence), 6, '0', STR_PAD_LEFT);
     }
 }
+if (!function_exists('generate_uuid')) {
+    function generate_uuid()
+    {
+        $prefix = 'UD-';
+        $timestamp = str_pad(base62_encode(time() - 1609459200), 5, '0', STR_PAD_LEFT);
+        $sequence = DB::table('uuid_sequences')->insertGetId(['created_at' => now()]);
+        return $prefix . $timestamp . str_pad(base62_encode($sequence), 6, '0', STR_PAD_LEFT);
+    }
+}

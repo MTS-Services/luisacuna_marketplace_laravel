@@ -29,6 +29,8 @@ interface PermissionRepositoryInterface
 
     public function search(string $query, string $sortField = 'created_at', $order = 'desc'): Collection;
 
+    public function allGroupedByPrefix(string $sortField = 'created_at', $order = 'desc'): Collection;
+
     /* ================== ================== ==================
     *                    Data Modification Methods
     * ================== ================== ================== */

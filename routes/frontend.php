@@ -17,7 +17,6 @@ use App\Livewire\Frontend\Components\Boostings\BoostingSubscribe;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/profile', [UserProfileController::class, 'profile'])->name('profile');
 Route::get('/currency', [CurrencyController::class, 'index'])->name('currency');
 Route::get('/boosting', [BoostingController::class, 'index'])->name('boosting');
 Route::get('/account', [UserAccountController::class, 'index'])->name('account');

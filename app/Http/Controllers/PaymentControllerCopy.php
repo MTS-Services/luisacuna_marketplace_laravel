@@ -9,7 +9,7 @@ use App\Services\PaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class PaymentController extends Controller
+class PaymentControllerCopy extends Controller
 {
     protected PaymentService $paymentService;
     public function __construct(PaymentService $paymentService)
