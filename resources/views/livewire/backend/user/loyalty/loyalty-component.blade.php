@@ -3,7 +3,7 @@
         {{-- Top Cards Section --}}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             {{-- Bronze Level Card --}}
-            <div class="bg-bg-primary rounded-2xl p-6 border border-primary-700/30">
+            <div class="bg-bg-primary rounded-2xl p-10 border border-primary-700/30">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-text-primary font-open-sans text-lg">{{ __('How it works?') }}</h3>
                     <div class="flex items-center gap-2 bg-zinc-50/10 px-3 py-1.5 rounded-full">
@@ -13,35 +13,42 @@
                     </div>
                 </div>
 
-                <div class="flex justify-center mb-6">
-                    <div class="relative">
-                        <div class="w-26 h-26 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
-                            <img src="{{ storage_url($rank?->icon) }}" alt="" class="w-full h-full">
+                <div class="px-24">
+                    <div class="flex justify-center mb-6">
+                        <div class="relative">
+                            <div
+                                class="w-26 h-26 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
+                                <img src="{{ storage_url($rank?->icon) }}" alt="" class="w-full h-full">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="text-center mb-4">
-                    <h4 class="text-text-white font-semibold text-xl mb-2">{{ $currentRank?->name ?? 'N/A' }}</h4>
-                    <div class="text-text-white text-sm">
-                        {{ $user->userPoint?->points ?? 0 . ' / ' . ($currentRank?->maximum_points === null ? $user->rank_points . '-' : $currentRank->maximum_points) }}
-                    </div>
-                    <div class="w-70 xl:w-90 mx-auto bg-white rounded-full h-2 mt-2">
-                        <div class="bg-linear-to-r from-pink-500 to-pink-600 h-2 rounded-full" style="width: 20%">
+                    <div class="text-center mb-4">
+                        <div class="flex justify-between">
+                            <h4 class="text-text-white font-semibold text-xl mb-2">{{ $currentRank?->name ?? 'N/A' }}
+                            </h4>
+                            <div class="text-text-white text-sm">
+                                {{-- {{ $user->userPoint?->points ?? 0 . ' / ' . ($currentRank?->maximum_points === null ? $user->rank_points . '-' : $currentRank->maximum_points) }} --}}
+                                {{ $this->user->userPoint?->points ?? 0 }} / {{ $currentRank?->maximum_points === null ? ($this->user->rank_points . '-') : $currentRank->maximum_points }}
+                            </div>
+                        </div>
+                        <div class="w-70 xl:w-full mx-auto bg-white rounded-full h-2 mt-2">
+                            <div class="bg-linear-to-r from-pink-500 to-pink-600 h-2 rounded-full" style="width: {{ $progress }}%">
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 @if ($nextRank)
-                    <p class="text-text-white text-center text-sm">
+                    <p class="text-text-white text-center text-xl">
                         {{ __('You need an additional') }}
                         {{ $pointsNeeded }}
                         {{ __('points to reach the') }} {{ $nextRank?->name }} {{ __('level.') }}
                     </p>
-                @else
-                    <p class="text-text-white text-center text-sm">
-                        {{ __('Congratulations! You have reached the highest rank.') }}
-                    </p>
                 @endif
+                {{-- <p class="text-text-white text-center text-sm">
+                        {{ __('Congratulations! You have reached the highest rank.') }}
+                    </p> --}}
+                {{-- @endif --}}
 
             </div>
 
