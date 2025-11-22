@@ -7,8 +7,6 @@ use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
-
-    use AuditColumnsTrait;
     /**
      * Run the migrations.
      */
@@ -17,14 +15,9 @@ return new class extends Migration
         Schema::create('application_settings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-            $table->string('key')->unique();
-            $table->string('env_key')->nullable();
-             $table->text('value')->nullable();
-
-
-            $table->softDeletes();
+            $table->string('key')->unique()->index();
+            $table->text('value')->nullable();
             $table->timestamps();
-            $this->addAdminAuditColumns($table);
         });
     }
 

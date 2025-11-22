@@ -14,8 +14,8 @@ class DeepLTranslationService
 
     public function __construct()
     {
-        $apiKey = config('services.deepl.key');
-        $this->isFree = config('services.deepl.is_free', false);
+        $apiKey = config('translation.deepl.key');
+        $this->isFree = config('translation.deepl.is_free', false);
 
         if (!$apiKey) {
             throw new \Exception('DeepL API key is not configured');

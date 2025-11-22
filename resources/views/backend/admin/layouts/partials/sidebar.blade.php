@@ -188,7 +188,7 @@
                         'name' => 'Achievements',
                         'route' => route('admin.rm.achievement.index'),
                         'icon' => 'user',
-                        'active' => 'achievement',                
+                        'active' => 'achievement',
                         'permission' => 'achievement-list',
                     ],
                     // [
@@ -253,10 +253,10 @@
             <x-backend.navlink type="dropdown" icon="wrench-screwdriver" name="Application Settings" :page_slug="$active"
                 :items="[
                     [
-                        'name' => 'Settings',
-                        'route' => '#',
+                        'name' => 'General Settings',
+                        'route' => route('admin.as.general-settings'),
                         'icon' => 'cog-8-tooth',
-                        'active' => '',
+                        'active' => 'general-settings',
                     ],
                     // [
                     //     'name' => 'Appearance',
@@ -306,12 +306,6 @@
                     //     'icon' => 'database',
                     //     'active' => 'settings-database',
                     // ],
-                    [
-                        'name' => 'General Settings',
-                        'route' => route('admin.as.general-settings'),
-                        'icon' => 'cog-8-tooth',
-                        'active' => 'general-settings',
-                    ],
                     // [
                     //     'name' => 'SMTP',
                     //     'route' => route('admin.app-settings.smtp'),
