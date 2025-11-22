@@ -4,7 +4,7 @@ use App\Traits\AuditColumnsTrait;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use App\Enums\RarityStatus;
 return new class extends Migration
 {
      use AuditColumnsTrait;
@@ -16,13 +16,13 @@ return new class extends Migration
         Schema::create('rarities', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-
+            $table->string('name');
+            $table->string('status')->index()->default(RarityStatus::ACTIVE->value);
+            $table->string('icon')->nullable();
 
             $table->softDeletes();
             $table->timestamps();
-
-           // $this->addMorphedAuditColumns($table);
-            // $this->addAdminAuditColumns($table);
+            $this->addAdminAuditColumns($table);
         });
     }
 

@@ -71,7 +71,7 @@ class Index extends Component
                 'key' => 'creater_id',
                 'label' => 'Created By',
                 'format' => function ($data) {
-                    return $data->creater?->name ?? 'System';
+                    return $data->creater_admin?->name ?? 'System';
                 }
             ],
         ];

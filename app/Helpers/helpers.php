@@ -5,6 +5,7 @@ use App\Enums\OtpType;
 use App\Models\OtpVerification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 // ==================== Existing Auth Helpers ====================
@@ -493,3 +494,39 @@ if (!function_exists('getAuditorName')) {
         return $model && $model->name ? $model->name : (isset($model->first_name) ? $model->first_name . ' ' . $model->last_name : 'N/A');
     }
 }
+
+
+if (!function_exists('log_error')) {
+    function log_error($e): void
+    {
+        Log::error(
+            'LOG ERROR DATA: ' . [
+                "Error" => $e->getMessage(),
+                "Trace" => $e->getTraceAsString(),
+                "Data" => [
+                    "File" => $e->getFile(),
+                    "Line" => $e->getLine()
+                ],
+                "Request" => [
+                    "URL" => request()->fullUrl(),
+                    "Method" => request()->method(),
+                    "IP" => request()->ip(),
+                    "Input" => request()->all()
+                ]
+            ]
+        );
+    }
+}
+
+if (!function_exists('log_info')) {
+    function log_info($i, $data = []): void
+    {
+        Log::info(
+            'LOG INFO DATA: ' . [
+                "Info" => $i,
+                "Data" => $data
+            ]
+        );
+    }
+}
+

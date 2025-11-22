@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Backend\Admin\GameManagement;
 
 use App\Http\Controllers\Controller;
 use App\Services\ServerService;
-use GuzzleHttp\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class ServerController extends Controller
+class ServerController extends Controller implements HasMiddleware
 {
     public function __construct(protected ServerService $service) {}
 
@@ -21,6 +22,9 @@ class ServerController extends Controller
             // Permission middlewares using the Middleware class
             new Middleware('permission:server-list', only: ['index']),
             new Middleware('permission:server-create', only: ['create']),
+            new Middleware('permission:server-edit', only: ['edit']),
+            new Middleware('permission:server-show', only: ['view']),
+            new Middleware('permission:server-trash', only: ['trash']),
         ];
     }
 

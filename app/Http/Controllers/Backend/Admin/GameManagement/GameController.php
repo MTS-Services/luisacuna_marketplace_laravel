@@ -9,7 +9,6 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
 class GameController extends Controller implements HasMiddleware
-
 {
     //
     public $masterView = 'backend.admin.pages.game-management.game';
@@ -47,7 +46,6 @@ class GameController extends Controller implements HasMiddleware
     }
 
     public function show($id)
-
     {
         $this->data = $this->service->findData(decrypt($id));
         if (!$this->data) {

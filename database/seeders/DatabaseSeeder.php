@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -48,15 +49,13 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             PageViewSeeder::class,
             RankSeeder::class,
-            // UserRankSeeder::class,
+                // UserRankSeeder::class,
             AchievementTypeSeeder::class,
             AchievementSeeder::class,
 
             DeliveryMethodSeeder::class,
             OfferItemSeeder::class,
-            // GameServerSeeder::class,
-            // DeliveryMethodSeeder::class,
-            // OfferItemSeeder::class,
+            RaritySeeder::class
         ]);
     }
 }
