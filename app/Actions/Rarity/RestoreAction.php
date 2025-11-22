@@ -3,11 +3,11 @@
 namespace App\Actions\Rarity;
 
 use Illuminate\Support\Facades\DB;
-use App\Repositories\Contracts\RankRepositoryInterface;
+use App\Repositories\Contracts\RarityRepositoryInterface;
 
 class RestoreAction{
 
-    public function __construct(protected RankRepositoryInterface $interface){}
+    public function __construct(protected RarityRepositoryInterface $interface){}
 
 
 

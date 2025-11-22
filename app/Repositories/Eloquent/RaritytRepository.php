@@ -7,21 +7,21 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Repositories\Contracts\RarityRepositoryInterface;
-use  App\Models\Achievement;
 
-class RaritytRepository  implements RarityRepositoryInterface
+class RaritytRepository implements RarityRepositoryInterface
 {
     /**
      * Create a new class instance.
      */
     public function __construct(
         protected Rarity $model
-    ) {}
+    ) {
+    }
 
 
     /* ================== ================== ==================
-    *                      Find Methods
-    * ================== ================== ================== */
+     *                      Find Methods
+     * ================== ================== ================== */
 
     public function all(string $sortField = 'created_at', $order = 'desc'): Collection
     {
@@ -29,7 +29,7 @@ class RaritytRepository  implements RarityRepositoryInterface
         return $query->orderBy($sortField, $order)->get();
     }
 
-    public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?Achievement
+    public function find($column_value, string $column_name = 'id', bool $trashed = false): ?Rarity
     {
         $model = $this->model;
         if ($trashed) {
@@ -37,7 +37,7 @@ class RaritytRepository  implements RarityRepositoryInterface
         }
         return $model->where($column_name, $column_value)->first();
     }
-    public function findTrashed($column_value, string $column_name = 'id'): ?Achievement
+    public function findTrashed($column_value, string $column_name = 'id'): ?Rarity
     {
         $model = $this->model->onlyTrashed();
         return $model->where($column_name, $column_value)->first();
@@ -50,7 +50,7 @@ class RaritytRepository  implements RarityRepositoryInterface
 
         if ($search) {
             // Scout Search
-            return Achievement::search($search)
+            return Rarity::search($search)
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
         }
@@ -73,7 +73,7 @@ class RaritytRepository  implements RarityRepositoryInterface
 
         if ($search) {
             //  Manually filter trashed + search
-            return Achievement::search($search)
+            return Rarity::search($search)
                 ->onlyTrashed()
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
@@ -106,11 +106,11 @@ class RaritytRepository  implements RarityRepositoryInterface
         return $this->model->search($query)->orderBy($sortField, $order)->get();
     }
 
-     /* ================== ================== ==================
-    *                    Data Modification Methods
-    * ================== ================== ================== */
+    /* ================== ================== ==================
+     *                    Data Modification Methods
+     * ================== ================== ================== */
 
-    public function create(array $data): Achievement
+    public function create(array $data): Rarity
     {
         return $this->model->create($data);
     }
@@ -186,8 +186,8 @@ class RaritytRepository  implements RarityRepositoryInterface
     }
 
     /* ================== ================== ==================
-    *                  Accessor Methods (Optional)
-    * ================== ================== ================== */
+     *                  Accessor Methods (Optional)
+     * ================== ================== ================== */
 
     public function getActive(string $sortField = 'created_at', $order = 'desc'): Collection
     {

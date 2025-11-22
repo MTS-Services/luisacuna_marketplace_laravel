@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\RarityStatus;
 use App\Models\Rarity;
 // use App\Enums\AchievementStatus;
 use App\Actions\Rarity\BulkAction;
@@ -12,9 +13,6 @@ use App\Actions\Rarity\RestoreAction;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Repositories\Contracts\RarityRepositoryInterface;
-use App\Models\Achievement;
-use App\Models\Rank;
-use App\Models\Game;
 class RarityService
 {
     /**
@@ -27,18 +25,19 @@ class RarityService
         protected DeleteAction $deleteAction,
         protected RestoreAction $restoreAction,
         protected BulkAction $bulkAction
-    ) {}
+    ) {
+    }
 
     /* ================== ================== ==================
-    *                          Find Methods
-    * ================== ================== ================== */
+     *                          Find Methods
+     * ================== ================== ================== */
 
     public function getAllDatas($sortField = 'created_at', $order = 'desc'): Collection
     {
         return $this->interface->all($sortField, $order);
     }
 
-    public function findData($column_value, string $column_name = 'id'): ?Achievement
+    public function findData($column_value, string $column_name = 'id'): ?Rarity
     {
         return $this->interface->find($column_value, $column_name);
     }
@@ -69,15 +68,15 @@ class RarityService
     }
 
     /* ================== ================== ==================
-    *                   Action Executions
-    * ================== ================== ================== */
+     *                   Action Executions
+     * ================== ================== ================== */
 
-    public function createData(array $data): Rank
+    public function createData(array $data): Rarity
     {
         return $this->createAction->execute($data);
     }
 
-    public function updateData(int $id, array $data): Achievement
+    public function updateData(int $id, array $data): Rarity
     {
         return $this->updateAction->execute($id, $data);
     }
@@ -98,19 +97,19 @@ class RarityService
         return $this->restoreAction->execute($id, $actionerId);
     }
 
-    // public function updateStatusData(int $id, AchievementStatus $status, ?int $actionerId = null): Achievement
-    // {
-    //     if ($actionerId == null) {
-    //         $actionerId = admin()->id;
-    //     }
+    public function updateStatusData(int $id, RarityStatus $status, ?int $actionerId = null): Rarity
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
 
-    //     return $this->updateAction->execute($id, [
-    //         'status' => $status->value,
-    //         'updated_by' => $actionerId,
-    //     ]);
+        return $this->updateAction->execute($id, [
+            'status' => $status->value,
+            'updated_by' => $actionerId,
+        ]);
 
 
-    // }
+    }
     public function bulkRestoreData(array $ids, ?int $actionerId = null): int
     {
         if ($actionerId == null) {
@@ -134,7 +133,7 @@ class RarityService
         }
         return $this->bulkAction->execute(ids: $ids, action: 'delete', status: null, actionerId: $actionerId);
     }
-    public function bulkUpdateStatus(array $ids, AchievementStatus $status, ?int $actionerId = null): int
+    public function bulkUpdateStatus(array $ids, RarityStatus $status, ?int $actionerId = null): int
     {
         if ($actionerId == null) {
             $actionerId = admin()->id;
@@ -143,8 +142,8 @@ class RarityService
     }
 
     /* ================== ================== ==================
-    *                   Accessors (optionals)
-    * ================== ================== ================== */
+     *                   Accessors (optionals)
+     * ================== ================== ================== */
 
     public function getActiveData($sortField = 'created_at', $order = 'desc'): Collection
     {
@@ -155,10 +154,5 @@ class RarityService
     {
         return $this->interface->getInactive($sortField, $order);
     }
-
-    public function getTrash()
-{
-    return $this->repository->getTrash();
-}
 
 }

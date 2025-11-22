@@ -5,19 +5,18 @@ namespace App\Repositories\Contracts;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Models\Rarity;
-use App\Models\Achievement;
 
 interface RarityRepositoryInterface
 {
     /* ================== ================== ==================
-    *                      Find Methods
-    * ================== ================== ================== */
+     *                      Find Methods
+     * ================== ================== ================== */
 
     public function all(string $sortField = 'created_at', $order = 'desc'): Collection;
 
-    public function find($column_value, string $column_name = 'id', bool $trashed = false): ?Achievement;
+    public function find($column_value, string $column_name = 'id', bool $trashed = false): ?Rarity;
 
-    public function findTrashed($column_value, string $column_name = 'id'): ?Achievement;
+    public function findTrashed($column_value, string $column_name = 'id'): ?Rarity;
 
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
 
@@ -31,10 +30,10 @@ interface RarityRepositoryInterface
 
 
     /* ================== ================== ==================
-    *                    Data Modification Methods
-    * ================== ================== ================== */
+     *                    Data Modification Methods
+     * ================== ================== ================== */
 
-    public function create(array $data): Achievement;
+    public function create(array $data): Rarity;
 
     public function update(int $id, array $data): bool;
 
@@ -49,12 +48,12 @@ interface RarityRepositoryInterface
     public function bulkUpdateStatus(array $ids, string $status, int $actionerId): int;
 
     public function bulkRestore(array $ids, int $actionerId): int;
-    
+
     public function bulkForceDelete(array $ids): int;
 
     /* ================== ================== ==================
-    *                  Accessor Methods (Optional)
-    * ================== ================== ================== */
+     *                  Accessor Methods (Optional)
+     * ================== ================== ================== */
 
     public function getActive(string $sortField = 'created_at', $order = 'desc'): Collection;
 

@@ -5,13 +5,13 @@
         @case('admin.gm.rarity.create')
             <x-slot name="title">{{ __('Game rarity Create') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Game Management / Game rarity create') }} </x-slot>
-            <livewire:backend.admin.game-management.rarity.create :data="$data" />
+            <livewire:backend.admin.game-management.rarity.create />
         @break
 
         @case('admin.gm.rarity.trash')
             <x-slot name="title">{{ __('Game rarity Trash List') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Game Management / Game rarity Trash List') }}</x-slot>
-            <livewire:backend.admin.game-management.rarity.trash :data="$data" />
+            <livewire:backend.admin.game-management.rarity.trash />
         @break
 
         @case('admin.gm.rarity.edit')
