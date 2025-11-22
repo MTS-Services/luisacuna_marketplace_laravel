@@ -16,9 +16,12 @@ return new class extends Migration
         Schema::create('user_ranks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-
             $table->unsignedBigInteger('user_id')->unique();
             $table->unsignedBigInteger('rank_level');
+            $table->boolean('is_active')->default(true);
+            $table->timestamp('activated_at');
+
+
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('rank_level')->references('id')->on('ranks')->onDelete('cascade');

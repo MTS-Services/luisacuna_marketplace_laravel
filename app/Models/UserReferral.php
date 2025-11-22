@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class UserReferral extends BaseModel implements Auditable
+class UserReferral extends AuditBaseModel implements Auditable
 {
     use  AuditableTrait;
     protected $fillable = [

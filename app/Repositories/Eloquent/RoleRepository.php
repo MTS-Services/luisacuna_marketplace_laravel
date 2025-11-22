@@ -3,6 +3,7 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Role;
+use App\Repositories\Contracts\PermissionRepositoryInterface;
 use App\Repositories\Contracts\RoleRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -12,9 +13,9 @@ use Illuminate\Support\Facades\DB;
 class RoleRepository implements RoleRepositoryInterface
 {
     public function __construct(
-        protected Role $model
-    ) {
-    }
+        protected Role $model,
+        protected PermissionRepositoryInterface $permissionInterface
+    ) {}
     /* ================== ================== ==================
      *                      Find Methods
      * ================== ================== ================== */
@@ -112,7 +113,11 @@ class RoleRepository implements RoleRepositoryInterface
 
     public function create(array $data): Role
     {
-        return $this->model->create($data);
+        $role = $this->model->create($data);
+        if (!empty($data['permissions'])) {
+            $role->permissions()->sync($data['permissions']);
+        }
+        return $role;
     }
 
     public function update(int $id, array $data): bool
@@ -123,7 +128,14 @@ class RoleRepository implements RoleRepositoryInterface
             return false;
         }
 
-        return $findData->update($data);
+        $role = $findData->update($data);
+        if (!empty($data['permissions'])) {
+            $findData->permissions()->sync($data['permissions']);
+        } else {
+            // If no permissions selected, detach all
+            $findData->permissions()->detach();
+        }
+        return true;
     }
 
     public function delete(int $id, int $actionerId): bool

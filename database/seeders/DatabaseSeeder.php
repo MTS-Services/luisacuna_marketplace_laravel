@@ -13,6 +13,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+
+            PaymentGatewaySeeder::class,
+            WithdrawalGatewaySeeder::class,
+
             RoleSeeder::class,
             PermissionSeeder::class,
             CountrySeeder::class,
@@ -27,7 +31,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CategorySeeder::class,
             ServerSeeder::class,
-            GamePlatformSeeder::class,
+            PlatformSeeder::class,
             GameSeeder::class,
             ApplicationSettingSeeder::class,
 
@@ -44,9 +48,10 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             PageViewSeeder::class,
             RankSeeder::class,
-            UserRankSeeder::class,
+            // UserRankSeeder::class,
+            AchievementTypeSeeder::class,
             AchievementSeeder::class,
-           
+
             DeliveryMethodSeeder::class,
             OfferItemSeeder::class,
             // GameServerSeeder::class,

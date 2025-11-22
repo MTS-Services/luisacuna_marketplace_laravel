@@ -103,6 +103,12 @@ class PermissionRepository implements PermissionRepositoryInterface
         return $this->model->search($query)->orderBy($sortField, $order)->get();
     }
 
+    public function allGroupedByPrefix(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        $permissions = $this->model->orderBy($sortField, $order)->get();
+        return $permissions->groupBy('prefix');
+    }
+
 
     /* ================== ================== ==================
      *                    Data Modification Methods

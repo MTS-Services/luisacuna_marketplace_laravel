@@ -1,6 +1,6 @@
 <?php
 
-    namespace App\Http\Controllers\Backend\Admin\RewardManagement;
+namespace App\Http\Controllers\Backend\Admin\RewardManagement;
 
 use Illuminate\Http\Request;
 use App\Services\RankService;
@@ -13,22 +13,22 @@ class RankController extends Controller implements HasMiddleware
     //
     protected $masterView = 'backend.admin.pages.reward-management.rank';
 
-     public function __construct(protected RankService $service){}
+    public function __construct(protected RankService $service) {}
 
 
-     public static function middleware(): array
-        {
-            return [
-                'auth:admin', // Applies 'auth:admin' to all methods
+    public static function middleware(): array
+    {
+        return [
+            'auth:admin', // Applies 'auth:admin' to all methods
 
-                // Permission middlewares using the Middleware class
-                new Middleware('permission:admin-list', only: ['index']),
-                new Middleware('permission:admin-create', only: ['create']),
-                new Middleware('permission:admin-edit', only: ['edit']),
-                new Middleware('permission:admin-show', only: ['show']),
-                new Middleware('permission:admin-trash', only: ['trash']),
-            ];
-        }
+            // Permission middlewares using the Middleware class
+            new Middleware('permission:rank-list', only: ['index']),
+            new Middleware('permission:rank-create', only: ['create']),
+            new Middleware('permission:rank-edit', only: ['edit']),
+            new Middleware('permission:rank-show', only: ['view']),
+            new Middleware('permission:rank-trash', only: ['trash']),
+        ];
+    }
 
     public function index()
     {

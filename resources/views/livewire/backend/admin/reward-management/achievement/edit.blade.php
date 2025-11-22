@@ -20,7 +20,7 @@
                     {{ __('Icon') }}
                 </h3>
                 <x-ui.file-input wire:model="form.icon" label="Icon" accept="image/*" :error="$errors->first('form.icon')"
-                    hint="Upload a icon (Max: 2MB)" />
+                    hint="Upload a icon (Max: 2MB)" :existingFiles="$existingFile" removeModel="form.remove_icon" />
             </div>
 
             <!-- Fields -->
@@ -36,14 +36,15 @@
                     <x-ui.input-error :messages="$errors->get('form.rank_id')" class="mt-2" />
                 </div>
                 <div>
-                    <x-ui.label for="category_id" :value="__('Category')" />
-                    <x-ui.select id="category_id" class="mt-1 block w-full" wire:model="form.category_id">
-                        <option value="">{{ __('Select Category') }}</option>
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    <x-ui.label for="achievement_type_id" :value="__('Achievement Type')" />
+                    <x-ui.select id="achievement_type_id" class="mt-1 block w-full"
+                        wire:model="form.achievement_type_id">
+                        <option value="">{{ __('Select Achievement Type') }}</option>
+                        @foreach ($achievementTypes as $achievementType)
+                            <option value="{{ $achievementType->id }}">{{ $achievementType->name }}</option>
                         @endforeach
                     </x-ui.select>
-                    <x-ui.input-error :messages="$errors->get('form.category_id')" class="mt-2" />
+                    <x-ui.input-error :messages="$errors->get('form.achievement_type_id')" class="mt-2" />
                 </div>
                 <div>
                     <x-ui.label for="title" :value="__('Title')" />
@@ -97,7 +98,7 @@
 
                 <x-ui.button class="w-auto! py-2!" type="submit">
                     <span wire:loading.remove wire:target="save"
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Create ') }}</span>
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Update ') }}</span>
                     <span wire:loading wire:target="save"
                         class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Updating...') }}</span>
                 </x-ui.button>

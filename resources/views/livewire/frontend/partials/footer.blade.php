@@ -71,7 +71,7 @@
                                 class="hover:text-purple-400 transition text-text-secondary text-md">{{ __('Terms & Conditions') }}</a>
                         </li>
                         <li>
-                            <a href="#" wire:navigate
+                            <a href="privacy-policy" wire:navigate
                                 class="hover:text-purple-400 transition text-text-secondary text-md">{{ __('Privacy Policy') }}</a>
                         </li>
                         <li><a href="{{ route('refund-policy') }}" wire:navigate

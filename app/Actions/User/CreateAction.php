@@ -2,11 +2,14 @@
 
 namespace App\Actions\User;
 
-use App\Events\User\UserCreated;
+use App\Models\Rank;
 use App\Models\User;
-use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Models\UserPoint;
+use App\Events\User\UserCreated;
+use App\Models\UserRank;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Repositories\Contracts\UserRepositoryInterface;
 
 class CreateAction
 {
@@ -18,7 +21,7 @@ class CreateAction
     {
         return DB::transaction(function () use ($data) {
 
-              if ($data['avatar']) {
+            if ($data['avatar']) {
                 $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
                 $fileName = $prefix . '-' . $data['avatar']->getClientOriginalName();
                 $data['avatar'] = Storage::disk('public')->putFileAs('users', $data['avatar'], $fileName);
@@ -26,12 +29,26 @@ class CreateAction
 
 
             // Create user
-           
+
             $newData = $this->interface->create($data);
+
+            $lowestRank = Rank::orderBy('minimum_points', 'asc')->first();
+
+            UserPoint::create([
+                'user_id' => $newData->id,
+                'points' => 0,
+                'note' => 'New User Created',
+            ]);
+            UserRank::create([
+                'user_id' => $newData->id,
+                'rank_level' => $lowestRank->id,
+                'activated_at' => now(),
+                'is_active' => 1,
+            ]);
 
             event(new UserCreated($newData));
 
-            return $newData->fresh();
+            return $newData->fresh(['userPoint', 'userRank']);
         });
     }
 }

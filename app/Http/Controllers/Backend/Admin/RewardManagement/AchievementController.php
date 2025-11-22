@@ -20,11 +20,11 @@ class AchievementController extends Controller implements HasMiddleware
                 'auth:admin', // Applies 'auth:admin' to all methods
 
                 // Permission middlewares using the Middleware class
-                new Middleware('permission:admin-list', only: ['index']),
-                new Middleware('permission:admin-create', only: ['create']),
-                new Middleware('permission:admin-edit', only: ['edit']),
-                new Middleware('permission:admin-show', only: ['show']),
-                new Middleware('permission:admin-trash', only: ['trash']),
+                new Middleware('permission:achievement-list', only: ['index']),
+                new Middleware('permission:achievement-create', only: ['create']),
+                new Middleware('permission:achievement-edit', only: ['edit']),
+                new Middleware('permission:achievement-show', only: ['show']),
+                new Middleware('permission:achievement-trash', only: ['trash']),
             ];
         }
 

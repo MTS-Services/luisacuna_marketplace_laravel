@@ -104,8 +104,20 @@
     --color-light-black-200: #FFFFFF14;
 
     /* Seller Profile Colors Sollection */
+    --livewire-progress-bar-color: var(--color-secondary-500) !important;
 }
 
+@keyframes bounce-dot {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
 
 @theme {
     /* ======================================================
@@ -218,8 +230,10 @@
     /* ======================================================
     	 	 	 	 	 	 # font family
     ======================================================== */
-    --font-open-sans: "Open Sans", sans-serif;
-    --font-lato: "Lato", sans-serif;
+    --font-open-sans: "Open Sans",
+    sans-serif;
+    --font-lato: "Lato",
+    sans-serif;
 
 
     /* ======================================================
@@ -274,10 +288,10 @@
         --color-text-new: var(--color-text-new-dark);
         --color-text-white: var(--color-white-dark);
 
-    /* Seller Profile Custom Colors */
-    --color-bg-light-black: var(--color-light-black);
-    --color-bg-light-black-200: var(--color-light-black-200);
-    /* Seller Profile Custom Colors */
+        /* Seller Profile Custom Colors */
+        --color-bg-light-black: var(--color-light-black);
+        --color-bg-light-black-200: var(--color-light-black-200);
+        /* Seller Profile Custom Colors */
     }
 }
 
@@ -405,7 +419,8 @@
     .swiper-pagination .swiper-pagination-bullet-active {
         @apply bg-purple-700! opacity-100;
     }
-    .mobile-nav-item{
+
+    .mobile-nav-item {
         @apply text-text-primary hover:bg-bg-secondary block px-3 py-2 rounded-md text-base font-medium;
     }
 }

@@ -21,23 +21,23 @@ class UserController extends Controller implements HasMiddleware
 
 
     public static function middleware(): array
-        {
-            return [
-                'auth:admin', // Applies 'auth:admin' to all methods
+    {
+        return [
+            'auth:admin', // Applies 'auth:admin' to all methods
 
-                // Permission middlewares using the Middleware class
-                new Middleware('permission:admin-list', only: ['index']),
-                new Middleware('permission:admin-create', only: ['create']),
-                new Middleware('permission:admin-edit', only: ['edit']),
-                new Middleware('permission:admin-view', only: ['view']),
-                new Middleware('permission:admin-trash', only: ['trash']),
-                new Middleware('permission:admin-profileInfo', only: ['profileInfo']),
-                new Middleware('permission:admin-shopInfo', only: ['shopInfo']),
-                new Middleware('permission:admin-kycInfo', only: ['kycInfo']),
-                new Middleware('permission:admin-statistic', only: ['statistic']),
-                new Middleware('permission:admin-referral', only: ['referral']),
-            ];
-        }
+            // Permission middlewares using the Middleware class
+            new Middleware('permission:user-list', only: ['index']),
+            new Middleware('permission:user-create', only: ['create']),
+            new Middleware('permission:user-edit', only: ['edit']),
+            new Middleware('permission:user-view', only: ['view']),
+            new Middleware('permission:user-trash', only: ['trash']),
+            new Middleware('permission:user-profileInfo', only: ['profileInfo']),
+            new Middleware('permission:user-shopInfo', only: ['shopInfo']),
+            new Middleware('permission:user-kycInfo', only: ['kycInfo']),
+            new Middleware('permission:user-statistic', only: ['statistic']),
+            new Middleware('permission:user-referral', only: ['referral']),
+        ];
+    }
 
     public function index()
     {

@@ -51,5 +51,11 @@ class FrontendController extends Controller
             return view($this->masterView);
         }
 
+
+        public function privacyPolicy()
+        {
+            return view($this->masterView);
+        }
+
 }
 

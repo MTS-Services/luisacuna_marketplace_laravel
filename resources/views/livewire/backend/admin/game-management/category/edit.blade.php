@@ -21,7 +21,7 @@
                     {{ __('Icon') }}
                 </h3>
                 <x-ui.file-input wire:model="form.icon" label="Profile Picture" accept="image/*" :error="$errors->first('form.icon')"
-                        hint="Upload a profile picture (Max: 2MB)" :existingFiles="$existingFile" removeModel="form.remove_file" />
+                        hint="Upload a profile picture (Max: 1MB) height: 200px width: 200px" :existingFiles="$existingFile" removeModel="form.remove_file" />
 
                 @error('form.icon')
                     <span class="text-red-600 text-sm mt-1 block">{{ $message }}</span>

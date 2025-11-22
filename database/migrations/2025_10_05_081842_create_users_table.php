@@ -22,12 +22,12 @@ return new class extends Migration {
 
             $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('country_id')->nullable();
-            $table->unsignedBigInteger('rank_points')->default(0);
 
 
             $table->string('username')->unique();
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('uuid')->unique();
 
             $table->string('email')->nullable()->unique();
 
@@ -50,6 +50,7 @@ return new class extends Migration {
 
             $table->string('user_type')->index()->default(UserType::BUYER->value);
             $table->string('account_status')->index()->default(UserAccountStatus::PENDING_VERIFICATION->value);
+            $table->text('reason')->nullable();
             $table->string('kyc_status')->index()->default(KycSettingStatus::INACTIVE->value);
 
             $table->timestamp('last_login_at')->nullable();

@@ -5,6 +5,7 @@ namespace App\Actions\Achievement;
 use App\Models\Achievement;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\Contracts\AchievementRepositoryInterface;
+use Illuminate\Support\Facades\Storage;
 
 class CreateAction
 {
@@ -19,6 +20,14 @@ class CreateAction
     public function execute(array $data): Achievement
     {
         return DB::transaction(function () use ($data) {
+            if ($data['icon']) {
+                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+                $fileName = $prefix . '-' . $data['icon']->getClientOriginalName();
+                $data['icon'] = Storage::disk('public')->putFileAs('achievements', $data['icon'], $fileName);
+            }
+
+            
+
             $newData = $this->interface->create($data);
             return $newData->fresh();
         });

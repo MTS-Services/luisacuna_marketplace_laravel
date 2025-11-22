@@ -33,6 +33,7 @@ class User extends AuthBaseModel implements Auditable
         'username',
         'first_name',
         'last_name',
+        'uuid',
         'email',
 
         'apple_id',
@@ -137,6 +138,19 @@ class User extends AuthBaseModel implements Auditable
         ];
     }
 
+    // Booting Method
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            // Only set UUID if empty
+            if (empty($user->uuid)) {
+                $user->uuid = (string) \generate_uuid();
+            }
+        });
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Relationships
@@ -177,7 +191,7 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->hasOne(Product::class, 'user_id', 'id');
     }
-    public function productReview(): HasOne 
+    public function productReview(): HasOne
     {
         return $this->hasOne(Product::class, 'user_id', 'id');
     }
@@ -194,9 +208,14 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->hasMany(User::class, 'unbanned_by', 'id');
     }
-    public function userRank(): HasMany
+    public function userRank(): HasOne
     {
-        return $this->hasMany(UserRank::class, 'user_id', 'id');
+        return $this->hasOne(UserRank::class, 'user_id', 'id');
+    }
+
+    public function userPoint(): HasOne
+    {
+        return $this->hasOne(UserPoint::class, 'user_id', 'id');
     }
     /*
     |--------------------------------------------------------------------------

@@ -11,35 +11,44 @@
     </title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fluxAppearance()
-    <style>
-        :root {
-            --livewire-progress-bar-color: var(--color-secondary-500) !important;
-        }
-
-        @keyframes bounce-dot {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-20px);
-            }
-        }
-    </style>
     @stack('styles')
 </head>
 
 <body class="min-h-screen flex flex-col bg-bg-secondary text-text-primary">
 
-    @if(!(request()->routeIs('login') || request()->routeIs('register') || request()->routeIs('password.request') || request()->routeIs('password.reset') || request()->routeIs('verify-reset-otp') || request()->routeIs('verification.notice') || request()->routeIs('verify-otp') || request()->routeIs('verification.verify') || request()->routeIs('two-factor.*') || request()->routeIs('two-factor.login') || request()->routeIs('two-factor.login.store') || request()->routeIs('admin.*') ))
-        <livewire:frontend.partials.header/>
+    @if (
+        !(request()->routeIs('login') ||
+            request()->routeIs('register') ||
+            request()->routeIs('password.request') ||
+            request()->routeIs('password.reset') ||
+            request()->routeIs('verify-reset-otp') ||
+            request()->routeIs('verification.notice') ||
+            request()->routeIs('verify-otp') ||
+            request()->routeIs('verification.verify') ||
+            request()->routeIs('two-factor.*') ||
+            request()->routeIs('two-factor.login') ||
+            request()->routeIs('two-factor.login.store') ||
+            request()->routeIs('admin.*')
+        ))
+        <livewire:frontend.partials.header />
     @endif
     <main class="flex-1">
         {{ $slot }}
     </main>
-    @if(!(request()->routeIs('login') || request()->routeIs('register') || request()->routeIs('password.request') || request()->routeIs('password.reset') || request()->routeIs('verify-reset-otp') || request()->routeIs('verification.notice') || request()->routeIs('verify-otp') || request()->routeIs('verification.verify') || request()->routeIs('two-factor.*') || request()->routeIs('two-factor.login') || request()->routeIs('two-factor.login.store') || request()->routeIs('admin.*') ))
+    @if (
+        !(request()->routeIs('login') ||
+            request()->routeIs('register') ||
+            request()->routeIs('password.request') ||
+            request()->routeIs('password.reset') ||
+            request()->routeIs('verify-reset-otp') ||
+            request()->routeIs('verification.notice') ||
+            request()->routeIs('verify-otp') ||
+            request()->routeIs('verification.verify') ||
+            request()->routeIs('two-factor.*') ||
+            request()->routeIs('two-factor.login') ||
+            request()->routeIs('two-factor.login.store') ||
+            request()->routeIs('admin.*')
+        ))
         <livewire:frontend.partials.footer />
     @endif
 

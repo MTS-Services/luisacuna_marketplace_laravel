@@ -7,6 +7,7 @@ use App\Models\Currency;
 use App\Services\CurrencyService;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+
 class CurrencyController extends Controller implements HasMiddleware
 {
     protected $masterView = 'backend.admin.pages.settings.currency';
@@ -15,18 +16,18 @@ class CurrencyController extends Controller implements HasMiddleware
 
 
     public static function middleware(): array
-        {
-            return [
-                'auth:admin', // Applies 'auth:admin' to all methods
+    {
+        return [
+            'auth:admin', // Applies 'auth:admin' to all methods
 
-                // Permission middlewares using the Middleware class
-                new Middleware('permission:admin-list', only: ['index']),
-                new Middleware('permission:admin-create', only: ['create']),
-                new Middleware('permission:admin-edit', only: ['edit']),
-                new Middleware('permission:admin-show', only: ['show']),
-                new Middleware('permission:admin-trash', only: ['trash']),
-            ];
-        }
+            // Permission middlewares using the Middleware class
+            new Middleware('permission:currency-list', only: ['index']),
+            new Middleware('permission:currency-create', only: ['create']),
+            new Middleware('permission:currency-edit', only: ['edit']),
+            new Middleware('permission:currency-show', only: ['show']),
+            new Middleware('permission:currency-trash', only: ['trash']),
+        ];
+    }
 
     public function index()
     {

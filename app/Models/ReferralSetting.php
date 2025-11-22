@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class ReferralSetting extends BaseModel implements Auditable
+class ReferralSetting extends AuditBaseModel implements Auditable
 {
     use  AuditableTrait;
     /**

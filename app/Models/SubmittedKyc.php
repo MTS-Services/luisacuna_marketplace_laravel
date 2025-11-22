@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
+use App\Models\AuditBaseModel;
 use App\Enums\SubmittedKycStatus;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class SubmittedKyc extends BaseModel implements Auditable
+class SubmittedKyc extends AuditBaseModel implements Auditable
 {
     use  AuditableTrait;
 

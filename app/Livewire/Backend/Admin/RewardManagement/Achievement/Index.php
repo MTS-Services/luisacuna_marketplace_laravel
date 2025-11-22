@@ -30,7 +30,7 @@ class Index extends Component
         $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        );
+        )->load('creater_admin');
 
         $columns = [
             [
@@ -47,11 +47,11 @@ class Index extends Component
                 }
             ],
             [
-                'key' => 'category_id',
-                'label' => 'Category',
+                'key' => 'achievement_type_id',
+                'label' => 'Achievement Type',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return optional($data->category)->name ?? 'N/A';
+                    return optional($data->achievementType)->name ?? 'N/A';
                 }
             ],
             [

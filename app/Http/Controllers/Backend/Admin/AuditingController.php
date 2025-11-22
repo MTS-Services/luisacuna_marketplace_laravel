@@ -6,21 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Models\Audit;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+
 class AuditingController extends Controller implements HasMiddleware
 {
     protected $masterView = 'backend.admin.pages.auditing';
 
 
-public static function middleware(): array
-        {
-            return [
-                'auth:admin', // Applies 'auth:admin' to all methods
+    public static function middleware(): array
+    {
+        return [
+            'auth:admin', // Applies 'auth:admin' to all methods
 
-                // Permission middlewares using the Middleware class
-                new Middleware('permission:admin-list', only: ['index']),
-                new Middleware('permission:admin-view', only: ['view']),
-            ];
-        }
+            // Permission middlewares using the Middleware class
+            new Middleware('permission:auditing-list', only: ['index']),
+            new Middleware('permission:auditing-view', only: ['view']),
+        ];
+    }
     public function index()
     {
         return view($this->masterView);

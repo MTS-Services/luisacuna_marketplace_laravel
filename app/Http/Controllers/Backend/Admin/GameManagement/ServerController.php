@@ -8,41 +8,40 @@ use GuzzleHttp\Middleware;
 
 class ServerController extends Controller
 {
-    public function __construct(protected ServerService $service)
-    {
-
-    }
+    public function __construct(protected ServerService $service) {}
 
     //
     public $master = 'backend.admin.pages.game-management.server';
 
     public static function middleware(): array
-        {
-            return [
-                'auth:admin', // Applies 'auth:admin' to all methods
+    {
+        return [
+            'auth:admin', // Applies 'auth:admin' to all methods
 
-                // Permission middlewares using the Middleware class
-                new Middleware('permission:admin-list', only: ['index']),
-                new Middleware('permission:admin-create', only: ['create']),
-            ];
-        }
+            // Permission middlewares using the Middleware class
+            new Middleware('permission:server-list', only: ['index']),
+            new Middleware('permission:server-create', only: ['create']),
+        ];
+    }
 
-    public function index(){
+    public function index()
+    {
 
         return view($this->master);
     }
 
-    public function create(){
+    public function create()
+    {
 
         return view($this->master);
-
     }
 
-    public function edit($encryptedId){
+    public function edit($encryptedId)
+    {
 
         $data = $this->service->findData(decrypt($encryptedId));
 
-        if(! $data){
+        if (! $data) {
             abort(404);
         }
 
@@ -51,16 +50,16 @@ class ServerController extends Controller
 
             'data' => $data,
         ]);
-
     }
 
-    public function show($encryptedId){
+    public function show($encryptedId)
+    {
 
 
         $data = $this->service->findData(decrypt($encryptedId));
 
 
-        if(! $data){
+        if (! $data) {
             abort(404);
         }
 
@@ -69,9 +68,9 @@ class ServerController extends Controller
         ]);
     }
 
-    public function trash(){
+    public function trash()
+    {
 
         return view($this->master);
-
     }
 }

@@ -12,8 +12,7 @@
                 <div class="">
                     <div class="relative">
                         <div class="w-20 h-20 sm:w-40 sm:h-40">
-                            <img src="{{ asset('assets/images/user_profile/Ellipse 474.png') }}" alt=""
-                                class="h-full w-full">
+                            <img src="{{ auth_storage_url(user()->avatar) }}" alt="" class="h-full w-full">
                         </div>
                         <div class="absolute -right-5 top-7 sm:-right-3 sm:top-20 w-10 h-10 sm:w-15 sm:h-15">
                             <img src="{{ asset('assets/images/user_profile/Frame 1261153813.png') }}" alt=""
@@ -23,7 +22,7 @@
 
                 </div>
                 <div class="">
-                    <h3 class="text-4xl font-semibold text-text-white mb-2">{{ __('Starriz.clo') }}</h3>
+                    <h3 class="text-4xl font-semibold text-text-white mb-2">{{ user()->name }}</h3>
                     <div class="flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#12D212"
                             class="w-10 h-10 text-text-secondary">
@@ -36,7 +35,8 @@
             </div>
             <div class="icon">
                 <a href="{{ route('user.account-settings') }}" wire:navigate>
-                    <x-flux::icon name="pencil-square" class="w-6 h-6 inline-block stroke-text-text-white" stroke="currentColor" />
+                    <x-flux::icon name="pencil-square" class="w-6 h-6 inline-block stroke-text-text-white"
+                        stroke="currentColor" />
                 </a>
             </div>
         </div>
@@ -48,7 +48,7 @@
             </button>
             <button wire:navigate wire:click="switchInnerMenu('reviews')"
                 class="{{ $activeInnerMenu === 'reviews' ? 'border-b-3 border-zinc-500' : '' }} group">
-                <span class="relative z-10 text-text-white">{{__('Reviews')}}</span>
+                <span class="relative z-10 text-text-white">{{ __('Reviews') }}</span>
             </button>
             <button wire:navigate wire:click="switchInnerMenu('about')"
                 class="{{ $activeInnerMenu === 'about' ? 'border-b-3 border-zinc-500' : '' }} group">
@@ -462,7 +462,7 @@
                         <div class="w-md border-2 border-zinc-800 rounded-lg">
                             <x-ui.select wire:model="game_id" id="game_id">
                                 <option value="">{{ __('All Game') }}</option>
-                                    <option value="All Game">{{ __('All Game') }}</option>
+                                <option value="All Game">{{ __('All Game') }}</option>
                             </x-ui.select>
                         </div>
                     </div>
@@ -485,7 +485,7 @@
                         <div class="w-md border-2 border-zinc-800 rounded-lg">
                             <x-ui.select wire:model="game_id" id="game_id">
                                 <option value="">{{ __('All Game') }}</option>
-                                    <option value="All Game">{{ __('All Game') }}</option>
+                                <option value="All Game">{{ __('All Game') }}</option>
                             </x-ui.select>
                         </div>
                     </div>
@@ -504,7 +504,7 @@
                         <div class="w-full sm:w-sm md:w-md lg:w-md mt-6 border-2 border-zinc-800 rounded-lg">
                             <x-ui.select wire:model="game_id" id="game_id">
                                 <option value="">{{ __('All Game') }}</option>
-                                    <option value="All Game">{{ __('All Game') }}</option>
+                                <option value="All Game">{{ __('All Game') }}</option>
                             </x-ui.select>
                         </div>
                     </div>
@@ -523,7 +523,7 @@
                         <div class="w-full sm:w-sm md:w-md lg:w-md mt-6 border-2 border-zinc-800 rounded-lg">
                             <x-ui.select wire:model="game_id" id="game_id">
                                 <option value="">{{ __('All Game') }}</option>
-                                    <option value="All Game">{{ __('All Game') }}</option>
+                                <option value="All Game">{{ __('All Game') }}</option>
                             </x-ui.select>
                         </div>
                     </div>
@@ -606,11 +606,11 @@
                             <div class="mt-2">
                                 <span class="font-normal text-base">
                                     {{ __('Did not respond in over 24 hours to the messages, even though "average delivery
-                                                                                                            time" is
-                                                                                                            3
-                                                                                                            hours, and being online on Fortnite. Was friended for over 48 hours and did not send
-                                                                                                            the
-                                                                                                            gift nor reply to the messages.') }}
+                                                                                                                                                                                    time" is
+                                                                                                                                                                                    3
+                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
+                                                                                                                                                                                    the
+                                                                                                                                                                                    gift nor reply to the messages.') }}
                                 </span>
                             </div>
                         </div>
@@ -632,11 +632,11 @@
                             <div class="mt-2">
                                 <span class="font-normal text-base">
                                     {{ __('Did not respond in over 24 hours to the messages, even though "average delivery
-                                                                                                            time" is
-                                                                                                            3
-                                                                                                            hours, and being online on Fortnite. Was friended for over 48 hours and did not send
-                                                                                                            the
-                                                                                                            gift nor reply to the messages.') }}
+                                                                                                                                                                                    time" is
+                                                                                                                                                                                    3
+                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
+                                                                                                                                                                                    the
+                                                                                                                                                                                    gift nor reply to the messages.') }}
                                 </span>
                             </div>
                         </div>
@@ -721,11 +721,11 @@
                             <div class="mt-2">
                                 <span class="font-normal text-base">
                                     {{ __('Did not respond in over 24 hours to the messages, even though "average delivery
-                                                                                                            time" is
-                                                                                                            3
-                                                                                                            hours, and being online on Fortnite. Was friended for over 48 hours and did not send
-                                                                                                            the
-                                                                                                            gift nor reply to the messages.') }}
+                                                                                                                                                                                    time" is
+                                                                                                                                                                                    3
+                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
+                                                                                                                                                                                    the
+                                                                                                                                                                                    gift nor reply to the messages.') }}
                                 </span>
                             </div>
                         </div>
@@ -862,11 +862,11 @@
                             <div class="mt-2">
                                 <span class="font-normal text-base">
                                     {{ __('Did not respond in over 24 hours to the messages, even though "average delivery
-                                                                                                            time" is
-                                                                                                            3
-                                                                                                            hours, and being online on Fortnite. Was friended for over 48 hours and did not send
-                                                                                                            the
-                                                                                                            gift nor reply to the messages.') }}
+                                                                                                                                                                                    time" is
+                                                                                                                                                                                    3
+                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
+                                                                                                                                                                                    the
+                                                                                                                                                                                    gift nor reply to the messages.') }}
                                 </span>
                             </div>
                         </div>
@@ -888,11 +888,11 @@
                             <div class="mt-2">
                                 <span class="font-normal text-base">
                                     {{ __('Did not respond in over 24 hours to the messages, even though "average delivery
-                                                                                                            time" is
-                                                                                                            3
-                                                                                                            hours, and being online on Fortnite. Was friended for over 48 hours and did not send
-                                                                                                            the
-                                                                                                            gift nor reply to the messages.') }}
+                                                                                                                                                                                    time" is
+                                                                                                                                                                                    3
+                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
+                                                                                                                                                                                    the
+                                                                                                                                                                                    gift nor reply to the messages.') }}
                                 </span>
                             </div>
                         </div>
@@ -914,11 +914,11 @@
                             <div class="mt-2">
                                 <span class="font-normal text-base">
                                     {{ __('Did not respond in over 24 hours to the messages, even though "average delivery
-                                                                                                            time" is
-                                                                                                            3
-                                                                                                            hours, and being online on Fortnite. Was friended for over 48 hours and did not send
-                                                                                                            the
-                                                                                                            gift nor reply to the messages.') }}
+                                                                                                                                                                                    time" is
+                                                                                                                                                                                    3
+                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
+                                                                                                                                                                                    the
+                                                                                                                                                                                    gift nor reply to the messages.') }}
                                 </span>
                             </div>
                         </div>
@@ -956,8 +956,8 @@
                         <div class="">
                             <p class="text-base text-text-white">
                                 {{ __('At PixelStoreLAT, we bring you the best digital deals, game keys, and in-game items —
-                                                                                                fast, safe, and hassle-free. Trusted by thousands of gamers worldwide with 97% positive
-                                                                                                reviews. Level up your experience with us today!') }}
+                                                                                                                                                                fast, safe, and hassle-free. Trusted by thousands of gamers worldwide with 97% positive
+                                                                                                                                                                reviews. Level up your experience with us today!') }}
                             </p>
                         </div>
                     </div>

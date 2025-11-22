@@ -29,6 +29,9 @@ class Edit extends Component
     public $existingFile;
 
 
+    public bool $showReasonField = false;
+
+
 
     protected UserService $service;
 
@@ -37,7 +40,7 @@ class Edit extends Component
     public function boot(UserService $service, LanguageService $languageService, CurrencyService $currencyService)
     {
         $this->service = $service;
-        $this->languageService = $languageService;  
+        $this->languageService = $languageService;
         $this->currencyService = $currencyService;
     }
     public function mount(User $data): void
@@ -51,6 +54,12 @@ class Edit extends Component
 
         $this->languases();
         $this->countries();
+    }
+
+
+    public function updatedFormAccountStatus()
+    {
+        $this->showReasonField = $this->form->shouldShowReasonField();
     }
 
     public function languases(): void
@@ -71,7 +80,7 @@ class Edit extends Component
             'statuses' => UserAccountStatus::options(),
             'countries' => $this->countries,
             'languages' => $this->languases,
-             'currencies' => $this->currencyService->getAllDatas(),
+            'currencies' => $this->currencyService->getAllDatas(),
         ]);
     }
 
@@ -79,20 +88,20 @@ class Edit extends Component
     {
 
 
-     $data =   $this->form->validate();
+        $data =   $this->form->validate();
+        //  dd($data);
 
         try {
 
             $data['updater_id'] = admin()->id;
 
-           $this->service->updateData($this->data->id, $data);
+            $this->service->updateData($this->data->id, $data);
 
             Log::info('Data updated successfully', ['data_id' => $this->data->id]);
 
             $this->success('Data updated successfully');
 
             return redirect()->route('admin.um.user.index');
-
         } catch (\Exception $e) {
             Log::error('Failed to update User', [
                 'user_id' => $this->dataId,
@@ -100,7 +109,6 @@ class Edit extends Component
                 'trace' => $e->getTraceAsString()
             ]);
             $this->error('Failed to update User: ' . $e->getMessage());
-            
         }
     }
     public function removeAvatar(): void
@@ -116,10 +124,12 @@ class Edit extends Component
         $this->redirect(route('admin.um.user.index'), navigate: true);
     }
 
-    public function resetForm(){
+    public function resetForm()
+    {
         $this->form->reset();
         $this->form->setData($this->data);
 
+        $this->showReasonField = false;
         // Reset existing files display
         $this->existingFile = $this->data->avatar;
         $this->dispatch('file-input-reset');
