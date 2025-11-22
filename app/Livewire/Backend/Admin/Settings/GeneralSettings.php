@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Admin\Settings;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Validate;
+use Livewire\Attributes\Computed;
 use App\Services\SettingsService;
 use App\Models\ApplicationSetting;
 use Illuminate\Support\Facades\Log;
@@ -13,7 +14,7 @@ class GeneralSettings extends Component
 {
     use WithFileUploads;
 
-    // Form fields
+    // Text Fields
     #[Validate('nullable|string|min:2|max:255')]
     public string $app_name = '';
 
@@ -23,6 +24,7 @@ class GeneralSettings extends Component
     #[Validate('nullable|string|max:100')]
     public string $timezone = '';
 
+    // Select Fields
     #[Validate('nullable|string')]
     public string $date_format = '';
 
@@ -35,27 +37,27 @@ class GeneralSettings extends Component
     #[Validate('nullable|string')]
     public string $environment = '';
 
-    #[Validate('nullable')]
-    public $app_debug = 0;
+    // Boolean/Radio Fields (using string for wire:model compatibility)
+    #[Validate('nullable|in:0,1')]
+    public string $app_debug = '0';
 
-    #[Validate('nullable')]
-    public $debugbar = 0;
+    #[Validate('nullable|in:0,1')]
+    public string $debugbar = '0';
 
-    #[Validate('nullable')]
-    public $auto_translate = 0;
+    #[Validate('nullable|in:0,1')]
+    public string $auto_translate = '0';
 
+    // File Uploads
     #[Validate('nullable|image|max:2048')]
     public $app_logo = null;
 
     #[Validate('nullable|image|max:2048')]
     public $favicon = null;
 
-    // Display data
+    // Display Properties
     public array $timezones = [];
     public ?string $current_logo = null;
     public ?string $current_favicon = null;
-
-    // Loading state
     public bool $saving = false;
 
     protected SettingsService $settingsService;
@@ -73,12 +75,13 @@ class GeneralSettings extends Component
 
     protected function loadTimezones(): void
     {
-        $this->timezones = function_exists('availableTimezones')
-            ? availableTimezones()
-            : collect(timezone_identifiers_list())->map(fn($tz) => [
-                'timezone' => $tz,
-                'name' => $tz
-            ])->toArray();
+        if (function_exists('availableTimezones')) {
+            $this->timezones = availableTimezones();
+        } else {
+            $this->timezones = collect(timezone_identifiers_list())
+                ->map(fn($tz) => ['timezone' => $tz, 'name' => str_replace('_', ' ', $tz)])
+                ->toArray();
+        }
     }
 
     protected function loadSettings(): void
@@ -98,16 +101,23 @@ class GeneralSettings extends Component
             'favicon'
         ]);
 
+        // Text fields
         $this->app_name = $settings['app_name'] ?? config('app.name', '');
         $this->short_name = $settings['short_name'] ?? '';
         $this->timezone = $settings['timezone'] ?? config('app.timezone', 'UTC');
+
+        // Select fields
         $this->date_format = $settings['date_format'] ?? ApplicationSetting::DATE_DMY;
         $this->time_format = $settings['time_format'] ?? ApplicationSetting::TIME_24H;
         $this->theme_mode = $settings['theme_mode'] ?? ApplicationSetting::THEME_SYSTEM;
         $this->environment = $settings['environment'] ?? ApplicationSetting::ENV_LOCAL;
-        $this->app_debug = (int)($settings['app_debug'] ?? 0);
-        $this->debugbar = (int)($settings['debugbar'] ?? 0);
-        $this->auto_translate = (int)($settings['auto_translate'] ?? 0);
+
+        // Boolean fields (cast to string for radio buttons)
+        $this->app_debug = (string)($settings['app_debug'] ?? '0');
+        $this->debugbar = (string)($settings['debugbar'] ?? '0');
+        $this->auto_translate = (string)($settings['auto_translate'] ?? '0');
+
+        // File paths
         $this->current_logo = $settings['app_logo'] ?? null;
         $this->current_favicon = $settings['favicon'] ?? null;
     }
@@ -149,15 +159,12 @@ class GeneralSettings extends Component
                 }
             }
 
-            // Save all settings
             $success = $this->settingsService->saveMany($data);
 
             if ($success) {
-                // Reset file inputs
                 $this->reset(['app_logo', 'favicon']);
-
                 session()->flash('success', __('Settings saved successfully!'));
-                $this->dispatch('settings-saved');
+                $this->redirectIntended(route('admin.as.general-settings'), navigate: true);
             } else {
                 session()->flash('error', __('Failed to save settings. Please try again.'));
             }
@@ -174,6 +181,19 @@ class GeneralSettings extends Component
         $this->reset(['app_logo', 'favicon']);
         $this->loadSettings();
         $this->resetValidation();
+        session()->flash('success', __('Form has been reset.'));
+    }
+
+    #[Computed]
+    public function isProduction(): bool
+    {
+        return $this->environment === 'production';
+    }
+
+    #[Computed]
+    public function hasDebugEnabled(): bool
+    {
+        return $this->app_debug === '1' || $this->debugbar === '1';
     }
 
     public function render()
