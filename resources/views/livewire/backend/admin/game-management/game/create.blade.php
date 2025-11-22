@@ -164,7 +164,7 @@
                         {{ __('Rarities') }} <span class="text-red-500">*</span>
                     </label>
 
-                    <select wire:model="form.tags" name="tags[]" multiple
+                    <select wire:model="form.rarities" name="rarities[]" multiple
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
 
                         <option disabled>{{ __('Choose Rarity') }}</option>

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('game_id');
             $table->unsignedBigInteger('platform_id');
             $table->timestamps();
-
+            
             $table->foreign('game_id')->references('id')->on('games')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('platform_id')->references('id')->on('platforms')->cascadeOnDelete()->cascadeOnUpdate();
         });

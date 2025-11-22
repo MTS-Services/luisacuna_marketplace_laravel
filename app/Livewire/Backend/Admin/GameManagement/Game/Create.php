@@ -7,8 +7,8 @@ namespace App\Livewire\Backend\Admin\GameManagement\Game;
 use App\Enums\GameStatus;
 use App\Enums\GameTag as EnumsGameTag;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameForm;
-use App\Models\GameTag;
-use App\Models\Rarity;
+
+
 use App\Services\CategoryService;
 use App\Services\PlatformService;
 use App\Services\GameService;
@@ -32,7 +32,7 @@ class Create extends Component
     protected ServerService $serverService;
 
     protected PlatformService $platformService;
-    
+
     protected RarityService $rarityService;
 
     public function boot(GameService $service, CategoryService $categoryService, PlatformService $platformService, ServerService $serverService , RarityService $rarityService)
