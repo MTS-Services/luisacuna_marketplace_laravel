@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
+use App\Traits\HasTranslations;
 use App\Enums\CategoryStatus;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -12,7 +13,7 @@ use Laravel\Scout\Attributes\SearchUsingPrefix;
 
 class Category extends AuditBaseModel implements Auditable
 {
-    use AuditableTrait;
+    use AuditableTrait, HasTranslations;
 
     protected $fillable = [
         'sort_order',
@@ -29,17 +30,44 @@ class Category extends AuditBaseModel implements Auditable
         'restored_at',
     ];
 
-    protected $hidden = [
-        'id',
-    ];
+    protected $hidden = ['id'];
 
     protected $casts = [
         'status' => CategoryStatus::class
     ];
 
-    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
-                Start of RELATIONSHIPS
-     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+    /* ================================================================
+     |  Translation Configuration
+     ================================================================ */
+
+    /**
+     * Define translation configuration for this model
+     */
+    protected function getTranslationConfig(): array
+    {
+        return [
+            // Fields to translate from main model
+            'fields' => ['name'],
+
+            // Relationship name
+            'relation' => 'categoryLanguages',
+
+            // Translation model class
+            'model' => CategoryLanguage::class,
+
+            // Foreign key in translation table
+            'foreign_key' => 'category_id',
+
+            // Map model fields to translation table fields
+            'field_mapping' => [
+                'name' => 'name', // model field => translation table field
+            ],
+        ];
+    }
+
+    /* ================================================================
+     |  Relationships
+     ================================================================ */
 
     public function categoryLanguages(): HasMany
     {
@@ -56,86 +84,18 @@ class Category extends AuditBaseModel implements Auditable
         return $this->hasMany(Achievement::class, 'category_id', 'id');
     }
 
-    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
-                End of RELATIONSHIPS
-     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
-
     /* ================================================================
-     |  Translation Helper Methods
+     |  Translation Helper Methods (Convenience)
      ================================================================ */
 
-    /**
-     * Get translated name for a specific language
-     * 
-     * @param int|string $languageIdOrLocale Language ID or locale code (e.g., 'es', 'fr')
-     * @return string Translated name or original name if not found
-     */
     public function getTranslatedName($languageIdOrLocale): string
     {
-        if (is_numeric($languageIdOrLocale)) {
-            // Search by language ID
-            $translation = $this->categoryLanguages()
-                ->where('language_id', $languageIdOrLocale)
-                ->first();
-        } else {
-            // Search by locale code
-            $translation = $this->categoryLanguages()
-                ->whereHas('language', function ($query) use ($languageIdOrLocale) {
-                    $query->where('locale', $languageIdOrLocale);
-                })
-                ->first();
-        }
-
-        return $translation?->name ?? $this->name;
+        return $this->getTranslated('name', $languageIdOrLocale) ?? $this->name;
     }
 
-    /**
-     * Get all translations as an array
-     * 
-     * @return array ['es' => 'Deportes', 'fr' => 'Sports', ...]
-     */
-    public function getAllTranslations(): array
+    public function getAllTranslatedNames(): array
     {
-        return $this->categoryLanguages()
-            ->with('language')
-            ->get()
-            ->mapWithKeys(function ($translation) {
-                return [$translation->language->locale => $translation->name];
-            })
-            ->toArray();
-    }
-
-    /**
-     * Check if translation exists for a specific language
-     */
-    public function hasTranslation($languageIdOrLocale): bool
-    {
-        if (is_numeric($languageIdOrLocale)) {
-            return $this->categoryLanguages()
-                ->where('language_id', $languageIdOrLocale)
-                ->exists();
-        }
-
-        return $this->categoryLanguages()
-            ->whereHas('language', function ($query) use ($languageIdOrLocale) {
-                $query->where('locale', $languageIdOrLocale);
-            })
-            ->exists();
-    }
-
-    /**
-     * Get translation progress (percentage)
-     */
-    public function getTranslationProgress(): array
-    {
-        $totalLanguages = \App\Models\Language::where('status', \App\Enums\LanguageStatus::ACTIVE)->count();
-        $translatedCount = $this->categoryLanguages()->count();
-
-        return [
-            'total' => $totalLanguages,
-            'translated' => $translatedCount,
-            'percentage' => $totalLanguages > 0 ? round(($translatedCount / $totalLanguages) * 100, 2) : 0,
-        ];
+        return $this->getAllTranslationsFor('name');
     }
 
     /* ================================================================
@@ -155,14 +115,8 @@ class Category extends AuditBaseModel implements Auditable
     public function scopeFilter(Builder $query, array $filters): Builder
     {
         return $query
-            ->when(
-                $filters['status'] ?? null,
-                fn($q, $status) => $q->where('status', $status)
-            )
-            ->when(
-                $filters['name'] ?? null,
-                fn($q, $name) => $q->where('name', 'like', "%{$name}%")
-            );
+            ->when($filters['status'] ?? null, fn($q, $status) => $q->where('status', $status))
+            ->when($filters['name'] ?? null, fn($q, $name) => $q->where('name', 'like', "%{$name}%"));
     }
 
     public function scopeSearch($query, $search)
@@ -173,11 +127,7 @@ class Category extends AuditBaseModel implements Auditable
         });
     }
 
-    /* ================================================================
-     |  Scout Search Configuration
-     ================================================================ */
-
-    #[SearchUsingPrefix(['id', 'name', 'meta_title'])]
+    #[SearchUsingPrefix(['name', 'meta_title'])]
     public function toSearchableArray(): array
     {
         return [

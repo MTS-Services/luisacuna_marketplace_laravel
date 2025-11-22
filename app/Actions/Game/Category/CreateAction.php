@@ -28,12 +28,19 @@ class CreateAction
             // Create category
             $newData = $this->interface->create($data);
 
+            $freshData = $newData->fresh();
+
             // Dispatch translation job in background
             // Assuming the source language is English (EN)
-            Log::info('Dispatching TranslateCategoryJob for Category ID: ' . $newData->id);
-            TranslateCategoryJob::dispatch($newData->fresh(), 'EN');
+            // Dispatch translation job (English is default, will be saved but not translated)
+            Log::info('Dispatching TranslateModelJob for Category ID: ' . $freshData->id);
 
-            return $newData->fresh();
+            $freshData->dispatchTranslation(
+                defaultLanguageLocale: 'en',
+                targetLanguageIds: null
+            );
+
+            return $freshData;
         });
     }
 }
