@@ -3,6 +3,7 @@
 namespace App\Actions\Game\Category;
 
 use App\Models\Category;
+use App\Jobs\TranslateCategoryJob;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
@@ -19,7 +20,6 @@ class UpdateAction
         $newSingleIconPath = null;
 
         try {
-
             return DB::transaction(function () use ($id, $data, &$newSingleIconPath) {
 
                 $findData = $this->interface->find($id);
@@ -34,12 +34,14 @@ class UpdateAction
                 $oldData = $findData->getAttributes();
                 $newData = $data;
 
+                // Check if name has changed (will trigger re-translation)
+                $nameChanged = isset($newData['name']) && $newData['name'] !== $oldData['name'];
+
                 // ---- SINGLE ICON HANDLING ----
                 $oldIconPath = Arr::get($oldData, 'icon');
                 $uploadedIcon = Arr::get($data, 'icon');
 
                 if ($uploadedIcon instanceof UploadedFile) {
-
                     // Delete old file permanently
                     if ($oldIconPath && Storage::disk('public')->exists($oldIconPath)) {
                         Storage::disk('public')->delete($oldIconPath);
@@ -52,9 +54,7 @@ class UpdateAction
                         ->putFileAs('icons', $uploadedIcon, $fileName);
 
                     $newData['icon'] = $newSingleIconPath;
-
                 } elseif (Arr::get($data, 'remove_file')) {
-
                     // Delete requested file
                     if ($oldIconPath && Storage::disk('public')->exists($oldIconPath)) {
                         Storage::disk('public')->delete($oldIconPath);
@@ -82,19 +82,30 @@ class UpdateAction
                     throw new \Exception('Failed to update category');
                 }
 
-                return $findData->fresh();
+                $freshData = $findData->fresh();
+
+                // ---- RE-TRANSLATE IF NAME CHANGED ----
+                if ($nameChanged) {
+                    Log::info('Category name changed, dispatching translation job', [
+                        'category_id' => $id,
+                        'old_name' => $oldData['name'],
+                        'new_name' => $newData['name']
+                    ]);
+
+                    TranslateCategoryJob::dispatch($freshData, 'EN')
+                        ->onQueue('translations');
+                }
+
+                return $freshData;
             });
-
         } catch (\Throwable $e) {
-
-            // ---- ERROR LOGGING ----
             Log::error('Category update failed', [
                 'category_id' => $id,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
 
-            throw $e; // Re-throw so controller can catch it
+            throw $e;
         }
     }
 }

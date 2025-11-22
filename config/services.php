@@ -13,6 +13,10 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
+    'deepl' => [
+        'key' => env('DEEPL_API_KEY'),
+        'is_free' => env('DEEPL_API_FREE', false),
+    ],
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
