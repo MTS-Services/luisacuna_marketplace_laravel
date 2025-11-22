@@ -3,10 +3,10 @@
     <div class="glass-card rounded-2xl p-4 lg:p-6 mb-6">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <h2 class="text-xl lg:text-2xl font-bold text-text-black dark:text-text-white">
-                {{ __('Game Trash List') }}
+                {{ __(' Trash List') }}
             </h2>
             <div class="flex items-center gap-2 w-full sm:w-auto">
-                    <x-ui.button href="{{ route('admin.gm.game.index') }}" class="w-auto! py-2!">
+                <x-ui.button href="{{ route('admin.gm.rarity.index') }}" class="w-auto! py-2!">
                     <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
                     <span class="sm:inline text-white">{{ __('Back') }}</span>
                 </x-ui.button>
@@ -17,11 +17,11 @@
     {{-- Table Component --}}
     <x-ui.table :data="$data" :columns="$columns" :actions="$actions" :bulkActions="$bulkActions" :bulkAction="$bulkAction"
         :statuses="$statuses" :selectedIds="$selectedIds" :mobileVisibleColumns="2" searchProperty="search" perPageProperty="perPage"
-        :showBulkActions="true" emptyMessage="No Game  found. Create your first Game to get started." />
+        :showBulkActions="true" emptyMessage="No data  found. Create your first data to get started." />
 
     {{-- Delete Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this Game?'" :message="'Are you absolutely sure you want to remove this data? All data will be permanently deleted.'" :method="'delete'"
-        :button-text="'Delete Game '" />
+    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this Data?'" :message="'Are you absolutely sure you want to remove this data? All data will be permanently deleted.'" :method="'forceDelete'"
+        :button-text="'Delete '" />
 
     {{-- Bulk Action Confirmation Modal --}}
     <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="'Confirm Bulk Action'" :message="'Are you sure you want to perform this action on ' . count($selectedIds) . ' selected data(s)?'" :method="'executeBulkAction'"
