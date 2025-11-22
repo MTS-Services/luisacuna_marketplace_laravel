@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('game_platforms', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('game_id');
-            $table->string('platform_id');
+            $table->unsignedBigInteger('platform_id');
             $table->timestamps();
-
+            
             $table->foreign('game_id')->references('id')->on('games')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('platform_id')->references('id')->on('platforms')->cascadeOnDelete()->cascadeOnUpdate();
         });

@@ -30,6 +30,10 @@ class GameForm extends Form
 
     public ?array $servers = [];
 
+    public ?array $tags = [];
+
+    public ?array $rarities = [];
+
     public ?string $description;
 
     public ?bool $is_featured = false;
@@ -54,6 +58,8 @@ class GameForm extends Form
             'logo' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
             'platforms' => 'nullable|array',
             'servers' => 'nullable|array',
+            'rarities' => 'nullable|array',
+            'tags' => 'nullable|array',
             'description' => 'nullable|string',
             'is_featured' => 'nullable|boolean',
             'is_trending' => 'nullable|boolean',
@@ -72,6 +78,7 @@ class GameForm extends Form
         $this->status = $data->status->value;
         $this->platforms = $data->platform;
         $this->servers = $data->servers;
+        $this->tags = $data->tags;
         $this->description = $data->description;
         $this->is_featured = $data->is_featured;
         $this->is_trending = $data->is_trending;
@@ -79,6 +86,7 @@ class GameForm extends Form
         $this->meta_description = $data->meta_description;
         $this->meta_keywords = $data->meta_keywords;
         $this->slug = $data->slug;
+        $this->rarities = $data->rarities;
         
     }
 
@@ -89,6 +97,8 @@ class GameForm extends Form
         $this->logo = null;
         $this->platforms = [];
         $this->servers = [];
+        $this->tags = [];
+        $this->rarities = [];
         $this->description = null;
         $this->is_featured = null;
         $this->is_trending = null;

@@ -8,13 +8,14 @@ use App\Repositories\Contracts\PlatformRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use App\Models\GamePlatform;
 
 class GameRepository implements GameRepositoryInterface
 {
     public function __construct(
         protected Game $model,
         protected PlatformRepositoryInterface $platformInterface,
-        // protected GamePlatforms $gamePlatforms,
+        protected GamePlatform $gamePlatforms,
     ) {}
 
 
@@ -117,18 +118,17 @@ class GameRepository implements GameRepositoryInterface
     public function create(array $data): Game
     {
         $game =  $this->model->create($data);
-        // if (isset($data['platforms'])) {
-        //     $platforms = $this->platformInterface->getQuery->whereIn('id', $data['platforms'])->get();
-        //     foreach ($platforms as $platform) {
-        //         $this->gamePlatforms->updateOrCreate(
-        //             [
-        //                 'game_id' => $game->id,
-        //                 'platform_id' => $platform->id
-        //             ],
-        //             []
-        //         );
-        //     }
-        // }
+        if (isset($data['platforms'])) {
+            $platforms = $this->platformInterface->getQuery()->whereIn('id', $data['platforms'])->get();
+            foreach ($platforms as $platform) {
+                $this->gamePlatforms->updateOrCreate(
+                    [
+                        'game_id' => $game->id,
+                        'platform_id' => $platform->id
+                    ]
+                );
+            }
+        }
 
         return $game;
     }

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('game_rarities', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('game_id');
-            $table->string('rarity_id');
+            $table->unsignedBigInteger('rarity_id');
 
             $table->timestamps();
             $table->foreign('game_id')->references('id')->on('games')->cascadeOnDelete()->cascadeOnUpdate();

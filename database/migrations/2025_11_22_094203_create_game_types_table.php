@@ -16,14 +16,10 @@ return new class extends Migration
         Schema::create('game_types', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('game_id');
-            $table->unsignedBigInteger('type_id');
+            $table->unsignedBigInteger('type_id')->nullable();
             $table->timestamps();
-
-
-            $table->tamesptamps();
-
             $table->foreign('game_id')->references('id')->on('games')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreign('type_id')->references('id')->on('types')->cascadeOnDelete()->cascadeOnUpdate();
+            // $table->foreign('type_id')->references('id')->on('types')->cascadeOnDelete()->cascadeOnUpdate();
           
         });
     }

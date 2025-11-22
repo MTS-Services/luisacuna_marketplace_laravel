@@ -6,6 +6,7 @@ use App\Enums\RarityStatus;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Builder;
+use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
 
@@ -76,6 +77,7 @@ class Rarity extends AuditBaseModel implements Auditable
             );
     }
 
+    
     /* ================================================================
      |  Query Scopes
      ================================================================ */
