@@ -49,6 +49,9 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             PageViewSeeder::class,
             RankSeeder::class,
+                // UserRankSeeder::class,
+            AchievementTypeSeeder::class,
+            AchievementSeeder::class,
 
             DeliveryMethodSeeder::class,
             OfferItemSeeder::class,

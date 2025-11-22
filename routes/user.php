@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\User\OfferManagement\OfferController;
 use App\Http\Controllers\Frontend\UserProfileController;
 use App\Http\Controllers\PaymentController;
 use App\Livewire\Backend\User\Components\Profile;
@@ -7,8 +8,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/users/{username}', [UserProfileController::class, 'profile'])->middleware('auth:web')->name('profile');
-
-Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(function () {
+// , 'userVerify'
+Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
 
     Route::group(['prefix' => 'orders'], function () {
         Route::get('/purchased-orders', function () {
@@ -35,7 +36,9 @@ Route::middleware(['auth', 'userVerify'])->prefix('user')->name('user.')->group(
         Route::get('/gift-cards', function () {
             return view('backend.user.pages.offers.gift-cards');
         })->name('gift-cards');
+        Route::get('offers/',[OfferController::class,'index'])->name('offers');
     });
+
 
     Route::group(['prefix' => 'boosting'], function () {
         Route::get('/my-requests', function () {
