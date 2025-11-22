@@ -16,6 +16,7 @@ use App\Repositories\Eloquent\CurrencyRepository;
 use App\Repositories\Eloquent\LanguageRepository;
 use App\Repositories\Eloquent\PageViewRepository;
 use App\Repositories\Eloquent\OfferItemRepository;
+use App\Repositories\Eloquent\GameServerRepository;
 
 
 use App\Repositories\Eloquent\PermissionRepository;
@@ -41,10 +42,19 @@ use App\Repositories\Contracts\PermissionRepositoryInterface;
 use App\Repositories\Contracts\AchievementRepositoryInterface;
 use App\Repositories\Contracts\ProductTypeRepositoryInterface;
 use App\Repositories\Contracts\AchievementTypeRepositoryInterface;
+use App\Repositories\Contracts\GamePlatformRepositoryInterface;
+use App\Repositories\Contracts\GameRarityRepositoryInterface;
+use App\Repositories\Contracts\GameServerRepositoryInterface;
+use App\Repositories\Contracts\GameTagRepositoryInterface;
+use App\Repositories\Contracts\GameTypeRepositoryInterface;
 use App\Repositories\Contracts\PlatformRepositoryInterface;
 use App\Repositories\Contracts\ServerRepositoryInterface;
 use App\Repositories\Contracts\OfferItemRepositoryInterface;
 use App\Repositories\Contracts\RarityRepositoryInterface;
+use App\Repositories\Eloquent\GamePlatformRepository;
+use App\Repositories\Eloquent\GameRarityRepository;
+use App\Repositories\Eloquent\GameTagRepository;
+use App\Repositories\Eloquent\GameTypeRepository;
 use App\Repositories\Eloquent\RaritytRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -61,7 +71,7 @@ class RepositoryServiceProvider extends ServiceProvider
             UserRepositoryInterface::class,
             UserRepository::class
         );
-        // Game Category Repository
+        // Category Repository
         $this->app->bind(
             CategoryRepositoryInterface::class,
             CategoryRepository::class,
@@ -74,19 +84,51 @@ class RepositoryServiceProvider extends ServiceProvider
             GameRepository::class,
         );
 
-        //GamePlatform Repository
+        //Platform Repository
         $this->app->bind(
             PlatformRepositoryInterface::class,
             PlatformRepository::class
         );
 
 
-        //Game Server Repository
+        // Server Repository
         $this->app->bind(
 
             ServerRepositoryInterface::class,
             ServerRepository::class,
 
+        );
+
+        // Game Server Repository
+        $this->app->bind(
+
+            GameServerRepositoryInterface::class,
+            GameServerRepository::class,
+        );
+
+
+        // Game Tag Repository End
+          $this->app->bind(
+            GameTagRepositoryInterface::class,
+            GameTagRepository::class,
+        );
+
+        // Game Type Repository End
+          $this->app->bind(
+            GameTypeRepositoryInterface::class,
+            GameTypeRepository::class,
+        );
+
+        // Game Platform Repository End
+          $this->app->bind(
+            GamePlatformRepositoryInterface::class,
+            GamePlatformRepository::class,
+        );
+
+        // Game Platform Repository End
+          $this->app->bind(
+            GameRarityRepositoryInterface::class,
+            GameRarityRepository::class,
         );
 
         // Rank

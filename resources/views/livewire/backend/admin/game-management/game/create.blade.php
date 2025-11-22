@@ -82,7 +82,7 @@
                 </div>
 
                 {{-- Boolean Checkboxes --}}
-                <div class="flex gap-6 mt-3 items-center justify-start col-span-2   ">
+                <div class="flex gap-6 mt-3 items-center justify-start col-span-2  ">
                     <x-ui.label class="flex items-center gap-2">
                         <input type="checkbox" wire:model="form.is_featured"> {{ __('Featured') }}
                     </x-ui.label>
@@ -112,7 +112,7 @@
 
                     <x-ui.input-error :messages="$errors->get('form.platform')" class="mt-2" />
                 </div>
-                {{-- Platforms Options --}}
+                {{-- Servers Options --}}
 
                 <div>
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">
@@ -132,26 +132,51 @@
                     <x-ui.input-error :messages="$errors->get('form.platform')" class="mt-2" />
                 </div>
 
-                {{-- End Platforms --}}
+                {{-- End Servers --}}
 
-                {{-- Platform (Checkbox) --}}
-                {{-- <div class="col-span-2">
+
+                
+                {{-- Tags Options --}}
+
+                <div>
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">
-                        {{ __('Platform') }} <span class="text-red-500">*</span>
+                        {{ __('Tags') }} <span class="text-red-500">*</span>
                     </label>
-                    <div class="flex flex-wrap gap-4">
-                        @foreach ($platforms as $id => $name)
-                            <x-ui.label class="flex items-center gap-2">
-                                <input type="checkbox" wire:model="form.platform" value="{{ $id }}">
-                                {{ $name }}
-                            </x-ui.label>
+
+                    <select wire:model="form.tags" name="tags[]" multiple
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+
+                        <option disabled>{{ __('Choose Tags') }}</option>
+
+                        @foreach ($tags as $key => $tag)
+                            <option value="{{ $tag['value'] }}">{{ $tag['label'] }}</option>
                         @endforeach
+                    </select>
 
-                    </div>
                     <x-ui.input-error :messages="$errors->get('form.platform')" class="mt-2" />
-                </div> --}}
+                </div>
+               
+                
+                {{-- Tags Options --}}
 
-                {{-- Ends Platforms --}}
+                <div>
+                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">
+                        {{ __('Rarities') }} <span class="text-red-500">*</span>
+                    </label>
+
+                    <select wire:model="form.tags" name="tags[]" multiple
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+
+                        <option disabled>{{ __('Choose Rarity') }}</option>
+
+                        @foreach ($rarities as $id => $name)
+                            <option value="{{ $id }}">{{ $name }}</option>
+                        @endforeach
+                    </select>
+
+                    <x-ui.input-error :messages="$errors->get('form.platform')" class="mt-2" />
+                </div>
+               
 
                 {{-- Description --}}
 

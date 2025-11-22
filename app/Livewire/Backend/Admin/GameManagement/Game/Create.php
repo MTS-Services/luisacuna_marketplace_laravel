@@ -5,10 +5,14 @@ namespace App\Livewire\Backend\Admin\GameManagement\Game;
 
 
 use App\Enums\GameStatus;
+use App\Enums\GameTag as EnumsGameTag;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameForm;
+use App\Models\GameTag;
+use App\Models\Rarity;
 use App\Services\CategoryService;
 use App\Services\PlatformService;
 use App\Services\GameService;
+use App\Services\RarityService;
 use App\Services\ServerService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -24,10 +28,14 @@ class Create extends Component
     public GameForm $form;
 
     protected CategoryService $categoryService;
-    protected ServerService $serverService;
-    protected PlatformService $platformService;
 
-    public function boot(GameService $service, CategoryService $categoryService, PlatformService $platformService, ServerService $serverService)
+    protected ServerService $serverService;
+
+    protected PlatformService $platformService;
+    
+    protected RarityService $rarityService;
+
+    public function boot(GameService $service, CategoryService $categoryService, PlatformService $platformService, ServerService $serverService , RarityService $rarityService)
     {
         $this->service = $service;
 
@@ -36,12 +44,17 @@ class Create extends Component
         $this->platformService = $platformService;
 
         $this->serverService = $serverService;
+
+        $this->rarityService = $rarityService;
+
     }
     public function render()
     {
         $platforms = $this->getPlatforms();
 
         $servers = $this->getServers();
+
+        $rarities = $this->getRarities();
         return view('livewire.backend.admin.game-management.game.create', [
 
             'statuses' => GameStatus::options(),
@@ -52,9 +65,17 @@ class Create extends Component
 
             'servers' => $servers,
 
+            'tags' => EnumsGameTag::options(),
+
+            'rarities' => $rarities ,
         ]);
     }
 
+    public function getRarities(): array {
+
+      return  $this->rarityService->getActiveData()->pluck('name', 'id')->toArray();
+
+    }
     protected function getServers() : array
     {
         return $this->serverService->getActiveData()->pluck('name', 'id')->toArray();
