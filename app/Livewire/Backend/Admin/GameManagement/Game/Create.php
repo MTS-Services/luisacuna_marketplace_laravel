@@ -9,6 +9,7 @@ use App\Livewire\Forms\Backend\Admin\GameManagement\GameForm;
 use App\Services\CategoryService;
 use App\Services\PlatformService;
 use App\Services\GameService;
+use App\Services\ServerService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -23,37 +24,46 @@ class Create extends Component
     public GameForm $form;
 
     protected CategoryService $categoryService;
+    protected ServerService $serverService;
+    protected PlatformService $platformService;
 
-    protected PlatformService $gamePlatformService;
-
-    public function boot(GameService $service, CategoryService $categoryService, PlatformService $gamePlatformService)
+    public function boot(GameService $service, CategoryService $categoryService, PlatformService $platformService, ServerService $serverService)
     {
         $this->service = $service;
 
         $this->categoryService = $categoryService;
 
-        $this->gamePlatformService = $gamePlatformService;
+        $this->platformService = $platformService;
+
+        $this->serverService = $serverService;
     }
     public function render()
     {
         $platforms = $this->getPlatforms();
 
+        $servers = $this->getServers();
         return view('livewire.backend.admin.game-management.game.create', [
 
             'statuses' => GameStatus::options(),
 
-            'categories' => $this->gameCategory(),
+            'categories' => $this->gameCategories(),
 
-            'platforms' => $platforms
+            'platforms' => $platforms,
+
+            'servers' => $servers,
 
         ]);
     }
 
+    protected function getServers() : array
+    {
+        return $this->serverService->getActiveData()->pluck('name', 'id')->toArray();
+    }
     protected function getPlatforms(): array
     {
-        return $this->gamePlatformService->getAllDatas()->pluck('name', 'id')->toArray();
+        return $this->platformService->getAllDatas()->pluck('name', 'id')->toArray();
     }
-    protected function gameCategory(): array
+    protected function gameCategories(): array
     {
         return $this->categoryService->getActiveData()->pluck('name', 'id')->toArray();
     }
@@ -61,16 +71,15 @@ class Create extends Component
     public function save()
     {
 
-        $this->form->validate();
-
+       $data =  $this->form->validate();
 
         try {
 
-            $data = $this->form->fillables();
+           
 
-            $data['creater_id'] = admin()->id;
+            $data['created_by'] = admin()->id;
 
-            $data['creater_type'] = get_class(admin());
+           
 
             $this->service->createData($data);
 
@@ -87,8 +96,9 @@ class Create extends Component
         }
     }
 
-    public function resetForm()
+    public function resetForm(): void
     {
         $this->form->reset();
+        $this->dispatch('file-input-reset');
     }
 }

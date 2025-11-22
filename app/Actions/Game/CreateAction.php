@@ -8,6 +8,7 @@ use App\Repositories\Contracts\GameRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Events\Game\GameCreated;
 
 class CreateAction
 {
@@ -20,27 +21,15 @@ class CreateAction
 
     return  DB::transaction(function () use ($data) {
 
-
-
-      if (! isset($data['slug'])) {
-        $data['slug'] = Str::slug($data['name']);
+      if ($data['logo']) {
+        $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+        $fileName = $prefix . '-' . $data['logo']->getClientOriginalName();
+        $data['logo'] = Storage::disk('public')->putFileAs('game', $data['logo'], $fileName);
       }
+      $newData =  $this->interface->create($data);
+      event(new GameCreated($newData));
 
-      if (isset($data['logo'])) {
-        $data['logo']  = Storage::disk('public')->putFile('logo', $data['logo']);
-      }
-
-
-      if (isset($data['banner'])) {
-        $data['banner']  = Storage::disk('public')->putFile('banners', $data['banner']);
-      }
-
-
-      if ( isset($data['thumbnail'])) {
-        $data['thumbnail']  = Storage::disk('public')->putFile('thumbnails', $data['thumbnail']);
-      }
-
-      return $this->interface->create($data);
+      return $newData->fresh();
     });
   }
 }

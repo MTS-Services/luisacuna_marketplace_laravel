@@ -22,21 +22,13 @@ class GameForm extends Form
 
     public ?string $status;
 
-    public ?string $developer;
-
     public ?string $slug;
-
-    public ?string $publisher;
 
     public  ?UploadedFile $logo = null;
 
-    public ?UploadedFile $banner = null;
+    public ?array $platforms = [];
 
-    public ?UploadedFile $thumbnail = null;
-
-    public ?string $release_date;
-
-    public ?array $platform = [];
+    public ?array $servers = [];
 
     public ?string $description;
 
@@ -50,25 +42,25 @@ class GameForm extends Form
 
     public ?string $meta_keywords;
 
+    public ?bool $remove_file = false;
+
     public function rules() :array 
     {
         return [
             'name' => 'required|string|max:255',
+            'slug' => $this->isUpdating() ? 'required|string|unique:games,slug,'.$this->id : 'required|string|unique:games,slug',
             'category_id' => 'nullable|integer',
             'status' => 'required|string|in:'.implode(',', array_column(GameStatus::cases(), 'value')),
-            'developer' => 'nullable|string',
-            'publisher' => 'nullable|string',
             'logo' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
-            'banner' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
-            'release_date' => 'nullable|date',
-            'platform' => 'nullable|array',
+            'platforms' => 'nullable|array',
+            'servers' => 'nullable|array',
             'description' => 'nullable|string',
-            'thumbnail' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
             'is_featured' => 'nullable|boolean',
             'is_trending' => 'nullable|boolean',
             'meta_title' => 'nullable|string',
             'meta_description' => 'nullable|string',
             'meta_keywords' => 'nullable|string',
+            'remove_file' => 'nullable|boolean',
         ];
     }
 
@@ -78,19 +70,15 @@ class GameForm extends Form
         $this->category_id = $data->category_id;
         $this->name = $data->name;
         $this->status = $data->status->value;
-        $this->developer = $data->developer;
-        $this->publisher = $data->publisher;
-
-
-        $this->release_date = $data->release_date;
-        $this->platform = $data->platform;
+        $this->platforms = $data->platform;
+        $this->servers = $data->servers;
         $this->description = $data->description;
-
         $this->is_featured = $data->is_featured;
         $this->is_trending = $data->is_trending;
         $this->meta_title = $data->meta_title;
         $this->meta_description = $data->meta_description;
         $this->meta_keywords = $data->meta_keywords;
+        $this->slug = $data->slug;
         
     }
 
@@ -98,14 +86,10 @@ class GameForm extends Form
         $this->name = null;
         $this->category_id = null;
         $this->status = null;
-        $this->developer = null;
-        $this->publisher = null;
         $this->logo = null;
-        $this->banner = null;
-        $this->release_date = null;
-        $this->platform = [];
+        $this->platforms = [];
+        $this->servers = [];
         $this->description = null;
-        $this->thumbnail = null;
         $this->is_featured = null;
         $this->is_trending = null;
         $this->meta_title = null;
@@ -114,30 +98,6 @@ class GameForm extends Form
 
         $this->resetValidation();
     }
-
-    public function fillables():array {
-        return array_filter([
-            'name' => $this->name,
-            'category_id' => $this->category_id,
-            'status' => $this->status,
-            'developer' => $this->developer,
-            'publisher' => $this->publisher,
-            'logo' => $this->logo,
-            'banner' => $this->banner,
-            'release_date' => $this->release_date,
-            'platform' => $this->platform,
-            'description' => $this->description,
-            'thumbnail' => $this->thumbnail,
-            'is_featured' => $this->is_featured,
-            'is_trending' => $this->is_trending,
-            'meta_title' => $this->meta_title,
-            'meta_description' => $this->meta_description,
-            'meta_keywords' => $this->meta_keywords
-        ], function ($value) {
-            return $value !== '' && $value !== null;
-        });
-    }
-
     public function isUpdating():bool {
         return isset($this->id);
     }   

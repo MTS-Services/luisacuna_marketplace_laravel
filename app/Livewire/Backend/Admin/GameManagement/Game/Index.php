@@ -40,6 +40,15 @@ class Index extends Component
 
         $columns = [
                 
+             [
+                'key' => 'logo',
+                'label' => 'Avatar',
+                'format' => function ($data) {
+                    return $data->logo
+                        ? '<img src="' . storage_url($data->logo) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
+                }
+            ],
             [
                 'key' => 'name',
                 'label' => 'Name',
