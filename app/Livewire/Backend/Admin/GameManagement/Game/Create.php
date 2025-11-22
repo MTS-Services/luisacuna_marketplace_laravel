@@ -7,7 +7,7 @@ namespace App\Livewire\Backend\Admin\GameManagement\Game;
 use App\Enums\GameStatus;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameForm;
 use App\Services\CategoryService;
-use App\Services\GamePlatformService;
+use App\Services\PlatformService;
 use App\Services\GameService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -24,9 +24,9 @@ class Create extends Component
 
     protected CategoryService $categoryService;
 
-    protected GamePlatformService $gamePlatformService;
+    protected PlatformService $gamePlatformService;
 
-    public function boot(GameService $service,  CategoryService $categoryService, GamePlatformService $gamePlatformService)
+    public function boot(GameService $service, CategoryService $categoryService, PlatformService $gamePlatformService)
     {
         $this->service = $service;
 
@@ -40,7 +40,7 @@ class Create extends Component
 
         return view('livewire.backend.admin.game-management.game.create', [
 
-            'statuses'   => GameStatus::options(),
+            'statuses' => GameStatus::options(),
 
             'categories' => $this->gameCategory(),
 
@@ -79,7 +79,7 @@ class Create extends Component
             $this->success('Game created successfully.');
 
             return $this->redirect(route('admin.gm.game.index'), navigate: true);
-            
+
         } catch (\Throwable $th) {
 
             Log::error("Failed to create game: ", ['error' => $th->getMessage()]);
