@@ -94,7 +94,6 @@ class Create extends Component
 
     public function save()
     {
-        dd($this->form->toArray());
         $data = $this->form->validate();
         try {
             $data['created_by'] = admin()->id;

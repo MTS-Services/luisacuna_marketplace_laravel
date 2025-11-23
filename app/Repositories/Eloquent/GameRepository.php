@@ -16,12 +16,13 @@ class GameRepository implements GameRepositoryInterface
         protected Game $model,
         protected PlatformRepositoryInterface $platformInterface,
         protected GamePlatform $gamePlatforms,
-    ) {}
+    ) {
+    }
 
 
     /* ================== ================== ==================
-    *                      Find Methods
-    * ================== ================== ================== */
+     *                      Find Methods
+     * ================== ================== ================== */
 
     public function all(string $sortField = 'created_at', $order = 'desc'): Collection
     {
@@ -29,7 +30,7 @@ class GameRepository implements GameRepositoryInterface
         return $query->orderBy($sortField, $order)->get();
     }
 
-    public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?Game
+    public function find($column_value, string $column_name = 'id', bool $trashed = false): ?Game
     {
         $model = $this->model;
         if ($trashed) {
@@ -112,23 +113,18 @@ class GameRepository implements GameRepositoryInterface
 
 
     /* ================== ================== ==================
-    *                    Data Modification Methods
-    * ================== ================== ================== */
+     *                    Data Modification Methods
+     * ================== ================== ================== */
 
     public function create(array $data): Game
     {
-        $game =  $this->model->create($data);
-        if (isset($data['platforms'])) {
-            $platforms = $this->platformInterface->getQuery()->whereIn('id', $data['platforms'])->get();
-            foreach ($platforms as $platform) {
-                $this->gamePlatforms->updateOrCreate(
-                    [
-                        'game_id' => $game->id,
-                        'platform_id' => $platform->id
-                    ]
-                );
-            }
-        }
+        $game = $this->model->create($data);
+        $game->platforms()->sync($data['platforms']);
+        $game->servers()->sync($data['servers']);
+        $game->categories()->sync($data['categories']);
+        $game->tags()->sync($data['tags']);
+        $game->types()->sync($data['types']);
+        $game->rarities()->sync($data['rarities']);
 
         return $game;
     }
@@ -205,8 +201,8 @@ class GameRepository implements GameRepositoryInterface
     }
 
     /* ================== ================== ==================
-    *                  Accessor Methods (Optional)
-    * ================== ================== ================== */
+     *                  Accessor Methods (Optional)
+     * ================== ================== ================== */
 
     public function getActive(string $sortField = 'created_at', $order = 'desc'): Collection
     {

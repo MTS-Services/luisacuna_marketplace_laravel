@@ -23,26 +23,20 @@
 {{-- Check if $append prop is provided --}}
 @if (is_null($append))
     {{-- STANDARD SELECT INPUT --}}
-    <select
-        id="{{ $selectId }}"
-        {{ $disabled ? 'disabled' : '' }}
-        {!! $attributes->merge([
-            'class' => 'select select2-target w-full !border-zinc-300 focus:!border-accent focus:!outline-none focus:!ring-1 focus:!ring-accent shadow-sm dark:border-zinc-700 bg-transparent dark:text-zinc-100 text-zinc-900 dark:focus:border-accent dark:focus:ring-accent !transition-all !duration-300 !ease-in-out',
-        ]) !!}
-        {{ $multiple ? 'multiple' : '' }}
-        data-select2-config="{{ $select2Config }}">
+    <select id="{{ $selectId }}" {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge([
+        'class' =>
+            'select select2-target w-full !border-zinc-300 focus:!border-accent focus:!outline-none focus:!ring-1 focus:!ring-accent shadow-sm dark:border-zinc-700 bg-transparent dark:text-zinc-100 text-zinc-900 dark:focus:border-accent dark:focus:ring-accent !transition-all !duration-300 !ease-in-out',
+    ]) !!}
+        {{ $multiple ? 'multiple' : '' }} data-select2-config="{{ $select2Config }}">
         {{ $slot }}
     </select>
 @else
     <div class="flex items-center w-full">
-        <select
-            id="{{ $selectId }}"
-            {{ $disabled ? 'disabled' : '' }}
-            {!! $attributes->merge([
-                'class' => 'select select2-target rounded-r-none w-full !border-zinc-300 focus:!border-accent focus:!ring-1 focus:!ring-accent shadow-sm dark:border-zinc-700 bg-transparent dark:text-zinc-100 text-zinc-900 dark:focus:border-accent dark:focus:ring-accent !transition-all !duration-300 !ease-in-out',
-            ]) !!}
-            {{ $multiple ? 'multiple' : '' }}
-            data-select2-config="{{ $select2Config }}">
+        <select id="{{ $selectId }}" {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge([
+            'class' =>
+                'select select2-target rounded-r-none w-full !border-zinc-300 focus:!border-accent focus:!ring-1 focus:!ring-accent shadow-sm dark:border-zinc-700 bg-transparent dark:text-zinc-100 text-zinc-900 dark:focus:border-accent dark:focus:ring-accent !transition-all !duration-300 !ease-in-out',
+        ]) !!}
+            {{ $multiple ? 'multiple' : '' }} data-select2-config="{{ $select2Config }}">
             {{ $slot }}
         </select>
 
@@ -87,7 +81,7 @@
                         });
 
                         // Force dropdown width on open
-                        $select.on('select2:open', function () {
+                        $select.on('select2:open', function() {
                             const container = $select.data('select2').$container;
                             const dropdown = $select.data('select2').$dropdown;
 
@@ -102,14 +96,18 @@
                         });
 
                         // Livewire integration
-                        $select.on('change', function (e) {
+                        $select.on('change', function(e) {
                             // Dispatch native change event for Livewire
-                            let event = new Event('change', { bubbles: true });
+                            let event = new Event('change', {
+                                bubbles: true
+                            });
                             select.dispatchEvent(event);
 
                             // Also trigger Livewire's input event if wire:model is present
                             if (select.hasAttribute('wire:model') || select.hasAttribute('wire:model.live')) {
-                                select.dispatchEvent(new Event('input', { bubbles: true }));
+                                select.dispatchEvent(new Event('input', {
+                                    bubbles: true
+                                }));
                             }
                         });
 
@@ -126,13 +124,13 @@
                 document.addEventListener('livewire:initialized', initializeAllSelect2);
 
                 // Re-initialize after Livewire updates
-                Livewire.hook('commit', ({ component, commit, respond, succeed, fail }) => {
-                    succeed(({ snapshot, effect }) => {
-                        queueMicrotask(() => {
-                            initializeAllSelect2();
-                        });
-                    });
-                });
+                // Livewire.hook('commit', ({ component, commit, respond, succeed, fail }) => {
+                //     succeed(({ snapshot, effect }) => {
+                //         queueMicrotask(() => {
+                //             initializeAllSelect2();
+                //         });
+                //     });
+                // });
             }
 
             // Standard DOM ready

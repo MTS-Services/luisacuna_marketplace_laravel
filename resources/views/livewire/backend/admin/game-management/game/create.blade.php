@@ -79,7 +79,7 @@
                     <x-ui.input-error :messages="$errors->get('form.platforms')" class="mt-2" />
                 </div>
                 {{-- Server --}}
-                <div>
+                {{-- <div>
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">
                         {{ __('Server') }} <span class="text-red-500">*</span>
                     </label>
@@ -91,13 +91,13 @@
                         @endforeach
                     </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.servers')" class="mt-2" />
-                </div>
+                </div> --}}
                 {{-- Rarity --}}
                 <div>
                     <label class="block text-sm font-medium dark:text-gray-300 mb-2">
                         {{ __('Rarity') }} <span class="text-red-500">*</span>
                     </label>
-                    <x-ui.select wire:model="form.servers" :multiple="true" :tags="true"
+                    <x-ui.select wire:model="form.rarities" :multiple="true" :tags="true"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
                         <option value="">{{ __('Select Rarity') }}</option>
                         @foreach ($rarities as $index => $value)
@@ -154,10 +154,8 @@
                 <div class="col-span-2">
                     <x-ui.label
                         class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Description') }}</x-ui.label>
-                    {{-- <x-ui.text-editor wire:model="form.description" rows="3"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></x-ui.text-editor> --}}
-                    <x-ui.text-editor model="form.description" id="description"
-                        placeholder="Enter game description..." :height="350" />
+                    <x-ui.text-editor model="form.description" id="description" placeholder="Enter game description..."
+                        :height="350" />
                     <x-ui.input-error :messages="$errors->get('form.description')" class="mt-2" />
                 </div>
 
