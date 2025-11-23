@@ -4,7 +4,9 @@ namespace App\Models;
 
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
+use App\Traits\HasTranslations;
 use App\Enums\CategoryStatus;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,8 +14,7 @@ use Laravel\Scout\Attributes\SearchUsingPrefix;
 
 class Category extends AuditBaseModel implements Auditable
 {
-    use AuditableTrait;
-
+    use AuditableTrait, HasTranslations;
 
     protected $fillable = [
         'sort_order',
@@ -23,32 +24,58 @@ class Category extends AuditBaseModel implements Auditable
         'meta_description',
         'icon',
         'status',
-
         'created_by',
         'updated_by',
         'deleted_by',
         'restored_by',
         'restored_at',
-
     ];
 
-    protected $hidden = [
-        'id',
+    protected $hidden = ['id'];
 
-    ];
     protected $casts = [
         'status' => CategoryStatus::class
     ];
 
-    // Scope
+    /* ================================================================
+     |  Translation Configuration
+     ================================================================ */
 
+    /**
+     * Define translation configuration for this model
+     */
+    protected function getTranslationConfig(): array
+    {
+        return [
+            // Fields to translate from main model
+            'fields' => ['name'],
 
-    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
-                Start of RELATIONSHIPS
-     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+            // Relationship name
+            'relation' => 'categoryLanguages',
 
+            // Translation model class
+            'model' => CategoryLanguage::class,
 
-    public function games()
+            // Foreign key in translation table
+            'foreign_key' => 'category_id',
+
+            // Map model fields to translation table fields
+            'field_mapping' => [
+                'name' => 'name', // model field => translation table field
+            ],
+        ];
+    }
+
+    /* ================================================================
+     |  Relationships
+     ================================================================ */
+
+    public function categoryLanguages(): HasMany
+    {
+        return $this->hasMany(CategoryLanguage::class, 'category_id', 'id');
+    }
+
+    public function games(): BelongsToMany
     {
         return $this->belongsToMany(
             Game::class,
@@ -57,17 +84,25 @@ class Category extends AuditBaseModel implements Auditable
             'game_id'
         );
     }
+
     public function achievements(): HasMany
     {
         return $this->hasMany(Achievement::class, 'category_id', 'id');
     }
 
-    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
-                End of RELATIONSHIPS
-     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+    /* ================================================================
+     |  Translation Helper Methods (Convenience)
+     ================================================================ */
 
+    public function getTranslatedName($languageIdOrLocale): string
+    {
+        return $this->getTranslated('name', $languageIdOrLocale) ?? $this->name;
+    }
 
-
+    public function getAllTranslatedNames(): array
+    {
+        return $this->getAllTranslationsFor('name');
+    }
 
     /* ================================================================
      |  Query Scopes
@@ -83,28 +118,22 @@ class Category extends AuditBaseModel implements Auditable
         return $query->where('status', CategoryStatus::INACTIVE);
     }
 
-
     public function scopeFilter(Builder $query, array $filters): Builder
     {
         return $query
-            ->when(
-                $filters['status'] ?? null,
-                fn($q, $status) =>
-                $q->where('status', $status)
-            )
-            ->when(
-                $filters['name'] ?? null,
-                fn($q, $name) =>
-                $q->where('name', 'like', "%{$name}%")
-            );
+            ->when($filters['status'] ?? null, fn($q, $status) => $q->where('status', $status))
+            ->when($filters['name'] ?? null, fn($q, $name) => $q->where('name', 'like', "%{$name}%"));
     }
 
-    /* ================================================================
-     |  Query Scopes
-     ================================================================ */
+    public function scopeSearch($query, $search)
+    {
+        return $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%")
+                ->orWhere('meta_description', 'like', "%{$search}%");
+        });
+    }
 
-
-    #[SearchUsingPrefix(['id', 'name', 'meta_title'])]
+    #[SearchUsingPrefix(['name', 'meta_title'])]
     public function toSearchableArray(): array
     {
         return [
@@ -114,25 +143,10 @@ class Category extends AuditBaseModel implements Auditable
         ];
     }
 
-    /**
-     * Include only non-deleted data in search index.
-     */
     public function shouldBeSearchable(): bool
     {
         return is_null($this->deleted_at);
     }
-
-
-
-    public function scopeSearch($query, $search)
-    {
-        return $query->where(function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%")
-                ->orWhere('description', 'like', "%{$search}%");
-        });
-    }
-
-
 
     public function __construct(array $attributes = [])
     {

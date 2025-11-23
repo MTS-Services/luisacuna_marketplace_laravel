@@ -87,27 +87,6 @@ if (!function_exists('auth_storage_url')) {
 
 // ==================== Existing Application Setting Helpers ====================
 
-if (!function_exists('site_name')) {
-    function site_name()
-    {
-        return config('app.name', 'Laravel Application');
-    }
-}
-
-if (!function_exists('site_short_name')) {
-    function site_short_name()
-    {
-        return config('app.short_name', 'LA');
-    }
-}
-
-if (!function_exists('site_tagline')) {
-    function site_tagline()
-    {
-        return config('app.tagline', 'Laravel Application Tagline');
-    }
-}
-
 // ==================== NEW OTP Helpers ====================
 
 if (!function_exists('generate_otp')) {
@@ -511,7 +490,7 @@ if (!function_exists('log_error')) {
                     "URL" => request()->fullUrl(),
                     "Method" => request()->method(),
                     "IP" => request()->ip(),
-                    "Input" => request()->all()
+                    "Input"  => json_encode(request()->all(), JSON_UNESCAPED_UNICODE),
                 ]
             ]
         );
@@ -524,7 +503,7 @@ if (!function_exists('log_info')) {
         Log::info(
             'LOG INFO DATA: ' . [
                 "Info" => $i,
-                "Data" => $data
+                "Data" => json_encode($data, JSON_UNESCAPED_UNICODE)
             ]
         );
     }
