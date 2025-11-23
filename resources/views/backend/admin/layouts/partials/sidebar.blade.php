@@ -19,7 +19,7 @@
                     x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition-all duration-200"
                     x-transition:leave-start="opacity-100 translate-x-0"
                     x-transition:leave-end="opacity-0 -translate-x-4">
-                    <h1 class="text-xl font-bold text-accent-content">{{ site_short_name() }}</h1>
+                    <h1 class="text-xl font-bold text-accent-content">{{ short_name() }}</h1>
                     <p class="text-text-secondary text-sm">{{ site_tagline() }}</p>
                 </div>
             </div>
