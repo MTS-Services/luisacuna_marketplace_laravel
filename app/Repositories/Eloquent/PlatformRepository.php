@@ -26,6 +26,11 @@ class PlatformRepository implements PlatformRepositoryInterface
         return $query->orderBy($sortField, $order)->get();
     }
 
+    public function getQuery(): object
+    {
+        return $this->model->query();
+    }
+
     public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?Platform
     {
         $model = $this->model;

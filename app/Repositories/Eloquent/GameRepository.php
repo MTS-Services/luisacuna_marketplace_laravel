@@ -4,14 +4,18 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Game;
 use App\Repositories\Contracts\GameRepositoryInterface;
+use App\Repositories\Contracts\PlatformRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use App\Models\GamePlatform;
 
 class GameRepository implements GameRepositoryInterface
 {
-     public function __construct(
-        protected Game $model
+    public function __construct(
+        protected Game $model,
+        protected PlatformRepositoryInterface $platformInterface,
+        protected GamePlatform $gamePlatforms,
     ) {}
 
 
@@ -113,7 +117,20 @@ class GameRepository implements GameRepositoryInterface
 
     public function create(array $data): Game
     {
-        return $this->model->create($data);
+        $game =  $this->model->create($data);
+        if (isset($data['platforms'])) {
+            $platforms = $this->platformInterface->getQuery()->whereIn('id', $data['platforms'])->get();
+            foreach ($platforms as $platform) {
+                $this->gamePlatforms->updateOrCreate(
+                    [
+                        'game_id' => $game->id,
+                        'platform_id' => $platform->id
+                    ]
+                );
+            }
+        }
+
+        return $game;
     }
 
     public function update(int $id, array $data): bool
@@ -174,7 +191,7 @@ class GameRepository implements GameRepositoryInterface
     {
         return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updater_id' => $actionerId]);
     }
-    
+
     public function bulkRestore(array $ids, int $actionerId): int
     {
         return DB::transaction(function () use ($ids, $actionerId) {

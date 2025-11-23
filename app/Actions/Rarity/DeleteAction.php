@@ -1,14 +1,18 @@
-<?php 
+<?php
 
 namespace App\Actions\Rarity;
 
 use Illuminate\Support\Facades\DB;
-use App\Repositories\Contracts\RankRepositoryInterface;
+use App\Repositories\Contracts\RarityRepositoryInterface;
+use Illuminate\Support\Facades\Storage;
 
-class DeleteAction{
+class DeleteAction
+{
 
-    public function __construct(protected RankRepositoryInterface $interface){}
-    
+    public function __construct(protected RarityRepositoryInterface $interface)
+    {
+    }
+
 
 
     public function execute(int $id, bool $forceDelete = false, int $actionerId): bool
@@ -26,6 +30,10 @@ class DeleteAction{
                 throw new \Exception('Data not found');
             }
             if ($forceDelete) {
+                // Delete avatar
+                if ($findData->avatar) {
+                    Storage::disk('public')->delete($findData->avatar);
+                }
                 return $this->interface->forceDelete($id);
             }
             return $this->interface->delete($id, $actionerId);

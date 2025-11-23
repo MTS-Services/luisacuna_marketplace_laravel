@@ -50,7 +50,7 @@ class UpdateAction
                     $fileName = $prefix . '-' . $uploadedIcon->getClientOriginalName();
 
                     $newSingleIconPath = Storage::disk('public')
-                        ->putFileAs('admins', $uploadedIcon, $fileName);
+                        ->putFileAs('platforms', $uploadedIcon, $fileName);
 
                     $newData['icon'] = $newSingleIconPath;
                 }

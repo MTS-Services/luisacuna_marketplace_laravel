@@ -15,30 +15,21 @@ return new class extends Migration {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-            $table->unsignedBigInteger('category_id');
-            $table->string('name')->index();
+            $table->string('name');
             $table->string('slug')->unique()->index();
             $table->text('description')->nullable();
-            $table->string('developer')->nullable();
-            $table->string('publisher')->nullable();
-            $table->date('release_date')->nullable();
-            $table->json('platform')->nullable();
             $table->string('logo')->nullable();
-            $table->string('banner')->nullable();
-            $table->string('thumbnail')->nullable();
-            $table->boolean('is_featured')->default(false);
-            $table->boolean('is_trending')->default(false);
             $table->string('status')->default(GameStatus::ACTIVE)->index();
-          
+           
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
             $table->text('meta_keywords')->nullable();
           
             $table->timestamps();
             $table->softDeletes();
-            $this->addMorphedAuditColumns($table);
+            $this->addAdminAuditColumns($table);
 
-            $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete()->cascadeOnUpdate();
+            // $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

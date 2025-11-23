@@ -96,6 +96,7 @@
                         'active' => 'game-category',
                         'permission' => 'category-list',
                     ],
+                
                     [
                         'name' => 'Servers',
                         'route' => route('admin.gm.server.index'),
@@ -103,6 +104,7 @@
                         'active' => 'server',
                         'permission' => 'server-list',
                     ],
+                
                     [
                         'name' => 'Platforms',
                         'route' => route('admin.gm.platform.index'),
@@ -110,6 +112,7 @@
                         'active' => 'game-platform',
                         'permission' => 'platform-list',
                     ],
+                
                     [
                         'name' => 'Games',
                         'route' => route('admin.gm.game.index'),
@@ -117,12 +120,21 @@
                         'active' => 'game',
                         'permission' => 'game-list',
                     ],
+                
+                    [
+                        'name' => 'Rarity',
+                        'route' => route('admin.gm.rarity.index'),
+                        'icon' => 'swords',
+                        'active' => 'game-rarity',
+                    ],
+                
                     // [
                     //     'name' => 'Pending Users',
                     //     'route' => '#',
                     //     'icon' => 'user-plus',
                     //     'active' => 'admin-users-pending',
                     // ],
+                
                     // [
                     //     'name' => 'Banned Users',
                     //     'route' => '#',

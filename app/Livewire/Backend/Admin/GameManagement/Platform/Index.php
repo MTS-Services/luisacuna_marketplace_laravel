@@ -14,7 +14,7 @@ use Livewire\Component;
 class Index extends Component
 {
 
-     use WithDataTable, WithNotification;
+    use WithDataTable, WithNotification;
 
     public $statusFilter = '';
     public $showDeleteModal = false;
@@ -32,8 +32,8 @@ class Index extends Component
 
 
     public function render()
-    {  
-         $datas = $this->service->getPaginatedData(
+    {
+        $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->load('creater_admin');
@@ -41,9 +41,9 @@ class Index extends Component
 
         $columns = [
 
-              [
-                'key' => 'avatar',
-                'label' => 'Avatar',
+            [
+                'key' => 'icon',
+                'label' => 'Icon',
                 'format' => function ($data) {
                     return $data->icon
                         ? '<img src="' . Storage::url($data->icon) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
@@ -60,7 +60,7 @@ class Index extends Component
                 'label' => 'Color',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return  $data->color ?? 'N/A';
+                    return $data->color ?? 'N/A';
                 }
             ],
             [
@@ -117,7 +117,7 @@ class Index extends Component
             ['value' => 'inactive', 'label' => 'Inactive'],
         ];
         return view('livewire.backend.admin.game-management.platform.index', [
-           
+
             'datas' => $datas,
             'statuses' => PlatformStatus::options(),
             'columns' => $columns,
@@ -125,7 +125,7 @@ class Index extends Component
             'bulkActions' => $bulkActions,
         ]);
     }
-    
+
     public function confirmDelete($id): void
     {
         $this->deleteId = $id;
@@ -204,7 +204,7 @@ class Index extends Component
 
     protected function bulkDelete(): void
     {
-        $count =  $this->service->bulkDeleteData($this->selectedIds);
+        $count = $this->service->bulkDeleteData($this->selectedIds);
         $this->success("{$count} Data deleted successfully");
     }
 
@@ -225,7 +225,7 @@ class Index extends Component
         ];
     }
 
-   protected function getSelectableIds(): array
+    protected function getSelectableIds(): array
     {
         $data = $this->service->getPaginatedData(
             perPage: $this->perPage,
