@@ -5,6 +5,7 @@ use App\Enums\OtpType;
 use App\Models\OtpVerification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 // ==================== Existing Auth Helpers ====================
@@ -85,27 +86,6 @@ if (!function_exists('auth_storage_url')) {
 }
 
 // ==================== Existing Application Setting Helpers ====================
-
-if (!function_exists('site_name')) {
-    function site_name()
-    {
-        return config('app.name', 'Laravel Application');
-    }
-}
-
-if (!function_exists('site_short_name')) {
-    function site_short_name()
-    {
-        return config('app.short_name', 'LA');
-    }
-}
-
-if (!function_exists('site_tagline')) {
-    function site_tagline()
-    {
-        return config('app.tagline', 'Laravel Application Tagline');
-    }
-}
 
 // ==================== NEW OTP Helpers ====================
 
@@ -493,3 +473,39 @@ if (!function_exists('getAuditorName')) {
         return $model && $model->name ? $model->name : (isset($model->first_name) ? $model->first_name . ' ' . $model->last_name : 'N/A');
     }
 }
+
+
+if (!function_exists('log_error')) {
+    function log_error($e): void
+    {
+        Log::error(
+            'LOG ERROR DATA: ' . [
+                "Error" => $e->getMessage(),
+                "Trace" => $e->getTraceAsString(),
+                "Data" => [
+                    "File" => $e->getFile(),
+                    "Line" => $e->getLine()
+                ],
+                "Request" => [
+                    "URL" => request()->fullUrl(),
+                    "Method" => request()->method(),
+                    "IP" => request()->ip(),
+                    "Input"  => json_encode(request()->all(), JSON_UNESCAPED_UNICODE),
+                ]
+            ]
+        );
+    }
+}
+
+if (!function_exists('log_info')) {
+    function log_info($i, $data = []): void
+    {
+        Log::info(
+            'LOG INFO DATA: ' . [
+                "Info" => $i,
+                "Data" => json_encode($data, JSON_UNESCAPED_UNICODE)
+            ]
+        );
+    }
+}
+

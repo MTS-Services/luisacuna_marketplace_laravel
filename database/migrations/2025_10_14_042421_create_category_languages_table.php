@@ -19,7 +19,6 @@ return new class extends Migration
             $table->unsignedBigInteger('language_id')->index();
             $table->string('name')->index();
 
-            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');

@@ -5,10 +5,15 @@ namespace App\Livewire\Backend\Admin\GameManagement\Game;
 
 
 use App\Enums\GameStatus;
+use App\Enums\GameTag as EnumsGameTag;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameForm;
+
+
 use App\Services\CategoryService;
-use App\Services\GamePlatformService;
+use App\Services\PlatformService;
 use App\Services\GameService;
+use App\Services\RarityService;
+use App\Services\ServerService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -24,36 +29,62 @@ class Create extends Component
 
     protected CategoryService $categoryService;
 
-    protected GamePlatformService $gamePlatformService;
+    protected ServerService $serverService;
 
-    public function boot(GameService $service,  CategoryService $categoryService, GamePlatformService $gamePlatformService)
+    protected PlatformService $platformService;
+
+    protected RarityService $rarityService;
+
+    public function boot(GameService $service, CategoryService $categoryService, PlatformService $platformService, ServerService $serverService , RarityService $rarityService)
     {
         $this->service = $service;
 
         $this->categoryService = $categoryService;
 
-        $this->gamePlatformService = $gamePlatformService;
+        $this->platformService = $platformService;
+
+        $this->serverService = $serverService;
+
+        $this->rarityService = $rarityService;
+
     }
     public function render()
     {
         $platforms = $this->getPlatforms();
 
+        $servers = $this->getServers();
+
+        $rarities = $this->getRarities();
         return view('livewire.backend.admin.game-management.game.create', [
 
-            'statuses'   => GameStatus::options(),
+            'statuses' => GameStatus::options(),
 
-            'categories' => $this->gameCategory(),
+            'categories' => $this->gameCategories(),
 
-            'platforms' => $platforms
+            'platforms' => $platforms,
 
+            'servers' => $servers,
+
+            'tags' => EnumsGameTag::options(),
+
+            'rarities' => $rarities ,
         ]);
     }
 
+    public function getRarities(): array {
+
+      return  $this->rarityService->getActiveData()->pluck('name', 'id')->toArray();
+
+    }
+    protected function getServers() : array
+    {
+        return $this->serverService->getActiveData()->pluck('name', 'id')->toArray();
+    }
     protected function getPlatforms(): array
     {
-        return $this->gamePlatformService->getAllDatas()->pluck('name', 'id')->toArray();
+        return $this->platformService->getAllDatas()->pluck('name', 'id')->toArray();
     }
-    protected function gameCategory(): array
+    protected function gameCategories(): array
     {
         return $this->categoryService->getActiveData()->pluck('name', 'id')->toArray();
     }
@@ -61,16 +92,15 @@ class Create extends Component
     public function save()
     {
 
-        $this->form->validate();
-
+       $data =  $this->form->validate();
 
         try {
 
-            $data = $this->form->fillables();
+           
 
-            $data['creater_id'] = admin()->id;
+            $data['created_by'] = admin()->id;
 
-            $data['creater_type'] = get_class(admin());
+           
 
             $this->service->createData($data);
 
@@ -79,7 +109,7 @@ class Create extends Component
             $this->success('Game created successfully.');
 
             return $this->redirect(route('admin.gm.game.index'), navigate: true);
-            
+
         } catch (\Throwable $th) {
 
             Log::error("Failed to create game: ", ['error' => $th->getMessage()]);
@@ -87,8 +117,9 @@ class Create extends Component
         }
     }
 
-    public function resetForm()
+    public function resetForm(): void
     {
         $this->form->reset();
+        $this->dispatch('file-input-reset');
     }
 }

@@ -92,8 +92,10 @@ class UpdateAction
                         'new_name' => $newData['name']
                     ]);
 
-                    TranslateCategoryJob::dispatch($freshData, 'EN')
-                        ->onQueue('translations');
+                    $freshData->dispatchTranslation(
+                        defaultLanguageLocale: 'en',
+                        targetLanguageIds: null
+                    );
                 }
 
                 return $freshData;

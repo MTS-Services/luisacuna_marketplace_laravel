@@ -50,7 +50,7 @@ class Edit extends Component
 
     public function save()
     {
-        $data =  $this->form->validate();
+        $data = $this->form->validate();
         try {
             $data['updated_by'] = admin()->id;
 
@@ -61,7 +61,7 @@ class Edit extends Component
             $this->success('Data updated successfully');
 
             return $this->redirect(route('admin.am.admin.index'), navigate: true);
-            
+
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validation failed', [
                 'errors' => $e->errors()

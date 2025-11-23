@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Jobs\TranslateModelJob;
+use Illuminate\Support\Facades\Log;
 
 trait HasTranslations
 {
@@ -18,6 +19,12 @@ trait HasTranslations
         ?array $targetLanguageIds = null
     ): void {
         $config = $this->getTranslationConfig();
+        $enabled = config('translation.auto_translate', false);
+
+        if (!$enabled) {
+            Log::info('Auto translation is disabled in config.');
+            return;
+        }
 
         TranslateModelJob::dispatch(
             model: $this,

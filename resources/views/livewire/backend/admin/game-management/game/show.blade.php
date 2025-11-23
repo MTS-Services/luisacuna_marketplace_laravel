@@ -21,13 +21,6 @@
 
                         <p class="text-slate-400 text-lg font-bold"></p>{{ $data->name }}</p>
                     </div>
-                    
-                    <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
-                        <p class="text-text-white text-xs font-semibold mb-2">{{ __('Category') }}</p>
-
-                        <p class="text-slate-400 text-lg font-bold"></p>{{ $data->category->name }}</p>
-                    </div>
-                    
                     {{-- - --}}
                     <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                         <p class="text-text-white text-xs font-semibold mb-2">{{ __('Slug') }}</p>
@@ -36,53 +29,8 @@
                     </div>
                     {{-- - --}}
 
-                    {{-- - --}}
-                    <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
-                        <p class="text-text-white text-xs font-semibold mb-2">{{ __('Developer') }}</p>
 
-                        <p class="text-slate-400 text-lg font-bold"></p>{{ $data->developer }}</p>
-                    </div>
-                    {{-- - --}}
 
-                    {{-- - --}}
-                    <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
-                        <p class="text-text-white text-xs font-semibold mb-2">{{ __('Publisher') }}</p>
-
-                        <p class="text-slate-400 text-lg font-bold"></p>{{ $data->publisher }}</p>
-                    </div>
-                    {{-- - --}}
-
-                    {{-- - --}}
-                    <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
-                        <p class="text-text-white text-xs font-semibold mb-2">{{ __('Release Date') }}</p>
-
-                        <p class="text-slate-400 text-lg font-bold"></p>{{ $data->release_date }}</p>
-                    </div>
-                    {{-- - --}}
-
-                    {{-- - --}}
-                    <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
-                        <p class="text-text-white text-xs font-semibold mb-2">{{ __('Platforms') }}</p>
-
-                        <p class="text-slate-400 text-lg font-bold"></p>{{ json_encode($data->platform) }}</p>
-                    </div>
-                    {{-- - --}}
-
-                    {{-- - --}}
-                    <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
-                        <p class="text-text-white text-xs font-semibold mb-2">{{ __('Featured') }}</p>
-
-                        <p class="text-slate-400 text-lg font-bold"></p> {{ $data->is_featured ? 'Yes' : 'No' }}</p>
-                    </div>
-                    {{-- - --}}
-
-                    {{-- - --}}
-                    <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
-                        <p class="text-text-white text-xs font-semibold mb-2">{{ __('Trending') }}</p>
-
-                        <p class="text-slate-400 text-lg font-bold"></p> {{ $data->is_trending ? 'Yes' : 'No' }}</p>
-                    </div>
-                    {{-- - --}}
 
                     {{-- - --}}
                     <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
@@ -143,24 +91,24 @@
                     <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                         <p class="text-text-white text-xs font-semibold mb-2">{{ __('CREATED BY') }}</p>
                         <p class="text-slate-400 text-lg font-bold">
-                            {{ $data->creater->name ?? 'N/A' }}</p>
+                            {{ $data->creater_admin?->name ?? 'N/A' }}</p>
                     </div>
 
                     <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                         <p class="text-text-white text-xs font-semibold mb-2">{{ __('UPDATED BY') }}</p>
                         <p class="text-slate-400 text-lg font-bold">
-                            {{ $data->updater->name ?? 'N/A' }}</p>
+                            {{ $data->updater_admin?->name ?? 'N/A' }}</p>
                     </div>
 
                     <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                         <p class="text-text-white text-xs font-semibold mb-2">{{ __('DELETED BY') }}</p>
                         <p class="text-slate-400 text-lg font-bold">
-                            {{ $data->deleter->name ?? 'N/A' }}</p>
+                            {{ $data->deleter_admin?->name ?? 'N/A' }}</p>
                     </div>
                     <div class="bg-slate-50 dark:bg-gray-700  rounded-lg p-4 border border-slate-200">
                         <p class="text-text-white text-xs font-semibold mb-2">{{ __('RESTORED BY') }} </p>
                         <p class="text-slate-400 text-lg font-bold">
-                            {{ $data->restorer->name ?? 'N/A' }}</p>
+                            {{ $data->restorer_admin?->name ?? 'N/A' }}</p>
                     </div>
                 </div>
             </div>
