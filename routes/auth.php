@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\User\Socialite\GoogleAuthController;
 use App\Http\Controllers\Auth\User\TwoFactorAuthenticatedSessionController as UserTwoFactorSessionController;
 use App\Http\Controllers\Auth\User\VerifyEmailController as UserVerifyEmailController;
 use App\Http\Controllers\Auth\Admin\VerifyEmailController as AdminVerifyEmailController;
+use App\Http\Controllers\Auth\User\RegisterController;
 use App\Http\Controllers\Auth\User\TwoFactorController as UserTwoFactorController;
 use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Route;
@@ -18,9 +19,17 @@ Route::middleware('guest:web')->group(function () {
         return view('frontend.auth.user.login');
     })->name('login');
 
-    Route::get('register', function () {
-        return view('frontend.auth.user.register');
-    })->name('register');
+
+        Route::controller(RegisterController::class)->name('register.')->prefix('register')->group(function () {
+            Route::get('/', 'signUp')->name('signUp');
+            Route::get('/email-verify', 'emailVerify')->name('emailVerify');
+            Route::get('/otp', 'otp')->name('otp');
+            Route::get('/password', 'password')->name('password');
+        });
+
+
+
+
 
     Route::get('forgot-password', function () {
         return view('frontend.auth.user.forgot-password');

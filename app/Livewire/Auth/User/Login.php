@@ -3,16 +3,20 @@
 namespace App\Livewire\Auth\User;
 
 use App\Models\User;
-use Illuminate\Auth\Events\Lockout;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Session;
+use App\Enums\OtpType;
+use Livewire\Component;
 use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Features;
 use Livewire\Attributes\Layout;
+use App\Mail\OtpVerificationMail;
 use Livewire\Attributes\Validate;
-use Livewire\Component;
+use Illuminate\Auth\Events\Lockout;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
 
 class Login extends Component
 {
@@ -60,6 +64,55 @@ class Login extends Component
     protected function validateCredentials(): User
     {
         $user = Auth::getProvider()->retrieveByCredentials(['email' => $this->email, 'password' => $this->password]);
+
+        // if ($user && is_null($user->password)) {
+
+        //     session(['registration.user_id' => $user->id]);
+        //     session(['registration.email' => $user->email]);
+
+        //     throw ValidationException::withMessages([
+        //         $this->redirect(route('register.otp'), navigate: true),
+        //     ]);
+        // }
+
+
+
+        if ($user && is_null($user->password)) {
+
+
+            session([
+                'registration.user_id' => $user->id,
+                'registration.email' => $user->email,
+            ]);
+
+            $otp = create_otp($user, OtpType::EMAIL_VERIFICATION, 10);
+
+            try {
+
+                Mail::to($user->email)->send(
+                    new OtpVerificationMail(
+                        $otp->code,
+                        $user->first_name,
+                        $otp->expires_at
+                    )
+                );
+
+                Log::info('OTP Email Verification sent for existing user', [
+                    'user_id' => $user->id,
+                    'email' => $user->email,
+                    'otp_code' => $otp->code,
+                    'expires_at' => $otp->expires_at,
+                ]);
+            } catch (\Exception $mailException) {
+                Log::error('Failed to send OTP email: ' . $mailException->getMessage());
+            }
+
+            throw ValidationException::withMessages([
+                $this->redirect(route('register.otp'), navigate: true),
+            ]);
+        }
+
+
 
         if (! $user || ! Auth::getProvider()->validateCredentials($user, ['password' => $this->password])) {
             RateLimiter::hit($this->throttleKey());
