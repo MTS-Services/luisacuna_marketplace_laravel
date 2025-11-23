@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Contracts;
 
-use App\Enums\GameStatus;
 use App\Models\Game;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;

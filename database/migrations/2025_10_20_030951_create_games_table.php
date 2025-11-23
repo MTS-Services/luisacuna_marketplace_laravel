@@ -20,16 +20,14 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->string('logo')->nullable();
             $table->string('status')->default(GameStatus::ACTIVE)->index();
-           
+
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
             $table->text('meta_keywords')->nullable();
-          
+
             $table->timestamps();
             $table->softDeletes();
             $this->addAdminAuditColumns($table);
-
-            // $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

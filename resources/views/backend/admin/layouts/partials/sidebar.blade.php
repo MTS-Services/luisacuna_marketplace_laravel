@@ -97,13 +97,13 @@
                         'permission' => 'category-list',
                     ],
                 
-                    [
-                        'name' => 'Servers',
-                        'route' => route('admin.gm.server.index'),
-                        'icon' => 'swords',
-                        'active' => 'server',
-                        'permission' => 'server-list',
-                    ],
+                    // [
+                    //     'name' => 'Servers',
+                    //     'route' => route('admin.gm.server.index'),
+                    //     'icon' => 'swords',
+                    //     'active' => 'server',
+                    //     'permission' => 'server-list',
+                    // ],
                 
                     [
                         'name' => 'Platforms',

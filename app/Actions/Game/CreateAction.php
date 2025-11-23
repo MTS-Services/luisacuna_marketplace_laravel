@@ -24,11 +24,9 @@ class CreateAction
       if ($data['logo']) {
         $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
         $fileName = $prefix . '-' . $data['logo']->getClientOriginalName();
-        $data['logo'] = Storage::disk('public')->putFileAs('game', $data['logo'], $fileName);
+        $data['logo'] = Storage::disk('public')->putFileAs('games', $data['logo'], $fileName);
       }
       $newData =  $this->interface->create($data);
-      event(new GameCreated($newData));
-
       return $newData->fresh();
     });
   }
