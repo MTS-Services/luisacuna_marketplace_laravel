@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Http\UploadedFile;
 use Exception;
+use Illuminate\Support\Facades\Storage;
 
 class SettingsService
 {
@@ -128,10 +129,10 @@ class SettingsService
     public function uploadFile(UploadedFile $file, string $key): ?string
     {
         try {
-            $filename = $key . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('settings', $filename, 'public');
 
-            return 'storage/' . $path;
+            $prefix = 'IMX' . '-' . $key . '-' . time();
+            $fileName = $prefix  . '-' . $file->getClientOriginalName();
+            return Storage::disk('public')->putFileAs('settings', $file, $fileName);
         } catch (Exception $e) {
             Log::error("File upload failed for {$key}: " . $e->getMessage());
             return null;

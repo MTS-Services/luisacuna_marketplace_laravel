@@ -9,6 +9,7 @@ use Livewire\Attributes\Computed;
 use App\Services\SettingsService;
 use App\Models\ApplicationSetting;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class GeneralSettings extends Component
 {
@@ -37,15 +38,23 @@ class GeneralSettings extends Component
     #[Validate('nullable|string')]
     public string $environment = '';
 
-    // Boolean/Radio Fields (using string for wire:model compatibility)
+    // Boolean/Radio Fields (string for wire:model compatibility)
     #[Validate('nullable|in:0,1')]
     public string $app_debug = '0';
 
     #[Validate('nullable|in:0,1')]
-    public string $debugbar = '0';
-
-    #[Validate('nullable|in:0,1')]
     public string $auto_translate = '0';
+
+    // Computed property for template reactivity
+    public function updatedAppDebug($value): void
+    {
+        $this->app_debug = (string) $value;
+    }
+
+    public function updatedAutoTranslate($value): void
+    {
+        $this->auto_translate = (string) $value;
+    }
 
     // File Uploads
     #[Validate('nullable|image|max:2048')]
@@ -95,7 +104,6 @@ class GeneralSettings extends Component
             'theme_mode',
             'environment',
             'app_debug',
-            'debugbar',
             'auto_translate',
             'app_logo',
             'favicon'
@@ -114,7 +122,6 @@ class GeneralSettings extends Component
 
         // Boolean fields (cast to string for radio buttons)
         $this->app_debug = (string)($settings['app_debug'] ?? '0');
-        $this->debugbar = (string)($settings['debugbar'] ?? '0');
         $this->auto_translate = (string)($settings['auto_translate'] ?? '0');
 
         // File paths
@@ -137,14 +144,19 @@ class GeneralSettings extends Component
                 'theme_mode' => $this->theme_mode,
                 'environment' => $this->environment,
                 'app_debug' => (int)$this->app_debug,
-                'debugbar' => (int)$this->debugbar,
                 'auto_translate' => (int)$this->auto_translate,
             ];
 
             // Handle logo upload
             if ($this->app_logo) {
                 $logoPath = $this->settingsService->uploadFile($this->app_logo, 'app_logo');
+                Log::info('Deleting old app logo: ' . $this->current_logo);
                 if ($logoPath) {
+                    Log::info('New app logo uploaded: ' . $logoPath);
+                    if (Storage::disk('public')->exists($this->current_logo)) {
+                        Log::info('Deleting old app logo after upload: ' . $this->current_logo);
+                        Storage::disk('public')->delete($this->current_logo);
+                    }
                     $data['app_logo'] = $logoPath;
                     $this->current_logo = $logoPath;
                 }
@@ -154,6 +166,9 @@ class GeneralSettings extends Component
             if ($this->favicon) {
                 $faviconPath = $this->settingsService->uploadFile($this->favicon, 'favicon');
                 if ($faviconPath) {
+                    if (Storage::disk('public')->exists($this->current_favicon)) {
+                        Storage::disk('public')->delete($this->current_favicon);
+                    }
                     $data['favicon'] = $faviconPath;
                     $this->current_favicon = $faviconPath;
                 }
@@ -164,12 +179,15 @@ class GeneralSettings extends Component
             if ($success) {
                 $this->reset(['app_logo', 'favicon']);
                 session()->flash('success', __('Settings saved successfully!'));
+                // $this->dispatch('settings-saved');
                 $this->redirectIntended(route('admin.as.general-settings'), navigate: true);
             } else {
                 session()->flash('error', __('Failed to save settings. Please try again.'));
             }
         } catch (\Exception $e) {
-            Log::error('Settings save error: ' . $e->getMessage());
+            Log::error('General settings save failed: ' . $e->getMessage(), [
+                'exception' => $e,
+            ]);
             session()->flash('error', __('An error occurred. Please try again.'));
         } finally {
             $this->saving = false;
@@ -193,7 +211,7 @@ class GeneralSettings extends Component
     #[Computed]
     public function hasDebugEnabled(): bool
     {
-        return $this->app_debug === '1' || $this->debugbar === '1';
+        return $this->app_debug === '1';
     }
 
     public function render()

@@ -511,7 +511,7 @@ if (!function_exists('log_error')) {
                     "URL" => request()->fullUrl(),
                     "Method" => request()->method(),
                     "IP" => request()->ip(),
-                    "Input" => request()->all()
+                    "Input"  => json_encode(request()->all(), JSON_UNESCAPED_UNICODE),
                 ]
             ]
         );
@@ -524,7 +524,7 @@ if (!function_exists('log_info')) {
         Log::info(
             'LOG INFO DATA: ' . [
                 "Info" => $i,
-                "Data" => $data
+                "Data" => json_encode($data, JSON_UNESCAPED_UNICODE)
             ]
         );
     }
