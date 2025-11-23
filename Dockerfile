@@ -40,6 +40,11 @@ WORKDIR /var/www
 # Copy Laravel app source
 COPY . .
 
+# Create .env file and set proper permissions
+RUN if [ -f .env.example ]; then cp .env.example .env; else touch .env; fi \
+    && chown www-data:www-data .env \
+    && chmod 664 .env
+
 # Change ownership of the entire application directory to the www-data user
 RUN chown -R www-data:www-data /var/www
 
