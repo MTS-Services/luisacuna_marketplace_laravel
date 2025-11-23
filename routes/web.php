@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\User\UserCreate;
 use App\Livewire\User\UserEdit;
 use App\Livewire\User\UserList;
+use Illuminate\Support\Facades\Redis;
 
 Route::post('language', [MultiLangController::class, 'langChange'])->name('lang.change');
 
