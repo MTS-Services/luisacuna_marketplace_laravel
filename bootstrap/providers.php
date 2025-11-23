@@ -7,5 +7,4 @@ return [
     App\Providers\FortifyServiceProvider::class,
     App\Providers\RedisServiceProvider::class,
     App\Providers\RepositoryServiceProvider::class,
-    App\Providers\RedisServiceProvider::class,
 ];
