@@ -18,7 +18,7 @@ class CategoryForm extends Form
     public string $status;
     public ?string $meta_title;
     public ?string $meta_description;
- 
+
     public $icon = null;
     // Track removed files
     public bool $remove_file = false;

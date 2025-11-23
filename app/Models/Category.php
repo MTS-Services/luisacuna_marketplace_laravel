@@ -12,7 +12,7 @@ use Laravel\Scout\Attributes\SearchUsingPrefix;
 
 class Category extends AuditBaseModel implements Auditable
 {
-    use  AuditableTrait;
+    use AuditableTrait;
 
 
     protected $fillable = [
@@ -33,24 +33,29 @@ class Category extends AuditBaseModel implements Auditable
     ];
 
     protected $hidden = [
-        'id',    
-      
+        'id',
+
     ];
     protected $casts = [
         'status' => CategoryStatus::class
     ];
 
-    // Scope    
+    // Scope
 
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     
-    public function games(): HasMany
+
+    public function games()
     {
-        return $this->hasMany(Game::class, 'category_id', 'id');
+        return $this->belongsToMany(
+            Game::class,
+            'game_categories',
+            'category_id',
+            'game_id'
+        );
     }
     public function achievements(): HasMany
     {

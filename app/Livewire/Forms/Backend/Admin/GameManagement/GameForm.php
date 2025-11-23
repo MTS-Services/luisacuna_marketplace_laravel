@@ -10,35 +10,24 @@ use Livewire\Form;
 
 class GameForm extends Form
 {
-    // 
+    //
 
     #[Locked]
 
     public ?int $id = null;
 
     public ?string $name;
-
-    public ?int $category_id;
-
-    public ?string $status;
-
-    public ?string $slug;
-
-    public  ?UploadedFile $logo = null;
-
-    public ?array $platforms = [];
-
+     public ?string $slug;
+    public array $categories = [];
     public ?array $servers = [];
-
-    public ?array $tags = [];
-
+    public ?array $platforms = [];
     public ?array $rarities = [];
+    public ?array $types = [];
+    public ?array $tags = [];
+    public ?string $status;
+    public  ?UploadedFile $icon = null;
 
     public ?string $description;
-
-    public ?bool $is_featured = false;
-
-    public ?bool $is_trending = false;
 
     public ?string $meta_title;
 
@@ -48,21 +37,21 @@ class GameForm extends Form
 
     public ?bool $remove_file = false;
 
-    public function rules() :array 
+    public function rules() :array
     {
         return [
             'name' => 'required|string|max:255',
             'slug' => $this->isUpdating() ? 'required|string|unique:games,slug,'.$this->id : 'required|string|unique:games,slug',
-            'category_id' => 'nullable|integer',
+            'categories' => 'required|array',
+            'types' => 'required|array',
+            'rarities' => 'required|array',
+            'platforms' => 'required|array',
+            'tags' => 'required|array',
+            'servers' => 'required|array',
+            'icon' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
+
             'status' => 'required|string|in:'.implode(',', array_column(GameStatus::cases(), 'value')),
-            'logo' => 'nullable|file|image|max:10240|mimes:jpg,jpeg,png',
-            'platforms' => 'nullable|array',
-            'servers' => 'nullable|array',
-            'rarities' => 'nullable|array',
-            'tags' => 'nullable|array',
             'description' => 'nullable|string',
-            'is_featured' => 'nullable|boolean',
-            'is_trending' => 'nullable|boolean',
             'meta_title' => 'nullable|string',
             'meta_description' => 'nullable|string',
             'meta_keywords' => 'nullable|string',
@@ -70,38 +59,39 @@ class GameForm extends Form
         ];
     }
 
-    public function setData(Game $data) :void 
+    public function setData(Game $data) :void
     {
         $this->id = $data->id;
-        $this->category_id = $data->category_id;
         $this->name = $data->name;
-        $this->status = $data->status->value;
-        $this->platforms = $data->platform;
+        $this->slug = $data->slug;
+        $this->icon = $data->icon;
+        $this->categories = $data->categories;
+        $this->types = $data->types;
+        $this->rarities = $data->rarities;
+        $this->platforms = $data->platforms;
         $this->servers = $data->servers;
         $this->tags = $data->tags;
+        $this->status = $data->status->value;
         $this->description = $data->description;
-        $this->is_featured = $data->is_featured;
-        $this->is_trending = $data->is_trending;
+
         $this->meta_title = $data->meta_title;
         $this->meta_description = $data->meta_description;
         $this->meta_keywords = $data->meta_keywords;
-        $this->slug = $data->slug;
-        $this->rarities = $data->rarities;
-        
+
     }
 
     public function reset(...$properties):void {
         $this->name = null;
-        $this->category_id = null;
-        $this->status = null;
-        $this->logo = null;
-        $this->platforms = [];
-        $this->servers = [];
+        $this->slug = null;
+        $this->icon = null;
+        $this->categories = [];
         $this->tags = [];
+        $this->servers = [];
+        $this->platforms = [];
         $this->rarities = [];
+        $this->types = [];
+        $this->status = null;
         $this->description = null;
-        $this->is_featured = null;
-        $this->is_trending = null;
         $this->meta_title = null;
         $this->meta_description = null;
         $this->meta_keywords = null;
@@ -110,5 +100,5 @@ class GameForm extends Form
     }
     public function isUpdating():bool {
         return isset($this->id);
-    }   
+    }
 }

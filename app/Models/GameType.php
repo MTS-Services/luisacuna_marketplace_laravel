@@ -1,42 +1,42 @@
 <?php
- 
+
 namespace App\Models;
- 
-use App\Models\AuditBaseModel;
+
+use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
- 
-class GameType extends AuditBaseModel implements Auditable
+
+class GameType extends BaseModel implements Auditable
 {
     use   AuditableTrait;
     //
- 
+
     protected $fillable = [
         'game_id',
         'type_id',
         'created_at',
         'updated_at'
     ];
- 
+
     protected $hidden = [
         //
-        'id',   
+        'id',
     ];
- 
+
     protected $casts = [
         //
     ];
- 
+
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
- 
+
      //
- 
+
      /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
- 
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -44,6 +44,6 @@ class GameType extends AuditBaseModel implements Auditable
             //
         ]);
     }
- 
- 
+
+
 }

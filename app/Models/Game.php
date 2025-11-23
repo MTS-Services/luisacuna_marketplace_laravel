@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
+use App\Models\Type;
 
 class Game extends AuditBaseModel implements Auditable
 {
@@ -19,16 +20,16 @@ class Game extends AuditBaseModel implements Auditable
         'name',
         'slug',
         'description',
-        
+
         'logo',
-        
+
         'meta_title',
         'meta_description',
         'meta_keywords',
         'status',
-       
-     
-       
+
+
+
         'sort_order',
 
 
@@ -59,15 +60,67 @@ class Game extends AuditBaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
     //
-    public function category()
+
+    public function categories()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        // 1. Pass the related model (Category::class)
+        // 2. Pass the name of your pivot table ('game_categories')
+        // 3. Pass the foreign key on the pivot table for THIS model ('game_id')
+        // 4. Pass the foreign key on the pivot table for the OTHER model ('category_id')
+        return $this->belongsToMany(
+            Category::class,
+            'game_categories',
+            'game_id',
+            'category_id'
+        );
     }
 
-    public function product()
+    public function servers()
     {
-        return $this->hasMany(Product::class, 'game_id', 'id');
+        return $this->belongsToMany(
+            Server::class,
+            'game_servers',
+            'game_id',
+            'server_id'
+        );
     }
+    public function platforms()
+    {
+        return $this->belongsToMany(
+            Platform::class,
+            'game_platforms',
+            'game_id',
+            'platform_id'
+        );
+    }
+    public function tags()
+    {
+        return $this->belongsToMany(
+            Tag::class,
+            'game_tags',
+            'game_id',
+            'tag_id'
+        );
+    }
+    public function types()
+    {
+        return $this->belongsToMany(
+            Type::class,
+            'game_types',
+            'game_id',
+            'type_id'
+        );
+    }
+    public function rarities()
+    {
+        return $this->belongsToMany(
+            Rarity::class,
+            'game_rarities',
+            'game_id',
+            'rarity_id'
+        );
+    }
+
 
 
 

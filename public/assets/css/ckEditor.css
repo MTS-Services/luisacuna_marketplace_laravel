@@ -22,6 +22,9 @@
 }
 
 /* Main Container */
+#tinymce{
+    padding: 0 !important;
+}
 .tox-tinymce {
     border: 2px solid transparent !important;
     border-radius: 20px !important;

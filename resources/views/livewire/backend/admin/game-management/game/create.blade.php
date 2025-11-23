@@ -1,4 +1,8 @@
 <section>
+
+    @push('styles')
+        <link rel="stylesheet" href="{{ asset('assets/css/ckEditor.css') }}">
+    @endpush
     <div class="glass-card rounded-2xl p-6 mb-6">
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game Create') }}</h2>
@@ -24,23 +28,6 @@
                     <x-ui.input-error :messages="$errors->get('form.logo')" class="mt-2" />
                 </div>
 
-                {{-- Category --}}
-                <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">
-                        {{ __('Category') }} <span class="text-red-500">*</span>
-                    </label>
-                    <x-ui.select wire:model="form.category_id"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-                        <option value="">{{ __('Select Category') }}</option>
-                        @foreach ($categories as $index => $value)
-                            <option value="{{ $index }}">{{ $value }}</option>
-                        @endforeach
-                    </x-ui.select>
-                    <x-ui.input-error :messages="$errors->get('form.game_category_id')" class="mt-2" />
-                </div>
-
-
-
                 {{-- Name --}}
 
                 <div>
@@ -52,8 +39,101 @@
                     <x-ui.input-error :messages="$errors->get('form.name')" class="mt-2" />
                 </div>
 
+                {{-- Slug --}}
 
+                <div>
+                    <x-ui.label class="block text-sm font-medium dark:text-gray-300 mb-2">
+                        {{ __('Slug') }} <span class="text-red-500">*</span>
+                    </x-ui.label>
+                    <x-ui.input type="text" wire:model="form.slug" placeholder="{{ __('Slug') }}" id="slug"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
+                    <x-ui.input-error :messages="$errors->get('form.slug')" class="mt-2" />
+                </div>
 
+                {{-- Category --}}
+                <div>
+                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">
+                        {{ __('Category') }} <span class="text-red-500">*</span>
+                    </label>
+                    <x-ui.select wire:model="form.categories" name="categories[]" :multiple="true" :tags="true"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600 select2">
+                        <option value="">{{ __('Select Category') }}</option>
+                        @foreach ($categories as $index => $value)
+                            <option value="{{ $index }}">{{ $value }}</option>
+                        @endforeach
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.categories')" class="mt-2" />
+                </div>
+                {{-- Platform --}}
+                <div>
+                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">
+                        {{ __('Platform') }} <span class="text-red-500">*</span>
+                    </label>
+                    <x-ui.select wire:model="form.platforms" :multiple="true" :tags="true"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                        <option value="">{{ __('Select Platform') }}</option>
+                        @foreach ($platforms as $index => $value)
+                            <option value="{{ $index }}">{{ $value }}</option>
+                        @endforeach
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.platforms')" class="mt-2" />
+                </div>
+                {{-- Server --}}
+                <div>
+                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">
+                        {{ __('Server') }} <span class="text-red-500">*</span>
+                    </label>
+                    <x-ui.select wire:model="form.servers" :multiple="true" :tags="true"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                        <option value="">{{ __('Select Server') }}</option>
+                        @foreach ($servers as $index => $value)
+                            <option value="{{ $index }}">{{ $value }}</option>
+                        @endforeach
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.servers')" class="mt-2" />
+                </div>
+                {{-- Rarity --}}
+                <div>
+                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">
+                        {{ __('Rarity') }} <span class="text-red-500">*</span>
+                    </label>
+                    <x-ui.select wire:model="form.servers" :multiple="true" :tags="true"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                        <option value="">{{ __('Select Rarity') }}</option>
+                        @foreach ($rarities as $index => $value)
+                            <option value="{{ $index }}">{{ $value }}</option>
+                        @endforeach
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.rarities')" class="mt-2" />
+                </div>
+                {{-- Type --}}
+                <div>
+                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">
+                        {{ __('Type') }} <span class="text-red-500">*</span>
+                    </label>
+                    <x-ui.select wire:model="form.types" :multiple="true" :tags="true"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                        <option value="">{{ __('Select Type') }}</option>
+                        @foreach ($types as $index => $value)
+                            <option value="{{ $index }}">{{ $value }}</option>
+                        @endforeach
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.types')" class="mt-2" />
+                </div>
+                {{-- Tag --}}
+                <div>
+                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">
+                        {{ __('Tag') }} <span class="text-red-500">*</span>
+                    </label>
+                    <x-ui.select wire:model="form.tags" :multiple="true" :tags="true"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                        <option value="">{{ __('Select Tag') }}</option>
+                        @foreach ($tags as $index => $value)
+                            <option value="{{ $index }}">{{ $value }}</option>
+                        @endforeach
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.tags')" class="mt-2" />
+                </div>
 
                 {{-- Status --}}
                 <div>
@@ -69,115 +149,6 @@
                     </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.status')" class="mt-2" />
                 </div>
-
-                {{-- Slug --}}
-
-                <div>
-                    <x-ui.label class="block text-sm font-medium dark:text-gray-300 mb-2">
-                        {{ __('Slug') }} <span class="text-red-500">*</span>
-                    </x-ui.label>
-                    <x-ui.input type="text" wire:model="form.slug" placeholder="{{ __('Slug') }}" id="slug"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
-                    <x-ui.input-error :messages="$errors->get('form.slug')" class="mt-2" />
-                </div>
-
-                {{-- Boolean Checkboxes --}}
-                <div class="flex gap-6 mt-3 items-center justify-start col-span-2  ">
-                    <x-ui.label class="flex items-center gap-2">
-                        <input type="checkbox" wire:model="form.is_featured"> {{ __('Featured') }}
-                    </x-ui.label>
-                    <x-ui.input-error :messages="$errors->get('form.is_featured')" class="mt-2" />
-                    <x-ui.label class="flex items-center gap-2">
-                        <input type="checkbox" wire:model="form.is_trending"> {{ __('Trending') }}
-                    </x-ui.label>
-                    <x-ui.input-error :messages="$errors->get('form.is_trending')" class="mt-2" />
-                </div>
-
-                {{-- Platforms Options --}}
-
-                <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">
-                        {{ __('Platform     ') }} <span class="text-red-500">*</span>
-                    </label>
-
-                    <select wire:model="form.platforms" name="platforms[]" multiple
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-
-                        <option disabled>{{ __('Select Platforms') }}</option>
-
-                        @foreach ($platforms as $id => $name)
-                            <option value="{{ $id }}">{{ $name }}</option>
-                        @endforeach
-                    </select>
-
-                    <x-ui.input-error :messages="$errors->get('form.platform')" class="mt-2" />
-                </div>
-                {{-- Servers Options --}}
-
-                <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">
-                        {{ __('Servers') }} <span class="text-red-500">*</span>
-                    </label>
-
-                    <select wire:model="form.servers" name="servers[]" multiple
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-
-                        <option disabled>{{ __('Select Platforms') }}</option>
-
-                        @foreach ($platforms as $id => $name)
-                            <option value="{{ $id }}">{{ $name }}</option>
-                        @endforeach
-                    </select>
-
-                    <x-ui.input-error :messages="$errors->get('form.platform')" class="mt-2" />
-                </div>
-
-                {{-- End Servers --}}
-
-
-                
-                {{-- Tags Options --}}
-
-                <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">
-                        {{ __('Tags') }} <span class="text-red-500">*</span>
-                    </label>
-
-                    <select wire:model="form.tags" name="tags[]" multiple
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-
-                        <option disabled>{{ __('Choose Tags') }}</option>
-
-                        @foreach ($tags as $key => $tag)
-                            <option value="{{ $tag['value'] }}">{{ $tag['label'] }}</option>
-                        @endforeach
-                    </select>
-
-                    <x-ui.input-error :messages="$errors->get('form.platform')" class="mt-2" />
-                </div>
-               
-                
-                {{-- Tags Options --}}
-
-                <div>
-                    <label class="block text-sm font-medium dark:text-gray-300 mb-2">
-                        {{ __('Rarities') }} <span class="text-red-500">*</span>
-                    </label>
-
-                    <select wire:model="form.rarities" name="rarities[]" multiple
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
-
-                        <option disabled>{{ __('Choose Rarity') }}</option>
-
-                        @foreach ($rarities as $id => $name)
-                            <option value="{{ $id }}">{{ $name }}</option>
-                        @endforeach
-                    </select>
-
-                    <x-ui.input-error :messages="$errors->get('form.platform')" class="mt-2" />
-                </div>
-               
-
                 {{-- Description --}}
 
                 <div class="col-span-2">
@@ -185,8 +156,8 @@
                         class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Description') }}</x-ui.label>
                     {{-- <x-ui.text-editor wire:model="form.description" rows="3"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></x-ui.text-editor> --}}
-                    <textarea wire:model="form.description" rows="3"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></textarea>
+                    <x-ui.text-editor model="form.description" id="description"
+                        placeholder="Enter game description..." :height="350" />
                     <x-ui.input-error :messages="$errors->get('form.description')" class="mt-2" />
                 </div>
 
@@ -202,8 +173,8 @@
                 <div class="col-span-2">
                     <x-ui.label
                         class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Meta Description') }}</x-ui.label>
-                    <textarea wire:model="form.meta_description" rows="3"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></textarea>
+                    <x-ui.text-editor model="form.meta_description" id="meta_description"
+                        placeholder="Enter your main content here..." :height="350" />
                     <x-ui.input-error :messages="$errors->get('form.meta_description')" class="mt-2" />
                 </div>
 
@@ -212,8 +183,9 @@
                         class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Meta Keywords') }}</x-ui.label>
                     {{-- <x-ui.textarea wire:model="form.meta_keywords" rows="2"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></x-ui.textarea> --}}
-                    <textarea wire:model="form.meta_keywords" rows="2"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></textarea>
+                    <x-ui.input type="text" wire:model="form.meta_keywords"
+                        placeholder="{{ __('Meta Keywords') }}"
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
                     <x-ui.input-error :messages="$errors->get('form.meta_keywords')" class="mt-2" />
                 </div>
 

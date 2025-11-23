@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Actions\Rarity;
+namespace App\Actions\Tag;
 
 use Illuminate\Support\Facades\DB;
-use App\Repositories\Contracts\RarityRepositoryInterface;
+use App\Repositories\Contracts\TagRepositoryInterface;
 use Illuminate\Support\Facades\Storage;
 
 class DeleteAction
 {
 
-    public function __construct(protected RarityRepositoryInterface $interface)
+    public function __construct(protected TagRepositoryInterface $interface)
     {
     }
 
@@ -30,8 +30,7 @@ class DeleteAction
                 throw new \Exception('Data not found');
             }
             if ($forceDelete) {
-                // Delete avatar
-                if ($findData->icon && Storage::disk('public')->exists($findData->icon)) {
+                if ($findData->icon) {
                     Storage::disk('public')->delete($findData->icon);
                 }
                 return $this->interface->forceDelete($id);

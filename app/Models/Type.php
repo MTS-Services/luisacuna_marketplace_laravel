@@ -2,17 +2,16 @@
 
 namespace App\Models;
 
-use App\Enums\RarityStatus;
+use App\Enums\TypeStatus;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Builder;
-use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class Rarity extends AuditBaseModel implements Auditable
+class Type extends AuditBaseModel implements Auditable
 {
-    use AuditableTrait, Searchable;
+    use   AuditableTrait , Searchable;
 
     protected $fillable = [
         'sort_order',
@@ -29,7 +28,6 @@ class Rarity extends AuditBaseModel implements Auditable
         'created_at',
         'deleted_at',
         'updated_at',
-        //here AuditColumns
     ];
 
     protected $hidden = [
@@ -39,7 +37,7 @@ class Rarity extends AuditBaseModel implements Auditable
     ];
 
     protected $casts = [
-        'status' => RarityStatus::class,
+        'status' => TypeStatus::class,
         'restored_at' => 'datetime',
     ];
 
@@ -51,15 +49,15 @@ class Rarity extends AuditBaseModel implements Auditable
     {
         return $this->belongsToMany(
             Game::class,
-            'game_rarities',
-            'rarity_id',
+            'game_types',
+            'type_id',
             'game_id'
         );
     }
 
-    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
-               End of RELATIONSHIPS
-    =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+                End of RELATIONSHIPS
+     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
     /* ================================================================
      |  Query Scopes
@@ -67,12 +65,12 @@ class Rarity extends AuditBaseModel implements Auditable
 
     public function scopeActive(Builder $query): Builder
     {
-        return $query->where('status', RarityStatus::ACTIVE);
+        return $query->where('status', TypeStatus::ACTIVE);
     }
 
     public function scopeInactive(Builder $query): Builder
     {
-        return $query->where('status', RarityStatus::INACTIVE);
+        return $query->where('status', TypeStatus::INACTIVE);
     }
 
     public function scopeFilter(Builder $query, array $filters): Builder
@@ -118,6 +116,7 @@ class Rarity extends AuditBaseModel implements Auditable
             //
         ]);
     }
+
 
 
 }
