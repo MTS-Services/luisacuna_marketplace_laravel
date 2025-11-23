@@ -6,25 +6,24 @@ use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class GameServer extends BaseModel implements Auditable
+class GameCategory extends BaseModel implements Auditable
 {
     use   AuditableTrait;
-    //
 
     protected $fillable = [
         'game_id',
-        'server_id',
-        'created_at',
+        'platform_id',
+
+        'created-at',
         'updated_at',
     ];
 
     protected $hidden = [
-        //
         'id'
     ];
 
     protected $casts = [
-        //
+ 
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

@@ -1,14 +1,18 @@
-<?php 
+<?php
 
 namespace App\Actions\Rank;
 
 use Illuminate\Support\Facades\DB;
 use App\Repositories\Contracts\RankRepositoryInterface;
+use Illuminate\Support\Facades\Storage;
 
-class DeleteAction{
+class DeleteAction
+{
 
-    public function __construct(protected RankRepositoryInterface $interface){}
-    
+    public function __construct(protected RankRepositoryInterface $interface)
+    {
+    }
+
 
 
     public function execute(int $id, bool $forceDelete = false, int $actionerId): bool
@@ -26,6 +30,9 @@ class DeleteAction{
                 throw new \Exception('Data not found');
             }
             if ($forceDelete) {
+                if ($findData->icon && Storage::disk('public')->exists($findData->icon)) {
+                    Storage::disk('public')->delete($findData->icon);
+                }
                 return $this->interface->forceDelete($id);
             }
             return $this->interface->delete($id, $actionerId);

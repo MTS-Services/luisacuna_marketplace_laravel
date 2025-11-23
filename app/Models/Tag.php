@@ -2,23 +2,25 @@
 
 namespace App\Models;
 
-use App\Enums\RarityStatus;
+use App\Enums\TagStatus;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Builder;
-use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class Rarity extends AuditBaseModel implements Auditable
+class Tag extends AuditBaseModel implements Auditable
 {
     use AuditableTrait, Searchable;
 
     protected $fillable = [
         'sort_order',
         'name',
+        'slug',
         'status',
         'icon',
+        'text_color',
+        'bg_color',
 
 
         'created_by',
@@ -29,17 +31,14 @@ class Rarity extends AuditBaseModel implements Auditable
         'created_at',
         'deleted_at',
         'updated_at',
-        //here AuditColumns
     ];
 
     protected $hidden = [
-        //
-
         'id',
     ];
 
     protected $casts = [
-        'status' => RarityStatus::class,
+        'status' => TagStatus::class,
         'restored_at' => 'datetime',
     ];
 
@@ -51,8 +50,8 @@ class Rarity extends AuditBaseModel implements Auditable
     {
         return $this->belongsToMany(
             Game::class,
-            'game_rarities',
-            'rarity_id',
+            'game_tags',
+            'tag_id',
             'game_id'
         );
     }
@@ -67,12 +66,12 @@ class Rarity extends AuditBaseModel implements Auditable
 
     public function scopeActive(Builder $query): Builder
     {
-        return $query->where('status', RarityStatus::ACTIVE);
+        return $query->where('status', TagStatus::ACTIVE);
     }
 
     public function scopeInactive(Builder $query): Builder
     {
-        return $query->where('status', RarityStatus::INACTIVE);
+        return $query->where('status', TagStatus::INACTIVE);
     }
 
     public function scopeFilter(Builder $query, array $filters): Builder
@@ -118,6 +117,7 @@ class Rarity extends AuditBaseModel implements Auditable
             //
         ]);
     }
-
-
 }
+
+
+

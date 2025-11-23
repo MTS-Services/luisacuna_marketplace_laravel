@@ -6,6 +6,7 @@ use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use App\Traits\HasTranslations;
 use App\Enums\CategoryStatus;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
@@ -74,9 +75,14 @@ class Category extends AuditBaseModel implements Auditable
         return $this->hasMany(CategoryLanguage::class, 'category_id', 'id');
     }
 
-    public function games(): HasMany
+    public function games(): BelongsToMany
     {
-        return $this->hasMany(Game::class, 'category_id', 'id');
+        return $this->belongsToMany(
+            Game::class,
+            'game_categories',
+            'category_id',
+            'game_id'
+        );
     }
 
     public function achievements(): HasMany

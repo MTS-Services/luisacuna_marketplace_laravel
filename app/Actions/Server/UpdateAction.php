@@ -30,7 +30,7 @@ class UpdateAction
                 throw new \Exception('Data not found');
             }
 
-            
+
                 $oldData = $findData->getAttributes();
                 $newData = $data;
 
@@ -47,7 +47,7 @@ class UpdateAction
                     $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
                     $fileName = $prefix . '-' . $uploadedIcon->getClientOriginalName();
 
-                    $newSingleIconPath = Storage::disk('public')->putFileAs('icons', $uploadedIcon, $fileName);
+                    $newSingleIconPath = Storage::disk('public')->putFileAs('servers', $uploadedIcon, $fileName);
 
                     $newData['icon'] = $newSingleIconPath;
 
@@ -63,7 +63,7 @@ class UpdateAction
                 }
                 unset($newData['remove_file']);
 
-               
+
             $updated = $this->interface->update($id, $newData);
 
             if (!$updated) {
