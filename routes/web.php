@@ -69,6 +69,24 @@ Route::get('/test-deepl', function () {
 });
 
 
+// Route::get('/test-redis-connection', function () {
+//     try {
+//         Redis::ping();
+//         return response()->json([
+//             'status' => 'success',
+//             'message' => 'Redis connection successful!',
+//             'redis_host' => config('database.redis.default.host'),
+//             'redis_port' => config('database.redis.default.port'),
+//         ]);
+//     } catch (\Exception $e) {
+//         return response()->json([
+//             'status' => 'error',
+//             'message' => 'Redis connection failed: ' . $e->getMessage(),
+//         ], 500);
+//     }
+// });
+
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/user.php';
 require __DIR__ . '/admin.php';
