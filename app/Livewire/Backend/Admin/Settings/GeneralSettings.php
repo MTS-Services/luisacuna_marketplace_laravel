@@ -39,8 +39,8 @@ class GeneralSettings extends Component
     public string $environment = '';
 
     // Boolean/Radio Fields (string for wire:model compatibility)
-    #[Validate('nullable|in:true,false,0,1')]
-    public bool $app_debug = false;
+    #[Validate('nullable|in:0,1')]
+    public string $app_debug = '0';
 
     #[Validate('nullable|in:0,1')]
     public string $auto_translate = '0';
