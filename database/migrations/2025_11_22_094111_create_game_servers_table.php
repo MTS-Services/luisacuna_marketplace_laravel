@@ -1,21 +1,18 @@
 <?php
 
-use App\Traits\AuditColumnsTrait;
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-     use AuditColumnsTrait;
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('game_servers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('game_id');      
+            $table->unsignedBigInteger('game_id');
             $table->unsignedBigInteger('server_id');
             $table->timestamps();
 

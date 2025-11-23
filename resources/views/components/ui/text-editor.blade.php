@@ -1,4 +1,12 @@
-@props(['model', 'id', 'placeholder' => '', 'height' => 400, 'disabled' => false, 'menubar' => false, 'readonly' => false])
+@props([
+    'model',
+    'id',
+    'placeholder' => '',
+    'height' => 400,
+    'disabled' => false,
+    'menubar' => false,
+    'readonly' => false,
+])
 
 @php
     $editorId = $id ?? 'tinymce-' . uniqid();
@@ -34,8 +42,8 @@
             readonly: {{ $disabled ? 'true' : 'false' }},
 
             content_style: `
-                    body { 
-                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; 
+                    body {
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
                         font-size: 14px;
                         padding: 10px;
                     }
@@ -79,7 +87,7 @@
             }
         });
     }
-}" x-init="initEditor()">
+}" x-init="initEditor().refresh();" x-cloak>
     <textarea id="{{ $editorId }}" class="tinymce-editor" style="width: 100%;" {{ $disabled ? 'disabled' : '' }}></textarea>
 </div>
 

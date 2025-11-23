@@ -12,7 +12,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Rarity extends AuditBaseModel implements Auditable
 {
-    use   AuditableTrait , Searchable;
+    use AuditableTrait, Searchable;
 
     protected $fillable = [
         'sort_order',
@@ -29,7 +29,7 @@ class Rarity extends AuditBaseModel implements Auditable
         'created_at',
         'deleted_at',
         'updated_at',
-      //here AuditColumns
+        //here AuditColumns
     ];
 
     protected $hidden = [
@@ -39,7 +39,7 @@ class Rarity extends AuditBaseModel implements Auditable
     ];
 
     protected $casts = [
-         'status' => RarityStatus::class,
+        'status' => RarityStatus::class,
         'restored_at' => 'datetime',
     ];
 
@@ -47,11 +47,19 @@ class Rarity extends AuditBaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     //
+    public function games()
+    {
+        return $this->belongsToMany(
+            Game::class,
+            'game_rarities',
+            'rarity_id',
+            'game_id'
+        );
+    }
 
-     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
-                End of RELATIONSHIPS
-     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+               End of RELATIONSHIPS
+    =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
     /* ================================================================
      |  Query Scopes
@@ -77,7 +85,7 @@ class Rarity extends AuditBaseModel implements Auditable
             );
     }
 
-    
+
     /* ================================================================
      |  Query Scopes
      ================================================================ */
@@ -91,7 +99,6 @@ class Rarity extends AuditBaseModel implements Auditable
     {
         return [
             'name' => $this->name,
-            'slug' => $this->slug,
             'status' => $this->status,
         ];
     }

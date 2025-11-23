@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace App\Models;
 
 use App\Enums\PlatformStatus;
@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Scout\Searchable;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use OwenIt\Auditing\Contracts\Auditable;
- 
+
 class Platform extends AuditBaseModel implements Auditable
 {
     use   AuditableTrait , Searchable;
- 
+
     protected $fillable = [
         'sort_order',
         'name',
@@ -22,7 +22,7 @@ class Platform extends AuditBaseModel implements Auditable
         'icon',
         'color',
 
-        
+
         'created_by',
         'updated_by',
         'deleted_by',
@@ -31,30 +31,41 @@ class Platform extends AuditBaseModel implements Auditable
         'created_at',
         'deleted_at',
         'updated_at',
-      //here AuditColumns 
+      //here AuditColumns
     ];
- 
+
     protected $hidden = [
         //
-        
+
         'id',
     ];
- 
+
     protected $casts = [
          'status' => PlatformStatus::class,
         'restored_at' => 'datetime',
     ];
- 
+
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
- 
+
      //
- 
+
      /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
- 
+
+
+    public function games()
+    {
+        return $this->belongsToMany(
+            Game::class,
+            'game_platforms',
+            'platform_id',
+            'game_id'
+        );
+    }
+
     /* ================================================================
      |  Query Scopes
      ================================================================ */
@@ -92,7 +103,6 @@ class Platform extends AuditBaseModel implements Auditable
     {
         return [
             'name' => $this->name,
-            'slug' => $this->slug,
             'status' => $this->status,
         ];
     }
@@ -112,6 +122,6 @@ class Platform extends AuditBaseModel implements Auditable
             //
         ]);
     }
- 
- 
+
+
 }

@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace App\Models;
 
 use App\Enums\RankStatus;
@@ -11,13 +11,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
- 
+
 class Rank extends AuditBaseModel implements Auditable
 {
     use   AuditableTrait;
     /** @use HasFactory<\Database\Factories\RankFactory> */
     use HasFactory;
- 
+
     protected $fillable = [
         'sort_order',
         'name',
@@ -28,30 +28,30 @@ class Rank extends AuditBaseModel implements Auditable
         'status',
 
         'created_by',
-        'updated_by', 
+        'updated_by',
         'deleted_by',
         'restored_by',
 
- 
-      //here AuditColumns 
+
+      //here AuditColumns
     ];
- 
+
     protected $hidden = [
         //
         'id',
 
     ];
- 
+
     protected $casts = [
         //
         'status'    => RankStatus::class,
         'restored_at' => 'datetime',
     ];
- 
+
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
- 
+
      public function achievements(): HasMany
      {
          return $this->hasMany(Achievement::class, 'rank_id', 'id');
@@ -60,11 +60,11 @@ class Rank extends AuditBaseModel implements Auditable
      {
          return $this->hasMany(UserRank::class, 'rank_level', 'id');
      }
- 
+
      /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
- 
+
     /* ================================================================
      |  Query Scopes
      ================================================================ */
@@ -102,7 +102,6 @@ class Rank extends AuditBaseModel implements Auditable
     {
         return [
             'name' => $this->name,
-            'slug' => $this->slug,
             'status' => $this->status,
         ];
     }
@@ -125,6 +124,6 @@ class Rank extends AuditBaseModel implements Auditable
             //
         ]);
     }
- 
- 
+
+
 }

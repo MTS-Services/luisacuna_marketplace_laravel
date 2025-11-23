@@ -83,8 +83,8 @@
                 </x-ui.button>
 
                 <x-ui.button type="accent" class="w-auto! py-2!">
-                    <span wire:loading.remove wire:target="save" class="text-white">{{ __('Create') }}</span>
-                    <span wire:loading wire:target="save" class="text-white">{{ __('Creating...') }}</span>
+                    <span wire:loading.remove wire:target="save" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Create') }}</span>
+                    <span wire:loading wire:target="save" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Creating...') }}</span>
                 </x-ui.button>
             </div>
         </form>

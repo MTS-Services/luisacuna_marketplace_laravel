@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace App\Models;
 
 use App\Enums\ServerStatus;
@@ -9,13 +9,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use OwenIt\Auditing\Contracts\Auditable;
- 
+
 class Server extends AuditBaseModel implements Auditable
 {
     use   AuditableTrait;
     /** @use HasFactory<\Database\Factories\GameServerFactory> */
     use HasFactory;
- 
+
     protected $fillable = [
         'sort_order',
         'name',
@@ -30,30 +30,38 @@ class Server extends AuditBaseModel implements Auditable
         'deleted_by',
         'restored_by',
         'restored_at',
-        //here AuditColumns 
+        //here AuditColumns
     ];
- 
+
     protected $hidden = [
         //
         'id',
     ];
- 
+
     protected $casts = [
         //
         'status' => ServerStatus::class,
         'restored_at' => 'datetime',
     ];
- 
+
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
- 
-     //
- 
+
+     public function games()
+    {
+        return $this->belongsToMany(
+            Game::class,
+            'game_servers',
+            'server_id',
+            'game_id'
+        );
+    }
+
      /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
- 
+
 
     public function scopeActive(Builder $query): Builder
     {

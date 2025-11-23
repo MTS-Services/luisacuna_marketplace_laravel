@@ -5,7 +5,6 @@ namespace App\Livewire\Backend\Admin\GameManagement\Game;
 
 
 use App\Enums\GameStatus;
-use App\Enums\GameTag as EnumsGameTag;
 use App\Livewire\Forms\Backend\Admin\GameManagement\GameForm;
 
 
@@ -14,6 +13,8 @@ use App\Services\PlatformService;
 use App\Services\GameService;
 use App\Services\RarityService;
 use App\Services\ServerService;
+use App\Services\TagService;
+use App\Services\TypeService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -23,96 +24,86 @@ class Create extends Component
 {
     use WithFileUploads, WithNotification;
 
-    protected GameService $service;
-
     public GameForm $form;
 
+    protected GameService $service;
     protected CategoryService $categoryService;
-
     protected ServerService $serverService;
-
     protected PlatformService $platformService;
-
     protected RarityService $rarityService;
+    protected TypeService $typeService;
+    protected TagService $tagService;
 
-    public function boot(GameService $service, CategoryService $categoryService, PlatformService $platformService, ServerService $serverService , RarityService $rarityService)
+
+
+    public function boot(GameService $service, CategoryService $categoryService, PlatformService $platformService, ServerService $serverService, RarityService $rarityService, TypeService $typeService, TagService $tagService)
     {
         $this->service = $service;
-
         $this->categoryService = $categoryService;
-
         $this->platformService = $platformService;
-
         $this->serverService = $serverService;
-
         $this->rarityService = $rarityService;
+        $this->typeService = $typeService;
+        $this->tagService = $tagService;
 
     }
     public function render()
     {
         $platforms = $this->getPlatforms();
-
         $servers = $this->getServers();
-
         $rarities = $this->getRarities();
+        $categories = $this->gameCategories();
+        $types = $this->getTypes();
+        $tags = $this->getTags();
         return view('livewire.backend.admin.game-management.game.create', [
 
             'statuses' => GameStatus::options(),
-
-            'categories' => $this->gameCategories(),
-
+            'categories' => $categories,
             'platforms' => $platforms,
-
             'servers' => $servers,
-
-            'tags' => EnumsGameTag::options(),
-
-            'rarities' => $rarities ,
+            'rarities' => $rarities,
+            'types' => $types,
+            'tags' => $tags,
         ]);
     }
 
-    public function getRarities(): array {
-
-      return  $this->rarityService->getActiveData()->pluck('name', 'id')->toArray();
-
+    public function getRarities(): array
+    {
+        return $this->rarityService->getActiveData()->pluck('name', 'id')->toArray();
     }
-    protected function getServers() : array
+    protected function getServers(): array
     {
         return $this->serverService->getActiveData()->pluck('name', 'id')->toArray();
     }
     protected function getPlatforms(): array
     {
-        return $this->platformService->getAllDatas()->pluck('name', 'id')->toArray();
+        return $this->platformService->getActiveData()->pluck('name', 'id')->toArray();
     }
     protected function gameCategories(): array
     {
         return $this->categoryService->getActiveData()->pluck('name', 'id')->toArray();
     }
+    protected function getTypes(): array
+    {
+        return $this->typeService->getActiveData()->pluck('name', 'id')->toArray();
+    }
+    protected function getTags(): array
+    {
+        return $this->tagService->getActiveData()->pluck('name', 'id')->toArray();
+    }
 
     public function save()
     {
-
-       $data =  $this->form->validate();
-
+        $data = $this->form->validate();
         try {
-
-           
-
             $data['created_by'] = admin()->id;
-
-           
-
             $this->service->createData($data);
-
             $this->resetForm();
-
-            $this->success('Game created successfully.');
-
+            $this->success('Data created successfully.');
             return $this->redirect(route('admin.gm.game.index'), navigate: true);
 
-        } catch (\Throwable $th) {
-
-            Log::error("Failed to create game: ", ['error' => $th->getMessage()]);
+        } catch (\Throwable $e) {
+            log_error($e);
             $this->error('Failed to create game.');
         }
     }

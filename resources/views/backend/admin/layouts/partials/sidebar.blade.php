@@ -19,7 +19,7 @@
                     x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition-all duration-200"
                     x-transition:leave-start="opacity-100 translate-x-0"
                     x-transition:leave-end="opacity-0 -translate-x-4">
-                    <h1 class="text-xl font-bold text-accent-content">{{ site_short_name() }}</h1>
+                    <h1 class="text-xl font-bold text-accent-content">{{ short_name() }}</h1>
                     <p class="text-text-secondary text-sm">{{ site_tagline() }}</p>
                 </div>
             </div>
@@ -97,13 +97,13 @@
                         'permission' => 'category-list',
                     ],
                 
-                    [
-                        'name' => 'Servers',
-                        'route' => route('admin.gm.server.index'),
-                        'icon' => 'swords',
-                        'active' => 'server',
-                        'permission' => 'server-list',
-                    ],
+                    // [
+                    //     'name' => 'Servers',
+                    //     'route' => route('admin.gm.server.index'),
+                    //     'icon' => 'swords',
+                    //     'active' => 'server',
+                    //     'permission' => 'server-list',
+                    // ],
                 
                     [
                         'name' => 'Platforms',
@@ -200,7 +200,7 @@
                         'name' => 'Achievements',
                         'route' => route('admin.rm.achievement.index'),
                         'icon' => 'user',
-                        'active' => 'achievement',                
+                        'active' => 'achievement',
                         'permission' => 'achievement-list',
                     ],
                     // [
@@ -265,10 +265,10 @@
             <x-backend.navlink type="dropdown" icon="wrench-screwdriver" name="Application Settings" :page_slug="$active"
                 :items="[
                     [
-                        'name' => 'Settings',
-                        'route' => '#',
+                        'name' => 'General Settings',
+                        'route' => route('admin.as.general-settings'),
                         'icon' => 'cog-8-tooth',
-                        'active' => '',
+                        'active' => 'general-settings',
                     ],
                     // [
                     //     'name' => 'Appearance',
@@ -318,12 +318,6 @@
                     //     'icon' => 'database',
                     //     'active' => 'settings-database',
                     // ],
-                    [
-                        'name' => 'General Settings',
-                        'route' => route('admin.as.general-settings'),
-                        'icon' => 'cog-8-tooth',
-                        'active' => 'general-settings',
-                    ],
                     // [
                     //     'name' => 'SMTP',
                     //     'route' => route('admin.app-settings.smtp'),

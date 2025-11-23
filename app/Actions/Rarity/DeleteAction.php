@@ -31,8 +31,8 @@ class DeleteAction
             }
             if ($forceDelete) {
                 // Delete avatar
-                if ($findData->avatar) {
-                    Storage::disk('public')->delete($findData->avatar);
+                if ($findData->icon && Storage::disk('public')->exists($findData->icon)) {
+                    Storage::disk('public')->delete($findData->icon);
                 }
                 return $this->interface->forceDelete($id);
             }

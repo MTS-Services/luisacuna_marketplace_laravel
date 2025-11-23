@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\User\UserCreate;
 use App\Livewire\User\UserEdit;
 use App\Livewire\User\UserList;
+use Illuminate\Support\Facades\Redis;
 
 Route::post('language', [MultiLangController::class, 'langChange'])->name('lang.change');
 
@@ -45,6 +46,48 @@ Route::middleware(['auth:web'])->group(function () {
 Route::post('/webhook/stripe', [PaymentController::class, 'stripeWebhook'])
     ->name('webhook.stripe');
 // ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+
+
+Route::get('/test-deepl', function () {
+    $translator = app(App\Services\DeepLTranslationService::class);
+
+    try {
+        $result = $translator->translate('Hello, how are you?', 'BN');
+
+        return response()->json([
+            'success' => true,
+            'original' => 'Hello, how are you?',
+            'translated' => $result,
+            'usage' => $translator->getUsage()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage()
+        ]);
+    }
+});
+
+
+Route::get('/test-redis-connection', function () {
+    try {
+        Redis::ping();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Redis connection successful!',
+            'redis_host' => config('database.redis.default.host'),
+            'redis_port' => config('database.redis.default.port'),
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Redis connection failed: ' . $e->getMessage(),
+        ], 500);
+    }
+});
+
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/user.php';
 require __DIR__ . '/admin.php';

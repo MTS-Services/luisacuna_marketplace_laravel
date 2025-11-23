@@ -159,8 +159,9 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/trash', 'trash')->name('trash');
         });
 
-        Route::controller(GeneralSettingsController::class)->prefix('general-settings')->group(function () {
-            Route::get('/', 'index')->name('general-settings');
+        Route::controller(ApplicationSettingController::class)->group(function () {
+            Route::get('/general', 'generalSettings')->name('general-settings');
+            Route::get('/database', 'databaseSettings')->name('database-settings');
         });
     });
 

@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repositories\Contracts\TagRepositoryInterface;
+use App\Repositories\Contracts\TypeRepositoryInterface;
+use App\Repositories\Eloquent\TagRepository;
+use App\Repositories\Eloquent\TypeRepository;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Eloquent\GameRepository;
 use App\Repositories\Eloquent\RankRepository;
@@ -185,6 +189,14 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             RarityRepositoryInterface::class,
             RaritytRepository::class
+        );
+        $this->app->bind(
+            TypeRepositoryInterface::class,
+            TypeRepository::class
+        );
+        $this->app->bind(
+            TagRepositoryInterface::class,
+            TagRepository::class
         );
     }
 
