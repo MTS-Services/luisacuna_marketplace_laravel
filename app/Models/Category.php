@@ -44,24 +44,15 @@ class Category extends AuditBaseModel implements Auditable
     /**
      * Define translation configuration for this model
      */
-    protected function getTranslationConfig(): array
+    public function getTranslationConfig(): array
     {
         return [
-            // Fields to translate from main model
             'fields' => ['name'],
-
-            // Relationship name
             'relation' => 'categoryLanguages',
-
-            // Translation model class
             'model' => CategoryLanguage::class,
-
-            // Foreign key in translation table
             'foreign_key' => 'category_id',
-
-            // Map model fields to translation table fields
             'field_mapping' => [
-                'name' => 'name', // model field => translation table field
+                'name' => 'name',
             ],
         ];
     }
@@ -102,6 +93,13 @@ class Category extends AuditBaseModel implements Auditable
     public function getAllTranslatedNames(): array
     {
         return $this->getAllTranslationsFor('name');
+    }
+
+    public function getTranslatedFields(): array
+    {
+        return [
+            'name' => $this->getAllTranslatedNames(),
+        ];
     }
 
     /* ================================================================
