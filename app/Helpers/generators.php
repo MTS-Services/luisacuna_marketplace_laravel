@@ -4,6 +4,7 @@
  * Custom Base62 encoder (PHP's base_convert only supports up to base 36)
  */
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
 if (!function_exists('base62_encode')) {
@@ -285,5 +286,47 @@ if (!function_exists('generate_uuid')) {
         $timestamp = str_pad(base62_encode(time() - 1609459200), 5, '0', STR_PAD_LEFT);
         $sequence = DB::table('uuid_sequences')->insertGetId(['created_at' => now()]);
         return $prefix . $timestamp . str_pad(base62_encode($sequence), 6, '0', STR_PAD_LEFT);
+    }
+}
+
+
+
+
+if (!function_exists('generate_username')) {
+    function generate_username(string $firstName, string $lastName): string
+    {
+
+        $firstName = Str::lower(Str::slug($firstName, ''));
+        $lastName = Str::lower(Str::slug($lastName, ''));
+        $baseUsername = substr($firstName . $lastName, 0, 40);
+
+        
+        if (strlen($baseUsername) < 3) {
+            $baseUsername = 'user' . $baseUsername;
+        }
+
+        
+        if (!DB::table('users')->where('username', $baseUsername)->exists()) {
+            return $baseUsername;
+        }
+
+        
+        $existingUsernames = DB::table('users')
+            ->where('username', 'LIKE', $baseUsername . '%')
+            ->pluck('username')
+            ->toArray();
+
+       
+        $maxSuffix = 0;
+        foreach ($existingUsernames as $username) {
+            
+            $suffix = str_replace($baseUsername, '', $username);
+            if (is_numeric($suffix)) {
+                $maxSuffix = max($maxSuffix, (int)$suffix);
+            }
+        }
+
+        $nextSuffix = $maxSuffix + 1;
+        return $baseUsername . $nextSuffix;
     }
 }

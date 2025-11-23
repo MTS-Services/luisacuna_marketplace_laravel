@@ -43,7 +43,7 @@
                         <li><a href="{{ route('buyer-protection') }}" wire:navigate
                                 class="hover:text-purple-400 transition text-text-secondary text-md">{{ __('Buyer Protection') }}</a>
                         </li>
-                        <li><a href="{{ route('register') }}" wire:navigate
+                        <li> <a href="{{ route('register.signUp') }}" wire:navigate
                                 class="hover:text-purple-400 transition text-text-secondary text-md">{{ __('Become a Seller') }}</a>
                         </li>
                         <li><a href="{{ route('how-to-sell') }}" wire:navigate

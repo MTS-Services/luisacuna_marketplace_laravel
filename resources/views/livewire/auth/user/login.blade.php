@@ -94,7 +94,7 @@
                     <!-- Sign up link -->
                     <div class="text-center text-sm text-text-white">
                        {{ __(' Don’t have an account?') }}
-                        <a href="{{ route('register') }}"
+                        <a href="{{ route('register.signUp') }}"
                             class="text-purple-400 hover:underline">{{ __('Sign up') }}</a>
                     </div>
                 </div>
