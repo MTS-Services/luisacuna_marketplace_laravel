@@ -31,5 +31,5 @@
             <livewire:backend.admin.game-management.category.index />
     @endswitch
 
-    <livewire:backend.admin.translation-modal />
+    <livewire:backend.admin.translation-manager />
 </x-admin::app>
