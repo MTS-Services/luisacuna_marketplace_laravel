@@ -167,7 +167,7 @@
                             <div class="space-y-3">
                                 <label
                                     class="flex items-center gap-4 p-4 rounded-xl cursor-pointer transition-all duration-200
-                                    {{ $app_debug == '1' ? 'bg-success/10 ring-2 ring-success/50' : 'bg-base-200/20 hover:bg-base-200' }}">
+                                    {{ $app_debug == '1' ? 'bg-success/10 ring-2 ring-success/50' : 'bg-bg-primary hover:bg-base-200' }}">
                                     <input type="radio" wire:model.live="app_debug" value="1"
                                         class="radio radio-success radio-sm" />
                                     <div class="flex-1">

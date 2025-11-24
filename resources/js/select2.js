@@ -77,7 +77,7 @@ Select2($);
  * Initialize Select2 on all select elements with .select2-target class
  */
 function initializeSelect2() {
-    const selects = document.querySelectorAll('select.select2-target:not(.select2-hidden-accessible)');
+    const selects = document.querySelectorAll('.select2:not(.not-select2)');
 
     selects.forEach(select => {
         try {
