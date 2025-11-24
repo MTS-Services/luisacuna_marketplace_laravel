@@ -8,6 +8,7 @@ use Livewire\Attributes\Validate;
 use Livewire\Attributes\Computed;
 use App\Services\SettingsService;
 use App\Models\ApplicationSetting;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -180,6 +181,7 @@ class GeneralSettings extends Component
                 $this->reset(['app_logo', 'favicon']);
                 session()->flash('success', __('Settings saved successfully!'));
                 // $this->dispatch('settings-saved');
+                Artisan::call('config:refresh');
                 $this->redirectIntended(route('admin.as.general-settings'), navigate: true);
             } else {
                 session()->flash('error', __('Failed to save settings. Please try again.'));
