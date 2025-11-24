@@ -106,6 +106,43 @@ class CategoryRepository implements CategoryRepositoryInterface
         return $this->model->search($query)->orderBy($sortField, $order)->get();
     }
 
+    // public function getGamesByCategory($fieldValue, $fieldName = 'id'): Collection
+    // {
+    //     return $this->model->where($fieldName, $fieldValue)->first()->games()->get();
+
+    // }
+
+
+    public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection
+    {
+        $category = $this->model->where($fieldName, $fieldValue)->first();
+
+        return $category?->games()->get() ?? new Collection();
+    }
+
+    // public function getPopularGameByTag($fieldValue, $fieldName = 'slug'): Collection
+    // {
+    //     $popular = $this->model->where($fieldName, $fieldValue)->first();
+
+    //     return $popular?->games()->get() ?? new Collection();
+    // }
+
+    // Repository এ
+    public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection
+    {
+        $category = $this->model->where('slug', $categorySlug)->first();
+
+        if (!$category) {
+            return new Collection();
+        }
+
+        return $category->games()
+            ->whereHas('tags', function ($query) use ($tagSlug) {
+                $query->where('slug', $tagSlug);
+            })
+            ->get();
+    }
+
 
     /* ================== ================== ==================
     *                    Data Modification Methods 
@@ -204,5 +241,4 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return $this->model->suspended()->orderBy($sortField, $order)->get();
     }
-
 }

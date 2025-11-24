@@ -2,16 +2,17 @@
 
 namespace App\Livewire\Frontend;
 
-use App\Services\GameService;
+use App\Models\Game;
 use Livewire\Component;
+use App\Services\CategoryService;
 
 class CurrencyComponent extends Component
 {
-    protected GameService $gameService;
+    protected CategoryService $category_service;
 
-    public function boot(GameService $gameService)
+    public function boot(CategoryService $category_service)
     {
-        $this->gameService = $gameService;
+        $this->category_service = $category_service;
     }
     public function render()
     {
@@ -25,18 +26,16 @@ class CurrencyComponent extends Component
             'to' => 2,
         ];
 
-
-        $allGames = $this->gameService->getAllDatas();
-
-        $games = $allGames->filter(function ($game) {
-            return !empty($game->currency) || isset($game->currency);
-        });
+        
+        $games = $this->category_service->getGamesByCategory('currency');
+        $popular_games = $this->category_service->getGamesByCategoryAndTag('currency', 'popular');
 
 
 
         return view('livewire.frontend.currency-component', [
             'pagination' => $pagination,
-            'games' => $games
+            'games' => $games,
+            'popular_games' => $popular_games
         ]);
     }
 }

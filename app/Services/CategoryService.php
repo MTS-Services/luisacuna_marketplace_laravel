@@ -37,6 +37,22 @@ class CategoryService
         return $this->interface->all($sortField, $order);
     }
 
+
+    public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection
+    {
+        return $this->interface->getGamesByCategory($fieldValue, $fieldName);
+    }
+
+    // public function getPopularGameByTag($fieldValue, $fieldName = 'slug'): Collection
+    // {
+    //     return $this->interface->getPopularGameByTag($fieldValue, $fieldName);
+    // }
+
+    public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection
+    {
+        return $this->interface->getGamesByCategoryAndTag($categorySlug, $tagSlug);
+    }
+
     public function findData($column_value, string $column_name = 'id'): ?Category
     {
         return $this->interface->find($column_value, $column_name);
@@ -137,7 +153,7 @@ class CategoryService
         if ($actionerId == null) {
             $actionerId = admin()->id;
         }
-      
+
         return $this->bulkAction->execute(ids: $ids, action: 'status', status: $status->value, actionerId: $actionerId);
     }
     /* ================== ================== ==================
