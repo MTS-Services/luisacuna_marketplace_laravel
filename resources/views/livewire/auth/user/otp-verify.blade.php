@@ -6,12 +6,101 @@
                 <h1 class="text-4xl font-medium text-white mb-4">{{ __('Confirm your Gmail') }}</h1>
                 <p class="text-gray-300">
                     {{ __('We have sent a code in an Email message to ex***@gmaol.co TO confirm your
-                                                                                account. enter your code.') }}
+                                                                                                    account. enter your code.') }}
                 </p>
             </div>
 
             <!-- Form -->
-            <form wire:submit="verifyOtp" class="space-y-6">
+            <div>
+                <!-- Form -->
+                <form wire:submit="verifyOtp" class="space-y-6">
+                    <!-- OTP Input -->
+                    <div>
+                        <x-ui.label value="Code" class="mb-1" />
+                        <x-ui.input type="number" placeholder="Enter your otp" wire:model="otp_code"
+                            class="border-none! bg-purple-300/10! bg-opacity-50!" />
+                        <x-ui.input-error :messages="$errors->get('otp_code')" />
+                    </div>
+
+                    <!-- Resend OTP with Countdown Timer -->
+                    <div class="text-right">
+                        <div x-data="{
+                            timeLeft: @entangle('remainingTime'),
+                            canResend: @entangle('canResend'),
+                            countdown: null,
+                        
+                            init() {
+                                if (this.timeLeft > 0) {
+                                    this.startCountdown();
+                                }
+                        
+                                // Livewire থেকে update আসলে countdown restart করুন
+                                this.$watch('timeLeft', (value) => {
+                                    if (value > 0 && !this.countdown) {
+                                        this.startCountdown();
+                                    }
+                                });
+                            },
+                        
+                            startCountdown() {
+                                if (this.countdown) {
+                                    clearInterval(this.countdown);
+                                }
+                        
+                                this.countdown = setInterval(() => {
+                                    if (this.timeLeft > 0) {
+                                        this.timeLeft--;
+                                    } else {
+                                        clearInterval(this.countdown);
+                                        this.countdown = null;
+                                        this.canResend = true;
+                                    }
+                                }, 1000);
+                            },
+                        
+                            formatTime(seconds) {
+                                const mins = Math.floor(seconds / 60);
+                                const secs = seconds % 60;
+                                return `${mins}:${secs.toString().padStart(2, '0')}`;
+                            }
+                        }" x-init="init()">
+                            
+                            <template x-if="canResend">
+                                <button type="button" wire:click.prevent="resendOtp"
+                                    class="group inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 transition-all duration-200 font-medium">
+                                    <svg class="w-4 h-4 group-hover:rotate-180 transition-transform duration-300"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                    </svg>
+                                    <span>{{ __("Don't receive OTP? Resend") }}</span>
+                                </button>
+                            </template>
+
+                           
+                            <template x-if="!canResend">
+                                <div class="inline-flex items-center gap-2 text-gray-400">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span class="text-sm">
+                                        {{ __('Resend OTP in') }}
+                                        <span class="font-bold text-purple-400 tabular-nums"
+                                            x-text="formatTime(timeLeft)"></span>
+                                    </span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Verify Button -->
+                    <x-ui.button class="w-full! py-2!" type="submit">
+                        {{ __('Verify') }}
+                    </x-ui.button>
+                </form>
+            </div>
+            {{-- <form wire:submit="verifyOtp" class="space-y-6">
                 <!-- Email Input -->
                 <div>
                     <x-ui.label value="Code" class="mb-1" />
@@ -29,7 +118,7 @@
                     <a href="{{ route('register.password') }}"
                         class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Verify') }}</a>
                 </x-ui.button>
-            </form>
+            </form> --}}
 
             <!-- Divider -->
             <div class="my-8 flex items-center">

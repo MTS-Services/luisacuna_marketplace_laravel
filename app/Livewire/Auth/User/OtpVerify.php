@@ -12,6 +12,7 @@ use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\RateLimiter;
 
 class OtpVerify extends Component
 {
@@ -21,11 +22,11 @@ class OtpVerify extends Component
     public $otp_code = '';
 
     public $email = '';
-    public $remaining_time = null;
-    public $formatted_time = '';
+    
+    public $canResend = true;
+    public $remainingTime = 0;
 
     protected UserService $service;
-
 
     public function boot(UserService $service)
     {
@@ -34,7 +35,6 @@ class OtpVerify extends Component
 
     public function mount()
     {
-
         if (!session()->has('registration.user_id')) {
             Log::error('OTP Verify Mount: User ID not found in session');
             session()->flash('error', 'Session expired. Please start registration again.');
@@ -48,38 +48,36 @@ class OtpVerify extends Component
             'email' => $this->email
         ]);
 
-
-        $this->loadRemainingTime();
+        $this->checkRateLimit();
     }
 
-
-
-    public function loadRemainingTime()
+    /**
+     * Rate limit check 
+     */
+    public function checkRateLimit()
     {
-        try {
+        $userId = session('registration.user_id');
+        $rateLimitKey = 'otp-resend:' . $userId;
 
-            $user = $this->service->getDataById(session('registration.user_id'));
-
-            if ($user) {
-                $this->remaining_time = get_otp_remaining_time($user, OtpType::EMAIL_VERIFICATION);
-                $this->formatted_time = format_otp_time($this->remaining_time);
-
-                Log::info('OTP Remaining Time Loaded', [
-                    'remaining_time' => $this->remaining_time,
-                    'formatted_time' => $this->formatted_time
-                ]);
-            }
-        } catch (\Exception $e) {
-            Log::error('Failed to load OTP time: ' . $e->getMessage());
+        if (RateLimiter::tooManyAttempts($rateLimitKey, 3)) {
+            $this->remainingTime = RateLimiter::availableIn($rateLimitKey);
+            $this->canResend = false;
+            
+            Log::info('Rate limit active', [
+                'user_id' => $userId,
+                'remaining_seconds' => $this->remainingTime
+            ]);
+        } else {
+            $this->remainingTime = 0;
+            $this->canResend = true;
         }
     }
-
 
     public function verifyOtp()
     {
         $user = User::find(session('registration.user_id'));
 
-        if (! $user) {
+        if (!$user) {
             Log::error('OTP Verify Failed: User not found', [
                 'user_id' => session('registration.user_id'),
             ]);
@@ -90,12 +88,12 @@ class OtpVerify extends Component
             );
         }
 
-        $otp = \App\Models\OtpVerification::where('verifiable_id', $user->id)
+        $otp = OtpVerification::where('verifiable_id', $user->id)
             ->where('type', OtpType::EMAIL_VERIFICATION)
             ->latest()
             ->first();
 
-        if (! $otp) {
+        if (!$otp) {
             Log::error('OTP Verify Failed: OTP record not found', [
                 'user_id' => $user->id,
             ]);
@@ -107,7 +105,6 @@ class OtpVerify extends Component
         }
 
         if (now()->greaterThan($otp->expires_at)) {
-
             Log::error('OTP Verify Failed: OTP Expired', [
                 'user_id' => $user->id,
                 'expires_at' => $otp->expires_at
@@ -118,12 +115,11 @@ class OtpVerify extends Component
                 message: 'Your OTP has expired. Please request a new one.'
             );
         }
-        if ($otp->code != $this->otp_code) {
 
+        if ($otp->code != $this->otp_code) {
             Log::error('OTP Verify Failed: Invalid OTP', [
                 'email' => $user->email,
                 'input_otp' => $this->otp_code,
-                'actual_otp' => $otp->code
             ]);
 
             return $this->error(
@@ -131,9 +127,11 @@ class OtpVerify extends Component
                 message: 'The OTP you entered is incorrect.'
             );
         }
+
         $user->update([
             'email_verified_at' => now(),
         ]);
+        
         $otp->delete();
 
         Log::info('OTP Verify Success', [
@@ -147,18 +145,28 @@ class OtpVerify extends Component
     public function resendOtp()
     {
         try {
-            // $user = User::find(session('registration.user_id'));
-
+            // Step 1: User validation
             $user = $this->service->getDataById(session('registration.user_id'));
 
             if (!$user) {
-                $this->error('User not found.');
-                return;
+                return $this->error('User not found.');
             }
 
+            // Step 2: Rate limiting check 
+            $rateLimitKey = 'otp-resend:' . $user->id;
+
+            if (RateLimiter::tooManyAttempts($rateLimitKey, 3)) {
+                $seconds = RateLimiter::availableIn($rateLimitKey);
+                $this->remainingTime = $seconds;
+                $this->canResend = false;
+                
+                return $this->error("Too many attempts. Please wait {$seconds} seconds.");
+            }
+
+            // Step 3: OTP creation
             $otp = create_otp($user, OtpType::EMAIL_VERIFICATION, 10);
 
-            // Send OTP via email
+            // Step 4: Send email
             Mail::to($user->email)->send(
                 new OtpVerificationMail(
                     $otp->code,
@@ -167,18 +175,30 @@ class OtpVerify extends Component
                 )
             );
 
-            Log::info('OTP Resent', [
+            // Step 5: Hit rate limiter (5 minutes = 300 seconds)
+            RateLimiter::hit($rateLimitKey, 300);
+
+            // Step 6: Update countdown state
+            $this->remainingTime = 300;
+            $this->canResend = false;
+
+            // Step 7: Logging (without OTP code)
+            Log::info('OTP Resent Successfully', [
                 'user_id' => $user->id,
                 'email' => $user->email,
-                'otp_code' => $otp->code,
                 'expires_at' => $otp->expires_at
             ]);
 
-            $this->loadRemainingTime();
-            $this->success('New OTP sent successfully. Check your email.');
+            return $this->success('New OTP sent successfully. Check your email.');
+            
         } catch (\Exception $e) {
-            Log::error('Failed to resend OTP: ' . $e->getMessage());
-            $this->error('Failed to resend OTP. Please try again.');
+            Log::error('Failed to resend OTP', [
+                'user_id' => session('registration.user_id'),
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return $this->error('Failed to resend OTP. Please try again.');
         }
     }
 
