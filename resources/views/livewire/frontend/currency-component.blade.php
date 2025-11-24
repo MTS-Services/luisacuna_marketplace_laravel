@@ -55,22 +55,7 @@
             <div class="swiper-wrapper py-10">
                 @foreach ($popular_games as $popular_game)
                     <div class="swiper-slide">
-                        <div class="bg-bg-primary p-6 rounded-2xl">
-                            <div class="images w-full h-60 sm:h-48 md:h-68">
-                                <img src="{{ storage_url($popular_game->logo) }}" alt="{{ $popular_game->name }}"
-                                    class="w-full h-full object-cover rounded-lg">
-                            </div>
-                            <div class="">
-                                <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                                    {{ $popular_game->name }}</h3>
-                                <p class="text-pink-500 mb-8">{{ __('50 offer') }}</p>
-                                <a href="{{ route('game.index', ['categorySlug' => 'currency', 'gameSlug' => 'exilecon-official-trailer']) }}"
-                                    wire:navigate>
-                                    <x-ui.button
-                                        class="px-4! py-2! sm:px-6! sm:py-3!">{{ __('See Seller List') }}</x-ui.button>
-                                </a>
-                            </div>
-                        </div>
+                        <x-currency-card :data="$popular_game" />
                     </div>
                 @endforeach
 
@@ -91,22 +76,7 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-6">
             @foreach ($games as $game)
-                <div class="bg-bg-primary p-6 rounded-2xl">
-                    <div class="images w-full h-60 sm:h-48 md:h-68">
-                        <img src="{{ storage_url($game->logo) }}" alt="{{ $game->name }}"
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="">
-                        <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                            {{ $game->name }}</h3>
-                        <p class="text-pink-500 mb-8">{{ __('50 offer') }}</p>
-                        <a href="{{ route('game.index', ['categorySlug' => 'currency', 'gameSlug' => 'exilecon-official-trailer']) }}"
-                            wire:navigate>
-                            <x-ui.button
-                                class="px-4! py-2! sm:px-6! sm:py-3!">{{ __('See Seller List') }}</x-ui.button>
-                        </a>
-                    </div>
-                </div>
+                <x-currency-card :data="$game" />
             @endforeach
         </div>
         <div class="pagination mb-24">

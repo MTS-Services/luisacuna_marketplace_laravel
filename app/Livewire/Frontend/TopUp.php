@@ -3,11 +3,38 @@
 namespace App\Livewire\Frontend;
 
 use Livewire\Component;
+use App\Services\CategoryService;
 
 class TopUp extends Component
 {
+    protected CategoryService $category_service;
+
+    public function boot(CategoryService $category_service)
+    {
+        $this->category_service = $category_service;
+    }
     public function render()
     {
-        return view('livewire.frontend.top-up');
+        // $topUps = $this->category_service->getGamesByCategory('topUp');
+        // $popular_topUps = $this->category_service->getGamesByCategoryAndTag('topUp', 'popular');
+        // $newly_topUps = $this->category_service->getGamesByCategoryAndTag('topUp', 'newly');
+
+        
+        $allTopUps = $this->category_service->getGamesByCategory('topUp');
+
+        $topUps = $allTopUps;
+        $popular_topUps = $allTopUps->filter(function ($game) {
+            return $game->tags->contains('slug', 'popular');
+        });
+        $newly_topUps = $allTopUps->filter(function ($game) {
+            return $game->tags->contains('slug', 'newly');
+        });
+
+
+        return view('livewire.frontend.top-up', [
+            'topUps' => $topUps,
+            'popular_topUps' => $popular_topUps,
+            'newly_topUps' => $newly_topUps
+        ]);
     }
 }

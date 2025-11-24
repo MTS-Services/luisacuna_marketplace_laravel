@@ -27,8 +27,14 @@ class CurrencyComponent extends Component
         ];
 
         
-        $games = $this->category_service->getGamesByCategory('currency');
-        $popular_games = $this->category_service->getGamesByCategoryAndTag('currency', 'popular');
+        // $games = $this->category_service->getGamesByCategory('currency');
+        // $popular_games = $this->category_service->getGamesByCategoryAndTag('currency', 'popular');
+
+        $allGames = $this->category_service->getGamesByCategory('currency');
+        $games = $allGames;
+        $popular_games = $allGames->filter(function ($game) {
+            return $game->tags->contains('slug', 'popular');
+        });
 
 
 
