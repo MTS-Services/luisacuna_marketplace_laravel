@@ -3,11 +3,32 @@
 namespace App\Livewire\Frontend;
 
 use Livewire\Component;
+use App\Services\CategoryService;
 
 class Accounts extends Component
 {
+    protected CategoryService $category_service;
+
+    public function boot(CategoryService $category_service)
+    {
+        $this->category_service = $category_service;
+    }
     public function render()
     {
-        return view('livewire.frontend.accounts');
+
+        // $accounts = $this->category_service->getGamesByCategory('accounts');
+        // $popular_accounts = $this->category_service->getGamesByCategoryAndTag('accounts', 'popular');
+
+
+        $allaccounts = $this->category_service->getGamesByCategory('accounts');
+
+        $accounts = $allaccounts;
+        $popular_accounts = $allaccounts->filter(function ($game) {
+            return $game->tags->contains('slug', 'popular');
+        });
+        return view('livewire.frontend.accounts', [
+            'accounts' => $accounts,
+            'popular_accounts' => $popular_accounts
+        ]);
     }
 }
