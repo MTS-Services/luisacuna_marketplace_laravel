@@ -4,7 +4,7 @@ namespace App\Repositories\Contracts;
 
 use App\Models\Category;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 interface CategoryRepositoryInterface
 {
@@ -32,13 +32,9 @@ interface CategoryRepositoryInterface
 
 
 
-    // public function getGamesByCategory($fieldValue, $fieldName = 'id'): Collection;
-    // app/Repositories/Interfaces/CategoryRepositoryInterface.php
+    // public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection;
 
-    public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection;
-
-    // public function getPopularGameByTag($fieldValue, $fieldName = 'slug'): Collection;
-    public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection;
+    // public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection;
 
 
     /* ================== ================== ==================
