@@ -2,11 +2,8 @@
 
 namespace App\Livewire\Auth\User;
 
-use App\Models\User;
 use App\Enums\OtpType;
 use Livewire\Component;
-use App\Services\UserService;
-use App\Models\OtpVerification;
 use App\Mail\OtpVerificationMail;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Log;
@@ -18,53 +15,65 @@ class OtpVerify extends Component
 {
     use WithNotification;
 
-    #[Validate('required|string')]
+    #[Validate('required|string|size:6')]
     public $otp_code = '';
 
     public $email = '';
-    
     public $canResend = true;
     public $remainingTime = 0;
-
-    protected UserService $service;
-
-    public function boot(UserService $service)
-    {
-        $this->service = $service;
-    }
+    public $isVerified = false;
 
     public function mount()
     {
-        if (!session()->has('registration.user_id')) {
-            Log::error('OTP Verify Mount: User ID not found in session');
-            session()->flash('error', 'Session expired. Please start registration again.');
+        // Check session expiry
+        if (!session()->has('registration.started_at') || 
+            now()->gt(session('registration.expires_at'))) {
+            session()->forget('registration');
+            $this->error('Registration session expired. Please start again.');
             return $this->redirect(route('register.signUp'), navigate: true);
         }
 
-        $this->email = session('registration.email', '');
+        // Check if previous steps completed
+        if (!session()->has('registration.email')) {
+            $this->error('Please complete the previous steps.');
+            return $this->redirect(route('register.emailVerify'), navigate: true);
+        }
+
+        // Check if OTP already verified
+        if (session()->has('registration.otp_verified') && session('registration.otp_verified') === true) {
+            $this->isVerified = true;
+            Log::info('OTP Already Verified', [
+                'email' => session('registration.email')
+            ]);
+        }
+
+        $this->email = session('registration.email');
+        
+        if (!$this->isVerified) {
+            // Only check for OTP code if not verified yet
+            if (!session()->has('registration.otp_code')) {
+                $this->error('Please request OTP first.');
+                return $this->redirect(route('register.emailVerify'), navigate: true);
+            }
+            $this->checkRateLimit();
+        }
 
         Log::info('OTP Verify Mount Success', [
-            'user_id' => session('registration.user_id'),
-            'email' => $this->email
+            'email' => $this->email,
+            'is_verified' => $this->isVerified
         ]);
-
-        $this->checkRateLimit();
     }
 
-    /**
-     * Rate limit check 
-     */
-    public function checkRateLimit()
+    private function checkRateLimit()
     {
-        $userId = session('registration.user_id');
-        $rateLimitKey = 'otp-resend:' . $userId;
+        $rateLimitKey = 'otp-resend:' . session('registration.email');
 
         if (RateLimiter::tooManyAttempts($rateLimitKey, 3)) {
             $this->remainingTime = RateLimiter::availableIn($rateLimitKey);
             $this->canResend = false;
             
             Log::info('Rate limit active', [
-                'user_id' => $userId,
+                'email' => session('registration.email'),
                 'remaining_seconds' => $this->remainingTime
             ]);
         } else {
@@ -75,39 +84,19 @@ class OtpVerify extends Component
 
     public function verifyOtp()
     {
-        $user = User::find(session('registration.user_id'));
-
-        if (!$user) {
-            Log::error('OTP Verify Failed: User not found', [
-                'user_id' => session('registration.user_id'),
-            ]);
-
-            return $this->error(
-                title: 'User Not Found',
-                message: 'No account found.'
-            );
+        // If already verified, redirect to next step
+        if ($this->isVerified || (session()->has('registration.otp_verified') && session('registration.otp_verified') === true)) {
+            $this->success('Email already verified. Proceeding to next step.');
+            return $this->redirect(route('register.password'), navigate: true);
         }
 
-        $otp = OtpVerification::where('verifiable_id', $user->id)
-            ->where('type', OtpType::EMAIL_VERIFICATION)
-            ->latest()
-            ->first();
+        $this->validate();
 
-        if (!$otp) {
-            Log::error('OTP Verify Failed: OTP record not found', [
-                'user_id' => $user->id,
-            ]);
-
-            return $this->error(
-                title: 'OTP Not Found',
-                message: 'OTP record not found.'
-            );
-        }
-
-        if (now()->greaterThan($otp->expires_at)) {
+        // Check if OTP expired
+        if (now()->gt(session('registration.otp_expires_at'))) {
             Log::error('OTP Verify Failed: OTP Expired', [
-                'user_id' => $user->id,
-                'expires_at' => $otp->expires_at
+                'email' => $this->email,
+                'expires_at' => session('registration.otp_expires_at')
             ]);
 
             return $this->error(
@@ -116,9 +105,10 @@ class OtpVerify extends Component
             );
         }
 
-        if ($otp->code != $this->otp_code) {
+        // Verify OTP
+        if (session('registration.otp_code') != $this->otp_code) {
             Log::error('OTP Verify Failed: Invalid OTP', [
-                'email' => $user->email,
+                'email' => $this->email,
                 'input_otp' => $this->otp_code,
             ]);
 
@@ -128,32 +118,42 @@ class OtpVerify extends Component
             );
         }
 
-        $user->update([
-            'email_verified_at' => now(),
+        // Mark OTP as verified
+        session([
+            'registration.otp_verified' => true,
+            'registration.otp_verified_at' => now(),
+            'registration.step' => 'otp_completed',
+            'registration.expires_at' => now()->addHours(24)
         ]);
-        
-        $otp->delete();
+
+        // Clear OTP data from session (security)
+        session()->forget(['registration.otp_code', 'registration.otp_expires_at']);
+
+        // Clear rate limiter after successful verification
+        $rateLimitKey = 'otp-resend:' . $this->email;
+        RateLimiter::clear($rateLimitKey);
+
+        $this->isVerified = true;
 
         Log::info('OTP Verify Success', [
-            'email' => $user->email,
-            'user_id' => $user->id,
+            'email' => $this->email,
         ]);
 
+        $this->success('Email verified successfully');
         return $this->redirect(route('register.password'), navigate: true);
     }
 
     public function resendOtp()
     {
+        // If already verified, show message and redirect
+        if ($this->isVerified || (session()->has('registration.otp_verified') && session('registration.otp_verified') === true)) {
+            $this->success('Email already verified. Proceeding to next step.');
+            return $this->redirect(route('register.password'), navigate: true);
+        }
+
         try {
-            // Step 1: User validation
-            $user = $this->service->getDataById(session('registration.user_id'));
-
-            if (!$user) {
-                return $this->error('User not found.');
-            }
-
-            // Step 2: Rate limiting check 
-            $rateLimitKey = 'otp-resend:' . $user->id;
+            // Rate limiting check 
+            $rateLimitKey = 'otp-resend:' . session('registration.email');
 
             if (RateLimiter::tooManyAttempts($rateLimitKey, 3)) {
                 $seconds = RateLimiter::availableIn($rateLimitKey);
@@ -163,43 +163,62 @@ class OtpVerify extends Component
                 return $this->error("Too many attempts. Please wait {$seconds} seconds.");
             }
 
-            // Step 3: OTP creation
-            $otp = create_otp($user, OtpType::EMAIL_VERIFICATION, 10);
+            // Generate new OTP
+            $otpCode = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+            $expiresAt = now()->addMinutes(10);
 
-            // Step 4: Send email
-            Mail::to($user->email)->send(
+            // Send email
+            Mail::to($this->email)->send(
                 new OtpVerificationMail(
-                    $otp->code,
-                    $user->first_name,
-                    $otp->expires_at
+                    $otpCode,
+                    session('registration.first_name'),
+                    $expiresAt
                 )
             );
 
-            // Step 5: Hit rate limiter (5 minutes = 300 seconds)
+            // Update session
+            session([
+                'registration.otp_code' => $otpCode,
+                'registration.otp_expires_at' => $expiresAt,
+            ]);
+
+            // Hit rate limiter (5 minutes = 300 seconds)
             RateLimiter::hit($rateLimitKey, 300);
 
-            // Step 6: Update countdown state
+            // Update countdown state
             $this->remainingTime = 300;
             $this->canResend = false;
 
-            // Step 7: Logging (without OTP code)
             Log::info('OTP Resent Successfully', [
-                'user_id' => $user->id,
-                'email' => $user->email,
-                'expires_at' => $otp->expires_at
+                'email' => $this->email,
+                'expires_at' => $expiresAt
             ]);
 
             return $this->success('New OTP sent successfully. Check your email.');
             
         } catch (\Exception $e) {
             Log::error('Failed to resend OTP', [
-                'user_id' => session('registration.user_id'),
+                'email' => session('registration.email'),
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
 
             return $this->error('Failed to resend OTP. Please try again.');
         }
+    }
+
+    public function proceedToNextStep()
+    {
+        if ($this->isVerified || (session()->has('registration.otp_verified') && session('registration.otp_verified') === true)) {
+            return $this->redirect(route('register.password'), navigate: true);
+        }
+
+        $this->error('Please verify your email first.');
+    }
+
+    public function back()
+    {
+        return $this->redirect(route('register.emailVerify'), navigate: true);
     }
 
     public function render()
