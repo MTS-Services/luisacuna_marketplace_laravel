@@ -11,6 +11,13 @@
     </title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fluxAppearance()
+      <script>
+        document.addEventListener('livewire:initialized', function() {
+            Livewire.on('notify', (event) => {
+                showAlert(event.type, event.message);
+            });
+        });
+    </script>
     @stack('styles')
 </head>
 

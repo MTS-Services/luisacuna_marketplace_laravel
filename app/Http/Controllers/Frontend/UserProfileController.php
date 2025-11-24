@@ -9,7 +9,11 @@ class UserProfileController extends Controller
 {
     protected $masterView = 'frontend.pages.userProfile';
 
-    public function profile()
+    public function index()
+    {
+        return view($this->masterView);
+    }
+    public function shop()
     {
         return view($this->masterView);
     }
