@@ -129,6 +129,12 @@ class CategoryRepository implements CategoryRepositoryInterface
             ->get();
     }
 
+    public function getCategoryByGames($fieldValue, $fieldName = 'slug'): Collection
+    {
+        return $this->model->with('games')->whereHas('games', function ($query) use ($fieldValue, $fieldName) {
+            $query->where($fieldName, $fieldValue);
+        })->get();
+    }
 
 
     /* ================== ================== ==================

@@ -32,9 +32,9 @@ interface CategoryRepositoryInterface
 
 
 
-    // public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection;
+    public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection;
 
-    // public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection;
+    public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection;
 
 
     /* ================== ================== ==================
