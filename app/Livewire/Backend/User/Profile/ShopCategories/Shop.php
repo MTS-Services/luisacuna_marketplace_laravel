@@ -14,6 +14,7 @@ class Shop extends Component
 
     public function render()
     {
+
         return view('livewire.backend.user.profile.shop-categories.shop');
     }
 }

@@ -7,7 +7,7 @@ use Livewire\Component;
 class ProfileComponent extends Component
 {
 
-    public $activeTab = 'currency';
+    // public $activeTab = 'currency';
     public $reviewItem = 'all';
 
     public $activeInnerMenu = 'shop';

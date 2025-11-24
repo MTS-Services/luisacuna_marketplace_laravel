@@ -13,4 +13,8 @@ class UserProfileController extends Controller
     {
         return view($this->masterView);
     }
+    public function shop()
+    {
+        return view($this->masterView);
+    }
 }

@@ -42,10 +42,14 @@
         </div>
         <div class="border-b border-zinc-700 mt-6 mb-4"></div>
         <div class="flex gap-6">
-            <button wire:navigate wire:click="switchInnerMenu('shop')"
-                class="{{ $activeInnerMenu === 'shop' ? 'border-b-3 border-zinc-500' : '' }} group">
-                <span class="relative z-10 text-text-white ">{{ __('Shop') }}</span>
-            </button>
+            <a wire:navigate href="{{ route('profile.index', ['username' => user()->username, 'tab' => 'shop']) }}"
+                class="group border-b-3 
+                 {{ Route::current()->parameter('tab') === 'shop' ? 'border-zinc-500' : 'border-transparent' }}">
+                <span class="relative z-10 text-text-white">
+                    {{ __('Shop') }}
+                </span>
+            </a>
+
             <button wire:navigate wire:click="switchInnerMenu('reviews')"
                 class="{{ $activeInnerMenu === 'reviews' ? 'border-b-3 border-zinc-500' : '' }} group">
                 <span class="relative z-10 text-text-white">{{ __('Reviews') }}</span>
@@ -59,9 +63,9 @@
     {{-- about --}}
     <div class="min-h-70"></div>
     {{-- shop --}}
-    @if ($activeInnerMenu === 'shop')
-        
-    @endif
+    {{-- @if ($activeInnerMenu === 'shop')
+        <livewire:backend.user.profile.shop-categories.shop />
+    @endif --}}
     @if ($activeInnerMenu === 'reviews')
         <section class="container mx-auto bg-bg-primary p-10! rounded-2xl mb-10">
             <div class="">
@@ -118,8 +122,7 @@
                         <div class="">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/user_profile/Subtract.png') }}"
-                                        alt="">
+                                    <img src="{{ asset('assets/images/user_profile/Subtract.png') }}" alt="">
                                     <p class="font-semibold text-2xl">{{ __('Items') }}</p>
                                     <span class="border-l border-text-white self-stretch"></span>
                                     <p class="text-xs">{{ __('Yeg***') }}</p>
@@ -131,11 +134,11 @@
                             <div class="mt-2">
                                 <span class="font-normal text-base">
                                     {{ __('Did not respond in over 24 hours to the messages, even though "average delivery
-                                                                                                                                                                                    time" is
-                                                                                                                                                                                    3
-                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
-                                                                                                                                                                                    the
-                                                                                                                                                                                    gift nor reply to the messages.') }}
+                                                                                                                                                                                                                                                                                                                                    time" is
+                                                                                                                                                                                                                                                                                                                                    3
+                                                                                                                                                                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
+                                                                                                                                                                                                                                                                                                                                    the
+                                                                                                                                                                                                                                                                                                                                    gift nor reply to the messages.') }}
                                 </span>
                             </div>
                         </div>
@@ -144,8 +147,7 @@
                         <div class="">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/user_profile/Subtract.png') }}"
-                                        alt="">
+                                    <img src="{{ asset('assets/images/user_profile/Subtract.png') }}" alt="">
                                     <p class="font-semibold text-2xl">{{ __('Items') }}</p>
                                     <span class="border-l border-text-white self-stretch"></span>
                                     <p class="text-xs">{{ __('Yeg***') }}</p>
@@ -157,11 +159,11 @@
                             <div class="mt-2">
                                 <span class="font-normal text-base">
                                     {{ __('Did not respond in over 24 hours to the messages, even though "average delivery
-                                                                                                                                                                                    time" is
-                                                                                                                                                                                    3
-                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
-                                                                                                                                                                                    the
-                                                                                                                                                                                    gift nor reply to the messages.') }}
+                                                                                                                                                                                                                                                                                                                                    time" is
+                                                                                                                                                                                                                                                                                                                                    3
+                                                                                                                                                                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
+                                                                                                                                                                                                                                                                                                                                    the
+                                                                                                                                                                                                                                                                                                                                    gift nor reply to the messages.') }}
                                 </span>
                             </div>
                         </div>
@@ -233,8 +235,7 @@
                         <div class="">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/user_profile/Subtract.png') }}"
-                                        alt="">
+                                    <img src="{{ asset('assets/images/user_profile/Subtract.png') }}" alt="">
                                     <p class="font-semibold text-2xl">{{ __('Items') }}</p>
                                     <span class="border-l border-text-white self-stretch"></span>
                                     <p class="text-xs">{{ __('Yeg***') }}</p>
@@ -246,11 +247,11 @@
                             <div class="mt-2">
                                 <span class="font-normal text-base">
                                     {{ __('Did not respond in over 24 hours to the messages, even though "average delivery
-                                                                                                                                                                                    time" is
-                                                                                                                                                                                    3
-                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
-                                                                                                                                                                                    the
-                                                                                                                                                                                    gift nor reply to the messages.') }}
+                                                                                                                                                                                                                                                                                                                                    time" is
+                                                                                                                                                                                                                                                                                                                                    3
+                                                                                                                                                                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
+                                                                                                                                                                                                                                                                                                                                    the
+                                                                                                                                                                                                                                                                                                                                    gift nor reply to the messages.') }}
                                 </span>
                             </div>
                         </div>
@@ -374,8 +375,7 @@
                         <div class="">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/user_profile/Subtract.png') }}"
-                                        alt="">
+                                    <img src="{{ asset('assets/images/user_profile/Subtract.png') }}" alt="">
                                     <p class="font-semibold text-2xl">{{ __('Items') }}</p>
                                     <span class="border-l border-zinc-700 self-stretch"></span>
                                     <p class="text-xs">{{ __('Yeg***') }}</p>
@@ -387,11 +387,11 @@
                             <div class="mt-2">
                                 <span class="font-normal text-base">
                                     {{ __('Did not respond in over 24 hours to the messages, even though "average delivery
-                                                                                                                                                                                    time" is
-                                                                                                                                                                                    3
-                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
-                                                                                                                                                                                    the
-                                                                                                                                                                                    gift nor reply to the messages.') }}
+                                                                                                                                                                                                                                                                                                                                    time" is
+                                                                                                                                                                                                                                                                                                                                    3
+                                                                                                                                                                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
+                                                                                                                                                                                                                                                                                                                                    the
+                                                                                                                                                                                                                                                                                                                                    gift nor reply to the messages.') }}
                                 </span>
                             </div>
                         </div>
@@ -400,8 +400,7 @@
                         <div class="">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/user_profile/Subtract.png') }}"
-                                        alt="">
+                                    <img src="{{ asset('assets/images/user_profile/Subtract.png') }}" alt="">
                                     <p class="font-semibold text-2xl">{{ __('Items') }}</p>
                                     <span class="border-l border-zinc-700 self-stretch"></span>
                                     <p class="text-xs">{{ __('Yeg***') }}</p>
@@ -413,11 +412,11 @@
                             <div class="mt-2">
                                 <span class="font-normal text-base">
                                     {{ __('Did not respond in over 24 hours to the messages, even though "average delivery
-                                                                                                                                                                                    time" is
-                                                                                                                                                                                    3
-                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
-                                                                                                                                                                                    the
-                                                                                                                                                                                    gift nor reply to the messages.') }}
+                                                                                                                                                                                                                                                                                                                                    time" is
+                                                                                                                                                                                                                                                                                                                                    3
+                                                                                                                                                                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
+                                                                                                                                                                                                                                                                                                                                    the
+                                                                                                                                                                                                                                                                                                                                    gift nor reply to the messages.') }}
                                 </span>
                             </div>
                         </div>
@@ -426,8 +425,7 @@
                         <div class="">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <img src="{{ asset('assets/images/user_profile/Subtract.png') }}"
-                                        alt="">
+                                    <img src="{{ asset('assets/images/user_profile/Subtract.png') }}" alt="">
                                     <p class="font-semibold text-2xl">{{ __('Items') }}</p>
                                     <span class="border-l border-zinc-700 self-stretch"></span>
                                     <p class="text-xs">{{ __('Yeg***') }}</p>
@@ -439,11 +437,11 @@
                             <div class="mt-2">
                                 <span class="font-normal text-base">
                                     {{ __('Did not respond in over 24 hours to the messages, even though "average delivery
-                                                                                                                                                                                    time" is
-                                                                                                                                                                                    3
-                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
-                                                                                                                                                                                    the
-                                                                                                                                                                                    gift nor reply to the messages.') }}
+                                                                                                                                                                                                                                                                                                                                    time" is
+                                                                                                                                                                                                                                                                                                                                    3
+                                                                                                                                                                                                                                                                                                                                    hours, and being online on Fortnite. Was friended for over 48 hours and did not send
+                                                                                                                                                                                                                                                                                                                                    the
+                                                                                                                                                                                                                                                                                                                                    gift nor reply to the messages.') }}
                                 </span>
                             </div>
                         </div>
@@ -481,8 +479,8 @@
                         <div class="">
                             <p class="text-base text-text-white">
                                 {{ __('At PixelStoreLAT, we bring you the best digital deals, game keys, and in-game items —
-                                                                                                                                                                fast, safe, and hassle-free. Trusted by thousands of gamers worldwide with 97% positive
-                                                                                                                                                                reviews. Level up your experience with us today!') }}
+                                                                                                                                                                                                                                                                                                fast, safe, and hassle-free. Trusted by thousands of gamers worldwide with 97% positive
+                                                                                                                                                                                                                                                                                                reviews. Level up your experience with us today!') }}
                             </p>
                         </div>
                     </div>

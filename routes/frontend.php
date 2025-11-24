@@ -45,7 +45,7 @@ Route::controller(FrontendController::class)->group(function () {
 // Route::get('/users/{username}', [UserProfileController::class, 'profile'])->name('profile');
 Route::controller(UserProfileController::class)->name('profile.')->prefix('profile')->group(function () {
     Route::get('/{username}', 'index')->name('index');
-    Route::get('/create', 'create')->name('create');
+    Route::get('/shop', 'shop')->name('shop');
     Route::get('/edit/{id}', 'edit')->name('edit');
     Route::get('/view/{id}', 'view')->name('view');
     Route::get('/trash', 'trash')->name('trash');
