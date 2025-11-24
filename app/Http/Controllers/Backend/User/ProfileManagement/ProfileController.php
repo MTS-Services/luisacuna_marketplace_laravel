@@ -7,5 +7,11 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-    //
+    protected $masterView = 'backend.user.pages.profile';
+
+    public function index()
+    {
+        return view($this->masterView);
+    }
 }
+

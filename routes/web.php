@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Redis;
 
 Route::post('language', [MultiLangController::class, 'langChange'])->name('lang.change');
 
+
+
 // Webhook routes (no auth)
 Route::post('/webhooks/stripe', [PaymentController::class, 'stripeWebhook'])->name('webhooks.stripe');
 Route::post('/webhooks/coinbase', [PaymentController::class, 'coinbaseWebhook'])->name('webhooks.coinbase');

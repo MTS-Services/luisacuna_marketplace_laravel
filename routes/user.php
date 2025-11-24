@@ -7,7 +7,7 @@ use App\Livewire\Backend\User\Components\Profile;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/users/{username}', [UserProfileController::class, 'profile'])->middleware('auth:web')->name('profile');
+
 // , 'userVerify'
 Route::middleware(['auth','userVerify'])->prefix('user')->name('user.')->group(function () {
 
