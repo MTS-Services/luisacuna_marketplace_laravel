@@ -2,12 +2,9 @@
 
 namespace App\Livewire\Auth\User\Register;
 
-use create;
 use App\Models\User;
 use App\Enums\OtpType;
 use Livewire\Component;
-use Illuminate\Support\Str;
-use App\Services\UserService;
 use App\Mail\OtpVerificationMail;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Log;
@@ -16,97 +13,78 @@ use App\Traits\Livewire\WithNotification;
 
 class SetEmail extends Component
 {
-
     use WithNotification;
 
-
-    protected UserService $service;
     #[Validate('required|email|unique:users,email')]
     public $email = '';
 
-
-    public function boot(UserService $service)
-    {
-        $this->service = $service;
-    }
-
     public function mount()
     {
-        if (!session()->has('registration.first_name') || !session()->has('registration.last_name')) {
-            $this->error('First name and last name are required.');
+        // Check session expiry
+        if (!session()->has('registration.started_at') || 
+            now()->gt(session('registration.expires_at'))) {
+            session()->forget('registration');
+            $this->error('Registration session expired. Please start again.');
             return $this->redirect(route('register.signUp'), navigate: true);
         }
+
+        // Check if previous step completed
+        if (!session()->has('registration.first_name') || 
+            !session()->has('registration.last_name')) {
+            $this->error('Please complete the previous step.');
+            return $this->redirect(route('register.signUp'), navigate: true);
+        }
+
+        // Load existing email if available
+        $this->email = session('registration.email', '');
     }
 
     public function save()
     {
-
-
-        $firstName = session('registration.first_name');
-        $lastName = session('registration.last_name');
-
-        $validate = $this->validate();
+        $this->validate();
 
         try {
-            $user = $this->service->createData([
-                'first_name' => $firstName,
-                'last_name' => $lastName,
-                'username' => generate_username($firstName, $lastName),
-                'email' => $this->email,
-                'avatar' => null,
-            ]);
+            // Generate OTP
+            $otpCode = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+            $expiresAt = now()->addMinutes(10);
 
-            $otp = create_otp($user, OtpType::EMAIL_VERIFICATION, 10);
-            try {
+            // Send OTP via email
+            Mail::to($this->email)->send(
+                new OtpVerificationMail(
+                    $otpCode,
+                    session('registration.first_name'),
+                    $expiresAt
+                )
+            );
 
-                // Send OTP via email
-                Mail::to($user->email)->send(
-                    new OtpVerificationMail(
-                        $otp->code,
-                        $user->first_name,
-                        $otp->expires_at
-                    )
-                );
-
-
-
-                Log::info('OTP Email Verification', [
-                    'user_id' => $user->id,
-                    'email' => $user->email,
-                    'otp_code' => $otp->code,
-                    'expires_at' => $otp->expires_at,
-                ]);
-            } catch (\Exception $mailException) {
-                Log::error('Failed to send OTP email: ' . $mailException->getMessage());
-            }
-
+            // Store email and OTP in session
             session([
-                'registration.user_id' => $user->id,
                 'registration.email' => $this->email,
+                'registration.otp_code' => $otpCode,
+                'registration.otp_expires_at' => $expiresAt,
+                'registration.step' => 'email_completed',
+                'registration.expires_at' => now()->addHours(24)
             ]);
 
-            session()->forget([
-                'registration.first_name',
-                'registration.last_name'
+            Log::info('OTP Email Sent', [
+                'email' => $this->email,
+                'otp_code' => $otpCode,
+                'expires_at' => $expiresAt,
             ]);
-            $this->dispatch('User Created');
-            $this->success('User created successfully');
+
+            $this->success('Verification code sent to your email');
             return $this->redirect(route('register.otp'), navigate: true);
+
         } catch (\Exception $e) {
-            Log::error('Failed to create user:' . $e->getMessage());
-            $this->error('Failed to create user.');
-            
+            Log::error('Failed to send OTP email: ' . $e->getMessage());
+            $this->error('Failed to send verification code. Please try again.');
         }
     }
-
-
 
     public function back()
     {
         return $this->redirect(route('register.signUp'), navigate: true);
     }
-
-
 
     public function render()
     {

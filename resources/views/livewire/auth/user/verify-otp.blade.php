@@ -94,7 +94,7 @@
 
             <div class="text-center text-text-white text-sm">
                 {{ __('Don\'t have an account?') }}
-                <a href="{{ route('register') }}" class="text-zinc-400 hover:underline">{{__('Sign up')}}</a>
+                <a href="{{ route('register.signUp') }}" class="text-zinc-400 hover:underline">{{__('Sign up')}}</a>
             </div>
         </form>
     </div>
