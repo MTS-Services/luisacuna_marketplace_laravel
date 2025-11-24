@@ -38,20 +38,16 @@ class CategoryService
     }
 
 
-    public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection
-    {
-        return $this->interface->getGamesByCategory($fieldValue, $fieldName);
-    }
-
-    // public function getPopularGameByTag($fieldValue, $fieldName = 'slug'): Collection
+    // public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection
     // {
-    //     return $this->interface->getPopularGameByTag($fieldValue, $fieldName);
+    //     return $this->interface->getGamesByCategory($fieldValue, $fieldName);
     // }
 
-    public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection
-    {
-        return $this->interface->getGamesByCategoryAndTag($categorySlug, $tagSlug);
-    }
+
+    // public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection
+    // {
+    //     return $this->interface->getGamesByCategoryAndTag($categorySlug, $tagSlug);
+    // }
 
     public function findData($column_value, string $column_name = 'id'): ?Category
     {

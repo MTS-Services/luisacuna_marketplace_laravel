@@ -16,8 +16,7 @@ class GameRepository implements GameRepositoryInterface
         protected Game $model,
         protected PlatformRepositoryInterface $platformInterface,
         protected GamePlatform $gamePlatforms,
-    ) {
-    }
+    ) {}
 
 
     /* ================== ================== ==================
@@ -111,6 +110,26 @@ class GameRepository implements GameRepositoryInterface
         return $this->model->search($query)->orderBy($sortField, $order)->get();
     }
 
+
+
+    public function getGamesByCategory($fieldValue, $fieldName = 'slug', $searchTerm = null): Collection
+    {
+        $query = $this->model
+            ->whereHas('categories', function ($q) use ($fieldValue, $fieldName) {
+                $q->where($fieldName, $fieldValue);
+            });
+
+        if (!empty($searchTerm)) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', "%{$searchTerm}%")
+                    ->orWhere('slug', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        return $query->get();
+    }
+
+    
 
     /* ================== ================== ==================
      *                    Data Modification Methods

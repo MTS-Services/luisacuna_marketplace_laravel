@@ -5,30 +5,36 @@ namespace App\Livewire\Frontend;
 use App\Models\Game;
 use Livewire\Component;
 use App\Services\CategoryService;
+use App\Services\GameService;
 
 class CurrencyComponent extends Component
 {
-    protected CategoryService $category_service;
+    public $search = '';
 
-    public function boot(CategoryService $category_service)
+    protected CategoryService $category_service;
+    protected GameService $game_service;
+
+    public function boot(CategoryService $category_service, GameService $game_service)
     {
         $this->category_service = $category_service;
+        $this->game_service = $game_service;
     }
     public function render()
     {
 
         $pagination = [
             'total' => 100,
-            'per_page' => 10,
+            'per_page' => 2,
             'current_page' => 1,
-            'last_page' => 11,
+            'last_page' => 10,
             'from' => 1,
             'to' => 2,
         ];
 
-        
-        // $games = $this->category_service->getGamesByCategory('currency');
-        // $popular_games = $this->category_service->getGamesByCategoryAndTag('currency', 'popular');
+
+        if (!empty($this->search)) {
+            $allGames = $this->game_service->getGamesByCategory($this->search, 'slug', $this->search);
+        }
 
         $allGames = $this->category_service->getGamesByCategory('currency');
         $games = $allGames;

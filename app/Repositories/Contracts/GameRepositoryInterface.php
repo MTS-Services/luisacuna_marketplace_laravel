@@ -9,7 +9,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 interface GameRepositoryInterface
 {
 
-   /* ================== ================== ==================
+    /* ================== ================== ==================
     *                      Find Methods
     * ================== ================== ================== */
 
@@ -28,6 +28,10 @@ interface GameRepositoryInterface
     public function count(array $filters = []): int;
 
     public function search(string $query, string $sortField = 'created_at', $order = 'desc'): Collection;
+
+    public function getGamesByCategory($fieldValue, $fieldName = 'slug', $searchTerm = null): Collection;
+
+
 
     /* ================== ================== ==================
     *                    Data Modification Methods

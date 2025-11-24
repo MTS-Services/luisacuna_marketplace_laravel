@@ -106,12 +106,6 @@ class CategoryRepository implements CategoryRepositoryInterface
         return $this->model->search($query)->orderBy($sortField, $order)->get();
     }
 
-    // public function getGamesByCategory($fieldValue, $fieldName = 'id'): Collection
-    // {
-    //     return $this->model->where($fieldName, $fieldValue)->first()->games()->get();
-
-    // }
-
 
     public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection
     {
@@ -120,14 +114,6 @@ class CategoryRepository implements CategoryRepositoryInterface
         return $category?->games()->get() ?? new Collection();
     }
 
-    // public function getPopularGameByTag($fieldValue, $fieldName = 'slug'): Collection
-    // {
-    //     $popular = $this->model->where($fieldName, $fieldValue)->first();
-
-    //     return $popular?->games()->get() ?? new Collection();
-    // }
-
-    // Repository এ
     public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection
     {
         $category = $this->model->where('slug', $categorySlug)->first();
@@ -142,6 +128,7 @@ class CategoryRepository implements CategoryRepositoryInterface
             })
             ->get();
     }
+
 
 
     /* ================== ================== ==================
