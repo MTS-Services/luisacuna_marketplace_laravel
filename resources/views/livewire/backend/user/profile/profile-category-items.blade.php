@@ -250,6 +250,17 @@
                     </div>
                 </div>
             </div>
+            <div class="flex justify-end items-center space-x-3  p-4 m-10">
+                <button class="text-text-primary text-sm hover:text-zinc-500">{{ __('Previous') }}</button>
+
+                <button class="bg-zinc-600 text-white text-sm px-3 py-1 rounded">1</button>
+                <button class="text-text-primary text-sm hover:text-zinc-500">2</button>
+                <button class="text-text-primary text-sm hover:text-zinc-500">3</button>
+                <button class="text-text-primary text-sm hover:text-zinc-500">4</button>
+                <button class="text-text-primary text-sm hover:text-zinc-500">5</button>
+
+                <button class="text-text-primary text-sm hover:text-zinc-500">{{ __('Next') }}</button>
+            </div>
         </section>
     @else
         {{-- select game --}}
@@ -593,6 +604,18 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="flex justify-end items-center space-x-3  p-4 m-10">
+            <button class="text-text-primary text-sm hover:text-zinc-500">{{ __('Previous') }}</button>
+
+            <button class="bg-zinc-600 text-white text-sm px-3 py-1 rounded">1</button>
+            <button class="text-text-primary text-sm hover:text-zinc-500">2</button>
+            <button class="text-text-primary text-sm hover:text-zinc-500">3</button>
+            <button class="text-text-primary text-sm hover:text-zinc-500">4</button>
+            <button class="text-text-primary text-sm hover:text-zinc-500">5</button>
+
+            <button class="text-text-primary text-sm hover:text-zinc-500">{{ __('Next') }}</button>
         </div>
     @endif
 </main>
