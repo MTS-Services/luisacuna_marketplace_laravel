@@ -95,13 +95,6 @@ class Category extends AuditBaseModel implements Auditable
         return $this->getAllTranslationsFor('name');
     }
 
-    public function getTranslatedFields(): array
-    {
-        return [
-            'name' => $this->getAllTranslatedNames(),
-        ];
-    }
-
     /* ================================================================
      |  Query Scopes
      ================================================================ */

@@ -42,7 +42,7 @@ trait HasTranslations
      * Get translation configuration for this model
      * Override this method in your model to customize
      */
-    abstract protected function getTranslationConfig(): array;
+    abstract public function getTranslationConfig(): array;
 
     /**
      * Get translated value for a specific language
@@ -69,7 +69,8 @@ trait HasTranslations
     }
 
     /**
-     * Get all translations for a specific field
+     * Get all translations for a specific field (OPTIMIZED)
+     * Will use eager-loaded relationships if available
      */
     public function getAllTranslationsFor(string $field): array
     {
@@ -77,6 +78,18 @@ trait HasTranslations
         $relation = $config['relation'];
         $mappedField = $config['field_mapping'][$field] ?? $field;
 
+        // Check if relationship is already loaded
+        if ($this->relationLoaded($relation)) {
+            // Use already loaded relationship (NO additional query)
+            return $this->$relation
+                ->filter(fn($translation) => $translation->relationLoaded('language'))
+                ->mapWithKeys(function ($translation) use ($mappedField) {
+                    return [$translation->language->locale => $translation->$mappedField];
+                })
+                ->toArray();
+        }
+
+        // Fallback: Load with query (with eager loading)
         return $this->$relation()
             ->with('language')
             ->get()
@@ -84,6 +97,22 @@ trait HasTranslations
                 return [$translation->language->locale => $translation->$mappedField];
             })
             ->toArray();
+    }
+
+    /**
+     * Get all translated fields (OPTIMIZED)
+     * Will use eager-loaded relationships if available
+     */
+    public function getTranslatedFields(): array
+    {
+        $config = $this->getTranslationConfig();
+        $result = [];
+
+        foreach ($config['fields'] as $field) {
+            $result[$field] = $this->getAllTranslationsFor($field);
+        }
+
+        return $result;
     }
 
     /**
