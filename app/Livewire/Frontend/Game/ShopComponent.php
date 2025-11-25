@@ -6,10 +6,9 @@ use Livewire\Component;
 
 class ShopComponent extends Component
 {
-
     public $gameSlug;
     public $categorySlug;
-   
+    
 
     public function mount($gameSlug, $categorySlug)
     {

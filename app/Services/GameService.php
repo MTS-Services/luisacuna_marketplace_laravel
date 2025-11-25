@@ -64,6 +64,22 @@ class GameService
         return $this->interface->count($filters);
     }
 
+
+    public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection
+    {
+        return $this->interface->getGamesByCategory($fieldValue, $fieldName);
+    }
+
+    public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection
+    {
+        return $this->interface->getGamesByCategoryAndTag($categorySlug, $tagSlug);
+    }
+
+    public function searchGamesByCategory($categorySlug, $searchTerm): Collection
+    {
+        return $this->interface->searchGamesByCategory($categorySlug, $searchTerm);
+    }
+
     /* ================== ================== ==================
     *                   Action Executions
     * ================== ================== ================== */
@@ -76,7 +92,6 @@ class GameService
     public function updateData(int $id, array $data): ?Game
     {
         return $this->updateAction->execute($id, $data);
-
     }
 
     public function deleteData(int $id, bool $forceDelete = false, ?int $actionerId = null): bool
@@ -95,7 +110,7 @@ class GameService
         return $this->restoreAction->execute($id, $actionerId);
     }
 
-    public function updateStatusData(int $id, GameStatus $status, ?int $actionerId = null): ? Game
+    public function updateStatusData(int $id, GameStatus $status, ?int $actionerId = null): ?Game
     {
         if ($actionerId == null) {
             $actionerId = admin()->id;

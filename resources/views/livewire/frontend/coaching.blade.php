@@ -23,32 +23,69 @@
 
 
         {{-- filter section --}}
-        <div class="flex items-center justify-between gap-4 mt-14 mb-10">
+        {{-- <div class="flex items-center justify-between gap-4 mt-14 mb-10">
             <div class="w-full">
                 <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{ __('Top Up') }}</h2>
                 <p class="text-text-white text-20px pt-3">
-                    {{ __('Different from gift cards or vouchers, U7BUY provides a Top Up service with which you can add
-                                        funds directly to your balance. It contains a large variety, including mobile games, live
-                                        streaming, shopping, entertainment, etc.') }}
+                    {{ __('Different from gift cards or vouchers, U7BUY provides a Top Up service with which you can add funds directly to your balance. It contains a large variety, including mobile games, live streaming, shopping, entertainment, etc.') }}
                 </p>
             </div>
             <div class="w-full h-80">
                 <img src="{{ asset('assets/images/items/top-up.png') }}" alt=""
                     class="w-full h-full object-cover">
             </div>
-        </div>
-        <div class="flex items-center justify-between gap-4 mt-3.5">
-            <div class="search w-full">
+        </div> --}}
+        <div class="flex items-center justify-between gap-4 mt-10 relative" x-data="{ filter: false }">
+            <div class="search flex-1">
                 <x-ui.input type="text" wire:model.live.debounce.300ms="search" placeholder="Search..."
-                    class="form-input w-full" />
+                    class="form-input w-full rounded-full!" />
             </div>
-            <div class="filter flex items-center">
-                <div class="border border-primary rounded-xl h-10 w-30 flex items-center justify-center">
-                    <img src="{{ asset('assets/icons/light.png') }}" alt="" class="w-5 h-5">
-                    <p>{{ __('Filter') }}</p>
+            <div class="flex-shrink-0">
+                <button @click="filter = !filter"
+                    class="flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 py-2 bg-bg-primary rounded-md w-[120px] sm:w-[140px]">
+                    <div class="flex items-center gap-1 sm:gap-2 overflow-hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2l-7 7v5l-4 4v-9L3 6V4z" />
+                        </svg>
+                        <span class="text-text-white text-xs sm:text-sm whitespace-nowrap truncate">
+                            @if ($sortOrder === 'asc')
+                                {{ __('A-Z') }}
+                            @elseif($sortOrder === 'desc')
+                                {{ __('Z-A') }}
+                            @else
+                                {{ __('Default') }}
+                            @endif
+                        </span>
+                    </div>
+                    <svg class="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 transition-transform"
+                        :class="filter ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+
+                {{-- Dropdown --}}
+                <div class="absolute top-14 right-0 z-10 shadow-glass-card min-w-30" x-show="filter" x-transition
+                    x-cloak @click.outside="filter = false">
+                    <div class="bg-bg-primary rounded-md p-2">
+                        <div class="flex flex-col gap-1">
+                            <button wire:click="sortBy('default')" @click="filter = false"
+                                class="text-left px-3 py-2 rounded transition text-sm {{ $sortOrder === 'default' ? 'bg-blue-600' : 'hover:bg-gray-700' }}">
+                                {{ __('Default') }}
+                            </button>
+                            <button wire:click="sortBy('asc')" @click="filter = false"
+                                class="text-left px-3 py-2 rounded transition text-sm {{ $sortOrder === 'asc' ? 'bg-blue-600' : 'hover:bg-gray-700' }}">
+                                {{ __('A-Z') }}
+                            </button>
+                            <button wire:click="sortBy('desc')" @click="filter = false"
+                                class="text-left px-3 py-2 rounded transition text-sm {{ $sortOrder === 'desc' ? 'bg-blue-600' : 'hover:bg-gray-700' }}">
+                                {{ __('Z-A') }}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
     </section>
 
     {{-- popular top up --}}
@@ -58,113 +95,13 @@
                 <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{ __('Popular Now') }}</h2>
             </div>
             <div class="swiper popular-coaching">
-                <div class="swiper-wrapper pt-10">
-                    <div class="swiper-slide">
-                        <div class="p-6 bg-bg-primary rounded-2xl">
-                            <div class="">
-                                <div class="w-full h-60 sm:h-48 md:h-68">
-                                    <img src="{{ asset('assets/images/items/WorldOfwarcraft.png') }}" alt=""
-                                        class="w-full h-full object-cover rounded-lg">
-                                </div>
-                                <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('World Of warcraft') }}
-                                    </h2>
-                                </div>
+                <div wire:ignore class="swiper-wrapper pt-10">
+                    <div class="swiper-wrapper py-16">
+                        @foreach ($popular_coachings as $popular_coaching)
+                            <div class="swiper-slide">
+                                <x-currency-card :data="$popular_coaching" />
                             </div>
-                            <div class="">
-                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                                    href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                                    wire:navigate>
-                                    {{ __('See seller list') }}
-                                </x-ui.button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="p-6 bg-bg-primary rounded-2xl">
-                            <div class="">
-                                <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                                    <img src="{{ asset('assets/images/items/FC25.png') }}" alt=""
-                                        class="w-full h-full object-cover rounded-lg">
-                                </div>
-                                <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('FC 25') }}</h2>
-                                </div>
-                            </div>
-                            <div class="">
-                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                                    href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                                    wire:navigate>
-                                    {{ __('See seller list') }}
-                                </x-ui.button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="p-6 bg-bg-primary rounded-2xl">
-                            <div class="">
-                                <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                                    <img src="{{ asset('assets/images/items/WOWMistsofPandariaClassic.png') }}"
-                                        alt="" class="w-full h-full object-cover rounded-lg">
-                                </div>
-                                <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                                        {{ __('WOW Mists of Pandaria') }}
-                                    </h2>
-                                </div>
-                            </div>
-                            <div class="">
-                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                                    href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                                    wire:navigate>
-                                    {{ __('See seller list') }}
-                                </x-ui.button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="p-6 bg-bg-primary rounded-2xl">
-                            <div class="">
-                                <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                                    <img src="{{ asset('assets/images/items/WOWMistsofPandariaClassic.png') }}"
-                                        alt="" class="w-full h-full object-cover rounded-lg">
-                                </div>
-                                <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                                        {{ __('WOW Mists of Pandaria') }}
-                                    </h2>
-                                </div>
-                            </div>
-                            <div class="">
-                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                                    href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                                    wire:navigate>
-                                    {{ __('See seller list') }}
-                                </x-ui.button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="p-6 bg-bg-primary rounded-2xl">
-                            <div class="">
-                                <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                                    <img src="{{ asset('assets/images/items/WOWMistsofPandariaClassic.png') }}"
-                                        alt="" class="w-full h-full object-cover rounded-lg">
-                                </div>
-                                <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                                        {{ __('WOW Mists of Pandaria') }}
-                                    </h2>
-                                </div>
-                            </div>
-                            <div class="">
-                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                                    href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                                    wire:navigate>
-                                    {{ __('See seller list') }}
-                                </x-ui.button>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
 
@@ -185,109 +122,14 @@
                 <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{ __('Newly Launched') }}
                 </h2>
             </div>
-            <div class="swiper popular-launched">
+            <div wire:ignore class="swiper popular-launched">
                 <div class="swiper-wrapper py-10">
-                    <div class="swiper-slide">
-                        <div class="p-6 bg-bg-primary rounded-2xl">
-                            <div class="">
-                                <div class="w-full h-60 sm:h-48 md:h-68">
-                                    <img src="{{ asset('assets/images/items/ApexLegends.png') }}" alt=""
-                                        class="w-full h-full object-cover rounded-lg">
-                                </div>
-                                <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Apex Legends') }}</h2>
-                                </div>
+                    <div class="swiper-wrapper py-16">
+                        @foreach ($newly_coachings as $newly_coaching)
+                            <div class="swiper-slide">
+                                <x-currency-card :data="$newly_coaching" />
                             </div>
-                            <div class="">
-                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                                    href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                                    wire:navigate>
-                                    {{ __('See seller list') }}
-                                </x-ui.button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="p-6 bg-bg-primary rounded-2xl">
-                            <div class="">
-                                <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                                    <img src="{{ asset('assets/images/items/Diablo4.png') }}" alt=""
-                                        class="w-full h-full object-cover rounded-lg">
-                                </div>
-                                <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Diablo 4.png') }}</h2>
-                                </div>
-                            </div>
-                            <div class="">
-                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                                    href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                                    wire:navigate>
-                                    {{ __('See seller list') }}
-                                </x-ui.button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="p-6 bg-bg-primary rounded-2xl">
-                            <div class="">
-                                <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                                    <img src="{{ asset('assets/images/items/ClashRoyale.png') }}" alt=""
-                                        class="w-full h-full object-cover rounded-lg">
-                                </div>
-                                <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Clash Royale') }}</h2>
-                                </div>
-                            </div>
-                            <div class="">
-                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                                    href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                                    wire:navigate>
-                                    {{ __('See seller list') }}
-                                </x-ui.button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="p-6 bg-bg-primary rounded-2xl">
-                            <div class="">
-                                <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                                    <img src="{{ asset('assets/images/items/Lastwarsurvival.png') }}" alt=""
-                                        class="w-full h-full object-cover rounded-lg">
-                                </div>
-                                <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Last war:survival') }}
-                                    </h2>
-                                </div>
-                            </div>
-                            <div class="">
-                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                                    href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                                    wire:navigate>
-                                    {{ __('See seller list') }}
-                                </x-ui.button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="p-6 bg-bg-primary rounded-2xl">
-                            <div class="">
-                                <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                                    <img src="{{ asset('assets/images/items/Lastwarsurvival.png') }}" alt=""
-                                        class="w-full h-full object-cover rounded-lg">
-                                </div>
-                                <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Last war:survival') }}
-                                    </h2>
-                                </div>
-                            </div>
-                            <div class="">
-                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                                    href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                                    wire:navigate>
-                                    {{ __('See seller list') }}
-                                </x-ui.button>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
 
@@ -307,168 +149,9 @@
                 {{ __('All brands for Coaching') }}</h2>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center gap-6">
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68">
-                        <img src="{{ asset('assets/images/items/BlueProtocol.png') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Blue Protocol') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/Brawlhalla.png') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Brawlhalla') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/ClashOfClans(Global).png') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Clash Of Clans (Global)') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/Des2.png') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Des2') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/Diablo2Resurrected.png') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Diablo 2: Resurrected') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __(' See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/ESO.png') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('ESO') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/Dota2.png') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Dota 2') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/FinalFantasyXIV(ARR).png') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Final Fantasy XIV (ARR)') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/DragonDogma2.png') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Dragon Dogma 2') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'coaching', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
+            @foreach ($coachings as $coaching)
+                <x-currency-card :data="$coaching" />
+            @endforeach
         </div>
 
         <div class="pagination mb-24">
