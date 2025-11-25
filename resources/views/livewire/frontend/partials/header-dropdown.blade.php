@@ -19,11 +19,11 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-2.5 pb-6">
                     @forelse($this->content['popular'] ?? [] as $item)
                         <a href="{{route('game.index', ['gameSlug' => $item['slug'], 'categorySlug' => $gameCategorySlug ])}}" wire:navigate>
-                            <div class="flex items-center gap-2.5 p-2.5 dark:hover:bg-purple-500/10 hover:bg-purple-100 rounded-lg transition cursor-pointer">
-                                <div class="w-6 h-6 flex-shrink-0">
+                            <div class="flex items-center gap-2.5 p-2 dark:hover:bg-purple-500/10 hover:bg-purple-100 rounded-lg transition cursor-pointer">
+                                <div class="w-6 h-6 flex-shrink-0 ">
                                     <img src="{{ asset($item['logo']) }}" 
                                         alt="{{ $item['name'] }}"
-                                        class="w-full h-full object-contain">
+                                        class="w-full h-full object-contain rounded-lg">
                                 </div>
                                 <p class="text-base font-normal dark:text-white text-gray-900">{{ $item['name'] }}</p>
                             </div>
@@ -65,8 +65,8 @@
                             <a href="{{route('game.index', ['gameSlug' => is_array($gameItem) ? $gameItem['slug'] : Str::slug($gameItem), 'categorySlug' => $gameCategorySlug ])}}" wire:navigate>
                                 <div class="flex items-center gap-2.5 p-2.5 dark:hover:bg-purple-500/10 hover:bg-purple-100 rounded-lg transition cursor-pointer">
                                     <div class="w-6 h-6 flex-shrink-0">
-                                        @if(is_array($gameItem) && isset($gameItem['icon']))
-                                            <img src="{{ asset('assets/images/game_icon/' . $gameItem['icon']) }}" 
+                                        @if(is_array($gameItem) && isset($gameItem['logo']))
+                                            <img src="{{ storage_url($gameItem['logo']) }}"  
                                                 alt="{{ is_array($gameItem) ? $gameItem['name'] : $gameItem }}"
                                                 class="w-full h-full object-contain">
                                         @else
