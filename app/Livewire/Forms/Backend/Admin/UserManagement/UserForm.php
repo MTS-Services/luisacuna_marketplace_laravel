@@ -109,7 +109,7 @@ class UserForm extends Form
         $this->last_name = '';
         $this->username = '';
         // $this->display_name = '';
-        $this->country_id = '';
+        // $this->country_id = '';
         $this->date_of_birth = '';
         $this->email = '';
         $this->password = '';
@@ -153,11 +153,10 @@ class UserForm extends Form
 
     public function fillables(): array
     {
-        return [
+        $data = [
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'username' => $this->username,
-            // 'display_name',
             'date_of_birth' => $this->date_of_birth,
             'country_id' => $this->country_id,
             'language_id' => $this->language,
@@ -165,11 +164,14 @@ class UserForm extends Form
             'password' => $this->password,
             'phone' => $this->phone,
             'account_status' => $this->account_status,
-            'avatar'    => $this->avatar,
+            'avatar' => $this->avatar,
             'currency_id' => $this->currency_id,
         ];
+
         if ($this->isAccountStatusChanged() && $this->reason) {
             $data['reason'] = $this->reason;
         }
+
+        return $data;
     }
 }
