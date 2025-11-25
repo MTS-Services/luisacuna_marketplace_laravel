@@ -24,7 +24,11 @@ class CategoryRepository implements CategoryRepositoryInterface
         $query = $this->model->query();
         return $query->orderBy($sortField, $order)->get();
     }
-
+    public function active(string $sortField = 'created_at', $order = 'desc', $status = 'active'): Collection
+    {
+        $query = $this->model->query();
+        return $query->where('status', $status)->orderBy($sortField, $order)->get();
+    }
     public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?Category
     {
         $model = $this->model;

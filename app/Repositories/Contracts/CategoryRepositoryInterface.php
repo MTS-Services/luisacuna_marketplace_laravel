@@ -16,6 +16,8 @@ interface CategoryRepositoryInterface
 
     public function all(string $sortField = 'created_at', $order = 'desc'): Collection;
 
+    public function active(string $sortField = 'created_at', $order = 'desc', $status = 'active'): Collection;
+
     public function find($column_value, string $column_name = 'id', bool $trashed = false): ?Category;
 
     public function findTrashed($column_value, string $column_name = 'id'): ?Category;
