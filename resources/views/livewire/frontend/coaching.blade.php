@@ -28,8 +28,8 @@
                 <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{ __('Top Up') }}</h2>
                 <p class="text-text-white text-20px pt-3">
                     {{ __('Different from gift cards or vouchers, U7BUY provides a Top Up service with which you can add
-                                                                                funds directly to your balance. It contains a large variety, including mobile games, live
-                                                                                streaming, shopping, entertainment, etc.') }}
+                                        funds directly to your balance. It contains a large variety, including mobile games, live
+                                        streaming, shopping, entertainment, etc.') }}
                 </p>
             </div>
             <div class="w-full h-80">
@@ -59,14 +59,7 @@
             </div>
             <div class="swiper popular-coaching">
                 <div class="swiper-wrapper pt-10">
-                    <div class="swiper-wrapper py-16">
-                        @foreach ($popular_coachings as $popular_coaching)
-                            <div class="swiper-slide">
-                                <x-currency-card :data="$popular_coaching" />
-                            </div>
-                        @endforeach
-                    </div>
-                    {{-- <div class="swiper-slide">
+                    <div class="swiper-slide">
                         <div class="p-6 bg-bg-primary rounded-2xl">
                             <div class="">
                                 <div class="w-full h-60 sm:h-48 md:h-68">
@@ -172,7 +165,7 @@
                                 </x-ui.button>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
 
                 <!-- Add Pagination and Navigation -->
@@ -194,14 +187,7 @@
             </div>
             <div class="swiper popular-launched">
                 <div class="swiper-wrapper py-10">
-                    <div class="swiper-wrapper py-16">
-                        @foreach ($newly_coachings as $newly_coaching)
-                            <div class="swiper-slide">
-                                <x-currency-card :data="$newly_coaching" />
-                            </div>
-                        @endforeach
-                    </div>
-                    {{-- <div class="swiper-slide">
+                    <div class="swiper-slide">
                         <div class="p-6 bg-bg-primary rounded-2xl">
                             <div class="">
                                 <div class="w-full h-60 sm:h-48 md:h-68">
@@ -209,8 +195,7 @@
                                         class="w-full h-full object-cover rounded-lg">
                                 </div>
                                 <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                                        {{ __('Apex Legends') }}</h2>
+                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Apex Legends') }}</h2>
                                 </div>
                             </div>
                             <div class="">
@@ -230,8 +215,7 @@
                                         class="w-full h-full object-cover rounded-lg">
                                 </div>
                                 <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                                        {{ __('Diablo 4.png') }}</h2>
+                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Diablo 4.png') }}</h2>
                                 </div>
                             </div>
                             <div class="">
@@ -251,8 +235,7 @@
                                         class="w-full h-full object-cover rounded-lg">
                                 </div>
                                 <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                                        {{ __('Clash Royale') }}</h2>
+                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Clash Royale') }}</h2>
                                 </div>
                             </div>
                             <div class="">
@@ -272,8 +255,7 @@
                                         class="w-full h-full object-cover rounded-lg">
                                 </div>
                                 <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                                        {{ __('Last war:survival') }}
+                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Last war:survival') }}
                                     </h2>
                                 </div>
                             </div>
@@ -294,8 +276,7 @@
                                         class="w-full h-full object-cover rounded-lg">
                                 </div>
                                 <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                                        {{ __('Last war:survival') }}
+                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Last war:survival') }}
                                     </h2>
                                 </div>
                             </div>
@@ -307,7 +288,7 @@
                                 </x-ui.button>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
 
                 <!-- Add Pagination and Navigation -->
@@ -326,18 +307,14 @@
                 {{ __('All brands for Coaching') }}</h2>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center gap-6">
-            @foreach ($coachings as $coaching)
-                <x-currency-card :data="$coaching" />
-            @endforeach
-            {{-- <div class="p-6 bg-bg-primary rounded-2xl">
+            <div class="p-6 bg-bg-primary rounded-2xl">
                 <div class="">
                     <div class="w-full h-60 sm:h-48 md:h-68">
                         <img src="{{ asset('assets/images/items/BlueProtocol.png') }}" alt=""
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                            {{ __('Blue Protocol') }}</h2>
+                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Blue Protocol') }}</h2>
                     </div>
                 </div>
                 <div class="">
@@ -355,8 +332,7 @@
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                            {{ __('Brawlhalla') }}</h2>
+                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Brawlhalla') }}</h2>
                     </div>
                 </div>
                 <div class="">
@@ -374,8 +350,7 @@
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                            {{ __('Clash Of Clans (Global)') }}</h2>
+                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Clash Of Clans (Global)') }}</h2>
                     </div>
                 </div>
                 <div class="">
@@ -393,8 +368,7 @@
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Des2') }}
-                        </h2>
+                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Des2') }}</h2>
                     </div>
                 </div>
                 <div class="">
@@ -412,8 +386,7 @@
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                            {{ __('Diablo 2: Resurrected') }}</h2>
+                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Diablo 2: Resurrected') }}</h2>
                     </div>
                 </div>
                 <div class="">
@@ -431,8 +404,7 @@
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('ESO') }}
-                        </h2>
+                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('ESO') }}</h2>
                     </div>
                 </div>
                 <div class="">
@@ -450,8 +422,7 @@
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Dota 2') }}
-                        </h2>
+                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Dota 2') }}</h2>
                     </div>
                 </div>
                 <div class="">
@@ -469,8 +440,7 @@
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                            {{ __('Final Fantasy XIV (ARR)') }}</h2>
+                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Final Fantasy XIV (ARR)') }}</h2>
                     </div>
                 </div>
                 <div class="">
@@ -488,8 +458,7 @@
                             class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                            {{ __('Dragon Dogma 2') }}</h2>
+                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Dragon Dogma 2') }}</h2>
                     </div>
                 </div>
                 <div class="">
@@ -499,7 +468,7 @@
                         {{ __('See seller list') }}
                     </x-ui.button>
                 </div>
-            </div> --}}
+            </div>
         </div>
 
         <div class="pagination mb-24">
