@@ -2,11 +2,17 @@
 
 namespace App\Livewire\Backend\User\Profile;
 
+use App\Models\User;
 use Livewire\Component;
 
 class Review extends Component
 {
+     public $user;
     public $reviewItem = 'all';
+       public function mount(User $user)
+    {
+        $this->user = $user;
+    }
     public function switchReviewItem($item)
     {
         $this->reviewItem = $item;
