@@ -234,4 +234,5 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return $this->model->suspended()->orderBy($sortField, $order)->get();
     }
+
 }

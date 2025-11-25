@@ -149,7 +149,7 @@ class CategoryService
         if ($actionerId == null) {
             $actionerId = admin()->id;
         }
-
+      
         return $this->bulkAction->execute(ids: $ids, action: 'status', status: $status->value, actionerId: $actionerId);
     }
     /* ================== ================== ==================

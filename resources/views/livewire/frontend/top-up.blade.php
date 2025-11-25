@@ -6,18 +6,18 @@
                 <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
             </div>
             <div class="text-muted text-base">
-                <a href="{{ route('home') }}" class="text-base text-text-white">{{ __('Home') }}</a>
+                <a href="{{ route('home') }}" class="text-base text-text-white">{{__('Home')}}</a>
             </div>
             <div class="px-2 text-text-white text-base">
                 >
             </div>
             <h1 class="text-text-white text-base">
-                {{ __('Top Up') }}
+                {{__('Top Up')}}
             </h1>
         </div>
 
         <div class="title mb-5">
-            <h2 class="font-semibold text-4xl">{{ __('Top Ups') }}</h2>
+            <h2 class="font-semibold text-4xl">{{__('Top Ups')}}</h2>
         </div>
 
 
@@ -90,7 +90,7 @@
     <section class="container mx-auto">
         <div class="mt-10">
             <div class="mb-10">
-                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{ __('Popular Now') }}</h2>
+                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{__('Popular Now')}}</h2>
             </div>
             <div wire:ignore class="swiper popular-toUp">
                 <div class="swiper-wrapper py-10">
@@ -115,8 +115,7 @@
     <section class="container mx-auto">
         <div class="mt-10">
             <div class="mb-10">
-                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{ __('Newly Launched') }}
-                </h2>
+                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{__('Newly Launched')}}</h2>
             </div>
             <div wire:ignore class="swiper popular-launched">
                 <div class="swiper-wrapper py-10">
@@ -140,7 +139,7 @@
     {{-- All Game --}}
     <section class="container mx-auto mt-10">
         <div class="mb-10">
-            <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{ __('All Game') }}</h2>
+            <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{__('All Game')}}</h2>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center gap-6">
             @foreach ($topUps as $topUp)

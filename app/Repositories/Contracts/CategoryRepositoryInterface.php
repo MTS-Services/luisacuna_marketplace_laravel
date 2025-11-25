@@ -69,4 +69,5 @@ interface CategoryRepositoryInterface
     public function getInactive(string $sortField = 'created_at', $order = 'desc'): Collection;
 
     public function getSuspended(string $sortField = 'created_at', $order = 'desc'): Collection;
+
 }

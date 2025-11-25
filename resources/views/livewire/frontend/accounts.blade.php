@@ -101,14 +101,14 @@
             </div>
         </div>
     </section>
-    {{-- all Accounts --}}
+    {{-- all items --}}
     <section class="container mx-auto mt-10">
         <div class="mb-10">
-            <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{ __('All Accounts') }}</h2>
+            <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{ __('All Item') }}</h2>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center gap-6 mb-16">
-            @foreach ($accounts as $accounts)
-                <x-currency-card :data="$accounts" />
+            @foreach ($accounts as $account)
+                <x-currency-card :data="$account" />
             @endforeach
         </div>
 

@@ -70,6 +70,14 @@ class UserRepository implements UserRepositoryInterface
     {
         return $this->model->withTrashed()->find($id);
     }
+      public function findData($column_value, string $column_name = 'id',  bool $trashed = false): ?User
+    {
+        $model = $this->model;
+        if ($trashed) {
+            $model = $model->withTrashed();
+        }
+        return $model->where($column_name, $column_value)->first();
+    }
 
     public function findByEmail(string $email): ?User
     {

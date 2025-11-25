@@ -1,5 +1,5 @@
 <div>
-<livewire:backend.user.profile.profile-component />
+  <livewire:backend.user.profile.profile-component :user="$user" />
     <section class="container mx-auto bg-bg-primary p-10! rounded-2xl mb-10">
         <div class="">
             <h2 class="font-semibold text-3xl">{{ __('Reviews') }}</h2>

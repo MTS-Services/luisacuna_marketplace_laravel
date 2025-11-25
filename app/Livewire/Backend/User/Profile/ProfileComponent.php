@@ -2,28 +2,16 @@
 
 namespace App\Livewire\Backend\User\Profile;
 
+use App\Models\User;
 use Livewire\Component;
 
 class ProfileComponent extends Component
-{
+{ 
+   public $user;
 
-    // // public $activeTab = 'currency';
-    // public $reviewItem = 'all';
-
-    // public $activeInnerMenu = 'shop';
-    // public function switchTab($tab)
-    // {
-    //     $this->activeTab = $tab;
-    // }
-
-    // public function switchInnerMenu($menu)
-    // {
-    //     $this->activeInnerMenu = $menu;
-    // }
-    // public function switchReviewItem($item)
-    // {
-    //     $this->reviewItem = $item;
-    // }
+    public function mount(User $user) {
+        $this->user = $user;
+    }
 
     public function render()
     {

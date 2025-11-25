@@ -84,6 +84,7 @@
                         </div>
                     @endforeach
                 </div>
+
                 <!-- Add Pagination and Navigation -->
                 <div class="swiper-pagination"></div>
                 <div class="swiper-button-next"></div>
@@ -91,7 +92,6 @@
             </div>
         </div>
 
-        <!-- Newly Boosting -->
         <div class="max-w-7xl mx-auto px-12">
             <div class="title mt-10">
                 <h2 class="font-semibold text-40px">{{ __('Newly Boosting') }}</h2>
@@ -104,31 +104,37 @@
                         </div>
                     @endforeach
                 </div>
+
                 <!-- Add Pagination and Navigation -->
                 <div class="swiper-pagination"></div>
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
+
         </div>
 
-
-        <!-- All Boosting -->
         <div class="max-w-7xl mx-auto px-12 py-6  ">
-            <div class="title mt-10">
-                <h2 class="font-semibold text-40px">{{ __('Fortnite') }}</h2>
-            </div>
+            <!-- Popular Boosting -->
+            <h2 class="text-4xl mb-6 text-white">{{ __('Fortnite') }}</h2>
+
             <!-- Cards Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+
                 @foreach ($boostings as $boosting)
                     <x-currency-card :data="$boosting" />
                 @endforeach
+                
             </div>
         </div>
+
+
         <div class="max-w-7xl mx-auto px-12 py-6  ">
             <div class="pagination mb-24">
                 <x-frontend.pagination-ui :pagination="$pagination" />
             </div>
+
         </div>
+
     </div>
 
     @push('scripts')

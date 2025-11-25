@@ -5,7 +5,6 @@ namespace App\Livewire\Frontend;
 use App\Services\GameService;
 use Livewire\Component;
 
-
 class Items extends Component
 {
 

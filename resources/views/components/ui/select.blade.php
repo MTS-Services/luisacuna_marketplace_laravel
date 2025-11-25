@@ -25,7 +25,7 @@
     {{-- STANDARD SELECT INPUT --}}
     <select id="{{ $selectId }}" {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge([
         'class' =>
-            'select select2-target w-full !border-zinc-300 focus:!border-accent focus:!outline-none focus:!ring-1 focus:!ring-accent shadow-sm dark:border-zinc-700 bg-transparent dark:text-zinc-100 text-zinc-900 dark:focus:border-accent dark:focus:ring-accent !transition-all !duration-300 !ease-in-out',
+            'select w-full !border-zinc-300 focus:!border-accent focus:!outline-none focus:!ring-1 focus:!ring-accent shadow-sm dark:border-zinc-700 bg-transparent dark:text-zinc-100 text-zinc-900 dark:focus:border-accent dark:focus:ring-accent !transition-all !duration-300 !ease-in-out',
     ]) !!}
         {{ $multiple ? 'multiple' : '' }} data-select2-config="{{ $select2Config }}">
         {{ $slot }}
@@ -34,7 +34,7 @@
     <div class="flex items-center w-full">
         <select id="{{ $selectId }}" {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge([
             'class' =>
-                'select select2-target rounded-r-none w-full !border-zinc-300 focus:!border-accent focus:!ring-1 focus:!ring-accent shadow-sm dark:border-zinc-700 bg-transparent dark:text-zinc-100 text-zinc-900 dark:focus:border-accent dark:focus:ring-accent !transition-all !duration-300 !ease-in-out',
+                'select rounded-r-none w-full !border-zinc-300 focus:!border-accent focus:!ring-1 focus:!ring-accent shadow-sm dark:border-zinc-700 bg-transparent dark:text-zinc-100 text-zinc-900 dark:focus:border-accent dark:focus:ring-accent !transition-all !duration-300 !ease-in-out',
         ]) !!}
             {{ $multiple ? 'multiple' : '' }} data-select2-config="{{ $select2Config }}">
             {{ $slot }}
@@ -52,7 +52,7 @@
     @push('scripts')
         <script>
             function initializeAllSelect2() {
-                const selects = document.querySelectorAll('select.select2-target:not(.select2-hidden-accessible)');
+                const selects = document.querySelectorAll('select.select2:not(.select2-hidden-accessible)');
 
                 selects.forEach(select => {
                     try {
