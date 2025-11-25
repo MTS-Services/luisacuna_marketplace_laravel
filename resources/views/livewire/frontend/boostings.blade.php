@@ -26,7 +26,7 @@
                     <x-ui.input type="text" wire:model.live.debounce.300ms="search" placeholder="Search..."
                         class="form-input w-full rounded-full!" />
                 </div>
-                <div class="w-auto flex items-center justify-between gap-2 relative" x-data={filter:false}>
+                <div class="min-w-30 flex items-center justify-between gap-2 relative" x-data={filter:false}>
 
                     {{-- Filter Button --}}
                     <button @click="filter = !filter"
