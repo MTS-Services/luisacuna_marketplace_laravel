@@ -87,7 +87,7 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div class="form-control">
+                        <div>
                             <x-ui.label>
                                 {{ __('Application Name') }}
                                 <span class="text-error">*</span>
@@ -97,7 +97,7 @@
                             <x-ui.input-error :messages="$errors->get('app_name')" class="mt-1" />
                         </div>
 
-                        <div class="form-control">
+                        <div>
                             <x-ui.label>
                                 {{ __('Short Name') }}
                                 <span class="text-text-secondary text-xs ml-1">({{ __('For tabs & mobile') }})</span>
@@ -167,7 +167,7 @@
                             <div class="space-y-3">
                                 <label
                                     class="flex items-center gap-4 p-4 rounded-xl cursor-pointer transition-all duration-200
-                                    {{ $app_debug == '1' ? 'bg-success/10 ring-2 ring-success/50' : 'bg-bg-primary hover:bg-base-200' }}">
+                                    {{ $app_debug == '1' ? 'bg-success/10 ring-2 ring-success/50' : 'bg-bg-secondary hover:bg-bg-secondary/80' }}">
                                     <input type="radio" wire:model.live="app_debug" value="1"
                                         class="radio radio-success radio-sm" />
                                     <div class="flex-1">
@@ -181,9 +181,9 @@
                                 </label>
                                 <label
                                     class="flex items-center gap-4 p-4 rounded-xl cursor-pointer transition-all duration-200
-                                    {{ $app_debug == '0' ? 'bg-base-300/50 ring-2 ring-base-content/20' : 'bg-base-200/50 hover:bg-base-200' }}">
+                                    {{ $app_debug == '0' ? 'bg-warning/10 ring-2 ring-warning/50' : 'bg-bg-secondary hover:bg-bg-secondary/80' }}">
                                     <input type="radio" wire:model.live="app_debug" value="0"
-                                        class="radio radio-sm" />
+                                        class="radio radio-sm radio-warning" />
                                     <div class="flex-1">
                                         <div class="flex items-center gap-2">
                                             <flux:icon name="x-circle" class="h-5 w-5 stroke-base-content/50" />
@@ -205,7 +205,7 @@
                             <div class="space-y-3">
                                 <label
                                     class="flex items-center gap-4 p-4 rounded-xl cursor-pointer transition-all duration-200
-                                    {{ $auto_translate === '1' ? 'bg-accent/10 ring-2 ring-accent/50' : 'bg-base-200/50 hover:bg-base-200' }}">
+                                    {{ $auto_translate === '1' ? 'bg-accent/10 ring-2 ring-accent/50' : 'bg-bg-secondary hover:bg-bg-secondary/80' }}">
                                     <input type="radio" wire:model.live="auto_translate" value="1"
                                         class="radio radio-accent radio-sm" />
                                     <div class="flex-1">
@@ -219,9 +219,9 @@
                                 </label>
                                 <label
                                     class="flex items-center gap-4 p-4 rounded-xl cursor-pointer transition-all duration-200
-                                    {{ $auto_translate === '0' ? 'bg-base-300/50 ring-2 ring-base-content/20' : 'bg-base-200/50 hover:bg-base-200' }}">
+                                    {{ $auto_translate === '0' ? 'bg-warning/10 ring-2 ring-warning/50' : 'bg-bg-secondary hover:bg-bg-secondary/80' }}">
                                     <input type="radio" wire:model.live="auto_translate" value="0"
-                                        class="radio radio-sm" />
+                                        class="radio radio-sm radio-warning" />
                                     <div class="flex-1">
                                         <div class="flex items-center gap-2">
                                             <flux:icon name="x-circle" class="h-5 w-5 stroke-base-content/50" />
@@ -440,20 +440,20 @@
                         <h3 class="font-bold text-text-primary">{{ __('Pro Tips') }}</h3>
                     </div>
                     <ul class="space-y-3">
-                        <li class="flex items-start gap-3 p-3 bg-base-100/50 rounded-lg">
+                        <li class="flex items-start gap-3 p-3 bg-bg-secondary rounded-lg">
                             <div class="p-1 bg-success rounded-full mt-0.5 shrink-0">
                                 <flux:icon name="check" class="h-3 w-3 stroke-white" />
                             </div>
                             <span
                                 class="text-sm text-text-secondary">{{ __('Use production mode for live sites') }}</span>
                         </li>
-                        <li class="flex items-start gap-3 p-3 bg-base-100/50 rounded-lg">
+                        <li class="flex items-start gap-3 p-3 bg-bg-secondary rounded-lg">
                             <div class="p-1 bg-warning rounded-full mt-0.5 shrink-0">
                                 <flux:icon name="exclamation-triangle" class="h-3 w-3 stroke-white" />
                             </div>
                             <span class="text-sm text-text-secondary">{{ __('Disable debug in production') }}</span>
                         </li>
-                        <li class="flex items-start gap-3 p-3 bg-base-100/50 rounded-lg">
+                        <li class="flex items-start gap-3 p-3 bg-bg-secondary rounded-lg">
                             <div class="p-1 bg-accent rounded-full mt-0.5 shrink-0">
                                 <flux:icon name="star" class="h-3 w-3 stroke-white" />
                             </div>

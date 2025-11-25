@@ -48,8 +48,8 @@ class Category extends AuditBaseModel implements Auditable
     {
         return [
             'fields' => ['name'],
-            'relation' => 'categoryLanguages',
-            'model' => CategoryLanguage::class,
+            'relation' => 'categoryTranslations',
+            'model' => CategoryTranslation::class,
             'foreign_key' => 'category_id',
             'field_mapping' => [
                 'name' => 'name',
@@ -61,9 +61,9 @@ class Category extends AuditBaseModel implements Auditable
      |  Relationships
      ================================================================ */
 
-    public function categoryLanguages(): HasMany
+    public function categoryTranslations(): HasMany
     {
-        return $this->hasMany(CategoryLanguage::class, 'category_id', 'id');
+        return $this->hasMany(CategoryTranslation::class, 'category_id', 'id');
     }
 
     public function games(): BelongsToMany

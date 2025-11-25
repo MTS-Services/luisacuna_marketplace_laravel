@@ -40,6 +40,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
+        config([
+            'debugbar.enabled' => app_setting('app_debug', false),
+        ]);
+
         Gate::before(function ($admin, $ability) {
             return $admin->hasRole('Super Admin') ? true : null;
         });
