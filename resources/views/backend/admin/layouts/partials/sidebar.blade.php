@@ -128,6 +128,20 @@
                         'active' => 'game-rarity',
                     ],
                 
+                    [
+                        'name' => 'Tag',
+                        'route' => route('admin.gm.tag.index'),
+                        'icon' => 'swords',
+                        'active' => 'game-tag',
+                    ],
+                
+                    [
+                        'name' => 'Type',
+                        'route' => route('admin.gm.type.index'),
+                        'icon' => 'swords',
+                        'active' => 'game-type',
+                    ],
+                
                     // [
                     //     'name' => 'Pending Users',
                     //     'route' => '#',

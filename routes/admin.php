@@ -24,6 +24,8 @@ use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductTypeController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementTypeController;
+use App\Http\Controllers\Backend\Admin\GameManagement\TagController;
+use App\Http\Controllers\Backend\Admin\GameManagement\TypeController;
 
 Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
@@ -91,6 +93,22 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
         });
 
         Route::controller(RarityController::class)->name('rarity.')->prefix('rarity')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/show/{id}', 'show')->name('show');
+            Route::get('/trash', 'trash')->name('trash');
+        });
+
+        Route::controller(TagController::class)->name('tag.')->prefix('tag')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/show/{id}', 'show')->name('show');
+            Route::get('/trash', 'trash')->name('trash');
+        });
+
+        Route::controller(TypeController::class)->name('type.')->prefix('type')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
