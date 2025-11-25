@@ -8,13 +8,14 @@ use Livewire\Attributes\Validate;
 use Livewire\Attributes\Computed;
 use App\Services\SettingsService;
 use App\Models\ApplicationSetting;
+use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class GeneralSettings extends Component
 {
-    use WithFileUploads;
+    use WithFileUploads, WithNotification;
 
     // Text Fields
     #[Validate('nullable|string|min:2|max:255')]
@@ -182,18 +183,18 @@ class GeneralSettings extends Component
 
             if ($success) {
                 $this->reset(['app_logo', 'favicon']);
-                session()->flash('success', __('Settings saved successfully!'));
+                $this->success(__('Settings saved successfully!'));
                 // $this->dispatch('settings-saved');
                 Artisan::call('config:refresh');
                 $this->redirectIntended(route('admin.as.general-settings'), navigate: true);
             } else {
-                session()->flash('error', __('Failed to save settings. Please try again.'));
+                $this->error(__('Failed to save settings. Please try again.'));
             }
         } catch (\Exception $e) {
             Log::error('General settings save failed: ' . $e->getMessage(), [
                 'exception' => $e,
             ]);
-            session()->flash('error', __('An error occurred. Please try again.'));
+            $this->error(__('An error occurred. Please try again.'));
         } finally {
             $this->saving = false;
         }
@@ -204,7 +205,7 @@ class GeneralSettings extends Component
         $this->reset(['app_logo', 'favicon']);
         $this->loadSettings();
         $this->resetValidation();
-        session()->flash('success', __('Form has been reset.'));
+        $this->success(__('Form has been reset.'));
     }
 
     #[Computed]

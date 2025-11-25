@@ -34,20 +34,14 @@ class CategoryService
 
     public function getAllDatas($sortField = 'created_at', $order = 'desc'): Collection
     {
+       
         return $this->interface->all($sortField, $order);
     }
 
-
-    // public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection
-    // {
-    //     return $this->interface->getGamesByCategory($fieldValue, $fieldName);
-    // }
-
-
-    // public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection
-    // {
-    //     return $this->interface->getGamesByCategoryAndTag($categorySlug, $tagSlug);
-    // }
+    public function getActiveDatas(string $sortField = 'created_at', $order = 'desc', $status ='active'): Collection
+    {
+        return $this->interface->active($sortField , $order, $status);
+    }
 
     public function findData($column_value, string $column_name = 'id'): ?Category
     {
