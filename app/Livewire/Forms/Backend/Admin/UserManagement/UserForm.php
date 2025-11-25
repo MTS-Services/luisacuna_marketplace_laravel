@@ -42,11 +42,17 @@ class UserForm extends Form
 
     public ?int $currency_id = null;
 
+    // public ?UploadedFile $avatar = null;
+
+    // public bool $remove_avatar = false;
+
+    // public ?bool $remove_file = false;
     public ?UploadedFile $avatar = null;
+    public $avatars = null;
 
-    public bool $remove_avatar = false;
-
-    public ?bool $remove_file = false;
+    // Track removed files
+    public bool $remove_file = false;
+    public array $removed_files = [];
 
 
     public ?string $originalAccountStatus = null;
@@ -70,7 +76,8 @@ class UserForm extends Form
             'phone' => 'nullable|string|max:20',
             'account_status' => 'required|string|in:' . implode(',', array_column(UserAccountStatus::cases(), 'value')),
             'reason' => $reasonRule,
-            'avatar' => 'nullable|image|max:2048',
+            // 'avatar' => 'nullable|image|max:2048',
+            'avatar' => 'nullable|image|max:2048|dimensions:max_width=300,max_height=300',
             // Track removed files
             'remove_file' => 'nullable|boolean',
         ];
@@ -112,7 +119,7 @@ class UserForm extends Form
         $this->originalAccountStatus = null;
         $this->reason = null;
         $this->avatar = null;
-        $this->remove_avatar = false;
+        $this->remove_file = false;
         $this->currency_id = null;
 
         $this->resetValidation();
@@ -131,7 +138,7 @@ class UserForm extends Form
     //         $this->originalAccountStatus !== $this->account_status;
     // }
 
-    // Public helper method - Blade এ ব্যবহার করার জন্য
+    // Public helper method - Blade
     public function shouldShowReasonField(): bool
     {
         return $this->isAccountStatusChanged();
