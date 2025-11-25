@@ -81,7 +81,12 @@
             </div>
             <div wire:ignore class="swiper popular-items">
                 <div class="swiper-wrapper py-10">
-                    <div class="swiper-slide">
+                    @foreach ($popular_items as $popular_item)
+                        <div class="swiper-slide">
+                            <x-currency-card :data="$popular_item" />
+                        </div>
+                    @endforeach
+                    {{-- <div class="swiper-slide">
                         <div class="p-6 bg-bg-primary rounded-2xl">
                             <div class="">
                                 <div class="w-full h-60 sm:h-48 md:h-68">
@@ -186,7 +191,7 @@
                                 </x-ui.button>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <!-- Add Pagination and Navigation -->

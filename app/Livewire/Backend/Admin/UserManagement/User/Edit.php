@@ -111,13 +111,13 @@ class Edit extends Component
             $this->error('Failed to update User: ' . $e->getMessage());
         }
     }
-    public function removeAvatar(): void
-    {
-        Log::info('removeAvatar called', ['user_id' => $this->userId]);
-        $this->form->remove_avatar = true;
-        $this->existingFile = null;
-        $this->form->avatar = null;
-    }
+    // public function removeAvatar(): void
+    // {
+    //     Log::info('removeAvatar called', ['user_id' => $this->userId]);
+    //     $this->form->remove_avatar = true;
+    //     $this->existingFile = null;
+    //     $this->form->avatar = null;
+    // }
 
     public function cancel(): void
     {
