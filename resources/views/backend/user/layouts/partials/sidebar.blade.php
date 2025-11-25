@@ -186,7 +186,7 @@
                         class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{ __('Account Settings') }}</span>
                 </a>
                 <!-- View Profile Link -->
-                <a href="{{ route('profile.index', Auth::user()->username) }}" wire:navigate @click="$root.sidebarOpen = false"
+                <a href="{{ route('profile', Auth::user()->username) }}" wire:navigate @click="$root.sidebarOpen = false"
                     class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'profile' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                     <flux:icon name="user" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
                     <span
