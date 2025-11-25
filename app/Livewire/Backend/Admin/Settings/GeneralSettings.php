@@ -151,12 +151,12 @@ class GeneralSettings extends Component
             // Handle logo upload
             if ($this->app_logo) {
                 $logoPath = $this->settingsService->uploadFile($this->app_logo, 'app_logo');
-                Log::info('Deleting old app logo: ' . $this->current_logo);
                 if ($logoPath) {
-                    Log::info('New app logo uploaded: ' . $logoPath);
-                    if (Storage::disk('public')->exists($this->current_logo)) {
-                        Log::info('Deleting old app logo after upload: ' . $this->current_logo);
-                        Storage::disk('public')->delete($this->current_logo);
+                    if ($this->current_logo !== null) {
+                        if (Storage::disk('public')->exists($this->current_logo)) {
+                            Log::info('Deleting old app logo after upload: ' . $this->current_logo);
+                            Storage::disk('public')->delete($this->current_logo);
+                        }
                     }
                     $data['app_logo'] = $logoPath;
                     $this->current_logo = $logoPath;
@@ -166,9 +166,12 @@ class GeneralSettings extends Component
             // Handle favicon upload
             if ($this->favicon) {
                 $faviconPath = $this->settingsService->uploadFile($this->favicon, 'favicon');
+
                 if ($faviconPath) {
-                    if (Storage::disk('public')->exists($this->current_favicon)) {
-                        Storage::disk('public')->delete($this->current_favicon);
+                    if ($this->current_favicon !== null) {
+                        if (Storage::disk('public')->exists($this->current_favicon)) {
+                            Storage::disk('public')->delete($this->current_favicon);
+                        }
                     }
                     $data['favicon'] = $faviconPath;
                     $this->current_favicon = $faviconPath;

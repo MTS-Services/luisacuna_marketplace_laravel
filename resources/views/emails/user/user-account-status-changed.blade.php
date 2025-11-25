@@ -122,7 +122,7 @@
 
         <div class="footer">
             <p>This is an automated email. Please do not reply to this message.</p>
-            <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} {{ site_name() }}. All rights reserved.</p>
         </div>
     </div>
 </body>

@@ -20,7 +20,6 @@ class SettingsService
         'timezone' => 'TIMEZONE',
         'environment' => 'APP_ENV',
         'app_debug' => 'APP_DEBUG',
-        'debugbar' => 'DEBUGBAR_ENABLED',
         'auto_translate' => 'AUTO_TRANSLATE',
     ];
 

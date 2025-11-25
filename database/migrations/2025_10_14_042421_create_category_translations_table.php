@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('category_languages', function (Blueprint $table) {
+        Schema::create('category_translations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-
-            $table->unsignedBigInteger('category_id')->index();
             $table->unsignedBigInteger('language_id')->index();
+            
+            $table->unsignedBigInteger('category_id')->index();
             $table->string('name')->index();
 
             $table->timestamps();
