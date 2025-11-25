@@ -74,10 +74,10 @@ import 'select2/dist/css/select2.min.css';
 Select2($);
 
 /**
- * Initialize Select2 on all select elements with .select2-target class
+ * Initialize Select2 on all select elements with .select2 class
  */
 function initializeSelect2() {
-    const selects = document.querySelectorAll('select.select2-target:not(.select2-hidden-accessible)');
+    const selects = document.querySelectorAll('select.select2:not(.select2-hidden-accessible)');
 
     selects.forEach(select => {
         try {
