@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\AuditBaseModel;
-use App\Traits\AuditableTrait;
-use OwenIt\Auditing\Contracts\Auditable;
+use App\Models\BaseModel;
 
-class CategoryLanguage extends BaseModel
+class CurrencyTranslation extends BaseModel
 {
+
     protected $fillable = [
         'sort_order',
-        'name',
-        'category_id',
-        'language_id',
+
+        //here AuditColumns 
     ];
 
     protected $hidden = [
@@ -27,14 +25,7 @@ class CategoryLanguage extends BaseModel
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
-    }
-    public function language()
-    {
-        return $this->belongsTo(Language::class, 'language_id', 'id');
-    }
+    //
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
