@@ -32,7 +32,10 @@ class UserService
     {
         return $this->interface->getSellers();
     }
-
+      public function findData($column_value, string $column_name = 'id'): ?User
+    {
+        return $this->interface->findData($column_value, $column_name);
+    }
     public function getPaginateDatas(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return $this->interface->paginate($perPage, $filters);
