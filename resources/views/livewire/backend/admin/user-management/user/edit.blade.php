@@ -93,34 +93,6 @@
                     <x-ui.input type="tel" placeholder="Phone" wire:model="form.phone" />
                     <x-ui.input-error :messages="$errors->get('form.phone')" />
                 </div>
-                {{-- <div class="w-full">
-                    <x-ui.label value="Status Select" class="mb-1" />
-                    <x-ui.select wire:model="form.account_status">
-                        @foreach ($statuses as $status)
-                            <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
-                        @endforeach
-                    </x-ui.select>
-                    <x-ui.input-error :messages="$errors->get('form.account_status')" />
-                </div> --}}
-                {{-- <div class="w-full">
-                    <x-ui.label value="Status Select" class="mb-1" />
-                    <x-ui.select wire:model.live="form.account_status">
-                        @foreach ($statuses as $status)
-                            <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
-                        @endforeach
-                    </x-ui.select>
-                    <x-ui.input-error :messages="$errors->get('form.account_status')" />
-                </div> --}}
-
-                {{-- @if ($form->shouldShowReasonField()) --}}
-                {{-- <div class="w-full col-span-2">
-                    <x-ui.label value="Reason for Status Change" class="mb-1" />
-                    <x-ui.textarea wire:model="form.reason" placeholder="Account status reason..."
-                        rows="4" />
-                    <x-ui.input-error :messages="$errors->get('form.reason')" />
-                </div> --}}
-                {{-- @endif --}}
-
                 <div class="w-full">
                     <x-ui.label value="Status Select" class="mb-1" />
                     <x-ui.select wire:model.live="form.account_status">
@@ -143,20 +115,6 @@
                         required />
                     <x-ui.input-error :messages="$errors->get('form.reason')" />
                 </div>
-
-
-                {{-- <div class="w-full">
-                    <x-ui.label value="Password" class="mb-1" />
-                    <x-ui.input type="password" placeholder="Password" wire:model="form.password" />
-                    <x-ui.input-error :messages="$errors->get('form.password')" />
-                </div>
-                <div class="w-full">
-                    <x-ui.label value="Password Confirmation" class="mb-1" />
-                    <x-ui.input type="password" placeholder="Password Confirmation"
-                        wire:model="form.password_confirmation" />
-                    <x-ui.input-error :messages="$errors->get('form.password_confirmation')" />
-                </div> --}}
-
                 <div class="w-full" x-data="{
                     generatePassword() {
                         const length = 12;
@@ -204,7 +162,7 @@
                 <x-ui.button class="w-auto! py-2!" type="submit">
                     <span wire:loading.remove wire:target="save"
                         class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Update
-                                                                                                                                                                                                                                                                                                                        User') }}</span>
+                                                                                                                                                                                                                                                                                                                                                User') }}</span>
                     <span wire:loading wire:target="save"
                         class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Updating...') }}</span>
                 </x-ui.button>
