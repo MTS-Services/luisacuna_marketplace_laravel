@@ -28,22 +28,46 @@
                     class="form-input w-full rounded-full!" />
             </div>
             <div class="flex items-center justify-between gap-4 relative" x-data={filter:false}>
-                <button @click="filter = !filter"
-                    class="flex items-center gap-2 border border-zinc-500! rounded-full px-5 py-2 hover:bg-zinc-600 transition">
+
+                {{-- Filter Button --}}
+                <button @click="filter = !filter" class="flex items-center gap-2 px-4 py-2 bg-bg-primary rounded-md">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2l-7 7v5l-4 4v-9L3 6V4z" />
                     </svg>
-                    <span>{{ __('Filter') }}</span>
+                    <span class="text-text-white text-sm">
+                        @if ($sortOrder === 'asc')
+                            {{ __('a-z') }}
+                        @elseif($sortOrder === 'desc')
+                            {{ __('z-a') }}
+                        @else
+                            {{ __('Default') }}
+                        @endif
+                    </span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                        </path>
+                    </svg>
                 </button>
+
+                {{-- Dropdown --}}
                 <div class="absolute top-14 right-0 z-10 shadow-glass-card" x-show="filter" x-transition x-cloak
                     @click.outside="filter = false">
-                    {{-- filter Options --}}
                     <div class="bg-bg-primary rounded-md p-4">
                         <div class="flex flex-col gap-2">
-                            <button class="">{{ __('Option 1') }}</button>
-                            <button class="">{{ __('Option 1') }}</button>
+                            <button wire:click="sortBy('asc')" @click="filter = false"
+                                class="text-left px-3 py-2 rounded transition {{ $sortOrder === 'asc' ? 'bg-blue-600' : 'hover:bg-gray-700' }}">
+                                {{ __('A-Z') }}
+                            </button>
+                            <button wire:click="sortBy('desc')" @click="filter = false"
+                                class="text-left px-3 py-2 rounded transition {{ $sortOrder === 'desc' ? 'bg-blue-600' : 'hover:bg-gray-700' }}">
+                                {{ __('Z-A') }}
+                            </button>
+                            <button wire:click="sortBy('default')" @click="filter = false"
+                                class="text-left px-3 py-2 rounded transition {{ $sortOrder === 'default' ? 'bg-blue-600' : 'hover:bg-gray-700' }}">
+                                {{ __('Default') }}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -55,117 +79,17 @@
     <section class="container mx-auto">
         <div class="mt-10">
             <div class="">
-                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{ __('Popular Accoounts') }}
+                <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">
+                    {{ __('Popular Accoounts') }}
                 </h2>
             </div>
-            <div class="swiper popular-accounts">
+            <div wire:ignore class="swiper popular-accounts">
                 <div class="swiper-wrapper py-10">
                     @foreach ($popular_accounts as $popular_account)
                         <div class="swiper-slide">
                             <x-currency-card :data="$popular_account" />
                         </div>
                     @endforeach
-                    {{-- <div class="swiper-slide">
-                        <div class="p-6 bg-bg-primary rounded-2xl">
-                            <div class="">
-                                <div class="w-full h-60 sm:h-48 md:h-68">
-                                    <img src="{{ asset('assets/images/items/Grand-Thef- Auto5.jpg') }}" alt=""
-                                        class="w-full h-full object-cover rounded-lg">
-                                </div>
-                                <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Grand Theft Auto 5') }}
-                                    </h2>
-                                </div>
-                            </div>
-                            <div class="">
-                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                                    href="{{ route('game.index', ['categorySlug' => 'accounts', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                                    wire:navigate>
-                                    {{ __('See seller list') }}
-                                </x-ui.button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="p-6 bg-bg-primary rounded-2xl">
-                            <div class="">
-                                <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                                    <img src="{{ asset('assets/images/items/Valorant.jpg') }}" alt=""
-                                        class="w-full h-full object-cover rounded-lg">
-                                </div>
-                                <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Valorant') }}</h2>
-                                </div>
-                            </div>
-                            <div class="">
-                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                                    href="{{ route('game.index', ['categorySlug' => 'accounts', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                                    wire:navigate>
-                                    {{ __('See seller list') }}
-                                </x-ui.button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="p-6 bg-bg-primary rounded-2xl">
-                            <div class="">
-                                <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                                    <img src="{{ asset('assets/images/items/Call-of-Duty.png') }}" alt=""
-                                        class="w-full h-full object-cover rounded-lg">
-                                </div>
-                                <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Call of Duty') }}</h2>
-                                </div>
-                            </div>
-                            <div class="">
-                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                                    href="{{ route('game.index', ['categorySlug' => 'accounts', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                                    wire:navigate>
-                                    {{ __('See seller list') }}
-                                </x-ui.button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="p-6 bg-bg-primary rounded-2xl">
-                            <div class="">
-                                <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                                    <img src="{{ asset('assets/images/items/Call-of-Duty.png') }}" alt=""
-                                        class="w-full h-full object-cover rounded-lg">
-                                </div>
-                                <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Call of Duty') }}</h2>
-                                </div>
-                            </div>
-                            <div class="">
-                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                                    href="{{ route('game.index', ['categorySlug' => 'accounts', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                                    wire:navigate>
-                                    {{ __('See seller list') }}
-                                </x-ui.button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="p-6 bg-bg-primary rounded-2xl">
-                            <div class="">
-                                <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                                    <img src="{{ asset('assets/images/items/Call-of-Duty.png') }}" alt=""
-                                        class="w-full h-full object-cover rounded-lg">
-                                </div>
-                                <div class="mt-5 mb-8">
-                                    <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Call of Duty') }}</h2>
-                                </div>
-                            </div>
-                            <div class="">
-                                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                                    href="{{ route('game.index', ['categorySlug' => 'accounts', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                                    wire:navigate>
-                                    {{ __('See seller list') }}
-                                </x-ui.button>
-                            </div>
-                        </div>
-                    </div> --}}
                 </div>
 
                 <!-- Add Pagination and Navigation -->
@@ -186,239 +110,11 @@
             @foreach ($accounts as $accounts)
                 <x-currency-card :data="$accounts" />
             @endforeach
-            {{-- <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68">
-                        <img src="{{ asset('assets/images/items/language-legends.jpg') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                            {{ __('League of Legends') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'accounts', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/Fortnite.jpg') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Fortnite') }}
-                        </h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'accounts', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/RainbowSixSiegeX.jpg') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                            {{ __('Rainbow Six Siege X') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'accounts', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/ClashRoyale.jpg') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                            {{ __('Clash Royale') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'accounts', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/Counter-Strike2.jpg') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                            {{ __('Counter-Strike 2') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'accounts', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/CallofDuty.jpg') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                            {{ __('Call of Duty') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'accounts', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/GrandTheftAuto5.png') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                            {{ __('Grand Theft Auto 5') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'accounts', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/Valorant1.jpg') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">{{ __('Valorant') }}
-                        </h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'accounts', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/Valorant.jpg') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                            {{ __('Minecraft') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'accounts', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/ForzaHorizon5.png') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                            {{ __('Forza Horizon 5') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'accounts', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/WOWMistsOfPandariaClassic.jpg') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                            {{ __('WOW Mists') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'accounts', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div>
-            <div class="p-6 bg-bg-primary rounded-2xl">
-                <div class="">
-                    <div class="w-full h-60 sm:h-48 md:h-68 rounded-2xl">
-                        <img src="{{ asset('assets/images/items/1945USAirForce.png') }}" alt=""
-                            class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="mt-5 mb-8">
-                        <h2 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
-                            {{ __('1945 US Air Force') }}</h2>
-                    </div>
-                </div>
-                <div class="">
-                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!"
-                        href="{{ route('game.index', ['categorySlug' => 'accounts', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                        wire:navigate>
-                        {{ __('See seller list') }}
-                    </x-ui.button>
-                </div>
-            </div> --}}
         </div>
 
-        {{-- <div class="pagination mb-24">
-            <x-frontend.pagination-ui />
-        </div> --}}
+        <div class="pagination mb-24">
+             <x-frontend.pagination-ui :pagination="$pagination" />
+        </div>
     </section>
 
     @push('scripts')

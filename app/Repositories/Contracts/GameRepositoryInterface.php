@@ -29,7 +29,13 @@ interface GameRepositoryInterface
 
     public function search(string $query, string $sortField = 'created_at', $order = 'desc'): Collection;
 
-    public function getGamesByCategory($fieldValue, $fieldName = 'slug', $searchTerm = null): Collection;
+    // public function getGamesByCategory($fieldValue, $fieldName = 'slug', $searchTerm = null): Collection;
+
+    public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection;
+
+    public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection;
+
+    public function searchGamesByCategory($categorySlug, $searchTerm): Collection;
 
 
 

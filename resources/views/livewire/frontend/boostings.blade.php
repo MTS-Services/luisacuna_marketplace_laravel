@@ -17,39 +17,58 @@
                     {{ __('Boosting') }}
                 </h1>
             </div>
+            {{-- filter section --}}
             <div class="title mb-5">
-                <h2 class="font-semibold text-4xl">{{ __('Boosting') }}</h2>
+                <h2 class="font-semibold text-4xl">{{ __('Accounts') }}</h2>
             </div>
-
-            <!-- Search + Filter -->
-            <div class="flex flex-col sm:flex-row items-center gap-4 relative" x-data="{ filter: false }">
-                <div
-                    class="flex items-center bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white rounded-lg px-3 py-2 w-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-5 h-5 text-gray-600 dark:text-gray-300">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                    </svg>
-                    <input type="text" placeholder="Search"
-                        class="w-full bg-transparent text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none px-3" />
+            <div class="flex items-center justify-between gap-4 mt-3.5">
+                <div class="search w-full">
+                    <x-ui.input type="text" wire:model.live.debounce.300ms="search" placeholder="Search..."
+                        class="form-input w-full rounded-full!" />
                 </div>
+                <div class="w-auto flex items-center justify-between gap-2 relative" x-data={filter:false}>
 
-                <button @click="filter = !filter"
-                    class="flex items-center gap-2 border border-purple-500 rounded-full px-5 py-2 hover:bg-purple-600 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2l-7 7v5l-4 4v-9L3 6V4z" />
-                    </svg>
-                    <span>{{ __('Filter') }}</span>
-                </button>
-                <div class="absolute top-14 right-0 z-10 shadow-glass-card" x-show="filter" x-transition x-cloak
-                    @click.outside="filter = false">
-                    {{-- filter Options --}}
-                    <div class="bg-bg-primary rounded-md p-4">
-                        <div class="flex flex-col gap-2">
-                            <button class="">{{ __('Option 1') }}</button>
-                            <button class="">{{ __('Option 2') }}</button>
+                    {{-- Filter Button --}}
+                    <button @click="filter = !filter"
+                        class="flex items-center gap-2 px-4 py-2 bg-bg-primary rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2l-7 7v5l-4 4v-9L3 6V4z" />
+                        </svg>
+                        <span class="text-text-white text-sm">
+                            @if ($sortOrder === 'asc')
+                                {{ __('a-z') }}
+                            @elseif($sortOrder === 'desc')
+                                {{ __('z-a') }}
+                            @else
+                                {{ __('Default') }}
+                            @endif
+                        </span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+
+                    {{-- Dropdown --}}
+                    <div class="absolute top-14 right-0 z-10 shadow-glass-card" x-show="filter" x-transition x-cloak
+                        @click.outside="filter = false">
+                        <div class="bg-bg-primary rounded-md p-4">
+                            <div class="flex flex-col gap-2">
+                                <button wire:click="sortBy('asc')" @click="filter = false"
+                                    class="text-left px-3 py-2 rounded transition {{ $sortOrder === 'asc' ? 'bg-blue-600' : 'hover:bg-gray-700' }}">
+                                    {{ __('A-Z') }}
+                                </button>
+                                <button wire:click="sortBy('desc')" @click="filter = false"
+                                    class="text-left px-3 py-2 rounded transition {{ $sortOrder === 'desc' ? 'bg-blue-600' : 'hover:bg-gray-700' }}">
+                                    {{ __('Z-A') }}
+                                </button>
+                                <button wire:click="sortBy('default')" @click="filter = false"
+                                    class="text-left px-3 py-2 rounded transition {{ $sortOrder === 'default' ? 'bg-blue-600' : 'hover:bg-gray-700' }}">
+                                    {{ __('Default') }}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -57,7 +76,7 @@
             <div class="title mt-10">
                 <h2 class="font-semibold text-40px">{{ __('Popular Boosting') }}</h2>
             </div>
-            <div class="swiper popular-boosting">
+            <div wire:ignore class="swiper popular-boosting">
                 <div class="swiper-wrapper py-16">
                     @foreach ($popular_boostings as $popular_boosting)
                         <div class="swiper-slide">
@@ -77,7 +96,7 @@
             <div class="title mt-10">
                 <h2 class="font-semibold text-40px">{{ __('Newly Boosting') }}</h2>
             </div>
-            <div class="swiper popular-boosting">
+            <div wire:ignore class="swiper popular-boosting">
                 <div class="swiper-wrapper py-16">
                     @foreach ($newly_boostings as $newly_boosting)
                         <div class="swiper-slide">
@@ -106,11 +125,8 @@
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-12 py-6  ">
-            <div class="flex justify-center mt-8 mb-18">
-                <button
-                    class="lg:text-xl sm:text-1xl md:text-2xl w-full sm:w-auto bg-purple-600 hover:bg-purple-700 text-white text-sm py-3 px-18 rounded-full transition">
-                    {{ __('Load More') }}
-                </button>
+            <div class="pagination mb-24">
+                <x-frontend.pagination-ui :pagination="$pagination" />
             </div>
         </div>
     </div>

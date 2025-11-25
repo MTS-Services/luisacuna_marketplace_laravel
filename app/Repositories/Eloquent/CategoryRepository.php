@@ -107,34 +107,34 @@ class CategoryRepository implements CategoryRepositoryInterface
     }
 
 
-    public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection
-    {
-        $category = $this->model->where($fieldName, $fieldValue)->first();
+    // public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection
+    // {
+    //     $category = $this->model->where($fieldName, $fieldValue)->first();
 
-        return $category?->games()->get() ?? new Collection();
-    }
+    //     return $category?->games()->get() ?? new Collection();
+    // }
 
-    public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection
-    {
-        $category = $this->model->where('slug', $categorySlug)->first();
+    // public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection
+    // {
+    //     $category = $this->model->where('slug', $categorySlug)->first();
 
-        if (!$category) {
-            return new Collection();
-        }
+    //     if (!$category) {
+    //         return new Collection();
+    //     }
 
-        return $category->games()
-            ->whereHas('tags', function ($query) use ($tagSlug) {
-                $query->where('slug', $tagSlug);
-            })
-            ->get();
-    }
+    //     return $category->games()
+    //         ->whereHas('tags', function ($query) use ($tagSlug) {
+    //             $query->where('slug', $tagSlug);
+    //         })
+    //         ->get();
+    // }
 
-    public function getCategoryByGames($fieldValue, $fieldName = 'slug'): Collection
-    {
-        return $this->model->with('games')->whereHas('games', function ($query) use ($fieldValue, $fieldName) {
-            $query->where($fieldName, $fieldValue);
-        })->get();
-    }
+    // public function getCategoryByGames($fieldValue, $fieldName = 'slug'): Collection
+    // {
+    //     return $this->model->with('games')->whereHas('games', function ($query) use ($fieldValue, $fieldName) {
+    //         $query->where($fieldName, $fieldValue);
+    //     })->get();
+    // }
 
 
     /* ================== ================== ==================

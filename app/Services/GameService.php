@@ -64,18 +64,21 @@ class GameService
         return $this->interface->count($filters);
     }
 
-    // public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection
-    // {
-    //     return $this->interface->getGamesByCategory($fieldValue, $fieldName);
-    // }
 
-
-
-    public function getGamesByCategory($fieldValue, $fieldName = 'slug', $searchTerm = null): Collection
+    public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection
     {
-        return $this->interface->getGamesByCategory($fieldValue, $fieldName, $searchTerm);
+        return $this->interface->getGamesByCategory($fieldValue, $fieldName);
     }
 
+    public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection
+    {
+        return $this->interface->getGamesByCategoryAndTag($categorySlug, $tagSlug);
+    }
+
+    public function searchGamesByCategory($categorySlug, $searchTerm): Collection
+    {
+        return $this->interface->searchGamesByCategory($categorySlug, $searchTerm);
+    }
 
     /* ================== ================== ==================
     *                   Action Executions
