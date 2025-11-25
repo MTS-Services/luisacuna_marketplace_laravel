@@ -509,3 +509,26 @@ if (!function_exists('log_info')) {
     }
 }
 
+
+if (!function_exists('category_route')) {
+    /**
+     * Get the route URL based on category slug
+     *
+     * @param string $slug
+     * @return string
+     */
+    function category_route(string $slug): string
+    {
+        $routes = [
+            'currency'   => 'currency',
+            'gift-card'  => 'gift-card',
+            'boosting'   => 'boosting',
+            'items'      => 'items',
+            'accounts'   => 'accounts',
+            'top-up'     => 'top-up',
+            'coaching'   => 'coaching',
+        ];
+
+        return isset($routes[$slug]) ? route($routes[$slug]) : '#';
+    }
+}
