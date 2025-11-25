@@ -1,12 +1,12 @@
 <div>
-    <livewire:backend.user.profile.profile-component />
+    <livewire:backend.user.profile.profile-component :user="$user" />
     <section class="container mx-auto mb-30">
         <div class="mb-6">
             <h3 class="text-4xl mb-4">{{ __('Shop') }}</h3>
             {{-- profile nav --}}
             <div class="flex gap-3 sm:gap-6 items-start">
                 <a wire:navigate
-                    href="{{ route('profile.index', ['username' => request('username'), 'activeTab' => 'currency']) }}"
+                    href="{{ route('profile', ['username' => $user->username, 'activeTab' => 'currency']) }}"
                     class="flex flex-col items-center">
                     <div
                         class="w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] mb-2 {{ $activeTab === 'currency' ? 'bg-zinc-500' : 'bg-zinc-800' }} b rounded-xl flex items-center justify-center">
@@ -17,7 +17,7 @@
                 </a>
 
                 <a wire:navigate
-                    href="{{ route('profile.index', ['username' => request('username'), 'activeTab' => 'account']) }}"
+                    href="{{ route('profile', ['username' => $user->username, 'activeTab' => 'account']) }}"
                     class="flex flex-col items-center">
                     <div
                         class="w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] mb-2 {{ $activeTab === 'account' ? 'bg-zinc-500' : 'bg-zinc-800' }} rounded-xl flex items-center justify-center">
@@ -28,7 +28,7 @@
                 </a>
 
                 <a wire:navigate
-                    href="{{ route('profile.index', ['username' => request('username'), 'activeTab' => 'items']) }}"
+                    href="{{ route('profile', ['username' => $user->username, 'activeTab' => 'items']) }}"
                     class="flex flex-col items-center">
                     <div
                         class="w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] mb-2 {{ $activeTab === 'items' ? 'bg-zinc-500' : 'bg-zinc-800' }} rounded-xl flex items-center justify-center">
@@ -39,7 +39,7 @@
                 </a>
 
                 <a wire:navigate
-                    href="{{ route('profile.index', ['username' => request('username'), 'activeTab' => 'topups']) }}"
+                    href="{{ route('profile', ['username' => $user->username, 'activeTab' => 'topups']) }}"
                     class="flex flex-col items-center">
                     <div
                         class="w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] mb-2 {{ $activeTab === 'topups' ? 'bg-zinc-500' : 'bg-zinc-800' }} rounded-xl flex items-center justify-center">
@@ -50,7 +50,7 @@
                 </a>
 
                 <a wire:navigate
-                    href="{{ route('profile.index', ['username' => request('username'), 'activeTab' => 'giftcards']) }}"
+                    href="{{ route('profile', ['username' => $user->username, 'activeTab' => 'giftcards']) }}"
                     class="flex flex-col items-center">
                     <div
                         class="w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] mb-2 {{ $activeTab === 'giftcards' ? 'bg-zinc-500' : 'bg-zinc-800' }} rounded-xl flex items-center justify-center">

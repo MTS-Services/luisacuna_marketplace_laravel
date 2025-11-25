@@ -15,6 +15,6 @@
         @break
         @default
             <x-slot name="title">{{ __('User Profile') }}</x-slot>
-            <livewire:backend.user.profile.shop-categories.shop />
+            <livewire:backend.user.profile.shop-categories.shop :user="$user" />
     @endswitch
 </x-frontend::app>
