@@ -6,6 +6,7 @@ namespace App\Livewire\Backend\User\Offers;
 use App\Services\CategoryService;
 use App\Services\GameService;
 use Livewire\Component;
+// use App\Illuminate\Support\Facades\Session;
 
 class Offer extends Component
 {
@@ -16,7 +17,7 @@ class Offer extends Component
     public $categoryGames = [];
     public $selectedGame = null;
     public $selectedGameData = null; // Game এর full data with relations
-    
+    public $sessionId = null;
     // Dynamic relational data
     public $servers = [];
     public $factions = [];
@@ -37,21 +38,43 @@ class Offer extends Component
         $this->gameService = $gameService;
     }
 
+    public function mount(){
+        
+        $this->sessionId = 'offer_history_'.user()->id ;
+        if(session()->has($this->sessionId)){
+            session()->forget($this->sessionId);
+            session()->put($this->sessionId,[]);
+        }else{
+
+         session()->put($this->sessionId,[]);
+        }
+       
+      
+    }
     // Category select korar function
     public function selectCategory($categoryId, $categoryName)
-    {
+    { 
+       
+
         $this->selectedCategoryId = $categoryId;
         $this->selectedCategory = $categoryName;
-
         $category = $this->categoryService->findData($categoryId);
-
+        dd($category->game());
         $this->categoryGames = $category->games ?? [];
-
-
         $this->step = 2;
-    }
 
-    
+        
+        $this->refine_session($this->sessionId, ['category_id' => $categoryId]);
+    }
+    // Helper
+        protected function refine_session(string $sessionId, array $data = []) {
+
+        $oldData = session()->get($this->sessionId);
+        $newData =  [...$oldData, ...$data];
+
+        session()->put($this->sessionId, $newData);
+        } 
+    // Helper
     public function updatedSelectedGame($gameId)
     {
         // Reset previous selections
@@ -115,6 +138,7 @@ class Offer extends Component
     }
     public function render()
     {
+ 
         $categories = $this->categoryService->getAllDatas();
         return view('livewire.backend.user.offers.offer', [
             'categories' => $categories

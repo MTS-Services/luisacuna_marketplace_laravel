@@ -147,4 +147,9 @@ class Category extends AuditBaseModel implements Auditable
             'status_color',
         ]);
     }
+
+
+    public function game(){
+        return $this->belongsToMany(Game::class, 'game_categories', 'category_id', 'game_id')->get();
+    }
 }
