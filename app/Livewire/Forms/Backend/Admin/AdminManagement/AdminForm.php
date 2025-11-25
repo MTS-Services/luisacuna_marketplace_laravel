@@ -32,7 +32,7 @@ class AdminForm extends Form
     {
         $rules = [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'required|email|max:255|unique:admins,email,' . $this->id,
             'role_id' => 'required|integer|exists:roles,id',
             'password' => $this->isUpdating() ? 'nullable|string|min:8' : 'required|string|min:8',
             'password_confirmation' => 'nullable|string|min:8|same:password',
