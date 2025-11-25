@@ -1,6 +1,6 @@
 <nav class="hidden xl:flex gap-8 text-sm items-center relative" x-data="{searchActive: false }" x-cloak>
     <div x-show="!searchActive" class="flex gap-8" x-transition:opacity.duration.300ms>
-        @foreach (gameCategories() as $category)
+        @foreach ($categories as $category)
             <a href="{{ $category['url'] }}" wire:navigate
                 x-on:mouseenter="open = (open == '{{ $category['slug'] }}' || open == '' || open != '{{ $category['slug'] }}' ? '{{ $category['slug'] }}' : '')"
                 class="navbar_style group relative"
