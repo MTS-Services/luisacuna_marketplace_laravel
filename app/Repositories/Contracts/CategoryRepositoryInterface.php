@@ -33,6 +33,12 @@ interface CategoryRepositoryInterface
     public function search(string $query, string $sortField = 'created_at', $order = 'desc'): Collection;
 
 
+
+    // public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection;
+
+    // public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection;
+
+
     /* ================== ================== ==================
     *                    Data Modification Methods 
     * ================== ================== ================== */
