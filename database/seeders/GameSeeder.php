@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Game;
-use App\Models\Category;
 use App\Enums\GameStatus;
 use App\Models\Admin;
 use Illuminate\Database\Seeder;
@@ -15,13 +14,14 @@ class GameSeeder extends Seeder
      */
     public function run(): void
     {
+        $dummyLogo = 'https://dummyimage.com/600x600/cccccc/cccccc';
+
         $games = [
             [
                 'sort_order' => 1,
                 'name' => 'EA Sports FC Coins',
                 'slug' => 'ea-sports-fc-coins',
                 'description' => 'EA Sports FC Coins',
-                'logo' => 'assets/images/home_page/Frame1001.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'EA Sports FC Coins',
                 'meta_description' => 'EA Sports FC Coins',
@@ -35,7 +35,6 @@ class GameSeeder extends Seeder
                 'name' => 'Albion Online Silver',
                 'slug' => 'albion-online-silver',
                 'description' => 'Albion Online Silver',
-                'logo' => 'assets/images/home_page/game-2.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Albion Online Silver',
                 'meta_description' => 'Albion Online Silver',
@@ -49,7 +48,6 @@ class GameSeeder extends Seeder
                 'name' => 'Animal Crossing: New Horizons Bells',
                 'slug' => 'animal-crossing-new-horizons-bells',
                 'description' => 'Animal Crossing: New Horizons Bells',
-                'logo' => 'assets/images/home_page/game-3.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Animal Crossing: New Horizons Bells',
                 'meta_description' => 'Animal Crossing: New Horizons Bells',
@@ -63,7 +61,6 @@ class GameSeeder extends Seeder
                 'name' => 'Black Desert Online Silver',
                 'slug' => 'black-desert-online-silver',
                 'description' => 'Black Desert Online Silver',
-                'logo' => 'assets/images/home_page/game-4.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Black Desert Online Silver',
                 'meta_description' => 'Black Desert Online Silver',
@@ -77,7 +74,6 @@ class GameSeeder extends Seeder
                 'name' => 'Blade & Soul NEO Divine Gems',
                 'slug' => 'blade-soul-neo-divine-gems',
                 'description' => 'Blade & Soul NEO Divine Gems',
-                'logo' => 'assets/images/home_page/game-5.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Blade & Soul NEO Divine Gems',
                 'meta_description' => 'Blade & Soul NEO Divine Gems',
@@ -91,7 +87,6 @@ class GameSeeder extends Seeder
                 'name' => 'Blade Ball Tokens',
                 'slug' => 'blade-ball-tokens',
                 'description' => 'Blade Ball Tokens',
-                'logo' => 'assets/images/home_page/Frame 97.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Blade Ball Tokens',
                 'meta_description' => 'Blade Ball Tokens',
@@ -105,7 +100,6 @@ class GameSeeder extends Seeder
                 'name' => 'New World Coins',
                 'slug' => 'new-world-coins',
                 'description' => 'New World Coins',
-                'logo' => 'assets/images/home_page/Frame 100.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'New World Coins',
                 'meta_description' => 'New World Coins',
@@ -119,7 +113,6 @@ class GameSeeder extends Seeder
                 'name' => 'Path of Exile 2 Currency',
                 'slug' => 'path-of-exile-2-currency',
                 'description' => 'Path of Exile 2 Currency',
-                'logo' => 'assets/images/home_page/Frame 103.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Path of Exile 2 Currency',
                 'meta_description' => 'Path of Exile 2 Currency',
@@ -133,7 +126,6 @@ class GameSeeder extends Seeder
                 'name' => 'Throne and Liberty Lucent',
                 'slug' => 'throne-and-liberty-lucent',
                 'description' => 'Throne and Liberty Lucent',
-                'logo' => 'assets/images/home_page/Frame 105.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Throne and Liberty Lucent',
                 'meta_description' => 'Throne and Liberty Lucent',
@@ -147,7 +139,6 @@ class GameSeeder extends Seeder
                 'name' => 'Worldforge Legends',
                 'slug' => 'worldforge-legends',
                 'description' => 'Worldforge Legends',
-                'logo' => 'assets/images/home_page/Frame 94.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Worldforge Legends',
                 'meta_description' => 'Worldforge Legends',
@@ -161,7 +152,6 @@ class GameSeeder extends Seeder
                 'name' => 'Exilecon Official Trailer',
                 'slug' => 'exilecon-official-trailer',
                 'description' => 'Exilecon Official Trailer',
-                'logo' => 'assets/images/home_page/Frame 93.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Exilecon Official Trailer',
                 'meta_description' => 'Exilecon Official Trailer',
@@ -175,7 +165,6 @@ class GameSeeder extends Seeder
                 'name' => 'Echoes of the Terra',
                 'slug' => 'echoes-of-the-terra',
                 'description' => 'Echoes of the Terra',
-                'logo' => 'assets/images/home_page/Frame 96.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Echoes of the Terra',
                 'meta_description' => 'Echoes of the Terra',
@@ -189,7 +178,6 @@ class GameSeeder extends Seeder
                 'name' => 'Epochs of Gaia',
                 'slug' => 'epochs-of-gaia',
                 'description' => 'Epochs of Gaia',
-                'logo' => 'assets/images/home_page/Frame 102.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Epochs of Gaia',
                 'meta_description' => 'Epochs of Gaia',
@@ -203,7 +191,6 @@ class GameSeeder extends Seeder
                 'name' => 'Titan Realms',
                 'slug' => 'titan-realms',
                 'description' => 'Titan Realms',
-                'logo' => 'assets/images/home_page/Frame 98.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Titan Realms',
                 'meta_description' => 'Titan Realms',
@@ -217,7 +204,6 @@ class GameSeeder extends Seeder
                 'name' => 'Kingdoms Across Skies',
                 'slug' => 'kingdoms-across-skies',
                 'description' => 'Kingdoms Across Skies',
-                'logo' => 'assets/images/home_page/Frame 99.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Kingdoms Across Skies',
                 'meta_description' => 'Kingdoms Across Skies',
@@ -231,7 +217,6 @@ class GameSeeder extends Seeder
                 'name' => 'Realmwalker: New Dawn',
                 'slug' => 'realmwalker-new-dawn',
                 'description' => 'Realmwalker: New Dawn',
-                'logo' => 'assets/images/home_page/Frame 111.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Realmwalker: New Dawn',
                 'meta_description' => 'Realmwalker: New Dawn',
@@ -245,7 +230,6 @@ class GameSeeder extends Seeder
                 'name' => 'RuneScape 3 Gold',
                 'slug' => 'runescape-3-gold',
                 'description' => 'RuneScape 3 Gold',
-                'logo' => 'assets/images/home_page/game-3.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'RuneScape 3 Gold',
                 'meta_description' => 'RuneScape 3 Gold',
@@ -259,7 +243,6 @@ class GameSeeder extends Seeder
                 'name' => 'Lost Ark Gold',
                 'slug' => 'lost-ark-gold',
                 'description' => 'Lost Ark Gold',
-                'logo' => 'assets/images/home_page/game-5.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Lost Ark Gold',
                 'meta_description' => 'Lost Ark Gold',
@@ -273,7 +256,6 @@ class GameSeeder extends Seeder
                 'name' => 'Old School RuneScape Gold',
                 'slug' => 'old-school-runescape-gold',
                 'description' => 'Old School RuneScape Gold',
-                'logo' => 'assets/images/home_page/game-6.png',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Old School RuneScape Gold',
                 'meta_description' => 'Old School RuneScape Gold',
@@ -283,6 +265,11 @@ class GameSeeder extends Seeder
                 'updated_at' => now(),
             ],
         ];
+
+        // Add same dummy logo to all
+        foreach ($games as &$game) {
+            $game['logo'] = $dummyLogo;
+        }
 
         Game::insert($games);
     }
