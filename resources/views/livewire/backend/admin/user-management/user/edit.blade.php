@@ -111,8 +111,8 @@
                     x-transition:leave-start="opacity-100 transform translate-y-0"
                     x-transition:leave-end="opacity-0 transform -translate-y-2" class="w-full col-span-2" x-cloak>
                     <x-ui.label value="Reason for Status Change" class="mb-1" />
-                    <x-ui.textarea wire:model="form.reason" placeholder="Account status change reason..." rows="4"
-                        required />
+                    <x-ui.textarea wire:model="form.reason" placeholder="Account status change reason..."
+                        rows="4" />
                     <x-ui.input-error :messages="$errors->get('form.reason')" />
                 </div>
                 <div class="w-full" x-data="{
@@ -162,7 +162,7 @@
                 <x-ui.button class="w-auto! py-2!" type="submit">
                     <span wire:loading.remove wire:target="save"
                         class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Update
-                                                                                                                                                                                                                                                                                                                                                User') }}</span>
+                                                                                                                                                                                                                                                                                                                                                                                                User') }}</span>
                     <span wire:loading wire:target="save"
                         class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Updating...') }}</span>
                 </x-ui.button>
