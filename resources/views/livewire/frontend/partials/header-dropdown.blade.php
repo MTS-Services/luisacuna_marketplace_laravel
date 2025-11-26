@@ -68,9 +68,10 @@
                                     class="flex items-center gap-2.5 p-2.5 dark:hover:bg-purple-500/10 hover:bg-purple-100 rounded-lg transition cursor-pointer">
 
                                     <div class="w-6 h-6 flex-shrink-0">
-                                        @if (!empty($gameItem['logo']))
-                                            <img src="{{ storage_url($gameItem['logo']) }}"
-                                                alt="{{ $gameItem['name'] }}" class="w-full h-full object-contain">
+                                        @if(is_array($gameItem) && isset($gameItem['logo']))
+                                            <img src="{{ storage_url($gameItem['logo']) }}"  
+                                                alt="{{ is_array($gameItem) ? $gameItem['name'] : $gameItem }}"
+                                                class="w-full h-full object-contain rounded-lg">
                                         @else
                                             <div
                                                 class="w-full h-full rounded bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
