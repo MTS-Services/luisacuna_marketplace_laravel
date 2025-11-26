@@ -62,7 +62,11 @@ class UpdateAction
                     $newData['avatar'] = null;
                 }
                 // Cleanup temporary/file object keys
-                if (!$newData['remove_file'] && !$newSingleAvatarPath) {
+                // if (!$newData['remove_file'] && !$newSingleAvatarPath) {
+                //     $newData['avatar'] = $oldAvatarPath ?? null;
+                // }
+
+                if (!isset($newData['remove_file']) || (!$newData['remove_file'] && !$newSingleAvatarPath)) {
                     $newData['avatar'] = $oldAvatarPath ?? null;
                 }
                 unset($newData['remove_file']);
@@ -87,7 +91,7 @@ class UpdateAction
                 $newAccountStatus = Arr::get($data, 'account_status');
                 $reason = Arr::get($data, 'reason');
 
-                
+
 
                 // Status change check and reason not null
                 if ($oldAccountStatus !== $newAccountStatus && $reason) {

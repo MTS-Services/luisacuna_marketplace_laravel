@@ -24,7 +24,7 @@
                 </div>
                 <div class="flex flex-col gap-1.5">
                     <p class="text-base font-semibold text-text-white truncate">
-                        {{ user()->full_name }}
+                        {{ user()->username }}
                     </p>
                     <p class="text-xs text-zinc-400 truncate">{{ user()->email }}</p>
                 </div>

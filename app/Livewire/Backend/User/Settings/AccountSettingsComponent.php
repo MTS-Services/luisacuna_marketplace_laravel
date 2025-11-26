@@ -21,6 +21,8 @@ class AccountSettingsComponent extends Component
     public $avater = null;
     public $dateOfBirth = null;
     public $description = null;
+    public $existingFile;
+
 
 
 
@@ -36,17 +38,29 @@ class AccountSettingsComponent extends Component
     {
         $user = user();
         $this->form->setData($user);
+        $this->existingFile = $user->avatar;
     }
 
     public function updateProfile()
     {
-        $validated = $this->form->validate();
+        try {
+            $validated = $this->form->validate();
 
-        $status = $this->service->updateData(user()->id, $validated);
+            $updatedUser = $this->service->updateData(user()->id, $validated);
 
-        if ($status !== null) {
-            $this->success('Data updated successfully.');
             $this->mount();
+
+            $this->success('Data updated successfully.');
+
+            $this->dispatch('profile-updated');
+             return $this->redirect(route('user.account-settings'), navigate: true);
+        } catch (\Exception $e) {
+            Log::error('User profile update failed', [
+                'user_id' => user()->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            $this->error('User profile update failed: ' . $e->getMessage());
         }
     }
 

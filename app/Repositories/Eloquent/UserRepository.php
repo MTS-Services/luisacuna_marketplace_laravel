@@ -92,7 +92,6 @@ class UserRepository implements UserRepositoryInterface
     public function update(int $id, array $data): bool
     {
         $user = $this->find($id);
-
         if (!$user) {
             return false;
         }

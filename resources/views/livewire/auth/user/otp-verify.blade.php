@@ -1,27 +1,29 @@
 <div>
     <div class="bg-bg-secondary min-h-screen flex items-center justify-center">
-        <div class="w-full max-w-lg bg-gradient-to-br bg-bg-primary rounded-2xl px-8 py-22 shadow-2xl">
+        <div class="w-full max-w-xl bg-gradient-to-br bg-bg-primary rounded-2xl px-8 py-22 shadow-2xl">
             <!-- Header -->
             <div class="text-center mb-8">
-                <h1 class="text-4xl font-medium text-white mb-4">
+                <h2 class="text-3xl sm:text-4xl font-medium text-text-white">
                     {{ $isVerified ? __('Email Verified!') : __('Confirm your Gmail') }}
-                </h1>
-                
-                @if($isVerified)
+                </h2>
+
+                @if ($isVerified)
                     <div class="bg-green-500/20 border border-green-500 rounded-lg p-4 mb-4">
                         <div class="flex items-center justify-center gap-2 text-green-400">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <span class="font-medium">{{ __('Your email has been verified successfully!') }}</span>
+                            <span
+                                class="text-text-white lg:text-xl sm:text-lg mt-2">{{ __('Your email has been verified successfully!') }}</span>
                         </div>
                     </div>
-                    <p class="text-gray-300">{{ __('Click the button below to continue setting up your password.') }}</p>
+                    <p class="text-text-white lg:text-xl sm:text-lg mt-2">
+                        {{ __('Click the button below to continue setting up your password.') }}</p>
                 @else
-                    <p class="text-gray-300">
-                        {{ __('We have sent a code in an Email message to') }} 
-                        <span class="font-semibold text-purple-400">{{ $email }}</span> 
+                    <p class="text-text-white lg:text-xl sm:text-lg mt-2">
+                        {{ __('We have sent a code in an Email message to') }}
+                        <span class="font-semibold text-purple-400">{{ $email }}</span>
                         {{ __('to confirm your account. Enter your code.') }}
                     </p>
                 @endif
@@ -29,15 +31,16 @@
 
             <!-- Form -->
             <div>
-                @if($isVerified)
+                @if ($isVerified)
                     <!-- Already Verified - Show Continue Button -->
                     <div class="space-y-6">
                         <x-ui.button wire:click="proceedToNextStep" class="w-full! py-3!">
-                            <span class="text-text-btn-primary group-hover:text-text-btn-secondary flex items-center justify-center gap-2">
+                            <span
+                                class="text-text-btn-primary group-hover:text-text-btn-secondary flex items-center justify-center gap-2">
                                 {{ __('Continue to Password Setup') }}
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                        d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 7l5 5m0 0l-5 5m5-5H6" />
                                 </svg>
                             </span>
                         </x-ui.button>
@@ -46,11 +49,12 @@
                     <!-- OTP Verification Form -->
                     <form wire:submit="verifyOtp" class="space-y-6">
                         <!-- OTP Input -->
-                        <div>
-                            <x-ui.label value="Code" class="mb-1" />
-                            <x-ui.input type="number" placeholder="Enter your otp" wire:model="otp_code"
-                                class="border-none! bg-purple-300/10! bg-opacity-50!" />
-                            <x-ui.input-error :messages="$errors->get('otp_code')" />
+                        <div class="mb-4 sm:mb-6 px-2 sm:px-6">
+                            <label
+                                class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">{{ __('Code') }}</label>
+                            <x-ui.input type="number" placeholder="Enter your otp" wire:model="otp_code" />
+                            {{-- Error message --}}
+                            <x-ui.input-error :messages="$errors->get('email')" />
                         </div>
 
                         <!-- Resend OTP with Countdown Timer -->
@@ -94,7 +98,7 @@
                                     return `${mins}:${secs.toString().padStart(2, '0')}`;
                                 }
                             }" x-init="init()">
-                                
+
                                 <template x-if="canResend">
                                     <button type="button" wire:click.prevent="resendOtp"
                                         class="group inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 transition-all duration-200 font-medium">
@@ -123,10 +127,11 @@
                             </div>
                         </div>
 
-                        <!-- Verify Button -->
-                        <x-ui.button class="w-full! py-2!" type="submit">
-                            {{ __('Verify') }}
-                        </x-ui.button>
+                        <div class=" flex justify-center px-2 sm:px-6">
+                            <x-ui.button type="submit" class="w-auto py-2!">
+                                {{ __('Verify') }}
+                            </x-ui.button>
+                        </div>
                     </form>
                 @endif
             </div>

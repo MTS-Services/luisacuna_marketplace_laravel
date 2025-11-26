@@ -1,39 +1,47 @@
 <div>
     <div class="bg-bg-secondary min-h-screen flex items-center justify-center ">
-        <div class="w-full  max-w-lg bg-gradient-to-br bg-bg-primary rounded-2xl  px-8 py-22 shadow-2xl ">
+        <div class="w-full  max-w-xl bg-gradient-to-br bg-bg-primary rounded-2xl  px-8 py-20 shadow-2xl ">
             <!-- Header -->
             <div class="text-center mb-8">
-                <h1 class="text-4xl font-medium text-white mb-4">{{ __('Create Password') }}</h1>
-                <p class="text-gray-300">{{ __('Hi! Welcome back, you\'ve been missed') }}</p>
+                <h1 class="text-3xl sm:text-4xl font-medium text-text-white">{{ __('Create Password') }}</h1>
+                <p class="text-text-white lg:text-xl sm:text-lg mt-2">{{ __('Hi! Welcome back, you\'ve been missed') }}
+                </p>
             </div>
 
 
 
             <form wire:submit="save" class="space-y-6">
-                <div class="w-full">
-                    <x-ui.label value="Password" class="mb-1" />
-                    <x-ui.input type="password" placeholder="Password" wire:model="password" />
+                <!-- Password -->
+                <div class="mb-4 sm:mb-6 px-2 sm:px-6">
+                    <x-ui.label
+                        class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">{{ __('Password') }}</x-ui.label>
+                    <x-ui.input type="password" id="password" placeholder="Aex@8465" wire:model="password" />
                     <x-ui.input-error :messages="$errors->get('password')" />
                 </div>
 
-                <div class="w-full">
+                {{-- <div class="w-full">
                     <x-ui.label value="Confirm Password" class="mb-1" />
-                    <x-ui.input type="password" placeholder="Confirm Password"
-                        wire:model="password_confirmation" />
+                    <x-ui.input type="password" placeholder="Confirm Password" wire:model="password_confirmation" />
+                    <x-ui.input-error :messages="$errors->get('password_confirmation')" />
+                </div> --}}
+                <!-- Password -->
+                <div class="mb-4 sm:mb-6 px-2 sm:px-6">
+                    <x-ui.label
+                        class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">{{ __('Confirm Password') }}</x-ui.label>
+                    <x-ui.input type="password" placeholder="Confirm Password" wire:model="password_confirmation" />
                     <x-ui.input-error :messages="$errors->get('password_confirmation')" />
                 </div>
 
                 <!-- Show Password Checkbox -->
-                <div class="flex items-center gap-2">
+                <div class="mb-4 sm:mb-6 px-2 sm:px-6">
                     <input type="checkbox" id="showPassword" class="w-4 h-4 rounded accent-purple-500 cursor-pointer">
                     <label for="showPassword"
-                        class="text-white font-medium cursor-pointer">{{ __('Show password') }}</label>
+                        class="text-base font-normal mb-2 text-text-white cursor-pointer">{{ __('Show password') }}</label>
                 </div>
 
                 <!-- Sign In Button -->
                 <x-ui.button class="w-full! py-2!" type="submit">
-                    <span
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Sign up') }}</span>
+                    <span class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Sign up') }}</span>
                 </x-ui.button>
 
 
@@ -95,7 +103,7 @@
             <!-- Sign Up Link -->
             <p class="text-center text-text-white">
                 {{ __('Have an account already?') }}
-                <a href="#" class="text-purple-700 transition font-medium">{{ __('Sign in') }}</a>
+                <a href="{{ route('login') }}" class="text-purple-700 transition font-medium">{{ __('Sign in') }}</a>
             </p>
         </div>
     </div>

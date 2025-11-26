@@ -81,7 +81,7 @@
                     <div class="flex flex-col justify-center">
                         <label for="imageUpload"
                             class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-full cursor-pointer transition text-sm w-fit">
-                            Upload image
+                            {{ __('Upload image') }}
                         </label>
 
                         <!-- IMPORTANT: wire:model must stay here -->
@@ -89,7 +89,7 @@
                             wire:model="form.avatar" @change="updatePreview">
 
                         <span class="text-sm text-text-secondary mt-2">
-                            Must be JPEG, PNG or HEIC and cannot exceed 10MB.
+                            {{ __('Must be JPEG, PNG or HEIC and cannot exceed 10MB.') }}
                         </span>
 
                         <!-- Show Livewire validation error -->
@@ -114,10 +114,10 @@
                     <!-- Display Mode -->
                     <div class="" x-show="!editMode">
                         <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
-                            <p class="text-text-white text-xs">{{ __('Hey there!') }}</p>
-                            <p class="text-text-white text-xs">
+                            <p class="text-text-white text-xs">{{ user()->description }}</p>
+                            {{-- <p class="text-text-white text-xs">
                                 {{ __('At PixelStoreLAT, we bring you the best digital deals, game keys, and in-game items — fast, safe, and hassle-free. Trusted by thousands of gamers worldwide with 97% positive reviews. Level up your experience with us today!') }}
-                            </p>
+                            </p> --}}
                             {{-- <textarea rows="4" class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-hidden focus:ring-2 focus:ring-accent resize-none">{{ user()->description }}</textarea> --}}
                         </div>
                     </div>
@@ -146,15 +146,15 @@
                 <h2 class="text-2xl sm:text-3xl font-semibold text-text-white mb-8">{{ __('Profile') }}</h2>
 
                 <form class="space-y-5">
-                    {{-- User Name --}}
+
 
                     {{-- First Name --}}
-                    <div x-data="{ editMode: false }">
+                    <div x-data="{ editMode: false }" @profile-updated.window="editMode = false">
                         <div class="p-3 sm:p-6 bg-zinc-100 dark:bg-zinc-50/10 rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('First name:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
-                                    <p class="text-text-white text-xs">{{ user()->first_name }}</p>
+                                    <p class="text-text-white text-xs">{{ $form->first_name }}</p>
                                 </div>
                                 <div @click="editMode = true"
                                     class="px-2 py-1.5 sm:px-4 sm:py-3 bg-zinc-50/20 rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition">
@@ -169,10 +169,10 @@
                             <label
                                 class="block text-sm font-medium text-text-primary mb-2">{{ __('First name:') }}</label>
                             <div class="relative">
-                                <input type="text" value="{{ old('first_name', auth()->user()->first_name ?? '') }}"
-                                    wire:model.defer="form.first_name"
+                                <input type="text" wire:model.defer="form.first_name"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
-                                    placeholder="Enter first_name">
+                                    placeholder="Enter first name">
+                                <x-ui.input-error :messages="$errors->get('form.first_name')" />
                                 <button type="button"
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-text-muted hover:text-text-primary">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -182,7 +182,7 @@
                                 </button>
                             </div>
                             <div class="flex justify-start gap-3 mt-4">
-                                <x-ui.button wire:click="updateProfile" @click="editMode = false" class="w-fit! py-2!">
+                                <x-ui.button wire:click="updateProfile" class="w-fit! py-2!">
                                     {{ __('Save changes') }}
                                 </x-ui.button>
                                 <button type="button" @click="editMode = false"
@@ -192,6 +192,7 @@
                             </div>
                         </div>
                     </div>
+
 
                     {{-- Last name --}}
                     <div x-data="{ editMode: false }">
@@ -373,7 +374,7 @@
                             <label
                                 class="block text-sm font-medium text-text-primary mb-2">{{ __('Password') }}</label>
                             <div class="relative">
-                                <input type="url" name="url" value="********"
+                                <input type="password"  value="********"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                     placeholder="https://">
                                 <button type="button"
