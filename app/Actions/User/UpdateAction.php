@@ -2,15 +2,18 @@
 
 namespace App\Actions\User;
 
-use App\Events\User\AccountStatusChnage;
-use App\Events\User\UserUpdated;
 use App\Models\User;
-use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Arr;
+use App\Enums\UserAccountStatus;
+use App\Events\User\UserUpdated;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use App\Events\User\AccountStatusChnage;
+use App\Mail\User\UserAccountStatusChanged;
+use App\Repositories\Contracts\UserRepositoryInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UpdateAction
@@ -84,10 +87,30 @@ class UpdateAction
                 $newAccountStatus = Arr::get($data, 'account_status');
                 $reason = Arr::get($data, 'reason');
 
+                
+
                 // Status change check and reason not null
                 if ($oldAccountStatus !== $newAccountStatus && $reason) {
                     // Event fire
-                    event(new AccountStatusChnage($user, $oldAccountStatus, $newAccountStatus, $reason));
+                    // event(new AccountStatusChnage($user, $oldAccountStatus, $newAccountStatus, $reason));
+                    if ($newAccountStatus === UserAccountStatus::SUSPENDED->value) {
+                        Mail::to($user->email)->send(
+                            new UserAccountStatusChanged(
+                                $user,
+                                $oldAccountStatus,
+                                $newAccountStatus,
+                                $reason
+                            )
+                        );
+
+                        Log::info('Account Suspended email sent', [
+                            'user_id' => $user->id,
+                            'user_email' => $user->email,
+                            'old_status' => $oldAccountStatus,
+                            'new_status' => $newAccountStatus,
+                            'reason' => $reason
+                        ]);
+                    }
                 }
 
 

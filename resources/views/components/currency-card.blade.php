@@ -9,7 +9,7 @@
             class="w-full h-full object-cover rounded-lg">
     </div>
     <div class="">
-        <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white">
+        <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white line-clamp-1">
             {{ $data->name }}</h3>
         <p class="text-pink-500 mb-8">{{ __('50 offer') }}</p>
         <a href="{{ route('game.index', ['categorySlug' => 'currency', 'gameSlug' => 'exilecon-official-trailer']) }}"
