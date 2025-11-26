@@ -15,11 +15,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Notifications\Notifiable;
 
 
 class User extends AuthBaseModel implements Auditable
 {
-    use  TwoFactorAuthenticatable, AuditableTrait;
+    use  TwoFactorAuthenticatable, AuditableTrait, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -89,14 +90,6 @@ class User extends AuthBaseModel implements Auditable
         'created_at',
         'updated_at',
     ];
-
-    /**
-     * Audits relationship
-     */
-    public function audits(): MorphMany
-    {
-        return $this->morphMany(Audit::class, 'user');
-    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -216,6 +209,11 @@ class User extends AuthBaseModel implements Auditable
     public function userPoint(): HasOne
     {
         return $this->hasOne(UserPoint::class, 'user_id', 'id');
+    }
+
+    public function audits(): MorphMany
+    {
+        return $this->morphMany(Audit::class, 'user');
     }
     /*
     |--------------------------------------------------------------------------

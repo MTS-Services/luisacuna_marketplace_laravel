@@ -80,6 +80,20 @@
         </div>
     </div>
 
+    <div id="notification-toast"
+        class="absolute hidden top-5 right-5 w-72 z-50 rounded-2xl shadow-2xl bg-white text-black transition-all duration-500 ease-in-out transform translate-x-full opacity-0">
+        <div class="p-4 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3 flex-grow">
+                <flux:icon name="information-circle" class="w-6 h-6 stroke-blue-500 flex-shrink-0" />
+                <p id="notification-message" class="text-sm leading-snug font-normal"></p>
+            </div>
+            <button id="close-notification-btn"
+                class="flex-shrink-0 p-1 rounded-full hover:bg-gray-100 transition-colors duration-200">
+                <flux:icon name="x-mark" class="w-5 h-5" />
+            </button>
+        </div>
+    </div>
+
     @fluxScripts
     <script>
         function dashboardData() {
@@ -284,6 +298,70 @@
         });
     </script>
 
+
+    <script>
+        document.addEventListener('livewire:initialized', () => {
+
+            window.Echo.channel('admins')
+                .listen('.notification.sent', (e) => {
+                    // console.log(e);
+                    showNotification(e.title || 'New message received.');
+                    Livewire.dispatch('notification-updated');
+                });
+
+            if ('{{ auth()->check() }}') {
+                window.Echo.private('admin.{{ admin()->id }}')
+                    .listen('.notification.sent', (e) => {
+                        // console.log(e);
+                        showNotification(e.title || 'New message received.');
+                        Livewire.dispatch('notification-updated');
+                    });
+            }
+
+
+            function showNotification(message) {
+                const toast = document.getElementById('notification-toast');
+                const messageElement = document.getElementById('notification-message');
+                const closeButton = document.getElementById('close-notification-btn');
+
+                if (!toast || !messageElement || !closeButton) {
+                    console.error('Notification elements not found.');
+                    return;
+                }
+
+                // Set the message
+                messageElement.textContent = message;
+
+                // Show the notification with animation
+                toast.classList.remove('hidden');
+                toast.classList.remove('translate-x-full', 'opacity-0');
+                toast.classList.add('translate-x-0', 'opacity-100');
+
+                // Automatic dismissal after 3 seconds
+                const timeoutId = setTimeout(() => {
+                    hideNotification();
+                }, 3000); // 3 seconds
+
+                // Manual dismissal on click
+                closeButton.addEventListener('click', () => {
+                    clearTimeout(timeoutId); // Clear the auto-dismiss timer
+                    hideNotification();
+                }, {
+                    once: true
+                }); // Ensure the event listener is removed after first use
+            }
+
+            function hideNotification() {
+                const toast = document.getElementById('notification-toast');
+                if (toast) {
+                    toast.classList.remove('translate-x-0', 'opacity-100');
+                    toast.classList.add('translate-x-full', 'opacity-0');
+                    toast.classList.add('hidden');
+                }
+            }
+
+        });
+    </script>
     @stack('scripts')
 </body>
 
