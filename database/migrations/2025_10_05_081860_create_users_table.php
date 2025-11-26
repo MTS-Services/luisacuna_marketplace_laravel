@@ -36,6 +36,7 @@ return new class extends Migration {
             $table->string('apple_id')->nullable()->unique();
             $table->string('avatar')->nullable();
             $table->date('date_of_birth')->nullable();
+            $table->text('description')->nullable();
 
             $table->string('timezone')->default('UTC');
 

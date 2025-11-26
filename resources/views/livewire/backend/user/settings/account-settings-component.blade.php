@@ -24,80 +24,39 @@
                 <h2 class="text-2xl sm:text-3xl font-semibold text-text-primary mb-8">{{ __('Profile') }}</h2>
 
 
-                {{-- Profile Image --}}
-                {{-- <div class="flex items-start bg-zinc-100 dark:bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6">
-                    <div class="relative">
-                        <img src="{{ auth()->user()->avatar ?? asset('assets/images/user_profile/Ellipse 474.png') }}"
-                            alt="Profile" class="w-20 h-20 rounded-full object-cover ring-2 ring-accent/20">
-
-                    </div>
-                    <div class="flex-col">
-                        <x-ui.button  wire:click="updateProfile" class="w-fit! py-2!">
-                            {{ __('Upload image') }}
-                        </x-ui.button>
-                        <div class="">
-                            <span
-                                class="text-base text-text-white mt-2">{{ __('Allowed file types: png, jpg, jpeg') }}</span>
-                        </div>
-
-                    </div>
-                </div> --}}
-                {{-- <form wire:submit.prevent="updateProfile"> --}}
-                {{-- <div x-data="imageUploader()"
-                        class="flex items-center bg-zinc-100 dark:bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6 w-full text-white">
-
-                        <!-- Profile Image -->
-                        <div class="relative">
-                            <img :src="previewUrl || defaultUrl" alt="Profile" 
-                                class="w-20 h-20 rounded-full object-cover ring-2 ring-purple-400/30">
-                        </div>
-
-                        <!-- Upload Section -->
-                        <div class="flex flex-col justify-center">
-                            <label for="imageUpload"
-                                class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-full cursor-pointer transition text-sm w-fit">
-                                Upload image
-                            </label>
-
-                            <input id="imageUpload" wire:model="form.avatar" type="file" accept="image/jpeg, image/png, image/heic"
-                                class="hidden" @change="updatePreview">
-
-                            <span class="text-sm text-text-secondary mt-2">
-                                Must be JPEG, PNG or HEIC and cannot exceed 10MB.
-                            </span>
-                        </div>
-                    </div> --}}
+               
 
                 <div x-data="imageUploader()"
-                    class="flex items-center bg-zinc-100 dark:bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6 w-full text-white">
+                    class="flex items-center bg-zinc-100 dark:bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6 w-full">
 
                     <!-- Profile Image -->
                     <div class="relative">
-                        <img :src="previewUrl || defaultUrl" alt="Profile"
-                            class="w-20 h-20 rounded-full object-cover ring-2 ring-purple-400/30">
+                        <img :src="previewUrl || defaultUrl"
+                            class="w-20 h-20 rounded-full object-cover ring-2 ring-purple-400/30" alt="Profile">
                     </div>
 
-                    <!-- Upload Section -->
-                    <div class="flex flex-col justify-center">
+                    <!-- Upload Area -->
+                    <div class="flex flex-col">
                         <label for="imageUpload"
                             class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-full cursor-pointer transition text-sm w-fit">
                             {{ __('Upload image') }}
                         </label>
 
-                        <!-- IMPORTANT: wire:model must stay here -->
-                        <input id="imageUpload" type="file" accept="image/jpeg,image/png,image/heic" class="hidden"
-                            wire:model="form.avatar" @change="updatePreview">
+                        {{-- <input id="imageUpload" type="file" class="hidden" accept="image/jpeg,image/png,image/heic"
+                            wire:model="form.avatar" @change="uploadAndPreview"> --}}
+                        <input id="imageUpload" type="file" class="hidden" accept="image/jpeg,image/png,image/heic"
+                            wire:model="form.avatar" @change="uploadAndPreview">
 
                         <span class="text-sm text-text-secondary mt-2">
                             {{ __('Must be JPEG, PNG or HEIC and cannot exceed 10MB.') }}
                         </span>
 
-                        <!-- Show Livewire validation error -->
                         @error('form.avatar')
                             <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
+
 
 
                 {{-- Bio Textarea --}}
@@ -220,6 +179,7 @@
                                     wire:model.defer="form.last_name"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                     placeholder="Enter company name">
+                                    <x-ui.input-error :messages="$errors->get('form.last_name')" />
                                 <button type="button"
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-text-muted hover:text-text-primary">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -274,6 +234,7 @@
                                 <input type="email" name="email" value="" wire:model.defer="form.email"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                     placeholder="Enter email">
+                                    <x-ui.input-error :messages="$errors->get('form.email')" />
                                 <span
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-xs text-text-muted bg-bg-primary px-2 py-1 rounded">
                                     {{ __('This field is linked and can only be filled in once for user') }}
@@ -327,6 +288,7 @@
                                     wire:model.defer="form.username"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                     placeholder="Enter location">
+                                    <x-ui.input-error :messages="$errors->get('form.username')" />
                                 <button type="button"
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-text-muted hover:text-text-primary">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -374,9 +336,10 @@
                             <label
                                 class="block text-sm font-medium text-text-primary mb-2">{{ __('Password') }}</label>
                             <div class="relative">
-                                <input type="password"  value="********"
+                                <input type="password" value="********" wire:model.defer="form.password"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
-                                    placeholder="https://">
+                                    placeholder="*****">
+                                    <x-ui.input-error :messages="$errors->get('form.password')" />
                                 <button type="button"
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-text-muted hover:text-text-primary">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -480,10 +443,10 @@
         <script>
             function imageUploader() {
                 return {
-                    defaultUrl: "{{ storage_url(user()->avatar) ?? asset('assets/images/user_profile/Ellipse 474.png') }}", // fallback or dynamic image
+                    defaultUrl: "{{ storage_url(user()->avatar) ?? asset('assets/images/user_profile/Ellipse 474.png') }}",
                     previewUrl: null,
 
-                    updatePreview(event) {
+                    uploadAndPreview(event) {
                         const file = event.target.files[0];
                         if (!file) return;
 
@@ -493,11 +456,13 @@
                             return;
                         }
 
+                        // Preview Image
                         const reader = new FileReader();
                         reader.onload = (e) => this.previewUrl = e.target.result;
                         reader.readAsDataURL(file);
+
+                        // Livewire automatic upload (wire:model triggers updatedFormAvatar)
                     }
                 }
             }
         </script>
-    </section>

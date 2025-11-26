@@ -2,11 +2,12 @@
 
 namespace App\Livewire\Backend\User\Settings;
 
-use App\Livewire\Forms\User\UserForm;
-use App\Services\UserService;
-use App\Traits\Livewire\WithNotification;
-use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+use App\Services\UserService;
+use Illuminate\Support\Facades\Log;
+use App\Livewire\Forms\User\UserForm;
+use Illuminate\Support\Facades\Storage;
+use App\Traits\Livewire\WithNotification;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class AccountSettingsComponent extends Component
@@ -53,7 +54,7 @@ class AccountSettingsComponent extends Component
             $this->success('Data updated successfully.');
 
             $this->dispatch('profile-updated');
-             return $this->redirect(route('user.account-settings'), navigate: true);
+            return $this->redirect(route('user.account-settings'), navigate: true);
         } catch (\Exception $e) {
             Log::error('User profile update failed', [
                 'user_id' => user()->id,
@@ -63,6 +64,36 @@ class AccountSettingsComponent extends Component
             $this->error('User profile update failed: ' . $e->getMessage());
         }
     }
+
+
+
+    public function updatedFormAvatar()
+    {
+        $this->validate([
+            'form.avatar' => 'required|image|max:10240|mimes:jpg,jpeg,png,heic',
+        ]);
+
+        $this->uploadAvatar();
+    }
+
+    /**
+     * 🔥 Upload avatar instantly + DB update
+     */
+    public function uploadAvatar()
+    {
+        $avatar = $this->form->avatar;
+
+        if ($avatar) {
+            if ($this->existingFile && Storage::disk('public')->exists($this->existingFile)) {
+                Storage::disk('public')->delete($this->existingFile);
+            }
+            $path = $avatar->store('users', 'public');
+            user()->update(['avatar' => $path]);
+            $this->existingFile = $path;
+            $this->success('Profile photo updated!');
+        }
+    }
+
 
 
     public function loadUser()

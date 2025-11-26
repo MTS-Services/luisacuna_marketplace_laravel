@@ -35,6 +35,7 @@ class User extends AuthBaseModel implements Auditable
         'last_name',
         'uuid',
         'email',
+        'description',
 
         'apple_id',
         'facebook_id',
@@ -216,6 +217,10 @@ class User extends AuthBaseModel implements Auditable
     public function userPoint(): HasOne
     {
         return $this->hasOne(UserPoint::class, 'user_id', 'id');
+    }
+    public function UserNotificationSetting(): HasOne
+    {
+        return $this->hasOne(UsersNotificationSetting::class, 'user_id', 'id');
     }
     /*
     |--------------------------------------------------------------------------
