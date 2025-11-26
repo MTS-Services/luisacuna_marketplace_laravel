@@ -68,7 +68,7 @@
                                         @if(is_array($gameItem) && isset($gameItem['logo']))
                                             <img src="{{ storage_url($gameItem['logo']) }}"  
                                                 alt="{{ is_array($gameItem) ? $gameItem['name'] : $gameItem }}"
-                                                class="w-full h-full object-contain">
+                                                class="w-full h-full object-contain rounded-lg">
                                         @else
                                             <div class="w-full h-full rounded bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
                                                 <span class="text-white text-xs font-bold">
