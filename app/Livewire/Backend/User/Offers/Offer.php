@@ -18,17 +18,21 @@ class Offer extends Component
     public $selectedGame = null;
     public $selectedGameData = null; // Game এর full data with relations
     public $sessionId = null;
+
     // Dynamic relational data
     public $servers = [];
     public $factions = [];
     public $deliveryMethods = [];
+    public $platforms = [];
     
     // Selected values
     public $selectedServer = null;
     public $selectedFaction = null;
     public $selectedDeliveryMethod = null;
+    public $selectedPlatform = null;
 
 
+    public $offerData = [];
     protected CategoryService $categoryService;
     protected GameService $gameService;
 
@@ -59,21 +63,16 @@ class Offer extends Component
         $this->selectedCategoryId = $categoryId;
         $this->selectedCategory = $categoryName;
         $category = $this->categoryService->findData($categoryId);
-        dd($category->game());
-        $this->categoryGames = $category->games ?? [];
+       
+        // $this->categoryGames = $category->games ?? [];
+        $this->categoryGames = $category->game();
         $this->step = 2;
 
         
         $this->refine_session($this->sessionId, ['category_id' => $categoryId]);
     }
     // Helper
-        protected function refine_session(string $sessionId, array $data = []) {
 
-        $oldData = session()->get($this->sessionId);
-        $newData =  [...$oldData, ...$data];
-
-        session()->put($this->sessionId, $newData);
-        } 
     // Helper
     public function updatedSelectedGame($gameId)
     {
@@ -83,12 +82,13 @@ class Offer extends Component
         $this->selectedDeliveryMethod = null;
         $game  = $this->gameService->findData($gameId);
 
-        $game->load( 'platforms', 'rarities');
+        $game->load( 'platforms', 'rarities', 'servers');
         if ($gameId && ( !empty($game->platforms) || !empty($game->rarities))) {
             $this->selectedGameData =  $game;
             
             if ($this->selectedGameData) {
                 $this->servers = $this->selectedGameData->servers ?? [];
+                $this->platforms = $this->selectedGameData->platforms ?? [];
                 $this->factions = $this->selectedGameData->factions ?? [];
                 $this->deliveryMethods = $this->selectedGameData->deliveryMethods ?? [];
             }
@@ -102,16 +102,49 @@ class Offer extends Component
 
     public function selectGame()
     {
-        $this->validate([
+        $data = $this->validate([
             'selectedGame' => 'required',
         ]);
+
+        $this->refine_session($this->sessionId, $data);
+
+        $this->updatedSelectedGame($this->selectedGame);
 
         $this->step = 3;
     }
 
 
 
+    public function updateGameInformation()
+    {
+        $data = $this->validate([
+            'selectedServer' => 'nullable',
+            'selectedFaction' => 'nullable',
+            'selectedDeliveryMethod' => 'nullable',
+            'selectedPlatform' => 'nullable',
+        ]);
 
+
+       if($this->selectedFaction){
+            $new_data['factionId'] = $this->selectedFaction;
+        }
+       if($this->selectedServer){
+            $new_data['selectedId'] = $this->selectedServer;
+        }
+
+       if($this->selectedDeliveryMethod){
+            $new_data['factionId'] = $this->selectedDeliveryMethod;
+        }
+       if($this->selectedPlatform){
+            $new_data['platfromId'] = $this->selectedPlatform;
+        }
+
+        $this->refine_session($this->sessionId, $new_data);
+
+       
+     
+        $this->step = 4;
+    }
 
 
     public function submitOffer()
@@ -134,7 +167,25 @@ class Offer extends Component
     {
         if ($this->step > 1) {
             $this->step--;
+            $this->remove_last_session($this->sessionId);
         }
+    }
+   protected function refine_session(string $sessionId, array $data = []) {
+
+    $oldData = session()->get($this->sessionId);
+    $newData =  [...$oldData, ...$data];
+
+    session()->put($this->sessionId, $newData);
+    } 
+
+    protected function remove_last_session(string $sessionId, array $keys = []) {
+
+        $oldData = session()->get($sessionId, []);
+       
+     array_pop($oldData);
+
+     session()->put($sessionId, $oldData);
+    
     }
     public function render()
     {

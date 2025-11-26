@@ -61,6 +61,8 @@ class Game extends AuditBaseModel implements Auditable
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
     //
 
+
+
     public function categories()
     {
         // 1. Pass the related model (Category::class)
@@ -77,6 +79,7 @@ class Game extends AuditBaseModel implements Auditable
 
     public function servers()
     {
+           
         return $this->belongsToMany(
             Server::class,
             'game_servers',
