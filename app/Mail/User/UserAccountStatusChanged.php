@@ -25,9 +25,7 @@ class UserAccountStatusChanged extends Mailable
         public ?User $changedBy = null
 
     )
-    {
-        //
-    }
+    {}
 
     /**
      * Get the message envelope.

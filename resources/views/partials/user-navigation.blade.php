@@ -1,24 +1,24 @@
-<nav class="hidden xl:flex gap-8 text-sm items-center relative" x-data="{searchActive: false }" x-cloak>
+<nav class="hidden xl:flex gap-8 text-sm items-center relative" x-data="{ searchActive: false }" x-cloak>
     <div x-show="!searchActive" class="flex gap-8" x-transition:opacity.duration.300ms>
-        @foreach (gameCategories() as $category)
-            <a href="{{ $category['url'] }}" wire:navigate
-                x-on:mouseenter="open = (open == '{{ $category['slug'] }}' || open == '' || open != '{{ $category['slug'] }}' ? '{{ $category['slug'] }}' : '')"
+        @foreach ($categories as $category)
+            <a wire:navigate href="{{ category_route($category->slug) }}"
+                x-on:mouseenter="open = (open == '{{ $category->slug }}' || open == '' || open != '{{ $category->slug }}' ? '{{ $category->slug }}' : '')"
                 class="navbar_style group relative"
                 :class="{
-                    'active': open == '{{ $category['slug'] }}' ||
-                        {{ request()->routeIs($category['slug']) ? 'true' : 'false' }}
+                    'active': open == '{{ $category->slug }}' ||
+                        {{ request()->routeIs($category->slug) ? 'true' : 'false' }}
                 }">
                 <span class="relative z-10">{{ $category['name'] }}</span>
                 <span
                     class="absolute bottom-0 left-0 w-full h-0.5 bg-blue-500 transform scale-x-0 transition-transform duration-300 ease-in-out origin-left"
                     :class="{
-                        '!scale-x-100': open == '{{ $category['slug'] }}' ||
-                            {{ request()->routeIs($category['slug']) ? 'true' : 'false' }}
+                        '!scale-x-100': open == '{{ $category->slug }}' ||
+                            {{ request()->routeIs($category->slug) ? 'true' : 'false' }}
                     }"></span>
             </a>
         @endforeach
     </div>
-   
+
     <div class="relative flex items-center ml-auto" :style="searchActive ? 'width: 50rem' : 'width: 5.5rem'"
         style="transition: width 300ms ease-in-out">
 

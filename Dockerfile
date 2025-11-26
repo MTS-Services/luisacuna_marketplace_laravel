@@ -61,9 +61,6 @@ RUN mkdir -p storage/framework/{views,sessions,cache} \
     && chown -R www-data:www-data storage/framework storage/logs bootstrap/cache \
     && chmod -R 775 storage/framework storage/logs bootstrap/cache
 
-    # After the storage directory creation, add:
-
-
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 

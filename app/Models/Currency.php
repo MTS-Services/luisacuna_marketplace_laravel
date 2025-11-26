@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Searchable;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use App\Traits\AuditableTrait;
+use App\Traits\HasTranslations;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Currency extends AuditBaseModel implements Auditable
 {
-    use Searchable, AuditableTrait;
+    use AuditableTrait, HasTranslations;
 
     protected $fillable = [
         'sort_order',
@@ -44,9 +45,34 @@ class Currency extends AuditBaseModel implements Auditable
         // 'decimal_places' => 'integer',
     ];
 
+    /* ================================================================
+     |  Translation Configuration
+     ================================================================ */
+
+    /**
+     * Define translation configuration for this model
+     */
+    public function getTranslationConfig(): array
+    {
+        return [
+            'fields' => ['name'],
+            'relation' => 'currencyTranslations',
+            'model' => CurrencyTranslation::class,
+            'foreign_key' => 'currency_id',
+            'field_mapping' => [
+                'name' => 'name',
+            ],
+        ];
+    }
+
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+
+    public function currencyTranslations()
+    {
+        return $this->hasMany(CurrencyTranslation::class, 'currency_id', 'id');
+    }
 
     public function products()
     {
@@ -56,6 +82,20 @@ class Currency extends AuditBaseModel implements Auditable
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+
+    /* ================================================================
+     |  Translation Helper Methods (Convenience)
+     ================================================================ */
+
+    public function getTranslatedName($languageIdOrLocale): string
+    {
+        return $this->getTranslated('name', $languageIdOrLocale) ?? $this->name;
+    }
+
+    public function getAllTranslatedNames(): array
+    {
+        return $this->getAllTranslationsFor('name');
+    }
 
     /* ================================================================
      |  Query Scopes

@@ -19,7 +19,7 @@
             </div>
             {{-- filter section --}}
             <div class="title mb-5">
-                <h2 class="font-semibold text-4xl">{{ __('Accounts') }}</h2>
+                <h2 class="font-semibold text-4xl">{{ __('Boostings') }}</h2>
             </div>
             <div class="flex items-center justify-between gap-4 mt-3.5">
                 <div class="search w-full">
@@ -115,7 +115,9 @@
 
         <div class="max-w-7xl mx-auto px-12 py-6  ">
             <!-- Popular Boosting -->
-            <h2 class="text-4xl mb-6 text-white">{{ __('Fortnite') }}</h2>
+            <div class="title mb-5">
+                <h2 class="font-semibold text-4xl">{{ __('Fortnite') }}</h2>
+            </div>
 
             <!-- Cards Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
@@ -123,7 +125,7 @@
                 @foreach ($boostings as $boosting)
                     <x-currency-card :data="$boosting" />
                 @endforeach
-                
+
             </div>
         </div>
 
