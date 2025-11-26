@@ -60,25 +60,33 @@ class HeaderDropdown extends Component
                 ];
             });
         // Get all games for this category (for the sidebar)
-        $allGames = Game::whereHas('categories', function ($query) use ($category) {
-                $query->where('categories.id', $category->id);
-            })
-            ->active()
-            ->when($this->search, function ($query) {
-                $query->where('name', 'like', '%' . $this->search . '%');
-            })
-            ->orderBy('sort_order')
-            ->pluck('name')
-            ->toArray();
+         $allGames = Game::whereHas('categories', function ($query) use ($category) {
+                    $query->where('categories.id', $category->id);
+                })
+                ->active()
+                ->when($this->search, function ($query) {
+                    $query->where('name', 'like', '%' . $this->search . '%');
+                })
+                ->orderBy('created_at', 'desc')
+                ->get()
+                ->map(function ($game) {
+                    return [
+                        'name' => $game->name,
+                        'slug' => $game->slug,
+                        'logo' => $game->logo, // null or path
+                    ];
+                })
+                ->toArray();
 
-        return [
-            'popular' => $popularGames->toArray(),
-            'all' => $allGames,
-        ];
+            return [
+                'popular' => $popularGames->toArray(),
+                'all' => $allGames,
+            ];
+
     }
-    
     public function render()
     {
+       
         return view('livewire.frontend.partials.header-dropdown');
     }
 }
