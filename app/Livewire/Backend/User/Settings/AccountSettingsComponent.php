@@ -2,11 +2,12 @@
 
 namespace App\Livewire\Backend\User\Settings;
 
-use App\Livewire\Forms\User\UserForm;
-use App\Services\UserService;
-use App\Traits\Livewire\WithNotification;
-use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+use App\Services\UserService;
+use Illuminate\Support\Facades\Log;
+use App\Livewire\Forms\User\UserForm;
+use Illuminate\Support\Facades\Storage;
+use App\Traits\Livewire\WithNotification;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class AccountSettingsComponent extends Component
@@ -21,6 +22,8 @@ class AccountSettingsComponent extends Component
     public $avater = null;
     public $dateOfBirth = null;
     public $description = null;
+    public $existingFile;
+
 
 
 
@@ -36,19 +39,61 @@ class AccountSettingsComponent extends Component
     {
         $user = user();
         $this->form->setData($user);
+        $this->existingFile = $user->avatar;
     }
 
     public function updateProfile()
     {
-        $validated = $this->form->validate();
+        try {
+            $validated = $this->form->validate();
 
-        $status = $this->service->updateData(user()->id, $validated);
+            $updatedUser = $this->service->updateData(user()->id, $validated);
 
-        if ($status !== null) {
-            $this->success('Data updated successfully.');
             $this->mount();
+
+            $this->success('Data updated successfully.');
+
+            $this->dispatch('profile-updated');
+            return $this->redirect(route('user.account-settings'), navigate: true);
+        } catch (\Exception $e) {
+            Log::error('User profile update failed', [
+                'user_id' => user()->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            $this->error('User profile update failed: ' . $e->getMessage());
         }
     }
+
+
+
+    public function updatedFormAvatar()
+    {
+        $this->validate([
+            'form.avatar' => 'required|image|max:10240|mimes:jpg,jpeg,png,heic',
+        ]);
+
+        $this->uploadAvatar();
+    }
+
+    /**
+     * 🔥 Upload avatar instantly + DB update
+     */
+    public function uploadAvatar()
+    {
+        $avatar = $this->form->avatar;
+
+        if ($avatar) {
+            if ($this->existingFile && Storage::disk('public')->exists($this->existingFile)) {
+                Storage::disk('public')->delete($this->existingFile);
+            }
+            $path = $avatar->store('users', 'public');
+            user()->update(['avatar' => $path]);
+            $this->existingFile = $path;
+            $this->success('Profile photo updated!');
+        }
+    }
+
 
 
     public function loadUser()

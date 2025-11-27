@@ -23,7 +23,8 @@ class UserForm extends Form
     public $account_status = UserAccountStatus::PENDING_VERIFICATION->value;
     public ?string $password = '';
     public ?string $password_confirmation = '';
-    public bool $remove_avatar = false;
+    public ?bool $remove_avatar = false;
+    public ?bool $remove_file = false;
     public ?int $country_id = null;
     public ?string $date_of_birth = null;
 
@@ -35,7 +36,7 @@ class UserForm extends Form
         return [
             'first_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
-            'country_id' => 'required|exists:countries,id',
+            'country_id' => 'sometimes|required|exists:countries,id',
             'email' => [
                 'required',
                 'email',
@@ -56,7 +57,7 @@ class UserForm extends Form
             'description' => 'nullable|string|max:500',
             'date_of_birth' => 'nullable|date', // Validation rule for date_of_birth
             'phone' => 'nullable|string|max:20',
-            'account_status' => 'required|string|in:' . implode(',', array_column(UserAccountStatus::cases(), 'value')),
+            'account_status' => 'sometimes|required|string|in:' . implode(',', array_column(UserAccountStatus::cases(), 'value')),
         ];
     }
 
@@ -92,6 +93,7 @@ class UserForm extends Form
         $this->password = '';
         $this->password_confirmation = '';
         $this->remove_avatar = false;
+        $this->remove_file = false;
         $this->date_of_birth = null; // Reset date_of_birth field
         $this->phone = null;
         $this->account_status = UserAccountStatus::PENDING_VERIFICATION->value;
