@@ -2,21 +2,21 @@
 
 namespace App\Services;
 
-use App\Repositories\Contracts\ServerRepositoryInterface;
+use App\Repositories\Contracts\GameFeatureRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use App\Actions\Server\CreateAction;
-use App\Actions\Server\UpdateAction;
-use App\Actions\Server\DeleteAction;
-use App\Actions\Server\RestoreAction;
-use App\Actions\Server\BulkAction;
-use App\Enums\ServerStatus;
-use App\Models\Server;
+use App\Actions\GameFeature\CreateAction;
+use App\Actions\GameFeature\UpdateAction;
+use App\Actions\GameFeature\DeleteAction;
+use App\Actions\GameFeature\RestoreAction;
+use App\Actions\GameFeature\BulkAction;
+use App\Enums\GameFeatureStatus;
+use App\Models\GameFeature;
 
-class ServerService
+class GameFeatureService
 {
       public function __construct(
-        protected ServerRepositoryInterface $interface,
+        protected GameFeatureRepositoryInterface $interface,
         protected CreateAction $createAction,
         protected UpdateAction $updateAction,
         protected DeleteAction $deleteAction,
@@ -33,7 +33,7 @@ class ServerService
         return $this->interface->all($sortField, $order);
     }
 
-    public function findData($column_value, string $column_name = 'id'): ?Server
+    public function findData($column_value, string $column_name = 'id'): ?GameFeature
     {
         return $this->interface->find($column_value, $column_name);
     }
@@ -67,12 +67,12 @@ class ServerService
     *                   Action Executions
     * ================== ================== ================== */
 
-    public function createData(array $data): Server
+    public function createData(array $data): GameFeature
     {
         return $this->createAction->execute($data);
     }
 
-    public function updateData(int $id, array $data): Server
+    public function updateData(int $id, array $data): GameFeature
     {
         return $this->updateAction->execute($id, $data);
     }
@@ -93,7 +93,7 @@ class ServerService
         return $this->restoreAction->execute($id, $actionerId);
     }
 
-    public function updateStatusData(int $id, ServerStatus $status, ?int $actionerId = null): Server
+    public function updateStatusData(int $id, GameFeatureStatus $status, ?int $actionerId = null): GameFeature
     {
         if ($actionerId == null) {
             $actionerId = admin()->id;
@@ -127,7 +127,7 @@ class ServerService
         }
         return $this->bulkAction->execute(ids: $ids, action: 'delete', status: null, actionerId: $actionerId);
     }
-    public function bulkUpdateStatus(array $ids, ServerStatus $status, ?int $actionerId = null): int
+    public function bulkUpdateStatus(array $ids, GameFeatureStatus $status, ?int $actionerId = null): int
     {
         if ($actionerId == null) {
             $actionerId = admin()->id;

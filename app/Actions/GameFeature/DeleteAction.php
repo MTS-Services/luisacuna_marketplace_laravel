@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Actions\Server;
+namespace App\Actions\GameFeature;
 
 
-use App\Repositories\Contracts\ServerRepositoryInterface;
+use App\Repositories\Contracts\GameFeatureRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\HttpCache\Store;
@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\HttpCache\Store;
 class DeleteAction
 {
     public function __construct(
-        protected ServerRepositoryInterface $interface
+        protected GameFeatureRepositoryInterface $interface
     ) {
     }
 

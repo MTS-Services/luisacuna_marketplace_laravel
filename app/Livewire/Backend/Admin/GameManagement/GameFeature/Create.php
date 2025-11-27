@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\GameManagement\Server;
+namespace App\Livewire\Backend\Admin\GameManagement\GameFeature;
 
-use App\Enums\ServerStatus;
-use App\Livewire\Forms\Backend\Admin\GameManagement\ServerForm;
-use App\Services\ServerService;
+use App\Enums\GameFeatureStatus;
+use App\Livewire\Forms\Backend\Admin\GameManagement\GameFeatureForm;
+use App\Services\GameFeatureService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -14,14 +14,14 @@ class Create extends Component
 {
    use WithNotification, WithFileUploads;
 
-    public ServerForm $form;
+    public GameFeatureForm $form;
 
-    protected ServerService $service;
+    protected GameFeatureService $service;
 
     /**
      * Inject the CurrencyService via the boot method.
      */
-    public function boot(ServerService $service): void
+    public function boot(GameFeatureService $service): void
     {
         $this->service = $service;
     }
@@ -31,7 +31,7 @@ class Create extends Component
      */
     public function mount(): void
     {
-         $this->form->status = ServerStatus::ACTIVE->value;
+         $this->form->status = GameFeatureStatus::ACTIVE->value;
     }
 
     /**
@@ -39,8 +39,8 @@ class Create extends Component
      */
     public function render()
     {
-        return view('livewire.backend.admin.game-management.server.create', [
-            'statuses' => ServerStatus::options(),
+        return view('livewire.backend.admin.game-management.game-feature.create', [
+            'statuses' => GameFeatureStatus::options(),
         ]);
     }
 

@@ -2,17 +2,17 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Models\Server;
-use App\Repositories\Contracts\ServerRepositoryInterface;
+use App\Models\GameFeature;
+use App\Repositories\Contracts\GameFeatureRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
-class ServerRepository implements ServerRepositoryInterface
+class GameFeatureRepository implements GameFeatureRepositoryInterface
 {
        public function __construct(
 
-        protected Server $model
+        protected GameFeature $model
 
     ) {}
 
@@ -27,7 +27,7 @@ class ServerRepository implements ServerRepositoryInterface
         return $query->orderBy($sortField, $order)->get();
     }
 
-    public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?Server
+    public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?GameFeature
     {
         $model = $this->model;
         if ($trashed) {
@@ -36,7 +36,7 @@ class ServerRepository implements ServerRepositoryInterface
         return $model->where($column_name, $column_value)->first();
     }
 
-    public function findTrashed($column_value, string $column_name = 'id'): ?Server
+    public function findTrashed($column_value, string $column_name = 'id'): ?GameFeature
     {
         $model = $this->model->onlyTrashed();
         return $model->where($column_name, $column_value)->first();
@@ -52,7 +52,7 @@ class ServerRepository implements ServerRepositoryInterface
 
         if ($search) {
             // Scout Search
-            return Server::search($search)
+            return GameFeature::search($search)
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
         }
@@ -75,7 +75,7 @@ class ServerRepository implements ServerRepositoryInterface
 
         if ($search) {
             // 👇 Manually filter trashed + search
-            return Server::search($search)
+            return GameFeature::search($search)
                 ->onlyTrashed()
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
@@ -113,7 +113,7 @@ class ServerRepository implements ServerRepositoryInterface
     *                    Data Modification Methods
     * ================== ================== ================== */
 
-    public function create(array $data): Server
+    public function create(array $data): GameFeature
     {
         return $this->model->create($data);
     }

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Actions\Server;
+namespace App\Actions\GameFeature;
 
 
-use App\Repositories\Contracts\ServerRepositoryInterface;
+use App\Repositories\Contracts\GameFeatureRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 
 class BulkAction
 {
     public function __construct(
-        protected ServerRepositoryInterface $interface
+        protected GameFeatureRepositoryInterface $interface
     ) {}
 
     public function execute(array $ids, string $action, ?string $status = null, int $actionerId): bool

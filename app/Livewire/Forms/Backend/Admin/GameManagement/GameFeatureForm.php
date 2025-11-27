@@ -3,12 +3,12 @@
 namespace App\Livewire\Forms\Backend\Admin\GameManagement;
 
 
-use App\Enums\ServerStatus;
+use App\Enums\GameFeatureStatus;
 use Illuminate\Http\UploadedFile;
 use Livewire\Attributes\Locked;
 use Livewire\Form;
 
-class ServerForm extends Form
+class GameFeatureForm extends Form
 {
 
 
@@ -49,7 +49,7 @@ class ServerForm extends Form
 
         $this->name = '';
 
-        $this->status = ServerStatus::ACTIVE->value;
+        $this->status = GameFeatureStatus::ACTIVE->value;
 
         $this->remove_file = false;
 

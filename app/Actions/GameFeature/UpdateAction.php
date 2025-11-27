@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Actions\Server;
+namespace App\Actions\GameFeature;
 
-use App\Models\Server;
-use App\Repositories\Contracts\ServerRepositoryInterface;
+use App\Models\GameFeature;
+use App\Repositories\Contracts\GameFeatureRepositoryInterface;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -13,11 +13,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class UpdateAction
 {
     public function __construct(
-        protected ServerRepositoryInterface $interface
+        protected GameFeatureRepositoryInterface $interface
     ) {
     }
 
-    public function execute(int $id, array $data): Server
+    public function execute(int $id, array $data): GameFeature
     {
         $newSingleIconPath = null;
 

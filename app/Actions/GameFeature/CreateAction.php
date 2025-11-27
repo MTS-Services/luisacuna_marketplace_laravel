@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Actions\Server;
+namespace App\Actions\GameFeature;
 
 use App\Events\Server\ServerCreated;
-use App\Models\Server;
-use App\Repositories\Contracts\ServerRepositoryInterface;
+use App\Models\GameFeature;
+use App\Repositories\Contracts\GameFeatureRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class CreateAction
 {
     public function __construct(
-        protected ServerRepositoryInterface $interface
+        protected GameFeatureRepositoryInterface $interface
     ) {
     }
 
 
-    public function execute(array $data): Server
+    public function execute(array $data): GameFeature
     {
         return DB::transaction(function () use ($data) {
 
@@ -27,8 +27,6 @@ class CreateAction
             }
 
             $newData = $this->interface->create($data);
-            // Dispatch event
-            event(new ServerCreated($newData));
             
             return $newData->fresh();
         });
