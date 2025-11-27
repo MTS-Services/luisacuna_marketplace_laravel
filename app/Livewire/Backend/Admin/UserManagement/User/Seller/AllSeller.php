@@ -33,7 +33,6 @@ class AllSeller extends Component
             // perPage: $this->perPage,
             // filters: $this->getFilters()
         );
-        $datas->load('country');
 
         // $users = $this->userService->getAllUsers();
 
@@ -66,14 +65,6 @@ class AllSeller extends Component
                 'key' => 'phone',
                 'label' => 'Phone',
                 'sortable' => true
-            ],
-            [
-                'key' => 'country_id',
-                'label' => 'Country Name',
-                'sortable' => true,
-                'format' => function ($user) {
-                    return $user?->country?->name ?? '-';
-                }
             ],
             [
                 'key' => 'account_status',
@@ -162,7 +153,6 @@ class AllSeller extends Component
             match ($userStatus) {
                 UserAccountStatus::ACTIVE => $this->service->activateData($userId),
                 UserAccountStatus::INACTIVE => $this->service->deactivateData($userId),
-                UserAccountStatus::SUSPENDED => $this->service->suspendData($userId),
                 default => null,
             };
 
@@ -192,7 +182,6 @@ class AllSeller extends Component
                 'delete' => $this->bulkDelete(),
                 'activate' => $this->bulkUpdateStatus(UserAccountStatus::ACTIVE),
                 'deactivate' => $this->bulkUpdateStatus(UserAccountStatus::INACTIVE),
-                'suspend' => $this->bulkUpdateStatus(UserAccountStatus::SUSPENDED),
                 default => null,
             };
 

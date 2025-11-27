@@ -6,6 +6,7 @@ use Throwable;
 use Livewire\Component;
 use App\Services\UserService;
 use App\Enums\UserAccountStatus;
+use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 
@@ -56,14 +57,6 @@ class BuyerTrash extends Component
                 'key' => 'phone',
                 'label' => 'Phone',
                 'sortable' => true
-            ],
-            [
-                'key' => 'country_id',
-                'label' => 'Country Name',
-                'sortable' => true,
-                'format' => function ($user) {
-                    return $user->country->name;
-                }
             ],
             [
                 'key' => 'account_status',
@@ -156,7 +149,6 @@ class BuyerTrash extends Component
             match ($userStatus) {
                 UserAccountStatus::ACTIVE => $this->service->activateData($userId),
                 UserAccountStatus::INACTIVE => $this->service->deactivateData($userId),
-                UserAccountStatus::SUSPENDED => $this->service->suspendData($userId),
                 default => null,
             };
 
@@ -187,7 +179,6 @@ class BuyerTrash extends Component
                 'bulkRestore' => $this->bulkRestoreDatas(),
                 'activate' => $this->bulkUpdateStatus(UserAccountStatus::ACTIVE),
                 'deactivate' => $this->bulkUpdateStatus(UserAccountStatus::INACTIVE),
-                'suspend' => $this->bulkUpdateStatus(UserAccountStatus::SUSPENDED),
                 default => null,
             };
 

@@ -41,11 +41,6 @@ class Language extends AuditBaseModel implements Auditable
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
 
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
-
 
 
 

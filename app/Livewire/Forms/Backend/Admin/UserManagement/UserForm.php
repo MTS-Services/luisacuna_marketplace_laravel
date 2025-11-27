@@ -22,10 +22,6 @@ class UserForm extends Form
 
     public ?string $date_of_birth = '';
 
-    public ?int $country_id = null;
-
-    public ?int $language = null;
-
     public ?string $display_name = '';
 
     public ?string $email = '';
@@ -40,7 +36,6 @@ class UserForm extends Form
 
     public ?string $reason = null;
 
-    public ?int $currency_id = null;
 
     // public ?UploadedFile $avatar = null;
 
@@ -67,10 +62,7 @@ class UserForm extends Form
             'last_name' => 'nullable|string|max:255',
             'username' => $this->isUpdating() ? 'nullable|string|max:255|regex:/^[A-Za-z0-9_\-\$]+$/|unique:users,username,' . $this->user_id : 'required|string|max:255|unique:users,username|regex:/^[A-Za-z0-9_\-\$]+$/',
             'date_of_birth' => 'nullable|date',
-            'country_id' => 'required|exists:countries,id',
-            'language' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $this->user_id,
-            'currency_id'   => 'required|exists:currencies,id',
             'password' => $this->isUpdating() ? 'nullable|string|min:8' : 'required|string|min:8|confirmed',
             'phone' => 'nullable|string|max:20',
             'account_status' => 'required|string|in:' . implode(',', array_column(UserAccountStatus::cases(), 'value')),
@@ -89,15 +81,11 @@ class UserForm extends Form
         $this->first_name = $user->first_name;
         $this->last_name = $user->last_name;
         $this->username = $user->username ?? null;
-        // $this->display_name = $user->display_name;
-        $this->country_id = $user->country_id;
-        $this->language = $user->language_id;
         $this->date_of_birth = $user->date_of_birth;
         $this->email = $user->email;
         $this->phone = $user->phone;
         $this->account_status = $user->account_status->value;
         $this->originalAccountStatus = $user->account_status->value;
-        $this->currency_id = $user->currency_id;
         $this->reason = null;
     }
 
@@ -106,8 +94,6 @@ class UserForm extends Form
         $this->first_name = '';
         $this->last_name = '';
         $this->username = '';
-        // $this->display_name = '';
-        // $this->country_id = '';
         $this->date_of_birth = '';
         $this->email = '';
         $this->password = '';
@@ -118,8 +104,6 @@ class UserForm extends Form
         $this->reason = null;
         $this->avatar = null;
         $this->remove_file = false;
-        $this->currency_id = null;
-
         $this->resetValidation();
     }
 
@@ -156,14 +140,11 @@ class UserForm extends Form
             'last_name' => $this->last_name,
             'username' => $this->username,
             'date_of_birth' => $this->date_of_birth,
-            'country_id' => $this->country_id,
-            'language_id' => $this->language,
             'email' => $this->email,
             'password' => $this->password,
             'phone' => $this->phone,
             'account_status' => $this->account_status,
             'avatar' => $this->avatar,
-            'currency_id' => $this->currency_id,
         ];
 
         if ($this->isAccountStatusChanged() && $this->reason) {
