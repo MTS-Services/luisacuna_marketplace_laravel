@@ -136,13 +136,44 @@ class CurrencyRepository implements CurrencyRepositoryInterface
 
     public function update(int $id, array $data): bool
     {
-        $findData = $this->find($id);
+        return DB::transaction(function () use ($id, $data) {
+            $findData = $this->find($id);
 
-        if (!$findData) {
-            return false;
-        }
+            if (!$findData) {
+                return false;
+            }
 
-        return $findData->update($data);
+            // Check if exchange_rate is being updated
+            if (isset($data['exchange_rate']) && $data['exchange_rate'] != $findData->exchange_rate) {
+                $defaultCurrency = $this->getDefaultCurrency();
+                
+                // Store old exchange rate in history
+                $this->exchangeRateHistoryModel->create([
+                    'base_currency' => $defaultCurrency ? $defaultCurrency->id : null,
+                    'target_currency' => $findData->id,
+                    'rate' => $findData->exchange_rate,
+                    'last_updated_at' => $findData->updated_at ?? $findData->created_at,
+                    'created_by' => $data['updated_by'] ?? null,
+                ]);
+
+                // Update the exchange rate table
+                if ($defaultCurrency) {
+                    $this->exchangeRateModel->updateOrCreate(
+                        [
+                            'base_currency' => $defaultCurrency->id,
+                            'target_currency' => $findData->id,
+                        ],
+                        [
+                            'rate' => $data['exchange_rate'],
+                            'last_updated_at' => now(),
+                            'updated_by' => $data['updated_by'] ?? null,
+                        ]
+                    );
+                }
+            }
+
+            return $findData->update($data);
+        });
     }
 
     public function delete(int $id, int $actionerId): bool
@@ -192,6 +223,7 @@ class CurrencyRepository implements CurrencyRepositoryInterface
     {
         return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updated_by' => $actionerId]);
     }
+    
     public function bulkRestore(array $ids, int $actionerId): int
     {
         return DB::transaction(function () use ($ids, $actionerId) {
@@ -199,7 +231,8 @@ class CurrencyRepository implements CurrencyRepositoryInterface
             return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
         });
     }
-    public function bulkForceDelete(array $ids): int //
+    
+    public function bulkForceDelete(array $ids): int
     {
         return $this->model->onlyTrashed()->whereIn('id', $ids)->forceDelete();
     }
