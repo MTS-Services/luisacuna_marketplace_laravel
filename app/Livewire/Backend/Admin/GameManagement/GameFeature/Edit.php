@@ -58,7 +58,7 @@ class Edit extends Component
             $this->service->updateData($this->data->id, $data);
 
             $this->success('Data updated successfully.');
-            return $this->redirect(route('admin.gm.server.index'), navigate: true);
+            return $this->redirect(route('admin.gm.game-feature.index'), navigate: true);
         } catch (\Exception $e) {
             $this->error('Failed to update data: ' . $e->getMessage());
         }
@@ -71,7 +71,7 @@ class Edit extends Component
     {
         $this->form->reset();
 
-        $this->redirect(route('admin.gm.server.index'), navigate: true);
+        $this->redirect(route('admin.gm.game-feature.index'), navigate: true);
     }
 
     public function resetForm(){

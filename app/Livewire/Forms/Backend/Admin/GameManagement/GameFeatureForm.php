@@ -26,8 +26,8 @@ class GameFeatureForm extends Form
     {
         $rules = [
             'name' => 'required|string|max:255',
-            'status' => 'required|string|in:' . implode(',', array_column(ServerStatus::cases(), 'value')),
-            'icon' => 'nullable|image|mimes:jpeg,png,jpg|max:1024|dimensions:max_width=200,max_height=200',
+            'status' => 'required|string|in:' . implode(',', array_column(GameFeatureStatus::cases(), 'value')),
+            'icon' => 'nullable|image|max:2048|dimensions:max_width=200,max_height=200',
             'remove_file' => 'nullable|boolean',
         ];
 

@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game Server Create') }}</h2>
             <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.gm.server.index') }}" class="w-auto py-2!">
+                <x-ui.button href="{{ route('admin.gm.game-feature.index') }}" class="w-auto py-2!">
                     <flux:icon name="arrow-left"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                     {{ __('Back') }}
@@ -23,7 +23,7 @@
                         placeholder="Name" />
                     <x-ui.input-error :messages="$errors->get('form.name')" class="mt-2" />
                 </div>
-                 <div>
+                <div>
                     <x-ui.label for="status" :value="__('Status')" />
                     <x-ui.select id="status" class="mt-1 block w-full" wire:model="form.status">
                         <option value="">{{ __('Select Status') }}</option>
@@ -35,8 +35,8 @@
                 </div>
             </div>
             <div class="mt-6 space-y-4 grid gap-5">
-               
-               <div>
+
+                <div>
                     <x-ui.label
                         class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Icon') }}</x-ui.label>
                     <x-ui.file-input wire:model="form.icon" accept="image/*" :error="$errors->first('form.icon')"

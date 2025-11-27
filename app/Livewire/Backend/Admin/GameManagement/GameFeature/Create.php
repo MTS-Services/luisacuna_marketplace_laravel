@@ -58,7 +58,7 @@ class Create extends Component
 
             $this->success('Data created successfully.');
 
-            return $this->redirect(route('admin.gm.server.index'), navigate: true);
+            return $this->redirect(route('admin.gm.game-feature.index'), navigate: true);
         } catch (\Exception $e) {
 
             Log::error('Failed to create data: ' . $e->getMessage());

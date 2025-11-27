@@ -16,7 +16,7 @@
                             {{ __('Edit') }}
                         </x-ui.button>
 
-                        <x-ui.button href="{{ route('admin.gm.server.index') }}" class="w-auto py-2!">
+                        <x-ui.button href="{{ route('admin.gm.game-feature.index') }}" class="w-auto py-2!">
                             <flux:icon name="arrow-left"
                                 class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                             {{ __('Back') }}
