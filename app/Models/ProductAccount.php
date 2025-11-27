@@ -6,16 +6,13 @@ use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
  
-class OfferItemDiscount extends AuditBaseModel implements Auditable
+class ProductAccount extends AuditBaseModel implements Auditable
 {
     use   AuditableTrait;
     //
  
     protected $fillable = [
         'sort_order',
-        'offer_item_id',
-        'quantity_unit',
-        'discount',
  
       //here AuditColumns 
     ];
@@ -32,10 +29,7 @@ class OfferItemDiscount extends AuditBaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
  
-    public function offerItem()
-    {
-        return $this->belongsTo(OfferItem::class, 'offer_item_id', 'id');
-    }
+     //
  
      /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS

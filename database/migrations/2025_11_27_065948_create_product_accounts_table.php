@@ -7,27 +7,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-     use AuditColumnsTrait;
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('offer_item_discounts', function (Blueprint $table) {
+        Schema::create('product_accounts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-            
-            $table->unsignedBigInteger('offer_item_id')->index();
-            $table->integer('quantity_unit');
-            $table->integer('discount');
 
+            $table->unsignedBigInteger('product_id')->index();
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade');
 
+            $table->text('account_info');
 
-            $table->softDeletes();
             $table->timestamps();
-
-           // $this->addMorphedAuditColumns($table);
-            // $this->addAdminAuditColumns($table);
         });
     }
 
@@ -36,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('offer_item_discounts');
+        Schema::dropIfExists('product_accounts');
     }
 };

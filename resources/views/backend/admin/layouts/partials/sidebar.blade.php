@@ -154,28 +154,16 @@
                 :items="[
                     [
                         'name' => 'Product Types',
-                        'route' => route('admin.pm.productType.index'),
+                        'route' => '#',
                         'icon' => 'user',
                         'active' => 'product-type',
                     ],
                     [
                         'name' => 'Products',
-                        'route' => route('admin.pm.product.index'),
+                        'route' => '#',
                         'icon' => 'user',
                         'active' => 'product',
                     ],
-                    // [
-                    //     'name' => 'Pending Users',
-                    //     'route' => '#',
-                    //     'icon' => 'user-plus',
-                    //     'active' => 'admin-users-pending',
-                    // ],
-                    // [
-                    //     'name' => 'Banned Users',
-                    //     'route' => '#',
-                    //     'icon' => 'user-round-x',
-                    //     'active' => 'admin-users-banned',
-                    // ],
                 ]" />
             <x-backend.navlink type="dropdown" icon="gift" name="Offer Item Management" :page_slug="$active"
                 :items="[

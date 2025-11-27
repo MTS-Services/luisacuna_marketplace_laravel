@@ -18,10 +18,9 @@ class Index extends Component
     public $deleteId = null;
     public $bulkAction = '';
     public $showBulkActionModal = false;
-
-
-
-    // protected $listeners = ['CurrencyCreated' => '$refresh', 'CurrencyUpdated' => '$refresh'];
+    public $showDefaultModal = false;
+    public $defaultId = null;
+    public $currentDefaultCurrency = null;
 
     protected CurrencyService $service;
 
@@ -67,6 +66,16 @@ class Index extends Component
                 'sortable' => true
             ],
             [
+                'key' => 'is_default',
+                'label' => 'Default',
+                'sortable' => true,
+                'format' => function ($data) {
+                    return $data->is_default 
+                        ? '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Yes</span>'
+                        : '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">No</span>';
+                }
+            ],
+            [
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
@@ -108,6 +117,12 @@ class Index extends Component
             ],
             [
                 'key' => 'id',
+                'label' => 'Set as Default',
+                'method' => 'confirmSetDefault',
+                'encrypt' => true
+            ],
+            [
+                'key' => 'id',
                 'label' => 'Delete',
                 'method' => 'confirmDelete',
                 'encrypt' => true
@@ -127,6 +142,61 @@ class Index extends Component
             'actions' => $actions,
             'bulkActions' => $bulkActions,
         ]);
+    }
+
+    public function confirmSetDefault($id): void
+    {
+        try {
+            $decryptedId = decrypt($id);
+            
+            // Check if currency exists
+            if (!$this->service->exists($decryptedId)) {
+                $this->error('Currency not found');
+                return;
+            }
+            
+            // Get the currency to check if it's already default
+            $currency = $this->service->findData($decryptedId);
+            if ($currency->is_default) {
+                $this->warning('This currency is already set as default');
+                return;
+            }
+            
+            // Get existing default currency
+            $existingDefault = $this->service->getDefaultCurrency();
+            
+            $this->defaultId = $id;
+            $this->currentDefaultCurrency = $existingDefault;
+            $this->showDefaultModal = true;
+            
+        } catch (\Exception $e) {
+            $this->error('Failed to process request: ' . $e->getMessage());
+        }
+    }
+
+    public function setAsDefault(): void
+    {
+        try {
+            if (!$this->defaultId) {
+                $this->warning('No currency selected');
+                return;
+            }
+
+            $decryptedId = decrypt($this->defaultId);
+            
+            // Pass admin ID explicitly
+            $result = $this->service->setDefaultCurrency($decryptedId, admin()->id);
+            
+            if ($result['success']) {
+                $this->reset(['defaultId', 'showDefaultModal', 'currentDefaultCurrency']);
+                $this->success($result['message']);
+            } else {
+                $this->warning($result['message']);
+            }
+            
+        } catch (\Exception $e) {
+            $this->error('Failed to set default currency: ' . $e->getMessage());
+        }
     }
 
     public function confirmDelete($id): void

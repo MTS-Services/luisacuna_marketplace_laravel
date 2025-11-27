@@ -6,6 +6,7 @@ use App\Actions\Currency\BulkAction;
 use App\Actions\Currency\CreateAction;
 use App\Actions\Currency\DeleteAction;
 use App\Actions\Currency\RestoreAction;
+use App\Actions\Currency\SetDefaultCurrencyAction;
 use App\Actions\Currency\UpdateAction;
 use App\Enums\CurrencyStatus;
 use App\Models\Currency;
@@ -21,7 +22,8 @@ class CurrencyService
         protected UpdateAction $updateAction,
         protected DeleteAction $deleteAction,
         protected RestoreAction $restoreAction,
-        protected BulkAction $bulkAction
+        protected BulkAction $bulkAction,
+        protected SetDefaultCurrencyAction $setDefaultAction
     ) {}
 
     /* ================== ================== ==================
@@ -31,6 +33,43 @@ class CurrencyService
     public function getAllDatas($sortField = 'created_at', $order = 'desc'): Collection
     {
         return $this->interface->all($sortField, $order);
+    }
+  /**
+     * Get the current default currency
+     */
+    public function getDefaultCurrency(): ?Currency
+    {
+        return $this->interface->getDefaultCurrency();
+    }
+
+    /**
+     * Set a currency as default using action class
+     */
+   
+    /**
+     * Set a currency as default using action class
+     */
+    public function setDefaultCurrency(int $id, ?int $actionerId = null): array
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+        return $this->setDefaultAction->execute($id, $actionerId);
+    }
+    /**
+     * Check if currency exists
+     */
+    public function exists(int $id): bool
+    {
+        return $this->interface->exists($id);
+    }
+
+    /**
+     * Get total count
+     */
+    public function count(array $filters = []): int
+    {
+        return $this->interface->count($filters);
     }
 
     public function findData($column_value, string $column_name = 'id'): ?Currency
