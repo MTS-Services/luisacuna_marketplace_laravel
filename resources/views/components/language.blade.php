@@ -2,7 +2,7 @@
     <!-- Trigger Button -->
     <button @click="open = !open" class="flex items-center gap-1 text-text-white hover:text-black">
         <x-phosphor-globe class="w-5 h-5" />
-        <span>
+        <span class="text-xs xxs:text-base">
             {{ strtoupper( $locale ) }} | 
             {{ session('currency', 'USD-$') }}
         </span>
