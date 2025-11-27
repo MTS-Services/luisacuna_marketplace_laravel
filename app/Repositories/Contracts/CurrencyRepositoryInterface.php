@@ -62,6 +62,8 @@ interface CurrencyRepositoryInterface
 
      public function getDefaultCurrency(): ?Currency;
 
+     
+
     /**
      * Set a currency as default and remove default from others
      * 

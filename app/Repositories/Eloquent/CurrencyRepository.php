@@ -3,6 +3,8 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Currency;
+use App\Models\ExchangeRate;
+use App\Models\ExchangeRateHistory;
 use App\Repositories\Contracts\CurrencyRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -11,7 +13,9 @@ use Illuminate\Support\Facades\DB;
 class CurrencyRepository implements CurrencyRepositoryInterface
 {
     public function __construct(
-        protected Currency $model
+        protected Currency $model,
+        protected ExchangeRate $exchangeRateModel,
+        protected ExchangeRateHistory $exchangeRateHistoryModel,
     ) {}
 
 
@@ -113,7 +117,21 @@ class CurrencyRepository implements CurrencyRepositoryInterface
 
     public function create(array $data): Currency
     {
-        return $this->model->create($data);
+        $currency =  $this->model->create($data);
+        
+        $defaultCurrency = $this->getDefaultCurrency();
+
+        if ($defaultCurrency) {
+            $this->exchangeRateModel->create([
+                'base_currency' => $defaultCurrency->id,
+                'target_currency' => $currency->id,
+                'rate' => $currency->exchange_rate, 
+                'last_updated_at' => now(),
+                'created_by' => $data['created_by'] ?? null,
+            ]);
+        }
+
+        return $currency;
     }
 
     public function update(int $id, array $data): bool
@@ -208,6 +226,7 @@ class CurrencyRepository implements CurrencyRepositoryInterface
         return $this->model->where('is_default', true)->first();
     }
 
+    
     /**
      * Set a currency as default and remove default from others
      */
