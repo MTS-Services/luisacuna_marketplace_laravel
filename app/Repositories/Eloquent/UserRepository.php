@@ -2,12 +2,13 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Enums\UserType;
 use App\Models\User;
+use App\Enums\UserType;
+use Illuminate\Support\Facades\DB;
+use App\Models\UsersNotificationSetting;
+use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -70,7 +71,7 @@ class UserRepository implements UserRepositoryInterface
     {
         return $this->model->withTrashed()->find($id);
     }
-      public function findData($column_value, string $column_name = 'id',  bool $trashed = false): ?User
+    public function findData($column_value, string $column_name = 'id',  bool $trashed = false): ?User
     {
         $model = $this->model;
         if ($trashed) {
@@ -181,11 +182,48 @@ class UserRepository implements UserRepositoryInterface
         $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restorer_id' => $actioner_id]);
 
         return $this->model->withTrashed()->whereIn('id', $ids)->restore();
-
     }
 
     public function bulkForceDelete(array $ids): int
     {
         return $this->model->withTrashed()->whereIn('id', $ids)->forceDelete();
+    }
+
+
+
+   /**
+     * Update notification setting for a user
+     */
+    public function updateNotificationSetting(int $userId, string $field, bool $value): bool
+    {
+        $user = $this->find($userId);
+        
+        if (!$user) {
+            return false;
+        }
+
+        // Get notification settings (must exist)
+        $notificationSetting = UsersNotificationSetting::where('user_id', $userId)->first();
+
+        if (!$notificationSetting) {
+            throw new \Exception('Notification settings not found for this user');
+        }
+
+        // Update the specific field
+        return $notificationSetting->update([$field => $value]);
+    }
+
+    /**
+     * Get notification settings for a user
+     */
+    public function getNotificationSettings(int $userId): ?UsersNotificationSetting
+    {
+        $user = $this->find($userId);
+        
+        if (!$user) {
+            return null;
+        }
+
+        return UsersNotificationSetting::where('user_id', $userId)->first();
     }
 }

@@ -150,6 +150,11 @@ class User extends AuthBaseModel implements Auditable
                 $user->uuid = (string) \generate_uuid();
             }
         });
+        static::created(function ($user) {
+            UsersNotificationSetting::create([
+                'user_id' => $user->id,
+            ]);
+        });
     }
 
     /*
