@@ -4,6 +4,7 @@ namespace App\Actions\Game;
 
 use App\Models\Game;
 use App\Repositories\Contracts\GameRepositoryInterface;
+use Illuminate\Database\Console\Migrations\FreshCommand;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -80,7 +81,7 @@ class UpdateAction
             return DB::transaction(function () use ($id, $data) {
 
             $findData = $this->interface->find($id);
-            
+
             if (!$findData) {
 
                 Log::error('Data not found', ['data_id' => $id]);
@@ -92,7 +93,7 @@ class UpdateAction
 
             $file_just_uploaded = [];
 
-                    
+
             if (! isset($data['slug'])) {
                 $data['slug'] = Str::slug($data['name']);
             }
@@ -114,7 +115,7 @@ class UpdateAction
                 $data['banner']  = Storage::disk('public')->putFile('banners', $data['banner']);
 
                  $file_just_uploaded[] = $data['banner'];
-                 
+
                  if($findData->banner !== null){
                 $file_to_delete[] = $findData->banner;
             }
@@ -126,11 +127,11 @@ class UpdateAction
                 $data['thumbnail']  = Storage::disk('public')->putFile('thumbnails', $data['thumbnail']);
 
                 $file_just_uploaded[] = $data['thumbnail'];
-                
+
                 if($findData->thumbnail !== null){
                     $file_to_delete[] = $findData->thumbnail;
                 }
-               
+
             }
 
 
@@ -138,7 +139,7 @@ class UpdateAction
             $updated = $this->interface->update($id, $data);
 
             if (!$updated) {
-              
+
                foreach ($file_just_uploaded as $file) {
                     if (Storage::disk('public')->exists($file)) {
                         Storage::disk('public')->delete($file);
@@ -150,16 +151,31 @@ class UpdateAction
                 throw new \Exception('Failed to update data');
 
             }else{
-              
+
                  foreach ($file_to_delete as $file) {
-                   
+
                     if (Storage::disk('public')->exists($file)) {
                         Storage::disk('public')->delete($file);
                     }
                }
             }
 
-            return $findData->fresh();
+            $nameChanges = isset($data['name']) && $data['name'] !== $findData->name;
+            $descriptionChanges = isset($data['description']) && $data['description'] !== $findData->description;
+            $metaTitleChanges = isset($data['meta_title']) && $data['meta_title'] !== $findData->meta_title;
+            $metaDescriptionChanges = isset($data['meta_description']) && $data['meta_description'] !== $findData->meta_description;
+            $metaKeywordsChanges = isset($data['meta_keywords']) && $data['meta_keywords'] !== $findData->meta_keywords;
+            $freshData = $findData->fresh();
+            if($nameChanges || $descriptionChanges || $metaTitleChanges || $metaDescriptionChanges || $metaKeywordsChanges){
+
+                $freshData->dispatchTranslation(
+                 defaultLanguageLocale: 'en',
+                 targetLanguageIds: null
+
+            );
+            }
+
+            return $freshData;
         });
     }
 }
