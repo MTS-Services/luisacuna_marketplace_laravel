@@ -3,7 +3,7 @@
         {{-- Header Section --}}
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-2xl sm:text-3xl font-bold text-text-primary">{{ __('Account Settings') }}</h1>
-            <x-ui.button href="{{ route('user.purchased-orders') }}" class="w-fit! sm:w-auto! py-2!">
+            <x-ui.button href="#" class="w-fit! sm:w-auto! py-2!">
                 {{ __('Seller API') }}
             </x-ui.button>
         </div>
@@ -24,14 +24,10 @@
                 <h2 class="text-2xl sm:text-3xl font-semibold text-text-primary mb-8">{{ __('Profile') }}</h2>
 
 
-               
-
-                <div x-data="imageUploader()"
-                    class="flex items-center bg-zinc-100 dark:bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6 w-full">
-
+                <div class="flex items-center bg-zinc-100 dark:bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6 w-full">
                     <!-- Profile Image -->
                     <div class="relative">
-                        <img :src="previewUrl || defaultUrl"
+                        <img src="{{ storage_url($existingFile) }}"
                             class="w-20 h-20 rounded-full object-cover ring-2 ring-purple-400/30" alt="Profile">
                     </div>
 
@@ -42,10 +38,8 @@
                             {{ __('Upload image') }}
                         </label>
 
-                        {{-- <input id="imageUpload" type="file" class="hidden" accept="image/jpeg,image/png,image/heic"
-                            wire:model="form.avatar" @change="uploadAndPreview"> --}}
-                        <input id="imageUpload" type="file" class="hidden" accept="image/jpeg,image/png,image/heic"
-                            wire:model="form.avatar" @change="uploadAndPreview">
+                        <input id="imageUpload" type="file" class="hidden" name="avatarFile" accept="image/jpeg,image/png,image/heic"
+                            wire:model.live="form.avatar">
 
                         <span class="text-sm text-text-secondary mt-2">
                             {{ __('Must be JPEG, PNG or HEIC and cannot exceed 10MB.') }}
@@ -54,8 +48,13 @@
                         @error('form.avatar')
                             <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
                         @enderror
+
+                        <div wire:loading wire:target="form.avatar" class="text-sm text-purple-600 mt-2">
+                            {{ __('Uploading...') }}
+                        </div>
                     </div>
                 </div>
+
 
 
 
@@ -179,7 +178,7 @@
                                     wire:model.defer="form.last_name"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                     placeholder="Enter company name">
-                                    <x-ui.input-error :messages="$errors->get('form.last_name')" />
+                                <x-ui.input-error :messages="$errors->get('form.last_name')" />
                                 <button type="button"
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-text-muted hover:text-text-primary">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -234,7 +233,7 @@
                                 <input type="email" name="email" value="" wire:model.defer="form.email"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                     placeholder="Enter email">
-                                    <x-ui.input-error :messages="$errors->get('form.email')" />
+                                <x-ui.input-error :messages="$errors->get('form.email')" />
                                 <span
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-xs text-text-muted bg-bg-primary px-2 py-1 rounded">
                                     {{ __('This field is linked and can only be filled in once for user') }}
@@ -288,7 +287,7 @@
                                     wire:model.defer="form.username"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                     placeholder="Enter location">
-                                    <x-ui.input-error :messages="$errors->get('form.username')" />
+                                <x-ui.input-error :messages="$errors->get('form.username')" />
                                 <button type="button"
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-text-muted hover:text-text-primary">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -339,7 +338,7 @@
                                 <input type="password" value="********" wire:model.defer="form.password"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                     placeholder="*****">
-                                    <x-ui.input-error :messages="$errors->get('form.password')" />
+                                <x-ui.input-error :messages="$errors->get('form.password')" />
                                 <button type="button"
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-text-muted hover:text-text-primary">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -368,33 +367,5 @@
             </section>
 
             {{-- Email Notifications Section --}}
-           <livewire:backend.user.settings.account-notification />
+            <livewire:backend.user.settings.account-notification />
         </div>
-
-
-        <script>
-            function imageUploader() {
-                return {
-                    defaultUrl: "{{ storage_url(user()->avatar) ?? asset('assets/images/user_profile/Ellipse 474.png') }}",
-                    previewUrl: null,
-
-                    uploadAndPreview(event) {
-                        const file = event.target.files[0];
-                        if (!file) return;
-
-                        if (file.size > 10 * 1024 * 1024) {
-                            alert('File size cannot exceed 10MB.');
-                            event.target.value = '';
-                            return;
-                        }
-
-                        // Preview Image
-                        const reader = new FileReader();
-                        reader.onload = (e) => this.previewUrl = e.target.result;
-                        reader.readAsDataURL(file);
-
-                        // Livewire automatic upload (wire:model triggers updatedFormAvatar)
-                    }
-                }
-            }
-        </script>

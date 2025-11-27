@@ -14,6 +14,7 @@ class Create extends Component
     use WithNotification, WithFileUploads;
 
     public CurrencyForm $form;
+    public $defaultCurrency = null;
 
     protected CurrencyService $service;
 
@@ -31,6 +32,9 @@ class Create extends Component
     public function mount(): void
     {
         $this->form->status = CurrencyStatus::ACTIVE->value;
+        
+        // Get default currency for display
+        $this->defaultCurrency = $this->service->getDefaultCurrency();
     }
 
     /**
