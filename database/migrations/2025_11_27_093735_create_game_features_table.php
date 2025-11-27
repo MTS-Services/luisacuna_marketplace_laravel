@@ -20,7 +20,6 @@ return new class extends Migration {
             $table->string('name')->unique();
             $table->string('status')->default(GameFeatureStatus::ACTIVE->value);
             $table->string('icon')->nullable();
-            $table->string('color')->nullable();
 
             $table->softDeletes();
             $table->timestamps();
