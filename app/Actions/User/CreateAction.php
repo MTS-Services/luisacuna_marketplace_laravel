@@ -10,6 +10,7 @@ use App\Models\UserRank;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use Illuminate\Support\Facades\Log;
 
 class CreateAction
 {
@@ -48,7 +49,20 @@ class CreateAction
 
             event(new UserCreated($newData));
 
-            return $newData->fresh(['userPoint', 'userRank']);
+
+             $freshData = $newData->fresh();
+
+            // Dispatch translation job in background
+            // Assuming the source language is English (EN)
+            // Dispatch translation job (English is default, will be saved but not translated)
+            Log::info('Dispatching TranslateModelJob for userId: ' . $freshData->id);
+
+            $freshData->dispatchTranslation(
+                defaultLanguageLocale: 'en',
+                targetLanguageIds: null
+            );
+
+            return $freshData;
         });
     }
 }

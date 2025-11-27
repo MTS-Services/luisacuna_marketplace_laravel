@@ -7,6 +7,16 @@
                 {{ __('User Profile') }}
             </h2>
             <div class="flex items-center gap-2">
+                 <x-ui.button
+                            x-on:click="$dispatch('show-translation-modal', {
+                                modelId: '{{ encrypt($data->id) }}',
+                                modelType: '{{ base64_encode(\App\Models\User::class) }}'
+                            })"
+                            variant="secondary" class="w-auto py-2! text-nowrap">
+                            <flux:icon name="arrows-pointing-out"
+                                class="w-4 h-4 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
+                            {{ __('Manage Translations') }}
+                        </x-ui.button>
                 <x-ui.button href="{{ route('admin.um.user.index') }}" class="w-auto! py-2!">
                     <flux:icon name="arrow-left"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
