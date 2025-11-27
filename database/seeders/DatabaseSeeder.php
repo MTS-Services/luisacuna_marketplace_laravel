@@ -57,6 +57,8 @@ class DatabaseSeeder extends Seeder
             DeliveryMethodSeeder::class,
             RaritySeeder::class,
             TypeSeeder::class,
+
+            ProductSeeder::class,
         ]);
     }
 }
