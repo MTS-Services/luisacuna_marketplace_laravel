@@ -80,6 +80,8 @@
         </div>
     </div>
 
+    <livewire:backend.admin.translation-manager />
+
     @fluxScripts
     <script>
         function dashboardData() {
