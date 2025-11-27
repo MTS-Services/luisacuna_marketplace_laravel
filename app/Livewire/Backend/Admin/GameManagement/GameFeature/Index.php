@@ -87,13 +87,13 @@ class Index extends Component
             [
                 'key' => 'id',
                 'label' => 'Show',
-                'route' => 'admin.gm.server.view',
+                'route' => 'admin.gm.game-feature.view',
                 'encrypt' => true
             ],
             [
                 'key' => 'id',
                 'label' => 'Edit',
-                'route' => 'admin.gm.server.edit',
+                'route' => 'admin.gm.game-feature.edit',
                 'encrypt' => true
             ],
             [

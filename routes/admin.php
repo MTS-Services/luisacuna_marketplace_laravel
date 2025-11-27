@@ -15,7 +15,7 @@ use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\GameManagement\RarityController;
 use App\Http\Controllers\Backend\Admin\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\RankController;
-use App\Http\Controllers\Backend\Admin\GameManagement\ServerController;
+use App\Http\Controllers\Backend\Admin\GameManagement\GameFeatureController;
 use App\Http\Controllers\Backend\Admin\GameManagement\PlatformController;
 use App\Http\Controllers\Backend\Admin\Settings\GeneralSettingsController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductController;
@@ -67,7 +67,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/trash', 'trash')->name('trash');
         });
 
-        Route::controller(ServerController::class)->name('server.')->prefix('game-server')->group(function () {
+        Route::controller(GameFeatureController::class)->name('game-feature.')->prefix('game-feature')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');

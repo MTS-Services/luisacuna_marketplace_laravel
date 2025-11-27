@@ -9,8 +9,8 @@
                         {{ __('Game Server Details') }}
                     </h2>
                     <div class="flex items-center gap-2 w-full sm:w-auto">
-                        <x-ui.button href="{{ route('admin.gm.server.edit', encrypt($data->id)) }}" variant="secondary"
-                            class="w-auto py-2!">
+                        <x-ui.button href="{{ route('admin.gm.game-feature.edit', encrypt($data->id)) }}"
+                            variant="secondary" class="w-auto py-2!">
                             <flux:icon name="pencil"
                                 class="w-4 h-4 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
                             {{ __('Edit') }}
@@ -51,7 +51,8 @@
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('STATUS') }}</p>
-                                <p class="text-sm rounded-3xl font-bold {{ $data->status->color() }}">{{ $data->status->label() }}</p>
+                                <p class="text-sm rounded-3xl font-bold {{ $data->status->color() }}">
+                                    {{ $data->status->label() }}</p>
                             </div>
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">

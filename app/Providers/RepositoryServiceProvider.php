@@ -13,7 +13,7 @@ use App\Repositories\Eloquent\RoleRepository;
 use App\Repositories\Eloquent\UserRepository;
 use App\Repositories\Eloquent\AdminRepository;
 use App\Repositories\Eloquent\AuditRepository;
-use App\Repositories\Eloquent\ServerRepository;
+use App\Repositories\Eloquent\GameFeatureRepository;
 use App\Repositories\Eloquent\ProductRepository;
 use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\CurrencyRepository;
@@ -52,7 +52,7 @@ use App\Repositories\Contracts\GameServerRepositoryInterface;
 use App\Repositories\Contracts\GameTagRepositoryInterface;
 use App\Repositories\Contracts\GameTypeRepositoryInterface;
 use App\Repositories\Contracts\PlatformRepositoryInterface;
-use App\Repositories\Contracts\ServerRepositoryInterface;
+use App\Repositories\Contracts\GameFeatureRepositoryInterface;
 use App\Repositories\Contracts\OfferItemRepositoryInterface;
 use App\Repositories\Contracts\RarityRepositoryInterface;
 use App\Repositories\Eloquent\GamePlatformRepository;
@@ -98,8 +98,8 @@ class RepositoryServiceProvider extends ServiceProvider
         // Server Repository
         $this->app->bind(
 
-            ServerRepositoryInterface::class,
-            ServerRepository::class,
+            GameFeatureRepositoryInterface::class,
+            GameFeatureRepository::class,
 
         );
 

@@ -110,14 +110,13 @@
                         'active' => 'game-category',
                         'permission' => 'category-list',
                     ],
-                
-                    // [
-                    //     'name' => 'Servers',
-                    //     'route' => route('admin.gm.server.index'),
-                    //     'icon' => 'swords',
-                    //     'active' => 'server',
-                    //     'permission' => 'server-list',
-                    // ],
+                    [
+                        'name' => 'GameFeature',
+                        'route' => route('admin.gm.game-feature.index'),
+                        'icon' => 'swords',
+                        'active' => 'game-feature',
+                        'permission' => 'game-feature-list',
+                    ],
                 
                     [
                         'name' => 'Platforms',

@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Backend\Admin\GameManagement;
 
 use App\Http\Controllers\Controller;
-use App\Services\ServerService;
+use App\Services\GameFeatureService;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class ServerController extends Controller implements HasMiddleware
+class GameFeatureController extends Controller implements HasMiddleware
 {
-    public function __construct(protected ServerService $service) {}
+    public function __construct(protected GameFeatureService $service) {}
 
     //
-    public $master = 'backend.admin.pages.game-management.server';
+    public $master = 'backend.admin.pages.game-management.game-feature';
 
     public static function middleware(): array
     {
@@ -20,11 +20,11 @@ class ServerController extends Controller implements HasMiddleware
             'auth:admin', // Applies 'auth:admin' to all methods
 
             // Permission middlewares using the Middleware class
-            new Middleware('permission:server-list', only: ['index']),
-            new Middleware('permission:server-create', only: ['create']),
-            new Middleware('permission:server-edit', only: ['edit']),
-            new Middleware('permission:server-show', only: ['view']),
-            new Middleware('permission:server-trash', only: ['trash']),
+            new Middleware('permission:game-feature-list', only: ['index']),
+            new Middleware('permission:game-feature-create', only: ['create']),
+            new Middleware('permission:game-feature-edit', only: ['edit']),
+            new Middleware('permission:game-feature-show', only: ['view']),
+            new Middleware('permission:game-feature-trash', only: ['trash']),
         ];
     }
 
