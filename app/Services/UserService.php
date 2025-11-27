@@ -41,6 +41,17 @@ class UserService
         return $this->interface->getSellersByTrash();
     }
 
+    public function getAllBuyersData(): Collection
+    {
+        return $this->interface->getBuyers();
+    }
+
+
+    public function getBuyersByTrash(): Collection
+    {
+        return $this->interface->getBuyersByTrash();
+    }
+
     public function findData($column_value, string $column_name = 'id'): ?User
     {
         return $this->interface->findData($column_value, $column_name);

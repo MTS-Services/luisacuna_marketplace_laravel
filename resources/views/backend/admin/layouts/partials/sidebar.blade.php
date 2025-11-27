@@ -77,7 +77,14 @@
                         'name' => 'All Sellers',
                         'route' => route('admin.um.user.all-seller'),
                         'icon' => 'user',
-                        'active' => 'admin-users',
+                        'active' => 'sellers',
+                        // 'permission' => 'user-list',
+                    ],
+                    [
+                        'name' => 'All Buyers',
+                        'route' => route('admin.um.user.all-buyer'),
+                        'icon' => 'user',
+                        'active' => 'buyers',
                         // 'permission' => 'user-list',
                     ],
                     // [
@@ -102,6 +109,13 @@
                         'icon' => 'gamepad-2',
                         'active' => 'game-category',
                         'permission' => 'category-list',
+                    ],
+                    [
+                        'name' => 'GameFeature',
+                        'route' => route('admin.gm.game-feature.index'),
+                        'icon' => 'swords',
+                        'active' => 'game-feature',
+                        'permission' => 'game-feature-list',
                     ],
                     [
                         'name' => 'Games',

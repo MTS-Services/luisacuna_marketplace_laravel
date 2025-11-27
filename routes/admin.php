@@ -14,6 +14,7 @@ use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\RankController;
 use App\Http\Controllers\Backend\Admin\ReviewManagement\PageViewController;
+use App\Http\Controllers\Backend\Admin\GameManagement\GameFeatureController;
 use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementTypeController;
@@ -53,6 +54,13 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
     Route::group(['prefix' => 'game-management', 'as' => 'gm.'], function () {
 
         Route::controller(CategoryController::class)->name('category.')->prefix('category')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/view/{id}', 'show')->name('view');
+            Route::get('/trash', 'trash')->name('trash');
+        });
+        Route::controller(GameFeatureController::class)->name('game-feature.')->prefix('game-feature')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
@@ -112,6 +120,8 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
 
             Route::get('all-seller', 'allSeller')->name('all-seller');
             Route::get('seller-trash', 'sellerTrash')->name('seller-trash');
+            Route::get('all-buyer', 'allBuyer')->name('all-buyer');
+            Route::get('buyer-trash', 'buyerTrash')->name('buyer-trash');
         });
     });
 
