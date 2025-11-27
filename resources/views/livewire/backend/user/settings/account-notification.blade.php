@@ -83,7 +83,7 @@
                      class="text-sm text-text-muted justify-start block">{{ __('When you receive a new message') }}</span>
              </label>
              <label class="relative inline-flex items-center cursor-pointer">
-                 <input type="checkbox" name="new_update" wire:model.live="new_update" class="sr-only peer">
+                 <input type="checkbox" name="new_message" wire:model.live="new_message" class="sr-only peer">
                  <div
                      class="w-11 h-6 bg-zinc-200/80 dark:bg-zinc-200/50 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-accent rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent">
                  </div>
