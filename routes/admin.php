@@ -1,7 +1,6 @@
 <?php
 
 
-use App\Models\Platform;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Admin\AuditingController;
 use App\Http\Controllers\Backend\Admin\Settings\CurrencyController;
@@ -12,17 +11,12 @@ use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
-use App\Http\Controllers\Backend\Admin\GameManagement\RarityController;
 use App\Http\Controllers\Backend\Admin\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\RankController;
-use App\Http\Controllers\Backend\Admin\GameManagement\GameFeatureController;
-use App\Http\Controllers\Backend\Admin\GameManagement\PlatformController;
-use App\Http\Controllers\Backend\Admin\Settings\GeneralSettingsController;
-use App\Http\Controllers\Backend\admin\ProductManagament\ProductController;
 use App\Http\Controllers\Backend\Admin\ReviewManagement\PageViewController;
+use App\Http\Controllers\Backend\Admin\GameManagement\GameFeatureController;
 use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementController;
-use App\Http\Controllers\Backend\admin\ProductManagament\ProductTypeController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementTypeController;
 
 Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefix('admin')->group(function () {
@@ -66,15 +60,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/view/{id}', 'show')->name('view');
             Route::get('/trash', 'trash')->name('trash');
         });
-
         Route::controller(GameFeatureController::class)->name('game-feature.')->prefix('game-feature')->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/create', 'create')->name('create');
-            Route::get('/edit/{id}', 'edit')->name('edit');
-            Route::get('/view/{id}', 'show')->name('view');
-            Route::get('/trash', 'trash')->name('trash');
-        });
-        Route::controller(PlatformController::class)->name('platform.')->prefix('game-platform')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
@@ -87,14 +73,6 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/create', 'create')->name('create');
             Route::get('/view/{id}', 'show')->name('view');
             Route::get('/edit/{id}', 'edit')->name('edit');
-            Route::get('/trash', 'trash')->name('trash');
-        });
-
-        Route::controller(RarityController::class)->name('rarity.')->prefix('rarity')->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/create', 'create')->name('create');
-            Route::get('/edit/{id}', 'edit')->name('edit');
-            Route::get('/show/{id}', 'show')->name('show');
             Route::get('/trash', 'trash')->name('trash');
         });
 
@@ -167,23 +145,6 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
         Route::controller(ApplicationSettingController::class)->group(function () {
             Route::get('/general', 'generalSettings')->name('general-settings');
             Route::get('/database', 'databaseSettings')->name('database-settings');
-        });
-    });
-
-    Route::group(['prefix' => 'product-management', 'as' => 'pm.'], function () {
-        Route::controller(ProductTypeController::class)->name('productType.')->prefix('productType')->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/create', 'create')->name('create');
-            Route::get('/edit/{id}', 'edit')->name('edit');
-            Route::get('/show/{id}', 'show')->name('show');
-            Route::get('/trash', 'trash')->name('trash');
-        });
-        Route::controller(ProductController::class)->name('product.')->prefix('product')->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/create', 'create')->name('create');
-            Route::get('/edit/{id}', 'edit')->name('edit');
-            Route::get('/show/{id}', 'show')->name('show');
-            Route::get('/trash', 'trash')->name('trash');
         });
     });
 
