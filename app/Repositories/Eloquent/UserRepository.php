@@ -26,6 +26,11 @@ class UserRepository implements UserRepositoryInterface
         return $this->model->whereIn('user_type', [UserType::SELLER, UserType::BOTH])->orderBy($sortField, $order)->get();
     }
 
+    public function getSellersByTrash(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->whereIn('user_type', [UserType::SELLER, UserType::BOTH])->onlyTrashed()->orderBy($sortField, $order)->get();
+    }
+
     public function getBuyers(string $sortField = 'created_at', $order = 'desc'): Collection
     {
         return $this->model->whereIn('user_type', [UserType::BUYER, UserType::BOTH])->orderBy($sortField, $order)->get();
