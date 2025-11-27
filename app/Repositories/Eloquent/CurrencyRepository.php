@@ -199,4 +199,39 @@ class CurrencyRepository implements CurrencyRepositoryInterface
     {
         return $this->model->inactive()->orderBy($sortField, $order)->get();
     }
+
+    /**
+     * Get the current default currency
+     */
+    public function getDefaultCurrency(): ?Currency
+    {
+        return $this->model->where('is_default', true)->first();
+    }
+
+    /**
+     * Set a currency as default and remove default from others
+     */
+    public function setAsDefault(int $id, int $actionerId): bool
+    {
+        return DB::transaction(function () use ($id, $actionerId) {
+            // Remove default from all currencies
+            $this->model->where('is_default', true)->update([
+                'is_default' => false,
+                'updated_by' => $actionerId
+            ]);
+            
+            // Find the currency to set as default
+            $currency = $this->find($id);
+            
+            if (!$currency) {
+                throw new \Exception('Currency not found');
+            }
+            
+            // Set as default
+            return $currency->update([
+                'is_default' => true,
+                'updated_by' => $actionerId
+            ]);
+        });
+    }
 }
