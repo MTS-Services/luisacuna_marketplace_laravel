@@ -31,8 +31,6 @@ class DatabaseSeeder extends Seeder
             ReferralSettingSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
-            // ServerSeeder::class,
-            PlatformSeeder::class,
             GameSeeder::class,
             GameFeatureSeeder::class,
             GameCategorySeeder::class,
@@ -56,8 +54,6 @@ class DatabaseSeeder extends Seeder
             AchievementSeeder::class,
 
             DeliveryMethodSeeder::class,
-            RaritySeeder::class,
-            TypeSeeder::class,
 
             ProductSeeder::class,
         ]);
