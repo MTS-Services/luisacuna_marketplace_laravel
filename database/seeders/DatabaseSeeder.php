@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             ReferralSettingSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
-            ServerSeeder::class,
+            // ServerSeeder::class,
             PlatformSeeder::class,
             GameSeeder::class,
             GameCategorySeeder::class,
