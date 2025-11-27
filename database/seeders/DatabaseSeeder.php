@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             // ServerSeeder::class,
             PlatformSeeder::class,
             GameSeeder::class,
+            GameFeatureSeeder::class,
             GameCategorySeeder::class,
             TagSeeder::class,
             GameTagSeeder::class,

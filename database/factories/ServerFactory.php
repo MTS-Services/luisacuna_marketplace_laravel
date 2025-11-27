@@ -2,14 +2,14 @@
 
 namespace Database\Factories;
 
-use App\Enums\ServerStatus;
+use App\Enums\GameFeatureStatus;
 use App\Models\Admin;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\GameServer>
  */
-class ServerFactory extends Factory
+class GameFeatureFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -20,7 +20,7 @@ class ServerFactory extends Factory
     {
         return [
             'name'  => $this->faker->unique()->name(),
-            'status' => $this->faker->randomElement(ServerStatus::cases()),
+            'status' => $this->faker->randomElement(GameFeatureStatus::cases()),
              'created_by' => Admin::inRandomorder()->value('id'),
         ];
     }

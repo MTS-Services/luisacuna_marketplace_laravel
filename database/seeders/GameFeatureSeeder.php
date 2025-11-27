@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Server;
+use App\Models\GameFeature;
 use Illuminate\Database\Seeder;
 
-class ServerSeeder extends Seeder
+class GameFeatureSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,6 +13,6 @@ class ServerSeeder extends Seeder
     public function run(): void
     {
         //
-        Server::factory(10)->create();
+        GameFeature::factory(10)->create();
     }
 }
