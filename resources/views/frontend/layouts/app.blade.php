@@ -9,9 +9,10 @@
         {{ isset($title) ? $title . ' - ' : '' }}
         {{ site_name() }}
     </title>
+    <link rel="shortcut icon" href="{{ storage_url(app_favicon()) }}" type="image/x-icon">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fluxAppearance()
-      <script>
+    <script>
         document.addEventListener('livewire:initialized', function() {
             Livewire.on('notify', (event) => {
                 showAlert(event.type, event.message);
@@ -25,7 +26,10 @@
 
     @if (
         !(request()->routeIs('login') ||
-            request()->routeIs('register') ||
+            request()->routeIs('register.signUp') ||
+            request()->routeIs('register.emailVerify') ||
+            request()->routeIs('register.otp') ||
+            request()->routeIs('register.password') ||
             request()->routeIs('password.request') ||
             request()->routeIs('password.reset') ||
             request()->routeIs('verify-reset-otp') ||
@@ -44,7 +48,10 @@
     </main>
     @if (
         !(request()->routeIs('login') ||
-            request()->routeIs('register') ||
+            request()->routeIs('register.signUp') ||
+            request()->routeIs('register.emailVerify') ||
+            request()->routeIs('register.otp') ||
+            request()->routeIs('register.password') ||
             request()->routeIs('password.request') ||
             request()->routeIs('password.reset') ||
             request()->routeIs('verify-reset-otp') ||

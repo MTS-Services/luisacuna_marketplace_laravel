@@ -59,6 +59,7 @@
                 <div class="w-full">
                     <x-ui.label value="Country Select" class="mb-1" />
                     <x-ui.select wire:model="form.country_id">
+                        <option value="">{{ __('Select Country') }}</option>
                         @foreach ($countries as $country)
                             <option value="{{ $country['id'] }}">{{ $country['name'] }}</option>
                         @endforeach
@@ -68,6 +69,7 @@
                 <div class="w-full">
                     <x-ui.label value="Langugae" class="mb-1" />
                     <x-ui.select wire:model="form.language">
+                        <option value="">{{ __('Select Language') }}</option>
                         @foreach ($languages as $language)
                             <option value="{{ $language['id'] }}">{{ $language['name'] }}</option>
                         @endforeach
@@ -77,6 +79,7 @@
                 <div class="w-full">
                     <x-ui.label value="Default Currency" class="mb-1" />
                     <x-ui.select wire:model="form.currency_id">
+                        <option value="">{{ __('Select Currency') }}</option>
                         @foreach ($currencies as $currency)
                             <option value="{{ $currency['id'] }}">{{ $currency['name'] }}</option>
                         @endforeach
@@ -96,15 +99,40 @@
                 <div class="w-full">
                     <x-ui.label value="Status Select" class="mb-1" />
                     <x-ui.select wire:model="form.account_status">
+                        <option value="">{{ __('Select Status') }}</option>
                         @foreach ($statuses as $status)
                             <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
                         @endforeach
                     </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.account_status')" />
                 </div>
-                <div class="w-full">
+                <div class="w-full" x-data="{
+                    generatePassword() {
+                        const length = 12;
+                        const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
+                        let password = '';
+                        for (let i = 0; i < length; i++) {
+                            password += charset.charAt(Math.floor(Math.random() * charset.length));
+                        }
+                
+                        // Set the password in Livewire component
+                        $wire.set('form.password', password);
+                        $wire.set('form.password_confirmation', password);
+                    }
+                }">
                     <x-ui.label value="Password" class="mb-1" />
-                    <x-ui.input type="password" placeholder="Password" wire:model="form.password" />
+                    <div class="flex items-center gap-2">
+                        <x-ui.input type="password" placeholder="Password" wire:model="form.password" class="flex-1" />
+                        <button type="button" @click="generatePassword()"
+                            class="text-gray-500 hover:text-gray-700 focus:outline-none flex-shrink-0"
+                            title="Generate Password">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            </svg>
+                        </button>
+                    </div>
                     <x-ui.input-error :messages="$errors->get('form.password')" />
                 </div>
                 <div class="w-full">
@@ -114,23 +142,23 @@
                     <x-ui.input-error :messages="$errors->get('form.password_confirmation')" />
                 </div>
             </div>
+    </div>
 
-            <!-- Form Actions -->
-            <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button wire:click="resetForm" variant="tertiary" class="w-auto! py-2!">
-                    <flux:icon name="x-circle"
-                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
-                    {{ __('Reset') }}
-                </x-ui.button>
+    <!-- Form Actions -->
+    <div class="flex items-center justify-end gap-4 mt-6">
+        <x-ui.button wire:click="resetForm" variant="tertiary" class="w-auto! py-2!">
+            <flux:icon name="x-circle" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
+            {{ __('Reset') }}
+        </x-ui.button>
 
-                <x-ui.button class="w-auto! py-2!" type="submit">
-                    <span wire:loading.remove wire:target="save"
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{__('Create
-                        User')}}</span>
-                    <span wire:loading wire:target="save"
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{__('Creating...')}}</span>
-                </x-ui.button>
-            </div>
-        </form>
+        <x-ui.button class="w-auto! py-2!" type="submit">
+            <span wire:loading.remove wire:target="save"
+                class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Create
+                                                                                                        User') }}</span>
+            <span wire:loading wire:target="save"
+                class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Creating...') }}</span>
+        </x-ui.button>
+    </div>
+    </form>
     </div>
 </section>

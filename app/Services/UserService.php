@@ -2,14 +2,16 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Actions\User\BulkAction;
+use App\Enums\UserAccountStatus;
 use App\Actions\User\CreateAction;
 use App\Actions\User\DeleteAction;
-use App\Actions\User\RestoreAction;
 use App\Actions\User\UpdateAction;
-use App\Models\User;
-use App\Enums\UserAccountStatus;
+use App\Actions\User\RestoreAction;
+use App\Models\UsersNotificationSetting;
 use Illuminate\Database\Eloquent\Collection;
+use App\Actions\User\UpdateNotificationAction;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -22,6 +24,7 @@ class UserService
         protected DeleteAction $deleteAction,
         protected BulkAction $bulkAction,
         protected RestoreAction $restoreAction,
+        protected UpdateNotificationAction $updateNotificationAction,
     ) {}
 
     public function getAllDatas(): Collection
@@ -32,7 +35,13 @@ class UserService
     {
         return $this->interface->getSellers();
     }
-      public function findData($column_value, string $column_name = 'id'): ?User
+
+    public function getSellersByTrash(): Collection
+    {
+        return $this->interface->getSellersByTrash();
+    }
+
+    public function findData($column_value, string $column_name = 'id'): ?User
     {
         return $this->interface->findData($column_value, $column_name);
     }
@@ -93,8 +102,8 @@ class UserService
 
     public function bulkDeleteDatas(array $ids, ?int $actionerId = null): int
     {
-        if($actionerId == null){
-            $actionerId = admin()->id; 
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
         }
         return $this->bulkAction->execute($ids, 'delete', null, $actionerId);
     }
@@ -108,8 +117,8 @@ class UserService
 
     public function bulkUpdateStatus(array $ids, UserAccountStatus $status, ?int $actionerId = null): int
     {
-        if($actionerId == null){
-            $actionerId = admin()->id; 
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
         }
         return $this->bulkAction->execute($ids, 'status', $status->value, $actionerId);
     }
@@ -128,7 +137,7 @@ class UserService
     public function activateData(int $id): bool
     {
         $user = $this->getDataById($id);
-        
+
         if (!$user) {
             return false;
         }
@@ -140,7 +149,7 @@ class UserService
     public function deactivateData(int $id): bool
     {
         $user = $this->getDataById($id);
-        
+
         if (!$user) {
             return false;
         }
@@ -152,7 +161,7 @@ class UserService
     public function suspendData(int $id): bool
     {
         $user = $this->getDataById($id);
-        
+
         if (!$user) {
             return false;
         }
@@ -164,5 +173,32 @@ class UserService
     public function bulkForceDeleteDatas(array $ids): int
     {
         return $this->bulkAction->execute($ids, 'forceDelete', null, null);
+    }
+
+
+
+
+    /**
+     * Update single notification setting
+     */
+    public function updateNotificationSetting(int $userId, string $field, bool $value): UsersNotificationSetting
+    {
+        return $this->updateNotificationAction->execute($userId, $field, $value);
+    }
+
+    /**
+     * Update multiple notification settings
+     */
+    // public function updateMultipleNotificationSettings(int $userId, array $settings): UsersNotificationSetting
+    // {
+    //     return $this->updateNotificationAction->executeMultiple($userId, $settings);
+    // }
+
+    /**
+     * Get user notification settings
+     */
+    public function getNotificationSettings(int $userId): ?UsersNotificationSetting
+    {
+        return $this->interface->getNotificationSettings($userId);
     }
 }

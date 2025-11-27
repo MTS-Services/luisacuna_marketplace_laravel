@@ -24,7 +24,11 @@ class CategoryRepository implements CategoryRepositoryInterface
         $query = $this->model->query();
         return $query->orderBy($sortField, $order)->get();
     }
-
+    public function active(string $sortField = 'created_at', $order = 'desc', $status = 'active'): Collection
+    {
+        $query = $this->model->query();
+        return $query->where('status', $status)->orderBy($sortField, $order)->get();
+    }
     public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?Category
     {
         $model = $this->model;
@@ -105,6 +109,36 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return $this->model->search($query)->orderBy($sortField, $order)->get();
     }
+
+
+    // public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection
+    // {
+    //     $category = $this->model->where($fieldName, $fieldValue)->first();
+
+    //     return $category?->games()->get() ?? new Collection();
+    // }
+
+    // public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection
+    // {
+    //     $category = $this->model->where('slug', $categorySlug)->first();
+
+    //     if (!$category) {
+    //         return new Collection();
+    //     }
+
+    //     return $category->games()
+    //         ->whereHas('tags', function ($query) use ($tagSlug) {
+    //             $query->where('slug', $tagSlug);
+    //         })
+    //         ->get();
+    // }
+
+    // public function getCategoryByGames($fieldValue, $fieldName = 'slug'): Collection
+    // {
+    //     return $this->model->with('games')->whereHas('games', function ($query) use ($fieldValue, $fieldName) {
+    //         $query->where($fieldName, $fieldValue);
+    //     })->get();
+    // }
 
 
     /* ================== ================== ==================

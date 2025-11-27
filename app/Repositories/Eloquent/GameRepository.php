@@ -16,8 +16,7 @@ class GameRepository implements GameRepositoryInterface
         protected Game $model,
         protected PlatformRepositoryInterface $platformInterface,
         protected GamePlatform $gamePlatforms,
-    ) {
-    }
+    ) {}
 
 
     /* ================== ================== ==================
@@ -111,6 +110,40 @@ class GameRepository implements GameRepositoryInterface
         return $this->model->search($query)->orderBy($sortField, $order)->get();
     }
 
+
+
+    public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection
+    {
+        return $this->model->with('categories')->whereHas('categories', function ($query) use ($fieldValue, $fieldName) {
+            $query->where($fieldName, $fieldValue);
+        })->get();
+    }
+
+    public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection
+    {
+        return $this->model
+            ->whereHas('category', function ($query) use ($categorySlug) {
+                $query->where('slug', $categorySlug);
+            })
+            ->whereHas('tags', function ($query) use ($tagSlug) {
+                $query->where('slug', $tagSlug);
+            })
+            ->get();
+    }
+    // Repository
+    public function searchGamesByCategory($categorySlug, $searchTerm): Collection
+    {
+        return $this->model
+            ->with('categories')
+            ->whereHas('categories', function ($query) use ($categorySlug) {
+                $query->where('slug', $categorySlug);
+            })
+            ->where(function ($query) use ($searchTerm) {
+                $query->where('name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('description', 'like', '%' . $searchTerm . '%');
+            })
+            ->get();
+    }
 
     /* ================== ================== ==================
      *                    Data Modification Methods

@@ -56,34 +56,50 @@ if (!function_exists('storage_url')) {
     function storage_url($urlOrArray)
     {
         $image = asset('assets/images/no_img.jpg');
+
         if (is_array($urlOrArray) || is_object($urlOrArray)) {
             $result = '';
             $count = 0;
             $itemCount = count($urlOrArray);
-            foreach ($urlOrArray as $index => $url) {
-                $result .= $url ? (Str::startsWith($url, 'https://') ? $url : asset('storage/' . $url)) : $image;
 
-                if ($count === $itemCount - 1) {
-                    $result .= '';
-                } else {
-                    $result .= ', ';
-                }
+            foreach ($urlOrArray as $index => $url) {
+
+                $result .= $url
+                    ? (Str::startsWith($url, ['http://', 'https://'])
+                        ? $url
+                        : asset('storage/' . $url))
+                    : $image;
+
+                $result .= ($count === $itemCount - 1) ? '' : ', ';
                 $count++;
             }
+
             return $result;
         } else {
-            return $urlOrArray ? (Str::startsWith($urlOrArray, 'https://') ? $urlOrArray : asset('storage/' . $urlOrArray)) : $image;
+
+            return $urlOrArray
+                ? (Str::startsWith($urlOrArray, ['http://', 'https://'])
+                    ? $urlOrArray
+                    : asset('storage/' . $urlOrArray))
+                : $image;
         }
     }
 }
+
 
 if (!function_exists('auth_storage_url')) {
     function auth_storage_url($url)
     {
         $image = asset('assets/images/default_profile.jpg');
-        return $url ? $url : $image;/*  */
+
+        return $url
+            ? (Str::startsWith($url, ['http://', 'https://'])
+                ? $url
+                : asset('storage/' . $url))
+            : $image;
     }
 }
+
 
 // ==================== Existing Application Setting Helpers ====================
 
@@ -509,3 +525,26 @@ if (!function_exists('log_info')) {
     }
 }
 
+
+if (!function_exists('category_route')) {
+    /**
+     * Get the route URL based on category slug
+     *
+     * @param string $slug
+     * @return string
+     */
+    function category_route(string $slug): string
+    {
+        $routes = [
+            'currency'   => 'currency',
+            'gift-card'  => 'gift-card',
+            'boosting'   => 'boosting',
+            'items'      => 'items',
+            'accounts'   => 'accounts',
+            'top-up'     => 'top-up',
+            'coaching'   => 'coaching',
+        ];
+
+        return isset($routes[$slug]) ? route($routes[$slug]) : '#';
+    }
+}

@@ -25,8 +25,8 @@ class DatabaseSeeder extends Seeder
             RoleHasPermissionSeeder::class,
             LanguageSeeder::class,
             CurrencySeeder::class,
-            ExchangeRateSeeder::class,
-            ExchangeRateHistorySeeder::class,
+            // ExchangeRateSeeder::class,
+            // ExchangeRateHistorySeeder::class,
             EmailTemplateSeeder::class,
             ReferralSettingSeeder::class,
             UserSeeder::class,
@@ -34,6 +34,9 @@ class DatabaseSeeder extends Seeder
             ServerSeeder::class,
             PlatformSeeder::class,
             GameSeeder::class,
+            GameCategorySeeder::class,
+            TagSeeder::class,
+            GameTagSeeder::class,
             // ApplicationSettingSeeder::class,
 
             SellerProfileSeeder::class,
@@ -45,18 +48,17 @@ class DatabaseSeeder extends Seeder
             KycFormSectionSeeder::class,
             KycFormFieldSeeder::class,
             SubmittedKycSeeder::class,
-            ProductTypeSeeder::class,
-            ProductSeeder::class,
             PageViewSeeder::class,
             RankSeeder::class,
-                // UserRankSeeder::class,
+            UserRankSeeder::class,
             AchievementTypeSeeder::class,
             AchievementSeeder::class,
 
             DeliveryMethodSeeder::class,
-            OfferItemSeeder::class,
             RaritySeeder::class,
             TypeSeeder::class,
+
+            ProductSeeder::class,
         ]);
     }
 }

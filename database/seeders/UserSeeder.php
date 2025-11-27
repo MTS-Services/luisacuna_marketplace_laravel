@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Enums\UserType;
 use App\Enums\UserStatus;
-use Faker\Factory as Faker;
 use Illuminate\Support\Str;
 use App\Enums\userKycStatus;
 use Illuminate\Database\Seeder;
@@ -19,8 +18,6 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = Faker::create();
-
         User::create([
             'sort_order' => 1,
             'country_id' => 1,
@@ -32,10 +29,10 @@ class UserSeeder extends Seeder
             'timezone' => 'UTC',
             'language_id' => 1,
             'currency_id' => 1,
-            'kyc_status' => userKycStatus::PENDING->value,
+            // 'kyc_status' => userKycStatus::PENDING->value,
             'email' => "user@dev.com",
             'email_verified_at' => now(),
-            'password' => Hash::make("user@dev.com"), // default password
+            'password' => Hash::make("user@dev.com"),
             'phone' => '1234567890',
             'phone_verified_at' => now(),
             'user_type' => UserType::BUYER->value,
@@ -53,29 +50,29 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
-        // Create 10 dummy users
+        // Create 5 dummy users using fake() helper
         for ($i = 1; $i <= 5; $i++) {
             User::create([
                 'sort_order' => $i,
                 'country_id' => 1,
-                'username' => $faker->unique()->userName,
-                'first_name' => $faker->firstName,
-                'last_name' => $faker->lastName,
+                'username' => fake()->unique()->userName,
+                'first_name' => fake()->firstName,
+                'last_name' => fake()->lastName,
                 'avatar' => null,
-                'date_of_birth' => $faker->date(),
-                'timezone' => $faker->timezone,
+                'date_of_birth' => fake()->date(),
+                'timezone' => fake()->timezone,
                 'email' => "user@dev{$i}.com",
                 'email_verified_at' => null,
-                'password' => Hash::make("user@dev{$i}.com"), // default password
-                'phone' => $faker->phoneNumber,
+                'password' => Hash::make("user@dev{$i}.com"),
+                'phone' => fake()->phoneNumber,
                 'phone_verified_at' => now(),
                 'user_type' => UserType::SELLER->value,
                 'account_status' => UserAccountStatus::PENDING_VERIFICATION->value,
                 'language_id' => 1,
                 'currency_id' => 1,
-                'kyc_status' => userKycStatus::PENDING->value,
+                // 'kyc_status' => userKycStatus::PENDING->value,
                 'last_login_at' => now(),
-                'last_login_ip' => $faker->ipv4,
+                'last_login_ip' => fake()->ipv4,
                 'login_attempts' => 0,
                 'locked_until' => null,
                 'two_factor_enabled' => false,

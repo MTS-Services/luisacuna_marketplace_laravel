@@ -15,6 +15,7 @@ class Edit extends Component
     use WithNotification;
 
     public CurrencyForm $form;
+     public $defaultCurrency = null;
 
     #[Locked]
     public Currency $data;
@@ -35,6 +36,7 @@ class Edit extends Component
     {
         $this->data = $data;
         $this->form->setData($data);
+        $this->defaultCurrency = $this->service->getDefaultCurrency();
     }
 
     /**

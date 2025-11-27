@@ -34,7 +34,13 @@ class CategoryService
 
     public function getAllDatas($sortField = 'created_at', $order = 'desc'): Collection
     {
+       
         return $this->interface->all($sortField, $order);
+    }
+
+    public function getActiveDatas(string $sortField = 'created_at', $order = 'desc', $status ='active'): Collection
+    {
+        return $this->interface->active($sortField , $order, $status);
     }
 
     public function findData($column_value, string $column_name = 'id'): ?Category

@@ -19,7 +19,7 @@ trait HasTranslations
         ?array $targetLanguageIds = null
     ): void {
         $config = $this->getTranslationConfig();
-        $enabled = config('translation.auto_translate', false);
+        $enabled = auto_translate();
 
         if (!$enabled) {
             Log::info('Auto translation is disabled in config.');

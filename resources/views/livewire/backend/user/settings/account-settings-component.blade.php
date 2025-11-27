@@ -3,7 +3,7 @@
         {{-- Header Section --}}
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-2xl sm:text-3xl font-bold text-text-primary">{{ __('Account Settings') }}</h1>
-            <x-ui.button href="{{ route('user.purchased-orders') }}" class="w-fit! sm:w-auto! py-2!">
+            <x-ui.button href="#" class="w-fit! sm:w-auto! py-2!">
                 {{ __('Seller API') }}
             </x-ui.button>
         </div>
@@ -24,80 +24,38 @@
                 <h2 class="text-2xl sm:text-3xl font-semibold text-text-primary mb-8">{{ __('Profile') }}</h2>
 
 
-                {{-- Profile Image --}}
-                {{-- <div class="flex items-start bg-zinc-100 dark:bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6">
-                    <div class="relative">
-                        <img src="{{ auth()->user()->avatar ?? asset('assets/images/user_profile/Ellipse 474.png') }}"
-                            alt="Profile" class="w-20 h-20 rounded-full object-cover ring-2 ring-accent/20">
-
-                    </div>
-                    <div class="flex-col">
-                        <x-ui.button  wire:click="updateProfile" class="w-fit! py-2!">
-                            {{ __('Upload image') }}
-                        </x-ui.button>
-                        <div class="">
-                            <span
-                                class="text-base text-text-white mt-2">{{ __('Allowed file types: png, jpg, jpeg') }}</span>
-                        </div>
-
-                    </div>
-                </div> --}}
-                {{-- <form wire:submit.prevent="updateProfile"> --}}
-                {{-- <div x-data="imageUploader()"
-                        class="flex items-center bg-zinc-100 dark:bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6 w-full text-white">
-
-                        <!-- Profile Image -->
-                        <div class="relative">
-                            <img :src="previewUrl || defaultUrl" alt="Profile" 
-                                class="w-20 h-20 rounded-full object-cover ring-2 ring-purple-400/30">
-                        </div>
-
-                        <!-- Upload Section -->
-                        <div class="flex flex-col justify-center">
-                            <label for="imageUpload"
-                                class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-full cursor-pointer transition text-sm w-fit">
-                                Upload image
-                            </label>
-
-                            <input id="imageUpload" wire:model="form.avatar" type="file" accept="image/jpeg, image/png, image/heic"
-                                class="hidden" @change="updatePreview">
-
-                            <span class="text-sm text-text-secondary mt-2">
-                                Must be JPEG, PNG or HEIC and cannot exceed 10MB.
-                            </span>
-                        </div>
-                    </div> --}}
-
-                <div x-data="imageUploader()"
-                    class="flex items-center bg-zinc-100 dark:bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6 w-full text-white">
-
+                <div class="flex items-center bg-zinc-100 dark:bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6 w-full">
                     <!-- Profile Image -->
                     <div class="relative">
-                        <img :src="previewUrl || defaultUrl" alt="Profile"
-                            class="w-20 h-20 rounded-full object-cover ring-2 ring-purple-400/30">
+                        <img src="{{ storage_url($existingFile) }}"
+                            class="w-20 h-20 rounded-full object-cover ring-2 ring-purple-400/30" alt="Profile">
                     </div>
 
-                    <!-- Upload Section -->
-                    <div class="flex flex-col justify-center">
+                    <!-- Upload Area -->
+                    <div class="flex flex-col">
                         <label for="imageUpload"
                             class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-full cursor-pointer transition text-sm w-fit">
-                            Upload image
+                            {{ __('Upload image') }}
                         </label>
 
-                        <!-- IMPORTANT: wire:model must stay here -->
-                        <input id="imageUpload" type="file" accept="image/jpeg,image/png,image/heic" class="hidden"
-                            wire:model="form.avatar" @change="updatePreview">
+                        <input id="imageUpload" type="file" class="hidden" name="avatarFile" accept="image/jpeg,image/png,image/heic"
+                            wire:model.live="form.avatar">
 
                         <span class="text-sm text-text-secondary mt-2">
-                            Must be JPEG, PNG or HEIC and cannot exceed 10MB.
+                            {{ __('Must be JPEG, PNG or HEIC and cannot exceed 10MB.') }}
                         </span>
 
-                        <!-- Show Livewire validation error -->
                         @error('form.avatar')
                             <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
                         @enderror
+
+                        <div wire:loading wire:target="form.avatar" class="text-sm text-purple-600 mt-2">
+                            {{ __('Uploading...') }}
+                        </div>
                     </div>
                 </div>
+
+
 
 
                 {{-- Bio Textarea --}}
@@ -114,10 +72,10 @@
                     <!-- Display Mode -->
                     <div class="" x-show="!editMode">
                         <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
-                            <p class="text-text-white text-xs">{{ __('Hey there!') }}</p>
-                            <p class="text-text-white text-xs">
+                            <p class="text-text-white text-xs">{{ user()->description }}</p>
+                            {{-- <p class="text-text-white text-xs">
                                 {{ __('At PixelStoreLAT, we bring you the best digital deals, game keys, and in-game items — fast, safe, and hassle-free. Trusted by thousands of gamers worldwide with 97% positive reviews. Level up your experience with us today!') }}
-                            </p>
+                            </p> --}}
                             {{-- <textarea rows="4" class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-hidden focus:ring-2 focus:ring-accent resize-none">{{ user()->description }}</textarea> --}}
                         </div>
                     </div>
@@ -146,15 +104,15 @@
                 <h2 class="text-2xl sm:text-3xl font-semibold text-text-white mb-8">{{ __('Profile') }}</h2>
 
                 <form class="space-y-5">
-                    {{-- User Name --}}
+
 
                     {{-- First Name --}}
-                    <div x-data="{ editMode: false }">
+                    <div x-data="{ editMode: false }" @profile-updated.window="editMode = false">
                         <div class="p-3 sm:p-6 bg-zinc-100 dark:bg-zinc-50/10 rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('First name:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
-                                    <p class="text-text-white text-xs">{{ user()->first_name }}</p>
+                                    <p class="text-text-white text-xs">{{ $form->first_name }}</p>
                                 </div>
                                 <div @click="editMode = true"
                                     class="px-2 py-1.5 sm:px-4 sm:py-3 bg-zinc-50/20 rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition">
@@ -169,10 +127,10 @@
                             <label
                                 class="block text-sm font-medium text-text-primary mb-2">{{ __('First name:') }}</label>
                             <div class="relative">
-                                <input type="text" value="{{ old('first_name', auth()->user()->first_name ?? '') }}"
-                                    wire:model.defer="form.first_name"
+                                <input type="text" wire:model.defer="form.first_name"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
-                                    placeholder="Enter first_name">
+                                    placeholder="Enter first name">
+                                <x-ui.input-error :messages="$errors->get('form.first_name')" />
                                 <button type="button"
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-text-muted hover:text-text-primary">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -182,7 +140,7 @@
                                 </button>
                             </div>
                             <div class="flex justify-start gap-3 mt-4">
-                                <x-ui.button wire:click="updateProfile" @click="editMode = false" class="w-fit! py-2!">
+                                <x-ui.button wire:click="updateProfile" class="w-fit! py-2!">
                                     {{ __('Save changes') }}
                                 </x-ui.button>
                                 <button type="button" @click="editMode = false"
@@ -192,6 +150,7 @@
                             </div>
                         </div>
                     </div>
+
 
                     {{-- Last name --}}
                     <div x-data="{ editMode: false }">
@@ -219,6 +178,7 @@
                                     wire:model.defer="form.last_name"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                     placeholder="Enter company name">
+                                <x-ui.input-error :messages="$errors->get('form.last_name')" />
                                 <button type="button"
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-text-muted hover:text-text-primary">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -273,6 +233,7 @@
                                 <input type="email" name="email" value="" wire:model.defer="form.email"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                     placeholder="Enter email">
+                                <x-ui.input-error :messages="$errors->get('form.email')" />
                                 <span
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-xs text-text-muted bg-bg-primary px-2 py-1 rounded">
                                     {{ __('This field is linked and can only be filled in once for user') }}
@@ -326,6 +287,7 @@
                                     wire:model.defer="form.username"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                     placeholder="Enter location">
+                                <x-ui.input-error :messages="$errors->get('form.username')" />
                                 <button type="button"
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-text-muted hover:text-text-primary">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -373,9 +335,10 @@
                             <label
                                 class="block text-sm font-medium text-text-primary mb-2">{{ __('Password') }}</label>
                             <div class="relative">
-                                <input type="url" name="url" value="********"
+                                <input type="password" value="********" wire:model.defer="form.password"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
-                                    placeholder="https://">
+                                    placeholder="*****">
+                                <x-ui.input-error :messages="$errors->get('form.password')" />
                                 <button type="button"
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-text-muted hover:text-text-primary">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -404,99 +367,5 @@
             </section>
 
             {{-- Email Notifications Section --}}
-            <section class="sm:bg-bg-primary rounded-2xl sm:p-15 md:20">
-                <h2 class="text-2xl sm:text-3xl font-semibold text-text-white mb-6">{{ __('Email notifications') }}
-                </h2>
-
-                <div class="space-y-4">
-                    @php
-                        $notifications = [
-                            [
-                                'key' => 'manage_notification',
-                                'label' => 'Manage notification',
-                                'sub_title' => 'When you receive a new order.',
-                            ],
-                            [
-                                'key' => 'new_update',
-                                'label' => 'New update',
-                                'sub_title' => 'When you receive a new message',
-                            ],
-                            [
-                                'key' => 'new_request',
-                                'label' => 'New request',
-                                'sub_title' => 'When your order status changes',
-                            ],
-                            [
-                                'key' => 'message_received',
-                                'label' => 'Message received',
-                                'sub_title' => 'When your dispute is resolved or updated',
-                            ],
-                            [
-                                'key' => 'status_changed',
-                                'label' => 'Status changed',
-                                'sub_title' => 'When your payment is received or refunded',
-                            ],
-                            [
-                                'key' => 'request_rejected',
-                                'label' => 'Request rejected',
-                                'sub_title' => 'When you request a withdrawal, and when it is processed',
-                            ],
-                            [
-                                'key' => 'dispute_created',
-                                'label' => 'Dispute created',
-                                'sub_title' => 'When your verification is processed or updated',
-                            ],
-                            [
-                                'key' => 'payment_received',
-                                'label' => 'Payment received',
-                                'sub_title' => 'When you receive boosting offers or updates',
-                            ],
-                        ];
-                    @endphp
-
-                    @foreach ($notifications as $notification)
-                        <div
-                            class="flex items-center justify-between py-3  border-zinc-200 dark:border-zinc-800 last:border-b-0">
-                            <label class="text-xl text-text-white cursor-pointer flex-1">
-                                {{ $notification['label'] }}
-                                <span
-                                    class="text-sm text-text-muted justify-start block">{{ $notification['sub_title'] }}</span>
-                            </label>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" name="notifications[{{ $notification['key'] }}]"
-                                    class="sr-only peer">
-                                <div
-                                    class="w-11 h-6 bg-zinc-200/80 dark:bg-zinc-200/50 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-accent rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent">
-                                </div>
-                            </label>
-                        </div>
-                    @endforeach
-                </div>
-            </section>
+            <livewire:backend.user.settings.account-notification />
         </div>
-
-
-        <script>
-            function imageUploader() {
-                return {
-                    defaultUrl: "{{ storage_url(user()->avatar) ?? asset('assets/images/user_profile/Ellipse 474.png') }}", // fallback or dynamic image
-                    previewUrl: null,
-
-                    updatePreview(event) {
-                        const file = event.target.files[0];
-                        if (!file) return;
-
-                        if (file.size > 10 * 1024 * 1024) {
-                            alert('File size cannot exceed 10MB.');
-                            event.target.value = '';
-                            return;
-                        }
-
-                        const reader = new FileReader();
-                        reader.onload = (e) => this.previewUrl = e.target.result;
-                        reader.readAsDataURL(file);
-                    }
-                }
-            }
-        </script>
-    </section>

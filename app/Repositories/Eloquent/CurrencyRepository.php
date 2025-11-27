@@ -3,6 +3,8 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Currency;
+use App\Models\ExchangeRate;
+use App\Models\ExchangeRateHistory;
 use App\Repositories\Contracts\CurrencyRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -11,7 +13,9 @@ use Illuminate\Support\Facades\DB;
 class CurrencyRepository implements CurrencyRepositoryInterface
 {
     public function __construct(
-        protected Currency $model
+        protected Currency $model,
+        protected ExchangeRate $exchangeRateModel,
+        protected ExchangeRateHistory $exchangeRateHistoryModel,
     ) {}
 
 
@@ -113,18 +117,63 @@ class CurrencyRepository implements CurrencyRepositoryInterface
 
     public function create(array $data): Currency
     {
-        return $this->model->create($data);
+        $currency =  $this->model->create($data);
+        
+        $defaultCurrency = $this->getDefaultCurrency();
+
+        if ($defaultCurrency) {
+            $this->exchangeRateModel->create([
+                'base_currency' => $defaultCurrency->id,
+                'target_currency' => $currency->id,
+                'rate' => $currency->exchange_rate, 
+                'last_updated_at' => now(),
+                'created_by' => $data['created_by'] ?? null,
+            ]);
+        }
+
+        return $currency;
     }
 
     public function update(int $id, array $data): bool
     {
-        $findData = $this->find($id);
+        return DB::transaction(function () use ($id, $data) {
+            $findData = $this->find($id);
 
-        if (!$findData) {
-            return false;
-        }
+            if (!$findData) {
+                return false;
+            }
 
-        return $findData->update($data);
+            // Check if exchange_rate is being updated
+            if (isset($data['exchange_rate']) && $data['exchange_rate'] != $findData->exchange_rate) {
+                $defaultCurrency = $this->getDefaultCurrency();
+                
+                // Store old exchange rate in history
+                $this->exchangeRateHistoryModel->create([
+                    'base_currency' => $defaultCurrency ? $defaultCurrency->id : null,
+                    'target_currency' => $findData->id,
+                    'rate' => $findData->exchange_rate,
+                    'last_updated_at' => $findData->updated_at ?? $findData->created_at,
+                    'created_by' => $data['updated_by'] ?? null,
+                ]);
+
+                // Update the exchange rate table
+                if ($defaultCurrency) {
+                    $this->exchangeRateModel->updateOrCreate(
+                        [
+                            'base_currency' => $defaultCurrency->id,
+                            'target_currency' => $findData->id,
+                        ],
+                        [
+                            'rate' => $data['exchange_rate'],
+                            'last_updated_at' => now(),
+                            'updated_by' => $data['updated_by'] ?? null,
+                        ]
+                    );
+                }
+            }
+
+            return $findData->update($data);
+        });
     }
 
     public function delete(int $id, int $actionerId): bool
@@ -174,6 +223,7 @@ class CurrencyRepository implements CurrencyRepositoryInterface
     {
         return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updated_by' => $actionerId]);
     }
+    
     public function bulkRestore(array $ids, int $actionerId): int
     {
         return DB::transaction(function () use ($ids, $actionerId) {
@@ -181,7 +231,8 @@ class CurrencyRepository implements CurrencyRepositoryInterface
             return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
         });
     }
-    public function bulkForceDelete(array $ids): int //
+    
+    public function bulkForceDelete(array $ids): int
     {
         return $this->model->onlyTrashed()->whereIn('id', $ids)->forceDelete();
     }
@@ -198,5 +249,41 @@ class CurrencyRepository implements CurrencyRepositoryInterface
     public function getInactive(string $sortField = 'created_at', $order = 'desc'): Collection
     {
         return $this->model->inactive()->orderBy($sortField, $order)->get();
+    }
+
+    /**
+     * Get the current default currency
+     */
+    public function getDefaultCurrency(): ?Currency
+    {
+        return $this->model->where('is_default', true)->first();
+    }
+
+    
+    /**
+     * Set a currency as default and remove default from others
+     */
+    public function setAsDefault(int $id, int $actionerId): bool
+    {
+        return DB::transaction(function () use ($id, $actionerId) {
+            // Remove default from all currencies
+            $this->model->where('is_default', true)->update([
+                'is_default' => false,
+                'updated_by' => $actionerId
+            ]);
+            
+            // Find the currency to set as default
+            $currency = $this->find($id);
+            
+            if (!$currency) {
+                throw new \Exception('Currency not found');
+            }
+            
+            // Set as default
+            return $currency->update([
+                'is_default' => true,
+                'updated_by' => $actionerId
+            ]);
+        });
     }
 }
