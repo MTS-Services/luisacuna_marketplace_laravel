@@ -87,6 +87,9 @@
                     // ],
                 ]" />
 
+
+
+
             <x-backend.navlink type="dropdown" icon="gamepad-directional" name="Game Management" :page_slug="$active"
                 :items="[
                     [
@@ -96,7 +99,7 @@
                         'active' => 'game-category',
                         'permission' => 'category-list',
                     ],
-                
+
                     // [
                     //     'name' => 'Servers',
                     //     'route' => route('admin.gm.server.index'),
@@ -104,7 +107,7 @@
                     //     'active' => 'server',
                     //     'permission' => 'server-list',
                     // ],
-                
+
                     [
                         'name' => 'Platforms',
                         'route' => route('admin.gm.platform.index'),
@@ -112,7 +115,7 @@
                         'active' => 'game-platform',
                         'permission' => 'platform-list',
                     ],
-                
+
                     [
                         'name' => 'Games',
                         'route' => route('admin.gm.game.index'),
@@ -120,21 +123,21 @@
                         'active' => 'game',
                         'permission' => 'game-list',
                     ],
-                
+
                     [
                         'name' => 'Rarity',
                         'route' => route('admin.gm.rarity.index'),
                         'icon' => 'swords',
                         'active' => 'game-rarity',
                     ],
-                
+
                     // [
                     //     'name' => 'Pending Users',
                     //     'route' => '#',
                     //     'icon' => 'user-plus',
                     //     'active' => 'admin-users-pending',
                     // ],
-                
+
                     // [
                     //     'name' => 'Banned Users',
                     //     'route' => '#',
@@ -255,6 +258,15 @@
                     ],
                 ]" />
 
+
+
+            <x-backend.navlink type="single" icon="layout-dashboard" name="Faq" :route="route('admin.flm.faq.index')"
+                active="admin-faq" :page_slug="$active" />
+
+
+
+
+
             <div class="pt-4 pb-2">
                 <p class="text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
                     x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)">
@@ -270,12 +282,14 @@
                         'icon' => 'cog-8-tooth',
                         'active' => 'general-settings',
                     ],
+
                     // [
                     //     'name' => 'Appearance',
                     //     'route' => '#',
                     //     'icon' => 'palette',
                     //     'active' => 'settings-appearance',
                     // ],
+
                     [
                         'name' => 'Security',
                         'route' => route('admin.two-factor.index'),

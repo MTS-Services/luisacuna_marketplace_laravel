@@ -17,13 +17,14 @@ use App\Http\Controllers\Backend\Admin\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\RankController;
 use App\Http\Controllers\Backend\Admin\GameManagement\ServerController;
 use App\Http\Controllers\Backend\Admin\GameManagement\PlatformController;
-use App\Http\Controllers\Backend\Admin\Settings\GeneralSettingsController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductController;
 use App\Http\Controllers\Backend\Admin\ReviewManagement\PageViewController;
 use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementController;
 use App\Http\Controllers\Backend\admin\ProductManagament\ProductTypeController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementTypeController;
+use App\Http\Controllers\Backend\Admin\FaqManagement\FaqController;
+
 
 Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
@@ -206,4 +207,21 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/', 'index')->name('index');
         });
     });
+
+    // Faq
+    Route::group(['prefix' => 'faq-management', 'as' => 'flm.'], function () {
+
+        Route::controller(FaqController::class)->name('faq.')->prefix('faq')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/show/{id}', 'show')->name('show');
+            Route::get('/trash', 'trash')->name('trash');
+        });
+
+    });
+
+
+
+
 });

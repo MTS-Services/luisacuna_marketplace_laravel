@@ -19,7 +19,7 @@ class Edit extends Component
     public $categoryId = null;
     public CategoryForm $form;
 
-    public $existingFile; 
+    public $existingFile;
     #[Locked]
     public Category $data;
     protected CategoryService $service;

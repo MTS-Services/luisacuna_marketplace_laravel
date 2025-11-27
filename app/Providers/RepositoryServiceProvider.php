@@ -60,6 +60,8 @@ use App\Repositories\Eloquent\GameRarityRepository;
 use App\Repositories\Eloquent\GameTagRepository;
 use App\Repositories\Eloquent\GameTypeRepository;
 use App\Repositories\Eloquent\RaritytRepository;
+use App\Repositories\Contracts\FaqRepositoryInterface;
+use App\Repositories\Eloquent\FaqRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -140,6 +142,12 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             RankRepositoryInterface::class,
             RankRepository::class,
+        );
+
+        // Faq
+        $this->app->bind(
+            FaqRepositoryInterface::class,
+            FaqRepository::class,
         );
 
         $this->app->bind(

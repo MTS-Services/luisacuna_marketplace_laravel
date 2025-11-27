@@ -157,6 +157,8 @@
                     <x-ui.input type="text" placeholder="Region" wire:model="form.region" />
                     <x-ui.input-error :messages="$errors->get('form.region')" />
                 </div>
+
+
                 {{-- status --}}
                 <div class="w-full">
                     <x-ui.label value="Status" class="mb-1" />
@@ -168,6 +170,7 @@
                     </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.status')" />
                 </div>
+                
 
 
 

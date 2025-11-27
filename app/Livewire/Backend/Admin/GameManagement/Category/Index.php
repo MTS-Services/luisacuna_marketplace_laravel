@@ -42,7 +42,7 @@ class Index extends Component
         $datas->load('creater_admin');
 
         $columns = [
-          
+
               [
                 'key' => 'icon',
                 'label' => 'icon',

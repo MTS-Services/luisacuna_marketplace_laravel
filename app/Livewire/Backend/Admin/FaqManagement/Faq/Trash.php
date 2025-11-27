@@ -1,76 +1,80 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\ProductManagement\ProductType;
+namespace App\Livewire\Backend\Admin\FaqManagement\Faq;
 
-use Livewire\Component;
-use App\Enums\ProductTypeStatus;
-use Illuminate\Support\Facades\Log;
+use App\Enums\FaqStatus;
+use App\Services\FaqService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
-use App\Services\ProductTypeService;
-
+use Illuminate\Support\Facades\Log;
+use Livewire\Component;
 class Trash extends Component
 {
     use WithDataTable, WithNotification;
-
+    public $typeses = [];
     public $statusFilter = '';
     public $showDeleteModal = false;
     public $selectedId = null;
     public $bulkAction = '';
     public $showBulkActionModal = false;
 
-    protected $listeners = ['ProductTypeDeleted' => '$refresh', 'ProductTypeRestored' => '$refresh', 'ProductTypeUpdated' => '$refresh'];
+    protected FaqService $service;
 
-    protected ProductTypeService $service;
-
-    public function boot(ProductTypeService $service)
+    public function boot(FaqService $service)
     {
         $this->service = $service;
     }
+
     public function render()
     {
         $datas = $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        );
-
+        )->load('deleter_admin');
 
         $columns = [
             [
-                'key' => 'name',
-                'label' => 'Name',
-                'sortable' => true
+                'key' => 'icon',
+                'label' => 'ICON',
+                'format' => function ($data) {
+
+                    return $data->icon
+                        ? '<img src="' . storage_url($data->icon) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
+                }
             ],
-            [
-                'key' => 'description',
-                'label' => 'Description',
-                'sortable' => true,
-                'format' => fn($data) => $data->description
-            ],
-            [
-                'key' => 'commission_rate',
-                'label' => 'Commission Rate',
-                'sortable' => true
-            ],
+
+
             [
                 'key' => 'status',
-                'label' => 'Status',
+                'label' => 'STATUS',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
-                        $data->status->label() .
+                    $status = $data->status; // can be null
+                    $color = $status?->color() ?? 'bg-gray-200 text-gray-800'; // fallback color
+                    $label = $status?->label() ?? 'Unknown'; // fallback label
+
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $color . '">' .
+                        $label .
                         '</span>';
                 }
             ],
 
             [
-                'key' => 'deleter_type',
-                'label' => 'Deleted By',
+                'key' => 'deleted_at',
+                'label' => 'DELETED AT',
+                'sortable' => true,
                 'format' => function ($data) {
-                    return ($data?->deleter)->name
-                        ? '<span class="text-sm font-medium text-gray-900 dark:text-gray-100">' . ($data->deleter->name) . '</span>'
-                        : '<span class="text-sm text-gray-500 dark:text-gray-400 italic">System</span>';
-                },
+                    return $data->deleted_at_formatted;
+                }
+            ],
+
+            [
+                'key' => 'DELETED BY',
+                'label' => 'DELETED BY',
+                'format' => function ($data) {
+                    return $data->deleter_admin?->name ?? 'System';
+                }
             ],
         ];
 
@@ -89,21 +93,25 @@ class Trash extends Component
             ],
         ];
 
-        $bulkActions = [
-            ['value' => 'forceDelete', 'label' => 'Permanent Delete'],
-            ['value' => 'bulkRestore', 'label' => 'Restore Selected'],
+         $this->typeses = [
+            ['value' => 1, 'label' => 'Buyer'],
+             ['value' => 2, 'label' => 'Seller'],
         ];
-        return view('livewire.backend.admin.product-management.product-type.trash', [
+
+        $bulkActions = [
+            ['value' => 'forceDelete', 'label' => 'Permanently Delete'],
+            ['value' => 'bulkRestore', 'label' => 'Restore']
+        ];
+
+        return view('livewire.backend.admin.faq-management.faq.trash', [
             'datas' => $datas,
+            'statuses' => FaqStatus::options(),
+            // 'typeses' => FaqType::options(),
             'columns' => $columns,
-            'statuses' => ProductTypeStatus::options(),
             'actions' => $actions,
             'bulkActions' => $bulkActions
         ]);
     }
-
-
-
 
     public function confirmDelete($encryptedId): void
     {
