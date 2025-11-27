@@ -11,7 +11,6 @@ use App\Repositories\Eloquent\RoleRepository;
 use App\Repositories\Eloquent\UserRepository;
 use App\Repositories\Eloquent\AdminRepository;
 use App\Repositories\Eloquent\AuditRepository;
-use App\Repositories\Eloquent\ProductRepository;
 use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\CurrencyRepository;
 use App\Repositories\Eloquent\LanguageRepository;
@@ -20,7 +19,6 @@ use App\Repositories\Eloquent\OfferItemRepository;
 
 
 use App\Repositories\Eloquent\PermissionRepository;
-use App\Repositories\Eloquent\ProductTypeRepository;
 use App\Repositories\Eloquent\AchievementRepository;
 
 
@@ -31,7 +29,6 @@ use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\AdminRepositoryInterface;
 use App\Repositories\Contracts\AuditRepositoryInterface;
 use App\Repositories\Eloquent\AchievementTypeRepository;
-use App\Repositories\Contracts\ProductRepositoryInterface;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\CurrencyRepositoryInterface;
 use App\Repositories\Contracts\LanguageRepositoryInterface;
@@ -39,7 +36,6 @@ use App\Repositories\Contracts\PageViewRepositoryInterface;
 
 use App\Repositories\Contracts\PermissionRepositoryInterface;
 use App\Repositories\Contracts\AchievementRepositoryInterface;
-use App\Repositories\Contracts\ProductTypeRepositoryInterface;
 use App\Repositories\Contracts\AchievementTypeRepositoryInterface;
 use App\Repositories\Contracts\GameTagRepositoryInterface;
 use App\Repositories\Contracts\OfferItemRepositoryInterface;
