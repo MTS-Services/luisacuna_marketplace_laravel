@@ -73,6 +73,13 @@
                         'active' => 'admin-users',
                         'permission' => 'user-list',
                     ],
+                    [
+                        'name' => 'All Sellers',
+                        'route' => route('admin.um.user.all-seller'),
+                        'icon' => 'user',
+                        'active' => 'admin-users',
+                        // 'permission' => 'user-list',
+                    ],
                     // [
                     //     'name' => 'Pending Users',
                     //     'route' => '#',

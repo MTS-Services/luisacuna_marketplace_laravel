@@ -13,6 +13,8 @@ interface UserRepositoryInterface
 
     public function getSellers(): Collection;
 
+    public function getSellersByTrash(): Collection;
+
     public function getBuyers(): Collection;
 
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
