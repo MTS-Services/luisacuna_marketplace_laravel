@@ -17,6 +17,8 @@ interface UserRepositoryInterface
 
     public function getBuyers(): Collection;
 
+    public function getBuyersByTrash(): Collection;
+
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
     public function findData($column_value, string $column_name = 'id', bool $trashed = false): ?User;
     public function find(int $id): ?User;

@@ -36,6 +36,11 @@ class UserRepository implements UserRepositoryInterface
         return $this->model->whereIn('user_type', [UserType::BUYER, UserType::BOTH])->orderBy($sortField, $order)->get();
     }
 
+    public function getBuyersByTrash(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->whereIn('user_type', [UserType::BUYER, UserType::BOTH])->onlyTrashed()->orderBy($sortField, $order)->get();
+    }
+
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         $query = $this->model->query();
