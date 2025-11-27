@@ -2,7 +2,7 @@
     class="sticky top-0 z-50  {{ request()->routeIs('home') ? 'bg-linear-to-r from-zinc-950/50 via-text-text-white to-zinc-950/50 glass-card shadow-none!' : 'glass-card' }}">
     <div class=" px-4 py-4 flex items-center justify-between relative" x-cloak>
         <div class="flex flex-row-reverse items-center justify-center">
-            <div class="flex ml-4 lg:ml-0 scale-75 xl:scale-100">
+            <div class="hidden xxs:flex ml-4 lg:ml-0 scale-75 xl:scale-100">
                 <a href="{{ route('home') }}" wire:navigate>
                     <img src="{{ asset('assets/images/header_logo.png') }}" alt="{{ __('Logo') }}"></a>
             </div>
@@ -20,9 +20,17 @@
         {{-- Main Navigation Icons --}}
         <div class="flex gap-1  xl:gap-2 items-center">
 
-            <div class="hidden xl:flex">
-                <x-language />
-            </div>
+            @guest
+                <div class="xl:flex">
+                    <x-language />
+                </div>
+            @endguest
+
+            @auth
+                <div class="hidden md:flex">
+                    <x-language />
+                </div>
+            @endauth
 
             @auth
                 <div class="flex items-center justify-center gap-1">
@@ -47,27 +55,59 @@
 
             <div class="flex items-center" x-data>
 
-                <div class="flex bg-zinc-200 dark:bg-zinc-800 lg:p-1 rounded-full">
-                    <!-- Light/Dark Mode Toggle -->
-                    <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
-                        class="flex items-center justify-center w-8 h-6 text-lg rounded-l-full transition-colors duration-200 hidden xl:flex"
-                        :class="!$flux.dark ? 'bg-zinc-400 text-text-white' : 'bg-transparent text-zinc-600 dark:text-zinc-300'">
-                        <flux:icon name="sun" class="w-5 h-5 stroke-white" />
-                    </button>
+                @guest
+                    <div class="flex bg-zinc-200 dark:bg-zinc-800 lg:p-1 rounded-full">
+                        <!-- Light/Dark Mode Toggle -->
+                        <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
+                            class="flex items-center justify-center w-8 h-6 text-lg rounded-l-full transition-colors duration-200 xl:flex"
+                            :class="!$flux.dark ? 'bg-zinc-400 text-text-white' :
+                                'bg-transparent text-zinc-600 dark:text-zinc-300'">
+                            <flux:icon name="sun" class="w-5 h-5 stroke-white" />
+                        </button>
 
-                    <button type="button" @click="$flux.dark = true" :aria-pressed="$flux.dark"
-                        class="flex items-center justify-center w-8 h-6 text-lg rounded-r-full transition-colors duration-200 hidden xl:flex"
-                        :class="$flux.dark ? 'bg-zinc-400 text-text-white' : 'bg-transparent text-zinc-600 dark:text-zinc-300'">
-                        <flux:icon name="moon" class="w-5 h-5 stroke-current" />
-                    </button>
+                        <button type="button" @click="$flux.dark = true" :aria-pressed="$flux.dark"
+                            class="flex items-center justify-center w-8 h-6 text-lg rounded-r-full transition-colors duration-200 xl:flex"
+                            :class="$flux.dark ? 'bg-zinc-400 text-text-white' :
+                                'bg-transparent text-zinc-600 dark:text-zinc-300'">
+                            <flux:icon name="moon" class="w-5 h-5 stroke-current" />
+                        </button>
 
-                    {{-- <div x-show="$flux.dark" class="lg:hidden">
+                        {{-- <div x-show="$flux.dark" class="lg:hidden">
                         <flux:icon name="moon" class="w-5 h-5 stroke-current" @click="$flux.dark = false" />
                     </div>
                     <div x-show="!$flux.dark" class="lg:hidden">
                         <flux:icon name="sun" class="w-5 h-5 stroke-current" @click="$flux.dark = true" />
                     </div> --}}
-                </div>
+                    </div>
+                @endguest
+
+
+
+                @auth
+                    <div class="hidden md:flex bg-zinc-200 dark:bg-zinc-800 lg:p-1 rounded-full">
+                        <!-- Light/Dark Mode Toggle -->
+                        <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
+                            class="flex items-center justify-center w-8 h-6 text-lg rounded-l-full transition-colors duration-200 xl:flex"
+                            :class="!$flux.dark ? 'bg-zinc-400 text-text-white' :
+                                'bg-transparent text-zinc-600 dark:text-zinc-300'">
+                            <flux:icon name="sun" class="w-5 h-5 stroke-white" />
+                        </button>
+
+                        <button type="button" @click="$flux.dark = true" :aria-pressed="$flux.dark"
+                            class="flex items-center justify-center w-8 h-6 text-lg rounded-r-full transition-colors duration-200 xl:flex"
+                            :class="$flux.dark ? 'bg-zinc-400 text-text-white' :
+                                'bg-transparent text-zinc-600 dark:text-zinc-300'">
+                            <flux:icon name="moon" class="w-5 h-5 stroke-current" />
+                        </button>
+
+                        {{-- <div x-show="$flux.dark" class="lg:hidden">
+                        <flux:icon name="moon" class="w-5 h-5 stroke-current" @click="$flux.dark = false" />
+                    </div>
+                    <div x-show="!$flux.dark" class="lg:hidden">
+                        <flux:icon name="sun" class="w-5 h-5 stroke-current" @click="$flux.dark = true" />
+                    </div> --}}
+                    </div>
+                @endauth
 
                 @auth
                     @include('partials.profile-dropdown')

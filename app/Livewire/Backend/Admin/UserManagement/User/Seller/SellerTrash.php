@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\UserManagement\User;
+namespace App\Livewire\Backend\Admin\UserManagement\User\Seller;
 
-use App\Models\User;
-use App\Models\Admin;
+use Throwable;
 use Livewire\Component;
-use App\Enums\UserAccountStatus;
 use App\Services\UserService;
+use App\Enums\UserAccountStatus;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
-use Throwable;
 
-class Trash extends Component
+class SellerTrash extends Component
 {
-
     use WithDataTable, WithNotification;
 
 
@@ -32,9 +29,9 @@ class Trash extends Component
     }
     public function render()
     {
-        $users = $this->service->getTrashedPaginateDatas(
-            perPage: $this->perPage,
-            filters: $this->getFilters()
+        $datas = $this->service->getSellersByTrash(
+            // perPage: $this->perPage,
+            // filters: $this->getFilters()
         );
 
         // $users = $this->userService->getAllUsers();
@@ -97,15 +94,15 @@ class Trash extends Component
             ['value' => 'suspend', 'label' => 'Suspend'],
 
         ];
-        return view('livewire.backend.admin.user-management.user.trash', [
-            'users' => $users,
+        return view('livewire.backend.admin.user-management.user.seller.seller-trash', [
+            'datas' => $datas,
             'columns' => $columns,
             'statuses' => UserAccountStatus::options(),
             'actions' => $actions,
-            'bulkActions' => $bulkActions,
-
+            'bulkActions' => $bulkActions
         ]);
     }
+
     public function confirmDelete($userId): void
     {
         $this->userId = $userId;

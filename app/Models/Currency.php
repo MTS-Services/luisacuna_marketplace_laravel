@@ -74,11 +74,6 @@ class Currency extends AuditBaseModel implements Auditable
         return $this->hasMany(CurrencyTranslation::class, 'currency_id', 'id');
     }
 
-    public function products()
-    {
-        return $this->hasMany(Product::class, 'currency_id', 'id');
-    }
-
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */

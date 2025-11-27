@@ -30,13 +30,7 @@ class AccountNotification extends Component
         
         // Get notification settings (must exist)
         $notificationSettings = $this->service->getNotificationSettings($user->id);
-        
-        // if (!$notificationSettings) {
-        //     // Notification settings না থাকলে error handling
-        //     Log::warning('Notification settings not found for user', ['user_id' => $user->id]);
-        //     $this->dispatch('error', 'Notification settings not found. Please contact support.');
-        //     return;
-        // }
+    
         
         $this->new_order = $notificationSettings->new_order;
         $this->new_message = $notificationSettings->new_message;

@@ -139,6 +139,11 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/kyc-info/{id}', 'kycInfo')->name('kycInfo');
             Route::get('/statistic/{id}', 'statistic')->name('statistic');
             Route::get('/referral/{id}', 'referral')->name('referral');
+
+            Route::get('all-seller', 'allSeller')->name('all-seller');
+            Route::get('seller-trash', 'sellerTrash')->name('seller-trash');
+            Route::get('all-buyer', 'allBuyer')->name('all-buyer');
+            Route::get('buyer-trash', 'buyerTrash')->name('buyer-trash');
         });
     });
 

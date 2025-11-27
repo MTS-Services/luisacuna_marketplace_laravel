@@ -2,31 +2,27 @@
 
 namespace App\Enums;
 
-enum UserAccountStatus: string
+enum ActiveInactiveEnum: string
 {
     case ACTIVE = 'active';
     case INACTIVE = 'inactive';
-    case PENDING_VERIFICATION = 'pending_verification';
-
 
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::ACTIVE => 'Active',
             self::INACTIVE => 'Inactive',
-            self::PENDING_VERIFICATION => 'Pending Verification',
         };
     }
-
 
     public function color(): string
     {
-        return match($this) {
-            self::ACTIVE => 'badge-success',
-            self::INACTIVE => 'badge-secondary',
-            self::PENDING_VERIFICATION => 'badge-info',
+        return match ($this) {
+            self::ACTIVE => 'badge badge-success',
+            self::ACTIVE => 'badge badge-secondary',
         };
     }
+
     public static function options(): array
     {
         return array_map(

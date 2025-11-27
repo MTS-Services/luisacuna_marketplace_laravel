@@ -58,4 +58,18 @@ interface CurrencyRepositoryInterface
     public function getActive(string $sortField = 'created_at', $order = 'desc'): Collection;
 
     public function getInactive(string $sortField = 'created_at', $order = 'desc'): Collection;
+
+
+     public function getDefaultCurrency(): ?Currency;
+
+     
+
+    /**
+     * Set a currency as default and remove default from others
+     * 
+     * @param int $id Currency ID to set as default
+     * @param int $actionerId User ID performing the action
+     * @return bool
+     */
+    public function setAsDefault(int $id, int $actionerId): bool;
 }

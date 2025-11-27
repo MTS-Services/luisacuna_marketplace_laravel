@@ -17,18 +17,18 @@ class ExchangeRate extends AuditBaseModel implements Auditable
 
 
     protected $fillable = [
+        "sort_order",
         'base_currency',
         'target_currency',
         'rate',
         'last_updated_at',
 
 
-        'created_type',
-        'created_id',
-        'updated_type',
-        'updated_id',
-        'deleted_type',
-        'deleted_id',
+        'created_by',
+        'updated_by',
+        'deleted_by',
+        'restored_by',
+        'restored_at',
     ];
 
 

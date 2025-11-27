@@ -34,9 +34,7 @@ class Index extends Component
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
-        $users->load('country');
 
-        // $users = $this->userService->getAllUsers();
 
         $columns = [
              [
@@ -69,27 +67,9 @@ class Index extends Component
                 'sortable' => true
             ],
             [
-                'key' => 'country_id',
-                'label' => 'Country Name',
-                'sortable' => true,
-                'format' => function ($user) {
-                    return $user?->country?->name ?? '-';
-                }
-            ],
-            [
                 'key' => 'account_status',
                 'label' => 'Status',
                 'sortable' => true,
-                // 'format' => function ($user) {
-                //     $colors = [
-                //         'active' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-                //         'inactive' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-                //         'suspended' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-                //     ];
-                //     $color = $colors[$user->account_status_color ] ?? 'bg-gray-100 text-gray-800';
-                //     return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' .
-                //         ucfirst($user->account_status_label) .
-                //         '</span>';
                 'format' => function ($user) {
                     return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium '
                         . $user->account_status_color . '">'
@@ -143,12 +123,6 @@ class Index extends Component
             if (!$this->deleteUserId) {
                 return;
             }
-
-            // if ($this->deleteUserId == user()->id) {
-            //     $this->error('You cannot delete your own account');
-            //     return;
-            // }
-
             $this->service->deleteData($this->deleteUserId);
 
             $this->showDeleteModal = false;
@@ -174,7 +148,6 @@ class Index extends Component
             match ($userStatus) {
                 UserAccountStatus::ACTIVE => $this->service->activateData($userId),
                 UserAccountStatus::INACTIVE => $this->service->deactivateData($userId),
-                UserAccountStatus::SUSPENDED => $this->service->suspendData($userId),
                 default => null,
             };
 
@@ -204,7 +177,6 @@ class Index extends Component
                 'delete' => $this->bulkDelete(),
                 'activate' => $this->bulkUpdateStatus(UserAccountStatus::ACTIVE),
                 'deactivate' => $this->bulkUpdateStatus(UserAccountStatus::INACTIVE),
-                'suspend' => $this->bulkUpdateStatus(UserAccountStatus::SUSPENDED),
                 default => null,
             };
 

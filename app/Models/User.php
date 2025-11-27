@@ -29,7 +29,7 @@ class User extends AuthBaseModel implements Auditable
      */
     protected $fillable = [
         'sort_order',
-        'country_id',
+        // 'country_id',
 
         'username',
         'first_name',
@@ -45,8 +45,8 @@ class User extends AuthBaseModel implements Auditable
         'date_of_birth',
 
         'timezone',
-        'language_id',
-        'currency_id',
+        // 'language_id',
+        // 'currency_id',
 
 
         'email_verified_at',
@@ -164,7 +164,7 @@ class User extends AuthBaseModel implements Auditable
     |--------------------------------------------------------------------------
     */
 
-       public function userTranslations(): HasMany
+    public function userTranslations(): HasMany
     {
         return $this->hasMany(UserTranslations::class, 'user_id', 'id');
     }
@@ -185,15 +185,6 @@ class User extends AuthBaseModel implements Auditable
     public function referral(): HasOne
     {
         return $this->hasOne(UserReferral::class, 'user_id', 'id');
-    }
-    public function language(): BelongsTo
-    {
-        return $this->belongsTo(Language::class, 'language_id', 'id');
-    }
-
-    public function currency(): BelongsTo
-    {
-        return $this->belongsTo(Currency::class, 'currency_id', 'id');
     }
     public function userReferral(): HasOne
     {

@@ -24,12 +24,11 @@ class ExchangeRateHistory extends AuditBaseModel implements Auditable
 
 
 
-        'created_type',
-        'created_id',
-        'updated_type',
-        'updated_id',
-        'deleted_type',
-        'deleted_id',
+         'created_by',
+        'updated_by',
+        'deleted_by',
+        'restored_by',
+        'restored_at',
     ];
 
 
