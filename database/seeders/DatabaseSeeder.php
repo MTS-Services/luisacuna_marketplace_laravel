@@ -48,18 +48,17 @@ class DatabaseSeeder extends Seeder
             KycFormSectionSeeder::class,
             KycFormFieldSeeder::class,
             SubmittedKycSeeder::class,
-            ProductTypeSeeder::class,
-            ProductSeeder::class,
             PageViewSeeder::class,
             RankSeeder::class,
-                // UserRankSeeder::class,
+            UserRankSeeder::class,
             AchievementTypeSeeder::class,
             AchievementSeeder::class,
 
             DeliveryMethodSeeder::class,
-            OfferItemSeeder::class,
             RaritySeeder::class,
             TypeSeeder::class,
+
+            ProductSeeder::class,
         ]);
     }
 }
