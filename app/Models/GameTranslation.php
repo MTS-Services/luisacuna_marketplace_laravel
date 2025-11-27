@@ -2,26 +2,31 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
+
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class GameType extends BaseModel implements Auditable
+class GameTranslation extends BaseModel implements Auditable
 {
     use   AuditableTrait;
     //
 
     protected $fillable = [
+        'sort_order',
+        'name',
+        'description',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
         'game_id',
-        'type_id',
-        'created_at',
-        'updated_at'
+        'language_id',
 
+
+      //here AuditColumns
     ];
 
     protected $hidden = [
         //
-        'id',
     ];
 
     protected $casts = [
@@ -33,6 +38,14 @@ class GameType extends BaseModel implements Auditable
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
      //
+    public function game()
+    {
+        return $this->belongsTo(Game::class, 'game_id', 'id');
+    }
+    public function language()
+    {
+        return $this->belongsTo(Language::class, 'language_id', 'id');
+    }
 
      /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS

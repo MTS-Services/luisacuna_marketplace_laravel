@@ -9,6 +9,7 @@ use App\Enums\userKycStatus;
 use App\Traits\AuditableTrait;
 use Illuminate\Support\Carbon;
 use App\Enums\UserAccountStatus;
+use App\Traits\HasTranslations;
 use OwenIt\Auditing\Contracts\Auditable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class User extends AuthBaseModel implements Auditable
 {
-    use  TwoFactorAuthenticatable, AuditableTrait;
+    use  TwoFactorAuthenticatable, AuditableTrait, HasTranslations;
 
     /**
      * The attributes that are mass assignable.
@@ -163,6 +164,15 @@ class User extends AuthBaseModel implements Auditable
     |--------------------------------------------------------------------------
     */
 
+    public function userTranslations(): HasMany
+    {
+        return $this->hasMany(UserTranslations::class, 'user_id', 'id');
+    }
+
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class, 'country_id', 'id');
+    }
 
     public function seller(): HasOne
     {
@@ -406,5 +416,21 @@ class User extends AuthBaseModel implements Auditable
         return $this->forceFill([
             'phone_verified_at' => now(),
         ])->save();
+    }
+
+    // Translations
+
+      public function getTranslationConfig(): array
+    {
+        return [
+            'fields' => ['first_name', 'last_name'],
+            'relation' => 'userTranslations',
+            'model' => UserTranslations::class,
+            'foreign_key' => 'user_id',
+            'field_mapping' => [
+                'first_name' => 'first_name',
+                'last_name' => 'last_name',
+            ],
+        ];
     }
 }
