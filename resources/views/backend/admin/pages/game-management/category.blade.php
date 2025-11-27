@@ -30,6 +30,4 @@
             <x-slot name="breadcrumb">{{ __('Game Management / Category List') }}</x-slot>
             <livewire:backend.admin.game-management.category.index />
     @endswitch
-
-    <livewire:backend.admin.translation-manager />
 </x-admin::app>
