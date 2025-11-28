@@ -10,13 +10,15 @@ use App\Models\Language;
 use App\Services\LanguageService;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class Edit extends Component
 {
-    use WithNotification;
+    use WithNotification, WithFileUploads;
 
     public LanguageForm $form;
     public Language $data;
+    public $existingFile;
 
     protected LanguageService $service;
 
@@ -35,6 +37,16 @@ class Edit extends Component
     {
         $this->data = $data;
         $this->form->setData($data);
+        $this->existingFile = $this->data->file;
+    }
+
+    public function removeFile(): void
+    {
+        $this->form->remove_file = true;
+        $this->form->existing_file = null;
+         $this->existingFile = null;
+
+        $this->resetValidation('form.file');
     }
 
     /**
@@ -79,9 +91,11 @@ class Edit extends Component
     /**
      * Cancel editing and redirect back to index.
      */
-       public function resetForm(): void
+    public function resetForm(): void
     {
         $this->form->setData($this->data);
+        $this->existingFile = $this->data->file;
         $this->form->resetValidation();
+        $this->dispatch('file-input-reset');
     }
 }

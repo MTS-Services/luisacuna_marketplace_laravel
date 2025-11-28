@@ -5,7 +5,7 @@ namespace App\Livewire\Backend\User\Settings;
 use Livewire\Component;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Log;
-use App\Livewire\Forms\User\UserForm;
+use App\Livewire\Forms\Backend\Admin\UserManagement\UserForm;
 use Illuminate\Support\Facades\Storage;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
