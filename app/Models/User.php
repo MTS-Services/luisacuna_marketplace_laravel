@@ -8,14 +8,15 @@ use App\Enums\UserStatus;
 use App\Enums\userKycStatus;
 use App\Traits\AuditableTrait;
 use Illuminate\Support\Carbon;
-use App\Enums\UserAccountStatus;
 use App\Traits\HasTranslations;
+use App\Enums\UserAccountStatus;
 use OwenIt\Auditing\Contracts\Auditable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 
 class User extends AuthBaseModel implements Auditable
@@ -224,6 +225,19 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->hasOne(UsersNotificationSetting::class, 'user_id', 'id');
     }
+
+
+    public function rankedUsers(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            User::class,
+            UserRank::class,
+            'rank_level',
+            'id',                 
+            'id',                 
+            'user_id'             
+        );
+    }
     /*
     |--------------------------------------------------------------------------
     | Query Scopes
@@ -420,7 +434,7 @@ class User extends AuthBaseModel implements Auditable
 
     // Translations
 
-      public function getTranslationConfig(): array
+    public function getTranslationConfig(): array
     {
         return [
             'fields' => ['first_name', 'last_name'],

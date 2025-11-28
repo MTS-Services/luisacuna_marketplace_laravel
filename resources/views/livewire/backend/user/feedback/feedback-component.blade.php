@@ -55,20 +55,20 @@
 
 
     <div class="py-15">
-        <div class="max-w-8xl mx-auto bg-bg-primary/70 p-15 rounded-lg">
+        <div class="max-w-8xl mx-auto bg-bg-primary/70 p-5 sm:p-15 rounded-lg">
             <!-- Filter Buttons -->
-            <div class="flex gap-3 mb-6">
+            <div class="flex gap-1 xxxs:gap-3 mb-6">
                 <button
-                    class="px-6 py-2.5 rounded-full bg-accent text-text-white font-medium hover:bg-accent/90 transition-all duration-300 shadow-lg">
+                    class="px-3 xxxs:px-6 py-1.5 xxxs:py-2.5 rounded-full bg-accent text-text-white font-medium hover:bg-accent/90 transition-all duration-300 shadow-lg">
                     {{ __('All') }}
                 </button>
                 <button
-                    class="px-6 py-2.5 rounded-full bg-white text-accent font-medium hover:bg-gray-50 transition-all duration-300 shadow-md flex items-center gap-2">
+                    class="px-3 xxxs:px-6 py-1.5 xxxs:py-2.5 rounded-full bg-white text-accent font-medium hover:bg-gray-50 transition-all duration-300 shadow-md flex items-center gap-2">
                     {{ __('Positive') }}
                     <x-phosphor-thumbs-up-fill class="w-5 h-5  fill-accent" />
                 </button>
                 <button
-                    class="px-6 py-2.5 rounded-full bg-white text-accent font-medium hover:bg-gray-50 transition-all duration-300 shadow-md flex items-center gap-2">
+                    class="px-3 xxxs:px-6 py-1.5 xxxs:py-2.5 rounded-full bg-white text-accent font-medium hover:bg-gray-50 transition-all duration-300 shadow-md flex items-center gap-2">
                     {{ __('Negative') }}
                     <x-phosphor-thumbs-up-fill class="w-5 h-5 fill-red-500 rotate-180" />
                 </button>
