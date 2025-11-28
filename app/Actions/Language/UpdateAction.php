@@ -3,9 +3,11 @@
 namespace App\Actions\Language;
 
 use App\Models\Language;
-use App\Repositories\Contracts\LanguageRepositoryInterface;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use App\Repositories\Contracts\LanguageRepositoryInterface;
 
 class UpdateAction
 {
@@ -24,6 +26,35 @@ class UpdateAction
                 Log::error('Data not found', ['language_id' => $id]);
                 throw new \Exception('Language not found');
             }
+
+            // --- 1. CSV Handling ---
+            $oldFilePath = $findData->file ?? null;
+
+            $uploadedFile = Arr::get($data, 'file');
+
+            if ($uploadedFile instanceof \Illuminate\Http\UploadedFile) {
+                if ($oldFilePath && Storage::disk('public')->exists($oldFilePath)) {
+                    Storage::disk('public')->delete($oldFilePath);
+                }
+
+                $sanitizedName = strtolower(str_replace(' ', '_', $data['locale']));
+                $prefix = $sanitizedName . '-' . time() . '-' . uniqid();
+                $fileName = $prefix . '-' . $uploadedFile->getClientOriginalName();
+
+                $filePath = Storage::disk('public')->putFileAs('languages', $uploadedFile, $fileName);
+
+                $data['file'] = $filePath;
+            } elseif (Arr::get($data, 'remove_file')) {
+                if ($oldFilePath && Storage::disk('public')->exists($oldFilePath)) {
+                    Storage::disk('public')->delete($oldFilePath);
+                }
+                $data['file'] = null;
+            } else {
+                $data['file'] = $oldFilePath ?? null;
+            }
+
+            unset($data['remove_file']);
+
 
             $oldData = $findData->getAttributes();
 
