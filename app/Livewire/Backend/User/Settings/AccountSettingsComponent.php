@@ -25,6 +25,7 @@ class AccountSettingsComponent extends Component
     public $existingFile;
     public $updatedFormAvatar = null;
     public $avatarFile;
+    public $avatar;
 
     public UserForm $form;
     protected UserService $service;
@@ -42,32 +43,21 @@ class AccountSettingsComponent extends Component
     }
 
 
-    public function updatedAvatarFile()
+    public function updatedAvatar()
     {
         try {
+
+
             $this->validate([
-                'avatarFile' => 'required|image|mimes:jpeg,png,heic|max:10240'
+                'avatar' => 'image|max:2048'
             ]);
 
-            $updatedUser = $this->service->updateData(user()->id, [
-                'avatar' => $this->avatarFile
+            $path = $this->avatar->store('users', 'public');
+            auth()->user()->update([
+                'avatar' => $path,
             ]);
-
-            $this->existingFile = $updatedUser->avatar;
-
-            $this->reset('avatarFile');
-
-            $this->success(__('Profile image updated successfully!'));
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            $this->addError('avatarFile', $e->getMessage());
         } catch (\Exception $e) {
-            Log::error('User avatar update failed', [
-                'user_id' => user()->id,
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-
-            $this->addError('avatarFile', __('Failed to update profile image'));
+            $this->dispatch('notify', 'Profile photo update failed!', 'error');
         }
     }
     public function updateProfile()
