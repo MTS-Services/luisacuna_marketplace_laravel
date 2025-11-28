@@ -1,6 +1,6 @@
 <div class="space-y-6">
     <div class=" p-4 w-full">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex flex-col xl:flex-row justify-between items-center gap-4">
 
             <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
 
@@ -31,8 +31,8 @@
 
             </div>
 
-            <div class="w-full md:w-auto">
-                <x-ui.button class="w-auto py!">
+            <div class="flex justify-end! w-full md:w-auto">
+                <x-ui.button class="w-fit! py!">
                     <x-phosphor-download class="w-5 h-5 fill-text-text-white" />
                     <span>{{__('Download invoice')}}</span>
                 </x-ui.button>
