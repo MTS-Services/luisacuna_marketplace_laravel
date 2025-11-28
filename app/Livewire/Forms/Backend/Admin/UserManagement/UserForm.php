@@ -35,6 +35,7 @@ class UserForm extends Form
     public string $account_status;
 
     public ?string $reason = null;
+    public ?string $description = '';
 
 
     // public ?UploadedFile $avatar = null;
@@ -70,6 +71,7 @@ class UserForm extends Form
             'avatar' => 'nullable|image|max:2048|dimensions:max_width=300,max_height=300',
             // Track removed files
             'remove_file' => 'nullable|boolean',
+            'description' => 'nullable|string|max:500',
         ];
 
         return $rules;
@@ -87,6 +89,7 @@ class UserForm extends Form
         $this->account_status = $user->account_status->value;
         $this->originalAccountStatus = $user->account_status->value;
         $this->reason = null;
+        $this->description = $user->description;
     }
 
     public function reset(...$properties): void
@@ -94,6 +97,7 @@ class UserForm extends Form
         $this->first_name = '';
         $this->last_name = '';
         $this->username = '';
+        $this->description = '';
         $this->date_of_birth = '';
         $this->email = '';
         $this->password = '';
@@ -154,3 +158,4 @@ class UserForm extends Form
         return $data;
     }
 }
+        
