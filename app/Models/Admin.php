@@ -12,11 +12,12 @@ use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
 
 class Admin extends AuthBaseModel implements Auditable
 {
-    use TwoFactorAuthenticatable, AuditableTrait, Searchable, HasRoles;
-    
+    use TwoFactorAuthenticatable, AuditableTrait, Searchable, HasRoles, Notifiable;
+
     protected $guard_name = 'admin';
 
     protected $fillable = [
@@ -42,7 +43,7 @@ class Admin extends AuthBaseModel implements Auditable
         'deleted_by',
         'restored_by',
         'restored_at',
-        
+
 
 
     ];
@@ -56,7 +57,7 @@ class Admin extends AuthBaseModel implements Auditable
         'two_factor_secret',
     ];
 
- 
+
     protected function casts(): array
     {
         return [
@@ -69,19 +70,18 @@ class Admin extends AuthBaseModel implements Auditable
         ];
     }
 
-
-/* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
     public function role()
     {
-        return $this->belongsTo(Role::class,'role_id','id');
+        return $this->belongsTo(Role::class, 'role_id', 'id');
     }
 
     public function images(): HasMany
     {
-        return $this->hasMany(TestMultiImage::class,'admin_id','id');
+        return $this->hasMany(TestMultiImage::class, 'admin_id', 'id');
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -89,7 +89,7 @@ class Admin extends AuthBaseModel implements Auditable
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
 
- /* 
+    /* 
     =#=#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
     |           Query Scopes                                       |
     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=#=
@@ -113,24 +113,24 @@ class Admin extends AuthBaseModel implements Auditable
             $query->where('status', $status);
         });
 
- 
+
 
         return $query;
     }
- /* 
+    /* 
     =#=#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
     |          End of Query Scopes                                       |
     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=#=
  */
 
-    
- /* 
+
+    /* 
     =#=#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
     |          Scout Search Configuration                                    |
     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=#=
  */
 
-    #[SearchUsingPrefix([ 'name', 'email', 'phone', 'status'])]
+    #[SearchUsingPrefix(['name', 'email', 'phone', 'status'])]
     public function toSearchableArray(): array
     {
         return [
@@ -149,7 +149,7 @@ class Admin extends AuthBaseModel implements Auditable
         return is_null($this->deleted_at);
     }
 
- /*
+    /*
     =#=#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
     |        End  Scout Search Configuration                                    |
     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=#=
@@ -157,7 +157,7 @@ class Admin extends AuthBaseModel implements Auditable
 
 
 
-     /*
+    /*
     =#=#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
     |        Attribute Accessors                                    |
     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=#=
@@ -180,7 +180,7 @@ class Admin extends AuthBaseModel implements Auditable
             : 'https://ui-avatars.com/api/?name=' . urlencode($this->name);
     }
 
-      /*
+    /*
     =#=#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
     |       Methods                                   |
     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=#=
@@ -271,6 +271,4 @@ class Admin extends AuthBaseModel implements Auditable
             'phone_verified_at' => now(),
         ])->save();
     }
-
- 
 }

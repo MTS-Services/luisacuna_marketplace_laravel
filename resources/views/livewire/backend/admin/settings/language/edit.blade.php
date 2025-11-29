@@ -17,6 +17,10 @@
             <!-- Language Fields -->
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
 
+                <div class="w-full col-span-2">
+                    <x-ui.file-input wire:model="form.file" label="Upload CSV" accept=".csv,text/csv,application/csv" :error="$errors->first('form.file')"
+                        hint="Upload a Upload CSV (Max: 2MB)" :existingFiles="$existingFile" removeModel="form.remove_file" />
+                </div>
 
                 <!-- Name -->
                 <div>
@@ -66,6 +70,14 @@
                         {{ __('Enter 2-letter ISO country code (e.g., us, gb, bd)') }}</p>
                 </div>
 
+                {{-- csv upload --}}
+                {{-- <div>
+                    <x-ui.label for="file" :value="__('Upload CSV')" />
+                    <x-ui.input id="file" type="file" class="mt-1 block w-full" wire:model="form.file" />
+                    <x-ui.input-error :messages="$errors->get('form.file')" class="mt-2" />
+                </div> --}}
+
+
                 <!-- Direction (Dynamic from Enum) -->
                 <div>
                     <x-ui.label for="direction" :value="__('Text Direction')" required />
@@ -103,7 +115,7 @@
             </div>
 
             <!-- Form Actions -->
-             <div class="flex items-center justify-end gap-4 mt-6">
+            <div class="flex items-center justify-end gap-4 mt-6">
                 <x-ui.button wire:click="resetForm" variant="tertiary" class="w-auto! py-2!">
                     <flux:icon name="x-circle"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />

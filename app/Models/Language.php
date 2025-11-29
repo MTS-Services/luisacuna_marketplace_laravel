@@ -22,6 +22,7 @@ class Language extends AuditBaseModel implements Auditable
         'is_active',
         'direction',
         'country_code',
+        'file',
 
 
         'created_by',

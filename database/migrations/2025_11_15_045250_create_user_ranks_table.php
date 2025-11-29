@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('user_ranks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-            $table->unsignedBigInteger('user_id')->unique();
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('rank_level');
             $table->boolean('is_active')->default(true);
             $table->timestamp('activated_at');
