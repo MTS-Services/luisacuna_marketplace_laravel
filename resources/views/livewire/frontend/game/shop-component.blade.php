@@ -1,6 +1,6 @@
 <main class="mx-auto">
     {{-- @if ($categorySlug == 'gift-card' || $categorySlug == 'top-up') --}}
-    @if (true)
+    @if ($layoutView == 'grid')
 
     <x-grid-layout :gameSlug="$gameSlug" :categorySlug="$categorySlug" :datas="$datas"/>
 
