@@ -14,6 +14,8 @@ class ShopComponent extends Component
     public $selectedAccountType = null;
     public $selectedPrice = null;
     public $selectedDeliveryTime = null;
+    public $selectRegion = null;
+    public $selectedSort = null;
     public $layoutView = 'list';
     
 

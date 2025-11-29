@@ -52,14 +52,20 @@
 
                     <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex" wire:model.live="selectedAccountType" wire:change="serachFilter">
                         <option value="">{{ __('Account type') }}</option>
+                          <option value="">Type 1 </option>
+                        <option value="">Type 2</option>
                     </x-ui.select>
 
                     <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex" wire:model.live="selectedPrice" wire:change="serachFilter">
                         <option value="">{{ __('Price') }}</option>
+                        <option value="">{{ __('1 -100 $') }}</option>
+                        <option value="">{{ __('101 -200 $') }}</option>
                     </x-ui.select>
 
                     <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex" wire:model.live="selectedDeliveryTime" wire:change="serachFilter">
                         <option value="">{{ __('Select Delivery Time') }}</option>
+                        <option value="">{{ __('Instant Delivery') }}</option>
+                        <option value="">{{ __('In a Week') }}</option>
                     </x-ui.select>
 
                     <x-ui.button class="py-2! px-3! w-auto! rounded-2xl!  hidden md:flex bg-transparent!"
