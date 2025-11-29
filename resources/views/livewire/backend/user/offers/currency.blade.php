@@ -1,15 +1,18 @@
 <div class="space-y-6">
     <div class=" p-4 w-full">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-3 md:gap-4">
 
             <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
 
                 <div class="relative w-full sm:w-35 lg:w-40 2xl:w-80">
                     <x-ui.select>
                         <option value="">{{ __('All Game') }}</option>
-                        <option value="game1">{{ __('Game 1') }}</option>
-                        <option value="game2">{{ __('Game 2') }}</option>
-                        <option value="game3">{{ __('Game 3') }}</option>
+                        <option value="game1">{{ __('New World Coins') }}</option>
+                        <option value="game2">{{ __('Exilecon  Official Trailer') }}</option>
+                        <option value="game3">{{ __('Path of Exile 2 Currency') }}</option>
+                        <option value="game3">{{ __('Throne and Liberty Lucent') }}</option>
+                        <option value="game3">{{ __('Blade Ball Tokens') }}</option>
+                        <option value="game3">{{ __('EA Sports FC Coins') }}</option>
                     </x-ui.select>
                 </div>
 

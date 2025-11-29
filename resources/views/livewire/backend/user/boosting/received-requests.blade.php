@@ -26,7 +26,7 @@
                 </div>
             </div>
             <!-- New Offer Button -->
-            <x-ui.button class="w-full sm:w-auto! py-2!">
+            <x-ui.button class="w-full sm:w-fit! py-2!">
                 <span
                     class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Manage Subscriptions') }}</span>
             </x-ui.button>
