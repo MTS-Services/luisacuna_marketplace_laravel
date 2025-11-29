@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\User\Offers;
 
+use App\Services\GameService;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Str;
@@ -13,8 +14,17 @@ class TopUps extends Component
     public $showDeleteModal = false;
     public $deleteItemId = null;
     public $perPage = 3;
+
+    protected GameService $gameService;
+
+    public function boot(GameService $gameService)
+    {
+        $this->gameService = $gameService;
+    }
     public function render()
     {
+
+        $games = $this->gameService->getAllDatas();
         $allItems = collect([
             [
                 'id' => 1,
@@ -175,6 +185,7 @@ class TopUps extends Component
 
         return view('livewire.backend.user.offers.top-ups', [
             'items' => $items,
+            'games' => $games,
             'columns' => $columns,
             'actions' => $actions,
             'pagination' => $pagination,

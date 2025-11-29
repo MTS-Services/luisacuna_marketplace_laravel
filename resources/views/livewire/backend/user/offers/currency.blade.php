@@ -7,12 +7,15 @@
                 <div class="relative w-full sm:w-35 lg:w-40 2xl:w-80">
                     <x-ui.select>
                         <option value="">{{ __('All Game') }}</option>
-                        <option value="game1">{{ __('New World Coins') }}</option>
+                        @foreach ($games as $game)
+                            <option value="{{ $game->id }}">{{ $game->name }}</option>
+                        @endforeach
+                        {{-- <option value="game1">{{ __('New World Coins') }}</option>
                         <option value="game2">{{ __('Exilecon  Official Trailer') }}</option>
                         <option value="game3">{{ __('Path of Exile 2 Currency') }}</option>
                         <option value="game3">{{ __('Throne and Liberty Lucent') }}</option>
                         <option value="game3">{{ __('Blade Ball Tokens') }}</option>
-                        <option value="game3">{{ __('EA Sports FC Coins') }}</option>
+                        <option value="game3">{{ __('EA Sports FC Coins') }}</option> --}}
                     </x-ui.select>
                 </div>
 
