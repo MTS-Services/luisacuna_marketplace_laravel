@@ -50,7 +50,7 @@
                             class="w-[20px] h-[20px] xxs:w-[25px] xxs:h-[25px] sm:w-[30px] sm:h-[30px] object-contain">
                     </div>
                     <h3 class="text-xs xxs:text-sm font-medium whitespace-nowrap">{{ __('Items (0)') }}</h3>
-                </a>~
+                </a>
 
                 <a wire:navigate
                     href="{{ route('profile', ['username' => $user->username, 'activeTab' => 'topups']) }}"
