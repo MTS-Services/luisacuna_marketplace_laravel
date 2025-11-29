@@ -8,7 +8,19 @@
                     <h2 class="text-xl lg:text-2xl font-bold text-text-black dark:text-text-white">
                         {{ __('Achievement Details') }}
                     </h2>
+                    
                     <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <x-ui.button
+                            x-on:click="$dispatch('show-translation-modal', {
+                                modelId: '{{ encrypt($data->id) }}',
+                                modelType: '{{ base64_encode(\App\Models\Achievement::class) }}'
+                            })"
+                            variant="secondary" class="w-auto py-2! text-nowrap">
+                            <flux:icon name="arrows-pointing-out"
+                                class="w-4 h-4 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
+                            {{ __('Manage Translations') }}
+                        </x-ui.button>
+                        
                         <x-ui.button href="{{ route('admin.rm.achievement.index') }}" class="w-auto py-2!">
                             <flux:icon name="arrow-left"
                                 class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />

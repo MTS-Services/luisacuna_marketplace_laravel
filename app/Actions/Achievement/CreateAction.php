@@ -29,7 +29,14 @@ class CreateAction
             
 
             $newData = $this->interface->create($data);
-            return $newData->fresh();
+           
+            $freshData =  $newData->fresh();
+
+             $freshData->dispatchTranslation(
+                defaultLanguageLocale: 'en',
+                targetLanguageIds: null
+            );
+            return $freshData;
         });
     }
 }
