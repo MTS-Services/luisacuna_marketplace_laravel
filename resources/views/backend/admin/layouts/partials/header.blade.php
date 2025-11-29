@@ -4,7 +4,7 @@
         <div class="flex items-center justify-between p-4 lg:p-6">
             <div class="flex items-center gap-4">
                 <button @click="toggleSidebar()"
-                    class="p-2 rounded-xl hover:bg-bg-black/10 dark:hover:bg-bg-white/10 text-text-primary transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/20 group"
+                    class="p-2 rounded-xl hover:bg-black/10 dark:hover:bg-white/10 text-text-primary transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/20 group shadow-shadow-primary border border-border"
                     :aria-label="desktop ? (sidebar_expanded ? '{{ __('Collapse sidebar') }}' : '{{ __('Expand sidebar') }}') : (mobile_menu_open ?
                         '{{ __('Close menu') }}' : '{{ __('Open menu') }}')">
                     <flux:icon name="bars-4" x-show="!sidebar_expanded && !mobile_menu_open"
