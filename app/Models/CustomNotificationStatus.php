@@ -23,7 +23,7 @@ class CustomNotificationStatus extends BaseModel
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    public function user(): MorphTo
+    public function actor(): MorphTo
     {
         return $this->morphTo();
     }
@@ -48,13 +48,13 @@ class CustomNotificationStatus extends BaseModel
 
     public function scopeForCurrentUser(Builder $query): Builder
     {
-        return $query->where('user_id', user()->id)
-            ->where('user_type', get_class(user()));
+        return $query->where('actor_id', user()->id)
+            ->where('actor_type', User::class);
     }
     public function scopeForCurrentAdmin(Builder $query): Builder
     {
-        return $query->where('user_id', admin()->id)
-            ->where('user_type', get_class(admin()));
+        return $query->where('actor_id', admin()->id)
+            ->where('actor_type', Admin::class);
     }
 
     public function getReadAtFormattedAttribute()

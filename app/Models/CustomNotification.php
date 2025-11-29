@@ -18,12 +18,12 @@ class CustomNotification extends BaseModel
         'receiver_id',
         'receiver_type',
         'type',
-        'url',
-        'message_data',
+        'action',
+        'data',
     ];
 
     protected $casts = [
-        'message_data' => 'array',
+        'data' => 'array',
         'created_at' => 'datetime',
     ];
 
@@ -49,7 +49,7 @@ class CustomNotification extends BaseModel
 
     public function deleteds(): HasMany
     {
-        return $this->hasMany(CustomNotificationDeleted::class, 'notification_id');
+        return $this->hasMany(DeletedCustomNotification::class, 'notification_id');
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

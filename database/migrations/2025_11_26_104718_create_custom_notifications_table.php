@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\CustomNotificationType;
 use App\Traits\AuditColumnsTrait;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -7,6 +8,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    use AuditColumnsTrait;
     /**
      * Run the migrations.
      */
@@ -22,14 +24,13 @@ return new class extends Migration
             $table->unsignedBigInteger('receiver_id')->nullable()->index();
             $table->string('receiver_type')->nullable()->index();
 
-            $table->tinyInteger('type')->index();
-            $table->string('url')->nullable();
-            $table->json('message_data')->nullable();
+            $table->string('type')->default(CustomNotificationType::PUBLIC)->index();
+            $table->string('action')->nullable();
+            $table->longText('data')->nullable();
 
             $table->timestamps();
 
-            // $this->addMorphedAuditColumns($table);
-            // $this->addAdminAuditColumns($table);
+            $this->addMorphedAuditColumns($table);
         });
     }
 

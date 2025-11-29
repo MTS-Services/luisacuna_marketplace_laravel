@@ -32,6 +32,7 @@
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     <option value="users">To Users</option>
                     <option value="admins">To Admins</option>
+                    <option value="public">To Public</option>
                 </select>
             </div>
             <div class="mb-4">

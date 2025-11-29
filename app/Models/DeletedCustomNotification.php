@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Builder;
 
-class CustomNotificationDeleted extends BaseModel
+class DeletedCustomNotification extends BaseModel
 {
     protected $fillable = [
         'user_id',
@@ -19,7 +19,7 @@ class CustomNotificationDeleted extends BaseModel
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    public function user(): MorphTo
+    public function actor(): MorphTo
     {
         return $this->morphTo();
     }

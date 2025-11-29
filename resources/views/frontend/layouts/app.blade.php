@@ -79,14 +79,14 @@
     </div>
 
     <div id="notification-toast"
-        class="absolute top-5 right-5 w-72 z-50 rounded-2xl shadow-2xl bg-white text-black transition-all duration-500 ease-in-out transform translate-x-full">
+        class="absolute hidden top-5 right-5 w-72 z-50 rounded-2xl shadow-2xl bg-white text-black transition-all duration-500 ease-in-out transform translate-x-full opacity-0">
         <div class="p-4 flex items-center justify-between gap-4">
-            <div class="flex items-center gap-3 flex-grow">
-                <flux:icon name="information-circle" class="w-6 h-6 stroke-blue-500 flex-shrink-0" />
+            <div class="flex items-center gap-3 grow">
+                <flux:icon name="information-circle" class="w-6 h-6 stroke-blue-500 shrink-0" />
                 <p id="notification-message" class="text-sm leading-snug font-normal"></p>
             </div>
             <button id="close-notification-btn"
-                class="flex-shrink-0 p-1 rounded-full hover:bg-gray-100 transition-colors duration-200">
+                class="shrink-0 p-1 rounded-full hover:bg-gray-100 transition-colors duration-200">
                 <flux:icon name="x-mark" class="w-5 h-5" />
             </button>
         </div>
@@ -114,8 +114,8 @@
                     Livewire.dispatch('notification-updated');
                 });
 
-            if ('{{ auth()->check() }}') {
-                window.Echo.private('user.{{ user()->id }}')
+            if ('{{ auth()->guard('web')->check() }}') {
+                window.Echo.private('user.{{ auth()->guard('web')->id() }}')
                     .listen('.notification.sent', (e) => {
                         console.log(e);
                         showNotification(e.title || 'New message received.');

@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Enums\CustomNotificationType;
 use App\Models\Admin;
 use App\Models\CustomNotification;
 use Illuminate\Broadcasting\Channel;
@@ -28,7 +29,7 @@ class AdminNotificationSent implements ShouldBroadcast, ShouldQueue
     {
         if ($this->notification->receiver_id && $this->notification->receiver_type == Admin::class) {
             return new PrivateChannel('admin.' . $this->notification->receiver_id);
-        } elseif ($this->notification->receiver_id == null && $this->notification->type == CustomNotification::TYPE_ADMIN) {
+        } elseif ($this->notification->receiver_id == null && ($this->notification->type == CustomNotificationType::ADMIN->value || $this->notification->type == CustomNotificationType::PUBLIC->value)) {
             return new Channel('admins');
         }
         return [];
@@ -41,12 +42,12 @@ class AdminNotificationSent implements ShouldBroadcast, ShouldQueue
     public function broadcastWith()
     {
         return [
-            'title' => $this->notification->message_data['title'],
-            'message' => $this->notification->message_data['message'] ?? null,
-            'description' => $this->notification->message_data['description'] ?? null,
-            'url' => $this->notification->message_data['url'] ?? null,
-            'icon' => $this->notification->message_data['icon'] ?? 'cog',
-            'additional_data' => $this->notification->message_data['additional_data'],
+            'title' => $this->notification->data['title'],
+            'message' => $this->notification->data['message'] ?? null,
+            'description' => $this->notification->data['description'] ?? null,
+            'url' => $this->notification->action ?? null,
+            'icon' => $this->notification->data['icon'] ?? 'cog',
+            'additional_data' => $this->notification->data['additional_data'],
             'timestamp' => dateTimeHumanFormat(now()),
         ];
     }
