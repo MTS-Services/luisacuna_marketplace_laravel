@@ -369,6 +369,34 @@
                     <p class="text-text-white text-sm">{{ __('Cart Total') }}</p>
                     <p class="text-text-white text-base font-semibold">$777.07</p>
                 </div>
+
+
+                <label class="relative cursor-pointer select-none flex items-center group">
+    <!-- REAL RADIO (hidden but still active) -->
+    <input type="radio" name="payment_method" value="digital_wallet"
+        x-model="selectedPayment" class="sr-only" />
+
+    <!-- CUSTOM SQUARE BOX -->
+    <span
+        class="w-6 h-6 flex items-center justify-center rounded-sm border border-zinc-700 transition-all duration-200 group-has-[:checked]:bg-zinc-700 group-has-[:checked]:border-zinc-700">
+
+        <!-- CHECK ICON -->
+        <svg class="w-4 h-4 text-white opacity-0 group-has-[:checked]:opacity-100 transition-opacity duration-200"
+            fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+            <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </span>
+
+    <label class="text-text-white text-base px-2">
+        {{ __('I accept the Terms of Service, Privacy Notice and Refund Policy.') }}
+    </label>
+</label>
+
+
+
+
+
+
                 <div class="mt-8 lg:px-78 px-0">
                     <x-ui.button href="{{ route('game.checkout', ['orderId' => 435345]) }}" class="w-auto py-3!">
                         {{ __('$76.28 | Buy now') }}
@@ -377,26 +405,7 @@
                 <div class="mt-8">
 
 
-                <label class="relative cursor-pointer select-none flex items-center group ">
-                <!-- REAL RADIO (hidden but still active) -->
-                <input type="radio" name="payment_method" value="digital_wallet"
-                    x-model="selectedPayment" class="sr-only " />
 
-                <!-- CUSTOM CIRCLE -->
-                <span
-                    class="w-6 h-6 flex items-center justify-center rounded-full border border-zinc-700 transition-all duration-200 group-has-[:checked]:bg-zinc-700 group-has-[:checked]:border-zinc-700">
-                    <!-- CHECK ICON -->
-                    <svg class="w-4 h-4 text-white opacity-0 group-has-[:checked]:opacity-100 transition-opacity duration-200"
-                        fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                        <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </span>
-                {{-- <input type="checkbox" name="" id="" class="accent-zinc-500 rounded-full"> --}}
-                <label class="text-text-white text-base px-2">
-                    {{ __('I accept the Terms of Service, Privacy Notice and Refund Policy.') }}
-
-                </label>
-                </label>
                 </div>
             </div>
         </div>
