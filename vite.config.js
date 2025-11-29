@@ -7,7 +7,7 @@ import path from 'path';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/css/dashboard.css'],
             refresh: true,
         }),
         tailwindcss(),
@@ -35,10 +35,10 @@ export default defineConfig({
     ],
     server: {
         cors: true,
-        // host: '192.168.100.31', 
-        // port: 5173,     
-        // hmr: {
-        //     host: '192.168.100.31', 
-        // },
+        host: '192.168.100.31', 
+        port: 5173,     
+        hmr: {
+            host: '192.168.100.31', 
+        },
     },
 });
