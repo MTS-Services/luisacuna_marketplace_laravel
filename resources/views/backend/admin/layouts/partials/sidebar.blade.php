@@ -30,11 +30,9 @@
 
                 <x-backend.navlink type="single" icon="layout-dashboard" name="Dashboard" :route="route('admin.dashboard')"
                     active="admin-dashboard" :page_slug="$active" />
-                <x-backend.navlink type="single" icon="layout-dashboard" name="Dashboard" :route="route('admin.dashboard')"
-                    active="admin-dashboards" :page_slug="$active" />
 
-                <x-sidebar-separator title="Management" />
-                <x-backend.navlink type="dropdown" icon="users" name="Admin Management" :page_slug="$active"
+                <x-sidebar-separator title="Users & Staff" />
+                <x-backend.navlink type="dropdown" icon="shield-user" name="Administrators" :page_slug="$active"
                     :items="[
                         [
                             'name' => 'Admins',
@@ -50,52 +48,41 @@
                             'active' => 'role',
                             'permission' => 'role-list',
                         ],
-                        [
-                            'name' => 'Permissions',
-                            'route' => route('admin.am.permission.index'),
-                            'icon' => 'shield-check',
-                            'active' => 'permission',
-                            'permission' => 'permission-list',
-                        ],
+                        // [
+                        //     'name' => 'Permissions',
+                        //     'route' => route('admin.am.permission.index'),
+                        //     'icon' => 'shield-check',
+                        //     'active' => 'permission',
+                        //     'permission' => 'permission-list',
+                        // ],
                     ]" />
 
-                <x-backend.navlink type="dropdown" icon="user-group" name="User Management" :page_slug="$active"
+                <x-backend.navlink type="dropdown" icon="user-group" name="Users" :page_slug="$active"
                     :items="[
                         [
                             'name' => 'All Users',
                             'route' => route('admin.um.user.index'),
-                            'icon' => 'user',
+                            'icon' => 'users',
                             'active' => 'admin-users',
                             'permission' => 'user-list',
                         ],
                         [
-                            'name' => 'All Sellers',
+                            'name' => 'Sellers',
                             'route' => route('admin.um.user.all-seller'),
                             'icon' => 'user',
                             'active' => 'sellers',
                             // 'permission' => 'user-list',
                         ],
                         [
-                            'name' => 'All Buyers',
+                            'name' => 'Buyers',
                             'route' => route('admin.um.user.all-buyer'),
                             'icon' => 'user',
                             'active' => 'buyers',
                             // 'permission' => 'user-list',
                         ],
-                        // [
-                        //     'name' => 'Pending Users',
-                        //     'route' => '#',
-                        //     'icon' => 'user-plus',
-                        //     'active' => 'admin-users-pending',
-                        // ],
-                        // [
-                        //     'name' => 'Banned Users',
-                        //     'route' => '#',
-                        //     'icon' => 'user-round-x',
-                        //     'active' => 'admin-users-banned',
-                        // ],
                     ]" />
 
+                <x-sidebar-separator title="Catalog" />
                 <x-backend.navlink type="dropdown" icon="gamepad-directional" name="Game Management" :page_slug="$active"
                     :items="[
                         [
@@ -105,19 +92,10 @@
                             'active' => 'game-category',
                             'permission' => 'category-list',
                         ],
-                    
-                        // [
-                        //     'name' => 'Servers',
-                        //     'route' => route('admin.gm.server.index'),
-                        //     'icon' => 'swords',
-                        //     'active' => 'server',
-                        //     'permission' => 'server-list',
-                        // ],
-                    
                         [
                             'name' => 'Platforms',
                             'route' => route('admin.gm.platform.index'),
-                            'icon' => 'swords',
+                            'icon' => 'joystick',
                             'active' => 'game-platform',
                             'permission' => 'platform-list',
                         ],
@@ -130,135 +108,182 @@
                             'permission' => 'game-list',
                         ],
                     
-                        [
-                            'name' => 'Rarity',
-                            'route' => route('admin.gm.rarity.index'),
-                            'icon' => 'swords',
-                            'active' => 'game-rarity',
-                        ],
-                    
                         // [
-                        //     'name' => 'Pending Users',
-                        //     'route' => '#',
-                        //     'icon' => 'user-plus',
-                        //     'active' => 'admin-users-pending',
-                        // ],
-                    
-                        // [
-                        //     'name' => 'Banned Users',
-                        //     'route' => '#',
-                        //     'icon' => 'user-round-x',
-                        //     'active' => 'admin-users-banned',
+                        //     'name' => 'Rarity',
+                        //     'route' => route('admin.gm.rarity.index'),
+                        //     'icon' => 'swords',
+                        //     'active' => 'game-rarity',
                         // ],
                     ]" />
 
-                <x-backend.navlink type="dropdown" icon="user-group" name="Product Management" :page_slug="$active"
+                <x-backend.navlink type="dropdown" icon="box" name="Products" :page_slug="$active"
                     :items="[
                         [
-                            'name' => 'Product Types',
+                            'name' => 'Currencies',
                             'route' => '#',
-                            'icon' => 'user',
+                            'icon' => 'currency-dollar',
                             'active' => 'product-type',
                         ],
                         [
-                            'name' => 'Products',
+                            'name' => 'Accounts',
                             'route' => '#',
-                            'icon' => 'user',
-                            'active' => 'product',
+                            'icon' => 'chess-pawn',
+                            'active' => 'product-type',
                         ],
-                    ]" />
-                <x-backend.navlink type="dropdown" icon="gift" name="Offer Item Management" :page_slug="$active"
-                    :items="[
                         [
-                            'name' => 'Offer Items',
+                            'name' => 'Top Ups',
+                            'route' => '#',
+                            'icon' => 'bitcoin',
+                            'active' => 'product-type',
+                        ],
+                        [
+                            'name' => 'Items',
                             'route' => route('admin.om.offer.index'),
+                            'icon' => 'bow-arrow',
+                            'active' => 'product-type',
+                        ],
+                        [
+                            'name' => 'Boostings',
+                            'route' => '#',
+                            'icon' => 'rocket',
+                            'active' => 'product-type',
+                        ],
+                        [
+                            'name' => 'Gift Cards',
+                            'route' => '#',
                             'icon' => 'gift',
-                            'active' => 'offer-item',
+                            'active' => 'product-type',
                         ],
                     ]" />
 
-                <x-backend.navlink type="dropdown" icon="user-group" name="Reward Management" :page_slug="$active"
+                <x-backend.navlink type="dropdown" icon="layers" name="Level Management" :page_slug="$active"
                     :items="[
                         [
                             'name' => 'Ranks',
                             'route' => route('admin.rm.rank.index'),
-                            'icon' => 'user',
+                            'icon' => 'trophy',
                             'active' => 'rank',
                             'permission' => 'rank-list',
                         ],
                         [
                             'name' => 'Achievement Types',
                             'route' => route('admin.rm.achievementType.index'),
-                            'icon' => 'user',
+                            'icon' => 'award',
                             'active' => 'achievement-type',
                             'permission' => 'achievement-type-list',
                         ],
                         [
                             'name' => 'Achievements',
                             'route' => route('admin.rm.achievement.index'),
-                            'icon' => 'user',
+                            'icon' => 'medal',
                             'active' => 'achievement',
                             'permission' => 'achievement-list',
                         ],
-                        // [
-                        //     'name' => 'Pending Users',
-                        //     'route' => '#',
-                        //     'icon' => 'user-plus',
-                        //     'active' => 'admin-users-pending',
-                        // ],
-                        // [
-                        //     'name' => 'Banned Users',
-                        //     'route' => '#',
-                        //     'icon' => 'user-round-x',
-                        //     'active' => 'admin-users-banned',
-                        // ],
                     ]" />
 
-                <x-backend.navlink type="dropdown" icon="user-group" name="Review Management" :page_slug="$active"
+                <x-sidebar-separator title="Finance" />
+                <x-backend.navlink type="dropdown" icon="currency-dollar" name="Finance Management" :page_slug="$active"
                     :items="[
                         [
-                            'name' => 'Page View',
-                            'route' => route('admin.rm.review.index'),
-                            'icon' => 'user',
-                            'active' => 'rewiew-management',
+                            'name' => 'Transactions',
+                            'route' => '#',
+                            'icon' => 'badge-dollar-sign',
+                            'active' => 'transaction',
                         ],
-                        // [
-                        //     'name' => 'Products',
-                        //     'route' => route('admin.pm.product.index'),
-                        //     'icon' => 'user',
-                        //     'active' => 'product',
-                        // ],
-                        // [
-                        //     'name' => 'Pending Users',
-                        //     'route' => '#',
-                        //     'icon' => 'user-plus',
-                        //     'active' => 'admin-users-pending',
-                        // ],
-                        // [
-                        //     'name' => 'Banned Users',
-                        //     'route' => '#',
-                        //     'icon' => 'user-round-x',
-                        //     'active' => 'admin-users-banned',
-                        // ],
+                        [
+                            'name' => 'Withdrawals',
+                            'route' => '#',
+                            'icon' => 'dollar-sign',
+                            'active' => 'withdrawal',
+                        ],
+                        [
+                            'name' => 'Escrow',
+                            'route' => '#',
+                            'icon' => 'heart-handshake',
+                            'active' => 'withdrawal',
+                        ],
                     ]" />
+                <x-backend.navlink type="single" icon="percent" name="Fee Settings" :route="route('admin.dashboard')" active="fee"
+                    :page_slug="$active" />
 
-                <x-backend.navlink type="dropdown" icon="user-group" name="Audit Log Management" :page_slug="$active"
+                <x-sidebar-separator title="Support" />
+                <x-backend.navlink type="single" icon="messages-square" name="Chat List" :route="route('admin.dashboard')"
+                    active="fee" :page_slug="$active" />
+                <x-backend.navlink type="dropdown" icon="headset" name="Supports" :page_slug="$active"
+                    :items="[
+                        [
+                            'name' => 'Tickets',
+                            'route' => '#',
+                            'icon' => 'ticket',
+                            'active' => 'ticket',
+                        ],
+                        [
+                            'name' => 'Reviews',
+                            'route' => '#',
+                            'icon' => 'star',
+                            'active' => 'star',
+                        ],
+                    ]" />
+                <x-sidebar-separator title="Content" />
+                <x-backend.navlink type="dropdown" icon="headset" name="Content Management" :page_slug="$active"
+                    :items="[
+                        [
+                            'name' => 'Banner',
+                            'route' => '#',
+                            'icon' => 'megaphone',
+                            'active' => 'megaphone',
+                        ],
+                        [
+                            'name' => 'Faqs',
+                            'route' => '#',
+                            'icon' => 'question-mark-circle',
+                            'active' => 'question-mark-circle',
+                        ],
+                        [
+                            'name' => 'Terms & Conditions',
+                            'route' => '#',
+                            'icon' => 'notebook-text',
+                            'active' => 'star',
+                        ],
+                        [
+                            'name' => 'Privacy Policy',
+                            'route' => '#',
+                            'icon' => 'notepad-text',
+                            'active' => 'star',
+                        ],
+                        [
+                            'name' => 'Refunds Policy',
+                            'route' => '#',
+                            'icon' => 'notepad-text-dashed',
+                            'active' => 'star',
+                        ],
+                    ]" />
+                <x-sidebar-separator title="System" />
+                <x-backend.navlink type="dropdown" icon="hand-coins" name="Gateway Settings" :page_slug="$active"
+                    :items="[
+                        [
+                            'name' => 'Payment Gateways',
+                            'route' => '#',
+                            'icon' => 'credit-card',
+                            'active' => 'audit-log-management',
+                        ],
+
+                    ]" />
+                <x-backend.navlink type="dropdown" icon="radiation" name="Track Management" :page_slug="$active"
                     :items="[
                         [
                             'name' => 'Audit Logs',
                             'route' => route('admin.alm.audit.index'),
-                            'icon' => 'user',
+                            'icon' => 'pen-line',
                             'active' => 'audit-log-management',
                         ],
+                        [
+                            'name' => 'Page View',
+                            'route' => route('admin.rm.review.index'),
+                            'icon' => 'telescope',
+                            'active' => 'rewiew-management',
+                        ],
                     ]" />
-
-                <div class="pt-4 pb-2">
-                    <p class="text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
-                        x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)">
-                        {{ __('Settings & Tools') }}</p>
-                    <p class="text-center text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
-                        x-show="desktop && !sidebar_expanded">...</p>
-                </div>
                 <x-backend.navlink type="dropdown" icon="wrench-screwdriver" name="Application Settings"
                     :page_slug="$active" :items="[
                         [

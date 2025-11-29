@@ -35,10 +35,10 @@ export default defineConfig({
     ],
     server: {
         cors: true,
-        // host: '192.168.100.31', 
-        // port: 5173,     
-        // hmr: {
-        //     host: '192.168.100.31', 
-        // },
+        host: '192.168.100.31', 
+        port: 5173,     
+        hmr: {
+            host: '192.168.100.31', 
+        },
     },
 });
