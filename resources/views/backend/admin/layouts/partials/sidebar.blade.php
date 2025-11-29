@@ -26,7 +26,7 @@
         <flux:separator class="bg-accent!" />
         <div class="flex-1 overflow-y-auto custom-scrollbar">
             <nav class="p-2 space-y-2">
-                <x-sidebar-separator title="Main" :expanded="false" />
+                <x-sidebar-separator title="Main" :expanded="false" class="p-0!"/>
 
                 <x-backend.navlink type="single" icon="layout-dashboard" name="Dashboard" :route="route('admin.dashboard')"
                     active="admin-dashboard" :page_slug="$active" />
