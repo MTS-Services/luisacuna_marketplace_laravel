@@ -124,4 +124,21 @@ class UserController extends Controller implements HasMiddleware
             'user' => $user
         ]);
     }
+
+    public function allSeller()
+    {
+        return view($this->masterView);
+    }
+    public function sellerTrash()
+    {
+        return view($this->masterView);
+    }
+    public function allBuyer()
+    {
+        return view($this->masterView);
+    }
+    public function buyerTrash()
+    {
+        return view($this->masterView);
+    }
 }

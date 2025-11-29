@@ -2,15 +2,15 @@
 
 namespace App\Livewire\Forms\Backend\Admin\Settings;
 
-use App\Enums\LanguageDirection;
-use App\Enums\LanguageStatus;
-use App\Models\Language;
-use Livewire\Attributes\Locked;
 use Livewire\Form;
+use App\Models\Language;
+use App\Enums\LanguageStatus;
+use Livewire\Attributes\Locked;
+use App\Enums\LanguageDirection;
 
 class LanguageForm extends Form
 {
-     #[Locked]
+    #[Locked]
     public ?int $id = null;
     public string $locale = '';
     public string $country_code = '';
@@ -26,6 +26,9 @@ class LanguageForm extends Form
     public int $is_default = 0;
 
     public string $direction = '';
+    public string $file;
+    public ?string $existing_file = null;
+    public bool $remove_file = false;
 
     /**
      * Validation rules (handles create/update logic)
@@ -44,11 +47,22 @@ class LanguageForm extends Form
             ? 'required|string|size:2|unique:languages,country_code,' . $this->id
             : 'required|string|size:2|unique:languages,country_code';
 
+        $fileRule = 'required|file|mimes:csv|max:2048';
+
+        if ($this->isUpdating()) {
+            if ($this->existing_file && !$this->remove_file) {
+                $fileRule = 'nullable|file|mimes:csv|max:2048';
+            } elseif ($this->remove_file || !$this->existing_file) {
+                $fileRule = 'required|file|mimes:csv|max:2048';
+            }
+        }
+
         return [
             'locale' => $localeRule,
             'name' => $nameRule,
             'country_code' => $countryCodeRule,
             'native_name' => 'nullable|string|max:255',
+            'file' => $fileRule,
             'flag_icon' => 'nullable|string|max:255',
             'status' => 'required|string|in:' . implode(',', array_column(LanguageStatus::cases(), 'value')),
             'is_default' => 'boolean',
@@ -88,6 +102,9 @@ class LanguageForm extends Form
         $this->direction = $data->direction->value;
         $this->is_default = $data->is_default;
         $this->country_code = $data->country_code;
+        $this->existing_file = $data->file ?? null;
+        $this->remove_file = false;
+        // $this->file = null;
     }
 
     /**
@@ -104,6 +121,9 @@ class LanguageForm extends Form
         $this->is_default = false;
         $this->direction = LanguageDirection::LTR->value;
         $this->country_code = '';
+        // $this->file = null;
+        $this->existing_file = null;
+        $this->remove_file = false;
 
         $this->resetValidation();
     }

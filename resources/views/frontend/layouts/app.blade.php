@@ -26,7 +26,10 @@
 
     @if (
         !(request()->routeIs('login') ||
-            request()->routeIs('register') ||
+            request()->routeIs('register.signUp') ||
+            request()->routeIs('register.emailVerify') ||
+            request()->routeIs('register.otp') ||
+            request()->routeIs('register.password') ||
             request()->routeIs('password.request') ||
             request()->routeIs('password.reset') ||
             request()->routeIs('verify-reset-otp') ||
@@ -45,7 +48,10 @@
     </main>
     @if (
         !(request()->routeIs('login') ||
-            request()->routeIs('register') ||
+            request()->routeIs('register.signUp') ||
+            request()->routeIs('register.emailVerify') ||
+            request()->routeIs('register.otp') ||
+            request()->routeIs('register.password') ||
             request()->routeIs('password.request') ||
             request()->routeIs('password.reset') ||
             request()->routeIs('verify-reset-otp') ||

@@ -33,7 +33,7 @@ class UpdateAction
                 $user = $this->interface->find($id);
 
                 if (!$user) {
-                    Log::error('User not found', ['user_id' => $userId]);
+                    Log::error('User not found', ['user_id' => $id]);
                     throw new \Exception('User not found');
                 }
 
@@ -62,7 +62,11 @@ class UpdateAction
                     $newData['avatar'] = null;
                 }
                 // Cleanup temporary/file object keys
-                if (!$newData['remove_file'] && !$newSingleAvatarPath) {
+                // if (!$newData['remove_file'] && !$newSingleAvatarPath) {
+                //     $newData['avatar'] = $oldAvatarPath ?? null;
+                // }
+
+                if (!isset($newData['remove_file']) || (!$newData['remove_file'] && !$newSingleAvatarPath)) {
                     $newData['avatar'] = $oldAvatarPath ?? null;
                 }
                 unset($newData['remove_file']);
@@ -87,7 +91,7 @@ class UpdateAction
                 $newAccountStatus = Arr::get($data, 'account_status');
                 $reason = Arr::get($data, 'reason');
 
-                
+
 
                 // Status change check and reason not null
                 if ($oldAccountStatus !== $newAccountStatus && $reason) {
@@ -115,8 +119,8 @@ class UpdateAction
 
 
                 // Refresh model and dispatch event
-                $user = $user->fresh();
-                $newAttributes = $user->getAttributes();
+                $freshData = $user->fresh();
+                $newAttributes = $freshData->getAttributes();
                 $changes = [];
 
                 foreach ($newAttributes as $key => $value) {
@@ -131,7 +135,26 @@ class UpdateAction
                     event(new UserUpdated($user, $changes));
                 }
 
-                return $user;
+
+                $firstNameChanged = isset($newData['first_name']) && $newData['first_name'] !== $oldData['first_name'];
+                $lastNameChanged = isset($newData['last_name']) && $newData['last_name'] !== $oldData['last_name'];
+                // ---- RE-TRANSLATE IF NAME CHANGED ----
+                if ($firstNameChanged || $lastNameChanged) {
+                    Log::info('User Frist name name changed, dispatching translation job', [
+                        'user_id' => $id,
+                        'old_first_name' => $oldData['first_name'],
+                        'new_first_name' => $newData['first_name'],
+                        'old_last_name' => $oldData['last_name'],
+                        'new_last_name' => $newData['last_name'],
+                    ]);
+
+                    $freshData->dispatchTranslation(
+                        defaultLanguageLocale: 'en',
+                        targetLanguageIds: null
+                    );
+                }
+
+                return $freshData;
             });
         } catch (\Exception $e) {
 

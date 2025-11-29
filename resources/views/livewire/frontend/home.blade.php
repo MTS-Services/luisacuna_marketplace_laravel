@@ -137,11 +137,14 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Game Card 1 -->
                 @foreach ($games as $game)
-                    <div
+                    <div class="swiper-slide">
+                        <x-currency-card :data="$game" />
+                    </div>
+                    {{-- <div
                         class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
                         <div
                             class="w-full max-w-[300px] mx-auto mb-4 rounded-lg flex items-center justify-center text-4xl">
-                            <img src="{{ asset($game->logo) }}" alt="{{ $game->name }}">
+                            <img src="{{ storage_url($game->logo) }}" alt="{{ $game->name }}">
                         </div>
                         <h3 class="font-bold text-lg mb-2 text-text-white">{{ $game->name }}</h3>
                         <p class="text-sm text-text-secondary mb-4">{{ __('50 items available') }}</p>
@@ -150,7 +153,7 @@
                             wire:navigate>
                             {{ __('Buy Now') }}
                         </x-ui.button>
-                    </div>
+                    </div> --}}
                 @endforeach
             </div>
         </div>

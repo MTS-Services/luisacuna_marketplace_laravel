@@ -44,44 +44,11 @@
                     <x-ui.input type="text" placeholder="User Name" wire:model="form.username" />
                     <x-ui.input-error :messages="$errors->get('form.username')" />
                 </div>
-                {{-- display name --}}
-                {{-- <div class="w-full">
-                    <x-ui.label value="Display Name" class="mb-1" />
-                    <x-ui.input type="text" placeholder="Display Name" wire:model="form.display_name" />
-                    <x-ui.input-error :messages="$errors->get('form.display_name')" />
-                </div> --}}
                 {{-- date_of_birth --}}
                 <div class="w-full">
                     <x-ui.label value="Date Of Birth" class="mb-1" />
                     <x-ui.input type="date" wire:model="form.date_of_birth" />
                     <x-ui.input-error :messages="$errors->get('form.date_of_birth')" />
-                </div>
-                <div class="w-full">
-                    <x-ui.label value="Country Select" class="mb-1" />
-                    <x-ui.select wire:model="form.country_id">
-                        @foreach ($countries as $country)
-                            <option value="{{ $country['id'] }}">{{ $country['name'] }}</option>
-                        @endforeach
-                    </x-ui.select>
-                    <x-ui.input-error :messages="$errors->get('form.country_id')" />
-                </div>
-                <div class="w-full">
-                    <x-ui.label value="Langugae" class="mb-1" />
-                    <x-ui.select wire:model="form.language">
-                        @foreach ($languages as $language)
-                            <option value="{{ $language['id'] }}">{{ $language['name'] }}</option>
-                        @endforeach
-                    </x-ui.select>
-                    <x-ui.input-error :messages="$errors->get('form.language')" />
-                </div>
-                <div class="w-full">
-                    <x-ui.label value="Default Currency" class="mb-1" />
-                    <x-ui.select wire:model="form.currency_id">
-                        @foreach ($currencies as $currency)
-                            <option value="{{ $currency['id'] }}">{{ $currency['name'] }}</option>
-                        @endforeach
-                    </x-ui.select>
-                    <x-ui.input-error :messages="$errors->get('form.currency_id')" />
                 </div>
                 <div class="w-full">
                     <x-ui.label value="Email" class="mb-1" />

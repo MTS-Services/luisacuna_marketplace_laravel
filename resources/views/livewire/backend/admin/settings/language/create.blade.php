@@ -16,6 +16,11 @@
 
             <!-- Language Fields -->
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
+                <div class="w-full col-span-2">
+                    <x-ui.file-input wire:model="form.file" label="Upload CSV" accept=".csv,text/csv,application/csv" :error="$errors->first('form.file')"
+                        hint="Upload a Upload CSV (Max: 2MB)" />
+
+                </div>
 
                 <!-- Name -->
                 <div>
@@ -44,7 +49,7 @@
 
                 <!-- Country Code with Flag Preview -->
                 <div>
-                    <x-ui.label for="country_code" :value="__('Country Code')"  />
+                    <x-ui.label for="country_code" :value="__('Country Code')" />
                     <div class="flex gap-2">
                         <x-ui.input id="country_code" type="text" class="mt-1 block w-full lowercase"
                             wire:model.live.debounce.300ms="form.country_code" placeholder="us, es, fr, bd"
@@ -65,6 +70,13 @@
                     <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
                         {{ __('Enter 2-letter ISO country code (e.g., us, gb, bd)') }}</p>
                 </div>
+
+                {{-- csv upload --}}
+                {{-- <div>
+                    <x-ui.label for="file" :value="__('Upload CSV')" />
+                    <x-ui.input id="file" type="file" class="mt-1 block w-full" wire:model="form.file" />
+                    <x-ui.input-error :messages="$errors->get('form.file')" class="mt-2" />
+                </div> --}}
 
                 <!-- Direction (Dynamic from Enum) -->
                 <div>
@@ -102,8 +114,8 @@
                 </div>
             </div>
 
-           
-             <div class="flex items-center justify-end gap-4 mt-6">
+
+            <div class="flex items-center justify-end gap-4 mt-6">
                 <x-ui.button wire:click="resetForm" variant="tertiary" class="w-auto! py-2!">
                     <flux:icon name="x-circle"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />

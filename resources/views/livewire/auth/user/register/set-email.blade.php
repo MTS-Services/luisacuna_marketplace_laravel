@@ -1,35 +1,41 @@
 <div>
     <div class="bg-bg-secondary min-h-screen flex items-center justify-center ">
-        <div class="w-full  max-w-lg bg-gradient-to-br bg-bg-primary rounded-2xl px-8 py-22 shadow-2xl ">
+        <div class="w-full  max-w-lg bg-gradient-to-br bg-bg-primary rounded-2xl px-8 py-20 shadow-2xl ">
             <!-- Header -->
             <div class="text-center mb-8">
-                <h1 class="text-4xl font-medium text-white mb-4">{{ __('Gmail Veryfication') }}</h1>
-                <p class="text-gray-300">{{ __('Hi! Welcome back, you\'ve been missed') }}</p>
+                <h2 class="text-3xl sm:text-4xl font-medium text-text-white">{{ __('Gmail Veryfication') }}</h2>
+                <p class="text-text-white lg:text-xl sm:text-lg mt-2">{{ __('Hi! Welcome back, you\'ve been missed') }}
+                </p>
             </div>
 
             <!-- Form -->
             <form wire:submit="save" class="space-y-6">
-                <!-- Email Input -->
-                <div>
-
-                    <x-ui.label value="Email" class="mb-1" />
-                    <x-ui.input type="email" placeholder="email@example.com" wire:model="email"
-                        class="border-none! bg-purple-300/10! bg-opacity-50!" />
+                <!-- Email -->
+                <div class="mb-4 sm:mb-6 px-2 sm:px-6">
+                    <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">{{ __('Email') }}</label>
+                    <x-ui.input type="email" placeholder="example@gmail.com" wire:model="email" />
+                    {{-- Error message --}}
                     <x-ui.input-error :messages="$errors->get('email')" />
                 </div>
 
                 <!-- Sign In Button -->
-                <x-ui.button class="w-full! py-2!" type="submit">
+                {{-- <x-ui.button class="w-full! py-2!" type="submit">
                     <span wire:target="save"
                         class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Send Code') }}</span>
-                </x-ui.button>
+                </x-ui.button> --}}
+                <!-- Sign in button -->
+                <div class=" flex justify-center px-2 sm:px-6">
+                    <x-ui.button type="submit" class="w-auto py-2!">
+                        {{ __('Send Code') }}
+                    </x-ui.button>
+                </div>
             </form>
 
             <!-- Divider -->
-            <div class="my-8 flex items-center">
-                <div class="flex-1 border-t "></div>
-                <p class="px-3 text-text-white text-sm">{{ __('Or sign in with') }}</p>
-                <div class="flex-1 border-t "></div>
+            <div class="flex items-center mb-2 mt-12 px-4">
+                <hr class="flex-1 border-zinc-700" />
+                <span class="px-3 text-sm sm:text-md text-zinc-500">{{ __('Or sign in with') }}</span>
+                <hr class="flex-1 border-zinc-700" />
             </div>
 
             <!-- Social Login Buttons -->

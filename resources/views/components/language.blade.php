@@ -2,7 +2,7 @@
     <!-- Trigger Button -->
     <button @click="open = !open" class="flex items-center gap-1 text-text-white hover:text-black">
         <x-phosphor-globe class="w-5 h-5" />
-        <span>
+        <span class="text-xs xxs:text-base">
             {{ strtoupper( $locale ) }} | 
             {{ session('currency', 'USD-$') }}
         </span>
@@ -15,7 +15,7 @@
         x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95" class="absolute z-50 mt-2 right-16 w-80 origin-top-right">
         <div x-transition
-             class="dark:bg-zinc-700 bg-bg-primary rounded-2xl shadow-xl w-98 p-6 relative">
+             class="dark:bg-zinc-950 bg-bg-primary rounded-2xl shadow-xl w-98 p-6 relative">
             <!-- Header -->
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-base font-semibold flex gap-2 items-center text-text-white">

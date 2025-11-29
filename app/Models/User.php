@@ -8,6 +8,7 @@ use App\Enums\UserStatus;
 use App\Enums\userKycStatus;
 use App\Traits\AuditableTrait;
 use Illuminate\Support\Carbon;
+use App\Traits\HasTranslations;
 use App\Enums\UserAccountStatus;
 use OwenIt\Auditing\Contracts\Auditable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -16,11 +17,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 
 class User extends AuthBaseModel implements Auditable
 {
-    use  TwoFactorAuthenticatable, AuditableTrait, Notifiable;
+    use  TwoFactorAuthenticatable, AuditableTrait, HasTranslations, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -29,13 +31,14 @@ class User extends AuthBaseModel implements Auditable
      */
     protected $fillable = [
         'sort_order',
-        'country_id',
+        // 'country_id',
 
         'username',
         'first_name',
         'last_name',
         'uuid',
         'email',
+        'description',
 
         'apple_id',
         'facebook_id',
@@ -44,8 +47,8 @@ class User extends AuthBaseModel implements Auditable
         'date_of_birth',
 
         'timezone',
-        'language_id',
-        'currency_id',
+        // 'language_id',
+        // 'currency_id',
 
 
         'email_verified_at',
@@ -142,6 +145,11 @@ class User extends AuthBaseModel implements Auditable
                 $user->uuid = (string) \generate_uuid();
             }
         });
+        static::created(function ($user) {
+            UsersNotificationSetting::create([
+                'user_id' => $user->id,
+            ]);
+        });
     }
 
     /*
@@ -149,6 +157,11 @@ class User extends AuthBaseModel implements Auditable
     | Relationships
     |--------------------------------------------------------------------------
     */
+
+    public function userTranslations(): HasMany
+    {
+        return $this->hasMany(UserTranslations::class, 'user_id', 'id');
+    }
 
     public function country(): BelongsTo
     {
@@ -166,15 +179,6 @@ class User extends AuthBaseModel implements Auditable
     public function referral(): HasOne
     {
         return $this->hasOne(UserReferral::class, 'user_id', 'id');
-    }
-    public function language(): BelongsTo
-    {
-        return $this->belongsTo(Language::class, 'language_id', 'id');
-    }
-
-    public function currency(): BelongsTo
-    {
-        return $this->belongsTo(Currency::class, 'currency_id', 'id');
     }
     public function userReferral(): HasOne
     {
@@ -214,6 +218,22 @@ class User extends AuthBaseModel implements Auditable
     public function audits(): MorphMany
     {
         return $this->morphMany(Audit::class, 'user');
+    }
+    public function UserNotificationSetting(): HasOne
+    {
+        return $this->hasOne(UsersNotificationSetting::class, 'user_id', 'id');
+    }
+
+    public function rankedUsers(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            User::class,
+            UserRank::class,
+            'rank_level',
+            'id',
+            'id',
+            'user_id'
+        );
     }
     /*
     |--------------------------------------------------------------------------
@@ -407,5 +427,21 @@ class User extends AuthBaseModel implements Auditable
         return $this->forceFill([
             'phone_verified_at' => now(),
         ])->save();
+    }
+
+    // Translations
+
+    public function getTranslationConfig(): array
+    {
+        return [
+            'fields' => ['first_name', 'last_name'],
+            'relation' => 'userTranslations',
+            'model' => UserTranslations::class,
+            'foreign_key' => 'user_id',
+            'field_mapping' => [
+                'first_name' => 'first_name',
+                'last_name' => 'last_name',
+            ],
+        ];
     }
 }

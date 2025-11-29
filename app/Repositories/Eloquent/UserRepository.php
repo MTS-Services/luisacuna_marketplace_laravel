@@ -2,18 +2,26 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Enums\UserType;
 use App\Models\User;
+use App\Enums\UserType;
+use Illuminate\Support\Facades\DB;
+use App\Models\UsersNotificationSetting;
+use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 
 class UserRepository implements UserRepositoryInterface
 {
     public function __construct(
         protected User $model
     ) {}
+
+
+
+    /* ================== ================== ==================
+    *                      Find Methods
+    * ================== ================== ================== */
+
 
     public function all(string $sortField = 'created_at', $order = 'desc'): Collection
     {
@@ -25,9 +33,19 @@ class UserRepository implements UserRepositoryInterface
         return $this->model->whereIn('user_type', [UserType::SELLER, UserType::BOTH])->orderBy($sortField, $order)->get();
     }
 
+    public function getSellersByTrash(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->whereIn('user_type', [UserType::SELLER, UserType::BOTH])->onlyTrashed()->orderBy($sortField, $order)->get();
+    }
+
     public function getBuyers(string $sortField = 'created_at', $order = 'desc'): Collection
     {
         return $this->model->whereIn('user_type', [UserType::BUYER, UserType::BOTH])->orderBy($sortField, $order)->get();
+    }
+
+    public function getBuyersByTrash(string $sortField = 'created_at', $order = 'desc'): Collection
+    {
+        return $this->model->whereIn('user_type', [UserType::BUYER, UserType::BOTH])->onlyTrashed()->orderBy($sortField, $order)->get();
     }
 
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
@@ -70,7 +88,7 @@ class UserRepository implements UserRepositoryInterface
     {
         return $this->model->withTrashed()->find($id);
     }
-      public function findData($column_value, string $column_name = 'id',  bool $trashed = false): ?User
+    public function findData($column_value, string $column_name = 'id',  bool $trashed = false): ?User
     {
         $model = $this->model;
         if ($trashed) {
@@ -84,6 +102,30 @@ class UserRepository implements UserRepositoryInterface
         return $this->model->where('email', $email)->first();
     }
 
+    public function exists(int $id): bool
+    {
+        return $this->model->where('id', $id)->exists();
+    }
+
+    public function count(array $filters = []): int
+    {
+        $query = $this->model->query();
+
+        if (!empty($filters)) {
+            $query->filter($filters);
+        }
+
+        return $query->count();
+    }
+
+
+
+    /* ================== ================== ==================
+    *                    Data Modification Methods
+    * ================== ================== ================== */
+
+
+
     public function create(array $data): User
     {
         return $this->model->create($data);
@@ -92,7 +134,6 @@ class UserRepository implements UserRepositoryInterface
     public function update(int $id, array $data): bool
     {
         $user = $this->find($id);
-
         if (!$user) {
             return false;
         }
@@ -134,21 +175,13 @@ class UserRepository implements UserRepositoryInterface
         return $user->restore();
     }
 
-    public function exists(int $id): bool
-    {
-        return $this->model->where('id', $id)->exists();
-    }
 
-    public function count(array $filters = []): int
-    {
-        $query = $this->model->query();
 
-        if (!empty($filters)) {
-            $query->filter($filters);
-        }
 
-        return $query->count();
-    }
+
+    /* ================== ================== ==================
+    *                    Data Modification Methods
+    * ================== ================== ================== */
 
     public function getActive(): Collection
     {
@@ -182,11 +215,55 @@ class UserRepository implements UserRepositoryInterface
         $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restorer_id' => $actioner_id]);
 
         return $this->model->withTrashed()->whereIn('id', $ids)->restore();
-
     }
 
     public function bulkForceDelete(array $ids): int
     {
         return $this->model->withTrashed()->whereIn('id', $ids)->forceDelete();
+    }
+
+
+
+    /* ================== ================== ==================
+    *                  Accessor Methods (Optional)
+    * ================== ================== ================== */
+
+
+
+
+    /**
+     * Update notification setting for a user
+     */
+    public function updateNotificationSetting(int $userId, string $field, bool $value): bool
+    {
+        $user = $this->find($userId);
+
+        if (!$user) {
+            return false;
+        }
+
+        // Get notification settings (must exist)
+        $notificationSetting = UsersNotificationSetting::where('user_id', $userId)->first();
+
+        if (!$notificationSetting) {
+            throw new \Exception('Notification settings not found for this user');
+        }
+
+        // Update the specific field
+        return $notificationSetting->update([$field => $value]);
+    }
+
+    /**
+     * Get notification settings for a user
+     */
+    public function getNotificationSettings(int $userId): ?UsersNotificationSetting
+    {
+        $user = $this->find($userId);
+
+        if (!$user) {
+            return null;
+        }
+
+        return UsersNotificationSetting::where('user_id', $userId)->first();
     }
 }
