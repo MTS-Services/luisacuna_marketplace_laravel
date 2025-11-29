@@ -1,7 +1,7 @@
 <main class="mx-auto">
     {{-- @if ($categorySlug == 'gift-card' || $categorySlug == 'top-up') --}}
     @if (true)
-    <x-grid-layout :arr="['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug]" />
+    <x-grid-layout :gameSlug="$gameSlug" :categorySlug="$categorySlug"/>
 
     @else
         <section>

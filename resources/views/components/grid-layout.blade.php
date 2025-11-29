@@ -1,11 +1,12 @@
 @props(
-   [ $arr = [],
-    $gameSlug = '',
-    $categorySlug = '',
+    [
+        'gameSlug' => '',
+        'categorySlug' => '',
     ]
-);
+)
 <div>
             <section class="container mt-2">
+
             <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
       
             <div class="flex items-center gap-2 mt-8 text-lg font-semibold">
@@ -18,6 +19,7 @@
                 <span class=" text-text-primary">></span>
                 <span class=" text-text-primary">{{ __('Shop') }}</span>
             </div>
+            
             <div class="mt-8">
                 <div class="flex items-center justify-between">
                     <div class="">
