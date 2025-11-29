@@ -16,12 +16,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 
 class User extends AuthBaseModel implements Auditable
 {
-    use  TwoFactorAuthenticatable, AuditableTrait, HasTranslations;
+    use  TwoFactorAuthenticatable, AuditableTrait, HasTranslations, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -92,14 +93,6 @@ class User extends AuthBaseModel implements Auditable
         'created_at',
         'updated_at',
     ];
-
-    /**
-     * Audits relationship
-     */
-    public function audits(): MorphMany
-    {
-        return $this->morphMany(Audit::class, 'user');
-    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -221,11 +214,15 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->hasOne(UserPoint::class, 'user_id', 'id');
     }
+
+    public function audits(): MorphMany
+    {
+        return $this->morphMany(Audit::class, 'user');
+    }
     public function UserNotificationSetting(): HasOne
     {
         return $this->hasOne(UsersNotificationSetting::class, 'user_id', 'id');
     }
-
 
     public function rankedUsers(): HasManyThrough
     {
@@ -233,9 +230,9 @@ class User extends AuthBaseModel implements Auditable
             User::class,
             UserRank::class,
             'rank_level',
-            'id',                 
-            'id',                 
-            'user_id'             
+            'id',
+            'id',
+            'user_id'
         );
     }
     /*
