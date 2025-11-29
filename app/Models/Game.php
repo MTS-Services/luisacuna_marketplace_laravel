@@ -9,10 +9,12 @@ use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use App\Models\Type;
+use App\Traits\HasTranslations;
+use Illuminate\Testing\Fluent\Concerns\Has;
 
 class Game extends AuditBaseModel implements Auditable
 {
-    use  AuditableTrait, Searchable;
+    use  AuditableTrait, Searchable, HasTranslations;
     //
 
     protected $fillable = [
@@ -61,7 +63,7 @@ class Game extends AuditBaseModel implements Auditable
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
     //
 
-    public function categories()
+    public function category()
     {
         // 1. Pass the related model (Category::class)
         // 2. Pass the name of your pivot table ('game_categories')
@@ -74,6 +76,20 @@ class Game extends AuditBaseModel implements Auditable
             'category_id'
         );
     }
+
+    // public function categories()
+    // {
+    //     // 1. Pass the related model (Category::class)
+    //     // 2. Pass the name of your pivot table ('game_categories')
+    //     // 3. Pass the foreign key on the pivot table for THIS model ('game_id')
+    //     // 4. Pass the foreign key on the pivot table for the OTHER model ('category_id')
+    //     return $this->belongsToMany(
+    //         Category::class,
+    //         'game_categories',
+    //         'game_id',
+    //         'category_id'
+    //     );
+    // }
 
     public function servers()
     {
@@ -121,8 +137,28 @@ class Game extends AuditBaseModel implements Auditable
         );
     }
 
+    public function gameTranslations()
+    {
+        return $this->hasMany(GameTranslation::class, 'game_id', 'id');
+    }
 
 
+  public function getTranslationConfig(): array
+    {
+        return [
+            'fields' => ['name', 'description', 'meta_title', 'meta_description', 'meta_keywords'],
+            'relation' => 'gameTranslations',
+            'model' => GameTranslation::class,
+            'foreign_key' => 'game_id',
+            'field_mapping' => [
+                'name' => 'name',
+                'description' => 'description',
+                'meta_title' => 'meta_title',
+                'meta_description' => 'meta_description',
+                'meta_keywords' => 'meta_keywords',
+            ],
+        ];
+    }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
             Query Scopes

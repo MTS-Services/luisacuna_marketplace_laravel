@@ -22,6 +22,7 @@ class Language extends AuditBaseModel implements Auditable
         'is_active',
         'direction',
         'country_code',
+        'file',
 
 
         'created_by',
@@ -40,11 +41,6 @@ class Language extends AuditBaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
 
 
 

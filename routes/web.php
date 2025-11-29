@@ -90,6 +90,53 @@ Route::get('/test-redis-connection', function () {
 });
 
 
+use App\Notifications\UserNotification;
+use App\Notifications\AdminNotification;
+
+// Test user notification
+// Route::get('/test-user-notification', function () {
+//     $user = user();
+
+//     if (!$user) {
+//         return 'Please login first';
+//     }
+
+//     $user->notify(new UserNotification(
+//         title: 'Test Notification',
+//         message: 'This is a test notification from Pusher!',
+//         actionUrl: route('profile'),
+//         type: 'info'
+//     ));
+
+//     return 'User notification sent! Check your notification bell.';
+// });
+
+// // Test admin notification
+// Route::get('/test-admin-notification', function () {
+//     $admin = admin();
+
+//     if (!$admin) {
+//         return 'Please login as admin first';
+//     }
+
+//     $admin->notify(new AdminNotification(
+//         title: 'Test Admin Notification',
+//         message: 'This is a test notification for admin!',
+//         actionUrl: route('admin.dashboard'),
+//         type: 'success'
+//     ));
+
+//     return 'Admin notification sent! Check your notification bell.';
+// });
+
+Route::get('/send', function () {
+    return view('send');
+});
+Route::post('/send-notification', [App\Http\Controllers\TestController::class, 'sendNotification'])->name('send-notification');
+Route::get('/buttons', function () {
+    return view('button-showcase');
+});
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/user.php';
 require __DIR__ . '/admin.php';

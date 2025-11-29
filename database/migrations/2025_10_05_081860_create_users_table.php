@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->id();
 
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-            $table->unsignedBigInteger('country_id')->nullable();
+            // $table->unsignedBigInteger('country_id')->nullable();
 
 
             $table->string('username')->unique();
@@ -40,8 +40,8 @@ return new class extends Migration {
 
             $table->string('timezone')->default('UTC');
 
-            $table->unsignedBigInteger('language_id')->nullable();
-            $table->unsignedBigInteger('currency_id')->nullable();
+            // $table->unsignedBigInteger('language_id')->nullable();
+            // $table->unsignedBigInteger('currency_id')->nullable();
 
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
@@ -70,9 +70,9 @@ return new class extends Migration {
             $table->softDeletes();
 
 
-            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('language_id')->references('id')->on('languages')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreign('language_id')->references('id')->on('languages')->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade')->onUpdate('cascade');
             $this->addMorphedAuditColumns($table);
         });
 

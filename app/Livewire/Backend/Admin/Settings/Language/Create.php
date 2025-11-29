@@ -52,10 +52,10 @@ class Create extends Component
      */
     public function save()
     {
-        
+
         $validated = $this->form->validate();
         try {
-    
+
             $flagIcon = null;
             if (!empty($validated['country_code'])) {
                 $flagIcon = 'https://flagcdn.com/' . strtolower($validated['country_code']) . '.svg';
@@ -84,7 +84,7 @@ class Create extends Component
         $this->redirect(route('admin.as.language.index'), navigate: true);
     }
 
-     public function resetForm(): void
+    public function resetForm(): void
     {
         $this->form->reset();
     }
