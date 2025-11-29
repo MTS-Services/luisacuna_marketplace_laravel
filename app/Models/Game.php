@@ -63,7 +63,8 @@ class Game extends AuditBaseModel implements Auditable
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
     //
 
-    public function category()
+
+    public function categories()
     {
         // 1. Pass the related model (Category::class)
         // 2. Pass the name of your pivot table ('game_categories')
@@ -76,20 +77,6 @@ class Game extends AuditBaseModel implements Auditable
             'category_id'
         );
     }
-
-    // public function categories()
-    // {
-    //     // 1. Pass the related model (Category::class)
-    //     // 2. Pass the name of your pivot table ('game_categories')
-    //     // 3. Pass the foreign key on the pivot table for THIS model ('game_id')
-    //     // 4. Pass the foreign key on the pivot table for the OTHER model ('category_id')
-    //     return $this->belongsToMany(
-    //         Category::class,
-    //         'game_categories',
-    //         'game_id',
-    //         'category_id'
-    //     );
-    // }
 
     public function servers()
     {

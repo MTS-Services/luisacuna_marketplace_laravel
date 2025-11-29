@@ -72,9 +72,19 @@ class UpdateAction
             }
 
             // Refresh the achievement model
-            $model = $model->fresh();
 
-            return $model;
+            $titleChanged = isset($newData['title']) && $newData['title'] !== $oldData['title'];
+            $descriptionChanged = isset($newData['description']) && $newData['description'] !== $oldData['description'];
+            $freshData = $model->fresh();
+
+            if($titleChanged || $descriptionChanged){
+                $freshData->dispatchTranslation(
+                    defaultLanguageLocale: 'en',
+                    targetLanguageIds: null
+                );
+            }
+            
+            return $freshData;
         });
     }
 }

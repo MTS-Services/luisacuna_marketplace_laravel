@@ -23,11 +23,11 @@
         <div class="flex items-center justify-between gap-4 mt-10 relative" x-data="{ filter: false }">
             <div class="search flex-1">
                 <x-ui.input type="text" wire:model.live.debounce.300ms="search" placeholder="Search..."
-                    class="form-input w-full rounded-full!" />
+                    class="form-input w-full rounded-xl!" />
             </div>
             <div class="flex-shrink-0">
                 <button @click="filter = !filter"
-                    class="flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 py-2 bg-bg-primary rounded-md w-[120px] sm:w-[140px]">
+                    class="flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 py-2 bg-bg-primary rounded-md w-30 sm:w-[140px]">
                     <div class="flex items-center gap-1 sm:gap-2 overflow-hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -51,20 +51,20 @@
                 </button>
 
                 {{-- Dropdown --}}
-                <div class="absolute top-14 right-0 z-10 shadow-glass-card min-w-30" x-show="filter" x-transition
+                <div class="absolute top-14 right-0 z-10 shadow-glass-card min-w-36" x-show="filter" x-transition
                     x-cloak @click.outside="filter = false">
                     <div class="bg-bg-primary rounded-md p-2">
                         <div class="flex flex-col gap-1">
                             <button wire:click="sortBy('default')" @click="filter = false"
-                                class="text-left px-3 py-2 rounded transition text-sm {{ $sortOrder === 'default' ? 'bg-blue-600' : 'hover:bg-gray-700' }}">
+                                class="text-left px-3 py-2 rounded transition text-sm {{ $sortOrder === 'default' ? 'bg-zinc-700 text-text-primary'  : 'hover:bg-zinc-400' }}">
                                 {{ __('Default') }}
                             </button>
                             <button wire:click="sortBy('asc')" @click="filter = false"
-                                class="text-left px-3 py-2 rounded transition text-sm {{ $sortOrder === 'asc' ? 'bg-blue-600' : 'hover:bg-gray-700' }}">
+                                class="text-left px-3 py-2 rounded transition text-sm {{ $sortOrder === 'asc' ? 'bg-zinc-700' : 'hover:bg-zinc-400' }}">
                                 {{ __('A-Z') }}
                             </button>
                             <button wire:click="sortBy('desc')" @click="filter = false"
-                                class="text-left px-3 py-2 rounded transition text-sm {{ $sortOrder === 'desc' ? 'bg-blue-600' : 'hover:bg-gray-700' }}">
+                                class="text-left px-3 py-2 rounded transition text-sm {{ $sortOrder === 'desc' ? 'bg-zinc-700' : 'hover:bg-zinc-400' }}">
                                 {{ __('Z-A') }}
                             </button>
                         </div>
