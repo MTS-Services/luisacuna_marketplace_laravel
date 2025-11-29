@@ -10,11 +10,17 @@ class ShopComponent extends Component
     public $categorySlug;
     public $datas = [];
     public $search = '';
+    public $selectedDevice = null;
+    public $selectedAccountType = null;
+    public $selectedPrice = null;
+    public $selectedDeliveryTime = null;
+    public $layoutView = 'list';
+    
 
     public function tagSelected($tag)
     {
         $this->search = $tag;
-        $this->serach(); // Trigger search when tag is selected
+        $this->serachFilter(); // Trigger search when tag is selected
     }
 
     public function mount($gameSlug, $categorySlug)
@@ -33,7 +39,7 @@ class ShopComponent extends Component
         ]);
     }
 
-    public function serach()
+    public function serachFilter()
     {
         // Simulate search/fetch logic
         sleep(1);
@@ -45,9 +51,21 @@ class ShopComponent extends Component
         $this->dispatch('loaded');
     }
 
-    public function updatedSearch()
+    public function resetAllFilters()
     {
-        // This method is automatically called when $search property changes
-        $this->serach();
+        $this->search = '';
+        $this->selectedDevice = null;
+        $this->selectedAccountType = null;
+        $this->selectedPrice = null;
+        $this->selectedDeliveryTime = null;
+        
+        $this->serachFilter(); // Trigger search to reset filters
+    }   
+
+    public function changeView()
+    {
+        // Logic to change view layout
+        $this->layoutView = $this->layoutView === 'grid' ? 'list' : 'grid';
     }
+
 }

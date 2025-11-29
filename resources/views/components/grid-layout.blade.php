@@ -25,6 +25,7 @@
                     <div class="flex-1 w-auto md:min-w-64">
                         <div class="relative">
                             <input type="text" placeholder="Search" wire:model.live.debounce.500ms="search"
+                                wire:change="serachFilter"
                                 class="w-full bg-bg-primary border border-zinc-700 rounded px-4 py-2 pl-10 focus:outline-none focus:border-zinc-500">
                             <span class="absolute left-3 top-2.5">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -35,7 +36,7 @@
                             </span>
                             
                             <!-- Loading Spinner -->
-                            <span class="absolute right-3 top-2.5" wire:loading wire:target="search, serach, tagSelected, selectedDevice">
+                            <span class="absolute right-3 top-2.5" wire:loading wire:target="search, tagSelected, selectedDevice, selectedAccountType,  selectedPrice, selectedDeliveryTime , resetAllFilters">
                                 <svg class="animate-spin h-5 w-5 text-purple-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -43,26 +44,26 @@
                             </span>
                         </div>
                     </div>
-                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex" wire:model="selectedDevice" wire:change="serach">
+                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex" wire:model.live="selectedDevice" wire:change="serachFilter">
                         <option value="">{{ __('Device') }}</option>
                         <option value="">Device 1 </option>
                         <option value="">Device 2</option>
                     </x-ui.select>
 
-                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex">
+                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex" wire:model.live="selectedAccountType" wire:change="serachFilter">
                         <option value="">{{ __('Account type') }}</option>
                     </x-ui.select>
 
-                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex">
+                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex" wire:model.live="selectedPrice" wire:change="serachFilter">
                         <option value="">{{ __('Price') }}</option>
                     </x-ui.select>
 
-                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex">
+                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex" wire:model.live="selectedDeliveryTime" wire:change="serachFilter">
                         <option value="">{{ __('Select Delivery Time') }}</option>
                     </x-ui.select>
 
                     <x-ui.button class="py-2! px-3! w-auto! rounded-2xl!  hidden md:flex bg-transparent!"
-                        :variant="'primary'">
+                        :variant="'primary'" wire:click="resetAllFilters">
                         {{ __('Clear All') }}
                     </x-ui.button>
                     <button @click="filter = !filter"
@@ -90,11 +91,14 @@
                         <div class="flex justify-between mb-6 space-x-3">
                             <button class="px-5 py-2 rounded-full bg-bg-secondary text-text-white font-semibold">Instant
                                 delivery</button>
+
                             <button
                                 class="px-5 py-2 rounded-full bg-bg-secondary/70 text-text-white font-semibold flex items-center gap-2">
                                 <span class="w-4 h-4 bg-green rounded-full"></span>
                                 <span>Online Seller</span>
                             </button>
+                           
+                         
                         </div>
 
                         <!-- Dropdown Filters -->
@@ -245,11 +249,15 @@
 
                 <!-- Right Filters -->
                 <div class="gap-3 justify-end hidden md:flex">
+                    
                     <button
                         class="px-4 py-2 border border-green text-green rounded-full text-sm hover:bg-green hover:text-white transition">{{ __('● Online Seller') }}</button>
 
                     <button class="px-5 py-2 rounded-full bg-bg-primary text-text-white font-semibold">Instant
                         delivery</button>
+                         <x-ui.button wire:click="changeView"  class="py-2! px-4! w-auto!" variant="secondary">
+                                {{ __('Change layout') }}
+                            </x-ui.button>
                 </div>
             </div>
 
@@ -258,7 +266,7 @@
          <div class="relative min-h-[40vh]">
     <!-- Skeleton Loading -->
     <div wire:loading 
-         wire:target="search, serach, tagSelected, selectedDevice"
+         wire:target="search, tagSelected, selectedDevice, selectedAccountType,  selectedPrice, selectedDeliveryTime , resetAllFilters"
          class="absolute inset-0 z-10">
         <div x-transition:enter="transition ease-out duration-200" 
              x-transition:enter-start="opacity-0"
@@ -344,7 +352,7 @@
 
     <!-- Actual Product Cards -->
     <div wire:loading.class="opacity-0"
-         wire:target="search, serach, tagSelected"
+         wire:target="search, tagSelected, selectedDevice, selectedAccountType,  selectedPrice, selectedDeliveryTime , resetAllFilters"
          x-transition:enter="transition ease-out duration-300" 
          x-transition:enter-start="opacity-0"
          x-transition:enter-end="opacity-100" 
