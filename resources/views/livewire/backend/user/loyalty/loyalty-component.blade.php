@@ -149,9 +149,11 @@
                 {{ __('Make your first purchase today and start tracking your journey toward exciting rewards. Each order helps you unlock new levels, bonuses, and exclusive offers. Stay motivated and see your progress grow with every step!') }}
             </p>
 
-            <x-ui.button class="sm:w-auto! py-2! mt-6 mx-auto">
-                {{ __('Browse for more') }}
-            </x-ui.button>
+            <a wire:navigate href="{{ route('home') }}" class="inline-block mx-auto">
+                <x-ui.button class="sm:w-auto! py-2! mt-6">
+                    {{ __('Browse for more') }}
+                </x-ui.button>
+            </a>
         </div>
     </div>
 </div>

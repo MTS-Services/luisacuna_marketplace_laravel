@@ -7,18 +7,18 @@
                 <div class="relative w-full sm:w-56">
                     <x-ui.select>
                         <option value="">{{ __('All statuses') }}</option>
-                        <option value="completed">{{ __('Completed') }}</option>
-                        <option value="pending">{{ __('Pending') }}</option>
-                        <option value="processing">{{ __('Processing') }}</option>
+                        @foreach ($statuses as $status)
+                            <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
+                        @endforeach
                     </x-ui.select>
                 </div>
 
                 <div class="relative w-full sm:w-56">
                     <x-ui.select>
-                        <option value="">{{ __('All Game') }}</option>
-                        <option value="game1">{{ __('Game 1') }}</option>
-                        <option value="game2">{{ __('Game 2') }}</option>
-                        <option value="game3">{{ __('Game 3') }}</option>
+                        <option value="">{{ __('Recent') }}</option>
+                        <option value="today">{{ __('Today') }}</option>
+                        <option value="week">{{ __('This Week') }}</option>
+                        <option value="month">{{ __('This Month') }}</option>
                     </x-ui.select>
                 </div>
 
@@ -31,10 +31,11 @@
 
             </div>
 
-            <div class="flex justify-end! w-full md:w-auto">
+            <div class="flex w-full md:w-auto">
                 <x-ui.button class="w-fit! py!">
-                    <x-phosphor-download class="w-5 h-5 fill-text-text-white" />
-                    <span>{{__('Download invoice')}}</span>
+                    <x-phosphor-download
+                        class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
+                    {{ __('Download invoice') }}
                 </x-ui.button>
             </div>
 

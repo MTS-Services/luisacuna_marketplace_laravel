@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\User\Offers;
 
+use App\Services\GameService;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,8 +14,15 @@ class Currency extends Component
     public $deleteItemId = null;
     public $perPage = 7;
 
+    protected GameService $gameService;
+    public function boot(GameService $gameService)
+    {
+        $this->gameService = $gameService;
+    }
     public function render()
     {
+
+        $games = $this->gameService->getAllDatas();
         $allItems = collect([
             [
                 'id' => 1,
@@ -178,6 +186,7 @@ class Currency extends Component
 
         return view('livewire.backend.user.offers.currency', [
             'items' => $items,
+            'games' => $games,
             'columns' => $columns,
             'actions' => $actions,
             'pagination' => $pagination,
