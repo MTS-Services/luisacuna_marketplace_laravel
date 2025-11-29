@@ -7,12 +7,9 @@
                 <div class="relative w-full sm:w-56">
                     <x-ui.select>
                         <option value="">{{ __('All statuses') }}</option>
-                        <option value="pending">{{ __('Pending delivery') }}</option>
-                        <option value="disputed">{{ __('Disputed') }}</option>
-                        <option value="delivered">{{ __('Delivered') }}</option>
-                        <option value="received">{{ __('Received') }}</option>
-                        <option value="completed">{{ __('Completed') }}</option>
-                        <option value="cancelled">{{ __('Cancelled') }}</option>
+                        @foreach ($statuses as $status)
+                            <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
+                        @endforeach
                     </x-ui.select>
                 </div>
 
