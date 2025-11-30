@@ -18,6 +18,9 @@ Route::middleware(['auth','userVerify'])->prefix('user')->name('user.')->group(f
         Route::get('/sold-orders', function () {
             return view('backend.user.pages.orders.sold-orders');
         })->name('sold-orders');
+        Route::get('/order-details', function () {
+            return view('backend.user.pages.orders.order-details');
+        })->name('order-details');
     });
 
     Route::group(['prefix' => 'offers'], function () {
