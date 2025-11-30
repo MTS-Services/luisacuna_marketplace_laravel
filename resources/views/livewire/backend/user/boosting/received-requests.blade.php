@@ -26,10 +26,12 @@
                 </div>
             </div>
             <!-- New Offer Button -->
-            <x-ui.button class="w-full sm:w-fit! py-2!">
-                <span
-                    class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Manage Subscriptions') }}</span>
-            </x-ui.button>
+            <a href="{{ route('user.subscriptions') }}">
+                <x-ui.button class="w-full sm:w-fit! py-2!">
+                    <span
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Manage Subscriptions') }}</span>
+                </x-ui.button>
+            </a>
         </div>
     </div>
     <div>
