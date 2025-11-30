@@ -1,10 +1,10 @@
 <div class="h-full z-50">
     <aside x-cloak :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-        class="fixed h-full lg:static inset-y-0 left-0 z-50 w-64 sm:w-72 md:w-80 lg:w-68 bg-bg-primary/80 transition-transform duration-300 ease-in-out lg:translate-x-0 overflow-y-auto">
+        class="fixed h-full xl:static inset-y-0 left-0 z-50 w-64 sm:w-72 md:w-80 xl:w-68 bg-bg-primary/80 transition-transform duration-300 ease-in-out xl:translate-x-0 overflow-y-auto">
 
         <div class="flex flex-col h-full">
             <!-- Mobile Close Button -->
-            <div class="lg:hidden flex items-center justify-between px-4 py-3 border-b border-zinc-800">
+            <div class="xl:hidden flex items-center justify-between px-4 py-3 border-b border-zinc-800">
                 <span class="text-text-white font-semibold text-lg">{{ __('Menu') }}</span>
                 <button @click="sidebarOpen = false" class="text-text-white hover:text-zinc-300">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -14,7 +14,7 @@
                 </button>
             </div>
 
-            <nav class="flex-1 px-3 py-4 space-y-2">
+                     <nav class="flex-1 px-3 py-4 space-y-2">
                 <!-- Orders Dropdown -->
                 <div x-data="{
                     ordersOpen: {{ in_array($pageSlug, ['purchased_orders', 'sold_orders']) ? 'true' : 'false' }},
@@ -26,7 +26,8 @@
                         class="w-full flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg transition-all text-text-white hover:bg-pink-500/50">
                         <div class="flex items-center space-x-2 sm:space-x-3">
                             <flux:icon name="shopping-cart" class="w-5 h-5 sm:w-6 sm:h-6 text-text-white" />
-                            <span class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{ __('Orders') }}</span>
+                            <span
+                                class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{ __('Orders') }}</span>
 
                             <!-- Left indicator bar -->
                             <div x-show="isActive" x-cloak
@@ -64,7 +65,8 @@
                         class="w-full flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg transition-all text-text-white hover:bg-pink-500/50">
                         <div class="flex items-center space-x-2 sm:space-x-3">
                             <x-phosphor-tag class="w-5 h-5 rotate-90 fill-text-text-white" />
-                            <span class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{__('Offers')}}</span>
+                            <span
+                                class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{ __('Offers') }}</span>
 
                             <!-- Left indicator bar -->
                             <div x-show="isActive" x-cloak
@@ -115,7 +117,8 @@
                         <div class="flex items-center space-x-2 sm:space-x-3">
                             <x-phosphor name="circles-four" variant="solid"
                                 class="w-5 h-5 rotate-90 fill-text-text-white" />
-                            <span class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{__('Boosting')}}</span>
+                            <span
+                                class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{ __('Boosting') }}</span>
 
                             <!-- Left indicator bar -->
                             <div x-show="isActive" x-cloak
@@ -186,7 +189,8 @@
                         class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{ __('Account Settings') }}</span>
                 </a>
                 <!-- View Profile Link -->
-                <a href="{{ route('profile', Auth::user()->username) }}" wire:navigate @click="$root.sidebarOpen = false"
+                <a href="{{ route('profile', Auth::user()->username) }}" wire:navigate
+                    @click="$root.sidebarOpen = false"
                     class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'profile' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                     <flux:icon name="user" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
                     <span
@@ -196,3 +200,4 @@
         </div>
     </aside>
 </div>
+
