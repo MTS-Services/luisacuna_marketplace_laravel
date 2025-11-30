@@ -11,7 +11,7 @@
         </div>
 
         <!-- Game Card -->
-        <div class="bg-bg-border2 rounded-xl p-6 shadow-lg border border-[#2a1b3c]">
+        <div class="bg-bg-border2 rounded-xl p-6 shadow-lg  ">
             <div class="flex items-center gap-3">
                 <img src="https://images.pexels.com/photos/1054655/pexels-photo-1054655.jpeg?cs=srgb&dl=pexels-hsapir-1054655.jpg&fm=jpg"
                     class="w-12 h-12 rounded-lg object-cover">
@@ -25,18 +25,19 @@
             <div class="mt-6 space-y-5">
                 <!-- Unit Obtaining -->
                 <div class="flex justify-between items-center text-text-white">
-                    <span>Unit Obtaining</span>
+                    <span>Points & Currency</span>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" class="sr-only peer">
-                        <div class="w-10 h-5 bg-gray-300 rounded-full peer transition-all">
+                        <div class="w-10 h-5 bg-gray-600 rounded-full peer peer-checked:bg-purple-500 transition-all">
                         </div>
                         <div
-                            class="absolute left-0.5 top-0.5 w-4 h-4 peer-checked:bg-purple-500 rounded-full transition-all peer-checked:translate-x-5">
+                            class="absolute left-0.5 top-0.5 w-4 h-4 bg-bg-white rounded-full transition-all peer-checked:translate-x-5">
                         </div>
                     </label>
                 </div>
 
                 <!-- Points & Currency -->
+
                 <div class="flex justify-between items-center text-text-white">
                     <span>Points & Currency</span>
                     <label class="relative inline-flex items-center cursor-pointer">
@@ -44,7 +45,7 @@
                         <div class="w-10 h-5 bg-gray-600 rounded-full peer peer-checked:bg-purple-500 transition-all">
                         </div>
                         <div
-                            class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full transition-all peer-checked:translate-x-5">
+                            class="absolute left-0.5 top-0.5 w-4 h-4 bg-bg-white rounded-full transition-all peer-checked:translate-x-5">
                         </div>
                     </label>
                 </div>
@@ -104,7 +105,7 @@
             </div>
         </div>
 
-        <div x-data="{ open: false }" class="bg-bg-border2 rounded-xl p-6 shadow-lg border border-[#2a1b3c] mt-6">
+        <div x-data="{ open: false }" class="bg-bg-border2 rounded-xl p-6 shadow-lg    mt-6">
             <!-- Header -->
             <div class="flex justify-between items-center cursor-pointer" @click="open = !open">
 
@@ -132,13 +133,13 @@
 
                 <p class="text-sm text-gray-300">Coming soon...</p>
 
-                <div class="p-4 bg-bg-border2 rounded-lg border border-[#3a2b4d]">
+                <div class="p-4 bg-bg-border2 rounded-lg  ">
                     <p class="text-sm text-gray-200">Service options will appear here.</p>
                 </div>
             </div>
         </div>
 
-        <div x-data="{ open: false }" class="bg-bg-border2 rounded-xl p-6 shadow-lg border border-[#2a1b3c] mt-6">
+        <div x-data="{ open: false }" class="bg-bg-border2 rounded-xl p-6 shadow-lg   mt-6">
             <!-- Header -->
             <div class="flex justify-between items-center cursor-pointer" @click="open = !open">
 
@@ -166,13 +167,13 @@
 
                 <p class="text-sm text-gray-300">Coming soon...</p>
 
-                <div class="p-4 bg-bg-border2 rounded-lg border border-[#3a2b4d]">
+                <div class="p-4 bg-bg-border2 rounded-lg  ">
                     <p class="text-sm text-gray-200">Service options will appear here.</p>
                 </div>
             </div>
         </div>
 
-        <div x-data="{ open: false }" class="bg-bg-border2 rounded-xl p-6 shadow-lg border border-[#2a1b3c] mt-6">
+        <div x-data="{ open: false }" class="bg-bg-border2 rounded-xl p-6 shadow-lg   mt-6">
             <!-- Header -->
             <div class="flex justify-between items-center cursor-pointer" @click="open = !open">
 
@@ -200,13 +201,13 @@
 
                 <p class="text-sm text-gray-300">Coming soon...</p>
 
-                <div class="p-4 bg-bg-border2 rounded-lg border border-[#3a2b4d]">
+                <div class="p-4 bg-bg-border2 rounded-lg  ">
                     <p class="text-sm text-gray-200">Service options will appear here.</p>
                 </div>
             </div>
         </div>
 
-        <div x-data="{ open: false }" class="bg-bg-border2 rounded-xl p-6 shadow-lg border border-[#2a1b3c] mt-6">
+        <div x-data="{ open: false }" class="bg-bg-border2 rounded-xl p-6 shadow-lg   mt-6">
             <!-- Header -->
             <div class="flex justify-between items-center cursor-pointer" @click="open = !open">
 
@@ -234,7 +235,7 @@
 
                 <p class="text-sm text-gray-300">Coming soon...</p>
 
-                <div class="p-4 bg-bg-border2 rounded-lg border border-[#3a2b4d]">
+                <div class="p-4 bg-bg-border2 rounded-lg  ">
                     <p class="text-sm text-gray-200">Service options will appear here.</p>
                 </div>
             </div>
