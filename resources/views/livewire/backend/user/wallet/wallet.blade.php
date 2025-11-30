@@ -7,11 +7,13 @@
                 <div class="dark:bg-zinc-50/15 bg-zinc-50 rounded-2xl p-5 md:p-7">
                     <div class="flex flex-col lg:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
-                            <p class="text-text-white">{{__('Balance')}}</p>
+                            <p class="text-text-white">{{ __('Balance') }}</p>
                             <h2 class="text-text-white text-2xl font-semibold mt-2">$12.00</h2>
-                            <p class="text-text-white mt-2 text-sm md:text-base">{{__('Withdrawals require $10 in completed
-                                sales')}}</p>
-                            <a href="#" class="text-pink-500 mt-2 inline-block">{{__('Learn more')}}</a>
+                            <p class="text-text-white mt-2 text-sm md:text-base">
+                                {{ __('Withdrawals require $10 in completed
+                                                                sales') }}
+                            </p>
+                            <a href="#" class="text-pink-500 mt-2 inline-block">{{ __('Learn more') }}</a>
                         </div>
                         <div>
                             <x-ui.button class="w-full sm:w-auto py-2!">
@@ -28,7 +30,7 @@
         <div class="w-full md:w-1/2 bg-bg-primary rounded-2xl p-6 md:p-10">
             <div class="dark:bg-zinc-50/10 bg-zinc-200 rounded-2xl p-5 md:p-7">
                 <div class="dark:bg-zinc-50/15 bg-zinc-50 rounded-2xl p-5 md:p-7">
-                    <h2 class="text-text-white text-2xl font-semibold">{{__('Pending Sales')}}</h2>
+                    <h2 class="text-text-white text-2xl font-semibold">{{ __('Pending Sales') }}</h2>
                     <p class="text-text-white mt-2 text-sm md:text-base">
                         {{ __('Revenue from pending orders. Funds will be added to your balance when orders are Completed.') }}
                     </p>
@@ -76,11 +78,12 @@
             <!-- Right Side: Search & Actions -->
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
                 <!-- Manage Subscriptions Button -->
-                <x-ui.button class="w-full sm:w-auto! py-2!">
-                    <span
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Manage Subscriptionsr') }}</span>
-                </x-ui.button>
-
+                <a href="{{ route('user.subscriptions') }}">
+                    <x-ui.button class="w-full sm:w-auto! py-2!">
+                        <span
+                            class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Manage Subscriptionsr') }}</span>
+                    </x-ui.button>
+                </a>
             </div>
         </div>
     </div>
