@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Admin\GameManagement\Category;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Enums\CategoryStatus;
+use App\Enums\CategoryLayout;
 use Illuminate\Support\Facades\Log;
 use App\Services\CategoryService;
 use App\Traits\Livewire\WithNotification;
@@ -26,12 +27,14 @@ class Create extends Component
     public function mount()
     {
         $this->form->status = CategoryStatus::ACTIVE->value;
+        $this->form->layout = CategoryLayout::LIST_GRID->value;
     }
     public function render()
     {
 
         return view('livewire.backend.admin.game-management.category.create', [
             'statuses'   => CategoryStatus::options(),
+            'layouts'   => CategoryLayout::options(),
         ]);
     }
 

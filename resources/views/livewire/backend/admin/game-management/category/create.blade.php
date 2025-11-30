@@ -20,8 +20,8 @@
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                     {{ __('Icon') }}
                 </h3>
-                 <x-ui.file-input wire:model="form.icon" label="Icon" accept="image/*" :error="$errors->first('form.icon')"
-                        hint="Upload a profile picture (Max: 1MB) height: 200px width: 200px" />
+                <x-ui.file-input wire:model="form.icon" label="Icon" accept="image/*" :error="$errors->first('form.icon')"
+                    hint="Upload a profile picture (Max: 1MB) height: 200px width: 200px" />
 
                 @error('form.icon.*')
                     <span class="error">{{ $message }}</span>
@@ -63,6 +63,17 @@
                     </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.status')" />
                 </div>
+                {{-- Layout --}}
+                <div class="w-full">
+                    <x-ui.label value="Layout" class="mb-1" />
+                    <x-ui.select wire:model="form.layout">
+
+                        @foreach ($layouts as $layout)
+                            <option value="{{ $layout['value'] }}">{{ $layout['label'] }}</option>
+                        @endforeach
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.layout')" />
+                </div>
 
             </div>
 
@@ -83,8 +94,10 @@
                 </x-ui.button>
 
                 <x-ui.button type="accent" class="w-auto! py-2!">
-                    <span wire:loading.remove wire:target="save" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Create') }}</span>
-                    <span wire:loading wire:target="save" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Creating...') }}</span>
+                    <span wire:loading.remove wire:target="save"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Create') }}</span>
+                    <span wire:loading wire:target="save"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Creating...') }}</span>
                 </x-ui.button>
             </div>
         </form>
@@ -99,8 +112,8 @@
                         .toLowerCase()
                         .trim()
                         .replace(/\s+/g, '-')
-                        .replace(/[^a-z0-9]+/g, '-')    
-                        .replace(/^-+|-+$/g, '');  
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/^-+|-+$/g, '');
                     document.getElementById('slug').value = slug;
 
                     document.getElementById('slug').dispatchEvent(new Event('input'));
