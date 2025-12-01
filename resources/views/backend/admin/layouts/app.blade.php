@@ -36,6 +36,7 @@
             Livewire.on('notify', (event) => {
                 showAlert(event.type, event.message);
             });
+            // console.log(Toastify);
         });
     </script>
     @stack('styles')
@@ -45,7 +46,8 @@
     <div x-show="mobile_menu_open && !desktop" x-transition:enter="transition-all duration-300 ease-out"
         x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
         x-transition:leave="transition-all duration-300 ease-in" x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0" @click="closeMobileMenu()" class="fixed inset-0 z-40 bg-transparent backdrop-blur-xs lg:hidden">
+        x-transition:leave-end="opacity-0" @click="closeMobileMenu()"
+        class="fixed inset-0 z-40 bg-transparent backdrop-blur-xs lg:hidden">
     </div>
 
     <div class="flex h-screen">
@@ -74,7 +76,7 @@
         <div class="flex space-x-2">
             <div class="w-4 h-4 rounded-full bg-accent animate-[bounce-dot_1.2s_infinite]"
                 style="animation-delay: -0.8s;"></div>
-            <div class="w-4 h-4 rounded-full bg-accent-foreground animate-[bounce-dot_1.2s_infinite]"
+            <div class="w-4 h-4 rounded-full bg-pink-500 animate-[bounce-dot_1.2s_infinite]"
                 style="animation-delay: -0.4s;"></div>
             <div class="w-4 h-4 rounded-full bg-accent animate-[bounce-dot_1.2s_infinite]"></div>
         </div>
