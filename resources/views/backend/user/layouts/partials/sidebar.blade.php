@@ -26,7 +26,7 @@
                         class="w-full flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg transition-all text-text-white hover:bg-pink-500/50">
                         <div class="flex items-center space-x-2 sm:space-x-3">
                             <flux:icon name="shopping-cart" class="w-5 h-5 sm:w-6 sm:h-6 text-text-white" />
-                            <span class="text-xs  font-medium text-text-white">{{ __('Orders') }}</span>
+                            <span class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{ __('Orders') }}</span>
 
                             <!-- Left indicator bar -->
                             <div x-show="isActive" x-cloak

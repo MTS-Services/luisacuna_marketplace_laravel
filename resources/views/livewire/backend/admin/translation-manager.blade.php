@@ -5,8 +5,8 @@
         class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"></div>
 
     <!-- Modal -->
-    <div x-show="showTranslationDetailsModal" x-transition
-        class="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div x-show="showTranslationDetailsModal" x-transition class="fixed inset-0 z-50 hidden items-center justify-center p-4"
+        :class="{ 'flex!': showTranslationDetailsModal }">
 
         <div x-transition.scale.origin.center @click.stop
             class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-6xl w-full relative overflow-hidden">

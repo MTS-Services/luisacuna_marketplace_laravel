@@ -3,6 +3,7 @@
 namespace App\Livewire\Backend\User\Orders;
 
 use Livewire\Component;
+use App\Enums\OrderStatus;
 use Livewire\WithPagination;
 
 class SoldOrders extends Component
@@ -183,6 +184,7 @@ class SoldOrders extends Component
             'items' => $items,
             'columns' => $columns,
             'pagination' => $pagination,
+            'statuses' => OrderStatus::options(),
         ]);
     }
 }

@@ -32,9 +32,9 @@
             {{-- Per Page --}}
             @if ($showPerPage)
                 <div class="w-full sm:w-auto">
-                    <select wire:model.live="{{ $perPageProperty }}" class="select w-full sm:w-auto min-w-[140px]">
+                    <select wire:model.live="{{ $perPageProperty }}" class="select w-full sm:w-auto min-w-[140px] shadow-shadow-primary">
                         @foreach ($perPageOptions as $option)
-                            <option value="{{ $option }}">{{ $option }} {{__('per page')}}</option>
+                            <option value="{{ $option }}">{{ $option }} {{ __('per page') }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -43,8 +43,8 @@
             {{-- Status Filter --}}
             @if (!empty($statuses))
                 <div class="w-full sm:w-auto">
-                    <select wire:model.live="statusFilter" class="select w-full sm:w-auto min-w-[140px]">
-                        <option value="">{{__('All Statuses')}}</option>
+                    <select wire:model.live="statusFilter" class="select w-full sm:w-auto min-w-[140px] shadow-shadow-primary">
+                        <option value="">{{ __('All Statuses') }}</option>
                         @foreach ($statuses as $status)
                             <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
                         @endforeach
@@ -87,7 +87,7 @@
 
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:flex-1">
                     <select wire:model.live="bulkAction" class="select w-full sm:w-auto min-w-[160px]">
-                        <option value="">{{__('Select Action')}}</option>
+                        <option value="">{{ __('Select Action') }}</option>
                         @foreach ($bulkActions as $action)
                             <option value="{{ $action['value'] }}">{{ $action['label'] }}</option>
                         @endforeach

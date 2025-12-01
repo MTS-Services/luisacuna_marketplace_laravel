@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\User\Offers;
 
+use App\Services\GameService;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
@@ -14,9 +15,16 @@ class Items extends Component
     public $deleteItemId = null;
     public $perPage = 4;
 
+    protected GameService $gameService;
+
+    public function boot(GameService $gameService)
+    {
+        $this->gameService = $gameService;
+    }
 
     public function render()
     {
+        $games = $this->gameService->getAllDatas();
         $allItems = collect(
             [
                 [
@@ -177,6 +185,7 @@ class Items extends Component
 
         return view('livewire.backend.user.offers.items', [
             'items' => $items,
+            'games' => $games,
             'columns' => $columns,
             'actions' => $actions,
             'pagination' => $pagination,

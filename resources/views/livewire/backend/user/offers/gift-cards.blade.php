@@ -9,9 +9,9 @@
                 <div class="relative w-full sm:w-40 lg:w-44">
                     <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
                         <option value="">{{ __('All Game') }}</option>
-                        <option value="game1">{{ __('Game 1') }}</option>
-                        <option value="game2">{{ __('Game 2') }}</option>
-                        <option value="game3">{{ __('Game 3') }}</option>
+                        @foreach ($games as $game)
+                            <option value="{{ $game->id }}">{{ $game->name }}</option>
+                        @endforeach
                     </x-ui.select>
                 </div>
             </div>
@@ -27,7 +27,8 @@
                 <!-- New Offer Button -->
                 <x-ui.button class="w-full sm:w-auto! py-2!">
                     <x-phosphor-plus class="w-5 h-5 fill-text-text-white group-hover:fill-accent" />
-                    <span class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('New Offer') }}</span>
+                    <a wire.navigate href="{{ route('user.offers') }}"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('New Offer') }}</a>
                 </x-ui.button>
 
             </div>

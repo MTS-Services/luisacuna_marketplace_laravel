@@ -1,22 +1,22 @@
 <div class="space-y-6">
     <div class=" p-4 w-full">
-        <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-3 lg:gap-4">
+        <div class="flex flex-col xl:flex-row justify-between items-stretch xl:items-center gap-3 md:gap-4">
 
             <!-- Left Side: Filters -->
-            <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+            <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
 
                 <!-- Game Filter -->
-                <div class="relative w-full sm:w-40 lg:w-44">
+                <div class="relative w-full sm:w-40 md:w-44">
                     <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
                         <option value="">{{ __('All Game') }}</option>
-                        <option value="game1">{{ __('Game 1') }}</option>
-                        <option value="game2">{{ __('Game 2') }}</option>
-                        <option value="game3">{{ __('Game 3') }}</option>
+                        @foreach ($games as $game)
+                            <option value="{{ $game->id }}">{{ $game->name }}</option>
+                        @endforeach
                     </x-ui.select>
                 </div>
 
                 <!-- Status Filter -->
-                <div class="relative w-full sm:w-40 lg:w-44">
+                <div class="relative w-full sm:w-40 md:w-44">
                     <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
                         <option value="">{{ __('All') }}</option>
                         <option value="active">{{ __('Active offers') }}</option>
@@ -26,7 +26,7 @@
                 </div>
 
                 <!-- Recommended Filter -->
-                <div class="relative w-full sm:w-44 lg:w-48">
+                <div class="relative w-full sm:w-44 md:w-48">
                     <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
                         <option value="">{{ __('Recommended') }}</option>
                         <option value="price_low">{{ __('Price: Low to High') }}</option>
@@ -34,8 +34,11 @@
                         <option value="newest">{{ __('Newest First') }}</option>
                     </x-ui.select>
                 </div>
+
+                <!-- Search Input -->
                 <div class="relative w-full sm:w-56">
-                    <x-ui.input type="text" placeholder="{{ __('Search') }}" class="pl-5 py-1.5! text-text-white" />
+                    <x-ui.input type="text" placeholder="{{ __('Search') }}"
+                        class="pl-5 py-1.5! text-text-white" />
                     <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                         <x-phosphor-magnifying-glass class="w-5 h-5 fill-text-text-white" />
                     </div>
@@ -43,9 +46,9 @@
             </div>
 
             <!-- Right Side: Search & Actions -->
-            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
                 <!-- Export Button -->
-                <x-ui.button variant="secondary" class="sm:w-auto! py-2!">
+                <x-ui.button variant="secondary" class="w-full sm:w-auto! py-2!">
                     <x-phosphor-download class="w-5 h-5 fill-accent group-hover:fill-white" />
                     <span class="text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Export') }}</span>
                 </x-ui.button>
@@ -53,9 +56,9 @@
                 <!-- New Offer Button -->
                 <x-ui.button class="w-full sm:w-auto! py-2!">
                     <x-phosphor-plus class="w-5 h-5 fill-text-text-white group-hover:fill-accent" />
-                    <span class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('New Offer') }}</span>
+                    <a wire.navigate href="{{ route('user.offers') }}"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('New Offer') }}</a>
                 </x-ui.button>
-
             </div>
         </div>
     </div>
@@ -92,7 +95,7 @@
                                 </h3>
                                 <div class="mt-2">
                                     <p class="text-sm text-text-muted">
-                                       {{ __(' Are you sure you want to delete this item? This action cannot be undone.') }}
+                                        {{ __(' Are you sure you want to delete this item? This action cannot be undone.') }}
                                     </p>
                                 </div>
                             </div>
