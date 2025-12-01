@@ -55,7 +55,8 @@
 
         </div>
         <div class="mt-3 mb-6 flex items-center justify-between">
-            <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70 rounded! border! border-zinc-700!" wire:model="selectRegion" wire:change="serachFilter">
+            <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70 rounded! border! border-zinc-700!"
+                wire:model="selectedRegion" wire:change="serachFilter">
                 <option value="">{{ __('Global') }}</option>
                 <option value="completed">{{ __('Completed') }}</option>
                 <option value="pending">{{ __('Pending') }}</option>
@@ -63,17 +64,21 @@
             </x-ui.select>
 
             <div class="flex flex-row gap-5">
-                <x-ui.select id="status-select" class="py-0.5! w-auto! pl-5! hidden md:flex rounded! border! border-zinc-700!" wire:model.live="selectedSort" wire:change="serachFilter">
-                <option value="">{{ __('Sort by') }}</option>
-                <option value="">{{ __('lowest to highest') }}</option>
-                <option value="">{{ __('highest to lowest') }}</option>
-            </x-ui.select>
-             <x-ui.button wire:click="changeView" class="py-2! px-4! w-auto! hidden md:flex border! border-zinc-700!" variant="secondary">
+                <x-ui.select id="status-select"
+                    class="py-0.5! w-auto! pl-5! hidden md:flex rounded! border! border-zinc-700!"
+                    wire:model.live="selectedSort" wire:change="serachFilter">
+                    <option value="">{{ __('Sort by') }}</option>
+                    <option value="">{{ __('lowest to highest') }}</option>
+                    <option value="">{{ __('highest to lowest') }}</option>
+                </x-ui.select>
+                <x-ui.button wire:click="changeView" class="py-2! px-4! w-auto! hidden md:flex border! border-zinc-700!"
+                    variant="secondary">
                     {{ __('Change Layout') }}
-            </x-ui.button>
-             <x-ui.button wire:click="changeView" class="py-2! px-4! w-auto! flex md:hidden rounded! border! border-zinc-700!" variant="secondary">
+                </x-ui.button>
+                <x-ui.button wire:click="changeView"
+                    class="py-2! px-4! w-auto! flex md:hidden rounded! border! border-zinc-700!" variant="secondary">
                     {{ __('Grid') }}
-            </x-ui.button>
+                </x-ui.button>
             </div>
 
         </div>
@@ -88,32 +93,45 @@
     {{-- main --}}
     <section class="container">
         <div class="md:flex gap-6 h-auto">
+
+
+            {{-- Loading Animation --}}
+
+            <div class="relative min-h-[40vh]">
+                <x-loading-animation :target="'selectedSort, selectedRegion, resetAllFilters'" :style="'list'" />
+            </div>
+
+            {{-- Animation --}}
+
             <div class="w-full md:w-[65%] grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4 content-start">
-               
-               
+
+
+
                 @forelse ($datas = [1,2,3,4,5,6,7] as $item)
-                     <div
-                    class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
-                    <div class="flex items-center justify-between ">
-                        <div class="w-6 h-6">
-                            <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
-                                class="w-full h-full object-cover">
+                    <div wire:loading.class="opacity-0" wire:target="selectedSort, selectedRegion, resetAllFilters"
+                        x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+                        x-transition:enter-end="opacity-100"
+                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        <div class="flex items-center justify-between ">
+                            <div class="w-6 h-6">
+                                <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
+                            <div class="">
+                                <a href="" class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl">
+                                    <x-phosphor name="fire" variant="regular"
+                                        class="inline-block fill-white" />{{ __('Popular') }}
+                                </a>
+                            </div>
                         </div>
-                        <div class="">
-                            <a href="" class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl">
-                                <x-phosphor name="fire" variant="regular"
-                                    class="inline-block fill-white" />{{ __('Popular') }}
-                            </a>
-                        </div>
+                        <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
+                        <p class="text-xs text-text-white mt-2">{{ __('V-Bucks') }}</p>
+                        <span class="text-base font-semibold text-pink-500 mt-4">$40.16</span>
                     </div>
-                    <h3 class="text-base font-semibold text-text-white mt-4">1000</h3>
-                    <p class="text-xs text-text-white mt-2">{{ __('V-Bucks') }}</p>
-                    <span class="text-base font-semibold text-pink-500 mt-4">$40.16</span>
-                </div>
                 @empty
                     <h2 class="">No Data Found</h2>
                 @endforelse
-               
+
             </div>
             <div class="w-full md:w-[35%] mt-4 md:mt-0">
                 <div class="">
@@ -232,7 +250,7 @@
                     class="px-4 py-2 border border-green-500 text-green-500 rounded-full text-sm hover:bg-green hover:text-white transition">
                     {{ __('● Online Seller') }} </button>
 
-               
+
             </div>
         </div>
         <div class="min-w-full text-left border-collapse">
@@ -245,36 +263,36 @@
             </div>
 
             <div class="py-7 space-y-7">
-                @forelse ( $lists=[1,2,3,4,5,6] as $item )
+                @forelse ($lists=[1,2,3,4,5,6] as $item)
                     <div
-                    class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
-                    <div class="px-4 py-3">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10">
-                                <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt=""
-                                    class="w-full h-full rounded-full">
-                            </div>
-                            <div>
-                                <h3 class="text-text-white text-base font-semibold">{{ __('Devon Lane') }}</h3>
-                                <div class="flex items-center gap-1">
-                                    <x-phosphor name="thumbs-up" variant="solid"
-                                        class="fill-zinc-600 inline-block" />
-                                    <span class="text-xs text-text-white">99.3%</span>
+                        class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
+                        <div class="px-4 py-3">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10">
+                                    <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt=""
+                                        class="w-full h-full rounded-full">
+                                </div>
+                                <div>
+                                    <h3 class="text-text-white text-base font-semibold">{{ __('Devon Lane') }}</h3>
+                                    <div class="flex items-center gap-1">
+                                        <x-phosphor name="thumbs-up" variant="solid"
+                                            class="fill-zinc-600 inline-block" />
+                                        <span class="text-xs text-text-white">99.3%</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="px-4 py-3 text-text-white text-base font-semibold">{{ __('Instants') }}</div>
+                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">
+                            {{ __('Login Top UP') }}
+                        </div>
+                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
+                        <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
                     </div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold">{{ __('Instants') }}</div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">
-                        {{ __('Login Top UP') }}
-                    </div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
-                    <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
-                </div>
                 @empty
                     <h2>No Data found</h2>
                 @endforelse
-                
+
 
             </div>
         </div>
