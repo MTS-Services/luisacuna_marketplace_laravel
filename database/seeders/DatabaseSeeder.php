@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
 
+            ApplicationSettingSeeder::class,
             PaymentGatewaySeeder::class,
             WithdrawalGatewaySeeder::class,
 
@@ -37,7 +38,6 @@ class DatabaseSeeder extends Seeder
             GameCategorySeeder::class,
             TagSeeder::class,
             GameTagSeeder::class,
-            // ApplicationSettingSeeder::class,
 
             SellerProfileSeeder::class,
             UserStatisticsSeeder::class,

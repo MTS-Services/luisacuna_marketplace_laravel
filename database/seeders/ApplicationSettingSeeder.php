@@ -25,7 +25,7 @@ class ApplicationSettingSeeder extends Seeder
         ]);
         ApplicationSetting::create([
             'key' => 'timezone',
-            'value' => 'Asia/Dhaka',
+            'value' => 'UTC',
         ]);
         ApplicationSetting::create([
             'key' => 'date_format',
@@ -36,24 +36,8 @@ class ApplicationSettingSeeder extends Seeder
             'value' => 'H:i:s',
         ]);
         ApplicationSetting::create([
-            'key' => 'favicon',
-            'value' => 'laravel',
-        ]);
-        ApplicationSetting::create([
-            'key' => 'app_logo',
-            'value' => '',
-        ]);
-        ApplicationSetting::create([
             'key' => 'theme_mode',
-            'value' => 'light',
-        ]);
-        ApplicationSetting::create([
-            'key' => 'public_registration',
-            'value' => '1',
-        ]);
-        ApplicationSetting::create([
-            'key' => 'registration_approval',
-            'value' => '1',
+            'value' => 'system',
         ]);
         ApplicationSetting::create([
             'key' => 'environment',
@@ -64,8 +48,8 @@ class ApplicationSettingSeeder extends Seeder
             'value' => '1',
         ]);
         ApplicationSetting::create([
-            'key' => 'debugbar',
-            'value' => '1',
+            'key' => 'auto_translate',
+            'value' => '0',
         ]);
 
         // Database Setting

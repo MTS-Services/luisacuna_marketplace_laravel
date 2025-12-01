@@ -142,7 +142,7 @@ class PurchasedOrders extends Component
                         <div class="min-w-0">
                             <h3 class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">' . $order->name . '</h3>
                             <p class="text-xs text-green-400 truncate xxs:block">' . $order->subtitle . '</p>
-                            <a href="#" class="text-pink-400 text-xs hover:underline flex items-center gap-1 hidden xs:flex">Learn more →</a>
+                            <a href="' . route('user.order-details') . '" class="text-pink-400 text-xs hover:underline flex items-center gap-1 hidden xs:flex">Learn more →</a>
                         </div>
                     </div>
                 '
