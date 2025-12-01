@@ -102,7 +102,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
     });
 
     // Banner 
-
+    
     route::group(['prefix' => 'banner-management', 'as' => 'bm.'], function () {
         Route::controller(BannerController::class)->name('banner.')->prefix('banner')->group(function (){
             Route::get('/', 'index')->name('index');

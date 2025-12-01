@@ -14,4 +14,9 @@ class BannerController extends Controller
     {
         return view($this->master);
     }
+
+    public function create()
+    {
+        return view($this->master);
+    }
 }
