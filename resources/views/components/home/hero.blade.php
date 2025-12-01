@@ -45,7 +45,7 @@
     </section>
 @else
     <section class=" relative  overflow-hidden bg-cover bg-center " style="background-image: url('{{ asset('assets/images/banner.jpg') }}')">
-        <div class="bg-[#0f002973] py-30 bg-opacity-0 relative z-10">
+        <div class="bg-[#0f00294d] py-30 bg-opacity-0 relative z-10">
             <div
                 class="container py-30 relative z-10 align-left px-0 w-100vw">
 
