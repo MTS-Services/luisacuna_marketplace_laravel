@@ -32,6 +32,7 @@
                     active="admin-dashboard" :page_slug="$active" />
 
                 <x-sidebar-separator title="Users & Staff" />
+
                 <x-backend.navlink type="dropdown" icon="shield-user" name="Administrators" :page_slug="$active"
                     :items="[
                         [
@@ -83,6 +84,10 @@
                     ]" />
 
                 <x-sidebar-separator title="Catalog" />
+
+                <x-backend.navlink type="single" icon="box" name="Banners" :route="route('admin.bm.banner.index')"
+                    active="banner-management" :page_slug="$active" />
+
                 <x-backend.navlink type="dropdown" icon="gamepad-directional" name="Game Management" :page_slug="$active"
                     :items="[
                         [

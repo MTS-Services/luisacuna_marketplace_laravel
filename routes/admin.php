@@ -11,6 +11,7 @@ use App\Http\Controllers\Backend\Admin\UserManagement\UserController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
+use App\Http\Controllers\Backend\Admin\BannerManagement\BannerController;
 use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\GameManagement\RarityController;
 use App\Http\Controllers\Backend\Admin\OfferManagement\OfferController;
@@ -99,6 +100,18 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
         });
 
     });
+
+    // Banner 
+
+    route::group(['prefix' => 'banner-management', 'as' => 'bm.'], function () {
+        Route::controller(BannerController::class)->name('banner.')->prefix('banner')->group(function (){
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/view/{id}', 'show')->name('view');
+            Route::get('/trash', 'trash')->name('trash');
+        });
+    }); 
 
     // Rank
     Route::group(['prefix' => 'reward-management', 'as' => 'rm.'], function () {
