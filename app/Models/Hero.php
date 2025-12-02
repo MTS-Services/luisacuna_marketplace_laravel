@@ -1,7 +1,8 @@
 <?php
  
 namespace App\Models;
- 
+
+use App\Enums\HeroStatus;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -29,7 +30,7 @@ class Hero extends AuditBaseModel implements Auditable
     ];
  
     protected $casts = [
-        //
+        'status' => HeroStatus::class,
     ];
  
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
