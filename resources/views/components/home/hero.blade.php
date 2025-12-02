@@ -4,7 +4,6 @@
 
 
 
-
 @if ( $hero ==null )
     <section class=" relative py-20 overflow-hidden">
         <div class="absolute inset-0 z-0 bg-linear-to-r from-purple-950/50 via-text-white to-purple-950/50">
@@ -44,21 +43,21 @@
         </div>
     </section>
 @else
-    <section class=" relative  overflow-hidden bg-cover bg-center " style="background-image: url('{{ asset('assets/images/banner.jpg') }}')">
+    <section class=" relative  overflow-hidden bg-cover bg-center " style="background-image: url('{{ storage_url($hero->image) }}')">
         <div class="bg-[#0f002978] py-30 bg-opacity-0 relative z-10">
             <div
                 class="container py-30 relative z-10 align-left px-0 w-100vw">
 
-                <h1 class="text-5xl md:text-6xl font-semibold mb-6 text-white align-left">{{ __('Finish Your Brainrot Set') }}</h1>
+                <h1 class="text-5xl md:text-6xl font-semibold mb-6 text-white align-left">{{$hero->title }}</h1>
                 <p class="text-xl text-white mb-15 max-w-2xl align-left">
-                    {{ __('Find exclusive drops and limited sets in the biggest Brainrot marketplace. Complete your collection and own the movement before it’s gone.') }}
+                    {{$hero->content }}
                 </p>
 
                 <div class="flex flex-col md:flex-row gap-4 justify-start">
                     <div>
-                        <x-ui.button class="py-2! px-3!" href="#popular-games" :wire="false">
+                        <x-ui.button class="py-2! px-3!" href="{{ $hero->action_url }}" :wire="false" :target="$hero->target">
                             
-                            {{ __('Shop Now') }}
+                            {{ $hero->action_title }}
                         </x-ui.button>
                     </div>
                 </div>
