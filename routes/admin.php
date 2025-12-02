@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Backend\Admin\GameManagement\TagController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Admin\AuditingController;
 use App\Http\Controllers\Backend\Admin\Settings\CurrencyController;
@@ -62,6 +63,13 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/trash', 'trash')->name('trash');
         });
         Route::controller(PlatformController::class)->name('platform.')->prefix('platform')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/view/{id}', 'show')->name('view');
+            Route::get('/trash', 'trash')->name('trash');
+        });
+        Route::controller(TagController::class)->name('tag.')->prefix('tag')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
