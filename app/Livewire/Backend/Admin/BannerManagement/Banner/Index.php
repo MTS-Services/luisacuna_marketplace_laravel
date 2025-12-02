@@ -3,95 +3,67 @@
 namespace App\Livewire\Backend\Admin\BannerManagement\Banner;
 
 use App\Enums\HeroStatus;
+use App\Livewire\Forms\BannerForm;
+use App\Models\Hero;
 use App\Services\HeroService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Index extends Component
 {
-    use WithDataTable, WithNotification;
-    public $statusFilter = '';
-    public $showDeleteModal = false;
-    public $deleteCategoryId = null;
-    public $bulkAction = '';
-    public $showBulkActionModal = false;
-    public $deleteId = null;
+    use WithDataTable, WithNotification, WithFileUploads;
 
+
+    public BannerForm $form;
     protected HeroService $heroService;
+    public ?string $existingFile = null;
+    public Hero $data;
     public function boot(HeroService $heroService)
     {
         $this->heroService = $heroService;
     }
     public function render()
     {
-        $datas  = $this->heroService->getPaginatedData();
-         $datas->load('creater_admin');
+        $data = $this->heroService->getFristData();
+        
+      
+        $this->data = $data;
 
-        $columns = [
-          
-              [
-                'key' => 'banner_image',
-                'label' => 'Banner Image',
-                'format' => function ($data) {
-                    return '<img src="' .storage_url($data->banner_image ). '" alt="' . $data->title . '" class="w-10 h-10 rounded-full object-cover shadow-sm">';
+        $this->existingFile = $data->image;
 
-                }
-            ],
-            [
-                'key' => 'title',
-                'label' => 'Title',
-                'sortable' => true
-            ],
-            [
-                'key' => 'banner_content',
-                'label' => 'Content',
-                'sortable' => true
-            ],
-            [
-                'key' => 'status',
-                'label' => 'Status',
-                'sortable' => true,
-                'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
-                        $data->status->label() .
-                        '</span>';
-                }
-            ],
-            [
-                'key' => 'created_at',
-                'label' => 'Created',
-                'sortable' => true,
-                'format' => function ($data) {
-                    return $data->created_at_formatted;
-                }
-            ],
-            [
-                'key' => 'created_by',
-                'label' => 'Created By',
-                'format' => function ($data) {
-                    return $data->creater_admin?->name ?? 'System';
-                }
-            ],
-        ];
-
-        $actions = [
-            ['key' => 'id', 'label' => 'View', 'route' => 'admin.bm.banner.view', 'encrypt' => true],
-            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.bm.banner.edit', 'encrypt' => true],
-            ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete'],
-        ];
-
-        $bulkActions = [
-            ['value' => 'delete', 'label' => 'Delete'],
-            ['value' => 'active', 'label' => 'Activate'],
-            ['value' => 'inactive', 'label' => 'Inactive'],
-        ];
+        $this->form->setData($data);
         return view('livewire.backend.admin.banner-management.banner.index', [
-            'datas' => $datas,
-            'columns' => $columns,
-            'actions' => $actions,
-            'bulkActions' => $bulkActions,
             'statuses' => HeroStatus::options(),
         ]);
+    }
+    public function save()
+    {
+        $data = $this->form->validate();
+
+        try {
+            $data['updated_by'] = admin()->id;
+
+
+            $this->data = $this->heroService->updateData($this->data->id, $data);
+
+            $this->success(__('Banner updated successfully.'));
+
+        } catch (\Exception $e) {
+
+            Log::error('Error updating Banner: ' . $e->getMessage());
+            $this->error(__('An error occurred while updating the Banner.'. $e->getMessage()));
+        }
+    }
+
+    public function resetForm()
+    {
+         $this->form->reset();
+      
+        $this->form->setData($this->data);
+        $this->existingFile = $this->data->image;
+       
     }
 }

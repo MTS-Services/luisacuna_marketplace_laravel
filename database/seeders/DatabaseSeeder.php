@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use Illuminate\Database\Seeder;
+use ParagonIE\Sodium\Core\Curve25519\H;
 
 class DatabaseSeeder extends Seeder
 {
@@ -57,7 +58,7 @@ class DatabaseSeeder extends Seeder
             DeliveryMethodSeeder::class,
             RaritySeeder::class,
             TypeSeeder::class,
-
+            HeroSeeder::class,
             ProductSeeder::class,
         ]);
     }
