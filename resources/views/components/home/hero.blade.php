@@ -55,7 +55,7 @@
 
                 <div class="flex flex-col md:flex-row gap-4 justify-start">
                     <div>
-                        <x-ui.button class="py-2! px-3!" href="{{ $hero->action_url }}" :wire="false" :target="$hero->action_target">
+                        <x-ui.button class="py-2! px-3!" href="{{ $hero->action_url }}" :wire="false" :target="$hero->target">
                             
                             {{ $hero->action_title }}
                         </x-ui.button>
