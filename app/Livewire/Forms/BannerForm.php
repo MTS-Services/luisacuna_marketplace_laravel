@@ -41,6 +41,7 @@ class BannerForm extends Form
         $this->action_url = $data->action_url ?? null;
         $this->target = $data->target ?? null;
         $this->status = $data->status->value ?? null;
+        $this->remove_file = false;
     }
 
   public function reset(...$properties): void

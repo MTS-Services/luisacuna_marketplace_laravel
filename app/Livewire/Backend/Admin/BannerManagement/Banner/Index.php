@@ -35,6 +35,8 @@ class Index extends Component
         $this->existingFile = $data->image;
 
         $this->form->setData($data);
+
+        
         return view('livewire.backend.admin.banner-management.banner.index', [
             'statuses' => HeroStatus::options(),
         ]);

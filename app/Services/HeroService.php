@@ -68,11 +68,15 @@ class HeroService
                 return null;
             }
 
+            
                 $oldData = $model->getAttributes();
                 $newData = $data;
+
                 // --- 1. Single Avatar Handling ---
                 $oldImagePath = Arr::get($oldData, 'image');
                 $uploadedImage = Arr::get($data, 'image');
+
+                
                 if ($uploadedImage instanceof UploadedFile) {
                     // Delete old file permanently (File deletion is non-reversible)
                     if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
@@ -90,9 +94,10 @@ class HeroService
                     }
                     $newData['image'] = null;
                 }
+                
                 // Cleanup temporary/file object keys
                 if (!$newData['remove_file'] && !$newSingleImagePath) {
-                    $newData['image'] = $oldAvatarPath ?? null;
+                    $newData['image'] = $oldImagePath ?? null;
                 }
                 unset($newData['remove_file']);
 
