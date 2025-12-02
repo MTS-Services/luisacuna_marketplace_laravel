@@ -54,7 +54,7 @@ class DatabaseSeeder extends Seeder
             AchievementSeeder::class,
 
             DeliveryMethodSeeder::class,
-
+            HeroSeeder::class,
             ProductSeeder::class,
             GameConfigSeeder::class,
         ]);
