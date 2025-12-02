@@ -46,9 +46,12 @@
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('Name') }}</p>
 
-                                <p class="text-slate-400 text-lg font-bold"
-                                    style="color: {{ $data->text_color }} !important; background-color: {{ $data->bg_color }} !important">
-                                    {{ $data->name }}</p>
+                                <p class="text-slate-400 text-lg font-bold">
+                                    <span class="px-2 py-1 rounded-xl"
+                                        style="color: {{ $data->text_color }} !important; background-color: {{ $data->bg_color }} !important">
+                                        {{ $data->name }}
+                                    </span>
+                                </p>
                             </div>
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('STATUS') }}</p>
