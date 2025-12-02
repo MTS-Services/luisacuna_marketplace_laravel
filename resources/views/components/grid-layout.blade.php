@@ -44,23 +44,16 @@
                             </span>
                         </div>
                     </div>
-                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex" wire:model.live="selectedDevice" wire:change="serachFilter">
-                        <option value="">{{ __('Device') }}</option>
+                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex" wire:model.live="selectedPlatform" wire:change="serachFilter">
+                        <option value="">{{ __('Platform') }}</option>
                         <option value="">Device 1 </option>
                         <option value="">Device 2</option>
                     </x-ui.select>
 
-                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex" wire:model.live="selectedAccountType" wire:change="serachFilter">
-                        <option value="">{{ __('Account type') }}</option>
-                          <option value="">Type 1 </option>
-                        <option value="">Type 2</option>
-                    </x-ui.select>
-
-                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex" wire:model.live="selectedPrice" wire:change="serachFilter">
-                        <option value="">{{ __('Price') }}</option>
-                        <option value="">{{ __('1 -100 $') }}</option>
-                        <option value="">{{ __('101 -200 $') }}</option>
-                    </x-ui.select>
+                    <div class="flex flex-nowrap gap-5 w-auto">
+                        <x-ui.input type="text" placeholder="Min Price" class="pl-5 hidden md:flex w-auto" />
+                        <x-ui.input type="text" placeholder="max Price" class="pl-5 hidden md:flex w-auto" />
+                    </div>
 
                     <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex" wire:model.live="selectedDeliveryTime" wire:change="serachFilter">
                         <option value="">{{ __('Select Delivery Time') }}</option>
@@ -85,7 +78,7 @@
                         <span class="group-hover:text-white transition-color duration-300"
                             :class="{ 'text-white': filter }">{{ __('Filter') }}</span>
                     </button>
-
+{{-- This filter for mobile Menu --}}
                     <div x-show="filter"
                         class="glass-card bg-bg-primary/50 text-text-white p-6 rounded-lg w-full absolute top-16 right-0 z-10 md:hidden">
                         <!-- Header -->
@@ -192,6 +185,7 @@
                             </x-ui.button>
                         </div>
                     </div>
+{{-- End of Filter --}}
                 </div>
 
 
@@ -257,13 +251,10 @@
                 <div class="gap-3 justify-end hidden md:flex">
                     
                     <button
-                        class="px-4 py-2 border border-green text-green rounded-full text-sm hover:bg-green hover:text-white transition">{{ __('● Online Seller') }}</button>
+                        class="px-4 py-2 border border-green text-green rounded-full text-sm hover:bg-green hover:text-white transition">{{ __('● Online Seller') }}
+                    </button>
 
-                    <button class="px-5 py-2 rounded-full bg-bg-primary text-text-white font-semibold">Instant
-                        delivery</button>
-                         <x-ui.button wire:click="changeView"  class="py-2! px-4! w-auto!" variant="secondary">
-                                {{ __('Change layout') }}
-                            </x-ui.button>
+                
                 </div>
             </div>
 

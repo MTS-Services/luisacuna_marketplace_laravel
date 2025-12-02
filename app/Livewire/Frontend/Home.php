@@ -2,9 +2,11 @@
 
 namespace App\Livewire\Frontend;
 
+use App\Models\Tag;
 use Livewire\Component;
 use App\Services\GameService;
 use App\Services\HeroService;
+use App\Services\TagService;
 
 class Home extends Component
 {
@@ -22,8 +24,10 @@ class Home extends Component
 
     protected GameService $gameService;
     protected HeroService $heroService;
-    public function boot(GameService $gameService, HeroService $heroService)
+    protected TagService $tagService;
+    public function boot(GameService $gameService, HeroService $heroService, TagService $tagService)
     {
+        $this->tagService = $tagService;
         $this->gameService = $gameService;
         $this->heroService = $heroService;
     }
@@ -39,10 +43,14 @@ class Home extends Component
 
     public function render()
     {
+        
         $games = $this->gameService->getAllDatas();
         $hero = $this->heroService->getFirstActiveData();
 
+        $tag = $this->tagService->findData('popular', 'slug');
       
+        $games = $tag->games()->latest()->take(6)->with('categories')->get();
+     
       
         return view('livewire.frontend.home', [
             'games' => $games,

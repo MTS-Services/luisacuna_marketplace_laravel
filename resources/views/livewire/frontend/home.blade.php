@@ -105,7 +105,7 @@
                 <!-- Game Card 1 -->
                 @foreach ($games as $game)
                     <div class="swiper-slide">
-                        <x-currency-card :data="$game" />
+                        <x-game-card :data="$game" />
                     </div>
                     {{-- <div
                         class="bg-bg-primary rounded-lg p-8 text-align-center transition-all ease-[0.3s] backdrop-filter-blur-[10px]">
