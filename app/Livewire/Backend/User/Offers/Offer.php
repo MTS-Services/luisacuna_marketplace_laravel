@@ -2,31 +2,22 @@
 
 namespace App\Livewire\Backend\User\Offers;
 
-
 use App\Services\CategoryService;
 use App\Services\GameService;
 use Livewire\Component;
 
 class Offer extends Component
 {
-
     public $step = 1;
     public $selectedCategory = null;
     public $selectedCategoryId = null;
     public $categoryGames = [];
     public $selectedGame = null;
-    public $selectedGameData = null; // Game এর full data with relations
+    public $selectedGameData = null;
     
-    // Dynamic relational data
-    public $servers = [];
-    public $factions = [];
-    public $deliveryMethods = [];
-    
-    // Selected values
-    public $selectedServer = null;
-    public $selectedFaction = null;
-    public $selectedDeliveryMethod = null;
-
+    // Dynamic configuration fields
+    public $gameConfigs = [];
+    public $configValues = [];
 
     protected CategoryService $categoryService;
     protected GameService $gameService;
@@ -37,43 +28,34 @@ class Offer extends Component
         $this->gameService = $gameService;
     }
 
-    // Category select korar function
     public function selectCategory($categoryId, $categoryName)
     {
         $this->selectedCategoryId = $categoryId;
         $this->selectedCategory = $categoryName;
 
         $category = $this->categoryService->findData($categoryId);
-
         $this->categoryGames = $category->games ?? [];
-
 
         $this->step = 2;
     }
 
-    
     public function updatedSelectedGame($gameId)
     {
         // Reset previous selections
-        $this->selectedServer = null;
-        $this->selectedFaction = null;
-        $this->selectedDeliveryMethod = null;
-        $game  = $this->gameService->findData($gameId);
+        $this->configValues = [];
+        if ($gameId) {
 
-        $game->load( 'platforms', 'rarities');
-        if ($gameId && ( !empty($game->platforms) || !empty($game->rarities))) {
-            $this->selectedGameData =  $game;
+            $game = $this->gameService->findData($gameId);
+
+            $game->load('gameConfig');
+
+           $this->gameConfigs = $game->gameConfig;
+
+            $this->selectedGameData = $game;
             
-            if ($this->selectedGameData) {
-                $this->servers = $this->selectedGameData->servers ?? [];
-                $this->factions = $this->selectedGameData->factions ?? [];
-                $this->deliveryMethods = $this->selectedGameData->deliveryMethods ?? [];
-            }
         } else {
             $this->selectedGameData = null;
-            $this->servers = [];
-            $this->factions = [];
-            $this->deliveryMethods = [];
+            $this->gameConfigs = [];
         }
     }
 
@@ -86,22 +68,19 @@ class Offer extends Component
         $this->step = 3;
     }
 
-
-
-
-
-
     public function submitOffer()
     {
-        $this->validate([
+        // Dynamic validation rules based on game configs
+        $rules = [
             'selectedGame' => 'required',
-            'selectedServer' => 'required',
-            'selectedFaction' => 'required',
-            'selectedDeliveryMethod' => 'required',
-        ]);
+        ];
+        
+        foreach ($this->gameConfigs as $config) {
+            $rules['configValues.' . $config->slug] = 'required';
+        }
+        
+        $this->validate($rules);
 
-        // Ekhane database e save korbe
-        // Offer::create([...]);
 
         session()->flash('message', 'Offer successfully created!');
         $this->reset();
@@ -113,9 +92,10 @@ class Offer extends Component
             $this->step--;
         }
     }
+
     public function render()
     {
-        $categories = $this->categoryService->getAllDatas();
+        $categories = $this->categoryService->getDatas();
         return view('livewire.backend.user.offers.offer', [
             'categories' => $categories
         ]);

@@ -10,8 +10,7 @@
                             <p class="text-text-white">{{ __('Balance') }}</p>
                             <h2 class="text-text-white text-2xl font-semibold mt-2">$12.00</h2>
                             <p class="text-text-white mt-2 text-sm md:text-base">
-                                {{ __('Withdrawals require $10 in completed
-                                                                sales') }}
+                                {{ __('Withdrawals require $10 in completed sales') }}
                             </p>
                             <a href="#" class="text-pink-500 mt-2 inline-block">{{ __('Learn more') }}</a>
                         </div>
