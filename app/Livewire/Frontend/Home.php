@@ -42,7 +42,7 @@ class Home extends Component
         $games = $this->gameService->getAllDatas();
         $hero = $this->heroService->getFirstActiveData();
 
-        
+      
       
         return view('livewire.frontend.home', [
             'games' => $games,
