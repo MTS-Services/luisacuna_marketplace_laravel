@@ -24,7 +24,7 @@ class HeroSeeder extends Seeder
             'action_url' => '/shop',
             'image' => 'heroes/hero1.jpg',
             'target' => '_self',
-            'status' => 'active',
+            'status' => 'inactive',
         ]);
 
     }
