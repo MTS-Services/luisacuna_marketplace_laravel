@@ -16,12 +16,13 @@
     <div class="glass-card rounded-2xl p-6 mb-6">
         <form wire:submit="save">
 
-               <div>
+            <div>
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                     {{ __('Icon') }}
                 </h3>
                 <x-ui.file-input wire:model="form.icon" label="Profile Picture" accept="image/*" :error="$errors->first('form.icon')"
-                        hint="Upload a profile picture (Max: 1MB) height: 200px width: 200px" :existingFiles="$existingFile" removeModel="form.remove_file" />
+                    hint="Upload a profile picture (Max: 1MB) height: 200px width: 200px" :existingFiles="$existingFile"
+                    removeModel="form.remove_file" />
 
                 @error('form.icon')
                     <span class="text-red-600 text-sm mt-1 block">{{ $message }}</span>
@@ -64,6 +65,17 @@
                     </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.status')" />
                 </div>
+                {{-- Layout --}}
+                <div class="w-full">
+                    <x-ui.label value="Layout" class="mb-1" />
+                    <x-ui.select wire:model="form.layout">
+
+                        @foreach ($layouts as $layout)
+                            <option value="{{ $layout['value'] }}">{{ $layout['label'] }}</option>
+                        @endforeach
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.layout')" />
+                </div>
 
 
             </div>
@@ -78,8 +90,7 @@
             </div>
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
-                <x-ui.button wire:click.prevent="resetForm" type="danger" class="w-auto! py-2!"
-                    variant="tertiary">
+                <x-ui.button wire:click.prevent="resetForm" type="danger" class="w-auto! py-2!" variant="tertiary">
                     <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
                     {{ __('Reset') }}
                 </x-ui.button>
@@ -91,7 +102,7 @@
             </div>
         </form>
     </div>
-        @push('scripts')
+    @push('scripts')
         {{-- Auto slug script --}}
         <script>
             document.addEventListener('livewire:navigated', function() {
@@ -100,8 +111,8 @@
                         .toLowerCase()
                         .trim()
                         .replace(/\s+/g, '-')
-                        .replace(/[^a-z0-9]+/g, '-')    
-                        .replace(/^-+|-+$/g, '');  
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/^-+|-+$/g, '');
                     document.getElementById('slug').value = slug;
 
                     document.getElementById('slug').dispatchEvent(new Event('input'));

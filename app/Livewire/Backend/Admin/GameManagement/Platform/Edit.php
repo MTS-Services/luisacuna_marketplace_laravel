@@ -3,87 +3,84 @@
 namespace App\Livewire\Backend\Admin\GameManagement\Platform;
 
 use App\Enums\PlatformStatus;
-use App\Livewire\Forms\PlatformForm;
+use App\Livewire\Forms\Backend\Admin\GameManagement\PlatformForm;
 use App\Models\Platform;
 use App\Services\PlatformService;
 use App\Traits\Livewire\WithNotification;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class Edit extends Component
 {
-
     use WithNotification, WithFileUploads;
+
     public PlatformForm $form;
-    public ?string $existingFile;
     public Platform $data;
     protected PlatformService $service;
-
-    public function boot(PlatformService $service)
+    public $existingFile;
+    /**
+     * Inject the CurrencyService via the boot method.
+     */
+    public function boot(PlatformService $service): void
     {
         $this->service = $service;
     }
-    public function mount(Platform $data)
+
+    /**
+     * Initialize default form values.
+     */
+    public function mount(Platform $data): void
     {
+        $this->form->setData($data);
         $this->data = $data;
         $this->existingFile = $data->icon;
-        $this->form->setData($data);
-
-    }
-    public function render()
-    {
-        return view(
-            'livewire.backend.admin.game-management.platform.edit',
-            [
-                'statuses' => PlatformStatus::options(),
-            ]
-        );
     }
 
     /**
-     * Handle form submission to update the language.
+     * Render the component view.
+     */
+    public function render()
+    {
+        return view('livewire.backend.admin.game-management.platform.edit', [
+            'statuses' => PlatformStatus::options(),
+        ]);
+    }
+
+    /**
+     * Handle form submission to create a new currency.
      */
     public function save()
     {
         $data = $this->form->validate();
-        try {
-          
-            $data['updated_by'] = admin()->id;
 
+        try {
+            $data['updated_by'] = admin()->id;
             $this->service->updateData($this->data->id, $data);
 
             $this->success('Data updated successfully.');
-
             return $this->redirect(route('admin.gm.platform.index'), navigate: true);
         } catch (\Exception $e) {
-
-            Log::error("Faild to Update Data". $e->getMessage());
-            
-            $this->error('Failed to update data');
+            $this->error('Failed to update data: ' . $e->getMessage());
         }
     }
 
     /**
-     * Cancel editing and redirect back to index.
+     * Cancel creation and redirect back to index.
      */
-    public function cancel()
+    public function cancel(): void
     {
-        // $this->form->reset();
-        // $this->form->resetValidation();
+        $this->form->reset();
 
-        return $this->redirect(route('admin.as.currency.index'), navigate: true);
-
+        $this->redirect(route('admin.gm.platform.index'), navigate: true);
     }
 
-       public function resetForm(): void
+    public function resetForm()
     {
         $this->form->reset();
         $this->form->setData($this->data);
-        // $this->existingFile = $this->data->icon;
-        $this->existingFile = $this->data->avatar;
-    
+
+        // Reset existing files display
+        $this->existingFile = $this->data->icon;
         $this->dispatch('file-input-reset');
     }
 }

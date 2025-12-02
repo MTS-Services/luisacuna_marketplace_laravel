@@ -1,7 +1,6 @@
-<?php 
+<?php
 
 namespace App\Services;
-
 
 use App\Repositories\Contracts\PlatformRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -15,17 +14,15 @@ use App\Enums\PlatformStatus;
 use App\Models\Platform;
 
 class PlatformService
-{   
-    public function __construct(
+{
+      public function __construct(
         protected PlatformRepositoryInterface $interface,
         protected CreateAction $createAction,
         protected UpdateAction $updateAction,
         protected DeleteAction $deleteAction,
         protected RestoreAction $restoreAction,
         protected BulkAction $bulkAction
-        )
-    {
-    }   
+    ) {}
 
     /* ================== ================== ==================
     *                          Find Methods
@@ -151,6 +148,4 @@ class PlatformService
     {
         return $this->interface->getInactive($sortField, $order);
     }
-
-
 }

@@ -23,11 +23,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('category_id')->index();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
-            $table->unsignedBigInteger('platform_id')->index()->nullable();
-            $table->foreign('platform_id')->references('id')->on('platforms')->onDelete('cascade')->onUpdate('cascade');
-            $table->unsignedBigInteger('server_id')->index()->nullable();
-            $table->foreign('server_id')->references('id')->on('servers')->onDelete('cascade')->onUpdate('cascade');
-
+   
             $table->string('slug')->unique();
             $table->string('name');
             $table->text('description')->nullable();
