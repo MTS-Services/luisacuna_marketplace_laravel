@@ -6,15 +6,13 @@ use App\Models\Platform;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
-interface PlatformRepositoryInterface
-{
+interface PlatformRepositoryInterface {
+
     /* ================== ================== ==================
     *                      Find Methods
     * ================== ================== ================== */
 
     public function all(string $sortField = 'created_at', $order = 'desc'): Collection;
-
-    public function getQuery(): object;
 
     public function find($column_value, string $column_name = 'id', bool $trashed = false): ?Platform;
 

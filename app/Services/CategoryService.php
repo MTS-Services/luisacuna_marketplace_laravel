@@ -8,6 +8,7 @@ use App\Actions\Game\Category\DeleteAction;
 use App\Actions\Game\Category\RestoreAction;
 use App\Actions\Game\Category\UpdateAction;
 use App\Enums\CategoryStatus;
+use App\Enums\CategoryLayout;
 use App\Models\Category;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -22,61 +23,43 @@ class CategoryService
         protected RestoreAction $restoreAction,
         protected CreateAction $createAction,
         protected UpdateAction $updateAction,
-    ) {}
-
-
-
-    /* ================== ================== ==================
-    *                          Find Methods 
-    * ================== ================== ================== */
-
-
-
-    public function getAllDatas($sortField = 'created_at', $order = 'desc'): Collection
-    {
-       
-        return $this->interface->all($sortField, $order);
+    ) {
     }
 
-    public function getActiveDatas(string $sortField = 'created_at', $order = 'desc', $status ='active'): Collection
+    public function getDatas($sortField = 'created_at', $order = 'desc', $status = false, $layout = false, $trashed = false): Collection
     {
-        return $this->interface->active($sortField , $order, $status);
+        return $this->interface->getData($sortField, $order, $status, $layout, $trashed);
     }
 
-    public function findData($column_value, string $column_name = 'id'): ?Category
+    public function findData($column_value, string $column_name = 'id', $status = false, $layout = false, $trashed = false): ?Category
     {
-        return $this->interface->find($column_value, $column_name);
+        return $this->interface->findData($column_value, $column_name, $status, $layout, $trashed);
     }
 
-    public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function getPaginatedData(int $perPage = 15, array $filters = [], $sortField = 'created_at', $order = 'desc', $status = false, $layout = false, $trashed = false): LengthAwarePaginator
     {
-        return $this->interface->paginate($perPage, $filters);
+        return $this->interface->getPaginatedData($perPage, $filters, $sortField, $order, $status, $layout, $trashed);
     }
 
-    public function getTrashedPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function searchData(string $query, $sortField = 'created_at', $order = 'desc', $status = false, $layout = false, $trashed = false): Collection
     {
-        return $this->interface->trashPaginate($perPage, $filters);
+        return $this->interface->searchData($query, $sortField, $order, $status, $layout, $trashed);
     }
 
-    public function searchData(string $query, $sortField = 'created_at', $order = 'desc'): Collection
+    public function dataExists(int $id, $status = false, $layout = false, $trashed = false): bool
     {
-        return $this->interface->search($query, $sortField, $order);
+        return $this->interface->dataExists($id, $status, $layout, $trashed);
     }
 
-    public function dataExists(int $id): bool
+    public function getDataCount(array $filters = [], $status = false, $layout = false, $trashed = false): int
     {
-        return $this->interface->exists($id);
-    }
-
-    public function getDataCount(array $filters = []): int
-    {
-        return $this->interface->count($filters);
+        return $this->interface->getDataCount($filters, $status, $layout, $trashed);
     }
 
 
     /* ================== ================== ==================
-    *                   Action Executions
-    * ================== ================== ================== */
+     *                   Action Executions
+     * ================== ================== ================== */
 
     public function createData(array $data): Category
     {
@@ -115,6 +98,17 @@ class CategoryService
             'updated_by' => $actionerId,
         ]);
     }
+    public function updateLayoutData(int $id, CategoryLayout $layout, ?int $actionerId = null): Category
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
+
+        return $this->updateAction->execute($id, [
+            'layout' => $layout->value,
+            'updated_by' => $actionerId,
+        ]);
+    }
     public function bulkRestoreData(array $ids, ?int $actionerId = null): int
     {
         if ($actionerId == null) {
@@ -143,24 +137,15 @@ class CategoryService
         if ($actionerId == null) {
             $actionerId = admin()->id;
         }
-      
+
         return $this->bulkAction->execute(ids: $ids, action: 'status', status: $status->value, actionerId: $actionerId);
     }
-    /* ================== ================== ==================
-    *                   Accessors (optionals)
-    * ================== ================== ================== */
+    public function bulkUpdateLayout(array $ids, CategoryLayout $layout, ?int $actionerId = null): int
+    {
+        if ($actionerId == null) {
+            $actionerId = admin()->id;
+        }
 
-    public function getActiveData($sortField = 'created_at', $order = 'desc'): Collection
-    {
-        return $this->interface->getActive($sortField, $order);
-    }
-
-    public function getInactiveData($sortField = 'created_at', $order = 'desc'): Collection
-    {
-        return $this->interface->getInactive($sortField, $order);
-    }
-    public function getSuspendedData($sortField = 'created_at', $order = 'desc'): Collection
-    {
-        return $this->interface->getSuspended($sortField, $order);
+        return $this->bulkAction->execute(ids: $ids, action: 'layout', status: $layout->value, actionerId: $actionerId);
     }
 }

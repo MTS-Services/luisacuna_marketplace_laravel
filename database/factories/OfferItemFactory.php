@@ -20,7 +20,7 @@ class OfferItemFactory extends Factory
             'image' => 'https://placehold.co/400x400',
 
             'delivery_time' => $this->faker->dateTimeBetween('+1 day', '+7 days'),
-            'delivery_method_id' => DeliveryMethod::factory(),
+            // 'delivery_method_id' => DeliveryMethod::factory(),
 
             'quantity' => $this->faker->numberBetween(1, 10),
             'terms_condition' => $this->faker->boolean(),

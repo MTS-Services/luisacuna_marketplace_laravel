@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms\Backend\Admin\GameManagement;
 
+use App\Enums\CategoryLayout;
 use App\Enums\CategoryStatus;
 use App\Models\Category;
 use Livewire\Attributes\Locked;
@@ -16,6 +17,7 @@ class CategoryForm extends Form
     public string $name;
     public string $slug;
     public string $status;
+    public string $layout;
     public ?string $meta_title;
     public ?string $meta_description;
 
@@ -35,6 +37,7 @@ class CategoryForm extends Form
             'name' => 'required|string|max:255',
             'slug' => $slugRule,
             'status' => 'required|string|in:' . implode(',', array_column(CategoryStatus::cases(), 'value')),
+            'layout' => 'required|string|in:' . implode(',', array_column(CategoryLayout::cases(), 'value')),
             'meta_title' => 'nullable|string',
             'meta_description' => 'nullable|string',
             'icon' => 'nullable|image|max:1024|dimensions:max_width=200,max_height=200',
@@ -48,6 +51,7 @@ class CategoryForm extends Form
         $this->name = $data->name;
         $this->slug = $data->slug;
         $this->status = $data->status->value;
+        $this->layout = $data->layout->value;
         $this->meta_title = $data->meta_title;
         $this->meta_description = $data->meta_description;
         // $this->icon = $data->icon;
@@ -59,6 +63,7 @@ class CategoryForm extends Form
         $this->name = '';
         $this->slug = '';
         $this->status = CategoryStatus::ACTIVE->value;
+        $this->layout = CategoryLayout::LIST_GRID->value;
         $this->meta_title = '';
         $this->meta_description = '';
         $this->icon = null;

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\GameDeliveryMethod;
 use App\Enums\GameStatus;
 use App\Traits\AuditColumnsTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,6 +21,8 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->string('logo')->nullable();
             $table->string('status')->default(GameStatus::ACTIVE)->index();
+            $table->string('delivery_method')->default(GameDeliveryMethod::INSTANT_DELIVERY)->index();
+            $table->string('banner')->nullable();
 
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();

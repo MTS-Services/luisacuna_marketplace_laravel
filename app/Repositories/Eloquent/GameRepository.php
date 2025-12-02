@@ -4,18 +4,14 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Game;
 use App\Repositories\Contracts\GameRepositoryInterface;
-use App\Repositories\Contracts\PlatformRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
-use App\Models\GamePlatform;
 
 class GameRepository implements GameRepositoryInterface
 {
     public function __construct(
         protected Game $model,
-        protected PlatformRepositoryInterface $platformInterface,
-        protected GamePlatform $gamePlatforms,
     ) {}
 
 
