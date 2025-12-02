@@ -9,10 +9,12 @@ use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use App\Models\Type;
+use App\Traits\HasTranslations;
+use Illuminate\Testing\Fluent\Concerns\Has;
 
 class Game extends AuditBaseModel implements Auditable
 {
-    use  AuditableTrait, Searchable;
+    use  AuditableTrait, Searchable, HasTranslations;
     //
 
     protected $fillable = [
@@ -60,6 +62,7 @@ class Game extends AuditBaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
     //
+
 
     public function categories()
     {
@@ -121,8 +124,28 @@ class Game extends AuditBaseModel implements Auditable
         );
     }
 
+    public function gameTranslations()
+    {
+        return $this->hasMany(GameTranslation::class, 'game_id', 'id');
+    }
 
 
+  public function getTranslationConfig(): array
+    {
+        return [
+            'fields' => ['name', 'description', 'meta_title', 'meta_description', 'meta_keywords'],
+            'relation' => 'gameTranslations',
+            'model' => GameTranslation::class,
+            'foreign_key' => 'game_id',
+            'field_mapping' => [
+                'name' => 'name',
+                'description' => 'description',
+                'meta_title' => 'meta_title',
+                'meta_description' => 'meta_description',
+                'meta_keywords' => 'meta_keywords',
+            ],
+        ];
+    }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
             Query Scopes

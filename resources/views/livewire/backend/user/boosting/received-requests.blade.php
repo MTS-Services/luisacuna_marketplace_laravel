@@ -9,9 +9,9 @@
                 <div class="relative w-full sm:w-40 lg:w-44">
                     <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
                         <option value="">{{ __('All Game') }}</option>
-                        <option value="game1">{{ __('Game 1') }}</option>
-                        <option value="game2">{{ __('Game 2') }}</option>
-                        <option value="game3">{{ __('Game 3') }}</option>
+                        @foreach ($games as $game)
+                            <option value="{{ $game->id }}">{{ $game->name }}</option>
+                        @endforeach
                     </x-ui.select>
                 </div>
 
@@ -26,10 +26,12 @@
                 </div>
             </div>
             <!-- New Offer Button -->
-            <x-ui.button class="w-full sm:w-auto! py-2!">
-                <span
-                    class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Manage Subscriptions') }}</span>
-            </x-ui.button>
+            <a href="{{ route('user.subscriptions') }}">
+                <x-ui.button class="w-full sm:w-fit! py-2!">
+                    <span
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Manage Subscriptions') }}</span>
+                </x-ui.button>
+            </a>
         </div>
     </div>
     <div>

@@ -1,42 +1,9 @@
 <main class="overflow-x-hidden-hidden">
     <!-- Hero Section -->
-    <section class=" relative py-20 overflow-hidden">
-        <div class="absolute inset-0 z-0 bg-linear-to-r from-purple-950/50 via-text-white to-purple-950/50">
-            <div class="absolute top-50 -translate-y-1/2 left-0 w-32 h-32 md:w-auto md:h-auto">
-                <img src="{{ asset('assets/images/home_page/Frame 62.png') }}" alt=""
-                    class="w-full h-full object-fit">
-            </div>
 
-            <div class="absolute top-50 translate-y-[-50%] right-0 z-10 w-32 h-32 md:w-auto md:h-auto">
-                <img src="{{ asset('assets/images/home_page/Frame 61.png') }}" alt=""
-                    class="w-full h-full object-fit">
-            </div>
-        </div>
+    <x-home.hero :hero="$hero"/>
 
-        <div class="container relative z-10 text-center">
-            <h1 class="text-5xl md:text-6xl font-bold mb-6 text-text-white">{{ __('Digital Commerce') }}</h1>
-            <p class="text-xl text-text-secondary mb-8 max-w-2xl mx-auto">
-                {{ __('The most reliable platform to buy and sell high-quality digital products.') }}
-            </p>
-
-            <div class="flex flex-col md:flex-row gap-4 justify-center">
-                <div>
-                    <x-ui.button class="py-2" href="#popular-games" :wire="false">
-                        <flux:icon name="user"
-                            class="w-5 h-5 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                        {{ __('Explore Products') }}
-                    </x-ui.button>
-                </div>
-                <div>
-                    <x-ui.button class="py-2" variant='secondary'>
-                        <flux:icon name="shopping-cart"
-                            class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
-                        {{ __('Sell Now') }}
-                    </x-ui.button>
-                </div>
-            </div>
-        </div>
-    </section>
+    
     <!-- Popular Games Section -->
     <section class="py-20" id="popular-games">
         <!--<div class="flex flex-wrap justify-center gap-4 p-6">

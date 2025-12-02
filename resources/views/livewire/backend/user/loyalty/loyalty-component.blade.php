@@ -13,7 +13,7 @@
                     </div>
                 </div>
 
-                <div class="px-24">
+                <div class="px-0 2xl:px-24">
                     <div class="flex justify-center mb-6">
                         <div class="relative">
                             <div
@@ -28,11 +28,13 @@
                             </h4>
                             <div class="text-text-white text-sm">
                                 {{-- {{ $user->userPoint?->points ?? 0 . ' / ' . ($currentRank?->maximum_points === null ? $user->rank_points . '-' : $currentRank->maximum_points) }} --}}
-                                {{ $this->user->userPoint?->points ?? 0 }} / {{ $currentRank?->maximum_points === null ? ($this->user->rank_points . '-') : $currentRank->maximum_points }}
+                                {{ $this->user->userPoint?->points ?? 0 }} /
+                                {{ $currentRank?->maximum_points === null ? $this->user->rank_points . '-' : $currentRank->maximum_points }}
                             </div>
                         </div>
-                        <div class="w-70 xl:w-full mx-auto bg-white rounded-full h-2 mt-2">
-                            <div class="bg-linear-to-r from-pink-500 to-pink-600 h-2 rounded-full" style="width: {{ $progress }}%">
+                        <div class="w-full xl:max-w-full mx-auto bg-white rounded-full h-2 mt-2">
+                            <div class="bg-linear-to-r from-pink-500 to-pink-600 h-2 rounded-full"
+                                style="width: {{ $progress }}%">
                             </div>
                         </div>
                     </div>
@@ -94,7 +96,8 @@
                         <div class="flex items-center gap-4 mb-9">
                             <div
                                 class="w-20 h-20 rounded-xl bg-primary-800/50 flex items-center justify-center flex-shrink-0">
-                                <img src="{{ storage_url($achievement->icon) }}" alt="" class="w-full h-full rounded-xl">
+                                <img src="{{ storage_url($achievement->icon) }}" alt=""
+                                    class="w-full h-full rounded-xl">
                             </div>
                             <div class="flex-1">
                                 <h4 class="text-text-white font-semibold font-lato text-lg sm:text-3xl mb-1">
@@ -146,9 +149,11 @@
                 {{ __('Make your first purchase today and start tracking your journey toward exciting rewards. Each order helps you unlock new levels, bonuses, and exclusive offers. Stay motivated and see your progress grow with every step!') }}
             </p>
 
-            <x-ui.button class="sm:w-auto! py-2! mt-6 mx-auto">
-                {{ __('Browse for more') }}
-            </x-ui.button>
+            <a wire:navigate href="{{ route('home') }}" class="inline-block mx-auto">
+                <x-ui.button class="sm:w-auto! py-2! mt-6">
+                    {{ __('Browse for more') }}
+                </x-ui.button>
+            </a>
         </div>
     </div>
 </div>

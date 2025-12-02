@@ -3,7 +3,18 @@
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game Details') }}</h2>
             <div class="flex items-center gap-2">
-             
+
+                 <x-ui.button
+                            x-on:click="$dispatch('show-translation-modal', {
+                                modelId: '{{ encrypt($data->id) }}',
+                                modelType: '{{ base64_encode(\App\Models\Game::class) }}'
+                            })"
+                            variant="secondary" class="w-auto py-2! text-nowrap">
+                            <flux:icon name="arrows-pointing-out"
+                                class="w-4 h-4 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
+                            {{ __('Manage Translations') }}
+                        </x-ui.button>
+
                 <x-ui.button href="{{ route('admin.gm.game.index') }}" type='accent' class="w-auto! py-2!">
                     <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
                     {{ __('Back') }}
@@ -14,7 +25,7 @@
         <div class="bg-bg-primary rounded-2xl shadow-lg overflow-hidden border border-gray-500/20">
         <div class="px-8 py-8">
             <div class="mb-10">
-             
+
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                         <p class="text-text-white text-xs font-semibold mb-2">{{ __('Name') }}</p>

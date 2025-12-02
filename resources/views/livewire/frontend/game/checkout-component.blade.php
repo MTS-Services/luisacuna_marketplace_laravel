@@ -202,7 +202,7 @@
 
                     <!-- Credit/Debit Card -->
                     <div :class="{ 'border-blue-500': selectedPayment === 'credit_card' }"
-                        class="flex items-center justify-between gap-4 border border-zinc-500 rounded-2xl py-5 px-6 cursor-pointer"
+                        class="flex items-center justify-between gap-4 border border-zinc-700 rounded py-4 px-6 cursor-pointer"
                         @click="selectedPayment = 'credit_card'">
                         <div class="flex items-center gap-2">
                             <div class="w-12 h-5"><img src="{{ asset('assets/images/gift_cards/Visa.png') }}"
@@ -243,20 +243,20 @@
                     <!-- Credit/Debit Card Form -->
                     <div x-show="selectedPayment === 'credit_card'" class="mt-6 space-y-4">
                         <x-ui.input placeholder="{{ __('Card number*') }}"
-                            class="dark:bg-bg-black! placeholder-text-white!" />
+                            class="dark:bg-bg-black! placeholder-text-white! border-0! " />
                         <x-ui.input placeholder="{{ __('Card number*') }}"
-                            class="dark:bg-bg-black! placeholder-text-white!" />
+                            class="dark:bg-bg-black! placeholder-text-white! border-0! " />
                         <div class="flex gap-6">
                             <x-ui.input placeholder="{{ __('Valid date*') }}"
-                                class="w-full dark:bg-bg-black! placeholder-text-white!" />
+                                class="w-full dark:bg-bg-black! placeholder-text-white! border-0!" />
                             <x-ui.input placeholder="{{ __('CVC*') }}"
-                                class="w-full dark:bg-bg-black! placeholder-text-white!" />
+                                class="w-full dark:bg-bg-black! placeholder-text-white! border-0!" />
                         </div>
                     </div>
 
                     <!-- Digital Wallet -->
                     <div :class="{ 'border-blue-500': selectedPayment === 'digital_wallet' }"
-                        class="flex items-center justify-between gap-4 border border-zinc-500 rounded-2xl py-5 px-6 mt-6 cursor-pointer"
+                        class="flex items-center justify-between gap-4 border border-zinc-500 rounded py-4 px-6 mt-6 cursor-pointer"
                         @click="selectedPayment = 'digital_wallet'">
                         <div class="flex items-center gap-2">
                             <div class="w-11 h-7"><img src="{{ asset('assets/images/gift_cards/google2.png') }}"
@@ -273,14 +273,14 @@
                         <div class="flex items-center gap-4">
                             <p class="text-text-white hidden md:block">{{ __('Digital Wallet') }}</p>
 
-                            <label class="relative cursor-pointer select-none flex items-center group">
+                            <label class="relative cursor-pointer select-none flex items-center group rounded-full!">
                                 <!-- REAL RADIO (hidden but still active) -->
                                 <input type="radio" name="payment_method" value="digital_wallet"
                                     x-model="selectedPayment" class="sr-only" />
 
                                 <!-- CUSTOM CIRCLE -->
                                 <span
-                                    class="w-6 h-6 flex items-center justify-center rounded-full border border-zinc-700 transition-all duration-200 group-has-[:checked]:bg-zinc-700 group-has-[:checked]:border-zinc-700">
+                                    class="w-6 h-6 flex items-center rounded-full justify-center rounded border border-zinc-700 transition-all duration-200 group-has-[:checked]:bg-zinc-700 group-has-[:checked]:border-zinc-700">
                                     <!-- CHECK ICON -->
                                     <svg class="w-4 h-4 text-white opacity-0 group-has-[:checked]:opacity-100 transition-opacity duration-200"
                                         fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
@@ -298,7 +298,7 @@
 
                     <!-- Crypto Wallet -->
                     <div :class="{ 'border-blue-500': selectedPayment === 'crypto' }"
-                        class="flex items-center justify-between gap-4 border border-zinc-500 rounded-2xl py-5 px-6 mt-6 cursor-pointer"
+                        class="flex items-center justify-between gap-4 border border-zinc-500 rounded py-4 px-6 mt-6 cursor-pointer"
                         @click="selectedPayment = 'crypto'">
                         <div class="flex items-center gap-2">
 
@@ -369,34 +369,37 @@
                     <p class="text-text-white text-sm">{{ __('Cart Total') }}</p>
                     <p class="text-text-white text-base font-semibold">$777.07</p>
                 </div>
-                <div class="mt-8 lg:px-78 px-0">
-                    <x-ui.button href="{{ route('game.checkout', ['orderId' => 435345]) }}" class="w-auto py-3!">
-                        {{ __('$76.28 | Buy now') }}
-                    </x-ui.button>
-                </div>
+
                 <div class="mt-8">
 
 
-                <label class="relative cursor-pointer select-none flex items-center group ">
-                <!-- REAL RADIO (hidden but still active) -->
-                <input type="radio" name="payment_method" value="digital_wallet"
-                    x-model="selectedPayment" class="sr-only " />
+                    <label class="relative cursor-pointer select-none flex items-center group ">
+                        <!-- REAL RADIO (hidden but still active) -->
+                        <input type="radio" name="payment_method" value="digital_wallet" x-model="selectedPayment"
+                            class="sr-only " />
 
-                <!-- CUSTOM CIRCLE -->
-                <span
-                    class="w-6 h-6 flex items-center justify-center rounded-full border border-zinc-700 transition-all duration-200 group-has-[:checked]:bg-zinc-700 group-has-[:checked]:border-zinc-700">
-                    <!-- CHECK ICON -->
-                    <svg class="w-4 h-4 text-white opacity-0 group-has-[:checked]:opacity-100 transition-opacity duration-200"
-                        fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                        <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </span>
-                {{-- <input type="checkbox" name="" id="" class="accent-zinc-500 rounded-full"> --}}
-                <label class="text-text-white text-base px-2">
-                    {{ __('I accept the Terms of Service, Privacy Notice and Refund Policy.') }}
+                        <!-- CUSTOM CIRCLE -->
+                        <span
+                            class="w-6 h-6 flex items-center justify-center rounded-full! border border-zinc-700 transition-all duration-200 group-has-[:checked]:bg-zinc-700 group-has-[:checked]:border-zinc-700">
+                            <!-- CHECK ICON -->
+                            <svg class="w-6 h-6 text-white opacity-0 group-has-[:checked]:opacity-100 transition-opacity duration-200"
+                                fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                        {{-- <input type="checkbox" name="" id="" class="accent-zinc-500 rounded-full"> --}}
+                        <label class="text-text-white text-base px-2">
+                            {{ __('I accept the Terms of Service, Privacy Notice and Refund Policy.') }}
 
-                </label>
-                </label>
+                        </label>
+                    </label>
+                </div>
+
+
+                 <div class="mt-8 lg:px-78 px-0">
+                    <x-ui.button href="{{ route('game.checkout', ['orderId' => 435345]) }}" class="w-auto py-3!">
+                        {{ __('$76.28 | Buy now') }}
+                    </x-ui.button>
                 </div>
             </div>
         </div>

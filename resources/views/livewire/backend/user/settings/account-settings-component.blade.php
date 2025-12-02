@@ -38,18 +38,18 @@
                             {{ __('Upload image') }}
                         </label>
 
-                        <input id="imageUpload" type="file" class="hidden" name="avatarFile" accept="image/jpeg,image/png,image/heic"
-                            wire:model.live="form.avatar">
+                        <input id="imageUpload" type="file" class="hidden" name="avatar" accept="image/jpeg,image/png,image/heic"
+                            wire:model="avatar">
 
                         <span class="text-sm text-text-secondary mt-2">
                             {{ __('Must be JPEG, PNG or HEIC and cannot exceed 10MB.') }}
                         </span>
 
-                        @error('form.avatar')
+                        @error('avatar')
                             <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
                         @enderror
 
-                        <div wire:loading wire:target="form.avatar" class="text-sm text-purple-600 mt-2">
+                        <div wire:loading wire:target="avatar" class="text-sm text-purple-600 mt-2">
                             {{ __('Uploading...') }}
                         </div>
                     </div>

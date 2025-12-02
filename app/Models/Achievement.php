@@ -6,13 +6,14 @@ use App\Models\AuditBaseModel;
 use Laravel\Scout\Searchable;
 use App\Traits\AuditableTrait;
 use App\Enums\AchievementStatus;
+use App\Traits\HasTranslations;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 
 class Achievement extends AuditBaseModel implements Auditable
 {
-    use Searchable, AuditableTrait;
+    use Searchable, AuditableTrait, HasTranslations;
 
     protected $fillable = [
         'sort_order',
@@ -45,6 +46,23 @@ class Achievement extends AuditBaseModel implements Auditable
         'restored_at' => 'datetime',
     ];
 
+    /* ================================================================
+     |  Translation Configuration
+     ================================================================ */
+
+    public function getTranslationConfig(): array
+    {
+        return [
+            'fields' => ['title', 'description'],
+            'relation' => 'achievementTranslations',
+            'model' => AchievementsTranslation::class,
+            'foreign_key' => 'achievement_id',
+            'field_mapping' => [
+                'title' => 'title',
+                'description' => 'description',
+            ],
+        ];
+    }
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
@@ -57,6 +75,12 @@ class Achievement extends AuditBaseModel implements Auditable
     public function achievementType()
     {
         return $this->belongsTo(AchievementType::class, 'achievement_type_id', 'id');
+    }
+
+    public function achievementTranslations()
+    {
+
+        return $this->hasMany(AchievementsTranslation::class, 'achievement_id', 'id');
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

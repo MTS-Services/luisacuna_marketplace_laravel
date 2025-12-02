@@ -37,8 +37,10 @@ class Home extends Component
     public function render()
     {
         $games = $this->gameService->getAllDatas();
+        $hero = [];
         return view('livewire.frontend.home', [
             'games' => $games,
+            'hero' => $hero,
         ]);
     }
 }

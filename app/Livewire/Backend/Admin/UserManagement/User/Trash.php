@@ -61,14 +61,6 @@ class Trash extends Component
                 'sortable' => true
             ],
             [
-                'key' => 'country_id',
-                'label' => 'Country Name',
-                'sortable' => true,
-                'format' => function ($user) {
-                    return $user->country->name;
-                }
-            ],
-            [
                 'key' => 'account_status',
                 'label' => 'Status',
                 'sortable' => true,
@@ -159,7 +151,6 @@ class Trash extends Component
             match ($userStatus) {
                 UserAccountStatus::ACTIVE => $this->service->activateData($userId),
                 UserAccountStatus::INACTIVE => $this->service->deactivateData($userId),
-                UserAccountStatus::SUSPENDED => $this->service->suspendData($userId),
                 default => null,
             };
 
@@ -190,7 +181,6 @@ class Trash extends Component
                 'bulkRestore' => $this->bulkRestoreDatas(),
                 'activate' => $this->bulkUpdateStatus(UserAccountStatus::ACTIVE),
                 'deactivate' => $this->bulkUpdateStatus(UserAccountStatus::INACTIVE),
-                'suspend' => $this->bulkUpdateStatus(UserAccountStatus::SUSPENDED),
                 default => null,
             };
 
