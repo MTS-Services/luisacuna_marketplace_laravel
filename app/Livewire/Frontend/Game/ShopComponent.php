@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Frontend\Game;
 
+use App\Services\CategoryService;
+use App\Services\GameService;
 use Livewire\Component;
 
 class ShopComponent extends Component
@@ -16,8 +18,19 @@ class ShopComponent extends Component
     public $selectedDeliveryTime = null;
     public $selectedRegion = null;
     public $selectedSort = null;
-    public $layoutView = 'list';
+    public $layoutView = 'list-grid';
+    protected $game = null;
+    protected $category = null;
     
+
+    // Service
+
+    protected GameService $gameService;
+    protected CategoryService $categoryService;
+    public function boot(GameService $gameService, CategoryService $categoryService){
+        $this->gameService = $gameService;
+        $this->categoryService = $categoryService;
+    }
 
     public function tagSelected($tag)
     {
@@ -25,15 +38,24 @@ class ShopComponent extends Component
         $this->serachFilter(); // Trigger search when tag is selected
     }
 
+
     public function mount($gameSlug, $categorySlug)
     {
         $this->gameSlug = $gameSlug;
         $this->categorySlug = $categorySlug;
-        $this->datas = [1, 2, 3, 4, 5, 6, 7];
+        $this->game = $this->gameService->findData($gameSlug, 'slug')->load('categories');
+        $this->category = $this->categoryService->findData($categorySlug, 'slug');
+
+        $this->layoutView = $this->category->layout->value ?? 'grid';
+        $this->datas = [1, 2, 3, 4, 5, 6, 7];   
     }
 
     public function render()
-    {
+    {   
+        
+
+
+
         return view('livewire.frontend.game.shop-component', [
             'gameSlug' => $this->gameSlug,
             'categorySlug' => $this->categorySlug,
