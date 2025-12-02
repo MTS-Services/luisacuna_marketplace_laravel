@@ -98,7 +98,14 @@
                     <div class="">
                         <div class="flex justify-between mt-7">
                             <p class="text-text-white text-base font-semibold mb-2">{{ __('Game') }}</p>
-                            <p class="text-text-white text-base font-normal">{{ __('Fortnite') }}</p>
+                            <div class="flex gap-2 items-center">
+                                <div>
+                                    <div class="w-6 h-6">
+                                        <img src="{{ asset('assets/images/order.png') }}" alt="Product Name" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                                <p class="text-text-white text-base font-normal">{{ __('Fortnite') }}</p>
+                            </div>
                         </div>
                         <div class="flex justify-between mt-2">
                             <p class="text-text-white text-base font-semibold mb-2">{{ __('Username') }}</p>
@@ -118,10 +125,12 @@
                         </div>
                     </div>
                     <div class="flex w-full md:w-auto justify-center items-center mt-10!">
-                        <x-ui.button class="w-fit! py!">
-                            {{ __('View full description') }}
-                            <x-phosphor-arrow-right-light
-                                class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" /></x-ui.button>
+                        <a href="{{ route('user.order-description') }}">
+                            <x-ui.button class="w-fit! py!">
+                                {{ __('View full description') }}
+                                <x-phosphor-arrow-right-light
+                                    class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" /></x-ui.button>
+                        </a>
                     </div>
                 </div>
             </div>
