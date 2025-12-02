@@ -1,10 +1,20 @@
-<div class="container px-24 bg-zinc-900/90">
-    <div class="w-full mx-auto p-20">
+<div class="container px-24 mb-32">
+    <div class="flex gap-4 items-center my-10">
+        {{-- <h2 class="text-text-white text-base">
+            {{ __('Home') }}
+        </h2>
+        <x-phosphor name="greater-than" variant="regular" class="w-4 h-4 text-zinc-400" />
+        <h2 class="text-text-white text-base">
+            {{ __('Select game') }}
+        </h2> --}}
+    </div>
+    <div class="bg-zinc-900 w-full mx-auto p-20">
+
 
         {{-- Step 1: Category Selection --}}
         @if ($step === 1)
-            <h1 class="text-40px font-semibold text-center text-white mb-3">{{ __('Start selling') }}</h1>
-            <h2 class="text-2xl text-center text-white/60 mb-10">{{ __('Choose category') }}</h2>
+            <h1 class="text-40px font-semibold text-center text-text-white mb-3">{{ __('Start selling') }}</h1>
+            <h2 class="text-2xl text-center text-text-white/60 mb-10">{{ __('Choose category') }}</h2>
 
             <div class="space-y-10">
                 @foreach ($categories as $category)
@@ -15,7 +25,7 @@
                                 <img src="{{ storage_url($category->image) }}" alt="{{ $category->name }}"
                                     class="w-full h-full rounded-xl object-cover">
                             </div>
-                            <span class="text-3xl font-semibold text-white">{{ $category->name }}</span>
+                            <span class="text-3xl font-semibold text-text-white">{{ $category->name }}</span>
                         </div>
                         <svg class="w-6 h-6 fill-white" viewBox="0 0 256 256">
                             <path
@@ -26,28 +36,29 @@
                 @endforeach
             </div>
         @endif
+
+        {{-- Step 2: Game Selection --}}
         @if ($step === 2)
-            <h2 class="text-40px font-semibold text-center text-white mb-3">
+            <h2 class="text-40px font-semibold text-center text-text-white mb-3">
                 {{ __('Sell') }} {{ $selectedCategory }}
             </h2>
-            <h2 class="text-2xl text-center text-white/60 mb-10">{{ __('Step 1/3') }}</h2>
+            <h2 class="text-2xl text-center text-text-white/60 mb-10">{{ __('Step 1/3') }}</h2>
 
-            <div class="p-20 bg-zinc-400/15 rounded-2xl">
-                <h2 class="text-2xl font-semibold text-center text-white mb-7">
-                    {{ __('Select Game') }}
+            <div class="p-10 bg-zinc-400/15 rounded-2xl">
+                <h2 class="text-2xl font-semibold text-center text-text-white mb-7">
+                    {{ __('Choose Game') }}
                 </h2>
 
                 <div class="w-md flex justify-center mx-auto">
                     @if (count($categoryGames) > 0)
-                        <select wire:model="selectedGame"
-                            class="w-full bg-zinc-700/50 text-white border-none focus:border-0 focus:ring-0 rounded-lg px-4 py-3">
+                        <x-ui.select class="mt-1 block w-full" wire:model="selectedGame">
                             <option value="">{{ __('Select a game') }}</option>
                             @foreach ($categoryGames as $game)
                                 <option value="{{ $game->id }}">{{ $game->name }}</option>
                             @endforeach
-                        </select>
+                        </x-ui.select>
                     @else
-                        <div class="text-center text-white/60 py-8">
+                        <div class="text-center text-text-white/60 py-8">
                             <p class="text-xl mb-2">{{ __('No games found in this category') }}</p>
                             <p class="text-sm">{{ __('Please try another category') }}</p>
                         </div>
@@ -57,68 +68,82 @@
                 @error('selectedGame')
                     <p class="text-red-500 text-center mt-2">{{ $message }}</p>
                 @enderror
-
-                <div class="flex justify-center space-x-4 pt-10">
-                    <button wire:click="back"
-                        class="px-8 py-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded-lg transition">
-                        {{ __('Back') }}
-                    </button>
-                    @if (count($categoryGames) > 0)
-                        <button wire:click="selectGame"
-                            class="px-8 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
-                            {{ __('Next') }}
-                        </button>
-                    @endif
+            </div>
+            <div class="flex justify-center space-x-4">
+                <div class="flex w-full md:w-auto mt-10!">
+                    <x-ui.button class="w-fit! py!">{{ __('Back') }}</x-ui.button>
                 </div>
+                @if (count($categoryGames) > 0)
+                    <div wire:click="selectGame" class="flex w-full md:w-auto mt-10!">
+                        <x-ui.button class="w-fit! py!">{{ __('Next') }}</x-ui.button>
+                    </div>
+                @endif
             </div>
         @endif
 
-        {{-- Step 3: Additional Details --}}
+        {{-- Step 3: Additional Details (Dynamic from game_configs) --}}
         @if ($step === 3)
-            <h2 class="text-40px font-semibold text-center text-white mb-3">
+            <h2 class="text-40px font-semibold text-center text-text-white mb-3">
                 {{ __('Sell Game ') . ucfirst($selectedCategory) }}
             </h2>
-            <h2 class="text-2xl text-center text-white/60 mb-10">{{ __('Step 2/3') }}</h2>
+            <h2 class="text-2xl text-center text-text-white/60 mb-10">{{ __('Step 2/3') }}</h2>
 
             <div class="p-20 bg-zinc-400/15 rounded-2xl">
-                <h2 class="text-2xl font-semibold text-center text-white mb-7">
-                    {{ __('Additional Details') }}
+                <h2 class="text-2xl font-semibold text-text-white mb-7">
+                    {{ __('Item details') }}
                 </h2>
 
-                <div class="w-md grid grid-cols-2 gap-3 justify-center mx-auto">
-                    {{-- Server Selection --}}
-                    @if (count($servers) > 0)
-                        <select wire:model="selectedServer"
-                            class="bg-zinc-700/50 text-white border-none focus:border-0 focus:ring-0 rounded-lg px-4 py-3">
-                            <option value="">{{ __('Select Server') }}</option>
-                            @foreach ($servers as $server)
-                                <option value="{{ $server->id }}">{{ $server->name }}</option>
-                            @endforeach
-                        </select>
-                    @endif
 
-                    {{-- Faction Selection --}}
-                    @if (count($factions) > 0)
-                        <select wire:model="selectedFaction"
-                            class="bg-zinc-700/50 text-white border-none focus:border-0 focus:ring-0 rounded-lg px-4 py-3">
-                            <option value="">{{ __('Select Faction') }}</option>
-                            @foreach ($factions as $faction)
-                                <option value="{{ $faction->id }}">{{ $faction->name }}</option>
-                            @endforeach
-                        </select>
-                    @endif
+                <div class="w-md grid grid-cols-1 gap-3 justify-center mx-auto">
+                    @foreach ($gameConfigs as $config)
+                        <div
+                            class="{{ in_array($config->filter_type, ['textarea', 'filter_by_textarea']) ? 'col-span-2' : '' }}">
 
-                    {{-- Delivery Method --}}
-                    @if (count($deliveryMethods) > 0)
-                        <select wire:model="selectedDeliveryMethod"
-                            class="bg-zinc-700/50 text-white border-none focus:border-0 focus:ring-0 rounded-lg px-4 py-3 col-span-2">
-                            <option value="">{{ __('Delivery Method') }}</option>
-                            @foreach ($deliveryMethods as $method)
-                                <option value="{{ $method->id }}">{{ $method->name }}</option>
-                            @endforeach
-                        </select>
-                    @endif
+                            {{-- Dropdown --}}
+                            @if (in_array($config->filter_type, ['filter_by_select', 'select_dropdown']))
+                                <div>
+                                    <x-ui.label :for="'config_' . $config->slug" :value="$config->field_name" />
+                                    <x-ui.select :id="'config_' . $config->slug" class="mt-1 block w-full"
+                                        wire:model="configValues.{{ $config->slug }}">
+                                        <option value="">{{ __('Select') }} {{ $config->field_name }}</option>
+
+                                        @if (!empty($config->dropdown_values))
+                                            @foreach (json_decode($config->dropdown_values, true) as $value)
+                                                <option value="{{ $value }}">{{ $value }}</option>
+                                            @endforeach
+                                        @endif
+                                    </x-ui.select>
+                                    <x-ui.input-error :messages="$errors->get('configValues.' . $config->slug)" class="mt-2" />
+                                </div>
+
+                                {{-- Textarea --}}
+                            @elseif (in_array($config->filter_type, ['textarea', 'filter_by_textarea']))
+                                <textarea wire:model="configValues.{{ $config->slug }}" placeholder="{{ $config->field_name }}" rows="4"
+                                    class="w-full bg-zinc-700/50 text-text-white border-none focus:border-0 focus:ring-0 rounded-lg px-4 py-3"></textarea>
+
+                                {{-- Number input --}}
+                            @elseif (in_array($config->filter_type, ['filter_by_range', 'number']))
+                                <input type="number" wire:model="configValues.{{ $config->slug }}"
+                                    placeholder="{{ $config->field_name }}"
+                                    class="w-full bg-zinc-700/50 text-text-white border-none focus:border-0 focus:ring-0 rounded-lg px-4 py-3">
+
+                                {{-- Default text input --}}
+                            @else
+                                <input type="text" wire:model="configValues.{{ $config->slug }}"
+                                    placeholder="{{ $config->field_name }}"
+                                    class="w-full bg-zinc-700/50 text-text-white border-none focus:border-0 focus:ring-0 rounded-lg px-4 py-3">
+                            @endif
+
+                            {{-- Validation errors (for non-dropdown fields) --}}
+                            @if (!in_array($config->filter_type, ['filter_by_select', 'select_dropdown']))
+                                @error('configValues.' . $config->slug)
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            @endif
+                        </div>
+                    @endforeach
                 </div>
+
 
                 @if ($errors->any())
                     <div class="text-red-500 text-center mt-4">
@@ -127,23 +152,21 @@
                         @endforeach
                     </div>
                 @endif
+            </div>
+            <div class="flex justify-center space-x-4">
+                <div wire:click="back" class="flex w-full md:w-auto mt-10!">
+                    <x-ui.button class="w-fit! py!">{{ __('Back') }}</x-ui.button>
+                </div>
 
-                <div class="flex justify-center space-x-4 pt-10">
-                    <button wire:click="back"
-                        class="px-8 py-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded-lg transition">
-                        {{ __('Back') }}
-                    </button>
-                    <button wire:click="submitOffer"
-                        class="px-8 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition">
-                        {{ __('Submit Offer') }}
-                    </button>
+                <div wire:click="submitOffer" class="flex w-full md:w-auto mt-10!">
+                    <x-ui.button class="w-fit! py!">{{ __('Next') }}</x-ui.button>
                 </div>
             </div>
         @endif
 
         {{-- Success Message --}}
         @if (session()->has('message'))
-            <div class="mt-4 p-4 bg-green-600/20 border border-green-600 rounded-lg text-center text-white">
+            <div class="mt-4 p-4 bg-green-600/20 border border-green-600 rounded-lg text-center text-text-white">
                 {{ session('message') }}
             </div>
         @endif

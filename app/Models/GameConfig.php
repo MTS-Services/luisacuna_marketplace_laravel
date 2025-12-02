@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\AuditBaseModel;
+use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class GameConfig extends AuditBaseModel implements Auditable
+class GameConfig extends BaseModel implements Auditable
 {
     use AuditableTrait;
     //
@@ -39,6 +39,11 @@ class GameConfig extends AuditBaseModel implements Auditable
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
     //
+
+    public function game()
+    {
+        return $this->belongsTo(Game::class);
+    }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                End of RELATIONSHIPS
