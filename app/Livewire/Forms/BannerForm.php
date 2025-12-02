@@ -4,7 +4,6 @@ namespace App\Livewire\Forms;
 
 use App\Models\Hero;
 use Livewire\Attributes\Locked;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class BannerForm extends Form
@@ -30,6 +29,7 @@ class BannerForm extends Form
             'target' => 'nullable|string|in:_self,_blank',
             'status' => 'required|string|in:active,inactive',
             'image' => 'nullable|image|max:10240', // Max 10MB
+            'remove_file' => 'nullable|boolean',
         ];
     }
 

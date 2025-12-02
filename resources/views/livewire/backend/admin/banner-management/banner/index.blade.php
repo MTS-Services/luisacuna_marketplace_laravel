@@ -150,13 +150,10 @@
         {{-- Action Bar --}}
         <div class="mt-8">
             <div class="glass-card rounded-2xl p-5 shadow-xl border border-primary/20">
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div class="hidden sm:flex items-center gap-3 px-4 py-2 bg-info/10 rounded-xl">
-                        <flux:icon name="information-circle" class="h-5 w-5 stroke-info" />
-                        <span class="text-sm font-medium text-info">{{ __('Changes auto-save to .env file') }}</span>
-                    </div>
+                <div class="flex flex-col sm:flex-row items-center justify-end gap-4">
+                    
 
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-3 ">
                         <x-ui.button type="button" wire:click="resetForm" class="w-fit py-2! text-nowrap"
                             variant="tertiary">
                             {{-- <flux:icon name="arrow-path"
@@ -169,14 +166,14 @@
                                 {{ __('Reset') }}
                             </span>
                             <span wire:loading wire:target="resetForm"
-                                class="flex items-center gap-2 text-text-btn-primary group-hover:text-text-btn-tertiary">
+                                class="flex items-center gap-2  text-text-btn-primary group-hover:text-text-btn-tertiary">
                                 <flux:icon name="arrow-path"
                                     class="h-5 w-5 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary animate-spin" />
                                 {{ __('Resetting...') }}
                             </span>
                         </x-ui.button>
 
-                        <x-ui.button type="submit" wire:loading.attr="disabled" wire:target="save"
+                        <x-ui.button type="submit" wire:loading.attr="disabled" wire:click="save" wire:target="save"
                             class="w-fit py-2! text-nowrap">
                             <span wire:loading.remove wire:target="save"
                                 class="flex items-center gap-2 text-text-btn-primary group-hover:text-text-btn-secondary">
@@ -185,7 +182,7 @@
                                 {{ __('Save Changes') }}
                             </span>
                             <span wire:loading wire:target="save"
-                                class="flex items-center gap-2 text-text-btn-primary group-hover:text-text-btn-secondary">
+                                class="flex items-center gap-2 py-2! text-text-btn-primary group-hover:text-text-btn-secondary">
                                 <span class="loading loading-spinner loading-sm"></span>
                                 {{ __('Saving...') }}
                             </span>

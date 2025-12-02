@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\HeroStatus;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
+use Illuminate\Database\Eloquent\Builder;
 use OwenIt\Auditing\Contracts\Auditable;
  
 class Hero extends AuditBaseModel implements Auditable
@@ -43,6 +44,11 @@ class Hero extends AuditBaseModel implements Auditable
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
  
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', HeroStatus::ACTIVE);
+    }
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -50,6 +56,7 @@ class Hero extends AuditBaseModel implements Auditable
             //
         ]);
     }
+
  
  
 }
