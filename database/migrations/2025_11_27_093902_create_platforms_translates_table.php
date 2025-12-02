@@ -1,28 +1,24 @@
 <?php
 
-use App\Traits\AuditColumnsTrait;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    use AuditColumnsTrait;
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
-        Schema::create('game_config_translates', function (Blueprint $table) {
+        Schema::create('platform_translates', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-            $table->unsignedBigInteger('language_id');
-            $table->unsignedBigInteger('game_config_id');
-            $table->string('field_name');
-            $table->json('dropdown_values')->nullable();
+            $table->unsignedBigInteger('language_id')->index();
+
+            $table->unsignedBigInteger('platform_id')->index();
+            $table->string('name')->index();
 
             $table->timestamps();
 
-            $table->foreign('game_config_id')->references('id')->on('game_configs')->onDelete('cascade');
+            $table->foreign('platform_id')->references('id')->on('platforms')->onDelete('cascade');
             $table->foreign('language_id')->references('id')->on('languages')->onDelete('cascade');
         });
     }
@@ -32,6 +28,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('game_config_translates');
+        Schema::dropIfExists('platform_translates');
     }
 };

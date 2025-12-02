@@ -18,15 +18,14 @@ class PlatformFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    protected $model =  Platform::class;
+    protected $model = Platform::class;
     public function definition(): array
     {
         $faker = Faker::create();
-        $name =substr($faker->unique()->name(),0,10);
+        $name = substr($faker->unique()->name(), 0, 10);
         return [
             'name' => fake()->name(),
             'status' => fake()->randomElement(PlatformStatus::cases()),
-            'color' => fake()->hexColor(),
             'created_by' => Admin::inRandomorder()->value('id'),
         ];
     }

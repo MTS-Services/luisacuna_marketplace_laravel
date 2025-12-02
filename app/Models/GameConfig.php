@@ -8,17 +8,21 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class GameConfig extends AuditBaseModel implements Auditable
 {
-    use   AuditableTrait;
+    use AuditableTrait;
     //
 
     protected $fillable = [
-        'sort_order',
 
-      //here AuditColumns
-        'game_id',
-        'type_id',
-        'created_at',
-        'updated_at'
+        "sort_order",
+        "game_id",
+        "category_id",
+        "field_name",
+        "slug",
+        "filter_type",
+        "input_type",
+        "dropdown_values",
+
+
 
     ];
 
@@ -34,11 +38,11 @@ class GameConfig extends AuditBaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     //
+    //
 
-     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
-                End of RELATIONSHIPS
-     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+               End of RELATIONSHIPS
+    =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
     public function __construct(array $attributes = [])
     {

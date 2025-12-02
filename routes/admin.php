@@ -15,7 +15,7 @@ use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\RankController;
 use App\Http\Controllers\Backend\Admin\ReviewManagement\PageViewController;
-use App\Http\Controllers\Backend\Admin\GameManagement\GameFeatureController;
+use App\Http\Controllers\Backend\Admin\GameManagement\PlatformController;
 use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementTypeController;
@@ -61,7 +61,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/view/{id}', 'show')->name('view');
             Route::get('/trash', 'trash')->name('trash');
         });
-        Route::controller(GameFeatureController::class)->name('game-feature.')->prefix('game-feature')->group(function () {
+        Route::controller(PlatformController::class)->name('platform.')->prefix('platform')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
@@ -79,17 +79,17 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
 
     });
 
-    // Banner 
-    
+    // Banner
+
     route::group(['prefix' => 'banner-management', 'as' => 'bm.'], function () {
-        Route::controller(BannerController::class)->name('banner.')->prefix('banner')->group(function (){
+        Route::controller(BannerController::class)->name('banner.')->prefix('banner')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
             Route::get('/view/{id}', 'show')->name('view');
             Route::get('/trash', 'trash')->name('trash');
         });
-    }); 
+    });
 
     // Rank
     Route::group(['prefix' => 'reward-management', 'as' => 'rm.'], function () {

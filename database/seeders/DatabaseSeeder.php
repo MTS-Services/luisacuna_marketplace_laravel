@@ -26,14 +26,14 @@ class DatabaseSeeder extends Seeder
             RoleHasPermissionSeeder::class,
             LanguageSeeder::class,
             CurrencySeeder::class,
-            // ExchangeRateSeeder::class,
-            // ExchangeRateHistorySeeder::class,
+                // ExchangeRateSeeder::class,
+                // ExchangeRateHistorySeeder::class,
             EmailTemplateSeeder::class,
             ReferralSettingSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
             GameSeeder::class,
-            GameFeatureSeeder::class,
+            PlatformSeeder::class,
             GameCategorySeeder::class,
             TagSeeder::class,
             GameTagSeeder::class,
@@ -56,6 +56,7 @@ class DatabaseSeeder extends Seeder
             DeliveryMethodSeeder::class,
 
             ProductSeeder::class,
+            GameConfigSeeder::class,
         ]);
     }
 }
