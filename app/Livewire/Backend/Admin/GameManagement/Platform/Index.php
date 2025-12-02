@@ -10,10 +10,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
-
 class Index extends Component
 {
-
     use WithDataTable, WithNotification;
 
     public $statusFilter = '';
@@ -22,28 +20,24 @@ class Index extends Component
     public $bulkAction = '';
     public $showBulkActionModal = false;
 
+
     protected PlatformService $service;
     public function boot(PlatformService $service)
     {
-
         $this->service = $service;
-
     }
-
-
     public function render()
     {
         $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        )->load('creater_admin');
-
+        );
+        $datas->load('creater_admin');
 
         $columns = [
-
             [
                 'key' => 'icon',
-                'label' => 'Icon',
+                'label' => 'icon',
                 'format' => function ($data) {
                     return $data->icon
                         ? '<img src="' . Storage::url($data->icon) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
@@ -54,14 +48,6 @@ class Index extends Component
                 'key' => 'name',
                 'label' => 'Name',
                 'sortable' => true
-            ],
-            [
-                'key' => 'color',
-                'label' => 'Color',
-                'sortable' => true,
-                'format' => function ($data) {
-                    return $data->color ?? 'N/A';
-                }
             ],
             [
                 'key' => 'status',
@@ -88,12 +74,19 @@ class Index extends Component
                     return $data->creater_admin?->name ?? 'System';
                 }
             ],
+            [
+                'key' => 'restored_by',
+                'label' => 'Restored By',
+                'format' => function ($data) {
+                    return $data->restorer_admin?->name ?? 'N/A';
+                }
+            ],
         ];
 
         $actions = [
             [
                 'key' => 'id',
-                'label' => 'View',
+                'label' => 'Show',
                 'route' => 'admin.gm.platform.view',
                 'encrypt' => true
             ],
@@ -116,8 +109,9 @@ class Index extends Component
             ['value' => 'active', 'label' => 'Active'],
             ['value' => 'inactive', 'label' => 'Inactive'],
         ];
-        return view('livewire.backend.admin.game-management.platform.index', [
 
+
+        return view('livewire.backend.admin.game-management.platform.index', [
             'datas' => $datas,
             'statuses' => PlatformStatus::options(),
             'columns' => $columns,

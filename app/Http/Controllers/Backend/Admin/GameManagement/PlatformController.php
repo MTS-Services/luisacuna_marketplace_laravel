@@ -3,22 +3,16 @@
 namespace App\Http\Controllers\Backend\Admin\GameManagement;
 
 use App\Http\Controllers\Controller;
-use App\Models\Platform;
 use App\Services\PlatformService;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
 class PlatformController extends Controller implements HasMiddleware
 {
-    public $masterView = 'backend.admin.pages.game-management.platform';
-    //
-    protected PlatformService $service;
+    public function __construct(protected PlatformService $service) {}
 
-    public Platform $data;
-    public function __construct(PlatformService $service)
-    {
-        $this->service = $service;
-    }
+    //
+    public $master = 'backend.admin.pages.game-management.platform';
 
     public static function middleware(): array
     {
@@ -34,42 +28,53 @@ class PlatformController extends Controller implements HasMiddleware
         ];
     }
 
-
     public function index()
     {
-        return view($this->masterView);
+
+        return view($this->master);
     }
 
     public function create()
     {
-        return view($this->masterView);
+
+        return view($this->master);
     }
 
-    public function show($id)
+    public function edit($encryptedId)
     {
-        $this->data = $this->service->findData(decrypt($id));
-        if (!$this->data) {
+
+        $data = $this->service->findData(decrypt($encryptedId));
+
+        if (! $data) {
             abort(404);
         }
 
-        return view($this->masterView, [
-            'data' => $this->data,
+
+        return view($this->master, [
+
+            'data' => $data,
         ]);
     }
-    public function edit($id)
-    {
-        $this->data = $this->service->findData(decrypt($id));
 
-        if (!$this->data) {
+    public function show($encryptedId)
+    {
+
+
+        $data = $this->service->findData(decrypt($encryptedId));
+
+
+        if (! $data) {
             abort(404);
         }
 
-        return view($this->masterView, [
-            'data' => $this->data,
+        return view($this->master, [
+            'data' => $data
         ]);
     }
+
     public function trash()
     {
-        return view($this->masterView);
+
+        return view($this->master);
     }
 }

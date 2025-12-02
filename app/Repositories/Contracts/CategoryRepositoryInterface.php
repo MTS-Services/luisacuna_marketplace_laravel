@@ -9,67 +9,32 @@ use Illuminate\Database\Eloquent\Collection;
 interface CategoryRepositoryInterface
 {
 
-
     /* ================== ================== ==================
-    *                      Find Methods 
-    * ================== ================== ================== */
+     *                      Find Methods
+     * ================== ================== ================== */
 
-    public function all(string $sortField = 'created_at', $order = 'desc'): Collection;
-
-    public function active(string $sortField = 'created_at', $order = 'desc', $status = 'active'): Collection;
-
-    public function find($column_value, string $column_name = 'id', bool $trashed = false): ?Category;
-
-    public function findTrashed($column_value, string $column_name = 'id'): ?Category;
-
-    public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
-
-    public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
-
-    public function exists(int $id): bool;
-
-    public function count(array $filters = []): int;
-
-    public function search(string $query, string $sortField = 'created_at', $order = 'desc'): Collection;
-
-
-
-    // public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection;
-
-    // public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection;
+    public function getData(string $sortField, $order, $status, $layout, $trashed): Collection;
+    public function findData($column_value, string $column_name, $status, $layout, $trashed): ?Category;
+    public function getPaginatedData(int $perPage, array $filters, string $sortField, $order, $status, $layout, $trashed): LengthAwarePaginator;
+    public function searchData(string $query, string $sortField, $order, $status, $layout, $trashed): Collection;
+    public function dataExists(int $id, $status, $layout, $trashed): bool;
+    public function getDataCount(array $filters, $status, $layout, $trashed): int;
 
 
     /* ================== ================== ==================
-    *                    Data Modification Methods 
-    * ================== ================== ================== */
+     *                    Data Modification Methods
+     * ================== ================== ================== */
 
     public function create(array $data): Category;
-
     public function update(int $id, array $data): bool;
-
     public function delete(int $id, int $actionerId): bool;
-
     public function forceDelete(int $id): bool;
-
     public function restore(int $id, int $actionerId): bool;
-
     public function bulkDelete(array $ids, int $actionerId): int;
-
     public function bulkUpdateStatus(array $ids, string $status, int $actionerId): int;
-
+    public function bulkUpdateLayout(array $ids, string $layout, int $actionerId): int;
     public function bulkRestore(array $ids, int $actionerId): int;
-
     public function bulkForceDelete(array $ids): int;
 
-
-    /* ================== ================== ==================
-    *                  Accessor Methods (Optional)
-    * ================== ================== ================== */
-
-    public function getActive(string $sortField = 'created_at', $order = 'desc'): Collection;
-
-    public function getInactive(string $sortField = 'created_at', $order = 'desc'): Collection;
-
-    public function getSuspended(string $sortField = 'created_at', $order = 'desc'): Collection;
 
 }

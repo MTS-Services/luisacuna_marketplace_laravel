@@ -10,7 +10,8 @@ class DeleteAction
 {
     public function __construct(
         protected CategoryRepositoryInterface $interface
-    ) {}
+    ) {
+    }
 
     public function execute($id, $forceDelete = false, ?int $actionerId = null)
     {
@@ -18,21 +19,21 @@ class DeleteAction
             $findData = null;
 
             if ($forceDelete) {
-                $findData = $this->interface->findTrashed($id);
+                $findData = $this->interface->findData($id, 'id', false, false, true);
             } else {
-                $findData = $this->interface->find($id);
+                $findData = $this->interface->findData($id, 'id', false, false, false);
             }
 
             if (!$findData) {
                 throw new \Exception('Data not found');
             }
             if ($forceDelete) {
-                if($findData->icon && Storage::disk('public')->exists($findData->icon)) {
+                if ($findData->icon && Storage::disk('public')->exists($findData->icon)) {
 
                     Storage::disk('public')->delete($findData->icon);
 
                 }
-                
+
                 return $this->interface->forceDelete($id);
             }
             return $this->interface->delete($id, $actionerId);

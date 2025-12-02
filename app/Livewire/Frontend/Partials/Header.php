@@ -33,7 +33,7 @@ class Header extends Component
     {
         // $categories= Category::where('status','active')->get();
         $this->languages = $this->languageService->getAllDatas();
-        $this->categories = $this->categoryService->getActiveDatas();
+        $this->categories = $this->categoryService->getDatas(status: "active");
         return view('livewire.frontend.partials.header');
     }
 }
