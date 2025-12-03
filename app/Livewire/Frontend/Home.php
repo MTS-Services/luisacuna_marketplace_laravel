@@ -49,7 +49,8 @@ class Home extends Component
 
         $tag = $this->tagService->findData('popular', 'slug');
       
-        $games = $tag->games()->latest()->take(6)->with('categories')->get();
+        $games = $tag->games()->latest()->take(6)->get();
+        $games->load('categories');
      
       
         return view('livewire.frontend.home', [
