@@ -71,10 +71,7 @@
                     <option value="">{{ __('lowest to highest') }}</option>
                     <option value="">{{ __('highest to lowest') }}</option>
                 </x-ui.select>
-                <x-ui.button wire:click="changeView" class="py-2! px-4! w-auto! hidden md:flex border! border-zinc-700!"
-                    variant="secondary">
-                    {{ __('Change Layout') }}
-                </x-ui.button>
+               
                 <x-ui.button wire:click="changeView"
                     class="py-2! px-4! w-auto! flex md:hidden rounded! border! border-zinc-700!" variant="secondary">
                     {{ __('Grid') }}
