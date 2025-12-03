@@ -42,6 +42,7 @@
     --color-primary-800: #351966;
     --color-primary-900: #1B0C33;
     --color-primary-950: #0D061A;
+    --color-primary-1000: #853EFF14;
 
     /* Secondary: Pink */
     --color-secondary-50: #fdf2f8;
@@ -89,13 +90,24 @@
     --color-bg-secondary-dark: oklch(21.779% 0.00002 271.152);
     --color-bg-tertiary-dark: oklch(26.862% 0.00003 271.152);  */
 
-    --color-bg-primary-light: oklch(96.115% 0.00011 271.152);
-    --color-bg-secondary-light: oklch(92.494% 0.00011 271.152);
+    --color-bg-primary-light: oklch(100% 0.00011 271.152);
+    --color-bg-secondary-light: oklch(0 0 0 / 0.04);
+    --color-bg-optional-light: oklch(0.689 0.324 274.7 / 0.08);
+    --color-bg-info-light: oklch(0% 0 0 / 0.08);
     --color-bg-tertiary-light: oklch(88.531% 0.0001 271.152);
+    /* --color-bg- */
 
-    --color-bg-primary-dark: var(--color-primary-900);
+    /* --color-bg-primary-dark: var(--color-primary-900);
     --color-bg-secondary-dark: var(--color-primary-950);
+    --color-bg-tertiary-dark: var(--color-secondary-500); */
+
+    
+    --color-bg-primary-dark: var(--color-primary-950);
+    --color-bg-secondary-dark: var(--color-primary-900);
+    --color-bg-optional-dark: var(--color-primary-1000);
+    --color-bg-info-dark: oklch(1 0 0 / 0.08);
     --color-bg-tertiary-dark: var(--color-secondary-500);
+    
 
 
     /* Seller Profile Colors Collection  */
@@ -179,6 +191,8 @@
 
     --color-bg-primary: var(--color-bg-primary-light);
     --color-bg-secondary: var(--color-bg-secondary-light);
+    --color-bg-optional: var(--color-bg-optional-light);
+    --color-bg-info: var(--color-bg-info-light);
     --color-bg-tertiary: var(--color-bg-tertiary-light);
 
     --color-bg-container1: #1b0c33;
@@ -271,6 +285,7 @@
     }
 
     .dark {
+        
         --color-accent: var(--color-accent-dark);
 
         --color-accent-content: var(--color-accent-content-dark);
@@ -282,6 +297,9 @@
 
         --color-bg-primary: var(--color-bg-primary-dark);
         --color-bg-secondary: var(--color-bg-secondary-dark);
+        --color-bg-optional: var(--color-bg-optional-dark);
+        --color-bg-info: var(--color-bg-info-dark);
+
         --color-bg-tertiary: var(--color-bg-tertiary-dark);
 
         --color-bg-hover: var(--color-zinc-800);

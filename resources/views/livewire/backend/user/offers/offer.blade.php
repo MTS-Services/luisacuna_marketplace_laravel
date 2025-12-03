@@ -8,7 +8,7 @@
             {{ __('Select game') }}
         </h2> --}}
     </div>
-    <div class="dark:bg-zinc-900 w-full mx-auto p-10 md:p-20 rounded-2xl">
+    <div class="bg-bg-secondary w-full mx-auto p-10 md:p-20 rounded-2xl">
 
 
         {{-- Step 1: Category Selection --}}
@@ -19,7 +19,7 @@
             <div class="space-y-10">
                 @foreach ($categories as $category)
                     <button wire:click="selectCategory({{ $category->id }}, '{{ $category->name }}')"
-                        class="w-full flex items-center justify-between p-4 bg-zinc-700/15 hover:bg-zinc-700/30 transition rounded-xl">
+                        class="w-full flex items-center justify-between p-4 bg-bg-info hover:bg-zinc-700/30 transition rounded-xl">
                         <div class="flex items-center space-x-3">
                             <div class="w-16 h-16">
                                 <img src="{{ storage_url($category->image) }}" alt="{{ $category->name }}"
