@@ -9,13 +9,13 @@ class BuyComponent extends Component
 
     public $gameSlug;
     public $categorySlug;
-    public $sellerSlug;
+    public $itemSlug;
 
-    public function mount($gameSlug, $categorySlug, $sellerSlug)
+    public function mount($gameSlug, $categorySlug, $itemSlug)
     {
         $this->gameSlug = $gameSlug;
         $this->categorySlug = $categorySlug;
-        $this->sellerSlug = $sellerSlug;
+        $this->itemSlug = $itemSlug;
     }
     public function render()
     {

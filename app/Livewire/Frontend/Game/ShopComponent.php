@@ -19,7 +19,7 @@ class ShopComponent extends Component
     public $selectedRegion = null;
     public $selectedSort = null;
     public $layoutView = 'list-grid';
-    public $games ;
+    public $game;
     protected $category = null;
     public  $products ;
 
@@ -43,9 +43,9 @@ class ShopComponent extends Component
     {
         $this->gameSlug = $gameSlug;
 
-        $this->games = $this->gameService->findData($gameSlug, 'slug')->load(['products', 'gameConfig', 'categories']);
+        $this->game = $this->gameService->findData($gameSlug, 'slug')->load(['products', 'gameConfig', 'categories']);
 
-        $this->products = $this->games->products;
+        $this->products = $this->game->products;
 
        
 

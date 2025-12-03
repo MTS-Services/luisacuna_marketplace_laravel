@@ -27,10 +27,13 @@ return new class extends Migration
 
             $table->string('slug')->unique();
             $table->string('name');
+             $table->string('image')->nullable();
             $table->text('description')->nullable();
             $table->decimal('price', 15, 2)->default(0);
             $table->unsignedBigInteger('quantity')->default(0);
             $table->unsignedBigInteger('minimum_offer_quantity')->nullable();
+            $table->string('platform')->nullable();
+            $table->string('skin')->nullable();
 
             $table->string('status')->default(ActiveInactiveEnum::ACTIVE->value);
 
