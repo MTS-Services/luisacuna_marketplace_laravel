@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->string('filter_type')->default(GameConfigFilterType::NO_FILTER->value);
             $table->string('input_type')->default(GameConfigInputType::TEXT->value);
             $table->json('dropdown_values')->nullable();
+            $table->json('delivery_methods');
             $table->timestamps();
 
             $table->foreign('game_id')->references('id')->on('games')->cascadeOnDelete()->cascadeOnUpdate();
