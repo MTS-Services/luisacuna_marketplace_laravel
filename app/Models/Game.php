@@ -116,10 +116,16 @@ class Game extends AuditBaseModel implements Auditable
         ];
     }
 
-    Public function gameConfig()
+    public function gameConfig()
     {
         return $this->hasMany(GameConfig::class, 'game_id', 'id');
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'game_id', 'id');
+    }
+
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
             Query Scopes

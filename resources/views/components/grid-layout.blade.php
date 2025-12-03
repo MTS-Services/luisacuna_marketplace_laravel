@@ -272,9 +272,11 @@
                 x-transition:enter-start="opacity-0"
                 x-transition:enter-end="opacity-100" 
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 w-full">
+
                 @foreach ($datas as $item)
-                    <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+                    <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" :data="$item" />
                 @endforeach
+
             </div>
         </div>
 

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend\Game;
 
+use App\Models\Product;
 use App\Services\CategoryService;
 use App\Services\GameService;
 use Livewire\Component;
@@ -10,7 +11,6 @@ class ShopComponent extends Component
 {
     public $gameSlug;
     public $categorySlug;
-    public $datas = [];
     public $search = '';
     public $selectedDevice = null;
     public $selectedAccountType = null;
@@ -19,9 +19,9 @@ class ShopComponent extends Component
     public $selectedRegion = null;
     public $selectedSort = null;
     public $layoutView = 'list-grid';
-    protected $game = null;
+    public $games ;
     protected $category = null;
-    
+    public  $products ;
 
     // Service
 
@@ -42,12 +42,22 @@ class ShopComponent extends Component
     public function mount($gameSlug, $categorySlug)
     {
         $this->gameSlug = $gameSlug;
+
+        $this->games = $this->gameService->findData($gameSlug, 'slug')->load(['products', 'gameConfig', 'categories']);
+
+        $this->products = $this->games->products;
+
+       
+
         $this->categorySlug = $categorySlug;
-        $this->game = $this->gameService->findData($gameSlug, 'slug')->load('categories');
+
+      //    $this->category = $this->categoryService->findData($categorySlug, 'slug')->load(['games.gameConfig', 'games.products']);
+        
         $this->category = $this->categoryService->findData($categorySlug, 'slug');
 
         $this->layoutView = $this->category->layout->value ?? 'grid';
-        $this->datas = [1, 2, 3, 4, 5, 6, 7];   
+
+      
     }
 
     public function render()
@@ -59,7 +69,7 @@ class ShopComponent extends Component
         return view('livewire.frontend.game.shop-component', [
             'gameSlug' => $this->gameSlug,
             'categorySlug' => $this->categorySlug,
-            'datas' => $this->datas,
+            'datas' => $this->products,
         ]);
     }
 
