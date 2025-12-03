@@ -1,3 +1,4 @@
+
 <section>
     <div class="max-w-7xl mx-auto px-8 py-8">
         <!-- Breadcrumb -->
@@ -247,7 +248,7 @@
         <!-- Product Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
             <!-- Card 1 -->
-            <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
+            <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'itemSlug' => 'test']) }}"
                             wire:navigate>
                             <!-- Card -->
                             <div class="bg-bg-primary rounded-2xl p-5 shadow-lg transition">
@@ -310,7 +311,7 @@
                             </a>
 
             <!-- Card 2 -->
-            <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
+            <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'itemSlug' => 'test']) }}"
                             wire:navigate>
                             <!-- Card -->
                             <div class="bg-bg-primary rounded-2xl p-5 shadow-lg transition">
@@ -373,7 +374,7 @@
                             </a>
 
             <!-- Card 3 -->
-            <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
+            <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'itemSlug' => 'test']) }}"
                             wire:navigate>
                             <!-- Card -->
                             <div class="bg-bg-primary rounded-2xl p-5 shadow-lg transition">
@@ -436,7 +437,7 @@
                             </a>
 
             <!-- Card 4 -->
-            <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
+            <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'itemSlug' => 'test']) }}"
                             wire:navigate>
                             <!-- Card -->
                             <div class="bg-bg-primary rounded-2xl p-5 shadow-lg transition">
@@ -499,7 +500,7 @@
                             </a>
 
             <!-- Card 5 -->
-            <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
+            <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'itemSlug' => 'test']) }}"
                             wire:navigate>
                             <!-- Card -->
                             <div class="bg-bg-primary rounded-2xl p-5 shadow-lg transition">
@@ -562,7 +563,7 @@
                             </a>
 
             <!-- Card 6 -->
-            <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
+            <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'itemSlug' => 'test']) }}"
                             wire:navigate>
                             <!-- Card -->
                             <div class="bg-bg-primary rounded-2xl p-5 shadow-lg transition">

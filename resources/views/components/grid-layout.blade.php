@@ -2,6 +2,7 @@
     'gameSlug' => '',
     'categorySlug' => '',
     'datas' => [],
+    'game' => [],
 ])
 <section>
     <div class="container ">
@@ -274,7 +275,7 @@
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 w-full">
 
                 @foreach ($datas as $item)
-                    <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" :data="$item" />
+                    <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" :data="$item" :game="$game" />
                 @endforeach
 
             </div>

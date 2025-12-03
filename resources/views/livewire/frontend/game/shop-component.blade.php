@@ -4,7 +4,7 @@
 
     @if ($layoutView == 'list_grid')
 
-    <x-grid-layout :gameSlug="$gameSlug" :categorySlug="$categorySlug" :datas="$datas"/>
+    <x-grid-layout :gameSlug="$gameSlug" :categorySlug="$categorySlug" :datas="$datas" :game="$game" />
 
     @else
 
