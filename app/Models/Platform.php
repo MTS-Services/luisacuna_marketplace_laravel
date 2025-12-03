@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\PlatFormStatus;
+use App\Enums\PlatformStatus;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -37,7 +37,7 @@ class Platform extends AuditBaseModel implements Auditable
 
     protected $casts = [
         //
-        'status' => PlatFormStatus::class,
+        'status' => PlatformStatus::class,
         'restored_at' => 'datetime',
     ];
 
@@ -62,12 +62,12 @@ class Platform extends AuditBaseModel implements Auditable
 
     public function scopeActive(Builder $query): Builder
     {
-        return $query->where('status', PlatFormStatus::ACTIVE);
+        return $query->where('status', PlatformStatus::ACTIVE);
     }
 
     public function scopeInactive(Builder $query): Builder
     {
-        return $query->where('status', PlatFormStatus::INACTIVE);
+        return $query->where('status', PlatformStatus::INACTIVE);
     }
 
     public function scopeFilter(Builder $query, array $filters): Builder

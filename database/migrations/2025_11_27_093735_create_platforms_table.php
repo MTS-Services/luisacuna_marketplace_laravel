@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\PlatFormStatus;
+use App\Enums\PlatformStatus;
 use App\Traits\AuditColumnsTrait;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('sort_order')->default(0)->index();
 
             $table->string('name')->unique();
-            $table->string('status')->default(PlatFormStatus::ACTIVE->value);
+            $table->string('status')->default(PlatformStatus::ACTIVE->value);
             $table->string('icon')->nullable();
 
             $table->softDeletes();
