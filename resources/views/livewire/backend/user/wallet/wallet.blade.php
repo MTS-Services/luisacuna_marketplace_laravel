@@ -75,7 +75,7 @@
             </div>
 
             <!-- Right Side: Search & Actions -->
-            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+            {{-- <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
                 <!-- Manage Subscriptions Button -->
                 <a href="{{ route('user.subscriptions') }}">
                     <x-ui.button class="w-full sm:w-auto! py-2!">
@@ -83,7 +83,7 @@
                             class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Manage Subscriptions') }}</span>
                     </x-ui.button>
                 </a>
-            </div>
+            </div> --}}
         </div>
     </div>
     <div>
