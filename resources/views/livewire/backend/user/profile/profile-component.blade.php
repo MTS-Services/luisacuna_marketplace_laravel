@@ -15,8 +15,8 @@
                             <img src="{{ auth_storage_url($user->avatar) }}" alt="" class="h-full w-full">
                         </div>
                         <div class="absolute -right-5 top-7 sm:-right-3 sm:top-20 w-10 h-10 sm:w-15 sm:h-15">
-                            <img src="{{ asset('assets/images/user_profile/Frame 1261153813.png') }}" alt=""
-                                class="w-full h-full">
+                            {{-- <img src="{{ asset('assets/images/user_profile/Frame 1261153813.png') }}" alt=""
+                                class="w-full h-full"> --}}
                         </div>
                     </div>
 
