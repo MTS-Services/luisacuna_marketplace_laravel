@@ -44,7 +44,7 @@
             </h2>
             <h2 class="text-2xl text-center text-text-white/60 mb-10">{{ __('Step 1/3') }}</h2>
 
-            <div class="p-10 bg-zinc-400/15 rounded-2xl">
+            <div class="p-10 bg-bg-info rounded-2xl">
                 <h2 class="text-2xl font-semibold text-center text-text-white mb-7">
                     {{ __('Choose Game') }}
                 </h2>
@@ -88,9 +88,9 @@
             </h2>
             <h2 class="text-2xl text-center text-text-white/60 mb-10">{{ __('Step 2/3') }}</h2>
             <form wire:submit.prevent="submitOffer">
-                <div class="bg-zinc-900 rounded-2xl mb-10">
+                <div class="bg-bg-optional rounded-2xl mb-10 p-20">
                     <h2 class="text-text-white font-semibold text-40px mb-10">{{ __('Your item') }}</h2>
-                    <div class="bg-zinc-400/15 flex gap-4 items-center p-10 rounded-2xl">
+                    <div class="bg-bg-info flex gap-4 items-center p-10 rounded-2xl">
                         <div>
                             <div class="w-28 h-28">
                                 <img src="{{ asset('assets/images/Rectangle 24589.png') }}" alt=""
@@ -101,7 +101,7 @@
                     </div>
                 </div>
 
-                <div class="p-20 bg-zinc-400/15 rounded-2xl">
+                <div class="p-20 bg-bg-optional rounded-2xl">
                     <h2 class="text-2xl font-semibold text-text-white mb-7">
                         {{ __('Specific Attributes') }}
                     </h2>
@@ -168,7 +168,7 @@
                         </div>
                     @endif
                 </div>
-                <div class="p-20 bg-zinc-400/15 rounded-2xl mt-10">
+                <div class="p-20 bg-bg-optional rounded-2xl mt-10">
                     <!-- Quantity Section -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="w-full">
@@ -198,7 +198,7 @@
                         <div class="">
                             <p class="text-text-white text-base font-normal text-end mb-2">{{ __('0/500') }}</p>
                             <x-ui.textarea wire:model="description" placeholder="Type here......"
-                                class="w-full bg-zinc-400/15" rows="5"></x-ui.textarea>
+                                class="w-full bg-bg-optional" rows="5"></x-ui.textarea>
                             <p class="text-text-white text-xl font-normal mt-5">
                                 {{ __('The listing title and description must be accurate and as informative as possible (no random or lottery). Misleading description is a violation of our ') }}
                                 <span class="text-pink-500">{{ __('Seller Rules.') }}</span>
@@ -211,7 +211,7 @@
 
 
 
-                <div class="bg-zinc-400/15 p-10 xl:p-20 rounded-2xl mt-10">
+                <div class="bg-bg-optional p-10 xl:p-20 rounded-2xl mt-10">
                     <h2 class="text-text-white font-semibold text-3xl">{{ __('Delivery method') }}</h2>
                     <div class="border-t border-zinc-500 mb-12 mt-2"></div>
 
