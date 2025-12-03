@@ -1,6 +1,7 @@
 
 <section>
     <div class="max-w-7xl mx-auto px-8 py-8">
+          <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
         <!-- Breadcrumb -->
         <a href="{{ route('game.index', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug]) }}">
             <div class="group flex items-center gap-2 my-8 text-lg font-semibold">
