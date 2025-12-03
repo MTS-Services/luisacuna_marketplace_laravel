@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum PlatFormStatus: string
+enum PlatformStatus: string
 {
     case ACTIVE = 'active';
     case INACTIVE = 'inactive';

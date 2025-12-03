@@ -14,6 +14,7 @@ class GameConfig extends BaseModel implements Auditable
     protected $fillable = [
 
         "sort_order",
+        "delivery_methods",
         "game_id",
         "category_id",
         "field_name",
