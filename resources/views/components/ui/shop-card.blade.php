@@ -1,32 +1,52 @@
 <div>
-    @props(['gameSlug', 'categorySlug' , 'data'])
+    @props([
+        'gameSlug', 
+        'categorySlug' ,
+         'data', // Prdocuts as Data
+          'game'
+          ])
 
 
-    <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
+    <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'itemSlug' => $data->slug]) }}"
         wire:navigate>
         <!-- Card -->
         <div class="bg-bg-primary rounded-2xl p-4 shadow-lg transition">
 
             <div class="flex justify-between items-start">
                 <div class="flex items-center space-x-2">
+                    @if($game->logo)
+                    <div class="bg-orange text-text-white font-bold rounded-md overflow-hidden w-6 h-6 flex items-center justify-center">
+                        <img src="{{ storage_url($game->logo)}}" alt="">    
+                    </div>
+                    @else
                     <div class="bg-orange text-text-white font-bold rounded-md w-6 h-6 flex items-center justify-center">
-                        F</div>
-                    <span class="text-green font-medium">Xbox</span>
+                        {{ substr($game->name, 0, 1)}}</div>
+                    @endif 
+
+                    <span class="text-green font-medium">{{ $data->platform }}</span>
                 </div>
                 <span class="text-text-secondary text-sm">• Stacked</span>
             </div>
 
             <div class="flex justify-between my-2">
                 <p class="text-text-secondary text-sm mt-4 max-w-[60%]">
-                    Blue Squire Skin – 50 VB – Xbox / PSN / PC Full Access
+                    {{
+                        $data->skin ?? ''
+                    }}
+                    {{
+                        $data->platform ? ' / '. $data->platform : ''
+                    }}
+                   
                 </p>
 
-                <img class="w-16 h-16 rounded float-right" src="{{ asset('assets/images/Rectangle.png') }}"
+                <img class="w-16 h-16 rounded float-right" src="{{ storage_url($data->image) }}"
                     alt="Image">
             </div>
 
             <div class=" flex items-center justify-between ">
-                <span class="text-text-white font-medium text-lg">PEN175.27</span>
+                <span class="text-text-white font-medium text-lg">
+                    {{ $data->price }}
+                </span>
                 <div class="flex items-center space-x-1 text-text-secondary text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 stroke-text-primary" viewBox="0 0 15 15"
                         fill="none">
@@ -34,7 +54,9 @@
                             d="M7.26584 4.23838V7.26584L8.47682 5.44936M1.81641 7.26584C1.81641 7.98147 1.95736 8.69009 2.23122 9.35124C2.50508 10.0124 2.90648 10.6131 3.41251 11.1192C3.91853 11.6252 4.51927 12.0266 5.18043 12.3005C5.84159 12.5743 6.55021 12.7153 7.26584 12.7153C7.98147 12.7153 8.69009 12.5743 9.35124 12.3005C10.0124 12.0266 10.6131 11.6252 11.1192 11.1192C11.6252 10.6131 12.0266 10.0124 12.3005 9.35124C12.5743 8.69009 12.7153 7.98147 12.7153 7.26584C12.7153 6.55021 12.5743 5.84159 12.3005 5.18043C12.0266 4.51927 11.6252 3.91853 11.1192 3.41251C10.6131 2.90648 10.0124 2.50508 9.35124 2.23122C8.69009 1.95736 7.98147 1.81641 7.26584 1.81641C6.55021 1.81641 5.84159 1.95736 5.18043 2.23122C4.51927 2.50508 3.91853 2.90648 3.41251 3.41251C2.90648 3.91853 2.50508 4.51927 2.23122 5.18043C1.95736 5.84159 1.81641 6.55021 1.81641 7.26584Z"
                             stroke="currentColor" stroke-width="1.36236" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    <span>Instant</span>
+                    <span>
+                        {{ $game->delivery_method }}
+                    </span>
                 </div>
             </div>
 
@@ -48,7 +70,9 @@
                 </div>
 
                 <div class="w-full">
-                    <p class="text-text-white font-medium">Victoria</p>
+                    <p class="text-text-white font-medium">
+                        {{ $data->user->username }}
+                    </p>
 
                     <div class="flex items-center space-x-2 mt-2">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 fill-zinc-500">

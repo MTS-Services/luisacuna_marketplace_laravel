@@ -15,8 +15,8 @@
             <x-slot name="pageSlug">{{ $gameSlug }}-{{ $categorySlug }}{{__('-shop')}}</x-slot>
             <x-slot name="gameSlug">{{ $gameSlug }}</x-slot>
             <x-slot name="categorySlug">{{ $categorySlug }}</x-slot>
-            <x-slot name="sellerSlug">{{ $sellerSlug }}</x-slot>
-            <livewire:frontend.game.buy-component :gameSlug="$gameSlug" :categorySlug="$categorySlug" :sellerSlug="$sellerSlug" />
+            <x-slot name="sellerSlug">{{ $itemSlug }}</x-slot>
+            <livewire:frontend.game.buy-component :gameSlug="$gameSlug" :categorySlug="$categorySlug" :itemSlug="$itemSlug" />
         @break
 
         @case('game.checkout' && request()->route()->parameter('orderId'))

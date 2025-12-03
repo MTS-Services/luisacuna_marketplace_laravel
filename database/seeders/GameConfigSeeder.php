@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\GameConfigFilterType;
 use App\Enums\GameConfigInputType;
+use App\Enums\GameDeliveryMethod;
 use App\Models\GameConfig;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -24,7 +25,8 @@ class GameConfigSeeder extends Seeder
             'slug' => 'server',
             'filter_type' => GameConfigFilterType::FILTER_BY_SELECT,
             'input_type' => GameConfigInputType::SELECT_DROPDOWN,
-            'dropdown_values' => json_encode(['Asia', 'Europe', 'North America', 'South America', 'Oceania'])
+            'dropdown_values' => json_encode(['Asia', 'Europe', 'North America', 'South America', 'Oceania']),
+            'delivery_methods' => json_encode(GameDeliveryMethod::options())
         ]);
         GameConfig::create([
             'game_id' => 1,
@@ -33,7 +35,8 @@ class GameConfigSeeder extends Seeder
             'slug' => 'faction',
             'filter_type' => GameConfigFilterType::FILTER_BY_SELECT,
             'input_type' => GameConfigInputType::SELECT_DROPDOWN,
-            'dropdown_values' => json_encode(['Horde', 'Alliance', 'Neutral'])
+            'dropdown_values' => json_encode(['Horde', 'Alliance', 'Neutral']),
+            'delivery_methods' => json_encode(GameDeliveryMethod::options())
         ]);
         GameConfig::create([
             'game_id' => 1,
@@ -42,7 +45,8 @@ class GameConfigSeeder extends Seeder
             'slug' => 'number-of-skin',
             'filter_type' => GameConfigFilterType::FILTER_BY_RANGE,
             'input_type' => GameConfigInputType::NUMBER,
-            'dropdown_values' => null
+            'dropdown_values' => null,
+            'delivery_methods' => json_encode(GameDeliveryMethod::options())
         ]);
         GameConfig::create([
             'game_id' => 1,
@@ -51,19 +55,21 @@ class GameConfigSeeder extends Seeder
             'slug' => 'rare-skin',
             'filter_type' => GameConfigFilterType::FILTER_BY_SELECT,
             'input_type' => GameConfigInputType::SELECT_DROPDOWN,
-            'dropdown_values' => json_encode(['Black Knight', 'Ikonic', 'Galaxy'])
+            'dropdown_values' => json_encode(['Black Knight', 'Ikonic', 'Galaxy']),
+            'delivery_methods' => json_encode(GameDeliveryMethod::options())
         ]);
 
         // Config Game Two
 
-          GameConfig::create([
+        GameConfig::create([
             'game_id' => 2,
             'category_id' => 1,
             'field_name' => 'Server',
             'slug' => 'server',
             'filter_type' => GameConfigFilterType::FILTER_BY_SELECT,
             'input_type' => GameConfigInputType::SELECT_DROPDOWN,
-            'dropdown_values' => json_encode(['Singpore', 'Russian'])
+            'dropdown_values' => json_encode(['Singpore', 'Russian']),
+            'delivery_methods' => json_encode(GameDeliveryMethod::options())
         ]);
         GameConfig::create([
             'game_id' => 2,
@@ -72,7 +78,8 @@ class GameConfigSeeder extends Seeder
             'slug' => 'faction',
             'filter_type' => GameConfigFilterType::FILTER_BY_SELECT,
             'input_type' => GameConfigInputType::SELECT_DROPDOWN,
-            'dropdown_values' => json_encode(['Livik', 'Pochonki', 'Port'])
+            'dropdown_values' => json_encode(['Livik', 'Pochonki', 'Port']),
+            'delivery_methods' => json_encode(GameDeliveryMethod::options())
         ]);
         GameConfig::create([
             'game_id' => 2,
@@ -81,7 +88,8 @@ class GameConfigSeeder extends Seeder
             'slug' => 'number-of-skin',
             'filter_type' => GameConfigFilterType::FILTER_BY_RANGE,
             'input_type' => GameConfigInputType::NUMBER,
-            'dropdown_values' => null
+            'dropdown_values' => null,
+            'delivery_methods' => json_encode(GameDeliveryMethod::options())
         ]);
         GameConfig::create([
             'game_id' => 2,
@@ -90,7 +98,8 @@ class GameConfigSeeder extends Seeder
             'slug' => 'rare-skin',
             'filter_type' => GameConfigFilterType::FILTER_BY_SELECT,
             'input_type' => GameConfigInputType::SELECT_DROPDOWN,
-            'dropdown_values' => json_encode(['Green Light', 'Green Gray', 'Black Diamond'])
+            'dropdown_values' => json_encode(['Green Light', 'Green Gray', 'Black Diamond']),
+            'delivery_methods' => json_encode(GameDeliveryMethod::options())
         ]);
 
     }
