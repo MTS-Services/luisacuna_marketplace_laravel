@@ -47,34 +47,34 @@ class UserSeeder extends Seeder
         ]);
 
         // Create 5 dummy users using fake() helper
-        for ($i = 1; $i <= 5; $i++) {
-            User::create([
-                'sort_order' => $i,
-                'username' => fake()->unique()->userName,
-                'first_name' => fake()->firstName,
-                'last_name' => fake()->lastName,
-                'avatar' => null,
-                'date_of_birth' => fake()->date(),
-                'timezone' => fake()->timezone,
-                'email' => "user@dev{$i}.com",
-                'email_verified_at' => null,
-                'password' => Hash::make("user@dev{$i}.com"),
-                'phone' => fake()->phoneNumber,
-                'phone_verified_at' => now(),
-                'user_type' => UserType::SELLER->value,
-                'account_status' => UserAccountStatus::PENDING_VERIFICATION->value,
-                'last_login_at' => now(),
-                'last_login_ip' => fake()->ipv4,
-                'login_attempts' => 0,
-                'locked_until' => null,
-                'two_factor_enabled' => false,
-                'two_factor_secret' => null,
-                'two_factor_recovery_codes' => null,
-                'terms_accepted_at' => now(),
-                'privacy_accepted_at' => now(),
-                'last_synced_at' => now(),
-                'remember_token' => Str::random(10),
-            ]);
-        }
+        // for ($i = 1; $i <= 5; $i++) {
+        //     User::create([
+        //         'sort_order' => $i,
+        //         'username' => fake()->unique()->userName,
+        //         'first_name' => fake()->firstName,
+        //         'last_name' => fake()->lastName,
+        //         'avatar' => null,
+        //         'date_of_birth' => fake()->date(),
+        //         'timezone' => fake()->timezone,
+        //         'email' => "user@dev{$i}.com",
+        //         'email_verified_at' => null,
+        //         'password' => Hash::make("user@dev{$i}.com"),
+        //         'phone' => fake()->phoneNumber,
+        //         'phone_verified_at' => now(),
+        //         'user_type' => UserType::SELLER->value,
+        //         'account_status' => UserAccountStatus::PENDING_VERIFICATION->value,
+        //         'last_login_at' => now(),
+        //         'last_login_ip' => fake()->ipv4,
+        //         'login_attempts' => 0,
+        //         'locked_until' => null,
+        //         'two_factor_enabled' => false,
+        //         'two_factor_secret' => null,
+        //         'two_factor_recovery_codes' => null,
+        //         'terms_accepted_at' => now(),
+        //         'privacy_accepted_at' => now(),
+        //         'last_synced_at' => now(),
+        //         'remember_token' => Str::random(10),
+        //     ]);
+        // }
     }
 }
