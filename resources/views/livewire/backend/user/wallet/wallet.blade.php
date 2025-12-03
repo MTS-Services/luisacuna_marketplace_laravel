@@ -80,7 +80,7 @@
                 <a href="{{ route('user.subscriptions') }}">
                     <x-ui.button class="w-full sm:w-auto! py-2!">
                         <span
-                            class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Manage Subscriptionsr') }}</span>
+                            class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Manage Subscriptions') }}</span>
                     </x-ui.button>
                 </a>
             </div>

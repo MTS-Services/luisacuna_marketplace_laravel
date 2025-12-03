@@ -8,7 +8,7 @@
             {{ __('Select game') }}
         </h2> --}}
     </div>
-    <div class="bg-zinc-900 w-full mx-auto p-20">
+    <div class="dark:bg-zinc-900 w-full mx-auto p-20">
 
 
         {{-- Step 1: Category Selection --}}
