@@ -45,29 +45,115 @@
                             </span>
                         </div>
                     </div>
-                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex" wire:model.live="selectedPlatform" wire:change="serachFilter">
-                        <option value="">{{ __('Platform') }}</option>
-                        <option value="">Device 1 </option>
-                        <option value="">Device 2</option>
-                    </x-ui.select>
+                  
 
-                    <div class="flex flex-nowrap gap-5 w-auto">
-                        <x-ui.input type="text" placeholder="Min Price" class="pl-5 hidden md:flex w-auto" />
-                        <x-ui.input type="text" placeholder="max Price" class="pl-5 hidden md:flex w-auto" />
+                <div class="flex-nowrap gap-5 relative hidden md:flex" x-data="{ open: false, selectedOption: '' }" @click.away="open = false">
+                    <div class="flex justify-between border border-zinc-700 bg-bg-primary items-center w-50 px-2 py-2 rounded cursor-pointer"
+                        @click="open = !open">
+                        <span x-text="selectedOption || '{{ __('Platform') }}'"></span>
+                        <flux:icon name="chevron-down" class="w-5 h-5" />
                     </div>
+                    
+                    <div class="absolute top-[110%] left-0 w-50! rounded bg-bg-primary border border-zinc-700 z-20"
+                        x-show="open"
+                        x-transition
+                        @click.stop>
+                        <ol class="list">
+                            <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-zinc-700 first:rounded-t last:rounded-b"
+                                data-value=""
+                                @click="selectedOption = '{{ __('Platform') }}'; $wire.selectedPlatform = ''; open = false; $wire.call('serachFilter')">
+                                {{ __('Platform') }}
+                            </li>
+                            <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-zinc-700 last:rounded-b"
+                                data-value="device1"
+                                @click="selectedOption = 'Device 1'; $wire.selectedPlatform = 'device1'; open = false; $wire.call('serachFilter')">
+                                Device 1
+                            </li>
+                            <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-zinc-700 last:rounded-b"
+                                data-value="device2"
+                                @click="selectedOption = 'Device 2'; $wire.selectedPlatform = 'device2'; open = false; $wire.call('serachFilter')">
+                                Device 2
+                            </li>
+                        </ol>
+                    </div>
+                </div>
 
-                    <x-ui.select id="status-select" class="py-0.5! w-auto! rounded! border-zinc-700!  hidden md:flex" wire:model.live="selectedDeliveryTime" wire:change="serachFilter">
-                        <option value="">{{ __('Select Delivery Time') }}</option>
-                        <option value="">{{ __('Instant Delivery') }}</option>
-                        <option value="">{{ __('In a Week') }}</option>
-                    </x-ui.select>
 
-                    <x-ui.button class="py-2! px-3! w-auto! rounded-2xl!  hidden md:flex bg-transparent!"
+                <div class="flex-nowrap gap-5 relative hidden md:flex" x-data="{ open: false, selectedMin: '', selectedMax: '' }" @click.away="open = false">
+                    <div class="price-input flex justify-between border border-zinc-700 bg-bg-primary items-center w-50 px-2 py-2 rounded cursor-pointer"
+                        @click="open = !open">
+                        <span x-text="selectedMin && selectedMax ? `$${selectedMin} - $${selectedMax}` : 'Price'"></span>
+                        <flux:icon name="chevron-down" class="w-5 h-5" />
+                    </div>
+                    
+                    <div class="price-dropdown absolute top-[110%] left-0 w-100! rounded bg-bg-primary border border-zinc-700 z-20 px-5 py-5"
+                        x-show="open"
+                        x-transition
+                        @click.stop>
+                        <div class="flex justify-center gap-2">
+                            <x-ui.input type="text" placeholder="Min" wire:model="minPrice" class="border-zinc-700" x-model="selectedMin"/>
+                            <x-ui.input type="text" placeholder="Max" wire:model="maxPrice" class="border-zinc-700" x-model="selectedMax"/>
+                            <x-ui.button class="py-2! px-3! w-auto! rounded! hidden md:flex bg-transparent!"
+                                :variant="'primary'" 
+                                @click="selectedMin = ''; selectedMax = ''; $wire.minPrice = ''; $wire.maxPrice = ''; $wire.call('serachFilter')">
+                            <flux:icon name="trash" class="w-5 h-5" />
+                            </x-ui.button>
+                        </div>
+                        <ol class="list pt-2.5">
+                            <li class="py-3 px-2 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-zinc-700 rounded"
+                                data-min="100" 
+                                data-max="500"
+                                @click="selectedMin = $el.dataset.min; selectedMax = $el.dataset.max; $wire.minPrice = $el.dataset.min; $wire.maxPrice = $el.dataset.max; open = false; $wire.call('serachFilter')">
+                                100 to 500
+                            </li>
+                            <li class="py-3 px-2 text-text-primary mt-2 bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-zinc-700 rounded"
+                                data-min="500" 
+                                data-max="1000"
+                                @click="selectedMin = $el.dataset.min; selectedMax = $el.dataset.max; $wire.minPrice = $el.dataset.min; $wire.maxPrice = $el.dataset.max; open = false; $wire.call('serachFilter')">
+                                500 to 1000
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="flex-nowrap gap-5 relative hidden md:flex" x-data="{ open: false, selectedOption: '' }" @click.away="open = false">
+                    <div class="flex justify-between border border-zinc-700 bg-bg-primary items-center w-50 px-2 py-2 rounded cursor-pointer"
+                        @click="open = !open">
+                        <span x-text="selectedOption || '{{ __('Select Delivery Time') }}'"></span>
+                        <flux:icon name="chevron-down" class="w-5 h-5" />
+                    </div>
+                    
+                    <div class="absolute top-[110%] left-0 w-50! rounded bg-bg-primary border border-zinc-700 z-20"
+                        x-show="open"
+                        x-transition
+                        @click.stop>
+                        <ol class="list">
+                            <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-zinc-700 first:rounded-t last:rounded-b"
+                                data-value=""
+                                @click="selectedOption = '{{ __('Select Delivery Time') }}'; $wire.selectedDeliveryTime = ''; open = false; $wire.call('serachFilter')">
+                                {{ __('Select Delivery Time') }}
+                            </li>
+                            <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-zinc-700 last:rounded-b"
+                                data-value="instant"
+                                @click="selectedOption = '{{ __('Instant Delivery') }}'; $wire.selectedDeliveryTime = 'instant'; open = false; $wire.call('serachFilter')">
+                                {{ __('Instant Delivery') }}
+                            </li>
+                            <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-zinc-700 last:rounded-b"
+                                data-value="week"
+                                @click="selectedOption = '{{ __('In a Week') }}'; $wire.selectedDeliveryTime = 'week'; open = false; $wire.call('serachFilter')">
+                                {{ __('In a Week') }}
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+
+                    <x-ui.button class="py-2! px-3! w-auto! rounded!  hidden md:flex bg-transparent!"
                         :variant="'primary'" wire:click="resetAllFilters">
                         {{ __('Clear All') }}
                     </x-ui.button>
                     <button @click="filter = !filter"
-                        class="flex items-center gap-2 border border-zinc-500 rounded-full px-5 py-2 hover:bg-zinc-600  transition md:hidden group"
+                        class="flex items-center gap-2 border border-zinc-500 rounded px-5 py-2 hover:bg-zinc-600  transition md:hidden group"
                         :class="{ 'bg-zinc-600': filter }">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-5 w-5 group-hover:stroke-white transition-color duration-300"
@@ -296,3 +382,13 @@
         </div>
     </div>
 </section>
+
+
+@push("script")
+    <script>
+        function updatePriceValue(event) {
+            console.log(event.target.value);
+            
+        }
+    </script>
+@endpush
