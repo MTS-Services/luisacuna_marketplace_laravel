@@ -26,7 +26,7 @@ return new class extends Migration
 
             $table->string('type')->default(CustomNotificationType::PUBLIC)->index();
             $table->string('action')->nullable();
-            $table->longText('data')->nullable();
+            $table->json('data')->nullable();
 
             $table->timestamps();
 
