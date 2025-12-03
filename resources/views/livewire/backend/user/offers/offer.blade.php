@@ -1,4 +1,4 @@
-<div class="container px-24 mb-32">
+<div class="container">
     <div class="flex gap-4 items-center my-10">
         {{-- <h2 class="text-text-white text-base">
             {{ __('Home') }}
@@ -8,7 +8,7 @@
             {{ __('Select game') }}
         </h2> --}}
     </div>
-    <div class="bg-bg-secondary w-full mx-auto p-10 md:p-20 rounded-2xl">
+    <div class="bg-bg-secondary w-full mx-auto p-5 sm:p-10 md:p-20 rounded-2xl">
 
 
         {{-- Step 1: Category Selection --}}
@@ -25,7 +25,8 @@
                                 <img src="{{ storage_url($category->image) }}" alt="{{ $category->name }}"
                                     class="w-full h-full rounded-xl object-cover">
                             </div>
-                            <span class="text-3xl font-semibold text-text-white">{{ $category->name }}</span>
+                            <span
+                                class="text-2xl sm:text-3xl font-semibold text-text-white">{{ $category->name }}</span>
                         </div>
                         <svg class="w-6 h-6 fill-white" viewBox="0 0 256 256">
                             <path
@@ -44,19 +45,21 @@
             </h2>
             <h2 class="text-2xl text-center text-text-white/60 mb-10">{{ __('Step 1/3') }}</h2>
 
-            <div class="p-10 bg-bg-info rounded-2xl">
+            <div class="p-5 sm:p-10 bg-bg-info rounded-2xl">
                 <h2 class="text-2xl font-semibold text-center text-text-white mb-7">
                     {{ __('Choose Game') }}
                 </h2>
 
-                <div class="w-md flex justify-center mx-auto">
+                <div class="flex justify-center mx-auto">
                     @if (count($categoryGames) > 0)
-                        <x-ui.select class="mt-1 block w-full" wire:model="selectedGame">
-                            <option value="">{{ __('Select a game') }}</option>
-                            @foreach ($categoryGames as $game)
-                                <option value="{{ $game->id }}">{{ $game->name }}</option>
-                            @endforeach
-                        </x-ui.select>
+                        <div class="justify-center">
+                            <x-ui.select class="mt-1 block w-auto! sm:w-full" wire:model="selectedGame">
+                                <option value="">{{ __('Select a game') }}</option>
+                                @foreach ($categoryGames as $game)
+                                    <option value="{{ $game->id }}">{{ $game->name }}</option>
+                                @endforeach
+                            </x-ui.select>
+                        </div>
                     @else
                         <div class="text-center text-text-white/60 py-8">
                             <p class="text-xl mb-2">{{ __('No games found in this category') }}</p>
@@ -69,7 +72,7 @@
                     <p class="text-red-500 text-center mt-2">{{ $message }}</p>
                 @enderror
             </div>
-            <div class="flex justify-center space-x-4">
+            <div class="flex gap-4 justify-center">
                 <div class="flex w-full md:w-auto mt-10!">
                     <x-ui.button class="w-fit! py!">{{ __('Back') }}</x-ui.button>
                 </div>
