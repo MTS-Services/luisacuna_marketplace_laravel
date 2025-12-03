@@ -9,14 +9,12 @@ use App\Events\UserNotificationSent;
 use App\Models\Admin;
 use App\Models\CustomNotification;
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
 
 class TestController extends Controller
 {
     public function sendNotification(Request $request)
     {
         try {
-            Log::info('sendNotification');
             // Get input values from the request
             $userId = $request->input('user_id');
             $sendTo = $request->input('send_to', 'users');
@@ -27,7 +25,6 @@ class TestController extends Controller
             $receiverType = null;
             $type = null;
 
-            Log::info('step 2');
             switch ($sendTo) {
                 case 'users':
                     $type = CustomNotificationType::USER->value;
@@ -59,10 +56,8 @@ class TestController extends Controller
                     break;
             }
 
-            Log::info('step 3');
             $title = $request->input('title', ($receiverId ? 'Private Notification' : 'Public Notification'));
 
-            Log::info('step 4');
             // Create the notification record in the database
             $notification = CustomNotification::create([
                 'type' => $type,
@@ -81,9 +76,6 @@ class TestController extends Controller
                 'action' => route('home')
             ]);
 
-
-            Log::info('Notification created: ' . $notification->id . 'sendTo' . $sendTo . 'receiverId' . $receiverId . 'receiverType' . $receiverType);
-
             if ($sendTo === 'users') {
                 broadcast(new UserNotificationSent($notification));
             }
@@ -94,7 +86,6 @@ class TestController extends Controller
                 broadcast(new UserNotificationSent($notification));
                 broadcast(new AdminNotificationSent($notification));
             }
-            Log::info('step 5');
             return redirect()->back()->with('success', 'Notification sent successfully!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to send notification: ' . $e->getMessage());

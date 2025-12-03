@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\CustomNotificationType;
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -26,7 +25,6 @@ class CustomNotification extends BaseModel
     protected $casts = [
         'data' => 'array',
         'created_at' => 'datetime',
-        'type' => CustomNotificationType::class
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -64,5 +62,18 @@ class CustomNotification extends BaseModel
         $this->appends = array_merge(parent::getAppends(), [
             //
         ]);
+    }
+
+    public const TYPE_USER = 0;
+    public const TYPE_ADMIN = 1;
+
+    public function scopeUserType(Builder $query): Builder
+    {
+        return $query->where('sender_type', self::TYPE_USER);
+    }
+
+    public function scopeAdminType(Builder $query): Builder
+    {
+        return $query->where('sender_type', self::TYPE_ADMIN);
     }
 }

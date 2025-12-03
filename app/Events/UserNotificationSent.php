@@ -13,7 +13,6 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
 class UserNotificationSent implements ShouldBroadcast, ShouldQueue
 {
@@ -29,7 +28,6 @@ class UserNotificationSent implements ShouldBroadcast, ShouldQueue
 
     public function broadcastOn()
     {
-        Log::info('UserNotificationSent: ' . $this->notification->receiver_id . ' ' . $this->notification->receiver_type);
         if ($this->notification->receiver_id && $this->notification->receiver_type == User::class) {
             return new PrivateChannel('user.' . $this->notification->receiver_id);
         } elseif ($this->notification->receiver_id == null && ($this->notification->type == CustomNotificationType::USER->value || $this->notification->type == CustomNotificationType::PUBLIC->value)) {
