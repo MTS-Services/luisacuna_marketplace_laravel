@@ -16,8 +16,7 @@ class Product extends AuditBaseModel implements Auditable
 
         'user_id',
         'category_id',
-        'platform_id',
-        'server_id',
+        'game_id',
 
         'slug',
         'name',

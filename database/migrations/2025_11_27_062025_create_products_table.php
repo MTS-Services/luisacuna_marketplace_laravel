@@ -19,11 +19,12 @@ return new class extends Migration
             $table->unsignedBigInteger('sort_order')->default(0)->index();
 
             $table->unsignedBigInteger('user_id')->index();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedBigInteger('category_id')->index();
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
    
+            $table->unsignedBigInteger('game_id')->index();
+            
+
             $table->string('slug')->unique();
             $table->string('name');
             $table->text('description')->nullable();
@@ -40,6 +41,12 @@ return new class extends Migration
             $table->timestamps();
 
             $this->addMorphedAuditColumns($table);
+            
+            $table->foreign('game_id')->references('id')->on('games')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+
+
         });
     }
 

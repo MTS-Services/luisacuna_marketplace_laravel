@@ -1,5 +1,5 @@
 <div>
-    @props(['gameSlug', 'categorySlug'])
+    @props(['gameSlug', 'categorySlug' , 'data'])
 
 
     <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'sellerSlug' => 'seller-1']) }}"
