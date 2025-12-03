@@ -97,8 +97,7 @@ class Offer extends Component
     {
         $categories = $this->categoryService->getDatas();
         return view('livewire.backend.user.offers.offer', [
-            'categories' => $categories,
-            // '' => LanguageStatus::options(),
+            'categories' => $categories
         ]);
     }
 }
