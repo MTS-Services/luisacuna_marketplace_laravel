@@ -20,6 +20,7 @@ class Index extends Component
     public BannerForm $form;
     protected HeroService $heroService;
     public ?string $existingFile = null;
+    public ?string $existingFileMobile = null;
     public Hero $data;
     public function boot(HeroService $heroService)
     {
@@ -33,6 +34,7 @@ class Index extends Component
         $this->data = $data;
 
         $this->existingFile = $data->image;
+        $this->existingFileMobile = $data->mobile_image;
 
         $this->form->setData($data);
 

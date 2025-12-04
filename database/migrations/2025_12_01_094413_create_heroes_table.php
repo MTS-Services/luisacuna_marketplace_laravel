@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('action_title')->nullable();
             $table->string('action_url')->nullable();
             $table->string('image')->nullable();
+            $table->string('mobile_image')->nullable();
             $table->string('target')->default('_blank');
             $table->string('status')->default(HeroStatus::ACTIVE->value)->index();
             $table->softDeletes();

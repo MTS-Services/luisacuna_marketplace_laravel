@@ -1,5 +1,5 @@
 <header x-data="{ mobileMenuOpen: false, notification: false, dropdown: '', globalSearchModal: false, open: '' }" x-cloak
-    class="sticky top-0 z-50  {{ request()->routeIs('home') ? 'bg-linear-to-r from-zinc-950/50 via-text-text-white to-zinc-950/50 glass-card shadow-none!' : 'glass-card' }}">
+    class="sticky top-0 z-50  {{ request()->routeIs('home') ? 'bg-linear-to-r bg-bg-secondary via-text-text-white to-zinc-950/50 glass-card shadow-none!' : 'glass-card' }}">
     <div class=" px-4 py-4 flex items-center justify-between relative" x-cloak>
         <div class="flex flex-row-reverse items-center justify-center">
             <div class="hidden xxs:flex ml-4 lg:ml-0 scale-75 xl:scale-100">
@@ -129,7 +129,7 @@
     {{-- Mobile sidebar --}}
     <div x-show="mobileMenuOpen" x-cloak @click.outside="mobileMenuOpen = false"
         x-transition:enter="transition ease-out duration-100"
-        class="absolute top-18 right-0 w-full h-screen bg-bg-primary backdrop:blure-md z-100 rounded-lg transition-all duration-300  p-4 shadow-lg overflow-y-auto ">
+        class="absolute  top-18 right-0 w-full h-screen bg-bg-primary dark:bg-bg-secondary backdrop:blure-md z-100  md:rounded-lg transition-all duration-300  p-4 shadow-lg overflow-y-auto ">
         <div class="flex justify-between items-center bg-bg-hover p-2 rounded-lg mb-2">
             <h2 class="text-lg font-semibold">Category</h2>
             <button @click="mobileMenuOpen = false">

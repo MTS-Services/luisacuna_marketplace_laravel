@@ -64,6 +64,7 @@ class HeroService
         return DB::transaction(function () use ($id, $data) {
             $model = $this->findData($id);
             $newSingleImagePath = null;
+            $newSingleImagePathMobile = null;
             if (!$model) {
                 return null;
             }
@@ -76,6 +77,7 @@ class HeroService
                 $oldImagePath = Arr::get($oldData, 'image');
                 $uploadedImage = Arr::get($data, 'image');
 
+
                 
                 if ($uploadedImage instanceof UploadedFile) {
                     // Delete old file permanently (File deletion is non-reversible)
@@ -86,7 +88,7 @@ class HeroService
                     $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
                     $fileName = $prefix . '-' . $uploadedImage->getClientOriginalName();
 
-                    $newSingleImagePath = Storage::disk('public')->putFileAs('banner', $uploadedImage, $fileName);
+                    $newSingleImagePath = Storage::disk('public')->putFileAs('banners', $uploadedImage, $fileName);
                     $newData['image'] = $newSingleImagePath;
                 } elseif ($newData['remove_file']) {
                     if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
@@ -100,6 +102,36 @@ class HeroService
                     $newData['image'] = $oldImagePath ?? null;
                 }
                 unset($newData['remove_file']);
+
+
+                //Mobile Image
+                $oldImagePathMobile = Arr::get($oldData, 'mobile_image');
+                $uploadedImageMobile = Arr::get($data, 'mobile_image');
+                
+     
+                if ($uploadedImageMobile instanceof UploadedFile) {
+                    // Delete old file permanently (File deletion is non-reversible)
+                    if ($oldImagePath && Storage::disk('public')->exists($oldImagePathMobile)) {
+                        Storage::disk('public')->delete($oldImagePathMobile);
+                    }
+                    // Store the new file and track path for rollback
+                    $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+                    $fileName = $prefix . '-' . $uploadedImageMobile->getClientOriginalName();
+
+                    $newSingleImagePathMobile = Storage::disk('public')->putFileAs('banners', $uploadedImageMobile, $fileName);
+                    $newData['mobile_image'] = $newSingleImagePathMobile;
+                } elseif ($newData['remove_file_mobile']) {
+                    if ($oldImagePath && Storage::disk('public')->exists($oldImagePathMobile)) {
+                        Storage::disk('public')->delete($oldImagePathMobile);
+                    }
+                    $newData['mobile_image'] = null;
+                }
+                
+                // Cleanup temporary/file object keys
+                if (!$newData['remove_file_mobile'] && !$newSingleImagePathMobile) {
+                    $newData['mobile_image'] = $oldImagePathMobile ?? null;
+                }
+                unset($newData['remove_file_mobile']);
 
             $model->update($newData);
             return $model->fresh();

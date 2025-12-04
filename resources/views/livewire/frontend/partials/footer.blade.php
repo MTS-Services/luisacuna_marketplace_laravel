@@ -1,4 +1,4 @@
-<footer class="bg-bg-primary">
+<footer class="bg-bg-secondary">
     <div class="pt-12">
         <div class="container flex flex-col md:flex-row justify-between gap-8 mb-12">
             <div class="w-full md:w-1/4 flex flex-col items-center justify-center md:justify-start">
@@ -82,7 +82,7 @@
             </div>
         </div>
     </div>
-    <div class="bg-bg-secondary py-4 text-center text-md text-text-secondary">
+    <div class="bg-bg-primary py-4 text-center text-md text-text-secondary">
         <p class="text-text-secondary">{{ __('© 2025 DigitalCommerce. All rights reserved') }}</p>
     </div>
 </footer>

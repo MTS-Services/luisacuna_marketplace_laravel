@@ -52,7 +52,7 @@
     @foreach ($links as $link)
         @php
             $isActive = request()->routeIs($link['route']);
-            $bgClass = $isActive ? 'bg-bg-primary hover:bg-bg-secondary' : 'bg-bg-secondary hover:bg-bg-primary';
+            $bgClass = $isActive ? 'bg-bg-hover hover:bg-bg-hover' : 'bg-bg-info hover:bg-bg-hover';
         @endphp
 
         <a href="{{ route($link['route']) }}"
