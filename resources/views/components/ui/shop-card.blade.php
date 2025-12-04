@@ -10,7 +10,7 @@
     <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'itemSlug' => $data->slug]) }}"
         wire:navigate>
         <!-- Card -->
-        <div class="bg-bg-primary rounded-2xl p-4 shadow-lg transition">
+        <div class="bg-bg-optional rounded-2xl p-4 shadow-lg transition">
 
             <div class="flex justify-between items-start">
                 <div class="flex items-center space-x-2">

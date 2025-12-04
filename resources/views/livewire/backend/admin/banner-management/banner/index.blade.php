@@ -69,9 +69,14 @@
 
 
                           <div class="w-full ">
-                                <x-ui.file-input wire:model="form.image" label="Banner Image" accept="image/*" :error="$errors->first('form.avatar')"
+                                <x-ui.file-input wire:model="form.image" label="Banner Image" accept="image/*" :error="$errors->first('form.image')"
                                     hint="Upload a profile picture (Max: 2MB)" :existingFiles="$existingFile" removeModel="form.remove_file" />
-                        </div>
+                          </div>
+                          
+                          <div class="w-full ">
+                                <x-ui.file-input wire:model="form.mobile_image" label="Banner Image (Mobile Device)" accept="image/*" :error="$errors->first('form.mobile_image')"
+                                    hint="Upload a profile picture (Max: 2MB)" :existingFiles="$existingFileMobile" removeModel="form.remove_file_mobile" />
+                          </div>
 
                         <div>
                             <x-ui.label>
