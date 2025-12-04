@@ -2,17 +2,24 @@
 
 namespace App\Services;
 
+use App\Enums\CategoryStatus;
 use App\Enums\GameStatus;
+use App\Models\Category;
 use App\Models\Game;
+use App\Models\GameCategory;
 use App\Traits\FileManagementTrait;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class GameService
 {
     use FileManagementTrait;
     public function __construct(
         protected Game $model,
+        protected Category $category,
+        protected GameCategory $gameCategory,
         protected ?int $adminId = null
     ) {
         $this->adminId ??= admin()?->id;
@@ -160,5 +167,39 @@ class GameService
     {
         $this->model->whereIn('id', $ids)->update(['restored_by' => $this->adminId]);
         return $this->model->whereIn('id', $ids)->restore();
+    }
+
+
+    /* ================== ================== ==================
+     *                      RELATIONSHIPS
+     * ================== ================== ================== */
+    public function saveGameCategory(Game $game, Category $category): GameCategory
+    {
+        return DB::transaction(function () use ($game, $category) {
+            $gameCategory = $this->gameCategory->updateOrCreate(
+                [
+                    'game_id' => $game->id,
+                    'category_id' => $category->id,
+                ]
+            );
+
+            return $gameCategory;
+        });
+    }
+
+    /**
+     * Delete game category with optimized query
+     * Returns boolean indicating success
+     */
+    public function deleteGameCategory(Game $game, Category $category): bool
+    {
+        return DB::transaction(function () use ($game, $category) {
+            $deleted = $this->gameCategory
+                ->where('game_id', $game->id)
+                ->where('category_id', $category->id)
+                ->delete();
+
+            return $deleted > 0;
+        });
     }
 }

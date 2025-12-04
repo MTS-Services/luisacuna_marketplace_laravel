@@ -67,4 +67,15 @@ class GameController extends Controller implements HasMiddleware
     {
         return view($this->masterView);
     }
+
+    public function config($id)
+    {
+        $data = $this->service->findData(decrypt($id));
+        if (!$data) {
+            abort(404);
+        }
+        return view($this->masterView, [
+            'data' => $data
+        ]);
+    }
 }

@@ -11,6 +11,8 @@ use Laravel\Scout\Attributes\SearchUsingPrefix;
 use App\Models\Type;
 use App\Traits\HasTranslations;
 use Illuminate\Testing\Fluent\Concerns\Has;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Game extends AuditBaseModel implements Auditable
 {
@@ -62,19 +64,21 @@ class Game extends AuditBaseModel implements Auditable
     //
 
 
-    public function categories()
+    public function categories(): BelongsToMany
     {
-        // 1. Pass the related model (Category::class)
-        // 2. Pass the name of your pivot table ('game_categories')
-        // 3. Pass the foreign key on the pivot table for THIS model ('game_id')
-        // 4. Pass the foreign key on the pivot table for the OTHER model ('category_id')
         return $this->belongsToMany(
             Category::class,
             'game_categories',
             'game_id',
             'category_id'
-        );
+        )->withTimestamps();
     }
+
+    public function gameCategories(): HasMany
+    {
+        return $this->hasMany(GameCategory::class);
+    }
+
     public function platforms()
     {
         return $this->belongsToMany(
@@ -151,6 +155,30 @@ class Game extends AuditBaseModel implements Auditable
             $query->where('status', $status);
         });
         return $query;
+    }
+
+    public function scopeWithCategory($query, $categoryId)
+    {
+        return $query->whereHas('categories', function ($q) use ($categoryId) {
+            $q->where('categories.id', $categoryId);
+        });
+    }
+
+    public function scopeWithCategories($query, array $categoryIds)
+    {
+        return $query->whereHas('categories', function ($q) use ($categoryIds) {
+            $q->whereIn('categories.id', $categoryIds);
+        }, '=', count($categoryIds));
+    }
+
+    public function hasCategory(int $categoryId): bool
+    {
+        return $this->categories()->where('categories.id', $categoryId)->exists();
+    }
+
+    public function getCategoriesCountAttribute(): int
+    {
+        return $this->categories()->count();
     }
 
     // public function scopeSearch($query, $search)

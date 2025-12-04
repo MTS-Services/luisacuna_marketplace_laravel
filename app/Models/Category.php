@@ -71,7 +71,13 @@ class Category extends AuditBaseModel implements Auditable
 
     public function games(): BelongsToMany
     {
-        return $this->belongsToMany(Game::class, 'game_categories', 'category_id', 'game_id');
+        return $this->belongsToMany(Game::class, 'game_categories')
+            ->withTimestamps();
+    }
+
+    public function gameCategories(): HasMany
+    {
+        return $this->hasMany(GameCategory::class);
     }
 
     public function achievements(): HasMany
@@ -109,6 +115,13 @@ class Category extends AuditBaseModel implements Auditable
     public function scopeListGrid(Builder $query): Builder
     {
         return $query->where('layout', CategoryLayout::LIST_GRID);
+    }
+
+    public function scopeNotAssignedToGame($query, int $gameId)
+    {
+        return $query->whereDoesntHave('games', function ($q) use ($gameId) {
+            $q->where('games.id', $gameId);
+        });
     }
 
     public function scopeGroupGiftCard(Builder $query): Builder
@@ -152,6 +165,12 @@ class Category extends AuditBaseModel implements Auditable
     {
         parent::__construct($attributes);
         $this->appends = array_merge(parent::getAppends(), [
+            'games_count',
         ]);
+    }
+
+    public function getGamesCountAttribute(): int
+    {
+        return $this->games()->count();
     }
 }

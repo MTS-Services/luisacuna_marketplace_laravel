@@ -63,11 +63,13 @@ class Store extends Component
         try {
             if ($this->data) {
                 $this->service->update($this->data->id, $validated);
+                $this->success('Move to next step.');
+                return $this->redirect(route('admin.gm.game.config', encrypt($this->data->id)), navigate: true);
             } else {
-                $this->service->create($validated);
+                $data = $this->service->create($validated);
+                $this->success('Move to next step.');
+                return $this->redirect(route('admin.gm.game.config', encrypt($data->id)), navigate: true);
             }
-            $this->success('Move to next step.');
-            return $this->redirect(route('admin.gm.game.index'), navigate: true);
         } catch (Exception $e) {
             Log::error('Failed to create game: ' . $e->getMessage());
             $this->error('Something went wrong. Please try again.');

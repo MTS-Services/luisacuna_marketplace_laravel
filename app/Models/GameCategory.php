@@ -22,16 +22,21 @@ class GameCategory extends BaseModel implements Auditable
         'id'
     ];
 
-    protected $casts = [
-
-    ];
+    protected $casts = [];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    //
+    public function game()
+    {
+        return $this->belongsTo(Game::class);
+    }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                End of RELATIONSHIPS
     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
@@ -44,5 +49,13 @@ class GameCategory extends BaseModel implements Auditable
         ]);
     }
 
+    public function scopeForGame($query, int $gameId)
+    {
+        return $query->where('game_id', $gameId);
+    }
 
+    public function scopeForCategory($query, int $categoryId)
+    {
+        return $query->where('category_id', $categoryId);
+    }
 }
