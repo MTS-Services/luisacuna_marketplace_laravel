@@ -86,8 +86,17 @@
                 });
             }
         });
+    },
+    resetEditor() {
+        tinymce.remove();
+        this.editor = null;
+
+        this.value = ''; // reset value
+        this.$nextTick(() => {
+            this.initEditor();
+        });
     }
-}" x-init="initEditor().refresh();" x-cloak>
+}" @reset-tinymce-initiallized.window="resetEditor()" x-cloak>
     <textarea id="{{ $editorId }}" class="tinymce-editor" style="width: 100%;" {{ $disabled ? 'disabled' : '' }}></textarea>
 </div>
 
@@ -96,10 +105,10 @@
         <script src="{{ asset('js/tinymce/tinymce.js') }}" referrerpolicy="origin"></script>
         <script>
             // Cleanup on page navigation
-            document.addEventListener('livewire:navigating', () => {
-                if (typeof tinymce !== 'undefined') {
-                    tinymce.remove();
-                }
+            document.addEventListener('livewire:navigated', () => {
+                setTimeout(() => {
+                    Livewire.dispatch('reset-tinymce-initiallized');
+                }, 1000);
             });
         </script>
     @endpush

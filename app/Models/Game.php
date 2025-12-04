@@ -55,6 +55,7 @@ class Game extends AuditBaseModel implements Auditable
         // 'platform' => 'array',
         'status' => GameStatus::class,
         'restored_at' => 'datetime',
+        'meta_keywords' => 'array',
     ];
 
 

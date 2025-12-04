@@ -5,7 +5,7 @@
         @case('admin.gm.game.create')
             <x-slot name="title">{{__('Game Create')}}</x-slot>
             <x-slot name="breadcrumb">{{__('Game Management / Game Create')}}</x-slot>
-            <livewire:backend.admin.game-management.game.create />
+            <livewire:backend.admin.game-management.game.store />
         @break
          @case('admin.gm.game.view')
             <x-slot name="title">{{__('Game View')}}</x-slot>
@@ -15,7 +15,7 @@
          @case('admin.gm.game.edit')
             <x-slot name="title">{{__('Game Edit')}}</x-slot>
             <x-slot name="breadcrumb">{{__('Game Management / Game Edit')}}</x-slot>
-            <livewire:backend.admin.game-management.game.edit :data="$data" />
+            <livewire:backend.admin.game-management.game.store :data="$data" />
         @break
 
          @case('admin.gm.game.trash')

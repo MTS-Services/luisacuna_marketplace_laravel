@@ -4,11 +4,13 @@ namespace App\Services;
 
 use App\Enums\GameStatus;
 use App\Models\Game;
+use App\Traits\FileManagementTrait;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
 class GameService
 {
+    use FileManagementTrait;
     public function __construct(
         protected Game $model,
         protected ?int $adminId = null
@@ -78,12 +80,24 @@ class GameService
 
     public function create(array $data): Game
     {
+        $data['created_by'] = $this->adminId;
+        if (isset($data['logo'])) {
+            $data['logo'] = $this->handleSingleFileUpload($data['logo'], 'games');
+        }
+        if (isset($data['banner'])) {
+            $data['banner'] = $this->handleSingleFileUpload($data['banner'], 'games');
+        }
+        // convert to json
+        // if (isset($data['meta_keywords']) && !empty($data['meta_keywords'])) {
+        //     $data['meta_keywords'] = json_encode($data['meta_keywords']);
+        // }
         return $this->model->create($data);
     }
 
     public function update(int $id, array $data): bool
     {
         $game = $this->findData($id);
+        $data['updated_by'] = $this->adminId;
         return $game ? $game->update($data) : false;
     }
 
