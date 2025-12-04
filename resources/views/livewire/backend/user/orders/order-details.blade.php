@@ -13,49 +13,49 @@
         <div class="flex justify-between">
             <div class="flex gap-5">
                 <div>
-                    <div class="w-16 h-16">
-                        <img src="{{ asset('assets/images/order/order.png') }}" alt="Product Name">
+                    <div class="w-10 h-10 md:w-16 md:h-16">
+                        <img src="{{ asset('assets/images/order/order.png') }}" alt="Product Name" class="w-full h-full rounded-lg">
                     </div>
                 </div>
                 <div>
-                    <h2 class="text-text-white text-2xl font-semibold">
+                    <h2 class="text-text-white text-2xl font-semibold line-clamp-1">
                         {{ __('Mercury Spark — Ultimate 5-Star Boost') }}
                     </h2>
-                    <p class="text-text-white font-normal text-base">
+                    <p class="text-text-white font-normal text-base line-clamp-1">
                         {{ __('Order ID: 98bc4674-4bde-4498-9175-a4a0318458e0') }}</p>
                 </div>
             </div>
             <div class="">
-                <x-ui.button class="bg-pink-700! w-fit! py! border-none!">
+                <x-ui.button class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!">
                     {{ __('Canceled') }}
                 </x-ui.button>
             </div>
         </div>
-        <div class="block sm:flex gap-6 justify-between items-start mt-10 mb-20">
-            <div class="w-full sm:w-2/3">
-                <div class=" bg-bg-primary p-10 rounded-lg">
+        <div class="block lg:flex gap-6 justify-between items-start mt-10 mb-20">
+            <div class="w-full lg:w-2/3">
+                <div class=" bg-bg-secondary p-4 sm:p-10 rounded-lg">
                     <div class="flex gap-4 items-center">
-                        <div class="dark:bg-zinc-950 bg-zinc-200 rounded-full p-3">
+                        <div class="bg-bg-info rounded-full p-3">
                             <x-phosphor name="info" variant="regular" class="w-6 h-6 text-zinc-400" />
                         </div>
-                        <h3 class="text-text-white text-2xl font-semibold">{{ __('Order cancelled') }}</h3>
+                        <h3 class="text-text-white text-base sm:text-2xl font-semibold">{{ __('Order cancelled') }}</h3>
                     </div>
                     <div class="">
                         <div class="mt-7">
                             <p class="text-text-white text-base mb-2">{{ __('Dispute reason:') }}</p>
-                            <p class="text-text-white text-2xl font-semibold">{{ __('I have another issue') }}</p>
+                            <p class="text-text-white text-base sm:text-2xl font-semibold">{{ __('I have another issue') }}</p>
                         </div>
                         <div class="mt-5">
                             <p class="text-text-white text-base mb-2">{{ __('Cancelled by:') }}</p>
-                            <p class="text-text-white text-2xl font-semibold">{{ __('Seller') }}</p>
+                            <p class="text-text-white text-base sm:text-2xl font-semibold">{{ __('Seller') }}</p>
                         </div>
                         <div class="mt-5">
                             <p class="text-text-white text-base mb-2">{{ __('Cancelation reason:') }}</p>
-                            <p class="text-text-white text-2xl font-semibold">{{ __('Others') }}</p>
+                            <p class="text-text-white text-base sm:text-2xl font-semibold">{{ __('Others') }}</p>
                         </div>
                         <div class="mt-5">
                             <p class="text-text-white text-base mb-2">{{ __('Comment:') }}</p>
-                            <p class="text-text-white text-2xl font-semibold">
+                            <p class="text-text-white text-base sm:text-2xl font-semibold">
                                 {{ __('buyer requested to cancel the order') }}</p>
                         </div>
                     </div>
@@ -63,21 +63,21 @@
                 <div class="mt-10">
                     <!-- Bullet Points -->
                     <ul class="list-disc list-inside text-text-white text-xl">
-                        <li class="text-text-white text-xl font-normal mb-3">
+                        <li class="text-text-white text-base sm:text-xl font-normal mb-3">
                             {{ __('You received a refund for this order in your') }}
                             <span class="text-pink-500">{{ __('"Company name"') }}</span
                                 class="text-text-white text-xl font-normal"> {{ __('balance') }}
                         </li>
-                        <li class="text-text-white text-xl font-normal mb-3">
+                        <li class="text-text-white text-base sm:text-xl font-normal mb-3">
                             {{ __('When you place a new order, your balance will be used automatically') }}
                         </li>
-                        <li class="text-text-white text-xl font-normal mb-3">
+                        <li class="text-text-white text-base sm:text-xl font-normal mb-3">
                             {{ __('You will not be charged payment fees again') }}</li>
                     </ul>
 
                     <!-- Button -->
                     <div class="flex w-full md:w-auto mt-10!">
-                        <x-ui.button class="w-fit! py!">
+                        <x-ui.button class="w-fit! py-3! px-6!">
                             {{ __('Buy again') }}
                             <x-phosphor-arrow-right-light
                                 class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" /></x-ui.button>
@@ -91,7 +91,7 @@
                 </div>
             </div>
 
-            <div class="w-full sm:w-1/3 bg-bg-primary p-7 rounded-lg">
+            <div class="w-full lg:w-1/3 bg-bg-secondary p-4 sm:p-7 mt-10 lg:mt-0 rounded-lg">
                 <div class="flex gap-4 items-center">
                     <h3 class="text-text-white text-2xl font-semibold">{{ __('Order cancelled') }}</h3>
                 </div>
@@ -127,7 +127,7 @@
                 </div>
                 <div class="flex w-full md:w-auto justify-center items-center mt-10!">
                     <a href="{{ route('user.order-description') }}">
-                        <x-ui.button class="w-fit! py!">
+                        <x-ui.button class="w-fit! py-3! px-6!">
                             {{ __('View full description') }}
                             <x-phosphor-arrow-right-light
                                 class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" /></x-ui.button>
@@ -135,10 +135,10 @@
                 </div>
             </div>
         </div>
-        <div class="dark:bg-primary-primary/80 bg-bg-primary rounded-lg mt-20 5 sm:p-20">
+        <div class="bg-bg-info rounded-lg mt-20 p-5 sm:p-20">
 
             <!-- User Header -->
-            <div class="dark:bg-zinc-950 bg-zinc-200 rounded-lg p-5 border-l-4 border-pink-500 mb-10">
+            <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
                 <div class="flex items-center gap-3">
                     <img src="https://ui-avatars.com/api/?name=D18QUANB&background=853EFF&color=fff" alt="User"
                         class="w-10 h-10 rounded-full">
@@ -150,10 +150,10 @@
             </div>
 
             <!-- Order Created Message -->
-            <div class="dark:bg-zinc-950 bg-zinc-200 rounded-lg p-5 border-l-4 border-pink-500 mb-10">
+            <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
                 <div>
-                    <p class="text-text-white text-base mb-2">{{ __('Order Created:') }} <a href="#">
-                            https://www.companyname.ga/order/d8bcd674-dbde-4d98-9175-a4a031845de0</a></p>
+                    {{-- <p class="text-text-white text-base mb-2">{{ __('Order Created:') }} <a href="#">
+                            https://www.companyname.ga/order/d8bcd674-dbde-4d98-9175-a4a031845de0</a></p> --}}
                     <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
                         <x-phosphor name="link" variant="" class="fill-zinc-500" />
 
@@ -166,7 +166,7 @@
 
             <!-- Order Disputed -->
 
-            <div class="dark:bg-zinc-950 bg-zinc-200 rounded-lg p-5 border-l-4 border-pink-500 mb-10">
+            <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
                 <div>
                     <p class="text-text-white text-base mb-2">{{ __('Order Disputed by Buyer:') }}</p>
                     <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
@@ -224,7 +224,7 @@
 
             <!-- Dispute Won -->
 
-            <div class="dark:bg-zinc-950 bg-zinc-200 rounded-lg p-5 border-l-4 border-pink-500 mt-10">
+            <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mt-10">
                 <div>
                     <p class="text-text-white text-base mb-2">{{ __('Order Disputed by Buyer:') }}</p>
                     <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
@@ -241,7 +241,7 @@
             </div>
 
         </div>
-        <div class="dark:bg-zinc-900/80 bg-bg-primary rounded-lg mt-20 mb-29 py-20 px-10">
+        <div class="bg-bg-info rounded-lg mt-20 mb-29 py-8! px-4! md:py-20 md:px-10">
             <div class="flex items-center gap-3">
                 <div class="w-16 h-16">
                     <img src="{{ asset('assets/images/order/Security.png') }}" alt="Security tips"

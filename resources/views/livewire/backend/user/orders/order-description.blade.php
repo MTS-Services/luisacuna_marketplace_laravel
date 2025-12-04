@@ -6,7 +6,7 @@
                 {{ __('Back') }}
             </h2>
         </div>
-        <div class="bg-bg-primary p-4 sm:p-10 md:p-20 rounded-lg mt-10 md:mt-44">
+        <div class="bg-bg-secondary p-4 sm:p-10 md:p-20 rounded-lg mt-10 md:mt-44">
             <div class="flex mt-7">
                 <div class="flex gap-2">
                     <div>
@@ -18,7 +18,7 @@
                     <p class="text-text-white text-3xl font-semibold">{{ __('Fortnite') }}</p>
                 </div>
             </div>
-            <div class="dark:bg-white/7 p-7 rounded-lg mt-10">
+            <div class="bg-bg-optional p-7 rounded-lg mt-10">
                 <div class="flex gap-5">
                     <div>
                         <div class="w-10 h-10">
@@ -150,7 +150,7 @@
                 </div>
             </div>
         </div>
-        <div class="dark:bg-white/7 bg-bg-primary px-4 sm:px-10 md:px-20 py-4 sm:py-10 rounded-2xl mt-10">
+        <div class="bg-bg-info px-4 sm:px-10 md:px-20 py-4 sm:py-10 rounded-2xl mt-10">
             <h2 class="text-text-white text-2xl font-semibold">{{ __('Seller') }}</h2>
             <div class="mt-3">
                 <div class="pt-4 mt-4 flex items-center gap-5">
@@ -167,7 +167,7 @@
                 </div>
             </div>
         </div>
-        <div class="dark:bg-white/7 bg-bg-primary px-4 sm:px-10 md:px-20 py-4 sm:py-10 rounded-2xl mt-10 mb-10 sm:mb-32">
+        <div class="bg-bg-info px-4 sm:px-10 md:px-20 py-4 sm:py-10 rounded-2xl mt-10 mb-10 sm:mb-32">
             <h2 class="text-text-white text-2xl font-semibold">{{ __('Payment') }}</h2>
             <div class="flex justify-between mt-3">
                 <p class="text-text-white text-base font-semibold mb-2">{{ __('Total price') }}</p>
