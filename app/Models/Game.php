@@ -23,17 +23,15 @@ class Game extends AuditBaseModel implements Auditable
         'slug',
         'description',
 
+        'status',
         'logo',
+        'banner',
 
         'meta_title',
         'meta_description',
         'meta_keywords',
-        'status',
-
-
 
         'sort_order',
-
 
         'created_by',
         'updated_by',
@@ -44,7 +42,6 @@ class Game extends AuditBaseModel implements Auditable
         'deleted_at',
         'restored_at',
         'updated_at',
-
     ];
 
     protected $hidden = [

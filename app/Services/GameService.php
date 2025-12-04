@@ -82,10 +82,10 @@ class GameService
     {
         $data['created_by'] = $this->adminId;
         if (isset($data['logo'])) {
-            $data['logo'] = $this->handleSingleFileUpload($data['logo'], 'games');
+            $data['logo'] = $this->handleSingleFileUpload(newFile: $data['logo'], folderName: 'games');
         }
         if (isset($data['banner'])) {
-            $data['banner'] = $this->handleSingleFileUpload($data['banner'], 'games');
+            $data['banner'] = $this->handleSingleFileUpload(newFile: $data['banner'], folderName: 'games');
         }
         // convert to json
         // if (isset($data['meta_keywords']) && !empty($data['meta_keywords'])) {
@@ -97,6 +97,17 @@ class GameService
     public function update(int $id, array $data): bool
     {
         $game = $this->findData($id);
+
+        $logoPath = $game->logo;
+        if (isset($data['logo'])) {
+            $logoPath = $this->handleSingleFileUpload(newFile: $data['logo'], oldPath: $game->logo, removeKey: $data['remove_logo'] ?? false, folderName: 'games');
+        }
+        $data['logo'] = $logoPath;
+        $bannerPath = $game->banner;
+        if (isset($data['banner'])) {
+            $bannerPath = $this->handleSingleFileUpload(newFile: $data['banner'], oldPath: $game->banner, removeKey: $data['remove_banner'] ?? false, folderName: 'games');
+        }
+        $data['banner'] = $bannerPath;
         $data['updated_by'] = $this->adminId;
         return $game ? $game->update($data) : false;
     }

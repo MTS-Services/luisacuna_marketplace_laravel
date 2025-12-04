@@ -58,7 +58,7 @@ class GameController extends Controller implements HasMiddleware
     }
     public function edit($id)
     {
-        $this->data = $this->service->findData($id);
+        $this->data = $this->service->findData(decrypt($id));
         return view($this->masterView, [
             'data' => $this->data,
         ]);

@@ -93,7 +93,7 @@ class Index extends Component
                 'key' => 'id',
                 'label' => 'Edit',
                 'route' => 'admin.gm.game.edit',
-                'ecrypt' => true
+                'encrypt' => true
             ],
             [
                 'key' => 'id',

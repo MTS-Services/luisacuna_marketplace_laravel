@@ -4,7 +4,7 @@
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game Create') }}</h2>
             <div class="flex items-center gap-2">
                 <x-ui.button href="{{ route('admin.gm.game.index') }}" class="w-auto! py-2!">
-                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
+                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-white group-hover:stroke-text-btn-secondary" />
                     {{ __('Back') }}
                 </x-ui.button>
             </div>
@@ -18,16 +18,16 @@
                 <div>
                     <x-ui.label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Logo') }}
                         <small>{{ __('(400x400)') }}</small></x-ui.label>
-                    <x-ui.file-input type="file" wire:model="form.logo"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
+                    <x-ui.file-input type="file" wire:model="form.logo" :existingFiles="$existing_logo"
+                        removeModel="form.remove_logo" />
                     <x-ui.input-error :messages="$errors->get('form.logo')" class="mt-2" />
                 </div>
 
                 <div>
                     <x-ui.label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Banner') }}
                         <small>{{ __('(1000x400)') }}</small></x-ui.label>
-                    <x-ui.file-input type="file" wire:model="form.banner"
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
+                    <x-ui.file-input type="file" wire:model="form.banner" :existingFiles="$existing_banner"
+                        removeModel="form.remove_banner" />
                     <x-ui.input-error :messages="$errors->get('form.banner')" class="mt-2" />
                 </div>
 
@@ -95,8 +95,8 @@
                         class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Meta Keywords') }}</x-ui.label>
                     {{-- <x-ui.textarea wire:model="form.meta_keywords" rows="2"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></x-ui.textarea> --}}
-                    <x-ui.select wire:model="form.meta_keywords" placeholder="{{ __('Meta Keywords') }}"
-                        multiple class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
+                    <x-ui.select wire:model="form.meta_keywords" placeholder="{{ __('Meta Keywords') }}" multiple
+                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
                     <x-ui.input-error :messages="$errors->get('form.meta_keywords')" class="mt-2" />
                 </div>
 
