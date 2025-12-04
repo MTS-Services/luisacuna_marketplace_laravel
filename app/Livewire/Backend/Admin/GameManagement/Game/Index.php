@@ -39,7 +39,6 @@ class Index extends Component
         $datas->load('creater_admin');
 
         $columns = [
-
             [
                 'key' => 'logo',
                 'label' => 'Avatar',
@@ -145,7 +144,7 @@ class Index extends Component
 
             $this->success('Data deleted successfully');
         } catch (\Exception $e) {
-            log_error("Failed to delete data", ['error' => $e->getMessage()]);
+            log_error($e);
             $this->error('Failed to delete data.');
         }
     }
@@ -227,10 +226,8 @@ class Index extends Component
 
             $this->success("($count) Datas deleted successfully");
         } catch (\Exception $e) {
-
+            log_error($e);
             $this->error('Failed to delete data.');
-
-            log_error('Failed to delete data: ' . $e->getMessage());
         }
     }
 
@@ -242,7 +239,7 @@ class Index extends Component
 
             $this->success("($count)  Datas change successfully");
         } catch (\Exception $e) {
-            log_error("Failed to change data", ['error' => $e->getMessage()]);
+            log_error($e);
             $this->error('Failed to change data.');
         }
     }

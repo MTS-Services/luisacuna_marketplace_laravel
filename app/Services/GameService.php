@@ -55,7 +55,7 @@ class GameService
             ->paginate($perPage);
     }
 
-    public function trashPaginateDatas(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function trashedPaginatedDatas(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         $search = $filters['search'] ?? null;
         $sortField = $filters['sort_field'] ?? 'deleted_at';
@@ -129,5 +129,11 @@ class GameService
 
         $this->model->whereIn('id', $ids)->update(['deleted_by' => $this->adminId]);
         return $this->model->whereIn('id', $ids)->delete();
+    }
+
+    public function bulkRestore(array $ids): int
+    {
+        $this->model->whereIn('id', $ids)->update(['restored_by' => $this->adminId]);
+        return $this->model->whereIn('id', $ids)->restore();
     }
 }
