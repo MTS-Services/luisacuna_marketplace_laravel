@@ -32,15 +32,15 @@ class Index extends Component
     public function render()
     {
 
-        $datas = $this->service->getPaginatedData(
+        $datas = $this->service->paginateDatas(
             $this->perPage,
             $this->getfilters(),
-        )->load('creater_admin');
-
+        );
+        $datas->load('creater_admin');
 
         $columns = [
-                
-             [
+
+            [
                 'key' => 'logo',
                 'label' => 'Avatar',
                 'format' => function ($data) {
@@ -55,25 +55,23 @@ class Index extends Component
                 'sortable' => true
             ],
 
-        
             [
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">'  .
                         $data->status->label() .
                         '</span>';
                 }
             ],
-                [
+            [
                 'key' => 'created_at',
                 'label' => 'Created Date',
                 'sortable' => true,
                 'format' => function ($data) {
 
                     return $data->created_at_formatted;
-
                 }
             ],
             [
@@ -87,21 +85,21 @@ class Index extends Component
 
         $actions = [
             [
-                'key' => 'id', 
-                'label' => 'View', 
-                'route' => 'admin.gm.game.view', 
+                'key' => 'id',
+                'label' => 'View',
+                'route' => 'admin.gm.game.view',
                 'encrypt' => true
             ],
             [
-                'key' => 'id', 
-                'label' => 'Edit', 
-                'route' => 'admin.gm.game.edit', 
+                'key' => 'id',
+                'label' => 'Edit',
+                'route' => 'admin.gm.game.edit',
                 'ecrypt' => true
             ],
             [
-                'key' => 'id', 
-                'label' => 'Delete', 
-                'method' => 'confirmDelete', 
+                'key' => 'id',
+                'label' => 'Delete',
+                'method' => 'confirmDelete',
                 'encrypt' => true
             ],
         ];
@@ -142,13 +140,13 @@ class Index extends Component
                 $this->warning('No data selected');
                 return;
             }
-            $this->service->deleteData(decrypt($this->deleteId));
+            $this->service->delete(decrypt($this->deleteId));
             $this->reset(['deleteId', 'showDeleteModal']);
 
             $this->success('Data deleted successfully');
         } catch (\Exception $e) {
-
-            $this->error('Failed to delete data: ' . $e->getMessage());
+            log_error("Failed to delete data", ['error' => $e->getMessage()]);
+            $this->error('Failed to delete data.');
         }
     }
 
@@ -165,9 +163,9 @@ class Index extends Component
             $dataStatus = GameStatus::from($status);
 
             match ($dataStatus) {
-                GameStatus::ACTIVE => $this->service->updateStatusData($id, GameStatus::ACTIVE),
-                GameStatus::INACTIVE => $this->service->updateStatusData($id, GameStatus::INACTIVE),
-                GameStatus::UPCOMING => $this->service->updateStatusData($id, GameStatus::UPCOMING),
+                GameStatus::ACTIVE => $this->service->updateStatus($id, GameStatus::ACTIVE),
+                GameStatus::INACTIVE => $this->service->updateStatus($id, GameStatus::INACTIVE),
+                GameStatus::UPCOMING => $this->service->updateStatus($id, GameStatus::UPCOMING),
                 default => null,
             };
 
@@ -207,8 +205,9 @@ class Index extends Component
         try {
             match ($this->bulkAction) {
                 'delete' => $this->bulkDelete(),
-                'activate' => $this->bulkUpdateStatus(GameStatus::ACTIVE),
-                'inactivate' => $this->bulkUpdateStatus(GameStatus::INACTIVE),
+                'activate' => $this->bulkUpdate(['status' => GameStatus::ACTIVE->value]),
+                'inactivate' => $this->bulkUpdate(['status' => GameStatus::INACTIVE->value]),
+                'upcoming' => $this->bulkUpdate(['status' => GameStatus::UPCOMING->value]),
                 default => null,
             };
 
@@ -224,36 +223,34 @@ class Index extends Component
     {
         try {
 
-            $count =    $this->service->bulkDeleteData($this->selectedIds,  admin()->id);
+            $count =    $this->service->bulkDelete($this->selectedIds);
 
             $this->success("($count) Datas deleted successfully");
         } catch (\Exception $e) {
 
             $this->error('Failed to delete data.');
 
-            log::error('Failed to delete data: ' . $e->getMessage());
+            log_error('Failed to delete data: ' . $e->getMessage());
         }
     }
 
-    public function bulkUpdateStatus(GameStatus $status): void
+    public function bulkUpdate(array $changes): void
     {
 
         try {
+            $count =  $this->service->bulkUpdate($this->selectedIds, $changes);
 
-            $count =  $this->service->bulkUpdateStatus($this->selectedIds, $status, admin()->id);
-
-            $this->success("($count)  Status change successfully");
-
+            $this->success("($count)  Datas change successfully");
         } catch (\Exception $e) {
-
-            $this->error('Failed to change status.');
+            log_error("Failed to change data", ['error' => $e->getMessage()]);
+            $this->error('Failed to change data.');
         }
     }
 
 
     protected function getSelectableIds(): array
     {
-        return $this->service->getPaginatedData(
+        return $this->service->paginateDatas(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

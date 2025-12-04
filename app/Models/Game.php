@@ -102,7 +102,7 @@ class Game extends AuditBaseModel implements Auditable
     }
 
 
-  public function getTranslationConfig(): array
+    public function getTranslationConfig(): array
     {
         return [
             'fields' => ['name', 'description'],
@@ -149,13 +149,10 @@ class Game extends AuditBaseModel implements Auditable
 
     public function scopeFilter(Builder $query, array $filters): Builder
     {
-        return $query
-            ->when(
-                $filters['status'] ?? null,
-                fn($q, $status) =>
-                $q->where('status', $status)
-            );
-
+        $query->when($filters['status'] ?? null, function ($query, $status) {
+            $query->where('status', $status);
+        });
+        return $query;
     }
 
     // public function scopeSearch($query, $search)
