@@ -1,5 +1,5 @@
 <div>
-    <div class="bg-bg-secondary">
+    <div class="bg-bg-primary">
         <div>
             <div class="p-3 sm:p-4">
                 <div class="flex items-center justify-between mb-3 sm:mb-4">
@@ -54,7 +54,7 @@
 
                 <!-- Left Sidebar - Messages List -->
                 <div id="messagesSidebar"
-                    class="fixed md:static inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-30 w-full md:w-64 lg:w-72 xl:w-80 2xl:w-96 bg-bg-primary rounded-lg flex flex-col md:mr-5 mb-1 md:mb-0 max-h-full md:max-h-full">
+                    class="fixed md:static inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-30 w-full md:w-64 lg:w-72 xl:w-80 2xl:w-96 bg-bg-secondary rounded-lg flex flex-col md:mr-5 mb-1 md:mb-0 max-h-full md:max-h-full">
                     <div class="p-3 sm:p-4 ">
                         <!-- Close Button for Mobile -->
                         <div class="flex items-center justify-between mb-3 md:hidden">
@@ -208,7 +208,7 @@
                 </div>
 
                 <!-- Right Side - Chat Area -->
-                <div class="flex-1 flex flex-col min-h-[50vh] md:min-h-[20vh] rounded-lg bg-bg-primary">
+                <div class="flex-1 flex flex-col min-h-[50vh] md:min-h-[20vh] rounded-lg bg-bg-secondary">
                     <!-- Chat Header -->
                     <div class="p-3 sm:p-4 flex items-center bg-zinc-50/10 rounded-t-lg justify-between">
                         <div class="flex items-center gap-2 sm:gap-3">

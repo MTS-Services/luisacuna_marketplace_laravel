@@ -19,7 +19,7 @@
     </style>
 </head>
 
-<body x-data="{ sidebarOpen: false, mobileMenuOpen: false }" class="h-full max-h-screen antialiased bg-bg-secondary">
+<body x-data="{ sidebarOpen: false, mobileMenuOpen: false }" class="h-full max-h-screen antialiased bg-bg-primary">
 
     <div class="flex flex-col h-screen">
         @if (

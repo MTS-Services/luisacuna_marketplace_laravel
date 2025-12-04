@@ -2,9 +2,9 @@
     {{-- Balance card --}}
     <div class="flex flex-col md:flex-row gap-6">
         <!-- Balance Card -->
-        <div class="w-full md:w-1/2 bg-bg-primary rounded-2xl p-6 md:p-10">
-            <div class="dark:bg-zinc-50/10 bg-zinc-200 rounded-2xl p-5 md:p-7">
-                <div class="dark:bg-zinc-50/15 bg-zinc-50 rounded-2xl p-5 md:p-7">
+        <div class="w-full md:w-1/2 bg-bg-secondary rounded-2xl p-6 md:p-10">
+            <div class="bg-bg-optional rounded-2xl p-5 md:p-7">
+                <div class="bg-bg-info rounded-2xl p-5 md:p-7">
                     <div class="flex flex-col lg:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
                             <p class="text-text-white">{{ __('Balance') }}</p>
@@ -15,7 +15,7 @@
                             <a href="#" class="text-pink-500 mt-2 inline-block">{{ __('Learn more') }}</a>
                         </div>
                         <div>
-                            <x-ui.button class="w-full sm:w-auto py-2!">
+                            <x-ui.button class="w-fit! py-3! px-6!">
                                 <span
                                     class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Withdraw') }}</span>
                             </x-ui.button>
@@ -26,9 +26,9 @@
         </div>
 
         <!-- Pending Sales Card -->
-        <div class="w-full md:w-1/2 bg-bg-primary rounded-2xl p-6 md:p-10">
-            <div class="dark:bg-zinc-50/10 bg-zinc-200 rounded-2xl p-5 md:p-7">
-                <div class="dark:bg-zinc-50/15 bg-zinc-50 rounded-2xl p-5 md:p-7">
+        <div class="w-full md:w-1/2 bg-bg-secondary rounded-2xl p-6 md:p-10">
+            <div class="bg-bg-optional rounded-2xl p-5 md:p-7">
+                <div class="bg-bg-info rounded-2xl p-5 md:p-7">
                     <h2 class="text-text-white text-2xl font-semibold">{{ __('Pending Sales') }}</h2>
                     <p class="text-text-white mt-2 text-sm md:text-base">
                         {{ __('Revenue from pending orders. Funds will be added to your balance when orders are Completed.') }}

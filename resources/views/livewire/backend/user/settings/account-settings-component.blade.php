@@ -1,4 +1,4 @@
-<section class="min-h-screen bg-bg-secondary py-8">
+<section class="min-h-screen bg-bg-primary py-8">
     <section class=" mx-auto px-4">
         {{-- Header Section --}}
         <div class="flex justify-between items-center mb-8">
@@ -20,21 +20,21 @@
 
         <div class=" mx-auto space-y-6">
             {{-- Profile Section --}}
-            <section class="sm:bg-bg-primary rounded-2xl sm:p-15 md:20">
+            <section class="sm:bg-bg-secondary rounded-2xl sm:p-15 md:20">
                 <h2 class="text-2xl sm:text-3xl font-semibold text-text-primary mb-8">{{ __('Profile') }}</h2>
 
 
-                <div class="flex items-center bg-zinc-100 dark:bg-zinc-50/10 rounded-lg gap-6 p-5 mb-6 w-full">
+                <div class="flex items-start sm:items-center bg-bg-info rounded-lg gap-3 sm:gap-6 p-5 mb-6 w-full">
                     <!-- Profile Image -->
-                    <div class="relative">
+                    <div class="relative w-12 h-12 sm:w-20 sm:h-20">
                         <img src="{{ storage_url($existingFile) }}"
-                            class="w-20 h-20 rounded-full object-cover ring-2 ring-purple-400/30" alt="Profile">
+                            class="w-full h-full rounded-full object-cover ring-2 ring-purple-400/30" alt="Profile">
                     </div>
 
                     <!-- Upload Area -->
                     <div class="flex flex-col">
                         <label for="imageUpload"
-                            class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-full cursor-pointer transition text-sm w-fit">
+                            class="bg-purple-600 hover:bg-purple-700 text-text-white font-medium py-2 px-4 rounded-full cursor-pointer transition text-sm w-fit">
                             {{ __('Upload image') }}
                         </label>
 
@@ -59,7 +59,7 @@
 
 
                 {{-- Bio Textarea --}}
-                <div class="p-6 bg-zinc-100 dark:bg-zinc-50/10 rounded-lg" x-data="{ editMode: false }">
+                <div class="p-6 bg-bg-info rounded-lg" x-data="{ editMode: false }">
                     <div class="flex justify-between items-center gap-6 mb-3">
                         <h2 class="block text-base font-medium text-text-primary">{{ __('Your description') }}</h2>
                         <p class="px-2 py-1.5 sm:px-4 sm:py-3 bg-zinc-50/20 justify-end rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition"
@@ -81,10 +81,10 @@
                     </div>
 
                     <!-- Edit Mode -->
-                    <div x-show="editMode" x-cloak>
+                    <div x-show="editMode" x-cloak class="bg-bg-info p-3 sm:p-6 rounded-lg">
                         <div class="relative">
                             <textarea rows="4" wire:model.defer="form.description"
-                                class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-hidden focus:ring-2 focus:ring-accent resize-none"
+                                class="w-full border border-zinc-300 bg-bg-info rounded-lg px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-hidden focus:ring-2 focus:ring-accent resize-none"
                                 placeholder="Write a short bio about yourself..." wire:model="form.description"></textarea>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
             </section>
 
             {{-- Profile Details Section --}}
-            <section class="sm:bg-bg-primary rounded-2xl  mt-5 sm:p-15 md:20">
+            <section class="sm:bg-bg-secondary rounded-2xl  mt-5 sm:p-15 md:20">
                 <h2 class="text-2xl sm:text-3xl font-semibold text-text-white mb-8">{{ __('Profile') }}</h2>
 
                 <form class="space-y-5">
@@ -108,7 +108,7 @@
 
                     {{-- First Name --}}
                     <div x-data="{ editMode: false }" @profile-updated.window="editMode = false">
-                        <div class="p-3 sm:p-6 bg-zinc-100 dark:bg-zinc-50/10 rounded-lg" x-show="!editMode">
+                        <div class="p-3 sm:p-6 bg-bg-info rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('First name:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
@@ -123,12 +123,12 @@
                         @error('form.first_name')
                             <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
                         @enderror
-                        <div x-show="editMode" x-cloak>
+                        <div x-show="editMode" x-cloak class="bg-bg-info p-3 sm:p-6 rounded-lg">
                             <label
                                 class="block text-sm font-medium text-text-primary mb-2">{{ __('First name:') }}</label>
                             <div class="relative">
                                 <input type="text" wire:model.defer="form.first_name"
-                                    class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
+                                    class="w-full bg-bg-info border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                     placeholder="Enter first name">
                                 <x-ui.input-error :messages="$errors->get('form.first_name')" />
                                 <button type="button"
@@ -154,7 +154,7 @@
 
                     {{-- Last name --}}
                     <div x-data="{ editMode: false }">
-                        <div class="p-3 sm:p-6 bg-zinc-100 dark:bg-zinc-50/10 rounded-lg" x-show="!editMode">
+                        <div class="p-3 sm:p-6 bg-bg-info rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Last name:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
@@ -170,7 +170,7 @@
                             <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
                         @enderror
 
-                        <div x-show="editMode" x-cloak>
+                        <div x-show="editMode" x-cloak class="bg-bg-info p-3 sm:p-6 rounded-lg">
                             <label
                                 class="block text-sm font-medium text-text-primary mb-2">{{ __('Last name:') }}</label>
                             <div class="relative">
@@ -202,7 +202,7 @@
 
                     {{-- Email --}}
                     <div x-data="{ editMode: false }">
-                        <div class="p-3 sm:p-6 bg-zinc-100 dark:bg-zinc-50/10 rounded-lg" x-show="!editMode">
+                        <div class="p-3 sm:p-6 bg-bg-info rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Email:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full">
@@ -226,7 +226,7 @@
                             <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
                         @enderror
 
-                        <div x-show="editMode" x-cloak>
+                        <div x-show="editMode" x-cloak class="bg-bg-info p-3 sm:p-6 rounded-lg">
                             <label
                                 class="block text-sm font-medium text-text-primary mb-2">{{ __('Email:') }}</label>
                             <div class="relative">
@@ -256,7 +256,7 @@
                     <div x-data="{
                         editMode: @error('form.username') true @else false @enderror
                     }">
-                        <div class="p-3 sm:p-6 bg-zinc-100 dark:bg-zinc-50/10 rounded-lg" x-show="!editMode">
+                        <div class="p-3 sm:p-6 bg-bg-info rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Username:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full">
@@ -279,7 +279,7 @@
                             <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
                         @enderror
 
-                        <div x-show="editMode" x-cloak>
+                        <div x-show="editMode" x-cloak class="bg-bg-info p-3 sm:p-6 rounded-lg">
                             <label
                                 class="block text-sm font-medium text-text-primary mb-2">{{ __('Username:') }}</label>
                             <div class="relative">
@@ -311,7 +311,7 @@
 
                     {{-- Password --}}
                     <div x-data="{ editMode: false }">
-                        <div class="p-3 sm:p-6 bg-zinc-100 dark:bg-zinc-50/10 rounded-lg" x-show="!editMode">
+                        <div class="p-3 sm:p-6 bg-bg-info rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Password:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full">
@@ -331,7 +331,7 @@
                             </div>
                         </div>
 
-                        <div x-show="editMode" x-cloak>
+                        <div x-show="editMode" x-cloak class="bg-bg-info p-3 sm:p-6 rounded-lg">
                             <label
                                 class="block text-sm font-medium text-text-primary mb-2">{{ __('Password') }}</label>
                             <div class="relative">
