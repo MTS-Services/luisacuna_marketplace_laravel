@@ -17,7 +17,7 @@
 
                 <div class="w-full  grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4">
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="flex items-center justify-between ">
                             <div class="w-6 h-6">
                                 <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
@@ -35,7 +35,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$40.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="flex items-center justify-between ">
                             <div class="w-6 h-6">
                                 <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
@@ -53,7 +53,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$50.20</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="flex items-center justify-between ">
                             <div class="w-6 h-6">
                                 <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
@@ -71,7 +71,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$60.20</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="flex items-center justify-between ">
                             <div class="w-6 h-6">
                                 <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
@@ -89,7 +89,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$80.20</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
@@ -99,7 +99,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$90.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
@@ -109,7 +109,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$95.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
@@ -119,7 +119,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$100.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
@@ -129,7 +129,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$110.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
@@ -139,7 +139,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$120.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
@@ -149,7 +149,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$130.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
@@ -159,7 +159,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$140.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
@@ -169,7 +169,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$150.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
@@ -179,7 +179,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$160.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
@@ -189,7 +189,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$170.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
@@ -199,7 +199,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$180.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
@@ -209,7 +209,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$190.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
@@ -219,7 +219,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$200.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
@@ -229,7 +229,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$210.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
@@ -239,7 +239,7 @@
                         <span class="text-base font-semibold text-pink-500 mt-4">$220.16</span>
                     </div>
                     <div
-                        class="bg-bg-primary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="w-6 h-6">
                             <img src="{{ asset('assets/images/gift_cards/V-Bucks.png') }}" alt=""
                                 class="w-full h-full object-cover">
@@ -278,7 +278,7 @@
 
         {{-- games --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
-            <div class="bg-bg-primary rounded-lg p-5">
+            <div class="bg-bg-secondary rounded-lg p-5">
                 <div class="flex items-center justify-between gap-4">
                     <div class="flex items-center gap-2">
                         <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
@@ -316,7 +316,7 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-bg-primary rounded-lg p-5">
+            <div class="bg-bg-secondary rounded-lg p-5">
                 <div class="flex items-center justify-between gap-4">
                     <div class="flex items-center gap-2">
                         <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
@@ -352,7 +352,7 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-bg-primary rounded-lg p-5">
+            <div class="bg-bg-secondary rounded-lg p-5">
                 <div class="flex items-center justify-between gap-4">
                     <div class="flex items-center gap-2">
                         <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
@@ -388,7 +388,7 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-bg-primary rounded-lg p-5">
+            <div class="bg-bg-secondary rounded-lg p-5">
                 <div class="flex items-center justify-between gap-4">
                     <div class="flex items-center gap-2">
                         <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
@@ -424,7 +424,7 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-bg-primary rounded-lg p-5">
+            <div class="bg-bg-secondary rounded-lg p-5">
                 <div class="flex items-center justify-between gap-4">
                     <div class="flex items-center gap-2">
                         <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
@@ -460,7 +460,7 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-bg-primary rounded-lg p-5">
+            <div class="bg-bg-secondary rounded-lg p-5">
                 <div class="flex items-center justify-between gap-4">
                     <div class="flex items-center gap-2">
                         <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
@@ -496,7 +496,7 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-bg-primary rounded-lg p-5">
+            <div class="bg-bg-secondary rounded-lg p-5">
                 <div class="flex items-center justify-between gap-4">
                     <div class="flex items-center gap-2">
                         <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
@@ -532,7 +532,7 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-bg-primary rounded-lg p-5">
+            <div class="bg-bg-secondary rounded-lg p-5">
                 <div class="flex items-center justify-between gap-4">
                     <div class="flex items-center gap-2">
                         <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">
@@ -568,7 +568,7 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-bg-primary rounded-lg p-5">
+            <div class="bg-bg-secondary rounded-lg p-5">
                 <div class="flex items-center justify-between gap-4">
                     <div class="flex items-center gap-2">
                         <img src="{{ asset('assets/images/user_profile/frame.png') }}" alt="">

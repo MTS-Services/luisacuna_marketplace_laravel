@@ -1,4 +1,4 @@
-<div class="container px-24 mb-32">
+<div class="container">
     <div class="flex gap-4 items-center my-10">
         {{-- <h2 class="text-text-white text-base">
             {{ __('Home') }}
@@ -8,24 +8,25 @@
             {{ __('Select game') }}
         </h2> --}}
     </div>
-    <div class="bg-bg-secondary w-full mx-auto p-10 md:p-20 rounded-2xl">
+    <div class="bg-bg-secondary w-full mx-auto p-4 sm:p-10 md:p-20 rounded-2xl">
 
 
         {{-- Step 1: Category Selection --}}
         @if ($step === 1)
-            <h1 class="text-40px font-semibold text-center text-text-white mb-3">{{ __('Start selling') }}</h1>
-            <h2 class="text-2xl text-center text-text-white/60 mb-10">{{ __('Choose category') }}</h2>
+            <h1 class="text-2xl sm:text-40px font-semibold text-center text-text-white mb-2">{{ __('Start selling') }}</h1>
+            <h2 class="text-base sm:text-2xl text-center text-text-white mb-4 sm:mb-10">{{ __('Choose category') }}</h2>
 
-            <div class="space-y-10">
+            <div class="space-y-4 sm:space-y-10">
                 @foreach ($categories as $category)
                     <button wire:click="selectCategory({{ $category->id }}, '{{ $category->name }}')"
                         class="w-full flex items-center justify-between p-4 bg-bg-info hover:bg-zinc-700/30 transition rounded-xl">
                         <div class="flex items-center space-x-3">
-                            <div class="w-16 h-16">
+                            <div class="w-8 h-8 sm:w-16 sm:h-16">
                                 <img src="{{ storage_url($category->image) }}" alt="{{ $category->name }}"
-                                    class="w-full h-full rounded-xl object-cover">
+                                    class="w-full h-full rounded-lg sm:rounded-xl object-cover">
                             </div>
-                            <span class="text-3xl font-semibold text-text-white">{{ $category->name }}</span>
+                            <span
+                                class="text-2xl sm:text-3xl font-semibold text-text-white">{{ $category->name }}</span>
                         </div>
                         <svg class="w-6 h-6 fill-white" viewBox="0 0 256 256">
                             <path
@@ -39,24 +40,26 @@
 
         {{-- Step 2: Game Selection --}}
         @if ($step === 2)
-            <h2 class="text-40px font-semibold text-center text-text-white mb-3">
+            <h2 class="text-2xl sm:text-40px font-semibold text-center text-text-white mb-3">
                 {{ __('Sell') }} {{ $selectedCategory }}
             </h2>
-            <h2 class="text-2xl text-center text-text-white/60 mb-10">{{ __('Step 1/3') }}</h2>
+            <h2 class="text-xl sm:text-2xl text-center text-text-white mb-5 sm:mb-10">{{ __('Step 1/3') }}</h2>
 
-            <div class="p-10 bg-bg-info rounded-2xl">
-                <h2 class="text-2xl font-semibold text-center text-text-white mb-7">
+            <div class="p-5 sm:p-10 bg-bg-info rounded-2xl">
+                <h2 class="text-2xl font-semibold text-center text-text-white mb-2 sm:mb-7">
                     {{ __('Choose Game') }}
                 </h2>
 
-                <div class="w-md flex justify-center mx-auto">
+                <div class="flex justify-center mx-auto">
                     @if (count($categoryGames) > 0)
-                        <x-ui.select class="mt-1 block w-full" wire:model="selectedGame">
-                            <option value="">{{ __('Select a game') }}</option>
-                            @foreach ($categoryGames as $game)
-                                <option value="{{ $game->id }}">{{ $game->name }}</option>
-                            @endforeach
-                        </x-ui.select>
+                        <div class="justify-center">
+                            <x-ui.select class="mt-1 block w-full" wire:model="selectedGame">
+                                <option value="">{{ __('Select a game') }}</option>
+                                @foreach ($categoryGames as $game)
+                                    <option value="{{ $game->id }}">{{ $game->name }}</option>
+                                @endforeach
+                            </x-ui.select>
+                        </div>
                     @else
                         <div class="text-center text-text-white/60 py-8">
                             <p class="text-xl mb-2">{{ __('No games found in this category') }}</p>
@@ -69,45 +72,49 @@
                     <p class="text-red-500 text-center mt-2">{{ $message }}</p>
                 @enderror
             </div>
-            <div class="flex justify-center space-x-4">
-                <div class="flex w-full md:w-auto mt-10!">
-                    <x-ui.button class="w-fit! py!">{{ __('Back') }}</x-ui.button>
+            <div class="flex gap-4 justify-center mt-5! sm:mt-10!">
+                <div class="flex md:w-auto! ">
+                    <x-ui.button class="w-fit! py-2! px-4!">{{ __('Back') }}</x-ui.button>
                 </div>
                 @if (count($categoryGames) > 0)
-                    <div wire:click="selectGame" class="flex w-full md:w-auto mt-10!">
-                        <x-ui.button class="w-fit! py!">{{ __('Next') }}</x-ui.button>
+                    <div wire:click="selectGame" class="flex md:w-auto! ">
+                        <x-ui.button class="w-fit! py-2! px-4!">{{ __('Next') }}</x-ui.button>
                     </div>
                 @endif
+            </div>
+            <div class="text-center mt-5">
+                <p class="inline-block text-center text-text-white text-xs sm:text-base font-normal">{{ __('Can\'t find the game you want to sell? Contact our ') }}<p class="inline-block text-pink-500 text-xs sm:text-base font-normal">
+                    {{ __(' customer support') }}</p> <p class="inline-block text-text-white text-xs sm:text-base font-normal">{{ __('  to suggest a game.') }}</p> </p>
             </div>
         @endif
 
         {{-- Step 3: Additional Details (Dynamic from game_configs) --}}
         @if ($step === 3)
-            <h2 class="text-40px font-semibold text-center text-text-white mb-3">
+            <h2 class="text-2xl sm:text-40px font-semibold text-center text-text-white mb-3">
                 {{ __('Sell Game ') . ucfirst($selectedCategory) }}
             </h2>
-            <h2 class="text-2xl text-center text-text-white/60 mb-10">{{ __('Step 2/3') }}</h2>
+            <h2 class="text-xl sm:text-2xl text-center text-text-white mb-5 sm:mb-10">{{ __('Step 2/3') }}</h2>
             <form wire:submit.prevent="submitOffer">
-                <div class="bg-bg-optional rounded-2xl mb-10 p-20">
-                    <h2 class="text-text-white font-semibold text-40px mb-10">{{ __('Your item') }}</h2>
-                    <div class="bg-bg-info flex gap-4 items-center p-10 rounded-2xl">
+                <div class="bg-bg-optional rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
+                    <h2 class="text-text-white font-semibold text-2xl sm:text-40px mb-4 sm:mb-10">{{ __('Your item') }}</h2>
+                    <div class="bg-bg-info flex gap-4 items-center p-4 md-p-10 rounded-2xl">
                         <div>
-                            <div class="w-28 h-28">
+                            <div class="w-10 h-10 sm:w-28 sm:h-28">
                                 <img src="{{ asset('assets/images/Rectangle 24589.png') }}" alt=""
                                     class="w-full h-full rounded-lg">
                             </div>
                         </div>
-                        <h2 class="text-2xl text-text-white font-semibold">{{ __('Your item') }}</h2>
+                        <h2 class="text-base sm:text-2xl text-text-white font-semibold">{{ __('Your item') }}</h2>
                     </div>
                 </div>
 
-                <div class="p-20 bg-bg-optional rounded-2xl">
-                    <h2 class="text-2xl font-semibold text-text-white mb-7">
+                <div class="bg-bg-optional rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
+                    <h2 class="text-2xl font-semibold text-text-white mb-2 sm:mb-7">
                         {{ __('Specific Attributes') }}
                     </h2>
 
 
-                    <div class="grid grid-cols-2 gap-3 justify-center mx-auto">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 justify-center mx-auto">
                         @foreach ($gameConfigs as $config)
                             <div
                                 class="{{ in_array($config->filter_type, ['textarea', 'filter_by_textarea']) ? 'col-span-2' : '' }}">
@@ -168,7 +175,7 @@
                         </div>
                     @endif
                 </div>
-                <div class="p-20 bg-bg-optional rounded-2xl mt-10">
+                <div class="bg-bg-optional rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
                     <!-- Quantity Section -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="w-full">
@@ -192,14 +199,14 @@
                         </div>
                     </div>
                     <div class="mt-20">
-                        <h2 class="text-3xl font-semibold text-text-white">{{ __('Description') }} <span
-                                class="text-text-white text-xl font-normal">{{ __('(optional)') }}</span></h2>
+                        <h2 class="text-xl sm:text-3xl font-semibold text-text-white">{{ __('Description') }} <span
+                                class="text-text-white text-base sm:text-xl font-normal">{{ __('(optional)') }}</span></h2>
                         <div class="border-t border-zinc-500 pt-4 mt-4 flex items-center gap-3"></div>
                         <div class="">
                             <p class="text-text-white text-base font-normal text-end mb-2">{{ __('0/500') }}</p>
                             <x-ui.textarea wire:model="description" placeholder="Type here......"
                                 class="w-full bg-bg-optional" rows="5"></x-ui.textarea>
-                            <p class="text-text-white text-xl font-normal mt-5">
+                            <p class="text-text-white text-base sm:text-xl font-normal mt-5">
                                 {{ __('The listing title and description must be accurate and as informative as possible (no random or lottery). Misleading description is a violation of our ') }}
                                 <span class="text-pink-500">{{ __('Seller Rules.') }}</span>
                             </p>
@@ -211,12 +218,12 @@
 
 
 
-                <div class="bg-bg-optional p-10 xl:p-20 rounded-2xl mt-10">
-                    <h2 class="text-text-white font-semibold text-3xl">{{ __('Delivery method') }}</h2>
-                    <div class="border-t border-zinc-500 mb-12 mt-2"></div>
+                <div class="bg-bg-optional rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
+                    <h2 class="text-text-white font-semibold text-2xl sm:text-3xl">{{ __('Delivery method') }}</h2>
+                    <div class="border-t border-zinc-500 mb-4 sm:mb-10 mt-2"></div>
 
                     <div>
-                        <h3 class="text-text-white text-lg font-medium mb-6">{{ __('Select delivery method') }}</h3>
+                        <h3 class="text-text-white text-lg sm:text-xl font-medium mb-6">{{ __('Select delivery method') }}</h3>
 
                         <div class="space-y-4">
 

@@ -6,11 +6,11 @@
                 {{ __('Back') }}
             </h2>
         </div>
-        <div class="bg-bg-primary p-4 sm:p-10 md:p-20 rounded-lg mt-10 md:mt-44">
+        <div class="bg-bg-secondary p-4 sm:p-10 md:p-20 rounded-lg mt-10 md:mt-44">
             <div class="flex mt-7">
                 <div class="flex gap-2">
                     <div>
-                        <div class="w-12 h-12">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12">
                             <img src="{{ asset('assets/images/order.png') }}" alt="Product Name"
                                 class="w-full h-full object-cover">
                         </div>
@@ -18,7 +18,7 @@
                     <p class="text-text-white text-3xl font-semibold">{{ __('Fortnite') }}</p>
                 </div>
             </div>
-            <div class="dark:bg-white/7 p-7 rounded-lg mt-10">
+            <div class="bg-bg-optional p-7 rounded-lg mt-10">
                 <div class="flex gap-5">
                     <div>
                         <div class="w-10 h-10">
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <div>
-                        <h2 class="text-text-white text-base sm:text-2xl font-semibold">
+                        <h2 class="text-text-white text-base sm:text-2xl font-semibold line-clamp-1">
                             {{ __('Mercury Spark — Ultimate 5-Star Boost') }}
                         </h2>
                     </div>
@@ -68,7 +68,7 @@
                 </div>
             </div>
             <div x-data="{ isExpanded: false }">
-                <div class="flex w-full md:w-auto mt-10!">
+                <div class="flex w-fit! py-3! px-6!">
                     <x-ui.button @click="isExpanded = !isExpanded" class="w-fit! py!"
                         x-text="isExpanded ? 'Read less' : 'Read more'">{{ __('Read more') }}</x-ui.button>
                 </div>
@@ -80,8 +80,7 @@
                         </p>
                         <p class="text-text-white text-xl font-normal mb-4">🔴 {{ __('FRIENDSHIP REQUIRED:') }} 🔴</p>
                         <p class="text-text-white text-xl font-normal mb-2">
-                            {{ __('To follow Epic Games gifting policy, we must be Epic friends for at least 48 hours before
-                                                                                sending gifts.') }}
+                            {{ __('To follow Epic Games gifting policy, we must be Epic friends for at least 48 hours before sending gifts.') }}
                         </p>
                         <p class="text-text-white text-xl font-normal mb-2">
                             {{ __(' Please send friend requests to all of these accounts:') }}
@@ -112,8 +111,7 @@
                     <div class="mb-6">
                         <p class="text-text-white text-xl font-normal mb-2">💎 {{ __('HOW TO GIFT CORRECTLY:') }}</p>
                         <p class="text-text-white text-xl font-normal">
-                            {{ __('After 48 hours of Epic friendship, send us your Epic username and a screenshot of the skin you\'d
-                                                                                like.') }}
+                            {{ __('After 48 hours of Epic friendship, send us your Epic username and a screenshot of the skin you\'d like.') }}
                         </p>
                     </div>
 
@@ -121,8 +119,7 @@
                     <div class="mb-6">
                         <p class="text-text-white text-xl font-normal mb-2">💤 {{ __('OFFLINE NOTE:') }}</p>
                         <p class="text-text-white text-xl font-normal">
-                            {{ __('If we appear offline, we\'re just away or asleep — your friend request will be accepted as soon
-                                                                                as possible!') }}
+                            {{ __('If we appear offline, we\'re just away or asleep — your friend request will be accepted as soon as possible!') }}
                         </p>
                     </div>
 
@@ -142,15 +139,13 @@
                     <div>
                         <p class="text-text-white text-xl font-normal mb-2">🏷️ {{ __('TAGS (Ignore):') }}</p>
                         <p class="text-text-white text-xl font-normal leading-relaxed">
-                            {{ __('fortnite-vbucks-gift, fortnite-skins-sale, vbucks-discount, fortnite-shop-deals, gaming-gifts,
-                                                                                vbucks-promo, fortnite-deals, fortnite-gifting, fortnite-items, gaming-giftcards,
-                                                                                cosmetics-sale, battle-royale-skins, gamer-gifts, vbucks-special, fortnite-gift-ideas') }}
+                            {{ __('fortnite-vbucks-gift, fortnite-skins-sale, vbucks-discount, fortnite-shop-deals, gaming-gifts, vbucks-promo, fortnite-deals, fortnite-gifting, fortnite-items, gaming-giftcards, cosmetics-sale, battle-royale-skins, gamer-gifts, vbucks-special, fortnite-gift-ideas') }}
                         </p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="dark:bg-white/7 bg-bg-primary px-4 sm:px-10 md:px-20 py-4 sm:py-10 rounded-2xl mt-10">
+        <div class="bg-bg-info px-4 sm:px-10 md:px-20 py-4 sm:py-10 rounded-2xl mt-10">
             <h2 class="text-text-white text-2xl font-semibold">{{ __('Seller') }}</h2>
             <div class="mt-3">
                 <div class="pt-4 mt-4 flex items-center gap-5">
@@ -167,7 +162,7 @@
                 </div>
             </div>
         </div>
-        <div class="dark:bg-white/7 bg-bg-primary px-4 sm:px-10 md:px-20 py-4 sm:py-10 rounded-2xl mt-10 mb-10 sm:mb-32">
+        <div class="bg-bg-info px-4 sm:px-10 md:px-20 py-4 sm:py-10 rounded-2xl mt-10 mb-10 sm:mb-32">
             <h2 class="text-text-white text-2xl font-semibold">{{ __('Payment') }}</h2>
             <div class="flex justify-between mt-3">
                 <p class="text-text-white text-base font-semibold mb-2">{{ __('Total price') }}</p>
