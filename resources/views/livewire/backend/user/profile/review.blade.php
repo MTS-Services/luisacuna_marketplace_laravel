@@ -1,6 +1,6 @@
 <div>
   <livewire:backend.user.profile.profile-component :user="$user" />
-    <section class="container mx-auto bg-bg-primary p-10! rounded-2xl mb-10">
+    <section class="container mx-auto bg-bg-secondary p-10! rounded-2xl mb-10">
         <div class="">
             <h2 class="font-semibold text-3xl">{{ __('Reviews') }}</h2>
         </div>
@@ -15,8 +15,7 @@
                     {!! $reviewItem === 'positive'
                         ? '<img src="' . asset('assets/images/user_profile/New Project.png') . '" alt="" class="inline-block">'
                         : '<img src="' . asset('assets/images/user_profile/thumb up filled.svg') . '" alt="" class="inline-block">' !!}
-
-
+                    {{ __('Positive') }}
                 </button>
             </div>
             <div class="">
@@ -30,7 +29,7 @@
         </div>
         @if ($reviewItem === 'all')
             <div class="flex flex-col gap-5">
-                <div class="p-6 bg-white/10 rounded-2xl">
+                <div class="p-6 bg-bg-info rounded-2xl">
                     <div class="">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -51,7 +50,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="p-6 bg-white/10 rounded-2xl">
+                <div class="p-6 bg-bg-info rounded-2xl">
                     <div class="">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -71,7 +70,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="p-6 bg-white/10 rounded-2xl">
+                <div class="p-6 bg-bg-info rounded-2xl">
                     <div class="">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -91,7 +90,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="p-6 bg-white/10 rounded-2xl">
+                <div class="p-6 bg-bg-info rounded-2xl">
                     <div class="">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -112,7 +111,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="p-6 bg-white/10 rounded-2xl">
+                <div class="p-6 bg-bg-info rounded-2xl">
                     <div class="">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -133,7 +132,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="p-6 bg-white/10 rounded-2xl">
+                <div class="p-6 bg-bg-info rounded-2xl">
                     <div class="">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -154,7 +153,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="p-6 bg-white/10 rounded-2xl">
+                <div class="p-6 bg-bg-info rounded-2xl">
                     <div class="">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -179,7 +178,7 @@
 
         @if ($reviewItem === 'positive')
             <div class="flex flex-col gap-5">
-                <div class="p-6 bg-white/10 rounded-2xl">
+                <div class="p-6 bg-bg-info rounded-2xl">
                     <div class="">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -200,7 +199,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="p-6 bg-white/10 rounded-2xl">
+                <div class="p-6 bg-bg-info rounded-2xl">
                     <div class="">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -221,7 +220,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="p-6 bg-white/10 rounded-2xl">
+                <div class="p-6 bg-bg-info rounded-2xl">
                     <div class="">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -242,7 +241,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="p-6 bg-white/10 rounded-2xl">
+                <div class="p-6 bg-bg-info rounded-2xl">
                     <div class="">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -263,7 +262,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="p-6 bg-white/10 rounded-2xl">
+                <div class="p-6 bg-bg-info rounded-2xl">
                     <div class="">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -289,7 +288,7 @@
 
         @if ($reviewItem === 'negative')
             <div class="flex flex-col gap-5">
-                <div class="p-6 bg-white/10 rounded-2xl">
+                <div class="p-6 bg-bg-info rounded-2xl">
                     <div class="">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -309,7 +308,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="p-6 bg-white/10 rounded-2xl">
+                <div class="p-6 bg-bg-info rounded-2xl">
                     <div class="">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -329,7 +328,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="p-6 bg-white/10 rounded-2xl">
+                <div class="p-6 bg-bg-info rounded-2xl">
                     <div class="">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">

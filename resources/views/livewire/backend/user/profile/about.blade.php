@@ -1,11 +1,11 @@
 <div>
   <livewire:backend.user.profile.profile-component :user="$user" />
-    <section class="container mx-auto bg-bg-primary rounded-2xl mb-10 p-5 sm:p-10 md:p-20">
+    <section class="container mx-auto bg-bg-secondary rounded-2xl mb-10 p-5 sm:p-10 md:p-20">
         <div class="mb-5">
             <h2 class="font-semibold text-3xl">{{ __('About') }}</h2>
         </div>
         <div class="flex flex-col gap-5">
-            <div class="p-6 bg-white/10 rounded-2xl">
+            <div class="p-6 bg-bg-info rounded-2xl">
                 <div class="flex items-center justify-between">
                     <div class="">
                         <h3 class="text-2xl font-semibold text-text-white">{{ __('Description') }}</h3>
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <div class="p-6 bg-white/10 rounded-2xl">
+            <div class="p-6 bg-bg-info rounded-2xl">
                 <div class="">
                     <p class="text-base text-text-white">
                         {{ __('Registered: Feb 20, 2023') }}
