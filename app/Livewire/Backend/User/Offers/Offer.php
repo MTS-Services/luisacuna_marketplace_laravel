@@ -116,7 +116,7 @@ class Offer extends Component
 
             $this->platforms = $game->platforms;
 
-            $this->deliveryMethods = json_decode($game->gameConfig->first()->delivery_methods, true);
+            // $this->deliveryMethods = json_decode($game->gameConfig->first()->delivery_methods, true);
 
         } else {
            return ;
@@ -148,16 +148,16 @@ class Offer extends Component
             [
                 'gameId' => 'required|integer',
                 'categoryId' => 'required|integer',
-                'deliveryMethod' => 'required|string|max:255',
+                'deliveryMethod' => 'nullable|string|max:255',
                 'platform' => 'nullable|string|max:255',
                 'price' => 'required|numeric|min:1',
                 'stock_quantity' => 'required|integer|min:1',
                 'description' => 'nullable',
 
-                'config_server' => 'required|string|max:255',
-                'config_faction' => 'required|string|max:255',
-                'config_number_of_skin' => 'required|integer|min:1',
-                'config_rare_skin' => 'required|string|max:255',
+                // 'config_server' => 'required|string|max:255',
+                // 'config_faction' => 'required|string|max:255',
+                // 'config_number_of_skin' => 'required|integer|min:1',
+                // 'config_rare_skin' => 'required|string|max:255',
             ],
             [
                 'gameId.required' => 'Please select a game.',

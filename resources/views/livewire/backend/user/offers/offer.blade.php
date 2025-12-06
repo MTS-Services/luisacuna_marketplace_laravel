@@ -222,7 +222,7 @@
 
 
 
-                <div class="bg-bg-optional rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
+                {{-- <div class="bg-bg-optional rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
                     <h2 class="text-text-white font-semibold text-2xl sm:text-3xl">{{ __('Delivery method') }}</h2>
                     <div class="border-t border-zinc-500 mb-4 sm:mb-10 mt-2"></div>
 
@@ -249,7 +249,7 @@
 
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <!-- Place Offer Button -->
                 <div class="mt-10">
                     <x-ui.button type="submit" class="w-auto! py-2!">
