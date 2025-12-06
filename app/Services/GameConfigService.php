@@ -75,6 +75,42 @@ class GameConfigService
             }
         });
     }
+    // public function syncConfigs(GameCategory $gameCategory, array $configs, array $deliveryMethods): void
+    // {
+    //     DB::transaction(function () use ($gameCategory, $configs, $deliveryMethods) {
+    //         // Get existing config IDs
+    //         $existingIds = collect($configs)->pluck('id')->filter()->toArray();
+
+    //         // Delete configs that are no longer in the list
+    //         $this->model->where('game_category_id', $gameCategory->id)
+    //             ->whereNotIn('id', $existingIds)
+    //             ->delete();
+
+    //         // Create or update configs
+    //         foreach ($configs as $index => $config) {
+    //             $data = [
+    //                 'game_id' => $gameCategory->game_id,
+    //                 'category_id' => $gameCategory->category_id,
+    //                 'game_category_id' => $gameCategory->id,
+    //                 'field_name' => $config['field_name'],
+    //                 'slug' => $config['slug'],
+    //                 'input_type' => $config['input_type'],
+    //                 'filter_type' => $config['filter_type'],
+    //                 'dropdown_values' => !empty($config['dropdown_values']) ? $config['dropdown_values'] : null,
+    //                 'delivery_methods' => $deliveryMethods,
+    //                 'sort_order' => $index,
+    //             ];
+
+    //             if (!empty($config['id'])) {
+    //                 // Update existing
+    //                 $this->model->where('id', $config['id'])->update($data);
+    //             } else {
+    //                 // Create new
+    //                 $this->model->create($data);
+    //             }
+    //         }
+    //     });
+    // }
 
     /**
      * Delete a specific config

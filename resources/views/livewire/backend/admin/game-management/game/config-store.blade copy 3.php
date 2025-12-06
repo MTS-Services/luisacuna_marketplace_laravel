@@ -14,7 +14,7 @@
 
     <!-- Modal Content -->
     <div class="flex min-h-screen items-center justify-center p-4">
-        <div class="relative w-full max-w-4xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-h-[90vh] flex flex-col"
+        <div class="relative w-full max-w-4xl bg-main rounded-2xl shadow-shadow-primary border-border max-h-[90vh] flex flex-col"
             x-show="showConfigModal" x-transition:enter="transition ease-out duration-200 delay-75"
             x-transition:enter-start="opacity-0 transform scale-95"
             x-transition:enter-end="opacity-100 transform scale-100"
@@ -27,34 +27,33 @@
                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                 x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
                 x-transition:leave-end="opacity-0"
-                class="absolute inset-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl z-10 flex items-center justify-center">
+                class="absolute inset-0 bg-main/80 backdrop-blur-sm rounded-2xl z-10 flex items-center justify-center">
                 <div class="text-center">
-                    <svg class="w-12 h-12 mx-auto text-blue-500 animate-spin mb-3" fill="none" stroke="currentColor"
+                    <svg class="w-12 h-12 mx-auto stroke-accent animate-spin mb-3" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                     </svg>
-                    <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <p class="text-sm font-medium text-text-muted">
                         {{ __('Loading configuration...') }}
                     </p>
                 </div>
             </div>
 
             <!-- Modal Header -->
-            <div
-                class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+            <div class="flex items-center justify-between p-6 border-b border-border shrink-0">
                 <div class="flex-1">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white">
+                    <h3 class="text-2xl font-bold text-text-primary">
                         {{ __('Configure Category') }}
                     </h3>
                     <div x-show="!isLoading">
                         @if ($currentCategory)
-                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                            <p class="mt-1 text-sm text-text-muted">
                                 {{ __('Game') }}: <span
-                                    class="font-semibold text-blue-600 dark:text-blue-400">{{ $game->name }}</span>
+                                    class="font-semibold text-transparent bg-clip-text bg-linear-to-r from-accent to-primary">{{ $game->name }}</span>
                                 <span class="mx-2">•</span>
                                 {{ __('Category') }}: <span
-                                    class="font-semibold text-blue-600 dark:text-blue-400">{{ $currentCategory->name }}</span>
+                                    class="font-semibold text-transparent bg-clip-text bg-linear-to-r from-accent to-primary">{{ $currentCategory->name }}</span>
                             </p>
                         @endif
                     </div>
@@ -63,11 +62,8 @@
                     </div>
                 </div>
                 <button @click="showConfigModal = false; $wire.closeConfigModal()"
-                    class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors flex-shrink-0">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                    class="text-text-muted dark:hover:text-gray-200 border border-transparent hover:border-border rounded-full flex items-center justify-center w-10 h-10 hover:bg-gray-100/50 dark:hover:bg-gray-950/50 transition-all duration-300 ease-linear shrink-0 group">
+                    <flux:icon name="x-mark" class="w-6 h-6 group-hover:rotate-180 transition-all duration-300" />
                 </button>
             </div>
 
@@ -76,7 +72,7 @@
 
                 <!-- 1. DELIVERY METHODS -->
                 <div
-                    class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-4 rounded-xl border border-blue-200 dark:border-blue-700">
+                    class="bg-linear-to-br from-zinc-50 to-secondary-50 dark:from-zinc-900/20 dark:to-secondary-900/20 p-4 rounded-xl border border-accent">
                     <label class="block text-sm font-bold text-gray-900 dark:text-white mb-3 uppercase tracking-wide">
                         <flux:icon name="truck" class="w-4 h-4 inline mr-2" />
                         {{ __('Allowed Delivery Methods') }}
@@ -100,10 +96,10 @@
                 </div>
 
                 <!-- 2. CUSTOM FIELDS -->
-                <div class="bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+                <div class="bg-card dark:bg-card/50 p-4 rounded-xl border-border">
                     <div class="flex justify-between items-center mb-4">
                         <div>
-                            <h4 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wide">
+                            <h4 class="text-sm font-bold text-text-primary uppercase tracking-wide">
                                 <flux:icon name="squares-2x2" class="w-4 h-4 inline mr-2" />
                                 {{ __('Seller Input Fields') }}
                             </h4>
@@ -112,16 +108,17 @@
                             </p>
                         </div>
                         <x-ui.button wire:click="addField" size="sm" class="w-auto! px-4 py-2!">
-                            <flux:icon name="plus" class="w-4 h-4 stroke-text-btn-primary" />
-                            <span class="text-text-btn-primary">{{ __('Add Field') }}</span>
+                            <flux:icon name="plus"
+                                class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
+                            <span
+                                class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Add Field') }}</span>
                         </x-ui.button>
                     </div>
 
                     @if (empty($fields))
-                        <div
-                            class="text-center py-8 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
-                            <flux:icon name="document-plus" class="w-12 h-12 mx-auto text-gray-400 mb-2" />
-                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                        <div class="text-center py-8 border-2 border-dashed border-border rounded-lg">
+                            <flux:icon name="document-plus" class="w-12 h-12 mx-auto stroke-text-muted mb-2" />
+                            <p class="text-sm text-muted">
                                 {{ __('No fields defined yet. Click "Add Field" to create your first field.') }}
                             </p>
                         </div>
@@ -129,16 +126,16 @@
                         <div class="space-y-3 max-h-96 overflow-y-auto pr-2">
                             @foreach ($fields as $index => $field)
                                 <div wire:key="field-{{ $index }}"
-                                    class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-3">
+                                    class="bg-linear-to-br from-zinc-50 via-main to-zinc-100 dark:from-zinc-900 dark:to-zinc-900 p-4 rounded-lg border-border space-y-3">
 
                                     <!-- Field Header with Actions -->
                                     <div class="flex items-center justify-between gap-2">
                                         <div class="flex items-center gap-2">
                                             <span
-                                                class="flex items-center justify-center w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold">
+                                                class="flex items-center justify-center w-6 h-6 rounded-full bg-accent text-text-primary text-xs font-bold">
                                                 {{ $index + 1 }}
                                             </span>
-                                            <span class="text-xs font-semibold text-gray-600 dark:text-gray-400">
+                                            <span class="text-xs font-semibold text-text-muted">
                                                 {{ __('Field') }} #{{ $index + 1 }}
                                             </span>
                                         </div>
@@ -173,25 +170,28 @@
                                                 {{ __('Field Label') }}
                                             </label>
                                             <input type="text"
-                                                wire:model.live="fields.{{ $index }}.field_name"
-                                                x-data="{ value: @entangle('fields.' . $index . '.field_name').live }"
-                                                x-on:input="
-                                                       value = $event.target.value;
-                                                       $wire.fields[{{ $index }}].slug = $event.target.value.toLowerCase()
-                                                           .replace(/[^a-z0-9]+/g, '-')
-                                                           .replace(/^-+|-+$/g, '');
-                                                   "
+                                                wire:model.blur="fields.{{ $index }}.field_name"
+                                                wire:change="updateFieldName({{ $index }}, $event.target.value)"
                                                 placeholder="e.g., Server Region"
                                                 class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                            @error('fields.' . $index . '.field_name')
+                                                <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}
+                                                </p>
+                                            @enderror
                                         </div>
                                         <div>
                                             <label
                                                 class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
                                                 {{ __('Slug (ID)') }}
                                             </label>
-                                            <input type="text" wire:model.live="fields.{{ $index }}.slug"
+                                            <input type="text" wire:model.blur="fields.{{ $index }}.slug"
+                                                wire:change="updateFieldSlug({{ $index }}, $event.target.value)"
                                                 placeholder="e.g., server-region"
                                                 class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                            @error('fields.' . $index . '.slug')
+                                                <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}
+                                                </p>
+                                            @enderror
                                         </div>
                                     </div>
 
@@ -203,6 +203,7 @@
                                                 {{ __('Input Type') }}
                                             </label>
                                             <select wire:model.live="fields.{{ $index }}.input_type"
+                                                wire:change="updateFieldInputType({{ $index }}, $event.target.value)"
                                                 class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                                                 @foreach ($inputTypes as $type)
                                                     <option value="{{ $type['value'] }}">{{ $type['label'] }}
@@ -216,6 +217,7 @@
                                                 {{ __('Filter Type') }}
                                             </label>
                                             <select wire:model.live="fields.{{ $index }}.filter_type"
+                                                wire:change="updateFieldFilterType({{ $index }}, $event.target.value)"
                                                 class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                                                 @foreach ($filterTypes as $type)
                                                     <option value="{{ $type['value'] }}">{{ $type['label'] }}
@@ -235,27 +237,20 @@
                                                     class="text-gray-500 font-normal">({{ __('comma separated') }})</span>
                                             </label>
                                             <input type="text"
-                                                wire:model.live.debounce.500ms="fields.{{ $index }}.dropdown_values"
+                                                wire:model.blur="fields.{{ $index }}.dropdown_values"
+                                                wire:change="updateDropdownValues({{ $index }}, $event.target.value)"
+                                                value="{{ is_array($field['dropdown_values']) ? implode(', ', $field['dropdown_values']) : '' }}"
                                                 placeholder="e.g., North America, Europe, Asia"
                                                 class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                                             @if (!empty($field['dropdown_values']))
-                                                @php
-                                                    $values = array_map(
-                                                        'trim',
-                                                        explode(',', $field['dropdown_values']),
-                                                    );
-                                                    $values = array_filter($values);
-                                                @endphp
-                                                @if (!empty($values))
-                                                    <div class="mt-2 flex flex-wrap gap-1">
-                                                        @foreach ($values as $value)
-                                                            <span
-                                                                class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
-                                                                {{ $value }}
-                                                            </span>
-                                                        @endforeach
-                                                    </div>
-                                                @endif
+                                                <div class="mt-2 flex flex-wrap gap-1">
+                                                    @foreach ($field['dropdown_values'] as $value)
+                                                        <span
+                                                            class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                                                            {{ $value }}
+                                                        </span>
+                                                    @endforeach
+                                                </div>
                                             @endif
                                         </div>
                                     @endif
