@@ -113,7 +113,7 @@
             </div>
 
             {{-- Actions --}}
-            <div class="flex items-center justify-end gap-4 ">
+            <div class="flex items-center justify-end gap-4 mt-4">
                 <x-ui.button wire:click="resetForm" variant="tertiary" class="w-auto! py-2!">
                     <flux:icon name="x-circle"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
