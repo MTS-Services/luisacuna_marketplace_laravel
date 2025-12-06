@@ -120,77 +120,104 @@
         </table>
     </div>
 
-    {{-- Mobile Card View --}}
-    <div class="md:hidden space-y-4 p-4">
+{{-- Mobile Card View --}}
+    <div class="block md:hidden overflow-x-auto space-y-4 p-4">
         @forelse ($data as $item)
-            <div class="bg-bg-secondary rounded-lg p-4 space-y-3">
-                @foreach ($columns as $column)
-                    @if (!isset($column['hideOnMobile']) || !$column['hideOnMobile'])
-                        <div class="flex justify-between items-start">
-                            <span class="text-text-muted text-sm font-medium">
-                                {{ __($column['label']) }}:
+            <div class="bg-bg-secondary rounded-xl shadow-lg overflow-hidden p-4">
+                {{-- Card Header with Status Badge --}}
+                <div class="bg-bg-optional p-4 rounded-xl">
+                    {{-- Title/First Column --}}
+                    <div class="mb-2">
+                        @if (isset($columns[0]))
+                            @if (isset($columns[0]['format']) && is_callable($columns[0]['format']))
+                                {!! $columns[0]['format']($item) !!}
+                            @else
+                                <div class="text-text-white font-medium">
+                                    {{ data_get($item, $columns[0]['key']) ?? '-' }}
+                                </div>
+                            @endif
+                        @endif
+                    </div>
+
+                    {{-- Status Badge --}}
+                    @foreach ($columns as $column)
+                        @if (isset($column['badge']) && $column['badge'])
+                            @php
+                                $value = data_get($item, $column['key']);
+                                $badgeColors = $column['badgeColors'] ?? [
+                                    'active' => 'bg-pink-500',
+                                    'paused' => 'bg-red-500',
+                                    'inactive' => 'bg-gray-500',
+                                    'completed' => 'bg-pink-500',
+                                ];
+                                $badgeColor = $badgeColors[strtolower($value)] ?? 'bg-gray-500';
+                            @endphp
+                            <span class="px-3 ml-10 py-1 text-xs font-semibold rounded-full {{ $badgeColor }} text-white whitespace-nowrap inline-block">
+                                {{ ucfirst($value) }}
                             </span>
-                            <span class="text-text-white text-sm text-right">
-                                @if (isset($column['format']) && is_callable($column['format']))
-                                    {!! $column['format']($item) !!}
-                                @elseif (isset($column['badge']) && $column['badge'])
-                                    @php
-                                        $value = data_get($item, $column['key']);
-                                        $badgeColors = $column['badgeColors'] ?? [
-                                            'active' => 'bg-pink-500',
-                                            'paused' => 'bg-red-500',
-                                            'inactive' => 'bg-gray-500',
-                                        ];
-                                        $badgeColor = $badgeColors[strtolower($value)] ?? 'bg-gray-500';
-                                    @endphp
-                                    <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $badgeColor }} text-white">
-                                        {{ ucfirst($value) }}
-                                    </span>
-                                @else
-                                    {{ data_get($item, $column['key']) ?? '-' }}
+                            @break
+                        @endif
+                    @endforeach
+                </div>
+
+                {{-- Card Body with Data --}}
+                <div class="p-4 space-y-3">
+                    @foreach ($columns as $index => $column)
+                        @if ($index > 0 && (!isset($column['hideOnMobile']) || !$column['hideOnMobile']) && (!isset($column['badge']) || !$column['badge']))
+                            <div class="flex justify-between items-start">
+                                <span class="text-text-muted text-sm font-medium">
+                                    {{ __($column['label']) }}
+                                </span>
+                                <span class="text-text-white text-sm text-right">
+                                    @if (isset($column['format']) && is_callable($column['format']))
+                                        {!! $column['format']($item) !!}
+                                    @else
+                                        {{ data_get($item, $column['key']) ?? '-' }}
+                                    @endif
+                                </span>
+                            </div>
+                        @endif
+                    @endforeach
+
+                    {{-- Actions --}}
+                    @if (count($actions) > 0)
+                        <div class="flex items-center justify-end gap-3 pt-3 border-t border-zinc-700">
+                            @foreach ($actions as $action)
+                                @php
+                                    $actionValue = data_get($item, $action['param'] ?? 'id');
+                                    $isActive = isset($action['condition']) ? $action['condition']($item) : true;
+                                    $iconName = $action['icon'] ?? 'question-mark';
+                                    $componentName = 'phosphor-' . $iconName;
+                                @endphp
+
+                                @if ($isActive)
+                                    @if (isset($action['method']))
+                                        <button type="button"
+                                                wire:click="{{ $action['method'] }}({{ is_numeric($actionValue) ? $actionValue : "'{$actionValue}'" }})"
+                                                class="cursor-pointer hover:{{ $action['hoverClass'] ?? 'text-text-primary' }} transition-colors text-text-muted"
+                                                title="{{ $action['label'] ?? '' }}">
+                                            <x-dynamic-component :component="$componentName" class="w-6 h-6" />
+                                        </button>
+                                    @elseif (isset($action['route']))
+                                        <a href="{{ route($action['route'], $actionValue) }}"
+                                           wire:navigate
+                                           class="cursor-pointer hover:{{ $action['hoverClass'] ?? 'text-text-primary' }} transition-colors text-text-muted"
+                                           title="{{ $action['label'] ?? '' }}">
+                                            <x-dynamic-component :component="$componentName" class="w-6 h-6" />
+                                        </a>
+                                    @elseif (isset($action['href']))
+                                        <a href="{{ $action['href'] }}"
+                                           target="{{ $action['target'] ?? '_self' }}"
+                                           class="cursor-pointer hover:{{ $action['hoverClass'] ?? 'text-text-primary' }} transition-colors text-text-muted"
+                                           title="{{ $action['label'] ?? '' }}">
+                                            <x-dynamic-component :component="$componentName" class="w-6 h-6" />
+                                        </a>
+                                    @endif
                                 @endif
-                            </span>
+                            @endforeach
                         </div>
                     @endif
-                @endforeach
-
-                @if (count($actions) > 0)
-                    <div class="flex items-center justify-end gap-3 pt-3 border-t border-zinc-700">
-                        @foreach ($actions as $action)
-                            @php
-                                $actionValue = data_get($item, $action['param'] ?? 'id');
-                                $isActive = isset($action['condition']) ? $action['condition']($item) : true;
-                                $iconName = $action['icon'] ?? 'question-mark';
-                                $componentName = 'phosphor-' . $iconName;
-                            @endphp
-
-                            @if ($isActive)
-                                @if (isset($action['method']))
-                                    <button type="button"
-                                            wire:click="{{ $action['method'] }}({{ is_numeric($actionValue) ? $actionValue : "'{$actionValue}'" }})"
-                                            class="cursor-pointer hover:{{ $action['hoverClass'] ?? 'text-text-primary' }} transition-colors text-text-muted"
-                                            title="{{ $action['label'] ?? '' }}">
-                                        <x-dynamic-component :component="$componentName" class="w-6 h-6" />
-                                    </button>
-                                @elseif (isset($action['route']))
-                                    <a href="{{ route($action['route'], $actionValue) }}"
-                                       wire:navigate
-                                       class="cursor-pointer hover:{{ $action['hoverClass'] ?? 'text-text-primary' }} transition-colors text-text-muted"
-                                       title="{{ $action['label'] ?? '' }}">
-                                        <x-dynamic-component :component="$componentName" class="w-6 h-6" />
-                                    </a>
-                                @elseif (isset($action['href']))
-                                    <a href="{{ $action['href'] }}"
-                                       target="{{ $action['target'] ?? '_self' }}"
-                                       class="cursor-pointer hover:{{ $action['hoverClass'] ?? 'text-text-primary' }} transition-colors text-text-muted"
-                                       title="{{ $action['label'] ?? '' }}">
-                                        <x-dynamic-component :component="$componentName" class="w-6 h-6" />
-                                    </a>
-                                @endif
-                            @endif
-                        @endforeach
-                    </div>
-                @endif
+                </div>
             </div>
         @empty
             <div class="flex flex-col items-center justify-center gap-4 py-12">

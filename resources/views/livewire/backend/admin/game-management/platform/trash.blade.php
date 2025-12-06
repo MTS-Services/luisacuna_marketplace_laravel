@@ -1,11 +1,14 @@
 <section>
-    <div class="glass-card rounded-2xl p-6 mb-6">
-        <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Platform Trash List') }}</h2>
-            <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.gm.platform.index') }}" class="w-auto py-2!">
+    {{-- Page Header --}}
+    <div class="glass-card rounded-2xl p-4 lg:p-6 mb-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <h2 class="text-xl lg:text-2xl font-bold text-text-black dark:text-text-white">
+                {{ __('Platform List') }}
+            </h2>
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                <x-ui.button href="{{ route('admin.gm.platform.index') }}" variant='tertiary' class="w-auto py-2!">
                     <flux:icon name="arrow-left"
-                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
                     {{ __('Back') }}
                 </x-ui.button>
             </div>
@@ -15,11 +18,11 @@
     {{-- Table Component --}}
     <x-ui.table :data="$datas" :columns="$columns" :actions="$actions" :bulkActions="$bulkActions" :bulkAction="$bulkAction"
         :statuses="$statuses" :selectedIds="$selectedIds" :mobileVisibleColumns="2" searchProperty="search" perPageProperty="perPage"
-        :showBulkActions="true" emptyMessage="No data found. Delete your first data to get started." />
+        :showBulkActions="true" emptyMessage="No data found. Create your first data to get started." />
 
     {{-- Delete Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Permanently delete this data?'" :message="'Are you absolutely sure you want to delete this data? All associated data will be permanently deleted.'" :method="'forceDelete'"
-        :button-text="'Permanently Delete'" />
+    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this data?'" :message="'Are you absolutely sure you want to remove this data? All associated data will be moved to trash.'" :method="'forceDelete'"
+        :button-text="'Delete Data'" />
 
     {{-- Bulk Action Confirmation Modal --}}
     <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="'Confirm Bulk Action'" :message="'Are you sure you want to perform this action on ' . count($selectedIds) . ' selected data(s)?'" :method="'executeBulkAction'"

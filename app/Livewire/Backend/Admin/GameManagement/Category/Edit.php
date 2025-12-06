@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Admin\GameManagement\Category;
 use Livewire\Component;
 use App\Models\Category;
 use App\Enums\CategoryStatus;
+use App\Enums\CategoryLayout;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Locked;
 use App\Services\CategoryService;
@@ -39,7 +40,8 @@ class Edit extends Component
     public function render()
     {
         return view('livewire.backend.admin.game-management.category.edit', [
-            'statuses'   => CategoryStatus::options(),
+            'statuses' => CategoryStatus::options(),
+            'layouts' => CategoryLayout::options(),
         ]);
     }
 

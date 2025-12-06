@@ -19,21 +19,21 @@ return new class extends Migration
             $table->unsignedBigInteger('sort_order')->default(0)->index();
 
             $table->unsignedBigInteger('user_id')->index();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedBigInteger('category_id')->index();
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
-            $table->unsignedBigInteger('platform_id')->index()->nullable();
-            $table->foreign('platform_id')->references('id')->on('platforms')->onDelete('cascade')->onUpdate('cascade');
-            $table->unsignedBigInteger('server_id')->index()->nullable();
-            $table->foreign('server_id')->references('id')->on('servers')->onDelete('cascade')->onUpdate('cascade');
+   
+            $table->unsignedBigInteger('game_id')->index();
+            
 
             $table->string('slug')->unique();
             $table->string('name');
+             $table->string('image')->nullable();
             $table->text('description')->nullable();
             $table->decimal('price', 15, 2)->default(0);
             $table->unsignedBigInteger('quantity')->default(0);
             $table->unsignedBigInteger('minimum_offer_quantity')->nullable();
+            $table->string('platform')->nullable();
+            $table->string('skin')->nullable();
 
             $table->string('status')->default(ActiveInactiveEnum::ACTIVE->value);
 
@@ -44,6 +44,12 @@ return new class extends Migration
             $table->timestamps();
 
             $this->addMorphedAuditColumns($table);
+            
+            $table->foreign('game_id')->references('id')->on('games')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+
+
         });
     }
 

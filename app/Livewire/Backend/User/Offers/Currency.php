@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\User\Offers;
 
+use App\Services\GameService;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,8 +14,31 @@ class Currency extends Component
     public $deleteItemId = null;
     public $perPage = 7;
 
+    public $itemStatuses = [];
+
+    protected GameService $gameService;
+    public function boot(GameService $gameService)
+    {
+        $this->gameService = $gameService;
+    }
+    public function mount()
+    {
+        $this->itemStatuses = [
+            1 => 1,
+            2 => 1,
+            3 => 1,
+            4 => 1,
+            5 => 0,
+            6 => 0,
+            7 => 0,
+            8 => 0,
+        ];
+    }
+
     public function render()
     {
+        $games = $this->gameService->getAllDatas();
+
         $allItems = collect([
             [
                 'id' => 1,
@@ -23,7 +47,7 @@ class Currency extends Component
                 'quantity' => '1B',
                 'min_quantity' => '100k',
                 'price' => '$6.5 (100k)',
-                'status' => 'active',
+                'status' => $this->itemStatuses[1] ?? 1,
                 'delivery_time' => '1 h',
             ],
             [
@@ -33,7 +57,7 @@ class Currency extends Component
                 'quantity' => '2B',
                 'min_quantity' => '200K',
                 'price' => '$9.5 (200k)',
-                'status' => 'active',
+                'status' => $this->itemStatuses[2] ?? 1,
                 'delivery_time' => '10 min',
             ],
             [
@@ -43,7 +67,7 @@ class Currency extends Component
                 'quantity' => '2M',
                 'min_quantity' => '1K',
                 'price' => '$6 (1k)',
-                'status' => 'active',
+                'status' => $this->itemStatuses[3] ?? 1,
                 'delivery_time' => '15 min',
             ],
             [
@@ -53,7 +77,7 @@ class Currency extends Component
                 'quantity' => '10M',
                 'min_quantity' => '10K',
                 'price' => '$6.5 (10k)',
-                'status' => 'active',
+                'status' => $this->itemStatuses[4] ?? 1,
                 'delivery_time' => '45 min',
             ],
             [
@@ -63,7 +87,7 @@ class Currency extends Component
                 'quantity' => '20M',
                 'min_quantity' => '20K',
                 'price' => '$9.5 (20k)',
-                'status' => 'paused',
+                'status' => $this->itemStatuses[5] ?? 0,
                 'delivery_time' => '1 h',
             ],
             [
@@ -73,7 +97,7 @@ class Currency extends Component
                 'quantity' => '10M',
                 'min_quantity' => '50K',
                 'price' => '$5.5 (50k)',
-                'status' => 'paused',
+                'status' => $this->itemStatuses[6] ?? 0,
                 'delivery_time' => '1 h',
             ],
             [
@@ -83,7 +107,7 @@ class Currency extends Component
                 'quantity' => '2.5B',
                 'min_quantity' => '100K',
                 'price' => '$6.5 (100k)',
-                'status' => 'paused',
+                'status' => $this->itemStatuses[7] ?? 0,
                 'delivery_time' => '1 h',
             ],
             [
@@ -93,14 +117,14 @@ class Currency extends Component
                 'quantity' => '2.5B',
                 'min_quantity' => '100K',
                 'price' => '$6.5 (100k)',
-                'status' => 'paused',
+                'status' => $this->itemStatuses[8] ?? 0,
                 'delivery_time' => '1 h',
             ],
         ])->map(fn($item) => (object)$item);
 
         $currentPage = $this->getPage();
         $items = $allItems->slice(($currentPage - 1) * $this->perPage, $this->perPage)->values();
-        
+
         $pagination = [
             'total' => $allItems->count(),
             'per_page' => $this->perPage,
@@ -134,39 +158,41 @@ class Currency extends Component
                 'key' => 'status',
                 'label' => 'Status',
                 'badge' => true,
-                'badgeColors' => [
-                    'active' => 'bg-pink-500',
-                    'paused' => 'bg-status-paused',
-                ]
+                'format' => fn($item) => '<span class="px-2 py-1 rounded-full text-xs text-white ' . ($item->status === 1 ? 'bg-pink-500' : 'bg-status-paused') . '">' . ($item->status === 1 ? 'Active' : 'Paused') . '</span>'
             ],
             [
                 'key' => 'delivery_time',
                 'label' => 'Delivery time',
             ],
         ];
-
-        // Action buttons configuration
         $actions = [
             [
                 'icon' => 'pause-fill',
                 'method' => 'pauseItem',
                 'label' => 'Pause',
-                'condition' => fn($item) => $item->status === 'active',
+                'condition' => fn($item) => $item->status === 1,
             ],
             [
                 'icon' => 'play-fill',
-                'method' => 'playItem',
+                'method' => 'resumeItem',
                 'label' => 'Resume',
-                'condition' => fn($item) => $item->status === 'paused',
+                'condition' => fn($item) => $item->status === 0,
             ],
             [
                 'icon' => 'link-fill',
-                'route' => 'user.profile',
+                'method' => 'copyItemLink',
                 'label' => 'Link',
+                'alpine' => true,
+                'click' => "
+                        navigator.clipboard.writeText('" . route('user.currency', ['id' => '{id}']) . "')
+                            .then(() => {
+                                \$dispatch('notify', {type: 'success', message: 'Link copied!'})
+                            })
+                    ",
             ],
             [
                 'icon' => 'pencil-simple-fill',
-                'route' => 'user.profile',
+                'route' => 'user.offers',
                 'label' => 'Edit',
             ],
             [
@@ -178,6 +204,7 @@ class Currency extends Component
 
         return view('livewire.backend.user.offers.currency', [
             'items' => $items,
+            'games' => $games,
             'columns' => $columns,
             'actions' => $actions,
             'pagination' => $pagination,
@@ -186,7 +213,8 @@ class Currency extends Component
 
     public function pauseItem($id)
     {
-        //  pause logic 
+        $this->itemStatuses[$id] = 0;
+
         $this->dispatch('notify', [
             'type' => 'success',
             'message' => "Item #{$id} paused successfully"
@@ -195,7 +223,8 @@ class Currency extends Component
 
     public function resumeItem($id)
     {
-        // resume logic 
+        $this->itemStatuses[$id] = 1;
+
         $this->dispatch('notify', [
             'type' => 'success',
             'message' => "Item #{$id} resumed successfully"
@@ -208,9 +237,9 @@ class Currency extends Component
         return redirect()->route('routeName', $id);
     }
 
-    public function confirmDelete($id)
+    public function confirmDelete($id): void
     {
-        $this->deleteItemId = $id;
+        $this->deleteId = $id;
         $this->showDeleteModal = true;
     }
 
@@ -219,7 +248,8 @@ class Currency extends Component
         if (!$this->deleteItemId) {
             return;
         }
-        // Game::find($this->deleteItemId)->delete();
+
+        unset($this->itemStatuses[$this->deleteItemId]);
 
         $this->showDeleteModal = false;
         $this->dispatch('notify', [
@@ -228,5 +258,21 @@ class Currency extends Component
         ]);
 
         $this->deleteItemId = null;
+    }
+
+
+    public function copyItemLink($id)
+    {
+        $url = route('user.currency') . '?id=' . $id;
+
+        $this->dispatch('copyToClipboard', [
+            'url' => $url
+        ]);
+
+        // Success message
+        $this->dispatch('notify', [
+            'type' => 'success',
+            'message' => 'Link copied to clipboard!'
+        ]);
     }
 }

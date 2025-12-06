@@ -77,16 +77,6 @@ class Game extends AuditBaseModel implements Auditable
             'category_id'
         );
     }
-
-    public function servers()
-    {
-        return $this->belongsToMany(
-            Server::class,
-            'game_servers',
-            'game_id',
-            'server_id'
-        );
-    }
     public function platforms()
     {
         return $this->belongsToMany(
@@ -105,24 +95,6 @@ class Game extends AuditBaseModel implements Auditable
             'tag_id'
         );
     }
-    public function types()
-    {
-        return $this->belongsToMany(
-            Type::class,
-            'game_types',
-            'game_id',
-            'type_id'
-        );
-    }
-    public function rarities()
-    {
-        return $this->belongsToMany(
-            Rarity::class,
-            'game_rarities',
-            'game_id',
-            'rarity_id'
-        );
-    }
 
     public function gameTranslations()
     {
@@ -133,19 +105,27 @@ class Game extends AuditBaseModel implements Auditable
   public function getTranslationConfig(): array
     {
         return [
-            'fields' => ['name', 'description', 'meta_title', 'meta_description', 'meta_keywords'],
+            'fields' => ['name', 'description'],
             'relation' => 'gameTranslations',
             'model' => GameTranslation::class,
             'foreign_key' => 'game_id',
             'field_mapping' => [
                 'name' => 'name',
                 'description' => 'description',
-                'meta_title' => 'meta_title',
-                'meta_description' => 'meta_description',
-                'meta_keywords' => 'meta_keywords',
             ],
         ];
     }
+
+    public function gameConfig()
+    {
+        return $this->hasMany(GameConfig::class, 'game_id', 'id');
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'game_id', 'id');
+    }
+
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
             Query Scopes

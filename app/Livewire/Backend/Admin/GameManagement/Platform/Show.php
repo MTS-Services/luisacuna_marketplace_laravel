@@ -7,12 +7,11 @@ use Livewire\Component;
 
 class Show extends Component
 {
-    public Platform $data;
-    public function mount(Platform $data): void{
+
+    public ?Platform $data = null;
+    public function mount(Platform $data){
+
         $this->data = $data;
     }
-    public function render()
-    {
-        return view('livewire.backend.admin.game-management.platform.show');
-    }
+
 }

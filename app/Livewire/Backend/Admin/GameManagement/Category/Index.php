@@ -4,6 +4,7 @@ namespace App\Livewire\Backend\Admin\GameManagement\Category;
 
 use Livewire\Component;
 use App\Enums\CategoryStatus;
+use App\Enums\CategoryLayout;
 use App\Services\CategoryService;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
@@ -58,17 +59,22 @@ class Index extends Component
                 'sortable' => true
             ],
             [
-                'key' => 'slug',
-                'label' => 'Slug',
-                'sortable' => true
-            ],
-            [
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
                 'format' => function ($data) {
                     return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
                         $data->status->label() .
+                        '</span>';
+                }
+            ],
+            [
+                'key' => 'layout',
+                'label' => 'Layout',
+                'sortable' => true,
+                'format' => function ($data) {
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->layout->color() . '">' .
+                        $data->layout->label() .
                         '</span>';
                 }
             ],
@@ -105,6 +111,7 @@ class Index extends Component
         return view('livewire.backend.admin.game-management.category.index', [
             'categories' => $datas,
             'statuses' => CategoryStatus::options(),
+            'layouts' => CategoryLayout::options(),
             'columns' =>  $columns,
             'actions' => $actions,
             'bulkActions' => $bulkActions,
@@ -155,6 +162,22 @@ class Index extends Component
             $this->error('Failed to update status: ' . $e->getMessage());
         }
     }
+    public function changeLayout($id, $layout): void
+    {
+        try {
+            $dataLayout = CategoryLayout::from($layout);
+
+            match ($dataLayout) {
+                CategoryLayout::LIST_GRID => $this->service->updateLayoutData($id, CategoryLayout::LIST_GRID),
+                CategoryLayout::GROUP_GIFT_CARD => $this->service->updateLayoutData($id, CategoryLayout::GROUP_GIFT_CARD),
+                default => null,
+            };
+
+            $this->success('Data status updated successfully');
+        } catch (\Exception $e) {
+            $this->error('Failed to update status: ' . $e->getMessage());
+        }
+    }
 
     public function confirmBulkAction(): void
     {
@@ -176,6 +199,8 @@ class Index extends Component
                 'delete' => $this->bulkDelete(),
                 'active' => $this->bulkUpdateStatus(CategoryStatus::ACTIVE),
                 'inactive' => $this->bulkUpdateStatus(CategoryStatus::INACTIVE),
+                'list_grid' => $this->bulkUpdateLyout(CategoryLayout::LIST_GRID),
+                'group_gift_card' => $this->bulkUpdateLyout(CategoryLayout::GROUP_GIFT_CARD),
                 default => null,
             };
 
@@ -197,6 +222,12 @@ class Index extends Component
     {
         $count = count($this->selectedIds);
         $this->service->bulkUpdateStatus($this->selectedIds, $status);
+        $this->success("{$count} Data updated successfully");
+    }
+    protected function bulkUpdateLyout(CategoryLayout $layout): void
+    {
+        $count = count($this->selectedIds);
+        $this->service->bulkUpdateLayout($this->selectedIds, $layout);
         $this->success("{$count} Data updated successfully");
     }
 

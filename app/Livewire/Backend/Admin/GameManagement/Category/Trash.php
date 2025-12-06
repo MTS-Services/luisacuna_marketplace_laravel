@@ -30,7 +30,7 @@ class Trash extends Component
     public function render()
     {
         $columns = [
-          
+
               [
                 'key' => 'icon',
                 'label' => 'icon',
@@ -46,17 +46,22 @@ class Trash extends Component
                 'sortable' => true
             ],
             [
-                'key' => 'slug',
-                'label' => 'Slug',
-                'sortable' => true
-            ],
-            [
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
                 'format' => function ($data) {
                     return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
                         $data->status->label() .
+                        '</span>';
+                }
+            ],
+            [
+                'key' => 'layout',
+                'label' => 'Layout',
+                'sortable' => true,
+                'format' => function ($data) {
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->layout->color() . '">' .
+                        $data->layout->label() .
                         '</span>';
                 }
             ],
@@ -98,10 +103,11 @@ class Trash extends Component
         ];
 
         // $category = GameCategory::onlyTrashed()->get();
-        $datas = $this->service->getTrashedPaginatedData(
+        $datas = $this->service->getPaginatedData(
 
             perPage: $this->perPage,
-            filters: $this->getFilters()
+            filters: $this->getFilters(),
+            trashed: true
         );
         return view('livewire.backend.admin.game-management.category.trash', [
             'datas' => $datas,
@@ -214,11 +220,11 @@ class Trash extends Component
 
     protected function getSelectableIds(): array
     {
-        $data = $this->service->getTrashedPaginatedData(
+        $data = $this->service->getPaginatedData(
             perPage: $this->perPage,
-            filters: $this->getFilters()
+            filters: $this->getFilters(),
+            trashed: true
         );
-
         return array_column($data->items(), 'id');
     }
 

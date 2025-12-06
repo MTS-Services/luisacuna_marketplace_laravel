@@ -6,6 +6,7 @@ use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use App\Traits\HasTranslations;
 use App\Enums\CategoryStatus;
+use App\Enums\CategoryLayout;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -24,6 +25,7 @@ class Category extends AuditBaseModel implements Auditable
         'meta_description',
         'icon',
         'status',
+        'layout',
         'created_by',
         'updated_by',
         'deleted_by',
@@ -34,7 +36,8 @@ class Category extends AuditBaseModel implements Auditable
     protected $hidden = ['id'];
 
     protected $casts = [
-        'status' => CategoryStatus::class
+        'status' => CategoryStatus::class,
+        'layout' => CategoryLayout::class
     ];
 
     /* ================================================================
@@ -68,7 +71,7 @@ class Category extends AuditBaseModel implements Auditable
 
     public function games(): BelongsToMany
     {
-        return $this->belongsToMany(Game::class,'game_categories','category_id','game_id' );
+        return $this->belongsToMany(Game::class, 'game_categories', 'category_id', 'game_id');
     }
 
     public function achievements(): HasMany
@@ -103,11 +106,21 @@ class Category extends AuditBaseModel implements Auditable
     {
         return $query->where('status', CategoryStatus::INACTIVE);
     }
+    public function scopeListGrid(Builder $query): Builder
+    {
+        return $query->where('layout', CategoryLayout::LIST_GRID);
+    }
+
+    public function scopeGroupGiftCard(Builder $query): Builder
+    {
+        return $query->where('layout', CategoryLayout::GROUP_GIFT_CARD);
+    }
 
     public function scopeFilter(Builder $query, array $filters): Builder
     {
         return $query
             ->when($filters['status'] ?? null, fn($q, $status) => $q->where('status', $status))
+            ->when($filters['layout'] ?? null, fn($q, $layout) => $q->where('layout', $layout))
             ->when($filters['name'] ?? null, fn($q, $name) => $q->where('name', 'like', "%{$name}%"));
     }
 
@@ -115,16 +128,17 @@ class Category extends AuditBaseModel implements Auditable
     {
         return $query->where(function ($q) use ($search) {
             $q->where('name', 'like', "%{$search}%")
-                ->orWhere('meta_description', 'like', "%{$search}%");
+                ->orWhere('layout', 'like', "%{$search}%")
+                ->orWhere('status', 'like', "%{$search}%");
         });
     }
 
-    #[SearchUsingPrefix(['name', 'meta_title'])]
+    #[SearchUsingPrefix(['name', 'status', 'layout'])]
     public function toSearchableArray(): array
     {
         return [
             'name' => $this->name,
-            'meta_title' => $this->meta_title,
+            'layout' => $this->layout,
             'status' => $this->status,
         ];
     }
@@ -138,8 +152,6 @@ class Category extends AuditBaseModel implements Auditable
     {
         parent::__construct($attributes);
         $this->appends = array_merge(parent::getAppends(), [
-            'status_label',
-            'status_color',
         ]);
     }
 }

@@ -8,11 +8,11 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class GameCategory extends BaseModel implements Auditable
 {
-    use   AuditableTrait;
+    use AuditableTrait;
 
     protected $fillable = [
         'game_id',
-        'platform_id',
+        'category_id',
 
         'created-at',
         'updated_at',
@@ -23,18 +23,18 @@ class GameCategory extends BaseModel implements Auditable
     ];
 
     protected $casts = [
- 
+
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     //
+    //
 
-     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
-                End of RELATIONSHIPS
-     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+               End of RELATIONSHIPS
+    =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
     public function __construct(array $attributes = [])
     {

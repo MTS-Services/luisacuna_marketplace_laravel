@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 
 // , 'userVerify'
-Route::middleware(['auth','userVerify'])->prefix('user')->name('user.')->group(function () {
+Route::middleware(['auth','userVerify'])->prefix('dashboard')->name('user.')->group(function () {
 
     Route::group(['prefix' => 'orders'], function () {
         Route::get('/purchased-orders', function () {
@@ -18,6 +18,12 @@ Route::middleware(['auth','userVerify'])->prefix('user')->name('user.')->group(f
         Route::get('/sold-orders', function () {
             return view('backend.user.pages.orders.sold-orders');
         })->name('sold-orders');
+        Route::get('/order-details', function () {
+            return view('backend.user.pages.orders.order-details');
+        })->name('order-details');
+        Route::get('/order-description', function () {
+            return view('backend.user.pages.orders.order-description');
+        })->name('order-description');
     });
 
     Route::group(['prefix' => 'offers'], function () {
@@ -47,6 +53,9 @@ Route::middleware(['auth','userVerify'])->prefix('user')->name('user.')->group(f
         Route::get('/received-requests', function () {
             return view('backend.user.pages.boosting.received-requests');
         })->name('received-requests');
+        Route::get('/subscriptions', function () {
+            return view('backend.user.pages.boosting.subscriptions');
+        })->name('subscriptions');
     });
 
     Route::group(['prefix' => 'seller'], function () {

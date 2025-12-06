@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\User\Boosting;
 
+use App\Services\GameService;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
@@ -11,8 +12,18 @@ class MyRequests extends Component
     use WithPagination;
 
     public $perPage = 4;
+
+    protected GameService $gameService;
+
+    public function boot(GameService $gameService)
+    {
+        $this->gameService = $gameService;
+    }
     public function render()
     {
+
+        $games = $this->gameService->getAllDatas();
+
         $allItems = collect(
             [
                 [
@@ -102,6 +113,7 @@ class MyRequests extends Component
 
         return view('livewire.backend.user.boosting.my-requests', [
             'items' => $items,
+            'games' => $games,
             'columns' => $columns,
             'pagination' => $pagination,
         ]);

@@ -27,7 +27,7 @@ Route::get('/gift-card', [GiftCardController::class, 'index'])->name('gift-card'
 Route::get('/coaching', [CoachingController::class, 'index'])->name('coaching');
 
 Route::get('/game/{gameSlug}/{categorySlug}', [GameController::class, 'index'])->name('game.index');
-Route::get('/game-buy/{gameSlug}/{categorySlug}/{sellerSlug}', [GameController::class, 'buy'])->name('game.buy');
+Route::get('/game-buy/{gameSlug}/{categorySlug}/{itemSlug}', [GameController::class, 'buy'])->name('game.buy');
 Route::get('/game-checkout/{orderId}', [GameController::class, 'checkout'])->name('game.checkout');
 
 Route::controller(FrontendController::class)->group(function () {

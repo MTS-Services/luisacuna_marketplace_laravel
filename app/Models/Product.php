@@ -16,8 +16,7 @@ class Product extends AuditBaseModel implements Auditable
 
         'user_id',
         'category_id',
-        'platform_id',
-        'server_id',
+        'game_id',
 
         'slug',
         'name',
@@ -53,7 +52,7 @@ class Product extends AuditBaseModel implements Auditable
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function category()
@@ -66,10 +65,12 @@ class Product extends AuditBaseModel implements Auditable
         return $this->belongsTo(Platform::class);
     }
 
-    public function server()
+    public function games()
     {
-        return $this->belongsTo(Server::class);
+        return $this->belongsTo(Game::class, 'game_id', 'id');
     }
+
+
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS

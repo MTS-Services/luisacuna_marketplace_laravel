@@ -22,12 +22,12 @@
         <div class="flex items-center justify-between gap-4 my-10">
             <div class="search w-full">
                 <x-ui.input type="text" wire:model.live.debounce.300ms="search" placeholder="Search..."
-                    class="form-input w-full rounded-full!" />
+                    class="form-input w-full rounded!" />
             </div>
             <div class="flex items-center justify-between gap-4 relative" x-data={filter:false}>
 
-                <button @click="filter = !filter"
-                    class="flex items-center gap-2 border border-purple-500 rounded-full px-5 py-2 hover:bg-purple-600 transition">
+                <button
+                    class="flex items-center gap-2  px-5 hover:bg-purple-600 transition py-2 bg-bg-primary rounded border! border-zinc-700!">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -35,224 +35,35 @@
                     </svg>
                     <span>{{ __('Filter') }}</span>
                 </button>
-                <div class="absolute top-14 right-0 z-10 shadow-glass-card" x-show="filter" x-transition x-cloak
-                    @click.outside="filter = false">
-                    {{-- filter Options --}}
-                    <div class="bg-bg-primary rounded-md p-4">
-                        <div class="flex flex-col gap-2">
-                            <button class="">{{ __('Option 1') }}</button>
-                            <button class="">{{ __('Option 1') }}</button>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
+
+
     </section>
     {{-- Gift Cards --}}
     <section class="container mx-auto">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-10">
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/1.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/2.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/3.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/4.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/5.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/6.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/7.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/8.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/9.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/10.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/11.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/12.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/13.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/14.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/15.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/16.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/17.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/18.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/19.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('game.index', ['categorySlug' => 'gift-cards', 'gameSlug' => 'realmwalker-new-dawn']) }}"
-                wire:navigate>
-                <div class="w-full h-72 relative">
-                    <img src="{{ asset('assets/images/gift_cards/20.png') }}" alt="" class="w-full h-full">
-                    <div class="absolute top-2.5 right-2.5">
-                        <span
-                            class="text-xs bg-zinc-500 font-medium px-4 py-1 rounded-full">{{ __('4 offerd') }}</span>
-                    </div>
-                </div>
-            </a>
+           
+          @forelse ([1,2,3,4,5,6] as $item )
+              <x-gift-card />
+          @empty
+              <h2>{{ __('No gift card found') }}</h2>
+          @endforelse
         </div>
-        {{-- <div class="pagination mb-24">
-            <x-frontend.pagination-ui />
-        </div> --}}
+        <div class="pagination mb-24 mx-auto">
+            {{-- <x-frontend.pagination-ui  :pagination="'[1,2,3,4,5,6,7,8,9,10]'"/> --}}
+             <div class="flex justify-center lg:justify-end items-center space-x-3 p-4 mt-10">
+                <button class="text-text-primary text-sm hover:text-zinc-500">{{ __('Previous') }}</button>
+
+                <button class="bg-zinc-600 text-white text-sm px-3 py-1 rounded">1</button>
+                <button class="text-text-primary text-sm hover:text-zinc-500">2</button>
+                <button class="text-text-primary text-sm hover:text-zinc-500">3</button>
+                <button class="text-text-primary text-sm hover:text-zinc-500">4</button>
+                <button class="text-text-primary text-sm hover:text-zinc-500">5</button>
+
+                <button class="text-text-primary text-sm hover:text-zinc-500">{{ __('Next') }}</button>
+            </div>
+        </div>
     </section>
 </main>

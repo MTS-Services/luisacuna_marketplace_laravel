@@ -3,7 +3,7 @@
         {{-- Top Cards Section --}}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             {{-- Bronze Level Card --}}
-            <div class="bg-bg-primary rounded-2xl p-10 border border-primary-700/30">
+            <div class="bg-bg-secondary rounded-2xl p-4 sm:p-10 border border-primary-700/30">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-text-primary font-open-sans text-lg">{{ __('How it works?') }}</h3>
                     <div class="flex items-center gap-2 bg-zinc-50/10 px-3 py-1.5 rounded-full">
@@ -51,7 +51,7 @@
             </div>
 
             {{-- Available Points Card --}}
-            <div class="rounded-3xl p-10 bg-pink-200 dark:bg-pink-900">
+            <div class="rounded-3xl p-4 sm:p-10 bg-pink-200 dark:bg-pink-900">
                 <div class="mb-6">
                     <h3 class="text-text-white font-semibold text-xl mb-4">{{ __('Available points') }}</h3>
                     <div class="flex items-center gap-2">
@@ -95,7 +95,7 @@
                     <div class="glass-card rounded-2xl p-6 border border-primary-700/30">
                         <div class="flex items-center gap-4 mb-9">
                             <div
-                                class="w-20 h-20 rounded-xl bg-primary-800/50 flex items-center justify-center flex-shrink-0">
+                                class="bg-bg-secondary w-20 h-20 rounded-xl flex items-center justify-center flex-shrink-0">
                                 <img src="{{ storage_url($achievement->icon) }}" alt=""
                                     class="w-full h-full rounded-xl">
                             </div>
@@ -130,7 +130,7 @@
                 @endforelse
             @else
                 <div class="bg-bg-primary rounded-2xl p-6 border border-primary-700/30 text-center lg:col-span-2">
-                    <h2 class="text-text-white font-open-sans text-3xl xl:text-4xl font-bold mb-6">
+                    <h2 class="text-text-white font-open-sans text-2xl sm:text-3xl xl:text-4xl font-bold mb-6">
                         {{ __('No achievements') }}
                     </h2>
                     <p class="text-text-white max-w-3xl font-open-sans text-xl font-normal mx-auto mb-6">
@@ -141,17 +141,19 @@
         </div>
 
         {{-- CTA Card --}}
-        <div class="glass-card rounded-2xl p-8 py-12 bg-linear-to-r from-pink-500/20 to-pink-800 text-center">
-            <h2 class="text-text-white font-open-sans text-3xl xl:text-4xl font-bold mb-6">
+        <div class="glass-card rounded-2xl p-4 sm:p-8 py-6 sm:py-12 bg-linear-to-r from-pink-500/20 to-pink-800 text-center">
+            <h2 class="text-text-white font-open-sans text-2xl sm:text-3xl xl:text-4xl font-bold mb-6">
                 {{ __('Start Your Reward Journey Today') }}
             </h2>
-            <p class="text-text-white max-w-3xl font-open-sans text-xl font-normal mx-auto mb-6">
+            <p class="text-text-white max-w-3xl font-open-sans text-base sm:text-xl font-normal mx-auto mb-6">
                 {{ __('Make your first purchase today and start tracking your journey toward exciting rewards. Each order helps you unlock new levels, bonuses, and exclusive offers. Stay motivated and see your progress grow with every step!') }}
             </p>
 
-            <x-ui.button class="sm:w-auto! py-2! mt-6 mx-auto">
-                {{ __('Browse for more') }}
-            </x-ui.button>
+            <a wire:navigate href="{{ route('home') }}" class="inline-block mx-auto">
+                <x-ui.button class="sm:w-auto! py-2! mt-6">
+                    {{ __('Browse for more') }}
+                </x-ui.button>
+            </a>
         </div>
     </div>
 </div>

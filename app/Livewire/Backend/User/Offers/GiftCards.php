@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\User\Offers;
 
+use App\Services\GameService;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
@@ -14,9 +15,36 @@ class GiftCards extends Component
     public $showDeleteModal = false;
     public $deleteItemId = null;
     public $perPage = 4;
-    
+
+    public $itemStatuses = [];
+
+    protected GameService $gameService;
+    public function boot(GameService $gameService)
+    {
+        $this->gameService = $gameService;
+    }
+
+    public function mount()
+    {
+        $this->itemStatuses = [
+            1 => 1,
+            2 => 1,
+            3 => 1,
+            4 => 1,
+            5 => 0,
+            6 => 0,
+            7 => 0,
+            8 => 0,
+        ];
+    }
+
+
+
     public function render()
     {
+
+        $games = $this->gameService->getAllDatas();
+
         $allItems = collect(
             [
                 [
@@ -28,7 +56,7 @@ class GiftCards extends Component
                     'min_quantity' => '1',
                     'price' => '$65',
                     'device' => 'PC',
-                    'status' => 'active',
+                    'status' => $this->itemStatuses[1] ?? 1,
                     'delivery_time' => '1 h',
                 ],
                 [
@@ -40,7 +68,7 @@ class GiftCards extends Component
                     'min_quantity' => '1',
                     'price' => '$95',
                     'device' => 'Xbox',
-                    'status' => 'active',
+                    'status' => $this->itemStatuses[2] ?? 1,
                     'delivery_time' => '10 min',
                 ],
                 [
@@ -52,7 +80,7 @@ class GiftCards extends Component
                     'min_quantity' => '1',
                     'price' => '$60',
                     'device' => 'PC',
-                    'status' => 'active',
+                    'status' => $this->itemStatuses[3] ?? 0,
                     'delivery_time' => '15 min',
                 ],
                 [
@@ -64,7 +92,7 @@ class GiftCards extends Component
                     'min_quantity' => '1',
                     'price' => '$65',
                     'device' => 'PC',
-                    'status' => 'active',
+                    'status' => $this->itemStatuses[4] ?? 0,
                     'delivery_time' => '45 min',
                 ],
                 [
@@ -76,7 +104,7 @@ class GiftCards extends Component
                     'min_quantity' => '1',
                     'price' => '$65',
                     'device' => 'PC',
-                    'status' => 'active',
+                    'status' => $this->itemStatuses[5] ?? 1,
                     'delivery_time' => '45 min',
                 ],
             ]
@@ -134,10 +162,7 @@ class GiftCards extends Component
                     'key' => 'status',
                     'label' => 'Status',
                     'badge' => true,
-                    'badgeColors' => [
-                        'active' => 'bg-pink-500',
-                        'paused' => 'bg-status-paused',
-                    ]
+                    'format' => fn($item) => '<span class="px-2 py-1 rounded-full text-xs text-white ' . ($item->status === 1 ? 'bg-pink-500' : 'bg-status-paused') . '">' . ($item->status === 1 ? 'Active' : 'Paused') . '</span>'
                 ],
                 [
                     'key' => 'delivery_time',
@@ -150,22 +175,29 @@ class GiftCards extends Component
                 'icon' => 'pause-fill',
                 'method' => 'pauseItem',
                 'label' => 'Pause',
-                'condition' => fn($item) => $item->status === 'active',
+                'condition' => fn($item) => $item->status === 1,
             ],
             [
                 'icon' => 'play-fill',
-                'method' => 'playItem',
+                'method' => 'resumeItem',
                 'label' => 'Resume',
-                'condition' => fn($item) => $item->status === 'paused',
+                'condition' => fn($item) => $item->status === 0,
             ],
             [
                 'icon' => 'link-fill',
-                'route' => 'user.profile',
+                'method' => 'copyItemLink',
                 'label' => 'Link',
+                'alpine' => true,
+                'click' => "
+                        navigator.clipboard.writeText('" . route('user.gift-cards', ['id' => '{id}']) . "')
+                            .then(() => {
+                                \$dispatch('notify', {type: 'success', message: 'Link copied!'})
+                            })
+                    ",
             ],
             [
                 'icon' => 'pencil-simple-fill',
-                'route' => 'user.profile',
+                'route' => 'user.offers',
                 'label' => 'Edit',
             ],
             [
@@ -177,6 +209,7 @@ class GiftCards extends Component
 
         return view('livewire.backend.user.offers.gift-cards', [
             'items' => $items,
+            'games' => $games,
             'columns' => $columns,
             'actions' => $actions,
             'pagination' => $pagination,
@@ -185,7 +218,8 @@ class GiftCards extends Component
 
     public function pauseItem($id)
     {
-        //  pause logic 
+        $this->itemStatuses[$id] = 0;
+
         $this->dispatch('notify', [
             'type' => 'success',
             'message' => "Item #{$id} paused successfully"
@@ -194,7 +228,8 @@ class GiftCards extends Component
 
     public function resumeItem($id)
     {
-        // resume logic 
+        $this->itemStatuses[$id] = 1;
+
         $this->dispatch('notify', [
             'type' => 'success',
             'message' => "Item #{$id} resumed successfully"
@@ -207,9 +242,9 @@ class GiftCards extends Component
         return redirect()->route('routeName', $id);
     }
 
-    public function confirmDelete($id)
+    public function confirmDelete($id): void
     {
-        $this->deleteItemId = $id;
+        $this->deleteId = $id;
         $this->showDeleteModal = true;
     }
 
@@ -218,7 +253,8 @@ class GiftCards extends Component
         if (!$this->deleteItemId) {
             return;
         }
-        // Game::find($this->deleteItemId)->delete();
+
+        unset($this->itemStatuses[$this->deleteItemId]);
 
         $this->showDeleteModal = false;
         $this->dispatch('notify', [
@@ -227,5 +263,19 @@ class GiftCards extends Component
         ]);
 
         $this->deleteItemId = null;
+    }
+    public function copyItemLink($id)
+    {
+        $url = route('user.gift-cards') . '?id=' . $id;
+
+        $this->dispatch('copyToClipboard', [
+            'url' => $url
+        ]);
+
+        // Success message
+        $this->dispatch('notify', [
+            'type' => 'success',
+            'message' => 'Link copied to clipboard!'
+        ]);
     }
 }

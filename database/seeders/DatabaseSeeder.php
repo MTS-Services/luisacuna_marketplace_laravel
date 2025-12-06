@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
 
+            ApplicationSettingSeeder::class,
             PaymentGatewaySeeder::class,
             WithdrawalGatewaySeeder::class,
 
@@ -25,19 +26,17 @@ class DatabaseSeeder extends Seeder
             RoleHasPermissionSeeder::class,
             LanguageSeeder::class,
             CurrencySeeder::class,
-            // ExchangeRateSeeder::class,
-            // ExchangeRateHistorySeeder::class,
+                // ExchangeRateSeeder::class,
+                // ExchangeRateHistorySeeder::class,
             EmailTemplateSeeder::class,
             ReferralSettingSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
-            ServerSeeder::class,
-            PlatformSeeder::class,
             GameSeeder::class,
+            PlatformSeeder::class,
             GameCategorySeeder::class,
             TagSeeder::class,
             GameTagSeeder::class,
-            // ApplicationSettingSeeder::class,
 
             SellerProfileSeeder::class,
             UserStatisticsSeeder::class,
@@ -55,11 +54,10 @@ class DatabaseSeeder extends Seeder
             AchievementSeeder::class,
 
             DeliveryMethodSeeder::class,
-            RaritySeeder::class,
-            TypeSeeder::class,
-
+            HeroSeeder::class,
             ProductSeeder::class,
             FaqSeeder::class,
+            GameConfigSeeder::class,
         ]);
     }
 }
