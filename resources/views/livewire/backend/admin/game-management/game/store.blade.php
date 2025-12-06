@@ -27,7 +27,7 @@
                     <x-ui.label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Banner') }}
                         <small>{{ __('(1000x400)') }}</small></x-ui.label>
                     <x-ui.file-input type="file" wire:model="form.banner" :existingFiles="$existing_banner"
-                        removeModel="form.remove_banner"  accept="image/*" />
+                        removeModel="form.remove_banner" accept="image/*" />
                     <x-ui.input-error :messages="$errors->get('form.banner')" class="mt-2" />
                 </div>
 
@@ -91,12 +91,13 @@
                 </div>
 
                 <div class="col-span-2">
-                    <x-ui.label
-                        class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Meta Keywords') }}</x-ui.label>
+                    <x-ui.label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Meta Keywords') }}
+                        <span class="text-text-muted font-normal">({{ __('comma separated') }})</span></x-ui.label>
                     {{-- <x-ui.textarea wire:model="form.meta_keywords" rows="2"
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600"></x-ui.textarea> --}}
-                    <x-ui.select wire:model="form.meta_keywords" placeholder="{{ __('Meta Keywords') }}" multiple
-                        class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
+                    <x-ui.input wire:model="form.meta_keywords" placeholder="{{ __('Example: Keyword 1, Keyword 2') }}"
+                        multiple class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
+
                     <x-ui.input-error :messages="$errors->get('form.meta_keywords')" class="mt-2" />
                 </div>
 

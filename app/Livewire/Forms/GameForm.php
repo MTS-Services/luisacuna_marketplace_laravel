@@ -24,7 +24,7 @@ class GameForm extends Form
 
     public ?string $meta_title = null;
     public ?string $meta_description = null;
-    public ?array $meta_keywords = [];
+    public ?string $meta_keywords = null;
 
     public bool $remove_logo = false;
     public bool $remove_banner = false;
@@ -42,7 +42,7 @@ class GameForm extends Form
             'banner' => 'nullable|image',
             'meta_title' => 'nullable|string',
             'meta_description' => 'nullable|string',
-            'meta_keywords' => 'nullable|array',
+            'meta_keywords' => 'nullable|string',
             'status' => 'required|string|in:' . implode(',', array_column(GameStatus::cases(), 'value')),
             'remove_logo' => 'nullable|boolean',
             'remove_banner' => 'nullable|boolean',
@@ -52,15 +52,33 @@ class GameForm extends Form
     public function setData(Game $data)
     {
         $this->id = $data->id;
-        $this->name = $data->name;
-        $this->slug = $data->slug;
-        $this->description = $data->description;
-        $this->status = $data->status->value;
+        $this->name = $data->name ?? null;
+        $this->slug = $data->slug ?? null;
+        $this->description = $data->description ?? null;
+        $this->status = $data->status->value ?? null;
 
 
-        $this->meta_title = $data->meta_title;
-        $this->meta_description = $data->meta_description;
-        $this->meta_keywords = $data->meta_keywords;
+        $this->meta_title = $data->meta_title ?? null;
+        $this->meta_description = $data->meta_description ?? null;
+
+        $value = $data->meta_keywords;
+
+        // If value is already a plain string
+        if (is_string($value) && !str_starts_with(trim($value), '[')) {
+            $this->meta_keywords = $value;
+            return;
+        }
+
+        // Otherwise treat as JSON
+        $decoded = json_decode($value, true);
+
+        // If JSON decoded into array → implode
+        if (is_array($decoded)) {
+            $this->meta_keywords = implode(', ', $decoded);
+        } else {
+            // Fallback when invalid JSON or null
+            $this->meta_keywords = $value ?? null;
+        }
     }
 
     public function reset(...$properties): void

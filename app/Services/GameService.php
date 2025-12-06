@@ -94,10 +94,15 @@ class GameService
         if (isset($data['banner'])) {
             $data['banner'] = $this->handleSingleFileUpload(newFile: $data['banner'], folderName: 'games');
         }
-        // convert to json
-        // if (isset($data['meta_keywords']) && !empty($data['meta_keywords'])) {
-        //     $data['meta_keywords'] = json_encode($data['meta_keywords']);
-        // }
+
+        if (!empty($data['meta_keywords']) && is_string($data['meta_keywords'])) {
+            $keywords = array_filter(
+                array_map('trim', explode(',', $data['meta_keywords'])),
+                fn($item) => $item !== ''
+            );
+
+            $data['meta_keywords'] = json_encode(array_values($keywords));
+        }
         return $this->model->create($data);
     }
 
@@ -115,6 +120,17 @@ class GameService
             $bannerPath = $this->handleSingleFileUpload(newFile: $data['banner'], oldPath: $game->banner, removeKey: $data['remove_banner'] ?? false, folderName: 'games');
         }
         $data['banner'] = $bannerPath;
+
+        // meta keywords 
+        if (!empty($data['meta_keywords']) && is_string($data['meta_keywords'])) {
+            $keywords = array_filter(
+                array_map('trim', explode(',', $data['meta_keywords'])),
+                fn($item) => $item !== ''
+            );
+
+            $data['meta_keywords'] = json_encode(array_values($keywords));
+        }
+
         $data['updated_by'] = $this->adminId;
         return $game ? $game->update($data) : false;
     }
