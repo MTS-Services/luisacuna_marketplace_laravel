@@ -36,7 +36,7 @@ Route::controller(FrontendController::class)->group(function () {
     Route::get('/how-to-sell', 'howToSell')->name('how-to-sell');
     Route::get('/seller-protection', 'sellerProtection')->name('seller-protection');
     Route::get('/faq', 'faq')->name('faq');
-    Route::get('/faq', 'faq')->name('faq');
+    // Route::get('/faq', 'faq')->name('faq');
     Route::get('/contact-us', 'contactUs')->name('contact-us');
     Route::get('/terms-and-conditions', 'termsAndConditions')->name('terms-and-conditions');
     Route::get('/refund-policy', 'refunPolicy')->name('refund-policy');
