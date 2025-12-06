@@ -1,36 +1,111 @@
 <div x-data="{
     showConfigModal: @entangle('showConfigModal').live,
-    isLoading: @entangle('isLoading').live
-}" x-show="showConfigModal" x-cloak x-transition:enter="transition ease-out duration-200"
-    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-    x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
-    x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;"
-    @open-config-modal.window="showConfigModal = true; isLoading = true; $wire.openConfigModal($event.detail.slug)">
+    isLoading: @entangle('isLoading').live,
+    fields: @entangle('fields').live,
+    processingAction: false,
+    
+    addField() {
+        this.fields.push({
+            id: null,
+            field_name: '',
+            slug: '',
+            input_type: 'text',
+            filter_type: 'no_filter',
+            dropdown_values: '',
+            sort_order: this.fields.length
+        });
+    },
+    
+    removeField(index) {
+        this.processingAction = true;
+        setTimeout(() => {
+            this.fields.splice(index, 1);
+            this.fields.forEach((field, idx) => {
+                field.sort_order = idx;
+            });
+            this.processingAction = false;
+        }, 100);
+    },
+    
+    moveFieldUp(index) {
+        if (index > 0) {
+            this.processingAction = true;
+            setTimeout(() => {
+                const temp = this.fields[index];
+                this.fields[index] = this.fields[index - 1];
+                this.fields[index - 1] = temp;
+                this.fields[index].sort_order = index;
+                this.fields[index - 1].sort_order = index - 1;
+                this.processingAction = false;
+            }, 100);
+        }
+    },
+    
+    moveFieldDown(index) {
+        if (index < this.fields.length - 1) {
+            this.processingAction = true;
+            setTimeout(() => {
+                const temp = this.fields[index];
+                this.fields[index] = this.fields[index + 1];
+                this.fields[index + 1] = temp;
+                this.fields[index].sort_order = index;
+                this.fields[index + 1].sort_order = index + 1;
+                this.processingAction = false;
+            }, 100);
+        }
+    },
+    
+    generateSlug(index) {
+        const fieldName = this.fields[index].field_name;
+        this.fields[index].slug = fieldName
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    }
+}" 
+x-show="showConfigModal" 
+x-cloak 
+x-transition:enter="transition ease-out duration-200"
+x-transition:enter-start="opacity-0" 
+x-transition:enter-end="opacity-100"
+x-transition:leave="transition ease-in duration-150" 
+x-transition:leave-start="opacity-100"
+x-transition:leave-end="opacity-0" 
+class="fixed inset-0 z-50 overflow-y-auto" 
+style="display: none;"
+@open-config-modal.window="showConfigModal = true; isLoading = true; $wire.openConfigModal($event.detail.slug)">
 
     <!-- Backdrop -->
-    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" @click="showConfigModal = false; $wire.closeConfigModal()"
-        x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"></div>
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" 
+         @click="showConfigModal = false; $wire.closeConfigModal()"
+         x-transition:enter="transition ease-out duration-200" 
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100">
+    </div>
 
     <!-- Modal Content -->
     <div class="flex min-h-screen items-center justify-center p-4">
         <div class="relative w-full max-w-4xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-h-[90vh] flex flex-col"
-            x-show="showConfigModal" x-transition:enter="transition ease-out duration-200 delay-75"
+            x-show="showConfigModal" 
+            x-transition:enter="transition ease-out duration-200 delay-75"
             x-transition:enter-start="opacity-0 transform scale-95"
             x-transition:enter-end="opacity-100 transform scale-100"
             x-transition:leave="transition ease-in duration-150"
             x-transition:leave-start="opacity-100 transform scale-100"
-            x-transition:leave-end="opacity-0 transform scale-95" @click.stop>
+            x-transition:leave-end="opacity-0 transform scale-95" 
+            @click.stop>
 
             <!-- Loading Overlay -->
-            <div x-show="isLoading" x-transition:enter="transition ease-out duration-200"
-                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
-                x-transition:leave-end="opacity-0"
-                class="absolute inset-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl z-10 flex items-center justify-center">
+            <div x-show="isLoading" 
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0" 
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition ease-in duration-150" 
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="absolute inset-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl z-10 flex items-center justify-center">
                 <div class="text-center">
-                    <svg class="w-12 h-12 mx-auto text-blue-500 animate-spin mb-3" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
+                    <svg class="w-12 h-12 mx-auto text-blue-500 animate-spin mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                     </svg>
@@ -40,9 +115,22 @@
                 </div>
             </div>
 
+            <!-- Action Processing Indicator -->
+            <div x-show="processingAction" 
+                 x-transition:enter="transition ease-out duration-150"
+                 x-transition:enter-start="opacity-0" 
+                 x-transition:enter-end="opacity-100"
+                 class="absolute top-4 right-4 z-20">
+                <div class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2">
+                    <svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <span class="text-sm font-medium">Processing...</span>
+                </div>
+            </div>
+
             <!-- Modal Header -->
-            <div
-                class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
                 <div class="flex-1">
                     <h3 class="text-2xl font-bold text-gray-900 dark:text-white">
                         {{ __('Configure Category') }}
@@ -50,11 +138,9 @@
                     <div x-show="!isLoading">
                         @if ($currentCategory)
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                {{ __('Game') }}: <span
-                                    class="font-semibold text-blue-600 dark:text-blue-400">{{ $game->name }}</span>
+                                {{ __('Game') }}: <span class="font-semibold text-blue-600 dark:text-blue-400">{{ $game->name }}</span>
                                 <span class="mx-2">•</span>
-                                {{ __('Category') }}: <span
-                                    class="font-semibold text-blue-600 dark:text-blue-400">{{ $currentCategory->name }}</span>
+                                {{ __('Category') }}: <span class="font-semibold text-blue-600 dark:text-blue-400">{{ $currentCategory->name }}</span>
                             </p>
                         @endif
                     </div>
@@ -65,8 +151,7 @@
                 <button @click="showConfigModal = false; $wire.closeConfigModal()"
                     class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors flex-shrink-0">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -74,9 +159,8 @@
             <!-- Modal Body - Scrollable -->
             <div class="flex-1 overflow-y-auto p-6 space-y-6" x-show="!isLoading">
 
-                <!-- 1. DELIVERY METHODS -->
-                <div
-                    class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-4 rounded-xl border border-blue-200 dark:border-blue-700">
+                <!-- DELIVERY METHODS -->
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-4 rounded-xl border border-blue-200 dark:border-blue-700">
                     <label class="block text-sm font-bold text-gray-900 dark:text-white mb-3 uppercase tracking-wide">
                         <flux:icon name="truck" class="w-4 h-4 inline mr-2" />
                         {{ __('Allowed Delivery Methods') }}
@@ -84,11 +168,11 @@
                     <div class="flex flex-wrap gap-4">
                         @foreach ($deliveryMethods as $key => $label)
                             <label class="flex items-center gap-2 cursor-pointer group">
-                                <input type="checkbox" wire:model.live="selectedDeliveryMethods"
-                                    value="{{ $key }}"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <span
-                                    class="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                <input type="checkbox" 
+                                       wire:model.live="selectedDeliveryMethods"
+                                       value="{{ $key }}"
+                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                                     {{ $label }}
                                 </span>
                             </label>
@@ -99,9 +183,9 @@
                     @enderror
                 </div>
 
-                <!-- 2. CUSTOM FIELDS -->
+                <!-- CUSTOM FIELDS -->
                 <div class="bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-700">
-                    <div class="flex justify-between items-center mb-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
                         <div>
                             <h4 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wide">
                                 <flux:icon name="squares-2x2" class="w-4 h-4 inline mr-2" />
@@ -111,183 +195,175 @@
                                 {{ __('Define custom fields that sellers must fill when creating listings') }}
                             </p>
                         </div>
-                        <x-ui.button wire:click="addField" size="sm" class="w-auto! px-4 py-2!">
-                            <flux:icon name="plus" class="w-4 h-4 stroke-text-btn-primary" />
-                            <span class="text-text-btn-primary">{{ __('Add Field') }}</span>
-                        </x-ui.button>
+                        <button @click="addField()" 
+                                type="button"
+                                class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all duration-200 shadow-sm hover:shadow-md whitespace-nowrap">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            <span>{{ __('Add Field') }}</span>
+                        </button>
                     </div>
 
-                    @if (empty($fields))
-                        <div
-                            class="text-center py-8 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
-                            <flux:icon name="document-plus" class="w-12 h-12 mx-auto text-gray-400 mb-2" />
-                            <p class="text-sm text-gray-500 dark:text-gray-400">
-                                {{ __('No fields defined yet. Click "Add Field" to create your first field.') }}
-                            </p>
-                        </div>
-                    @else
-                        <div class="space-y-3 max-h-96 overflow-y-auto pr-2">
-                            @foreach ($fields as $index => $field)
-                                <div wire:key="field-{{ $index }}"
-                                    class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-3">
+                    <div x-show="fields.length === 0"
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 scale-95"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         class="text-center py-8 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
+                        <flux:icon name="document-plus" class="w-12 h-12 mx-auto text-gray-400 mb-2" />
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            {{ __('No fields defined yet. Click "Add Field" to create your first field.') }}
+                        </p>
+                    </div>
 
-                                    <!-- Field Header with Actions -->
-                                    <div class="flex items-center justify-between gap-2">
-                                        <div class="flex items-center gap-2">
-                                            <span
-                                                class="flex items-center justify-center w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold">
-                                                {{ $index + 1 }}
-                                            </span>
-                                            <span class="text-xs font-semibold text-gray-600 dark:text-gray-400">
-                                                {{ __('Field') }} #{{ $index + 1 }}
-                                            </span>
-                                        </div>
-                                        <div class="flex items-center gap-1">
-                                            @if ($index > 0)
-                                                <button wire:click="moveFieldUp({{ $index }})"
-                                                    class="p-1.5 text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-gray-700 rounded transition-colors"
-                                                    title="{{ __('Move Up') }}">
-                                                    <flux:icon name="arrow-up" class="w-4 h-4" />
-                                                </button>
-                                            @endif
-                                            @if ($index < count($fields) - 1)
-                                                <button wire:click="moveFieldDown({{ $index }})"
-                                                    class="p-1.5 text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-gray-700 rounded transition-colors"
-                                                    title="{{ __('Move Down') }}">
-                                                    <flux:icon name="arrow-down" class="w-4 h-4" />
-                                                </button>
-                                            @endif
-                                            <button wire:click="removeField({{ $index }})"
-                                                class="p-1.5 text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
+                    <div x-show="fields.length > 0" class="space-y-3 max-h-96 overflow-y-auto pr-2">
+                        <template x-for="(field, index) in fields" :key="index">
+                            <div x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 transform scale-95"
+                                 x-transition:enter-end="opacity-100 transform scale-100"
+                                 class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-3">
+
+                                <!-- Field Header -->
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold" x-text="index + 1"></span>
+                                        <span class="text-xs font-semibold text-gray-600 dark:text-gray-400">
+                                            {{ __('Field') }} #<span x-text="index + 1"></span>
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <button x-show="index > 0"
+                                                @click="moveFieldUp(index)"
+                                                type="button"
+                                                class="p-1.5 text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-gray-700 rounded transition-all duration-150"
+                                                title="{{ __('Move Up') }}">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                                            </svg>
+                                        </button>
+                                        <button x-show="index < fields.length - 1"
+                                                @click="moveFieldDown(index)"
+                                                type="button"
+                                                class="p-1.5 text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-gray-700 rounded transition-all duration-150"
+                                                title="{{ __('Move Down') }}">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </button>
+                                        <button @click="removeField(index)"
+                                                type="button"
+                                                class="p-1.5 text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-all duration-150"
                                                 title="{{ __('Delete') }}">
-                                                <flux:icon name="trash" class="w-4 h-4" />
-                                            </button>
-                                        </div>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
                                     </div>
-
-                                    <!-- Field Name & Slug -->
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                        <div>
-                                            <label
-                                                class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                                                {{ __('Field Label') }}
-                                            </label>
-                                            <input type="text"
-                                                wire:model.live="fields.{{ $index }}.field_name"
-                                                x-data="{ value: @entangle('fields.' . $index . '.field_name').live }"
-                                                x-on:input="
-                                                       value = $event.target.value;
-                                                       $wire.fields[{{ $index }}].slug = $event.target.value.toLowerCase()
-                                                           .replace(/[^a-z0-9]+/g, '-')
-                                                           .replace(/^-+|-+$/g, '');
-                                                   "
-                                                placeholder="e.g., Server Region"
-                                                class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                        </div>
-                                        <div>
-                                            <label
-                                                class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                                                {{ __('Slug (ID)') }}
-                                            </label>
-                                            <input type="text" wire:model.live="fields.{{ $index }}.slug"
-                                                placeholder="e.g., server-region"
-                                                class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                        </div>
-                                    </div>
-
-                                    <!-- Input Type & Filter Type -->
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                        <div>
-                                            <label
-                                                class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                                                {{ __('Input Type') }}
-                                            </label>
-                                            <select wire:model.live="fields.{{ $index }}.input_type"
-                                                class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                                @foreach ($inputTypes as $type)
-                                                    <option value="{{ $type['value'] }}">{{ $type['label'] }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label
-                                                class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                                                {{ __('Filter Type') }}
-                                            </label>
-                                            <select wire:model.live="fields.{{ $index }}.filter_type"
-                                                class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                                @foreach ($filterTypes as $type)
-                                                    <option value="{{ $type['value'] }}">{{ $type['label'] }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <!-- Dropdown Values (Only for SELECT type) -->
-                                    @if ($field['input_type'] === \App\Enums\GameConfigInputType::SELECT_DROPDOWN->value)
-                                        <div>
-                                            <label
-                                                class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                                                {{ __('Dropdown Options') }}
-                                                <span
-                                                    class="text-gray-500 font-normal">({{ __('comma separated') }})</span>
-                                            </label>
-                                            <input type="text"
-                                                wire:model.live.debounce.500ms="fields.{{ $index }}.dropdown_values"
-                                                placeholder="e.g., North America, Europe, Asia"
-                                                class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                            @if (!empty($field['dropdown_values']))
-                                                @php
-                                                    $values = array_map(
-                                                        'trim',
-                                                        explode(',', $field['dropdown_values']),
-                                                    );
-                                                    $values = array_filter($values);
-                                                @endphp
-                                                @if (!empty($values))
-                                                    <div class="mt-2 flex flex-wrap gap-1">
-                                                        @foreach ($values as $value)
-                                                            <span
-                                                                class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
-                                                                {{ $value }}
-                                                            </span>
-                                                        @endforeach
-                                                    </div>
-                                                @endif
-                                            @endif
-                                        </div>
-                                    @endif
                                 </div>
-                            @endforeach
-                        </div>
-                    @endif
+
+                                <!-- Field Name & Slug -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                                            {{ __('Field Label') }}
+                                        </label>
+                                        <input type="text"
+                                               x-model="fields[index].field_name"
+                                               @input="generateSlug(index)"
+                                               placeholder="e.g., Server Region"
+                                               class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-150">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                                            {{ __('Slug (ID)') }}
+                                        </label>
+                                        <input type="text"
+                                               x-model="fields[index].slug"
+                                               placeholder="e.g., server-region"
+                                               class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-150">
+                                    </div>
+                                </div>
+
+                                <!-- Input Type & Filter Type -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                                            {{ __('Input Type') }}
+                                        </label>
+                                        <select x-model="fields[index].input_type"
+                                                class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-150">
+                                            @foreach ($inputTypes as $type)
+                                                <option value="{{ $type['value'] }}">{{ $type['label'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                                            {{ __('Filter Type') }}
+                                        </label>
+                                        <select x-model="fields[index].filter_type"
+                                                class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-150">
+                                            @foreach ($filterTypes as $type)
+                                                <option value="{{ $type['value'] }}">{{ $type['label'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Dropdown Values -->
+                                <div x-show="fields[index].input_type === 'select_dropdown'"
+                                     x-transition:enter="transition ease-out duration-200"
+                                     x-transition:enter-start="opacity-0 transform scale-95"
+                                     x-transition:enter-end="opacity-100 transform scale-100">
+                                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                                        {{ __('Dropdown Options') }}
+                                        <span class="text-gray-500 font-normal">({{ __('comma separated') }})</span>
+                                    </label>
+                                    <input type="text"
+                                           x-model="fields[index].dropdown_values"
+                                           placeholder="e.g., North America, Europe, Asia"
+                                           class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-150">
+                                    <div x-show="fields[index].dropdown_values" class="mt-2 flex flex-wrap gap-1">
+                                        <template x-for="value in fields[index].dropdown_values.split(',').map(v => v.trim()).filter(v => v)" :key="value">
+                                            <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
+                                                  x-text="value"></span>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
                 </div>
 
             </div>
 
             <!-- Modal Footer -->
-            <div
-                class="flex items-center justify-between gap-3 p-6 border-t border-gray-200 dark:border-gray-700 flex-shrink-0">
-                <div class="text-xs text-gray-500 dark:text-gray-400">
-                    @if (!empty($fields))
-                        {{ count($fields) }} {{ __('field(s) configured') }}
-                    @endif
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-6 border-t border-gray-200 dark:border-gray-700 flex-shrink-0">
+                <div class="text-xs text-gray-500 dark:text-gray-400 text-center sm:text-left">
+                    <span x-show="fields.length > 0">
+                        <span x-text="fields.length"></span> {{ __('field(s) configured') }}
+                    </span>
                 </div>
-                <div class="flex items-center gap-3">
-                    <button @click="showConfigModal = false; $wire.closeConfigModal()" :disabled="isLoading"
-                        class="px-6 py-2.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    <button @click="showConfigModal = false; $wire.closeConfigModal()" 
+                            :disabled="isLoading"
+                            type="button"
+                            class="px-6 py-2.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
                         {{ __('Cancel') }}
                     </button>
-                    <x-ui.button wire:click="saveConfiguration" wire:loading.attr="disabled"
-                        wire:target="saveConfiguration" class="w-auto! px-6 py-2.5!">
-                        <flux:icon wire:loading.remove wire:target="saveConfiguration" name="check"
-                            class="w-4 h-4 stroke-text-btn-primary" />
-                        <flux:icon wire:loading wire:target="saveConfiguration" name="arrow-path"
-                            class="w-4 h-4 stroke-text-btn-primary animate-spin" />
-                        <span class="text-text-btn-primary">{{ __('Save Configuration') }}</span>
-                    </x-ui.button>
+                    <button wire:click="saveConfiguration" 
+                            wire:loading.attr="disabled"
+                            wire:target="saveConfiguration"
+                            type="button"
+                            class="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+                        <svg wire:loading.remove wire:target="saveConfiguration" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <svg wire:loading wire:target="saveConfiguration" class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        <span>{{ __('Save Configuration') }}</span>
+                    </button>
                 </div>
             </div>
         </div>

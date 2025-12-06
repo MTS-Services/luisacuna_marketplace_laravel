@@ -19,7 +19,7 @@
                     <x-ui.label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Logo') }}
                         <small>{{ __('(400x400)') }}</small></x-ui.label>
                     <x-ui.file-input type="file" wire:model="form.logo" :existingFiles="$existing_logo"
-                        removeModel="form.remove_logo" />
+                        removeModel="form.remove_logo" accept="image/*" />
                     <x-ui.input-error :messages="$errors->get('form.logo')" class="mt-2" />
                 </div>
 
@@ -27,7 +27,7 @@
                     <x-ui.label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Banner') }}
                         <small>{{ __('(1000x400)') }}</small></x-ui.label>
                     <x-ui.file-input type="file" wire:model="form.banner" :existingFiles="$existing_banner"
-                        removeModel="form.remove_banner" />
+                        removeModel="form.remove_banner"  accept="image/*" />
                     <x-ui.input-error :messages="$errors->get('form.banner')" class="mt-2" />
                 </div>
 
