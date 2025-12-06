@@ -15,8 +15,9 @@ return new class extends Migration {
         Schema::create('game_configs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-            $table->unsignedBigInteger('game_id');
+            $table->unsignedBigInteger('game_id')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
+            $table->unsignedBigInteger('game_category_id');
             $table->string('field_name');
             $table->string('slug')->index();
             $table->string('filter_type')->default(GameConfigFilterType::NO_FILTER->value);

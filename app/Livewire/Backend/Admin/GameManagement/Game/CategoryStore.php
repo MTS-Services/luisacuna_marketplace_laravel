@@ -20,8 +20,8 @@ class CategoryStore extends Component
 
     public Game $game;
     public ?string $selectedCategory = null;
-    public bool $showConfigModal = false;
-    public ?string $configuringCategorySlug = null;
+    public ?string $selectedCategoryToRemove = null;
+    public bool $showRemoveModal = false;
 
     protected CategoryService $categoryService;
     protected GameService $gameService;
@@ -74,10 +74,13 @@ class CategoryStore extends Component
         return $this->categories->whereNotIn('id', $assignedIds)->values();
     }
 
-
     #[On('saveGameCategory')]
     public function saveGameCategory(): void
     {
+        $this->validate([
+            'selectedCategory' => 'required|string|exists:categories,slug'
+        ]);
+
         $category = $this->categoryService->findData($this->selectedCategory, 'slug');
 
         if (!$category) {
@@ -85,64 +88,13 @@ class CategoryStore extends Component
             return;
         }
 
-        // Check if category is already assigned, if not assign it first
-        if (!$this->gameCategories->contains('id', $category->id)) {
-            try {
-                $this->gameService->saveGameCategory($this->game, $category);
-
-                // Refresh the relationship efficiently
-                $this->game->load('categories:id,name,slug');
-
-                // Clear computed property cache
-                unset($this->gameCategories, $this->remainingCategories);
-
-                $this->success('Category assigned successfully!');
-            } catch (\Exception $e) {
-                Log::error('Error assigning category before configuration', [
-                    'game_id' => $this->game->id,
-                    'category_slug' => $this->selectedCategory,
-                    'error' => $e->getMessage(),
-                ]);
-
-                $this->error('Error assigning category. Please try again.');
-                return;
-            }
+        // Check if category is already assigned
+        if ($this->gameCategories->contains('id', $category->id)) {
+            $this->warning('Category is already assigned to this game');
+            return;
         }
-    }
-
-    /**
-     * Close configuration modal and reset
-     */
-    public function closeConfigModal(): void
-    {
-        $this->showConfigModal = false;
-        $this->configuringCategorySlug = null;
-        $this->reset(['selectedCategory']);
-    }
-
-    /**
-     * Save category (for dropdown assignment)
-     */
-    public function saveCategory(): bool
-    {
-        $this->validate([
-            'selectedCategory' => 'required|string|exists:categories,slug'
-        ]);
 
         try {
-            $category = $this->categoryService->findData($this->selectedCategory, 'slug');
-
-            if (!$category) {
-                $this->error('Category not found');
-                return false;
-            }
-
-            // Check if already assigned
-            if ($this->gameCategories->contains('id', $category->id)) {
-                $this->warning('Category is already assigned to this game');
-                return false;
-            }
-
             $this->gameService->saveGameCategory($this->game, $category);
 
             // Refresh the relationship efficiently
@@ -152,39 +104,49 @@ class CategoryStore extends Component
             unset($this->gameCategories, $this->remainingCategories);
 
             $this->reset('selectedCategory');
-            $this->success('Category saved successfully!');
+            $this->success('Category assigned successfully!');
 
-            return true;
+            // Dispatch event to open config modal
+            $this->dispatch('openConfigModal', slug: $category->slug);
         } catch (\Exception $e) {
-            Log::error('Error saving game category', [
+            Log::error('Error assigning category', [
                 'game_id' => $this->game->id,
                 'category_slug' => $this->selectedCategory,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
             ]);
 
-            $this->error('Error saving category. Please try again.');
-            return false;
+            $this->error('Error assigning category. Please try again.');
         }
     }
 
-    /**
-     * Remove category
-     */
-    public function removeCategory(string $slug): bool
+    #[On('confirmRemoveGameCategory')]
+    public function confirmRemoveGameCategory(string $slug): void
     {
+        $this->selectedCategoryToRemove = $slug;
+        $this->showRemoveModal = true;
+    }
+
+    public function removeCategory(): void
+    {
+        if (!$this->selectedCategoryToRemove) {
+            $this->error('No category selected for removal');
+            return;
+        }
+
         try {
-            $category = $this->categoryService->findData($slug, 'slug');
+            $category = $this->categoryService->findData($this->selectedCategoryToRemove, 'slug');
 
             if (!$category) {
                 $this->error('Category not found');
-                return false;
+                $this->closeRemoveModal();
+                return;
             }
 
             // Check if category is assigned
             if (!$this->gameCategories->contains('id', $category->id)) {
                 $this->warning('Category is not assigned to this game');
-                return false;
+                $this->closeRemoveModal();
+                return;
             }
 
             $this->gameService->deleteGameCategory($this->game, $category);
@@ -195,21 +157,25 @@ class CategoryStore extends Component
             // Clear computed property cache
             unset($this->gameCategories, $this->remainingCategories);
 
-            $this->reset('selectedCategory');
             $this->success('Category removed successfully!');
-
-            return true;
+            $this->closeRemoveModal();
         } catch (\Exception $e) {
             Log::error('Error removing game category', [
                 'game_id' => $this->game->id,
-                'category_slug' => $slug,
+                'category_slug' => $this->selectedCategoryToRemove,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
 
             $this->error('Error removing category. Please try again.');
-            return false;
+            $this->closeRemoveModal();
         }
+    }
+
+    public function closeRemoveModal(): void
+    {
+        $this->showRemoveModal = false;
+        $this->selectedCategoryToRemove = null;
     }
 
     /**

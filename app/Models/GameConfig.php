@@ -17,14 +17,12 @@ class GameConfig extends BaseModel implements Auditable
         "delivery_methods",
         "game_id",
         "category_id",
+        "game_category_id",
         "field_name",
         "slug",
         "filter_type",
         "input_type",
         "dropdown_values",
-
-
-
     ];
 
     protected $hidden = [
@@ -57,6 +55,4 @@ class GameConfig extends BaseModel implements Auditable
             //
         ]);
     }
-
-
 }

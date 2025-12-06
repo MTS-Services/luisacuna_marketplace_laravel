@@ -37,6 +37,11 @@ class GameCategory extends BaseModel implements Auditable
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function configs()
+    {
+        return $this->hasMany(GameConfig::class);
+    }
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                End of RELATIONSHIPS
     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
