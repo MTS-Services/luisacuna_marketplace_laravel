@@ -110,15 +110,19 @@ class GameRepository implements GameRepositoryInterface
 
     public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection
     {
-        return $this->model->with('categories')->whereHas('categories', function ($query) use ($fieldValue, $fieldName) {
-            $query->where($fieldName, $fieldValue);
-        })->get();
+        return $this->model
+            ->with(['categories', 'tags'])
+            ->whereHas('categories', function ($query) use ($fieldValue, $fieldName) {
+                $query->where($fieldName, $fieldValue);
+            })
+            ->get();
     }
 
     public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection
     {
         return $this->model
-            ->whereHas('category', function ($query) use ($categorySlug) {
+            ->with(['categories', 'tags'])
+            ->whereHas('categories', function ($query) use ($categorySlug) {
                 $query->where('slug', $categorySlug);
             })
             ->whereHas('tags', function ($query) use ($tagSlug) {
@@ -130,7 +134,7 @@ class GameRepository implements GameRepositoryInterface
     public function searchGamesByCategory($categorySlug, $searchTerm): Collection
     {
         return $this->model
-            ->with('categories')
+            ->with(['categories', 'tags']) // 'tags' add করুন!
             ->whereHas('categories', function ($query) use ($categorySlug) {
                 $query->where('slug', $categorySlug);
             })

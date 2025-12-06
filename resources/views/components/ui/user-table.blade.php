@@ -125,7 +125,7 @@
         @forelse ($data as $item)
             <div class="bg-bg-secondary rounded-xl shadow-lg overflow-hidden p-4">
                 {{-- Card Header with Status Badge --}}
-                <div class="bg-zinc-800 p-4 rounded-xl">
+                <div class="bg-bg-optional p-4 rounded-xl">
                     {{-- Title/First Column --}}
                     <div class="mb-2">
                         @if (isset($columns[0]))

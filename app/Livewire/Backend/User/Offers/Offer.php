@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Backend\User\Offers;
 
-use App\Services\CategoryService;
-use App\Services\GameService;
+use App\Models\Product;
 use Livewire\Component;
+use App\Services\GameService;
+use App\Services\CategoryService;
 
 class Offer extends Component
 {
@@ -14,10 +15,16 @@ class Offer extends Component
     public $categoryGames = [];
     public $selectedGame = null;
     public $selectedGameData = null;
-    
+    public $selectedDeliveryMethod;
+    public $price;
+    public $stock_quantity;
+    public $Platform;
+    public $description;
+
     // Dynamic configuration fields
     public $gameConfigs = [];
     public $configValues = [];
+    public $deliveryMethods = [];
 
     protected CategoryService $categoryService;
     protected GameService $gameService;
@@ -36,6 +43,11 @@ class Offer extends Component
         $category = $this->categoryService->findData($categoryId);
         $this->categoryGames = $category->games ?? [];
 
+        session([
+            'selectedCategoryId' => $categoryId,
+            'selectedCategoryName' => $categoryName,
+        ]);
+
         $this->step = 2;
     }
 
@@ -43,16 +55,32 @@ class Offer extends Component
     {
         // Reset previous selections
         $this->configValues = [];
+        $this->deliveryMethods = [];
         if ($gameId) {
 
             $game = $this->gameService->findData($gameId);
 
             $game->load('gameConfig');
 
-           $this->gameConfigs = $game->gameConfig;
+            $this->gameConfigs = $game->gameConfig;
 
             $this->selectedGameData = $game;
-            
+
+
+
+            $deliveryGroups = [];
+            foreach ($game->gameConfig as $config) {
+                $methods = json_decode($config->delivery_methods, true);
+                if ($methods) {
+                    foreach ($methods as $m) {
+                        $deliveryGroups[$m['value']] = $m['label'];
+                    }
+                }
+            }
+
+            $this->deliveryMethods = $deliveryGroups;
+
+            session(['selectedGameId' => $gameId]);
         } else {
             $this->selectedGameData = null;
             $this->gameConfigs = [];
@@ -68,23 +96,32 @@ class Offer extends Component
         $this->step = 3;
     }
 
+
     public function submitOffer()
     {
-        // Dynamic validation rules based on game configs
-        $rules = [
-            'selectedGame' => 'required',
-        ];
-        
-        foreach ($this->gameConfigs as $config) {
-            $rules['configValues.' . $config->slug] = 'required';
-        }
-        
-        $this->validate($rules);
+        // Retrieve data from session
+        $categoryId = session('selectedCategoryId', $this->selectedCategoryId);
+        $gameId = session('selectedGameId', $this->selectedGame);
 
+        Product::create([
+            'user_id' => auth()->id(),
+            'category_id' => $categoryId,
+            'game_id' => $gameId,
+            'config_values' => json_encode($this->configValues), // Dynamic attributes
+            'delivery_method' => $this->selectedDeliveryMethod,
+            'price' => $this->price,
+            'stock_quantity' => $this->stock_quantity,
+            'platform' => $this->Platform,
+            'description' => $this->description,
+        ]);
 
+        // Flash message
         session()->flash('message', 'Offer successfully created!');
+
+        // Reset properties
         $this->reset();
     }
+
 
     public function back()
     {
@@ -93,12 +130,13 @@ class Offer extends Component
         }
     }
 
+    public function serachFilter(){}
+
     public function render()
     {
         $categories = $this->categoryService->getDatas();
         return view('livewire.backend.user.offers.offer', [
-            'categories' => $categories,
-            // '' => LanguageStatus::options(),
+            'categories' => $categories
         ]);
     }
 }

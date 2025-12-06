@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
-@import 'tailwindcss';
-@import '../../vendor/livewire/flux/dist/flux.css';
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+@import "tailwindcss";
+@import "../../vendor/livewire/flux/dist/flux.css";
 @plugin "daisyui";
 
 /* ================= CUSTOM CSS START ================= */
-@import './table.css';
-@import './select.css';
-@import './select2.css';
+@import "./table.css";
+@import "./select.css";
+@import "./select2.css";
 /* ================= CUSTOM CSS END =================*/
 
 @source '../views';
@@ -18,17 +18,15 @@
 
 /* ================= GOOGLE FONTS ================= */
 
-
-
 :root {
     /* Base Colors */
     --color-black: #000000;
     --color-white: #ffffff;
-    --color-bg-base: #1B0C33;
+    --color-bg-base: #1b0c33;
 
-    --color-status-paused: #CB2C30;
-    --color-green: #12D212;
-    --color-orange: #F97316;
+    --color-status-paused: #cb2c30;
+    --color-green: #12d212;
+    --color-orange: #f97316;
 
     /* Primary: Purple */
     --color-primary-50: #f5f3ff;
@@ -36,12 +34,13 @@
     --color-primary-200: #ddd6fe;
     --color-primary-300: #c4b5fd;
     --color-primary-400: #a78bfa;
-    --color-primary-500: #853EFF;
+    --color-primary-500: #853eff;
     --color-primary-600: #7c3aed;
     --color-primary-700: #6d28d9;
     --color-primary-800: #351966;
-    --color-primary-900: #1B0C33;
-    --color-primary-950: #0D061A;
+    --color-primary-900: #1b0c33;
+    --color-primary-950: #0d061a;
+    --color-primary-1000: #853eff14;
 
     /* Secondary: Pink */
     --color-secondary-50: #fdf2f8;
@@ -49,14 +48,12 @@
     --color-secondary-200: #fbcfe8;
     --color-secondary-300: #f9a8d4;
     --color-secondary-400: #f472b6;
-    --color-secondary-500: #FF2E91;
+    --color-secondary-500: #ff2e91;
     --color-secondary-600: #db2777;
     --color-secondary-700: #be185d;
     --color-secondary-800: #9d174d;
     --color-secondary-900: #831843;
     --color-secondary-950: #50072c;
-
-
 
     --color-text-new-light: #1b1b1b;
     --color-text-new-dark: #f1f1f1;
@@ -89,26 +86,33 @@
     --color-bg-secondary-dark: oklch(21.779% 0.00002 271.152);
     --color-bg-tertiary-dark: oklch(26.862% 0.00003 271.152);  */
 
-    --color-bg-primary-light: oklch(96.115% 0.00011 271.152);
-    --color-bg-secondary-light: oklch(92.494% 0.00011 271.152);
+    --color-bg-primary-light: oklch(100% 0.00011 271.152);
+    --color-bg-secondary-light: oklch(0 0 0 / 0.04);
+    --color-bg-optional-light: oklch(0.689 0.324 274.7 / 0.08);
+    --color-bg-info-light: oklch(0% 0 0 / 0.08);
     --color-bg-tertiary-light: oklch(88.531% 0.0001 271.152);
+    /* --color-bg- */
 
-    --color-bg-primary-dark: var(--color-primary-900);
+    /* --color-bg-primary-dark: var(--color-primary-900);
     --color-bg-secondary-dark: var(--color-primary-950);
-    --color-bg-tertiary-dark: var(--color-secondary-500);
+    --color-bg-tertiary-dark: var(--color-secondary-500); */
 
+    --color-bg-primary-dark: var(--color-primary-950);
+    --color-bg-secondary-dark: var(--color-primary-900);
+    --color-bg-optional-dark: var(--color-primary-1000);
+    --color-bg-info-dark: oklch(1 0 0 / 0.08);
+    --color-bg-tertiary-dark: var(--color-secondary-500);
 
     /* Seller Profile Colors Collection  */
 
-    --color-light-black: #FFFFFF14;
-    --color-light-black-200: #FFFFFF14;
+    --color-light-black: #ffffff14;
+    --color-light-black-200: #ffffff14;
 
     /* Seller Profile Colors Sollection */
     --livewire-progress-bar-color: var(--color-secondary-500) !important;
 }
 
 @keyframes bounce-dot {
-
     0%,
     100% {
         transform: translateY(0);
@@ -166,7 +170,7 @@
     --color-bg-hover: var(--color-zinc-100);
 
     --color-text-btn-primary: #f8f8f8;
-    --color-text-baground3: #FF2E91;
+    --color-text-baground3: #ff2e91;
     --color-text-purple: #6b21a8;
     --color-text-pink: #ec4899;
 
@@ -179,6 +183,8 @@
 
     --color-bg-primary: var(--color-bg-primary-light);
     --color-bg-secondary: var(--color-bg-secondary-light);
+    --color-bg-optional: var(--color-bg-optional-light);
+    --color-bg-info: var(--color-bg-info-light);
     --color-bg-tertiary: var(--color-bg-tertiary-light);
 
     --color-bg-container1: #1b0c33;
@@ -225,16 +231,11 @@
         }
     }
 
-
-
     /* ======================================================
     	 	 	 	 	 	 # font family
     ======================================================== */
-    --font-open-sans: "Open Sans",
-    sans-serif;
-    --font-lato: "Lato",
-    sans-serif;
-
+    --font-open-sans: "Open Sans", sans-serif;
+    --font-lato: "Lato", sans-serif;
 
     /* ======================================================
     	 	 	 	 	 	 # font size
@@ -257,17 +258,15 @@
     --breakpoint-3xl: 1536px;
     --breakpoint-4xl: 1920px;
     --breakpoint-5xl: 2560px;
-
-
-
-
 }
 
 @layer theme {
     :root {
         --color-accent: var(--color-accent-light) !important;
         --color-accent-content: var(--color-accent-content-light) !important;
-        --color-accent-foreground: var(--color-accent-foreground-light) !important;
+        --color-accent-foreground: var(
+            --color-accent-foreground-light
+        ) !important;
     }
 
     .dark {
@@ -282,6 +281,9 @@
 
         --color-bg-primary: var(--color-bg-primary-dark);
         --color-bg-secondary: var(--color-bg-secondary-dark);
+        --color-bg-optional: var(--color-bg-optional-dark);
+        --color-bg-info: var(--color-bg-info-dark);
+
         --color-bg-tertiary: var(--color-bg-tertiary-dark);
 
         --color-bg-hover: var(--color-zinc-800);
@@ -296,9 +298,7 @@
     }
 }
 
-
 @layer base {
-
     *,
     ::after,
     ::before,
@@ -326,7 +326,8 @@
 
     .dark * {
         border-color: var(--color-gray-700, currentColor);
-        scrollbar-color: var(--color-accent-dark) var(--color-accent-content-dark) !important;
+        scrollbar-color: var(--color-accent-dark)
+            var(--color-accent-content-dark) !important;
     }
 
     /* For Webkit-based browsers (Chrome, Edge, Safari) */
@@ -362,7 +363,6 @@
         background: transparent;
     }
 
-
     /* Custom scrollbar */
     .custom-scrollbar::-webkit-scrollbar {
         width: 6px;
@@ -386,7 +386,6 @@
         @apply backdrop-blur-md bg-linear-to-tr from-zinc-50/50 via-bg-primary/50 to-zinc-50/50 shadow-glass-card;
     }
 
-
     .sidebar-glass-card {
         @apply bg-linear-to-tr from-zinc-50/50 via-bg-primary/50 to-zinc-50/50 shadow-glass-card;
     }
@@ -405,7 +404,7 @@
     }
 
     .navbar_style {
-        @apply relative text-white dark:text-zinc-500 font-medium transition-colors duration-300 hover:text-purple-400 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-0.5 after:bg-purple-500 after:w-0 hover:after:w-full after:transition-all after:duration-300 [&.active]:text-purple-400 active:after:w-full;
+        @apply relative font-medium text-text-primary transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-0.5 after:bg-purple-500 after:w-0 hover:after:w-full after:transition-all after:duration-300 [&.active]:after:w-full active:after:w-full;
     }
 
     .navbar_indicator {
@@ -414,11 +413,11 @@
 
     /* === Global Swiper Pagination Style === */
     .swiper-pagination-bullet {
-        @apply w-4! h-2.5! bg-zinc-300! dark:bg-white! rounded-md! transition-all duration-300 ease-in-out opacity-100!;
+        @apply !w-4 !h-2.5 !bg-zinc-300 dark:!bg-white !rounded-md !transition-all duration-300 ease-in-out !opacity-100;
     }
 
     .swiper-pagination .swiper-pagination-bullet-active {
-        @apply bg-purple-700! opacity-100;
+        @apply !bg-purple-700 !opacity-100;
     }
 
     .mobile-nav-item {
@@ -454,7 +453,6 @@ button {
     @apply cursor-pointer transition-all duration-200 ease-in-out hover:scale-[1.01];
 }
 
-
 [data-flux-field]:not(ui-radio, ui-checkbox) {
     @apply grid gap-2;
 }
@@ -468,15 +466,17 @@ textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
+
 @keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
 }
 
 .animate-shimmer {
-  animation: shimmer 1.5s infinite ease-in-out;
+    animation: shimmer 1.5s infinite ease-in-out;
 }

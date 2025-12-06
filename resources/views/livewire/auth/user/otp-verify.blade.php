@@ -1,6 +1,6 @@
 <div>
-    <div class="bg-bg-secondary min-h-screen flex items-center justify-center">
-        <div class="w-full max-w-xl bg-gradient-to-br bg-bg-primary rounded-2xl px-8 py-22 shadow-2xl">
+    <div class="bg-bg-primary min-h-screen flex items-center justify-center">
+        <div class="w-full max-w-xl bg-gradient-to-br bg-bg-secondary rounded-2xl px-8 py-22 shadow-2xl">
             <!-- Header -->
             <div class="text-center mb-8">
                 <h2 class="text-3xl sm:text-4xl font-medium text-text-white">

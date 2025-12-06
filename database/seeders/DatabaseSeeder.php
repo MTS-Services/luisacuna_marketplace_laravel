@@ -56,7 +56,8 @@ class DatabaseSeeder extends Seeder
             DeliveryMethodSeeder::class,
             HeroSeeder::class,
             ProductSeeder::class,
-            // GameConfigSeeder::class,
+            FaqSeeder::class,
+            GameConfigSeeder::class,
         ]);
     }
 }

@@ -20,6 +20,7 @@ class Hero extends AuditBaseModel implements Auditable
         'action_title',
         'action_url',
         'image',
+        'mobile_image',
         'target',
         'status',
  

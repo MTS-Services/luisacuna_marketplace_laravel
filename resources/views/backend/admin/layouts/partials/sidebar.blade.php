@@ -58,6 +58,64 @@
                         // ],
                     ]" />
 
+
+
+
+            <x-backend.navlink type="dropdown" icon="gamepad-directional" name="Game Management" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'Categories',
+                        'route' => route('admin.gm.category.index'),
+                        'icon' => 'gamepad-2',
+                        'active' => 'game-category',
+                        'permission' => 'category-list',
+                    ],
+
+                    // [
+                    //     'name' => 'Servers',
+                    //     'route' => route('admin.gm.server.index'),
+                    //     'icon' => 'swords',
+                    //     'active' => 'server',
+                    //     'permission' => 'server-list',
+                    // ],
+
+                    [
+                        'name' => 'Platforms',
+                        'route' => route('admin.gm.platform.index'),
+                        'icon' => 'swords',
+                        'active' => 'game-platform',
+                        'permission' => 'platform-list',
+                    ],
+
+                    [
+                        'name' => 'Games',
+                        'route' => route('admin.gm.game.index'),
+                        'icon' => 'swords',
+                        'active' => 'game',
+                        'permission' => 'game-list',
+                    ],
+
+                    // [
+                    //     'name' => 'Rarity',
+                    //     'route' => route('admin.gm.rarity.index'),
+                    //     'icon' => 'swords',
+                    //     'active' => 'game-rarity',
+                    // ],
+
+                    // [
+                    //     'name' => 'Pending Users',
+                    //     'route' => '#',
+                    //     'icon' => 'user-plus',
+                    //     'active' => 'admin-users-pending',
+                    // ],
+
+                    // [
+                    //     'name' => 'Banned Users',
+                    //     'route' => '#',
+                    //     'icon' => 'user-round-x',
+                    //     'active' => 'admin-users-banned',
+                    // ],
+                ]" />
                 <x-backend.navlink type="dropdown" icon="user-group" name="Users" :page_slug="$active"
                     :items="[
                         [
@@ -168,6 +226,87 @@
                         ],
                     ]" />
 
+
+
+            <x-backend.navlink type="single" icon="layout-dashboard" name="Faq" :route="route('admin.flm.faq.index')"
+                active="admin-faq" :page_slug="$active" />
+
+
+
+
+
+            <div class="pt-4 pb-2">
+                <p class="text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
+                    x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)">
+                    {{ __('Settings & Tools') }}</p>
+                <p class="text-center text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase"
+                    x-show="desktop && !sidebar_expanded">...</p>
+            </div>
+            <x-backend.navlink type="dropdown" icon="wrench-screwdriver" name="Application Settings" :page_slug="$active"
+                :items="[
+                    [
+                        'name' => 'General Settings',
+                        'route' => route('admin.as.general-settings'),
+                        'icon' => 'cog-8-tooth',
+                        'active' => 'general-settings',
+                    ],
+
+                    // [
+                    //     'name' => 'Appearance',
+                    //     'route' => '#',
+                    //     'icon' => 'palette',
+                    //     'active' => 'settings-appearance',
+                    // ],
+
+                    [
+                        'name' => 'Security',
+                        'route' => route('admin.two-factor.index'),
+                        'icon' => 'shield',
+                        'active' => 'two-factor',
+                    ],
+                    [
+                        'name' => 'Languages',
+                        'route' => route('admin.as.language.index'),
+                        'icon' => 'language',
+                        'active' => 'language',
+                    ],
+                    [
+                        'name' => 'Currencies',
+                        'route' => route('admin.as.currency.index'),
+                        'icon' => 'currency-dollar',
+                        'active' => 'currency',
+                    ],
+                    // [
+                    //     'name' => 'Analytics',
+                    //     'route' => '#',
+                    //     'icon' => 'chart-bar',
+                    //     'active' => 'settings-analytics',
+                    // ],
+                    // [
+                    //     'name' => 'Support',
+                    //     'route' => '#',
+                    //     'icon' => 'headset',
+                    //     'active' => 'settings-support',
+                    // ],
+                    // [
+                    //     'name' => 'Notifications',
+                    //     'route' => '#',
+                    //     'icon' => 'bell',
+                    //     'active' => 'settings-notifications',
+                    // ],
+                    // [
+                    //     'name' => 'Database',
+                    //     'route' => route('admin.app-settings.database'),
+                    //     'icon' => 'database',
+                    //     'active' => 'settings-database',
+                    // ],
+                    // [
+                    //     'name' => 'SMTP',
+                    //     'route' => route('admin.app-settings.smtp'),
+                    //     'icon' => 'envelope',
+                    //     'active' => 'app-smtp-settings',
+                    // ],
+                ]" />
                 <x-backend.navlink type="dropdown" icon="layers" name="Level Management" :page_slug="$active"
                     :items="[
                         [
