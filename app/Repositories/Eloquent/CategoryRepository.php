@@ -12,15 +12,13 @@ class CategoryRepository implements CategoryRepositoryInterface
 {
 
 
-    public function __construct(protected Category $model)
-    {
-    }
+    public function __construct(protected Category $model) {}
 
 
     /* ================== ================== ==================
      *                      Find Methods
      * ================== ================== ================== */
-    protected function commonQuery($query, $status, $layout, $trashed)
+    protected function commonQuery($query, $status, $layout, $trashed, ?array $selects = null)
     {
         if ($status) {
             $query->where('status', $status);
@@ -31,13 +29,16 @@ class CategoryRepository implements CategoryRepositoryInterface
         if ($trashed) {
             $query->withTrashed();
         }
+        if ($selects) {
+            $query->select($selects);
+        }
         return $query;
     }
 
-    public function getData(string $sortField, $order, $status, $layout, $trashed): Collection
+    public function getData(string $sortField, $order, $status, $layout, $trashed, ?array $selects): Collection
     {
         $query = $this->model->query();
-        $this->commonQuery($query, $status, $layout, $trashed);
+        $this->commonQuery($query, $status, $layout, $trashed, $selects);
         return $query->orderBy($sortField, $order)->get();
     }
     public function findData($column_value, string $column_name, $status, $layout, $trashed): ?Category
@@ -166,5 +167,4 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return $this->model->onlyTrashed()->whereIn('id', $ids)->forceDelete();
     }
-
 }

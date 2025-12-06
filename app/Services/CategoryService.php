@@ -23,12 +23,11 @@ class CategoryService
         protected RestoreAction $restoreAction,
         protected CreateAction $createAction,
         protected UpdateAction $updateAction,
-    ) {
-    }
+    ) {}
 
-    public function getDatas($sortField = 'created_at', $order = 'desc', $status = false, $layout = false, $trashed = false): Collection
+    public function getDatas($sortField = 'created_at', $order = 'desc', $status = false, $layout = false, $trashed = false, ?array $selects = null): Collection
     {
-        return $this->interface->getData($sortField, $order, $status, $layout, $trashed);
+        return $this->interface->getData($sortField, $order, $status, $layout, $trashed, $selects);
     }
 
     public function findData($column_value, string $column_name = 'id', $status = false, $layout = false, $trashed = false): ?Category
