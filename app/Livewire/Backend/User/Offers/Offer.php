@@ -130,6 +130,8 @@ class Offer extends Component
         }
     }
 
+    public function serachFilter(){}
+
     public function render()
     {
         $categories = $this->categoryService->getDatas();

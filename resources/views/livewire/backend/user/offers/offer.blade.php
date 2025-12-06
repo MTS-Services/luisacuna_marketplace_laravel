@@ -1,14 +1,17 @@
-<div class="container">
-    <div class="flex gap-4 items-center my-10">
-        {{-- <h2 class="text-text-white text-base">
+<div class="container pb-75">
+    {{-- <div class="flex gap-4 items-center my-10">
+        <h2 class="text-text-white text-base">
             {{ __('Home') }}
         </h2>
         <x-phosphor name="greater-than" variant="regular" class="w-4 h-4 text-zinc-400" />
         <h2 class="text-text-white text-base">
             {{ __('Select game') }}
-        </h2> --}}
-    </div>
-    <div class="bg-bg-secondary w-full mx-auto p-4 sm:p-10 md:p-20 rounded-2xl">
+        </h2>
+    </div> --}}
+
+    <livewire:frontend.partials.breadcrumb :gameSlug="'currency'" :categorySlug="'sell currency'" />
+
+    <div class="bg-bg-secondary w-full mx-auto p-4 sm:p-10 md:p-20 rounded-2xl ">
 
 
         {{-- Step 1: Category Selection --}}
@@ -50,10 +53,10 @@
                     {{ __('Choose Game') }}
                 </h2>
 
-                <div class="flex justify-center mx-auto">
+                {{-- <div class="flex justify-center mx-auto">
                     @if (count($categoryGames) > 0)
                         <div class="justify-center">
-                            <x-ui.select class="mt-1 block w-full" wire:model="selectedGame">
+                            <x-ui.select class="mt-1 block w-full!" wire:model="selectedGame">
                                 <option value="">{{ __('Select a game') }}</option>
                                 @foreach ($categoryGames as $game)
                                     <option value="{{ $game->id }}">{{ $game->name }}</option>
@@ -66,7 +69,9 @@
                             <p class="text-sm">{{ __('Please try another category') }}</p>
                         </div>
                     @endif
-                </div>
+                </div> --}}
+               
+                <x-ui.custom-select :rounded="'rounded'" :label="__('Select a game')" :options="$categoryGames" :wireModel="'selectedGame'"/>
 
                 @error('selectedGame')
                     <p class="text-red-500 text-center mt-2">{{ $message }}</p>
@@ -83,7 +88,7 @@
                 @endif
             </div>
             <div class="text-center mt-5">
-                <p class="inline-block text-center text-text-white text-xs sm:text-base font-normal">{{ __('Can\'t find the game you want to sell? Contact our ') }}<p class="inline-block text-pink-500 text-xs sm:text-base font-normal">
+                <p class="inline-block text-center text-text-white text-xs sm:text-base font-normal">{{ __('Can\'t find the game you want to sell? Contact our ' ) }}<p class="inline-block text-pink-500 text-xs sm:text-base font-normal ml-1">
                     {{ __(' customer support') }}</p> <p class="inline-block text-text-white text-xs sm:text-base font-normal">{{ __('  to suggest a game.') }}</p> </p>
             </div>
         @endif
@@ -93,8 +98,10 @@
             <h2 class="text-2xl sm:text-40px font-semibold text-center text-text-white mb-3">
                 {{ __('Sell Game ') . ucfirst($selectedCategory) }}
             </h2>
-            <h2 class="text-xl sm:text-2xl text-center text-text-white mb-5 sm:mb-10">{{ __('Step 2/3') }}</h2>
+            <h2 class="text-xl sm:text-2xl text-center text-text-white mb-5 sm:mb-10">{{ __('Step 2/2') }}</h2>
+
             <form wire:submit.prevent="submitOffer">
+
                 <div class="bg-bg-optional rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
                     <h2 class="text-text-white font-semibold text-2xl sm:text-40px mb-4 sm:mb-10">{{ __('Your item') }}</h2>
                     <div class="bg-bg-info flex gap-4 items-center p-4 md-p-10 rounded-2xl">
@@ -116,24 +123,18 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 justify-center mx-auto">
                         @foreach ($gameConfigs as $config)
+
+                        
                             <div
                                 class="{{ in_array($config->filter_type, ['textarea', 'filter_by_textarea']) ? 'col-span-2' : '' }}">
 
                                 {{-- Dropdown --}}
                                 @if (in_array($config->filter_type, ['filter_by_select', 'select_dropdown']))
                                     <div>
-                                        <x-ui.label :for="'config_' . $config->slug" :value="$config->field_name" />
-                                        <x-ui.select :id="'config_' . $config->slug" class="mt-1 block w-full"
-                                            wire:model="configValues.{{ $config->slug }}">
-                                            <option value="">{{ __('Select') }} {{ $config->field_name }}
-                                            </option>
+                                        <x-ui.label :for="'config_' . $config->slug" :value="$config->field_name" class="mb-2"> </x-ui.label>
+                                      
+                                            <x-ui.custom-select :label="$config->field_name" :options="json_decode($config->dropdown_values, true)" :wireModel="'configValues.' . $config->slug" mdWidth="md:w-full" rounded="rounded" mdLeft="md:left-0"  />
 
-                                            @if (!empty($config->dropdown_values))
-                                                @foreach (json_decode($config->dropdown_values, true) as $value)
-                                                    <option value="{{ $value }}">{{ $value }}</option>
-                                                @endforeach
-                                            @endif
-                                        </x-ui.select>
                                         <x-ui.input-error :messages="$errors->get('configValues.' . $config->slug)" class="mt-2" />
                                     </div>
 
@@ -144,9 +145,10 @@
 
                                     {{-- Number input --}}
                                 @elseif (in_array($config->filter_type, ['filter_by_range', 'number']))
-                                    <x-ui.label :for="'config_' . $config->slug" :value="$config->field_name" />
-                                    <x-ui.input id="name" type="number"
-                                        class="bg-transparent! dark:text-zinc-100! text-zinc-900! mt-1 block w-full"
+                                    <x-ui.label :for="'config_' . $config->slug" :value="$config->field_name" class="mb-2"/>
+
+                                    <x-ui.input id="name" type="text"
+                                        class="bg-bg-primary! dark:text-text-primary! border-none focus:border-0! focus:ring-0! rounded-lg px-3 py-2"
                                         wire:model="configValues.{{ $config->slug }}"
                                         placeholder="{{ $config->field_name }}" />
 
