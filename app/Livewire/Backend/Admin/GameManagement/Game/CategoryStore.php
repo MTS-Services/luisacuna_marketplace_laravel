@@ -104,10 +104,7 @@ class CategoryStore extends Component
             unset($this->gameCategories, $this->remainingCategories);
 
             $this->reset('selectedCategory');
-            $this->success('Category assigned successfully!');
-
-            // Dispatch event to open config modal
-            $this->dispatch('openConfigModal', slug: $category->slug);
+            // $this->success('Category assigned successfully!');
         } catch (\Exception $e) {
             Log::error('Error assigning category', [
                 'game_id' => $this->game->id,
@@ -157,7 +154,7 @@ class CategoryStore extends Component
             // Clear computed property cache
             unset($this->gameCategories, $this->remainingCategories);
 
-            $this->success('Category removed successfully!');
+            // $this->success('Category removed successfully!');
             $this->closeRemoveModal();
         } catch (\Exception $e) {
             Log::error('Error removing game category', [

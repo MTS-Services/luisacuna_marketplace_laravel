@@ -4,156 +4,306 @@ namespace App\Services;
 
 use App\Models\GameConfig;
 use App\Models\GameCategory;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class GameConfigService
 {
-    public function __construct(
-        protected GameConfig $model
-    ) {}
-
     /**
-     * Get all configs for a game category
+     * Load existing configurations for a game category
      */
-    public function getConfigsByGameCategory(int $gameCategoryId): Collection
+    public function loadConfigurations(GameCategory $gameCategory): array
     {
-        return $this->model->newQuery()
-            ->where('game_category_id', $gameCategoryId)
-            ->orderBy('sort_order', 'asc')
+        $configs = $gameCategory->configs()
+            ->ordered()
             ->get();
+
+        return [
+            'delivery_methods' => $this->extractDeliveryMethods($configs),
+            'fields' => $this->extractFields($configs),
+        ];
     }
 
     /**
-     * Get configs by game and category
+     * Extract delivery methods from configs
      */
-    public function getConfigsByGameAndCategory(int $gameId, int $categoryId): Collection
+    protected function extractDeliveryMethods(Collection $configs): array
     {
-        return $this->model->newQuery()
-            ->where('game_id', $gameId)
-            ->where('category_id', $categoryId)
-            ->orderBy('sort_order', 'asc')
-            ->get();
+        $deliveryConfig = $configs
+            ->where('sort_order', 0)
+            ->whereNull('field_name')
+            ->first();
+
+        return $deliveryConfig?->delivery_methods ?? ['game_delivery'];
     }
 
     /**
-     * Create or update configs for a game category
+     * Extract fields from configs
      */
-    public function syncConfigs(GameCategory $gameCategory, array $configs, array $deliveryMethods): void
+    protected function extractFields(Collection $configs): array
     {
-        DB::transaction(function () use ($gameCategory, $configs, $deliveryMethods) {
-            // Get existing config IDs
-            $existingIds = collect($configs)->pluck('id')->filter()->toArray();
-
-            // Delete configs that are no longer in the list
-            $this->model->where('game_category_id', $gameCategory->id)
-                ->whereNotIn('id', $existingIds)
-                ->delete();
-
-            // Create or update configs
-            foreach ($configs as $index => $config) {
-                $data = [
-                    'game_id' => $gameCategory->game_id,
-                    'category_id' => $gameCategory->category_id,
-                    'game_category_id' => $gameCategory->id,
-                    'field_name' => $config['field_name'],
-                    'slug' => $config['slug'],
-                    'input_type' => $config['input_type'],
-                    'filter_type' => $config['filter_type'],
-                    'dropdown_values' => !empty($config['dropdown_values']) ? $config['dropdown_values'] : null,
-                    'delivery_methods' => $deliveryMethods,
-                    'sort_order' => $index,
-                ];
-
-                if (!empty($config['id'])) {
-                    // Update existing
-                    $this->model->where('id', $config['id'])->update($data);
-                } else {
-                    // Create new
-                    $this->model->create($data);
-                }
-            }
-        });
-    }
-    // public function syncConfigs(GameCategory $gameCategory, array $configs, array $deliveryMethods): void
-    // {
-    //     DB::transaction(function () use ($gameCategory, $configs, $deliveryMethods) {
-    //         // Get existing config IDs
-    //         $existingIds = collect($configs)->pluck('id')->filter()->toArray();
-
-    //         // Delete configs that are no longer in the list
-    //         $this->model->where('game_category_id', $gameCategory->id)
-    //             ->whereNotIn('id', $existingIds)
-    //             ->delete();
-
-    //         // Create or update configs
-    //         foreach ($configs as $index => $config) {
-    //             $data = [
-    //                 'game_id' => $gameCategory->game_id,
-    //                 'category_id' => $gameCategory->category_id,
-    //                 'game_category_id' => $gameCategory->id,
-    //                 'field_name' => $config['field_name'],
-    //                 'slug' => $config['slug'],
-    //                 'input_type' => $config['input_type'],
-    //                 'filter_type' => $config['filter_type'],
-    //                 'dropdown_values' => !empty($config['dropdown_values']) ? $config['dropdown_values'] : null,
-    //                 'delivery_methods' => $deliveryMethods,
-    //                 'sort_order' => $index,
-    //             ];
-
-    //             if (!empty($config['id'])) {
-    //                 // Update existing
-    //                 $this->model->where('id', $config['id'])->update($data);
-    //             } else {
-    //                 // Create new
-    //                 $this->model->create($data);
-    //             }
-    //         }
-    //     });
-    // }
-
-    /**
-     * Delete a specific config
-     */
-    public function deleteConfig(int $id): bool
-    {
-        $config = $this->model->find($id);
-        return $config ? $config->delete() : false;
+        return $configs
+            ->where('sort_order', '>', 0)
+            ->filter(fn($config) => !empty($config->field_name))
+            ->values()
+            ->map(fn($config, $index) => [
+                'id' => $config->id,
+                'field_name' => $config->field_name,
+                'slug' => $config->slug,
+                'input_type' => $config->input_type->value,
+                'filter_type' => $config->filter_type->value,
+                'dropdown_values' => is_array($config->dropdown_values)
+                    ? implode(', ', $config->dropdown_values)
+                    : '',
+                'sort_order' => $index,
+            ])
+            ->toArray();
     }
 
     /**
-     * Reorder configs
+     * Validate configuration data
      */
-    public function reorderConfigs(array $orderedIds): void
+    public function validate(array $deliveryMethods, array $fields): ?string
     {
-        DB::transaction(function () use ($orderedIds) {
-            foreach ($orderedIds as $index => $id) {
-                $this->model->where('id', $id)->update(['sort_order' => $index]);
-            }
-        });
-    }
-
-    /**
-     * Get delivery methods for a game category
-     */
-    public function getDeliveryMethods(int $gameCategoryId): array
-    {
-        $config = $this->model->where('game_category_id', $gameCategoryId)->first();
-        return $config ? $config->delivery_methods : [];
-    }
-
-    /**
-     * Check if a slug is unique within a game category
-     */
-    public function isSlugUnique(string $slug, int $gameCategoryId, ?int $excludeId = null): bool
-    {
-        $query = $this->model->where('game_category_id', $gameCategoryId)
-            ->where('slug', $slug);
-
-        if ($excludeId) {
-            $query->where('id', '!=', $excludeId);
+        if (empty($deliveryMethods)) {
+            return 'Please select at least one delivery method';
         }
 
-        return $query->doesntExist();
+        foreach ($fields as $index => $field) {
+            if (empty($field['field_name'])) {
+                return "Field #" . ($index + 1) . " name is required";
+            }
+            if (empty($field['slug'])) {
+                return "Field #" . ($index + 1) . " slug is required";
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Save configuration for a game category
+     */
+    public function saveConfiguration(
+        GameCategory $gameCategory,
+        int $gameId,
+        int $categoryId,
+        array $deliveryMethods,
+        array $fields
+    ): void {
+        DB::transaction(function () use ($gameCategory, $gameId, $categoryId, $deliveryMethods, $fields) {
+            // Save delivery methods
+            $this->saveDeliveryMethods(
+                $gameCategory->id,
+                $gameId,
+                $categoryId,
+                $deliveryMethods
+            );
+
+            // Save fields
+            $this->saveFields(
+                $gameCategory->id,
+                $gameId,
+                $categoryId,
+                $fields
+            );
+        });
+    }
+
+    /**
+     * Save delivery methods configuration
+     */
+    protected function saveDeliveryMethods(
+        int $gameCategoryId,
+        int $gameId,
+        int $categoryId,
+        array $deliveryMethods
+    ): void {
+        GameConfig::updateOrCreate(
+            [
+                'game_category_id' => $gameCategoryId,
+                'sort_order' => 0,
+            ],
+            [
+                'game_id' => $gameId,
+                'category_id' => $categoryId,
+                'field_name' => null,
+                'slug' => null,
+                'input_type' => null,
+                'filter_type' => null,
+                'dropdown_values' => null,
+                'delivery_methods' => $deliveryMethods,
+            ]
+        );
+    }
+
+    /**
+     * Save field configurations
+     */
+    protected function saveFields(
+        int $gameCategoryId,
+        int $gameId,
+        int $categoryId,
+        array $fields
+    ): void {
+        // Delete removed fields
+        $this->deleteRemovedFields($gameCategoryId, $fields);
+
+        // Save or update each field
+        foreach ($fields as $index => $field) {
+            $this->saveField($gameCategoryId, $gameId, $categoryId, $field, $index);
+        }
+    }
+
+    /**
+     * Delete fields that were removed
+     */
+    protected function deleteRemovedFields(int $gameCategoryId, array $fields): void
+    {
+        $existingFieldIds = collect($fields)
+            ->pluck('id')
+            ->filter()
+            ->toArray();
+
+        GameConfig::forGameCategory($gameCategoryId)
+            ->where('sort_order', '>', 0)
+            ->whereNotIn('id', $existingFieldIds)
+            ->delete();
+    }
+
+    /**
+     * Save a single field
+     */
+    protected function saveField(
+        int $gameCategoryId,
+        int $gameId,
+        int $categoryId,
+        array $field,
+        int $index
+    ): void {
+        $fieldData = $this->prepareFieldData(
+            $gameCategoryId,
+            $gameId,
+            $categoryId,
+            $field,
+            $index
+        );
+
+        if (!empty($field['id'])) {
+            GameConfig::where('id', $field['id'])->update($fieldData);
+        } else {
+            GameConfig::create($fieldData);
+        }
+    }
+
+    /**
+     * Prepare field data for saving
+     */
+    protected function prepareFieldData(
+        int $gameCategoryId,
+        int $gameId,
+        int $categoryId,
+        array $field,
+        int $index
+    ): array {
+        return [
+            'game_id' => $gameId,
+            'category_id' => $categoryId,
+            'game_category_id' => $gameCategoryId,
+            'field_name' => $field['field_name'],
+            'slug' => $field['slug'],
+            'input_type' => $field['input_type'],
+            'filter_type' => $field['filter_type'],
+            'dropdown_values' => $this->parseDropdownValues($field['dropdown_values'] ?? ''),
+            'delivery_methods' => null,
+            'sort_order' => $index + 1,
+        ];
+    }
+
+    /**
+     * Parse dropdown values from comma-separated string
+     */
+    protected function parseDropdownValues(string $dropdownValues): ?array
+    {
+        if (empty($dropdownValues)) {
+            return null;
+        }
+
+        $values = array_map('trim', explode(',', $dropdownValues));
+        $values = array_filter($values);
+
+        return !empty($values) ? array_values($values) : null;
+    }
+
+    /**
+     * Get game category with configs
+     */
+    public function getGameCategoryWithConfigs(int $gameId, int $categoryId): ?GameCategory
+    {
+        return GameCategory::with(['configs' => fn($query) => $query->ordered()])
+            ->where('game_id', $gameId)
+            ->where('category_id', $categoryId)
+            ->first();
+    }
+
+    /**
+     * Delete a specific field configuration
+     */
+    public function deleteField(int $fieldId): bool
+    {
+        try {
+            return (bool) GameConfig::destroy($fieldId);
+        } catch (\Exception $e) {
+            Log::error('Error deleting game config field', [
+                'field_id' => $fieldId,
+                'error' => $e->getMessage(),
+            ]);
+            return false;
+        }
+    }
+
+    /**
+     * Duplicate configuration to another game category
+     */
+    public function duplicateConfiguration(
+        GameCategory $sourceGameCategory,
+        GameCategory $targetGameCategory
+    ): void {
+        $configs = $this->loadConfigurations($sourceGameCategory);
+
+        $this->saveConfiguration(
+            $targetGameCategory,
+            $targetGameCategory->game_id,
+            $targetGameCategory->category_id,
+            $configs['delivery_methods'],
+            array_map(fn($field) => array_merge($field, ['id' => null]), $configs['fields'])
+        );
+    }
+
+    /**
+     * Get fields by filter type
+     */
+    public function getFieldsByFilterType(GameCategory $gameCategory, string $filterType): Collection
+    {
+        return $gameCategory->configs()
+            ->where('filter_type', $filterType)
+            ->where('sort_order', '>', 0)
+            ->whereNotNull('field_name')
+            ->ordered()
+            ->get();
+    }
+
+    /**
+     * Check if delivery method is enabled
+     */
+    public function isDeliveryMethodEnabled(GameCategory $gameCategory, string $method): bool
+    {
+        $config = $gameCategory->configs()
+            ->where('sort_order', 0)
+            ->whereNull('field_name')
+            ->first();
+
+        return in_array($method, $config?->delivery_methods ?? []);
     }
 }
