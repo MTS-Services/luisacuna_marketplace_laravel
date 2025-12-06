@@ -13,19 +13,19 @@
 <div class="flex flex-nowrap gap-5 relative justify-center items-center"
      x-data="{ 
         open: false, 
-        selectedOption: '{{ $label }}', 
+        selectedOption: @js($label), 
         selectedValue: @if($wireModel) @entangle($wireModel) @else '' @endif
      }"
      @click.away="open = false">
 
-    {{-- Hidden Input (only if wireModel is provided) --}}
+    {{-- Hidden Input for form submission (optional) --}}
     @if($wireModel)
-        <input type="hidden" name="{{ $attributes->get('name') }}" wire:model="{{ $wireModel }}" x-model="selectedValue">
+        <input type="hidden" x-model="selectedValue">
     @endif
 
     {{-- Dropdown Trigger --}}
     <div @click="open = !open"
-         class="flex justify-between bg-bg-primary items-center px-3 py-2 cursor-pointer {{ $border }} {{ $rounded }} {{ $width }} {{ $mdWidth }}">
+         class="flex justify-between bg-bg-primary items-center px-3 py-2 cursor-pointer border {{ $border }} {{ $rounded }} {{ $width }} {{ $mdWidth }}">
         <span x-text="selectedOption"></span>
         <svg class="w-5 h-5 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -41,15 +41,15 @@
          x-transition:leave="transition ease-in duration-200 transform"
          x-transition:leave-start="opacity-100 scale-y-100"
          x-transition:leave-end="opacity-0 scale-y-0"
-         class="absolute top-[110%] left-0 rounded bg-bg-primary z-20 overflow-hidden origin-top overflow-y-auto h-[50vh] {{ $border }} {{ $rounded }} {{ $width }} {{ $mdWidth }} {{ $mdLeft }}">
+         class="absolute top-[110%] left-0 rounded bg-bg-primary z-20 overflow-hidden origin-top overflow-y-auto max-h-[50vh] {{ $border }} {{ $rounded }} {{ $width }} {{ $mdWidth }} {{ $mdLeft }}">
         <ul class="list-none space-y-2 px-2 py-2">
             <li class="py-2 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                @click="selectedOption = '{{ $label }}'; selectedValue = ''; open = false; @if($onChange) $wire.call('{{$onChange}}') @endif">
+                @click="selectedOption = @js($label); selectedValue = ''; open = false; @if($onChange) $wire.call('{{ $onChange }}') @endif">
                 {{ $label }}
             </li>
             @foreach($options as $item)
                 <li class="py-2 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                    @click="selectedOption = '{{ $item->name ?? $item }}'; selectedValue = '{{ $item->id ?? $item }}'; open = false; @if($onChange) $wire.call('{{ $onChange }}') @endif">
+                    @click="selectedOption = @js($item->name ?? $item); selectedValue = @js($item->id ?? $item); open = false; @if($onChange) $wire.call('{{ $onChange }}') @endif">
                     {{ $item->name ?? $item }}
                 </li>
             @endforeach
