@@ -59,6 +59,7 @@ class DatabaseSeeder extends Seeder
             TypeSeeder::class,
 
             ProductSeeder::class,
+            FaqSeeder::class,
         ]);
     }
 }

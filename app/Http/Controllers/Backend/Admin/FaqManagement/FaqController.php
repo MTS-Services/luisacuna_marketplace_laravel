@@ -23,11 +23,11 @@ class FaqController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            new Middleware('permission:faq-list', only: ['index']),
-            new Middleware('permission:faq-create', only: ['create']),
-            new Middleware('permission:faq-edit', only: ['edit']),
-            new Middleware('permission:faq-show', only: ['show']),
-            new Middleware('permission:faq-trash', only: ['trash']),
+            // new Middleware('permission:faq-list', only: ['index']),
+            // new Middleware('permission:faq-create', only: ['create']),
+            // new Middleware('permission:faq-edit', only: ['edit']),
+            // new Middleware('permission:faq-show', only: ['show']),
+            // new Middleware('permission:faq-trash', only: ['trash']),
         ];
     }
 
