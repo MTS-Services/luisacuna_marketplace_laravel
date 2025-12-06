@@ -38,10 +38,12 @@ use App\Repositories\Contracts\PageViewRepositoryInterface;
 use App\Repositories\Contracts\PermissionRepositoryInterface;
 use App\Repositories\Contracts\AchievementRepositoryInterface;
 use App\Repositories\Contracts\AchievementTypeRepositoryInterface;
+use App\Repositories\Contracts\FaqRepositoryInterface;
 use App\Repositories\Contracts\GameTagRepositoryInterface;
 use App\Repositories\Contracts\OfferItemRepositoryInterface;
 use App\Repositories\Eloquent\GameTagRepository;
 use App\Repositories\Contracts\PlatformRepositoryInterface;
+use App\Repositories\Eloquent\FaqRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -87,6 +89,12 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             RankRepositoryInterface::class,
             RankRepository::class,
+        );
+
+        // Faq
+        $this->app->bind(
+            FaqRepositoryInterface::class,
+            FaqRepository::class,
         );
 
         $this->app->bind(

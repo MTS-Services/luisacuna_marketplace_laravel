@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\ExchangeRate;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class ExchangeRateSeeder extends Seeder
 {
