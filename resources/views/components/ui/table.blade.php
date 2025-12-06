@@ -116,7 +116,7 @@
                     {{-- Bulk Select Checkbox --}}
                     @if ($showBulkActions)
                         <th scope="col" class="w-12 px-4 py-3 text-center">
-                            <input type="checkbox" wire:model.live="selectAll" class="checkbox w-5 h-5 rounded">
+                            <input type="checkbox" wire:model.live="selectAll" class="checkbox w-5 h-5 rounded shadow-shadow-primary checkbox-accent">
                         </th>
                     @endif
 
@@ -184,7 +184,7 @@
                         @if ($showBulkActions)
                             <td class="px-4 py-3 text-center">
                                 <input type="checkbox" wire:model.live="selectedIds" value="{{ $item->id }}"
-                                    class="checkbox w-5 h-5 rounded">
+                                    class="checkbox w-5 h-5 rounded shadow-shadow-primary checkbox-accent">
                             </td>
                         @endif
 
@@ -273,7 +273,7 @@
                                             x-transition:leave-end="transform opacity-0 scale-95"
                                             class="absolute z-10 mt-2 min-w-32 w-fit max-w-52 origin-top-right right-0 rounded-md shadow-lg text-center"
                                             @click.outside="open = false">
-                                            <div class="rounded-md bg-bg-primary shadow-xs">
+                                            <div class="rounded-md bg-card shadow-shadow-primary">
                                                 <div class="py-1">
                                                     @foreach ($actions as $action)
                                                         @php
@@ -397,12 +397,12 @@
                         <div class="flex items-center gap-3">
                             @if ($showBulkActions)
                                 <input type="checkbox" wire:model.live="selectedIds" value="{{ $item->id }}"
-                                    class="checkbox w-5 h-5 rounded flex-shrink-0">
+                                    class="checkbox w-5 h-5 rounded shrink-0 shadow-shadow-primary checkbox-accent">
                             @endif
 
                             @if ($showRowNumber)
                                 <div
-                                    class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 text-sm font-semibold text-gray-700 dark:text-gray-300 flex-shrink-0">
+                                    class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 text-sm font-semibold text-gray-700 dark:text-gray-300 shrink-0">
                                     {{ $rowNumber }}
                                 </div>
                             @endif

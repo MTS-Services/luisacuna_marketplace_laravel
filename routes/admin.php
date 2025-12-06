@@ -85,8 +85,8 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/view/{id}', 'show')->name('view');
             Route::get('/edit/{id}', 'edit')->name('edit');
             Route::get('/trash', 'trash')->name('trash');
+            Route::get('/{id}/config', 'config')->name('config');
         });
-
     });
 
     // Banner

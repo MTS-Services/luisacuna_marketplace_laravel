@@ -30,43 +30,52 @@ class Trash extends Component
     public function render()
     {
 
-        $datas = $this->service->getTrashedPaginatedData($this->perPage, $this->getFilters());
-
-
+        $datas = $this->service->trashedPaginatedDatas(
+            $this->perPage,
+            $this->getfilters(),
+        );
+        $datas->load('deleter_admin');
 
         $columns = [
-
+            [
+                'key' => 'logo',
+                'label' => 'Avatar',
+                'format' => function ($data) {
+                    return $data->logo
+                        ? '<img src="' . storage_url($data->logo) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
+                }
+            ],
             [
                 'key' => 'name',
                 'label' => 'Name',
                 'sortable' => true
             ],
 
-
             [
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">'  .
                         $data->status->label() .
                         '</span>';
                 }
             ],
             [
-                'key' => 'created_at',
-                'label' => 'Created Date',
+                'key' => 'deleted_at',
+                'label' => 'Deleted Date',
                 'sortable' => true,
                 'format' => function ($data) {
 
-                    return $data->created_at_formatted;
+                    return $data->deleted_at_formatted;
                 }
             ],
             [
-                'key' => 'creater_id',
-                'label' => 'Created By',
+                'key' => 'deleter_id',
+                'label' => 'Deleted By',
                 'format' => function ($data) {
-                    return $data->creater?->name ?? 'System';
+                    return $data->deleter_admin?->name ?? 'System';
                 }
             ],
         ];
@@ -120,14 +129,11 @@ class Trash extends Component
     {
 
         try {
-            $this->service->restoreData(decrypt($encrypted_id), admin()->id);
-
+            $this->service->restore(decrypt($encrypted_id));
             $this->success('Data restored successfully');
         } catch (\Exception $e) {
-
+            log_error($e);
             $this->error('Failed to restore data.');
-
-            Log::error('Failed to restore data: ' . $e->getMessage());
         }
     }
 
@@ -145,14 +151,11 @@ class Trash extends Component
                 $this->warning('No data selected');
                 return;
             }
-            $this->service->deleteData(decrypt($this->deleteId), true);
+            $this->service->delete(decrypt($this->deleteId), true);
             $this->reset(['deleteId', 'showDeleteModal']);
-
             $this->success('Data deleted successfully');
         } catch (\Exception $e) {
-
-            Log::error("Failed to delete data", ['error' => $e->getMessage()]);
-
+            log_error($e);
             $this->error('Failed to delete data.');
         }
     }
@@ -189,13 +192,10 @@ class Trash extends Component
     {
 
         try {
-            $count = $this->service->bulkForceDeleteData($this->selectedIds);
-
+            $count = $this->service->bulkDelete($this->selectedIds, true);
             $this->success("{$count} Datas deleted successfully");
         } catch (\Exception $e) {
-
-            Log::error("Failed to delete data", ['error' => $e->getMessage()]);
-
+            log_error($e);
             $this->error('Failed to delete data.');
         }
     }
@@ -207,20 +207,18 @@ class Trash extends Component
                 $this->warning('No data selected');
                 return;
             }
-            $count =  $this->service->bulkRestoreData($this->selectedIds, admin()->id);
+            $count =  $this->service->bulkRestore($this->selectedIds);
 
             $this->success("{$count} Data restored successfully");
         } catch (\Exception $e) {
-
-            Log::error("Failed to delete data", ['error' => $e->getMessage()]);
-
+            log_error($e);
             $this->error('Failed to delete data.');
         }
     }
 
     protected function getSelectableIds(): array
     {
-        return $this->service->getTrashedPaginatedData(
+        return $this->service->trashedPaginatedDatas(
             perPage: $this->perPage,
             filters: $this->getFilters()
         )->pluck('id')->toArray();

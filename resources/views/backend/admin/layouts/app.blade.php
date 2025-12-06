@@ -74,7 +74,7 @@
         <div class="flex space-x-2">
             <div class="w-4 h-4 rounded-full bg-accent animate-[bounce-dot_1.2s_infinite]"
                 style="animation-delay: -0.8s;"></div>
-            <div class="w-4 h-4 rounded-full bg-accent-foreground animate-[bounce-dot_1.2s_infinite]"
+            <div class="w-4 h-4 rounded-full bg-pink-500 animate-[bounce-dot_1.2s_infinite]"
                 style="animation-delay: -0.4s;"></div>
             <div class="w-4 h-4 rounded-full bg-accent animate-[bounce-dot_1.2s_infinite]"></div>
         </div>
