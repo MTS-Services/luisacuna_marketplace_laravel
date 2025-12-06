@@ -95,12 +95,12 @@
                         'permission' => 'game-list',
                     ],
 
-                    [
-                        'name' => 'Rarity',
-                        'route' => route('admin.gm.rarity.index'),
-                        'icon' => 'swords',
-                        'active' => 'game-rarity',
-                    ],
+                    // [
+                    //     'name' => 'Rarity',
+                    //     'route' => route('admin.gm.rarity.index'),
+                    //     'icon' => 'swords',
+                    //     'active' => 'game-rarity',
+                    // ],
 
                     // [
                     //     'name' => 'Pending Users',
