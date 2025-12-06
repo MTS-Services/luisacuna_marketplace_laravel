@@ -28,6 +28,7 @@ return new class extends Migration {
 
             $table->foreign('game_id')->references('id')->on('games')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('game_category_id')->references('id')->on('game_categories')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 
