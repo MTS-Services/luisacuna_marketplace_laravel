@@ -12,6 +12,7 @@ use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\BannerManagement\BannerController;
+use App\Http\Controllers\Backend\Admin\CmsManagement\CmsController;
 use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\RankController;
@@ -202,10 +203,14 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/show/{id}', 'show')->name('show');
             Route::get('/trash', 'trash')->name('trash');
         });
-
     });
 
-
-
-
+    // Content management
+    Route::group(['prefix' => 'cms', 'as' => 'cms.'], function () {
+        Route::controller(CmsController::class)->name('')->prefix('')->group(function () {
+            Route::get('/terms-condition', 'termsCondition')->name('terms-condition');
+            Route::get('/refund-policy', 'refundPolicy')->name('refund-policy');
+            Route::get('/privacy-policy', 'privacyPolicy')->name('privacy-policy');
+        });
+    });
 });
