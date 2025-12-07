@@ -4,6 +4,7 @@ use App\Http\Controllers\MultiLangController;
 use App\Http\Controllers\PaymentController;
 use App\Livewire\Test\Checkout;
 use App\Livewire\Test\Items;
+use App\Livewire\ToastDemo;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\User\UserCreate;
 use App\Livewire\User\UserEdit;
@@ -137,6 +138,7 @@ Route::get('/buttons', function () {
     return view('button-showcase');
 });
 
+Route::get('/toastDemo', ToastDemo::class)->name('toastDemo');
 require __DIR__ . '/auth.php';
 require __DIR__ . '/user.php';
 require __DIR__ . '/admin.php';

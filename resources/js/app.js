@@ -6,6 +6,7 @@ import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
 window.Swiper = Swiper;
 
+
 // auto slug create
 // document.getElementById('title').addEventListener('input', function () {
 //     let slug = this.value
@@ -23,3 +24,4 @@ window.Swiper = Swiper;
  */
 
 import './echo';
+import './iziToast';
