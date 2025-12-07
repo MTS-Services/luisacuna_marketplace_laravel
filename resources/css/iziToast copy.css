@@ -1,0 +1,557 @@
+/* Enhanced iziToast Styles - Fixed version */
+
+/* Ensure proper z-index */
+.iziToast-wrapper {
+    z-index: 99999 !important;
+}
+
+/* Base toast styling */
+.iziToast {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+    border-radius: 3px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+    min-height: 54px !important;
+}
+
+/* Icon styling */
+.iziToast > .iziToast-icon {
+    width: 24px !important;
+    height: 24px !important;
+    margin: 0 12px 0 0 !important;
+    font-size: 24px !important;
+    line-height: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Close button - FIXED */
+.iziToast > .iziToast-close {
+    background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDEyIDEyIj48cGF0aCBmaWxsPSIjZmZmIiBkPSJNNyA2bDQtNCAxIDEtNCA0IDQgNC0xIDEtNC00TDIgN2wtMS0xIDQtNEwyIDJsMS0xIDQgNCA0LTQgMSAxLTQgNHoiLz48L3N2Zz4=') no-repeat 50% 50% !important;
+    background-size: 12px !important;
+    opacity: 0.7 !important;
+    width: 16px !important;
+    height: 16px !important;
+    border-radius: 2px !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+    display: block !important;
+}
+
+.iziToast > .iziToast-close:hover {
+    opacity: 1 !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Progress bar */
+.iziToast > .iziToast-progressbar {
+    height: 3px !important;
+}
+
+/* Animations */
+@keyframes iziT-bounceInLeft {
+    from, 60%, 75%, 90%, to {
+        animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+    from {
+        opacity: 0;
+        transform: translate3d(-3000px, 0, 0);
+    }
+    60% {
+        opacity: 1;
+        transform: translate3d(25px, 0, 0);
+    }
+    75% {
+        transform: translate3d(-10px, 0, 0);
+    }
+    90% {
+        transform: translate3d(5px, 0, 0);
+    }
+    to {
+        transform: none;
+    }
+}
+
+@keyframes iziT-bounceInRight {
+    from, 60%, 75%, 90%, to {
+        animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+    from {
+        opacity: 0;
+        transform: translate3d(3000px, 0, 0);
+    }
+    60% {
+        opacity: 1;
+        transform: translate3d(-25px, 0, 0);
+    }
+    75% {
+        transform: translate3d(10px, 0, 0);
+    }
+    90% {
+        transform: translate3d(-5px, 0, 0);
+    }
+    to {
+        transform: none;
+    }
+}
+
+@keyframes iziT-fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes iziT-fadeInDown {
+    from {
+        opacity: 0;
+        transform: translate3d(0, -100%, 0);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes iziT-fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 100%, 0);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes iziT-fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Apply animations */
+.iziToast.bounceInLeft {
+    animation: iziT-bounceInLeft 0.7s ease-in-out both;
+}
+
+.iziToast.bounceInRight {
+    animation: iziT-bounceInRight 0.7s ease-in-out both;
+}
+
+.iziToast.fadeIn {
+    animation: iziT-fadeIn 0.5s ease both;
+}
+
+.iziToast.fadeInDown {
+    animation: iziT-fadeInDown 0.5s ease both;
+}
+
+.iziToast.fadeInUp {
+    animation: iziT-fadeInUp 0.5s ease both;
+}
+
+.iziToast.fadeOut {
+    animation: iziT-fadeOut 0.5s ease both;
+}
+
+/* Modern Toast Styles - Your Original */
+
+/* Base toast styling - Modern card design */
+.iziToast.modern-toast {
+    border-radius: 8px !important;
+    padding: 16px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    backdrop-filter: blur(10px);
+    min-width: 300px !important;
+    max-width: 500px !important;
+    border: none !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    transition: all 0.2s ease !important;
+    gap: 4px !important;
+}
+
+/* Hover effect - Subtle lift */
+.iziToast.modern-toast:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Success toast - Soft Green theme */
+.iziToast.modern-toast.toast-success {
+    background: #d1f4e0 !important;
+    color: #16a34a !important;
+}
+
+/* Error toast - Soft Red theme */
+.iziToast.modern-toast.toast-error {
+    background: #fce8e8 !important;
+    color: #dc2626 !important;
+}
+
+/* Warning toast - Soft Amber/Orange theme */
+.iziToast.modern-toast.toast-warning {
+    background: #fef3c7 !important;
+    color: #d97706 !important;
+}
+
+/* Info toast - Soft Blue theme */
+.iziToast.modern-toast.toast-info {
+    background: #dbeafe !important;
+    color: #2563eb !important;
+}
+
+/* Icon container - Modern circular design */
+.iziToast.modern-toast > .iziToast-icon {
+    width: 20px !important;
+    height: 20px !important;
+    margin-right: 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 16px !important;
+    line-height: 1 !important;
+}
+
+/* Icon colors based on toast type */
+.iziToast.modern-toast.toast-success > .iziToast-icon {
+    color: #16a34a !important;
+}
+
+.iziToast.modern-toast.toast-error > .iziToast-icon {
+    color: #dc2626 !important;
+}
+
+.iziToast.modern-toast.toast-warning > .iziToast-icon {
+    color: #d97706 !important;
+}
+
+.iziToast.modern-toast.toast-info > .iziToast-icon {
+    color: #2563eb !important;
+}
+
+/* Message container */
+.iziToast.modern-toast .iziToast-body {
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Message text styling */
+.iziToast.modern-toast .iziToast-body .iziToast-message {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    font-weight: 500 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    letter-spacing: 0.2px !important;
+}
+
+/* Message colors based on toast type */
+.iziToast.modern-toast.toast-success .iziToast-body .iziToast-message {
+    color: #16a34a !important;
+}
+
+.iziToast.modern-toast.toast-error .iziToast-body .iziToast-message {
+    color: #dc2626 !important;
+}
+
+.iziToast.modern-toast.toast-warning .iziToast-body .iziToast-message {
+    color: #d97706 !important;
+}
+
+.iziToast.modern-toast.toast-info .iziToast-body .iziToast-message {
+    color: #2563eb !important;
+}
+
+/* Title text styling */
+.iziToast.modern-toast .iziToast-body .iziToast-title {
+    display: none !important;
+}
+
+/* Close button - Modern X design */
+.iziToast.modern-toast > .iziToast-close {
+    background: transparent !important;
+    opacity: 0.6 !important;
+    border-radius: 4px !important;
+    width: 20px !important;
+    height: 20px !important;
+    transition: all 0.2s ease !important;
+    font-size: 20px !important;
+    line-height: 20px !important;
+    padding: 0 !important;
+    margin-left: 8px !important;
+    position: relative !important;
+    cursor: pointer !important;
+}
+
+/* Close button colors based on toast type */
+.iziToast.modern-toast.toast-success > .iziToast-close {
+    color: #16a34a !important;
+}
+
+.iziToast.modern-toast.toast-error > .iziToast-close {
+    color: #dc2626 !important;
+}
+
+.iziToast.modern-toast.toast-warning > .iziToast-close {
+    color: #d97706 !important;
+}
+
+.iziToast.modern-toast.toast-info > .iziToast-close {
+    color: #2563eb !important;
+}
+
+.iziToast.modern-toast > .iziToast-close:hover {
+    opacity: 1 !important;
+    background: rgba(0, 0, 0, 0.05) !important;
+    transform: scale(1.1) !important;
+}
+
+/* Custom X icon using pseudo-elements */
+.iziToast.modern-toast > .iziToast-close::before,
+.iziToast.modern-toast > .iziToast-close::after {
+    display: none !important;
+}
+
+.iziToast.modern-toast > .iziToast-close {
+    background-image: none !important;
+}
+
+/* Add X symbol directly */
+.iziToast.modern-toast > .iziToast-close::before {
+    content: '×' !important;
+    display: block !important;
+    font-size: 24px !important;
+    line-height: 20px !important;
+    font-weight: 300 !important;
+}
+
+/* Progress bar - Clean and modern */
+.iziToast.modern-toast > .iziToast-progressbar {
+    height: 4px !important;
+    border-radius: 0 0 8px 8px !important;
+}
+
+/* Progress bar backgrounds based on toast type */
+.iziToast.modern-toast.toast-success > .iziToast-progressbar {
+    background: rgba(22, 163, 74, 0.2) !important;
+}
+
+.iziToast.modern-toast.toast-success > .iziToast-progressbar > div {
+    background: #16a34a !important;
+}
+
+.iziToast.modern-toast.toast-error > .iziToast-progressbar {
+    background: rgba(220, 38, 38, 0.2) !important;
+}
+
+.iziToast.modern-toast.toast-error > .iziToast-progressbar > div {
+    background: #dc2626 !important;
+}
+
+.iziToast.modern-toast.toast-warning > .iziToast-progressbar {
+    background: rgba(217, 119, 6, 0.2) !important;
+}
+
+.iziToast.modern-toast.toast-warning > .iziToast-progressbar > div {
+    background: #d97706 !important;
+}
+
+.iziToast.modern-toast.toast-info > .iziToast-progressbar {
+    background: rgba(37, 99, 235, 0.2) !important;
+}
+
+.iziToast.modern-toast.toast-info > .iziToast-progressbar > div {
+    background: #2563eb !important;
+}
+
+.iziToast.modern-toast > .iziToast-progressbar > div {
+    height: 100% !important;
+}
+
+/* Remove default borders */
+.iziToast.modern-toast:after {
+    display: none !important;
+}
+
+/* Ensure proper text wrapping */
+.iziToast.modern-toast .iziToast-body .iziToast-texts {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    flex: 1 !important;
+}
+
+/* Stacking with proper spacing - Top positions */
+.iziToast-wrapper-topRight .iziToast.modern-toast,
+.iziToast-wrapper-topLeft .iziToast.modern-toast,
+.iziToast-wrapper-topCenter .iziToast.modern-toast {
+    margin-bottom: 12px !important;
+}
+
+/* Stacking with proper spacing - Bottom positions */
+.iziToast-wrapper-bottomRight .iziToast.modern-toast,
+.iziToast-wrapper-bottomLeft .iziToast.modern-toast,
+.iziToast-wrapper-bottomCenter .iziToast.modern-toast {
+    margin-top: 12px !important;
+}
+
+/* RTL Support */
+.iziToast.modern-toast.iziToast-rtl {
+    direction: rtl !important;
+}
+
+.iziToast.modern-toast.iziToast-rtl > .iziToast-icon {
+    margin-right: 0 !important;
+    margin-left: 12px !important;
+}
+
+.iziToast.modern-toast.iziToast-rtl > .iziToast-close {
+    margin-left: 0 !important;
+    margin-right: 8px !important;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .iziToast.modern-toast {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+    }
+    
+    .iziToast.modern-toast:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    /* Darker soft variants for dark mode */
+    .iziToast.modern-toast.toast-success {
+        background: #1e3a2a !important;
+        color: #6ee7b7 !important;
+    }
+    
+    .iziToast.modern-toast.toast-success > .iziToast-icon,
+    .iziToast.modern-toast.toast-success .iziToast-body .iziToast-message,
+    .iziToast.modern-toast.toast-success > .iziToast-close {
+        color: #6ee7b7 !important;
+    }
+    
+    .iziToast.modern-toast.toast-success > .iziToast-progressbar {
+        background: rgba(110, 231, 183, 0.2) !important;
+    }
+    
+    .iziToast.modern-toast.toast-success > .iziToast-progressbar > div {
+        background: #6ee7b7 !important;
+    }
+    
+    .iziToast.modern-toast.toast-error {
+        background: #3a1e1e !important;
+        color: #fca5a5 !important;
+    }
+    
+    .iziToast.modern-toast.toast-error > .iziToast-icon,
+    .iziToast.modern-toast.toast-error .iziToast-body .iziToast-message,
+    .iziToast.modern-toast.toast-error > .iziToast-close {
+        color: #fca5a5 !important;
+    }
+    
+    .iziToast.modern-toast.toast-error > .iziToast-progressbar {
+        background: rgba(252, 165, 165, 0.2) !important;
+    }
+    
+    .iziToast.modern-toast.toast-error > .iziToast-progressbar > div {
+        background: #fca5a5 !important;
+    }
+    
+    .iziToast.modern-toast.toast-warning {
+        background: #3a2e1e !important;
+        color: #fcd34d !important;
+    }
+    
+    .iziToast.modern-toast.toast-warning > .iziToast-icon,
+    .iziToast.modern-toast.toast-warning .iziToast-body .iziToast-message,
+    .iziToast.modern-toast.toast-warning > .iziToast-close {
+        color: #fcd34d !important;
+    }
+    
+    .iziToast.modern-toast.toast-warning > .iziToast-progressbar {
+        background: rgba(252, 211, 77, 0.2) !important;
+    }
+    
+    .iziToast.modern-toast.toast-warning > .iziToast-progressbar > div {
+        background: #fcd34d !important;
+    }
+    
+    .iziToast.modern-toast.toast-info {
+        background: #1e293b !important;
+        color: #93c5fd !important;
+    }
+    
+    .iziToast.modern-toast.toast-info > .iziToast-icon,
+    .iziToast.modern-toast.toast-info .iziToast-body .iziToast-message,
+    .iziToast.modern-toast.toast-info > .iziToast-close {
+        color: #93c5fd !important;
+    }
+    
+    .iziToast.modern-toast.toast-info > .iziToast-progressbar {
+        background: rgba(147, 197, 253, 0.2) !important;
+    }
+    
+    .iziToast.modern-toast.toast-info > .iziToast-progressbar > div {
+        background: #93c5fd !important;
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .iziToast.modern-toast {
+        min-width: 280px !important;
+        max-width: calc(100vw - 32px) !important;
+        margin: 8px auto !important;
+    }
+    
+    .iziToast-wrapper-topRight,
+    .iziToast-wrapper-topLeft,
+    .iziToast-wrapper-bottomRight,
+    .iziToast-wrapper-bottomLeft {
+        left: 16px !important;
+        right: 16px !important;
+    }
+}
+
+/* Icon animations on toast open */
+.iziToast.modern-toast > .iziToast-icon {
+    animation: iconPulse 0.4s ease-out;
+}
+
+@keyframes iconPulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Ensure text doesn't overflow */
+.iziToast.modern-toast .iziToast-body .iziToast-message {
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+/* Better focus state for accessibility */
+.iziToast.modern-toast:focus-within {
+    outline: 2px solid currentColor !important;
+    outline-offset: 2px !important;
+}
+
+/* Ensure close button is always visible */
+.iziToast.modern-toast > .iziToast-close {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
