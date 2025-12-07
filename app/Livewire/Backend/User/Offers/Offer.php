@@ -26,7 +26,7 @@ class Offer extends Component
     public $deliveryMethod = null;
     public $platform_id = null;
     public $price = null;
-    public $stock_quantity = null;
+    public $quantity = null;
     public $description = null;
 
     public $fields = [];
@@ -167,7 +167,7 @@ class Offer extends Component
                 'categoryId' => 'required|integer',
                 'platform_id' => 'required|integer|max:255',
                 'price' => 'required|numeric|min:1',
-                'stock_quantity' => 'required|integer|min:1',
+                'quantity' => 'required|integer|min:1',
                 'description' => 'nullable',
                 'deliveryMethod' => 'required|string|max:255',
                 'fields' => 'nullable|array',
@@ -178,7 +178,7 @@ class Offer extends Component
                 'categoryId.required' => 'Category is required.',
                 'platform_id.required' => 'Platform is required.',
                 'price.required' => 'Price is required.',
-                'stock_quantity.required' => 'Stock quantity is required.',
+                'quantity.required' => 'Stock quantity is required.',
                 'deliveryMethod.required' => 'Delivery method is required.',
             ]
 
@@ -244,15 +244,9 @@ class Offer extends Component
         $this->deliveryMethod = null;
         // $this->platform = null;
         $this->price = null;
-        $this->stock_quantity = null;
+        $this->quantity = null;
         $this->description = null;
 
-        //Dynamic Fields
-
-        $this->config_server = null;
-        $this->config_faction = null;
-        $this->config_number_of_skin = null;
-        $this->config_rare_skin = null;
     }
 
     public function serachFilter() {}

@@ -8,7 +8,7 @@
 
     @else
 
-    <x-list-layout :gameSlug="$gameSlug" :categorySlug="$categorySlug"/> 
+    {{-- <x-list-layout :gameSlug="$gameSlug" :categorySlug="$categorySlug"/>  --}}
 
     @endif
 </main>

@@ -6,7 +6,7 @@ use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
  
-class ProductConfig extends AuditBaseModel implements Auditable
+class ProductConfig extends BaseModel implements Auditable
 {
     use   AuditableTrait;
     //
@@ -29,6 +29,9 @@ class ProductConfig extends AuditBaseModel implements Auditable
         //
     ];
  
+   public function game_configs(){
+    return $this->belongsTo(GameConfig::class, 'game_config_id', 'id');
+    }
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */

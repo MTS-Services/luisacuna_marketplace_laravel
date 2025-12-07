@@ -8,9 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
-use App\Models\Type;
 use App\Traits\HasTranslations;
-use Illuminate\Testing\Fluent\Concerns\Has;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -139,6 +137,7 @@ class Game extends AuditBaseModel implements Auditable
         return $query->where('status', GameStatus::ACTIVE);
     }
 
+   
     public function scopeInactive(Builder $query): Builder
     {
         return $query->where('status', GameStatus::INACTIVE);
@@ -151,10 +150,36 @@ class Game extends AuditBaseModel implements Auditable
 
     public function scopeFilter(Builder $query, array $filters): Builder
     {
+        if(!empty($filters['relations'])){
+
+            $query->with($filters['relations']);
+       
+              unset($filters['relations']);
+        }
+
         $query->when($filters['status'] ?? null, function ($query, $status) {
             $query->where('status', $status);
-        });
+        })
+
+        ->when($filters['category'] ?? '', function ($query, $category) {
+            $query->whereHas('categories', function ($q) use ($category) {
+                $q->where('categories.slug', $category);
+            });
+
+        })
+        ->when($filters['tag'] ?? null, function ($query, $tag) {
+            $query->whereHas('tags', function ($q) use ($tag) {
+                $q->where('tags.slug', $tag);
+            });
+        })
+        ;
         return $query;
+    }
+     public function scopeByCategory(Builder $query , string $Categoryslug): Builder
+    {
+        return $query->whereHas('categories', function ($q) use ($Categoryslug) {
+            $q->where('categories.slug', $Categoryslug);
+        });
     }
 
     public function scopeWithCategory($query, $categoryId)
