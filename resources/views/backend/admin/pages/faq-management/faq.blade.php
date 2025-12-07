@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{ __('Faq') }}</x-slot>
+    <x-slot name="pageSlug">faq-management</x-slot>
 
     @switch(Route::currentRouteName())
         @case('admin.flm.faq.create')
