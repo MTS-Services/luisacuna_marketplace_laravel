@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\AuditBaseModel;
+use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class Product extends AuditBaseModel implements Auditable
+class Product extends BaseModel implements Auditable
 {
     use   AuditableTrait;
     //

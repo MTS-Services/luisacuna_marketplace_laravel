@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Services\ProductService;
 
 class GameController extends Controller
 {
     protected $masterView = 'frontend.pages.game';
+
+    public function __construct(protected ProductService $service){}
 
     public function index($gameSlug, $categorySlug)
     {
@@ -14,8 +17,9 @@ class GameController extends Controller
     }
 
 
-    public function buy($gameSlug, $categorySlug, $itemSlug){
-        return view($this->masterView, compact('gameSlug', 'categorySlug', 'itemSlug'));
+    public function buy($gameSlug, $categorySlug, $productId){
+        // $this->service->findData($productId, 'id')->slug;
+        return view($this->masterView, compact('gameSlug', 'categorySlug', 'productId'));
     }
 
     public function checkout($orderId){

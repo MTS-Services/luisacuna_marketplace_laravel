@@ -36,7 +36,7 @@
             <div class="swiper-wrapper py-10">
                 @foreach ($popular_games as $popular_game)
                     <div class="swiper-slide">
-                        <x-currency-card :data="$popular_game" />
+                        <x-currency-card :data="$popular_game" :categorySlug="$categorySlug" />
                     </div>
                 @endforeach
             </div>
@@ -55,12 +55,14 @@
             <h2 class="font-semibold text-40px">{{ __('All Currency') }}</h2>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-6">
+           
             @foreach ($games as $game)
-                <x-currency-card :data="$game" />
+                <x-currency-card :data="$game" :categorySlug="$categorySlug" />
             @endforeach
         </div>
         <div class="pagination mb-24">
-            <x-frontend.pagination-ui :pagination="$pagination" />
+            {{-- <x-frontend.pagination-ui :pagination="$pagination" /> --}}
+            {{ $games->links() }}
         </div>
     </section>
     @push('scripts')

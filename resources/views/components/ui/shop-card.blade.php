@@ -7,7 +7,7 @@
           ])
 
 
-    <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'itemSlug' => $data->slug]) }}"
+    <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'productId' => encrypt($data->id) ]) }}"
         wire:navigate>
         <!-- Card -->
         <div class="bg-bg-optional rounded-2xl p-4 shadow-lg transition">
@@ -22,23 +22,20 @@
                     <div class="bg-orange text-text-white font-bold rounded-md w-6 h-6 flex items-center justify-center">
                         {{ substr($game->name, 0, 1)}}</div>
                     @endif 
-
-                    <span class="text-green font-medium">{{ $data->platform }}</span>
+                     
+                    <span class="text-green font-medium">{{ $data->platform->name }}</span>
                 </div>
                 <span class="text-text-secondary text-sm">• Stacked</span>
             </div>
 
             <div class="flex justify-between my-2">
                 <p class="text-text-secondary text-sm mt-4 max-w-[60%]">
-                    {{
-                        $data->skin ?? ''
+                
+                   <p>
+                     {{
+                        $data->name ?? ''
                     }}
-                    {{
-                        $data->platform ? ' / '. $data->platform : ''
-                    }}
-                   
-                </p>
-
+                   </p>
                 <img class="w-16 h-16 rounded float-right" src="{{ storage_url($data->image) }}"
                     alt="Image">
             </div>
@@ -55,7 +52,11 @@
                             stroke="currentColor" stroke-width="1.36236" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                     <span>
-                        {{ $game->delivery_method }}
+                        @foreach($data->product_configs as $product_config)
+                        {{-- @dd($product_config->game_configs->slug); --}}
+                            {{ $product_config->game_configs->slug == 'delivery-speed' ? $product_config->value : '' }}
+
+                        @endforeach
                     </span>
                 </div>
             </div>

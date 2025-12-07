@@ -1,6 +1,9 @@
 @props([
     'data' => null,
+    'categorySlug' => null
 ])
+
+
 <div class="bg-bg-optional p-6 rounded-2xl w-full max-w-sm mx-auto sm:mx-0">
     <div class="images w-full h-60 sm:h-48 md:h-68">
         <img src="{{ storage_url($data->logo) }}" alt="{{ $data->name }}"
@@ -11,9 +14,10 @@
             {{ $data->name }}
         </h3>
         <p class="text-pink-500 mb-8">{{ __('50 offer') }}</p>
-        <a href="{{ route('game.index', ['categorySlug' => 'currency', 'gameSlug' => 'exilecon-official-trailer']) }}"
-            wire:navigate>
-            <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{ __('See Seller List') }}</x-ui.button>
+        <a href="{{ route('game.index', ['categorySlug' => $categorySlug, 'gameSlug' => $data->slug]) }}"
+        wire:navigate>
+        <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{ __('See Seller List') }}</x-ui.button>
         </a>
+
     </div>
 </div>

@@ -43,6 +43,6 @@ class ProductSeeder extends Seeder
             }
         }
 
-        Product::insert($products);
+        // Product::insert($products);
     }
 }

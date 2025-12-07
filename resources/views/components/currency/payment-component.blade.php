@@ -3,7 +3,7 @@
     <div class="bg-bg-primary rounded-lg p-6 mb-6 ">
         <div class="mb-3 flex items-center justify-between border-b border-zinc-500">
             <p class="text-text-primary text-sm mb-2">{{__('Price')}}</p>
-            <p class="text-3xl ">{{ $product->price}}<span class="text-lg text-text-primary">{{__('/unit')}}</span>
+            <p class="text-3xl ">{{ $product->price }}<span class="text-lg text-text-primary">{{__('/unit')}}</span>
             </p>
         </div>
         {{-- order incriment decriment --}}
@@ -22,14 +22,14 @@
             </div>
 
             <div class="flex justify-between mt-3 text-xs text-gray-400">
-                <span>{{__('Minimum Quantity: 1000 unit')}}</span>
-                <span>{{__('In Stock: 57000 unit')}}</span>
+                <span>{{__('Minimum Quantity: 1 unit')}}</span>
+                <span>{{__("In Stock: $product->quantity unit")}}</span>
             </div>
         </div>
         <!-- Buy Button -->
         <a href="{{ route('game.checkout', ['orderId' => 12345]) }}" wire:navigate
             class="block text-center w-full bg-gradient-to-r bg-[#853EFF]  text-gray-100 sm:text-sm md:text-md lg:text-lg py-3 px-4 rounded-full mb-6 transition transform hover:scale-105">
-            {{__(' $76.28 | Buy now')}}
+            {{  '$'.$product->price }} {{ __('Buy Now') }}
         </a>
 
         <!-- Guarantees -->
