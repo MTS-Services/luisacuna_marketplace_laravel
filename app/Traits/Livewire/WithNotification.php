@@ -34,7 +34,7 @@ trait WithNotification
     /**
      * Show success toast
      */
-    public function success(string $message, array $options = [])
+    public function toastSuccess(string $message, array $options = [])
     {
         $this->toast(
             message: $message,
@@ -52,7 +52,7 @@ trait WithNotification
     /**
      * Show error toast
      */
-    public function error(string $message, array $options = [])
+    public function toastError(string $message, array $options = [])
     {
         $this->toast(
             message: $message,
@@ -70,7 +70,7 @@ trait WithNotification
     /**
      * Show warning toast
      */
-    public function warning(string $message, array $options = [])
+    public function toastWarning(string $message, array $options = [])
     {
         $this->toast(
             message: $message,
@@ -88,7 +88,7 @@ trait WithNotification
     /**
      * Show info toast
      */
-    public function info(string $message, array $options = [])
+    public function toastInfo(string $message, array $options = [])
     {
         $this->toast(
             message: $message,
@@ -104,22 +104,22 @@ trait WithNotification
     }
 
     // Legacy notification methods (if you still need them)
-    public function sweetSuccess(string $message, string $title = 'Success'): void
+    public function success(string $message, string $title = 'Success'): void
     {
         $this->dispatch('notify', type: 'success', title: $title, message: $message);
     }
 
-    public function sweetError(string $message, string $title = 'Error'): void
+    public function error(string $message, string $title = 'Error'): void
     {
         $this->dispatch('notify', type: 'error', title: $title, message: $message);
     }
 
-    public function sweetWarning(string $message, string $title = 'Warning'): void
+    public function warning(string $message, string $title = 'Warning'): void
     {
         $this->dispatch('notify', type: 'warning', title: $title, message: $message);
     }
 
-    public function sweetInfo(string $message, string $title = 'Info'): void
+    public function info(string $message, string $title = 'Info'): void
     {
         $this->dispatch('notify', type: 'info', title: $title, message: $message);
     }
