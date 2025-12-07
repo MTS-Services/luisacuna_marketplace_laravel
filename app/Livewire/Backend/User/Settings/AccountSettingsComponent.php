@@ -27,6 +27,8 @@ class AccountSettingsComponent extends Component
     public $avatarFile;
     public $avatar;
 
+    public bool $showModal = false;
+
     public UserForm $form;
     protected UserService $service;
 
@@ -41,7 +43,15 @@ class AccountSettingsComponent extends Component
         $this->form->setData($user);
         $this->existingFile = $user->avatar;
     }
+    public function openModal()
+    {
+        $this->showModal = true;
+    }
 
+    public function closeModal()
+    {
+        $this->showModal = false;
+    }
 
     public function updatedAvatar()
     {
