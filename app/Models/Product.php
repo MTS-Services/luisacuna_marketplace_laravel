@@ -27,6 +27,8 @@ class Product extends AuditBaseModel implements Auditable
         'delivery_method',
         'delivery_time',
         'status',
+        'platform_id',
+        
 
         'creater_id',
         'creater_type',
@@ -70,6 +72,10 @@ class Product extends AuditBaseModel implements Auditable
         return $this->belongsTo(Game::class, 'game_id', 'id');
     }
 
+    public function product_configs()
+    {
+        return $this->hasMany(ProductConfig::class, 'product_id', 'id');
+    }
 
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

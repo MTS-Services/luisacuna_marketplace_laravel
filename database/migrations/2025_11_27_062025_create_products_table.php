@@ -24,27 +24,27 @@ return new class extends Migration
    
             $table->unsignedBigInteger('game_id')->index();
             
+           $table->unsignedBigInteger('platform_id');
 
-            $table->string('slug')->unique();
-            $table->string('name');
-             $table->string('image')->nullable();
             $table->text('description')->nullable();
             $table->decimal('price', 15, 2)->default(0);
             $table->unsignedBigInteger('quantity')->default(0);
-            $table->unsignedBigInteger('minimum_offer_quantity')->nullable();
-            $table->string('platform')->nullable();
-            $table->string('skin')->nullable();
-
             $table->string('status')->default(ActiveInactiveEnum::ACTIVE->value);
-
-            $table->string('delivery_method');
-            $table->string('delivery_time');
+            
+            // $table->string('slug')->unique();
+            // $table->string('name');
+            // $table->string('image')->nullable();
+            // $table->unsignedBigInteger('minimum_offer_quantity')->nullable();
+            // $table->string('skin')->nullable();
+            // $table->string('delivery_method');
+            // $table->string('delivery_time');
 
             $table->softDeletes();
             $table->timestamps();
 
             $this->addMorphedAuditColumns($table);
             
+            $table->foreign('platform_id')->references('id')->on('platforms')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('game_id')->references('id')->on('games')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

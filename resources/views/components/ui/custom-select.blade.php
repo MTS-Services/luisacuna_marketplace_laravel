@@ -13,15 +13,12 @@
 <div class="flex flex-nowrap gap-5 relative justify-center items-center"
      x-data="{ 
         open: false, 
-        selectedOption: @js($label), 
-        selectedValue: @if($wireModel) @entangle($wireModel) @else '' @endif
+        selectedOption: @js($label)
      }"
      @click.away="open = false">
 
-    {{-- Hidden Input for form submission (optional) --}}
-    @if($wireModel)
-        <input type="hidden" x-model="selectedValue">
-    @endif
+    {{-- Hidden input for Livewire binding --}}
+    <input type="hidden" wire:model="{{ $wireModel }}">
 
     {{-- Dropdown Trigger --}}
     <div @click="open = !open"
@@ -44,12 +41,12 @@
          class="absolute top-[110%] left-0 rounded bg-bg-primary z-20 overflow-hidden origin-top overflow-y-auto max-h-[50vh] {{ $border }} {{ $rounded }} {{ $width }} {{ $mdWidth }} {{ $mdLeft }}">
         <ul class="list-none space-y-2 px-2 py-2">
             <li class="py-2 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                @click="selectedOption = @js($label); selectedValue = ''; open = false; @if($onChange) $wire.call('{{ $onChange }}') @endif">
+                @click="selectedOption = @js($label); $wire.set('{{ $wireModel }}', ''); open = false; @if($onChange) $wire.call('{{ $onChange }}') @endif">
                 {{ $label }}
             </li>
             @foreach($options as $item)
                 <li class="py-2 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                    @click="selectedOption = @js($item->name ?? $item); selectedValue = @js($item->id ?? $item); open = false; @if($onChange) $wire.call('{{ $onChange }}') @endif">
+                    @click="selectedOption = @js($item->name ?? $item); $wire.set('{{ $wireModel }}', @js($item->id ?? $item)); open = false; @if($onChange) $wire.call('{{ $onChange }}') @endif">
                     {{ $item->name ?? $item }}
                 </li>
             @endforeach

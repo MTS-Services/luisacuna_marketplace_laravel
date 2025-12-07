@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Models\Product;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class ProductService
 {
@@ -58,11 +59,44 @@ class ProductService
     *                   Action Executions
     * ================== ================== ================== */
 
-    public function createData(array $data): Product
-    {
-      //  return $this->createAction->execute($data);
-      return new Product();
-    }
+public function createData(array $data): Product
+{
+    return DB::transaction(function () use ($data) {
+
+        $dynamic_data = $data['fields'] ?? [];
+        $delivery_method = $data['deliveryMethod'] ?? null;
+        unset($data['fields']);
+        unset($data['deliveryMethod']);
+
+        $record = $this->model->create($data);
+
+        if (!empty($dynamic_data)) {
+            $configs = [];
+
+          
+            foreach ($dynamic_data as $index => $datas) {
+               
+                //Not need to assing product id because CreateMany automatically assign this according relations
+               $configs[] = [
+                   'game_config_id' => $index,
+                   'value' => $datas['value'],
+                   'category_id' => $record->category_id,
+               ];
+            }
+            
+            
+            $configs[] = [
+                'game_config_id' =>explode('|', $delivery_method)[0],
+                'value' => explode('|', $delivery_method)[1],
+                'category_id' => $record->category_id,
+            ];
+
+            $record->product_configs()->createMany($configs);
+        }
+
+        return $record;
+    });
+}
 
     public function updateData(int $id, array $data): Product
     {
