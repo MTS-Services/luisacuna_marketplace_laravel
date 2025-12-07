@@ -90,7 +90,7 @@
                     <x-ui.input-error :messages="$errors->get('form.meta_description')" class="mt-2" />
                 </div>
 
-                <div class="col-span-2">
+                <div class="col-span-2" x-data="{}">
                     <x-ui.label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Meta Keywords') }}
                         <span class="text-text-muted font-normal">({{ __('comma separated') }})</span></x-ui.label>
                     {{-- <x-ui.textarea wire:model="form.meta_keywords" rows="2"
@@ -98,13 +98,22 @@
                     <x-ui.input wire:model="form.meta_keywords" placeholder="{{ __('Example: Keyword 1, Keyword 2') }}"
                         multiple class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" />
 
+                    <div x-show="$wire.form.meta_keywords" class="mt-2 flex flex-wrap gap-1">
+                        <template x-for="value in $wire.form.meta_keywords.split(',').map(v => v.trim()).filter(v => v)"
+                            :key="value">
+                            <span
+                                class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
+                                x-text="value"></span>
+                        </template>
+                    </div>
+
                     <x-ui.input-error :messages="$errors->get('form.meta_keywords')" class="mt-2" />
                 </div>
 
             </div>
 
             {{-- Actions --}}
-            <div class="flex items-center justify-end gap-4 mt-6">
+            <div class="flex items-center justify-end gap-4 mt-4">
                 <x-ui.button wire:click="resetForm" variant="tertiary" class="w-auto! py-2!">
                     <flux:icon name="x-circle"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
@@ -115,8 +124,16 @@
                 </x-ui.button>
 
                 <x-ui.button type="accent" button class="w-auto! py-2!">
-                    <span wire:loading.remove wire:target="save" class="text-white">{{ __('Next Step') }}</span>
-                    <span wire:loading wire:target="save" class="text-white">{{ __('Saving...') }}</span>
+                    <span wire:loading.remove wire:target="save"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Next Step') }}</span>
+                    <span wire:loading wire:target="save"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Saving...') }}</span>
+                    <flux:icon wire:loading.remove wire:target="save"
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary"
+                        name="arrow-right" />
+                    <flux:icon wire:loading wire:target="save"
+                        class="w-4 h-4 animate-spin stroke-text-btn-primary group-hover:stroke-text-btn-secondary"
+                        name="arrow-path" />
                 </x-ui.button>
             </div>
         </form>

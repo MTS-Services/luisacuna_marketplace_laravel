@@ -1,4 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+/* @import 'toastify-js/src/toastify.css'; */
+/* @import 'izitoast-custom.css'; */
+
+@import './iziToast.css';
 @import "tailwindcss";
 @import "../../vendor/livewire/flux/dist/flux.css";
 @plugin "daisyui";
@@ -113,6 +117,7 @@
 }
 
 @keyframes bounce-dot {
+
     0%,
     100% {
         transform: translateY(0);
@@ -234,8 +239,10 @@
     /* ======================================================
     	 	 	 	 	 	 # font family
     ======================================================== */
-    --font-open-sans: "Open Sans", sans-serif;
-    --font-lato: "Lato", sans-serif;
+    --font-open-sans: "Open Sans",
+    sans-serif;
+    --font-lato: "Lato",
+    sans-serif;
 
     /* ======================================================
     	 	 	 	 	 	 # font size
@@ -264,9 +271,7 @@
     :root {
         --color-accent: var(--color-accent-light) !important;
         --color-accent-content: var(--color-accent-content-light) !important;
-        --color-accent-foreground: var(
-            --color-accent-foreground-light
-        ) !important;
+        --color-accent-foreground: var(--color-accent-foreground-light) !important;
     }
 
     .dark {
@@ -299,6 +304,7 @@
 }
 
 @layer base {
+
     *,
     ::after,
     ::before,
@@ -326,8 +332,7 @@
 
     .dark * {
         border-color: var(--color-gray-700, currentColor);
-        scrollbar-color: var(--color-accent-dark)
-            var(--color-accent-content-dark) !important;
+        scrollbar-color: var(--color-accent-dark) var(--color-accent-content-dark) !important;
     }
 
     /* For Webkit-based browsers (Chrome, Edge, Safari) */
@@ -413,7 +418,7 @@
 
     /* === Global Swiper Pagination Style === */
     .swiper-pagination-bullet {
-        @apply !w-4 !h-2.5 !bg-zinc-300 dark:!bg-white !rounded-md !transition-all duration-300 ease-in-out !opacity-100;
+        @apply !w-4 !h-2.5 !bg-zinc-300 dark:bg-white! !rounded-md !transition-all duration-300 ease-in-out !opacity-100;
     }
 
     .swiper-pagination .swiper-pagination-bullet-active {
