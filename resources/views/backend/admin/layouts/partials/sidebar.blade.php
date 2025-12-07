@@ -394,21 +394,21 @@
                         ],
                         [
                             'name' => 'Terms & Conditions',
-                            'route' => '#',
+                            'route' => route('admin.cms.terms-condition'),
                             'icon' => 'notebook-text',
-                            'active' => 'star',
+                            'active' => 'admin.cms.terms-condition',
                         ],
                         [
                             'name' => 'Privacy Policy',
-                            'route' => '#',
+                            'route' => route('admin.cms.privacy-policy'),
                             'icon' => 'notepad-text',
-                            'active' => 'star',
+                            'active' => 'admin.cms.privacy-policy',
                         ],
                         [
                             'name' => 'Refunds Policy',
-                            'route' => '#',
+                            'route' => route('admin.cms.refund-policy'),
                             'icon' => 'notepad-text-dashed',
-                            'active' => 'star',
+                            'active' => 'admin.cms.refund-policy',
                         ],
                     ]" />
                 <x-sidebar-separator title="System" />
