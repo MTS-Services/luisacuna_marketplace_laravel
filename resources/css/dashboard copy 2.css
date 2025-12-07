@@ -1,0 +1,320 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import 'tailwindcss';
+@import '../../vendor/livewire/flux/dist/flux.css';
+@plugin "daisyui";
+
+/* ================= CUSTOM CSS START ================= */
+@import './table.css';
+@import './select.css';
+@import './select2.css';
+/* ================= CUSTOM CSS END =================*/
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
+@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+    --color-dark-main: #0f0518;
+    --color-dark-card: #1b142d;
+    --color-dark-header: #130b24;
+    --color-dark-hover: #2a2240;
+    --color-dark-border: #2f264a;
+    --color-dark-primary: #8b5cf6;
+    --color-dark-primary-hover: #7c3aed;
+    --color-dark-text-base: #e0e0e0;
+    --color-dark-text-muted: #9ca3af;
+
+    --color-light-main: #f8fafc;
+    --color-light-card: #ffffff;
+    --color-light-header: #ffffff;
+    --color-light-hover: #f1f5f9;
+    --color-light-border: #e2e8f0;
+    --color-light-primary: #6366f1;
+    --color-light-primary-hover: #4f46e5;
+    --color-light-text-base: #0f172a;
+    --color-light-text-muted: #64748b;
+
+    --color-primary-50: #f5f3ff;
+    --color-primary-100: #ede9fe;
+    --color-primary-200: #ddd6fe;
+    --color-primary-300: #c4b5fd;
+    --color-primary-400: #a78bfa;
+    --color-primary-500: #853EFF;
+    --color-primary-600: #7c3aed;
+    --color-primary-700: #6d28d9;
+    --color-primary-800: #351966;
+    --color-primary-900: #1B0C33;
+    --color-primary-950: #0D061A;
+
+    --color-secondary-50: #fdf2f8;
+    --color-secondary-100: #fce7f3;
+    --color-secondary-200: #fbcfe8;
+    --color-secondary-300: #f9a8d4;
+    --color-secondary-400: #f472b6;
+    --color-secondary-500: #FF2E91;
+    --color-secondary-600: #db2777;
+    --color-secondary-700: #be185d;
+    --color-secondary-800: #9d174d;
+    --color-secondary-900: #831843;
+    --color-secondary-950: #50072c;
+
+
+    --color-text-primary-dark: oklch(92.494% 0.00011 271.152);
+    --color-text-secondary-dark: oklch(88.531% 0.0001 271.152);
+    --color-text-muted-dark: oklch(84.522% 0.0001 271.152);
+    --color-text-primary-light: oklch(21.779% 0.00002 271.152);
+    --color-text-secondary-light: oklch(26.862% 0.00003 271.152);
+    --color-text-muted-light: oklch(32.109% 0.00004 271.152);
+
+
+    --livewire-progress-bar-color: var(--color-primary-500) !important;
+}
+
+@keyframes bounce-dot {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@theme {
+
+    /* ======================================================
+     	 	 	 	| Breakpoints |
+    ======================================================== */
+    --breakpoint-xxxs: 400px;
+    --breakpoint-xxs: 480px;
+    --breakpoint-xs: 576px;
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1024px;
+    --breakpoint-2xl: 1280px;
+    --breakpoint-3xl: 1536px;
+    --breakpoint-4xl: 1920px;
+    --breakpoint-5xl: 2560px;
+
+    /* ======================================================
+     	 	 	 	| End Breakpoints |
+    ======================================================== */
+
+    --color-zinc-50: var(--color-primary-50);
+    --color-zinc-100: var(--color-primary-100);
+    --color-zinc-200: var(--color-primary-200);
+    --color-zinc-300: var(--color-primary-300);
+    --color-zinc-400: var(--color-primary-400);
+    --color-zinc-500: var(--color-primary-500);
+    --color-zinc-600: var(--color-primary-600);
+    --color-zinc-700: var(--color-primary-700);
+    --color-zinc-800: var(--color-primary-800);
+    --color-zinc-900: var(--color-primary-900);
+    --color-zinc-950: var(--color-primary-950);
+
+    --color-secondary-50: var(--color-secondary-50);
+    --color-secondary-100: var(--color-secondary-100);
+    --color-secondary-200: var(--color-secondary-200);
+    --color-secondary-300: var(--color-secondary-300);
+    --color-secondary-400: var(--color-secondary-400);
+    --color-secondary-500: var(--color-secondary-500);
+    --color-secondary-600: var(--color-secondary-600);
+    --color-secondary-700: var(--color-secondary-700);
+    --color-secondary-800: var(--color-secondary-800);
+    --color-secondary-900: var(--color-secondary-900);
+    --color-secondary-950: var(--color-secondary-950);
+
+    --color-main: var(--color-light-main);
+    --color-card: var(--color-light-card);
+    --color-header: var(--color-light-header);
+    --color-hover: var(--color-light-hover);
+    --color-border: var(--color-light-border);
+    --color-primary: var(--color-light-primary) !important;
+    --color-primary-hover: var(--color-light-primary-hover);
+    --color-text-base: var(--color-light-text-base);
+    --color-text-muted: var(--color-light-text-muted);
+    --color-text-primary: var(--color-text-primary-light);
+    --color-text-secondary: var(--color-text-secondary-light);
+
+    --color-text-btn-primary: #f8f8f8;
+    --color-text-btn-secondary: var(--color-primary-500);
+    --color-text-btn-tertiary: var(--color-secondary-500);
+
+
+    --shadow-shadow-primary: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px !important;
+    --shadow-shadow-secondary: rgb(204, 219, 232) 1px 1px 10px -2px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+
+
+    --font-inter: "Inter", sans-serif;
+}
+
+@layer theme {
+    :root {
+        --color-accent: var(--color-primary-500) !important;
+        --color-accent-content: var(--color-white) !important;
+        --color-accent-foreground: var(--color-white) !important;
+
+        --color-primary: var(--color-light-primary) !important;
+        --color-primary-hover: var(--color-light-primary-hover) !important;
+        --color-text-base: var(--color-light-text-base) !important;
+        --color-text-muted: var(--color-light-text-muted) !important;
+    }
+
+    .dark {
+        --color-accent: var(--color-primary-500) !important;
+        --color-accent-content: var(--color-white) !important;
+        --color-accent-foreground: var(--color-white) !important;
+
+        --color-main: var(--color-dark-main);
+        --color-card: var(--color-dark-card);
+        --color-header: var(--color-dark-header);
+        --color-hover: var(--color-dark-hover);
+        --color-border: var(--color-dark-border);
+
+        --color-primary: var(--color-dark-primary) !important;
+        --color-primary-hover: var(--color-dark-primary-hover) !important;
+        --color-text-base: var(--color-dark-text-base) !important;
+        --color-text-muted: var(--color-dark-text-muted) !important;
+        --color-text-primary: var(--color-text-primary-dark);
+        --color-text-secondary: var(--color-text-secondary-dark);
+
+
+        --shadow-shadow-primary: hsla(240, 35%, 70%, 0.15) 0px 2px 5px 0px, hsla(0, 0%, 100%, 0.05) 0px 1px 1px 0px;
+        --shadow-shadow-secondary-dark:
+            hsla(210, 20%, 10%, 0.8) 1px 1px 12px -3px inset,
+            hsla(0, 0%, 100%, 0.05) -3px -3px 6px 1px inset !important;
+
+
+    }
+}
+
+
+@layer base {
+
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+        scroll-behavior: smooth;
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-accent) var(--color-accent-content)important;
+        @apply transition-colors duration-200 ease-in-out text-text-base font-inter;
+    }
+
+    /* For Webkit-based browsers (Chrome, Edge, Safari) */
+    *::-webkit-scrollbar {
+        height: 8px;
+        width: 8px;
+        background-color: var(--color-primary) !important;
+    }
+
+    .dark *::-webkit-scrollbar {
+        background-color: var(--color-primary) !important;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background-color: var(--color-accent) !important;
+        border-radius: 9999px !important;
+        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.75);
+    }
+
+    .dark *::-webkit-scrollbar-thumb {
+        background-color: var(--color-accent) !important;
+    }
+
+    *::-webkit-scrollbar-thumb:hover {
+        background-color: var(--color-accent) !important;
+    }
+
+    .dark *::-webkit-scrollbar-thumb:hover {
+        background-color: var(--color-accent) !important;
+    }
+
+    *::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+
+
+    /* Custom scrollbar */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+
+    body {
+        @apply bg-main text-text-base transition-all duration-300 ease-in-out;
+    }
+
+    .glass-card {
+        @apply bg-card border border-border rounded-2xl;
+    }
+
+    .form-checkbox:checked {
+        background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+    }
+}
+
+@utility container {
+    margin-inline: auto;
+    padding-inline: var(--container-padding-inline, 1rem);
+    width: var(--container-width, 100%);
+
+    @variant 2xl {
+        max-width: 1240px;
+    }
+}
+
+@utility container-wide {
+    margin-inline: auto;
+    padding-inline: var(--container-padding-inline, 1rem);
+    width: 100%;
+    max-width: 1680px;
+}
+
+@utility container-fluid {
+    margin-inline: auto;
+    padding-inline: var(--container-padding-inline, 1rem);
+    width: 100%;
+    max-width: none;
+}
+
+button {
+    @apply cursor-pointer transition-all duration-200 ease-in-out hover:scale-[1.01];
+}
+
+
+[data-flux-field]:not(ui-radio, ui-checkbox) {
+    @apply grid gap-2;
+}
+
+[data-flux-label] {
+    @apply !mb-0 !leading-tight;
+}
+
+input:focus[data-flux-control],
+textarea:focus[data-flux-control],
+select:focus[data-flux-control] {
+    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+}
