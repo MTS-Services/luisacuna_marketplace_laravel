@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 class CmsController extends Controller
 {
-    protected string $masterView = 'backend.admin.pages.CmsManagement.cms';
+    protected string $masterView = 'backend.admin.pages.cms-management.cms';
 
     /**
      * Terms & Condition Page

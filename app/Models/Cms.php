@@ -29,7 +29,7 @@ class Cms extends AuditBaseModel implements Auditable
     ];
 
     protected $casts = [
-            'type' => CmsType::class,
+        'type' => CmsType::class,
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
