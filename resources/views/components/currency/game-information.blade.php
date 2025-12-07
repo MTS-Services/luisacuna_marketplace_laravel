@@ -26,7 +26,13 @@
              <div class="flex justify-between items-center py-3">
                  <span class="text-text-primary sm:text-2xl md:text-3xl lg:text-4xl">{{ __('Delivery time') }}
                  </span>
-                 <span class="text-gray-100 sm:text-sm md:text-md lg:text-lg">{{ $game->delivery_method }}</span>
+                 <span class="text-gray-100 sm:text-sm md:text-md lg:text-lg">
+                     @foreach($product->product_configs as $product_config)
+                     
+                            {{ $product_config->game_configs->slug == 'delivery-speed' ? $product_config->value : '' }}
+
+                        @endforeach
+                </span>
              </div>
          </div>
 
