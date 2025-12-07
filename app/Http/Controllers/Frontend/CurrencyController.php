@@ -11,6 +11,8 @@ class CurrencyController extends Controller
 
     public function index()
     {
-        return view($this->masterView);
+        return view($this->masterView, [
+            'categorySlug' => 'currency'
+        ]);
     }
 }

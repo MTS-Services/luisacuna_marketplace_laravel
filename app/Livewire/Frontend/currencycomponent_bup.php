@@ -7,15 +7,11 @@ use App\Services\GameService;
 
 class CurrencyComponent extends Component
 {
-
-    // Store Category slug for future use
-    public $categorySlug = null;
     public $search = '';
     public $sortOrder = 'default';
     public $perPage = 9;
     public $currentPage = 1;
 
-    protected $games;
     protected GameService $game_service;
     protected $allGamesCache = null;
 
@@ -29,28 +25,15 @@ class CurrencyComponent extends Component
         $this->sortOrder = $order;
     }
 
-    public function mount($categorySlug)
-    {
-        $this->categorySlug = $categorySlug;
-    }
-
     public function render()
     {
-        $this->games =  $this->game_service->paginateDatas($this->perPage, [
-
-                'category' => $this->categorySlug,
-
-                'relations' => ['tags', 'categories']
+           $this->games =  $this->game_service->paginateDatas($this->perPage, [
+                'category' => 'currency',
         ]);
-       
+        if ($this->allGamesCache === null) {
+            $this->allGamesCache = $this->game_service->getGamesByCategory('currency');
+        }
 
-        $popular_games = $this->game_service->getAllDatas( [
-        'category' => $this->categorySlug,
-        'tag' => 'popular', 
-        'relations' => ['tags', 'categories']
-         ]);
-
-     
         // Search logic
         if (!empty($this->search)) {
             $games = $this->game_service->searchGamesByCategory('currency', $this->search);
@@ -58,23 +41,24 @@ class CurrencyComponent extends Component
             $games = $this->allGamesCache;
         }
 
-      
+        // Popular games 
+        $popular_games = $this->allGamesCache->filter(function ($game) {
+            return $game->tags->contains('slug', 'popular');
+        });
 
         // Sorting apply
-        // $games = $this->applySorting($games);
+        $games = $this->applySorting($games);
 
         // Pagination data 
-        // $pagination = $this->getPaginationData($this->games);
+        $pagination = $this->getPaginationData($games);
 
         // Pagination apply
-        // $games = $games->forPage($this->currentPage, $this->perPage);
+        $games = $games->forPage($this->currentPage, $this->perPage);
 
         return view('livewire.frontend.currency-component', [
-           
-            'games' => $this->games,
-            'popular_games' => $popular_games,
-            'categorySlug' => $this->categorySlug,
-            
+            'pagination' => $pagination,
+            'games' => $games,
+            'popular_games' => $popular_games
         ]);
     }
 

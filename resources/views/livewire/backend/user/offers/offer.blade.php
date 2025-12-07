@@ -200,11 +200,11 @@
                             <x-ui.input-error :messages="$errors->get('price')" />
                         </div>
                         <div>
-                            <x-ui.label for="stock_quantity" :value="__('Stock Quantity')" required />
-                            <x-ui.input id="stock_quantity" type="text"
+                            <x-ui.label for="quantity" :value="__('Stock Quantity')" required />
+                            <x-ui.input id="quantity" type="text"
                                 class="mt-2 border-zinc-700 text-text-primary placeholder:text-text-primary border  focus:ring-0 bg-bg-primary!"
-                                wire:model="stock_quantity" placeholder="stock_quantity" />
-                            <x-ui.input-error :messages="$errors->get('stock_quantity')" />
+                                wire:model="quantity" placeholder="quantity" />
+                            <x-ui.input-error :messages="$errors->get('quantity')" />
 
                         </div>
                         <div>

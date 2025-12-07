@@ -55,6 +55,10 @@ class GameConfig extends BaseModel implements Auditable
         return $this->belongsTo(Category::class);
     }
 
+    public function product_configs()
+    {
+        return $this->hasOne(ProductConfig::class, 'game_config_id', 'id');
+    }
     /* ═══════════════════════════════════════════════════════════════
                                 SCOPES
        ═══════════════════════════════════════════════════════════════ */

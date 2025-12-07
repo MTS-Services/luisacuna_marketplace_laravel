@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Enums\CategoryStatus;
+
 use App\Enums\GameStatus;
 use App\Models\Category;
 use App\Models\Game;
@@ -10,7 +10,7 @@ use App\Models\GameCategory;
 use App\Traits\FileManagementTrait;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Cache;
+
 use Illuminate\Support\Facades\DB;
 
 class GameService
@@ -49,6 +49,7 @@ class GameService
         $search = $filters['search'] ?? null;
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
+    
 
         if ($search) {
             // Scout Search
@@ -57,11 +58,12 @@ class GameService
                 ->paginate($perPage);
         }
 
-        // Normal Eloquent Query
+        // // Normal Eloquent Query
         return $this->model->query()
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
+
     }
 
     public function trashedPaginatedDatas(int $perPage = 15, array $filters = []): LengthAwarePaginator
@@ -92,9 +94,7 @@ class GameService
     {
         return $this->model
             ->with(['categories', 'tags'])
-            ->whereHas('categories', function ($query) use ($fieldValue, $fieldName) {
-                $query->where($fieldName, $fieldValue);
-            })
+            ->whereRelation('categories', $fieldName, $fieldValue)
             ->get();
     }
 

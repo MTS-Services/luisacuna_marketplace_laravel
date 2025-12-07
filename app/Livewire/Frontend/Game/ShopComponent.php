@@ -41,13 +41,24 @@ class ShopComponent extends Component
 
     public function mount($gameSlug, $categorySlug)
     {
+
+
         $this->gameSlug = $gameSlug;
 
-        $this->game = $this->gameService->findData($gameSlug, 'slug')->load(['products', 'gameConfig', 'categories']);
+       $this->game = $this->gameService->findData($gameSlug, 'slug')
+        ->load([
+        'products' => function ($query) use ($categorySlug) {
+            $query->whereHas('category', function ($q) use ($categorySlug) {
+                $q->where('slug', $categorySlug);
+            })->with('product_configs.game_configs');
+        },
+        'gameConfig',
+        'categories'
+    ]);
 
         $this->products = $this->game->products;
 
-       
+
 
         $this->categorySlug = $categorySlug;
 
