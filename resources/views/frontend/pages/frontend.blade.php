@@ -30,22 +30,39 @@
             <livewire:frontend.frontend.faq />
         @break
 
-        @case('terms-and-conditions')
+        {{-- @case('terms-and-conditions')
             <x-slot name="title">{{ __('Terms & Conditions') }}</x-slot>
             <x-slot name="pageSlug">{{ __('terms-and-conditions') }}</x-slot>
-            <livewire:frontend.frontend.terms-conditions />
+            <livewire:frontend.frontend.terms-conditions :type="$type->value" :key="$type->value"/>
         @break
 
         @case('privacy-policy')
             <x-slot name="title">{{ __('Privacy Policy') }}</x-slot>
             <x-slot name="pageSlug">{{ __('privacy-policy') }}</x-slot>
-            <livewire:frontend.frontend.privacy-policy />
+            <livewire:frontend.frontend.terms-conditions :type="$type->value" :key="$type->value" />
         @break
 
         @case('refund-policy')
             <x-slot name="title">{{ __('refund policy') }}</x-slot>
             <x-slot name="pageSlug">{{ __('refund-policy') }}</x-slot>
-            <livewire:frontend.frontend.refund-policy />
+            <livewire:frontend.frontend.terms-conditions :type="$type->value" :key="$type->value" />
+        @break --}}
+        @case('terms-and-conditions')
+            <x-slot name="title">{{ __('Terms & Conditions') }}</x-slot>
+            <x-slot name="pageSlug">{{ __('terms-and-conditions') }}</x-slot>
+            <livewire:frontend.frontend.cms :type="$type->value" :key="$type->value" />
+        @break
+
+        @case('privacy-policy')
+            <x-slot name="title">{{ __('Privacy Policy') }}</x-slot>
+            <x-slot name="pageSlug">{{ __('privacy-policy') }}</x-slot>
+            <livewire:frontend.frontend.cms :type="$type->value" :key="$type->value" />
+        @break
+
+        @case('refund-policy')
+            <x-slot name="title">{{ __('refund policy') }}</x-slot>
+            <x-slot name="pageSlug">{{ __('refund-policy') }}</x-slot>
+            <livewire:frontend.frontend.cms :type="$type->value" :key="$type->value" />
         @break
 
         @case('contact-us')
