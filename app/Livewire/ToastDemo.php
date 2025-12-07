@@ -15,22 +15,22 @@ class ToastDemo extends Component
     
     public function showSuccessToast()
     {
-        $this->toastSuccess('✓ Operation completed successfully!');
+        $this->success('✓ Operation completed successfully!');
     }
 
     public function showErrorToast()
     {
-        $this->toastError('✕ Something went wrong! Please try again.');
+        $this->error('✕ Something went wrong! Please try again.');
     }
 
     public function showWarningToast()
     {
-        $this->toastWarning('⚠ Warning: This action cannot be undone!');
+        $this->warning('⚠ Warning: This action cannot be undone!');
     }
 
     public function showInfoToast()
     {
-        $this->toastInfo('ℹ Did you know? Hover over me to pause the timer!');
+        $this->info('ℹ Did you know? Hover over me to pause the timer!');
     }
 
     // ==========================================
@@ -39,32 +39,32 @@ class ToastDemo extends Component
     
     public function showTopLeft()
     {
-        $this->toastSuccess('Toast from Top Left', ['position' => 'top-left']);
+        $this->success('Toast from Top Left', ['position' => 'top-left']);
     }
 
     public function showTopCenter()
     {
-        $this->toastInfo('Toast from Top Center', ['position' => 'top-center']);
+        $this->info('Toast from Top Center', ['position' => 'top-center']);
     }
 
     public function showTopRight()
     {
-        $this->toastSuccess('Toast from Top Right', ['position' => 'top-right']);
+        $this->success('Toast from Top Right', ['position' => 'top-right']);
     }
 
     public function showBottomLeft()
     {
-        $this->toastWarning('Toast from Bottom Left', ['position' => 'bottom-left']);
+        $this->warning('Toast from Bottom Left', ['position' => 'bottom-left']);
     }
 
     public function showBottomCenter()
     {
-        $this->toastError('Toast from Bottom Center', ['position' => 'bottom-center']);
+        $this->error('Toast from Bottom Center', ['position' => 'bottom-center']);
     }
 
     public function showBottomRight()
     {
-        $this->toastSuccess('Toast from Bottom Right', ['position' => 'bottom-right']);
+        $this->success('Toast from Bottom Right', ['position' => 'bottom-right']);
     }
 
     // ==========================================
@@ -73,22 +73,22 @@ class ToastDemo extends Component
     
     public function showQuickToast()
     {
-        $this->toastInfo('⚡ Quick toast - Disappears in 2 seconds!', ['duration' => 2000]);
+        $this->info('⚡ Quick toast - Disappears in 2 seconds!', ['duration' => 2000]);
     }
 
     public function showNormalToast()
     {
-        $this->toastInfo('⏱️ Normal toast - 5 seconds duration', ['duration' => 5000]);
+        $this->info('⏱️ Normal toast - 5 seconds duration', ['duration' => 5000]);
     }
 
     public function showLongToast()
     {
-        $this->toastWarning('🕐 Long toast - Takes 10 seconds to disappear', ['duration' => 10000]);
+        $this->warning('🕐 Long toast - Takes 10 seconds to disappear', ['duration' => 10000]);
     }
 
     public function showNoProgressBar()
     {
-        $this->toastInfo('No progress bar on this toast', ['progressBar' => false, 'duration' => 5000]);
+        $this->info('No progress bar on this toast', ['progressBar' => false, 'duration' => 5000]);
     }
 
     // ==========================================
@@ -97,7 +97,7 @@ class ToastDemo extends Component
     
     public function showPauseOnHover()
     {
-        $this->toastInfo('👆 Hover over me to pause the timer!', [
+        $this->info('👆 Hover over me to pause the timer!', [
             'pauseOnHover' => true,
             'duration' => 5000
         ]);
@@ -105,7 +105,7 @@ class ToastDemo extends Component
 
     public function showNoPauseOnHover()
     {
-        $this->toastWarning('⏩ Hovering won\'t pause this toast', [
+        $this->warning('⏩ Hovering won\'t pause this toast', [
             'pauseOnHover' => false,
             'duration' => 5000
         ]);
@@ -113,7 +113,7 @@ class ToastDemo extends Component
 
     public function showNoCloseOnClick()
     {
-        $this->toastInfo('🔒 Clicking won\'t close me - use the X button!', [
+        $this->info('🔒 Clicking won\'t close me - use the X button!', [
             'closeOnClick' => false,
             'duration' => 7000
         ]);
@@ -125,13 +125,13 @@ class ToastDemo extends Component
     
     public function showRtlToast()
     {
-        $this->toastSuccess('مرحبا! هذا إشعار باللغة العربية 🌐', ['rtl' => true]);
+        $this->success('مرحبا! هذا إشعار باللغة العربية 🌐', ['rtl' => true]);
     }
 
     public function showMultipleToasts()
     {
         // Show multiple toasts - newest will appear first
-        $this->toastSuccess('1️⃣ First toast - Success!');
+        $this->success('1️⃣ First toast - Success!');
         
         $this->dispatch('toast', [
             'message' => '2️⃣ Second toast - Info',
@@ -154,7 +154,7 @@ class ToastDemo extends Component
 
     public function showLongMessage()
     {
-        $this->toastInfo(
+        $this->info(
             '📝 This is a very long toast message to demonstrate how the toast handles extensive content. ' .
             'The toast will automatically adjust its height and properly wrap the text across multiple lines. ' .
             'This ensures excellent readability even with longer notifications that contain important information. ' .
@@ -170,24 +170,24 @@ class ToastDemo extends Component
     {
         // Simulate processing delay
         sleep(1);
-        $this->toastSuccess('💾 Your changes have been saved successfully!');
+        $this->success('💾 Your changes have been saved successfully!');
     }
 
     public function simulateDelete()
     {
-        $this->toastError('🗑️ Item has been deleted permanently!', ['duration' => 6000]);
+        $this->error('🗑️ Item has been deleted permanently!', ['duration' => 6000]);
     }
 
     public function simulateUpdate()
     {
-        $this->toastInfo('🔄 Profile updated! Changes may take a few minutes to reflect.', [
+        $this->info('🔄 Profile updated! Changes may take a few minutes to reflect.', [
             'duration' => 6000
         ]);
     }
 
     public function simulateValidationError()
     {
-        $this->toastError('❌ Validation failed: Please fill in all required fields before submitting.', [
+        $this->error('❌ Validation failed: Please fill in all required fields before submitting.', [
             'duration' => 7000
         ]);
     }
