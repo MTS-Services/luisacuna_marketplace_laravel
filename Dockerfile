@@ -6,6 +6,7 @@ COPY ./docker/php.ini /usr/local/etc/php/conf.d/custom.ini
 # Install system dependencies and PHP extensions
 # Combining update, install, and cleanup in one RUN command
 RUN apt-get update && apt-get install -y \
+    nano \
     nginx \
     git \
     unzip \
