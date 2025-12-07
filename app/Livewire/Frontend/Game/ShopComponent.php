@@ -2,13 +2,15 @@
 
 namespace App\Livewire\Frontend\Game;
 
+use App\Models\Product;
+use App\Services\CategoryService;
+use App\Services\GameService;
 use Livewire\Component;
 
 class ShopComponent extends Component
 {
     public $gameSlug;
     public $categorySlug;
-    public $datas = [];
     public $search = '';
     public $selectedDevice = null;
     public $selectedAccountType = null;
@@ -16,8 +18,19 @@ class ShopComponent extends Component
     public $selectedDeliveryTime = null;
     public $selectedRegion = null;
     public $selectedSort = null;
-    public $layoutView = 'list';
-    
+    public $layoutView = 'list-grid';
+    public $game;
+    protected $category = null;
+    public  $products ;
+
+    // Service
+
+    protected GameService $gameService;
+    protected CategoryService $categoryService;
+    public function boot(GameService $gameService, CategoryService $categoryService){
+        $this->gameService = $gameService;
+        $this->categoryService = $categoryService;
+    }
 
     public function tagSelected($tag)
     {
@@ -25,19 +38,38 @@ class ShopComponent extends Component
         $this->serachFilter(); // Trigger search when tag is selected
     }
 
+
     public function mount($gameSlug, $categorySlug)
     {
         $this->gameSlug = $gameSlug;
+
+        $this->game = $this->gameService->findData($gameSlug, 'slug')->load(['products', 'gameConfig', 'categories']);
+
+        $this->products = $this->game->products;
+
+       
+
         $this->categorySlug = $categorySlug;
-        $this->datas = [1, 2, 3, 4, 5, 6, 7];
+
+      //    $this->category = $this->categoryService->findData($categorySlug, 'slug')->load(['games.gameConfig', 'games.products']);
+        
+        $this->category = $this->categoryService->findData($categorySlug, 'slug');
+
+        $this->layoutView = $this->category->layout->value ?? 'grid';
+
+      
     }
 
     public function render()
-    {
+    {   
+        
+
+
+
         return view('livewire.frontend.game.shop-component', [
             'gameSlug' => $this->gameSlug,
             'categorySlug' => $this->categorySlug,
-            'datas' => $this->datas,
+            'datas' => $this->products,
         ]);
     }
 

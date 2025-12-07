@@ -5,43 +5,39 @@ namespace App\Models;
 use App\Enums\PlatformStatus;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Laravel\Scout\Searchable;
-use Laravel\Scout\Attributes\SearchUsingPrefix;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\Builder;
+use Laravel\Scout\Attributes\SearchUsingPrefix;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Platform extends AuditBaseModel implements Auditable
 {
-    use   AuditableTrait , Searchable;
+    use AuditableTrait;
+    /** @use HasFactory<\Database\Factories\GameServerFactory> */
+    use HasFactory;
 
     protected $fillable = [
         'sort_order',
         'name',
         'status',
         'icon',
-        'color',
-
 
         'created_by',
         'updated_by',
         'deleted_by',
         'restored_by',
         'restored_at',
-        'created_at',
-        'deleted_at',
-        'updated_at',
-      //here AuditColumns
+        //here AuditColumns
     ];
 
     protected $hidden = [
         //
-
         'id',
     ];
 
     protected $casts = [
-         'status' => PlatformStatus::class,
+        //
+        'status' => PlatformStatus::class,
         'restored_at' => 'datetime',
     ];
 
@@ -49,26 +45,20 @@ class Platform extends AuditBaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     //
-
-     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
-                End of RELATIONSHIPS
-     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
-
-
     public function games()
     {
         return $this->belongsToMany(
             Game::class,
-            'game_platforms',
-            'platform_id',
+            'game_servers',
+            'server_id',
             'game_id'
         );
     }
 
-    /* ================================================================
-     |  Query Scopes
-     ================================================================ */
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+               End of RELATIONSHIPS
+    =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+
 
     public function scopeActive(Builder $query): Builder
     {
@@ -98,7 +88,7 @@ class Platform extends AuditBaseModel implements Auditable
      |  Scout Search Configuration
      ================================================================ */
 
-    #[SearchUsingPrefix(['id', 'name',])]
+    #[SearchUsingPrefix(['id', 'name', 'status'])]
     public function toSearchableArray(): array
     {
         return [
@@ -114,7 +104,6 @@ class Platform extends AuditBaseModel implements Auditable
     {
         return is_null($this->deleted_at);
     }
-
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -122,6 +111,4 @@ class Platform extends AuditBaseModel implements Auditable
             //
         ]);
     }
-
-
 }

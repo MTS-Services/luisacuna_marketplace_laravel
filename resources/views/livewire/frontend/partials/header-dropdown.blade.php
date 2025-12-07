@@ -3,12 +3,12 @@
     <div class="relative" x-on:click.outside="open = ''">
         {{-- 🌟 Dropdown Content --}}
         <div
-            class="dark:bg-zinc-800 bg-white flex flex-col lg:flex-row items-start justify-between rounded-lg shadow-lg px-4 lg:px-10 max-h-[500px]">
+            class="dark:bg-bg-secondary bg-bg-primary flex flex-col lg:flex-row items-start justify-between rounded-lg shadow-lg px-4 lg:px-10 max-h-[500px]">
 
             {{-- Popular Games Section --}}
             <div class="w-full lg:w-2/3 pt-6 order-2 lg:order-1 overflow-y-auto pr-4">
                 <h3
-                    class="dark:text-white text-gray-900 text-base font-semibold pt-2 mb-6 sticky top-0 dark:bg-zinc-800 bg-white pb-2">
+                    class="dark:text-white text-gray-900 text-base font-semibold pt-2 mb-6 sticky top-0pb-2">
                     Popular {{ ucfirst($gameCategorySlug) }}
                 </h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-2.5 pb-6">
@@ -37,14 +37,25 @@
                 {{-- Search Bar --}}
                 <div class="mb-6 flex-shrink-0">
                     <div class="relative">
-                        <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search games..."
-                            class="w-full dark:bg-zinc-700 bg-gray-100 dark:text-white text-gray-900 border-0 rounded-full px-4 py-2.5 pl-4 pr-10 focus:outline-none focus:ring-2 dark:focus:ring-purple-500 focus:ring-purple-400 placeholder:text-gray-500 dark:placeholder:text-gray-400" />
-                        <button
+                        {{-- <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search games..."
+                            class="w-full bg-bg-primary dark:text-white text-gray-900 border border-zinc-750  rounded px-4 py-2 pl-4 pr-10 focus:outline-none focus:ring-1 dark:focus:ring-purple-500 focus:ring-purple-400 placeholder:text-gray-500 dark:placeholder:text-gray-400" /> --}}
+                       <input type="text"
+    wire:model.live.debounce.300ms="search"
+    placeholder="Search games..."
+    class="w-full bg-bg-primary
+           border border-zinc-700! 
+           focus:border-zinc-700!                         
+           focus:outline-none                         
+           rounded px-4 py-2 pl-4 pr-10         
+           placeholder:text-gray-500 dark:placeholder:text-gray-400"
+/>
+                            <button
                             class="absolute right-3 top-1/2 -translate-y-1/2 dark:text-gray-400 text-gray-500 hover:text-purple-500 transition">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                {{-- <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /> --}}
+                                <flux:icon name="search" class="w-5 h-5" />
                             </svg>
                         </button>
                     </div>

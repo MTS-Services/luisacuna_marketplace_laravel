@@ -27,7 +27,7 @@ Route::get('/gift-card', [GiftCardController::class, 'index'])->name('gift-card'
 Route::get('/coaching', [CoachingController::class, 'index'])->name('coaching');
 
 Route::get('/game/{gameSlug}/{categorySlug}', [GameController::class, 'index'])->name('game.index');
-Route::get('/game-buy/{gameSlug}/{categorySlug}/{sellerSlug}', [GameController::class, 'buy'])->name('game.buy');
+Route::get('/game-buy/{gameSlug}/{categorySlug}/{itemSlug}', [GameController::class, 'buy'])->name('game.buy');
 Route::get('/game-checkout/{orderId}', [GameController::class, 'checkout'])->name('game.checkout');
 
 Route::controller(FrontendController::class)->group(function () {
@@ -36,7 +36,7 @@ Route::controller(FrontendController::class)->group(function () {
     Route::get('/how-to-sell', 'howToSell')->name('how-to-sell');
     Route::get('/seller-protection', 'sellerProtection')->name('seller-protection');
     Route::get('/faq', 'faq')->name('faq');
-    Route::get('/faq', 'faq')->name('faq');
+    // Route::get('/faq', 'faq')->name('faq');
     Route::get('/contact-us', 'contactUs')->name('contact-us');
     Route::get('/terms-and-conditions', 'termsAndConditions')->name('terms-and-conditions');
     Route::get('/refund-policy', 'refunPolicy')->name('refund-policy');

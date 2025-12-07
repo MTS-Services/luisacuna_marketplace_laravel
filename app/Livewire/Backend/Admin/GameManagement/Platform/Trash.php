@@ -3,7 +3,6 @@
 namespace App\Livewire\Backend\Admin\GameManagement\Platform;
 
 use App\Enums\PlatformStatus;
-use App\Models\Platform;
 use App\Services\PlatformService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
@@ -13,34 +12,33 @@ use Livewire\Component;
 
 class Trash extends Component
 {
-
-     use WithDataTable, WithNotification;
+    use WithDataTable, WithNotification;
 
     public $statusFilter = '';
     public $showDeleteModal = false;
-    public $deleteId = null;
+    public $selectedId = null;
     public $bulkAction = '';
     public $showBulkActionModal = false;
-    public $selectedId = null ;
+
     protected PlatformService $service;
+
     public function boot(PlatformService $service)
     {
-
         $this->service = $service;
-
     }
 
-
     public function render()
-    {  
-         $datas = $this->service->getTrashedPaginatedData(
+    {
+        $datas = $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        )->load('creater_admin');
+        );
+        $datas->load('deleter_admin');
+
         $columns = [
-           [
-                'key' => 'avatar',
-                'label' => 'Avatar',
+            [
+                'key' => 'icon',
+                'label' => 'icon',
                 'format' => function ($data) {
                     return $data->icon
                         ? '<img src="' . Storage::url($data->icon) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
@@ -51,14 +49,6 @@ class Trash extends Component
                 'key' => 'name',
                 'label' => 'Name',
                 'sortable' => true
-            ],
-            [
-                'key' => 'color',
-                'label' => 'Color',
-                'sortable' => true,
-                'format' => function ($data) {
-                    return  $data->color ?? 'N/A';
-                }
             ],
             [
                 'key' => 'status',
@@ -87,9 +77,8 @@ class Trash extends Component
             ],
         ];
 
-       
         $actions = [
-              [
+            [
                 'key' => 'id',
                 'label' => 'Restore',
                 'method' => 'restore',
@@ -107,8 +96,8 @@ class Trash extends Component
             ['value' => 'bulkRestore', 'label' => 'Restore'],
             ['value' => 'forceDelete', 'label' => 'Permanent Delete'],
         ];
+
         return view('livewire.backend.admin.game-management.platform.trash', [
-           
             'datas' => $datas,
             'statuses' => PlatformStatus::options(),
             'columns' => $columns,
@@ -116,8 +105,8 @@ class Trash extends Component
             'bulkActions' => $bulkActions,
         ]);
     }
-  
-      public function confirmDelete($encryptedId): void
+
+    public function confirmDelete($encryptedId): void
     {
         if (!$encryptedId) {
             $this->error('No Data selected');
@@ -217,7 +206,7 @@ class Trash extends Component
         ];
     }
 
-     protected function getSelectableIds(): array
+    protected function getSelectableIds(): array
     {
         $data = $this->service->getTrashedPaginatedData(
             perPage: $this->perPage,

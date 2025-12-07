@@ -1,6 +1,6 @@
 <div class="h-full z-50">
     <aside x-cloak :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-        class="fixed h-full xl:static inset-y-0 left-0 z-50 w-64 sm:w-72 md:w-80 xl:w-68 bg-bg-primary/80 transition-transform duration-300 ease-in-out xl:translate-x-0 overflow-y-auto">
+        class="fixed h-full xl:static inset-y-0 left-0 z-50 w-64 sm:w-72 md:w-80 xl:w-68 bg-bg-secondary/80 transition-transform duration-300 ease-in-out xl:translate-x-0 overflow-y-auto">
 
         <div class="flex flex-col h-full">
             <!-- Mobile Close Button -->

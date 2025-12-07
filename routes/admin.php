@@ -1,7 +1,7 @@
 <?php
 
 
-use App\Models\Platform;
+use App\Http\Controllers\Backend\Admin\GameManagement\TagController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Admin\AuditingController;
 use App\Http\Controllers\Backend\Admin\Settings\CurrencyController;
@@ -11,19 +11,17 @@ use App\Http\Controllers\Backend\Admin\UserManagement\UserController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
+use App\Http\Controllers\Backend\Admin\BannerManagement\BannerController;
 use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
-use App\Http\Controllers\Backend\Admin\GameManagement\RarityController;
 use App\Http\Controllers\Backend\Admin\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\RankController;
-use App\Http\Controllers\Backend\Admin\GameManagement\ServerController;
-use App\Http\Controllers\Backend\Admin\GameManagement\PlatformController;
-use App\Http\Controllers\Backend\Admin\Settings\GeneralSettingsController;
-use App\Http\Controllers\Backend\admin\ProductManagament\ProductController;
 use App\Http\Controllers\Backend\Admin\ReviewManagement\PageViewController;
+use App\Http\Controllers\Backend\Admin\GameManagement\PlatformController;
 use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementController;
-use App\Http\Controllers\Backend\admin\ProductManagament\ProductTypeController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementTypeController;
+use App\Http\Controllers\Backend\Admin\FaqManagement\FaqController;
+
 
 Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
@@ -66,15 +64,14 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/view/{id}', 'show')->name('view');
             Route::get('/trash', 'trash')->name('trash');
         });
-
-        Route::controller(ServerController::class)->name('server.')->prefix('game-server')->group(function () {
+        Route::controller(PlatformController::class)->name('platform.')->prefix('platform')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
             Route::get('/view/{id}', 'show')->name('view');
             Route::get('/trash', 'trash')->name('trash');
         });
-        Route::controller(PlatformController::class)->name('platform.')->prefix('game-platform')->group(function () {
+        Route::controller(TagController::class)->name('tag.')->prefix('tag')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
@@ -88,16 +85,16 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/view/{id}', 'show')->name('view');
             Route::get('/edit/{id}', 'edit')->name('edit');
             Route::get('/trash', 'trash')->name('trash');
+            Route::get('/{id}/config', 'config')->name('config');
         });
+    });
 
-        Route::controller(RarityController::class)->name('rarity.')->prefix('rarity')->group(function () {
+    // Banner
+
+    route::group(['prefix' => 'banner-management', 'as' => 'bm.'], function () {
+        Route::controller(BannerController::class)->name('banner.')->prefix('banner')->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::get('/create', 'create')->name('create');
-            Route::get('/edit/{id}', 'edit')->name('edit');
-            Route::get('/show/{id}', 'show')->name('show');
-            Route::get('/trash', 'trash')->name('trash');
         });
-
     });
 
     // Rank
@@ -170,23 +167,6 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
         });
     });
 
-    Route::group(['prefix' => 'product-management', 'as' => 'pm.'], function () {
-        Route::controller(ProductTypeController::class)->name('productType.')->prefix('productType')->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/create', 'create')->name('create');
-            Route::get('/edit/{id}', 'edit')->name('edit');
-            Route::get('/show/{id}', 'show')->name('show');
-            Route::get('/trash', 'trash')->name('trash');
-        });
-        Route::controller(ProductController::class)->name('product.')->prefix('product')->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/create', 'create')->name('create');
-            Route::get('/edit/{id}', 'edit')->name('edit');
-            Route::get('/show/{id}', 'show')->name('show');
-            Route::get('/trash', 'trash')->name('trash');
-        });
-    });
-
     Route::group(['prefix' => 'review-management', 'as' => 'rm.'], function () {
         Route::controller(PageViewController::class)->name('review.')->prefix('review')->group(function () {
             Route::get('/', 'index')->name('index');
@@ -211,4 +191,21 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/', 'index')->name('index');
         });
     });
+
+    // Faq
+    Route::group(['prefix' => 'faq-management', 'as' => 'flm.'], function () {
+
+        Route::controller(FaqController::class)->name('faq.')->prefix('faq')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/show/{id}', 'show')->name('show');
+            Route::get('/trash', 'trash')->name('trash');
+        });
+
+    });
+
+
+
+
 });

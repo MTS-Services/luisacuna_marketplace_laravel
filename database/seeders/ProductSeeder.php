@@ -4,11 +4,9 @@ namespace Database\Seeders;
 
 use App\Enums\ActiveInactiveEnum;
 use App\Models\Category;
-use App\Models\Platform;
+use App\Models\Game;
 use App\Models\Product;
-use App\Models\Server;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -20,8 +18,7 @@ class ProductSeeder extends Seeder
     {
         $categories = Category::all();
         $users = User::all();
-        $platforms = Platform::all();
-        $servers = Server::all();
+        $games = Game::all();
 
         $products = [];
 
@@ -29,9 +26,8 @@ class ProductSeeder extends Seeder
             foreach ($users as $user) {
                 $products[] = [
                     'category_id' => $category->id,
+                    'game_id' => $games->random()->id,
                     'user_id' => $user->id,
-                    'platform_id' => $platforms->isNotEmpty() ? $platforms->random()->id : null,
-                    'server_id' => $servers->isNotEmpty() ? $servers->random()->id : null,
                     'name' => fake()->name(),
                     'slug' => fake()->slug() . '-' . time() . rand(1, 100),
                     'description' => fake()->text(),

@@ -47,7 +47,8 @@
             "app/Helpers/helpers.php",
             "app/Helpers/generators.php",
             "app/Helpers/TranslationHelper.php",
-            "app/Helpers/applications.php"
+            "app/Helpers/applications.php",
+            "app/Helpers/game_helpers.php"
         ]
     },
     "autoload-dev": {

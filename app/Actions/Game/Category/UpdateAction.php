@@ -22,7 +22,7 @@ class UpdateAction
         try {
             return DB::transaction(function () use ($id, $data, &$newSingleIconPath) {
 
-                $findData = $this->interface->find($id);
+                $findData = $this->interface->findData($id, 'id', false, false, false);
 
                 if (!$findData) {
                     Log::error('Category not found', [

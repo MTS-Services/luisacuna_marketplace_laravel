@@ -8,21 +8,18 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class GameTranslation extends BaseModel implements Auditable
 {
-    use   AuditableTrait;
+    use AuditableTrait;
     //
 
     protected $fillable = [
-        'sort_order',
-        'name',
-        'description',
-        'meta_title',
-        'meta_description',
-        'meta_keywords',
-        'game_id',
-        'language_id',
+        "sort_order",
+        "language_id",
+        "game_id",
+        "name",
+        "description",
 
 
-      //here AuditColumns
+        //here AuditColumns
     ];
 
     protected $hidden = [
@@ -37,7 +34,7 @@ class GameTranslation extends BaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     //
+    //
     public function game()
     {
         return $this->belongsTo(Game::class, 'game_id', 'id');
@@ -47,9 +44,9 @@ class GameTranslation extends BaseModel implements Auditable
         return $this->belongsTo(Language::class, 'language_id', 'id');
     }
 
-     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
-                End of RELATIONSHIPS
-     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+               End of RELATIONSHIPS
+    =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
     public function __construct(array $attributes = [])
     {

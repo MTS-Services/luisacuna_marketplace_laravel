@@ -11,6 +11,8 @@ use Laravel\Scout\Attributes\SearchUsingPrefix;
 use App\Models\Type;
 use App\Traits\HasTranslations;
 use Illuminate\Testing\Fluent\Concerns\Has;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Game extends AuditBaseModel implements Auditable
 {
@@ -23,17 +25,15 @@ class Game extends AuditBaseModel implements Auditable
         'slug',
         'description',
 
+        'status',
         'logo',
+        'banner',
 
         'meta_title',
         'meta_description',
         'meta_keywords',
-        'status',
-
-
 
         'sort_order',
-
 
         'created_by',
         'updated_by',
@@ -44,7 +44,6 @@ class Game extends AuditBaseModel implements Auditable
         'deleted_at',
         'restored_at',
         'updated_at',
-
     ];
 
     protected $hidden = [
@@ -55,6 +54,7 @@ class Game extends AuditBaseModel implements Auditable
         // 'platform' => 'array',
         'status' => GameStatus::class,
         'restored_at' => 'datetime',
+        'meta_keywords' => 'array',
     ];
 
 
@@ -64,29 +64,21 @@ class Game extends AuditBaseModel implements Auditable
     //
 
 
-    public function categories()
+    public function categories(): BelongsToMany
     {
-        // 1. Pass the related model (Category::class)
-        // 2. Pass the name of your pivot table ('game_categories')
-        // 3. Pass the foreign key on the pivot table for THIS model ('game_id')
-        // 4. Pass the foreign key on the pivot table for the OTHER model ('category_id')
         return $this->belongsToMany(
             Category::class,
             'game_categories',
             'game_id',
             'category_id'
-        );
+        )->withTimestamps();
     }
 
-    public function servers()
+    public function gameCategories(): HasMany
     {
-        return $this->belongsToMany(
-            Server::class,
-            'game_servers',
-            'game_id',
-            'server_id'
-        );
+        return $this->hasMany(GameCategory::class);
     }
+
     public function platforms()
     {
         return $this->belongsToMany(
@@ -105,24 +97,6 @@ class Game extends AuditBaseModel implements Auditable
             'tag_id'
         );
     }
-    public function types()
-    {
-        return $this->belongsToMany(
-            Type::class,
-            'game_types',
-            'game_id',
-            'type_id'
-        );
-    }
-    public function rarities()
-    {
-        return $this->belongsToMany(
-            Rarity::class,
-            'game_rarities',
-            'game_id',
-            'rarity_id'
-        );
-    }
 
     public function gameTranslations()
     {
@@ -130,22 +104,30 @@ class Game extends AuditBaseModel implements Auditable
     }
 
 
-  public function getTranslationConfig(): array
+    public function getTranslationConfig(): array
     {
         return [
-            'fields' => ['name', 'description', 'meta_title', 'meta_description', 'meta_keywords'],
+            'fields' => ['name', 'description'],
             'relation' => 'gameTranslations',
             'model' => GameTranslation::class,
             'foreign_key' => 'game_id',
             'field_mapping' => [
                 'name' => 'name',
                 'description' => 'description',
-                'meta_title' => 'meta_title',
-                'meta_description' => 'meta_description',
-                'meta_keywords' => 'meta_keywords',
             ],
         ];
     }
+
+    public function gameConfig()
+    {
+        return $this->hasMany(GameConfig::class, 'game_id', 'id');
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'game_id', 'id');
+    }
+
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
             Query Scopes
@@ -169,13 +151,34 @@ class Game extends AuditBaseModel implements Auditable
 
     public function scopeFilter(Builder $query, array $filters): Builder
     {
-        return $query
-            ->when(
-                $filters['status'] ?? null,
-                fn($q, $status) =>
-                $q->where('status', $status)
-            );
+        $query->when($filters['status'] ?? null, function ($query, $status) {
+            $query->where('status', $status);
+        });
+        return $query;
+    }
 
+    public function scopeWithCategory($query, $categoryId)
+    {
+        return $query->whereHas('categories', function ($q) use ($categoryId) {
+            $q->where('categories.id', $categoryId);
+        });
+    }
+
+    public function scopeWithCategories($query, array $categoryIds)
+    {
+        return $query->whereHas('categories', function ($q) use ($categoryIds) {
+            $q->whereIn('categories.id', $categoryIds);
+        }, '=', count($categoryIds));
+    }
+
+    public function hasCategory(int $categoryId): bool
+    {
+        return $this->categories()->where('categories.id', $categoryId)->exists();
+    }
+
+    public function getCategoriesCountAttribute(): int
+    {
+        return $this->categories()->count();
     }
 
     // public function scopeSearch($query, $search)

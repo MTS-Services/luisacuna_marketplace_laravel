@@ -4,15 +4,16 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Platform;
 use App\Repositories\Contracts\PlatformRepositoryInterface;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-
 use Illuminate\Support\Facades\DB;
 
 class PlatformRepository implements PlatformRepositoryInterface
 {
-    public function __construct(
+       public function __construct(
+
         protected Platform $model
+
     ) {}
 
 
@@ -24,11 +25,6 @@ class PlatformRepository implements PlatformRepositoryInterface
     {
         $query = $this->model->query();
         return $query->orderBy($sortField, $order)->get();
-    }
-
-    public function getQuery(): object
-    {
-        return $this->model->query();
     }
 
     public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?Platform

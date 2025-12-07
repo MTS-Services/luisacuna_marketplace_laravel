@@ -21,9 +21,6 @@ return new class extends Migration
 
             $table->string('name')->nullable()->index();
             $table->text('description')->nullable();
-            $table->string('meta_title')->nullable();
-            $table->text('meta_description')->nullable();
-            $table->text('meta_keywords')->nullable();
 
             $table->timestamps();
             $table->foreign('game_id')->references('id')->on('games')->onDelete('cascade');

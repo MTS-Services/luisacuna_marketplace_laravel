@@ -16,134 +16,84 @@ class CategoryRepository implements CategoryRepositoryInterface
 
 
     /* ================== ================== ==================
-    *                      Find Methods 
-    * ================== ================== ================== */
+     *                      Find Methods
+     * ================== ================== ================== */
+    protected function commonQuery($query, $status, $layout, $trashed, ?array $selects = null)
+    {
+        if ($status) {
+            $query->where('status', $status);
+        }
+        if ($layout) {
+            $query->where('layout', $layout);
+        }
+        if ($trashed) {
+            $query->withTrashed();
+        }
+        if ($selects) {
+            $query->select($selects);
+        }
+        return $query;
+    }
 
-    public function all(string $sortField = 'created_at', $order = 'desc'): Collection
+    public function getData(string $sortField, $order, $status, $layout, $trashed, ?array $selects): Collection
     {
         $query = $this->model->query();
+        $this->commonQuery($query, $status, $layout, $trashed, $selects);
         return $query->orderBy($sortField, $order)->get();
     }
-    public function active(string $sortField = 'created_at', $order = 'desc', $status = 'active'): Collection
+    public function findData($column_value, string $column_name, $status, $layout, $trashed): ?Category
     {
         $query = $this->model->query();
-        return $query->where('status', $status)->orderBy($sortField, $order)->get();
+        $this->commonQuery($query, $status, $layout, $trashed);
+        return $query->where($column_name, $column_value)->first();
     }
-    public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?Category
-    {
-        $model = $this->model;
-        if ($trashed) {
-            $model = $model->withTrashed();
-        }
-        return $model->where($column_name, $column_value)->first();
-    }
-
-    public function findTrashed($column_value, string $column_name = 'id'): ?Category
-    {
-        $model = $this->model->onlyTrashed();
-        return $model->where($column_name, $column_value)->first();
-    }
-
-
-
-    public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function getPaginatedData(int $perPage, array $filters, string $sortField, $order, $status, $layout, $trashed): LengthAwarePaginator
     {
         $search = $filters['search'] ?? null;
-        $sortField = $filters['sort_field'] ?? 'created_at';
-        $sortDirection = $filters['sort_direction'] ?? 'desc';
-
+        $sortField = $filters['sort_field'] ?? $sortField;
+        $sortDirection = $filters['sort_direction'] ?? $order;
+        $query = $this->model;
+        $this->commonQuery($query, $status, $layout, $trashed);
         if ($search) {
-            // Scout Search
-            return Category::search($search)
-                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+            return $query->search($search)
+                ->filter($filters)
+                ->orderBy($sortField, $sortDirection)
                 ->paginate($perPage);
         }
 
         // Normal Eloquent Query
-        return $this->model->query()
-            ->filter($filters)
+        return $query->filter($filters)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
     }
 
-    /**
-     * Paginate only trashed records with optional search.
-     */
-    public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
-    {
-        $search = $filters['search'] ?? null;
-        $sortField = $filters['sort_field'] ?? 'deleted_at';
-        $sortDirection = $filters['sort_direction'] ?? 'desc';
-
-        if ($search) {
-            // 👇 Manually filter trashed + search
-            return Category::search($search)
-                ->onlyTrashed()
-                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
-                ->paginate($perPage);
-        }
-
-        return $this->model->onlyTrashed()
-            ->filter($filters)
-            ->orderBy($sortField, $sortDirection)
-            ->paginate($perPage);
-    }
-
-    public function exists(int $id): bool
-    {
-        return $this->model->where('id', $id)->exists();
-    }
-
-    public function count(array $filters = []): int
+    public function searchData(string $query, string $sortField, $order, $status, $layout, $trashed): Collection
     {
         $query = $this->model->query();
+        $this->commonQuery($query, $status, $layout, $trashed);
+        return $query->search($query)->orderBy($sortField, $order)->get();
+    }
 
+
+    public function dataExists(int $id, $status, $layout, $trashed): bool
+    {
+        $query = $this->model->query();
+        $this->commonQuery($query, $status, $layout, $trashed);
+        return $query->where('id', $id)->exists();
+    }
+
+    public function getDataCount(array $filters, $status, $layout, $trashed): int
+    {
+        $query = $this->model->query();
+        $this->commonQuery($query, $status, $layout, $trashed);
         if (!empty($filters)) {
             $query->filter($filters);
         }
-
         return $query->count();
     }
-
-    public function search(string $query, string $sortField = 'created_at', $order = 'desc'): Collection
-    {
-        return $this->model->search($query)->orderBy($sortField, $order)->get();
-    }
-
-
-    // public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection
-    // {
-    //     $category = $this->model->where($fieldName, $fieldValue)->first();
-
-    //     return $category?->games()->get() ?? new Collection();
-    // }
-
-    // public function getGamesByCategoryAndTag($categorySlug, $tagSlug): Collection
-    // {
-    //     $category = $this->model->where('slug', $categorySlug)->first();
-
-    //     if (!$category) {
-    //         return new Collection();
-    //     }
-
-    //     return $category->games()
-    //         ->whereHas('tags', function ($query) use ($tagSlug) {
-    //             $query->where('slug', $tagSlug);
-    //         })
-    //         ->get();
-    // }
-
-    // public function getCategoryByGames($fieldValue, $fieldName = 'slug'): Collection
-    // {
-    //     return $this->model->with('games')->whereHas('games', function ($query) use ($fieldValue, $fieldName) {
-    //         $query->where($fieldName, $fieldValue);
-    //     })->get();
-    // }
-
-
     /* ================== ================== ==================
-    *                    Data Modification Methods 
-    * ================== ================== ================== */
+     *                    Data Modification Methods
+     * ================== ================== ================== */
 
     public function create(array $data): Category
     {
@@ -152,19 +102,16 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     public function update(int $id, array $data): bool
     {
-        $findData = $this->find($id);
-
+        $findData = $this->findData($id, 'id', false, false, false);
         if (!$findData) {
             return false;
         }
-
         return $findData->update($data);
     }
 
     public function delete(int $id, int $actionerId): bool
     {
-        $findData = $this->find($id);
-
+        $findData = $this->findData($id, 'id', false, false, false);
         if (!$findData) {
             return false;
         }
@@ -175,19 +122,16 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     public function forceDelete(int $id): bool
     {
-        $findData = $this->findTrashed($id);
-
+        $findData = $this->findData($id, 'id', false, false, true);
         if (!$findData) {
             return false;
         }
-
         return $findData->forceDelete();
     }
 
     public function restore(int $id, int $actionerId): bool
     {
-        $findData = $this->findTrashed($id);
-
+        $findData = $this->findData($id, 'id', false, false, true);
         if (!$findData) {
             return false;
         }
@@ -208,6 +152,10 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updated_by' => $actionerId]);
     }
+    public function bulkUpdateLayout(array $ids, string $layout, int $actionerId): int
+    {
+        return $this->model->withTrashed()->whereIn('id', $ids)->update(['layout' => $layout, 'updated_by' => $actionerId]);
+    }
     public function bulkRestore(array $ids, int $actionerId): int
     {
         return DB::transaction(function () use ($ids, $actionerId) {
@@ -219,24 +167,4 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return $this->model->onlyTrashed()->whereIn('id', $ids)->forceDelete();
     }
-
-    /* ================== ================== ==================
-    *                  Accessor Methods (Optional)
-    * ================== ================== ================== */
-
-    public function getActive(string $sortField = 'created_at', $order = 'desc'): Collection
-    {
-        return $this->model->active()->orderBy($sortField, $order)->get();
-    }
-
-    public function getInactive(string $sortField = 'created_at', $order = 'desc'): Collection
-    {
-        return $this->model->inactive()->orderBy($sortField, $order)->get();
-    }
-
-    public function getSuspended(string $sortField = 'created_at', $order = 'desc'): Collection
-    {
-        return $this->model->suspended()->orderBy($sortField, $order)->get();
-    }
-
 }

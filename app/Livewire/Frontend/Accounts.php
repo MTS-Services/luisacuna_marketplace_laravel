@@ -13,8 +13,6 @@ class Accounts extends Component
     public $perPage = 9;
     public $currentPage = 1;
 
-
-
     protected GameService $game_service;
     protected $allGamesCache = null;
 
@@ -22,38 +20,33 @@ class Accounts extends Component
     {
         $this->game_service = $game_service;
     }
+    
     public function sortBy($order)
     {
         $this->sortOrder = $order;
     }
+    
     public function render()
     {
+        if ($this->allGamesCache === null) {
+            $this->allGamesCache = $this->game_service->getGamesByCategory('accounts');
+        }
 
         if (!empty($this->search)) {
             $accounts = $this->game_service->searchGamesByCategory('accounts', $this->search);
-
-            if ($this->allGamesCache === null) {
-                $this->allGamesCache = $this->game_service->getGamesByCategory('accounts');
-            }
-
-            $popular_accounts = $this->allGamesCache->filter(function ($game) {
-                return $game->tags->contains('slug', 'popular');
-            });
         } else {
-            if ($this->allGamesCache === null) {
-                $this->allGamesCache = $this->game_service->getGamesByCategory('accounts');
-            }
-
             $accounts = $this->allGamesCache;
-            $popular_accounts = $this->allGamesCache->filter(function ($game) {
-                return $game->tags->contains('slug', 'popular');
-            });
         }
 
+        $popular_accounts = $this->allGamesCache->filter(function ($game) {
+            return $game->tags->contains('slug', 'popular');
+        });
+
         $accounts = $this->applySorting($accounts);
+        
+        $pagination = $this->getPaginationData($accounts);
+        
         $accounts = $accounts->forPage($this->currentPage, $this->perPage);
-        // Pagination data
-        $pagination = $this->getPaginationData();
 
         return view('livewire.frontend.accounts', [
             'accounts' => $accounts,
@@ -73,7 +66,6 @@ class Accounts extends Component
         return $collection;
     }
 
-
     public function gotoPage($page)
     {
         $this->currentPage = $page;
@@ -88,20 +80,32 @@ class Accounts extends Component
 
     public function nextPage()
     {
-        $pagination = $this->getPaginationData();
+        if ($this->allGamesCache === null) {
+            $this->allGamesCache = $this->game_service->getGamesByCategory('accounts');
+        }
+
+        $accountsCollection = !empty($this->search) 
+            ? $this->game_service->searchGamesByCategory('accounts', $this->search)
+            : $this->allGamesCache;
+
+        $pagination = $this->getPaginationData($accountsCollection);
+        
         if ($this->currentPage < $pagination['last_page']) {
             $this->currentPage++;
         }
     }
 
-    protected function getPaginationData()
+    protected function getPaginationData($accountsCollection)
     {
-        if (!empty($this->search)) {
-            $allAccounts = $this->game_service->getGamesByCategory('accounts');
-            $accountsCollection = $this->game_service->searchGamesByCategory('accounts', $this->search);
-        } else {
-            $allAccounts = $this->game_service->getGamesByCategory('accounts');
-            $accountsCollection = $allAccounts;
+        if ($accountsCollection === null || $accountsCollection->isEmpty()) {
+            return [
+                'total' => 0,
+                'per_page' => $this->perPage,
+                'current_page' => $this->currentPage,
+                'last_page' => 1,
+                'from' => 0,
+                'to' => 0,
+            ];
         }
 
         $accountsCollection = $this->applySorting($accountsCollection);

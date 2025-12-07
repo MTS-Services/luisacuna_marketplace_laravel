@@ -58,7 +58,7 @@ class GameController extends Controller implements HasMiddleware
     }
     public function edit($id)
     {
-        $this->data = $this->service->findData($id);
+        $this->data = $this->service->findData(decrypt($id));
         return view($this->masterView, [
             'data' => $this->data,
         ]);
@@ -66,5 +66,16 @@ class GameController extends Controller implements HasMiddleware
     public function trash()
     {
         return view($this->masterView);
+    }
+
+    public function config($id)
+    {
+        $data = $this->service->findData(decrypt($id));
+        if (!$data) {
+            abort(404);
+        }
+        return view($this->masterView, [
+            'data' => $data
+        ]);
     }
 }

@@ -48,7 +48,7 @@ class CategoryController extends Controller implements HasMiddleware
 
         $data = $this->service->findData(decrypt($id));
         return view($this->masterView, [
-            'data'  => $data
+            'data' => $data
         ]);
     }
     public function show($id)
@@ -61,7 +61,7 @@ class CategoryController extends Controller implements HasMiddleware
         }
 
         return view($this->masterView, [
-            'data'  => $data
+            'data' => $data
         ]);
     }
 

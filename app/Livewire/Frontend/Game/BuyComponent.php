@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Frontend\Game;
 
+
+use App\Services\ProductService;
 use Livewire\Component;
 
 class BuyComponent extends Component
@@ -9,13 +11,23 @@ class BuyComponent extends Component
 
     public $gameSlug;
     public $categorySlug;
-    public $sellerSlug;
-
-    public function mount($gameSlug, $categorySlug, $sellerSlug)
+    public $itemSlug;
+    public $product;
+    public $game;
+    public $user;
+    protected ProductService $service;
+    public function boot(ProductService $service){
+        $this->service = $service;
+    }
+    public function mount($gameSlug, $categorySlug, $itemSlug)
     {
         $this->gameSlug = $gameSlug;
         $this->categorySlug = $categorySlug;
-        $this->sellerSlug = $sellerSlug;
+        $this->itemSlug = $itemSlug;
+        $this->product = $this->service->findData($itemSlug, 'slug')->load(['games', 'user']);
+        $this->game = $this->product->games;
+        $this->user = $this->product->user;
+
     }
     public function render()
     {
