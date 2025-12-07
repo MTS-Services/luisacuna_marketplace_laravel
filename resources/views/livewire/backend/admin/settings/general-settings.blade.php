@@ -475,7 +475,7 @@
                     </div>
 
                     <div class="flex items-center gap-3">
-                        <x-ui.button type="button" wire:click="resetForm" class="w-fit py-2! text-nowrap"
+                        <x-ui.button type="button" wire:click="resetForm" class="w-fit py-2! text-nowrap!"
                             variant="tertiary">
                             {{-- <flux:icon name="arrow-path"
                                 class="h-5 w-5 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />

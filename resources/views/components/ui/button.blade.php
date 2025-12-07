@@ -29,7 +29,7 @@
                 {{ $wire ? 'wire:navigate' : '' }} {!! $attributes->merge([
                     'class' =>
                         $variantClasses[$variant] .
-                        ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
+                        ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group text-nowrap ' .
                         ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
                 ]) !!}>
                 {{ $slot }}
@@ -38,7 +38,7 @@
             <button type="{{ $type }}" {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge([
                 'class' =>
                     $variantClasses[$variant] .
-                    ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
+                    ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group text-nowrap ' .
                     ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
             ]) !!}>
                 {{ $slot }}
@@ -51,7 +51,7 @@
             {{ $wire ? 'wire:navigate' : '' }} {!! $attributes->merge([
                 'class' =>
                     $variantClasses[$variant] .
-                    ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
+                    ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group text-nowrap ' .
                     ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
             ]) !!}>
             {{ $slot }}
@@ -60,7 +60,7 @@
         <button type="{{ $type }}" {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge([
             'class' =>
                 $variantClasses[$variant] .
-                ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group ' .
+                ' font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group text-nowrap ' .
                 ($disabled ? '!cursor-not-allowed' : 'cursor-pointer'),
         ]) !!}>
             {{ $slot }}
