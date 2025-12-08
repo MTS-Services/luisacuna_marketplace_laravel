@@ -7,10 +7,12 @@ use Illuminate\Http\Request;
 
 class BoostingController extends Controller
 {
-    protected $masterView = 'frontend.pages.boosting';
+    protected $masterView = 'frontend.pages.product';
 
     public function index()
     {
-        return view($this->masterView);
+        return view($this->masterView, [
+            'categorySlug' => 'boosting'
+        ]);
     }
 }
