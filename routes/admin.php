@@ -22,7 +22,7 @@ use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementTypeController;
 use App\Http\Controllers\Backend\Admin\FaqManagement\FaqController;
-
+use App\Http\Controllers\Backend\Admin\GatewayAndIntegration\GatewayAndIntegrationController;
 
 Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
@@ -211,6 +211,20 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('/terms-condition', 'termsCondition')->name('terms-condition');
             Route::get('/refund-policy', 'refundPolicy')->name('refund-policy');
             Route::get('/privacy-policy', 'privacyPolicy')->name('privacy-policy');
+        });
+    });
+
+    Route::group(['as' => 'gi.'], function () {
+        Route::controller(GatewayAndIntegrationController::class)->group(function () {
+            Route::group(['prefix' => 'payment-gateway', 'as' => 'pay-g.'], function () {
+                Route::get('/', 'paymentIndex')->name('index');
+                Route::get('/edit/{id}', 'paymentEdit')->name('edit');
+            });
+            Route::group(['prefix' => 'withdraw-gateway', 'as' => 'wi-g.'], function () {
+                Route::get('/', 'withdrawIndex')->name('index');
+                Route::get('/edit/{id}', 'withdrawEdit')->name('edit');
+            });
+            Route::get('/translation-keys', 'translationKeys')->name('translation-keys');
         });
     });
 });

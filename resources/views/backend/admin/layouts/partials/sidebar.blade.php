@@ -326,25 +326,25 @@
                         ],
                     ]" />
                 <x-sidebar-separator title="System" />
-                <x-backend.navlink type="dropdown" icon="squares-exclude" name="Integration" :page_slug="$active"
-                    :items="[
+                <x-backend.navlink type="dropdown" icon="squares-exclude" name="Gateway's & Integration"
+                    :page_slug="$active" :items="[
                         [
-                            'name' => 'Payment Config',
-                            'route' => '#',
+                            'name' => 'Payment Gateway\'s',
+                            'route' => route('admin.gi.pay-g.index'),
                             'icon' => 'wallet-minimal',
-                            'active' => 'payment-config',
+                            'active' => 'payment-gateway',
                         ],
                         [
-                            'name' => 'Payout Config',
+                            'name' => 'Withdrawal Gateway\'s',
                             'route' => '#',
                             'icon' => 'credit-card',
-                            'active' => 'payout-config',
+                            'active' => 'payout-gateway',
                         ],
                         [
-                            'name' => 'Transaction Config',
+                            'name' => 'Translation Keys',
                             'route' => '#',
                             'icon' => 'languages',
-                            'active' => 'transaction-config',
+                            'active' => 'translation-key',
                         ],
                     ]" />
                 <x-backend.navlink type="dropdown" icon="radiation" name="Track Management" :page_slug="$active"

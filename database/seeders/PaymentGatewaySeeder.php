@@ -19,10 +19,14 @@ class PaymentGatewaySeeder extends Seeder
                 'name' => 'Stripe',
                 'slug' => 'stripe',
                 'icon' => null,
-                'data' => json_encode([
+                'live_data' => [
                     'public_key' => config('services.stripe.key'),
                     'secret_key' => config('services.stripe.secret'),
-                ]),
+                ],
+                'sandbox_data' => [
+                    'public_key' => config('services.stripe.key'),
+                    'secret_key' => config('services.stripe.secret'),
+                ],
                 'is_active' => true,
             ],
             [
@@ -30,10 +34,14 @@ class PaymentGatewaySeeder extends Seeder
                 'name' => 'PayPal',
                 'slug' => 'paypal',
                 'icon' => null,
-                'data' => json_encode([
+                'live_data' => [
                     'client_id' => '',
                     'secret' => '',
-                ]),
+                ],
+                'sandbox_data' => [
+                    'client_id' => '',
+                    'secret' => '',
+                ],
                 'is_active' => true,
             ],
             [
@@ -41,9 +49,12 @@ class PaymentGatewaySeeder extends Seeder
                 'name' => 'Coinbase',
                 'slug' => 'coinbase',
                 'icon' => null,
-                'data' => json_encode([
+                'live_data' => [
                     'api_key' => config('services.coinbase.api_key'),
-                ]),
+                ],
+                'sandbox_data' => [
+                    'api_key' => config('services.coinbase.api_key'),
+                ],
                 'is_active' => true,
             ],
         ];
