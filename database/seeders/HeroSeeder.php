@@ -22,10 +22,10 @@ class HeroSeeder extends Seeder
             'content' => 'Find exclusive drops and limited sets in the biggest Brainrot marketplace. Complete your collection and own the movement before it’s gone.',
             'action_title' => 'Shop Now',
             'action_url' => '/shop',
-            'image' => 'heroes/hero1.jpg',
+            'image' => asset('assets/images/home/banner.png'),
             'mobile_image' => 'heroes/hero1.jpg',
             'target' => '_self',
-            'status' => 'inactive',
+            'status' => 'active',
         ]);
 
     }

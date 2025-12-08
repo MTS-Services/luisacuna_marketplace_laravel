@@ -49,7 +49,7 @@ class HeaderDropdown extends Component
             })
             ->active()
             ->with(['tags', 'categories'])
-            ->orderBy('created_at', 'desc')
+            ->orderBy('name', 'asc')
             ->take(12)
             ->get()
             ->map(function ($game) {
@@ -67,7 +67,7 @@ class HeaderDropdown extends Component
                 ->when($this->search, function ($query) {
                     $query->where('name', 'like', '%' . $this->search . '%');
                 })
-                ->orderBy('created_at', 'desc')
+                ->orderBy('name', 'asc')
                 ->get()
                 ->map(function ($game) {
                     return [
