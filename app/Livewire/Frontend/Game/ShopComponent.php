@@ -60,7 +60,7 @@ class ShopComponent extends Component
         'categories'
       ]);
 
-        $this->products = $this->productService->getPaginatedData($this->perPage, [
+    $this->products = $this->productService->getPaginatedData($this->perPage, [
             'gameSlug' => $gameSlug,
             'categorySlug' => $categorySlug,
             'products' => $this->products

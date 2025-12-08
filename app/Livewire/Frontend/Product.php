@@ -10,6 +10,7 @@ class Product extends Component
    
     // Store Category slug for future use
     public $categorySlug = null;
+
     public $search = '';
     public $sortOrder = 'default';
     public $perPage = 9;
@@ -41,7 +42,9 @@ class Product extends Component
 
                 'category' => $this->categorySlug,
 
-                'relations' => ['tags', 'categories']
+                'relations' => ['tags', 'categories'], 
+                
+                'search' => $this->search
         ]);
         
     
