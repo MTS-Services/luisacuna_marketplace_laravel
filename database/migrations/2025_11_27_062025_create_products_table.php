@@ -16,6 +16,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+
             $table->unsignedBigInteger('sort_order')->default(0)->index();
 
             $table->unsignedBigInteger('user_id')->index();
@@ -24,8 +25,10 @@ return new class extends Migration
    
             $table->unsignedBigInteger('game_id')->index();
             
-           $table->unsignedBigInteger('platform_id');
-
+          
+            $table->unsignedBigInteger('platform_id');
+            
+            $table->string('name')->index();
             $table->text('description')->nullable();
             $table->decimal('price', 15, 2)->default(0);
             $table->unsignedBigInteger('quantity')->default(0);
