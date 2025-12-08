@@ -13,6 +13,7 @@ class CurrencyController extends Controller
     {
         return view($this->masterView, [
             'categorySlug' => 'currency'
+            
         ]);
     }
 }
