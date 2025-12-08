@@ -36,22 +36,6 @@ class Product extends Component
     }
 
     /**
-     * Search updated listener
-     */
-    // public function updatedSearch()
-    // {
-    //     $this->currentPage = 12;
-    // }
-
-    // /**
-    //  * Sort order updated listener
-    //  */
-    // public function updatedSortOrder()
-    // {
-    //     $this->currentPage = 12; 
-    // }
-
-    /**
      * Sort by method
      */
     public function sortBy($order)
