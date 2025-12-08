@@ -5,6 +5,7 @@ namespace App\Livewire\Frontend\Game;
 use App\Models\Product;
 use App\Services\CategoryService;
 use App\Services\GameService;
+use App\Services\ProductService;
 use Livewire\Component;
 
 class ShopComponent extends Component
@@ -21,15 +22,18 @@ class ShopComponent extends Component
     public $layoutView = 'list-grid';
     public $game;
     protected $category = null;
-    public  $products ;
+    protected  $products ;
 
+    public $perPage = 12;
     // Service
 
     protected GameService $gameService;
     protected CategoryService $categoryService;
-    public function boot(GameService $gameService, CategoryService $categoryService){
+    protected ProductService $productService;
+    public function boot(GameService $gameService, CategoryService $categoryService, ProductService $productService) {
         $this->gameService = $gameService;
         $this->categoryService = $categoryService;
+        $this->productService = $productService;
     }
 
     public function tagSelected($tag)
@@ -54,11 +58,18 @@ class ShopComponent extends Component
         },
         'gameConfig',
         'categories'
-    ]);
+      ]);
 
-        $this->products = $this->game->products;
+        $this->products = $this->productService->getPaginatedData($this->perPage, [
+            'gameSlug' => $gameSlug,
+            'categorySlug' => $categorySlug,
+            'products' => $this->products
+        ]);
 
 
+
+
+        
 
         $this->categorySlug = $categorySlug;
 

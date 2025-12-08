@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
+use Illuminate\Database\Eloquent\Builder;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Product extends BaseModel implements Auditable
@@ -78,6 +79,22 @@ class Product extends BaseModel implements Auditable
         return $this->hasMany(ProductConfig::class, 'product_id', 'id');
     }
 
+
+    public function scopeFilter(Builder $query, $filters): Builder
+    {
+        if($filters['gameSlug'] ?? null){
+            $query->whereHas('games', function ($q) use ($filters) {
+                $q->where('games.slug', $filters['gameSlug']);
+            });
+        }
+        if($filters['categorySlug'] ?? null){
+            $query->whereHas('category', function ($q) use ($filters) {
+                $q->where('categories.slug', $filters['categorySlug']);
+            });
+        }
+
+        return $query;
+    }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
