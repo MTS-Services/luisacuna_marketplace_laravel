@@ -348,7 +348,7 @@
             </div>
 
             <!-- Pagination (Outside of loading container) -->
-            <div class="flex justify-end items-center space-x-3 p-4 mt-10">
+            {{-- <div class="flex justify-end items-center space-x-3 p-4 mt-10">
                 <button class="text-text-primary text-sm hover:text-zinc-500">{{ __('Previous') }}</button>
 
                 <button class="bg-zinc-600 text-white text-sm px-3 py-1 rounded">1</button>
@@ -358,7 +358,10 @@
                 <button class="text-text-primary text-sm hover:text-zinc-500">5</button>
 
                 <button class="text-text-primary text-sm hover:text-zinc-500">{{ __('Next') }}</button>
-            </div>
+            </div> --}}
+
+            {{ $datas->links() }}
+            
         </div>
     </div>
 </section>
