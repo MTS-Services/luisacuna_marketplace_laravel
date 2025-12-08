@@ -8,9 +8,108 @@
                 </p>
             </div>
 
+            <form wire:submit="save" class="space-y-6" x-data="{
+                password: @entangle('password'),
+                touched: false,
+            
+                get hasLowercase() { return /[a-z]/.test(this.password); },
+                get hasUppercase() { return /[A-Z]/.test(this.password); },
+                get hasNumber() { return /[0-9]/.test(this.password); },
+                get hasMinLength() { return this.password && this.password.length >= 8; },
+                get noSpaces() { return this.password && this.password === this.password.trim() && this.password.length > 0; },
+                get allValid() { return this.hasLowercase && this.hasUppercase && this.hasNumber && this.hasMinLength && this.noSpaces; }
+            }">
+                <!-- Password -->
+                <div class="mb-4 sm:mb-6 px-2 sm:px-6">
+                    <x-ui.label
+                        class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">{{ __('Password') }}</x-ui.label>
+                    <x-ui.input type="password" id="password" placeholder="Aex@8465" wire:model="password"
+                        @blur="touched = true" />
+                    <x-ui.input-error :messages="$errors->get('password')" />
+                </div>
+
+                <!-- Validation Rules -->
+                <div x-show="touched" x-transition>
+                    <!-- Lowercase -->
+                    <div class="flex items-center gap-2 mb-4 sm:mb-6 px-2 sm:px-6">
+                        <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500"
+                            x-show="!hasLowercase" />
+                        <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500" x-show="hasLowercase"
+                            x-cloak />
+                        <p class="text-xs font-normal" :class="hasLowercase ? 'text-zinc-500' : 'text-text-white'">
+                            {{ __('Password must contain a lowercase letter') }}
+                        </p>
+                    </div>
+
+                    <!-- Uppercase -->
+                    <div class="flex items-center gap-2 mb-4 sm:mb-6 px-2 sm:px-6">
+                        <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500"
+                            x-show="!hasUppercase" />
+                        <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500" x-show="hasUppercase"
+                            x-cloak />
+                        <p class="text-xs font-normal" :class="hasUppercase ? 'text-zinc-500' : 'text-text-white'">
+                            {{ __('Password must contain an uppercase letter') }}
+                        </p>
+                    </div>
+
+                    <!-- Number -->
+                    <div class="flex items-center gap-2 mb-4 sm:mb-6 px-2 sm:px-6">
+                        <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500"
+                            x-show="!hasNumber" />
+                        <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500" x-show="hasNumber"
+                            x-cloak />
+                        <p class="text-xs font-normal" :class="hasNumber ? 'text-zinc-500' : 'text-text-white'">
+                            {{ __('Password must contain a number') }}
+                        </p>
+                    </div>
+
+                    <!-- Min Length -->
+                    <div class="flex items-center gap-2 mb-4 sm:mb-6 px-2 sm:px-6">
+                        <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500"
+                            x-show="!hasMinLength" />
+                        <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500" x-show="hasMinLength"
+                            x-cloak />
+                        <p class="text-xs font-normal" :class="hasMinLength ? 'text-zinc-500' : 'text-text-white'">
+                            {{ __('Password must be at least 8 characters long') }}
+                        </p>
+                    </div>
+
+                    <!-- No Spaces -->
+                    <div class="flex items-center gap-2 mb-4 sm:mb-6 px-2 sm:px-6">
+                        <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500" x-show="!noSpaces" />
+                        <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500" x-show="noSpaces"
+                            x-cloak />
+                        <p class="text-xs font-normal" :class="noSpaces ? 'text-zinc-500' : 'text-text-white'">
+                            {{ __('Password must not contain leading or trailing spaces') }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="mb-4 sm:mb-6 px-2 sm:px-6">
+                    <x-ui.label
+                        class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">{{ __('Confirm Password') }}</x-ui.label>
+                    <x-ui.input type="password" placeholder="Confirm Password" wire:model="password_confirmation" />
+                    <x-ui.input-error :messages="$errors->get('password_confirmation')" />
+                </div>
+
+                <!-- Show Password Checkbox -->
+                <div class="mb-4 sm:mb-6 px-2 sm:px-6">
+                    <input type="checkbox" id="showPassword" class="w-4 h-4 rounded accent-purple-500 cursor-pointer"
+                        x-on:click="passwordField = passwordField === 'password' ? 'text' : 'password'; $refs.password.type = passwordField" />
+                    <label for="showPassword" class="text-base font-normal mb-2 text-text-white cursor-pointer">
+                        {{ __('Show password') }}
+                    </label>
+                </div>
+
+                <!-- Sign Up Button -->
+                <x-ui.button class="w-full! py-2!" type="submit">
+                    <span class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Sign up') }}</span>
+                </x-ui.button>
+            </form>
 
 
-            <form wire:submit="save" class="space-y-6">
+            {{-- <form wire:submit="save" class="space-y-6">
                 <!-- Password -->
                 <div class="mb-4 sm:mb-6 px-2 sm:px-6">
                     <x-ui.label
@@ -19,11 +118,11 @@
                     <x-ui.input-error :messages="$errors->get('password')" />
                 </div>
 
-                {{-- <div class="w-full">
+                <div class="w-full">
                     <x-ui.label value="Confirm Password" class="mb-1" />
                     <x-ui.input type="password" placeholder="Confirm Password" wire:model="password_confirmation" />
                     <x-ui.input-error :messages="$errors->get('password_confirmation')" />
-                </div> --}}
+                </div>
                 <!-- Password -->
                 <div class="mb-4 sm:mb-6 px-2 sm:px-6">
                     <x-ui.label
@@ -31,6 +130,59 @@
                     <x-ui.input type="password" placeholder="Confirm Password" wire:model="password_confirmation" />
                     <x-ui.input-error :messages="$errors->get('password_confirmation')" />
                 </div>
+
+
+                <!-- Lowercase Letter -->
+                <div class="flex items-center gap-2">
+                    <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500" x-show="!hasLowercase" />
+                    <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500" x-show="hasLowercase"
+                        x-cloak />
+                    <p class="text-xs font-normal" :class="hasLowercase ? 'text-zinc-500' : 'text-text-white'">
+                        {{ __('Password must contain a lowercase letter') }}
+                    </p>
+                </div>
+
+                <!-- Uppercase Letter -->
+                <div class="flex items-center gap-2 mb-4 sm:mb-6 px-2 sm:px-6">
+                    <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500" x-show="!hasUppercase" />
+                    <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500" x-show="hasUppercase"
+                        x-cloak />
+                    <p class="text-xs font-normal" :class="hasUppercase ? 'text-zinc-500' : 'text-text-white'">
+                        {{ __('Password must contain an uppercase letter') }}
+                    </p>
+                </div>
+
+                <!-- Number -->
+                <div class="flex items-center gap-2 mt-2">
+                    <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500" x-show="!hasNumber" />
+                    <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500" x-show="hasNumber"
+                        x-cloak />
+                    <p class="text-xs font-normal" :class="hasNumber ? 'text-zinc-500' : 'text-text-white'">
+                        {{ __('Password must contain a number') }}
+                    </p>
+                </div>
+
+                <!-- Min Length -->
+                <div class="flex items-center gap-2 mt-2">
+                    <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500" x-show="!hasMinLength" />
+                    <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500" x-show="hasMinLength"
+                        x-cloak />
+                    <p class="text-xs font-normal" :class="hasMinLength ? 'text-zinc-500' : 'text-text-white'">
+                        {{ __('Password must be at least 8 characters long') }}
+                    </p>
+                </div>
+
+                <!-- No Spaces -->
+                <div class="flex items-center gap-2 mt-2">
+                    <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500" x-show="!noSpaces" />
+                    <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500" x-show="noSpaces"
+                        x-cloak />
+                    <p class="text-xs font-normal" :class="noSpaces ? 'text-zinc-500' : 'text-text-white'">
+                        {{ __('Password must not contain leading or trailing spaces') }}
+                    </p>
+                </div>
+
+
 
                 <!-- Show Password Checkbox -->
                 <div class="mb-4 sm:mb-6 px-2 sm:px-6">
@@ -45,7 +197,7 @@
                 </x-ui.button>
 
 
-            </form>
+            </form> --}}
 
 
             <!-- Divider -->
@@ -103,7 +255,8 @@
             <!-- Sign Up Link -->
             <p class="text-center text-text-white">
                 {{ __('Have an account already?') }}
-                <a href="{{ route('login') }}" class="text-purple-700 transition font-medium">{{ __('Sign in') }}</a>
+                <a href="{{ route('login') }}"
+                    class="text-purple-700 transition font-medium">{{ __('Sign in') }}</a>
             </p>
         </div>
     </div>
