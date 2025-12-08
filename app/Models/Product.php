@@ -22,6 +22,7 @@ class Product extends BaseModel implements Auditable
         'name',
         'description',
         'price',
+        'name',
         'quantity',
         'minimum_offer_quantity',
         'delivery_method',

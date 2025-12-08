@@ -31,7 +31,7 @@
             <div class="flex justify-between my-2">
                 <p class="text-text-secondary text-sm mt-4 max-w-[60%]">
                 
-                   <p>
+                   <p class="text-start">
                      {{
                         $data->name ?? ''
                     }}

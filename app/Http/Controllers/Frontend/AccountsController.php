@@ -7,10 +7,12 @@ use Illuminate\Http\Request;
 
 class AccountsController extends Controller
 {
-    protected $masterView = 'frontend.pages.accounts';
+    protected $masterView = 'frontend.pages.product';
 
     public function index()
     {
-        return view($this->masterView);
+        return view($this->masterView, [
+            'categorySlug' => 'accounts'
+        ]);
     }
 }

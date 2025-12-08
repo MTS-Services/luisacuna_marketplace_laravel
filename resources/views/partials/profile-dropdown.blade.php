@@ -13,7 +13,7 @@
         x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100"
         x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-100"
         x-transition:leave-end="opacity-0 transform scale-95"
-        class="absolute right-0 mt-2 w-56 sm:w-64 xl:w-90 2xl:w-96 bg-bg-primary rounded-xl shadow-2xl overflow-hidden z-50">
+        class="absolute right-0 mt-2 w-56 sm:w-64 xl:w-90 2xl:w-96 dark:bg-bg-secondary bg-bg-primary rounded-xl shadow-2xl overflow-hidden z-50">
 
         <!-- User Info Header -->
         <div class="px-2 py-5 flex items-center justify-between shadow-lg bg-bg-secondary">
@@ -45,7 +45,7 @@
             }">
                 <button x-cloak @click="ordersOpen = !ordersOpen"
                     :class="isActive ? 'bg-pink-300 dark:bg-zinc-950 relative' : 'bg-pink-400 dark:bg-zinc-950'"
-                    class="w-full flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg transition-all text-text-white hover:bg-pink-500/50">
+                    class="w-full flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg transition-all text-text-white hover:bg-bg-hover">
                     <div class="flex items-center space-x-2 sm:space-x-3">
                         <flux:icon name="shopping-cart" class="w-5 h-5 sm:w-6 sm:h-6 text-text-white" />
                         <span class="text-xs font-medium text-text-white">{{ __('Orders') }}</span>
@@ -61,11 +61,11 @@
 
                 <div x-show="ordersOpen" x-collapse x-cloak class="mt-1 ml-6 sm:ml-8 space-y-1">
                     <a href="{{ route('user.purchased-orders') }}" wire:navigate @click="$root.sidebarOpen = false"
-                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'purchased_orders' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'purchased_orders' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('Purchased orders') }}
                     </a>
                     <a href="{{ route('user.sold-orders') }}" wire:navigate @click="$root.sidebarOpen = false"
-                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'sold_orders' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'sold_orders' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('Sold orders') }}
                     </a>
                 </div>
@@ -78,7 +78,7 @@
             }">
                 <button x-cloak @click="ordersOpen = !ordersOpen"
                     :class="isActive ? 'bg-pink-300 dark:bg-zinc-950 relative' : 'bg-pink-400 dark:bg-zinc-950'"
-                    class="w-full flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg transition-all text-text-white hover:bg-pink-500/50">
+                    class="w-full flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg transition-all text-text-white hover:bg-bg-hover">
                     <div class="flex items-center space-x-2 sm:space-x-3">
                         <x-phosphor-tag class="w-5 h-5 rotate-90 fill-text-text-white" />
                         <span class="text-xs font-medium text-text-white">Offers</span>
@@ -94,23 +94,23 @@
 
                 <div x-show="ordersOpen" x-collapse x-cloak class="mt-1 ml-6 sm:ml-8 space-y-1">
                     <a href="{{ route('user.currency') }}" wire:navigate @click="$root.sidebarOpen = false"
-                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'currency' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'currency' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('Currency') }}
                     </a>
                     <a href="{{ route('user.accounts') }}" wire:navigate @click="$root.sidebarOpen = false"
-                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'accounts' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'accounts' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('Accounts') }}
                     </a>
                     <a href="{{ route('user.top-ups') }}" wire:navigate @click="$root.sidebarOpen = false"
-                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'top-ups' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'top-ups' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('Top Ups') }}
                     </a>
                     <a href="{{ route('user.items') }}" wire:navigate @click="$root.sidebarOpen = false"
-                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'items' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'items' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('Items') }}
                     </a>
                     <a href="{{ route('user.gift-cards') }}" wire:navigate @click="$root.sidebarOpen = false"
-                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'gift-cards' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'gift-cards' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('Gift Cards') }}
                     </a>
                 </div>
@@ -123,7 +123,7 @@
             }">
                 <button x-cloak @click="boostingOpen = !boostingOpen"
                     :class="isActive ? 'bg-pink-300 dark:bg-zinc-950 relative' : 'bg-pink-400 dark:bg-zinc-950'"
-                    class="w-full flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg transition-all text-text-white hover:bg-pink-500/50">
+                    class="w-full flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg transition-all text-text-white hover:bg-bg-hover">
                     <div class="flex items-center space-x-2 sm:space-x-3">
                         <x-phosphor name="circles-four" variant="solid"
                             class="w-5 h-5 rotate-90 fill-text-text-white" />
@@ -140,11 +140,11 @@
 
                 <div x-show="boostingOpen" x-collapse x-cloak class="mt-1 ml-6 sm:ml-8 space-y-1">
                     <a href="{{ route('user.my-requests') }}" wire:navigate @click="$root.sidebarOpen = false"
-                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'my-requests' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'my-requests' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('My Requests') }}
                     </a>
                     <a href="{{ route('user.received-requests') }}" wire:navigate @click="$root.sidebarOpen = false"
-                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'received-requests' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'received-requests' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                         {{ __('Received Requests') }}
                     </a>
                 </div>
@@ -152,35 +152,35 @@
 
             <!-- Loyalty Link -->
             <a href="{{ route('user.loyalty') }}" wire:navigate @click="$root.sidebarOpen = false"
-                class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'loyalty' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'loyalty' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                 <flux:icon name="trophy" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
                 <span class="text-xs font-medium text-text-white">{{ __('Loyalty') }}</span>
             </a>
 
             <!-- Wallet Link -->
             <a href="{{ route('user.wallet') }}" wire:navigate @click="$root.sidebarOpen = false"
-                class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'wallet' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'wallet' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                 <x-phosphor name="cardholder" variant="regular" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
                 <span class="text-xs font-medium text-text-white">{{ __('Wallet') }}</span>
             </a>
 
             <!-- Messages Link -->
             <a href="{{ route('user.messages') }}" wire:navigate @click="$root.sidebarOpen = false"
-                class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'messages' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'messages' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                 <flux:icon name="chat-bubble-bottom-center-text" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
                 <span class="text-xs font-medium text-text-white">{{ __('Messages') }}</span>
             </a>
 
             <!-- Feedback Link -->
             <a href="{{ route('user.feedback') }}" wire:navigate @click="$root.sidebarOpen = false"
-                class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'feedback' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'feedback' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                 <flux:icon name="star" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
                 <span class="text-xs font-medium text-text-white">{{ __('Feedback') }}</span>
             </a>
 
             <!-- Settings Link -->
             <a href="{{ route('user.account-settings') }}" wire:navigate @click="$root.sidebarOpen = false"
-                class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'account-settings' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'account-settings' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                 <x-phosphor name="gear" class="w-4 h-4 sm:w-5 sm:h-5 fill-text-text-white" />
                 <span class="text-xs font-medium text-text-white">{{ __('Account Settings') }}</span>
             </a>
@@ -196,7 +196,7 @@
                 <div x-data="{ open: false }">
                     <!-- Trigger Button -->
                     <button @click="open = !open"
-                        class="text-xs font-medium flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 bg-pink-300 dark:bg-zinc-950 w-full">
+                        class="text-xs font-medium flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-bg-hover bg-pink-300 dark:bg-zinc-950 w-full">
                         <x-phosphor-globe class="w-5 h-5" />
                         <span class="flex items-center justify-between gap-1 text-text-white w-full">
                             {{ strtoupper(session('locale', 'en')) == 'EN' ? 'En' : 'Fr' }} |
@@ -245,7 +245,7 @@
                 {{-- Theme Switcher --}}
 
                 <div x-model="$flux.appearance" x-data
-                    class="text-xs font-medium flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 bg-pink-300 dark:bg-zinc-950 w-full justify-between">
+                    class="text-xs font-medium flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-bg-hover bg-pink-300 dark:bg-zinc-950 w-full justify-between">
 
                     <span class="flex items-center gap-2 text-text-white">
 

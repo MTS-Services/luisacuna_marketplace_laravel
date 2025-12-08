@@ -109,11 +109,26 @@
                     </div>
                 </div>
 
+             <div class="bg-bg-optional rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
+                    <h2 class="text-text-white font-semibold text-2xl sm:text-40px mb-4 sm:mb-10">{{ __('Game name') }}
+                    </h2>
+                
+                    <div class="grid grid-cols-1 sm:grid-cols-1 gap-3 justify-center mx-auto">
+                        <div>
+                            {{-- <x-ui.label :for="'name'" :value="'Game name'" class="mb-2"> </x-ui.label> --}}
+                            <x-ui.input type="text" placeholder="Game name" id="name" wire:model="name" class="mt-2 block w-full! text-text-primary placeholder:text-text-primary border border-zinc-700  focus:ring-0 bg-bg-primary!"/>
+                            <x-ui.input-error :messages="$errors->get('name')" class="mt-2" />
+                        </div>
+                    </div>
+                </div>
+
                 <div class="bg-bg-optional rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
                     <h2 class="text-2xl font-semibold text-text-white mb-2 sm:mb-7">
                         {{ __('Specific Attributes') }}
                     </h2>
 
+
+                  
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 justify-center mx-auto">
                         @foreach ($gameConfigs as $config)
