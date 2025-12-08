@@ -22,8 +22,8 @@
                         <!-- Left Column - Product Details -->
                         <x-currency.game-information :game="$game" :user="$user" :product="$product" />
 
-                        <!-- Right Column - Pricing & Checkout -->
-                        <x-currency.payment-component :product="$product" />
+                        <!-- Right Column - Product Cards -->
+                        <livewire:backend.user.payments.initialize-order :productId="encrypt($product->id)" />
                     </div>
                 </div>
             </div>
@@ -92,24 +92,6 @@
                     </div>
                 </div>
             </a>
-
         </div>
 
-        @push('scripts')
-            <script>
-                function decreaseQuantity() {
-                    const input = document.getElementById('quantity');
-                    let value = parseInt(input.value);
-                    if (value > 1) {
-                        input.value = value - 1;
-                    }
-                }
-
-                function increaseQuantity() {
-                    const input = document.getElementById('quantity');
-                    let value = parseInt(input.value);
-                    input.value = value + 1;
-                }
-            </script>
-        @endpush
 </section>
