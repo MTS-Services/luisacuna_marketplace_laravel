@@ -100,7 +100,7 @@ class GameConfigSeeder extends Seeder
         }
 
         return [
-            'delivery_methods' => $this->getDeliveryMethodsForCategory($category->slug),
+            'delivery_methods' => $this->getDeliveryMethodsForCategory(),
             'fields' => $categoryConfigs,
         ];
     }
@@ -108,33 +108,9 @@ class GameConfigSeeder extends Seeder
     /**
      * Get delivery methods based on category
      */
-    protected function getDeliveryMethodsForCategory(string $categorySlug): array
+    protected function getDeliveryMethodsForCategory(): array
     {
-        // Categories that typically use account delivery
-        $accountCategories = ['accounts', 'boosting', 'coaching'];
-
-        // Categories that typically use in-game delivery
-        $inGameCategories = ['gold', 'items', 'currency', 'resources'];
-
-        // Categories that typically use both
-        $bothCategories = ['power-leveling', 'services'];
-
-        $slug = strtolower($categorySlug);
-
-        if (in_array($slug, $accountCategories)) {
-            return ['account_delivery'];
-        }
-
-        if (in_array($slug, $inGameCategories)) {
-            return ['game_delivery'];
-        }
-
-        if (in_array($slug, $bothCategories)) {
-            return ['game_delivery', 'account_delivery'];
-        }
-
-        // Default: game delivery
-        return ['game_delivery'];
+        return ['instant', 'manual'];
     }
 
     /**

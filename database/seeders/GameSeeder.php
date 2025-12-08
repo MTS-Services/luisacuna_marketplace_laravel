@@ -14,8 +14,6 @@ class GameSeeder extends Seeder
      */
     public function run(): void
     {
-        $dummyLogo = 'https://dummyimage.com/600x600/cccccc/cccccc';
-
         $games = [
             [
                 'sort_order' => 1,
@@ -266,9 +264,51 @@ class GameSeeder extends Seeder
             ],
         ];
 
+        $colors = [
+            'FF5733',
+            'FF8D1A',
+            'FFC300',
+            'DAF7A6',
+            '33FF57',
+            '1AFFD5',
+            '33C1FF',
+            '3375FF',
+            '8D33FF',
+            'C700FF',
+            'FF33A8',
+            'FF3361',
+            'FF6F61',
+            'FF9A00',
+            'FFCD33',
+            'D4FF33',
+            '75FF33',
+            '33FF8A',
+            '33FFD5',
+            '33E5FF',
+            '3396FF',
+            '335BFF',
+            '6A33FF',
+            'A833FF',
+            'E633FF',
+            'FF33E0',
+            'FF3399',
+            'FF5E33',
+            'FF7F33',
+            'FFB833',
+            'FFE933',
+            'C3FF33',
+            '7DFF33',
+        ];
+
         // Add same dummy logo to all
         foreach ($games as &$game) {
-            $game['logo'] = $dummyLogo;
+            $name = str_replace(' ', '+', $game['name']);
+            $bgColor = $colors[array_rand($colors)];
+            do {
+                $textColor = $colors[array_rand($colors)];
+            } while ($textColor === $bgColor);
+
+            $game['logo'] = "https://placehold.co/600x400/{$bgColor}/{$textColor}?text={$name}";
         }
 
         Game::insert($games);
