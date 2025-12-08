@@ -8,11 +8,13 @@ use Illuminate\Http\Request;
 class UserAccountController extends Controller
 {
     
-    protected $masterView = 'frontend.pages.userAccount';
+    protected $masterView = 'frontend.pages.product';
 
     public function index()
     {
-        return view($this->masterView);
+        return view($this->masterView, [
+            'categorySlug' => 'account'
+        ]);
     }
 }
  

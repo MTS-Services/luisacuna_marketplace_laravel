@@ -7,8 +7,7 @@
 
             {{-- Popular Games Section --}}
             <div class="w-full lg:w-2/3 pt-6 order-2 lg:order-1 overflow-y-auto pr-4">
-                <h3
-                    class="dark:text-white text-gray-900 text-base font-semibold pt-2 mb-6 sticky top-0pb-2">
+                <h3 class="dark:text-white text-gray-900 text-base font-semibold pt-2 mb-6 sticky top-0pb-2">
                     Popular {{ ucfirst($gameCategorySlug) }}
                 </h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-2.5 pb-6">
@@ -39,17 +38,14 @@
                     <div class="relative">
                         {{-- <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search games..."
                             class="w-full bg-bg-primary dark:text-white text-gray-900 border border-zinc-750  rounded px-4 py-2 pl-4 pr-10 focus:outline-none focus:ring-1 dark:focus:ring-purple-500 focus:ring-purple-400 placeholder:text-gray-500 dark:placeholder:text-gray-400" /> --}}
-                       <input type="text"
-    wire:model.live.debounce.300ms="search"
-    placeholder="Search games..."
-    class="w-full bg-bg-primary
+                        <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search games..."
+                            class="w-full bg-bg-primary
            border border-zinc-700! 
            focus:border-zinc-700!                         
            focus:outline-none                         
            rounded px-4 py-2 pl-4 pr-10         
-           placeholder:text-gray-500 dark:placeholder:text-gray-400"
-/>
-                            <button
+           placeholder:text-gray-500 dark:placeholder:text-gray-400" />
+                        <button
                             class="absolute right-3 top-1/2 -translate-y-1/2 dark:text-gray-400 text-gray-500 hover:text-purple-500 transition">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
@@ -79,8 +75,8 @@
                                     class="flex items-center gap-2.5 p-2.5 dark:hover:bg-purple-500/10 hover:bg-purple-100 rounded-lg transition cursor-pointer">
 
                                     <div class="w-6 h-6 flex-shrink-0">
-                                        @if(is_array($gameItem) && isset($gameItem['logo']))
-                                            <img src="{{ storage_url($gameItem['logo']) }}"  
+                                        @if (is_array($gameItem) && isset($gameItem['logo']))
+                                            <img src="{{ storage_url($gameItem['logo']) }}"
                                                 alt="{{ is_array($gameItem) ? $gameItem['name'] : $gameItem }}"
                                                 class="w-full h-full object-contain rounded-lg">
                                         @else
