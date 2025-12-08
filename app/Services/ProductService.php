@@ -31,7 +31,13 @@ class ProductService
 
     public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        return $this->model->paginate($perPage, $filters);
+        $sortField = $filters['sort_field'] ?? 'created_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+
+        return $this->model->query()
+            ->filter($filters)
+            ->orderBy($sortField, $sortDirection)        
+            ->paginate($perPage);
     }
 
     public function getTrashedPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
