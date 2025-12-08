@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class CurrencyController extends Controller
 {
-     protected $masterView = 'frontend.pages.currency';
+     protected $masterView = 'frontend.pages.product';
 
     public function index()
     {

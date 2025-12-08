@@ -7,10 +7,12 @@ use Illuminate\Http\Request;
 
 class TopUpController extends Controller
 {
-    protected $masterView = 'frontend.pages.topUps';
+    protected $masterView = 'frontend.pages.product';
 
     public function index()
     {
-        return view($this->masterView);
+        return view($this->masterView, [
+            'categorySlug' => 'top-up'
+        ]);
     }
 }

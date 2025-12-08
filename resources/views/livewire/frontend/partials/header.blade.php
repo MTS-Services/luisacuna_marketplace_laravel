@@ -142,7 +142,7 @@
     {{-- Notification --}}
     <div x-show="notification" x-cloak @click.outside="notification = false"
         y-transition:enter="transition ease-out duration-100"
-        class="absolute top-18 right-3 w-[90%] xs:w-3/4 md:max-w-[600px] dark:bg-zinc-800 bg-white rounded-2xl! backdrop:blure-md z-100   transition-all duration-300 max-h-[65vh] text-text-text-white shadow-lg overflow-y-auto">
+        class="absolute top-18 right-3 w-[90%] xs:w-3/4 md:max-w-[600px] dark:bg-bg-secondary bg-bg-primary rounded-2xl! backdrop:blure-md z-100   transition-all duration-300 max-h-[65vh] text-text-text-white shadow-lg overflow-y-auto">
         <div class="pb-10 px-6">
             <!-- Header -->
             <div class="flex justify-between items-center p-4 pb-0">

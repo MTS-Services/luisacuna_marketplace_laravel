@@ -28,6 +28,7 @@ class Offer extends Component
     public $price = null;
     public $quantity = null;
     public $description = null;
+    public $name = null;
 
     public $fields = [];
 
@@ -170,8 +171,10 @@ class Offer extends Component
                 'quantity' => 'required|integer|min:1',
                 'description' => 'nullable',
                 'deliveryMethod' => 'required|string|max:255',
+                'name' => 'required|string|max:255',
                 'fields' => 'nullable|array',
                 'fields.*.value' => 'required|string|max:255',
+
             ],
             [
                 'gameId.required' => 'Please select a game.',
@@ -180,6 +183,7 @@ class Offer extends Component
                 'price.required' => 'Price is required.',
                 'quantity.required' => 'Stock quantity is required.',
                 'deliveryMethod.required' => 'Delivery method is required.',
+                'name.required' => 'Name is required.',
             ]
 
         );
@@ -246,6 +250,7 @@ class Offer extends Component
         $this->price = null;
         $this->quantity = null;
         $this->description = null;
+        $this->name = null;
 
     }
 
