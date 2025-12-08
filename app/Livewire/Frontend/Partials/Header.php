@@ -15,6 +15,8 @@ class Header extends Component
     public string $search = '';
 
     public $categories;
+    public $sortField;
+    public $order;
 
     public ?Collection $languages = null;
     protected GameService $game_service;
@@ -50,11 +52,11 @@ class Header extends Component
             $search_results = $this->game_service->searchData($this->search);
 
             if ($this->allGamesCache === null) {
-                $this->allGamesCache = $this->game_service->getAllDatas();
+                $this->allGamesCache = $this->game_service->getAllDatas([],$this->sortField = 'name',  $this->order = 'asc');
             }
         } else {
             if ($this->allGamesCache === null) {
-                $this->allGamesCache = $this->game_service->getAllDatas();
+                $this->allGamesCache = $this->game_service->getAllDatas([],$this->sortField = 'name',  $this->order = 'asc');
             }
             $popular_games = $this->allGamesCache->filter(function ($game) {
                 return $game->tags->contains('slug', 'popular');
