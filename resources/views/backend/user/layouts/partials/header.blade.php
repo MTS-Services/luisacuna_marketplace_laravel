@@ -13,6 +13,7 @@
             <!-- Logo -->
             <a href="{{ route('home') }}" wire:navigate>
                 <img src="{{ asset('assets/images/header_logo.png') }}" alt="Logo" class="h-6 sm:h-8 w-auto">
+                <img src="{{ storage_url('assets/images/header_logo.png') }}" alt="Logo" class="h-6 sm:h-8 w-auto">
             </a>
         </div>
 
