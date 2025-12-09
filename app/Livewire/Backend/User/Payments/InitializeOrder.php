@@ -2,8 +2,7 @@
 
 namespace App\Livewire\Backend\User\Payments;
 
-use App\Models\Currency;
-use App\Models\Order;
+
 use App\Models\Product;
 use App\Services\OrderService;
 use App\Traits\Livewire\WithNotification;
@@ -17,7 +16,7 @@ class InitializeOrder extends Component
     public ?Product $product = null;
     public int $quantity = 1;
 
-    public OrderService $orderService ;
+    protected OrderService $orderService ;
     public function boot (OrderService $orderService)
     {
      $this->orderService = $orderService;   
