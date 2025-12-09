@@ -36,11 +36,19 @@
                 </div>
             </div>
             <!-- Buy Button -->
-            <x-ui.button class="w-full mb-6" type="submit">
-                $<span x-text="(quantity * price).toFixed(2)"
-                    class="text-text-btn-primary group-hover:text-text-btn-secondary"></span>
-                {{ __('Buy Now') }}
-            </x-ui.button>
+            @auth('web')
+                <x-ui.button class="w-full mb-6" type="submit">
+                    $<span x-text="(quantity * price).toFixed(2)"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary"></span>
+                    {{ __('Buy Now') }}
+                </x-ui.button>
+            @else
+                <a href="{{ route('login') }}" wire:navigate class="bg-zinc-500 px-4 md:px-6 py-2 md:py-4 text-text-btn-primary hover:text-text-btn-secondary hover:bg-zinc-50 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group text-nowrap cursor-pointer w-full mb-6" >
+                    $<span x-text="(quantity * price).toFixed(2)"
+                        class=" text-text-btn-primary group-hover:text-text-btn-secondary"></span>
+                    {{ __('Buy Now') }}
+                </a>
+            @endauth
 
     </form>
     <!-- Guarantees -->

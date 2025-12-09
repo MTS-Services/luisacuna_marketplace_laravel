@@ -5,14 +5,23 @@ namespace App\Livewire\Backend\User\Payments;
 use App\Models\Currency;
 use App\Models\Order;
 use App\Models\Product;
+use App\Services\OrderService;
+use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class InitializeOrder extends Component
 {
 
+    use WithNotification;
     public ?Product $product = null;
     public int $quantity = 1;
+
+    public OrderService $orderService ;
+    public function boot (OrderService $orderService)
+    {
+     $this->orderService = $orderService;   
+    }
 
     public function mount($productId)
     {
@@ -36,10 +45,8 @@ class InitializeOrder extends Component
     public function submit()
     {
 
-        // dd($this->product, $this->quantity , $this->product->price * $this->quantity);
-
         $token = bin2hex(random_bytes(126));
-        $order = Order::create([
+        $order = $this->orderService->createData([
             'order_id' => generate_order_id_hybrid(),
             'user_id' => user()->id,
             'source_id' => $this->product->id,
