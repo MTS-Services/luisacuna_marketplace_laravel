@@ -150,12 +150,12 @@
 
                             <!-- Dropdown links -->
                             <div x-show="ordersOpen" x-collapse x-cloak class="mt-1 ml-6 sm:ml-8 space-y-1">
-                                <a href="{{ route('user.currency') }}" wire:navigate
+                                <a href="{{ route('user.offer.currency') }}" wire:navigate
                                     @click="$root.sidebarOpen = false"
                                     class="block px-2 sm:px-3 py-2 text-xs  rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'currency' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                                     {{ __('Currency') }}
                                 </a>
-                                <a href="{{ route('user.accounts') }}" wire:navigate
+                                <a href="{{ route('user.offer.accounts') }}" wire:navigate
                                     @click="$root.sidebarOpen = false"
                                     class="block px-2 sm:px-3 py-2 text-xs  rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'accounts' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                                     {{ __('Accounts') }}

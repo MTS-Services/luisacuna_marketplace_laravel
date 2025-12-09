@@ -30,7 +30,7 @@ class Product extends BaseModel implements Auditable
         'delivery_time',
         'status',
         'platform_id',
-        
+
 
         'creater_id',
         'creater_type',
@@ -62,7 +62,7 @@ class Product extends BaseModel implements Auditable
     public function category()
     {
         return $this->belongsTo(Category::class);
-    } 
+    }
 
     public function platform()
     {
@@ -83,15 +83,19 @@ class Product extends BaseModel implements Auditable
     public function scopeFilter(Builder $query, $filters): Builder
     {
 
-        if($filters['gameSlug'] ?? null){
+        if ($filters['gameSlug'] ?? null) {
             $query->whereHas('games', function ($q) use ($filters) {
                 $q->where('games.slug', $filters['gameSlug']);
             });
         }
-        if($filters['categorySlug'] ?? null){
+        if ($filters['categorySlug'] ?? null) {
             $query->whereHas('category', function ($q) use ($filters) {
                 $q->where('categories.slug', $filters['categorySlug']);
             });
+        }
+
+        if ($filters['user_id'] ?? null) {
+            $query->where('user_id', $filters['user_id']);
         }
 
         return $query;

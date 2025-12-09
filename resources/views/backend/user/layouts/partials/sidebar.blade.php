@@ -14,7 +14,7 @@
                 </button>
             </div>
 
-                     <nav class="flex-1 px-3 py-4 space-y-2">
+            <nav class="flex-1 px-3 py-4 space-y-2">
                 <!-- Orders Dropdown -->
                 <div x-data="{
                     ordersOpen: {{ in_array($pageSlug, ['purchased_orders', 'sold_orders']) ? 'true' : 'false' }},
@@ -44,11 +44,12 @@
 
                     <!-- Dropdown links -->
                     <div x-show="ordersOpen" x-collapse x-cloak class="mt-1 ml-6 sm:ml-8 space-y-1">
-                        <a href="{{ route('user.purchased-orders') }}" wire:navigate @click="$root.sidebarOpen = false"
+                        <a href="{{ route('user.order.purchased-orders') }}" wire:navigate
+                            @click="$root.sidebarOpen = false"
                             class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'purchased_orders' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                             {{ __('Purchased orders') }}
                         </a>
-                        <a href="{{ route('user.sold-orders') }}" wire:navigate @click="$root.sidebarOpen = false"
+                        <a href="{{ route('user.order.sold-orders') }}" wire:navigate @click="$root.sidebarOpen = false"
                             class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'sold_orders' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                             {{ __('Sold orders') }}
                         </a>
@@ -83,7 +84,15 @@
 
                     <!-- Dropdown links -->
                     <div x-show="ordersOpen" x-collapse x-cloak class="mt-1 ml-6 sm:ml-8 space-y-1">
-                        <a href="{{ route('user.currency') }}" wire:navigate @click="$root.sidebarOpen = false"
+                        @foreach ($categories as $category)
+                            <a href="{{ route('user.user-offer.category', $category->slug) }}" wire:navigate
+                                @click="$root.sidebarOpen = false"
+                                class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base rounded-lg transition-all text-text-white hover:bg-pink-500/50 
+                                {{ request()->route('categorySlug') === $category->slug ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
+                                {{ $category->name }}
+                            </a>
+                        @endforeach
+                        {{-- <a href="{{ route('user.currency') }}" wire:navigate @click="$root.sidebarOpen = false"
                             class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'currency' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                             {{ __('Currency') }}
                         </a>
@@ -102,7 +111,7 @@
                         <a href="{{ route('user.gift-cards') }}" wire:navigate @click="$root.sidebarOpen = false"
                             class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'gift-cards' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                             {{ __('Gift Cards') }}
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
                 <!-- Boosting Link -->
@@ -200,4 +209,3 @@
         </div>
     </aside>
 </div>
-
