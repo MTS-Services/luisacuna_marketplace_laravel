@@ -30,6 +30,7 @@ return new class extends Migration
             
             $table->string('name')->index();
             $table->text('description')->nullable();
+            $table->text('delivery_timeline');
             $table->decimal('price', 15, 2)->default(0);
             $table->unsignedBigInteger('quantity')->default(0);
             $table->string('status')->default(ActiveInactiveEnum::ACTIVE->value);

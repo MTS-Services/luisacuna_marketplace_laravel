@@ -28,9 +28,10 @@ class ProductSeeder extends Seeder
             $product = Product::create([
                 'category_id' => 1,
                 'game_id'     => 1, // important
-                'user_id'     => 1,
+                'user_id'     => $users->random()->id,
                 'name'        => fake()->name(),
                 'description' => fake()->text(),
+                'delivery_timeline' => 'Instant Delivery',
                 'price'       => fake()->randomFloat(2, 0, 100),
                 'quantity'    => fake()->randomNumber(4),
                 'platform_id' => Platform::inRandomOrder()->value('id'),
@@ -53,7 +54,8 @@ class ProductSeeder extends Seeder
             $product = Product::create([
                 'category_id' => 2,
                 'game_id'     => 1, // important
-                'user_id'     => 1,
+                'user_id'     => $users->random()->id,
+                'delivery_timeline' => 'Instant Delivery',
                 'name'        => fake()->name(),
                 'description' => fake()->text(),
                 'price'       => fake()->randomFloat(2, 0, 100),
@@ -77,7 +79,8 @@ class ProductSeeder extends Seeder
             $product = Product::create([
                 'category_id' => 3,
                 'game_id'     => 1, // important
-                'user_id'     => 1,
+                'user_id'     => $users->random()->id,
+                'delivery_timeline' => 'Instant Delivery',
                 'name'        => fake()->name(),
                 'description' => fake()->text(),
                 'price'       => fake()->randomFloat(2, 0, 100),
