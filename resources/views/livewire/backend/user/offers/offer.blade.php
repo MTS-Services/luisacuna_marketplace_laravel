@@ -109,14 +109,15 @@
                     </div>
                 </div>
 
-             <div class="bg-bg-optional rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
-                    <h2 class="text-text-white font-semibold text-2xl sm:text-40px mb-4 sm:mb-10">{{ __('Game name') }}
+                <div class="bg-bg-optional rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
+                    <h2 class="text-2xl font-semibold text-text-white mb-2 sm:mb-7">{{ __('Game Title') }}
                     </h2>
-                
+
                     <div class="grid grid-cols-1 sm:grid-cols-1 gap-3 justify-center mx-auto">
                         <div>
                             {{-- <x-ui.label :for="'name'" :value="'Game name'" class="mb-2"> </x-ui.label> --}}
-                            <x-ui.input type="text" placeholder="Game name" id="name" wire:model="name" class="mt-2 block w-full! text-text-primary placeholder:text-text-primary border border-zinc-700  focus:ring-0 bg-bg-primary!"/>
+                            <x-ui.input type="text" placeholder="Game Title" id="name" wire:model="name"
+                                class="mt-2 block w-full! text-text-primary placeholder:text-text-primary border border-zinc-700  focus:ring-0 bg-bg-primary!" />
                             <x-ui.input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
                     </div>
@@ -128,7 +129,7 @@
                     </h2>
 
 
-                  
+
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 justify-center mx-auto">
                         @foreach ($gameConfigs as $config)
@@ -142,12 +143,12 @@
                                             $options = is_array($config->dropdown_values)
                                                 ? $config->dropdown_values
                                                 : json_decode($config->dropdown_values, true);
-                                               $wireModel = "fields.".$config->id.".value" ;
+                                            $wireModel = 'fields.' . $config->id . '.value';
                                         @endphp
-                                     <x-ui.custom-select :label="$config->field_name" :options="$options" :wireModel="$wireModel"
+                                        <x-ui.custom-select :label="$config->field_name" :options="$options" :wireModel="$wireModel"
                                             mdWidth="md:w-full" rounded="rounded" mdLeft="md:left-0" />
 
-                                        
+
 
                                         <x-ui.input-error :messages="$errors->get($wireModel)" class="mt-2" />
                                     </div>
@@ -166,10 +167,10 @@
                             @elseif ($config->input_type == App\Enums\GameConfigInputType::NUMBER)
                                 <div
                                     class="{{ in_array($config->filter_type, ['textarea', 'filter_by_textarea']) ? 'col-span-2' : '' }}">
-                                    <x-ui.label :for="'fields.{{$config->id}}.value'" :value="$config->field_name" class="mb-2" />
+                                    <x-ui.label :for="'fields.{{ $config->id }}.value'" :value="$config->field_name" class="mb-2" />
                                     <x-ui.input id="name" type="number"
                                         class="bg-bg-primary! text-text-primary! dark:text-text-primary! placeholder:text-text-primary! border border-zinc-700 focus:border-0! focus:ring-0! rounded-lg px-3 py-2"
-                                        wire:model="fields.{{$config->id}}.value"
+                                        wire:model="fields.{{ $config->id }}.value"
                                         placeholder="{{ $config->field_name }}" />
                                 </div>
                                 {{-- Default text input --}}
@@ -180,20 +181,20 @@
                                         <x-ui.label :for="'config_' . str_replace('-', '_', $config->slug)" :value="$config->field_name" class="mb-2" />
 
                                         <x-ui.input type="text" placeholder="{{ $config->field_name }}"
-                                            wire:model="fields.{{$config->id}}.value"
+                                            wire:model="fields.{{ $config->id }}.value"
                                             class="border-zinc-700 pl-7 bg-bg-primary! "
-                                            x-model="fields.{{$config->id}}.value" />
+                                            x-model="fields.{{ $config->id }}.value" />
 
-                                        <x-ui.input-error :messages="$errors->get('fields.{{$config->id}}.value')" class="mt-2" />
+                                        <x-ui.input-error :messages="$errors->get('fields.{{ $config->id }}.value')" class="mt-2" />
                                     </div>
                                 @endif
                             @endif
 
                             {{-- Validation errors (for non-dropdown fields) --}}
-                          
-                                @error("fields.{{$config->id}}.value")
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
+
+                            @error("fields.{{ $config->id }}.value")
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         @endforeach
                     </div>
 
@@ -226,11 +227,11 @@
                             <x-ui.label for="platform" :value="__('Platform')" required class="mb-2" />
                             <x-ui.custom-select :label="'Platform'" :options="$platforms" :wireModel="'platform_id'"
                                 mdWidth="md:w-full" rounded="rounded" mdLeft="md:left-0" />
-                            <x-ui.input-error :messages="$errors->get('platform')" />
+                            <x-ui.input-error :messages="$errors->get('platform_id')" />
 
                         </div>
                     </div>
-                    <div class="mt-20">
+                    <div class="mt-8">
                         <h2 class="text-xl sm:text-3xl font-semibold text-text-white">{{ __('Description') }} <span
                                 class="text-text-white text-base sm:text-xl font-normal">{{ __('(optional)') }}</span>
                         </h2>
@@ -256,40 +257,50 @@
                     <h2 class="text-text-white font-semibold text-2xl sm:text-3xl">{{ __('Delivery method') }}</h2>
                     <div class="border-t border-zinc-500 mb-4 sm:mb-10 mt-2"></div>
 
-                    <div>
-                        <h3 class="text-text-white text-lg sm:text-xl font-medium mb-6">
-                            {{ __('Select delivery method') }}</h3>
-
-                        <div class="space-y-4">
-
+                    <div class="grid grid-cols-1 md:grid-cols-2">
+                        <div>
+                            <h3 class="text-text-white text-lg sm:text-xl font-medium mb-6">
+                                {{ __('Select delivery method') }}
+                            </h3>
                             <div class="space-y-4">
                                 @foreach ($gameConfigs as $config)
-                                    @if ($config->delivery_methods == null)
-                                        @continue
+                                    @if ($config->delivery_methods != null)
+                                        @foreach ($config->delivery_methods as $method)
+                                            <label class="flex items-center cursor-pointer group">
+                                                <input type="radio" name="delivery_method"
+                                                    value="{{ $config->id }}|{{ $method }}"  wire:model.live="deliveryMethod"
+                                                    class="w-5 h-5 accent-pink-500 bg-transparent border-2 border-zinc-700 cursor-pointer">
+                                                <span class="ml-3 text-text-white text-base transition-colors">
+                                                    {{ ucfirst(str_replace('_', ' ', $method)) }}
+                                                </span>
+                                            </label>
+                                        @endforeach
+                                        @break
                                     @endif
-                                    @foreach ($config->delivery_methods as $method)
-                                        <label class="flex items-center cursor-pointer group">
-                                            <input type="radio" name="delivery_method" wire:model="deliveryMethod"
-                                                value="{{ $config->id ."|" . $method }}"
-                                                class="w-5 h-5 accent-pink-500 bg-transparent border-2 border-zinc-700 cursor-pointer">
-                                            <span class="ml-3 text-text-white text-base transition-colors">
-                                                {{ ucfirst(str_replace('_', ' ', $method)) }}
-                                            </span>
-                                        </label>
-                                    @endforeach
                                 @endforeach
+                                <x-ui.input-error :messages="$errors->get('deliveryMethod')" />
                             </div>
-
-
                         </div>
+
+                        <div>
+                            <h3 class="text-text-white text-lg sm:text-xl font-medium mb-6">
+                                {{ __('Select delivery Timeline') }}
+                            </h3>
+
+                            <div class="space-y-4">
+                                <x-ui.custom-select label="Delivery Timeline" :options="$timelineOptions"  wireModel="delivery_timeline"
+                                    mdWidth="md:w-full" rounded="rounded" mdLeft="md:left-0" />
+                                <x-ui.input-error  :messages="$errors->get('delivery_timeline')" />
+                            </div>
+                        </div>
+
                     </div>
-                </div>
-                <!-- Place Offer Button -->
-                <div class="mt-10">
-                    <x-ui.button type="submit" class="w-auto! py-2!">
-                        {{ __('Place Offer') }}
-                    </x-ui.button>
-                </div>
+                    <!-- Place Offer Button -->
+                    <div class="mt-10">
+                        <x-ui.button type="submit" class="w-auto! py-2!">
+                            {{ __('Place Offer') }}
+                        </x-ui.button>
+                    </div>
             </form>
         @endif
 
@@ -301,4 +312,7 @@
         @endif
 
     </div>
+
+
+
 </div>

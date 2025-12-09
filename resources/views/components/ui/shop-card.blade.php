@@ -23,7 +23,7 @@
                         {{ substr($game->name, 0, 1)}}</div>
                     @endif 
                      
-                    <span class="text-green font-medium">{{ $data->platform->name }}</span>
+                    <span class="text-green font-medium w-full">{{ $data->platform->name }}</span>
                 </div>
                 <span class="text-text-secondary text-sm">• Stacked</span>
             </div>
@@ -31,7 +31,7 @@
             <div class="flex justify-between my-2">
                 <p class="text-text-secondary text-sm mt-4 max-w-[60%]">
                 
-                   <p class="text-start">
+                   <p class="text-start w-full">
                      {{
                         $data->name ?? ''
                     }}
@@ -52,11 +52,7 @@
                             stroke="currentColor" stroke-width="1.36236" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                     <span>
-                        @foreach($data->product_configs as $product_config)
-                        {{-- @dd($product_config->game_configs->slug); --}}
-                            {{ $product_config->game_configs->slug == 'delivery-speed' ? $product_config->value : '' }}
-
-                        @endforeach
+                            {{ $data->delivery_timeline ?? '' }}
                     </span>
                 </div>
             </div>
