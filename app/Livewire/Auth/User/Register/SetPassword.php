@@ -15,7 +15,7 @@ class SetPassword extends Component
 {
     use WithNotification;
 
-    #[Validate('required|string|min:8|confirmed')]
+    #[Validate('required|string|min:8|confirmed|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/^\S*$/')]
     public $password = '';
 
     #[Validate('required|string')]
@@ -31,24 +31,30 @@ class SetPassword extends Component
     public function mount()
     {
         // Check session expiry
-        if (!session()->has('registration.started_at') || 
-            now()->gt(session('registration.expires_at'))) {
+        if (
+            !session()->has('registration.started_at') ||
+            now()->gt(session('registration.expires_at'))
+        ) {
             session()->forget('registration');
             $this->error('Registration session expired. Please start again.');
             return $this->redirect(route('register.signUp'), navigate: true);
         }
 
         // Check if all previous steps completed
-        if (!session()->has('registration.otp_verified') || 
-            !session('registration.otp_verified')) {
+        if (
+            !session()->has('registration.otp_verified') ||
+            !session('registration.otp_verified')
+        ) {
             $this->error('Please verify your email first.');
             return $this->redirect(route('register.otp'), navigate: true);
         }
 
         // Verify all required data exists
-        if (!session()->has('registration.first_name') || 
-            !session()->has('registration.last_name') || 
-            !session()->has('registration.email')) {
+        if (
+            !session()->has('registration.first_name') ||
+            !session()->has('registration.last_name') ||
+            !session()->has('registration.email')
+        ) {
             $this->error('Registration data incomplete. Please start again.');
             session()->forget('registration');
             return $this->redirect(route('register.signUp'), navigate: true);
@@ -106,7 +112,6 @@ class SetPassword extends Component
             session()->forget('registration');
 
             return $this->redirect(route('login'), navigate: true);
-
         } catch (\Exception $e) {
             Log::error('Failed to create user: ' . $e->getMessage(), [
                 'email' => session('registration.email'),
@@ -121,7 +126,7 @@ class SetPassword extends Component
     {
         // Clear password verification status if going back
         session()->forget(['registration.otp_verified', 'registration.otp_verified_at']);
-        
+
         return $this->redirect(route('register.otp'), navigate: true);
     }
 

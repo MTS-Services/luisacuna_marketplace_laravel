@@ -6,7 +6,7 @@
     </section>
     {{-- profile header --}}
     <section
-        class="relative z-50 container mx-auto bg-bg-secondary p-4 sm:p-10 rounded-2xl -mt-5 sm:-mt-10  shadow-xl mb-12">
+        class="relative z-20 container mx-auto bg-bg-secondary p-4 sm:p-10 rounded-2xl -mt-5 sm:-mt-10  shadow-xl mb-12">
         <div class="relative z-20">
             <div class="flex justify-between">
                 <div class="flex items-center gap-6 sm:gap-10">

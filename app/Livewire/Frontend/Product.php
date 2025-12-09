@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Frontend;
 
-use App\Services\GameService;
 use Livewire\Component;
+use App\Services\GameService;
+use Illuminate\Support\Facades\Log;
 
 class Product extends Component
 {
-   
-    // Store Category slug for future use
+    // Public properties
     public $categorySlug = null;
 
     public $search = '';
@@ -16,75 +16,99 @@ class Product extends Component
     public $perPage = 9;
     public $currentPage = 1;
 
-    protected $games;
+    // Protected properties
     protected GameService $game_service;
     protected $allGamesCache = null;
 
+    /**
+     * Boot method - Dependency injection
+     */
     public function boot(GameService $game_service)
     {
         $this->game_service = $game_service;
     }
 
-    public function sortBy($order)
-    {
-        $this->sortOrder = $order;
-    }
-
+    /**
+     * Mount method - Component initialization
+     */
     public function mount($categorySlug)
     {
         $this->categorySlug = $categorySlug;
     }
 
+    /**
+     * Sort by method
+     */
+    public function sortBy($order)
+    {
+        $this->sortOrder = $order;
+        $this->currentPage = 1;
+    }
+
+    /**
+     * Render method - Main view rendering
+     */
     public function render()
     {
-      
-        $this->games =  $this->game_service->paginateDatas($this->perPage, [
-
-                'category' => $this->categorySlug,
-
-                'relations' => ['tags', 'categories'], 
-                
-                'search' => $this->search
-        ]);
+        $games = $this->getGames();
         
-    
+        $popular_games = $this->game_service->getAllDatas([
+            'category' => $this->categorySlug,
+            'tag' => 'popular',
+            'relations' => ['tags', 'categories']
+        ]);
 
-        $popular_games = $this->game_service->getAllDatas( [
-        'category' => $this->categorySlug,
-        'tag' => 'popular', 
-        'relations' => ['tags', 'categories']
-         ]);
-
-     
-        // Search logic
-        if (!empty($this->search)) {
-            $games = $this->game_service->searchGamesByCategory('currency', $this->search);
-        } else {
-            $games = $this->allGamesCache;
-        }
-
-      
-
-        // Sorting apply
-        // $games = $this->applySorting($games);
-
-        // Pagination data 
-        // $pagination = $this->getPaginationData($this->games);
-
-        // Pagination apply
-        // $games = $games->forPage($this->currentPage, $this->perPage);
+        // $pagination = $this->getPaginationData($games);
 
         return view('livewire.frontend.product', [
-           
-            'games' => $this->games,
-            'popular_games' => $popular_games,
+            'games' => $games ?? collect([]),
+            'popular_games' => $popular_games ?? collect([]),
             'categorySlug' => $this->categorySlug,
-            
+            // 'pagination' => $pagination,
         ]);
     }
 
+    /**
+     * Get games with all filters applied
+     */
+    protected function getGames()
+    {
+        try {
+            // Base parameters
+            $params = [
+                'category' => $this->categorySlug,
+                'relations' => ['tags', 'categories'],
+                'page' => $this->currentPage,
+            ];
+
+            if (!empty($this->search)) {
+                $params['search'] = $this->search;
+            }
+
+            if ($this->sortOrder !== 'default') {
+                $params['sort_field'] = 'name';
+                $params['sort_direction'] = $this->sortOrder;
+            }
+
+            $games = $this->game_service->paginateDatas($this->perPage, $params);
+
+            return $games;
+
+        } catch (\Exception $e) {
+            Log::error('Error fetching games: ' . $e->getMessage());
+            return collect([]);
+        }
+    }
+
+    /**
+     * Apply sorting to collection
+     */
     protected function applySorting($collection)
     {
+        if ($collection === null || $collection->isEmpty()) {
+            return collect([]);
+        }
+
         if ($this->sortOrder === 'asc') {
             return $collection->sortBy('name')->values();
         } elseif ($this->sortOrder === 'desc') {
@@ -94,62 +118,15 @@ class Product extends Component
         return $collection;
     }
 
-    public function gotoPage($page)
+
+
+    /**
+     * Reset filters
+     */
+    public function resetFilters()
     {
-        $this->currentPage = $page;
-    }
-
-    public function previousPage()
-    {
-        if ($this->currentPage > 1) {
-            $this->currentPage--;
-        }
-    }
-
-    public function nextPage()
-    {
-       
-        if ($this->allGamesCache === null) {
-            $this->allGamesCache = $this->game_service->getGamesByCategory('currency');
-        }
-
-        
-        $gamesCollection = !empty($this->search) 
-            ? $this->game_service->searchGamesByCategory('currency', $this->search)
-            : $this->allGamesCache;
-
-        $pagination = $this->getPaginationData($gamesCollection);
-        
-        if ($this->currentPage < $pagination['last_page']) {
-            $this->currentPage++;
-        }
-    }
-
-    protected function getPaginationData($gamesCollection)
-    {
-        // Null check
-        if ($gamesCollection === null || $gamesCollection->isEmpty()) {
-            return [
-                'total' => 0,
-                'per_page' => $this->perPage,
-                'current_page' => $this->currentPage,
-                'last_page' => 1,
-                'from' => 0,
-                'to' => 0,
-            ];
-        }
-
-        $gamesCollection = $this->applySorting($gamesCollection);
-        $total = $gamesCollection->count();
-        $lastPage = (int) ceil($total / $this->perPage);
-
-        return [
-            'total' => $total,
-            'per_page' => $this->perPage,
-            'current_page' => $this->currentPage,
-            'last_page' => $lastPage,
-            'from' => (($this->currentPage - 1) * $this->perPage) + 1,
-            'to' => min($this->currentPage * $this->perPage, $total),
-        ];
+        $this->search = '';
+        $this->sortOrder = 'default';
+        $this->currentPage = 1;
     }
 }
