@@ -30,7 +30,7 @@ class Product extends BaseModel implements Auditable
         'delivery_time',
         'status',
         'platform_id',
-        
+        'delivery_timeline',
 
         'creater_id',
         'creater_type',
@@ -93,6 +93,7 @@ class Product extends BaseModel implements Auditable
                 $q->where('categories.slug', $filters['categorySlug']);
             });
         }
+
 
         return $query;
     }

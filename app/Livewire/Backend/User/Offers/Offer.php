@@ -29,7 +29,7 @@ class Offer extends Component
     public $quantity = null;
     public $description = null;
     public $name = null;
-
+    public $delivery_timeline = null;
     public $fields = [];
 
 
@@ -66,7 +66,7 @@ class Offer extends Component
     protected PlatformService $platformService;
     protected ProductService $productService;
 
-
+    public $timelineOptions = [];
 
 
     public function boot(CategoryService $categoryService, GameService $gameService, PlatformService $platformService, ProductService $productService)
@@ -75,6 +75,19 @@ class Offer extends Component
         $this->gameService = $gameService;
         $this->platformService = $platformService;
         $this->productService = $productService;
+    }
+
+    public function updatedDeliveryMethod($deliveryMethod)
+    {
+        // Update timeline options based on delivery method
+        if ($deliveryMethod === 'manual') {
+            $this->timelineOptions = ['1 Hour', '2 Hours', '3 Hours', '4 Hours']; 
+        } else {
+            $this->timelineOptions = ["Instant Delivery", '1 Hour', '2 Hours', '3 Hours', '4 Hours'];
+        }
+        
+        // Reset delivery time when method changes
+        $this->delivery_time = null;
     }
 
     // When Select Category will run Select Category with category id and name
@@ -171,6 +184,7 @@ class Offer extends Component
                 'quantity' => 'required|integer|min:1',
                 'description' => 'nullable',
                 'deliveryMethod' => 'required|string|max:255',
+                'delivery_timeline' => 'required|string|max:255',
                 'name' => 'required|string|max:255',
                 'fields' => 'nullable|array',
                 'fields.*.value' => 'required|string|max:255',
@@ -184,6 +198,7 @@ class Offer extends Component
                 'quantity.required' => 'Stock quantity is required.',
                 'deliveryMethod.required' => 'Delivery method is required.',
                 'name.required' => 'Name is required.',
+                'delivery_timeline' => "Delivery Timeline is required.",
             ]
 
         );
