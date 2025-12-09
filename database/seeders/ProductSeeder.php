@@ -21,9 +21,10 @@ class ProductSeeder extends Seeder
     {
         $users = User::all();
 
-        $products = [];
+  
         for ($i = 0; $i < 5; $i++) {
-            // Create product
+
+              //    Categoyr 1 Products
             $product = Product::create([
                 'category_id' => 1,
                 'game_id'     => 1, // important
@@ -40,13 +41,64 @@ class ProductSeeder extends Seeder
                             ->get();
             foreach ($gameConfigs as $gameConfig) {
                 ProductConfig::create([
-                    'product_id' => $i,
+                    'product_id' => $product->id,
                     'game_config_id' => $gameConfig->id,
                     'category_id' => 1,
                     'value' => $gameConfig->value,
                 ]);
             }
-            $products[] = $product->id;
+            
+
+              //    Categoyr 2 Products
+            $product = Product::create([
+                'category_id' => 2,
+                'game_id'     => 1, // important
+                'user_id'     => 1,
+                'name'        => fake()->name(),
+                'description' => fake()->text(),
+                'price'       => fake()->randomFloat(2, 0, 100),
+                'quantity'    => fake()->randomNumber(4),
+                'platform_id' => Platform::inRandomOrder()->value('id'),
+                'status'      => ActiveInactiveEnum::ACTIVE->value,
+            ]);
+            $gameConfigs = GameConfig::where('game_category_id', 2)
+                            ->where('game_id', 1)
+                            ->get();
+            foreach ($gameConfigs as $gameConfig) {
+                ProductConfig::create([
+                    'product_id' => $product->id,
+                    'game_config_id' => $gameConfig->id,
+                    'category_id' => 1,
+                    'value' => $gameConfig->value,
+                ]);
+            }
+
+              //    Categoyr 3 Products
+            $product = Product::create([
+                'category_id' => 3,
+                'game_id'     => 1, // important
+                'user_id'     => 1,
+                'name'        => fake()->name(),
+                'description' => fake()->text(),
+                'price'       => fake()->randomFloat(2, 0, 100),
+                'quantity'    => fake()->randomNumber(4),
+                'platform_id' => Platform::inRandomOrder()->value('id'),
+                'status'      => ActiveInactiveEnum::ACTIVE->value,
+            ]);
+            $gameConfigs = GameConfig::where('game_category_id', 3)
+                            ->where('game_id', 1)
+                            ->get();
+            foreach ($gameConfigs as $gameConfig) {
+                ProductConfig::create([
+                    'product_id' => $product->id,
+                    'game_config_id' => $gameConfig->id,
+                    'category_id' => 1,
+                    'value' => $gameConfig->value,
+                ]);
+            }
+            
         }
+    
+      
     }
 }
