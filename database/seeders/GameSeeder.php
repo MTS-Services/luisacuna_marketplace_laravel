@@ -14,12 +14,15 @@ class GameSeeder extends Seeder
      */
     public function run(): void
     {
+        // $dummyLogo = 'https://dummyimage.com/600x600/cccccc/cccccc';
+
         $games = [
             [
                 'sort_order' => 1,
                 'name' => 'EA Sports FC Coins',
                 'slug' => 'ea-sports-fc-coins',
                 'description' => 'EA Sports FC Coins',
+                'logo' => asset('assets/images/games_images/header.jpg'),
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'EA Sports FC Coins',
                 'meta_description' => 'EA Sports FC Coins',
@@ -32,6 +35,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 2,
                 'name' => 'Albion Online Silver',
                 'slug' => 'albion-online-silver',
+                'logo' => asset("assets/images/games_images/albion-online-1759420065208.webp"),
                 'description' => 'Albion Online Silver',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Albion Online Silver',
@@ -45,6 +49,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 3,
                 'name' => 'Animal Crossing: New Horizons Bells',
                 'slug' => 'animal-crossing-new-horizons-bells',
+                'logo' => asset("assets/images/games_images/images.jpg"),
                 'description' => 'Animal Crossing: New Horizons Bells',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Animal Crossing: New Horizons Bells',
@@ -58,6 +63,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 4,
                 'name' => 'Black Desert Online Silver',
                 'slug' => 'black-desert-online-silver',
+                'logo' => asset("assets/images/games_images/header.jpg"),
                 'description' => 'Black Desert Online Silver',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Black Desert Online Silver',
@@ -71,6 +77,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 5,
                 'name' => 'Blade & Soul NEO Divine Gems',
                 'slug' => 'blade-soul-neo-divine-gems',
+                'logo' => asset("assets/images/games_images/1971ab43ca8-d49b0e9d-54a7-43d5-a0e7-4c64e9b8d735.jpg"),
                 'description' => 'Blade & Soul NEO Divine Gems',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Blade & Soul NEO Divine Gems',
@@ -84,6 +91,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 6,
                 'name' => 'Blade Ball Tokens',
                 'slug' => 'blade-ball-tokens',
+                'logo' => asset("assets/images/games_images/images.png"),
                 'description' => 'Blade Ball Tokens',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Blade Ball Tokens',
@@ -97,6 +105,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 7,
                 'name' => 'New World Coins',
                 'slug' => 'new-world-coins',
+                'logo' => asset("assets/images/games_images/images (1).jpg"),
                 'description' => 'New World Coins',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'New World Coins',
@@ -110,6 +119,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 8,
                 'name' => 'Path of Exile 2 Currency',
                 'slug' => 'path-of-exile-2-currency',
+                'logo' => asset("assets/images/games_images/poe-2-trading-guide-small-700x394.webp"),
                 'description' => 'Path of Exile 2 Currency',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Path of Exile 2 Currency',
@@ -123,6 +133,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 9,
                 'name' => 'Throne and Liberty Lucent',
                 'slug' => 'throne-and-liberty-lucent',
+                'logo' => asset("assets/images/games_images/images (2).jpg"),
                 'description' => 'Throne and Liberty Lucent',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Throne and Liberty Lucent',
@@ -136,6 +147,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 10,
                 'name' => 'Worldforge Legends',
                 'slug' => 'worldforge-legends',
+                'logo' => asset("assets/images/games_images/4d6f48c6f7bb2deeb6c237528d5331f4.jpg"),
                 'description' => 'Worldforge Legends',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Worldforge Legends',
@@ -149,6 +161,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 11,
                 'name' => 'Exilecon Official Trailer',
                 'slug' => 'exilecon-official-trailer',
+                'logo' => asset("assets/images/games_images/mqdefault.jpg"),
                 'description' => 'Exilecon Official Trailer',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Exilecon Official Trailer',
@@ -162,6 +175,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 12,
                 'name' => 'Echoes of the Terra',
                 'slug' => 'echoes-of-the-terra',
+                'logo' => asset("assets/images/games_images/Logo.webp"),
                 'description' => 'Echoes of the Terra',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Echoes of the Terra',
@@ -175,6 +189,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 13,
                 'name' => 'Epochs of Gaia',
                 'slug' => 'epochs-of-gaia',
+                'logo' => asset("assets/images/games_images/5834317.webp"),
                 'description' => 'Epochs of Gaia',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Epochs of Gaia',
@@ -188,6 +203,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 14,
                 'name' => 'Titan Realms',
                 'slug' => 'titan-realms',
+                'logo' => asset("assets/images/games_images/bg1.webp"),
                 'description' => 'Titan Realms',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Titan Realms',
@@ -201,6 +217,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 15,
                 'name' => 'Kingdoms Across Skies',
                 'slug' => 'kingdoms-across-skies',
+                'logo' => asset("assets/images/games_images/55a6901f06ff49aba4319ab8a50a381c78c45675.png"),
                 'description' => 'Kingdoms Across Skies',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Kingdoms Across Skies',
@@ -214,6 +231,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 16,
                 'name' => 'Realmwalker: New Dawn',
                 'slug' => 'realmwalker-new-dawn',
+                'logo' => asset("assets/images/games_images/header (1).jpg"),
                 'description' => 'Realmwalker: New Dawn',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Realmwalker: New Dawn',
@@ -227,6 +245,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 17,
                 'name' => 'RuneScape 3 Gold',
                 'slug' => 'runescape-3-gold',
+                'logo' => asset("assets/images/games_images/images (3).jpg"),
                 'description' => 'RuneScape 3 Gold',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'RuneScape 3 Gold',
@@ -240,6 +259,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 18,
                 'name' => 'Lost Ark Gold',
                 'slug' => 'lost-ark-gold',
+                'logo' => asset("assets/images/games_images/LA_T4-Gold-Founder-Pack-Key-Art_580x326.jpg"),
                 'description' => 'Lost Ark Gold',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Lost Ark Gold',
@@ -253,6 +273,7 @@ class GameSeeder extends Seeder
                 'sort_order' => 19,
                 'name' => 'Old School RuneScape Gold',
                 'slug' => 'old-school-runescape-gold',
+                'logo' => asset("assets/images/games_images/images (4).jpg"),
                 'description' => 'Old School RuneScape Gold',
                 'status' => GameStatus::ACTIVE->value,
                 'meta_title' => 'Old School RuneScape Gold',
@@ -264,52 +285,55 @@ class GameSeeder extends Seeder
             ],
         ];
 
-        $colors = [
-            'FF5733',
-            'FF8D1A',
-            'FFC300',
-            'DAF7A6',
-            '33FF57',
-            '1AFFD5',
-            '33C1FF',
-            '3375FF',
-            '8D33FF',
-            'C700FF',
-            'FF33A8',
-            'FF3361',
-            'FF6F61',
-            'FF9A00',
-            'FFCD33',
-            'D4FF33',
-            '75FF33',
-            '33FF8A',
-            '33FFD5',
-            '33E5FF',
-            '3396FF',
-            '335BFF',
-            '6A33FF',
-            'A833FF',
-            'E633FF',
-            'FF33E0',
-            'FF3399',
-            'FF5E33',
-            'FF7F33',
-            'FFB833',
-            'FFE933',
-            'C3FF33',
-            '7DFF33',
-        ];
+        // $colors = [
+        //     'FF5733',
+        //     'FF8D1A',
+        //     'FFC300',
+        //     'DAF7A6',
+        //     '33FF57',
+        //     '1AFFD5',
+        //     '33C1FF',
+        //     '3375FF',
+        //     '8D33FF',
+        //     'C700FF',
+        //     'FF33A8',
+        //     'FF3361',
+        //     'FF6F61',
+        //     'FF9A00',
+        //     'FFCD33',
+        //     'D4FF33',
+        //     '75FF33',
+        //     '33FF8A',
+        //     '33FFD5',
+        //     '33E5FF',
+        //     '3396FF',
+        //     '335BFF',
+        //     '6A33FF',
+        //     'A833FF',
+        //     'E633FF',
+        //     'FF33E0',
+        //     'FF3399',
+        //     'FF5E33',
+        //     'FF7F33',
+        //     'FFB833',
+        //     'FFE933',
+        //     'C3FF33',
+        //     '7DFF33',
+        // ];
 
         // Add same dummy logo to all
-        foreach ($games as &$game) {
-            $name = str_replace(' ', '+', $game['name']);
-            $bgColor = $colors[array_rand($colors)];
-            do {
-                $textColor = $colors[array_rand($colors)];
-            } while ($textColor === $bgColor);
+        // foreach ($games as &$game) {
+        //     $game['logo'] = $dummyLogo;
+        // }
+        // foreach ($games as &$game) {
+        //     $name = str_replace(' ', '+', $game['name']);
+        //     $bgColor = $colors[array_rand($colors)];
+        //     do {
+        //         $textColor = $colors[array_rand($colors)];
+        //     } while ($textColor === $bgColor);
 
-            $game['logo'] = "https://placehold.co/600x400/{$bgColor}/{$textColor}?text={$name}";
-        }
+        //     $game['logo'] = "https://placehold.co/600x400/{$bgColor}/{$textColor}?text={$name}";
+        // }
 
         Game::insert($games);
     }
