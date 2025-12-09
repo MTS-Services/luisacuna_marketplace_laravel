@@ -26,8 +26,6 @@ class DatabaseSeeder extends Seeder
             RoleHasPermissionSeeder::class,
             LanguageSeeder::class,
             CurrencySeeder::class,
-                // ExchangeRateSeeder::class,
-                // ExchangeRateHistorySeeder::class,
             EmailTemplateSeeder::class,
             ReferralSettingSeeder::class,
             UserSeeder::class,

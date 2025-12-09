@@ -38,7 +38,7 @@ Route::get('/coaching', [CoachingController::class, 'index'])->name('coaching');
 
 Route::get('/game/{gameSlug}/{categorySlug}', [GameController::class, 'index'])->name('game.index');
 Route::get('/game-buy/{gameSlug}/{categorySlug}/{productId}', [GameController::class, 'buy'])->name('game.buy');
-Route::get('/game-checkout/{orderId}', [GameController::class, 'checkout'])->name('game.checkout');
+
 
 Route::controller(FrontendController::class)->group(function () {
     Route::get('/how-to-buy', 'howToBuy')->name('how-to-buy');

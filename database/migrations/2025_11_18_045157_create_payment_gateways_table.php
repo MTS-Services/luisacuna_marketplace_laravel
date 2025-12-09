@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('name')->index();
             $table->string('slug')->unique();
             $table->string('icon')->nullable();
-            $table->text('data')->nullable();
+            $table->json('live_data')->nullable();
+            $table->json('sandbox_data')->nullable();
             $table->boolean('is_active')->index()->default(true);
             $table->string('mode')->index()->default(MethodModeStatus::LIVE->value);
             $table->unsignedBigInteger('updated_by')->nullable()->index();

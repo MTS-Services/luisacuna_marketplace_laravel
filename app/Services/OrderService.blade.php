@@ -1,17 +1,10 @@
 <?php 
-
-
+use App\Models\Order;
 namespace App\Services;
 
-use App\Models\Game;
-use App\Models\Product;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
-
-class ProductService
-{
-    public function __construct(protected Product $model)
+class OrderService {
+    
+    public function __construct(protected Order $model)
     {
         
     }
@@ -32,27 +25,15 @@ class ProductService
 
     public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-
-        $search = $filters['search'] ?? null;
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
-        if($search) {
-            // Scout Search
-            return Game::search($search)
-                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
-                ->paginate($perPage);
-        }
         return $this->model->query()
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)        
             ->paginate($perPage);
     }
 
-    public function getTrashedPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
-    {
-        return $this->model->trashPaginate($perPage, $filters);
-    }
 
     public function searchData(string $query, $sortField = 'created_at', $order = 'desc'): Collection
     {
@@ -78,45 +59,17 @@ public function createData(array $data): Product
 {
     return DB::transaction(function () use ($data) {
 
-        $dynamic_data = $data['fields'] ?? [];
-        $delivery_method = $data['deliveryMethod'] ?? null;
-        unset($data['fields']);
-        unset($data['deliveryMethod']);
-
-        $record = $this->model->create($data);
-
-        if (!empty($dynamic_data)) {
-            $configs = [];
-
-          
-            foreach ($dynamic_data as $index => $datas) {
-               
-                //Not need to assing product id because CreateMany automatically assign this according relations
-               $configs[] = [
-                   'game_config_id' => $index,
-                   'value' => $datas['value'],
-                   'category_id' => $record->category_id,
-               ];
-            }
-            
-            
-            $configs[] = [
-                'game_config_id' =>explode('|', $delivery_method)[0],
-                'value' => explode('|', $delivery_method)[1],
-                'category_id' => $record->category_id,
-            ];
-
-            $record->product_configs()->createMany($configs);
-        }
-
-        return $record;
+      
+        return $this->model->create($data);
     });
 }
 
-    public function updateData(int $id, array $data): Product
+
+// Manage Function According to your need
+    public function updateData(int $id, array $data): Order
     {
       //  return $this->updateAction->execute($id, $data);
-       return new Product();
+       return new Order();
     }
 
     public function deleteData(int $id, bool $forceDelete = false, ?int $actionerId = null): bool
@@ -178,5 +131,3 @@ public function createData(array $data): Product
     {
         return $this->model->getInactive($sortField, $order);
     }
-
-}

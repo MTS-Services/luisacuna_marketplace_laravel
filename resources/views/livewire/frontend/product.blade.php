@@ -28,7 +28,7 @@
         <div class="flex items-center justify-between gap-4 mt-3.5">
             <div class="search w-full">
                 <x-ui.input type="text" wire:model.live.debounce.300ms="search" placeholder="Search..."
-                    class="form-input w-full  border border-zinc-700" />
+                    class="form-input w-full  border border-zinc-700"  />
             </div>
             <div class="min-w-30 flex items-center justify-between gap-2 relative" x-data={filter:false}>
 
