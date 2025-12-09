@@ -8,7 +8,7 @@
 
     <div class="min-h-[70vh] flex items-center justify-center text-text-white px-4  sm:px-6 lg:px-8 ">
         <form method="POST" wire:submit.prevent="login" class="w-full max-w-md sm:max-w-lg md:max-w-xl">
-            <div class="bg-bg-primary rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col justify-between min-h-[55vh]">
+            <div class="bg-bg-secondary rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col justify-between min-h-[55vh]">
 
                 <!-- Header -->
                 <div class="mb-6 text-center">
