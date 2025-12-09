@@ -8,6 +8,7 @@ use App\Models\PaymentGateway;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
+use App\Services\OrderService;
 
 class CheckoutComponent extends Component
 {
@@ -20,6 +21,13 @@ class CheckoutComponent extends Component
     public ?string $cardExpiry;
     public ?string $cardCvc;
 
+    protected OrderService $orderService;
+
+    public function boot(OrderService $orderService)
+    {
+        $this->orderService = $orderService;
+
+    }
     public function mount($slug, $token)
     {
         $key = $key = "checkout_{$token}";
@@ -35,7 +43,9 @@ class CheckoutComponent extends Component
             abort(403, 'Sorry, the checkout link has expired');
         }
 
-        $this->order = Order::where('id', $sessionKey['order_id'])->with(['user', 'source'])->first();
+        $this->order = $this->orderService->findData($sessionKey['order_id']);
+        
+        $this->order->load(['user', 'source']);
       
         if (!$this->order || $this->order->status !== OrderStatus::INITIALIZED) {
             abort(404, 'Checkout link is invalid or has expired');
