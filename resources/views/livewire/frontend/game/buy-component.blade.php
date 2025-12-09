@@ -13,19 +13,7 @@
 
         </a>
 
-        {{-- <div class="flex items-center gap-2 mb-8 text-md font-semibold">
-            <div class="w-4 h-4">
-                <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
-            </div>
-            <h1 class="text-text-white">
-                {{ ucwords(str_replace('-', ' ', $gameSlug)) . ' ' . ucwords(str_replace('-', ' ', $categorySlug)) }}
-            </h1>
-
-            <span class=" text-text-primary">></span>
-            <span class=" text-text-primary">Buy Now</span>
-        </div> --}}
         <div>
-
             <div class=" text-white min-h-screen">
                 <div class="w-full mx-auto">
                     <!-- Main Content Grid -->
@@ -34,8 +22,8 @@
                         <!-- Left Column - Product Details -->
                         <x-currency.game-information :game="$game" :user="$user" :product="$product" />
 
-                        <!-- Right Column - Pricing & Checkout -->
-                        <x-currency.payment-component :product="$product" />
+                        <!-- Right Column - Product Cards -->
+                        <livewire:backend.user.payments.initialize-order :productId="encrypt($product->id)" />
                     </div>
                 </div>
             </div>
@@ -104,24 +92,6 @@
                     </div>
                 </div>
             </a>
-
         </div>
 
-        @push('scripts')
-            <script>
-                function decreaseQuantity() {
-                    const input = document.getElementById('quantity');
-                    let value = parseInt(input.value);
-                    if (value > 1) {
-                        input.value = value - 1;
-                    }
-                }
-
-                function increaseQuantity() {
-                    const input = document.getElementById('quantity');
-                    let value = parseInt(input.value);
-                    input.value = value + 1;
-                }
-            </script>
-        @endpush
 </section>

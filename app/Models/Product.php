@@ -82,6 +82,7 @@ class Product extends BaseModel implements Auditable
 
     public function scopeFilter(Builder $query, $filters): Builder
     {
+
         if($filters['gameSlug'] ?? null){
             $query->whereHas('games', function ($q) use ($filters) {
                 $q->where('games.slug', $filters['gameSlug']);

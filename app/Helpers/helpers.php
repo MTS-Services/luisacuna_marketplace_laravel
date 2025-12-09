@@ -36,6 +36,13 @@ if (!function_exists('dateTimeHumanFormat')) {
     }
 }
 
+if(!function_exists('isLoggedIn')) {
+
+   function isLoggedIn() {
+       return Auth::check();
+   }
+}
+
 if (!function_exists('user')) {
     function user()
     {

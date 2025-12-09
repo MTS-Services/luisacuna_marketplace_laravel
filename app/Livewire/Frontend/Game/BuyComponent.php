@@ -16,7 +16,8 @@ class BuyComponent extends Component
     public $game;
     public $user;
     protected ProductService $service;
-    public function boot(ProductService $service){
+    public function boot(ProductService $service)
+    {
         $this->service = $service;
     }
     public function mount($gameSlug, $categorySlug, $productId)
@@ -27,7 +28,6 @@ class BuyComponent extends Component
         $this->product = $this->service->findData($this->productId)->load(['games', 'user']);
         $this->game = $this->product->games;
         $this->user = $this->product->user;
-
     }
     public function render()
     {
