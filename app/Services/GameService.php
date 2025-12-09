@@ -54,9 +54,9 @@ class GameService
         if ($search) {
             // Scout Search
             
-            // return Game::search($search)
-            //     ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
-            //     ->paginate($perPage);
+            return Game::search($search)
+                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->paginate($perPage);
         }
 
         // // Normal Eloquent Query

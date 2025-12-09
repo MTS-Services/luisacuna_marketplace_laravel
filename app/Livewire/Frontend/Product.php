@@ -35,7 +35,7 @@ class Product extends Component
     public function render()
     {
         $games = $this->getGames();
- 
+       
         $popular_games = $this->game_service->getAllDatas([
             'category' => $this->categorySlug,
             'tag' => 'popular',
@@ -51,16 +51,22 @@ class Product extends Component
         ]);
     }
  
+ 
     protected function getGames()
     {
+
+         
         try {
             $params = [
                 'category' => $this->categorySlug,
                 'relations' => ['tags', 'categories'],
                 'page' => $this->currentPage,
             ];
- 
+
+          
+
             if (!empty($this->search)) {
+              
                 $params['search'] = $this->search;
             }
  
