@@ -6,6 +6,7 @@ use App\Enums\OrderStatus;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\Builder;
 
 class Order extends AuditBaseModel implements Auditable
 {
@@ -88,6 +89,12 @@ class Order extends AuditBaseModel implements Auditable
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of HELPER METHODS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+
+    public function filter(Builder $query, array $filters): Builder
+    {
+        return $query;
+    }
+
 
     public function hasSuccessfulPayment(): bool
     {

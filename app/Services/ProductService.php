@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\Models\Game;
 use App\Models\Product;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -31,9 +32,17 @@ class ProductService
 
     public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
+
+        $search = $filters['search'] ?? null;
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
+        if($search) {
+            // Scout Search
+            return Game::search($search)
+                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->paginate($perPage);
+        }
         return $this->model->query()
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)        

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\MethodModeStatus;
 use App\Http\Payment\PaymentManager;
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,16 +14,23 @@ class PaymentGateway extends BaseModel
         'name',
         'slug',
         'icon',
-        'data',
-        'status',
+        'live_data',
+        'sandbox_data',
+        'mode',
+
+        'updated_by',
     ];
 
     protected $hidden = [
-        //
+        'updated_by',
+        'id',
     ];
 
     protected $casts = [
         'status' => 'boolean',
+        'mode' => MethodModeStatus::class,
+        'live_data' => 'array',
+        'sandbox_data' => 'array',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

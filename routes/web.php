@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Frontend\GameController;
 use App\Http\Controllers\MultiLangController;
 use App\Http\Controllers\PaymentController;
 use App\Livewire\Test\Checkout;
@@ -21,6 +23,8 @@ Route::post('/webhooks/coinbase', [PaymentController::class, 'coinbaseWebhook'])
 
 Route::middleware(['auth:web'])->group(function () {
     Route::get('/test', Items::class)->name('test');
+
+    Route::get('/game-checkout/{slug}/{token}', [CheckoutController::class, 'checkout'])->name('game.checkout');
     Route::get('/checkout/{slug}/{token}', Checkout::class)->name('checkout');
     // Route::post('/process-payment', [PaymentController::class, 'processPayment'])->name('process.payment');
 
