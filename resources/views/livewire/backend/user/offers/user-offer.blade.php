@@ -2,7 +2,7 @@
     <div class="p-4 w-full">
         <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-3 md:gap-4">
 
-             <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
 
                 <!-- Game Filter -->
                 <div class="relative w-full sm:w-40 md:w-44">
@@ -36,8 +36,7 @@
 
                 <!-- Search Input -->
                 <div class="relative w-full sm:w-56">
-                    <x-ui.input type="text" placeholder="{{ __('Search') }}"
-                        class="pl-5 py-1.5! text-text-white" />
+                    <x-ui.input type="text" placeholder="{{ __('Search') }}" class="pl-5 py-1.5! text-text-white" />
                     <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                         <x-phosphor-magnifying-glass class="w-5 h-5 fill-text-text-white" />
                     </div>
@@ -72,4 +71,19 @@
     <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this data?'" :message="'Are you absolutely sure you want to remove this data? All associated data will be permanently deleted.'" :method="'deleteProduct'"
         :button-text="'Delete Data'" />
 
+    @push('script')
+        <script>
+            function copied(url) {
+
+                navigator.clipboard.writeText(url)
+
+                    .then(() => {
+                        alert("Copied to clipboard: " + textToCopy);
+                    })
+                    .catch(err => {
+                        console.error("Failed to copy: ", err);
+                    });
+            }
+        </script>
+    @endpush
 </div>

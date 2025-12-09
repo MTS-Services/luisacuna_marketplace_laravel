@@ -17,6 +17,7 @@ class UserOffer extends Component
     public $categorySlug;
     public $showDeleteModal = false;
     public $deleteItemId;
+    public $url ;
 
     protected ProductService $service;
 
@@ -87,7 +88,7 @@ class UserOffer extends Component
                 'icon' => 'link-fill',
                 'method' => 'copyItemLink',
                 'label' => 'Link',
-            ],
+               ],
             [
                 'icon' => 'pencil-simple-fill',
                 'route' => 'user.offers',
@@ -180,17 +181,12 @@ class UserOffer extends Component
     //         'message' => 'Link copied to clipboard!'
     //     ]);
     // }
+    // Route::get('/game-buy/{gameSlug}/{categorySlug}/{productId}', [GameController::class, 'buy'])->name('game.buy');
     public function copyItemLink($id)
     {
-        $url = route('user.currency', ['id' => $id]);
-
-        // Livewire 3 এর js() method use করুন
-        $this->js("
-        navigator.clipboard.writeText('$url').then(() => {
-            \$wire.dispatch('notify', {type: 'success', message: 'Link copied to clipboard!'})
-        }).catch(() => {
-            \$wire.dispatch('notify', {type: 'error', message: 'Failed to copy link!'})
-        })
-    ");
+        
+        $data = $this->service->findData($id)->load(['category', 'games']);
+        $url = route('game.buy', ['gameSlug' => $data->games->slug, 'categorySlug' => $data->category->slug, 'productId' => encrypt($id)]);
+        $this->url = $url;
     }
 }
