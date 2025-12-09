@@ -31,7 +31,7 @@
                 <!-- Validation Rules -->
                 <div x-show="touched" x-transition>
                     <!-- Lowercase -->
-                    <div class="flex items-center gap-2 mb-4 sm:mb-6 px-2 sm:px-6">
+                    <div class="flex items-center gap-2 mb-2 px-2 sm:px-6">
                         <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500"
                             x-show="!hasLowercase" />
                         <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500" x-show="hasLowercase"
@@ -42,7 +42,7 @@
                     </div>
 
                     <!-- Uppercase -->
-                    <div class="flex items-center gap-2 mb-4 sm:mb-6 px-2 sm:px-6">
+                    <div class="flex items-center gap-2 mb-2 px-2 sm:px-6">
                         <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500"
                             x-show="!hasUppercase" />
                         <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500" x-show="hasUppercase"
@@ -53,7 +53,7 @@
                     </div>
 
                     <!-- Number -->
-                    <div class="flex items-center gap-2 mb-4 sm:mb-6 px-2 sm:px-6">
+                    <div class="flex items-center gap-2 mb-2 px-2 sm:px-6">
                         <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500"
                             x-show="!hasNumber" />
                         <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500" x-show="hasNumber"
@@ -64,7 +64,7 @@
                     </div>
 
                     <!-- Min Length -->
-                    <div class="flex items-center gap-2 mb-4 sm:mb-6 px-2 sm:px-6">
+                    <div class="flex items-center gap-2 mb-2 px-2 sm:px-6">
                         <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500"
                             x-show="!hasMinLength" />
                         <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500" x-show="hasMinLength"
@@ -75,7 +75,7 @@
                     </div>
 
                     <!-- No Spaces -->
-                    <div class="flex items-center gap-2 mb-4 sm:mb-6 px-2 sm:px-6">
+                    <div class="flex items-center gap-2 mb-2 px-2 sm:px-6">
                         <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500" x-show="!noSpaces" />
                         <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500" x-show="noSpaces"
                             x-cloak />
