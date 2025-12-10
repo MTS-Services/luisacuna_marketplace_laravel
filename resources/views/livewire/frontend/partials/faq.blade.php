@@ -10,13 +10,14 @@
             <!-- Tabs -->
             <div class="max-w-xs mx-auto flex justify-between mb-8  rounded-full px-4 py-4">
                 <button @click="tab = 'buyers'; active = 0"
-                    :class="tab === 'buyers' ? 'bg-zinc-800 px-8 py-5 rounded-full shadow-lg text-white' :
+                    :class="tab === 'buyers' ? 'bg-zinc-800 px-8 py-5 rounded-full shadow-lg text-gray-200' :
                         'text-text-secondery px-6 py-4'"
                     class="transition-colors duration-300 text-lg">
                     {{ 'For Buyers' }}
                 </button>
                 <button @click="tab = 'sellers'; active = 0"
-                    :class="tab === 'sellers' ? 'bg-bg-secondary px-8 py-5 rounded-full shadow-lg text-white' :
+                    :class="tab === 'sellers' ?
+                        'bg-bg-secondary px-8 py-5 rounded-full shadow-lg dark:bg-zinc-800 text-gray-400' :
                         'text-text-secondery px-6 py-4'"
                     class="transition-colors duration-300 text-lg">
                     {{ __('For Sellers') }}
