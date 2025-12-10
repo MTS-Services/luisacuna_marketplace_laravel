@@ -17,7 +17,7 @@ class UserOffer extends Component
     public $categorySlug;
     public $showDeleteModal = false;
     public $deleteItemId;
-    public $url ;
+    public $url;
 
     protected ProductService $service;
 
@@ -88,7 +88,7 @@ class UserOffer extends Component
                 'icon' => 'link-fill',
                 'method' => 'copyItemLink',
                 'label' => 'Link',
-               ],
+            ],
             [
                 'icon' => 'pencil-simple-fill',
                 'route' => 'user.offers',
@@ -135,8 +135,6 @@ class UserOffer extends Component
         $this->showDeleteModal = true;
     }
 
-
-
     public function deleteProduct(): void
     {
         try {
@@ -154,9 +152,6 @@ class UserOffer extends Component
         }
     }
 
-
-
-
     protected function getFilters(): array
     {
         return [
@@ -169,22 +164,19 @@ class UserOffer extends Component
     }
     // public function copyItemLink($id)
     // {
-    //     $url = route('user.currency') . '?id=' . $id;
-
-    //     $this->dispatch('copyToClipboard', [
-    //         'url' => $url
+    //     $data = $this->service->findData($id)->load(['category', 'games']);
+    //     $url = route('game.buy', [
+    //         'gameSlug' => $data->games->slug,
+    //         'categorySlug' => $data->category->slug,
+    //         'productId' => encrypt($id)
     //     ]);
 
-    //     // Success message
-    //     $this->dispatch('notify', [
-    //         'type' => 'success',
-    //         'message' => 'Link copied to clipboard!'
-    //     ]);
+    //     $this->dispatchBrowserEvent('copy-link', ['url' => $url]);
     // }
-    // Route::get('/game-buy/{gameSlug}/{categorySlug}/{productId}', [GameController::class, 'buy'])->name('game.buy');
+
     public function copyItemLink($id)
     {
-        
+
         $data = $this->service->findData($id)->load(['category', 'games']);
         $url = route('game.buy', ['gameSlug' => $data->games->slug, 'categorySlug' => $data->category->slug, 'productId' => encrypt($id)]);
         $this->url = $url;
