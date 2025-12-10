@@ -183,45 +183,62 @@
                         // ],
                     ]" />
 
-                <x-backend.navlink type="dropdown" icon="box" name="Products" :page_slug="$active"
+                {{-- <x-backend.navlink type="dropdown" icon="box" name="Products" :page_slug="$active"
                     :items="[
                         [
                             'name' => 'Currencies',
-                            'route' => '#',
+                            'route' => route('admin.pm.category.index', 'currency'),
                             'icon' => 'currency-dollar',
-                            'active' => 'product-type',
+                            'active' => 'currency',
                         ],
                         [
                             'name' => 'Accounts',
-                            'route' => '#',
+                            'route' => route('admin.pm.category.index', 'accounts'),
                             'icon' => 'chess-pawn',
-                            'active' => 'product-type',
+                            'active' => 'account',
                         ],
                         [
                             'name' => 'Top Ups',
-                            'route' => '#',
+                            'route' => route('admin.pm.top-ups.index'),
                             'icon' => 'bitcoin',
-                            'active' => 'product-type',
+                            'active' => 'top-ups',
                         ],
                         [
                             'name' => 'Items',
-                            'route' => route('admin.om.offer.index'),
+                            'route' => route('admin.pm.items.index'),
                             'icon' => 'bow-arrow',
-                            'active' => 'product-type',
+                            'active' => 'items',
                         ],
                         [
                             'name' => 'Boostings',
-                            'route' => '#',
+                            'route' => route('admin.pm.boostings.index'),
                             'icon' => 'rocket',
-                            'active' => 'product-type',
+                            'active' => 'boostings',
                         ],
                         [
                             'name' => 'Gift Cards',
-                            'route' => '#',
+                            'route' => route('admin.pm.category.index', 'gift-card'),
                             'icon' => 'gift',
-                            'active' => 'product-type',
+                            'active' => 'gift-cards',
                         ],
-                    ]" />
+                    ]" /> --}}
+                @php
+                    $productItems = [];
+
+                    foreach ($categories as $cat) {
+                        $productItems[] = [
+                            'name' => $cat->name,
+                            'route' => route('admin.pm.category.index', $cat->slug),
+                            // 'icon' => $cat->icon ?? 'circle',
+                            'active' => $cat->slug,
+                        ];
+                    }
+                @endphp
+
+
+                {{-- Dropdown Component --}}
+                <x-backend.navlink type="dropdown" icon="box" name="Products" :page_slug="$active"
+                    :items="$productItems" />
 
                 <x-backend.navlink type="dropdown" icon="layers" name="Level Management" :page_slug="$active"
                     :items="[
