@@ -28,7 +28,7 @@
                 <div class="space-y-4">
 
                     @foreach ($faqs_buyer as $index => $faq)
-                        <div class="bg-bg-border2 rounded-xl p-10 cursor-pointer"
+                        <div class="dark:bg-bg-border2 bg-bg-secondary rounded-xl p-10 cursor-pointer"
                             @click="active === {{ $index }} ? active = null : active = {{ $index }}">
                             <div class="flex justify-between items-center">
                                 <h3 class="text-text-white font-semibold">{{ $faq->question }}</h3>
