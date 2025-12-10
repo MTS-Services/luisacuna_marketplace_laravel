@@ -102,7 +102,7 @@ class HeroService
                 
                 if ($uploadedImage instanceof UploadedFile) {
                     // Delete old file permanently (File deletion is non-reversible)
-                    if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
+                    if (!empty($oldImagePath) && Storage::disk('public')->exists($oldImagePath)) {
                         Storage::disk('public')->delete($oldImagePath);
                     }
                     // Store the new file and track path for rollback
@@ -132,7 +132,7 @@ class HeroService
      
                 if ($uploadedImageMobile instanceof UploadedFile) {
                     // Delete old file permanently (File deletion is non-reversible)
-                    if ($oldImagePath && Storage::disk('public')->exists($oldImagePathMobile)) {
+                   if (!empty($oldImagePathMobile) && Storage::disk('public')->exists($oldImagePathMobile)) {
                         Storage::disk('public')->delete($oldImagePathMobile);
                     }
                     // Store the new file and track path for rollback
@@ -163,13 +163,32 @@ class HeroService
     public function deleteData(int $id):bool
     {
     return  DB::transaction(function () use ($id) {
-        $image = null ; $mobile_image = null;
+        $image_url = null ; $mobile_image_url = null;
         $model = $this->findData($id);
         if (!$model) {
             return false;
         }
 
+        if ($model->image) {
+            $image_url = $model->image;
+           
+        }
+        if ($model->mobile_image) {
+            $mobile_image_url = $model->mobile_image;
+          
+        }
+
         $deleted =  $model->delete();
+
+        if($deleted){
+            if (Storage::disk('public')->exists($image_url))  {
+                Storage::disk('public')->delete($image_url);
+            }
+            if (Storage::disk('public')->exists($mobile_image_url))  {
+                Storage::disk('public')->delete($mobile_image_url);
+            }
+        }
+        return $deleted;
      });
     }
 

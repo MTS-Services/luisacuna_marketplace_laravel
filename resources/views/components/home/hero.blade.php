@@ -1,10 +1,61 @@
 @props([
-    'hero' => [],
+    'heros' => [],
 ])
 
 
 
-@if ( $hero ==null )
+@forelse ($heros as $key => $hero)
+ @if($key > 0) @break @endif
+
+<div class=" relative hidden md:flex overflow-hidden  bg-center h-[532px] bg-no-repeat bg-[length:100%_100%]  justify-center items-center"
+    style="background-image: url('{{ storage_url($hero->image) }}')">
+    <div class="bg-[#0f002978] py-30 bg-opacity-0 relative z-10 w-full">
+        <div class="container py-30 relative z-10 align-left  w-100vw">
+
+            <h1 class="text-5xl md:text-6xl font-semibold mb-6 text-white align-left">{{ $hero->title }}
+            </h1>
+            <p class="text-xl text-white mb-15 max-w-2xl align-left">
+                {{ $hero->content }}
+            </p>
+
+            <div class="flex flex-col md:flex-row gap-4 justify-start">
+                <div>
+                    <x-ui.button class="py-2! px-3!" href="{{ $hero->action_url }}" :wire="false"
+                        :target="$hero->target">
+
+                        {{ $hero->action_title }}
+                    </x-ui.button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <section
+        class=" relative flex md:hidden overflow-hidden  bg-center h-[532px] bg-no-repeat bg-[length:100%_100%]  justify-center items-center"
+        style="background-image: url('{{ storage_url($hero->mobile_image) }}')">
+        <div class="bg-[#0f002978] py-30 bg-opacity-0 relative z-10 w-full">
+            <div class="container py-30 relative z-10 align-left  w-100vw">
+
+                <h1 class="text-5xl md:text-6xl font-semibold mb-6 text-white text-center">{{ $hero->title }}</h1>
+                <p class="text-xl text-white mb-15 max-w-2xl text-center">
+                    {{ $hero->content }}
+                </p>
+
+                <div class="flex flex-col md:flex-row gap-4 justify-start">
+                    <div>
+                        <x-ui.button class="py-2! px-3!" href="{{ $hero->action_url }}" :wire="false"
+                            :target="$hero->target">
+
+                            {{ $hero->action_title }}
+                        </x-ui.button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+@empty
     <section class=" relative py-20 overflow-hidden h-[532px]! flex justify-center items-center">
         <div class="absolute inset-0 z-0 bg-linear-to-r from-purple-950/50 via-text-white to-purple-950/50">
             <div class="absolute top-50 -translate-y-1/2 left-0 w-32 h-32 md:w-auto md:h-auto">
@@ -42,48 +93,5 @@
             </div>
         </div>
     </section>
-@else
-    <section class=" relative hidden md:flex overflow-hidden  bg-center h-[532px] bg-no-repeat bg-[length:100%_100%]  justify-center items-center" style="background-image: url('{{ storage_url($hero->image) }}')">
-        <div class="bg-[#0f002978] py-30 bg-opacity-0 relative z-10 w-full">
-            <div
-                class="container py-30 relative z-10 align-left  w-100vw">
+@endforelse
 
-                <h1 class="text-5xl md:text-6xl font-semibold mb-6 text-white align-left">{{$hero->title }}</h1>
-                <p class="text-xl text-white mb-15 max-w-2xl align-left">
-                    {{$hero->content }}
-                </p>
-
-                <div class="flex flex-col md:flex-row gap-4 justify-start">
-                    <div>
-                        <x-ui.button class="py-2! px-3!" href="{{ $hero->action_url }}" :wire="false" :target="$hero->target">
-                            
-                            {{ $hero->action_title }}
-                        </x-ui.button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <section class=" relative flex md:hidden overflow-hidden  bg-center h-[532px] bg-no-repeat bg-[length:100%_100%]  justify-center items-center" style="background-image: url('{{ storage_url($hero->mobile_image) }}')">
-        <div class="bg-[#0f002978] py-30 bg-opacity-0 relative z-10 w-full">
-            <div
-                class="container py-30 relative z-10 align-left  w-100vw">
-
-                <h1 class="text-5xl md:text-6xl font-semibold mb-6 text-white text-center">{{$hero->title }}</h1>
-                <p class="text-xl text-white mb-15 max-w-2xl text-center">
-                    {{$hero->content }}
-                </p>
-
-                <div class="flex flex-col md:flex-row gap-4 justify-start">
-                    <div>
-                        <x-ui.button class="py-2! px-3!" href="{{ $hero->action_url }}" :wire="false" :target="$hero->target">
-                            
-                            {{ $hero->action_title }}
-                        </x-ui.button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-@endif

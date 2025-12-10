@@ -72,7 +72,7 @@ class Home extends Component
     {
 
         $games = $this->gameService->getAllDatas();
-        $hero = $this->heroService->getFirstActiveData();
+        $heros = $this->heroService->getAllDatas();
 
         $tag = $this->tagService->findData('popular', 'slug');
       
@@ -82,7 +82,7 @@ class Home extends Component
       
         return view('livewire.frontend.home', [
             'games' => $games,
-            'hero' => $hero,
+            'heros' => $heros,
         ]);
     }
 }
