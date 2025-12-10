@@ -35,8 +35,15 @@
                 </div>
 
                 <!-- Search Input -->
-                <div class="relative w-full sm:w-56">
+                {{-- <div class="relative w-full sm:w-56">
                     <x-ui.input type="text" placeholder="{{ __('Search') }}" class="pl-5 py-1.5! text-text-white" />
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <x-phosphor-magnifying-glass class="w-5 h-5 fill-text-text-white" />
+                    </div>
+                </div> --}}
+                <div class="relative w-full sm:w-56">
+                    <x-ui.input type="text" placeholder="{{ __('Search') }}" class="pl-5 py-1.5! text-text-white"
+                        wire:model.live.debounce.300ms="search" />
                     <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                         <x-phosphor-magnifying-glass class="w-5 h-5 fill-text-text-white" />
                     </div>
@@ -61,7 +68,7 @@
         </div>
     </div>
     <div>
-        <x-ui.user-table :data="$datas" :columns="$columns" :actions="$actions"
+        <x-ui.user-table :data="$datas" :columns="$columns" :actions="$actions" searchProperty="search"
             emptyMessage="No data found. Add your first data to get started." class="rounded-lg overflow-hidden" />
         {{-- <x-frontend.pagination-ui :pagination="$pagination" /> --}}
     </div>

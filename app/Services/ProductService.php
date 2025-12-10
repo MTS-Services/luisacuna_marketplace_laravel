@@ -30,43 +30,22 @@ class ProductService
 
     public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
+
         $search = $filters['search'] ?? null;
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
-        // ============= SCOUT SEARCH CASE =============
         if ($search) {
+            // Scout Search
             return Game::search($search)
-                ->query(
-                    fn($query) =>
-                    $query->with('category')  // Category load
-                        ->filter($filters)
-                        ->orderBy($sortField, $sortDirection)
-                )
+                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
         }
-
-        // ============= NORMAL QUERY =============
-        $data = $this->model->query()
-            ->with('category')   // ⭐ Category load from relationship
+        return $this->model->query()
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
-
-        // OPTIONAL: category-wise custom data inject
-        $data->getCollection()->transform(function ($product) {
-
-            // Example: total products in same category
-            $product->category_total_products = $product->category
-                ? $product->category->products()->count()
-                : 0;
-
-            return $product;
-        });
-
-        return $data;
     }
-
 
     public function getTrashedPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
