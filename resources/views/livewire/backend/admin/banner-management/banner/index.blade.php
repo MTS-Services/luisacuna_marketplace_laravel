@@ -47,154 +47,22 @@
                     </div>
                     <div>
                         <h1 class="text-2xl lg:text-3xl font-bold text-text-primary">{{ __('Manage Banners') }}</h1>
-                        {{-- <p class="text-text-secondary text-sm mt-1">{{ __('Manage Banners') }}
-                        </p> --}}
+                      
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <form wire:submit.prevent="save">
-        <div class="grid grid-cols-1 xl:grid-cols-1 gap-6">
 
-            {{-- Main Content --}}
-            <div class="xl:col-span-2 space-y-6">
+    <x-ui.table :data="$datas" :columns="$columns" :actions="$actions" emptyMessage="No data found. Add your first data to get started." class="rounded-lg overflow-hidden" />
 
-                {{-- Application Identity --}}
-                <div class="glass-card rounded-2xl p-6 shadow-lg">
-                    
+    
+    {{-- Delete Confirmation Modal --}}
+    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this data?'" :message="'Are you absolutely sure you want to remove this data? All associated data will be delete to permanently.'" :method="'delete'"
+        :button-text="'Delete Data'" />
 
-                    <div class="grid grid-cols-1 md:grid-cols-1 gap-5">
-
-
-                          <div class="w-full ">
-                                <x-ui.file-input wire:model="form.image" label="Banner Image" accept="image/*" :error="$errors->first('form.image')"
-                                    hint="Upload a profile picture (Max: 2MB)" :existingFiles="$existingFile" removeModel="form.remove_file" />
-                          </div>
-                          
-                          <div class="w-full ">
-                                <x-ui.file-input wire:model="form.mobile_image" label="Banner Image (Mobile Device)" accept="image/*" :error="$errors->first('form.mobile_image')"
-                                    hint="Upload a profile picture (Max: 2MB)" :existingFiles="$existingFileMobile" removeModel="form.remove_file_mobile" />
-                          </div>
-
-                        <div>
-                            <x-ui.label>
-                                {{ __('Banner Title') }}
-                                <span class="text-error">*</span>
-                            </x-ui.label>
-                            <x-ui.input type="text" wire:model="form.title" placeholder="{{ __('Title Here') }}"
-                                class="mt-2" />
-                            <x-ui.input-error :messages="$errors->get('form.title')" class="mt-1" />
-                        </div>
-
-                        <div>
-                            <x-ui.label>
-                                {{ __('Description') }}
-
-                            </x-ui.label>
-                            <x-ui.textarea wire:model="form.content" placeholder="{{ __('Description here') }}"
-                                class="mt-2" rows="4" />
-
-                            <x-ui.input-error :messages="$errors->get('form.content')" class="mt-1" />
-                        </div>
-                        <div>
-                            <x-ui.label>
-                                {{ __('Button Label') }}
-
-                            </x-ui.label>
-                            <x-ui.input type="text" wire:model="form.action_title" placeholder="{{ __('Url Label') }}"
-                                class="mt-2" />
-                            <x-ui.input-error :messages="$errors->get('form.action_title')" class="mt-1" />
-                        </div>
-                        <div>
-                            <x-ui.label>
-                                {{ __('Button Link') }}
-
-                            </x-ui.label>
-                            <x-ui.input type="text" wire:model="form.action_url" placeholder="{{ __('Link url') }}"
-                                class="mt-2" />
-                            <x-ui.input-error :messages="$errors->get('form.action_url')" class="mt-1" />
-                        </div>
-
-                        <div>
-                            <x-ui.label>
-                                {{ __('Link Behaviour') }}
-
-                            </x-ui.label>
-                            <x-ui.select wire:model="form.target" class="mt-2">
-
-                                <option value="_self" {{ $data->target  == '_self' ? 'selected' : ''}} >{{ __('Same Tab') }}</option>
-                                <option value="_blank" {{ $data->target  != '_self' ? 'selected' : ''}} >{{ __('New Tab') }}</option>
-                                
-                            </x-ui.select>
-                            <x-ui.input-error :messages="$errors->get('form.target')" class="mt-1" />
-                        </div>
-
-                        <div>
-                            <x-ui.label>
-
-                                {{ __('Status') }}
-
-                            </x-ui.label>
-                            <x-ui.select wire:model="form.status" class="mt-2">
-                                @foreach ($statuses as $status)
-                                    <option value="{{ $status['value'] }}" {{ $status['value'] == $data->status->value  ? 'selected' : ''}} >{{ $status['label'] }}</option>
-                                @endforeach
-                            </x-ui.select>
-                            <x-ui.input-error :messages="$errors->get('form.status')" class="mt-1" />
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-
-        </div>
-
-        {{-- Action Bar --}}
-        <div class="mt-8">
-            <div class="glass-card rounded-2xl p-5 shadow-xl border border-primary/20">
-                <div class="flex flex-col sm:flex-row items-center justify-end gap-4">
-                    
-
-                    <div class="flex items-center gap-3 ">
-                        <x-ui.button type="button" wire:click="resetForm" class="w-fit py-2! text-nowrap"
-                            variant="tertiary">
-                            {{-- <flux:icon name="arrow-path"
-                                class="h-5 w-5 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
-                            {{ __('Reset') }} --}}
-                            <span wire:loading.remove wire:target="resetForm"
-                                class="flex items-center gap-2 text-text-btn-primary group-hover:text-text-btn-tertiary">
-                                <flux:icon name="arrow-path"
-                                    class="h-5 w-5 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
-                                {{ __('Reset') }}
-                            </span>
-                            <span wire:loading wire:target="resetForm"
-                                class="flex items-center gap-2  text-text-btn-primary group-hover:text-text-btn-tertiary">
-                                <flux:icon name="arrow-path"
-                                    class="h-5 w-5 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary animate-spin" />
-                                {{ __('Resetting...') }}
-                            </span>
-                        </x-ui.button>
-
-                        <x-ui.button type="submit" wire:loading.attr="disabled" wire:click="save" wire:target="save"
-                            class="w-fit py-2! text-nowrap">
-                            <span wire:loading.remove wire:target="save"
-                                class="flex items-center gap-2 text-text-btn-primary group-hover:text-text-btn-secondary">
-                                <flux:icon name="save"
-                                    class="h-5 w-5 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                                {{ __('Save Changes') }}
-                            </span>
-                            <span wire:loading wire:target="save"
-                                class="flex items-center gap-2 py-2! text-text-btn-primary group-hover:text-text-btn-secondary">
-                                <span class="loading loading-spinner loading-sm"></span>
-                                {{ __('Saving...') }}
-                            </span>
-                        </x-ui.button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
+    {{-- Bulk Action Confirmation Modal --}}
+    <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="'Confirm Bulk Action'" :message="'Are you sure you want to perform this action on ' . count($selectedIds) . ' selected data(s)?'" :method="'executeBulkAction'"
+        :button-text="'Confirm Action'" />
 </div>

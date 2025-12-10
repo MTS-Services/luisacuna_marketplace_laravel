@@ -4,8 +4,9 @@ namespace App\Models;
 
 use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
-use Illuminate\Database\Eloquent\Builder;
+use App\Enums\ActiveInactiveEnum;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\Builder;
 
 class Product extends BaseModel implements Auditable
 {
@@ -27,7 +28,6 @@ class Product extends BaseModel implements Auditable
         'quantity',
         'minimum_offer_quantity',
         'delivery_method',
-        'delivery_time',
         'status',
         'platform_id',
         'delivery_timeline',
@@ -47,7 +47,7 @@ class Product extends BaseModel implements Auditable
     ];
 
     protected $casts = [
-        //
+        'status' => ActiveInactiveEnum::class,
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -62,7 +62,7 @@ class Product extends BaseModel implements Auditable
     public function category()
     {
         return $this->belongsTo(Category::class);
-    } 
+    }
 
     public function platform()
     {
@@ -83,17 +83,20 @@ class Product extends BaseModel implements Auditable
     public function scopeFilter(Builder $query, $filters): Builder
     {
 
-        if($filters['gameSlug'] ?? null){
+        if ($filters['gameSlug'] ?? null) {
             $query->whereHas('games', function ($q) use ($filters) {
                 $q->where('games.slug', $filters['gameSlug']);
             });
         }
-        if($filters['categorySlug'] ?? null){
+        if ($filters['categorySlug'] ?? null) {
             $query->whereHas('category', function ($q) use ($filters) {
                 $q->where('categories.slug', $filters['categorySlug']);
             });
         }
 
+        if ($filters['user_id'] ?? null) {
+            $query->where('user_id', $filters['user_id']);
+        }
 
         return $query;
     }

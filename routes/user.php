@@ -1,23 +1,30 @@
 <?php
 
-use App\Http\Controllers\Backend\User\OfferManagement\OfferController;
-use App\Http\Controllers\Frontend\UserProfileController;
-use App\Http\Controllers\PaymentController;
-use App\Livewire\Backend\User\Components\Profile;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Backend\User\OfferManagement\OfferController;
+use App\Http\Controllers\Backend\User\OfferManagement\UserOfferController;
+use App\Http\Controllers\Backend\User\OrderManagement\OrderController;
 
 
 
 // , 'userVerify'
-Route::middleware(['auth','userVerify'])->prefix('dashboard')->name('user.')->group(function () {
+Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->group(function () {
 
     Route::group(['prefix' => 'orders'], function () {
-        Route::get('/purchased-orders', function () {
-            return view('backend.user.pages.orders.purchased-orders');
-        })->name('purchased-orders');
-        Route::get('/sold-orders', function () {
-            return view('backend.user.pages.orders.sold-orders');
-        })->name('sold-orders');
+        // Route::get('/purchased-orders', function () {
+        //     return view('backend.user.pages.orders.purchased-orders');
+        // })->name('purchased-orders');
+        // Route::get('/sold-orders', function () {
+        //     return view('backend.user.pages.orders.sold-orders');
+        // })->name('sold-orders');
+
+
+        Route::controller(OrderController::class)->name('order.')->prefix('order')->group(function () {
+            Route::get('/purchased-orders', 'purchasedOrders')->name('purchased-orders');
+            Route::get('/sold-orders', 'soldOrders')->name('sold-orders');
+        });
+
         Route::get('/order-details', function () {
             return view('backend.user.pages.orders.order-details');
         })->name('order-details');
@@ -27,22 +34,28 @@ Route::middleware(['auth','userVerify'])->prefix('dashboard')->name('user.')->gr
     });
 
     Route::group(['prefix' => 'offers'], function () {
-        Route::get('/currency', function () {
-            return view('backend.user.pages.offers.currency');
-        })->name('currency');
-        Route::get('/accounts', function () {
-            return view('backend.user.pages.offers.accounts');
-        })->name('accounts');
-        Route::get('/top-ups', function () {
-            return view('backend.user.pages.offers.top-ups');
-        })->name('top-ups');
-        Route::get('/items', function () {
-            return view('backend.user.pages.offers.items');
-        })->name('items');
-        Route::get('/gift-cards', function () {
-            return view('backend.user.pages.offers.gift-cards');
-        })->name('gift-cards');
-        Route::get('offers/',[OfferController::class,'index'])->name('offers');
+
+        Route::controller(UserOfferController::class)->name('user-offer.')->prefix('offer')->group(function () {
+            Route::get('/{categorySlug}', 'category')->name('category');
+        });
+
+
+        // Route::get('/currency', function () {
+        //     return view('backend.user.pages.offers.currency');
+        // })->name('currency');
+        // Route::get('/accounts', function () {
+        //     return view('backend.user.pages.offers.accounts');
+        // })->name('accounts');
+        // Route::get('/top-ups', function () {
+        //     return view('backend.user.pages.offers.top-ups');
+        // })->name('top-ups');
+        // Route::get('/items', function () {
+        //     return view('backend.user.pages.offers.items');
+        // })->name('items');
+        // Route::get('/gift-cards', function () {
+        //     return view('backend.user.pages.offers.gift-cards');
+        // })->name('gift-cards');
+        Route::get('offers/', [OfferController::class, 'index'])->name('offers');
     });
 
 

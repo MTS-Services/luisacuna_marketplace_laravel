@@ -16,11 +16,12 @@ class Index extends Component
 {
     use WithDataTable, WithNotification, WithFileUploads;
 
-
-    public BannerForm $form;
+    public $showDeleteModal = false;
+    public $deleteId = null;
+    public $statusFilter = '';
+  
     protected HeroService $heroService;
-    public ?string $existingFile = null;
-    public ?string $existingFileMobile = null;
+
     public Hero $data;
     public function boot(HeroService $heroService)
     {
@@ -28,46 +29,98 @@ class Index extends Component
     }
     public function render()
     {
-        $data = $this->heroService->getFristData();
-        
+        $datas = $this->heroService->getPaginatedData(
+            perPage: 12,
+            filters: $this->getFilters()
+        );
+
       
-        $this->data = $data;
+        $columns = [
+            [
+                'key' => 'image',
+                'label' => 'Icon',
+                'format' => fn($data) => storage_url($data->image) ?? 'NO Image'
+            ],
+            [
+                'key' => 'title',
+                'label' => 'Title',
+                'sortable' => true
+            ],
 
-        $this->existingFile = $data->image;
-        $this->existingFileMobile = $data->mobile_image;
+            [
+                'key' => 'status',
+                'label' => 'Status',
+                'sortable' => true,
+                'format' => function ($data) {
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
+                        $data->status->label() .
+                        '</span>';
+                }
+            ],
 
-        $this->form->setData($data);
+        ];
 
-        
+        $actions = [
+            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.bm.banner.edit', 'encrypt' => true],
+            ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete', 'encrypt' => true],
+        ];
+
+
+        $bulkActions = [
+            ['value' => 'delete', 'label' => 'Delete'],
+            ['value' => 'active', 'label' => 'Active'],
+            ['value' => 'inactive', 'label' => 'Inactive'],
+        ];
+
+
         return view('livewire.backend.admin.banner-management.banner.index', [
-            'statuses' => HeroStatus::options(),
+            'datas' => $datas,
+            'columns' => $columns,
+            'actions' => $actions,
+            'bulkActions' => $bulkActions
         ]);
     }
-    public function save()
+   
+
+    public function confirmDelete($id): void
     {
-        $data = $this->form->validate();
-
-        try {
-            $data['updated_by'] = admin()->id;
-
-
-            $this->data = $this->heroService->updateData($this->data->id, $data);
-
-            $this->success(__('Banner updated successfully.'));
-
-        } catch (\Exception $e) {
-
-            Log::error('Error updating Banner: ' . $e->getMessage());
-            $this->error(__('An error occurred while updating the Banner.'. $e->getMessage()));
-        }
+        $this->deleteId = $id;
+        $this->showDeleteModal = true;
     }
 
-    public function resetForm()
+    public function delete(): void
     {
-         $this->form->reset();
-      
-        $this->form->setData($this->data);
-        $this->existingFile = $this->data->image;
-       
+        try {
+            if (!$this->deleteId) {
+                $this->warning('No data selected');
+                return;
+            }
+            $this->heroService->deleteData(decrypt($this->deleteId));
+            $this->reset(['deleteId', 'showDeleteModal']);
+
+            $this->success('Data deleted successfully');
+        } catch (\Exception $e) {
+            $this->error('Failed to delete data: ' . $e->getMessage());
+        }
+    }
+    protected function getFilters(): array
+    {
+        return [
+            'search' => $this->search,
+            'status' => $this->statusFilter,
+            'sort_field' => $this->sortField,
+            'sort_direction' => $this->sortDirection,
+        ];
+    }
+
+
+    protected function getSelectableIds(): array
+    {
+         $data = $this->heroService->getPaginatedData(
+            perPage: 12,
+            filters: $this->getFilters()
+        );
+  
+        return array_column($data->items(), 'id');
     }
 }
