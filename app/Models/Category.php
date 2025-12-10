@@ -84,6 +84,11 @@ class Category extends AuditBaseModel implements Auditable
     {
         return $this->hasMany(Achievement::class, 'category_id', 'id');
     }
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id', 'id');
+    }
+
 
     /* ================================================================
      |  Translation Helper Methods (Convenience)
