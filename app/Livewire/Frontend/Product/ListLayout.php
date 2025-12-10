@@ -52,7 +52,7 @@ class ListLayout extends Component
         ]);
         Session::driver('database')->put("checkout_{$token}", [
             'order_id' => $order->id,
-            'price_locked' => ($this->product->price * $this->product->quantity),
+            'price_locked' => ($this->product->price * $this->product->quantity) ,
             'expires_at' => now()->addMinutes((int) env('ORDER_CHECKOUT_TIMEOUT_MINUTES', 5))->timestamp,
         ]);
         return $this->redirect(
