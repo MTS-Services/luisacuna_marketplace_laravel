@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Hero;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -53,6 +54,26 @@ class HeroService
         }
 
         return $query->active()->orderBy($sortField, $order)->first();
+    }
+
+    public function getPaginatedData(int $perPage =  15, array $filters = []): LengthAwarePaginator
+    {
+        $search = $filters['search'] ?? null;
+        $sortField = $filters['sort_field'] ?? 'created_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+
+        if ($search) {
+            // Scout Search
+            return Hero::search($search)
+                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->paginate($perPage);
+        }
+
+        // Normal Eloquent Query
+        return $this->model->query()
+            ->filter($filters)
+            ->orderBy($sortField, $sortDirection)
+            ->paginate($perPage);
     }
 
     /* ================== ================== ==================
@@ -136,6 +157,20 @@ class HeroService
             $model->update($newData);
             return $model->fresh();
         });
+    }
+
+
+    public function deleteData(int $id):bool
+    {
+    return  DB::transaction(function () use ($id) {
+        $image = null ; $mobile_image = null;
+        $model = $this->findData($id);
+        if (!$model) {
+            return false;
+        }
+
+        $deleted =  $model->delete();
+     });
     }
 
   
