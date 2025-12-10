@@ -1,28 +1,34 @@
 <?php
 
 
-use App\Http\Controllers\Backend\Admin\GameManagement\TagController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backend\Admin\ProductManagement\TopUpsController;
 use App\Http\Controllers\Backend\Admin\AuditingController;
+use App\Http\Controllers\Backend\Admin\CmsManagement\CmsController;
+use App\Http\Controllers\Backend\Admin\FaqManagement\FaqController;
 use App\Http\Controllers\Backend\Admin\Settings\CurrencyController;
 use App\Http\Controllers\Backend\Admin\Settings\LanguageController;
+use App\Http\Controllers\Backend\Admin\GameManagement\TagController;
 use App\Http\Controllers\Backend\Admin\GameManagement\GameController;
 use App\Http\Controllers\Backend\Admin\UserManagement\UserController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
-use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
-use App\Http\Controllers\Backend\Admin\BannerManagement\BannerController;
-use App\Http\Controllers\Backend\Admin\CmsManagement\CmsController;
-use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\RankController;
-use App\Http\Controllers\Backend\Admin\ReviewManagement\PageViewController;
+use App\Http\Controllers\Backend\Admin\BannerManagement\BannerController;
+use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\GameManagement\PlatformController;
+use App\Http\Controllers\Backend\Admin\ProductManagement\AccountController;
+use App\Http\Controllers\Backend\Admin\ReviewManagement\PageViewController;
+use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementTypeController;
-use App\Http\Controllers\Backend\Admin\FaqManagement\FaqController;
 use App\Http\Controllers\Backend\Admin\GatewayAndIntegration\GatewayAndIntegrationController;
+use App\Http\Controllers\Backend\Admin\ProductManagement\BoostingsController;
+use App\Http\Controllers\Backend\Admin\ProductManagement\CurrencyController as ProductCurrencyController;
+use App\Http\Controllers\Backend\Admin\ProductManagement\GiftCardsController;
+use App\Http\Controllers\Backend\Admin\ProductManagement\ItemsController;
 
 Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
@@ -226,5 +232,32 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             });
             Route::get('/translation-keys', 'translationKeys')->name('translation-keys');
         });
+    });
+    Route::group(['prefix' => 'product-management', 'as' => 'pm.'], function () {
+        Route::controller(ProductCurrencyController::class)->name('category.')->prefix('category')->group(function () {
+            Route::get('/{categorySlug}', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+        });
+
+        // Route::controller(AccountController::class)->name('account.')->prefix('account')->group(function () {
+        //     Route::get('/', 'index')->name('index');
+        //     Route::get('/create', 'create')->name('create');
+        // });
+        // Route::controller(TopUpsController::class)->name('top-ups.')->prefix('top-ups')->group(function () {
+        //     Route::get('/', 'index')->name('index');
+        //     Route::get('/create', 'create')->name('create');
+        // });
+        // Route::controller(ItemsController::class)->name('items.')->prefix('items')->group(function () {
+        //     Route::get('/', 'index')->name('index');
+        //     Route::get('/create', 'create')->name('create');
+        // });
+        // Route::controller(BoostingsController::class)->name('boostings.')->prefix('boostings')->group(function () {
+        //     Route::get('/', 'index')->name('index');
+        //     Route::get('/create', 'create')->name('create');
+        // });
+        // Route::controller(GiftCardsController::class)->name('gift-cards.')->prefix('gift-cards')->group(function () {
+        //     Route::get('/', 'index')->name('index');
+        //     Route::get('/create', 'create')->name('create');
+        // });
     });
 });

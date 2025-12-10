@@ -4,8 +4,9 @@ namespace App\Models;
 
 use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
-use Illuminate\Database\Eloquent\Builder;
+use App\Enums\ActiveInactiveEnum;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\Builder;
 
 class Product extends BaseModel implements Auditable
 {
@@ -46,7 +47,7 @@ class Product extends BaseModel implements Auditable
     ];
 
     protected $casts = [
-        //
+        'status' => ActiveInactiveEnum::class,
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
