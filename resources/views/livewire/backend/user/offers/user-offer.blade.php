@@ -72,6 +72,18 @@
         :button-text="'Delete Data'" />
 
     @push('script')
+        {{-- <script>
+            window.addEventListener('copy-link', event => {
+                navigator.clipboard.writeText(event.detail.url)
+                    .then(() => {
+                        alert("Link copied!");
+                    })
+                    .catch(err => {
+                        console.log("Copy failed", err);
+                    });
+            });
+        </script> --}}
+
         <script>
             function copied(url) {
 
