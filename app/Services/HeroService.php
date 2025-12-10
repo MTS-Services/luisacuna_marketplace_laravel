@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Hero;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -55,6 +56,26 @@ class HeroService
         return $query->active()->orderBy($sortField, $order)->first();
     }
 
+    public function getPaginatedData(int $perPage =  15, array $filters = []): LengthAwarePaginator
+    {
+        $search = $filters['search'] ?? null;
+        $sortField = $filters['sort_field'] ?? 'created_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+
+        if ($search) {
+            // Scout Search
+            return Hero::search($search)
+                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->paginate($perPage);
+        }
+
+        // Normal Eloquent Query
+        return $this->model->query()
+            ->filter($filters)
+            ->orderBy($sortField, $sortDirection)
+            ->paginate($perPage);
+    }
+
     /* ================== ================== ==================
     *                   Action Executions
     * ================== ================== ================== */
@@ -81,7 +102,7 @@ class HeroService
                 
                 if ($uploadedImage instanceof UploadedFile) {
                     // Delete old file permanently (File deletion is non-reversible)
-                    if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
+                    if (!empty($oldImagePath) && Storage::disk('public')->exists($oldImagePath)) {
                         Storage::disk('public')->delete($oldImagePath);
                     }
                     // Store the new file and track path for rollback
@@ -111,7 +132,7 @@ class HeroService
      
                 if ($uploadedImageMobile instanceof UploadedFile) {
                     // Delete old file permanently (File deletion is non-reversible)
-                    if ($oldImagePath && Storage::disk('public')->exists($oldImagePathMobile)) {
+                   if (!empty($oldImagePathMobile) && Storage::disk('public')->exists($oldImagePathMobile)) {
                         Storage::disk('public')->delete($oldImagePathMobile);
                     }
                     // Store the new file and track path for rollback
@@ -136,6 +157,39 @@ class HeroService
             $model->update($newData);
             return $model->fresh();
         });
+    }
+
+
+    public function deleteData(int $id):bool
+    {
+    return  DB::transaction(function () use ($id) {
+        $image_url = null ; $mobile_image_url = null;
+        $model = $this->findData($id);
+        if (!$model) {
+            return false;
+        }
+
+        if ($model->image) {
+            $image_url = $model->image;
+           
+        }
+        if ($model->mobile_image) {
+            $mobile_image_url = $model->mobile_image;
+          
+        }
+
+        $deleted =  $model->delete();
+
+        if($deleted){
+            if (Storage::disk('public')->exists($image_url))  {
+                Storage::disk('public')->delete($image_url);
+            }
+            if (Storage::disk('public')->exists($mobile_image_url))  {
+                Storage::disk('public')->delete($mobile_image_url);
+            }
+        }
+        return $deleted;
+     });
     }
 
   

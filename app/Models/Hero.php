@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Enums\HeroStatus;
-use App\Models\AuditBaseModel;
+use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Builder;
+use Laravel\Scout\Attributes\SearchUsingPrefix;
 use OwenIt\Auditing\Contracts\Auditable;
  
-class Hero extends AuditBaseModel implements Auditable
+class Hero extends BaseModel implements Auditable
 {
     use   AuditableTrait;
     //
@@ -40,11 +41,30 @@ class Hero extends AuditBaseModel implements Auditable
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
  
      //
- 
+
+     public function scopeFilter(Builder $query, $filters): Builder
+     {
+        if($filters['status'] ?? null){
+            $query->where('status', $filters['status']);
+        }
+         return $query;   
+     }
      /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
  
+    #[SearchUsingPrefix(['title', 'status'])]
+    public function toSearchableArray(): array
+    {
+        return [
+            'name' => $this->title,
+            'status' => $this->status,
+        ];
+    }
+
+
+
+
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('status', HeroStatus::ACTIVE);

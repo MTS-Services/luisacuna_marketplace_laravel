@@ -26,9 +26,7 @@ return new class extends Migration
             $table->string('mobile_image')->nullable();
             $table->string('target')->default('_blank');
             $table->string('status')->default(HeroStatus::ACTIVE->value)->index();
-            $table->softDeletes();
             $table->timestamps();
-
             $this->addAdminAuditColumns($table);
         });
     }
