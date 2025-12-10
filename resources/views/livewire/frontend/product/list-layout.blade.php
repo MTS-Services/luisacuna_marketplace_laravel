@@ -86,26 +86,22 @@
             <div class="w-full md:w-[65%]">
                 <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4 content-start">
                     @forelse ($datas as $data)
-                       <div 
-                        wire:loading.class="opacity-0" 
-                        wire:target="selectedSort, selectedRegion, resetAllFilters"
-                        x-transition:enter="transition ease-out duration-300"
-                        x-transition:enter-start="opacity-0"
-                        x-transition:enter-end="opacity-100" 
-                        wire:click="selectItem('{{encrypt($data->id)}}')"
-                        @click="data = { 
+                        <div wire:loading.class="opacity-0" wire:target="selectedSort, selectedRegion, resetAllFilters"
+                            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+                            x-transition:enter-end="opacity-100" wire:click="selectItem('{{ encrypt($data->id) }}')"
+                            @click="data = { 
                             name: '{{ substr($data->name, 0, 20) }}',
                             quantity: {{ $data->quantity }},
                             price: {{ $data->quantity * $data->price }},
                             logo: '{{ storage_url($game->logo) }}',
                             delivery_timeline: '{{ $data?->delivery_timeline ?? 'N/A' }}'
                         }"
-                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300"
-                    >
+                            class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
 
                             <div class="flex items-center justify-between">
                                 <div class="w-6 h-6">
-                                    <img src="{{ storage_url($game->logo) }}" alt="" class="w-full h-full object-cover">
+                                    <img src="{{ storage_url($game->logo) }}" alt=""
+                                        class="w-full h-full object-cover">
                                 </div>
                                 <div>
                                     <a href="" class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl">
@@ -116,7 +112,8 @@
                             </div>
                             <h3 class="text-base font-semibold text-text-white mt-4">{{ $data->quantity }}</h3>
                             <p class="text-xs text-text-white mt-2">{{ substr($data->name, 0, 20) }}</p>
-                            <span class="text-base font-semibold text-pink-500 mt-4">${{ $data->quantity * $data->price }}</span>
+                            <span
+                                class="text-base font-semibold text-pink-500 mt-4">${{ $data->quantity * $data->price }}</span>
                         </div>
                     @empty
                         <h2>No Data Found</h2>
@@ -144,15 +141,19 @@
                     <span class="border-t-2 border-zinc-500 w-full inline-block"></span>
                     <div class="mt-4">
                         @auth('web')
-                        <form action="" wire:submit="submit">
-                        <x-ui.button wire:click="submit">
-                           <span>$</span> <span x-text="data.price"></span>
-                            {{  ' Buy Now' }}</x-ui.button>
+                            <form action="" wire:submit="submit">
+                                <x-ui.button wire:click="submit">
+                                    <span class="text-white group-hover:text-zinc-500">$</span>
+                                    <span x-text="data.price" class="text-white group-hover:text-zinc-500"></span>
+                                    {{ ' Buy Now' }}</x-ui.button>
                             </form>
                         @else
-                        <a href="{{ route('login') }}" wire:navigate>
-                           <span>$</span> <span x-text="data.price"></span>
-                            {{  ' Buy Now' }}</a>
+                            <a href="{{ route('login') }}" wire:navigate
+                                class="bg-zinc-500 px-4 md:px-6 py-2 md:py-4 text-text-btn-primary hover:text-text-btn-secondary hover:bg-zinc-50 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group text-nowrap cursor-pointer">
+                                <span class="text-white group-hover:text-zinc-500">$</span>
+                                <span x-text="data.price" class="text-white group-hover:text-zinc-500"></span>
+                                {{ ' Buy Now' }}
+                            </a>
                         @endauth
                     </div>
 
@@ -166,8 +167,10 @@
                         <flux:icon name="bolt" class="w-6 h-6" />
                         <p class="text-text-white text-base font-semibold">{{ __('Fast Checkout Options') }}</p>
                         <div class="flex items-center gap-2 w-11 h-7">
-                            <img src="{{ asset('assets/images/gift_cards/google.png') }}" alt="" class="w-full h-full">
-                            <img src="{{ asset('assets/images/gift_cards/apple.png') }}" alt="" class="w-full h-full">
+                            <img src="{{ asset('assets/images/gift_cards/google.png') }}" alt=""
+                                class="w-full h-full">
+                            <img src="{{ asset('assets/images/gift_cards/apple.png') }}" alt=""
+                                class="w-full h-full">
                         </div>
                     </div>
 
@@ -176,8 +179,10 @@
                             <rect fill="none" />
                             <path d="M224,200v8a32,32,0,0,1-32,32H136" fill="none" stroke="currentColor"
                                 stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-                            <path d="M224,128H192a16,16,0,0,0-16,16v40a16,16,0,0,0,16,16h32V128a96,96,0,1,0-192,0v56a16,16,0,0,0,16,16H64a16,16,0,0,0,16-16V144a16,16,0,0,0-16-16H32"
-                                fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+                            <path
+                                d="M224,128H192a16,16,0,0,0-16,16v40a16,16,0,0,0,16,16h32V128a96,96,0,1,0-192,0v56a16,16,0,0,0,16,16H64a16,16,0,0,0,16-16V144a16,16,0,0,0-16-16H32"
+                                fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="16" />
                         </svg>
                         <p class="text-text-white text-base font-semibold">{{ __('24/7 Live Support') }}</p>
                         <span class="text-xs text-zinc-200/60">{{ __('We\'re always here to help') }}</span>
@@ -200,7 +205,8 @@
 
                     <div class="flex gap-4 items-center mt-4">
                         <div class="w-14 h-14">
-                            <img src="{{ asset('assets/images/gift_cards/profile.png') }}" alt="" class="w-full h-full">
+                            <img src="{{ asset('assets/images/gift_cards/profile.png') }}" alt=""
+                                class="w-full h-full">
                         </div>
                         <div>
                             <h2 class="text-text-white font-semibold text-base">{{ __('Devon Lane') }}</h2>
@@ -231,7 +237,8 @@
                 <option value="pending">{{ __('Pending') }}</option>
                 <option value="processing">{{ __('Processing') }}</option>
             </x-ui.select>
-            <button class="px-4 py-2 border border-green-500 text-green-500 rounded-full text-sm hover:bg-green hover:text-white transition">
+            <button
+                class="px-4 py-2 border border-green-500 text-green-500 rounded-full text-sm hover:bg-green hover:text-white transition">
                 {{ __('● Online Seller') }}
             </button>
         </div>
@@ -247,23 +254,25 @@
 
             <div class="py-7 space-y-7">
                 @forelse ($lists=[1,2,3,4,5,6] as $item)
-                    <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300"
-                  
-                    >
+                    <div
+                        class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
                         <div class="px-4 py-3 flex items-center gap-4">
                             <div class="w-10 h-10">
-                                <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt="" class="w-full h-full rounded-full">
+                                <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt=""
+                                    class="w-full h-full rounded-full">
                             </div>
                             <div>
                                 <h3 class="text-text-white text-base font-semibold">{{ __('Devon Lane') }}</h3>
                                 <div class="flex items-center gap-1">
-                                    <x-phosphor name="thumbs-up" variant="solid" class="fill-zinc-600 inline-block" />
+                                    <x-phosphor name="thumbs-up" variant="solid"
+                                        class="fill-zinc-600 inline-block" />
                                     <span class="text-xs text-text-white">99.3%</span>
                                 </div>
                             </div>
                         </div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold">{{ __('Instants') }}</div>
-                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">{{ __('Login Top UP') }}</div>
+                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">
+                            {{ __('Login Top UP') }}</div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
                         <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
                     </div>
