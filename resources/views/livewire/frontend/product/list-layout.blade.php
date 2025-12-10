@@ -78,7 +78,7 @@
 
     {{-- Main content --}}
     <section class="container">
-        <div class="md:flex gap-6 h-auto">
+        <div class="md:flex gap-6 h-auto" x-data={data:{}}>
             <div class="relative min-h-[40vh]">
                 <x-loading-animation :target="'selectedSort, selectedRegion, resetAllFilters'" :style="'list'" />
             </div>
@@ -86,10 +86,23 @@
             <div class="w-full md:w-[65%]">
                 <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4 content-start">
                     @forelse ($datas as $data)
-                        <div wire:loading.class="opacity-0" wire:target="selectedSort, selectedRegion, resetAllFilters"
-                            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
-                            x-transition:enter-end="opacity-100" wire:click="selectItem('{{ encrypt($data->id) }}')"
-                            class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                       <div 
+                        wire:loading.class="opacity-0" 
+                        wire:target="selectedSort, selectedRegion, resetAllFilters"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0"
+                        x-transition:enter-end="opacity-100" 
+                        wire:click="selectItem('{{encrypt($data->id)}}')"
+                        @click="data = { 
+                            name: '{{ substr($data->name, 0, 20) }}',
+                            quantity: {{ $data->quantity }},
+                            price: {{ $data->quantity * $data->price }},
+                            logo: '{{ storage_url($game->logo) }}',
+                            delivery_timeline: '{{ $data?->delivery_timeline ?? 'N/A' }}'
+                        }"
+                        class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300"
+                    >
+
                             <div class="flex items-center justify-between">
                                 <div class="w-6 h-6">
                                     <img src="{{ storage_url($game->logo) }}" alt="" class="w-full h-full object-cover">
@@ -119,18 +132,28 @@
                 <div class="bg-bg-primary rounded-2xl py-7 px-6">
                     <div class="flex items-center gap-1 mb-8">
                         <div class="w-8 h-8">
-                            <img src="{{ storage_url($game->logo) }}" alt="" class="w-full h-full object-cover">
+                            <img :src="data.logo" alt="" class="w-full h-full object-cover">
                         </div>
-                        <p>{{ substr($product?->name, 0, 20) ?? 'N/A' }}</p>
+                        <p x-text="data.name"></p>
                     </div>
                     <span class="border-t-2 border-zinc-500 w-full inline-block"></span>
                     <div class="flex items-center justify-between py-3">
-                        <p class="text-base text-text-white">{{ substr($product?->name, 0, 20) ?? 'N/A' }}</p>
-                        <p class="text-base text-text-white font-semibold">{{ $product?->delivery_timeline ?? 'N/A' }}</p>
+                        <p class="text-base text-text-white"> {{ __('Delivery Timeline') }}</p>
+                        <p class="text-base text-text-white font-semibold" x-text="data.delivery_timeline"></p>
                     </div>
                     <span class="border-t-2 border-zinc-500 w-full inline-block"></span>
                     <div class="mt-4">
-                        <x-ui.button>{{ '$ ' . ($product?->price * $product?->quantity ?? 0) . ' Buy Now' }}</x-ui.button>
+                        @auth('web')
+                        <form action="" wire:submit="submit">
+                        <x-ui.button wire:click="submit">
+                           <span>$</span> <span x-text="data.price"></span>
+                            {{  ' Buy Now' }}</x-ui.button>
+                            </form>
+                        @else
+                        <a href="{{ route('login') }}" wire:navigate>
+                           <span>$</span> <span x-text="data.price"></span>
+                            {{  ' Buy Now' }}</a>
+                        @endauth
                     </div>
 
                     <div class="flex items-center gap-2 mt-8">
@@ -224,7 +247,9 @@
 
             <div class="py-7 space-y-7">
                 @forelse ($lists=[1,2,3,4,5,6] as $item)
-                    <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
+                    <div class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300"
+                  
+                    >
                         <div class="px-4 py-3 flex items-center gap-4">
                             <div class="w-10 h-10">
                                 <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt="" class="w-full h-full rounded-full">
