@@ -65,6 +65,7 @@ class Order extends AuditBaseModel implements Auditable
         return $this->morphTo('source');
     }
 
+
     public function payments()
     {
         return $this->hasMany(Payment::class, 'order_id');
@@ -108,6 +109,36 @@ class Order extends AuditBaseModel implements Auditable
             ->sum('amount');
     }
 
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? null, function ($query, $search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('subtitle', 'like', '%' . $search . '%');
+            });
+        });
+
+        $query->when($filters['user_id'] ?? null, function ($query, $userId) {
+            $query->where('user_id', $userId); // এটা important - logged in user এর order দেখাবে
+        });
+
+
+        // product owner filter (logged in user is the creator)
+        $query->when($filters['product_creator_id'] ?? null, function ($query, $ownerId) {
+            $query->whereHas('source', function ($q) use ($ownerId) {
+                $q->where('user_id', $ownerId);   // product.owner_id = logged user
+            });
+        });
+
+        // exclude buyer = owner
+        $query->when($filters['product_creator_id'] ?? null, function ($query, $ownerId) {
+            $query->where('user_id', '!=', $ownerId);   // buyer ≠ owner
+        });
+
+        return $query;
+    }
+
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of HELPER METHODS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
@@ -119,4 +150,4 @@ class Order extends AuditBaseModel implements Auditable
             //
         ]);
     }
-} 
+}

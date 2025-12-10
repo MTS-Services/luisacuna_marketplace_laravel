@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\User\Orders;
 use Livewire\Component;
 use App\Enums\OrderStatus;
 use Livewire\WithPagination;
+use App\Services\OrderService;
 
 class SoldOrders extends Component
 {
@@ -14,177 +15,102 @@ class SoldOrders extends Component
     public $deleteItemId = null;
     public $perPage = 7;
 
+
+    protected OrderService $service;
+
+    public function boot(OrderService $service)
+    {
+        $this->service = $service;
+    }
+
     public function render()
     {
-        // Orders data matching your table structure
-        $allOrders = collect([
-            [
-                'id' => 1,
-                'name' => 'Fortnite VB Skin Gift',
-                'image' => asset('assets/images/order.png'),
-                'subtitle' => 'Cheapest +75% Discount',
-                'type' => 'Items',
-                'buyer' => 'Albert Flores',
-                'ordered_date' => 'February 11, 2014',
-                'status' => 'Completed',
-                'quantity' => 7421,
-                'price' => 4.75,
-            ],
-            [
-                'id' => 2,
-                'name' => 'Fortnite VB Skin Gift',
-                'image' => asset('assets/images/order.png'),
-                'subtitle' => 'Cheapest +75% Discount',
-                'type' => 'Items',
-                'buyer' => 'Jenny Wilson',
-                'ordered_date' => 'February 28, 2018',
-                'status' => 'Completed',
-                'quantity' => 5832,
-                'price' => 15.30,
-            ],
-            [
-                'id' => 3,
-                'name' => 'Fortnite VB Skin Gift',
-                'image' => asset('assets/images/order.png'),
-                'subtitle' => 'Cheapest +75% Discount',
-                'type' => 'Items',
-                'buyer' => 'Albert Flores',
-                'ordered_date' => 'February 11, 2014',
-                'status' => 'Completed',
-                'quantity' => 7421,
-                'price' => 4.75,
-            ],
-            [
-                'id' => 4,
-                'name' => 'Fortnite VB Skin Gift',
-                'image' => asset('assets/images/order.png'),
-                'subtitle' => 'Cheapest +75% Discount',
-                'type' => 'Items',
-                'buyer' => 'Jenny Wilson',
-                'ordered_date' => 'February 28, 2018',
-                'status' => 'Completed',
-                'quantity' => 5832,
-                'price' => 15.30,
-            ],
-            [
-                'id' => 5,
-                'name' => 'Fortnite VB Skin Gift',
-                'image' => asset('assets/images/order.png'),
-                'subtitle' => 'Cheapest +75% Discount',
-                'type' => 'Items',
-                'buyer' => 'Albert Flores',
-                'ordered_date' => 'February 11, 2014',
-                'status' => 'Completed',
-                'quantity' => 7421,
-                'price' => 4.75,
-            ],
-            [
-                'id' => 6,
-                'name' => 'Fortnite VB Skin Gift',
-                'image' => asset('assets/images/order.png'),
-                'subtitle' => 'Cheapest +75% Discount',
-                'type' => 'Items',
-                'buyer' => 'Jenny Wilson',
-                'ordered_date' => 'February 28, 2018',
-                'status' => 'In Progress',
-                'quantity' => 5832,
-                'price' => 15.30,
-            ],
-            [
-                'id' => 7,
-                'name' => 'Fortnite VB Skin Gift',
-                'image' => asset('assets/images/order.png'),
-                'subtitle' => 'Cheapest +75% Discount',
-                'type' => 'Items',
-                'buyer' => 'Jenny Wilson',
-                'ordered_date' => 'February 28, 2018',
-                'status' => 'Pending',
-                'quantity' => 5832,
-                'price' => 15.30,
-            ],
-            [
-                'id' => 8,
-                'name' => 'Fortnite VB Skin Gift',
-                'image' => asset('assets/images/order.png'),
-                'subtitle' => 'Cheapest +75% Discount',
-                'type' => 'Items',
-                'buyer' => 'Jenny Wilson',
-                'ordered_date' => 'February 28, 2018',
-                'status' => 'Pending',
-                'quantity' => 5832,
-                'price' => 15.30,
-            ],
-        ])->map(fn($order) => (object)$order);
 
-        $currentPage = $this->getPage();
-        $items = $allOrders->slice(($currentPage - 1) * $this->perPage, $this->perPage)->values();
-        
-        $pagination = [
-            'total' => $allOrders->count(),
-            'per_page' => $this->perPage,
-            'current_page' => $currentPage,
-            'last_page' => ceil($allOrders->count() / $this->perPage),
-            'from' => (($currentPage - 1) * $this->perPage) + 1,
-            'to' => min($currentPage * $this->perPage, $allOrders->count()),
-        ];
 
         // Table columns configuration for orders
+        // Table columns configuration for orders
+        $datas = $this->service->getPaginatedData(
+            perPage: $this->perPage,
+            filters: $this->getFilters()
+        );
+
+        // dd($datas);
         $columns = [
             [
                 'key' => 'name',
                 'label' => 'Order Name',
-                'sortable' => true,
                 'format' => fn($order) => '
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 xxs:w-10 xxs:h-10 rounded-lg flex-shrink-0">
-                            <img src="' . $order->image . '" alt="' . $order->name . '" class="w-full h-full rounded-lg object-cover" />
-                        </div>
-                        <div class="min-w-0">
-                            <h3 class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">' . $order->name . '</h3>
-                            <p class="text-xs text-text-white/50 truncate hidden xxs:block">' . $order->subtitle . '</p>
-                            <a href="' . route('user.order-details') . '" class="text-pink-400 text-xs hover:underline flex items-center gap-1 hidden xs:flex">Learn more →</a>
-                        </div>
-                    </div>
-                '
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 xxs:w-10 xxs:h-10 rounded-lg flex-shrink-0">
+                    <img src="' . $order->product_logo . '" 
+                         alt="' . $order->product_name . '" 
+                         class="w-full h-full rounded-lg object-cover" />
+                </div>
+                <div class="min-w-0">
+                    <h3 class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">'
+                    . $order->product_name .
+                    '</h3>
+                    <p class="text-xs text-green-400 truncate xxs:block">'
+                    . $order->product_subtitle .
+                    '</p>
+                </div>
+            </div>
+        '
             ],
             [
                 'key' => 'type',
                 'label' => 'Type',
+                'format' => fn($order) => $order->product_type
             ],
             [
-                'key' => 'buyer',
-                'label' => 'Buyer',
+                'key' => 'seller',
+                'label' => 'Seller',
+                'format' => fn($order) => $order->seller_name
             ],
             [
-                'key' => 'ordered_date',
+                'key' => 'created_at',
                 'label' => 'Ordered date',
+                'format' => function ($data) {
+                    return $data->created_at_formatted;
+                }
             ],
             [
                 'key' => 'status',
                 'label' => 'Order status',
-                'badge' => true,
-                'badgeColors' => [
-                    'completed' => 'bg-pink-500',
-                    'in progress' => 'bg-pink-500',
-                    'pending' => 'bg-pink-500',
-                ]
+                // 'badge' => true,
+                //    'format' => function ($data) {
+                //         return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status . '">' .
+                //             $data->status->label() .
+                //             '</span>';
+                //     }
             ],
             [
                 'key' => 'quantity',
                 'label' => 'Quantity',
+                'format' => fn($order) => $order->total_quantity ?? 1
             ],
             [
-                'key' => 'price',
+                'key' => 'grand_total',
                 'label' => 'Price ($)',
-                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">$' . number_format($order->price, 2) . '</span>'
+                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">$' . number_format($order->total_price, 2) . '</span>'
             ],
         ];
 
         return view('livewire.backend.user.orders.sold-orders', [
-            'items' => $items,
+            'datas' => $datas,
             'columns' => $columns,
-            'pagination' => $pagination,
+            // 'pagination' => $pagination,
             'statuses' => OrderStatus::options(),
         ]);
+    }
+
+    protected function getFilters(): array
+    {
+        return [
+            'search' => $this->search ?? null,
+            'sort_field' => $this->sortField ?? 'created_at',
+            'sort_direction' => $this->sortDirection ?? 'desc',
+            'product_creator_id' => user()->id,
+        ];
     }
 }

@@ -16,7 +16,7 @@ class OrderService
         return $this->model->all($sortField, $order);
     }
 
-    public function findData($column_value, string $column_name = 'id'): ? Order
+    public function findData($column_value, string $column_name = 'id'): ?Order
     {
         $model = $this->model;
 
@@ -28,7 +28,26 @@ class OrderService
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
-        return $this->model->query()->filter($filters)->orderBy($sortField, $sortDirection)->paginate($perPage);
+        $orders = $this->model->query()
+            ->with(['source', 'user'])
+            ->filter($filters)
+            ->orderBy($sortField, $sortDirection)
+            ->paginate($perPage);
+
+        $orders->getCollection()->transform(function ($order) {
+            $order->product_name = $order->source?->name ?? 'N/A';
+            $order->product_logo = $order->source?->logo ?? asset('default-image.png');
+            $order->product_subtitle = $order->source?->subtitle ?? '';
+            $order->product_type = $order->source?->type ?? 'N/A';
+            $order->seller_name = $order->source?->seller?->name ?? 'N/A';
+
+            $order->total_quantity = 1;
+            $order->total_price = $order->grand_total;
+
+            return $order;
+        });
+
+        return $orders;
     }
 
     public function searchData(string $query, $sortField = 'created_at', $order = 'desc'): Collection
@@ -124,7 +143,4 @@ class OrderService
     {
         return $this->model->getInactive($sortField, $order);
     }
-
-
-    
 }
