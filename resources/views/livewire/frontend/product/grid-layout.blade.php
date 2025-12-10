@@ -1,9 +1,3 @@
-@props([
-    'gameSlug' => '',
-    'categorySlug' => '',
-    'datas' => [],
-    'game' => [],
-])
 <section>
     <div class="container ">
 
@@ -51,51 +45,51 @@
 
                     {{-- Custom Select --}}
 
-
+                       
                     <div class="flex-nowrap gap-5 relative hidden md:flex" x-data="{ open: false, selectedOption: '', selectedValue: '' }"
                         @click.away="open = false">
 
-                        <!-- Hidden Input Field -->
-                        <input type="hidden" name="platform" x-model="selectedValue">
+                      
+                        <input type="hidden" x-model="selectedValue" wire:model.live="platformId">
 
-                        <!-- Dropdown Trigger -->
+
+                        
                         <div class="flex justify-between rounded-full border border-zinc-700 bg-bg-primary items-center w-50 px-3 py-2 cursor-pointer"
                             @click="open = !open">
                             <span x-text="selectedOption || '{{ __('Platform') }}'"></span>
                             <flux:icon name="chevron-down" class="w-5 h-5 transition-transform duration-200"
                                 x-bind:class="open ? 'rotate-180' : ''" />
                         </div>
-
+                        
                         <!-- Dropdown Menu with Smooth Animation -->
-                        <div class="absolute top-[110%] left-0 w-50 rounded bg-bg-primary border border-zinc-700 z-20 overflow-hidden origin-top"
+                        <div class="absolute top-[110%] left-0 w-50 rounded bg-bg-primary border border-zinc-500 z-20 overflow-hidden origin-top h-[40vh] overflow-y-auto"
                             x-show="open" x-transition:enter="transition ease-out duration-300 transform"
                             x-transition:enter-start="opacity-0 scale-y-0"
                             x-transition:enter-end="opacity-100 scale-y-100"
                             x-transition:leave="transition ease-in duration-200 transform"
                             x-transition:leave-start="opacity-100 scale-y-100"
                             x-transition:leave-end="opacity-0 scale-y-0" @click.stop>
-                            <div class="px-5 py-5">
+                            <div class="px-2 py-5">
                                 <ol class="list space-y-2">
-                                    <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                        @click="selectedOption = '{{ __('Platform') }}'; selectedValue = ''; $wire.selectedPlatform = ''; open = false; $wire.call('serachFilter')">
+                                    <li class="py-3 px-2 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
+                                        @click="selectedOption = '{{ __('Platform') }}'; selectedValue = ''; $wire.selectedPlatform = ''; open = false;">
                                         {{ __('Platform') }}
                                     </li>
-                                    <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                        @click="selectedOption = 'Device 1'; selectedValue = 'device1'; $wire.selectedPlatform = 'device1'; open = false; $wire.call('serachFilter')">
-                                        Device 1
+                                    @foreach ($platforms as $platform )
+                                        <li class="py-3 px-2 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
+                                        @click="selectedOption = '{{ $platform->name }}'; selectedValue = '{{ $platform->id}}';  $wire.set('platformId', {{ $platform->id }}); open = false; ">
+                                       {{ $platform->name }}
                                     </li>
-                                    <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                        @click="selectedOption = 'Device 2'; selectedValue = 'device2'; $wire.selectedPlatform = 'device2'; open = false; $wire.call('serachFilter')">
-                                        Device 2
-                                    </li>
+                                    @endforeach
+                                   
+                                    
                                 </ol>
                             </div>
                         </div>
                     </div>
-
-
-
                     
+
+
                     {{-- Custom Select --}}
 
                     <div class="flex-nowrap gap-5 relative hidden md:flex" x-data="{ open: false, selectedMin: '', selectedMax: '' }"
@@ -227,25 +221,6 @@
                     tags: [
                         'Robux',
                         'Steal A Brainrot',
-                        'Grow A Garden',
-                        'Hunty Zombie',
-                        '99 Nights In The Forest',
-                        'Prospecting',
-                        'All Star Tower Defense X',
-                        'Ink Game',
-                        'Garden Tower Defense',
-                        'Bubble Gum Simulator',
-                        'Dead Rails',
-                        'TYPE./ ISOUL',
-                        'Hypershot',
-                        'Build A Zoo',
-                        'Gems',
-                        'Rivals',
-                        'MM2',
-                        'Blox Fruit',
-                        'Pet Simulator 99',
-                        'Spin',
-                        'Adopt Me'
                     ]
                 }" class="w-full">
                     <div class="flex flex-wrap gap-2 sm:gap-3 transition-all duration-300">
@@ -361,7 +336,7 @@
             </div> --}}
 
             {{ $datas->links() }}
-            
+
         </div>
     </div>
 </section>

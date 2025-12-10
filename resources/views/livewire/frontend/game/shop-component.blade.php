@@ -4,7 +4,7 @@
 
     @if ($layoutView == 'list_grid')
 
-    <x-grid-layout :gameSlug="$gameSlug" :categorySlug="$categorySlug" :datas="$datas" :game="$game" />
+    <livewire:frontend.product.grid-layout :gameSlug="$gameSlug" :categorySlug="$categorySlug"  />
 
     @else
 
