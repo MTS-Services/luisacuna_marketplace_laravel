@@ -19,12 +19,12 @@ class ShopComponent extends Component
     public $selectedDeliveryTime = null;
     public $selectedRegion = null;
     public $selectedSort = null;
-    public $layoutView = 'list-grid';
+    public $layoutView = 'list_grid';
     public $game;
     protected $category = null;
     protected  $products ;
 
-    public $perPage = 12;
+    public $perPage = 4;
     // Service
 
     protected GameService $gameService;
@@ -49,16 +49,7 @@ class ShopComponent extends Component
 
         $this->gameSlug = $gameSlug;
 
-       $this->game = $this->gameService->findData($gameSlug, 'slug')
-        ->load([
-        'products' => function ($query) use ($categorySlug) {
-            $query->whereHas('category', function ($q) use ($categorySlug) {
-                $q->where('slug', $categorySlug);
-            })->with('product_configs.game_configs');
-        },
-        'gameConfig',
-        'categories'
-      ]);
+       $this->game = $this->gameService->findData($gameSlug, 'slug');
 
     $this->products = $this->productService->getPaginatedData($this->perPage, [
             'gameSlug' => $gameSlug,
@@ -77,7 +68,7 @@ class ShopComponent extends Component
         
         $this->category = $this->categoryService->findData($categorySlug, 'slug');
 
-        $this->layoutView = $this->category->layout->value ?? 'grid';
+        $this->layoutView = $this->category->layout->value;
 
       
     }
@@ -118,10 +109,5 @@ class ShopComponent extends Component
         $this->serachFilter(); // Trigger search to reset filters
     }   
 
-    public function changeView()
-    {
-        // Logic to change view layout
-        $this->layoutView = $this->layoutView === 'grid' ? 'list' : 'grid';
-    }
 
 }
