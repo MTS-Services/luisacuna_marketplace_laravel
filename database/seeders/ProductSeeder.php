@@ -35,7 +35,7 @@ class ProductSeeder extends Seeder
                 'price'       => fake()->randomFloat(2, 0, 100),
                 'quantity'    => fake()->randomNumber(4),
                 'platform_id' => Platform::inRandomOrder()->value('id'),
-
+                'status'      => ActiveInactiveEnum::ACTIVE->value,
             ]);
             $gameConfigs = GameConfig::where('game_category_id', 1)
                             ->where('game_id', 1)
@@ -61,6 +61,7 @@ class ProductSeeder extends Seeder
                 'price'       => fake()->randomFloat(2, 0, 100),
                 'quantity'    => fake()->randomNumber(4),
                 'platform_id' => Platform::inRandomOrder()->value('id'),
+                'status'      => ActiveInactiveEnum::ACTIVE->value,
             ]);
             $gameConfigs = GameConfig::where('game_category_id', 2)
                             ->where('game_id', 1)
@@ -84,7 +85,8 @@ class ProductSeeder extends Seeder
                 'description' => fake()->text(),
                 'price'       => fake()->randomFloat(2, 0, 100),
                 'quantity'    => fake()->randomNumber(4),
-
+                'platform_id' => Platform::inRandomOrder()->value('id'),
+                'status'      => ActiveInactiveEnum::ACTIVE->value,
             ]);
             $gameConfigs = GameConfig::where('game_category_id', 3)
                             ->where('game_id', 1)
