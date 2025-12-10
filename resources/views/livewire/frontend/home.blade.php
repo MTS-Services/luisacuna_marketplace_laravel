@@ -1,26 +1,113 @@
 <main class="overflow-x-hidden-hidden">
     <!-- Hero Section -->
 
-    <x-home.hero :hero="$hero"/>
+    <x-home.hero :hero="$hero" />
 
     <!-- Popular Games Section -->
     <section class="py-20" id="popular-games">
-      
+
+
+
         <div class="container">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mb-4 text-text-white">{{ __('Popular Games') }}</h2>
-                <p class="text-text-secondary">{{ __('Find coins, items, and services for your favorite games.') }}</p>
+                <h2 class="text-4xl font-bold mb-4 text-text-white">
+                    {{ __('Newly Boosting') }}
+                </h2>
+                <p class="text-text-secondary">
+                    {{ __('Find coins, items, and services for your favorite games.') }}
+                </p>
             </div>
 
+            <!-- Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Game Card 1 -->
-                @foreach ($games as $game)
+                @foreach ($games as $key => $game)
+                    @if ($key > 2)
+                        @break
+                    @endif
+
                     <div class="swiper-slide">
                         <x-game-card :data="$game" />
                     </div>
                 @endforeach
             </div>
+
+            <!-- Center indicator -->
+            <div class="w-full flex justify-center mt-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-2 rounded-full bg-zinc-50"></div>
+                    <div class="w-8 h-2 rounded-full bg-purple-600"></div>
+                    <div class="w-8 h-2 rounded-full bg-zinc-50"></div>
+                </div>
+            </div>
         </div>
+
+        <div class="container">
+            <div class="text-center mb-16 mt-12">
+                <h2 class="text-4xl font-bold mb-4 text-text-white">
+                    {{ __('Popular Games ') }}
+                </h2>
+                <p class="text-text-secondary">
+                    {{ __('Find coins, items, and services for your favorite games.') }}
+                </p>
+            </div>
+
+            <!-- Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach ($games as $key => $game)
+                    @if ($key > 2)
+                        @break
+                    @endif
+
+                    <div class="swiper-slide">
+                        <x-game-card :data="$game" />
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Center indicator -->
+            <div class="w-full flex justify-center mt-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-2 rounded-full bg-zinc-50"></div>
+                    <div class="w-8 h-2 rounded-full bg-purple-600"></div>
+                    <div class="w-8 h-2 rounded-full bg-zinc-50"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mt-12 mb-4 text-text-white">
+                    {{ __('Top-Selling Offers') }}
+                </h2>
+                <p class="text-text-secondary">
+                    {{ __('Find coins, items, and services for your favorite games.') }}
+                </p>
+            </div>
+
+            <!-- Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach ($games as $key => $game)
+                    @if ($key > 2)
+                        @break
+                    @endif
+
+                    <div class="swiper-slide">
+                        <x-game-card :data="$game" />
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Center indicator -->
+            <div class="w-full flex justify-center mt-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-2 rounded-full bg-zinc-50"></div>
+                    <div class="w-8 h-2 rounded-full bg-purple-600"></div>
+                    <div class="w-8 h-2 rounded-full bg-zinc-50"></div>
+                </div>
+            </div>
+        </div>
+
+
     </section>
 
     <!-- How It Works Section -->
@@ -102,5 +189,5 @@
     </section>
 
     <!-- FAQ Section -->
-    <livewire:frontend.partials.faq :faqs_buyer="$faqs_buyer" :faqs_seller="$faqs_seller"/>
+    <livewire:frontend.partials.faq :faqs_buyer="$faqs_buyer" :faqs_seller="$faqs_seller" />
 </main>

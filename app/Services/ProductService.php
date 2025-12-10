@@ -1,22 +1,20 @@
-<?php 
+<?php
 
 
 namespace App\Services;
 
 use App\Models\Game;
 use App\Models\Product;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Enums\ActiveInactiveEnum;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ProductService
 {
-    public function __construct(protected Product $model)
-    {
-        
-    }
+    public function __construct(protected Product $model) {}
 
-    
+
     public function getAllDatas($sortField = 'created_at', $order = 'desc'): Collection
     {
         return $this->model->all($sortField, $order);
@@ -25,9 +23,9 @@ class ProductService
     public function findData($column_value, string $column_name = 'id'): ?Product
     {
 
-       $model = $this->model;
+        $model = $this->model;
 
-      return $model->where($column_name, $column_value)->first();
+        return $model->where($column_name, $column_value)->first();
     }
 
     public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
@@ -37,7 +35,7 @@ class ProductService
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
-        if($search) {
+        if ($search) {
             // Scout Search
             return Game::search($search)
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
@@ -45,7 +43,7 @@ class ProductService
         }
         return $this->model->query()
             ->filter($filters)
-            ->orderBy($sortField, $sortDirection)        
+            ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
     }
 
@@ -56,8 +54,8 @@ class ProductService
 
     public function searchData(string $query, $sortField = 'created_at', $order = 'desc'): Collection
     {
-       // return $this->model->search($query, $sortField, $order);
-       return Collection::empty();
+        // return $this->model->search($query, $sortField, $order);
+        return Collection::empty();
     }
 
     public function dataExists(int $id): bool
@@ -74,60 +72,92 @@ class ProductService
     *                   Action Executions
     * ================== ================== ================== */
 
-public function createData(array $data): Product
-{
-    return DB::transaction(function () use ($data) {
+    public function createData(array $data): Product
+    {
+        return DB::transaction(function () use ($data) {
 
-        $dynamic_data = $data['fields'] ?? [];
-        $delivery_method = $data['deliveryMethod'] ?? null;
-        unset($data['fields']);
-        unset($data['deliveryMethod']);
+            $dynamic_data = $data['fields'] ?? [];
+            $delivery_method = $data['deliveryMethod'] ?? null;
+            unset($data['fields']);
+            unset($data['deliveryMethod']);
 
-        $record = $this->model->create($data);
+            $record = $this->model->create($data);
 
-        if (!empty($dynamic_data)) {
-            $configs = [];
+            if (!empty($dynamic_data)) {
+                $configs = [];
 
-          
-            foreach ($dynamic_data as $index => $datas) {
-               
-                //Not need to assing product id because CreateMany automatically assign this according relations
-               $configs[] = [
-                   'game_config_id' => $index,
-                   'value' => $datas['value'],
-                   'category_id' => $record->category_id,
-               ];
+
+                foreach ($dynamic_data as $index => $datas) {
+
+                    //Not need to assing product id because CreateMany automatically assign this according relations
+                    $configs[] = [
+                        'game_config_id' => $index,
+                        'value' => $datas['value'],
+                        'category_id' => $record->category_id,
+                    ];
+                }
+
+
+                $configs[] = [
+                    'game_config_id' => explode('|', $delivery_method)[0],
+                    'value' => explode('|', $delivery_method)[1],
+                    'category_id' => $record->category_id,
+                ];
+
+                $record->product_configs()->createMany($configs);
             }
-            
-            
-            $configs[] = [
-                'game_config_id' =>explode('|', $delivery_method)[0],
-                'value' => explode('|', $delivery_method)[1],
-                'category_id' => $record->category_id,
-            ];
 
-            $record->product_configs()->createMany($configs);
-        }
+            return $record;
+        });
+    }
 
-        return $record;
-    });
-}
+    // public function updateData(int $id, array $data): Product
+    // {
+    //   //  return $this->updateAction->execute($id, $data);
+    //    return new Product();
+    // }
 
     public function updateData(int $id, array $data): Product
     {
-      //  return $this->updateAction->execute($id, $data);
-       return new Product();
+        return DB::transaction(function () use ($id, $data) {
+            $product = $this->model->findOrFail($id);
+            $product->update($data);
+            return $product->fresh();
+        });
     }
 
-    public function deleteData(int $id, bool $forceDelete = false, ?int $actionerId = null): bool
+    public function updateStatus(int $id, string $status): Product
     {
-        if ($actionerId == null) {
-            $actionerId = admin()->id;
-        }
-
-        return true;
-       // return $this->deleteAction->execute($id, $forceDelete, $actionerId);
+        return DB::transaction(function () use ($id, $status) {
+            $product = $this->model->findOrFail($id);
+            $product->update(['status' => $status]);
+            return $product->fresh();
+        });
     }
+
+
+
+
+    // public function deleteData(int $id, bool $forceDelete = false, ?int $actionerId = null): bool
+    // {
+    //     if ($actionerId == null) {
+    //         $actionerId = admin()->id;
+    //     }
+
+    //     return true;
+    //     // return $this->deleteAction->execute($id, $forceDelete, $actionerId);
+    // }
+
+
+    public function deleteProduct(int $id)
+    {
+        $product = Product::find($id);
+        if (!$product) return false;
+        $product->delete();
+        return true;
+    }
+
+
 
     public function restoreData(int $id, ?int $actionerId = null): bool
     {
@@ -136,7 +166,7 @@ public function createData(array $data): Product
         }
 
         return true;
-      //  return $this->restoreAction->execute($id, $actionerId);
+        //  return $this->restoreAction->execute($id, $actionerId);
     }
     public function bulkRestoreData(array $ids, ?int $actionerId = null): int
     {
@@ -144,7 +174,7 @@ public function createData(array $data): Product
             $actionerId = admin()->id;
         }
         return 0;
-      //  return $this->bulkAction->execute(ids: $ids, action: 'restore', status: null, actionerId: $actionerId);
+        //  return $this->bulkAction->execute(ids: $ids, action: 'restore', status: null, actionerId: $actionerId);
     }
 
     public function bulkForceDeleteData(array $ids, ?int $actionerId = null): int
@@ -153,7 +183,7 @@ public function createData(array $data): Product
             $actionerId = admin()->id;
         }
         return 0;
-      //  return $this->bulkAction->execute(ids: $ids, action: 'forceDelete', status: null, actionerId: $actionerId);
+        //  return $this->bulkAction->execute(ids: $ids, action: 'forceDelete', status: null, actionerId: $actionerId);
     }
 
     public function bulkDeleteData(array $ids, ?int $actionerId = null): int
@@ -162,7 +192,7 @@ public function createData(array $data): Product
             $actionerId = admin()->id;
         }
         return 0;
-      //  return $this->bulkAction->execute(ids: $ids, action: 'delete', status: null, actionerId: $actionerId);
+        //  return $this->bulkAction->execute(ids: $ids, action: 'delete', status: null, actionerId: $actionerId);
     }
 
     /* ================== ================== ==================
@@ -178,5 +208,4 @@ public function createData(array $data): Product
     {
         return $this->model->getInactive($sortField, $order);
     }
-
 }
