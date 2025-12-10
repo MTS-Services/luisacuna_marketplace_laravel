@@ -18,6 +18,7 @@ class UserOffer extends Component
     public $showDeleteModal = false;
     public $deleteItemId;
     public $url;
+     public $search = '';
 
     protected ProductService $service;
 
@@ -61,9 +62,13 @@ class UserOffer extends Component
             [
                 'key' => 'status',
                 'label' => 'Status',
-                'badge' => true,
-                'format' => fn($item) => '<span class="px-2 py-1 rounded-full text-xs text-white ' . ($item->status === ActiveInactiveEnum::ACTIVE->value ? 'bg-pink-500' : 'bg-status-paused') . '">' . ($item->status === ActiveInactiveEnum::ACTIVE->value ? 'Active' : 'Paused') . '</span>'
 
+                'sortable' => true,
+                'format' => function ($data) {
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
+                        $data->status->label() .
+                        '</span>';
+                }
             ],
             [
                 'key' => 'delivery_time',
@@ -76,13 +81,13 @@ class UserOffer extends Component
                 'icon' => 'pause-fill',
                 'method' => 'pauseOffer',
                 'label' => 'Pause',
-                'condition' => fn($item) => $item->status === ActiveInactiveEnum::ACTIVE->value,
+                'condition' => fn($item) => $item->status->value === ActiveInactiveEnum::ACTIVE->value,
             ],
             [
                 'icon' => 'play-fill',
                 'method' => 'resumeOffer',
                 'label' => 'Resume',
-                'condition' => fn($item) => $item->status === ActiveInactiveEnum::INACTIVE->value,
+                'condition' => fn($item) => $item->status->value === ActiveInactiveEnum::INACTIVE->value,
             ],
             [
                 'icon' => 'link-fill',
@@ -112,6 +117,7 @@ class UserOffer extends Component
     {
         $this->changeStatus($productId, ActiveInactiveEnum::INACTIVE->value);
     }
+
     public function resumeOffer(int $productId)
     {
         $this->changeStatus($productId, ActiveInactiveEnum::ACTIVE->value);
@@ -125,7 +131,7 @@ class UserOffer extends Component
             $this->success('Status updated successfully!');
             $this->dispatch('refreshDataTable');
         } catch (\Exception $e) {
-            $this->error('Failed to update status!');
+            $this->error('Failed to update status: ' . $e->getMessage());
         }
     }
 

@@ -19,7 +19,7 @@ enum ActiveInactiveEnum: string
     {
         return match ($this) {
             self::ACTIVE => 'badge badge-success',
-            self::ACTIVE => 'badge badge-secondary',
+            self::INACTIVE => 'badge badge-secondary',
         };
     }
 
