@@ -21,6 +21,7 @@ use App\Http\Controllers\Backend\Admin\GameManagement\PlatformController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\AccountController;
 use App\Http\Controllers\Backend\Admin\ReviewManagement\PageViewController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
+use App\Http\Controllers\Backend\Admin\FeeSettingsManagement\FeeSettingsController;
 use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementTypeController;
@@ -261,4 +262,11 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
         //     Route::get('/create', 'create')->name('create');
         // });
     });
+
+
+    Route::controller(FeeSettingsController::class)->name('fee-settings.')->prefix('fee-settings')->group(function () {
+        Route::get('/fee-settings', 'feeSettings')->name('fee-settings');
+    });
+
+
 });
