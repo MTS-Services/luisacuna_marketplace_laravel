@@ -1,7 +1,20 @@
 <main class="overflow-x-hidden-hidden">
     <!-- Hero Section -->
 
-    <x-home.hero :heros="$heros" />
+    <div class="swiper swiper-hero">
+        <div class="swiper-wrapper">
+            @forelse ($heros as $key => $hero)
+                <div class="swiper-slide">
+                    <x-home.hero :data="$hero" />
+                </div>
+            @empty
+                <div class="swiper-slide">
+                    <x-home.hero :data="null" />
+                </div>
+            @endforelse
+        </div>
+    </div>
+
 
     <!-- Popular Games Section -->
     <section class="py-20" id="popular-games">
@@ -190,36 +203,23 @@
 
     <!-- FAQ Section -->
     <livewire:frontend.partials.faq :faqs_buyer="$faqs_buyer" :faqs_seller="$faqs_seller" />
-      @push('scripts')
+    @push('scripts')
         <script>
             document.addEventListener('livewire:navigated', function() {
-                const swiper = new Swiper('.popular-currency', {
+                const swiper = new Swiper('.swiper-hero', {
                     loop: true,
                     pagination: {
                         el: '.swiper-pagination',
                         clickable: true,
                     },
-                    // navigation: {
-                    //     nextEl: '.swiper-button-next',
-                    //     prevEl: '.swiper-button-prev',
-                    // },
                     autoplay: {
                         delay: 2500,
                         disableOnInteraction: false,
                     },
-                    slidesPerView: 1,
+
+                    slidesPerView: 1, // Always 1 item
                     spaceBetween: 20,
-                    breakpoints: {
-                        640: {
-                            slidesPerView: 1,
-                        },
-
-                        1024: {
-                            slidesPerView: 1,
-                        },
-                    },
                 });
-
             });
         </script>
     @endpush
