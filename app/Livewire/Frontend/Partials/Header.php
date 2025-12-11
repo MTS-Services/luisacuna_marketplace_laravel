@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Category;
 use App\Services\GameService;
 use App\Services\CategoryService;
+use App\Services\CurrencyService;
 use App\Services\LanguageService;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -17,6 +18,7 @@ class Header extends Component
     public $categories;
     public $sortField;
     public $order;
+    public $currencies;
 
     public ?Collection $languages = null;
     protected GameService $game_service;
@@ -24,12 +26,14 @@ class Header extends Component
     protected $allGamesCache = null;
     protected CategoryService $categoryService;
     protected LanguageService $languageService;
+    protected CurrencyService $currencyService;
 
-    public function boot(LanguageService $languageService, CategoryService $categoryService, GameService $game_service)
+    public function boot(LanguageService $languageService, CategoryService $categoryService, GameService $game_service, CurrencyService $currencyService)
     {
         $this->languageService = $languageService;
         $this->categoryService = $categoryService;
         $this->game_service = $game_service;
+        $this->currencyService = $currencyService;
     }
 
     public function mount(string $pageSlug = 'home')
@@ -42,8 +46,9 @@ class Header extends Component
         // $categories= Category::where('status','active')->get();
         $this->languages = $this->languageService->getAllDatas();
         $this->categories = $this->categoryService->getDatas(status: "active");
+        $this->currencies = $this->currencyService->getAllDatas();
 
-
+        // dd($this->currencies);
 
         $popular_games = collect();
         $search_results = collect();
@@ -66,7 +71,7 @@ class Header extends Component
 
         return view('livewire.frontend.partials.header', [
             'popular_games' => $popular_games,
-            'search_results' => $search_results
+            'search_results' => $search_results,
         ]);
     }
 }
