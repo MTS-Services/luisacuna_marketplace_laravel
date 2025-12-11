@@ -287,7 +287,7 @@
                             'active' => 'withdrawal',
                         ],
                     ]" />
-                <x-backend.navlink type="single" icon="percent" name="Fee Settings" :route="route('admin.dashboard')" active="fee"
+                <x-backend.navlink type="single" icon="percent" name="Fee Settings" :route="route('admin.fee-settings.fee-settings')" active="fee-settings"
                     :page_slug="$active" />
 
                 <x-sidebar-separator title="Support" />
