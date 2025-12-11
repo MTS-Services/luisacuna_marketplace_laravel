@@ -18,7 +18,7 @@ class UserOffer extends Component
     public $showDeleteModal = false;
     public $deleteItemId;
     public $url;
-     public $search = '';
+    public $search = '';
 
     protected ProductService $service;
 
@@ -42,11 +42,16 @@ class UserOffer extends Component
 
         $columns = [
             [
-                'key' => 'name',
+                'key' => 'game',
                 'label' => 'Game',
-                'sortable' => true,
-                'format' => fn($item) => '<div class="flex items-center gap-3"><img src="' . ($item->game_image ?? null) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item->name ?? 'Game') . '"><span class="font-semibold text-text-white">' . ($item->name ?? '-') . '</span></div>'
+                'sortable' => false,
+                'format' => fn($item) =>
+                '<div class="flex items-center gap-3">
+                    <img src="' . ($item->games->logo) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item->games->name ?? 'Game') . '">
+                    <span class="font-semibold text-text-white">' . ($item->games->name ?? '-') . '</span>
+                </div>'
             ],
+
             [
                 'key' => 'quantity',
                 'label' => 'Quantity',
@@ -71,7 +76,7 @@ class UserOffer extends Component
                 }
             ],
             [
-                'key' => 'delivery_time',
+                'key' => 'delivery_timeline',
                 'label' => 'Delivery time',
             ],
         ];
