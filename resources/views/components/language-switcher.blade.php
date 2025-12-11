@@ -1,3 +1,4 @@
+@props(['currencies' => []])
 <form method="POST" action="{{ route('lang.change') }}">
     @csrf
     <div class="space-y-4">
@@ -13,11 +14,15 @@
         </div>
 
         <!-- Currency Selection (Only EUR for french) -->
-        <div>
+         <div>
             <x-ui.label class="mb-1!">{{ __('Currency') }}</x-ui.label>
             <x-ui.select name="currency" class="text-text-white!">
-                <option value="USD-$" selected>USD-$</option>
-                <option value="EUR-€" selected>EUR-€</option>
+                @forelse ($currencies as $currency)
+                    <option value="{{ $currency->code }}"
+                        {{ session('currency', 'USD-$') == $currency->code . '-' . $currency->symbol ? 'selected' : '' }}>
+                        {{ $currency->code }} - {{ $currency->symbol }}
+                    </option>
+                @endforeach
             </x-ui.select>
         </div>
 

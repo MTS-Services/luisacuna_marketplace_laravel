@@ -1,3 +1,4 @@
+@props(['currencies' => []])
 <div x-data="{ open: false }" class="relative z-40 hover:scale-105 transition-transform duration-200">
     <!-- Trigger Button -->
     <button @click="open = !open" class="flex items-center gap-1 text-text-white hover:text-black">
@@ -25,7 +26,7 @@
                     <x-phosphor-x class="w-5 h-5 text-gray-500 hover:text-text-white" />
                 </button>
             </div>
-            <x-language-switcher/>
+            <x-language-switcher :currencies="$currencies" />
         </div>
     </div>
 </div>

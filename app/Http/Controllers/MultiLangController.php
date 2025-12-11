@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CurrencyService;
 use App\Services\LanguageService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\App;
 
 class MultiLangController extends Controller
 {
-    public function __construct(protected LanguageService $languageService) {}
+    public function __construct(protected LanguageService $languageService, protected CurrencyService $currencyService) { }
     public function langChange(Request $request): RedirectResponse
     {
         $lang = $request->lang;
@@ -20,7 +21,7 @@ class MultiLangController extends Controller
             abort(400);
         }
 
-        if (!in_array($currency, ['USD-$', 'EUR-€'])) {
+        if (!in_array($currency, $this->currencyService->getActiveData()->pluck('code')->toArray())) {
             abort(400);
         }
 

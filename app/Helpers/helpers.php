@@ -1,12 +1,13 @@
 <?php
 // File: app/Helpers/helpers.php (Add to existing helpers file)
 
-use App\Enums\OtpType;
-use App\Models\OtpVerification;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+use App\Enums\OtpType;
+use App\Models\Currency;
 use Illuminate\Support\Str;
+use App\Models\OtpVerification;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 // ==================== Existing Auth Helpers ====================
 
@@ -558,3 +559,24 @@ if (!function_exists('category_route')) {
         return isset($routes[$slug]) ? route($routes[$slug]) : '#';
     }
 }
+
+
+if(!function_exists('currency_exchange')) {
+    function currency_exchange($price) {
+        $defaultCurrency = Currency::where('is_default', true)->first();
+
+        if(!$defaultCurrency) {
+            return $price;
+        }
+        $selectedCurrencyCode = session('currency', $defaultCurrency->code);
+
+        $selectedCurrency = Currency::where('code', $selectedCurrencyCode)->first();
+
+        if(!$selectedCurrency) {
+            return $price;
+        }
+        $convertedAmount = $price * ($selectedCurrency->exchange_rate / $defaultCurrency->exchange_rate);
+        return $selectedCurrency->symbol . number_format($convertedAmount, $selectedCurrency->decimal_places);
+    }
+}
+
