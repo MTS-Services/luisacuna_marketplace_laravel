@@ -18,17 +18,11 @@
 
     <!-- Popular Games Section -->
     <section class="py-20" id="popular-games">
-
-
-
         <div class="container">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mb-4 text-text-white">
+            <div class="mb-10">
+                <h2 class="text-40px font-bold mb-4 text-text-white">
                     {{ __('Newly Boosting') }}
                 </h2>
-                <p class="text-text-secondary">
-                    {{ __('Find coins, items, and services for your favorite games.') }}
-                </p>
             </div>
 
             <!-- Cards -->
@@ -55,13 +49,10 @@
         </div>
 
         <div class="container">
-            <div class="text-center mb-16 mt-12">
-                <h2 class="text-4xl font-bold mb-4 text-text-white">
-                    {{ __('Popular Games ') }}
+            <div class="mb-10 mt-20">
+                <h2 class="text-40px font-bold mb-4 text-text-white">
+                    {{ __('Popular Games') }}
                 </h2>
-                <p class="text-text-secondary">
-                    {{ __('Find coins, items, and services for your favorite games.') }}
-                </p>
             </div>
 
             <!-- Cards -->
@@ -88,17 +79,30 @@
         </div>
 
         <div class="container">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mt-12 mb-4 text-text-white">
+            <div class="mb-10 mt-20">
+                <h2 class="text-40px font-bold mb-4 text-text-white">
                     {{ __('Top-Selling Offers') }}
                 </h2>
-                <p class="text-text-secondary">
-                    {{ __('Find coins, items, and services for your favorite games.') }}
-                </p>
             </div>
 
             <!-- Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="relative min-h-[40vh]">
+                <!-- Skeleton Loading -->
+                <x-loading-animation :target="'search, tagSelected, selectedDevice, selectedAccountType,  selectedPrice, selectedDeliveryTime , resetAllFilters'" />
+                <!-- Actual Product Cards -->
+                <div wire:loading.class="opacity-0"
+                    wire:target="search, tagSelected, selectedDevice, selectedAccountType,  selectedPrice, selectedDeliveryTime , resetAllFilters"
+                    x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 w-full">
+
+                    @foreach ($datas as $item)
+                        <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" :data="$item" :game="$game" />
+                    @endforeach
+
+                </div>
+            </div>
+            {{-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach ($games as $key => $game)
                     @if ($key > 2)
                         @break
@@ -108,7 +112,7 @@
                         <x-game-card :data="$game" />
                     </div>
                 @endforeach
-            </div>
+            </div> --}}
 
             <!-- Center indicator -->
             <div class="w-full flex justify-center mt-6">
