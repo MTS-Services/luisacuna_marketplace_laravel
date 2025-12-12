@@ -80,9 +80,33 @@ class HeroService
     *                   Action Executions
     * ================== ================== ================== */
 
+    public function createData(array $data): ?Hero
+    {  return DB::transaction(function () use ($data) {
+
+            if ($data['image']) {
+                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+                $fileName = $prefix . '-' . $data['image']->getClientOriginalName();
+                $data['image'] = Storage::disk('public')->putFileAs('banners', $data['image'], $fileName);
+            }
+             if ($data['mobile_image']) {
+                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+                $fileName = $prefix . '-' . $data['mobile_image']->getClientOriginalName();
+                $data['mobile_image'] = Storage::disk('public')->putFileAs('banners', $data['mobile_image'], $fileName);
+            }
+
+            
+            $newData = $this->model->create($data);
+            // Dispatch event
+
+            return $newData->fresh();
+        });
+        
+    }
     public function updateData(int $id, array $data): ?Hero
     {
         return DB::transaction(function () use ($id, $data) {
+
+            
             $model = $this->findData($id);
             $newSingleImagePath = null;
             $newSingleImagePathMobile = null;

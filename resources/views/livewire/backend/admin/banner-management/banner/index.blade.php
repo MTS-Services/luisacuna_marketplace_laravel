@@ -33,23 +33,18 @@
     @endif
 
     {{-- Page Header --}}
-    <div class="relative overflow-hidden glass-card rounded-2xl p-6 lg:p-8 mb-6 shadow-xl">
-        <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5"></div>
-        <div
-            class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2">
-        </div>
-
-        <div class="relative z-10">
-            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                <div class="flex items-center gap-4">
-                    <div class="p-3 bg-primary/10 rounded-xl">
-                        <flux:icon name="cog-8-tooth" class="h-8 w-8 stroke-primary" />
-                    </div>
-                    <div>
-                        <h1 class="text-2xl lg:text-3xl font-bold text-text-primary">{{ __('Manage Banners') }}</h1>
-                      
-                    </div>
-                </div>
+    <div class="glass-card rounded-2xl p-4 lg:p-6 mb-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <h2 class="text-xl lg:text-2xl font-bold text-text-primary">
+                {{ __('Faq List') }}
+            </h2>
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+            
+                <x-ui.button href="{{ route('admin.bm.banner.create') }}" class="w-auto py-2!">
+                    <flux:icon name="user-plus"
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
+                    {{ __('Add') }}
+                </x-ui.button>
             </div>
         </div>
     </div>
