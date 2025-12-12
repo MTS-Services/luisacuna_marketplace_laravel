@@ -21,12 +21,12 @@
                 {{-- status --}}
                 <div class="w-full col-span-2">
                     <x-ui.label value="Send To" class="mb-1" />
-                    <x-ui.select wire:model="form.types">
-                        @foreach ($types as $types)
-                            <option value="{{ $types['value'] }}">{{ $types['label'] }}</option>
+                    <x-ui.select wire:model="form.type">
+                        @foreach ($types as $type)
+                            <option value="{{ $type['value'] }}">{{ $type['label'] }}</option>
                         @endforeach
                     </x-ui.select>
-                    <x-ui.input-error :messages="$errors->get('form.types')" />
+                    <x-ui.input-error :messages="$errors->get('form.type')" />
                 </div>
 
                 {{-- title --}}
