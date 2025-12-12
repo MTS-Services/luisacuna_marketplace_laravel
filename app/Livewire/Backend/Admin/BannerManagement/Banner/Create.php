@@ -34,7 +34,7 @@ class Create extends Component
         try {
             $data['created_by'] = admin()->id;
 
-         
+            
             $this->heroService->createData($data);
 
             $this->success(__('Banner created successfully.'));
