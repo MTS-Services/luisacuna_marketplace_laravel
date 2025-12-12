@@ -223,7 +223,7 @@
                                     {{ __('Access a vast community of buyers worldwide.') }}</li>
                                 <li><span class="font-medium">{{ __('Secure Transactions:') }}</span>
                                     {{ __('Our escrow and Seller
-                                                                                                                                                                                                                        Protection policies protect your earnings.') }}
+                                                                                                                                                                                                                                                            Protection policies protect your earnings.') }}
                                 </li>
                                 <li><span class="font-medium">{{ __('Easy Management:') }}</span>
                                     {{ __('User-friendly dashboard for listing, managing, and tracking sales.') }}</li>
@@ -235,7 +235,7 @@
 
                             <div class="flex flex-wrap gap-4 mt-8">
                                 <button
-                                    class="bg-bg-container2 text-text-white px-6 py-2 rounded-full font-medium hover:opacity-90 transition">{{ __('Start Selling') }}</button>
+                                    class="bg-zinc-500 text-white px-6 py-2 rounded-full font-medium hover:opacity-90 transition">{{ __('Start Selling') }}</button>
                                 <a href="{{ route('seller-protection') }}" wire:navigate
                                     class=" border bg-white text-text-purple px-6 py-2 rounded-full font-medium hover:bg-indigo-500/20 transition">{{ __('Sellers Protection Rules') }}</a>
                             </div>

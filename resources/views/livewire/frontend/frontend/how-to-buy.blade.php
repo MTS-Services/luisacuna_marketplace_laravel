@@ -183,7 +183,7 @@
                     </p>
 
                     <button
-                        class="px-8 py-3 bg-purple-600 text-white font-medium rounded-full hover:bg-gray-200 transition duration-300 shadow-md">
+                        class="px-8 py-3 bg-zinc-500 text-white font-medium rounded-full hover:bg-gray-200 transition duration-300 shadow-md">
                         {{ __('Start Shopping Now') }}
                     </button>
                 </div>
