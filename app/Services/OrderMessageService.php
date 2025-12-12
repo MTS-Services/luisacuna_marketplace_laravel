@@ -19,7 +19,6 @@ class OrderMessageService
     {
         $query = User::where('id', '!=', $authId);
 
-        // Apply search filter if provided
         if ($searchTerm) {
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('username', 'like', '%' . $searchTerm . '%')
@@ -32,13 +31,11 @@ class OrderMessageService
         $users = $query->get();
 
         foreach ($users as $user) {
-            // Unread Count
             $user->unreadCount = OrderMessage::where('sender_id', $user->id)
                 ->where('receiver_id', $authId)
                 ->where('is_seen', false)
                 ->count();
 
-            // Last Message
             $user->lastMessage = OrderMessage::where(function ($q) use ($user, $authId) {
                 $q->where('sender_id', $user->id)
                     ->where('receiver_id', $authId);
@@ -50,8 +47,6 @@ class OrderMessageService
                 ->latest()
                 ->first();
         }
-
-        // Sort by last message date descending
         return $users->sortByDesc(function ($u) {
             return $u->lastMessage->created_at ?? null;
         })->values();

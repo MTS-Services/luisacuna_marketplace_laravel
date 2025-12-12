@@ -107,39 +107,6 @@
 
                     <!-- Messages List -->
                     <div class="flex-1 overflow-y-auto custom-scrollbar">
-                        {{-- @forelse($users as $user)
-
-    <div wire:click="selectUser({{ $user->id }})"
-        class="flex items-center gap-3 p-3 border-b cursor-pointer">
-
-        <div class="flex-1 min-w-0">
-            <div class="flex justify-between">
-                <h4>{{ $user->full_name }}</h4>
-
-                <span>
-                    {{ $user->lastMessage ? $user->lastMessage->created_at->format('M d') : '' }}
-                </span>
-            </div>
-
-            <p class="truncate">
-                {{ $user->lastMessage ? \Illuminate\Support\Str::limit($user->lastMessage->message, 30) : 'No messages yet' }}
-            </p>
-        </div>
-
-        @if ($user->unreadCount > 0)
-            <div class="w-5 h-5 bg-accent rounded-full flex items-center justify-center">
-                <span class="text-white text-xs">{{ $user->unreadCount }}</span>
-            </div>
-        @endif
-
-    </div>
-
-@empty
-    <div class="p-4 text-center text-text-muted">No users found</div>
-@endforelse --}}
-
-
-
                         @forelse($users as $user)
                             <div wire:click="selectUser({{ $user->id }}, '{{ $user->full_name }}')"
                                 onclick="selectMessage()"
