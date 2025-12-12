@@ -9,6 +9,11 @@
             <x-slot name="breadcrumb">{{ __('Banner Management / Banner Edit') }}</x-slot>
             <livewire:backend.admin.banner-management.banner.edit :data="$data" />
         @break;
+        @case('admin.bm.banner.create')
+       
+            <x-slot name="breadcrumb">{{ __('Banner Management / Banner Edit') }}</x-slot>
+            <livewire:backend.admin.banner-management.banner.create  />
+        @break;
         
         @default
             <x-slot name="breadcrumb">{{ __('Banner Management / Banner List') }}</x-slot>

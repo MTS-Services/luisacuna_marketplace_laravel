@@ -28,7 +28,7 @@ class BannerForm extends Form
             'content' => 'nullable|string|max:1000',
             'action_title' => 'nullable|string|max:255',
             'action_url' => 'nullable|url|max:255',
-            'target' => 'nullable|string|in:_self,_blank',
+            'target' => 'required|string|in:_self,_blank',
             'status' => 'required|string|in:active,inactive',
             'image' => 'nullable|image|max:10240', // Max 10MB
             'mobile_image' => 'nullable|image|max:10240', // Max 10MB
