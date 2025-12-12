@@ -18,7 +18,7 @@
             <!-- Add other form fields here -->
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
 
-                {{-- status --}}
+                {{-- type --}}
                 <div class="w-full col-span-2">
                     <x-ui.label value="Send To" class="mb-1" />
                     <x-ui.select wire:model="form.type">
