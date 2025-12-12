@@ -1,4 +1,4 @@
-    <section class="py-20 bg-bg-Purple">
+    <section class="py-20 ">
         <div class="bg-bg-secondary container p-18 flex justify-center wrap flex-col rounded-3xl" x-data="{ active: 0, tab: 'buyers' }">
 
             <h2 class="text-text-white text-center text-5xl  mb-6 font-semibold">{{ 'Frequently Asked Questions' }}

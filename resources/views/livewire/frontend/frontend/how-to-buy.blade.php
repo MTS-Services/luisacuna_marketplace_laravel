@@ -173,7 +173,7 @@
                     </div>
                 </div>
 
-                <div class="mt-20 p-10 text-center rounded-lg dark:bg-bg-border2 bg-bg-primary shadow-2xl">
+                <div class="mt-20 p-10 text-center rounded-lg   bg-bg-secondary shadow-2xl">
                     <h2 class="text-3xl font-medium mb-4 tracking-wider text-text-white">
                         {{ __('Your Purchase is Protected!') }}
                     </h2>

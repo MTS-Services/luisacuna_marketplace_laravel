@@ -58,10 +58,11 @@
                                                 class="text-7xl font-bold bg-gradient-to-r from-pink-500 bg-purple-800 bg-blue-400 bg-clip-text text-transparent inline-block mb-8">
                                                 01
                                             </div>
-                                            <h2 class="text-3xl font-bold text-text-pink mb-4">{{__('Find Your Desired Product')}}
+                                            <h2 class="text-3xl font-bold text-text-pink mb-4">
+                                                {{ __('Find Your Desired Product') }}
                                             </h2>
                                             <p class="text-gray-500 leading-relaxed text-lg">
-                                                {{__("Begin by browsing our extensive categories or use the search bar to find the specific digital product you're looking for. You can filter results by game, region, price, and delivery time to pinpoint the perfect item.")}}
+                                                {{ __("Begin by browsing our extensive categories or use the search bar to find the specific digital product you're looking for. You can filter results by game, region, price, and delivery time to pinpoint the perfect item.") }}
                                             </p>
                                         </div>
                                         <div class="flex justify-center">
@@ -91,9 +92,10 @@
                                                 class="text-7xl font-bold bg-gradient-to-r from-pink-500 bg-purple-800 bg-blue-400 bg-clip-text text-transparent inline-block mb-8">
                                                 02
                                             </div>
-                                            <h2 class="text-3xl font-bold text-text-pink mb-4">{{__('Review Product Details & Seller Info')}}</h2>
+                                            <h2 class="text-3xl font-bold text-text-pink mb-4">
+                                                {{ __('Review Product Details & Seller Info') }}</h2>
                                             <p class="text-gray-500 leading-relaxed text-lg">
-                                                {{__("Click on a product to view its full description, delivery time, and requirements. Pay attention to the seller's rating and reviews to ensure you're buying from a reputable source. If you have questions, use the 'Message Seller' option (if available).")}}
+                                                {{ __("Click on a product to view its full description, delivery time, and requirements. Pay attention to the seller's rating and reviews to ensure you're buying from a reputable source. If you have questions, use the 'Message Seller' option (if available).") }}
                                             </p>
                                         </div>
                                     </div>
@@ -107,10 +109,11 @@
                                                 class="text-7xl font-bold bg-gradient-to-r from-pink-500 bg-purple-800 bg-blue-400 bg-clip-text text-transparent inline-block mb-8">
                                                 03
                                             </div>
-                                            <h2 class="text-3xl font-bold text-text-pink mb-4">{{__('Add to Cart & Checkout')}}
+                                            <h2 class="text-3xl font-bold text-text-pink mb-4">
+                                                {{ __('Add to Cart & Checkout') }}
                                             </h2>
                                             <p class="text-gray-500 leading-relaxed text-lg">
-                                                {{__("Once you've found the right product, click 'Buy Now.' You'll be directed to the checkout page where you can review your order summary and add any optional notes for the seller.")}}
+                                                {{ __("Once you've found the right product, click 'Buy Now.' You'll be directed to the checkout page where you can review your order summary and add any optional notes for the seller.") }}
                                             </p>
                                         </div>
                                         <div class="flex justify-center">
@@ -142,10 +145,11 @@
                                                 04
                                             </div>
 
-                                            <h2 class="text-3xl font-bold text-text-pink mb-4">{{__('Review Product Details & Seller Info')}}</h2>
+                                            <h2 class="text-3xl font-bold text-text-pink mb-4">
+                                                {{ __('Review Product Details & Seller Info') }}</h2>
 
                                             <p class="text-gray-500 leading-relaxed text-lg">
-                                                {{__("Click on a product to view its full description, delivery time, and requirements. Pay attention to the seller's rating and reviews to ensure you're buying from a reputable source. If you have questions, use the 'Message Seller' option (if available).")}}
+                                                {{ __("Click on a product to view its full description, delivery time, and requirements. Pay attention to the seller's rating and reviews to ensure you're buying from a reputable source. If you have questions, use the 'Message Seller' option (if available).") }}
                                             </p>
                                         </div>
                                     </div>
@@ -160,10 +164,11 @@
                                                 05
                                             </div>
 
-                                            <h2 class="text-3xl font-bold text-text-pink mb-4">{{__('Add to Cart & Checkout')}}
+                                            <h2 class="text-3xl font-bold text-text-pink mb-4">
+                                                {{ __('Add to Cart & Checkout') }}
                                             </h2>
                                             <p class="text-gray-500 leading-relaxed text-lg">
-                                                {{__("Once you've found the right product, click 'Buy Now.' You'll be directed to the checkout page where you can review your order summary and add any optional notes for the seller.")}}
+                                                {{ __("Once you've found the right product, click 'Buy Now.' You'll be directed to the checkout page where you can review your order summary and add any optional notes for the seller.") }}
                                             </p>
                                         </div>
 
@@ -194,9 +199,10 @@
                                                 class="text-7xl font-bold bg-gradient-to-r from-pink-500 bg-purple-800 bg-blue-400 bg-clip-text text-transparent inline-block mb-8">
                                                 06
                                             </div>
-                                            <h2 class="text-3xl font-bold text-text-pink mb-4">{{__('Review Product Details & Seller Info')}}</h2>
+                                            <h2 class="text-3xl font-bold text-text-pink mb-4">
+                                                {{ __('Review Product Details & Seller Info') }}</h2>
                                             <p class="text-gray-500 leading-relaxed text-lg">
-                                                {{__("Click on a product to view its full description, delivery time, and requirements. Pay attention to the seller's rating and reviews to ensure you're buying from a reputable source. If you have questions, use the 'Message Seller' option (if available).")}}
+                                                {{ __("Click on a product to view its full description, delivery time, and requirements. Pay attention to the seller's rating and reviews to ensure you're buying from a reputable source. If you have questions, use the 'Message Seller' option (if available).") }}
                                             </p>
                                         </div>
                                     </div>
@@ -208,22 +214,30 @@
                 <div class=" text-text-white font-[Inter]">
                     <div class="max-w-7xl mx-auto px-6 md:px-12 md:py-10">
                         <div class="border border-pink-600/60 rounded-2xl p-8 md:p-10 ">
-                            <h2 class="text-pink-500 text-2xl font-semibold mb-4">{{__('Why Sell with Swapy.gg?')}}</h2>
-                            <h3 class="text-lg font-semibold tex-text-white mb-4">{{__('Heading: Benefits of Selling on Swapy.gg')}}</h3>
+                            <h2 class="text-pink-500 text-2xl font-semibold mb-4">{{ __('Why Sell with Swapy.gg?') }}
+                            </h2>
+                            <h3 class="text-lg font-semibold tex-text-white mb-4">
+                                {{ __('Heading: Benefits of Selling on Swapy.gg') }}</h3>
                             <ul class="list-disc list-inside text-gray-300 space-y-2">
-                                <li><span class="font-medium">{{__('Global Reach:')}}</span> {{__('Access a vast community of buyers worldwide.')}}</li>
-                                <li><span class="font-medium">{{__('Secure Transactions:')}}</span> {{__('Our escrow and Seller
-                                    Protection policies protect your earnings.')}}</li>
-                                <li><span class="font-medium">{{__('Easy Management:')}}</span> {{__('User-friendly dashboard for listing, managing, and tracking sales.')}}</li>
-                                <li><span class="font-medium">{{__('Dedicated Support:')}}</span> {{__('Our team is here to assist you with any questions or issues.')}}</li>
-                                <li><span class="font-medium">{{__('Flexible Payouts:')}}</span> {{__('Convenient withdrawals via Payoneer.')}}</li>
+                                <li><span class="font-medium">{{ __('Global Reach:') }}</span>
+                                    {{ __('Access a vast community of buyers worldwide.') }}</li>
+                                <li><span class="font-medium">{{ __('Secure Transactions:') }}</span>
+                                    {{ __('Our escrow and Seller
+                                                                                                                                                                                                                        Protection policies protect your earnings.') }}
+                                </li>
+                                <li><span class="font-medium">{{ __('Easy Management:') }}</span>
+                                    {{ __('User-friendly dashboard for listing, managing, and tracking sales.') }}</li>
+                                <li><span class="font-medium">{{ __('Dedicated Support:') }}</span>
+                                    {{ __('Our team is here to assist you with any questions or issues.') }}</li>
+                                <li><span class="font-medium">{{ __('Flexible Payouts:') }}</span>
+                                    {{ __('Convenient withdrawals via Payoneer.') }}</li>
                             </ul>
 
                             <div class="flex flex-wrap gap-4 mt-8">
                                 <button
-                                    class="bg-bg-container2 text-text-white px-6 py-2 rounded-full font-medium hover:opacity-90 transition">{{__('Start Selling')}}</button>
+                                    class="bg-bg-container2 text-text-white px-6 py-2 rounded-full font-medium hover:opacity-90 transition">{{ __('Start Selling') }}</button>
                                 <a href="{{ route('seller-protection') }}" wire:navigate
-                                    class=" border bg-white text-text-purple px-6 py-2 rounded-full font-medium hover:bg-indigo-500/20 transition">{{__('Sellers Protection Rules')}}</a>
+                                    class=" border bg-white text-text-purple px-6 py-2 rounded-full font-medium hover:bg-indigo-500/20 transition">{{ __('Sellers Protection Rules') }}</a>
                             </div>
                         </div>
                     </div>
