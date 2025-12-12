@@ -88,10 +88,12 @@
                         </div>
 
                         <!-- Search -->
+                        <!-- Search -->
                         <div class="mt-3 sm:mt-4">
                             <div class="relative">
                                 <input type="text" wire:model.live="searchTerm" placeholder="{{ __('Search') }}"
                                     class="w-full dark:bg-zinc-50/10 bg-zinc-100 text-text-white px-3 sm:px-4 py-2 pr-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-500 text-xs sm:text-sm">
+
                                 <button class="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-zinc-400">
                                     <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -124,7 +126,7 @@
             </p>
         </div>
 
-        @if($user->unreadCount > 0)
+        @if ($user->unreadCount > 0)
             <div class="w-5 h-5 bg-accent rounded-full flex items-center justify-center">
                 <span class="text-white text-xs">{{ $user->unreadCount }}</span>
             </div>
@@ -136,7 +138,7 @@
     <div class="p-4 text-center text-text-muted">No users found</div>
 @endforelse --}}
 
-        
+
 
                         @forelse($users as $user)
                             <div wire:click="selectUser({{ $user->id }}, '{{ $user->full_name }}')"
@@ -153,7 +155,7 @@
                                             {{ $user->full_name }}
                                         </h4>
                                         <span class="text-[10px] sm:text-xs text-text-muted">
-                                              {{ $user->lastMessage ? $user->lastMessage->created_at_formatted : '' }}
+                                            {{ $user->lastMessage ? $user->lastMessage->created_at_formatted : '' }}
                                         </span>
                                     </div>
                                     <p class="text-text-secondary text-[10px] sm:text-xs truncate">

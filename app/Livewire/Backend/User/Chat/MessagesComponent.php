@@ -9,7 +9,6 @@ use App\Services\OrderMessageService;
 
 class MessagesComponent extends Component
 {
-
     use WithFileUploads;
 
     public $receiverId = null;
@@ -17,6 +16,7 @@ class MessagesComponent extends Component
     public $media;
     public $users;
     public $messages = [];
+    public $searchTerm = ''; // ← Search property
 
     protected OrderMessageService $orderMessageService;
 
@@ -27,9 +27,27 @@ class MessagesComponent extends Component
 
     public function mount()
     {
-        $this->users = $this->orderMessageService->getUsersSortedByLastMessage(Auth::id());
+        $this->loadUsers();
     }
 
+    /**
+     * Load users with optional search term
+     */
+    public function loadUsers()
+    {
+        $this->users = $this->orderMessageService->getUsersSortedByLastMessage(
+            Auth::id(), 
+            $this->searchTerm // ← Pass search term
+        );
+    }
+
+    /**
+     * Called automatically when searchTerm changes (because of wire:model.live)
+     */
+    public function updatedSearchTerm()
+    {
+        $this->loadUsers();
+    }
 
     public function selectUser($userId)
     {
@@ -74,11 +92,11 @@ class MessagesComponent extends Component
 
         $this->reset(['message', 'media']);
         $this->loadMessages();
+        $this->loadUsers(); // Refresh user list to update last message
     }
 
     public function render()
     {
-        $this->users = $this->orderMessageService->getUsersSortedByLastMessage(Auth::id());
 
         if ($this->receiverId) {
             $this->loadMessages();

@@ -12,39 +12,54 @@ class OrderMessageService
      */
     public function __construct() {}
 
-public function getUsersSortedByLastMessage($authId)
-{
-    $users = User::where('id', '!=', $authId)->get();
+    /**
+     * Get users sorted by last message with optional search
+     */
+    public function getUsersSortedByLastMessage($authId, $searchTerm = null)
+    {
+        $query = User::where('id', '!=', $authId);
 
-    foreach ($users as $user) {
+        // Apply search filter if provided
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('username', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('first_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('last_name', 'like', '%' . $searchTerm . '%');
+            });
+        }
 
-        // Unread Count
-        $user->unreadCount = OrderMessage::where('sender_id', $user->id)
-            ->where('receiver_id', $authId)
-            ->where('is_seen', false)
-            ->count();
 
-        // Last Message
-        $user->lastMessage = OrderMessage::where(function ($q) use ($user, $authId) {
+        $users = $query->get();
+
+        foreach ($users as $user) {
+            // Unread Count
+            $user->unreadCount = OrderMessage::where('sender_id', $user->id)
+                ->where('receiver_id', $authId)
+                ->where('is_seen', false)
+                ->count();
+
+            // Last Message
+            $user->lastMessage = OrderMessage::where(function ($q) use ($user, $authId) {
                 $q->where('sender_id', $user->id)
-                  ->where('receiver_id', $authId);
+                    ->where('receiver_id', $authId);
             })
-            ->orWhere(function ($q) use ($user, $authId) {
-                $q->where('sender_id', $authId)
-                  ->where('receiver_id', $user->id);
-            })
-            ->latest()
-            ->first();
+                ->orWhere(function ($q) use ($user, $authId) {
+                    $q->where('sender_id', $authId)
+                        ->where('receiver_id', $user->id);
+                })
+                ->latest()
+                ->first();
+        }
+
+        // Sort by last message date descending
+        return $users->sortByDesc(function ($u) {
+            return $u->lastMessage->created_at ?? null;
+        })->values();
     }
 
-    // Sort by last message date descending
-    return $users->sortByDesc(function ($u) {
-        return $u->lastMessage->created_at ?? null;
-    })->values();
-}
-
-
-
+    /**
+     * Send a message
+     */
     public function sendOrderMessage($senderId, $receiverId, $message = null, $media = null)
     {
         return OrderMessage::create([
@@ -55,7 +70,9 @@ public function getUsersSortedByLastMessage($authId)
         ]);
     }
 
-
+    /**
+     * Get conversation messages
+     */
     public function getMessages($currentUserId, $otherUserId)
     {
         return OrderMessage::where(function ($q) use ($currentUserId, $otherUserId) {
@@ -68,6 +85,9 @@ public function getUsersSortedByLastMessage($authId)
             ->get();
     }
 
+    /**
+     * Mark messages as seen
+     */
     public function markAsSeen($senderId, $receiverId)
     {
         OrderMessage::where('sender_id', $senderId)
