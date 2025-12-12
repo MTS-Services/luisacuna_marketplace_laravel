@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\HeroStatus;
 use App\Models\Hero;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -93,7 +94,8 @@ class HeroService
                 $fileName = $prefix . '-' . $data['mobile_image']->getClientOriginalName();
                 $data['mobile_image'] = Storage::disk('public')->putFileAs('banners', $data['mobile_image'], $fileName);
             }
-
+            $data['target'] = $data['target'] ?? '_self';
+            $data['status'] = $data['status'] ?? HeroStatus::ACTIVE;
             
             $newData = $this->model->create($data);
             // Dispatch event

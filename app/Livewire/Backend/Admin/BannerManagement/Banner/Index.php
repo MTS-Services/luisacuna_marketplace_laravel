@@ -39,7 +39,14 @@ class Index extends Component
             [
                 'key' => 'image',
                 'label' => 'Icon',
-                'format' => fn($data) => storage_url($data->image) ?? 'NO Image'
+                'format' => function ($data){
+                    if(!empty($data->image)){
+                      return ' <img src="'. storage_url($data->image).' alt="">';
+                    }else{
+                        return 'NO Image';
+                    }
+                    
+                }
             ],
             [
                 'key' => 'title',
