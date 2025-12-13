@@ -290,6 +290,9 @@
                 <x-backend.navlink type="single" icon="percent" name="Fee Settings" :route="route('admin.fee-settings.fee-settings')" active="fee-settings"
                     :page_slug="$active" />
 
+                <x-backend.navlink type="single" icon="bell" name="Notification" :route="route('admin.nm.notification.index')" active="notification"
+                    :page_slug="$active" />
+
                 <x-sidebar-separator title="Support" />
                 <x-backend.navlink type="single" icon="messages-square" name="Chat List" :route="route('admin.dashboard')"
                     active="fee" :page_slug="$active" />
