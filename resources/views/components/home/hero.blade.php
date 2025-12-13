@@ -7,9 +7,8 @@
         <div class="bg-[#0f002978] py-30 bg-opacity-0 relative z-10 w-full">
             <div class="container py-30 relative z-10 align-left  w-100vw">
 
-                <h1 class="text-5xl md:text-6xl font-semibold mb-6 text-white align-left">{{ $data->title }}
-                </h1>
-                <p class="text-xl text-white mb-15 max-w-2xl align-left">
+                <h2 class="text-5xl md:text-6xl font-semibold mb-6 text-text-white align-left">{{ $data->title }}</h2>
+                <p class="text-xl text-text-white mb-15 max-w-2xl align-left">
                     {{ $data->content }}
                 </p>
 
@@ -31,8 +30,8 @@
         <div class="bg-[#0f002978] py-30 bg-opacity-0 relative z-10 w-full">
             <div class="container py-30 relative z-10 align-left  w-100vw">
 
-                <h1 class="text-5xl md:text-6xl font-semibold mb-6 text-white text-center">{{ $data->title }}</h1>
-                <p class="text-xl text-white mb-15 max-w-2xl text-center">
+                <h1 class="text-5xl md:text-6xl font-semibold mb-6 text-text-white text-center">{{ $data->title }}</h1>
+                <p class="text-xl text-text-white mb-15 max-w-2xl text-center">
                     {{ $data->content }}
                 </p>
 
