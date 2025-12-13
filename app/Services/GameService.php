@@ -29,7 +29,7 @@ class GameService
 
     public function getAllDatas(array $filters = [], string $sortField = 'created_at', string $order = 'desc'): Collection
     {
-        return $this->model->newQuery()
+        return $this->model->query()
             ->filter($filters)
             ->orderBy($sortField, $order)
             ->get();
@@ -37,7 +37,7 @@ class GameService
 
     public function findData(mixed $value, string $column = 'id', bool $withTrashed = false): ?Game
     {
-        $query = $this->model->newQuery();
+        $query = $this->model->query();
         if ($withTrashed) {
             $query->withTrashed();
         }

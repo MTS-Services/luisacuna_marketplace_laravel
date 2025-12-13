@@ -30,7 +30,7 @@ class ProductService
 
     public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-
+        $relations = $filters['relations'] ?? [];
         $search = $filters['search'] ?? null;
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
@@ -39,11 +39,13 @@ class ProductService
             // Scout Search
             return Game::search($search)
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->with($relations)
                 ->paginate($perPage);
         }
         return $this->model->query()
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
+            ->with($relations)
             ->paginate($perPage);
     }
 

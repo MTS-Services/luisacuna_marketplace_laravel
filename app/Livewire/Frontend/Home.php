@@ -31,6 +31,7 @@ class Home extends Component
     public $categorySlug;
     public $gameSlug;
     protected $datas;
+    
 
 
     protected GameService $gameService;
@@ -71,6 +72,7 @@ class Home extends Component
         // Fetch product datas
         $this->datas = $this->getDatas();
 
+
         $this->platforms = $this->platformService->getAllDatas() ?? [];
     }
     public function saveContent()
@@ -92,6 +94,7 @@ class Home extends Component
         return $this->productService->getPaginatedData($this->perPage, [
             'gameSlug' => $this->gameSlug,
             'categorySlug' => $this->categorySlug,
+            'relations' => ['games', 'category'],
         ]);
     }
 
@@ -104,14 +107,22 @@ class Home extends Component
 
         $tag = $this->tagService->findData('popular', 'slug');
 
+        //Popular Games
         $games = $tag->games()->latest()->take(6)->get();
+        
         $games->load('categories');
 
+        //Boosting Games
+
+        $new_bostings = $this->gameService->paginateDatas(12, [
+            ['categorySlug' => 'boosting']
+            ]);
 
         return view('livewire.frontend.home', [
             'games' => $games,
             'heros' => $heros,
             'datas' => $this->datas,
+            'new_bostings' => $new_bostings
         ]);
     }
 }
