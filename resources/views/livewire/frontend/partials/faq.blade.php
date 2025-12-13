@@ -11,7 +11,7 @@
         </h5>
 
         <!-- Tabs -->
-        <div class="max-w-xs mx-auto flex justify-between mb-8 bg-bg-info rounded-full px-3 py-3">
+        <div class="max-w-xs mx-auto flex justify-between mb-8 bg-bg-info rounded-full px-2 py-2">
             <button
                 @click="tab = 'buyers'; active = null"
                 :class="tab === 'buyers'
