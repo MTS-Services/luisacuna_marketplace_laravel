@@ -1,21 +1,28 @@
 <main class="overflow-x-hidden-hidden">
     <!-- Hero Section -->
 
-    <x-home.hero :heros="$heros" />
+    <div class="swiper swiper-hero">
+        <div class="swiper-wrapper">
+            @forelse ($heros as $key => $hero)
+                <div class="swiper-slide">
+                    <x-home.hero :data="$hero" />
+                </div>
+            @empty
+                <div class="swiper-slide">
+                    <x-home.hero :data="null" />
+                </div>
+            @endforelse
+        </div>
+    </div>
+
 
     <!-- Popular Games Section -->
     <section class="py-20" id="popular-games">
-
-
-
         <div class="container">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mb-4 text-text-white">
+            <div class="mb-10">
+                <h2 class="text-40px font-bold mb-4 text-text-white">
                     {{ __('Newly Boosting') }}
                 </h2>
-                <p class="text-text-secondary">
-                    {{ __('Find coins, items, and services for your favorite games.') }}
-                </p>
             </div>
 
             <!-- Cards -->
@@ -42,13 +49,10 @@
         </div>
 
         <div class="container">
-            <div class="text-center mb-16 mt-12">
-                <h2 class="text-4xl font-bold mb-4 text-text-white">
-                    {{ __('Popular Games ') }}
+            <div class="mb-10 mt-20">
+                <h2 class="text-40px font-bold mb-4 text-text-white">
+                    {{ __('Popular Games') }}
                 </h2>
-                <p class="text-text-secondary">
-                    {{ __('Find coins, items, and services for your favorite games.') }}
-                </p>
             </div>
 
             <!-- Cards -->
@@ -75,17 +79,30 @@
         </div>
 
         <div class="container">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mt-12 mb-4 text-text-white">
+            <div class="mb-10 mt-20">
+                <h2 class="text-40px font-bold mb-4 text-text-white">
                     {{ __('Top-Selling Offers') }}
                 </h2>
-                <p class="text-text-secondary">
-                    {{ __('Find coins, items, and services for your favorite games.') }}
-                </p>
             </div>
 
             <!-- Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="relative min-h-[40vh]">
+                <!-- Skeleton Loading -->
+                <x-loading-animation :target="'search, tagSelected, selectedDevice, selectedAccountType,  selectedPrice, selectedDeliveryTime , resetAllFilters'" />
+                <!-- Actual Product Cards -->
+                <div wire:loading.class="opacity-0"
+                    wire:target="search, tagSelected, selectedDevice, selectedAccountType,  selectedPrice, selectedDeliveryTime , resetAllFilters"
+                    x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 w-full">
+
+                    @foreach ($datas as $item)
+                        <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" :data="$item" :game="$game" />
+                    @endforeach
+
+                </div>
+            </div>
+            {{-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach ($games as $key => $game)
                     @if ($key > 2)
                         @break
@@ -95,7 +112,7 @@
                         <x-game-card :data="$game" />
                     </div>
                 @endforeach
-            </div>
+            </div> --}}
 
             <!-- Center indicator -->
             <div class="w-full flex justify-center mt-6">
@@ -163,12 +180,12 @@
     </section>
 
     <!-- About Us Section -->
-    <section class="py-20 bg-gradient-to-r from-zinc-500  to-pink-900">
-        <div class="container">
+    <section class="container p-5 md:p-10 xl:p-20 bg-gradient-to-r from-zinc-900  to-pink-950">
+        <div class="">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div>
-                    <h2 class="text-4xl font-bold mb-6 text-white ">{{ __('About us') }}</h2>
-                    <p class="text-white/70 mb-4">
+                    <h2 class="text-4xl font-semibold mb-6 text-text-white ">{{ __('About us') }}</h2>
+                    <p class="text-text-white mb-4 text-xl font-normal">
                         {{ __('Digital Commerce is your go-to destination for buying and selling high-quality digital products. We connect buyers and verified sellers, ensuring secure transactions, fast delivery, and dedicated support for a seamless experience.') }}
                     </p>
                     {{-- <button class="btn-primary">
@@ -190,36 +207,23 @@
 
     <!-- FAQ Section -->
     <livewire:frontend.partials.faq :faqs_buyer="$faqs_buyer" :faqs_seller="$faqs_seller" />
-      @push('scripts')
+    @push('scripts')
         <script>
             document.addEventListener('livewire:navigated', function() {
-                const swiper = new Swiper('.popular-currency', {
+                const swiper = new Swiper('.swiper-hero', {
                     loop: true,
                     pagination: {
                         el: '.swiper-pagination',
                         clickable: true,
                     },
-                    // navigation: {
-                    //     nextEl: '.swiper-button-next',
-                    //     prevEl: '.swiper-button-prev',
-                    // },
                     autoplay: {
                         delay: 2500,
                         disableOnInteraction: false,
                     },
-                    slidesPerView: 1,
+
+                    slidesPerView: 1, // Always 1 item
                     spaceBetween: 20,
-                    breakpoints: {
-                        640: {
-                            slidesPerView: 1,
-                        },
-
-                        1024: {
-                            slidesPerView: 1,
-                        },
-                    },
                 });
-
             });
         </script>
     @endpush

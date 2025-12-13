@@ -7,7 +7,8 @@
           ])
 
 
-    <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'productId' => encrypt($data->id) ]) }}"
+    <a href=""
+    {{-- {{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'productId' => encrypt($data->id) ]) }} --}}
         wire:navigate>
         <!-- Card -->
         <div class="bg-bg-optional rounded-2xl p-4 shadow-lg transition">
@@ -42,7 +43,7 @@
 
             <div class=" flex items-center justify-between ">
                 <span class="text-text-white font-medium text-lg">
-                    {{ $data->price }}
+                   {{ currency_exchange($data->price) }}
                 </span>
                 <div class="flex items-center space-x-1 text-text-secondary text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 stroke-text-primary" viewBox="0 0 15 15"

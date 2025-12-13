@@ -22,13 +22,13 @@
 
             @guest
                 <div class="xl:flex">
-                    <x-language />
+                    <x-language :currencies="$currencies" />
                 </div>
             @endguest
 
             @auth
                 <div class="hidden md:flex">
-                    <x-language />
+                    <x-language :currencies="$currencies" />
                 </div>
             @endauth
 

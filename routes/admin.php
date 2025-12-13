@@ -21,10 +21,12 @@ use App\Http\Controllers\Backend\Admin\GameManagement\PlatformController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\AccountController;
 use App\Http\Controllers\Backend\Admin\ReviewManagement\PageViewController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
+use App\Http\Controllers\Backend\Admin\FeeSettingsManagement\FeeSettingsController;
 use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementTypeController;
 use App\Http\Controllers\Backend\Admin\GatewayAndIntegration\GatewayAndIntegrationController;
+use App\Http\Controllers\Backend\Admin\NotificationManagement\NotificationController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\BoostingsController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\CurrencyController as ProductCurrencyController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\GiftCardsController;
@@ -101,6 +103,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
     route::group(['prefix' => 'banner-management', 'as' => 'bm.'], function () {
         Route::controller(BannerController::class)->name('banner.')->prefix('banner')->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
         });
     });
@@ -260,5 +263,18 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
         //     Route::get('/', 'index')->name('index');
         //     Route::get('/create', 'create')->name('create');
         // });
+    });
+
+
+    Route::controller(FeeSettingsController::class)->name('fee-settings.')->prefix('fee-settings')->group(function () {
+        Route::get('/fee-settings', 'feeSettings')->name('fee-settings');
+    });
+
+    Route::group(['prefix' => 'notification-management', 'as' => 'nm.'], function () {
+        Route::controller(NotificationController::class)->name('notification.')->prefix('notification')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/send', 'send')->name('send');
+            Route::get('/view/{id}', 'view')->name('view');
+        });
     });
 });

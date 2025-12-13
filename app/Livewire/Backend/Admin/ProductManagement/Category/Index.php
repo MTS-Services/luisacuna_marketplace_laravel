@@ -32,7 +32,8 @@ class Index extends Component
         $this->service = $service;
     }
 
-    public function mount($categorySlug){
+    public function mount($categorySlug)
+    {
         $this->categorySlug = $categorySlug;
     }
 
@@ -51,18 +52,31 @@ class Index extends Component
         $columns = [
 
             [
-                'key' => 'icon',
-                'label' => 'icon',
-                'format' => function ($data) {
-                    return $data->icon
-                        ? '<img src="' . Storage::url($data->icon) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
-                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
-                }
+                'key' => 'slug',
+                'label' => 'Game',
+                'sortable' => false,
+                'format' => fn($item) =>
+                '<div class="flex items-center gap-3">
+                    <img src="' . ($item->games->logo) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item->games->slug ?? 'Game') . '">
+                    <span class="font-semibold text-text-white">' . ($item->games->slug ?? '-') . '</span>
+                </div>'
             ],
-            [
+             [
                 'key' => 'name',
                 'label' => 'Name',
-                'sortable' => true
+                'sortable' => true,
+                'format' => fn($item) =>
+                '<a href="' . route('admin.am.admin.view', encrypt($item->id)) . '" class="font-semibold text-text-white">' . ($item->user->username ?? '-') . '</a>'
+            ],
+            [
+                'key' => 'quantity',
+                'label' => 'Quantity',
+                'sortable' => true,
+            ],
+            [
+                'key' => 'price',
+                'label' => 'Price',
+                'sortable' => true,
             ],
             [
                 'key' => 'status',
@@ -77,25 +91,16 @@ class Index extends Component
 
             [
                 'key' => 'created_at',
-                'label' => 'Created',
+                'label' => 'Start Date',
                 'sortable' => true,
                 'format' => function ($data) {
                     return $data->created_at_formatted;
-                }
-            ],
-            [
-                'key' => 'created_by',
-                'label' => 'Created By',
-                'format' => function ($data) {
-                    return $data->creater_admin?->name ?? 'System';
                 }
             ],
         ];
 
         $actions = [
             ['key' => 'id', 'label' => 'View', 'route' => 'admin.gm.category.view', 'encrypt' => true],
-            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.gm.category.edit', 'encrypt' => true],
-            ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete'],
         ];
 
         $bulkActions = [
