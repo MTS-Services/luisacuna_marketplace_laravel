@@ -36,7 +36,7 @@
                     <div class="swiper-wrapper py-16">
                         @foreach ($popular_coachings as $popular_coaching)
                             <div class="swiper-slide">
-                                <x-currency-card :data="$popular_coaching" />
+                                <x-product-card :data="$popular_coaching" />
                             </div>
                         @endforeach
                     </div>
@@ -64,7 +64,7 @@
                     <div class="swiper-wrapper py-16">
                         @foreach ($newly_coachings as $newly_coaching)
                             <div class="swiper-slide">
-                                <x-currency-card :data="$newly_coaching" />
+                                <x-product-card :data="$newly_coaching" />
                             </div>
                         @endforeach
                     </div>
@@ -87,7 +87,7 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center gap-6">
             @foreach ($coachings as $coaching)
-                <x-currency-card :data="$coaching" />
+                <x-product-card :data="$coaching" />
             @endforeach
         </div>
 
