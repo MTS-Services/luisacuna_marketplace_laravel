@@ -87,13 +87,12 @@ class Home extends Component
     {
         return $this->faqService->getActiveData();
     }
-    public function getDatas()
-    {
-        return $this->productService->getPaginatedData($this->perPage, [
-            'gameSlug' => $this->gameSlug,
-            'categorySlug' => $this->categorySlug,
-        ]);
-    }
+public function getDatas(){
+    return $this->productService->getPaginatedData($this->perPage, [
+        'gameSlug' => $this->gameSlug,
+        'categorySlug' => $this->categorySlug,
+    ]);
+}
 
 
     public function render()

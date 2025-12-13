@@ -61,8 +61,6 @@
 
     --color-text-new-light: #1b1b1b;
     --color-text-new-dark: #f1f1f1;
-    --color-bg-gredient1: #130033;
-    --color-bg-gredient2: #330018;
 
     /* Accent Colors */
     --color-accent-light: var(--color-primary-600);
@@ -181,7 +179,6 @@
     --color-text-purple: #6b21a8;
     --color-text-pink: #ec4899;
 
-
     --color-text-btn-secondary: var(--color-primary-500);
     --color-text-btn-tertiary: var(--color-secondary-500);
 
@@ -201,8 +198,6 @@
     --color-bg-pink-500: #ec4899 !important;
     --color-bg-purple-800: #5b21b6 !important;
     --color-bg-blue-400: #60a5fa !important;
-    --color-bg-Purple: #1B0C33 !important;
-    --color-bg-Royal-Blue: #351966 !important;
 
     /* Seller Profile Custom Colors */
     --color-bg-light-black: var(--color-bg-primary);
@@ -214,11 +209,6 @@
     --color-bg-white: var(--color-white);
     --color-green: var(--color-green);
     --color-orange: var(--color-orange);
-
-    /* Home Page About Sections */
-    --color-bg-gredient1: var(--color-bg-gredient1);
-    --color-bg-gredient2: var(--color-bg-gredient1);
-    /* Home Page About Sections End */
 
     /* ======================================================
     	 	 	 	 	 	 # Shadows

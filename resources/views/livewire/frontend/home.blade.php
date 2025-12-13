@@ -180,19 +180,20 @@
     </section>
 
     <!-- About Us Section -->
-    <section class="container p-5 md:p-10 xl:p-20 bg-gradient-to-r from-bg-gredient1  to-bg-gredient2">
+    <section class="container p-5 md:p-10 xl:p-20 bg-gradient-to-r from-zinc-900  to-pink-950">
         <div class="">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div>
-                    <h2 class="text-4xl font-semibold mb-6 dark:text-text-white text-white  ">{{ __('About us') }}</h2>
-                    <p class="dark:text-text-white text-white mb-4 text-xl font-normal">
+                    <h2 class="text-4xl font-semibold mb-6 text-text-white ">{{ __('About us') }}</h2>
+                    <p class="text-text-white mb-4 text-xl font-normal">
                         {{ __('Digital Commerce is your go-to destination for buying and selling high-quality digital products. We connect buyers and verified sellers, ensuring secure transactions, fast delivery, and dedicated support for a seamless experience.') }}
                     </p>
                     {{-- <button class="btn-primary">
                         <span><x-flux::icon name="user" class="w-6 h-6 inline-block" stroke="white" /></span>
                         Explore Products</button> --}}
-                    <x-ui.button class=" mt-10! py-3! px-4! w-auto! text-base font-normal ">
-                     
+                    <x-ui.button class=" py-2 w-auto!">
+                        <flux:icon name="user"
+                            class="w-5 h-5 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                         {{ __('Explore Products') }}
                     </x-ui.button>
                 </div>
