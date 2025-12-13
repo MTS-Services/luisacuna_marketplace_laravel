@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
 use App\Enums\CategoryStatus;
-// use Faker\Factory as Faker;
+
 class CategorySeeder extends Seeder
 {
     /**
@@ -13,10 +13,6 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-
-        // Category::factory(100)->create();
-       
-
         Category::insert([
             [
                 'sort_order' => 1,
@@ -30,7 +26,7 @@ class CategorySeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-             [
+            [
                 'sort_order' => 2,
                 'name' => 'Gift Card',
                 'slug' => 'gift-card',
@@ -54,7 +50,7 @@ class CategorySeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-           
+
             [
                 'sort_order' => 4,
                 'name' => 'Items',
