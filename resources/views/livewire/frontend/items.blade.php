@@ -33,7 +33,7 @@
                 <div class="swiper-wrapper py-10">
                     @foreach ($popular_items as $popular_item)
                         <div class="swiper-slide">
-                            <x-currency-card :data="$popular_item" />
+                            <x-product-card :data="$popular_item" />
                         </div>
                     @endforeach
                     {{-- <div class="swiper-slide">
@@ -160,7 +160,7 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center gap-6">
             @foreach ($items as $item)
-                <x-currency-card :data="$item" />
+                <x-product-card :data="$item" />
             @endforeach
         </div>
 

@@ -34,7 +34,7 @@
                 <div class="swiper-wrapper">
                     @foreach ($popular_boostings as $popular_boosting)
                         <div class="swiper-slide">
-                            <x-currency-card :data="$popular_boosting" />
+                            <x-product-card :data="$popular_boosting" />
                         </div>
                     @endforeach
                 </div>
@@ -54,7 +54,7 @@
                 <div class="swiper-wrapper py-16">
                     @foreach ($newly_boostings as $newly_boosting)
                         <div class="swiper-slide">
-                            <x-currency-card :data="$newly_boosting" />
+                            <x-product-card :data="$newly_boosting" />
                         </div>
                     @endforeach
                 </div>
@@ -77,7 +77,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
 
                 @foreach ($boostings as $boosting)
-                    <x-currency-card :data="$boosting" />
+                    <x-product-card :data="$boosting" />
                 @endforeach
 
             </div>
