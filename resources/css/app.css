@@ -61,8 +61,6 @@
 
     --color-text-new-light: #1b1b1b;
     --color-text-new-dark: #f1f1f1;
-    --color-bg-gredient1: #130033;
-    --color-bg-gredient2: #330018;
 
     /* Accent Colors */
     --color-accent-light: var(--color-primary-600);
@@ -211,11 +209,6 @@
     --color-bg-white: var(--color-white);
     --color-green: var(--color-green);
     --color-orange: var(--color-orange);
-
-    /* Home Page About Sections */
-    --color-bg-gredient1: var(--color-bg-gredient1);
-    --color-bg-gredient2: var(--color-bg-gredient1);
-    /* Home Page About Sections End */
 
     /* ======================================================
     	 	 	 	 	 	 # Shadows
