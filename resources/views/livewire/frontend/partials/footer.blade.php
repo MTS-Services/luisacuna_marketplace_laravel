@@ -1,16 +1,21 @@
 <footer class="bg-bg-secondary">
     <div class="pt-12">
         <div class="container flex flex-col md:flex-row justify-start gap-8 mb-12">
-            <div class="w-full md:w-1/4 flex flex-col items-start justify-start md:justify-start">
+
+
+            <div class="w-full md:w-1/4 flex flex-col items-center md:items-start justify-start md:justify-start">
                 <div class="mb-4">
                     <a href="{{ route('home') }}">
                         <img src="{{ asset('assets/images/header_logo.png') }}" alt="">
                     </a>
                 </div>
+
                 <p class="text-text-secondary text-md text-center md:text-start">
                     {{ __('Digital Commerce connects buyers and verified sellers for secure, fast, and seamless digital transactions.') }}
                 </p>
-                <div class="flex gap-4 mt-6">
+
+                <!-- Center icons on mobile, left on desktop -->
+                <div class="flex gap-4 mt-6 justify-center md:justify-start">
                     <a href="#" target="_blank"
                         class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center hover:bg-zinc-500/40 transition">
                         <img src="{{ asset('assets/svgs/twiter.svg') }}" class="w-5 h-5" alt="">
@@ -29,6 +34,7 @@
                     </a>
                 </div>
             </div>
+
 
             <div class="w-full md:w-3/4 flex flex-wrap justify-start md:justify-around gap-8">
                 <div>
