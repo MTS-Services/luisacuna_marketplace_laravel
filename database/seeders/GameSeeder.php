@@ -58,7 +58,7 @@ class GameSeeder extends Seeder
                 'created_by' => Admin::inRandomOrder()->value('id'),
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
+            ], 
             [
                 'sort_order' => 4,
                 'name' => 'Black Desert Online Silver',
