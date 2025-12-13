@@ -142,3 +142,10 @@ Start the Laravel development server. The application will typically be accessib
 php artisan serve
 ```
 You should now be able to access and test the Luisacuna Marketplace locally!
+
+## 📖 Documentation & Guides
+
+* [**Getting Started**](new.md) - Learn how to install and set up the project.
+* [**Configuration**](SETUP.md) - Detailed guide on all available settings.
+* [**Contributing**](CONTRIBUTING.md) - Guidelines for submitting code or reports.
+* [**Security Policy**](SECURITY.md) - Our official security reporting policy.
