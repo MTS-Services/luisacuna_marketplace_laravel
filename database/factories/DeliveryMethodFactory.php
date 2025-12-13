@@ -17,17 +17,12 @@ class DeliveryMethodFactory extends Factory
 
     public function definition(): array
     {
-        $name = $this->faker->words(2, true);
-
-        
         return [
-            'name' => $name,
+            'name' => $this->faker->name(),
             'slug' => $this->faker->unique->slug(),
             'image' => 'https://placehold.co/400x400',
             'status' => DeliveryMethodStatus::ACTIVE->value,
-           'created_by' => Admin::inRandomorder()->value('id'),
+            'created_by' => Admin::inRandomorder()->value('id'),
         ];
     }
 }
-
-
