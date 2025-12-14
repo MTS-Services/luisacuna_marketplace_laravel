@@ -1,11 +1,11 @@
-<div class="lg:col-span-1">
+<div class="lg:col-span-1 ">
 
     <form x-data="{
         quantity: @entangle('quantity').live,
         price: {{ $product->price }},
         stock: {{ $product->quantity }}
     }" wire:submit="submit">
-        <div class="bg-bg-primary rounded-lg p-6 mb-6 ">
+        <div class="bg-bg-secondary rounded-lg p-6 mb-6 ">
             <div class ="mb-3 flex items-center justify-between border-b border-zinc-500">
                 <p class="text-text-primary text-sm mb-2">{{ __('Price') }}</p>
                 <p class="text-3xl ">{{ $product->price }}<span
@@ -101,7 +101,7 @@
     </div>
 </div>
 <!-- Delivery Instructions -->
-<div class="bg-bg-primary rounded-lg  mb-6 px-4 py-4 ">
+<div class="bg-bg-secondary rounded-lg  mb-6 px-4 py-4 ">
     <h3 class="font-bold mb-4">{{ __('Delivery Instructions') }}</h3>
     <div class="flex gap-4 mb-4">
         <button class="text-sm text-purple-400 hover:text-purple-300">{{ __('Welcome') }}</button>
