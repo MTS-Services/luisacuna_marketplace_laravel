@@ -32,17 +32,18 @@
                         <h2 class="font-semibold text-text-primary text-base  lg:text-2xl pb-5 text-left">Selling
                             experience:</h2>
 
-                        <div class="flex items-center gap-2 mb-3">
-                            <input type="radio" wire:model="sellingExperience" value="new" id="new"
-                                class="accent-pink-500">
-                            <label for="new">New Seller (This is my first selling)</label>
-                        </div>
+                            @foreach ($sellingExperiences as $sellingExperience )
+                                <div class="flex items-center gap-2">
+                                    <input type="radio" wire:model="selling_experience" value="{{ $sellingExperience['value'] }}" id="{{ $sellingExperience['value'] }}"
+                                        class="accent-pink-500">
+                                    <label for="{{ $sellingExperience['value'] }}">{{ $sellingExperience['label'] }}</label>
+                                </div>
+                            @endforeach
 
-                        <div class="flex items-center gap-2">
-                            <input type="radio" wire:model="sellingExperience" value="experienced" id="company"
-                                class="accent-pink-500">
-                            <label for="company">Experieced Seller (I have worked on others platform)</label>
-                        </div>
+                            <div class="mt-2 ">
+                                <x-ui.input-error :messages="$errors->get('selling_experience')" />
+                            </div>
+                                
                     </div>
                 </div>
 
@@ -50,13 +51,13 @@
                 <a href="{{route('user.seller.verification',['step' => 2])}}" class="px-8 py-2  hover:bg-zinc-50 rounded-lg">
                     BACK
                 </a>
-                <a href="{{route('user.seller.verification',['step' => 4])}}" wire:navigate class="px-8 py-2 text-white rounded-lg transition" 
+                <button wire:click="nextStep" class="px-8 py-2 text-white rounded-lg transition" 
                     :class="{
                         'bg-zinc-600 hover:bg-zinc-700': $wire.selectedCategories.length > 0,
                         'bg-zinc-200 text-zinc-950 cursor-pointer!': $wire.selectedCategories.length === 0
                     }">
                     NEXT
-                </a>
+                </button>
             </div>
 
             </div>

@@ -33,14 +33,7 @@
                         you'll
                         be selling in:</h2>
 
-                    @foreach ([
-                'currency' => 'Currency',
-                'accounts' => 'Accounts',
-                'items' => 'Items',
-                'top_ups' => 'Top Ups',
-                'boosting' => 'Boosting',
-                'gift_cards' => 'Gift Cards',
-            ] as $value => $label)
+                    @foreach ($categories as $value => $label)
                         <div class="flex items-center gap-3 mb-3">
                             <label class="relative inline-flex items-center">
                                 <input type="checkbox" wire:model="selectedCategories"
@@ -52,23 +45,24 @@
                             </label>
                         </div>
                     @endforeach
+                    <div class="mt-2 text-left">
+                        <x-ui.input-error :messages="$errors->get('selectedCategories')" />
+                    </div>
                 </div>
             </div>
-            @error('selectedCategories')
-                <p class="text-red-500 text-center mb-4">{{ $message }}</p>
-            @enderror
+            
 
             <div class="flex justify-center space-x-4 pt-10">
                 <a href="{{route('user.seller.verification',['step' => 1])}}" class="px-8 py-2  hover:bg-zinc-50 rounded-lg">
                     BACK
                 </a>
-                <a href="{{route('user.seller.verification',['step' => 3])}}" wire:navigate class="px-8 py-2 text-white rounded-lg transition" 
+                <button wire:click="nextStep"  class="px-8 py-2 text-white rounded-lg transition" 
                     :class="{
                         'bg-zinc-600 hover:bg-zinc-700': $wire.selectedCategories.length > 0,
-                        'bg-zinc-200 text-zinc-950 cursor-pointer': $wire.selectedCategories.length === 0
+                        'bg-zinc-200 text-zinc-950 cursor-not-allowed': $wire.selectedCategories.length === 0
                     }">
                     NEXT
-                </a>
+                </button>
             </div>
 
         </div>
