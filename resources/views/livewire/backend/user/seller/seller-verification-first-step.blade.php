@@ -21,7 +21,7 @@
                     <p class="font-semibold text-base ">Seller ID verification</p>
                 </div>
                 <div class="text-sm text-text-primary font-normal pt-2">
-                    Step <span>0</span>/<span>7</span>
+                    Step <span>1</span>/<span>6</span>
                 </div>
             </div>
 
@@ -32,25 +32,30 @@
                         an
                         individual or as a company?</h2>
 
-                    <div class="flex items-center gap-2 mb-3">
-                        <input type="radio" name="accountType" id="individal" class="accent-pink-500">
-                        <label for="individal">Individal</label>
+                    @foreach ( $accountTypes as $accountType )
+                         <div class="flex items-center gap-2 mb-3">
+                        <input type="radio" name="accountType" value="{{ $accountType['value'] }}" wire:model="account_type" id="{{ $accountType['value'] }}" class="accent-pink-500">
+                        <label for="{{ $accountType['value'] }}">{{ $accountType['label'] }}</label>
                     </div>
+                    @endforeach
 
-                    <div class="flex items-center gap-2">
-                        <input type="radio" name="accountType" id="company" class="accent-pink-500">
-                        <label for="company">Company</label>
+                    <div class="mt-2 text-left">
+                        <x-ui.input-error :messages="$errors->get('account_type')" />
                     </div>
                 </div>
+
             </div>
 
             <div class="flex justify-center space-x-4 pt-10">
                 <a href="{{route('user.seller.verification',['step' => 0])}}" class="px-8 py-2  hover:text-gray-700 rounded-lg hover:bg-gray-50">
                     BACK
                 </a>
-                <a href="{{route('user.seller.verification',['step' => 2])}}"  wire:navigate class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
+                {{-- <a href="{{route('user.seller.verification',['step' => 2])}}"  wire:navigate class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
                     NEXT
-                </a>
+                </a> --}}
+                  <button wire:click="nextStep"  class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
+                    NEXT
+                </button>
             </div>
 
         </div>

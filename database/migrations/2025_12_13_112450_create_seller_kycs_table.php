@@ -32,6 +32,13 @@ return new class extends Migration
             $table->string('front_image');
             $table->string('selfie_image')->nuallble();
             $table->string('seller_experience'); //SellerExperience Enum
+            //if Company 
+
+            $table->string('company_name')->nullable();
+            $table->string('company_license_number')->nullable();
+            $table->string('company_tax_number')->nullable();
+
+
             $table->string('status')->index()->default(SellerKycStatus::PENDING->value);
 
 
