@@ -22,7 +22,7 @@
                         <p class="font-semibold text-base ">Seller ID verification</p>
                     </div>
                     <div class="text-sm text-text-primary font-normal pt-2">
-                        Step <span>2</span>/<span>7</span>
+                        Step <span>3</span>/<span>6</span>
                     </div>
                 </div>
 
