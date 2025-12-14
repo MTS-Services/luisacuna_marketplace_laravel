@@ -87,7 +87,7 @@ class Offer extends Component
         }
         
         // Reset delivery time when method changes
-        $this->delivery_time = null;
+        $this->delivery_timeline = null;
     }
 
     // When Select Category will run Select Category with category id and name
@@ -220,9 +220,9 @@ class Offer extends Component
 
 
 
-        $this->productService->createData($data);
+        $createdData = $this->productService->createData($data);
 
-
+      
        // success
 
        $this->toastSuccess('Offer created successfully');
@@ -230,7 +230,7 @@ class Offer extends Component
         // Reset properties
         $this->resetField();
 
-        return redirect(route('user.currency'));
+        return redirect(route('user.user-offer.category', $createdData->category->slug));
     }
 
 

@@ -5,8 +5,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Backend\User\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\User\OfferManagement\UserOfferController;
 use App\Http\Controllers\Backend\User\OrderManagement\OrderController;
-
-
+use App\Http\Controllers\SellerKycController;
 
 // , 'userVerify'
 Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->group(function () {
@@ -72,9 +71,11 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
     });
 
     Route::group(['prefix' => 'seller'], function () {
-        Route::get('/verification', function () {
-            return view('backend.user.pages.seller.seller-verification');
-        })->name('seller.verification');
+
+        Route::get('verification/{step}',[SellerKycController::class,'index'])->name('seller.verification');
+        // Route::get('/verification', function () {
+        //     return view('backend.user.pages.seller.seller-verification');
+        // })->name('seller.verification');
     });
 
 
