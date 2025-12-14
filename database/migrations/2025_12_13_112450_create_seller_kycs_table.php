@@ -28,17 +28,17 @@ return new class extends Migration
             $table->string('city');
             $table->string('country');
             $table->string('postal_code');
-            $table->string('document_type');
+            $table->string('document_type'); //DocumentTyp Enum
             $table->string('front_image');
-            $table->string('back_image')->nuallble();
-            $table->string('seller_experience');
+            $table->string('selfie_image')->nuallble();
+            $table->string('seller_experience'); //SellerExperience Enum
             $table->string('status')->index()->default(SellerKycStatus::PENDING->value);
 
 
             $table->softDeletes();
             $table->timestamps();
 
-            $this->addAdminAuditColumns($table);
+            $this->addMorphedAuditColumns($table);
         });
     }
 

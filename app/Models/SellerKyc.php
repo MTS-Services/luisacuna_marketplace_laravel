@@ -28,7 +28,7 @@ class SellerKyc extends AuditBaseModel implements Auditable
         'postal_code',
         'document_type',
         'front_image',
-        'back_image',
+        'selfie_image',
         'seller_experience',
         'status',
 
