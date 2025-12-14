@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\Message;
+use App\Models\MessageParticipant;
 use App\Models\OrderMessage;
 
 class OrderMessageService
@@ -27,26 +29,32 @@ class OrderMessageService
             });
         }
 
-
         $users = $query->get();
 
         foreach ($users as $user) {
-            $user->unreadCount = OrderMessage::where('sender_id', $user->id)
-                ->where('receiver_id', $authId)
-                ->where('is_seen', false)
-                ->count();
-
-            $user->lastMessage = OrderMessage::where(function ($q) use ($user, $authId) {
+            $user->unreadCount = OrderMessage::whereHas('message', function ($q) use ($user, $authId) {
                 $q->where('sender_id', $user->id)
                     ->where('receiver_id', $authId);
             })
-                ->orWhere(function ($q) use ($user, $authId) {
-                    $q->where('sender_id', $authId)
-                        ->where('receiver_id', $user->id);
+            ->whereNull('seen_at')
+            ->count();
+
+            // Get last message between these two users
+            $user->lastMessage = OrderMessage::whereHas('message', function ($q) use ($user, $authId) {
+                $q->where(function ($query) use ($user, $authId) {
+                    $query->where('sender_id', $user->id)
+                        ->where('receiver_id', $authId);
                 })
-                ->latest()
-                ->first();
+                ->orWhere(function ($query) use ($user, $authId) {
+                    $query->where('sender_id', $authId)
+                        ->where('receiver_id', $user->id);
+                });
+            })
+            ->with('message')
+            ->latest()
+            ->first();
         }
+
         return $users->sortByDesc(function ($u) {
             return $u->lastMessage->created_at ?? null;
         })->values();
@@ -55,38 +63,69 @@ class OrderMessageService
     /**
      * Send a message
      */
-    public function sendOrderMessage($senderId, $receiverId, $message = null, $media = null)
+    public function sendOrderMessage($senderId, $receiverId, $messageText = null, $attachments = null, $isSystemMessage = false)
     {
-        return OrderMessage::create([
+
+        $message = Message::create([
+            'message_id' => uniqid('msg_', true),
             'sender_id' => $senderId,
             'receiver_id' => $receiverId,
-            'message' => $message,
-            'media' => $media,
         ]);
+
+
+        MessageParticipant::create([
+            'message_id' => $message->id,
+            'participant_id' => $senderId,
+            'participant_type' => User::class,
+        ]);
+
+        MessageParticipant::create([
+            'message_id' => $message->id,
+            'participant_id' => $receiverId,
+            'participant_type' => User::class,
+        ]);
+
+
+        $orderMessage = OrderMessage::create([
+            'message_id' => $message->id,
+            'message' => $messageText,
+            'attachments' => $attachments,
+            'is_system_message' => $isSystemMessage,
+        ]);
+
+        return $orderMessage->load('message');
     }
 
     /**
      * Get conversation messages
      */
-    public function getMessages($currentUserId, $otherUserId)
-    {
-        return OrderMessage::where(function ($q) use ($currentUserId, $otherUserId) {
-            $q->where('sender_id', $currentUserId)->where('receiver_id', $otherUserId);
-        })
-            ->orWhere(function ($q) use ($currentUserId, $otherUserId) {
-                $q->where('sender_id', $otherUserId)->where('receiver_id', $currentUserId);
-            })
-            ->orderBy('created_at', 'asc')
-            ->get();
-    }
+    // public function getMessages($currentUserId, $otherUserId)
+    // {
+    //     return OrderMessage::whereHas('messageRelation', function ($q) use ($currentUserId, $otherUserId) {
+    //         $q->where(function ($query) use ($currentUserId, $otherUserId) {
+    //             $query->where('sender_id', $currentUserId)
+    //                 ->where('receiver_id', $otherUserId);
+    //         })
+    //         ->orWhere(function ($query) use ($currentUserId, $otherUserId) {
+    //             $query->where('sender_id', $otherUserId)
+    //                 ->where('receiver_id', $currentUserId);
+    //         });
+    //     })
+    //     ->with(['messageRelation.sender', 'messageRelation.receiver'])
+    //     ->orderBy('created_at', 'asc')
+    //     ->get();
+    // }
 
     /**
      * Mark messages as seen
      */
-    public function markAsSeen($senderId, $receiverId)
-    {
-        OrderMessage::where('sender_id', $senderId)
-            ->where('receiver_id', $receiverId)
-            ->update(['is_seen' => true]);
-    }
+    // public function markAsSeen($senderId, $receiverId)
+    // {
+    //     OrderMessage::whereHas('messageRelation', function ($q) use ($senderId, $receiverId) {
+    //         $q->where('sender_id', $senderId)
+    //             ->where('receiver_id', $receiverId);
+    //     })
+    //     ->whereNull('seen_at')
+    //     ->update(['seen_at' => now()]);
+    // }
 }

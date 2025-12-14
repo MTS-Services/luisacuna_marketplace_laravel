@@ -13,19 +13,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order_messages', function (Blueprint $table) {
+        Schema::create('message_participants', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-            $table->unsignedBigInteger('sender_id')->index();
-            $table->unsignedBigInteger('receiver_id')->index();
-            $table->text('message')->nullable();
-            $table->json('media')->nullable();
-            $table->boolean('is_seen')->default(false);
-            $table->boolean('is_deleted')->default(false);
+            $table->unsignedBigInteger('message_id')->nullable();
+            $table->unsignedBigInteger('participant_id')->nullable();
+            $table->string('participant_type')->nullable();
 
 
-            $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->foreign('message_id')->references('id')->on('messages')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
 
@@ -38,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_messages');
+        Schema::dropIfExists('message_participants');
     }
 };

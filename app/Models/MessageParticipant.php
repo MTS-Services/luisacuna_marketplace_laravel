@@ -4,21 +4,20 @@ namespace App\Models;
 
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
-use Illuminate\Notifications\Notifiable;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class OrderMessage extends AuditBaseModel implements Auditable
+class MessageParticipant extends AuditBaseModel implements Auditable
 {
-    use   AuditableTrait, Notifiable;
+    use   AuditableTrait;
     //
 
     protected $fillable = [
+        'id',
         'sort_order',
         'message_id',
-        'message',
-        'attachments',
-        'is_system_message',
-        'seen_at',
+        'participant_id',
+        'participant_type',
+
 
         'creater_type',
         'updater_type',
@@ -27,8 +26,6 @@ class OrderMessage extends AuditBaseModel implements Auditable
         'updater_id',
         'deleter_id',
         'restorer_id',
-
-
     ];
 
     protected $hidden = [
@@ -36,15 +33,21 @@ class OrderMessage extends AuditBaseModel implements Auditable
     ];
 
     protected $casts = [
-          'attachments' => 'json', 
+        //
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    public function message(){
+    public function message()
+    {
         return $this->belongsTo(Message::class, 'message_id', 'id');
+    }
+
+    public function participant()
+    {
+        return $this->morphTo();
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

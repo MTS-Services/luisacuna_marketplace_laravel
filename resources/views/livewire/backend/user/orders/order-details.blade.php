@@ -2,6 +2,15 @@
     <section class="container mx-auto">
         {{-- breadcrumb --}}
 
+        <h2 class="text-text-white text-2xl font-semibold">
+            {{ $data->product->title ?? 'N/A' }}
+        </h2>
+
+        <p class="text-text-white">
+            Order ID: {{ $data->order_id }}
+        </p>
+
+
 
         <div class="flex gap-4 items-center my-10">
             <x-phosphor name="less-than" variant="regular" class="w-4 h-4 text-zinc-400" />
@@ -14,7 +23,8 @@
             <div class="flex gap-5">
                 <div>
                     <div class="w-10 h-10 md:w-16 md:h-16">
-                        <img src="{{ asset('assets/images/order/order.png') }}" alt="Product Name" class="w-full h-full rounded-lg">
+                        <img src="{{ asset('assets/images/order/order.png') }}" alt="Product Name"
+                            class="w-full h-full rounded-lg">
                     </div>
                 </div>
                 <div>
@@ -22,7 +32,7 @@
                         {{ __('Mercury Spark — Ultimate 5-Star Boost') }}
                     </h2>
                     <p class="text-text-white font-normal text-base line-clamp-1">
-                        {{ __('Order ID: 98bc4674-4bde-4498-9175-a4a0318458e0') }}</p>
+                        {{ __('Order ID: ') }} {{ $data->order_id }}</p>
                 </div>
             </div>
             <div class="">
@@ -38,12 +48,14 @@
                         <div class="bg-bg-info rounded-full p-3">
                             <x-phosphor name="info" variant="regular" class="w-6 h-6 text-zinc-400" />
                         </div>
-                        <h3 class="text-text-white text-base sm:text-2xl font-semibold">{{ __('Order cancelled') }}</h3>
+                        <h3 class="text-text-white text-base sm:text-2xl font-semibold">{{ __('Order') }}
+                            {{ $data->status }}</h3>
                     </div>
                     <div class="">
                         <div class="mt-7">
                             <p class="text-text-white text-base mb-2">{{ __('Dispute reason:') }}</p>
-                            <p class="text-text-white text-base sm:text-2xl font-semibold">{{ __('I have another issue') }}</p>
+                            <p class="text-text-white text-base sm:text-2xl font-semibold">
+                                {{ __('I have another issue') }}</p>
                         </div>
                         <div class="mt-5">
                             <p class="text-text-white text-base mb-2">{{ __('Cancelled by:') }}</p>
@@ -135,6 +147,7 @@
                 </div>
             </div>
         </div>
+        {{-- message --}}
         <div class="bg-bg-info rounded-lg mt-20 p-5 sm:p-20">
 
             <!-- User Header -->
@@ -152,8 +165,8 @@
             <!-- Order Created Message -->
             <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
                 <div>
-                    {{-- <p class="text-text-white text-base mb-2">{{ __('Order Created:') }} <a href="#">
-                            https://www.companyname.ga/order/d8bcd674-dbde-4d98-9175-a4a031845de0</a></p> --}}
+                    <p class="text-text-white text-base mb-2">{{ __('Order Created:') }} <a href="#">
+                            https://www.companyname.ga/order/d8bcd674-dbde-4d98-9175-a4a031845de0</a></p>
                     <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
                         <x-phosphor name="link" variant="" class="fill-zinc-500" />
 
@@ -241,6 +254,91 @@
             </div>
 
         </div>
+        {{-- <div class="bg-bg-info rounded-lg mt-20 p-5 sm:p-20">
+
+            <!-- Seller Header -->
+            <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
+                <div class="flex items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name={{ $data->seller->username }}&background=853EFF&color=fff"
+                        alt="Seller" class="w-10 h-10 rounded-full">
+                    <div>
+                        <h3 class="text-text-white text-2xl font-semibold">{{ $data->seller->username }}</h3>
+                        <p class="text-text-white text-base font-normal">Order #{{ $data->order_number }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            <div id="messages-container" class="space-y-6 mb-6" wire:poll.5s="loadMessages">
+                @foreach ($messages as $msg)
+                    @if ($msg->is_system_message)
+                        <!-- System Message -->
+                        <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500">
+                            <p class="text-text-white text-base mb-2">{{ $msg->message }}</p>
+                            <p class="text-text-white text-xs text-right mt-3">
+                                {{ $msg->created_at->format('M d Y, h:i A') }}
+                            </p>
+                        </div>
+                    @else
+                        <!-- Regular Message -->
+                        <div
+                            class="flex items-start gap-3 {{ $msg->messageRelation->sender_id == auth()->id() ? 'justify-end' : '' }}">
+                            @if ($msg->messageRelation->sender_id != auth()->id())
+                                <img src="https://ui-avatars.com/api/?name={{ $msg->messageRelation->sender->username }}&background=853EFF&color=fff"
+                                    alt="Sender" class="w-10 h-10 rounded-full">
+                            @endif
+
+                            <div
+                                class="max-w-[70%] {{ $msg->messageRelation->sender_id == auth()->id() ? 'bg-zinc-500' : 'bg-primary-800' }} rounded-lg p-4">
+                                <p class="text-text-white">{{ $msg->message }}</p>
+                            </div>
+
+                            @if ($msg->messageRelation->sender_id == auth()->id())
+                                <img src="https://ui-avatars.com/api/?name={{ auth()->user()->username }}&background=853EFF&color=fff"
+                                    alt="You" class="w-10 h-10 rounded-full">
+                            @endif
+                        </div>
+                        <p
+                            class="text-text-white text-xs {{ $msg->messageRelation->sender_id == auth()->id() ? 'text-right' : '' }}">
+                            {{ $msg->created_at->format('M d Y, h:i A') }}
+                        </p>
+                    @endif
+                @endforeach
+            </div>
+
+            <!-- Message Input -->
+            <form wire:submit.prevent="sendMessage" class="mt-10">
+                <div class="flex items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name={{ auth()->user()->username }}&background=853EFF&color=fff"
+                        alt="You" class="w-10 h-10 rounded-full">
+                    <div class="flex-1">
+                        <input type="text" wire:model="newMessage" placeholder="Send message to seller..."
+                            class="w-full bg-primary-800 text-text-white px-4 py-3 rounded-lg focus:outline-none" />
+                        @error('newMessage')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <button type="submit"
+                        class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg transition-colors">
+                        Send
+                    </button>
+                </div>
+            </form>
+
+        </div>
+
+        @push('scripts')
+            <script>
+                window.addEventListener('message-sent', () => {
+                    const container = document.getElementById('messages-container');
+                    container?.lastElementChild?.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            </script>
+        @endpush --}}
+
+
         <div class="bg-bg-info rounded-lg mt-20 mb-29 py-8! px-4! md:py-20 md:px-10">
             <div class="flex items-center gap-3">
                 <div class="w-16 h-16">
