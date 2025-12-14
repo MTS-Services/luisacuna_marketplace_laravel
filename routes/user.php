@@ -72,7 +72,7 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
 
     Route::group(['prefix' => 'seller'], function () {
 
-        Route::get('verification/{step}',[SellerKycController::class,'index'])->name('seller.verification');
+        Route::get('verification/{step?}',[SellerKycController::class,'index'])->name('seller.verification');
         // Route::get('/verification', function () {
         //     return view('backend.user.pages.seller.seller-verification');
         // })->name('seller.verification');
