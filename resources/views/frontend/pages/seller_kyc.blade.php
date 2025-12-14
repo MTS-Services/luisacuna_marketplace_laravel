@@ -11,6 +11,20 @@
         @case(3)
         <livewire:backend.user.seller.seller-verification-third-step />
         @break
+        @case(4)
+        <livewire:backend.user.seller.seller-verification-four-step />
+        @break
+    
+        @case(5)
+        <livewire:backend.user.seller.seller-verification-five-step />
+        @break
+        @case(6)
+        <livewire:backend.user.seller.seller-verification-six-step />
+        @break
+    
+        @case(7)
+        <livewire:backend.user.seller.seller-verification-seven-step />
+        @break
     
         @default
         <livewire:backend.user.seller.seller-verification />
