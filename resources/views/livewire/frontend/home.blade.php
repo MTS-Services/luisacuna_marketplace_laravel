@@ -162,7 +162,7 @@
     </section>
 
     <!-- About Us Section -->
-    <section class="container p-5 md:p-10 xl:p-20 bg-gradient-to-r from-bg-gredient1  to-bg-gredient2">
+    <section class="container p-5 md:p-10 xl:p-20 bg-gradient-to-r from-zinc-900  to-pink-950">
         <div class="">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div>
