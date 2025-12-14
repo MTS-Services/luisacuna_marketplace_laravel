@@ -38,7 +38,7 @@
                         $data->name ?? ''
                     }}
                    </p>
-                <img class="w-16 h-16 rounded float-right" src="{{ storage_url($data->image) }}"
+                <img class="w-16 h-16 rounded float-right" src="{{ storage_url($game->logo) }}"
                     alt="Image">
             </div>
 
