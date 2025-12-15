@@ -13,6 +13,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class AdminNotificationSent implements ShouldBroadcast, ShouldQueue
 {
@@ -27,9 +28,20 @@ class AdminNotificationSent implements ShouldBroadcast, ShouldQueue
 
     public function broadcastOn()
     {
+        Log::info('Called Admin notification.');
+        Log::info('AdminNotificationSent - broadcastOn called', [
+            'notification_id' => $this->notification->id,
+            'receiver_id' => $this->notification->receiver_id,
+            'receiver_type' => $this->notification->receiver_type,
+            'type' => $this->notification->type,
+            'type_is_admin' => $this->notification->type == CustomNotificationType::ADMIN,
+            'type_is_public' => $this->notification->type == CustomNotificationType::PUBLIC,
+        ]);
         if ($this->notification->receiver_id && $this->notification->receiver_type == Admin::class) {
+            Log::info('Broadcasting admin notification' . $this->notification->id);
             return new PrivateChannel('admin.' . $this->notification->receiver_id);
-        } elseif ($this->notification->receiver_id == null && ($this->notification->type == CustomNotificationType::ADMIN->value || $this->notification->type == CustomNotificationType::PUBLIC->value)) {
+        } elseif ($this->notification->receiver_id == null && ($this->notification->type == CustomNotificationType::ADMIN || $this->notification->type == CustomNotificationType::PUBLIC)) {
+            Log::info('Broadcasting public notification for admins ' . $this->notification->id);
             return new Channel('admins');
         }
         return [];

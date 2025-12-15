@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Backend\Admin\NotificationManagement\Announcement;
 
-
+use App\Enums\CustomNotificationType;
 use Livewire\Component;
 use App\Services\NotificatonService;
 use App\Traits\Livewire\WithDataTable;
@@ -14,10 +14,6 @@ class Index extends Component
     use WithDataTable, WithNotification;
 
     public $statusFilter = '';
-    public $showDeleteModal = false;
-    public $deleteId = null;
-    public $bulkAction = '';
-    public $showBulkActionModal = false;
 
     protected NotificatonService $service;
 
@@ -75,12 +71,13 @@ class Index extends Component
             'datas' => $datas,
             'columns' => $columns,
             'actions' => $actions,
+            'statuses' => CustomNotificationType::options()
         ]);
     }
 
     public function resetFilters(): void
     {
-        $this->reset(['search', 'statusFilter', 'perPage', 'sortField', 'sortDirection', 'selectedIds', 'selectAll', 'bulkAction']);
+        $this->reset(['search', 'statusFilter', 'perPage', 'sortField', 'sortDirection']);
         $this->resetPage();
     }
 

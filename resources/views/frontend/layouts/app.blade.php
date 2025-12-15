@@ -93,21 +93,35 @@
         });
         document.addEventListener('livewire:initialized', () => {
 
-            window.Echo.channel('users')
+            // ✅ Public channel for all admins
+            window.Echo.channel('admins')
                 .listen('.notification.sent', (e) => {
-                    console.log(e);
+                    console.log('📢 Admin notification received:', e);
                     window.toast.info(e.title || 'New Notification Received');
                     Livewire.dispatch('notification-updated');
+                })
+                .subscribed(() => {
+                    console.log('✅ Subscribed to admins channel');
+                })
+                .error((error) => {
+                    console.error('❌ Error on admins channel:', error);
                 });
 
-            if ('{{ auth()->guard('web')->check() }}') {
-                window.Echo.private('user.{{ auth()->guard('web')->id() }}')
+            // ✅ Private channel for specific admin (if authenticated)
+            @if (auth()->guard('admin')->check())
+                window.Echo.private('admin.{{ auth()->guard('admin')->id() }}')
                     .listen('.notification.sent', (e) => {
-                        console.log(e);
+                        console.log('🔒 Private admin notification received:', e);
                         window.toast.info(e.title || 'New Notification Received');
                         Livewire.dispatch('notification-updated');
+                    })
+                    .subscribed(() => {
+                        console.log('✅ Subscribed to private admin channel');
+                    })
+                    .error((error) => {
+                        console.error('❌ Error on private admin channel:', error);
                     });
-            }
+            @endif
         });
     </script>
     @stack('scripts')

@@ -273,7 +273,7 @@
 
             window.Echo.channel('users')
                 .listen('.notification.sent', (e) => {
-                    // console.log(e);
+                    console.log(e);
                     window.toast.info(e.title || 'New Notification Received');
                     Livewire.dispatch('notification-updated');
                 });
@@ -281,7 +281,7 @@
             if ('{{ auth()->check() }}') {
                 window.Echo.private('user.{{ user()->id }}')
                     .listen('.notification.sent', (e) => {
-                        // console.log(e);
+                        console.log(e);
                         window.toast.info(e.title || 'New Notification Received');
                         Livewire.dispatch('notification-updated');
                     });

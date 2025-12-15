@@ -9,6 +9,7 @@ use App\Events\UserNotificationSent;
 use App\Events\AdminNotificationSent;
 use App\Enums\CustomNotificationType;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
 
 class NotificatonService
 {
@@ -20,13 +21,16 @@ class NotificatonService
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
-        if ($search) {
+        // Check if search is provided and Scout is configured
+        if ($search && config('scout.driver')) {
             return CustomNotification::search($search)
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
         }
 
+        // Fallback to regular query if no search or Scout not configured
         return $this->model->query()
+            ->filter($filters)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
     }
@@ -37,15 +41,22 @@ class NotificatonService
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
+        $baseQuery = $this->model->query()
+            ->announcementType()
+            ->filter($filters);
+
         if ($search) {
-            return CustomNotification::search($search)
-                ->announcementType()
-                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
-                ->paginate($perPage);
+            $baseQuery->where(function ($q) use ($search) {
+                // Use indexed virtual columns for lightning-fast search
+                $q->where('title_searchable', 'like', "%{$search}%")
+                    ->orWhere('message_searchable', 'like', "%{$search}%")
+                    ->orWhere('description_searchable', 'like', "%{$search}%")
+                    ->orWhere('type', 'like', "%{$search}%")
+                    ->orWhere('action', 'like', "%{$search}%");
+            });
         }
 
-        return $this->model->query()
-            ->announcementType()
+        return $baseQuery
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
     }
@@ -59,8 +70,6 @@ class NotificatonService
         return $model->where($column_name, $column_value)->first();
     }
 
-
-
     public function createData(array $data): CustomNotification
     {
         $notificationData = [
@@ -69,12 +78,6 @@ class NotificatonService
             'description' => $data['description'] ?? null,
             'icon' => $data['icon'] ?? null,
         ];
-
-        // Don't include additional in data JSON since it has its own column
-        // Remove this block:
-        // if (isset($data['additional']) && !empty($data['additional'])) {
-        //     $notificationData['additional'] = $data['additional'];
-        // }
 
         $notification = $this->model->create([
             'type' => $data['type'],
@@ -87,6 +90,7 @@ class NotificatonService
             'data' => $notificationData,
             'additional' => $data['additional'] ?? null,
         ]);
+        Log::info('Notification created: ' . $notification->id);
         $this->broadcastNotification($notification);
         return $notification;
     }
@@ -94,18 +98,21 @@ class NotificatonService
     protected function broadcastNotification(CustomNotification $notification): void
     {
         switch ($notification->type) {
-            case CustomNotificationType::USER->value:
+            case CustomNotificationType::USER:
+                Log::info('Broadcasting user notification' . $notification->id);
                 broadcast(new UserNotificationSent($notification));
-                break;
+                return;
 
-            case CustomNotificationType::ADMIN->value:
+            case CustomNotificationType::ADMIN:
+                Log::info('Broadcasting admin notification' . $notification->id);
                 broadcast(new AdminNotificationSent($notification));
-                break;
+                return;
 
-            case CustomNotificationType::PUBLIC->value:
+            case CustomNotificationType::PUBLIC:
+                Log::info('Broadcasting public notification' . $notification->id);
                 broadcast(new UserNotificationSent($notification));
                 broadcast(new AdminNotificationSent($notification));
-                break;
+                return;
         }
     }
 }

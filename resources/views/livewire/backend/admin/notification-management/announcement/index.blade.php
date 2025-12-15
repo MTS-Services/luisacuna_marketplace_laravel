@@ -21,6 +21,7 @@
     </div>
 
     {{-- Table Component --}}
-    <x-ui.table :data="$datas" :columns="$columns" :actions="$actions" :mobileVisibleColumns="2" searchProperty="search"
-        perPageProperty="perPage" emptyMessage="No data found. Create your first data to get started." />
+    <x-ui.table :data="$datas" :columns="$columns" :actions="$actions" :statuses="$statuses" :mobileVisibleColumns="2"
+        searchProperty="search" perPageProperty="perPage"
+        emptyMessage="No data found. Create your first data to get started." />
 </section>
