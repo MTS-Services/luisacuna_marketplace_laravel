@@ -5,7 +5,7 @@ namespace App\Livewire\Frontend;
 use Livewire\Component;
 use App\Services\GameService;
 
-class CurrencyComponent extends Component
+class currencycomponent_bup extends Component
 {
     public $search = '';
     public $sortOrder = 'default';

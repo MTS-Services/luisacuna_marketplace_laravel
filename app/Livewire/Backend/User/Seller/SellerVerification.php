@@ -5,9 +5,8 @@ namespace App\Livewire\Backend\User\Seller;
 use Livewire\Component;
 use App\Models\SellerProfile;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Storage;
 
-class SellerVerificationComponent extends Component
+class SellerVerification extends Component
 {
     use WithFileUploads;
 
@@ -261,6 +260,6 @@ class SellerVerificationComponent extends Component
 
     public function render()
     {
-        return view('livewire.backend.user.seller.seller-verification-component');
+        return view('livewire.backend.user.seller.seller-verification');
     }
 }
