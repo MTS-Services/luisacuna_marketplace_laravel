@@ -18,15 +18,19 @@ class CustomNotification extends BaseModel
         'sender_type',
         'receiver_id',
         'receiver_type',
+        'is_announced',
         'type',
         'action',
         'data',
+        'additional',
     ];
 
     protected $casts = [
         'data' => 'array',
         'created_at' => 'datetime',
-        'type' => CustomNotificationType::class
+        'type' => CustomNotificationType::class,
+        'is_announced' => 'boolean',
+        'additional' => 'array',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -66,16 +70,8 @@ class CustomNotification extends BaseModel
         ]);
     }
 
-    public const TYPE_USER = 0;
-    public const TYPE_ADMIN = 1;
-
-    public function scopeUserType(Builder $query): Builder
+    public function scopeAnnouncementType(Builder $query): Builder
     {
-        return $query->where('sender_type', self::TYPE_USER);
-    }
-
-    public function scopeAdminType(Builder $query): Builder
-    {
-        return $query->where('sender_type', self::TYPE_ADMIN);
+        return $query->where('is_announced', true);
     }
 }

@@ -25,12 +25,12 @@ return new class extends Migration
             $table->string('receiver_type')->nullable()->index();
 
             $table->string('type')->default(CustomNotificationType::PUBLIC)->index();
+            $table->boolean('is_announced')->default(false);
             $table->string('action')->nullable();
             $table->longText('data')->nullable();
+            $table->longText('additional')->nullable();
 
             $table->timestamps();
-
-            $this->addMorphedAuditColumns($table);
         });
     }
 

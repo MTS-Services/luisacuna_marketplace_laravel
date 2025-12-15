@@ -12,10 +12,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class NotificatonService
 {
-    public function __construct(protected CustomNotification $model)
-    {
-        //
-    }
+    public function __construct(protected CustomNotification $model) {}
 
     public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
@@ -34,6 +31,24 @@ class NotificatonService
             ->paginate($perPage);
     }
 
+    public function getAnnouncementDatas(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        $search = $filters['search'] ?? null;
+        $sortField = $filters['sort_field'] ?? 'created_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+
+        if ($search) {
+            return CustomNotification::search($search)
+                ->announcementType()
+                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->paginate($perPage);
+        }
+
+        return $this->model->query()
+            ->announcementType()
+            ->orderBy($sortField, $sortDirection)
+            ->paginate($perPage);
+    }
 
     public function findData($column_value, string $column_name = 'id', bool $trashed = false): ?CustomNotification
     {
@@ -46,98 +61,48 @@ class NotificatonService
 
 
 
-    public function createData(array $data)
+    public function createData(array $data): CustomNotification
     {
-        return $this->model->create($data);
-    }
+        $notificationData = [
+            'title' => $data['title'] ?? null,
+            'message' => $data['message'] ?? null,
+            'description' => $data['description'] ?? null,
+            'icon' => $data['icon'] ?? null,
+        ];
 
-    /**
-     * Notification send o store korar main method
-     */
-    public function sendNotification(array $data): CustomNotification
-    {
-        // Notification data prepare
-        $notificationData = $this->prepareNotificationData($data);
+        // Don't include additional in data JSON since it has its own column
+        // Remove this block:
+        // if (isset($data['additional']) && !empty($data['additional'])) {
+        //     $notificationData['additional'] = $data['additional'];
+        // }
 
-        // Database e store
-        $notification = $this->createData($notificationData);
-
-        // Broadcast event fire
-        $this->broadcastNotification($notification, $data['send_to']);
-
+        $notification = $this->model->create([
+            'type' => $data['type'],
+            'action' => $data['action'] ?? null,
+            'sender_id' => $data['sender_id'] ?? null,
+            'sender_type' => $data['sender_type'] ?? null,
+            'receiver_id' => $data['receiver_id'] ?? null,
+            'receiver_type' => $data['receiver_type'] ?? null,
+            'is_announced' => $data['is_announced'] ?? false,
+            'data' => $notificationData,
+            'additional' => $data['additional'] ?? null,
+        ]);
+        $this->broadcastNotification($notification);
         return $notification;
     }
 
-    /**
-     * Notification data prepare
-     */
-    protected function prepareNotificationData(array $data): array
+    protected function broadcastNotification(CustomNotification $notification): void
     {
-        $receiverId = null;
-        $receiverType = null;
-        $type = null;
-
-        switch ($data['send_to']) {
-            case 'users':
-                $type = CustomNotificationType::USER->value;
-                $receiverType = User::class;
-                if (!empty($data['user_id'])) {
-                    $user = User::findOrFail($data['user_id']);
-                    $receiverId = $user->id;
-                }
-                break;
-
-            case 'admins':
-                $type = CustomNotificationType::ADMIN->value;
-                $receiverType = Admin::class;
-                if (!empty($data['user_id'])) {
-                    $admin = Admin::findOrFail($data['user_id']);
-                    $receiverId = $admin->id;
-                }
-                break;
-
-            default: // public
-                $type = CustomNotificationType::PUBLIC->value;
-                $receiverType = null;
-                $receiverId = null;
-                break;
-        }
-
-        $title = $data['title'] ?? ($receiverId ? 'Private Notification' : 'Public Notification');
-
-        return [
-            'type' => $type,
-            'receiver_id' => $receiverId,
-            'receiver_type' => $receiverType,
-            'data' => [
-                'title' => $title,
-                'icon' => $data['icon'] ?? 'bell-ring',
-                'message' => $data['message'],
-                'description' => $data['description'] ?? null,
-                'additional_data' => [
-                    'userId' => $data['user_id'] ?? null,
-                    'sendTo' => $data['send_to'],
-                ],
-            ],
-            'action' => $data['action'] ?? route('home')
-        ];
-    }
-
-    /**
-     * Broadcast notification event
-     */
-    protected function broadcastNotification(CustomNotification $notification, string $sendTo): void
-    {
-        switch ($sendTo) {
-            case 'users':
+        switch ($notification->type) {
+            case CustomNotificationType::USER->value:
                 broadcast(new UserNotificationSent($notification));
                 break;
 
-            case 'admins':
+            case CustomNotificationType::ADMIN->value:
                 broadcast(new AdminNotificationSent($notification));
                 break;
 
-            case 'public':
+            case CustomNotificationType::PUBLIC->value:
                 broadcast(new UserNotificationSent($notification));
                 broadcast(new AdminNotificationSent($notification));
                 break;

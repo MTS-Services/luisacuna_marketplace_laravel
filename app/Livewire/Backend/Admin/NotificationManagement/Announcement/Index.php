@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\NotificationManagement\Notification;
+namespace App\Livewire\Backend\Admin\NotificationManagement\Announcement;
 
 
 use Livewire\Component;
 use App\Services\NotificatonService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
+use Livewire\Attributes\On;
 
 class Index extends Component
 {
@@ -18,8 +19,6 @@ class Index extends Component
     public $bulkAction = '';
     public $showBulkActionModal = false;
 
-    protected $listeners = ['adminCreated' => '$refresh', 'adminUpdated' => '$refresh'];
-
     protected NotificatonService $service;
 
     public function boot(NotificatonService $service)
@@ -29,7 +28,7 @@ class Index extends Component
 
     public function render()
     {
-        $datas = $this->service->getPaginatedData(
+        $datas = $this->service->getAnnouncementDatas(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
@@ -66,25 +65,16 @@ class Index extends Component
             [
                 'key' => 'id',
                 'label' => 'View',
-                'route' => 'admin.nm.notification.view',
+                'x_click' => 'showAnnouncement({value})',
                 'encrypt' => true
             ],
 
         ];
 
-        $bulkActions = [
-            ['value' => 'delete', 'label' => 'Delete'],
-            ['value' => 'activate', 'label' => 'Activate'],
-            ['value' => 'inactive', 'label' => 'Inactive'],
-            ['value' => 'suspend', 'label' => 'Suspend'],
-            ['value' => 'pending', 'label' => 'Pending'],
-        ];
-
-        return view('livewire.backend.admin.notification-management.notification.index',[
+        return view('livewire.backend.admin.notification-management.announcement.index', [
             'datas' => $datas,
             'columns' => $columns,
             'actions' => $actions,
-            'bulkActions' => $bulkActions
         ]);
     }
 
@@ -118,6 +108,13 @@ class Index extends Component
 
     public function updatedStatusFilter(): void
     {
+        $this->resetPage();
+    }
+
+    #[On('refresh-announcement-list')]
+    public function refreshList()
+    {
+        // This will automatically refresh the component
         $this->resetPage();
     }
 }
