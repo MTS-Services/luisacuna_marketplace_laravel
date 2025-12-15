@@ -28,7 +28,7 @@
 
             <div class="p-5 lg:px-15 lg:py-10 bg-bg-info dark:bg-bg-light-black rounded-2xl">
               
-                @if ($accountType == 'individual')
+                @if ($accountType == \App\Enums\AccountType::INDIVIDUAL->value)
 
 
 
@@ -62,6 +62,7 @@
                                     @endfor
                                 </x-ui.select>
                                 <x-ui.select wire:model="dob_day" class="p-3 border rounded-lg">
+                               
                                     <option value="">Day</option>
                                     @for ($day = 1; $day <= 31; $day++)
                                         <option value="{{ str_pad($day, 2, '0', STR_PAD_LEFT) }}">
