@@ -40,7 +40,7 @@ class SellerKyc extends AuditBaseModel implements Auditable
         'company_postal_code',
         'company_license_number',
         'company_tax_number',
-        
+
         'status',
 
         'created_at',
@@ -76,11 +76,12 @@ class SellerKyc extends AuditBaseModel implements Auditable
          return $this->belongsTo(User::class, 'seller_id', 'id');
      }
 
-     public function service_category()
-     {
-         return $this->belongsTo(Category::class, 'service_category_id', 'id');
-     }
- 
+    public function categories()
+    {
+        return $this->hasMany(KycCategory::class, 'seller_kyc_id');
+    }
+
+
      /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
