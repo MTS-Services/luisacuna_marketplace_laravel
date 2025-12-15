@@ -1,6 +1,14 @@
 <div x-data="{
     open: false,
-    additionalNotes: @entangle('form.additional').live
+    additionalNotes: @entangle('form.additional').live,
+    editingKey: null,
+    tempKeys: {},
+    keyCounter: 1,
+    getNextKeyName() {
+        const keyName = 'key_' + String(this.keyCounter).padStart(2, '0');
+        this.keyCounter++;
+        return keyName;
+    }
 }" @announcement-send-modal-show.window="open = true"
     @announcement-modal-close.window="open = false"
     @keydown.escape.window="if(open) { open = false; $wire.call('resetForm'); }">
@@ -83,63 +91,113 @@
                         {{-- Additional Notes Section --}}
                         <div class="w-full md:col-span-2 border-t pt-4 mt-2">
                             <div class="flex items-center justify-between mb-3">
-                                <x-ui.label value="Additional Notes (Optional)" class="mb-0" />
+                                <x-ui.label value="Additional Information (Key-Value Pairs)" class="mb-0" />
                                 <button type="button"
-                                    @click="additionalNotes.push(''); $wire.set('form.additional', additionalNotes)"
+                                    @click="
+                                        if (!additionalNotes || Array.isArray(additionalNotes)) {
+                                            additionalNotes = {};
+                                        }
+                                        const tempKey = getNextKeyName(); 
+                                        additionalNotes[tempKey] = ''; 
+                                        tempKeys[tempKey] = tempKey;
+                                        $wire.set('form.additional', additionalNotes);
+                                        setTimeout(() => {
+                                            const container = $el.closest('.overflow-y-auto');
+                                            if (container) {
+                                                container.scrollTop = container.scrollHeight;
+                                            }
+                                        }, 100);
+                                    "
                                     class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary hover:bg-primary/90 text-white text-sm font-medium rounded-lg transition-colors duration-200">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M12 4v16m8-8H4"></path>
                                     </svg>
-                                    <span>Add Note</span>
+                                    <span>Add Field</span>
                                 </button>
                             </div>
 
-                            {{-- Dynamic Additional Notes --}}
-                            <template x-if="additionalNotes && additionalNotes.length > 0">
-                                <div class="space-y-3">
-                                    <template x-for="(note, index) in additionalNotes" :key="index">
-                                        <div class="flex items-start gap-2"
-                                            x-transition:enter="transition ease-out duration-200"
-                                            x-transition:enter-start="opacity-0 scale-95"
-                                            x-transition:enter-end="opacity-100 scale-100"
-                                            x-transition:leave="transition ease-in duration-150"
-                                            x-transition:leave-start="opacity-100 scale-100"
-                                            x-transition:leave-end="opacity-0 scale-95">
-                                            <div class="flex-1">
-                                                <input type="text"
-                                                    :placeholder="'Enter additional note ' + (index + 1)"
-                                                    x-model="additionalNotes[index]"
-                                                    @input="$wire.set('form.additional.' + index, $event.target.value)"
-                                                    class="w-full shadow-sm px-3 py-2 bg-transparent dark:bg-transparent dark:text-zinc-100 text-zinc-900 rounded-md border border-zinc-300 focus:border-accent focus:ring-accent focus:ring-1 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 bg-white text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-offset-0" />
-                                            </div>
-                                            <button type="button"
-                                                @click="additionalNotes.splice(index, 1); $wire.set('form.additional', additionalNotes)"
-                                                class="flex-shrink-0 p-2.5 bg-red-100 hover:bg-red-200 dark:bg-red-900/20 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 rounded-lg transition-colors duration-200 mt-0.5"
-                                                title="Remove note">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </template>
-                                </div>
-                            </template>
+                            {{-- Dynamic Additional Key-Value Pairs --}}
+                            <div x-show="additionalNotes && Object.keys(additionalNotes).length > 0" class="space-y-3">
+                                <template x-for="(value, key) in additionalNotes" :key="key">
+                                    <div class="flex items-start gap-2"
+                                        x-transition:enter="transition ease-out duration-200"
+                                        x-transition:enter-start="opacity-0 scale-95"
+                                        x-transition:enter-end="opacity-100 scale-100"
+                                        x-transition:leave="transition ease-in duration-150"
+                                        x-transition:leave-start="opacity-100 scale-100"
+                                        x-transition:leave-end="opacity-0 scale-95">
 
-                            <template x-if="!additionalNotes || additionalNotes.length === 0">
-                                <div class="text-center py-8 text-zinc-500 dark:text-zinc-400">
-                                    <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                        </path>
-                                    </svg>
-                                    <p class="text-sm">No additional notes added yet</p>
-                                    <p class="text-xs mt-1">Click "Add Note" to include extra information</p>
-                                </div>
-                            </template>
+                                        {{-- Key Input --}}
+                                        <div class="flex-1">
+                                            <input type="text" placeholder="Additional Note Key"
+                                                :value="tempKeys[key] !== undefined ? tempKeys[key] : key"
+                                                @input="tempKeys[key] = $event.target.value"
+                                                @blur="
+                                                    const newKey = tempKeys[key]?.trim();
+                                                    if (newKey && newKey !== key && !additionalNotes.hasOwnProperty(newKey)) {
+                                                        const temp = {};
+                                                        for (const [k, v] of Object.entries(additionalNotes)) {
+                                                            if (k === key) {
+                                                                temp[newKey] = v;
+                                                                tempKeys[newKey] = newKey;
+                                                                delete tempKeys[key];
+                                                            } else {
+                                                                temp[k] = v;
+                                                            }
+                                                        }
+                                                        additionalNotes = temp;
+                                                        $wire.set('form.additional', temp);
+                                                    } else if (!newKey) {
+                                                        tempKeys[key] = key;
+                                                    }
+                                                "
+                                                class="w-full shadow-sm px-3 py-2 bg-transparent dark:bg-transparent dark:text-zinc-100 text-zinc-900 rounded-md border border-zinc-300 focus:border-accent focus:ring-accent focus:ring-1 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 bg-white text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-offset-0" />
+                                        </div>
+
+                                        {{-- Value Input --}}
+                                        <div class="flex-1">
+                                            <input type="text" placeholder="Additional Note Value"
+                                                :value="additionalNotes[key]"
+                                                @input="
+                                                    additionalNotes[key] = $event.target.value;
+                                                    $wire.set('form.additional.' + key, $event.target.value);
+                                                "
+                                                class="w-full shadow-sm px-3 py-2 bg-transparent dark:bg-transparent dark:text-zinc-100 text-zinc-900 rounded-md border border-zinc-300 focus:border-accent focus:ring-accent focus:ring-1 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 bg-white text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-offset-0" />
+                                        </div>
+
+                                        {{-- Remove Button --}}
+                                        <button type="button"
+                                            @click="
+                                                const temp = {...additionalNotes};
+                                                delete temp[key];
+                                                delete tempKeys[key];
+                                                additionalNotes = temp;
+                                                $wire.set('form.additional', temp);
+                                            "
+                                            class="flex-shrink-0 p-2.5 bg-red-100 hover:bg-red-200 dark:bg-red-900/20 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 rounded-lg transition-colors duration-200 mt-0.5"
+                                            title="Remove field">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M6 18L18 6M6 6l12 12"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <div x-show="!additionalNotes || Object.keys(additionalNotes).length === 0"
+                                class="text-center py-6 text-zinc-500 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg border-2 border-dashed border-zinc-300 dark:border-zinc-700">
+                                <svg class="w-10 h-10 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                                <p class="text-sm font-medium">No additional fields added yet</p>
+                                <p class="text-xs mt-1">Click "Add Field" above to include custom key-value data</p>
+                            </div>
                         </div>
 
                     </div>

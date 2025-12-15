@@ -27,7 +27,7 @@ class Send extends Component
     public function mount()
     {
         $this->form->reset();
-        $this->form->additional = [];
+        $this->form->additional = []; // Initialize as empty associative array
         $this->resetValidation();
     }
 
@@ -47,12 +47,11 @@ class Send extends Component
             $data['action'] = 'https://' . $data['action'];
         }
 
-        // Filter out empty additional notes
+        // Filter out empty key-value pairs
         if (!empty($data['additional'])) {
-            $data['additional'] = array_filter($data['additional'], function ($note) {
-                return !empty(trim($note));
-            });
-            $data['additional'] = array_values($data['additional']);
+            $data['additional'] = array_filter($data['additional'], function ($value, $key) {
+                return !empty(trim($key)) && !empty(trim($value));
+            }, ARRAY_FILTER_USE_BOTH);
         }
 
         try {
@@ -71,6 +70,7 @@ class Send extends Component
 
             // Refresh the index table
             $this->dispatch('refresh-announcement-list');
+            
         } catch (\Exception $e) {
             Log::error('Failed to send announcement: ' . $e->getMessage());
             $this->error('Failed to send announcement. Please try again.');

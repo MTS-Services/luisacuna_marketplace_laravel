@@ -3,20 +3,16 @@
 namespace App\Livewire\Forms;
 
 use App\Enums\CustomNotificationType;
-use App\Models\CustomNotification;
-use Livewire\Attributes\Validate;
-use Livewire\Attributes\Locked;
 use Livewire\Form;
 
 class AnnouncementForm extends Form
 {
     public ?string $title = null;
     public ?string $message = null;
+    public ?string $description = null;
     public ?string $type = CustomNotificationType::PUBLIC->value;
     public ?string $action = null;
-    public ?string $description = null;
-    public ?array $additional = [];
-
+    public ?array $additional = []; // Changed to empty array instead of null
 
     public function rules(): array
     {
@@ -25,7 +21,7 @@ class AnnouncementForm extends Form
             'message' => 'required|string',
             'description' => 'nullable|string',
             'additional' => 'nullable|array',
-            'additional.*' => 'nullable|string',
+            'additional.*' => 'nullable|string', // Validates each value in the associative array
             'action' => [
                 'nullable',
                 'string',
@@ -55,8 +51,8 @@ class AnnouncementForm extends Form
     {
         $this->title = null;
         $this->message = null;
-        $this->additional = [];
         $this->description = null;
+        $this->additional = []; // Reset to empty array
         $this->type = CustomNotificationType::PUBLIC->value;
         $this->action = null;
 

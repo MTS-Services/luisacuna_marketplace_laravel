@@ -78,6 +78,11 @@ class NotificatonService
             'description' => $data['description'] ?? null,
             'icon' => $data['icon'] ?? null,
         ];
+        // Clean up additional data - store null if empty
+        $additional = $data['additional'] ?? null;
+        if (is_array($additional) && empty($additional)) {
+            $additional = null;
+        }
 
         $notification = $this->model->create([
             'type' => $data['type'],
@@ -88,7 +93,7 @@ class NotificatonService
             'receiver_type' => $data['receiver_type'] ?? null,
             'is_announced' => $data['is_announced'] ?? false,
             'data' => $notificationData,
-            'additional' => $data['additional'] ?? null,
+            'additional' => $additional,
         ]);
         Log::info('Notification created: ' . $notification->id);
         $this->broadcastNotification($notification);
