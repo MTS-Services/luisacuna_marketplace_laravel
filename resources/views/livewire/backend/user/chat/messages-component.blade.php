@@ -1,4 +1,5 @@
-<div>
+<div x-data x-init="setInterval(() => Livewire.dispatch('refreshMessages'), 500)">
+
     <div class="bg-bg-primary">
         <div>
             <div class="p-3 sm:p-4">
@@ -50,8 +51,8 @@
                 </a>
             </div>
 
-            <div class="flex flex-col md:flex-row h-auto md:h-[68vh] gap-2 px-3 sm:px-4 relative"
-                wire:poll.3s="loadMessages">
+            <div class="flex flex-col md:flex-row h-auto md:h-[68vh] gap-2 px-3 sm:px-4 relative">
+                {{-- wire:poll.3s="loadMessages" --}}
                 <!-- Mobile Overlay -->
                 <div id="mobileOverlay" onclick="toggleMobileMenu()"
                     class="hidden fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"></div>
@@ -104,7 +105,6 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- Messages List -->
                     <div class="flex-1 overflow-y-auto custom-scrollbar">
                         @forelse($users as $user)
@@ -112,10 +112,17 @@
                                 onclick="selectMessage()"
                                 class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 hover:bg-bg-hover cursor-pointer border-b border-zinc-800 
                                     {{ $receiverId == $user->id ? 'dark:bg-zinc-800 bg-zinc-200' : '' }} transition-colors">
-                                <div
-                                    class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
-                                    {{ strtoupper(substr($user->full_name, 0, 2)) }}
-                                </div>
+                                @if ($user->avatar)
+                                    {{-- Show actual avatar image --}}
+                                    <img src="{{ storage_url($user->avatar) }}" alt="{{ $user->full_name }}"
+                                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
+                                @else
+                                    {{-- Show initials --}}
+                                    <div
+                                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
+                                        {{ strtoupper(substr($user->full_name, 0, 2)) }}
+                                    </div>
+                                @endif
                                 <div class="flex-1 min-w-0">
                                     <div class="flex items-center justify-between mb-1">
                                         <h4 class="text-text-primary font-semibold text-xs sm:text-sm truncate">
@@ -150,10 +157,17 @@
                         <!-- Chat Header -->
                         <div class="p-3 sm:p-4 flex items-center bg-zinc-50/10 rounded-t-lg justify-between">
                             <div class="flex items-center gap-2 sm:gap-3">
-                                <div
-                                    class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-sm sm:text-base">
-                                    {{ strtoupper(substr($user->full_name ?? 'U', 0, 2)) }}
-                                </div>
+                                @if ($user->avatar)
+                                    {{-- Show actual avatar image --}}
+                                    <img src="{{ storage_url($user->avatar) }}" alt="{{ $user->full_name }}"
+                                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
+                                @else
+                                    {{-- Show initials --}}
+                                    <div
+                                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
+                                        {{ strtoupper(substr($user->full_name, 0, 2)) }}
+                                    </div>
+                                @endif
                                 <div>
                                     <h3 class="text-text-primary font-semibold text-sm sm:text-base">
                                         {{ $user->full_name }}</h3>
@@ -166,20 +180,38 @@
                         <div class="flex-1 overflow-y-auto custom-scrollbar p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6"
                             id="messagesContainer">
                             @forelse($messages as $msg)
-                                @if ($msg->sender_id == Auth::id())
+                                @if ($msg->creater_id == Auth::id() && $msg->creater_type == get_class(Auth::user()))
                                     <!-- Current User Message -->
                                     <div class="flex items-start gap-2 sm:gap-3 flex-row-reverse">
-                                        <div
-                                            class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
-                                            {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
-                                        </div>
+                                        @if ($user->avatar)
+                                            <img src="{{ auth_storage_url(user()->avatar) }}"
+                                                alt="{{ $user->full_name }}"
+                                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
+                                        @else
+                                            {{-- Show initials --}}
+                                            <div
+                                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
+                                                {{ strtoupper(substr($user->full_name, 0, 2)) }}
+                                            </div>
+                                        @endif
                                         <div class="flex flex-col gap-1 sm:gap-2 max-w-[75%] sm:max-w-md items-end">
-                                            @if ($msg->media)
-                                                @php $mediaArray = json_decode($msg->media, true); @endphp
+                                            @if ($msg->attachments)
+                                                @php
+                                                    $mediaArray = is_array($msg->attachments)
+                                                        ? $msg->attachments
+                                                        : json_decode($msg->attachments, true);
+                                                @endphp
                                                 @if ($mediaArray)
                                                     @foreach ($mediaArray as $mediaPath)
-                                                        <img src="{{ asset('storage/' . $mediaPath) }}"
-                                                            class="rounded-lg max-w-full mb-2">
+                                                        <div class="relative mb-2">
+                                                            <img src="{{ asset('storage/' . $mediaPath) }}"
+                                                                class="rounded-lg max-w-full">
+                                                            <!-- Download Button -->
+                                                            <a href="{{ asset('storage/' . $mediaPath) }}" download
+                                                                class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
+                                                                Download
+                                                            </a>
+                                                        </div>
                                                     @endforeach
                                                 @endif
                                             @endif
@@ -193,7 +225,7 @@
 
                                             <span class="text-[10px] sm:text-xs text-text-muted">
                                                 {{ $msg->created_at->format('M d, Y h:i A') }}
-                                                @if ($msg->is_seen)
+                                                @if ($msg->seen_at)
                                                     <span class="text-blue-500">✓✓</span>
                                                 @endif
                                             </span>
@@ -202,17 +234,39 @@
                                 @else
                                     <!-- Other User Message -->
                                     <div class="flex items-start gap-2 sm:gap-3">
-                                        <div
-                                            class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
-                                            {{ strtoupper(substr($msg->sender->full_name ?? 'U', 0, 2)) }}
-                                        </div>
+                                        @php
+                                            $otherUser = $msg->creator;
+                                            $displayName =
+                                                $otherUser->full_name ??
+                                                ($otherUser->name ?? ($otherUser->username ?? 'U'));
+                                        @endphp
+                                        @if ($user->avatar)
+                                            <img src="{{ storage_url($user->avatar) }}" alt="{{ $user->full_name }}"
+                                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
+                                        @else
+                                            <div
+                                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
+                                                {{ strtoupper(substr($user->full_name, 0, 2)) }}
+                                            </div>
+                                        @endif
                                         <div class="flex flex-col gap-1 sm:gap-2 max-w-[75%] sm:max-w-md">
-                                            @if ($msg->media)
-                                                @php $mediaArray = json_decode($msg->media, true); @endphp
+                                            @if ($msg->attachments)
+                                                @php
+                                                    $mediaArray = is_array($msg->attachments)
+                                                        ? $msg->attachments
+                                                        : json_decode($msg->attachments, true);
+                                                @endphp
                                                 @if ($mediaArray)
                                                     @foreach ($mediaArray as $mediaPath)
-                                                        <img src="{{ asset('storage/' . $mediaPath) }}"
-                                                            class="rounded-lg max-w-full mb-2">
+                                                        <div class="relative mb-2">
+                                                            <img src="{{ asset('storage/' . $mediaPath) }}"
+                                                                class="rounded-lg max-w-full">
+                                                            <!-- Download Button -->
+                                                            <a href="{{ asset('storage/' . $mediaPath) }}" download
+                                                                class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
+                                                                Download
+                                                            </a>
+                                                        </div>
                                                     @endforeach
                                                 @endif
                                             @endif
@@ -236,7 +290,6 @@
                                 </div>
                             @endforelse
                         </div>
-
                         <!-- Message Input -->
                         <div class="p-3 sm:p-4">
                             <div class="flex items-end gap-2 sm:gap-3">

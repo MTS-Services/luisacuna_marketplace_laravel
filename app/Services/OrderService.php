@@ -16,11 +16,19 @@ class OrderService
         return $this->model->all($sortField, $order);
     }
 
+    // public function findData($column_value, string $column_name = 'id'): ?Order
+    // {
+    //     $model = $this->model;
+
+    //     return $model->where($column_name, $column_value)->first();
+    // }
     public function findData($column_value, string $column_name = 'id'): ?Order
     {
         $model = $this->model;
 
-        return $model->where($column_name, $column_value)->first();
+        return $model->with(['source', 'user'])
+            ->where($column_name, $column_value)
+            ->first();
     }
 
     public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator

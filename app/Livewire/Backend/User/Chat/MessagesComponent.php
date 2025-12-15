@@ -11,12 +11,14 @@ class MessagesComponent extends Component
 {
     use WithFileUploads;
 
-    public $receiverId = null;
-    public $message = '';
-    public $media;
-    public $users;
+    public ?int $receiverId = null;
+    public string $receiverName = '';
+    public ?int $conversationId = null;
+    public string $message = '';
+    public $media = null;
+    public string $searchTerm = '';
+    public $users = [];
     public $messages = [];
-    public $searchTerm = ''; // ← Search property
 
     protected OrderMessageService $orderMessageService;
 
@@ -30,78 +32,71 @@ class MessagesComponent extends Component
         $this->loadUsers();
     }
 
-    /**
-     * Load users with optional search term
-     */
-    public function loadUsers()
+    public function loadUsers(): void
     {
-        $this->users = $this->orderMessageService->getUsersSortedByLastMessage(
-            Auth::id(), 
-            $this->searchTerm // ← Pass search term
-        );
+        $this->users = $this->orderMessageService->getUsersSortedByLastMessage(Auth::id(), $this->searchTerm);
     }
 
-    /**
-     * Called automatically when searchTerm changes (because of wire:model.live)
-     */
-    public function updatedSearchTerm()
+    public function updatedSearchTerm(): void
     {
         $this->loadUsers();
     }
 
-    public function selectUser($userId)
+    public function selectUser(int $userId, string $userName = ''): void
     {
         $this->receiverId = $userId;
+        $this->receiverName = $userName;
+
+        $conversation = $this->orderMessageService->getOrCreateConversation(Auth::id(), $userId);
+        $this->conversationId = $conversation->id;
+
+        // Mark as seen when opening
+        $this->orderMessageService->seen($this->conversationId, Auth::id());
+
         $this->loadMessages();
-        $this->orderMessageService->markAsSeen($userId, Auth::id());
     }
 
-    public function loadMessages()
+    public function loadMessages(): void
     {
-        if ($this->receiverId) {
-            $this->messages = $this->orderMessageService->getMessages(
-                Auth::id(),
-                $this->receiverId
-            );
+        if (!$this->conversationId) return;
+
+        $this->messages = $this->orderMessageService->fetch($this->conversationId);
+    }
+
+    #[\Livewire\Attributes\On('refreshMessages')]
+    public function refreshMessages(): void
+    {
+        $this->loadUsers();
+
+        if ($this->conversationId) {
+            $this->loadMessages();
+            $this->orderMessageService->seen($this->conversationId, Auth::id());
         }
     }
 
-    public function sendMessage()
+    public function sendMessage(): void
     {
-        if (!$this->receiverId || (!$this->message && empty($this->media))) {
-            return;
-        }
+        if (!$this->receiverId || (!$this->message && empty($this->media))) return;
 
         $mediaData = null;
-        if (!empty($this->media)) {
+        if ($this->media) {
             $paths = [];
-
-            foreach ($this->media as $file) {
+            foreach ((array)$this->media as $file) {
                 $paths[] = $file->store('chat_media', 'public');
             }
-
             $mediaData = json_encode($paths);
         }
 
-        $this->orderMessageService->sendOrderMessage(
-            Auth::id(),
-            $this->receiverId,
-            $this->message,
-            $mediaData
-        );
+        $this->orderMessageService->send($this->conversationId, $this->message, $mediaData);
 
         $this->reset(['message', 'media']);
         $this->loadMessages();
-        $this->loadUsers(); // Refresh user list to update last message
+        $this->loadUsers();
+        $this->dispatch('messageSent');
     }
 
     public function render()
     {
-
-        if ($this->receiverId) {
-            $this->loadMessages();
-        }
-
         return view('livewire.backend.user.chat.messages-component');
     }
 }

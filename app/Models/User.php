@@ -243,6 +243,10 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->hasMany(Message::class, 'receiver_id', 'id');
     }
+    public function orderMessages()
+    {
+        return $this->morphMany(OrderMessage::class, 'creater');
+    }
     // public function lastMessageWith()
     // {
     //     return $this->hasOne(OrderMessage::class, 'sender_id')

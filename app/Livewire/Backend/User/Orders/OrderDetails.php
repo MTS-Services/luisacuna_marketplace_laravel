@@ -12,9 +12,10 @@ class OrderDetails extends Component
     use WithFileUploads;
 
     public $data;
+    public $conversationId;
+    public $sellerId;
+    public $messageText;
     public $messages = [];
-    public $newMessage = '';
-    public $attachments = [];
 
     protected OrderService $service;
     protected OrderMessageService $messageService;
@@ -30,37 +31,45 @@ class OrderDetails extends Component
         $this->data = $this->service->findData($orderId);
 
         if (!$this->data) {
-            abort(404);
+            abort(404, 'Order not found');
+        }
+        $product = $this->data->source;
+        
+        if (!$product) {
+            abort(404, 'Product not found for this order');
         }
 
-        // $this->loadMessages();
+        $this->sellerId = $product->user_id;
+        $conversation = $this->messageService->getOrCreateConversation(
+            auth()->id(), 
+            $this->sellerId 
+        );
+        
+        $this->conversationId = $conversation->id;
+        $this->loadMessages();
     }
 
-    // public function loadMessages()
-    // {
-    //     $this->messages = $this->messageService->getMessages(
-    //         auth()->id(), 
-    //         $this->data->seller_id
-    //     );
-
-    //     $this->messageService->markAsSeen($this->data->seller_id, auth()->id());
-    // }
-
-    public function sendMessage()
+    public function send()
     {
-        $this->validate([
-            'newMessage' => 'required|string|max:5000',
-        ]);
+        // $this->validate([
+        //     'messageText' => 'required|string|max:1000',
+        // ]);
 
-        $this->messageService->sendOrderMessage(
-            auth()->id(),
-            $this->data->seller_id,
-            $this->newMessage
+        $this->messageService->send(
+            $this->conversationId,
+            $this->messageText,
+            null 
         );
 
-        $this->reset('newMessage');
-        // $this->loadMessages();
-        $this->dispatch('message-sent');
+        $this->messageText = '';
+        $this->loadMessages();
+    }
+
+    public function loadMessages()
+    {
+        $this->messages = $this->messageService->fetch(
+            $this->conversationId
+        );
     }
 
     public function render()

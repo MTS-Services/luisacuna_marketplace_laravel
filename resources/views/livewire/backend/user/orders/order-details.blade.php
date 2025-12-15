@@ -3,7 +3,7 @@
         {{-- breadcrumb --}}
 
         <h2 class="text-text-white text-2xl font-semibold">
-            {{ $data->product->title ?? 'N/A' }}
+            {{ $data->product->name ?? 'N/A' }}
         </h2>
 
         <p class="text-text-white">
@@ -148,7 +148,116 @@
             </div>
         </div>
         {{-- message --}}
-        <div class="bg-bg-info rounded-lg mt-20 p-5 sm:p-20">
+
+        {{-- <div class="bg-bg-info rounded-lg mt-20 p-5 sm:p-20">
+
+                <!-- User Header -->
+                <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
+                    <div class="flex items-center gap-3">
+                        <img src="https://ui-avatars.com/api/?name=D18QUANB&background=853EFF&color=fff" alt="User"
+                            class="w-10 h-10 rounded-full">
+                        <div>
+                            <h3 class="text-text-white text-2xl font-semibold">{{ __('D18QUANB') }}</h3>
+                            <p class="text-text-white text-base font-normal">{{ __('Order for Items') }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Created Message -->
+                <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
+                    <div>
+                        <p class="text-text-white text-base mb-2">{{ __('Order Created:') }} <a href="#">
+                                https://www.companyname.ga/order/d8bcd674-dbde-4d98-9175-a4a031845de0</a></p>
+                        <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
+                            <x-phosphor name="link" variant="" class="fill-zinc-500" />
+
+                            <span class="text-text-white">d8bcd674-dbde-4d98-9175-a4a031U58e0</span>
+                        </div>
+                        <a class="text-text-white text-xs" href="#">www.companyname.com</a>
+                    </div>
+                    <p class="text-text-white text-xs text-right mt-3">Oct 20 2025</p>
+                </div>
+
+                <!-- Order Disputed -->
+
+                <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
+                    <div>
+                        <p class="text-text-white text-base mb-2">{{ __('Order Disputed by Buyer:') }}</p>
+                        <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
+                            <span class="text-text-white">{{ __('Reason: I don\'t want it anymore') }}</span>
+                        </div>
+                    </div>
+                    <p class="text-text-white text-xs text-right mt-3">Oct 20 2025</p>
+                </div>
+
+                <!-- Buyer Message -->
+                <div>
+                    <div class="flex items-center gap-3">
+                        <img src="https://ui-avatars.com/api/?name=User&background=853EFF&color=fff" alt="User"
+                            class="w-10 h-10 rounded-full">
+                        <div class="flex-1">
+                            <div class="bg-primary-800 rounded-lg">
+                                <x:input type="text" placeholder="Hi, what's the problem?" class="w-full" />
+                            </div>
+
+                        </div>
+                    </div>
+                    <p class="text-text-white text-right text-xs mt-1">Oct 20 2025</p>
+                </div>
+
+                <!-- Seller Message -->
+                <div class="mt-10">
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1">
+                            <div class="bg-primary-800 rounded-lg">
+                                <p class="bg-zinc-500 px-6 py-3 text-right rounded-lg">
+                                    {{ __('Please cancel the order, I don\'t want it anymore.') }}</p>
+                            </div>
+
+                        </div>
+                        <img src="https://ui-avatars.com/api/?name=User&background=853EFF&color=fff" alt="User"
+                            class="w-10 h-10 rounded-full">
+                    </div>
+                    <p class="text-text-white text-right text-xs mt-1">Oct 20 2025</p>
+                </div>
+
+                <!-- Buyer Response -->
+                <div>
+                    <div class="flex items-center gap-3 mt-10">
+                        <img src="https://ui-avatars.com/api/?name=User&background=853EFF&color=fff" alt="User"
+                            class="w-10 h-10 rounded-full">
+                        <div class="flex-1">
+                            <div class="bg-primary-800 rounded-lg">
+                                <x:input type="text" wire:model.defer="messageText" wire:keydown.enter="send"
+                                    placeholder="Okay" class="w-full" />
+                            </div>
+
+                        </div>
+                    </div>
+                    <p class="text-text-white text-right text-xs mt-1">Oct 20 2025</p>
+                </div>
+
+                <!-- Dispute Won -->
+
+                <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mt-10">
+                    <div>
+                        <p class="text-text-white text-base mb-2">{{ __('Order Disputed by Buyer:') }}</p>
+                        <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
+                            <span class="text-text-white">{{ __('Reason: I don\'t want it anymore') }}</span>
+                        </div>
+                    </div>
+                    <p class="text-text-white text-xs text-right mt-3">Oct 30 2025</p>
+                </div>
+
+                <!-- Conversation Closed -->
+                <div class="bg-primary-800 rounded-lg mt-10">
+                    <p class="bg-zinc-500 px-6 py-3 rounded-lg">
+                        {{ __('this conversation is no longer active.') }}</p>
+                </div>
+
+            </div> --}}
+
+        <div class="bg-bg-info rounded-lg mt-20 p-5 sm:p-20" wire:poll.3s>
 
             <!-- User Header -->
             <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
@@ -162,181 +271,77 @@
                 </div>
             </div>
 
-            <!-- Order Created Message -->
-            <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
-                <div>
-                    <p class="text-text-white text-base mb-2">{{ __('Order Created:') }} <a href="#">
-                            https://www.companyname.ga/order/d8bcd674-dbde-4d98-9175-a4a031845de0</a></p>
-                    <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
-                        <x-phosphor name="link" variant="" class="fill-zinc-500" />
-
-                        <span class="text-text-white">d8bcd674-dbde-4d98-9175-a4a031U58e0</span>
-                    </div>
-                    <a class="text-text-white text-xs" href="#">www.companyname.com</a>
-                </div>
-                <p class="text-text-white text-xs text-right mt-3">Oct 20 2025</p>
-            </div>
-
-            <!-- Order Disputed -->
-
-            <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
-                <div>
-                    <p class="text-text-white text-base mb-2">{{ __('Order Disputed by Buyer:') }}</p>
-                    <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
-                        <span class="text-text-white">{{ __('Reason: I don\'t want it anymore') }}</span>
-                    </div>
-                </div>
-                <p class="text-text-white text-xs text-right mt-3">Oct 20 2025</p>
-            </div>
-
-            <!-- Buyer Message -->
-            <div>
-                <div class="flex items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=User&background=853EFF&color=fff" alt="User"
-                        class="w-10 h-10 rounded-full">
-                    <div class="flex-1">
-                        <div class="bg-primary-800 rounded-lg">
-                            <x:input type="text" placeholder="Hi, what's the problem?" class="w-full" />
-                        </div>
-
-                    </div>
-                </div>
-                <p class="text-text-white text-right text-xs mt-1">Oct 20 2025</p>
-            </div>
-
-            <!-- Seller Message -->
-            <div class="mt-10">
-                <div class="flex items-center gap-3">
-                    <div class="flex-1">
-                        <div class="bg-primary-800 rounded-lg">
-                            <p class="bg-zinc-500 px-6 py-3 text-right rounded-lg">
-                                {{ __('Please cancel the order, I don\'t want it anymore.') }}</p>
-                        </div>
-
-                    </div>
-                    <img src="https://ui-avatars.com/api/?name=User&background=853EFF&color=fff" alt="User"
-                        class="w-10 h-10 rounded-full">
-                </div>
-                <p class="text-text-white text-right text-xs mt-1">Oct 20 2025</p>
-            </div>
-
-            <!-- Buyer Response -->
-            <div>
-                <div class="flex items-center gap-3 mt-10">
-                    <img src="https://ui-avatars.com/api/?name=User&background=853EFF&color=fff" alt="User"
-                        class="w-10 h-10 rounded-full">
-                    <div class="flex-1">
-                        <div class="bg-primary-800 rounded-lg">
-                            <x:input type="text" placeholder="Okay" class="w-full" />
-                        </div>
-
-                    </div>
-                </div>
-                <p class="text-text-white text-right text-xs mt-1">Oct 20 2025</p>
-            </div>
-
-            <!-- Dispute Won -->
-
-            <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mt-10">
-                <div>
-                    <p class="text-text-white text-base mb-2">{{ __('Order Disputed by Buyer:') }}</p>
-                    <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
-                        <span class="text-text-white">{{ __('Reason: I don\'t want it anymore') }}</span>
-                    </div>
-                </div>
-                <p class="text-text-white text-xs text-right mt-3">Oct 30 2025</p>
-            </div>
-
-            <!-- Conversation Closed -->
-            <div class="bg-primary-800 rounded-lg mt-10">
-                <p class="bg-zinc-500 px-6 py-3 rounded-lg">
-                    {{ __('this conversation is no longer active.') }}</p>
-            </div>
-
-        </div>
-        {{-- <div class="bg-bg-info rounded-lg mt-20 p-5 sm:p-20">
-
-            <!-- Seller Header -->
-            <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
-                <div class="flex items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name={{ $data->seller->username }}&background=853EFF&color=fff"
-                        alt="Seller" class="w-10 h-10 rounded-full">
-                    <div>
-                        <h3 class="text-text-white text-2xl font-semibold">{{ $data->seller->username }}</h3>
-                        <p class="text-text-white text-base font-normal">Order #{{ $data->order_number }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Messages -->
-            <div id="messages-container" class="space-y-6 mb-6" wire:poll.5s="loadMessages">
-                @foreach ($messages as $msg)
-                    @if ($msg->is_system_message)
-                        <!-- System Message -->
-                        <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500">
-                            <p class="text-text-white text-base mb-2">{{ $msg->message }}</p>
-                            <p class="text-text-white text-xs text-right mt-3">
-                                {{ $msg->created_at->format('M d Y, h:i A') }}
+            {{-- ================= MESSAGES LOOP ================= --}}
+            @foreach ($messages as $msg)
+                {{-- ===== SYSTEM MESSAGE (Order Created / Disputed / Closed) ===== --}}
+                @if ($msg->is_system_message)
+                    <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
+                        <div>
+                            <p class="text-text-white text-base mb-2">
+                                {{ $msg->message }}
                             </p>
                         </div>
-                    @else
-                        <!-- Regular Message -->
+
+                        <p class="text-text-white text-xs text-right mt-3">
+                            {{ $msg->created_at->format('M d Y') }}
+                        </p>
+                    </div>
+                @else
+                    {{-- ===== USER MESSAGE ===== --}}
+                    <div class="mt-10">
+
                         <div
-                            class="flex items-start gap-3 {{ $msg->messageRelation->sender_id == auth()->id() ? 'justify-end' : '' }}">
-                            @if ($msg->messageRelation->sender_id != auth()->id())
-                                <img src="https://ui-avatars.com/api/?name={{ $msg->messageRelation->sender->username }}&background=853EFF&color=fff"
-                                    alt="Sender" class="w-10 h-10 rounded-full">
+                            class="flex items-center gap-3
+                            {{ $msg->created_by == auth()->id() ? 'justify-end' : '' }}">
+
+                            {{-- LEFT AVATAR (OTHER USER) --}}
+                            @if ($msg->created_by != auth()->id())
+                                <img src="https://ui-avatars.com/api/?name=User&background=853EFF&color=fff"
+                                    class="w-10 h-10 rounded-full">
                             @endif
 
-                            <div
-                                class="max-w-[70%] {{ $msg->messageRelation->sender_id == auth()->id() ? 'bg-zinc-500' : 'bg-primary-800' }} rounded-lg p-4">
-                                <p class="text-text-white">{{ $msg->message }}</p>
+                            <div class="flex-1 max-w-[70%]">
+                                <div class="bg-primary-800 rounded-lg">
+                                    <p
+                                        class="bg-zinc-500 px-6 py-3 rounded-lg {{ $msg->created_by == auth()->id() ? 'text-right' : '' }}">
+                                        {{ $msg->message }}
+                                    </p>
+                                </div>
                             </div>
 
-                            @if ($msg->messageRelation->sender_id == auth()->id())
-                                <img src="https://ui-avatars.com/api/?name={{ auth()->user()->username }}&background=853EFF&color=fff"
-                                    alt="You" class="w-10 h-10 rounded-full">
+                            {{-- RIGHT AVATAR (ME) --}}
+                            @if ($msg->created_by == auth()->id())
+                                <img src="https://ui-avatars.com/api/?name=Me&background=853EFF&color=fff"
+                                    class="w-10 h-10 rounded-full">
                             @endif
                         </div>
-                        <p
-                            class="text-text-white text-xs {{ $msg->messageRelation->sender_id == auth()->id() ? 'text-right' : '' }}">
-                            {{ $msg->created_at->format('M d Y, h:i A') }}
-                        </p>
-                    @endif
-                @endforeach
-            </div>
 
-            <!-- Message Input -->
-            <form wire:submit.prevent="sendMessage" class="mt-10">
-                <div class="flex items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name={{ auth()->user()->username }}&background=853EFF&color=fff"
-                        alt="You" class="w-10 h-10 rounded-full">
-                    <div class="flex-1">
-                        <input type="text" wire:model="newMessage" placeholder="Send message to seller..."
-                            class="w-full bg-primary-800 text-text-white px-4 py-3 rounded-lg focus:outline-none" />
-                        @error('newMessage')
-                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                        @enderror
+                        <p class="text-text-white text-xs text-right mt-1">
+                            {{ $msg->created_at->format('M d Y') }}
+                        </p>
+
                     </div>
-                    <button type="submit"
-                        class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg transition-colors">
-                        Send
-                    </button>
+                @endif
+            @endforeach
+
+            {{-- ================= INPUT BOX ================= --}}
+            <div class="mt-10">
+                <div class="flex items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Me&background=853EFF&color=fff"
+                        class="w-10 h-10 rounded-full">
+
+                    <div class="flex-1">
+                        <div class="bg-primary-800 rounded-lg">
+                            <x:input wire:model.defer="messageText" wire:keydown.enter="send" type="text"
+                                placeholder="Okay" class="w-full" />
+                        </div>
+                    </div>
                 </div>
-            </form>
+            </div>
 
         </div>
 
-        @push('scripts')
-            <script>
-                window.addEventListener('message-sent', () => {
-                    const container = document.getElementById('messages-container');
-                    container?.lastElementChild?.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            </script>
-        @endpush --}}
+
 
 
         <div class="bg-bg-info rounded-lg mt-20 mb-29 py-8! px-4! md:py-20 md:px-10">

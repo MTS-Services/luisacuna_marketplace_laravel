@@ -20,6 +20,7 @@ class OrderMessage extends AuditBaseModel implements Auditable
         'is_system_message',
         'seen_at',
 
+
         'creater_type',
         'updater_type',
         'deleter_type',
@@ -36,16 +37,31 @@ class OrderMessage extends AuditBaseModel implements Auditable
     ];
 
     protected $casts = [
-          'attachments' => 'json', 
+        'attachments' => 'json',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    public function message(){
+    public function message()
+    {
         return $this->belongsTo(Message::class, 'message_id', 'id');
     }
+
+    public function conversation()
+    {
+        return $this->belongsTo(Message::class, 'message_id');
+    }
+
+    /**
+     * User who created this message
+     */
+    public function creator()
+    {
+        return $this->morphTo('creater'); // 'creater' prefix ব্যবহার করুন
+    }
+
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS

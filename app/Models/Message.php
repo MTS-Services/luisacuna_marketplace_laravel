@@ -48,9 +48,27 @@ class Message extends AuditBaseModel implements Auditable
         return $this->belongsTo(User::class, 'receiver_id', 'id');
     }
 
+
     public function message_participants()
     {
         return $this->hasMany(MessageParticipant::class, 'message_id', 'id');
+    }
+
+
+    /**
+     * ✅ Relationship to OrderMessage
+     */
+    public function orderMessages()
+    {
+        return $this->hasMany(OrderMessage::class, 'message_id', 'id');
+    }
+
+    /**
+     * ✅ Latest order message
+     */
+    public function latestOrderMessage()
+    {
+        return $this->hasOne(OrderMessage::class, 'message_id', 'id')->latestOfMany();
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
