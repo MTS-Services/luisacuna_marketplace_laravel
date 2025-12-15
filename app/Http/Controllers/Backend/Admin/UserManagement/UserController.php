@@ -141,4 +141,10 @@ class UserController extends Controller implements HasMiddleware
     {
         return view($this->masterView);
     }
+
+    public function pending()
+    {
+        return view($this->masterView);
+    }
+
 }

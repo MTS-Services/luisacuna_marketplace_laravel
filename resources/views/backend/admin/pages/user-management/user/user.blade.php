@@ -85,6 +85,13 @@
             <livewire:backend.admin.user-management.user.buyer.all-buyer />
         @break
 
+        @case('admin.um.user.pending')
+            <x-slot name="pageSlug">{{ __('pending') }}</x-slot>
+            <x-slot name="title">{{ __('All Pending') }}</x-slot>
+            <x-slot name="breadcrumb">{{ __('Pending Management') }}</x-slot>
+            <livewire:backend.admin.user-management.user.pending.pending />
+        @break
+
         @case('admin.um.user.buyer-trash')
             <x-slot name="pageSlug">{{ __('buyers') }}</x-slot>
             <x-slot name="title">{{ __('Buyer Trash List') }}</x-slot>

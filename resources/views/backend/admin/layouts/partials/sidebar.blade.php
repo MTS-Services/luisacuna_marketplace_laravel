@@ -139,6 +139,14 @@
                             'active' => 'buyers',
                             // 'permission' => 'user-list',
                         ],
+                    
+                        [
+                            'name' => 'Pending',
+                            'route' => route('admin.um.user.pending'),
+                            'icon' => 'user',
+                            'active' => 'pending',
+                            // 'permission' => 'user-list',
+                        ],
                     ]" />
 
                 <x-sidebar-separator title="Catalog" />
@@ -287,11 +295,11 @@
                             'active' => 'withdrawal',
                         ],
                     ]" />
-                <x-backend.navlink type="single" icon="percent" name="Fee Settings" :route="route('admin.fee-settings.fee-settings')" active="fee-settings"
-                    :page_slug="$active" />
+                <x-backend.navlink type="single" icon="percent" name="Fee Settings" :route="route('admin.fee-settings.fee-settings')"
+                    active="fee-settings" :page_slug="$active" />
 
-                <x-backend.navlink type="single" icon="bell" name="Notification" :route="route('admin.nm.notification.index')" active="notification"
-                    :page_slug="$active" />
+                <x-backend.navlink type="single" icon="bell" name="Notification" :route="route('admin.nm.notification.index')"
+                    active="notification" :page_slug="$active" />
 
                 <x-sidebar-separator title="Support" />
                 <x-backend.navlink type="single" icon="messages-square" name="Chat List" :route="route('admin.dashboard')"
