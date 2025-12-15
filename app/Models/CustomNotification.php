@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Laravel\Scout\Attributes\SearchUsingPrefix;
 
 class CustomNotification extends BaseModel
 {
@@ -18,15 +19,19 @@ class CustomNotification extends BaseModel
         'sender_type',
         'receiver_id',
         'receiver_type',
+        'is_announced',
         'type',
         'action',
         'data',
+        'additional',
     ];
 
     protected $casts = [
         'data' => 'array',
         'created_at' => 'datetime',
-        'type' => CustomNotificationType::class
+        'type' => CustomNotificationType::class,
+        'is_announced' => 'boolean',
+        'additional' => 'array',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -66,16 +71,24 @@ class CustomNotification extends BaseModel
         ]);
     }
 
-    public const TYPE_USER = 0;
-    public const TYPE_ADMIN = 1;
-
-    public function scopeUserType(Builder $query): Builder
+    public function scopeAnnouncementType(Builder $query): Builder
     {
-        return $query->where('sender_type', self::TYPE_USER);
+        return $query->where('is_announced', true);
     }
 
-    public function scopeAdminType(Builder $query): Builder
+    public function scopeFilter(Builder $query, array $filters): Builder
     {
-        return $query->where('sender_type', self::TYPE_ADMIN);
+        return $query
+            ->when($filters['status'] ?? null, fn($q, $type) => $q->where('type', $type));
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->data['title'] ?? '',
+            'message' => $this->data['message'] ?? '',
+            'type' => $this->type,
+        ];
     }
 }
