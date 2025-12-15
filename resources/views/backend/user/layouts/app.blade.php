@@ -271,21 +271,35 @@
 
         document.addEventListener('livewire:initialized', () => {
 
+            // ✅ Public channel for all users
             window.Echo.channel('users')
                 .listen('.notification.sent', (e) => {
-                    console.log(e);
+                    console.log('📢 User notification received:', e);
                     window.toast.info(e.title || 'New Notification Received');
                     Livewire.dispatch('notification-updated');
+                })
+                .subscribed(() => {
+                    console.log('✅ Subscribed to users channel');
+                })
+                .error((error) => {
+                    console.error('❌ Error on users channel:', error);
                 });
 
-            if ('{{ auth()->check() }}') {
-                window.Echo.private('user.{{ user()->id }}')
+            // ✅ Private channel for specific user (if authenticated as user)
+            @if (auth()->guard('web')->check())
+                window.Echo.private('user.{{ auth()->guard('web')->id() }}')
                     .listen('.notification.sent', (e) => {
-                        console.log(e);
+                        console.log('🔒 Private user notification received:', e);
                         window.toast.info(e.title || 'New Notification Received');
                         Livewire.dispatch('notification-updated');
+                    })
+                    .subscribed(() => {
+                        console.log('✅ Subscribed to private user channel');
+                    })
+                    .error((error) => {
+                        console.error('❌ Error on private user channel:', error);
                     });
-            }
+            @endif
         });
     </script>
 
