@@ -20,13 +20,13 @@ return new class extends Migration
             $table->unsignedBigInteger('seller_id')->index();
             $table->unsignedBigInteger('service_category_id')->index();
             
-            $table->string('first_name')->index();
-            $table->string('last_name')->index();
-            $table->date('dob');
-            $table->string('nationality');
+            $table->string('first_name')->nullable()->index();
+            $table->string('last_name')->nullable()->index();
+            $table->date('dob')->nullable();
+            $table->string('nationality')->nullable();
             $table->string('address');
             $table->string('city');
-            $table->string('country');
+            $table->string('country_id');
             $table->string('postal_code');
             $table->string('document_type'); //DocumentTyp Enum
             $table->string('front_image');
@@ -35,6 +35,7 @@ return new class extends Migration
             //if Company 
 
             $table->string('company_name')->nullable();
+            $table->string('company_name')->nullable();
             $table->string('company_license_number')->nullable();
             $table->string('company_tax_number')->nullable();
 
@@ -42,9 +43,14 @@ return new class extends Migration
             $table->string('status')->index()->default(SellerKycStatus::PENDING->value);
 
 
+
             $table->softDeletes();
             $table->timestamps();
 
+            $table->foreign('seller_id')->references('id')->on('users')->onDeleteNull();
+            $table->foreign('service_category_id')->references('id')->on('categories')->onDeleteNull();
+            $table->foreign('country_id')->references('id')->on('countries')->onDeleteNull();
+            
             $this->addMorphedAuditColumns($table);
         });
     }

@@ -18,6 +18,7 @@ class SellerKyc extends AuditBaseModel implements Auditable
         'sort_order',
         'seller_id',
         'service_category_id',
+        //Individual Information
         'first_name',
         'last_name',
         'dob',
@@ -26,13 +27,20 @@ class SellerKyc extends AuditBaseModel implements Auditable
         'city',
         'country_id',
         'postal_code',
+
         'document_type',
         'front_image',
         'selfie_image',
         'seller_experience',
+
         'company_name',
+        'company_address',
+        'company_city',
+        'company_country_id',
+        'company_postal_code',
         'company_license_number',
         'company_tax_number',
+        
         'status',
 
         'created_at',
