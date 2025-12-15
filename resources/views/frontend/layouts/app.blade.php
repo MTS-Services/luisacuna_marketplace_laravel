@@ -22,7 +22,8 @@
     @stack('styles')
 </head>
 
-<body class="min-h-screen flex flex-col bg-bg-primary text-text-primary">
+<body class="min-h-screen flex flex-col bg-bg-secondary text-text-primary">
+
 
     @if (
         !(request()->routeIs('login') ||

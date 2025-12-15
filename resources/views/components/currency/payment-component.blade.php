@@ -1,4 +1,4 @@
-<div class="lg:col-span-1">
+<div class="lg:col-span-1 ">
     <!-- Price Section -->
     <div class="bg-bg-primary rounded-lg p-6 mb-6 ">
         <div class="mb-3 flex items-center justify-between border-b border-zinc-500">
