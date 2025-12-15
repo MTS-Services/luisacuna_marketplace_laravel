@@ -34,7 +34,7 @@
                         background
                     </h2>
 
-                    <div class="px-8">
+                    <div class="px-8 text-left">
                         <div class="flex justify-center mb-4">
                             <img src="{{ asset('assets/images/verification-id-background.webp') }}" alt=""
                                 class="mx-auto">
@@ -80,9 +80,7 @@
                             exceed
                             10MB.
                         </p>
-                        @error('idDocument')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                        @enderror
+                        <x-ui.input-error :messages="$errors->get('front_image')" class="mt-2" />
                     </div>
                 @else
                     <h2 class="text-base lg:text-xl font-semibold  mb-8 text-left">
@@ -115,18 +113,18 @@
 
                         <div
                             class="flex items-center max-w-88 mx-auto border border-zinc-100 rounded-lg overflow-hidden">
-                            <input type="file" wire:model="ultimateBeneficialOwnerIdDocument" accept="image/*"
-                                class="hidden" id="ultimateBeneficialOwnerIdDocument">
+                            <input type="file" wire:model="front_image" accept="image/*"
+                                class="hidden" id="front_image">
 
-                            <label for="ultimateBeneficialOwnerIdDocument"
+                            <label for="front_image"
                                 class="shrink-0 px-6 py-1.5 bg-zinc-600 text-white font-semibold rounded-3xl hover:bg-gray-800 cursor-pointer transition duration-150 ease-in-out">
                                 Choose file
                             </label>
 
                             <div
                                 class="p-2 text-sm text-primary-100 truncate w-full bg-bg-light-black shadow rounded-sm ml-2 text-left">
-                                @if (isset($ultimateBeneficialOwnerIdDocument))
-                                    {{ $ultimateBeneficialOwnerIdDocument->getClientOriginalName() }}
+                                @if (isset($front_image))
+                                    {{ $front_image->getClientOriginalName() }}
                                 @else
                                     No file selected
                                 @endif

@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace App\Services;
 
 use App\Enums\SellerKycStatus;
@@ -7,13 +8,13 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class SellerKycService 
+class SellerKycService
 {
-    public function __construct(protected SellerKyc $model)
-    {}
+    public function __construct(protected SellerKyc $model) {}
 
     /* ================== ================== ==================
     *                          Find Methods
@@ -45,7 +46,7 @@ class SellerKycService
         return $query->orderBy($sortField, $order)->first();
     }
 
-    public function getFirstActiveData(array $filters = [], $sortField = 'created_at', $order = 'desc') :?SellerKyc
+    public function getFirstActiveData(array $filters = [], $sortField = 'created_at', $order = 'desc'): ?SellerKyc
     {
         $query = $this->model->query();
 
@@ -81,37 +82,58 @@ class SellerKycService
     * ================== ================== ================== */
 
     public function createData(array $data): ?SellerKyc
-    {  return DB::transaction(function () use ($data) {
+    {
+        return DB::transaction(function () use ($data) {
             $categories = [];
+
             if ($data['front_image']) {
+
                 $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $data['front_image']->getClientOriginalName();
-                $data['front_image'] = Storage::disk('public')->putFileAs('seller_kyc', $data['front_image'], $fileName);
+                $fileName = $prefix . '-' . basename($data['front_image']);
+
+                if (Storage::exists($data['front_image'])) {
+
+                    $fileName = uniqid('IMX') . '-' . time() . '-' . basename($data['front_image']);
+
+                    $finalPath = Storage::disk('public')->putFileAs(
+                        'seller_kyc',
+                        new \Illuminate\Http\File(storage_path('app/private/' . $data['front_image'])),
+                        $fileName
+                    );
+                   Storage::delete($data['front_image']);
+
+                    $data['front_image'] = $finalPath;
+                }
             }
-            if($data['categories']) {
+
+            if ($data['selfie_image']) {
+                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+                $fileName = $prefix . '-' . $data['selfie_image']->getClientOriginalName();
+                $data['selfie_image'] = Storage::disk('public')->putFileAs('seller_kyc', $data['selfie_image'], $fileName);
+            }
+
+            if ($data['categories']) {
                 $categories = $data['categories'];
                 unset($data['categories']);
             }
-            if(!isset($data['seller_id'])){
+            if (!isset($data['seller_id'])) {
                 $data['seller_id'] = user()->id;
             }
-         
+
             // dd($data); 
             $kyc = $this->model->create($data);
 
             $kyc->categories()->createMany(
                 collect($categories)->map(fn($category_id) => ['service_category_id' => $category_id])->toArray()
             );
-
             return $kyc->fresh();
         });
-        
     }
     public function updateData(int $id, array $data): ?SellerKyc
     {
         return DB::transaction(function () use ($id, $data) {
 
-            
+
             $model = $this->findData($id);
             $newSingleImagePath = null;
             $newSingleImagePathMobile = null;
@@ -119,69 +141,69 @@ class SellerKycService
                 return null;
             }
 
-            
-                $oldData = $model->getAttributes();
-                $newData = $data;
 
-                // --- 1. Single Avatar Handling ---
-                $oldImagePath = Arr::get($oldData, 'image');
-                $uploadedImage = Arr::get($data, 'image');
+            $oldData = $model->getAttributes();
+            $newData = $data;
+
+            // --- 1. Single Avatar Handling ---
+            $oldImagePath = Arr::get($oldData, 'image');
+            $uploadedImage = Arr::get($data, 'image');
 
 
-                
-                if ($uploadedImage instanceof UploadedFile) {
-                    // Delete old file permanently (File deletion is non-reversible)
-                    if (!empty($oldImagePath) && Storage::disk('public')->exists($oldImagePath)) {
-                        Storage::disk('public')->delete($oldImagePath);
-                    }
-                    // Store the new file and track path for rollback
-                    $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                    $fileName = $prefix . '-' . $uploadedImage->getClientOriginalName();
 
-                    $newSingleImagePath = Storage::disk('public')->putFileAs('banners', $uploadedImage, $fileName);
-                    $newData['image'] = $newSingleImagePath;
-                } elseif ($newData['remove_file']) {
-                    if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
-                        Storage::disk('public')->delete($oldImagePath);
-                    }
-                    $newData['image'] = null;
+            if ($uploadedImage instanceof UploadedFile) {
+                // Delete old file permanently (File deletion is non-reversible)
+                if (!empty($oldImagePath) && Storage::disk('public')->exists($oldImagePath)) {
+                    Storage::disk('public')->delete($oldImagePath);
                 }
-                
-                // Cleanup temporary/file object keys
-                if (!$newData['remove_file'] && !$newSingleImagePath) {
-                    $newData['image'] = $oldImagePath ?? null;
+                // Store the new file and track path for rollback
+                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+                $fileName = $prefix . '-' . $uploadedImage->getClientOriginalName();
+
+                $newSingleImagePath = Storage::disk('public')->putFileAs('banners', $uploadedImage, $fileName);
+                $newData['image'] = $newSingleImagePath;
+            } elseif ($newData['remove_file']) {
+                if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
+                    Storage::disk('public')->delete($oldImagePath);
                 }
-                unset($newData['remove_file']);
+                $newData['image'] = null;
+            }
+
+            // Cleanup temporary/file object keys
+            if (!$newData['remove_file'] && !$newSingleImagePath) {
+                $newData['image'] = $oldImagePath ?? null;
+            }
+            unset($newData['remove_file']);
 
 
-                //Mobile Image
-                $oldImagePathMobile = Arr::get($oldData, 'mobile_image');
-                $uploadedImageMobile = Arr::get($data, 'mobile_image');
-                
-     
-                if ($uploadedImageMobile instanceof UploadedFile) {
-                    // Delete old file permanently (File deletion is non-reversible)
-                   if (!empty($oldImagePathMobile) && Storage::disk('public')->exists($oldImagePathMobile)) {
-                        Storage::disk('public')->delete($oldImagePathMobile);
-                    }
-                    // Store the new file and track path for rollback
-                    $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                    $fileName = $prefix . '-' . $uploadedImageMobile->getClientOriginalName();
+            //Mobile Image
+            $oldImagePathMobile = Arr::get($oldData, 'mobile_image');
+            $uploadedImageMobile = Arr::get($data, 'mobile_image');
 
-                    $newSingleImagePathMobile = Storage::disk('public')->putFileAs('banners', $uploadedImageMobile, $fileName);
-                    $newData['mobile_image'] = $newSingleImagePathMobile;
-                } elseif ($newData['remove_file_mobile']) {
-                    if ($oldImagePath && Storage::disk('public')->exists($oldImagePathMobile)) {
-                        Storage::disk('public')->delete($oldImagePathMobile);
-                    }
-                    $newData['mobile_image'] = null;
+
+            if ($uploadedImageMobile instanceof UploadedFile) {
+                // Delete old file permanently (File deletion is non-reversible)
+                if (!empty($oldImagePathMobile) && Storage::disk('public')->exists($oldImagePathMobile)) {
+                    Storage::disk('public')->delete($oldImagePathMobile);
                 }
-                
-                // Cleanup temporary/file object keys
-                if (!$newData['remove_file_mobile'] && !$newSingleImagePathMobile) {
-                    $newData['mobile_image'] = $oldImagePathMobile ?? null;
+                // Store the new file and track path for rollback
+                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+                $fileName = $prefix . '-' . $uploadedImageMobile->getClientOriginalName();
+
+                $newSingleImagePathMobile = Storage::disk('public')->putFileAs('banners', $uploadedImageMobile, $fileName);
+                $newData['mobile_image'] = $newSingleImagePathMobile;
+            } elseif ($newData['remove_file_mobile']) {
+                if ($oldImagePath && Storage::disk('public')->exists($oldImagePathMobile)) {
+                    Storage::disk('public')->delete($oldImagePathMobile);
                 }
-                unset($newData['remove_file_mobile']);
+                $newData['mobile_image'] = null;
+            }
+
+            // Cleanup temporary/file object keys
+            if (!$newData['remove_file_mobile'] && !$newSingleImagePathMobile) {
+                $newData['mobile_image'] = $oldImagePathMobile ?? null;
+            }
+            unset($newData['remove_file_mobile']);
 
             $model->update($newData);
             return $model->fresh();
@@ -189,38 +211,34 @@ class SellerKycService
     }
 
 
-    public function deleteData(int $id):bool
+    public function deleteData(int $id): bool
     {
-    return  DB::transaction(function () use ($id) {
-        $image_url = null ; $mobile_image_url = null;
-        $model = $this->findData($id);
-        if (!$model) {
-            return false;
-        }
-
-        if ($model->image) {
-            $image_url = $model->image;
-           
-        }
-        if ($model->mobile_image) {
-            $mobile_image_url = $model->mobile_image;
-          
-        }
-
-        $deleted =  $model->delete();
-
-        if($deleted){
-            if (Storage::disk('public')->exists($image_url))  {
-                Storage::disk('public')->delete($image_url);
+        return  DB::transaction(function () use ($id) {
+            $image_url = null;
+            $mobile_image_url = null;
+            $model = $this->findData($id);
+            if (!$model) {
+                return false;
             }
-            if (Storage::disk('public')->exists($mobile_image_url))  {
-                Storage::disk('public')->delete($mobile_image_url);
+
+            if ($model->image) {
+                $image_url = $model->image;
             }
-        }
-        return $deleted;
-     });
+            if ($model->mobile_image) {
+                $mobile_image_url = $model->mobile_image;
+            }
+
+            $deleted =  $model->delete();
+
+            if ($deleted) {
+                if (Storage::disk('public')->exists($image_url)) {
+                    Storage::disk('public')->delete($image_url);
+                }
+                if (Storage::disk('public')->exists($mobile_image_url)) {
+                    Storage::disk('public')->delete($mobile_image_url);
+                }
+            }
+            return $deleted;
+        });
     }
-
-  
-
 }

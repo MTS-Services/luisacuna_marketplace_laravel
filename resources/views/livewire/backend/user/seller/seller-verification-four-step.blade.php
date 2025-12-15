@@ -163,9 +163,9 @@
                             <div>
                                 <x-ui.label class="mb-2">Country</x-ui.label>
                                 <x-ui.select wire:model="company_country_id" class="w-full p-3 border rounded-lg">
-                                    <option value="">Select country</option>
-                                    <option value="BD">Bangladesh</option>
-                                    <option value="US">United States</option>
+                                   @foreach ($countries as $country )
+                                        <option value="{{ $country->id }}">{{ $country->name}}</option>
+                                    @endforeach
                                 </x-ui.select>
                                 <x-ui.input-error :messages="$errors->get('company_country_id')" />
                             </div>
