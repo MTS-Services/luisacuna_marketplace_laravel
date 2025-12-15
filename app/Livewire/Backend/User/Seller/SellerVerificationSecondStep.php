@@ -18,6 +18,7 @@ class SellerVerificationSecondStep extends Component
     public function render()
     {
         $data = Session::get('kyc_'.user()->id);
+      
         if($data && isset($data['categories'])){
             $this->selectedCategories = $data['categories'];
         }

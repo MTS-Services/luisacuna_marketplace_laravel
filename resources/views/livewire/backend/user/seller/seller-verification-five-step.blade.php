@@ -57,7 +57,7 @@
                         </ul>
 
                         <div class="flex items-center  max-w-88 mx-auto  rounded-lg overflow-hidden">
-                            <input type="file" wire:model="idDocument" accept="image/*" class="hidden"
+                            <input type="file" wire:model="front_image" accept="image/*" class="hidden"
                                 id="idDocument">
 
                             <label for="idDocument"
@@ -67,8 +67,9 @@
 
                             <div
                                 class="p-2 text-sm text-primary-100 truncate w-full bg-bg-light-black shadow rounded-sm ml-2 text-left">
-                                @if (false)
-                                    {{ $idDocument->getClientOriginalName() }}
+                               
+                                @if ($front_image)
+                                    {{ $front_image->getClientOriginalName() }}
                                 @else
                                     No file selected
                                 @endif
@@ -145,8 +146,7 @@
                     class="px-8 py-2 text-text-white  rounded-lg hover:bg-gray-50">
                     BACK
                 </a>
-                <button wire:click="nextStep" 
-                    class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
+                <button wire:click="nextStep" class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
                     NEXT
                 </button>
             </div>

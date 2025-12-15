@@ -82,24 +82,28 @@ class SellerKycService
 
     public function createData(array $data): ?SellerKyc
     {  return DB::transaction(function () use ($data) {
-
-            if ($data['image']) {
+            $categories = [];
+            if ($data['front_image']) {
                 $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $data['image']->getClientOriginalName();
-                $data['image'] = Storage::disk('public')->putFileAs('banners', $data['image'], $fileName);
+                $fileName = $prefix . '-' . $data['front_image']->getClientOriginalName();
+                $data['front_image'] = Storage::disk('public')->putFileAs('seller_kyc', $data['front_image'], $fileName);
             }
-             if ($data['mobile_image']) {
-                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $data['mobile_image']->getClientOriginalName();
-                $data['mobile_image'] = Storage::disk('public')->putFileAs('banners', $data['mobile_image'], $fileName);
+            if($data['categories']) {
+                $categories = $data['categories'];
+                unset($data['categories']);
             }
-            $data['target'] = $data['target'] ?? '_self';
-            $data['status'] = $data['status'] ?? SellerKycStatus::PENDING;
-            
-            $newData = $this->model->create($data);
-            // Dispatch event
+            if(!isset($data['seller_id'])){
+                $data['seller_id'] = user()->id;
+            }
+         
+            // dd($data); 
+            $kyc = $this->model->create($data);
 
-            return $newData->fresh();
+            $kyc->categories()->createMany(
+                collect($categories)->map(fn($category_id) => ['service_category_id' => $category_id])->toArray()
+            );
+
+            return $kyc->fresh();
         });
         
     }
