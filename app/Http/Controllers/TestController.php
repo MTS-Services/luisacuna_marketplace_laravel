@@ -9,6 +9,7 @@ use App\Events\UserNotificationSent;
 use App\Models\Admin;
 use App\Models\CustomNotification;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class TestController extends Controller
 {
@@ -83,6 +84,7 @@ class TestController extends Controller
                 broadcast(new AdminNotificationSent($notification));
             }
             if ($sendTo === 'public') {
+                Log::info('Broadcasting public notification');
                 broadcast(new UserNotificationSent($notification));
                 broadcast(new AdminNotificationSent($notification));
             }
