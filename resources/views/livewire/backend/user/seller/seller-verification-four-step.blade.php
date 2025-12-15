@@ -28,18 +28,18 @@
 
             <div class="p-5 lg:px-15 lg:py-10 bg-bg-info dark:bg-bg-light-black rounded-2xl">
               
-                @if ($accountType == 'individual')
+                @if ($accountType == \App\Enums\AccountType::INDIVIDUAL->value)
 
 
 
-                    <div class="w-full mx-auto space-y-4 mb-8">
-                        <div>
+                    <div class="w-full mx-auto space-y-4 mb-8 text-left">
+                        <div class="text-left">
                             <x-ui.label class="mb-2">First name</x-ui.label>
                             <x-ui.input type="text" wire:model="first_name" placeholder="First name" />
                             <x-ui.input-error :messages="$errors->get('first_name')" />
                         </div>
 
-                        <div>
+                        <div class="text-left">
                             <x-ui.label class="mb-2">Last name</x-ui.label>
                             <x-ui.input type="text" wire:model="last_name" placeholder="Last name" />
                             <x-ui.input-error :messages="$errors->get('last_name')" />
@@ -62,6 +62,7 @@
                                     @endfor
                                 </x-ui.select>
                                 <x-ui.select wire:model="dob_day" class="p-3 border rounded-lg">
+                               
                                     <option value="">Day</option>
                                     @for ($day = 1; $day <= 31; $day++)
                                         <option value="{{ str_pad($day, 2, '0', STR_PAD_LEFT) }}">
@@ -69,19 +70,18 @@
                                     @endfor
                                 </x-ui.select>
                             </div>
-                            <x-ui.input-error :messages="$errors->get('dob_year')" />
-                            <x-ui.input-error :messages="$errors->get('dob_month')" />
-                            <x-ui.input-error :messages="$errors->get('dob_day')" />
+                            <x-ui.input-error class="my-2" :messages="$errors->get('dob_year')" />
+                            <x-ui.input-error class="my-2" :messages="$errors->get('dob_month')" />
+                            <x-ui.input-error class="my-2" :messages="$errors->get('dob_day')" />
                         </div>
 
                         <div>
                             <x-ui.label class="mb-2">Nationality:</x-ui.label>
                             <x-ui.select wire:model="nationality" class="w-full p-3 border rounded-lg">
                                 <option value="">Select nationality</option>
-                                <option value="BD">Bangladesh</option>
-                                <option value="US">United States</option>
-                                <option value="UK">United Kingdom</option>
-                                <option value="IN">India</option>
+                                    @foreach ($countries as $country )
+                                        <option value="{{ strtolower($country->name)}}">{{ $country->name}}</option>
+                                    @endforeach
                             </x-ui.select>
                             <x-ui.input-error :messages="$errors->get('nationality')" />
                         </div>
@@ -105,9 +105,12 @@
                                 <x-ui.label class="mb-2">Country</x-ui.label>
                                 <x-ui.select wire:model="country_id" class="w-full p-3 border rounded-lg">
                                     <option value="">Select country</option>
-                                    <option value="BD">Bangladesh</option>
-                                    <option value="US">United States</option>
-                                    <option value="UK">United Kingdom</option>
+                                    @foreach ($countries as $country )
+                                        <option value="{{ $country->id }}">{{ $country->name}}</option>
+                                    @endforeach
+                                    
+                                    
+
                                 </x-ui.select>
                                 <x-ui.input-error :messages="$errors->get('country_id')" />
                             </div>
@@ -120,7 +123,7 @@
                         </div>
                     </div>
                 @else
-                    <div class="max-w-md mx-auto space-y-4 mb-8">
+                    <div class="max-w-md mx-auto space-y-4 mb-8 text-left">
                         <div>
                             <x-ui.label class="mb-2">Company name</x-ui.label>
                             <x-ui.input type="text" wire:model="company_name" class="w-full p-3 border rounded-lg"
@@ -160,9 +163,9 @@
                             <div>
                                 <x-ui.label class="mb-2">Country</x-ui.label>
                                 <x-ui.select wire:model="company_country_id" class="w-full p-3 border rounded-lg">
-                                    <option value="">Select country</option>
-                                    <option value="BD">Bangladesh</option>
-                                    <option value="US">United States</option>
+                                   @foreach ($countries as $country )
+                                        <option value="{{ $country->id }}">{{ $country->name}}</option>
+                                    @endforeach
                                 </x-ui.select>
                                 <x-ui.input-error :messages="$errors->get('company_country_id')" />
                             </div>

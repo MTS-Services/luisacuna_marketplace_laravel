@@ -13,6 +13,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class UserNotificationSent implements ShouldBroadcast, ShouldQueue
 {
@@ -28,9 +29,10 @@ class UserNotificationSent implements ShouldBroadcast, ShouldQueue
 
     public function broadcastOn()
     {
+        Log::info('Called User notification.');
         if ($this->notification->receiver_id && $this->notification->receiver_type == User::class) {
             return new PrivateChannel('user.' . $this->notification->receiver_id);
-        } elseif ($this->notification->receiver_id == null && ($this->notification->type == CustomNotificationType::USER->value || $this->notification->type == CustomNotificationType::PUBLIC->value)) {
+        } elseif ($this->notification->receiver_id == null && ($this->notification->type == CustomNotificationType::USER || $this->notification->type == CustomNotificationType::PUBLIC)) {
             return new Channel('users');
         }
         return [];
@@ -47,8 +49,8 @@ class UserNotificationSent implements ShouldBroadcast, ShouldQueue
             'message' => $this->notification->data['message'] ?? null,
             'description' => $this->notification->data['description'] ?? null,
             'action' => $this->notification->action ?? null,
-            'icon' => $this->notification->data['icon'] ?? 'cog',
-            'additional_data' => isset($this->notification->data['additional_data']) ? $this->notification->data['additional_data'] : [],
+            'icon' => $this->notification->data['icon'] ?? 'bell',
+            'additional' => $this->notification->additional ?? null,
             'timestamp' => dateTimeHumanFormat(now()),
         ];
     }

@@ -26,7 +26,7 @@ use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementTypeController;
 use App\Http\Controllers\Backend\Admin\GatewayAndIntegration\GatewayAndIntegrationController;
-use App\Http\Controllers\Backend\Admin\NotificationManagement\NotificationController;
+use App\Http\Controllers\Backend\Admin\NotificationManagement\AnnouncementController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\BoostingsController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\CurrencyController as ProductCurrencyController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\GiftCardsController;
@@ -270,11 +270,8 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
         Route::get('/fee-settings', 'feeSettings')->name('fee-settings');
     });
 
-    Route::group(['prefix' => 'notification-management', 'as' => 'nm.'], function () {
-        Route::controller(NotificationController::class)->name('notification.')->prefix('notification')->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/send', 'send')->name('send');
-            Route::get('/view/{id}', 'view')->name('view');
-        });
+    Route::controller(AnnouncementController::class)->name('announcement.')->prefix('announcement')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/show/{id}', 'show')->name('show');
     });
 });
