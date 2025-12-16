@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\SellerProfile;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -32,7 +33,12 @@ class SellerProfileService{
     }
 
 
-
+      public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        return $this->model->query()
+            ->filter($filters)
+            ->paginate($perPage);
+    }
     /* ================== ================== ==================
      *                    Data Modification Methods
      * ================== ================== ================== */

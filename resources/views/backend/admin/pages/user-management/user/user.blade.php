@@ -91,6 +91,12 @@
             <x-slot name="breadcrumb">{{ __('Buyer Management') }}</x-slot>
             <livewire:backend.admin.user-management.user.buyer.buyer-trash />
         @break
+        @case('admin.um.user.seller-verification')
+            <x-slot name="pageSlug">{{ __('seller-verification-pending') }}</x-slot>
+            <x-slot name="title">{{ __('Seller Pending Verificaiton') }}</x-slot>
+            <x-slot name="breadcrumb">{{ __('Seller Management') }}</x-slot>
+            <livewire:backend.admin.user-management.user.seller.pending-verification />
+        @break
 
         @default
             <x-slot name="pageSlug">{{ __('admin-users') }}</x-slot>
