@@ -153,15 +153,13 @@ class Game extends AuditBaseModel implements Auditable
         if(!empty($filters['relations'])){
 
             $query->with($filters['relations']);
-       
-              unset($filters['relations']);
         }
 
         $query->when($filters['status'] ?? null, function ($query, $status) {
             $query->where('status', $status);
         })
 
-        ->when($filters['category'] ?? '', function ($query, $category) {
+        ->when($filters['categorySlug'] ?? '', function ($query, $category) {
             $query->whereHas('categories', function ($q) use ($category) {
                 $q->where('categories.slug', $category);
             });
