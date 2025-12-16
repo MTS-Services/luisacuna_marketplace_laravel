@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Message;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;

@@ -71,6 +71,49 @@ class OrderMessageService
             return $u->lastMessage->created_at ?? null;
         })->values();
     }
+    public function getPaginated($perPage, $filters)
+    {
+        $query = Conversation::query()
+            ->with([
+                'conversation_participants.user',
+                'messages' => function ($q) {
+                    $q->latest()->limit(1);
+                },
+                'messages.sender'
+            ]);
+
+        if (!empty($filters['search'])) {
+            $query->where(function ($q) use ($filters) {
+                $q->where('subject', 'like', '%' . $filters['search'] . '%')
+                    ->orWhere('note', 'like', '%' . $filters['search'] . '%')
+                    ->orWhereHas('product', function ($q) use ($filters) {
+                        $q->where('name', 'like', '%' . $filters['search'] . '%');
+                    });
+            });
+        }
+
+        $sortField = $filters['sort_field'] ?? 'last_message_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+
+        $query->orderBy($sortField, $sortDirection);
+
+        return $query->paginate($perPage);
+    }
+
+    /**
+     * Admin: Fetch full conversation messages (both users)
+     */
+    public function fetchForAdmin(int $conversationId)
+    {
+        return Message::where('conversation_id', $conversationId)
+            ->with([
+                'sender:id,username,first_name,last_name',
+                'attachments'
+            ])
+            ->orderBy('created_at', 'asc')
+            ->get();
+    }
+
 
     /**
      * Get or create conversation between two users
@@ -260,7 +303,7 @@ class OrderMessageService
     public function editMessage(int $messageId, string $newMessageBody)
     {
         $message = Message::findOrFail($messageId);
-        
+
         $message->update([
             'message_body' => $newMessageBody,
             'is_edited' => true,
