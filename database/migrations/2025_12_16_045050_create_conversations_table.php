@@ -1,9 +1,10 @@
 <?php
 
+use App\Enums\ConversationStatus;
 use App\Traits\AuditColumnsTrait;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -13,16 +14,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('message_participants', function (Blueprint $table) {
+        Schema::create('conversations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-            $table->unsignedBigInteger('message_id')->nullable();
-            $table->unsignedBigInteger('participant_id')->nullable();
-            $table->string('participant_type')->nullable();
+            $table->uuid('conversation_uuid')->unique();
+            $table->string('subject')->nullable();
+            $table->longText('note')->nullable();
+            $table->string('status')->default(ConversationStatus::ACTIVE)->index();
+            $table->timestamp('last_message_at')->nullable();
+            
 
 
-
-            $table->foreign('message_id')->references('id')->on('messages')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
 
@@ -35,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('message_participants');
+        Schema::dropIfExists('conversations');
     }
 };

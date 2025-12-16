@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\MessageType;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -14,9 +15,16 @@ class Message extends AuditBaseModel implements Auditable
     protected $fillable = [
         'id',
         'sort_order',
-        'message_id',
+        'conversation_id',
         'sender_id',
-        'receiver_id',
+        'message_type',
+        'message_body',
+        'metadata',
+        'parent_message_id',
+        'is_edited',
+        'edited_at',
+
+
 
         'creater_type',
         'updater_type',
@@ -32,44 +40,64 @@ class Message extends AuditBaseModel implements Auditable
     ];
 
     protected $casts = [
-        //
+        'message_type' => MessageType::class
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
+
+
+
+    public function conversation()
+    {
+        return $this->belongsTo(Conversation::class, 'conversation_id', 'id');
+    }
     public function sender()
     {
         return $this->belongsTo(User::class, 'sender_id', 'id');
     }
-    public function receiver()
+
+    public function attachments()
     {
-        return $this->belongsTo(User::class, 'receiver_id', 'id');
+        return $this->hasMany(MessageAttachment::class, 'message_id', 'id');
+    }
+
+    public function readReceipts()
+    {
+        return $this->hasMany(MessageReadReceipt::class, 'message_id', 'id');
     }
 
 
-    public function message_participants()
-    {
-        return $this->hasMany(MessageParticipant::class, 'message_id', 'id');
-    }
+
+    // public function receiver()
+    // {
+    //     return $this->belongsTo(User::class, 'receiver_id', 'id');
+    // }
 
 
-    /**
-     * ✅ Relationship to OrderMessage
-     */
-    public function orderMessages()
-    {
-        return $this->hasMany(OrderMessage::class, 'message_id', 'id');
-    }
+    // public function message_participants()
+    // {
+    //     return $this->hasMany(MessageParticipant::class, 'message_id', 'id');
+    // }
 
-    /**
-     * ✅ Latest order message
-     */
-    public function latestOrderMessage()
-    {
-        return $this->hasOne(OrderMessage::class, 'message_id', 'id')->latestOfMany();
-    }
+
+    // /**
+    //  * ✅ Relationship to OrderMessage
+    //  */
+    // public function orderMessages()
+    // {
+    //     return $this->hasMany(OrderMessage::class, 'message_id', 'id');
+    // }
+
+    // /**
+    //  * ✅ Latest order message
+    //  */
+    // public function latestOrderMessage()
+    // {
+    //     return $this->hasOne(OrderMessage::class, 'message_id', 'id')->latestOfMany();
+    // }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS

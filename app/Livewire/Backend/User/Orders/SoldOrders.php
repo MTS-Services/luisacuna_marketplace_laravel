@@ -27,14 +27,11 @@ class SoldOrders extends Component
     {
 
 
-        // Table columns configuration for orders
-        // Table columns configuration for orders
         $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
 
-        // dd($datas);
         $columns = [
             [
                 'key' => 'name',

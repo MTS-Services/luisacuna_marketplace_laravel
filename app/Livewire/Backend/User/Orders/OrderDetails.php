@@ -37,6 +37,7 @@ class OrderDetails extends Component
         
         if (!$product) {
             abort(404, 'Product not found for this order');
+            
         }
 
         $this->sellerId = $product->user_id;

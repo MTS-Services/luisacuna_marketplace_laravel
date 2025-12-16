@@ -257,7 +257,7 @@
 
             </div> --}}
 
-        <div class="bg-bg-info rounded-lg mt-20 p-5 sm:p-20" wire:poll.3s>
+        <div class="bg-bg-info rounded-lg mt-20 p-5 sm:p-20">
 
             <!-- User Header -->
             <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
@@ -273,60 +273,88 @@
 
             {{-- ================= MESSAGES LOOP ================= --}}
             @foreach ($messages as $msg)
-                @if ($msg->is_system_message)
+                {{-- Check if message has metadata indicating it's a system message --}}
+                @php
+                    $metadata = is_string($msg->metadata) ? json_decode($msg->metadata, true) : $msg->metadata;
+                    $isSystemMessage = isset($metadata['is_system_message']) && $metadata['is_system_message'] === true;
+                @endphp
+
+                @if ($isSystemMessage)
+                    {{-- System Message --}}
                     <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
                         <p class="text-text-white text-base mb-2">
-                            {{ $msg->message }}
+                            {{ $msg->message_body }}
                         </p>
-                        <p class="text-text-white text-xs text-right mt-3">
-                            {{ $msg->created_at->format('M d Y') }}
+                        <p class="text-text-white text-xs text-start mt-3">
+                            {{ $msg->created_at_formatted }}
                         </p>
                     </div>
                 @else
-                    {{-- Seller Message (Right side - auth user) --}}
-                    @if ($msg->creater_id == auth()->id())
+                    {{-- Regular Messages --}}
+
+                    {{-- Auth User Message (Right side - auth user) --}}
+                    @if ($msg->sender_id == auth()->id())
                         <div class="mt-10">
                             <div class="flex items-center gap-3">
                                 <div class="flex-1">
                                     <div class="bg-primary-800 rounded-lg">
                                         <p class="bg-zinc-500 px-6 py-3 text-right rounded-lg text-text-white">
-                                            {{ $msg->message }}
+                                            {{ $msg->message_body }}
                                         </p>
                                     </div>
                                 </div>
-                                <img src="https://ui-avatars.com/api/?name=Me&background=853EFF&color=fff"
-                                    alt="Me" class="w-10 h-10 rounded-full">
+                                {{-- <img src="https://ui-avatars.com/api/?name=Me&background=853EFF&color=fff"
+                                    alt="Me" class="w-10 h-10 rounded-full"> --}}
+                                @if ($msg->avatar)
+                                    {{-- Show actual avatar image --}}
+                                    <img src="{{ storage_url($msg->avatar) }}" alt="{{ $msg->full_name }}"
+                                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
+                                @else
+                                    {{-- Show initials --}}
+                                    <div
+                                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
+                                        {{ strtoupper(substr($msg->full_name, 0, 2)) }}
+                                    </div>
+                                @endif
                             </div>
-                            <p class="text-text-white text-right text-xs mt-1">
-                                {{ $msg->created_at->format('M d Y') }}
+                            <p class="text-text-white text-left text-xs mt-1">
+                                {{ $msg->created_at_formatted }}
                             </p>
                         </div>
                     @else
-                        {{-- Buyer Message (Left side - other user) --}}
-                        {{-- <div class="mt-10">
-                            <div class="flex items-center gap-3">
-                                <img src="https://ui-avatars.com/api/?name=User&background=853EFF&color=fff"
-                                    alt="User" class="w-10 h-10 rounded-full">
-                                <div class="flex-1">
-                                    <div class="bg-primary-800 rounded-lg">
-                                        <p class="bg-primary-800 px-6 py-3 rounded-lg text-text-white">
-                                            {{ $msg->message }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="text-text-white text-xs mt-1">
-                                {{ $msg->created_at->format('M d Y') }}
-                            </p>
-                        </div> --}}
+                        {{-- Other User Message (Left side) --}}
+
                         <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mt-10">
+                            @if ($msg->attachments && $msg->attachments->count() > 0)
+                                @foreach ($msg->attachments as $attachment)
+                                    <div class="relative mb-2">
+                                        @if (
+                                            $attachment->attachment_type->value === 'image' ||
+                                                in_array($attachment->attachment_type->value, ['image', 'photo', 'picture']))
+                                            <img src="{{ asset('storage/' . $attachment->file_path) }}"
+                                                class="rounded-lg max-w-full">
+                                        @else
+                                            <a href="{{ asset('storage/' . $attachment->file_path) }}"
+                                                class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
+                                                📎 {{ basename($attachment->file_path) }}
+                                            </a>
+                                        @endif
+                                        <!-- Download Button -->
+                                        <a href="{{ asset('storage/' . $attachment->file_path) }}" download
+                                            class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
+                                            Download
+                                        </a>
+                                    </div>
+                                @endforeach
+                            @endif
                             <div>
-                                {{-- <p class="text-text-white text-base mb-2">{{ __('Order Disputed by Buyer:') }}</p> --}}
                                 <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
-                                    <span class="text-text-white">{{ $msg->message }}</span>
+                                    <span class="text-text-white">{{ $msg->message_body }}</span>
                                 </div>
                             </div>
-                            <p class="text-text-white text-xs text-right mt-3">{{ $msg->created_at->format('M d Y') }}</p>
+                            <p class="text-text-white text-xs text-right mt-3">
+                                {{ $msg->created_at_formatted }}
+                            </p>
                         </div>
                     @endif
                 @endif
@@ -348,7 +376,7 @@
                 </div>
             </div>
 
-            </>
+
 
 
 
@@ -369,5 +397,6 @@
                     </p>
                 </div>
             </div>
+        </div>
     </section>
 </main>

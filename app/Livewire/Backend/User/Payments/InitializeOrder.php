@@ -4,6 +4,7 @@ namespace App\Livewire\Backend\User\Payments;
 
 
 use App\Models\Product;
+use App\Services\OrderMessageService;
 use App\Services\OrderService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Session;
@@ -16,10 +17,12 @@ class InitializeOrder extends Component
     public ?Product $product = null;
     public int $quantity = 1;
 
-    protected OrderService $orderService ;
-    public function boot (OrderService $orderService)
+    protected OrderService $orderService;
+    protected OrderMessageService $OrderMessage;
+    public function boot(OrderService $orderService, OrderMessageService $OrderMessage)
     {
-     $this->orderService = $orderService;   
+        $this->orderService = $orderService;
+        $this->OrderMessage = $OrderMessage;
     }
 
     public function mount($productId)
@@ -54,6 +57,18 @@ class InitializeOrder extends Component
             'tax_amount' => 0,
             'grand_total' => ($this->product->price * $this->quantity),
         ]);
+
+
+        $buyerId  = user()->id;
+        $sellerId = $this->product->user_id;
+
+        $conversation = $this->OrderMessage->getOrCreateConversation($buyerId, $sellerId);
+
+        $this->OrderMessage->send(
+            $conversation->id,
+            'new order created',
+        );
+
         Session::driver('database')->put("checkout_{$token}", [
             'order_id' => $order->id,
             'price_locked' => ($this->product->price * $this->quantity),
@@ -63,8 +78,6 @@ class InitializeOrder extends Component
             route('game.checkout', ['slug' => encrypt($this->product->id), 'token' => $token]),
             navigate: true
         );
-
-
     }
 
     public function render()

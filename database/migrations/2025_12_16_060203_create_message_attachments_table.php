@@ -7,27 +7,26 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    use AuditColumnsTrait;
+     use AuditColumnsTrait;
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::create('message_attachments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-            $table->string('message_id')->unique();
-            $table->unsignedBigInteger('sender_id')->nullable();
-            $table->unsignedBigInteger('receiver_id')->nullable();
+            $table->unsignedBigInteger('message_id')->index();
+            $table->string('attachment_type');
+            $table->string('file_path');
+            $table->string('thumbnail_path')->nullable();
 
 
-
-            $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('message_id')->references('id')->on('messages')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
 
-            $this->addMorphedAuditColumns($table);
+           $this->addMorphedAuditColumns($table);
         });
     }
 
@@ -36,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('message_attachments');
     }
 };

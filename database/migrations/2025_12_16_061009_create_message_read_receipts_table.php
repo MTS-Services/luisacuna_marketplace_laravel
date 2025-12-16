@@ -13,18 +13,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order_messages', function (Blueprint $table) {
+        Schema::create('message_read_receipts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-            $table->unsignedBigInteger('message_id');
-            $table->text('message');
-            $table->json('attachments')->nullable();
-            $table->boolean('is_system_message')->default(false);
-            $table->timestamp('seen_at')->nullable();
+            $table->unsignedBigInteger('message_id')->index();
+            $table->unsignedBigInteger('user_id')->index();
+            $table->timestamp('read_at');
 
 
 
             $table->foreign('message_id')->references('id')->on('messages')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
 
@@ -37,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_messages');
+        Schema::dropIfExists('message_read_receipts');
     }
 };
