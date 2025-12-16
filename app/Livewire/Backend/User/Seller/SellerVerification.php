@@ -2,12 +2,25 @@
 
 namespace App\Livewire\Backend\User\Seller;
 
+use App\Models\SellerProfile;
+use App\Services\SellerProfileService;
 use Livewire\Component;
 
 
 class SellerVerification extends Component
 {
     
+
+    protected SellerProfileService $service;
+
+    public ?SellerProfile $sellerProfile ;
+    public function boot(SellerProfileService $service){
+
+        $this->service = $service;
+    }
+    public function  mount(){
+       $this->sellerProfile = $this->service->find(user()->id);
+    }
     public function render()
     {
         return view('livewire.backend.user.seller.seller-verification');

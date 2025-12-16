@@ -27,7 +27,7 @@
 
             <div class="p-5 lg:px-15 lg:py-10 bg-bg-info rounded-2xl">
 
-                @if ($accountType == \App\Enums\AccountType::INDIVIDUAL->value)
+                @if ($accountType == 0)
                     <h2 class="text-base lg:text-xl font-semibold  mb-8 text-left">Take a photo of your
                         ID and eldorado.gg in
                         <br>

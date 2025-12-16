@@ -187,6 +187,10 @@ class SellerProfile extends AuditBaseModel implements Auditable
      |  Accessors & Mutators
      ================================================================ */
 
+     public function getIsVerifiedAttribute(): bool
+    {
+        return $this->seller_verified;
+    }
     public function getSellerLevelLabelAttribute(): string
     {
         return $this->seller_level->label();
@@ -229,6 +233,7 @@ class SellerProfile extends AuditBaseModel implements Auditable
         $this->appends = array_merge(parent::getAppends(), [
             'seller_level_label',
             'seller_level_color',
+            'is_verified'
         ]);
     }
 }

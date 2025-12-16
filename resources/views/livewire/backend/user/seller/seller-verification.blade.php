@@ -14,7 +14,7 @@
         @endif
 
       
-
+            @if(! $sellerProfile)
             <div class="text-center">
                 <div class="mb-6">
                     <div class="mx-auto w-32 h-32 flex items-center justify-center">
@@ -48,7 +48,12 @@
 
                 <a href="#" class="block mt-4 text-zinc-600/80 hover:underline">Why do I need to verify my ID?</a>
             </div>
+            @elseif (!$sellerProfile->is_verified)
 
+            <h2>Verification pending</h2>
+            @else
+               <h2>Congrats you are verified</h2>
+            @endif
       
     </div>
 </div>

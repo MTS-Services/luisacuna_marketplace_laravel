@@ -4,6 +4,7 @@ namespace App\Livewire\Backend\User\Seller;
 
 use App\Enums\AccountType;
 use App\Services\SellerKycService;
+use App\Services\SellerProfileService;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -17,8 +18,8 @@ class SellerVerificationSixStep extends Component
 
     
 
-    protected SellerKycService $service;
-    public function boot(SellerKycService $service){
+    protected SellerProfileService $service;
+    public function boot(SellerProfileService $service){
         $this->service = $service;
     }
     public function mount(){
@@ -57,7 +58,7 @@ class SellerVerificationSixStep extends Component
             $this->service->createData($this->data);
             Session::forget('kyc_'.user()->id);
             session()->save();
-            return redirect()->route('user.seller.verification', ['step' => 7]);
+            return redirect()->route('user.seller.verification', ['step' => 0]);
         // } catch (\Throwable $th) {
         //     dd($th->getMessage());
         // }
@@ -67,6 +68,6 @@ class SellerVerificationSixStep extends Component
 
     protected function isIndividual(): bool
     {
-        return $this->accountType === AccountType::INDIVIDUAL->value;
+        return $this->accountType === 0;
     }   
 }

@@ -28,7 +28,7 @@
 
             <div class="p-5 lg:px-15 lg:py-10 bg-bg-info dark:bg-bg-light-black rounded-2xl">
               
-                @if ($accountType == \App\Enums\AccountType::INDIVIDUAL->value)
+                @if ($accountType == 0)
 
 
 
