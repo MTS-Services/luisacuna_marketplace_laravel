@@ -32,20 +32,19 @@ class SellerVerificationFirstStep extends Component
             'account_type.required' => 'Please select account type',
         ]
         );
-        if(Session::has('kyc_'.user()->id)){
-            Session::put('kyc_'.user()->id, 
-            array_merge(
-                Session::get('kyc_'.user()->id),
-                ['account_type' => $this->account_type]
-            )
-            );
-        }else{
-           Session::put('kyc_'.user()->id, [
-           'account_type' => $this->account_type
-           ]);
-        }
-       
 
+        $key = 'kyc_'.user()->id;
+
+        $data = Session::get($key, []);
+
+        if (($data['account_type'] ?? null) !== $this->account_type) {
+            $data = [];
+        }
+
+        $data = array_merge($data, ['account_type' => $this->account_type]);
+
+        Session::put($key, $data);
+       
        return redirect()->route('user.seller.verification', ['step' => 2]);
     }
 }

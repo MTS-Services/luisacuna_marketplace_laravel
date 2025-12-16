@@ -11,7 +11,7 @@ enum AccountType: string
     {
         return match($this) {
             self::INDIVIDUAL => 'Individual',
-            self::COMPANY => 'company',
+            self::COMPANY => 'Company',
         };
     }
  
