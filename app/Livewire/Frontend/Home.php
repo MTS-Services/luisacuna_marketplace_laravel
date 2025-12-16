@@ -115,9 +115,11 @@ class Home extends Component
         //Boosting Games
 
         $new_bostings = $this->gameService->paginateDatas(12, [
-            ['categorySlug' => 'boosting']
-            ]);
+            'categorySlug' => 'boosting',
+            'relations' => ['categories'],
+        ]);
 
+        
         return view('livewire.frontend.home', [
             'games' => $games,
             'heros' => $heros,

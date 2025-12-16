@@ -31,9 +31,11 @@
                 </div>
                 <div wire:ignore class="swiper new-boosting">
                     <div class="swiper-wrapper py-10">
-                        @foreach ($new_bostings as $bosting)
+                        @foreach ($new_bostings as $index => $boosting)
+                          
                             <div class="swiper-slide">
-                                <x-game-card :data="$bosting" />
+                                 {{-- <p class="bg-red-500"> {{ $index .'='. $boosting->slug }}</p> --}}
+                                <x-game-card :data="$boosting" :categorySlug="'boosting'"/>
                             </div>
                         @endforeach
                     </div>

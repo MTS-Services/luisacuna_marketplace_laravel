@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\SellerLevel;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\AuditBaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Traits\AuditableTrait;
@@ -18,21 +17,35 @@ class SellerProfile extends AuditBaseModel implements Auditable
     use AuditableTrait, HasTranslations;
 
     protected $fillable = [
+        'sort_order',
         'user_id',
-        'shop_name',
-        'shop_description',
+        'country_id',
+        'account_type',
+        'first_name',
+        'last_name',
+        'date_of_birth',
+        'nationality',
+        'street_address',
+        'city',
+        'postal_code',
+        'is_experienced_seller',
+        'identification',
+        'selfie_image',
+        'company_documents',
+        'company_name',
+        'company_license_number',
+        'company_tax_number',
+        'id_verified',
+        'id_verified_at',
         'seller_verified',
         'seller_verified_at',
         'seller_level',
         'commission_rate',
         'minimum_payout',
+        'deleted_at',
+        'updated_at',
+        'restored_at',
 
-        'created_type',
-        'created_id',
-        'updated_type',
-        'updated_id',
-        'deleted_type',
-        'deleted_id',
     ];
 
     protected $hidden = [
@@ -91,6 +104,16 @@ class SellerProfile extends AuditBaseModel implements Auditable
         return $this->belongsTo(User::class);
     }
 
+
+  public function categories()
+    {
+        return $this->belongsToMany(
+            Category::class,
+            'seller_categories',
+            'seller_profile_id',
+            'category_id'
+        )->withTimestamps();
+    }
     /* ================================================================
      |  Translation Helper Methods (Convenience)
      ================================================================ */
@@ -187,6 +210,10 @@ class SellerProfile extends AuditBaseModel implements Auditable
      |  Accessors & Mutators
      ================================================================ */
 
+    public function getIsVerifiedAttribute(): bool
+    {
+        return $this->seller_verified;
+    }
     public function getSellerLevelLabelAttribute(): string
     {
         return $this->seller_level->label();
@@ -229,6 +256,7 @@ class SellerProfile extends AuditBaseModel implements Auditable
         $this->appends = array_merge(parent::getAppends(), [
             'seller_level_label',
             'seller_level_color',
+            'is_verified'
         ]);
     }
 }

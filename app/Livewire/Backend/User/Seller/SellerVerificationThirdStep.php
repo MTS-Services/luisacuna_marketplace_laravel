@@ -11,6 +11,9 @@ class SellerVerificationThirdStep extends Component
     public $selling_experience;
 
 
+    public function mount(){
+        $this->protectStep();
+    }
     public function render()
     {
         $data = Session::get('kyc_'.user()->id);
@@ -20,7 +23,10 @@ class SellerVerificationThirdStep extends Component
         // dd($data);
         return view('livewire.backend.user.seller.seller-verification-third-step', [
 
-            'sellingExperiences' => SellerExperience::options()
+            'sellingExperiences' => [
+                ['value' => 1, 'label' => 'Experienced'],
+                ['value' => 0, 'label' => 'Newbie'],
+            ]
         ]);
     }
 
@@ -35,7 +41,35 @@ class SellerVerificationThirdStep extends Component
         'kyc_'.user()->id,
         array_merge(
             Session::get('kyc_'.user()->id),
-        ['seller_experience' => $this->selling_experience]));
-        return redirect()->route('user.seller.verification', ['step' => 4]);
+        [
+            'seller_experience' => $this->selling_experience, 
+            'nextStep' => 4,
+            'prevStep' => 3
+        ]));
+        return redirect()->route('user.seller.verification', ['step' => encrypt(4)]);
+    }
+    public function previousStep(){
+        $data = Session::put(
+            'kyc_' . user()->id,
+            array_merge(
+                Session::get('kyc_' . user()->id),
+                [
+                    
+                    'nextStep' => 2,
+                    'prevStep' => 1
+                ]
+
+            )
+        );
+         return redirect()->route('user.seller.verification', ['step' => encrypt(2)]);
+    }
+    public function protectStep()
+    {
+
+        $kyc = session()->get('kyc_' . user()->id);
+
+        if (!$kyc || ($kyc['nextStep'] != 3 && $kyc['prevStep'] != 2)) {
+            return redirect()->route('user.seller.verification', ['step' => 0]);
+        }
     }
 }
