@@ -104,6 +104,16 @@ class SellerProfile extends AuditBaseModel implements Auditable
         return $this->belongsTo(User::class);
     }
 
+
+  public function categories()
+    {
+        return $this->belongsToMany(
+            Category::class,
+            'seller_categories',
+            'seller_profile_id',
+            'category_id'
+        )->withTimestamps();
+    }
     /* ================================================================
      |  Translation Helper Methods (Convenience)
      ================================================================ */

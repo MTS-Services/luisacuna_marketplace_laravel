@@ -50,9 +50,73 @@
             </div>
             @elseif (!$sellerProfile->is_verified)
 
-            <h2>Verification pending</h2>
+            <div class="text-center">
+                <div class="mb-6">
+                    <div class="mx-auto w-32 h-32 flex items-center justify-center">
+                        <span class="text-8xl">🔍</span>
+                    </div>
+                </div>
+
+                <h2 class="text-2xl font-bold dark:text-text-white text-zinc-500/80 mb-4">Your Documents are pending
+                </h2>
+
+                <p class="dark:text-text-white text-zinc-500/50 mb-2">To sell currencies, please verify your identity
+                    first.</p>
+                <p class="dark:text-text-white text-zinc-500/50 mb-8">Our 24/7 support team will review your ID in up to
+                    15 minutes.</p>
+
+                {{-- <a href="{{ route('user.seller.verification', ['step' => 1]) }}" class="bg-bg-primary rounded-lg p-6 mb-6 " > --}}
+                <a  class="cursor-not-allowed bg-bg-secondary rounded-lg p-6 mb-6 inline-block">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center">
+                            <img src="{{ asset('assets/images/verification.svg') }}" alt="">
+                        </div>
+                        <div class="flex-1 text-left">
+                            <p class="font-semibold">Seller Verification</p>
+                            <span class="inline-block px-3 py-1 bg-pink-500 text-white text-sm rounded-full">Documents
+                                required</span>
+                        </div>
+                        <x-phosphor-caret-right class="w-6 h-6 fill-zinc-500" />
+                    </div>
+                </a>
+
+
+                <a href="#" class="block mt-4 text-zinc-600/80 hover:underline">Why do I need to verify my ID?</a>
+            </div>
             @else
-               <h2>Congrats you are verified</h2>
+               <div class="text-center">
+                <div class="mb-6">
+                    <div class="mx-auto w-32 h-32 flex items-center justify-center">
+                        <span class="text-8xl">🔍</span>
+                    </div>
+                </div>
+
+                <h2 class="text-2xl font-bold dark:text-text-white text-zinc-500/80 mb-4">Your Documents already been verified
+                </h2>
+
+                <p class="dark:text-text-white text-zinc-500/50 mb-2">To sell currencies, please verify your identity
+                    first.</p>
+                <p class="dark:text-text-white text-zinc-500/50 mb-8">Our 24/7 support team will review your ID in up to
+                    15 minutes.</p>
+
+                {{-- <a href="{{ route('user.seller.verification', ['step' => 1]) }}" class="bg-bg-primary rounded-lg p-6 mb-6 " > --}}
+                <a  class="cursor-not-allowed bg-bg-secondary rounded-lg p-6 mb-6 inline-block">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center">
+                            <img src="{{ asset('assets/images/verification.svg') }}" alt="">
+                        </div>
+                        <div class="flex-1 text-left">
+                            <p class="font-semibold">Seller Verification</p>
+                            <span class="inline-block px-3 py-1 bg-pink-500 text-white text-sm rounded-full">Documents
+                                required</span>
+                        </div>
+                        <x-phosphor-caret-right class="w-6 h-6 fill-zinc-500" />
+                    </div>
+                </a>
+
+
+                <a href="#" class="block mt-4 text-zinc-600/80 hover:underline">Why do I need to verify my ID?</a>
+            </div>
             @endif
       
     </div>

@@ -64,13 +64,13 @@ class SellerVerificationSixStep extends Component
                 'country_id' => $this->data['country_id'],
                 'postal_code' => $this->data['postal_code'],
                 'identification' => $this->data['front_image'],
-                'selfie_image' => $this->data['selfie_image'],
+                'selfie_image' => $this->selfie_image,
             ];
         }else{
             return [
                 'account_type' => $this->data['account_type'],
                 'categories' => $this->data['categories'],
-                'seller_experience' => $this->data['seller_experience'],
+                'is_experienced_seller' => $this->data['seller_experience'],
                 'company_name' => $this->data['company_name'],
                 'street_address' => $this->data['company_address'],
                 'city' => $this->data['company_city'],
@@ -79,7 +79,7 @@ class SellerVerificationSixStep extends Component
                 'company_license_number' => $this->data['company_license_number'],
                 'company_tax_number' => $this->data['company_tax_number'],
                 'identification' => $this->data['front_image'],
-                'company_documents' => $this->data['selfie_image'],
+                'company_documents' => $this->selfie_image,
             ];
         }
     }
