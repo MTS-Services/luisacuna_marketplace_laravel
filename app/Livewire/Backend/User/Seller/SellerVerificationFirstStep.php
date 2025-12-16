@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Backend\User\Seller;
 
-use App\Enums\AccountType;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
@@ -18,8 +17,12 @@ class SellerVerificationFirstStep extends Component
         $this->account_type = $data['account_type'];
     }
 
+    // 0 = Individual, 1 = Company
         return view('livewire.backend.user.seller.seller-verification-first-step',[
-            'accountTypes' => AccountType::options()
+            'accountTypes' => [
+                ['value' => 0, 'label' => 'Individual'],
+                ['value' => 1, 'label' => 'Company'],
+            ]
         ]);
     }
 

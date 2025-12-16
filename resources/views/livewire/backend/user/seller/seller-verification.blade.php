@@ -30,8 +30,7 @@
                 <p class="dark:text-text-white text-zinc-500/50 mb-8">Our 24/7 support team will review your ID in up to
                     15 minutes.</p>
 
-                {{-- <a href="{{ route('user.seller.verification', ['step' => 1]) }}" class="bg-bg-primary rounded-lg p-6 mb-6 " wire:click="startVerification"> --}}
-                <a href="{{ route('user.seller.verification', ['step' => 1]) }}" class="bg-bg-secondary rounded-lg p-6 mb-6 inline-block" wire:click="startVerification">
+                <a href="{{ route('user.seller.verification', ['step' => encrypt(1)]) }}" class="bg-bg-secondary rounded-lg p-6 mb-6 inline-block">
                     <div class="flex items-center space-x-4">
                         <div class="w-12 h-12 rounded-full flex items-center justify-center">
                             <img src="{{ asset('assets/images/verification.svg') }}" alt="">
