@@ -9,6 +9,12 @@ use Livewire\Component;
 class SellerVerificationFirstStep extends Component
 {
     public $account_type; 
+
+    public function mount(){
+    
+        $this->protectStep();
+
+    }
     public function render()
     {
       $data = Session::get('kyc_'.user()->id);
@@ -44,10 +50,22 @@ class SellerVerificationFirstStep extends Component
             $data = [];
         }
 
-        $data = array_merge($data, ['account_type' => $this->account_type]);
+        $data = array_merge($data, [
+            'account_type' => $this->account_type,
+            'step' => 1
+        ]);
 
         Session::put($key, $data);
        
        return redirect()->route('user.seller.verification', ['step' => 2]);
+    }
+
+    public function protectStep(){
+        
+       $kyc = session()->get('kyc_'.user()->id);
+
+        if (!$kyc || ($kyc['nextStep'] != 1 && $kyc['prevStep'] != 0)) {
+            return redirect()->route('user.seller.verification', ['step' => 0]);
+        }
     }
 }
