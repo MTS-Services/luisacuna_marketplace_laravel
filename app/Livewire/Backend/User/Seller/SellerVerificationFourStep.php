@@ -24,12 +24,15 @@ class SellerVerificationFourStep extends Component
 
     public function mount()
     {
+        $this->protectStep();
+
         $this->countries = Country::all();
 
         $data = Session::get('kyc_' . user()->id);
         if (!$data) return;
 
         $this->accountType = $data['account_type'] ?? null;
+
 
         if ($this->isIndividual()) {
             $this->fillIndividual($data);
@@ -90,7 +93,7 @@ class SellerVerificationFourStep extends Component
 
     protected function isIndividual(): bool
     {
-        return $this->accountType === AccountType::INDIVIDUAL->value;
+        return $this->accountType == 0 ;
     }
 
     // ---------------- Actions ----------------
@@ -122,10 +125,10 @@ class SellerVerificationFourStep extends Component
 
         Session::put(
             'kyc_' . user()->id,
-            array_merge(Session::get('kyc_' . user()->id, []), $data)
+            array_merge(Session::get('kyc_' . user()->id, []), [...$data, 'nextStep' => 5, 'prevStep' => 4])
         );
 
-        return redirect()->route('user.seller.verification', 5);
+        return redirect()->route('user.seller.verification', ['step' => encrypt(5)]);
     }
 
     protected function rules(): array
@@ -152,5 +155,29 @@ class SellerVerificationFourStep extends Component
                 'company_license_number' => 'required',
                 'company_tax_number' => 'nullable',
             ];
+    }
+
+    public function previousStep(){
+        $data = Session::put(
+            'kyc_' . user()->id,
+            array_merge(
+                Session::get('kyc_' . user()->id),
+                [
+                    'nextStep' => 3,
+                    'prevStep' => 2
+                ]
+
+            )
+        );
+         return redirect()->route('user.seller.verification', ['step' => encrypt(3)]);
+    }
+    public function protectStep()
+    {
+
+        $kyc = session()->get('kyc_' . user()->id);
+
+        if (!$kyc || ($kyc['nextStep'] != 4 || $kyc['prevStep'] != 3)) {
+            return redirect()->route('user.seller.verification', ['step' => 0]);
+        }
     }
 }

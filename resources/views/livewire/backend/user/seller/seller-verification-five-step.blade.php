@@ -27,7 +27,7 @@
 
             <div class="p-5 lg:px-15 lg:py-10 bg-bg-info rounded-2xl">
 
-                @if ($accountType == \App\Enums\AccountType::INDIVIDUAL->value)
+                @if ($accountType == 0)
                     <h2 class="text-base lg:text-xl font-semibold  mb-8 text-left">Take a photo of your
                         ID and eldorado.gg in
                         <br>
@@ -139,9 +139,12 @@
                     </div>
                 @endif
             </div>
+            <div>
+          
+            </div>
             <div class="flex justify-center space-x-4 pt-10">
-                <a href="{{ route('user.seller.verification', ['step' => 4]) }}" wire:navigate
-                    class="px-8 py-2 text-text-white  rounded-lg hover:bg-gray-50">
+                <a wire:click.prevent="previousStep" wire:navigate
+                    class="px-8 py-2 cursor-pointer text-text-white  rounded-lg hover:bg-gray-50">
                     BACK
                 </a>
                 <button wire:click="nextStep" class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
