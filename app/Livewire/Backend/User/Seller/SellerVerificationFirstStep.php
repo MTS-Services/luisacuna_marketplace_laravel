@@ -61,11 +61,14 @@ class SellerVerificationFirstStep extends Component
        return redirect()->route('user.seller.verification', ['step' => encrypt(2)]);
     }
 
+    public function previousStep(){
+        return redirect()->route('user.seller.verification', ['step' => encrypt(0)]);
+    }
     public function protectStep(){
         
        $kyc = session()->get('kyc_'.user()->id);
 
-        if (!$kyc && ($kyc['nextStep'] != 1 || $kyc['prevStep'] != 0)) {
+        if (!$kyc || ($kyc['nextStep'] != 1 || $kyc['prevStep'] != 0)) {
             return redirect()->route('user.seller.verification', ['step' => 0]);
         }
     }

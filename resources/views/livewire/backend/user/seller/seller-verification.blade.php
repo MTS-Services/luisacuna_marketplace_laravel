@@ -31,7 +31,7 @@
                     15 minutes.</p>
 
                 {{-- <a href="{{ route('user.seller.verification', ['step' => 1]) }}" class="bg-bg-primary rounded-lg p-6 mb-6 " > --}}
-                <a href="#" class="bg-bg-secondary rounded-lg p-6 mb-6 inline-block" wire:click.prevent="startVerification">
+                <a  class="cursor-pointer bg-bg-secondary rounded-lg p-6 mb-6 inline-block" wire:click.prevent="startVerification">
                     <div class="flex items-center space-x-4">
                         <div class="w-12 h-12 rounded-full flex items-center justify-center">
                             <img src="{{ asset('assets/images/verification.svg') }}" alt="">

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\SellerLevel;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\AuditBaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Traits\AuditableTrait;
@@ -18,21 +17,35 @@ class SellerProfile extends AuditBaseModel implements Auditable
     use AuditableTrait, HasTranslations;
 
     protected $fillable = [
+        'sort_order',
         'user_id',
-        'shop_name',
-        'shop_description',
+        'country_id',
+        'account_type',
+        'first_name',
+        'last_name',
+        'date_of_birth',
+        'nationality',
+        'street_address',
+        'city',
+        'postal_code',
+        'is_experienced_seller',
+        'identification',
+        'selfie_image',
+        'company_documents',
+        'company_name',
+        'company_license_number',
+        'company_tax_number',
+        'id_verified',
+        'id_verified_at',
         'seller_verified',
         'seller_verified_at',
         'seller_level',
         'commission_rate',
         'minimum_payout',
+        'deleted_at',
+        'updated_at',
+        'restored_at',
 
-        'created_type',
-        'created_id',
-        'updated_type',
-        'updated_id',
-        'deleted_type',
-        'deleted_id',
     ];
 
     protected $hidden = [
@@ -187,7 +200,7 @@ class SellerProfile extends AuditBaseModel implements Auditable
      |  Accessors & Mutators
      ================================================================ */
 
-     public function getIsVerifiedAttribute(): bool
+    public function getIsVerifiedAttribute(): bool
     {
         return $this->seller_verified;
     }

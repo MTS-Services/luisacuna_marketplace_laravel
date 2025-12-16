@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\SellerProfile;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class SellerProfileService{
 
@@ -109,7 +110,27 @@ class SellerProfileService{
 
     public function createData(array $data): SellerProfile
     {
-        
+        return DB::transaction(function () use ($data) {
+
+            dd($data);
+            if ($data['image']) {
+                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+                $fileName = $prefix . '-' . $data['image']->getClientOriginalName();
+                $data['image'] = Storage::disk('public')->putFileAs('banners', $data['image'], $fileName);
+            }
+             if ($data['mobile_image']) {
+                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+                $fileName = $prefix . '-' . $data['mobile_image']->getClientOriginalName();
+                $data['mobile_image'] = Storage::disk('public')->putFileAs('banners', $data['mobile_image'], $fileName);
+            }
+            $data['target'] = $data['target'] ?? '_self';
+            $data['status'] = $data['status'] ?? SellerKycStatus::PENDING;
+            
+            $newData = $this->model->create($data);
+            // Dispatch event
+
+            return $newData->fresh();
+        });
     }
 
     public function update(int $id, array $data): bool

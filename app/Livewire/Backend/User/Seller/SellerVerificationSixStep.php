@@ -13,6 +13,7 @@ class SellerVerificationSixStep extends Component
 {
     use WithFileUploads;
     public $accountType;
+    //If it's not for individutal then it will use for compnay document handler with same name !!
     public $selfie_image; 
     public $data;
 
@@ -40,34 +41,65 @@ class SellerVerificationSixStep extends Component
         $this->validate([
            'selfie_image' => 'required|mimes:jpg,jpeg,png,gif,svg,heic,pdf,docx|max:10240',
         ]);
-         $this->data['selfie_image'] = $this->selfie_image;
-      
-        
-
-         if(!$this->isIndividual()){
-            $this->data['address'] = $this->data['company_address'];
-            $this->data['city'] = $this->data['company_city'];
-            $this->data['country_id'] = $this->data['company_country_id'];
-            $this->data['postal_code'] = $this->data['company_postal_code'];
-            unset($this->data['company_address']);
-            unset($this->data['company_city']);
-            unset($this->data['company_country_id']);
-            unset($this->data['company_postal_code']);
-         }
-        // try {
-            $this->service->createData($this->data);
-            Session::forget('kyc_'.user()->id);
-            session()->save();
+         $data = $this->getUploadableData();     
+            $this->service->createData($data);
+            session()->forget('kyc_'.user()->id);
             return redirect()->route('user.seller.verification', ['step' => 0]);
-        // } catch (\Throwable $th) {
-        //     dd($th->getMessage());
-        // }
-        
-        // return redirect()->route('user.seller.verification', ['step' => 7]);
+ 
     }
 
+    protected function getUploadableData(){
+        if($this->isIndividual())
+        {
+            return [
+                'account_type' => $this->data['account_type'],
+                'categories' => $this->data['categories'],
+                'is_experienced_seller' => $this->data['seller_experience'],
+                'first_name' => $this->data['first_name'],
+                'last_name' => $this->data['last_name'],
+                'date_of_birth' => $this->data['dob'],
+                'nationality' => $this->data['nationality'],
+                'street_address' => $this->data['address'],
+                'city' => $this->data['city'],
+                'country_id' => $this->data['country_id'],
+                'postal_code' => $this->data['postal_code'],
+                'identification' => $this->data['front_image'],
+                'selfie_image' => $this->data['selfie_image'],
+            ];
+        }else{
+            return [
+                'account_type' => $this->data['account_type'],
+                'categories' => $this->data['categories'],
+                'seller_experience' => $this->data['seller_experience'],
+                'company_name' => $this->data['company_name'],
+                'street_address' => $this->data['company_address'],
+                'city' => $this->data['company_city'],
+                'country_id' => $this->data['company_country_id'],
+                'postal_code' => $this->data['company_postal_code'],
+                'company_license_number' => $this->data['company_license_number'],
+                'company_tax_number' => $this->data['company_tax_number'],
+                'identification' => $this->data['front_image'],
+                'company_documents' => $this->data['selfie_image'],
+            ];
+        }
+    }
+     public function previousStep(){
+        $data = Session::put(
+            'kyc_' . user()->id,
+            array_merge(
+                Session::get('kyc_' . user()->id),
+                [ 
+                    'nextStep' => 5,
+                    'prevStep' => 4
+                ]
+
+            )
+        );
+        return redirect()->route('user.seller.verification', ['step' => encrypt(5)]);
+    }
+    
     protected function isIndividual(): bool
     {
-        return $this->accountType === 0;
+        return $this->accountType == 0;
     }   
 }

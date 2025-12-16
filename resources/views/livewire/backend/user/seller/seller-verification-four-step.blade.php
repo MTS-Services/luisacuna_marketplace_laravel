@@ -181,7 +181,7 @@
             </div>
 
             <div class="flex justify-center space-x-4 pt-10">
-                <a href="{{ route('user.seller.verification',['step' => 3])}}" wire:navigate class="px-8 py-2 text-text-white  rounded-lg hover:bg-gray-50">
+                <a wire:click.prevent="previousStep" wire:navigate class="px-8 cursor-pointer py-2 text-text-white  rounded-lg hover:bg-gray-50">
                     BACK
                 </a>
                 <button wire:click="nextStep" class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">

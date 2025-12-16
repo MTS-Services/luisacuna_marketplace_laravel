@@ -19,7 +19,7 @@ class SellerVerification extends Component
         $this->service = $service;
     }
     public function  mount(){
-       $this->sellerProfile = $this->service->find(user()->id);
+       $this->sellerProfile = $this->service->findData(user()->id);
     }
     public function render()
     {

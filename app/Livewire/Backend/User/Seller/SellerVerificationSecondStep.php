@@ -56,16 +56,29 @@ class SellerVerificationSecondStep extends Component
             )
         );
 
-        return redirect()->route('user.seller.verification', ['step' => 3]);
+        return redirect()->route('user.seller.verification', ['step' => encrypt(3)]);
     }
+    public function previousStep(){
+        $data = Session::put(
+            'kyc_' . user()->id,
+            array_merge(
+                Session::get('kyc_' . user()->id),
+                [
+                    'nextStep' => 1,
+                    'prevStep' => 0
+                ]
 
+            )
+        );
+        return redirect()->route('user.seller.verification', ['step' => encrypt(1)]);
+    }
 
     public function protectStep()
     {
 
         $kyc = session()->get('kyc_' . user()->id);
 
-        if (!$kyc && ($kyc['nextStep'] != 2 ||  $kyc['prevStep'] != 1)) {
+        if (!$kyc || ($kyc['nextStep'] != 2 ||  $kyc['prevStep'] != 1)) {
             return redirect()->route('user.seller.verification', ['step' => 0]);
         }
     }
