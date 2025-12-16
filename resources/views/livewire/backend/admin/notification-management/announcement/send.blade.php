@@ -92,7 +92,7 @@
                         <div class="w-full md:col-span-2 border-t pt-4 mt-2">
                             <div class="flex items-center justify-between mb-3">
                                 <x-ui.label value="Additional Information (Key-Value Pairs)" class="mb-0" />
-                                <button type="button"
+                                <x-ui.button type="button" variant="secondary" class="w-auto! py-1! rounded-lg!"
                                     @click="
                                         if (!additionalNotes || Array.isArray(additionalNotes)) {
                                             additionalNotes = {};
@@ -107,14 +107,11 @@
                                                 container.scrollTop = container.scrollHeight;
                                             }
                                         }, 100);
-                                    "
-                                    class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary hover:bg-primary/90 text-white text-sm font-medium rounded-lg transition-colors duration-200">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 4v16m8-8H4"></path>
-                                    </svg>
-                                    <span>Add Field</span>
-                                </button>
+                                    ">
+                                    <flux:icon name="plus"
+                                        class="w-4 h-4 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
+                                   {{ __('Add Field') }}
+                                </x-ui.button>
                             </div>
 
                             {{-- Dynamic Additional Key-Value Pairs --}}
