@@ -92,7 +92,7 @@
                         <div class="w-full md:col-span-2 border-t pt-4 mt-2">
                             <div class="flex items-center justify-between mb-3">
                                 <x-ui.label value="Additional Information (Key-Value Pairs)" class="mb-0" />
-                                <button type="button"
+                                <x-ui.button type="button" variant="secondary" class="w-auto! py-1! rounded-lg!"
                                     @click="
                                         if (!additionalNotes || Array.isArray(additionalNotes)) {
                                             additionalNotes = {};
@@ -107,18 +107,15 @@
                                                 container.scrollTop = container.scrollHeight;
                                             }
                                         }, 100);
-                                    "
-                                    class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary hover:bg-primary/90 text-white text-sm font-medium rounded-lg transition-colors duration-200">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 4v16m8-8H4"></path>
-                                    </svg>
-                                    <span>Add Field</span>
-                                </button>
+                                    ">
+                                    <flux:icon name="plus"
+                                        class="w-4 h-4 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
+                                    {{ __('Add Field') }}
+                                </x-ui.button>
                             </div>
 
-                            {{-- Dynamic Additional Key-Value Pairs --}}
-                            <div x-show="additionalNotes && Object.keys(additionalNotes).length > 0" class="space-y-3">
+                            <!-- Dynamic Additional Key-Value Pairs -->
+                            {{-- <div x-show="additionalNotes && Object.keys(additionalNotes).length > 0" class="space-y-3">
                                 <template x-for="(value, key) in additionalNotes" :key="key">
                                     <div class="flex items-start gap-2"
                                         x-transition:enter="transition ease-out duration-200"
@@ -128,7 +125,7 @@
                                         x-transition:leave-start="opacity-100 scale-100"
                                         x-transition:leave-end="opacity-0 scale-95">
 
-                                        {{-- Key Input --}}
+                                        <!-- Key Input -->
                                         <div class="flex-1">
                                             <input type="text" placeholder="Additional Note Key"
                                                 :value="tempKeys[key] !== undefined ? tempKeys[key] : key"
@@ -155,7 +152,7 @@
                                                 class="w-full shadow-sm px-3 py-2 bg-transparent dark:bg-transparent dark:text-zinc-100 text-zinc-900 rounded-md border border-zinc-300 focus:border-accent focus:ring-accent focus:ring-1 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 bg-white text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-offset-0" />
                                         </div>
 
-                                        {{-- Value Input --}}
+                                        <!-- Value Input -->
                                         <div class="flex-1">
                                             <input type="text" placeholder="Additional Note Value"
                                                 :value="additionalNotes[key]"
@@ -166,7 +163,7 @@
                                                 class="w-full shadow-sm px-3 py-2 bg-transparent dark:bg-transparent dark:text-zinc-100 text-zinc-900 rounded-md border border-zinc-300 focus:border-accent focus:ring-accent focus:ring-1 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 bg-white text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-offset-0" />
                                         </div>
 
-                                        {{-- Remove Button --}}
+                                        <!-- Remove Button -->
                                         <button type="button"
                                             @click="
                                                 const temp = {...additionalNotes};
@@ -185,7 +182,7 @@
                                         </button>
                                     </div>
                                 </template>
-                            </div>
+                            </div> --}}
 
                             <div x-show="!additionalNotes || Object.keys(additionalNotes).length === 0"
                                 class="text-center py-6 text-zinc-500 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg border-2 border-dashed border-zinc-300 dark:border-zinc-700">
