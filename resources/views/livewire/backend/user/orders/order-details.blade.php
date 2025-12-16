@@ -273,56 +273,65 @@
 
             {{-- ================= MESSAGES LOOP ================= --}}
             @foreach ($messages as $msg)
-                {{-- ===== SYSTEM MESSAGE (Order Created / Disputed / Closed) ===== --}}
                 @if ($msg->is_system_message)
                     <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
-                        <div>
-                            <p class="text-text-white text-base mb-2">
-                                {{ $msg->message }}
-                            </p>
-                        </div>
-
+                        <p class="text-text-white text-base mb-2">
+                            {{ $msg->message }}
+                        </p>
                         <p class="text-text-white text-xs text-right mt-3">
                             {{ $msg->created_at->format('M d Y') }}
                         </p>
                     </div>
                 @else
-                    {{-- ===== USER MESSAGE ===== --}}
-                    <div class="mt-10">
-
-                        <div
-                            class="flex items-center gap-3
-                            {{ $msg->created_by == auth()->id() ? 'justify-end' : '' }}">
-
-                            {{-- LEFT AVATAR (OTHER USER) --}}
-                            @if ($msg->created_by != auth()->id())
+                    {{-- Seller Message (Right side - auth user) --}}
+                    @if ($msg->creater_id == auth()->id())
+                        <div class="mt-10">
+                            <div class="flex items-center gap-3">
+                                <div class="flex-1">
+                                    <div class="bg-primary-800 rounded-lg">
+                                        <p class="bg-zinc-500 px-6 py-3 text-right rounded-lg text-text-white">
+                                            {{ $msg->message }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <img src="https://ui-avatars.com/api/?name=Me&background=853EFF&color=fff"
+                                    alt="Me" class="w-10 h-10 rounded-full">
+                            </div>
+                            <p class="text-text-white text-right text-xs mt-1">
+                                {{ $msg->created_at->format('M d Y') }}
+                            </p>
+                        </div>
+                    @else
+                        {{-- Buyer Message (Left side - other user) --}}
+                        {{-- <div class="mt-10">
+                            <div class="flex items-center gap-3">
                                 <img src="https://ui-avatars.com/api/?name=User&background=853EFF&color=fff"
-                                    class="w-10 h-10 rounded-full">
-                            @endif
-
-                            <div class="flex-1 max-w-[70%]">
-                                <div class="bg-primary-800 rounded-lg">
-                                    <p
-                                        class="bg-zinc-500 px-6 py-3 rounded-lg {{ $msg->created_by == auth()->id() ? 'text-right' : '' }}">
-                                        {{ $msg->message }}
-                                    </p>
+                                    alt="User" class="w-10 h-10 rounded-full">
+                                <div class="flex-1">
+                                    <div class="bg-primary-800 rounded-lg">
+                                        <p class="bg-primary-800 px-6 py-3 rounded-lg text-text-white">
+                                            {{ $msg->message }}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-
-                            {{-- RIGHT AVATAR (ME) --}}
-                            @if ($msg->created_by == auth()->id())
-                                <img src="https://ui-avatars.com/api/?name=Me&background=853EFF&color=fff"
-                                    class="w-10 h-10 rounded-full">
-                            @endif
+                            <p class="text-text-white text-xs mt-1">
+                                {{ $msg->created_at->format('M d Y') }}
+                            </p>
+                        </div> --}}
+                        <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mt-10">
+                            <div>
+                                {{-- <p class="text-text-white text-base mb-2">{{ __('Order Disputed by Buyer:') }}</p> --}}
+                                <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
+                                    <span class="text-text-white">{{ $msg->message }}</span>
+                                </div>
+                            </div>
+                            <p class="text-text-white text-xs text-right mt-3">{{ $msg->created_at->format('M d Y') }}</p>
                         </div>
-
-                        <p class="text-text-white text-xs text-right mt-1">
-                            {{ $msg->created_at->format('M d Y') }}
-                        </p>
-
-                    </div>
+                    @endif
                 @endif
             @endforeach
+
 
             {{-- ================= INPUT BOX ================= --}}
             <div class="mt-10">
@@ -339,26 +348,26 @@
                 </div>
             </div>
 
-        </div>
+            </>
 
 
 
 
-        <div class="bg-bg-info rounded-lg mt-20 mb-29 py-8! px-4! md:py-20 md:px-10">
-            <div class="flex items-center gap-3">
-                <div class="w-16 h-16">
-                    <img src="{{ asset('assets/images/order/Security.png') }}" alt="Security tips"
-                        class="w-full h-full rounded-lg">
+            <div class="bg-bg-info rounded-lg mt-20 mb-29 py-8! px-4! md:py-20 md:px-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-16 h-16">
+                        <img src="{{ asset('assets/images/order/Security.png') }}" alt="Security tips"
+                            class="w-full h-full rounded-lg">
+                    </div>
+                    <div class="">
+                        <h2 class="text-text-white text-3xl font-semibold">{{ __('Security tips') }}</h2>
+                    </div>
                 </div>
-                <div class="">
-                    <h2 class="text-text-white text-3xl font-semibold">{{ __('Security tips') }}</h2>
+                <div class="mt-8">
+                    <p class="text-text-white">
+                        {{ __('For your protection, you must always pay and communicate directly through the Eldorado website. If you stay on Eldorado throughout the entire transaction—from payment, to communication, to delivery—you are protected by Tradeshield. Additionally, be aware that sellers will never ask for your currency or items back after the order is delivered, so you should not respond to any messages requesting this.') }}
+                    </p>
                 </div>
             </div>
-            <div class="mt-8">
-                <p class="text-text-white">
-                    {{ __('For your protection, you must always pay and communicate directly through the Eldorado website. If you stay on Eldorado throughout the entire transaction—from payment, to communication, to delivery—you are protected by Tradeshield. Additionally, be aware that sellers will never ask for your currency or items back after the order is delivered, so you should not respond to any messages requesting this.') }}
-                </p>
-            </div>
-        </div>
     </section>
 </main>
