@@ -26,11 +26,9 @@
                 </div>
 
                 <div class="p-5 lg:px-15 lg:py-10 bg-bg-info  rounded-2xl">
-                    @php 
-                    $accountType = 'individual';
-                    @endphp 
+                    
 
-                    @if ($accountType == 'individual')
+                    @if ($accountType == \App\Enums\AccountType::INDIVIDUAL->value)
                         <h2 class="text-base lg:text-xl leading-2 font-semibold  mb-4 text-left">Take a selfie with
                             your ID</h2>
 
@@ -53,17 +51,17 @@
 
                         <div
                             class="flex items-center max-w-md mx-auto  rounded-lg overflow-hidden">
-                            <input type="file" wire:model="selfieWithId" accept="image/*" class="hidden"
-                                id="selfieWithId">
+                            <input type="file" wire:model="selfie_image" accept="image/*" class="hidden"
+                                id="selfie_image">
 
-                            <label for="selfieWithId"
+                            <label for="selfie_image"
                                 class="shrink-0 px-6 py-2 bg-zinc-600 rounded-3xl text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
                                 Choose file
                             </label>
                             
-                                <div class="p-2 text-sm w-full text-primary-100 truncate w-full bg-bg-light-black shadow rounded-sm ml-2 text-left">
-                                    @if (false)
-                                        {{ $idDocument->getClientOriginalName() }}
+                                <div class="p-2 text-sm w-full text-primary-100 truncate  bg-bg-light-black shadow rounded-sm ml-2 text-left">
+                                    @if ($selfie_image)
+                                        {{ $selfie_image->getClientOriginalName() }}
                                     @else
                                         No file selected
                                     @endif
@@ -123,19 +121,17 @@
                             </div>
 
                             <div class="mb-4">
-                                <input type="file" wire:model="companyDocuments"
-                                    accept=".jpg,.jpeg,.png,.heic,.pdf,.docx" multiple class="hidden"
-                                    id="companyDocuments">
-                                <label for="companyDocuments"
+                                <input type="file" wire:model="selfie_image"
+                                    accept=".jpg,.jpeg,.png,.heic,.pdf,.docx" class="hidden"
+                                    id="selfie_image">
+                                <label for="selfie_image"
                                     class="shrink-0 px-6 py-2 bg-zinc-600 flex justify-center w-40 rounded-lg mx-auto text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
                                     Choose file
                                 </label>
-                                @if (!empty($companyDocuments))
+                                @if (!empty($selfie_image))
                                     <div class="mt-3 space-y-2">
-                                        @foreach ($companyDocuments as $index => $doc)
-                                            <p class="text-green-600 text-sm">✓ File {{ $index + 1 }}:
-                                                {{ $doc->getClientOriginalName() }}</p>
-                                        @endforeach
+                                            <p class="text-green-600 text-sm">✓ File :
+                                                {{ $selfie_image->getClientOriginalName() }}</p>
                                     </div>
                                 @else
                                 @endif
@@ -149,10 +145,10 @@
                 </div>
 
                 <div class="flex justify-center space-x-4 pt-10">
-                    <button wire:click="previousStep"
+                    <a href="{{ route('user.seller.verification', ['step' => 5]) }}" wire:navigate
                         class="px-8 py-2  hover:text-gray-700 rounded-lg hover:bg-gray-50">
                         BACK
-                    </button>
+                    </a>
                     <button wire:click="submit" class="px-8 py-2 bg-zinc-500 text-white rounded-lg hover:bg-zinc-700"
                         wire:loading.attr="disabled">
                         <span wire:loading.remove wire:target="submit" class="text-white">SUBMIT</span>

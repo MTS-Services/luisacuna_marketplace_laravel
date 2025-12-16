@@ -14,8 +14,8 @@ class SellerVerificationThirdStep extends Component
     public function render()
     {
         $data = Session::get('kyc_'.user()->id);
-        if($data && isset($data['selling_experience'])){
-            $this->selling_experience = $data['selling_experience'];
+        if($data && isset($data['seller_experience'])){
+            $this->selling_experience = $data['seller_experience'];
         }
         // dd($data);
         return view('livewire.backend.user.seller.seller-verification-third-step', [
@@ -35,7 +35,7 @@ class SellerVerificationThirdStep extends Component
         'kyc_'.user()->id,
         array_merge(
             Session::get('kyc_'.user()->id),
-        ['selling_experience' => $this->selling_experience]));
+        ['seller_experience' => $this->selling_experience]));
         return redirect()->route('user.seller.verification', ['step' => 4]);
     }
 }

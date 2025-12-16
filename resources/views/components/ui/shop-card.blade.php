@@ -8,7 +8,7 @@
 
 
 
-    <a wire:navigate href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'productId' => encrypt($data->id) ]) }}"
+    <a  href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'productId' => encrypt($data->id) ]) }}"
          >
         <!-- Card -->
         <div class="bg-bg-secondary rounded-2xl p-4 shadow-lg transition">

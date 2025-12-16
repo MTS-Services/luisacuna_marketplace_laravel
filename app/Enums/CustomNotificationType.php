@@ -2,11 +2,13 @@
 
 namespace App\Enums;
 
+use Illuminate\Database\Eloquent\Builder;
+
 enum CustomNotificationType: string
 {
+    case PUBLIC = 'public';
     case USER = 'user';
     case ADMIN = 'admin';
-    case PUBLIC = 'public';
 
     public function label(): string
     {
@@ -32,5 +34,21 @@ enum CustomNotificationType: string
             fn($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
+    }
+
+    // Scopes 
+    public function scopeForCurrentUser(Builder $query): Builder
+    {
+        return $query->where('type', user()->isAdmin() ? self::ADMIN : self::USER);
+    }
+
+    public function scopeForAdmin(Builder $query): Builder
+    {
+        return $query->where('type', self::ADMIN);
+    }
+
+    public function scopeForPublic(Builder $query): Builder
+    {
+        return $query->where('type', self::PUBLIC);
     }
 }
