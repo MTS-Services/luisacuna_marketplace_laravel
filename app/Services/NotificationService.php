@@ -97,7 +97,7 @@ class NotificationService
 
         return $this->notification
             ->query()
-            ->with(['sender', 'receiver'])
+            ->with(['sender', 'receiver', 'statuses', 'deleteds'])
             ->forReceiver($actorId, $actorType)
             ->forActorType($actorType)
             ->when($type, fn($q) => $q->where('type', $type))
@@ -115,11 +115,11 @@ class NotificationService
 
         return $this->notification
             ->query()
-            ->with(['sender'])
+            ->with(['sender', 'receiver', 'statuses', 'deleteds'])
             ->forReceiver($actorId, $actorType)
             ->forActorType($actorType)
             ->notDeletedForActor($actorId, $actorType)
-            ->unreadForActor($actorId, $actorType)
+            // ->unreadForActor($actorId, $actorType)
             ->latest()
             ->limit($limit)
             ->get();

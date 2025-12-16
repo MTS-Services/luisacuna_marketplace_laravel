@@ -40,9 +40,9 @@
                     <flux:radio value="dark" icon="moon" />
                 </flux:radio.group> --}}
 
-                <button
+                <button @click="$dispatch('open-sidebar-notifications')"
                     class="relative p-2 rounded-xl hover:bg-bg-black/10 dark:hover:bg-bg-white/10 transition-colors">
-                    <flux:icon name="bell" class="w-5 h-5 text-zinc-500" />
+                    <flux:icon name="bell" class="w-5 h-5" />
                     <div x-data="{
                         showNotificationIndicator: @entangle('showNotificationIndicator').live
                     }" x-show="showNotificationIndicator"

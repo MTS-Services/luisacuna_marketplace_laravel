@@ -71,6 +71,8 @@
         </div>
     </div>
 
+    <livewire:backend.admin.notification-management.notification.sidebar />
+
     <div id="navigation-loader" x-transition.opacity
         class="fixed inset-0 z-50 flex items-center justify-center bg-bg-primary/50 backdrop-blur-md">
         <div class="flex space-x-2">
@@ -290,6 +292,12 @@
         });
     </script>
     @stack('scripts')
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
 </body>
 
 </html>
