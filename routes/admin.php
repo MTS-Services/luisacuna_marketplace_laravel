@@ -152,6 +152,11 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
             Route::get('seller-trash', 'sellerTrash')->name('seller-trash');
             Route::get('all-buyer', 'allBuyer')->name('all-buyer');
             Route::get('buyer-trash', 'buyerTrash')->name('buyer-trash');
+
+            // Seller Verification
+            Route::get('seller-verification', 'sellerVerification')->name('seller-verification');
+
+         
         });
     });
 
