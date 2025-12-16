@@ -18,17 +18,22 @@ return new class extends Migration {
             $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('country_id');
-            $table->string('first_name');
-            $table->string('middle_name')->nullable();
-            $table->string(column: 'last_name');
-            $table->string('date_of_birth');
-            $table->string('nationality')->index();
+            $table->boolean('account_type');
+            $table->string('first_name')->nullable();
+            $table->string( 'last_name')->nullable();
+            $table->string('date_of_birth')->nullable();
+            $table->string('nationality')->nullable()->index();
             $table->text('street_address');
             $table->string('city')->index();
             $table->string('postal_code');
             $table->boolean('is_experienced_seller')->index()->default(false);
             $table->string('identification')->comment("Accepted documents: Driver's license, Government issued ID or Passport, international student ID. Max:10MB file size.");
-            $table->string('selfie');
+            $table->string('selfie_image')->nullable();
+
+            $table->string('company_documents')->nullable();
+            $table->string('company_name')->nullable();
+            $table->string('company_license_number')->nullable();
+            $table->string('company_tax_number')->nullable();
 
             $table->boolean('id_verified')->index()->default(false);
             $table->timestamp('id_verified_at')->nullable();
