@@ -142,9 +142,10 @@ class UserController extends Controller implements HasMiddleware
         return view($this->masterView);
     }
 
-    public function pending()
+    //Seller Verificaiton
+
+    public function sellerVerification()
     {
         return view($this->masterView);
     }
-
 }

@@ -139,13 +139,19 @@
                             'active' => 'buyers',
                             // 'permission' => 'user-list',
                         ],
-
                         [
-                            'name' => 'Pending',
-                            'route' => route('admin.um.user.pending'),
+                            'name' => 'Pending Verificaiton',
+                            'route' => route('admin.um.user.seller-verification'),
                             'icon' => 'user',
-                            'active' => 'pending',
-                            // 'permission' => 'user-list',
+                            'active' => 'seller-verification-pending',
+                            'permission' => 'user-list',
+                        ],
+                        [
+                            'name' => 'Banned Users',
+                            'route' => '#',
+                            'icon' => 'user',
+                            'active' => 'admin-users-banned',
+                            'permission' => 'user-list',
                         ],
                     ]" />
 
