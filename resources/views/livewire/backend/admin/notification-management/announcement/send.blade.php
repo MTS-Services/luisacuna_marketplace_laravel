@@ -89,7 +89,7 @@
                         </div>
 
                         {{-- Additional Notes Section --}}
-                        <div class="w-full md:col-span-2 border-t pt-4 mt-2">
+                        {{-- <div class="w-full md:col-span-2 border-t pt-4 mt-2">
                             <div class="flex items-center justify-between mb-3">
                                 <x-ui.label value="Additional Information (Key-Value Pairs)" class="mb-0" />
                                 <x-ui.button type="button" variant="secondary" class="w-auto! py-1! rounded-lg!"
@@ -110,12 +110,12 @@
                                     ">
                                     <flux:icon name="plus"
                                         class="w-4 h-4 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
-                                    {{ __('Add Field') }}
+                                   {{ __('Add Field') }}
                                 </x-ui.button>
                             </div>
 
                             <!-- Dynamic Additional Key-Value Pairs -->
-                            {{-- <div x-show="additionalNotes && Object.keys(additionalNotes).length > 0" class="space-y-3">
+                            <div x-show="additionalNotes && Object.keys(additionalNotes).length > 0" class="space-y-3">
                                 <template x-for="(value, key) in additionalNotes" :key="key">
                                     <div class="flex items-start gap-2"
                                         x-transition:enter="transition ease-out duration-200"
@@ -182,7 +182,7 @@
                                         </button>
                                     </div>
                                 </template>
-                            </div> --}}
+                            </div>
 
                             <div x-show="!additionalNotes || Object.keys(additionalNotes).length === 0"
                                 class="text-center py-6 text-zinc-500 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg border-2 border-dashed border-zinc-300 dark:border-zinc-700">
@@ -195,7 +195,7 @@
                                 <p class="text-sm font-medium">No additional fields added yet</p>
                                 <p class="text-xs mt-1">Click "Add Field" above to include custom key-value data</p>
                             </div>
-                        </div>
+                        </div> --}}
 
                     </div>
 
