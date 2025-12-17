@@ -110,6 +110,12 @@
             <x-slot name="breadcrumb">{{ __('Seller Management') }}</x-slot>
             <livewire:backend.admin.user-management.user.seller.verification-details :encryptedId="$encryptedId" />
         @break
+        @case('admin.um.user.seller-verification.verified')
+            <x-slot name="pageSlug">{{ __('seller-verification-verified') }}</x-slot>
+            <x-slot name="title">{{ __('Seller Verified') }}</x-slot>
+            <x-slot name="breadcrumb">{{ __('Seller Management') }}</x-slot>
+            <livewire:backend.admin.user-management.user.seller.verified-verification />
+        @break
 
         @default
             <x-slot name="pageSlug">{{ __('admin-users') }}</x-slot>
