@@ -147,6 +147,13 @@
                             'permission' => 'user-list',
                         ],
                         [
+                            'name' => 'Verified Sellers',
+                            'route' => route('admin.um.user.seller-verification.verified'),
+                            'icon' => 'user',
+                            'active' => 'seller-verification-verified',
+                            'permission' => 'user-list',
+                        ],
+                        [
                             'name' => 'Banned Users',
                             'route' => '#',
                             'icon' => 'user',

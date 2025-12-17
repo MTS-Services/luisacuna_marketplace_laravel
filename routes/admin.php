@@ -155,6 +155,7 @@ Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefi
 
             // Seller Verification
             Route::get('seller-verification', 'sellerVerification')->name('seller-verification');
+            Route::get('seller-verification/verified', 'sellerVerified')->name('seller-verification.verified');
             Route::get('seller-verification/view/{id}', 'sellerVerificationView')->name('seller-verification.view');
          
         });
