@@ -98,5 +98,40 @@ class SellerProfileService{
         });
     }
 
+    //Verify Data
+
+    public function verifyData($id) : bool
+    {
+        return DB::transaction(function () use ($id) {
+            $sellerProfile = $this->findData($id);
+
+            if (!$sellerProfile) {
+                throw new \Exception('Seller profile not found.');
+            }
+
+            return $sellerProfile->update([
+                'seller_verified' => 1,
+                'seller_verified_at' => now(),
+            ]);
+        });
+    }
+        public function unverifyData($id) : bool
+    {
+        return DB::transaction(function () use ($id) {
+
+           
+            $sellerProfile = $this->findData($id);
+
+            if (!$sellerProfile) {
+                throw new \Exception('Seller profile not found.');
+            }
+
+            return $sellerProfile->update([
+                'seller_verified' => 0, 
+            ]);
+
+            
+        });
+    }
 
 }
