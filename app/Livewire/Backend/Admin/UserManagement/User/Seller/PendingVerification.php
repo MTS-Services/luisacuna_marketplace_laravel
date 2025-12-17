@@ -68,11 +68,19 @@ class PendingVerification extends Component
         $actions = [
             [
                 'key' => 'id',
+                'label' => 'View Details',
+                'route' => 'admin.um.user.seller-verification.view',
+                'encrypt' => true,
+            ],
+            [
+                'key' => 'id',
                 'label' => 'Make Verified',
-                'method' => 'MakeVerified'
+                'method' => 'MakeVerified',
+                'encrypt' => true,
             ],
         ];
         $bulkActions = [
+            
             ['value' => 'verify', 'label' => 'Make Verified'],
         ];
 
