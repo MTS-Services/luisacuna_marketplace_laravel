@@ -1,4 +1,4 @@
-<main class="overflow-x-hidden">
+<main class="overflow-x-hidden bg-light-bg dark:bg-dark-bg">
     {{-- filter section --}}
     <section class="container mx-auto">
         <div class="flex items-center gap-1 my-10 font-semibold">
