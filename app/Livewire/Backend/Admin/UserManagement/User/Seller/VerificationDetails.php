@@ -20,7 +20,8 @@ class VerificationDetails extends Component
     {
         $this->id = decrypt($encryptedId);
 
-        $this->data = $this->service->findData($this->id);
+        $this->data = $this->service->findData($this->id)->load('user');
+      
     }
     public function render()
     {
