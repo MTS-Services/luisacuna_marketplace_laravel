@@ -138,9 +138,13 @@
     {{-- Loading Overlay --}}
     <div wire:loading.flex wire:target="filter,perPage"
         class="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 items-center justify-center">
-        <div class="bg-card rounded-2xl p-6 shadow-2xl border border-border">
-            <flux:icon name="arrow-path" class="w-8 h-8 stroke-primary animate-spin mx-auto mb-3" />
-            <p class="text-text-primary font-medium">{{ __('Loading notifications...') }}</p>
+        <div class="flex flex-col items-center justify-center h-full gap-3 p-8">
+            <div class="relative">
+                <div class="animate-spin rounded-full h-12 w-12 border-4 border-border border-t-primary"></div>
+                <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-secondary animate-spin"
+                    style="animation-duration: 0.7s;"></div>
+            </div>
+            <p class="text-text-primary text-sm">{{ __('Loading notifications...') }}</p>
         </div>
     </div>
 
@@ -196,7 +200,7 @@
                         {{-- Left Border for Unread --}}
                         @if ($isUnread)
                             <div
-                                class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-zinc-500 to-secondary-500">
+                                class="absolute left-0 top-0 bottom-0 w-1 bg-linear-to-b from-zinc-500 to-secondary-500">
                             </div>
                         @endif
 
@@ -236,15 +240,15 @@
                                             {{ $notification->data['title'] ?? __('Notification') }}
                                         </h3>
                                         @if ($notification->data['message'] ?? false)
-                                            <p class="text-text-secondary text-sm mb-2 line-clamp-2">
+                                            <p class="text-text-secondary text-sm mb-2 line-clamp-4">
                                                 {{ $notification->data['message'] }}
                                             </p>
                                         @endif
-                                        @if ($notification->data['description'] ?? false)
+                                        {{-- @if ($notification->data['description'] ?? false)
                                             <p class="text-text-muted text-xs line-clamp-1">
                                                 {{ $notification->data['description'] }}
                                             </p>
-                                        @endif
+                                        @endif --}}
 
                                         {{-- Action Link --}}
                                         @if ($notification->action)
@@ -265,14 +269,14 @@
                                                 wire:loading.attr="disabled"
                                                 class="p-2 hover:bg-zinc-500/20 rounded-full transition-all duration-300 hover:scale-110 opacity-0 group-hover:opacity-100"
                                                 title="{{ __('Mark as read') }}">
-                                                <flux:icon name="check-circle" class="w-5 h-5 stroke-accent" />
+                                                <flux:icon name="check-check" class="w-5 h-5 stroke-accent" />
                                             </button>
                                         @else
                                             <button wire:click="markAsUnread('{{ $notification->id }}')"
                                                 wire:loading.attr="disabled"
                                                 class="p-2 hover:bg-primary/20 rounded-full transition-all duration-200 hover:scale-110 opacity-0 group-hover:opacity-100"
                                                 title="{{ __('Mark as unread') }}">
-                                                <flux:icon name="envelope" class="w-5 h-5 stroke-primary" />
+                                                <flux:icon name="check-line" class="w-5 h-5 stroke-primary" />
                                             </button>
                                         @endif
 

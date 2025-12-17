@@ -33,7 +33,7 @@ class Index extends Component
     }
 
     public function mount(): void
-    {//
+    { //
     }
 
     #[Computed]
@@ -94,7 +94,7 @@ class Index extends Component
     {
         try {
             $this->service->markAsUnread($id);
-            $this->toastSuccess('Notification marked as unread');
+            $this->success('Notification marked as unread');
             $this->dispatch('notification-unread');
             unset($this->notifications);
         } catch (\Exception $e) {
@@ -107,7 +107,7 @@ class Index extends Component
         try {
             $count = $this->service->markAllAsRead(null);
 
-            $this->toastSuccess("Marked {$count} notifications as read");
+            $this->success("Marked {$count} notifications as read");
             $this->dispatch('all-notifications-read');
             $this->selectedNotifications = [];
             $this->selectAll = false;
@@ -166,8 +166,9 @@ class Index extends Component
 
     public function refresh(): void
     {
+        $this->resetPage();
         unset($this->notifications);
-        $this->toastSuccess('Notifications refreshed');
+        $this->success('Notifications Refreshed');
     }
 
     #[On('notification-created')]
