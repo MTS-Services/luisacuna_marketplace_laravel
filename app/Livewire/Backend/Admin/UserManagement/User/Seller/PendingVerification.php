@@ -39,13 +39,11 @@ class PendingVerification extends Component
             [
                 'key' => 'first_name',
                 'label' => 'First Name',
+                'format'   => function ($data) {
+                    return $data->user->first_name;
+                }
                 
             ],
-            [
-                'key' => 'last_name',
-                'label' => 'Last Name',
-                
-            ], 
             [
                 'key' => 'seller_verified',
                 'label' => 'status',
@@ -53,17 +51,15 @@ class PendingVerification extends Component
                     return $data->seller_verified ? 'Verified' : 'Unverified';
                 }
             ],
-            // [
-            //     'key' => 'account_status',
-            //     'label' => 'Status',
-            //     'sortable' => true,
-            //     'format' => function ($user) {
-            //         return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium '
-            //             . $user->account_status_color . '">'
-            //             . $user->account_status_label .
-            //             '</span>';
-            //     }
-            // ],
+           [
+                'key' => 'created_at',
+                'label' => 'Submitted At',
+                'sortable' => true,
+                'format'   => function ($data) {
+                    return $data->user->created_at_formatted;
+                }
+                
+            ],
         ];
         $actions = [
             [

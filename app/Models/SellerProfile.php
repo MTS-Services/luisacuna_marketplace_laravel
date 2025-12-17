@@ -101,7 +101,7 @@ class SellerProfile extends AuditBaseModel implements Auditable
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
 
@@ -113,6 +113,11 @@ class SellerProfile extends AuditBaseModel implements Auditable
             'seller_profile_id',
             'category_id'
         )->withTimestamps();
+    }
+
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class, 'country_id', 'id');
     }
     /* ================================================================
      |  Translation Helper Methods (Convenience)

@@ -78,7 +78,7 @@ class SellerProfileService{
             if (isset($data['company_documents'])) {
                 $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
                 $fileName = $prefix . '-' . $data['company_documents']->getClientOriginalName();
-                $data['company_documents'] = Storage::disk('public')->putFileAs('seller_profiles', $data['selfie_image'], $fileName);
+                $data['company_documents'] = Storage::disk('public')->putFileAs('seller_profiles', $data['company_documents'], $fileName);
             }
 
             if ($data['categories']) {
