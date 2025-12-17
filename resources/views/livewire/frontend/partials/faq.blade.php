@@ -5,15 +5,15 @@
             </h2>
 
             <!-- Tabs -->
-            <div class="max-w-xs mx-auto flex justify-between mb-10 bg-bg-info rounded-full px-3 py-3">
+            <div class="max-w-xs mx-auto flex justify-between mb-10 bg-bg-secondary rounded-full px-3 py-3">
                 <button @click="tab = 'buyers'; active = 0" 
-                    :class="tab === 'buyers' ? 'bg-bg-secondary px-5 py-3 rounded-full shadow-lg text-text-white' :
+                    :class="tab === 'buyers' ? 'bg-bg-hover px-5 py-3 rounded-full shadow-lg text-text-white' :
                         'text-text-secondery px-5 py-3'"
                     class="transition-colors duration-300 font-normal text-xl">
                     {{ 'For Buyers' }}
                 </button>
                 <button @click="tab = 'sellers'; active = 0" 
-                    :class="tab === 'sellers' ? 'bg-bg-secondary px-5 py-3 rounded-full shadow-lg text-text-white' :
+                    :class="tab === 'sellers' ? 'bg-bg-hover px-5 py-3 rounded-full shadow-lg text-text-white' :
                         'text-text-secondery px-5 py-3'"
                     class="transition-colors duration-300 font-normal text-xl">
                     {{ __('For Sellers') }}

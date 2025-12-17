@@ -1,20 +1,19 @@
-<main class="overflow-x-hidden  bg-light-bg dark:bg-dark-bg "
-    ">
+<main class="overflow-x-hidden  bg-light-bg dark:bg-dark-bg ">
 
     <!-- Hero Section -->
 
     <div class="swiper swiper-hero">
         <div class="swiper-wrapper">
-            @forelse ($heros as $key => $hero)
-                <div class="swiper-slide">
-                    <x-home.hero :data="$hero" />
-                </div>
-            @empty
-                <div class="swiper-slide">
-                    <x-home.hero :data="null" />
-                </div>
-            @endforelse
-        </div>
+              @forelse ($heros as $key=> $hero)
+    <div class="swiper-slide">
+        <x-home.hero :data="$hero" />
+    </div>
+@empty
+    <div class="swiper-slide">
+        <x-home.hero :data="null" />
+    </div>
+    @endforelse
+    </div>
     </div>
     <section class="py-20" id="popular-games">
         {{-- New Bosting Games Section --}}
@@ -135,12 +134,12 @@
                         <div class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
                             <img src="{{ asset('assets/images/home_page/verified_sellers.png') }}" alt="">
                         </div>
-                        <div class="absolute top-1/4 -left-1/4 z-20 hidden md:block">
+                        <div class="absolute top-8 left-[-25%] z-20 hidden md:block">
                             <img src="{{ asset('assets/images/home_page/right-arrow.png') }}" alt="">
                         </div>
                         <h3 class="font-semibold text-2xl mb-2 text-text-white">{{ __('Verified Sellers') }}</h3>
-                        <p class="text-text-white text-sm">
-                            {{ __('We meticulously verify each seller to ensure you receive genuine digital goods from trusted sources.') }}
+                        <p class="text-text-white text-base font-normal">
+                            {{ __('We meticulously verify every seller through an ID verification process, ensuring you receive genuine digital goods from trusted sources.') }}
                         </p>
                     </div>
 
@@ -149,13 +148,13 @@
                         <div class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
                             <img src="{{ asset('assets/images/home_page/effortless_buying.png') }}" alt="">
                         </div>
-                        <div class="absolute top-1/4 -left-1/4 z-20 hidden md:block">
+                        <div class="absolute top-8 left-[-25%] z-20 hidden md:block">
                             <img src="{{ asset('assets/images/home_page/right-arrow.png') }}" alt="">
                         </div>
                         <h3 class="font-semibold text-2xl mb-2 text-text-white">
                             {{ __('Effortless Buying & Selling') }}
                         </h3>
-                        <p class="text-text-white text-sm">
+                        <p class="text-text-white text-base font-normal">
                             {{ __('Our intuitive platform streamlines the buying and selling process, set with quick delivery and software within reach.') }}
                         </p>
                     </div>
