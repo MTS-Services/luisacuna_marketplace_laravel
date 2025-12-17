@@ -28,13 +28,14 @@ class NotificationService
     {
         [$actorId, $actorType] = $this->resolveActor();
 
-        return $this->notification
-            ->with(['sender', 'receiver'])
-            ->where('id', $id)
-            ->forReceiver($actorId, $actorType)
-            ->forActorType($actorType)
-            ->notDeletedForActor($actorId, $actorType)
-            ->first();
+        // return $this->notification
+        //     ->with(['sender', 'receiver'])
+        //     ->where('id', $id)
+        //     ->forReceiver($actorId, $actorType)
+        //     ->forActorType($actorType)
+        //     ->notDeletedForActor($actorId, $actorType)
+        //     ->first();
+        return $this->notification->with(['sender', 'receiver', 'statuses', 'deleteds'])->find($id);
     }
 
     /**
@@ -100,6 +101,7 @@ class NotificationService
             ->with(['sender', 'receiver', 'statuses', 'deleteds'])
             ->forReceiver($actorId, $actorType)
             ->forActorType($actorType)
+            ->notDeletedForActor($actorId, $actorType)
             ->when($type, fn($q) => $q->where('type', $type))
             ->byState($state, $actorId, $actorType)
             ->latest()
@@ -500,8 +502,10 @@ class NotificationService
             return [$id, $type];
         }
 
-        if ($user = user()) {
-            return [$user->id, get_class($user)];
+        if (!request()->routeIs('admin.*')) {
+            if ($user = user()) {
+                return [$user->id, get_class($user)];
+            }
         }
 
         if (function_exists('admin') && $admin = admin()) {

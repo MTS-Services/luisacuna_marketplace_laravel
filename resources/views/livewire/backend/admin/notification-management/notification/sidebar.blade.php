@@ -27,8 +27,45 @@
             @else
                 <div class="space-y-4">
                     @forelse ($notifications as $notification)
-                        <div class="notification-item">
-                            <x-ui.notification-card :notification="$notification" :isRead="$notification->statuses->isNotEmpty()" />
+                        @php
+                            $isRead = $notification->statuses
+                                ->where('actor_id', auth()->id())
+                                ->where('read_at', '!=', null)
+                                ->count();
+                        @endphp
+                        <div wire:key="notification-{{ $notification->id }}">
+                            <a href="{{ route('admin.notification.show', encrypt($notification->id)) }}" wire:navigate
+                                class="block group hover:bg-main/50 transition-colors rounded-lg p-3 -mx-3">
+                                <div class="flex items-start gap-3">
+                                    {{-- Icon --}}
+                                    <div
+                                        class="relative shrink-0 w-9 h-9 glass-card shadow-shadow-primary rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <flux:icon icon="{{ $notification->data['icon'] ?? 'bell' }}"
+                                            class="w-5 h-5 {{ $isRead ? 'stroke-text-primary' : 'stroke-primary' }}" />
+                                        @if (!$isRead)
+                                            <span class="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full">
+                                                <span
+                                                    class="absolute inset-0 w-2 h-2 bg-primary rounded-full animate-ping"></span>
+                                            </span>
+                                        @endif
+                                    </div>
+
+                                    {{-- Content --}}
+                                    <div class="flex-1 min-w-0">
+                                        <p
+                                            class="text-text-primary text-sm font-medium mb-1 line-clamp-1 group-hover:text-primary transition-colors">
+                                            {{ $notification->data['title'] ?? __('Notification') }}
+                                        </p>
+                                        <p class="text-text-secondary text-xs line-clamp-2 mb-1">
+                                            {{ $notification->data['message'] ?? '' }}
+                                        </p>
+                                        <span class="text-text-muted text-xs">
+                                            {{ $notification->created_at->diffForHumans() }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+
                         </div>
                     @empty
                         <div class="text-center py-8 text-text-primary">
@@ -47,7 +84,7 @@
                         {{ __('Mark All As Read') }}
                     </x-ui.button>
                 @endif
-                <x-ui.button href="" class="w-auto! py-1! rounded-md">
+                <x-ui.button href="{{ route('admin.notification.index') }}" class="w-auto! py-1! rounded-md">
                     {{ __('See All') }}
                 </x-ui.button>
             </div>
