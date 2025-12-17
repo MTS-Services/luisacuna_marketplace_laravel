@@ -33,7 +33,7 @@ use App\Http\Controllers\Backend\Admin\ProductManagement\CurrencyController as P
 use App\Http\Controllers\Backend\Admin\ProductManagement\GiftCardsController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\ItemsController;
 
-Route::middleware(['auth:admin', 'admin', 'adminVerify'])->name('admin.')->prefix('admin')->group(function () {
+Route::middleware(['admin'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
         return view('backend.admin.pages.dashboard');
     })->name('dashboard');

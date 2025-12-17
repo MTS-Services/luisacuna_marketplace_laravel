@@ -7,7 +7,7 @@
             <div class="flex-1">
                 <div class="flex items-center gap-3 mb-2">
                     <div class="w-12 h-12 rounded-xl glass-card flex items-center justify-center shadow-lg">
-                        <flux:icon name="bell" class="w-6 h-6 stroke-primary" />
+                        <flux:icon name="bell-ring" class="w-6 h-6 stroke-primary" />
                     </div>
                     <div>
                         <h1 class="text-2xl md:text-3xl font-bold text-text-primary">

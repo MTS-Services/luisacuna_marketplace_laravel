@@ -43,10 +43,9 @@
                 <button @click="$dispatch('open-sidebar-notifications')"
                     class="relative p-2 rounded-xl hover:bg-bg-black/10 dark:hover:bg-bg-white/10 transition-colors">
                     <flux:icon name="bell" class="w-5 h-5" />
-                    <div x-data="{
-                        showNotificationIndicator: @entangle('showNotificationIndicator').live
-                    }" x-show="showNotificationIndicator"
-                        class="absolute top-1 right-1 w-2 h-2 bg-red-400 rounded-full notification-badge"></div>
+                    <span x-data="{showNotificationIndicator: @entangle('showNotificationIndicator').live}" x-show="showNotificationIndicator" class="absolute top-1 right-1 w-2 h-2 bg-secondary-500 rounded-full">
+                        <span class="absolute inset-0 w-2 h-2 bg-secondary-500 rounded-full animate-ping"></span>
+                    </span>
                 </button>
 
                 <div class="relative" x-data="{ open: false }">
