@@ -38,8 +38,10 @@
                 {{-- Mark All Read --}}
                 <x-ui.button wire:click="markAllAsRead" wire:loading.attr="disabled" :disabled="$this->unreadCount === 0"
                     variant="secondary" class="w-auto! px-4 py-2! rounded-lg" title="Mark all as read">
-                    <flux:icon name="check-check"
+                    <flux:icon name="check-check" wire:loading.remove wire:target="markAllAsRead"
                         class="w-4 h-4 inline mr-2 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
+                    <flux:icon name="arrow-path" wire:loading wire:target="markAllAsRead"
+                        class="w-4 h-4 inline mr-2 animate-spin stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
                     <span class="hidden sm:inline text-text-btn-secondary group-hover:text-text-btn-primary">
                         {{ __('Mark All Read') }}
                     </span>
@@ -184,32 +186,23 @@
                 @foreach ($this->notifications as $notification)
                     @php
                         $isUnread = !$notification->statuses
-                            ->where('actor_id', auth()->id())
+                            ->where('actor_id', admin()->id)
                             ->where('read_at', '!=', null)
                             ->count();
                     @endphp
                     <div wire:key="notification-{{ $notification->id }}"
-                        class="group relative hover:bg-hover transition-all duration-200 cursor-pointer {{ $isUnread ? 'bg-zinc-50/30 dark:bg-zinc-950/20' : '' }}">
+                        class="group relative hover:bg-hover transition-all duration-200 {{ $isUnread ? 'bg-zinc-50/30 dark:bg-zinc-950/20' : '' }}">
 
                         {{-- Left Border for Unread --}}
                         @if ($isUnread)
                             <div
-                                class="absolute left-0 top-0 bottom-0 w-1 bg-linear-to-b from-zinc-500 to-secondary-500">
+                                class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-zinc-500 to-secondary-500">
                             </div>
                         @endif
 
-                        {{-- Action Link Overlay --}}
-                        @if ($notification->action)
-                            <a href="{{ $notification->action }}" target="_blank" rel="noopener noreferrer"
-                                title="{{ $notification->data['title'] ?? 'Notification' }}"
-                                class="absolute inset-0 z-0" wire:click="markAsRead('{{ $notification->id }}')">
-                            </a>
-                        @else
-                            <div class="absolute inset-0 z-0" wire:click="markAsRead('{{ $notification->id }}')">
-                            </div>
-                        @endif
+                        <div class="flex items-start gap-4 p-6 {{ $isUnread ? 'pl-8' : 'pl-6' }}"
+                            wire:click="markAsRead('{{ $notification->id }}')">
 
-                        <div class="flex items-start gap-4 p-6 relative z-10 {{ $isUnread ? 'pl-8' : 'pl-6' }}">
                             {{-- Checkbox (visible on hover or selected) --}}
                             <div class="shrink-0 pt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 {{ in_array($notification->id, $selectedNotifications) ? 'opacity-100' : '' }}"
                                 onclick="event.stopPropagation()">
@@ -252,6 +245,17 @@
                                                 {{ $notification->data['description'] }}
                                             </p>
                                         @endif
+
+                                        {{-- Action Link --}}
+                                        @if ($notification->action)
+                                            <a href="{{ $notification->action }}" target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="mt-2 inline-flex items-center gap-1 text-xs text-primary hover:text-primary-hover transition-colors"
+                                                onclick="event.stopPropagation()">
+                                                <span>{{ __('View Details') }}</span>
+                                                <flux:icon name="arrow-up-right" class="w-3 h-3" />
+                                            </a>
+                                        @endif
                                     </div>
 
                                     {{-- Action Buttons --}}
@@ -261,14 +265,14 @@
                                                 wire:loading.attr="disabled"
                                                 class="p-2 hover:bg-zinc-500/20 rounded-full transition-all duration-300 hover:scale-110 opacity-0 group-hover:opacity-100"
                                                 title="{{ __('Mark as read') }}">
-                                                <flux:icon name="check-line" class="w-5 h-5 stroke-accent" />
+                                                <flux:icon name="check-circle" class="w-5 h-5 stroke-accent" />
                                             </button>
                                         @else
                                             <button wire:click="markAsUnread('{{ $notification->id }}')"
                                                 wire:loading.attr="disabled"
                                                 class="p-2 hover:bg-primary/20 rounded-full transition-all duration-200 hover:scale-110 opacity-0 group-hover:opacity-100"
                                                 title="{{ __('Mark as unread') }}">
-                                                <flux:icon name="check-circle" class="w-5 h-5 stroke-primary" />
+                                                <flux:icon name="envelope" class="w-5 h-5 stroke-primary" />
                                             </button>
                                         @endif
 
@@ -336,20 +340,20 @@
         </div>
     @endif
 
-    @push('scripts')
-        <script>
-            // Auto-refresh notifications every 30 seconds
-            setInterval(() => {
-                @this.call('refreshNotifications');
-            }, 30000);
+</div>
 
-            // Listen for real-time notification events
-            window.addEventListener('notification-received', event => {
-                @this.call('refreshNotifications');
-            });
-        </script>
-    @endpush
+@push('scripts')
+    <script>
+        // Auto-refresh notifications every 30 seconds
+        setInterval(() => {
+            Livewire.dispatch('refreshNotifications');
+        }, 30000);
 
+        // Listen for real-time notification events
+        window.addEventListener('notification-received', event => {
+            Livewire.dispatch('refreshNotifications');
+        });
+    </script>
     <style>
         @keyframes fade-in {
             from {
@@ -367,4 +371,4 @@
             animation: fade-in 0.3s ease-out;
         }
     </style>
-</div>
+@endpush

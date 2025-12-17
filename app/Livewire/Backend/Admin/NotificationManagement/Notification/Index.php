@@ -33,8 +33,7 @@ class Index extends Component
     }
 
     public function mount(): void
-    {
-        $this->authorize('viewAny', \App\Models\CustomNotification::class);
+    {//
     }
 
     #[Computed]
@@ -84,7 +83,6 @@ class Index extends Component
     {
         try {
             $this->service->markAsRead($id);
-            $this->success('Notification marked as read');
             $this->dispatch('notification-read');
             unset($this->notifications);
         } catch (\Exception $e) {
@@ -96,7 +94,7 @@ class Index extends Component
     {
         try {
             $this->service->markAsUnread($id);
-            $this->success('Notification marked as unread');
+            $this->toastSuccess('Notification marked as unread');
             $this->dispatch('notification-unread');
             unset($this->notifications);
         } catch (\Exception $e) {
@@ -109,7 +107,7 @@ class Index extends Component
         try {
             $count = $this->service->markAllAsRead(null);
 
-            $this->success("Marked {$count} notifications as read");
+            $this->toastSuccess("Marked {$count} notifications as read");
             $this->dispatch('all-notifications-read');
             $this->selectedNotifications = [];
             $this->selectAll = false;
@@ -123,7 +121,7 @@ class Index extends Component
     {
         try {
             $this->service->delete($id);
-            $this->success('Notification deleted successfully');
+            $this->toastSuccess('Notification deleted successfully');
             $this->dispatch('notification-deleted');
             $this->selectedNotifications = array_diff($this->selectedNotifications, [$id]);
             unset($this->notifications);
@@ -141,7 +139,7 @@ class Index extends Component
 
         try {
             $count = $this->service->deleteMany($this->selectedNotifications);
-            $this->success("Deleted {$count} notifications");
+            $this->toastSuccess("Deleted {$count} notifications");
             $this->dispatch('notifications-deleted');
             $this->selectedNotifications = [];
             $this->selectAll = false;
@@ -156,7 +154,7 @@ class Index extends Component
         try {
             $count = $this->service->deleteAll(null);
 
-            $this->success("Deleted {$count} notifications");
+            $this->toastSuccess("Deleted {$count} notifications");
             $this->dispatch('all-notifications-deleted');
             $this->selectedNotifications = [];
             $this->selectAll = false;
@@ -169,7 +167,7 @@ class Index extends Component
     public function refresh(): void
     {
         unset($this->notifications);
-        $this->success('Notifications refreshed');
+        $this->toastSuccess('Notifications refreshed');
     }
 
     #[On('notification-created')]

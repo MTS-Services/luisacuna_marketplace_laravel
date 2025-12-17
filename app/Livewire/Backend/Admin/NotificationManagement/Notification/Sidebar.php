@@ -6,6 +6,7 @@ use App\Services\NotificationService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -67,6 +68,14 @@ class Sidebar extends Component
         }
     }
 
+
+    #[Computed()]
+    public function unreadCount(): int
+    {
+        return $this->service->getUnreadCount(null);
+    }
+
+    #[On('mark-as-read')]
     public function markAsRead(string $id): void
     {
         try {

@@ -10,7 +10,6 @@ use App\Events\AdminNotificationSent;
 use App\Enums\CustomNotificationType;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 class NotificationService
@@ -26,16 +25,9 @@ class NotificationService
      */
     public function find(string $id): ?CustomNotification
     {
-        [$actorId, $actorType] = $this->resolveActor();
-
-        // return $this->notification
-        //     ->with(['sender', 'receiver'])
-        //     ->where('id', $id)
-        //     ->forReceiver($actorId, $actorType)
-        //     ->forActorType($actorType)
-        //     ->notDeletedForActor($actorId, $actorType)
-        //     ->first();
-        return $this->notification->with(['sender', 'receiver', 'statuses', 'deleteds'])->find($id);
+        return $this->notification
+            ->with(['sender', 'receiver', 'statuses', 'deleteds'])
+            ->find($id);
     }
 
     /**
@@ -48,18 +40,14 @@ class NotificationService
     ): bool {
         [$actorId, $actorType] = $this->resolveActor($receiverId, $receiverType);
 
-        $cacheKey = $this->getCacheKey('exists', $actorId, $actorType, $type?->value);
-
-        return Cache::remember($cacheKey, 300, function () use ($type, $actorId, $actorType) {
-            return $this->notification
-                ->query()
-                ->forReceiver($actorId, $actorType)
-                ->forActorType($actorType)
-                ->when($type, fn($q) => $q->where('type', $type))
-                ->unreadForActor($actorId, $actorType)
-                ->notDeletedForActor($actorId, $actorType)
-                ->exists();
-        });
+        return $this->notification
+            ->query()
+            ->forReceiver($actorId, $actorType)
+            ->forActorType($actorType)
+            ->when($type, fn($q) => $q->where('type', $type))
+            ->unreadForActor($actorId, $actorType)
+            ->notDeletedForActor($actorId, $actorType)
+            ->exists();
     }
 
     /**
@@ -72,18 +60,14 @@ class NotificationService
     ): int {
         [$actorId, $actorType] = $this->resolveActor($receiverId, $receiverType);
 
-        $cacheKey = $this->getCacheKey('count', $actorId, $actorType, $type?->value);
-
-        return Cache::remember($cacheKey, 300, function () use ($type, $actorId, $actorType) {
-            return $this->notification
-                ->query()
-                ->forReceiver($actorId, $actorType)
-                ->forActorType($actorType)
-                ->when($type, fn($q) => $q->where('type', $type))
-                ->unreadForActor($actorId, $actorType)
-                ->notDeletedForActor($actorId, $actorType)
-                ->count();
-        });
+        return $this->notification
+            ->query()
+            ->forReceiver($actorId, $actorType)
+            ->forActorType($actorType)
+            ->when($type, fn($q) => $q->where('type', $type))
+            ->unreadForActor($actorId, $actorType)
+            ->notDeletedForActor($actorId, $actorType)
+            ->count();
     }
 
     /**
@@ -121,7 +105,6 @@ class NotificationService
             ->forReceiver($actorId, $actorType)
             ->forActorType($actorType)
             ->notDeletedForActor($actorId, $actorType)
-            // ->unreadForActor($actorId, $actorType)
             ->latest()
             ->limit($limit)
             ->get();
@@ -190,7 +173,6 @@ class NotificationService
             Log::info('Notification created', ['id' => $notification->id]);
 
             $this->broadcastNotification($notification);
-            $this->clearCache($notification);
 
             return $notification->fresh();
         });
@@ -219,7 +201,6 @@ class NotificationService
             }
 
             $notification->update($data);
-            $this->clearCache($notification);
 
             return $notification->fresh();
         });
@@ -248,8 +229,6 @@ class NotificationService
                 ['read_at' => now()]
             );
 
-            $this->clearActorCache($actorId, $actorType);
-
             return true;
         });
     }
@@ -266,10 +245,6 @@ class NotificationService
             ->where('actor_id', $actorId)
             ->where('actor_type', $actorType)
             ->update(['read_at' => null]);
-
-        if ($updated) {
-            $this->clearActorCache($actorId, $actorType);
-        }
 
         return (bool) $updated;
     }
@@ -307,8 +282,6 @@ class NotificationService
                 );
             }
 
-            $this->clearActorCache($actorId, $actorType);
-
             return $notificationIds->count();
         });
     }
@@ -342,10 +315,6 @@ class NotificationService
             'actor_type' => $actorType,
         ]);
 
-        if ($created) {
-            $this->clearActorCache($actorId, $actorType);
-        }
-
         return (bool) $created;
     }
 
@@ -366,7 +335,6 @@ class NotificationService
             ])->toArray();
 
             $this->deleted->insert($records);
-            $this->clearActorCache($actorId, $actorType);
 
             return count($records);
         });
@@ -401,7 +369,6 @@ class NotificationService
             ])->toArray();
 
             $this->deleted->insert($records);
-            $this->clearActorCache($actorId, $actorType);
 
             return count($records);
         });
@@ -420,10 +387,6 @@ class NotificationService
             ->where('actor_type', $actorType)
             ->delete();
 
-        if ($deleted) {
-            $this->clearActorCache($actorId, $actorType);
-        }
-
         return (bool) $deleted;
     }
 
@@ -441,7 +404,6 @@ class NotificationService
         return DB::transaction(function () use ($notification) {
             $notification->statuses()->delete();
             $notification->deleteds()->delete();
-            $this->clearCache($notification);
 
             return $notification->delete();
         });
@@ -454,22 +416,18 @@ class NotificationService
     {
         [$actorId, $actorType] = $this->resolveActor();
 
-        $cacheKey = $this->getCacheKey('stats', $actorId, $actorType, $type?->value);
+        $query = $this->notification
+            ->query()
+            ->forReceiver($actorId, $actorType)
+            ->forActorType($actorType)
+            ->when($type, fn($q) => $q->where('type', $type))
+            ->notDeletedForActor($actorId, $actorType);
 
-        return Cache::remember($cacheKey, 600, function () use ($type, $actorId, $actorType) {
-            $query = $this->notification
-                ->query()
-                ->forReceiver($actorId, $actorType)
-                ->forActorType($actorType)
-                ->when($type, fn($q) => $q->where('type', $type))
-                ->notDeletedForActor($actorId, $actorType);
+        $total = $query->count();
+        $unread = (clone $query)->unreadForActor($actorId, $actorType)->count();
+        $read = (clone $query)->readForActor($actorId, $actorType)->count();
 
-            $total = $query->count();
-            $unread = (clone $query)->unreadForActor($actorId, $actorType)->count();
-            $read = (clone $query)->readForActor($actorId, $actorType)->count();
-
-            return compact('total', 'unread', 'read');
-        });
+        return compact('total', 'unread', 'read');
     }
 
     /**
@@ -513,46 +471,5 @@ class NotificationService
         }
 
         throw new \RuntimeException('No authenticated actor found');
-    }
-
-    /**
-     * Generate cache key
-     */
-    protected function getCacheKey(string $prefix, int $actorId, string $actorType, ?string $suffix = null): string
-    {
-        $key = "notifications:{$prefix}:{$actorType}:{$actorId}";
-        return $suffix ? "{$key}:{$suffix}" : "{$key}:all";
-    }
-
-    /**
-     * Clear cache for specific actor
-     */
-    protected function clearActorCache(int $actorId, string $actorType): void
-    {
-        $patterns = ['exists', 'count', 'stats'];
-
-        foreach ($patterns as $pattern) {
-            Cache::forget($this->getCacheKey($pattern, $actorId, $actorType));
-
-            foreach (CustomNotificationType::cases() as $type) {
-                Cache::forget($this->getCacheKey($pattern, $actorId, $actorType, $type->value));
-            }
-        }
-    }
-
-    /**
-     * Clear all related cache for notification
-     */
-    protected function clearCache(CustomNotification $notification): void
-    {
-        // Only clear receiver cache if receiver exists
-        if ($notification->receiver_id && $notification->receiver_type) {
-            $this->clearActorCache($notification->receiver_id, $notification->receiver_type);
-        }
-
-        // Clear sender cache if sender exists
-        if ($notification->sender_id && $notification->sender_type) {
-            $this->clearActorCache($notification->sender_id, $notification->sender_type);
-        }
     }
 }

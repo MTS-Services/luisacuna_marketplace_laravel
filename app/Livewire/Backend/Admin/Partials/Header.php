@@ -40,7 +40,7 @@ class Header extends Component
     #[On('notification-updated')]
     public function unreadExists()
     {
-        $this->showNotificationIndicator = $this->notificationService->unreadExists(type: CustomNotificationType::ADMIN, receiverType: Admin::class, receiverId: admin()->id);
+        $this->showNotificationIndicator = $this->notificationService->unreadExists(type: null, receiverType: Admin::class, receiverId: admin()->id);
     }
 
 
