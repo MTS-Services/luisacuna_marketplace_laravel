@@ -345,16 +345,15 @@
                 </div>
             </div> --}}
             <div class="flex flex-col md:flex-row h-auto md:h-[68vh] gap-2 px-3 sm:px-4 relative">
-                {{-- wire:poll.3s="loadMessages" --}}
-                <!-- Mobile Overlay -->
+                {{-- Mobile Overlay --}}
                 <div id="mobileOverlay" onclick="toggleMobileMenu()"
                     class="hidden fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"></div>
 
-                <!-- Left Sidebar - Messages List -->
+                {{-- Left Sidebar - Messages List --}}
                 <div id="messagesSidebar"
                     class="fixed md:static inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-30 w-full md:w-64 lg:w-72 xl:w-80 2xl:w-96 bg-bg-secondary rounded-lg flex flex-col md:mr-5 mb-1 md:mb-0 max-h-full md:max-h-full">
                     <div class="p-3 sm:p-4">
-                        <!-- Close Button for Mobile -->
+                        {{-- Close Button for Mobile --}}
                         <div class="flex items-center justify-between mb-3 md:hidden">
                             <h3 class="text-text-primary font-semibold text-base">{{ __('Conversations') }}</h3>
                             <button onclick="toggleMobileMenu()" class="text-text-muted hover:text-text-primary">
@@ -365,7 +364,7 @@
                             </button>
                         </div>
 
-                        <!-- Browser notification toggle -->
+                        {{-- Browser notification toggle --}}
                         <div
                             class="flex items-center justify-between mt-2 sm:mt-4 dark:bg-zinc-50/10 bg-zinc-100 px-2 sm:px-3 py-1">
                             <span
@@ -381,7 +380,7 @@
                             </label>
                         </div>
 
-                        <!-- Search -->
+                        {{-- Search --}}
                         <div class="mt-3 sm:mt-4">
                             <div class="relative">
                                 <input type="text" wire:model.live="searchTerm" placeholder="{{ __('Search') }}"
@@ -397,13 +396,13 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Messages List -->
+                    {{-- Messages List --}}
                     <div class="flex-1 overflow-y-auto custom-scrollbar">
-                        @forelse($users as $user)
+                        @forelse($conversations as $conversation)
                             <div wire:click="selectUser({{ $user->id }}, '{{ $user->full_name }}')"
                                 onclick="selectMessage()"
                                 class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 hover:bg-bg-hover cursor-pointer border-b border-zinc-800 
-                                    {{ $receiverId == $user->id ? 'dark:bg-zinc-800 bg-zinc-200' : '' }} transition-colors">
+                                {{ $receiverId == $user->id ? 'dark:bg-zinc-800 bg-zinc-200' : '' }} transition-colors">
                                 @if ($user->avatar)
                                     {{-- Show actual avatar image --}}
                                     <img src="{{ storage_url($user->avatar) }}" alt="{{ $user->full_name }}"
@@ -443,10 +442,10 @@
                     </div>
                 </div>
 
-                <!-- Right Side - Chat Area -->
+                {{-- Right Side - Chat Area --}}
                 <div class="flex-1 flex flex-col min-h-[50vh] md:min-h-[20vh] rounded-lg bg-bg-secondary">
                     @if ($receiverId)
-                        <!-- Chat Header -->
+                        {{-- Chat Header --}}
                         <div class="p-3 sm:p-4 flex items-center bg-zinc-50/10 rounded-t-lg justify-between">
                             <div class="flex items-center gap-2 sm:gap-3">
                                 @php
@@ -472,12 +471,12 @@
                             </div>
                         </div>
 
-                        <!-- Messages Area -->
+                        {{-- Messages Area --}}
                         <div class="flex-1 overflow-y-auto custom-scrollbar p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6"
                             id="messagesContainer">
                             @forelse($messages as $msg)
                                 @if ($msg->sender_id == Auth::id())
-                                    <!-- Current User Message -->
+                                    {{-- Current User Message --}}
                                     <div class="flex items-start gap-2 sm:gap-3 flex-row-reverse">
                                         @if (auth()->user()->avatar)
                                             <img src="{{ auth_storage_url(auth()->user()->avatar) }}"
@@ -505,7 +504,7 @@
                                                                 📎 {{ basename($attachment->file_path) }}
                                                             </a>
                                                         @endif
-                                                        <!-- Download Button -->
+                                                        {{-- Download Button --}}
                                                         <a href="{{ asset('storage/' . $attachment->file_path) }}"
                                                             download
                                                             class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
@@ -525,14 +524,14 @@
 
                                             <span class="text-[10px] sm:text-xs text-text-muted">
                                                 {{ $msg->created_at->format('M d, Y h:i A') }}
-                                                @if ($msg->readReceipts && $msg->readReceipts->where('user_id', '!=', Auth::id())->count() > 0)
+                                                @if ($msg->readReceipts && $msg->readReceipts->where('participant_id', '!=', Auth::id())->count() > 0)
                                                     <span class="text-blue-500">✓✓</span>
                                                 @endif
                                             </span>
                                         </div>
                                     </div>
                                 @else
-                                    <!-- Other User Message -->
+                                    {{-- Other User Message --}}
                                     <div class="flex items-start gap-2 sm:gap-3">
                                         @php
                                             $otherUser = $msg->sender;
@@ -565,7 +564,7 @@
                                                                 📎 {{ basename($attachment->file_path) }}
                                                             </a>
                                                         @endif
-                                                        <!-- Download Button -->
+                                                        {{-- Download Button --}}
                                                         <a href="{{ asset('storage/' . $attachment->file_path) }}"
                                                             download
                                                             class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
@@ -595,7 +594,7 @@
                                 </div>
                             @endforelse
                         </div>
-                        <!-- Message Input -->
+                        {{-- Message Input --}}
                         <div class="p-3 sm:p-4">
                             <div class="flex items-end gap-2 sm:gap-3">
                                 <div class="flex-1 relative">
@@ -635,7 +634,7 @@
                             @endif
                         </div>
                     @else
-                        <!-- No User Selected -->
+                        {{-- No User Selected --}}
                         <div class="flex-1 flex items-center justify-center text-text-muted">
                             <div class="text-center">
                                 <svg class="w-16 h-16 mx-auto mb-3 text-zinc-600" fill="none"

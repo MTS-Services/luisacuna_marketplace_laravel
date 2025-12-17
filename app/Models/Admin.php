@@ -84,9 +84,9 @@ class Admin extends AuthBaseModel implements Auditable
         return $this->hasMany(TestMultiImage::class, 'admin_id', 'id');
     }
 
-    public function orderMessages()
+    public function conversationParticipant()
     {
-        return $this->morphMany(OrderMessage::class, 'creater');
+        return $this->morphMany(ConversationParticipant::class, 'participant_id');
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

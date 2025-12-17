@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('conversation_id')->index();
-            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('participant_id')->index();
+            $table->string('participant_type')->index();
             $table->string('participant_role');
             $table->timestamp('joined_at')->default(now());
             $table->timestamp('left_at')->nullable();
@@ -28,7 +29,6 @@ return new class extends Migration
 
 
             $table->foreign('conversation_id')->references('id')->on('conversations')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
 

@@ -3,218 +3,177 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Models\Conversation;
-use App\Models\ConversationParticipant;
+use App\Models\Admin;
 use App\Models\Message;
-use App\Models\MessageReadReceipt;
-use App\Models\MessageAttachment;
-use App\Enums\ConversationStatus;
-use App\Enums\ParticipantRole;
 use App\Enums\MessageType;
 use Illuminate\Support\Str;
+use App\Models\Conversation;
+use App\Enums\ParticipantRole;
+use App\Enums\ConversationStatus;
+use App\Models\MessageAttachment;
+use App\Models\MessageReadReceipt;
+use Illuminate\Support\Facades\Auth;
+use App\Models\ConversationParticipant;
 
 class OrderMessageService
 {
     public function __construct() {}
 
     /**
-     * Get all conversations for authenticated user, sorted by last message
-     * 
-     * 
+     * Get conversations sorted by last message for auth participant
      */
-    public function getUsersSortedByLastMessage($authUserId, $searchTerm = null)
+    public function getParticipantsSortedByLastMessage($authParticipant)
     {
-        $conversationIds = ConversationParticipant::where('user_id', $authUserId)
-            ->where('is_active', true)
-            ->pluck('conversation_id');
 
+        // $participant = ConversationParticipant::get()->all();
+
+        // dd($participant);
+
+        $participantId = $authParticipant->id;
+        
+        $participantRole = get_class($authParticipant);
+        $conversationIds = ConversationParticipant::where([
+            'participant_id' => $participantId,
+            'participant_role' => $participantRole,
+        ]);
+        // dd($conversationIds);
         $otherParticipants = ConversationParticipant::whereIn('conversation_id', $conversationIds)
-            ->where('user_id', '!=', $authUserId)
-            ->where('is_active', true)
-            ->with(['user', 'conversation'])
+            ->where(function ($q) use ($participantId, $participantRole) {
+                $q->where('participant_id', '!=', $participantId)
+                    ->orWhere('participant_role', '!=', $participantRole);
+            })
+            ->with(['participant', 'conversation'])
             ->get();
 
+        foreach ($otherParticipants as $row) {
+            $conversation = $row->conversation;
 
-        $userIds = $otherParticipants->pluck('user_id')->unique();
-        $query = User::whereIn('id', $userIds);
+            $row->unreadCount = $this->getUnreadCount(
+                $conversation->id,
+                $participantId,
+                $participantRole
+            );
+            $row->lastMessage = Message::where('conversation_id', $conversation->id)
+                ->with(['sender', 'attachments'])
+                ->latest()
+                ->first();
 
-        if ($searchTerm) {
-            $query->where(function ($q) use ($searchTerm) {
-                $q->where('username', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('first_name', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('last_name', 'like', '%' . $searchTerm . '%');
-            });
-        }
-
-        $users = $query->get();
-
-        foreach ($users as $user) {
-            $conversation = $this->findConversationBetweenUsers($authUserId, $user->id);
-
-            if ($conversation) {
-                $user->unreadCount = $this->getUnreadCount($conversation->id, $authUserId);
-
-                $user->lastMessage = Message::where('conversation_id', $conversation->id)
-                    ->with(['sender', 'attachments'])
-                    ->latest()
-                    ->first();
-
-                if ($user->lastMessage) {
-                    $user->lastMessage->created_at_formatted = $user->lastMessage->created_at->diffForHumans();
-                }
-                $user->conversation_id = $conversation->id;
-                $user->conversation_uuid = $conversation->conversation_uuid;
+            if ($row->lastMessage) {
+                $row->lastMessage->created_at_formatted = $row->lastMessage->created_at->diffForHumans();
             }
+
+            $row->conversation_uuid = $conversation->conversation_uuid;
         }
 
-        return $users->sortByDesc(function ($u) {
-            return $u->lastMessage->created_at ?? null;
+        return $otherParticipants->sortByDesc(function ($p) {
+            return $p->lastMessage->created_at ?? null;
         })->values();
     }
-    public function getPaginated($perPage, $filters)
-    {
-        $query = Conversation::query()
-            ->with([
-                'conversation_participants.user',
-                'messages' => function ($q) {
-                    $q->latest()->limit(1);
-                },
-                'messages.sender'
-            ]);
 
-        if (!empty($filters['search'])) {
-            $query->where(function ($q) use ($filters) {
-                $q->where('subject', 'like', '%' . $filters['search'] . '%')
-                    ->orWhere('note', 'like', '%' . $filters['search'] . '%')
-                    ->orWhereHas('product', function ($q) use ($filters) {
-                        $q->where('name', 'like', '%' . $filters['search'] . '%');
-                    });
-            });
-        }
 
-        $sortField = $filters['sort_field'] ?? 'last_message_at';
-        $sortDirection = $filters['sort_direction'] ?? 'desc';
 
-        $query->orderBy($sortField, $sortDirection);
-
-        return $query->paginate($perPage);
-    }
+    
 
     /**
-     * Admin: Fetch full conversation messages (both users)
+     * Get or create conversation between two participants
      */
-    public function fetchForAdmin(int $conversationId)
+    public function getOrCreateConversation($p1, $p2)
     {
-        return Message::where('conversation_id', $conversationId)
-            ->with([
-                'sender:id,username,first_name,last_name',
-                'attachments'
-            ])
-            ->orderBy('created_at', 'asc')
-            ->get();
-    }
+        $conversation = $this->findConversationBetweenParticipants(
+            $p1->id,
+            get_class($p1),
+            $p2->id,
+            get_class($p2)
+        );
 
-
-    /**
-     * Get or create conversation between two users
-     * 
-     *
-     */
-    public function getOrCreateConversation(int $userId1, int $userId2)
-    {
-        // Check if conversation already exists
-        $existingConversation = $this->findConversationBetweenUsers($userId1, $userId2);
-
-        if ($existingConversation) {
-            return $existingConversation;
+        if ($conversation) {
+            return $conversation;
         }
 
-        // Create new conversation
         $conversation = Conversation::create([
             'conversation_uuid' => Str::uuid(),
             'status' => ConversationStatus::ACTIVE,
             'last_message_at' => now(),
-            'creater_id' => $userId1,
-            'creater_type' => User::class,
+            'creater_id' => $p1->id,
+            'creater_type' => get_class($p1),
         ]);
 
-        // Add both users as participants
-        $this->addParticipant($conversation->id, $userId1, ParticipantRole::BUYER);
-        $this->addParticipant($conversation->id, $userId2, ParticipantRole::SELLER);
+        $this->addParticipant($conversation->id, $p1, ParticipantRole::BUYER);
+        $this->addParticipant($conversation->id, $p2, ParticipantRole::SELLER);
 
         return $conversation;
     }
 
     /**
-     * Find conversation between two users
-     * 
-     * @param int $userId1
-     * @param int $userId2
-     * @return Conversation|null
+     * Find conversation between two participants
      */
-    private function findConversationBetweenUsers(int $userId1, int $userId2)
-    {
-        $user1Conversations = ConversationParticipant::where('user_id', $userId1)
-            ->where('is_active', true)
-            ->pluck('conversation_id');
+    private function findConversationBetweenParticipants(
+        int $id1,
+        string $type1,
+        int $id2,
+        string $type2
+    ) {
+        $c1 = ConversationParticipant::where([
+            'participant_id' => $id1,
+            'participant_role' => $type1,
+            'is_active' => true,
+        ])->pluck('conversation_id');
 
-        $user2Conversations = ConversationParticipant::where('user_id', $userId2)
-            ->where('is_active', true)
-            ->pluck('conversation_id');
+        $c2 = ConversationParticipant::where([
+            'participant_id' => $id2,
+            'participant_role' => $type2,
+            'is_active' => true,
+        ])->pluck('conversation_id');
 
-        $commonConversationId = $user1Conversations->intersect($user2Conversations)->first();
+        $conversationId = $c1->intersect($c2)->first();
 
-        if ($commonConversationId) {
-            return Conversation::find($commonConversationId);
-        }
-
-        return null;
+        return $conversationId ? Conversation::find($conversationId) : null;
     }
 
     /**
      * Add participant to conversation
-     * 
      */
-    private function addParticipant(int $conversationId, int $userId, $role = null)
+    private function addParticipant(int $conversationId, $participant, $role)
     {
         return ConversationParticipant::create([
             'conversation_id' => $conversationId,
-            'user_id' => $userId,
-            'participant_role' => $role ?? ParticipantRole::BUYER,
+            'participant_id' => $participant->id,
+            'participant_role' => get_class($participant),
+            'participant_role' => $role,
             'joined_at' => now(),
             'is_active' => true,
             'notification_enabled' => true,
-            'creater_id' => $userId,
-            'creater_type' => User::class,
+            'creater_id' => $participant->id,
+            'creater_type' => get_class($participant),
         ]);
     }
 
     /**
-     * Send a message in conversation
-     * 
+     * Send message
      */
     public function send(int $conversationId, string $messageBody, $attachments = null, $messageType = null)
     {
-        $user = auth()->user();
+        $sender = auth()->user();
 
         $message = Message::create([
             'conversation_id' => $conversationId,
-            'sender_id' => $user->id,
+            'sender_id' => $sender->id,
+            'sender_type' => get_class($sender),
             'message_type' => $messageType ?? MessageType::TEXT,
             'message_body' => $messageBody,
-            'creater_id' => $user->id,
-            'creater_type' => get_class($user),
+            'creater_id' => $sender->id,
+            'creater_type' => get_class($sender),
         ]);
 
-        if ($attachments && is_array($attachments)) {
+        if ($attachments) {
             foreach ($attachments as $attachment) {
                 MessageAttachment::create([
                     'message_id' => $message->id,
                     'attachment_type' => $attachment['type'] ?? 'file',
                     'file_path' => $attachment['path'],
                     'thumbnail_path' => $attachment['thumbnail'] ?? null,
-                    'creater_id' => $user->id,
-                    'creater_type' => get_class($user),
+                    'creater_id' => $sender->id,
+                    'creater_type' => get_class($sender),
                 ]);
             }
         }
@@ -227,78 +186,88 @@ class OrderMessageService
     }
 
     /**
-     * Fetch all messages from a conversation
-     * 
+     * Fetch messages
      */
     public function fetch(int $conversationId)
     {
         return Message::where('conversation_id', $conversationId)
-            ->with(['sender', 'attachments', 'readReceipts.user'])
+            ->with(['sender', 'attachments', 'readReceipts.participant'])
             ->orderBy('created_at', 'asc')
             ->get();
     }
 
     /**
-     * Mark messages as read/seen
-     * 
+     * Mark messages as read
      */
-    public function markAsRead(int $conversationId, int $currentUserId)
+    public function markAsRead(int $conversationId, $participant)
     {
         $messages = Message::where('conversation_id', $conversationId)
-            ->where('sender_id', '!=', $currentUserId)
-            ->whereDoesntHave('readReceipts', function ($query) use ($currentUserId) {
-                $query->where('user_id', $currentUserId);
+            ->where(function ($q) use ($participant) {
+                $q->where('sender_id', '!=', $participant->id)
+                    ->orWhere('sender_type', '!=', get_class($participant));
+            })
+            ->whereDoesntHave('readReceipts', function ($q) use ($participant) {
+                $q->where([
+                    'participant_id' => $participant->id,
+                    'participant_role' => get_class($participant),
+                ]);
             })
             ->get();
 
         foreach ($messages as $message) {
             MessageReadReceipt::create([
                 'message_id' => $message->id,
-                'user_id' => $currentUserId,
+                'participant_id' => $participant->id,
+                'participant_role' => get_class($participant),
                 'read_at' => now(),
-                'creater_id' => $currentUserId,
-                'creater_type' => User::class,
+                'creater_id' => $participant->id,
+                'creater_type' => get_class($participant),
             ]);
         }
 
-        ConversationParticipant::where('conversation_id', $conversationId)
-            ->where('user_id', $currentUserId)
-            ->update(['last_read_at' => now()]);
+        ConversationParticipant::where([
+            'conversation_id' => $conversationId,
+            'participant_id' => $participant->id,
+            'participant_role' => get_class($participant),
+        ])->update(['last_read_at' => now()]);
     }
 
     /**
-     * Get unread message count for a conversation
-     * 
+     * Get unread count
      */
-    public function getUnreadCount(int $conversationId, int $userId)
+    public function getUnreadCount(int $conversationId, int $participantId, string $participantRole)
     {
         return Message::where('conversation_id', $conversationId)
-            ->where('sender_id', '!=', $userId)
-            ->whereDoesntHave('readReceipts', function ($query) use ($userId) {
-                $query->where('user_id', $userId);
+            ->where(function ($q) use ($participantId, $participantRole) {
+                $q->where('sender_id', '!=', $participantId)
+                    ->orWhere('sender_type', '!=', $participantRole);
+            })
+            ->whereDoesntHave('readReceipts', function ($q) use ($participantId, $participantRole) {
+                $q->where([
+                    'participant_id' => $participantId,
+                    'participant_role' => $participantRole,
+                ]);
             })
             ->count();
     }
 
     /**
-     * Delete/Archive a conversation for a user
-     * 
-     * 
+     * Leave conversation
      */
-    public function leaveConversation(int $conversationId, int $userId)
+    public function leaveConversation(int $conversationId, $participant)
     {
-        return ConversationParticipant::where('conversation_id', $conversationId)
-            ->where('user_id', $userId)
-            ->update([
-                'is_active' => false,
-                'left_at' => now(),
-            ]);
+        return ConversationParticipant::where([
+            'conversation_id' => $conversationId,
+            'participant_id' => $participant->id,
+            'participant_role' => get_class($participant),
+        ])->update([
+            'is_active' => false,
+            'left_at' => now(),
+        ]);
     }
 
     /**
-     * Edit a message
-     * 
-     *
+     * Edit message
      */
     public function editMessage(int $messageId, string $newMessageBody)
     {
@@ -314,13 +283,10 @@ class OrderMessageService
     }
 
     /**
-     * Delete a message (soft delete)
-     * 
-     * 
+     * Delete message
      */
     public function deleteMessage(int $messageId)
     {
-        $message = Message::findOrFail($messageId);
-        return $message->delete();
+        return Message::findOrFail($messageId)->delete();
     }
 }

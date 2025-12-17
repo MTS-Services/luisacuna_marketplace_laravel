@@ -10,6 +10,7 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 use App\Services\OrderMessageService;
 
+
 class MessagesComponent extends Component
 {
     use WithFileUploads;
@@ -26,6 +27,7 @@ class MessagesComponent extends Component
 
     protected OrderMessageService $OrderMessageService;
 
+
     public function boot(OrderMessageService $OrderMessageService)
     {
         $this->OrderMessageService = $OrderMessageService;
@@ -41,10 +43,30 @@ class MessagesComponent extends Component
      */
     public function loadUsers(): void
     {
-        $this->users = $this->OrderMessageService->getUsersSortedByLastMessage(
-            Auth::id(), 
-            $this->searchTerm
+        $participants = $this->OrderMessageService->getParticipantsSortedByLastMessage(
+            auth()->user()
         );
+        // dd($participants);
+
+        $this->users = $participants->map(function ($participant) {
+            $user = $participant->participant;
+
+            return (object)[
+                'id' => $user->id,
+                'full_name' => $user->full_name ?? $user->name ?? 'Unknown',
+                'avatar' => $user->avatar ?? null,
+                'unreadCount' => $participant->unreadCount ?? 0,
+                'lastMessage' => $participant->lastMessage,
+                'conversation_uuid' => $participant->conversation_uuid,
+                'participant' => $user,
+            ];
+        });
+
+        if ($this->searchTerm) {
+            $this->users = $this->users->filter(function ($user) {
+                return stripos($user->full_name ?? '', $this->searchTerm) !== false;
+            });
+        }
     }
 
     /**
@@ -57,23 +79,27 @@ class MessagesComponent extends Component
 
     /**
      * Select a user to chat with
-     * 
-     * 
      */
     public function selectUser(int $userId, string $userName = ''): void
     {
         $this->receiverId = $userId;
         $this->receiverName = $userName;
 
-        $conversation = $this->OrderMessageService->getOrCreateConversation(
-            Auth::id(), 
-            $userId
-        );
-        
+        // Get full user objects
+        $buyer = auth()->user();
+        $seller = \App\Models\User::find($userId);
+
+        if (!$seller) {
+            session()->flash('error', 'User not found.');
+            return;
+        }
+
+        $conversation = $this->OrderMessageService->getOrCreateConversation($buyer, $seller);
+
         $this->conversationId = $conversation->id;
         $this->conversationUuid = $conversation->conversation_uuid;
 
-        $this->OrderMessageService->markAsRead($this->conversationId, Auth::id());
+        $this->OrderMessageService->markAsRead($this->conversationId, auth()->user());
 
         $this->loadMessages();
     }
@@ -89,7 +115,7 @@ class MessagesComponent extends Component
     }
 
     /**
-     *
+     * Refresh messages - called by polling or events
      */
     #[On('refreshMessages')]
     public function refreshMessages(): void
@@ -98,7 +124,7 @@ class MessagesComponent extends Component
 
         if ($this->conversationId) {
             $this->loadMessages();
-            $this->OrderMessageService->markAsRead($this->conversationId, Auth::id());
+            $this->OrderMessageService->markAsRead($this->conversationId, auth()->user());
         }
     }
 
@@ -119,8 +145,10 @@ class MessagesComponent extends Component
         $messageType = MessageType::TEXT;
         if (!empty($attachments)) {
             $firstAttachment = $attachments[0] ?? [];
-            if (isset($firstAttachment['type']) && 
-                in_array($firstAttachment['type'], ['image', AttachmentType::IMAGE])) {
+            if (
+                isset($firstAttachment['type']) &&
+                in_array($firstAttachment['type'], ['image', AttachmentType::IMAGE])
+            ) {
                 $messageType = MessageType::TEXT;
             } else {
                 $messageType = MessageType::TEXT;
@@ -147,11 +175,6 @@ class MessagesComponent extends Component
         $this->dispatch('scrollToBottom');
     }
 
-    /**
-     * Process uploaded media files
-     * 
-     *
-     */
     private function processMediaUploads(): array
     {
         $attachments = [];
@@ -171,8 +194,6 @@ class MessagesComponent extends Component
             }
             $thumbnail = null;
             if ($attachmentType === AttachmentType::IMAGE) {
-                // You can add thumbnail generation logic here
-                // $thumbnail = $this->generateThumbnail($path);
             }
 
             $attachments[] = [
@@ -190,15 +211,13 @@ class MessagesComponent extends Component
 
     /**
      * Delete a message (soft delete)
-     * 
-     *
      */
     public function deleteMessage(int $messageId): void
     {
         try {
             $this->OrderMessageService->deleteMessage($messageId);
             $this->loadMessages();
-            
+
             session()->flash('success', 'Message deleted successfully.');
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to delete message.');
@@ -207,15 +226,13 @@ class MessagesComponent extends Component
 
     /**
      * Edit a message
-     * 
-     *
      */
     public function editMessage(int $messageId, string $newMessage): void
     {
         try {
             $this->OrderMessageService->editMessage($messageId, $newMessage);
             $this->loadMessages();
-            
+
             session()->flash('success', 'Message updated successfully.');
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to update message.');
@@ -231,13 +248,14 @@ class MessagesComponent extends Component
 
         try {
             $this->OrderMessageService->leaveConversation(
-                $this->conversationId, 
-                Auth::id()
+                $this->conversationId,
+                auth()->user()
             );
+
             $this->reset(['conversationId', 'conversationUuid', 'receiverId', 'receiverName', 'messages']);
-            
+
             $this->loadUsers();
-            
+
             session()->flash('success', 'Conversation archived.');
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to leave conversation.');
@@ -246,9 +264,6 @@ class MessagesComponent extends Component
 
     /**
      * Get unread count for a specific user
-     * 
-     * @param int $userId
-     * @return int
      */
     public function getUnreadCount(int $userId): int
     {
@@ -258,13 +273,11 @@ class MessagesComponent extends Component
 
     /**
      * Mark specific conversation as read
-     * 
-     * @param int $conversationId
      */
     #[On('markConversationAsRead')]
     public function markConversationAsRead(int $conversationId): void
     {
-        $this->OrderMessageService->markAsRead($conversationId, Auth::id());
+        $this->OrderMessageService->markAsRead($conversationId, auth()->user());
         $this->loadUsers();
     }
 

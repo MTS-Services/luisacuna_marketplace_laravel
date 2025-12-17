@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ConversationStatus;
 use App\Models\Message;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
@@ -34,13 +35,17 @@ class Conversation extends AuditBaseModel implements Auditable
         //
     ];
 
-    protected $casts = [];
+    protected $casts = [
+        'status' => ConversationStatus::class,
+        'last_message_at' => 'datetime',
+        ''
+    ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    public function conversation_participants()
+    public function participants()
     {
         return $this->hasMany(ConversationParticipant::class, 'conversation_id', 'id');
     }

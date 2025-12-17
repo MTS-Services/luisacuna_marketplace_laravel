@@ -17,7 +17,8 @@ class ConversationParticipant extends AuditBaseModel implements Auditable
         'id',
         'sort_order',
         'conversation_id',
-        'user_id',
+        'participant_id',
+        'participant_type',
         'participant_role',
         'joined_at',
         'left_at',
@@ -51,10 +52,16 @@ class ConversationParticipant extends AuditBaseModel implements Auditable
     {
         return $this->belongsTo(Conversation::class,  'conversation_id', 'id');
     }
-    public function user()
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class,  'user_id', 'id');
+    // }
+
+    public function participant()
     {
-        return $this->belongsTo(User::class,  'user_id', 'id');
+        return $this->morphTo();
     }
+
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS

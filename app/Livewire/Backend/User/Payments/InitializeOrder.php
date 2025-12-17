@@ -3,12 +3,13 @@
 namespace App\Livewire\Backend\User\Payments;
 
 
+use App\Models\User;
 use App\Models\Product;
-use App\Services\OrderMessageService;
-use App\Services\OrderService;
-use App\Traits\Livewire\WithNotification;
-use Illuminate\Support\Facades\Session;
 use Livewire\Component;
+use App\Services\OrderService;
+use App\Services\OrderMessageService;
+use Illuminate\Support\Facades\Session;
+use App\Traits\Livewire\WithNotification;
 
 class InitializeOrder extends Component
 {
@@ -59,15 +60,16 @@ class InitializeOrder extends Component
         ]);
 
 
-        $buyerId  = user()->id;
-        $sellerId = $this->product->user_id;
+        $buyer = user(); // অথবা User::find(user()->id)
+        $seller = User::find($this->product->user_id);
 
-        $conversation = $this->OrderMessage->getOrCreateConversation($buyerId, $sellerId);
+        $conversation = $this->OrderMessage->getOrCreateConversation($buyer, $seller);
 
         $this->OrderMessage->send(
             $conversation->id,
             'new order created',
         );
+
 
         Session::driver('database')->put("checkout_{$token}", [
             'order_id' => $order->id,

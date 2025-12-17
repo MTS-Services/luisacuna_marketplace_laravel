@@ -1,10 +1,13 @@
 <x-admin::app>
     <x-slot name="pageSlug">{{ __('chat') }}</x-slot>
+    
     @switch(Route::currentRouteName())
         @case('admin.chat.chat')
-        <x-slot name="title">{{ __('Chat ') }}</x-slot>
+            <x-slot name="title">{{ __('Chat') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Chat Management / Chat') }}</x-slot>
-           <livewire:backend.admin.chat-management.chat :data="$data" />
+            
+            {{-- Pass conversation ID directly --}}
+            <livewire:backend.admin.chat-management.chat :conversationId="$conversationId" />
         @break
 
         @default

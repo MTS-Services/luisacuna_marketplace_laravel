@@ -3,62 +3,127 @@
 namespace App\Livewire\Backend\Admin\ChatManagement;
 
 use Livewire\Component;
-use Livewire\WithPagination;
-use App\Services\OrderMessageService;
 use App\Models\Conversation;
+use Illuminate\Support\Facades\Log;
+use App\Services\OrderMessageService;
+use App\Traits\Livewire\WithNotification;
 
 class Chat extends Component
 {
-    use WithPagination;
+    use WithNotification;
 
-    public $selectedConversationId;
+    public $conversationId;
+    public $conversation;
     public $messages = [];
-    public $conversationDetails;
-    public $search = '';
+    public $messageBody = '';
+    public $participant1;
+    public $participant2;
 
-    protected $orderMessageService;
+    protected OrderMessageService $service;
 
-    public function boot(OrderMessageService $orderMessageService)
+    protected $rules = [
+        'messageBody' => 'required|string|max:5000',
+    ];
+
+    public function boot(OrderMessageService $service)
     {
-        $this->orderMessageService = $orderMessageService;
+        $this->service = $service;
     }
 
-    public function updatedSearch()
+    public function mount($data = null)
     {
-        $this->resetPage();
-    }
+        if ($data && isset($data->conversation_id)) {
+            $this->conversationId = $data->conversation_id;
+        } elseif (is_numeric($data)) {
+            $this->conversationId = $data;
+        } else {
+            $this->conversationId = request()->route('id');
+        }
 
-    public function selectConversation($conversationId)
-    {
-        $this->selectedConversationId = $conversationId;
+        if (!$this->conversationId) {
+            abort(404, 'Conversation not found');
+        }
+
+        $this->loadConversation();
         $this->loadMessages();
+    }
+
+    public function loadConversation()
+    {
+        $this->conversation = Conversation::with(['conversation_participants.user'])
+            ->findOrFail($this->conversationId);
+
+        $participants = $this->conversation->conversation_participants;
+
+        $this->participant1 = $participants->get(0)?->user;
+        $this->participant2 = $participants->get(1)?->user;
     }
 
     public function loadMessages()
     {
-        if ($this->selectedConversationId) {
-            $this->messages = $this->orderMessageService
-                ->fetchForAdmin($this->selectedConversationId)
-                ->toArray();
-            
-            $conversation = Conversation::with(['conversation_participants.user'])
-                ->find($this->selectedConversationId);
-            
-            $this->conversationDetails = $conversation;
+        $this->messages = $this->service->fetchForAdmin($this->conversationId);
+    }
+    public function sendMessage()
+    {
+        try {
+            $this->service->send(
+                conversationId: $this->conversationId,
+                messageBody: $this->messageBody,
+                messageType: \App\Enums\MessageType::TEXT
+            );
+
+            // ✅ SUCCESS LOG
+            Log::info('Message sent', [
+                'conversation_id' => $this->conversationId,
+                'sender_id'       => auth()->id(),
+                'message'         => $this->messageBody,
+                'type'            => 'TEXT',
+            ]);
+
+            $this->messageBody = '';
+            $this->loadMessages();
+
+            $this->showNotification('Message sent successfully!', 'success');
+            $this->dispatch('message-sent');
+        } catch (\Exception $e) {
+
+            // ❌ ERROR LOG
+            Log::error('Message sending failed', [
+                'conversation_id' => $this->conversationId,
+                'sender_id'       => auth()->id(),
+                'message'         => $this->messageBody,
+                'error'           => $e->getMessage(),
+            ]);
+
+            // optional
+            // $this->showNotification('Failed to send message', 'error');
         }
     }
 
+    // public function sendMessage()
+    // {
+    //     // $this->validate();
+
+    //     try {
+    //         $this->service->send(
+    //             conversationId: $this->conversationId,
+    //             messageBody: $this->messageBody,
+    //             messageType: \App\Enums\MessageType::TEXT
+    //         );
+
+    //         $this->messageBody = '';
+    //         $this->loadMessages();
+
+    //         $this->showNotification('Message sent successfully!', 'success');
+    //         $this->dispatch('message-sent');
+
+    //     } catch (\Exception $e) {
+    //         // $this->showNotification('Failed to send message: ' . $e->getMessage(), 'error');
+    //     }
+    // }
+
     public function render()
     {
-        // Get paginated data but don't store it in a property
-        $conversations = $this->orderMessageService->getPaginated(50, [
-            'search' => $this->search,
-            'sort_field' => 'last_message_at',
-            'sort_direction' => 'desc'
-        ]);
-
-        return view('livewire.backend.admin.chat-management.chat', [
-            'conversations' => $conversations
-        ]);
+        return view('livewire.backend.admin.chat-management.chat');
     }
 }

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Backend\Admin\ChatManagement;
 
-use App\Http\Controllers\Controller;
 use App\Models\Message;
+use App\Models\Conversation;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ChatController extends Controller
 {
@@ -14,15 +15,34 @@ class ChatController extends Controller
     {
         return view($this->masterView);
     }
+    // public function chat(string $id)
+    // {
+    //     // Find conversation by ID
+    //     $conversation = Conversation::with(['conversation_participants.user', 'messages'])
+    //         ->find($id);
 
-    public function chat(string $id)
+    //     if (!$conversation) {
+    //         abort(404, 'Conversation not found');
+    //     }
+
+    //     // Prepare data object to pass to view
+    //     $data = (object) [
+    //         'conversation_id' => $conversation->id,
+    //         'conversation' => $conversation
+    //     ];
+
+    //     return view($this->masterView, [
+    //         'data' => $data
+    //     ]);
+    // }
+
+public function chat(string $id)
     {
-        $data = Message::find($id);
-        if (!$data) {
-            abort(404);
-        }
+        // Verify conversation exists
+        $conversation = Conversation::findOrFail($id);
+        
         return view($this->masterView, [
-            'data' => $data
+            'conversationId' => $id
         ]);
     }
 }
