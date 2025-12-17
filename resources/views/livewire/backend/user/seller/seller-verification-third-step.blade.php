@@ -48,7 +48,7 @@
                 </div>
 
                <div class="flex justify-center space-x-4 pt-10">
-                <a href="{{route('user.seller.verification',['step' => 2])}}" class="px-8 py-2  hover:bg-zinc-50 rounded-lg">
+                <a wire:click.prevent="previousStep" wire:navigate class="px-8 cursor-pointer py-2  hover:bg-zinc-50 rounded-lg">
                     BACK
                 </a>
                 <button wire:click="nextStep" class="px-8 py-2 text-white rounded-lg transition" 

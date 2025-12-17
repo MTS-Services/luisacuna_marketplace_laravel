@@ -1,16 +1,12 @@
 <?php
 
 use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\Frontend\GameController;
 use App\Http\Controllers\MultiLangController;
 use App\Http\Controllers\PaymentController;
 use App\Livewire\Test\Checkout;
 use App\Livewire\Test\Items;
 use App\Livewire\ToastDemo;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\User\UserCreate;
-use App\Livewire\User\UserEdit;
-use App\Livewire\User\UserList;
 use Illuminate\Support\Facades\Redis;
 
 Route::post('language', [MultiLangController::class, 'langChange'])->name('lang.change');

@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
             GameTagSeeder::class,
 
-            SellerProfileSeeder::class,
+            // SellerProfileSeeder::class,
             UserStatisticsSeeder::class,
             ReferraSettingSeeder::class,
             UserReferralSeeder::class,

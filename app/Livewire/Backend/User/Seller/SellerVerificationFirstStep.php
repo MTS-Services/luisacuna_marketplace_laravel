@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Backend\User\Seller;
 
-use App\Enums\AccountType;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
@@ -10,6 +9,12 @@ use Livewire\Component;
 class SellerVerificationFirstStep extends Component
 {
     public $account_type; 
+
+    public function mount(){
+    
+        $this->protectStep();
+
+    }
     public function render()
     {
       $data = Session::get('kyc_'.user()->id);
@@ -18,8 +23,12 @@ class SellerVerificationFirstStep extends Component
         $this->account_type = $data['account_type'];
     }
 
+    // 0 = Individual, 1 = Company
         return view('livewire.backend.user.seller.seller-verification-first-step',[
-            'accountTypes' => AccountType::options()
+            'accountTypes' => [
+                ['value' => 0, 'label' => 'Individual'],
+                ['value' => 1, 'label' => 'Company'],
+            ]
         ]);
     }
 
@@ -41,10 +50,26 @@ class SellerVerificationFirstStep extends Component
             $data = [];
         }
 
-        $data = array_merge($data, ['account_type' => $this->account_type]);
+        $data = array_merge($data, [
+            'account_type' => $this->account_type,
+            'nextStep' => 2,
+            'prevStep' => 1
+        ]);
 
         Session::put($key, $data);
        
-       return redirect()->route('user.seller.verification', ['step' => 2]);
+       return redirect()->route('user.seller.verification', ['step' => encrypt(2)]);
+    }
+
+    public function previousStep(){
+        return redirect()->route('user.seller.verification', ['step' => encrypt(0)]);
+    }
+    public function protectStep(){
+        
+       $kyc = session()->get('kyc_'.user()->id);
+
+        if (!$kyc || ($kyc['nextStep'] != 1 || $kyc['prevStep'] != 0)) {
+            return redirect()->route('user.seller.verification', ['step' => 0]);
+        }
     }
 }
