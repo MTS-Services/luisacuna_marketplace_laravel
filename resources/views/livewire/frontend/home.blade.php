@@ -1,4 +1,6 @@
-<main class="overflow-x-hidden-hidden">
+<main class="overflow-x-hidden  bg-light-bg dark:bg-dark-bg "
+    ">
+
     <!-- Hero Section -->
 
     <div class="swiper swiper-hero">
@@ -14,28 +16,20 @@
             @endforelse
         </div>
     </div>
-
-
-  
     <section class="py-20" id="popular-games">
- 
-
-
         {{-- New Bosting Games Section --}}
-
         <section class="container mx-auto mt-10">
+            <div class="mx-20">
                 <div class="title mt-10">
-                <h2 class="text-40px font-bold mb-4 text-text-white">
-                            {{ __('Newly Boosting') }}
-                        </h2>
+                    <h2 class="text-40px font-bold mb-4 text-text-white">
+                        {{ __('Newly Boosting') }}
+                    </h2>
                 </div>
                 <div wire:ignore class="swiper new-boosting">
                     <div class="swiper-wrapper py-10">
                         @foreach ($new_bostings as $index => $boosting)
-                          
                             <div class="swiper-slide">
-                                 {{-- <p class="bg-red-500"> {{ $index .'='. $boosting->slug }}</p> --}}
-                                <x-game-card :data="$boosting" :categorySlug="'boosting'"/>
+                                <x-game-card :data="$boosting" :categorySlug="'boosting'" />
                             </div>
                         @endforeach
                     </div>
@@ -47,17 +41,18 @@
                         <div class="swiper-button-prev"></div>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
         {{-- New Boosting Ends --}}
 
-
-       {{-- Popular Games Section --}}
+        {{-- Popular Games Section --}}
         <section class="container mx-auto mt-10">
+            <div class="mx-20">
                 <div class="title mt-10">
-                <h2 class="text-40px font-bold mb-4 text-text-white">
-                            {{ __('Popular Games') }}
-                        </h2>
+                    <h2 class="text-40px font-bold mb-4 text-text-white">
+                        {{ __('Popular Games') }}
+                    </h2>
                 </div>
                 <div wire:ignore class="swiper popular-games">
                     <div class="swiper-wrapper py-10">
@@ -75,25 +70,28 @@
                         <div class="swiper-button-prev"></div>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-        {{--Popular Games Ends --}}
+        {{-- Popular Games Ends --}}
 
 
-       {{-- Top selling  Section --}}
+        {{-- Top selling  Section --}}
         <section class="container mx-auto mt-10">
+            <div class="mx-20">
                 <div class="title mt-10">
-                <h2 class="text-40px font-bold mb-4 text-text-white">
-                          {{ __('Top-Selling Offers') }}
-                        </h2>
+                    <h2 class="text-40px font-bold mb-4 text-text-white">
+                        {{ __('Top-Selling Offers') }}
+                    </h2>
                 </div>
                 <div wire:ignore class="swiper top-sellings">
                     <div class="swiper-wrapper py-10">
-                    @foreach ($datas as $item)
-                     <div class="swiper-slide">
-                        <x-ui.shop-card :gameSlug="$item->games->slug" :categorySlug="$item->category->slug" :data="$item" :game="$game" />
-                     </div>
-                    @endforeach
+                        @foreach ($datas as $item)
+                            <div class="swiper-slide">
+                                <x-ui.shop-card :gameSlug="$item->games->slug" :categorySlug="$item->category->slug" :data="$item"
+                                    :game="$game" />
+                            </div>
+                        @endforeach
                     </div>
 
                     <!-- Add Pagination and Navigation -->
@@ -103,9 +101,10 @@
                         <div class="swiper-button-prev"></div>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-        {{--Top Selling Ends --}}
+        {{-- Top Selling Ends --}}
 
 
 
@@ -113,51 +112,53 @@
 
     <!-- How It Works Section -->
     <section class="py-20">
-        <div class="container">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mb-4 text-text-white">{{ __('How It Works') }}</h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Step 1 -->
-                <div class="text-center">
-                    <div class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
-                        <img src="{{ asset('assets/images/home_page/secure_transaction.png') }}" alt="">
-                    </div>
-                    <h3 class="font-bold text-lg mb-2 text-text-white">{{ __('Secure Transactions') }}</h3>
-                    <p class="text-text-secondary text-sm">
-                        {{ __('Our platform uses industry-leading encryption to ensure your  transactions are safe and secure, guaranteeing asafeshopping experience.') }}
-                    </p>
+        <div class="container mx-auto">
+            <div class="mx-20">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold mb-4 text-text-white">{{ __('How It Works') }}</h2>
                 </div>
 
-                <!-- Step 2 -->
-                <div class="text-center relative">
-                    <div class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
-                        <img src="{{ asset('assets/images/home_page/verified_sellers.png') }}" alt="">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Step 1 -->
+                    <div class="text-center">
+                        <div class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
+                            <img src="{{ asset('assets/images/home_page/secure_transaction.png') }}" alt="">
+                        </div>
+                        <h3 class="font-semibold text-2xl mb-2 text-text-white">{{ __('Secure Transactions') }}</h3>
+                        <p class="text-text-white text-base font-normal">
+                            {{ __('Our platform uses industry-leading encryption to ensure your  transactions are safe and secure, guaranteeing asafeshopping experience.') }}
+                        </p>
                     </div>
-                    <div class="absolute top-1/4 -left-1/4 z-20 hidden md:block">
-                        <img src="{{ asset('assets/images/home_page/right-arrow.png') }}" alt="">
-                    </div>
-                    <h3 class="font-bold text-lg mb-2 text-text-white">{{ __('Verified Sellers') }}</h3>
-                    <p class="text-text-secondary text-sm">
-                        {{ __('We meticulously verify each seller to ensure you receive genuine digital goods from trusted sources.') }}
-                    </p>
-                </div>
 
-                <!-- Step 3 -->
-                <div class="text-center relative">
-                    <div class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
-                        <img src="{{ asset('assets/images/home_page/effortless_buying.png') }}" alt="">
+                    <!-- Step 2 -->
+                    <div class="text-center relative">
+                        <div class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
+                            <img src="{{ asset('assets/images/home_page/verified_sellers.png') }}" alt="">
+                        </div>
+                        <div class="absolute top-1/4 -left-1/4 z-20 hidden md:block">
+                            <img src="{{ asset('assets/images/home_page/right-arrow.png') }}" alt="">
+                        </div>
+                        <h3 class="font-semibold text-2xl mb-2 text-text-white">{{ __('Verified Sellers') }}</h3>
+                        <p class="text-text-white text-sm">
+                            {{ __('We meticulously verify each seller to ensure you receive genuine digital goods from trusted sources.') }}
+                        </p>
                     </div>
-                    <div class="absolute top-1/4 -left-1/4 z-20 hidden md:block">
-                        <img src="{{ asset('assets/images/home_page/right-arrow.png') }}" alt="">
+
+                    <!-- Step 3 -->
+                    <div class="text-center relative">
+                        <div class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
+                            <img src="{{ asset('assets/images/home_page/effortless_buying.png') }}" alt="">
+                        </div>
+                        <div class="absolute top-1/4 -left-1/4 z-20 hidden md:block">
+                            <img src="{{ asset('assets/images/home_page/right-arrow.png') }}" alt="">
+                        </div>
+                        <h3 class="font-semibold text-2xl mb-2 text-text-white">
+                            {{ __('Effortless Buying & Selling') }}
+                        </h3>
+                        <p class="text-text-white text-sm">
+                            {{ __('Our intuitive platform streamlines the buying and selling process, set with quick delivery and software within reach.') }}
+                        </p>
                     </div>
-                    <h3 class="font-bold text-lg mb-2 text-text-white">
-                        {{ __('Effortless Buying & Selling') }}
-                    </h3>
-                    <p class="text-text-secondary text-sm">
-                        {{ __('Our intuitive platform streamlines the buying and selling process, set with quick delivery and software within reach.') }}
-                    </p>
                 </div>
             </div>
         </div>
@@ -176,7 +177,7 @@
                         <span><x-flux::icon name="user" class="w-6 h-6 inline-block" stroke="white" /></span>
                         Explore Products</button> --}}
                     <x-ui.button class=" mt-10! py-3! px-4! w-auto! text-base font-normal ">
-                     
+
                         {{ __('Explore Products') }}
                     </x-ui.button>
                 </div>
@@ -190,6 +191,9 @@
 
     <!-- FAQ Section -->
     <livewire:frontend.partials.faq :faqs_buyer="$faqs_buyer" :faqs_seller="$faqs_seller" />
+    <div class="my-96">
+
+    </div>
     @push('scripts')
         <script>
             document.addEventListener('livewire:navigated', function() {
@@ -208,7 +212,7 @@
                     spaceBetween: 20,
                 });
             });
-             // Home Boosting Slider
+            // Home Boosting Slider
 
             document.addEventListener('livewire:navigated', function() {
                 const swiper = new Swiper('.new-boosting', {
