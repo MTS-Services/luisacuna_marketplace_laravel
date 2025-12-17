@@ -1,0 +1,1 @@
+@props(['notification', 'isRead' => false])

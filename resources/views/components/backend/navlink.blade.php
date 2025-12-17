@@ -25,7 +25,7 @@
 
         // Check permission for the item itself
         if (isset($item['permission']) && !empty($item['permission'])) {
-            $hasPermission = auth()->user()->can($item['permission']);
+            $hasPermission = admin()->can($item['permission']);
             $mainPermissions[] = $item['permission'];
         }
 
@@ -37,7 +37,7 @@
                 $hasSubPermission = true;
 
                 if (isset($subitem['permission']) && !empty($subitem['permission'])) {
-                    $hasSubPermission = auth()->user()->can($subitem['permission']);
+                    $hasSubPermission = admin()->can($subitem['permission']);
                 }
 
                 if ($hasSubPermission) {
@@ -84,7 +84,7 @@
 
     $isAnyActive = $isMainActive || $isDropdownActive;
     $shouldShowComponent =
-        $type === 'single' ? empty($permission) || auth()->user()->can($permission) : count($items) > 0;
+        $type === 'single' ? empty($permission) || admin()->can($permission) : count($items) > 0;
 
 @endphp
 
@@ -114,7 +114,7 @@
 
         @if ($type === 'single')
             <!-- Single Navlink (like original single-navlink) -->
-            @if (empty($permission) || auth()->user()->can($permission))
+            @if (empty($permission) || admin()->can($permission))
                 <a href="{{ $route }}" wire:navigate
                     class="sidebar-item flex items-center gap-4 p-1 rounded-xl hover:bg-hover transition-all duration-200 group {{ $isMainActive ? 'bg-primary hover:bg-primary/80' : '' }}">
                     <div

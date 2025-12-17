@@ -11,29 +11,9 @@ use App\Enums\CustomNotificationType;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 
-class NotificatonService
+class NotificationServiceCopy
 {
     public function __construct(protected CustomNotification $model) {}
-
-    public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
-    {
-        $search = $filters['search'] ?? null;
-        $sortField = $filters['sort_field'] ?? 'created_at';
-        $sortDirection = $filters['sort_direction'] ?? 'desc';
-
-        // Check if search is provided and Scout is configured
-        if ($search && config('scout.driver')) {
-            return CustomNotification::search($search)
-                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
-                ->paginate($perPage);
-        }
-
-        // Fallback to regular query if no search or Scout not configured
-        return $this->model->query()
-            ->filter($filters)
-            ->orderBy($sortField, $sortDirection)
-            ->paginate($perPage);
-    }
 
     public function getAnnouncementDatas(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
@@ -59,15 +39,6 @@ class NotificatonService
         return $baseQuery
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
-    }
-
-    public function findData($column_value, string $column_name = 'id', bool $trashed = false): ?CustomNotification
-    {
-        $model = $this->model;
-        if ($trashed) {
-            $model = $model->withTrashed();
-        }
-        return $model->where($column_name, $column_value)->first();
     }
 
     public function createData(array $data): CustomNotification
