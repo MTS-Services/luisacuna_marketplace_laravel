@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Builder;
 class CustomNotificationStatus extends BaseModel
 {
     protected $fillable = [
-        'user_id',
-        'user_type',
+        'actor_id',
+        'actor_type',
         'notification_id',
         'read_at',
     ];
