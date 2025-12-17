@@ -4,10 +4,11 @@ namespace App\Livewire\Backend\Admin\NotificationManagement\Announcement;
 
 use App\Enums\CustomNotificationType;
 use Livewire\Component;
-use App\Services\NotificatonService;
+use App\Services\NotificationService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Attributes\On;
+use Illuminate\Support\Str;
 
 class Index extends Component
 {
@@ -15,9 +16,9 @@ class Index extends Component
 
     public $statusFilter = '';
 
-    protected NotificatonService $service;
+    protected NotificationService $service;
 
-    public function boot(NotificatonService $service)
+    public function boot(NotificationService $service)
     {
         $this->service = $service;
     }
@@ -29,13 +30,21 @@ class Index extends Component
             filters: $this->getFilters()
         );
 
-
         $columns = [
 
             [
                 'key' => 'data.title',
                 'label' => 'Title',
-                'sortable' => true
+                'format' => function ($data) {
+                    return '<p class="text-text-white text-xs font-semibold mb-2">' . Str::limit($data->data['title'], 20) . '</p>';
+                }
+            ],
+            [
+                'key' => 'data.message',
+                'label' => 'Message',
+                'format' => function ($data) {
+                    return '<p class="text-text-white text-xs font-semibold mb-2">' . Str::limit($data->data['message'], 30) . '</p>';
+                }
             ],
             [
                 'key' => 'type',
@@ -91,16 +100,6 @@ class Index extends Component
             'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
         ];
-    }
-
-    protected function getSelectableIds(): array
-    {
-        $data = $this->service->getPaginatedData(
-            perPage: $this->perPage,
-            filters: $this->getFilters()
-        );
-
-        return array_column($data->items(), 'id');
     }
 
     public function updatedStatusFilter(): void

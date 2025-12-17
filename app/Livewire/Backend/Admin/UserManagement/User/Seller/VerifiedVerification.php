@@ -5,13 +5,13 @@ namespace App\Livewire\Backend\Admin\UserManagement\User\Seller;
 use App\Services\SellerProfileService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
-use Illuminate\Support\Facades\Log;
-use Livewire\Attributes\On;
 use Livewire\Component;
 
-class PendingVerification extends Component
+class VerifiedVerification extends Component
 {
-    use WithDataTable, WithNotification;
+
+
+   use WithDataTable, WithNotification;
 
 
     protected SellerProfileService $service;
@@ -71,7 +71,7 @@ class PendingVerification extends Component
                 'encrypt' => true,
             ],
         ];
-        return view('livewire.backend.admin.user-management.user.seller.pending-verification', [
+      return view('livewire.backend.admin.user-management.user.seller.verified-verification', [
             'datas' => $datas,
             'columns' => $columns,
             'actions' => $actions,
@@ -92,7 +92,7 @@ class PendingVerification extends Component
     {
         return [
             'search' => $this->search,
-            'seller_verified' => 0,
+            'seller_verified' => 1,
             'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
         ];

@@ -11,6 +11,7 @@ use Illuminate\Routing\Controllers\Middleware;
 
 class UserController extends Controller implements HasMiddleware
 {
+
     protected $masterView = 'backend.admin.pages.user-management.user.user';
 
     protected UserService $service;
@@ -145,6 +146,21 @@ class UserController extends Controller implements HasMiddleware
     //Seller Verificaiton 
 
     public function sellerVerification()
+    {
+        return view($this->masterView);
+    }
+
+    // Seller Verification View Details
+
+    public function sellerVerificationView(string $encryptedId)
+    {
+       
+        return view($this->masterView, [
+            'encryptedId' => $encryptedId
+        ]);
+    }
+  
+    public function sellerVerified()
     {
         return view($this->masterView);
     }

@@ -10,9 +10,10 @@ use Illuminate\Database\Eloquent\Builder;
 class DeletedCustomNotification extends BaseModel
 {
     protected $fillable = [
-        'user_id',
-        'user_type',
+        'actor_id',
+        'actor_type',
         'notification_id',
+        'deleted_at',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

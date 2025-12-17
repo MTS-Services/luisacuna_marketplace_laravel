@@ -101,7 +101,7 @@ class SellerProfile extends AuditBaseModel implements Auditable
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
 
@@ -113,6 +113,11 @@ class SellerProfile extends AuditBaseModel implements Auditable
             'seller_profile_id',
             'category_id'
         )->withTimestamps();
+    }
+
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class, 'country_id', 'id');
     }
     /* ================================================================
      |  Translation Helper Methods (Convenience)
@@ -161,9 +166,11 @@ class SellerProfile extends AuditBaseModel implements Auditable
     {
         return $query
             ->when(
-                $filters['verified'] ?? null,
-                fn($q, $verified) =>
-                $verified ? $q->verified() : $q->unverified()
+               array_key_exists('seller_verified', $filters),
+            fn ($q) =>
+                $filters['seller_verified']
+                    ? $q->verified()
+                    : $q->unverified()
             )
             ->when(
                 $filters['level'] ?? null,
@@ -174,6 +181,13 @@ class SellerProfile extends AuditBaseModel implements Auditable
                 $filters['shop_name'] ?? null,
                 fn($q, $name) =>
                 $q->where('shop_name', 'like', "%{$name}%")
+            )
+            ->when(
+                $filters['search'] ?? null,
+                fn($q, $search) =>
+                 $q->where('first_name', 'like', "%{$search}%")
+                    ->orWhere('last_name', 'like', "%{$search}%")  
+                    ->orWhere('company_name', 'like', "%{$search}%")
             );
     }
 

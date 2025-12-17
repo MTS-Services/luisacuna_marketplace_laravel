@@ -78,7 +78,7 @@ class SellerProfileService{
             if (isset($data['company_documents'])) {
                 $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
                 $fileName = $prefix . '-' . $data['company_documents']->getClientOriginalName();
-                $data['company_documents'] = Storage::disk('public')->putFileAs('seller_profiles', $data['selfie_image'], $fileName);
+                $data['company_documents'] = Storage::disk('public')->putFileAs('seller_profiles', $data['company_documents'], $fileName);
             }
 
             if ($data['categories']) {
@@ -98,5 +98,40 @@ class SellerProfileService{
         });
     }
 
+    //Verify Data
+
+    public function verifyData($id) : bool
+    {
+        return DB::transaction(function () use ($id) {
+            $sellerProfile = $this->findData($id);
+
+            if (!$sellerProfile) {
+                throw new \Exception('Seller profile not found.');
+            }
+
+            return $sellerProfile->update([
+                'seller_verified' => 1,
+                'seller_verified_at' => now(),
+            ]);
+        });
+    }
+        public function unverifyData($id) : bool
+    {
+        return DB::transaction(function () use ($id) {
+
+           
+            $sellerProfile = $this->findData($id);
+
+            if (!$sellerProfile) {
+                throw new \Exception('Seller profile not found.');
+            }
+
+            return $sellerProfile->update([
+                'seller_verified' => 0, 
+            ]);
+
+            
+        });
+    }
 
 }
