@@ -17,17 +17,16 @@ class Sidebar extends Component
     public Collection $notifications;
     public bool $isLoading = true;
 
-    protected NotificationService $notificationService;
+    protected NotificationService $service;
 
-    public function boot(NotificationService $notificationService)
+    public function boot(NotificationService $service): void
     {
-        $this->notificationService = $notificationService;
-        $this->notifications = new Collection();
+        $this->service = $service;
     }
 
-    public function mount()
+    public function mount(): void
     {
-        // $this->fetchNotifications();
+        $this->notifications = new Collection();
     }
 
     public function render()
@@ -36,39 +35,77 @@ class Sidebar extends Component
     }
 
     #[On('open-sidebar-notifications')]
-    public function openSidebar()
+    public function openSidebar(): void
     {
         $this->openSidebarNotifications = true;
         $this->fetchNotifications();
     }
 
-    public function fetchNotifications()
+    #[On('close-sidebar-notifications')]
+    public function closeSidebar(): void
     {
-        $this->isLoading = true;
-        $this->notifications = $this->notificationService->getRecent();
-        $this->isLoading = false;
+        $this->openSidebarNotifications = false;
     }
 
-    public function markAllAsRead()
+    #[On('notification-received')]
+    #[On('notification-created')]
+    #[On('notification-updated')]
+    public function fetchNotifications(): void
     {
         try {
-            $this->notificationService->markAllAsRead();
+            $this->isLoading = true;
+            $this->notifications = $this->service->getRecent(10);
+        } catch (\Exception $e) {
+            Log::error('Failed to fetch notifications', [
+                'error' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+            ]);
+            $this->notifications = new Collection();
+        } finally {
+            $this->isLoading = false;
+        }
+    }
+
+    public function markAsRead(string $id): void
+    {
+        try {
+            $this->service->markAsRead($id);
             $this->fetchNotifications();
-            $this->toastSuccess('All notifications have been marked as read.');
+            $this->dispatch('notification-read');
+        } catch (\Exception $e) {
+            Log::error('Failed to mark notification as read', [
+                'id' => $id,
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function markAllAsRead(): void
+    {
+        try {
+            $count = $this->service->markAllAsRead();
+            $this->fetchNotifications();
+            $this->dispatch('all-notifications-read');
+            $this->toastSuccess(__('Marked :count notifications as read', ['count' => $count]));
         } catch (\Exception $e) {
             Log::error('Failed to mark all notifications as read', [
                 'error' => $e->getMessage(),
                 'line' => $e->getLine(),
                 'file' => $e->getFile(),
             ]);
-            $this->toastError('Something went wrong. Please try again.');
+            $this->toastError(__('Something went wrong. Please try again.'));
         }
     }
 
-    #[On('close-sidebar-notifications')]
-    public function closeSidebar()
+    public function getListeners(): array
     {
-        $this->openSidebarNotifications = false;
-        $this->reset();
+        return [
+            'open-sidebar-notifications' => 'openSidebar',
+            'close-sidebar-notifications' => 'closeSidebar',
+            'notification-received' => 'fetchNotifications',
+            'notification-created' => 'fetchNotifications',
+            'notification-updated' => 'fetchNotifications',
+        ];
     }
 }
