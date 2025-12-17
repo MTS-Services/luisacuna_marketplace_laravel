@@ -77,16 +77,16 @@
                         {{-- Message --}}
                         <div class="w-full md:col-span-2">
                             <x-ui.label value="Message" class="mb-1" />
-                            <x-ui.textarea placeholder="Message" wire:model="form.message" rows="2" />
+                            <x-ui.textarea placeholder="Message" wire:model="form.message" rows="4" />
                             <x-ui.input-error :messages="$errors->get('form.message')" />
                         </div>
 
                         {{-- Description --}}
-                        <div class="w-full md:col-span-2">
+                        {{-- <div class="w-full md:col-span-2">
                             <x-ui.label value="Description (Optional)" class="mb-1" />
                             <x-ui.textarea placeholder="Description" wire:model="form.description" rows="4" />
                             <x-ui.input-error :messages="$errors->get('form.description')" />
-                        </div>
+                        </div> --}}
 
                         {{-- Additional Notes Section --}}
                         {{-- <div class="w-full md:col-span-2 border-t pt-4 mt-2">

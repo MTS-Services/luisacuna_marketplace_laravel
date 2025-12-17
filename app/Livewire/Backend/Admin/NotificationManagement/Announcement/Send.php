@@ -5,7 +5,7 @@ namespace App\Livewire\Backend\Admin\NotificationManagement\Announcement;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Log;
-use App\Services\NotificatonService;
+use App\Services\NotificationService;
 use App\Enums\CustomNotificationType;
 use App\Livewire\Forms\AnnouncementForm;
 use App\Models\Admin;
@@ -17,9 +17,9 @@ class Send extends Component
 
     public AnnouncementForm $form;
 
-    protected NotificatonService $service;
+    protected NotificationService $service;
 
-    public function boot(NotificatonService $service)
+    public function boot(NotificationService $service)
     {
         $this->service = $service;
     }
@@ -27,7 +27,7 @@ class Send extends Component
     public function mount()
     {
         $this->form->reset();
-        $this->form->additional = []; // Initialize as empty associative array
+        $this->form->additional = [];
         $this->resetValidation();
     }
 
@@ -60,7 +60,7 @@ class Send extends Component
             $data['is_announced'] = true;
             $data['icon'] = 'megaphone';
 
-            $this->service->createData($data);
+            $this->service->create($data);
 
             $this->success('Announcement sent successfully');
 
@@ -70,7 +70,6 @@ class Send extends Component
 
             // Refresh the index table
             $this->dispatch('refresh-announcement-list');
-            
         } catch (\Exception $e) {
             Log::error('Failed to send announcement: ' . $e->getMessage());
             $this->error('Failed to send announcement. Please try again.');
