@@ -5,7 +5,7 @@
             class="w-full max-w-xl bg-zinc-900/40 dark:bg-bg-secondary/75 backdrop-blur-sm dark:backdrop-blur-sm rounded-2xl p-20 my-20 shadow-2xl">
             <!-- Header -->
             <div class="text-center mb-8">
-                <div class="flex justify-center items-center h-[102px] mb-11">
+                <div class="flex justify-center items-center h-[102px] mb-5 sm:mb-11">
                     <img src="{{ asset('assets/images/background/login-logo.png') }}" alt=""
                         class="max-w-full max-h-full object-contain">
                 </div>
@@ -57,7 +57,7 @@
                         <!-- OTP Input -->
                         <div class="mb-4 sm:mb-6 px-2 sm:px-6 mt-11">
                             <label
-                                class="block text-lg sm:text-2xl font-medium mb-4 text-white">{{ __('Code') }}</label>
+                                class="block text-lg sm:text-2xl font-medium mb-1 sm:mb-4 text-white">{{ __('Code') }}</label>
                             <x-ui.input type="number" placeholder="Enter your otp" wire:model="otp_code"
                                 class="bg-bg-info! rounded-xl! border-0! focus:ring-0! text-white! placeholder:text-white!" />
                             <x-ui.input-error :messages="$errors->get('otp_code')" />
@@ -152,20 +152,20 @@
 
             <div>
                 <!-- Social login -->
-                <div class="flex justify-center gap-4 mb-8">
+                <div class="flex justify-center gap-4 mb-4 sm:mb-8">
                     <a href="{{ route('google.redirect') }}"
-                        class="w-10 h-10 sm:w-14 sm:h-14 p-3.5 flex items-center justify-center bg-bg-white rounded-md">
+                        class="w-14 h-14 p-3.5 flex items-center justify-center bg-bg-white rounded-md">
                         <img src="{{ asset('assets/icons/icons8-google.svg') }}" class="w-full h-full rounded-md"
                             alt="Google" />
                     </a>
                     <a href="{{ route('apple.login') }}"
-                        class="w-10 h-10 sm:w-14 sm:h-14 p-3.5 flex items-center justify-center bg-bg-white rounded-md">
+                        class="w-14 h-14 p-3.5 flex items-center justify-center bg-bg-white rounded-md">
                         <img src="{{ asset('assets/icons/icons8-apple-logo.svg') }}" class="w-full h-full rounded-md"
                             alt="Apple" />
                     </a>
 
                     <a href="{{ route('auth.facebook') }}"
-                        class="w-10 h-10 sm:w-14 sm:h-14 p-3.5 flex items-center justify-center bg-bg-white rounded-md">
+                        class="w-14 h-14 p-3.5 flex items-center justify-center bg-bg-white rounded-md">
                         <img src="{{ asset('assets/icons/facebook.svg') }}" class="w-full h-full rounded-md"
                             alt="Facebook" />
                     </a>
@@ -241,7 +241,7 @@
                             <!-- OTP Input -->
                             <div class="mb-4 sm:mb-6 px-2 sm:px-6 mt-5 md:mt-11">
                                 <label
-                                    class="block text-lg sm:text-2xl font-medium mb-4 text-white">{{ __('Code') }}</label>
+                                    class="block text-lg sm:text-2xl font-medium mb-1 sm:mb-4 text-white">{{ __('Code') }}</label>
                                 <x-ui.input type="number" placeholder="Enter your otp" wire:model="otp_code"
                                     class="bg-bg-info! rounded-xl! border-0! focus:ring-0! text-white! placeholder:text-white!" />
                                 <x-ui.input-error :messages="$errors->get('otp_code')" />
@@ -337,20 +337,20 @@
 
                 <div>
                     <!-- Social login -->
-                    <div class="flex justify-center gap-4 mb-8">
+                    <div class="flex justify-center gap-4 mb-4 sm:mb-8">
                         <a href="{{ route('google.redirect') }}"
-                            class="w-10 h-10 sm:w-14 sm:h-14 p-3.5 flex items-center justify-center bg-bg-white rounded-md">
+                            class="w-14 h-14 p-3.5 flex items-center justify-center bg-bg-white rounded-md">
                             <img src="{{ asset('assets/icons/icons8-google.svg') }}" class="w-full h-full rounded-md"
                                 alt="Google" />
                         </a>
                         <a href="{{ route('apple.login') }}"
-                            class="w-10 h-10 sm:w-14 sm:h-14 p-3.5 flex items-center justify-center bg-bg-white rounded-md">
+                            class="w-14 h-14 p-3.5 flex items-center justify-center bg-bg-white rounded-md">
                             <img src="{{ asset('assets/icons/icons8-apple-logo.svg') }}"
                                 class="w-full h-full rounded-md" alt="Apple" />
                         </a>
 
                         <a href="{{ route('auth.facebook') }}"
-                            class="w-10 h-10 sm:w-14 sm:h-14 p-3.5 flex items-center justify-center bg-bg-white rounded-md">
+                            class="w-14 h-14 p-3.5 flex items-center justify-center bg-bg-white rounded-md">
                             <img src="{{ asset('assets/icons/facebook.svg') }}" class="w-full h-full rounded-md"
                                 alt="Facebook" />
                         </a>
