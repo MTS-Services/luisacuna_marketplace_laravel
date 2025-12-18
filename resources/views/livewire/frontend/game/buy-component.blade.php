@@ -1,5 +1,5 @@
 <main class="overflow-x-hidden bg-light-bg dark:bg-dark-bg">
-    <div class="max-w-7xl mx-auto px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 py-8">
         <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" :game="$game" />
         <!-- Breadcrumb -->
         <livewire:frontend.partials.breadcrumb :gameSlug="$gameSlug" :categorySlug="$categorySlug" />

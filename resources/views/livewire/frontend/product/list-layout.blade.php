@@ -47,7 +47,7 @@
         </div>
 
         <div class="mt-3 mb-6 flex items-center justify-between">
-            <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70 rounded! border! border-zinc-700!"
+            <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!"
                 wire:model="selectedRegion" wire:change="serachFilter">
                 <option value="">{{ __('Global') }}</option>
                 <option value="completed">{{ __('Completed') }}</option>
@@ -57,7 +57,7 @@
 
             <div class="flex flex-row gap-5">
                 <x-ui.select id="status-select"
-                    class="py-0.5! w-auto! pl-5! hidden md:flex rounded! border! border-zinc-700!"
+                    class="py-0.5! w-auto! pl-5! hidden md:flex rounded-full! bg-transparent! border! border-zinc-700!"
                     wire:model.live="selectedSort" wire:change="serachFilter">
                     <option value="">{{ __('Sort by') }}</option>
                     <option value="">{{ __('Lowest to Highest') }}</option>
@@ -121,7 +121,7 @@
                 </div>
 
                 <div class="mt-5">
-                    {{ $datas->links() }}
+                    <x-frontend.pagination-ui :pagination="$pagination" />
                 </div>
             </div>
 
