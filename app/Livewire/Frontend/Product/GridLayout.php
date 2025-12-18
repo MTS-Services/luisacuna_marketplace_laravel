@@ -2,27 +2,29 @@
 
 namespace App\Livewire\Frontend\Product;
 
-use App\Models\Game;
-use App\Models\GameConfig;
 use App\Services\GameService;
 use App\Services\PlatformService;
 use App\Services\ProductService;
+use App\Traits\WithPaginationData;
 use Livewire\Component;
 
 class GridLayout extends Component
 {
+    use WithPaginationData;
 
     public $game;
 
     public $platforms;
 
-    public $perPage = 2;
+    public $perPage = 10;
 
     public $categorySlug;
 
     public $gameSlug;
 
     protected $datas;
+
+
 
     protected PlatformService $platformService;
     protected ProductService $productService;
@@ -46,8 +48,11 @@ class GridLayout extends Component
 
         $this->game = $this->gameService->findData($gameSlug, 'slug')->load(['gameConfig', 'tags']) ;   
 
+       
         
         $this->datas = $this->getDatas();
+
+        $this->pagination = $this->paginationData($this->datas);
 
         $this->platforms = $this->platformService->getAllDatas() ?? [];
     }
