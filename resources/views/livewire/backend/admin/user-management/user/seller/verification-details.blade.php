@@ -75,7 +75,7 @@
                         <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
                             <p class="text-text-white text-xs font-semibold mb-2">{{ __('VERIFIED STATUS') }}</p>
                             <p class="text-slate-400 text-lg font-bold ">
-                                {{ $data->seller_verified == 1 ? 'Verified' : 'Unverified' }}</p>
+                                {{ $data->seller_verified ? 'Verified' : 'Unverified' }}</p>
                         </div>
                         @if ($data->account_type == 0)
                             <div
@@ -160,13 +160,13 @@
                                 class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('COMPANY TAX NUMBER') }}
                                 </p>
-                                <span
-                                    class="text-slate-400 text-lg font-bold">{{ $data->company_tax_number }}</span>
+                                <span class="text-slate-400 text-lg font-bold">{{ $data->company_tax_number }}</span>
                             </div>
                         @endif
 
                         <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
-                            <p class="text-text-white text-xs font-semibold mb-2">{{ __('IDENTIFICATION DOCUMENT') }}</p>
+                            <p class="text-text-white text-xs font-semibold mb-2">{{ __('IDENTIFICATION DOCUMENT') }}
+                            </p>
                             @if ($data->identification)
                                 <a href="{{ storage_url($data->identification) }}" target="_blank"
                                     class="text-blue-600 underline">
@@ -208,75 +208,37 @@
                         <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
                             <p class="text-text-white text-xs font-semibold mb-2">{{ __('SUBMITED AT') }}
                             </p>
-                            <p class="text-slate-400 text-lg font-bold">{{ $data->created_at_formatted ?? "N/A" }}
+                            <p class="text-slate-400 text-lg font-bold">{{ $data->created_at_formatted ?? 'N/A' }}
                             </p>
                         </div>
 
                         <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
                             <p class="text-text-white text-xs font-semibold mb-2">{{ __('VERIFIED AT') }}
                             </p>
-                            <p class="text-slate-400 text-lg font-bold">{{ $data->seller_verified_at ?? "N/A" }}
+                            <p class="text-slate-400 text-lg font-bold">{{ $data->seller_verified_at ?? 'N/A' }}
                             </p>
                         </div>
 
-                        {{-- Default Operation Information  --}}
 
-                        {{-- <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
-                            <p class="text-text-white text-xs font-semibold mb-2">{{ __('CREATED BY') }}
-                            </p>
-                            <p class="text-slate-400 text-lg font-bold">{{ $data->creater_admin?->name ?? 'N/A' }}
-                            </p>
+                    </div>
+                    <div>
+                        <div class="flex justify-between">
+                            @if($data->seller_verified == 1)
+                            <x-ui.button wire:click.prevent="makeRejected('{{ encrypt($data->id) }}')"
+                                class="w-auto! py-2! mt-4" :variant="'tertiary'">
+                                <flux:icon name="check" class="w-4 h-4 stroke-white" />
+                                {{ __('Mark as Rejected') }}
+                            </x-ui.button>
+                            @else
+
+                            <x-ui.button wire:click.prevent="makeVerified('{{ encrypt($data->id) }}')"
+                                class="w-auto! py-2! mt-4">
+                                <flux:icon name="check" class="w-4 h-4 stroke-white" />
+                                {{ __('Mark as Verified') }}
+                            </x-ui.button>
+
+                            @endif;
                         </div>
-
-                        <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
-                            <p class="text-text-white text-xs font-semibold mb-2">{{ __('UPDATED BY') }}
-                            </p>
-                            <p class="text-slate-400 text-lg font-bold">{{ $data->updater_admin?->name ?? 'N/A' }}
-                            </p>
-                        </div>
-
-                        <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
-                            <p class="text-text-white text-xs font-semibold mb-2">{{ __('DELETED BY') }}
-                            </p>
-                            <p class="text-slate-400 text-lg font-bold">{{ $data->deleter_admin?->name ?? 'N/A' }}
-                            </p>
-                        </div>
-
-                        <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
-                            <p class="text-text-white text-xs font-semibold mb-2">{{ __('RESTORER BY') }}
-                            </p>
-                            <p class="text-slate-400 text-lg font-bold">{{ $data->restorer_admin?->name ?? 'N/A' }}
-                            </p>
-                        </div>
-
-                        
-                        <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
-                            <p class="text-text-white text-xs font-semibold mb-2">{{ __('CREATED AT') }}
-                            </p>
-                            <p class="text-slate-400 text-lg font-bold">{{ $data->created_at_formatted ?? 'N/A' }}
-                            </p>
-                        </div>
-
-                        <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
-                            <p class="text-text-white text-xs font-semibold mb-2">{{ __('UPDATED AT') }}
-                            </p>
-                            <p class="text-slate-400 text-lg font-bold">{{ $data->updated_at_formatted ?? 'N/A' }}
-                            </p>
-                        </div>
-
-                        <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
-                            <p class="text-text-white text-xs font-semibold mb-2">{{ __('DELETED AT') }}
-                            </p>
-                            <p class="text-slate-400 text-lg font-bold">{{ $data->deleted_at_formatted ?? 'N/A' }}
-                            </p>
-                        </div>
-
-                        <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md">
-                            <p class="text-text-white text-xs font-semibold mb-2">{{ __('RESTORED AT') }}
-                            </p>
-                            <p class="text-slate-400 text-lg font-bold">{{ $data->restored_at_formatted ?? 'N/A' }}
-                            </p>
-                        </div> --}}
 
                     </div>
                 </div>

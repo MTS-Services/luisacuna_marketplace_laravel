@@ -11,6 +11,8 @@
     </title>
     <link rel="shortcut icon" href="{{ storage_url(app_favicon()) }}" type="image/x-icon">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+
     @fluxAppearance()
     <script>
         document.addEventListener('livewire:initialized', function() {
@@ -19,6 +21,11 @@
             });
         });
     </script>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
     @stack('styles')
 </head>
 
@@ -66,7 +73,6 @@
         ))
         <livewire:frontend.partials.footer />
     @endif
-
 
     <div id="navigation-loader" x-transition.opacity
         class="fixed inset-0 z-50 flex items-center justify-center bg-bg-primary/50 backdrop-blur-md">
@@ -121,6 +127,21 @@
                     })
                     .error((error) => {
                         console.error('❌ Error on private user channel:', error);
+                    });
+            @endif
+
+            @if (auth()->guard('admin')->check())
+                window.Echo.private('admin.{{ admin()->id }}')
+                    .listen('.notification.sent', (e) => {
+                        console.log('✅ Notification received on private channel:', e);
+                        window.toast.info(e.title || 'New Notification Received');
+                        Livewire.dispatch('notification-updated');
+                    })
+                    .subscribed(() => {
+                        console.log('✅ Successfully subscribed to private admin channel');
+                    })
+                    .error((error) => {
+                        console.error('❌ Error on private admin channel:', error);
                     });
             @endif
         });

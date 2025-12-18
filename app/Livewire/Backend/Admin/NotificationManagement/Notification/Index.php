@@ -79,8 +79,9 @@ class Index extends Component
         }
     }
 
-    public function markAsRead(string $id): void
+    public function markAsRead(string $encryptedId): void
     {
+        $id = decrypt($encryptedId);
         try {
             $this->service->markAsRead($id);
             $this->dispatch('notification-read');
@@ -90,8 +91,9 @@ class Index extends Component
         }
     }
 
-    public function markAsUnread(string $id): void
+    public function markAsUnread(string $encryptedId): void
     {
+        $id = decrypt($encryptedId);
         try {
             $this->service->markAsUnread($id);
             $this->success('Notification marked as unread');
@@ -117,8 +119,9 @@ class Index extends Component
         }
     }
 
-    public function deleteNotification(string $id): void
+    public function deleteNotification(string $encryptedId): void
     {
+        $id = decrypt($encryptedId);
         try {
             $this->service->delete($id);
             $this->toastSuccess('Notification deleted successfully');

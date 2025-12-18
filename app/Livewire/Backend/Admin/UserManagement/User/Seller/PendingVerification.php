@@ -5,11 +5,13 @@ namespace App\Livewire\Backend\Admin\UserManagement\User\Seller;
 use App\Services\SellerProfileService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class PendingVerification extends Component
 {
-   use WithDataTable, WithNotification;
+    use WithDataTable, WithNotification;
 
 
     protected SellerProfileService $service;
@@ -28,11 +30,11 @@ class PendingVerification extends Component
     public function render()
     {
         $datas = $this->service->getPaginatedData(
-            // perPage: $this->perPage,
-            // filters: $this->getFilters()
+            perPage: $this->perPage,
+            filters: $this->getFilters()
         );
 
-      
+
         // $users = $this->userService->getAllUsers();
 
         $columns = [
@@ -40,9 +42,9 @@ class PendingVerification extends Component
                 'key' => 'first_name',
                 'label' => 'First Name',
                 'format'   => function ($data) {
-                    return $data->user->first_name;
+                    return $data->first_name ?? $data->company_name ?? $data->user->first_name;
                 }
-                
+
             ],
             [
                 'key' => 'seller_verified',
@@ -51,14 +53,14 @@ class PendingVerification extends Component
                     return $data->seller_verified ? 'Verified' : 'Unverified';
                 }
             ],
-           [
+            [
                 'key' => 'created_at',
                 'label' => 'Submitted At',
                 'sortable' => true,
                 'format'   => function ($data) {
                     return $data->user->created_at_formatted;
                 }
-                
+
             ],
         ];
         $actions = [
@@ -68,58 +70,16 @@ class PendingVerification extends Component
                 'route' => 'admin.um.user.seller-verification.view',
                 'encrypt' => true,
             ],
-            [
-                'key' => 'id',
-                'label' => 'Make Verified',
-                'method' => 'MakeVerified',
-                'encrypt' => true,
-            ],
         ];
-        $bulkActions = [
-            
-            ['value' => 'verify', 'label' => 'Make Verified'],
-        ];
-
-        return view('livewire.backend.admin.user-management.user.seller.pending-verification',[
+        return view('livewire.backend.admin.user-management.user.seller.pending-verification', [
             'datas' => $datas,
             'columns' => $columns,
-            'statuses' => [
-                ['value' => '1', 'label' => 'Verified'],
-                ['value' => '0', 'label' => 'Unverified'],
-            ],
             'actions' => $actions,
-            'bulkActions' => $bulkActions,
         ]);
     }
 
-    public function confirmDelete($userId): void
-    {
-        $this->deleteUserId = $userId;
-        $this->showDeleteModal = true;
-    }
 
-    public function delete(): void
-    {
-        try {
-            if (!$this->deleteUserId) {
-                return;
-            }
-
-            // if ($this->deleteUserId == user()->id) {
-            //     $this->error('You cannot delete your own account');
-            //     return;
-            // }
-
-            $this->service->deleteData($this->deleteUserId);
-
-            $this->showDeleteModal = false;
-            $this->deleteUserId = null;
-
-            $this->success('User deleted successfully');
-        } catch (\Exception $e) {
-            $this->error('Failed to delete User: ' . $e->getMessage());
-        }
-    }
+    // Not mine
 
     public function resetFilters(): void
     {
@@ -127,68 +87,15 @@ class PendingVerification extends Component
         $this->resetPage();
     }
 
-    public function changeStatus($userId, $status): void
-    {
-        try {
-            $userStatus = UserAccountStatus::from($status);
-
-            match ($userStatus) {
-                UserAccountStatus::ACTIVE => $this->service->activateData($userId),
-                UserAccountStatus::INACTIVE => $this->service->deactivateData($userId),
-                default => null,
-            };
-
-            $this->success('User status updated successfully');
-        } catch (\Exception $e) {
-            $this->error('Failed to update status: ' . $e->getMessage());
-        }
-    }
-
-    public function confirmBulkAction(): void
-    {
-        if (empty($this->selectedIds) || empty($this->bulkAction)) {
-            $this->warning('Please select Users and an action');
-            Log::info('No Users selected or no bulk action selected');
-            return;
-        }
-
-        $this->showBulkActionModal = true;
-    }
-
-    public function executeBulkAction(): void
-    {
-        $this->showBulkActionModal = false;
-
-      
-    }
-
-    protected function bulkDelete(): void
-    {
-        
-    }
-
 
     protected function getFilters(): array
     {
         return [
             'search' => $this->search,
-            'account_status' => $this->statusFilter,
+            'seller_verified' => 0,
             'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
         ];
     }
 
-    protected function getSelectableIds(): array
-    {
-        return $this->service->getPaginatedData(
-            perPage: $this->perPage,
-            filters: $this->getFilters()
-        )->pluck('id')->toArray();
-    }
-
-    public function updatedStatusFilter(): void
-    {
-        $this->resetPage();
-    }
- 
 }

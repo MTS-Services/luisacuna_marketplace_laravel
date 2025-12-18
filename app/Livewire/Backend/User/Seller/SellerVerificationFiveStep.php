@@ -2,13 +2,14 @@
 
 namespace App\Livewire\Backend\User\Seller;
 
+use App\Traits\FileManagementTrait;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class SellerVerificationFiveStep extends Component
 {
-    use WithFileUploads;
+    use WithFileUploads, FileManagementTrait;
 
     public $accountType;
     public $front_image;
@@ -33,10 +34,12 @@ class SellerVerificationFiveStep extends Component
     public function nextStep()
     {
 
-        $this->validate([
+        $validated = $this->validate([
             'front_image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:10240',
         ]);
-        $tempPath = $this->front_image->store('temp/kyc');
+
+        $tempPath = $this->handleSingleFileUpload(newFile: $validated['front_image'], folderName: 'temp');
+
         Session::put('kyc_' . user()->id, array_merge(
             Session::get('kyc_' . user()->id),
             [
@@ -48,7 +51,8 @@ class SellerVerificationFiveStep extends Component
         return redirect()->route('user.seller.verification', ['step' => encrypt(6)]);
     }
 
-    public function previousStep(){
+    public function previousStep()
+    {
         $data = Session::put(
             'kyc_' . user()->id,
             array_merge(
@@ -60,7 +64,7 @@ class SellerVerificationFiveStep extends Component
 
             )
         );
-         return redirect()->route('user.seller.verification', ['step' => encrypt(4)]);
+        return redirect()->route('user.seller.verification', ['step' => encrypt(4)]);
     }
     public function protectStep()
     {
