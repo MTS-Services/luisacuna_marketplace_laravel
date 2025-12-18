@@ -1,6 +1,7 @@
 <main class="overflow-x-hidden bg-light-bg dark:bg-dark-bg">
     {{-- filter section --}}
     <section class="container mx-auto">
+
         <div class="flex items-center gap-1 my-10 font-semibold">
             <div class="w-4 h-4">
                 <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
@@ -16,11 +17,22 @@
             </h1>
         </div>
 
-
-        <div class="title mb-5">
-            <h2 class="font-semibold text-4xl">{{ ucfirst(str_replace('-', ' ', $categorySlug)) }}</h2>
+     
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-6 mb-13">
+        <div>
+            <h2 class="font-semibold text-4xl pb-3">{{ $category->name }}</h2>
+            @if($category->icon)
+            <p class="text-base lg:text-xl text-text-white font-light pb-3 ">
+                {!! $category->meta_description !!}    
+            </p>
+            @endif
         </div>
-
+        @if($category->icon)
+        <div class="h-40 md:h-80 w-full rounded-2xl overflow-hidden bg-bg-secondary col-span-2">
+            <img src="{{ storage_url($category->icon) }}" alt="category banner" class="w-full h-full object-cover rounded-lg">
+        </div>
+        @endif
+    </div>
         {{-- Filter --}}
         {{-- <x-filter :sortOrder="$sortOrder" /> --}}
         {{-- Filter --}}
@@ -95,10 +107,13 @@
 
 
     </section>
-    {{-- popular currency --}}
+    {{-- popular Card --}}
+
+    {{-- To Ensure that if it is not a gift card category then title will visible --}}
+    @if($categorySlug != 'gift-card')
     <section class="container mx-auto mt-10">
         <div class="title mt-10">
-            <h2 class="font-semibold text-40px">{{ __('Popular') }} {{ ucfirst(str_replace('-', ' ', $categorySlug)) }}</h2>
+            <h2 class="font-semibold text-40px">{{ __('Popular') }} {{ $categorySlug == 'top-up' || $categorySlug == 'coaching' ? 'Now' : ucfirst(str_replace('-', ' ', $categorySlug)) }}</h2>
         </div>
         <div wire:ignore class="swiper popular-currency">
             <div class="swiper-wrapper py-10">
@@ -117,26 +132,91 @@
             </div>
         </div>
     </section>
+    @endif
+
+        {{-- To Ensure that if it is not a gift card category then title will visible --}}
+    @if( $categorySlug == 'boosting'  || $categorySlug == 'coaching' || $categorySlug == 'top-up' )
+    <section class="container mx-auto mt-10">
+        <div class="title mt-10">
+            <h2 class="font-semibold text-40px">{{ __('New') }} {{ $categorySlug == 'top-up' || $categorySlug == 'coaching' ? 'Launched' :ucfirst(str_replace('-', ' ', $categorySlug)) }}</h2>
+        </div>
+        <div wire:ignore class="swiper new-boosting">
+            <div class="swiper-wrapper py-10">
+                @foreach ($new_boosting as $index => $boosting_game)
+
+                    <div class="swiper-slide">
+                        <x-product-card :data="$boosting_game" :categorySlug="$categorySlug" />
+                    </div>
+
+                @endforeach
+            </div>
+
+            <!-- Add Pagination and Navigation -->
+            <div class="mt-10">
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </section>
+    @endif
+
     {{-- All Currency --}}
     <section class="container mx-auto mt-10">
+        {{-- To Ensure that if it is not a gift card category then title will visible --}}
+        @if($categorySlug != 'gift-card')
         <div class="title mb-10">
-            <h2 class="font-semibold text-40px">{{ __('All') }} {{ Str::ucfirst($categorySlug) }}</h2>
+            <h2 class="font-semibold text-40px">{{ __('All') }} {{ $categorySlug == 'top-up' || $categorySlug == 'coaching' ? 'Game' : Str::ucfirst($categorySlug) }}</h2>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-6">
+        @endif
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 {{$categorySlug == 'gift-card' ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}} gap-6 md:gap-8 lg:gap-6">
 
             @foreach ($games as $game)
+           
                 <x-product-card :data="$game" :categorySlug="$categorySlug" />
             @endforeach
         </div>
         <div class="pagination mb-24 mt-10">
-            {{-- <x-frontend.pagination-ui :pagination="$pagination" /> --}}
-            {{ $games->links() }}
+            <x-frontend.pagination-ui :pagination="$pagination" />
         </div>
     </section>
     @push('scripts')
         <script>
             document.addEventListener('livewire:navigated', function() {
                 const swiper = new Swiper('.popular-currency', {
+                    loop: true,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    // navigation: {
+                    //     nextEl: '.swiper-button-next',
+                    //     prevEl: '.swiper-button-prev',
+                    // },
+                    autoplay: {
+                        delay: 2500,
+                        disableOnInteraction: false,
+                    },
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                    breakpoints: {
+                        640: {
+                            slidesPerView: 2,
+                        },
+
+                        1024: {
+                            slidesPerView: 3,
+                        },
+                    },
+                });
+
+            });
+
+
+            
+            document.addEventListener('livewire:navigated', function() {
+                const swiper = new Swiper('.new-boosting', {
                     loop: true,
                     pagination: {
                         el: '.swiper-pagination',

@@ -98,6 +98,10 @@ class Product extends BaseModel implements Auditable
             $query->where('user_id', $filters['user_id']);
         }
 
+        if ($filters['page'] ?? null) {
+            $query->where('status', $filters['status']);
+        }
+
         return $query;
     }
 

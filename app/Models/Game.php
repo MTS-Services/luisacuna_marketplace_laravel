@@ -155,11 +155,21 @@ class Game extends AuditBaseModel implements Auditable
             $query->with($filters['relations']);
         }
 
+         // Add withCount for products
+        if(!empty($filters['withProductCount']) && !empty($filters['category'])) {
+            $category = Category::where('slug', $filters['category'])->first();
+            if($category) {
+                $query->withCount(['products' => function ($q) use ($category) {
+                    $q->where('category_id', $category->id);
+                }]);
+            }
+        }
+
         $query->when($filters['status'] ?? null, function ($query, $status) {
             $query->where('status', $status);
         })
 
-        ->when($filters['categorySlug'] ?? '', function ($query, $category) {
+        ->when($filters['category'] ?? '', function ($query, $category) {
             $query->whereHas('categories', function ($q) use ($category) {
                 $q->where('categories.slug', $category);
             });
