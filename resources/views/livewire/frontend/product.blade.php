@@ -12,13 +12,13 @@
                 >
             </div>
             <h1 class="text-text-white text-base">
-               {{ Str::ucfirst($categorySlug) }}
+                {{ ucfirst(str_replace('-', ' ', $categorySlug)) }}
             </h1>
         </div>
 
 
         <div class="title mb-5">
-            <h2 class="font-semibold text-4xl">{{ Str::ucfirst($categorySlug) }}</h2>
+            <h2 class="font-semibold text-4xl">{{ ucfirst(str_replace('-', ' ', $categorySlug)) }}</h2>
         </div>
 
         {{-- Filter --}}
@@ -26,15 +26,30 @@
         {{-- Filter --}}
 
         <div class="flex items-center justify-between gap-4 mt-3.5">
-            <div class="search w-full">
+            {{-- <div class="search w-full">
                 <x-ui.input type="text" wire:model.live.debounce.300ms="search" placeholder="Search..."
                     class="form-input w-full  border border-zinc-700"  />
+            </div> --}}
+            <div class="flex-1 w-auto md:min-w-64">
+                <div class="relative">
+                    <input type="text" placeholder="Search" wire:model.live.debounce.300ms="search"
+                        
+                        class="w-full bg-bg-transparent rounded-full border border-zinc-700 px-4 py-2 pl-10 focus:outline-none focus:border-zinc-500">
+                    <span class="absolute left-3 top-2.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                        </svg>
+                    </span>
+                </div>
             </div>
+
             <div class="min-w-30 flex items-center justify-between gap-2 relative" x-data={filter:false}>
 
                 {{-- Filter Button --}}
                 <button @click="filter = !filter"
-                    class="flex items-center gap-2 px-4 py-2.5 bg-bg-primary rounded-md border! border-zinc-700!">
+                    class="flex items-center gap-2 px-4 py-2.5 bg-bg-transparent rounded-full border! border-zinc-700!">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -83,7 +98,7 @@
     {{-- popular currency --}}
     <section class="container mx-auto mt-10">
         <div class="title mt-10">
-            <h2 class="font-semibold text-40px">{{ __('Popular') }} {{ Str::ucfirst($categorySlug) }}</h2>
+            <h2 class="font-semibold text-40px">{{ __('Popular') }} {{ ucfirst(str_replace('-', ' ', $categorySlug)) }}</h2>
         </div>
         <div wire:ignore class="swiper popular-currency">
             <div class="swiper-wrapper py-10">
@@ -113,7 +128,7 @@
                 <x-product-card :data="$game" :categorySlug="$categorySlug" />
             @endforeach
         </div>
-        <div class="pagination mb-24">
+        <div class="pagination mb-24 mt-10">
             {{-- <x-frontend.pagination-ui :pagination="$pagination" /> --}}
             {{ $games->links() }}
         </div>
