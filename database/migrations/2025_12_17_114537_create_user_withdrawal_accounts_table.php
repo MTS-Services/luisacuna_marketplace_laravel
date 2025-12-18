@@ -27,6 +27,9 @@ return new class extends Migration {
             $table->timestamp('verified_at')->nullable();
             $table->timestamp('last_used_at')->nullable();
 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('withdrawal_method_id')->references('id')->on('withdrawal_methods')->onDelete('cascade');
+
 
             $table->softDeletes();
             $table->timestamps();
