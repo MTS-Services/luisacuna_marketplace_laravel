@@ -22,8 +22,6 @@ return new class extends Migration
             $table->longText('note')->nullable();
             $table->string('status')->default(ConversationStatus::ACTIVE)->index();
             $table->timestamp('last_message_at')->nullable();
-            
-
 
             $table->softDeletes();
             $table->timestamps();

@@ -5,15 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\PaymentGateway;
+use App\Services\ConversationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
-    /**
-     * Initialize payment (create payment intent)
-     */
+
+    public function __construct(protected ConversationService $conversationService) {}
+
     public function initializePayment(Request $request)
     {
         try {
@@ -41,7 +42,7 @@ class PaymentController extends Controller
 
             if (!$order) {
                 Log::warning('Order not found', ['order_id' => $request->input('order_id')]);
-                
+
                 return response()->json([
                     'success' => false,
                     'message' => 'Order not found.',
@@ -64,11 +65,20 @@ class PaymentController extends Controller
                 ], 404);
             }
 
+            $startConversation = $this->conversationService->sendOrderMessage($order);
+
+            Log::info('Order conversation started', [
+                'order_id' => $order->order_id,
+                'conversation_id' => $startConversation->id,
+                'conversation_uuid' => $startConversation->conversation_uuid,
+            ]);
+
             // Get payment method instance
             $paymentMethod = $gateway->paymentMethod();
 
             // Initialize payment (creates payment intent)
             $result = $paymentMethod->startPayment($order);
+            
 
             Log::info('Payment initialized successfully', [
                 'order_id' => $order->order_id,
@@ -77,7 +87,6 @@ class PaymentController extends Controller
             ]);
 
             return response()->json($result);
-
         } catch (\Exception $e) {
             Log::error('Payment initialization error', [
                 'order_id' => $request->input('order_id'),
@@ -138,7 +147,6 @@ class PaymentController extends Controller
             ]);
 
             return response()->json($result);
-
         } catch (\Exception $e) {
             Log::error('Payment confirmation error', [
                 'payment_intent_id' => $request->input('payment_intent_id'),
@@ -206,14 +214,13 @@ class PaymentController extends Controller
 
             // Get payment gateway
             $gateway = PaymentGateway::where('slug', 'stripe')->first();
-            
+
             if ($gateway) {
                 $paymentMethod = $gateway->paymentMethod();
                 $paymentMethod->handleWebhook(is_array($event) ? $event : $event->toArray());
             }
 
             return response()->json(['status' => 'success']);
-
         } catch (\Stripe\Exception\SignatureVerificationException $e) {
             Log::error('Stripe webhook signature verification failed', ['error' => $e->getMessage()]);
             return response()->json(['error' => 'Invalid signature'], 400);

@@ -289,9 +289,6 @@ if (!function_exists('generate_uuid')) {
     }
 }
 
-
-
-
 if (!function_exists('generate_username')) {
     function generate_username(string $firstName, string $lastName): string
     {
@@ -300,26 +297,26 @@ if (!function_exists('generate_username')) {
         $lastName = Str::lower(Str::slug($lastName, ''));
         $baseUsername = substr($firstName . $lastName, 0, 40);
 
-        
+
         if (strlen($baseUsername) < 3) {
             $baseUsername = 'user' . $baseUsername;
         }
 
-        
+
         if (!DB::table('users')->where('username', $baseUsername)->exists()) {
             return $baseUsername;
         }
 
-        
+
         $existingUsernames = DB::table('users')
             ->where('username', 'LIKE', $baseUsername . '%')
             ->pluck('username')
             ->toArray();
 
-       
+
         $maxSuffix = 0;
         foreach ($existingUsernames as $username) {
-            
+
             $suffix = str_replace($baseUsername, '', $username);
             if (is_numeric($suffix)) {
                 $maxSuffix = max($maxSuffix, (int)$suffix);
@@ -328,5 +325,16 @@ if (!function_exists('generate_username')) {
 
         $nextSuffix = $maxSuffix + 1;
         return $baseUsername . $nextSuffix;
+    }
+}
+
+
+if (!function_exists('generate_conversation_uuid')) {
+    function generate_conversation_uuid()
+    {
+        $prefix = 'CV-';
+        $timestamp = str_pad(base62_encode(time() - 1609459200), 5, '0', STR_PAD_LEFT);
+        $sequence = DB::table('conversation_uuid_sequences')->insertGetId(['created_at' => now()]);
+        return $prefix . $timestamp . str_pad(base62_encode($sequence), 6, '0', STR_PAD_LEFT);
     }
 }

@@ -4,7 +4,6 @@ namespace App\Livewire\Backend\Admin\ChatManagement;
 
 use Livewire\Component;
 use Illuminate\Support\Str;
-use App\Services\OrderMessageService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 
@@ -18,12 +17,8 @@ class Index extends Component
     public $showBulkActionModal = false;
 
 
-    protected OrderMessageService $service;
 
-    public function boot(OrderMessageService $service)
-    {
-        $this->service = $service;
-    }
+
 
     public function render()
     {

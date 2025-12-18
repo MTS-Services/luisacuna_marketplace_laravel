@@ -138,7 +138,7 @@ class OrderMessageService
         return ConversationParticipant::create([
             'conversation_id' => $conversationId,
             'participant_id' => $participant->id,
-            'participant_role' => get_class($participant),
+            'participant_type' => get_class($participant),
             'participant_role' => $role,
             'joined_at' => now(),
             'is_active' => true,

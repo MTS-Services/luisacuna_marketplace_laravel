@@ -10,8 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Conversation extends AuditBaseModel implements Auditable
 {
-    use   AuditableTrait;
-    //
+    use AuditableTrait;
 
     protected $fillable = [
         'id',

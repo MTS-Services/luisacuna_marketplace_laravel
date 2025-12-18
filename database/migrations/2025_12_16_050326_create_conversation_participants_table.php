@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-     use AuditColumnsTrait;
+    use AuditColumnsTrait;
     /**
      * Run the migrations.
      */
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->timestamp('joined_at')->default(now());
             $table->timestamp('left_at')->nullable();
             $table->boolean('is_active')->default(true)->index();
-           $table->timestamp('last_read_at')->nullable();
+            $table->timestamp('last_read_at')->nullable();
             $table->boolean('notification_enabled')->default(true);
 
 
@@ -32,7 +32,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-           $this->addMorphedAuditColumns($table);
+            $this->addMorphedAuditColumns($table);
         });
     }
 

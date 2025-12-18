@@ -20,8 +20,6 @@ class MessageAttachment extends AuditBaseModel implements Auditable
         'file_path',
         'thumbnail_path',
 
-
-
         'creater_type',
         'updater_type',
         'deleter_type',

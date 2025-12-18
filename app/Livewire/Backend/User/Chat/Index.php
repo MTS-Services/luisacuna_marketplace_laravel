@@ -8,7 +8,7 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
-class Conversation extends Component
+class Index extends Component
 {
 
     public Collection $conversations;
@@ -27,13 +27,13 @@ class Conversation extends Component
     #[On('search', 'refresh', 'new-message')]
     public function fetchConversations()
     {
-        $this->conversations =  $this->service->fetchConversations(search: $this->perticipants);
+        $this->conversations =  $this->service->fetchConversationList(search: $this->perticipants);
     }
 
 
     public function render()
     {
         $this->fetchConversations();
-        return view('livewire.backend.user.chat.conversation');
+        return view('livewire.backend.user.chat.index');
     }
 }

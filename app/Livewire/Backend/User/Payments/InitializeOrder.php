@@ -19,11 +19,9 @@ class InitializeOrder extends Component
     public int $quantity = 1;
 
     protected OrderService $orderService;
-    protected OrderMessageService $OrderMessage;
-    public function boot(OrderService $orderService, OrderMessageService $OrderMessage)
+    public function boot(OrderService $orderService)
     {
         $this->orderService = $orderService;
-        $this->OrderMessage = $OrderMessage;
     }
 
     public function mount($productId)
@@ -59,22 +57,10 @@ class InitializeOrder extends Component
             'grand_total' => ($this->product->price * $this->quantity),
         ]);
 
-
-        $buyer = user(); // অথবা User::find(user()->id)
-        $seller = User::find($this->product->user_id);
-
-        $conversation = $this->OrderMessage->getOrCreateConversation($buyer, $seller);
-
-        $this->OrderMessage->send(
-            $conversation->id,
-            'new order created',
-        );
-
-
         Session::driver('database')->put("checkout_{$token}", [
             'order_id' => $order->id,
             'price_locked' => ($this->product->price * $this->quantity),
-            'expires_at' => now()->addMinutes((int) env('ORDER_CHECKOUT_TIMEOUT_MINUTES', 5))->timestamp,
+            'expires_at' => now()->addMinutes((int) env('ORDER_CHECKOUT_TIMEOUT_MINUTES', 10))->timestamp,
         ]);
         return $this->redirect(
             route('game.checkout', ['slug' => encrypt($this->product->id), 'token' => $token]),

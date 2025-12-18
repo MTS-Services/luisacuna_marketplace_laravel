@@ -18,12 +18,10 @@ class OrderDetails extends Component
     public $messages = [];
 
     protected OrderService $service;
-    protected OrderMessageService $messageService;
 
-    public function boot(OrderService $service, OrderMessageService $messageService)
+    public function boot(OrderService $service)
     {
         $this->service = $service;
-        $this->messageService = $messageService;
     }
 
     public function mount($orderId): void
@@ -41,12 +39,7 @@ class OrderDetails extends Component
         }
 
         $this->sellerId = $product->user_id;
-        $conversation = $this->messageService->getOrCreateConversation(
-            auth()->id(), 
-            $this->sellerId 
-        );
-        
-        $this->conversationId = $conversation->id;
+
         $this->loadMessages();
     }
 

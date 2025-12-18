@@ -8,14 +8,14 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class MessageReadReceipt extends AuditBaseModel implements Auditable
 {
-    use   AuditableTrait;
-    //
+    use AuditableTrait;
 
     protected $fillable = [
         'id',
         'sort_order',
         'message_id',
-        'user_id',
+        'reader_id',
+        'reader_type',
         'read_at',
 
         'creater_type',
@@ -46,9 +46,9 @@ class MessageReadReceipt extends AuditBaseModel implements Auditable
         return $this->belongsTo(Message::class, 'message_id', 'id');
     }
 
-    public function user()
+    public function reader()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->morphTo();
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

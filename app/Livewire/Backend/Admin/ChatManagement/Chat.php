@@ -5,7 +5,7 @@ namespace App\Livewire\Backend\Admin\ChatManagement;
 use Livewire\Component;
 use App\Models\Conversation;
 use Illuminate\Support\Facades\Log;
-use App\Services\OrderMessageService;
+
 use App\Traits\Livewire\WithNotification;
 
 class Chat extends Component
@@ -19,16 +19,12 @@ class Chat extends Component
     public $participant1;
     public $participant2;
 
-    protected OrderMessageService $service;
+
 
     protected $rules = [
         'messageBody' => 'required|string|max:5000',
     ];
 
-    public function boot(OrderMessageService $service)
-    {
-        $this->service = $service;
-    }
 
     public function mount($data = null)
     {

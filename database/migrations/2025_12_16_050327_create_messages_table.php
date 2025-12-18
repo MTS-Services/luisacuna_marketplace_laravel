@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('conversation_id')->nullable()->index();
             $table->unsignedBigInteger('sender_id')->nullable()->index();
+            $table->string('sender_type')->nullable()->index();
             $table->string('message_type')->default(MessageType::TEXT)->index();
             $table->text('message_body');
             $table->json('metadata')->nullable();
@@ -26,9 +27,9 @@ return new class extends Migration
             $table->boolean('is_edited')->default(false);
             $table->timestamp('edited_at')->nullable();
 
+            $table->unsignedBigInteger('order_id')->nullable()->index();
 
-
-
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->foreign('conversation_id')->references('id')->on('conversations')->onDelete('cascade');
             $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
             $table->softDeletes();

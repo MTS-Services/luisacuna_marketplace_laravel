@@ -9,22 +9,21 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Message extends AuditBaseModel implements Auditable
 {
-    use   AuditableTrait;
-    //
+    use AuditableTrait;
 
     protected $fillable = [
         'id',
         'sort_order',
         'conversation_id',
         'sender_id',
+        'sender_type',
         'message_type',
         'message_body',
         'metadata',
         'parent_message_id',
         'is_edited',
         'edited_at',
-
-
+        'order_id',
 
         'creater_type',
         'updater_type',
@@ -40,7 +39,9 @@ class Message extends AuditBaseModel implements Auditable
     ];
 
     protected $casts = [
-        'message_type' => MessageType::class
+        'message_type' => MessageType::class,
+        'edited_at' => 'datetime',
+        'is_edited' => 'boolean',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -56,7 +57,7 @@ class Message extends AuditBaseModel implements Auditable
     }
     public function sender()
     {
-        return $this->belongsTo(User::class, 'sender_id', 'id');
+        return $this->morphTo();
     }
 
     public function attachments()
