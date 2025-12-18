@@ -65,11 +65,13 @@
                         class="w-14 h-14 rounded-full border-2 border-white" alt="profile" />
                     <span
                         class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
+                    
                 </div>
 
                 <div class="w-full">
-                    <p class="text-text-white font-medium">
-                        {{ $data->user->first_name ?? $data->user->username }}
+                    <p class="text-text-white font-medium flex items-center gap-2">
+                       <span> {{ $data->user->first_name ?? $data->user->username }}</span>
+                          <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
                     </p>
 
                     <div class="flex items-center space-x-2 mt-0">
