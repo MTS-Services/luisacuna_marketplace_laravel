@@ -6,7 +6,7 @@ use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
  
-class Withdrawal extends AuditBaseModel implements Auditable
+class WithdrawalMethod extends AuditBaseModel implements Auditable
 {
     use   AuditableTrait;
     //

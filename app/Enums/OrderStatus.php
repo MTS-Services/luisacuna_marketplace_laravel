@@ -6,6 +6,7 @@ enum OrderStatus: string
 {
     case ACTIVE = 'active';
     case PROCESSING = 'processing';
+    case DELIVERED = 'delivered';
     case COMPLETED = 'completed';
     case CANCELLED = 'cancelled';
     case INITIALIZED = 'initialized';
@@ -17,6 +18,7 @@ enum OrderStatus: string
             self::ACTIVE => 'Active',
             self::PROCESSING => 'Processing',
             self::COMPLETED => 'Completed',
+            self::DELIVERED => 'Delivered',
             self::CANCELLED => 'Cancelled',
             self::INITIALIZED => 'Initialized',
             self::FAILED => 'Failed',
@@ -26,10 +28,11 @@ enum OrderStatus: string
     public function color(): string
     {
         return match ($this) {
-            self::ACTIVE => 'badge-success',
+            self::ACTIVE => 'badge-info',
             self::PROCESSING => 'badge-warning',
-            self::COMPLETED => 'badge-info',
+            self::COMPLETED => 'badge-accent',
             self::CANCELLED => 'badge-danger',
+            self::DELIVERED => 'badge-success',
             self::INITIALIZED => 'badge-secondary',
             self::FAILED => 'badge-error',
         };

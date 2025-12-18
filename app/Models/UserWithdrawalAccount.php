@@ -1,39 +1,40 @@
 <?php
-
+ 
 namespace App\Models;
-
-use App\Models\BaseModel;
-
-class WithdrawalGateway extends BaseModel
+ 
+use App\Models\AuditBaseModel;
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
+ 
+class UserWithdrawalAccount extends AuditBaseModel implements Auditable
 {
-
+    use   AuditableTrait;
+    //
+ 
     protected $fillable = [
         'sort_order',
-        'name',
-        'slug',
-        'icon',
-        'data',
-        'status',
+ 
+      //here AuditColumns 
     ];
-
+ 
     protected $hidden = [
         //
     ];
-
+ 
     protected $casts = [
-        'status' => 'boolean',
+        //
     ];
-
+ 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
-
-    //
-
-    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+ 
+     //
+ 
+     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
-
+ 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -41,4 +42,6 @@ class WithdrawalGateway extends BaseModel
             //
         ]);
     }
+ 
+ 
 }
