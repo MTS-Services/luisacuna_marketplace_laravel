@@ -19,14 +19,7 @@
             <livewire:frontend.game.buy-component :gameSlug="$gameSlug" :categorySlug="$categorySlug" :productId="$productId" />
         @break
 
-        {{-- @case('game.checkout' && request()->route()->parameter('orderId')) --}}
         @case('game.checkout')
-            {{-- <x-slot
-                name="title">{{ ucfirst(str_replace('-', ' ', $gameSlug)) . ' ' . ucfirst(str_replace('-', ' ', $categorySlug)) }}
-                {{__('Checkout')}}</x-slot> --}}
-
-            {{-- <x-slot name="pageSlug">{{ $gameSlug }}-{{ $categorySlug }}{{__('-checkout')}}</x-slot> --}}
-
             <livewire:frontend.game.checkout-component :slug="$slug" :token="$token" />
         @break
         @default

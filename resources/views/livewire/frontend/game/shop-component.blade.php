@@ -1,5 +1,5 @@
-<main class="mx-auto">
-    {{-- @if ($categorySlug == 'gift-card' || $categorySlug == 'top-up') --}}
+<main class="overflow-x-hidden bg-light-bg dark:bg-dark-bg">
+   
 
 
     @if ($layoutView == 'list_grid')
@@ -8,9 +8,7 @@
 
     @else
 
-    <livewire:frontend.product.list-layout :gameSlug="$gameSlug" :categorySlug="$categorySlug" :datas="$datas" :game="$game" />
+    <livewire:frontend.product.list-layout :gameSlug="$gameSlug" :categorySlug="$categorySlug"/>
    
-    {{-- <x-list-layout :gameSlug="$gameSlug" :categorySlug="$categorySlug" :datas="$datas" :game="$game" />  --}}
-
     @endif
 </main>
