@@ -43,10 +43,12 @@
                         <div class="relative inline-flex">
                             <flux:icon name="bell" class="w-6 h-6" />
 
-                            <span
-                                class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 text-[10px] text-white">
-                                1
-                            </span>
+                            @if ($unreadNotificationCount > 0)
+                                <span
+                                    class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 text-[10px] text-white">
+                                    {{ $unreadNotificationCount }}
+                                </span>
+                            @endif
                         </div>
                     </button>
                 </div>
