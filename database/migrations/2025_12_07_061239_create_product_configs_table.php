@@ -21,12 +21,14 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id')->index();
             $table->string('value')->nullable();
 
-            $table->timestamps();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('game_config_id')->references('id')->on('game_configs')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-           // $this->addMorphedAuditColumns($table);
-            // $this->addAdminAuditColumns($table);
+
+            $table->timestamps();
+            $table->softDeletes();
+
+            $this->addMorphedAuditColumns($table);
         });
     }
 

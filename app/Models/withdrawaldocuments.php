@@ -6,23 +6,23 @@ use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class WithdrawalRequest extends AuditBaseModel implements Auditable
+class withdrawaldocuments extends AuditBaseModel implements Auditable
 {
     use   AuditableTrait;
     //
 
     protected $fillable = [
-        'user_id',
-        'withdrawal_method_id',
-        'amount',
-        'fee_amount',
-        'tax_amount',
-        'final_amount',
-        'currency_id',
         'sort_order',
-        'status',
+        'withdrawal_request_id',
+        'document_type',
+        'file_path',
+        'file_name',
+        'file_size',
+        'mime_type',
+        'is_verified',
+        'verified_by',
         'verified_at',
-        'last_used_at',
+        'created_at',
 
       //here AuditColumns
     ];

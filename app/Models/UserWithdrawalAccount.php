@@ -1,40 +1,50 @@
 <?php
- 
+
 namespace App\Models;
- 
+
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
- 
+
 class UserWithdrawalAccount extends AuditBaseModel implements Auditable
 {
     use   AuditableTrait;
     //
- 
+
     protected $fillable = [
         'sort_order',
- 
-      //here AuditColumns 
+        'user_id',
+        'withdrawal_method_id',
+        'account_name',
+        'account_data',
+        'is_default',
+        'is_vsrified',
+        'status',
+        'note',
+        'verified_at',
+        'last_used_at',
+
+      //here AuditColumns
     ];
- 
+
     protected $hidden = [
         //
     ];
- 
+
     protected $casts = [
         //
     ];
- 
+
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
- 
+
      //
- 
+
      /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
- 
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -42,6 +52,6 @@ class UserWithdrawalAccount extends AuditBaseModel implements Auditable
             //
         ]);
     }
- 
- 
+
+
 }

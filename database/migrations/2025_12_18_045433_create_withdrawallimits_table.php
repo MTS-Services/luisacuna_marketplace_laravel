@@ -13,21 +13,28 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('withdrawal_requests', function (Blueprint $table) {
+        Schema::create('withdrawallimits', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('withdrawal_method_id');
-            $table->unsignedBigInteger('currency_id');
+            $table->string('role_name', 100)->nullable()->comment('If role-based limit');
+            $table->boolean('is_active')->default(true)->index();
 
-            $table->decimal('amount', 15, 2);
-            $table->decimal('fee_amount', 15, 2)->default(0.00);
-            $table->decimal('tax_amount', 15, 2)->default(0.00);
-            $table->decimal('final_amount', 15, 2)->comment('Amount user receives after fees');
+            $table->decimal('daily_limit', 15, 2)->nullable();
+            $table->decimal('weekly_limit', 15, 2)->nullable();
+            $table->decimal('monthly_limit', 15, 2)->nullable();
+            $table->decimal('per_transaction_limit', 15, 2)->nullable();
+
+            $table->integer('max_daily_requests')->nullable();
+            $table->integer('max_weekly_requests')->nullable();
+            $table->integer('max_monthly_requests')->nullable();
+            $table->integer('priority')->default(0)->comment('Higher priority overrides lower');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('withdrawal_method_id')->references('id')->on('withdrawal_methods')->onDelete('cascade');
-            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade');
+
+
 
             $table->softDeletes();
             $table->timestamps();
@@ -41,6 +48,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('withdrawal_requests');
+        Schema::dropIfExists('withdrawallimits');
     }
 };

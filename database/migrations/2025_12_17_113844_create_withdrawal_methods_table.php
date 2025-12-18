@@ -34,7 +34,6 @@ return new class extends Migration {
             $table->timestamps();
 
             $this->addMorphedAuditColumns($table);
-            // $this->addAdminAuditColumns($table);
         });
     }
 
