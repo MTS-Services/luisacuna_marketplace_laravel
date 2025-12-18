@@ -8,7 +8,7 @@
 
     @else
 
-    <livewire:frontend.product.list-layout :gameSlug="$gameSlug" :categorySlug="$categorySlug" :datas="$datas" :game="$game" />
+    <livewire:frontend.product.list-layout :gameSlug="$gameSlug" :categorySlug="$categorySlug"/>
    
     @endif
 </main>
