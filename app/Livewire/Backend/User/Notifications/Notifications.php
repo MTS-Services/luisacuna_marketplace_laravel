@@ -66,11 +66,11 @@ class Notifications extends Component
         $this->resetPage();
     }
 
-    public function markAsRead(string $id): void
+    public function markAsRead(string $encryptedId): void
     {
+        $id = decrypt($encryptedId);
         try {
             $this->service->markAsRead($id);
-            $this->success(__('Notification marked as read'));
             $this->dispatch('notification-read');
             unset($this->notifications);
         } catch (\Exception $e) {
@@ -78,17 +78,17 @@ class Notifications extends Component
         }
     }
 
-    // public function markAsUnread(string $id): void
-    // {
-    //     try {
-    //         $this->service->markAsUnread($id);
-    //         $this->success(__('Notification marked as unread'));
-    //         $this->dispatch('notification-unread');
-    //         unset($this->notifications);
-    //     } catch (\Exception $e) {
-    //         $this->error(__('Failed to mark notification as unread'));
-    //     }
-    // }
+    public function markAsUnread(string $encryptedId): void
+    {
+        $id = decrypt($encryptedId);
+        try {
+            $this->service->markAsUnread($id);
+            $this->dispatch('notification-unread');
+            unset($this->notifications);
+        } catch (\Exception $e) {
+            $this->error(__('Failed to mark notification as unread'));
+        }
+    }
 
     public function markAllAsRead(): void
     {
@@ -102,11 +102,12 @@ class Notifications extends Component
         }
     }
 
-    public function deleteNotification(string $id): void
+    public function deleteNotification(string $encryptedId): void
     {
+        $id = decrypt($encryptedId);
         try {
             $this->service->delete($id);
-            $this->success(__('Notification deleted successfully'));
+            $this->toasSuccess(__('Notification deleted successfully'));
             $this->dispatch('notification-deleted');
             unset($this->notifications);
         } catch (\Exception $e) {
@@ -133,4 +134,3 @@ class Notifications extends Component
         return view('livewire.backend.user.notifications.notifications');
     }
 }
-

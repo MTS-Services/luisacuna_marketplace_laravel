@@ -129,6 +129,21 @@
                         console.error('❌ Error on private user channel:', error);
                     });
             @endif
+
+            @if (auth()->guard('admin')->check())
+                window.Echo.private('admin.{{ admin()->id }}')
+                    .listen('.notification.sent', (e) => {
+                        console.log('✅ Notification received on private channel:', e);
+                        window.toast.info(e.title || 'New Notification Received');
+                        Livewire.dispatch('notification-updated');
+                    })
+                    .subscribed(() => {
+                        console.log('✅ Successfully subscribed to private admin channel');
+                    })
+                    .error((error) => {
+                        console.error('❌ Error on private admin channel:', error);
+                    });
+            @endif
         });
     </script>
     @stack('scripts')

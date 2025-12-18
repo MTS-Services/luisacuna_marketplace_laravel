@@ -32,7 +32,7 @@
                 </div>
             @endauth
 
-            @auth
+            @auth('web')
                 <div class="flex items-center justify-center gap-1">
                     <a href="{{ route('user.messages') }}" wire:navigate
                         class=" rounded-full bg-transparent  transition-colors">

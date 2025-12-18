@@ -46,8 +46,8 @@
                         @php
                             $isUnread = !$notification->isRead(encrypt(user()->id), get_class(user()));
                         @endphp
-                        <div wire:key="user-notification-{{ $notification->id }}"
-                            wire:click="markAsRead('{{ $notification->id }}')"
+                        <div wire:key="user-notification-{{ encrypt($notification->id) }}"
+                            wire:click="markAsRead('{{ encrypt($notification->id) }}')"
                             class="flex gap-3 hover:bg-bg-hover rounded-xl p-3 transition-colors cursor-pointer {{ $isUnread ? 'bg-bg-hover/80' : '' }}">
                             <div class="shrink-0">
                                 <div

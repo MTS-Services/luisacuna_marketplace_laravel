@@ -39,13 +39,14 @@ class Header extends Component
         $this->categoryService = $categoryService;
         $this->game_service = $game_service;
         $this->currencyService = $currencyService;
-        $this->notificationService = $notificationService;
+        if (auth()->guard('web')->check()) {
+            $this->notificationService = $notificationService;
+        }
     }
 
     public function mount(string $pageSlug = 'home')
     {
         $this->pageSlug = $pageSlug;
-        $this->refreshNotificationCount();
     }
 
     #[On('notification-created')]
@@ -54,7 +55,9 @@ class Header extends Component
     #[On('notification-read')]
     public function refreshNotificationCount()
     {
-        $this->unreadNotificationCount = $this->notificationService->getUnreadCount();
+        if (auth()->guard('web')->check()) {
+            $this->unreadNotificationCount = $this->notificationService->getUnreadCount();
+        }
     }
 
     public function render()

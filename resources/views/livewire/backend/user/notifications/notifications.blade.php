@@ -67,11 +67,11 @@
                                 $isUnread = !$notification->isRead(encrypt(user()->id), get_class(user()));
                             @endphp
 
-                            <div wire:key="notification-{{ $notification->id }}"
+                            <div wire:key="notification-{{ encrypt($notification->id) }}"
                                 class="group flex flex-col sm:flex-row gap-2 md:gap-4 hover:bg-zinc-800/50 rounded-xl p-4 transition-colors {{ $isUnread ? 'bg-bg-info' : '' }}">
 
                                 <div class="flex gap-2 md:gap-4 flex-1"
-                                    wire:click="markAsRead('{{ $notification->id }}')">
+                                    wire:click="markAsRead('{{ encrypt($notification->id) }}')">
                                     <div class="shrink-0">
                                         {{-- Notification icon --}}
                                         <div
@@ -92,14 +92,14 @@
                                             {{ $notification->data['title'] ?? __('Notification') }}
                                         </h3>
                                         <p
-                                            class="text-sm text-text-white dark:text-zinc-200/60 mt-1 leading-relaxed line-clamp-2">
+                                            class="text-sm text-text-white dark:text-zinc-200/60 mt-1 leading-relaxed line-clamp-4">
                                             {{ $notification->data['message'] ?? '' }}
                                         </p>
                                         @if ($notification->action)
                                             <a href="{{ $notification->action }}" target="_blank"
                                                 rel="noopener noreferrer"
                                                 class="mt-2 inline-flex items-center gap-1 text-xs text-pink-500 hover:text-pink-600 transition-colors"
-                                                onclick="event.stopPropagation()">
+                                                wire:click="markAsRead('{{ encrypt($notification->id) }}')">
                                                 <span>{{ __('View Details') }}</span>
                                                 <flux:icon name="arrow-up-right" class="w-3 h-3" />
                                             </a>
@@ -116,14 +116,14 @@
                                     <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity"
                                         onclick="event.stopPropagation()">
                                         @if ($isUnread)
-                                            <button wire:click="markAsRead('{{ $notification->id }}')"
+                                            <button wire:click="markAsRead('{{ encrypt($notification->id) }}')"
                                                 wire:loading.attr="disabled"
                                                 class="p-1.5 hover:bg-zinc-700 rounded-lg transition-colors"
                                                 title="{{ __('Mark as read') }}">
                                                 <flux:icon name="check-check" class="w-4 h-4 text-green-500" />
                                             </button>
                                         {{-- @else
-                                            <button wire:click="markAsUnread('{{ $notification->id }}')"
+                                            <button wire:click="markAsUnread('{{ encrypt($notification->id) }}')"
                                                 wire:loading.attr="disabled"
                                                 class="p-1.5 hover:bg-zinc-700 rounded-lg transition-colors"
                                                 title="{{ __('Mark as unread') }}">
@@ -131,7 +131,7 @@
                                             </button> --}}
                                         @endif
 
-                                        <button wire:click="deleteNotification('{{ $notification->id }}')"
+                                        <button wire:click="deleteNotification('{{ encrypt($notification->id) }}')"
                                             wire:confirm="Are you sure you want to delete this notification?"
                                             wire:loading.attr="disabled"
                                             class="p-1.5 hover:bg-red-500/20 rounded-lg transition-colors"

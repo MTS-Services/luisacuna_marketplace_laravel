@@ -58,8 +58,9 @@ class NotificationSidebar extends Component
         }
     }
 
-    public function markAsRead(string $id): void
+    public function markAsRead(string $encryptedId): void
     {
+        $id = decrypt($encryptedId);
         try {
             $this->service->markAsRead($id);
             $this->fetchNotifications();

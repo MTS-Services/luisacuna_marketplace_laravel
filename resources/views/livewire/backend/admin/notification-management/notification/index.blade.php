@@ -189,9 +189,9 @@
             <div class="divide-y divide-border">
                 @foreach ($this->notifications as $notification)
                     @php
-                        $isUnread = !$notification->isRead(encrypt(user()->id), get_class(user()));
+                        $isUnread = !$notification->isRead(encrypt(admin()->id), get_class(admin()));
                     @endphp
-                    <div wire:key="notification-{{ $notification->id }}"
+                    <div wire:key="notification-{{ encrypt($notification->id) }}"
                         class="group relative hover:bg-hover transition-all duration-200 {{ $isUnread ? 'bg-zinc-50/30 dark:bg-zinc-950/20' : '' }}">
 
                         {{-- Left Border for Unread --}}
@@ -202,7 +202,7 @@
                         @endif
 
                         <div class="flex items-start gap-4 p-6 {{ $isUnread ? 'pl-8' : 'pl-6' }}"
-                            wire:click="markAsRead('{{ $notification->id }}')">
+                            wire:click="markAsRead('{{ encrypt($notification->id) }}')">
 
                             {{-- Checkbox (visible on hover or selected) --}}
                             <div class="shrink-0 pt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 {{ in_array($notification->id, $selectedNotifications) ? 'opacity-100' : '' }}"
@@ -252,7 +252,7 @@
                                             <a href="{{ $notification->action }}" target="_blank"
                                                 rel="noopener noreferrer"
                                                 class="mt-2 inline-flex items-center gap-1 text-xs text-primary hover:text-primary-hover transition-colors"
-                                                onclick="event.stopPropagation()">
+                                                wire:click="markAsRead('{{ encrypt($notification->id) }}')">
                                                 <span>{{ __('View Details') }}</span>
                                                 <flux:icon name="arrow-up-right" class="w-3 h-3" />
                                             </a>
@@ -262,14 +262,14 @@
                                     {{-- Action Buttons --}}
                                     <div class="flex items-center gap-2 shrink-0" onclick="event.stopPropagation()">
                                         @if ($isUnread)
-                                            <button wire:click="markAsRead('{{ $notification->id }}')"
+                                            <button wire:click="markAsRead('{{ encrypt($notification->id) }}')"
                                                 wire:loading.attr="disabled"
                                                 class="p-2 hover:bg-zinc-500/20 rounded-full transition-all duration-300 hover:scale-110 opacity-0 group-hover:opacity-100"
                                                 title="{{ __('Mark as read') }}">
                                                 <flux:icon name="check-check" class="w-5 h-5 stroke-accent" />
                                             </button>
                                         @else
-                                            <button wire:click="markAsUnread('{{ $notification->id }}')"
+                                            <button wire:click="markAsUnread('{{ encrypt($notification->id) }}')"
                                                 wire:loading.attr="disabled"
                                                 class="p-2 hover:bg-primary/20 rounded-full transition-all duration-200 hover:scale-110 opacity-0 group-hover:opacity-100"
                                                 title="{{ __('Mark as unread') }}">
@@ -277,7 +277,7 @@
                                             </button>
                                         @endif
 
-                                        <button wire:click="deleteNotification('{{ $notification->id }}')"
+                                        <button wire:click="deleteNotification('{{ encrypt($notification->id) }}')"
                                             wire:confirm="Are you sure you want to delete this notification?"
                                             wire:loading.attr="disabled"
                                             class="p-2 hover:bg-red-500/20 rounded-full transition-all duration-200 hover:scale-110 opacity-0 group-hover:opacity-100"
