@@ -8,12 +8,16 @@ use App\Services\GameService;
 use App\Services\CategoryService;
 use App\Services\CurrencyService;
 use App\Services\LanguageService;
+use App\Services\NotificationService;
 use Illuminate\Database\Eloquent\Collection;
+use Livewire\Attributes\On;
 
 class Header extends Component
 {
     public string $pageSlug;
     public string $search = '';
+
+    public int $unreadNotificationCount = 0;
 
     public $categories;
     public $sortField;
@@ -27,18 +31,33 @@ class Header extends Component
     protected CategoryService $categoryService;
     protected LanguageService $languageService;
     protected CurrencyService $currencyService;
+    protected NotificationService $notificationService;
 
-    public function boot(LanguageService $languageService, CategoryService $categoryService, GameService $game_service, CurrencyService $currencyService)
+    public function boot(LanguageService $languageService, CategoryService $categoryService, GameService $game_service, CurrencyService $currencyService, NotificationService $notificationService)
     {
         $this->languageService = $languageService;
         $this->categoryService = $categoryService;
         $this->game_service = $game_service;
         $this->currencyService = $currencyService;
+        if (auth()->guard('web')->check()) {
+            $this->notificationService = $notificationService;
+        }
     }
 
     public function mount(string $pageSlug = 'home')
     {
         $this->pageSlug = $pageSlug;
+    }
+
+    #[On('notification-created')]
+    #[On('notification-updated')]
+    #[On('notification-received')]
+    #[On('notification-read')]
+    public function refreshNotificationCount()
+    {
+        if (auth()->guard('web')->check()) {
+            $this->unreadNotificationCount = $this->notificationService->getUnreadCount();
+        }
     }
 
     public function render()
@@ -57,17 +76,16 @@ class Header extends Component
             $search_results = $this->game_service->searchData($this->search);
 
             if ($this->allGamesCache === null) {
-                $this->allGamesCache = $this->game_service->getAllDatas([],$this->sortField = 'name',  $this->order = 'asc');
+                $this->allGamesCache = $this->game_service->getAllDatas([], $this->sortField = 'name',  $this->order = 'asc');
             }
         } else {
             if ($this->allGamesCache === null) {
-                $this->allGamesCache = $this->game_service->getAllDatas([],$this->sortField = 'name',  $this->order = 'asc');
+                $this->allGamesCache = $this->game_service->getAllDatas([], $this->sortField = 'name',  $this->order = 'asc');
             }
             $popular_games = $this->allGamesCache->filter(function ($game) {
                 return $game->tags->contains('slug', 'popular');
             });
         }
-
 
         return view('livewire.frontend.partials.header', [
             'popular_games' => $popular_games,

@@ -1,4 +1,4 @@
-<header class="sticky top-0 z-30 pt-6 px-4 xl:px-6">
+<header class="sticky top-0 z-10 pt-6 px-4 xl:px-6">
     <div class="glass-card rounded-2xl shadow-shadow-secondary dark:shadow-shadow-secondary-dark">
         <div class="flex items-center justify-between p-4 lg:p-6">
             <div class="flex items-center gap-4">

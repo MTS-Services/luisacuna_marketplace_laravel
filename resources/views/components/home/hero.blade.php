@@ -8,7 +8,7 @@
             <div class="container py-30 relative z-10 align-left  w-100vw">
 
                 <h2 class="text-5xl md:text-6xl font-semibold mb-6 text-text-white align-left">{{ $data->title }}</h2>
-                <p class="text-xl text-text-white mb-15 max-w-2xl align-left">
+                <p class="text-2xl font-normal text-text-white mb-15 max-w-2xl align-left">
                     {{ $data->content }}
                 </p>
 
