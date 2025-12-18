@@ -27,6 +27,7 @@ class SellerVerificationSixStep extends Component
         
         $data = Session::get('kyc_'.user()->id);
 
+
         if(isset($data['account_type'])){
             $this->accountType = $data['account_type'];
             $this->data = $data;
