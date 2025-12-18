@@ -3,32 +3,49 @@
 namespace App\Livewire\Frontend\Product;
 
 use App\Models\Product;
+use App\Services\GameService;
 use App\Services\OrderService;
 use App\Services\ProductService;
+use App\Traits\WithPaginationData;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class ListLayout extends Component
 {
+    use WithPaginationData;
     public  $gameSlug ;
     public $categorySlug; 
-    public $game ;
+    public $game;
     protected $datas;
     public $product;
 
-    
+   
 
     protected ProductService $productService;
     protected OrderService $orderService;
-    public function boot(ProductService $productService, OrderService $orderService){
+    protected GameService $gameService;
+    public function boot(ProductService $productService, OrderService $orderService, GameService $gameService){
         $this->productService = $productService;
         $this->orderService = $orderService;
+        $this->gameService = $gameService;
     }
-    public function mount($gameSlug, $categorySlug, $game, $datas){
+    public function mount($gameSlug, $categorySlug ){
         $this->gameSlug = $gameSlug;
         $this->categorySlug = $categorySlug;
-        $this->game = $game;
-        $this->datas = $datas;
+        $this->game = $this->gameService->findData($gameSlug, 'slug');
+        $this->datas = $this->getDatas();
+        $this->pagination = $this->paginationData($this->datas);
+    }
+   public function getDatas(){
+        
+     return  $this->productService->getPaginatedData($this->perPage = 2 , [
+
+            'gameSlug' => $this->gameSlug,
+
+            'categorySlug' => $this->categorySlug,
+
+
+        ]);
     }
     public function selectItem($ecnryptedId){
 

@@ -15,7 +15,6 @@ class Product extends Component
     public $categorySlug = null;
     public $search = '';
     public $sortOrder = 'default';
-    public $perPage = 9;
 
  
     // Protected properties

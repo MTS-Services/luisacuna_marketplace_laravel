@@ -16,7 +16,7 @@ class GridLayout extends Component
 
     public $platforms;
 
-    public $perPage = 10;
+   
 
     public $categorySlug;
 
