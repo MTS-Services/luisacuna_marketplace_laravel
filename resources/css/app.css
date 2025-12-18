@@ -469,6 +469,18 @@
     background-size: cover;
 }
 
+@utility bg-dark-bg-login {
+    background-image: url('http://127.0.0.1:8000/assets/images/background/login-dark-background.png');
+    /* background-attachment: fixed; */
+    background-position: 100% 100%;
+    background-size: cover;
+}
+@utility bg-light-bg-login {
+    background-image: url('http://127.0.0.1:8000/assets/images/background/login-light-background.png');
+    /* background-attachment: fixed; */
+    background-position: 100% 100%;
+    background-size: cover;
+}
 
 
 button {
