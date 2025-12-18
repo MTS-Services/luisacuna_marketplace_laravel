@@ -189,10 +189,7 @@
             <div class="divide-y divide-border">
                 @foreach ($this->notifications as $notification)
                     @php
-                        $isUnread = !$notification->statuses
-                            ->where('actor_id', admin()->id)
-                            ->where('read_at', '!=', null)
-                            ->count();
+                        $isUnread = !$notification->isRead(encrypt(user()->id), get_class(user()));
                     @endphp
                     <div wire:key="notification-{{ $notification->id }}"
                         class="group relative hover:bg-hover transition-all duration-200 {{ $isUnread ? 'bg-zinc-50/30 dark:bg-zinc-950/20' : '' }}">

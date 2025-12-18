@@ -39,6 +39,11 @@
             // console.log(Toastify);
         });
     </script>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
     @stack('styles')
 </head>
 

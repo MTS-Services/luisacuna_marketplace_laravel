@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="{{ storage_url(app_favicon()) }}" type="image/x-icon">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    
+
     @fluxAppearance()
     <script>
         document.addEventListener('livewire:initialized', function() {
@@ -21,6 +21,11 @@
             });
         });
     </script>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
     @stack('styles')
 </head>
 
@@ -68,7 +73,6 @@
         ))
         <livewire:frontend.partials.footer />
     @endif
-
 
     <div id="navigation-loader" x-transition.opacity
         class="fixed inset-0 z-50 flex items-center justify-center bg-bg-primary/50 backdrop-blur-md">
