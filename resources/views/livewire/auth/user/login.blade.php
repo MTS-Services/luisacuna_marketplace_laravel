@@ -17,7 +17,7 @@
                             class="max-w-full max-h-full object-contain">
                     </div>  
                     <h2 class="text-3xl sm:text-4xl font-medium text-white mb-3">{{ __('Sign in') }}</h2>
-                    <p class="text-white lg:text-xl sm:text-lg mt-2">
+                    <p class="text-white font-normal lg:text-xl sm:text-lg mt-2">
                         {{ __('Hi! Welcome back, you\'ve been missed') }}
                     </p>
                 </div>
