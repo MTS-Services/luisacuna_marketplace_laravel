@@ -18,7 +18,7 @@
     <section class="py-20" id="popular-games">
         {{-- New Bosting Games Section --}}
         <section class="container mx-auto mt-10">
-            <div class="mx-20">
+            <div class="mx-0 sm:mx-5 md:mx-10 lg:mx-14 xl:mx-20">
                 <div class="title mt-10">
                     <h2 class="text-40px font-bold mb-4 text-text-white">
                         {{ __('Newly Boosting') }}
@@ -47,7 +47,7 @@
 
         {{-- Popular Games Section --}}
         <section class="container mx-auto mt-10">
-            <div class="mx-20">
+            <div class="mx-0 sm:mx-5 md:mx-10 lg:mx-14 xl:mx-20">
                 <div class="title mt-10">
                     <h2 class="text-40px font-bold mb-4 text-text-white">
                         {{ __('Popular Games') }}
@@ -77,7 +77,7 @@
 
         {{-- Top selling  Section --}}
         <section class="container mx-auto mt-10">
-            <div class="mx-20">
+            <div class="mx-0 sm:mx-5 md:mx-10 lg:mx-14 xl:mx-20">
                 <div class="title mt-10">
                     <h2 class="text-40px font-bold mb-4 text-text-white">
                         {{ __('Top-Selling Offers') }}
@@ -112,7 +112,7 @@
     <!-- How It Works Section -->
     <section class="py-20">
         <div class="container mx-auto">
-            <div class="mx-20">
+            <div class="mx-0 sm:mx-5 md:mx-10 lg:mx-14 xl:mx-20">
                 <div class="text-center mb-16">
                     <h2 class="text-4xl font-bold mb-4 text-text-white">{{ __('How It Works') }}</h2>
                 </div>
@@ -190,7 +190,7 @@
 
     <!-- FAQ Section -->
     <livewire:frontend.partials.faq :faqs_buyer="$faqs_buyer" :faqs_seller="$faqs_seller" />
-    <div class="my-96">
+    <div class="my-20 sm:my-40 md:my-60 lg:my-80 xl:my-96">
 
     </div>
     @push('scripts')
