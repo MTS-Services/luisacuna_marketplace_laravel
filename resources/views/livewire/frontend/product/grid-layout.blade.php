@@ -1,4 +1,4 @@
-<section>
+<section class="pb-10">
     <div class="container ">
 
         <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" :game="$game" />
@@ -322,20 +322,8 @@
                 </div>
             </div>
 
-            <!-- Pagination (Outside of loading container) -->
-            {{-- <div class="flex justify-end items-center space-x-3 p-4 mt-10">
-                <button class="text-text-primary text-sm hover:text-zinc-500">{{ __('Previous') }}</button>
 
-                <button class="bg-zinc-600 text-white text-sm px-3 py-1 rounded">1</button>
-                <button class="text-text-primary text-sm hover:text-zinc-500">2</button>
-                <button class="text-text-primary text-sm hover:text-zinc-500">3</button>
-                <button class="text-text-primary text-sm hover:text-zinc-500">4</button>
-                <button class="text-text-primary text-sm hover:text-zinc-500">5</button>
-
-                <button class="text-text-primary text-sm hover:text-zinc-500">{{ __('Next') }}</button>
-            </div> --}}
-
-            {{ $datas->links() }}
+           <x-frontend.pagination-ui :pagination="$pagination" />
 
         </div>
     </div>
