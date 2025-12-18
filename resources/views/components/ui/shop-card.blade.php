@@ -61,7 +61,7 @@
             <div class="border-t border-zinc-500 mt-2 pt-3 flex items-center justify-between gap-2">
 
                 <div class="w-18 h-14 relative">
-                    <img src="{{ asset('assets/images/2 1.png') }}"
+                    <img src="{{ storage_url($data->user->avatar) }}"
                         class="w-14 h-14 rounded-full border-2 border-white" alt="profile" />
                     <span
                         class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
