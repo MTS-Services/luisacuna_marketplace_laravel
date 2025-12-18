@@ -28,7 +28,7 @@
                     <div class="mb-4 sm:mb-7 px-2 sm:px-7">
                         <label
                             class="block text-lg sm:text-2xl font-medium mb-4 text-white">{{ __('Email') }}</label>
-                        <x-ui.input type="email" placeholder="example@gmail.com" wire:model="email" class="bg-bg-info! rounded-xl! border-0! focus:ring-0! text-white!" />
+                        <x-ui.input type="email" placeholder="example@gmail.com" wire:model="email" class="bg-bg-info! rounded-xl! border-0! focus:ring-0! text-white! placeholder:text-white!" />
                         {{-- Error message --}}
                         <x-ui.input-error :messages="$errors->get('email')" />
                     </div>
@@ -42,7 +42,7 @@
                     <div class="mb-4 sm:mb-7 px-2 sm:px-6">
                         <x-ui.label
                             class="block text-lg sm:text-2xl font-medium mb-4 text-white">{{ __('Password') }}</x-ui.label>
-                        <x-ui.input type="password" id="password" placeholder="Aex@8465" wire:model="password" class="bg-bg-info! rounded-xl! border-0! focus:ring-0! text-white!" />
+                        <x-ui.input type="password" id="password" placeholder="Aex@8465" wire:model="password" class="bg-bg-info! rounded-xl! border-0! focus:ring-0! text-white! placeholder:text-white!" />
                         <x-ui.input-error :messages="$errors->get('password')" />
                     </div>
                 </div>
