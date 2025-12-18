@@ -1,22 +1,21 @@
 <?php
 
-namespace App\Livewire\Backend\Admin\NotificationManagement\Notification;
+namespace App\Livewire\Backend\User\Notifications;
 
 use App\Services\NotificationService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
-use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-class Sidebar extends Component
+class NotificationSidebar extends Component
 {
     use WithNotification;
 
-    public bool $openSidebarNotifications = false;
+    public bool $UserNotificationShow = false;
     public Collection $notifications;
-    public bool $isLoading = true;
+    public bool $isLoading = false;
 
     protected NotificationService $service;
 
@@ -32,25 +31,16 @@ class Sidebar extends Component
 
     public function render()
     {
-        return view('livewire.backend.admin.notification-management.notification.sidebar');
+        return view('livewire.backend.user.notifications.notification-sidebar');
     }
 
-    #[On('open-sidebar-notifications')]
+    #[On('user-notification-show')]
     public function openSidebar(): void
     {
-        $this->openSidebarNotifications = true;
+        $this->UserNotificationShow = true;
         $this->fetchNotifications();
     }
 
-    #[On('close-sidebar-notifications')]
-    public function closeSidebar(): void
-    {
-        $this->openSidebarNotifications = false;
-    }
-
-    #[On('notification-received')]
-    #[On('notification-created')]
-    #[On('notification-updated')]
     public function fetchNotifications(): void
     {
         try {
@@ -68,14 +58,6 @@ class Sidebar extends Component
         }
     }
 
-
-    #[Computed()]
-    public function unreadCount(): int
-    {
-        return $this->service->getUnreadCount(null);
-    }
-
-    #[On('mark-as-read')]
     public function markAsRead(string $encryptedId): void
     {
         $id = decrypt($encryptedId);
@@ -101,21 +83,26 @@ class Sidebar extends Component
         } catch (\Exception $e) {
             Log::error('Failed to mark all notifications as read', [
                 'error' => $e->getMessage(),
-                'line' => $e->getLine(),
-                'file' => $e->getFile(),
             ]);
             $this->toastError(__('Something went wrong. Please try again.'));
+        }
+    }
+
+    #[On('notification-received')]
+    #[On('notification-created')]
+    public function refreshNotifications(): void
+    {
+        if ($this->UserNotificationShow) {
+            $this->fetchNotifications();
         }
     }
 
     public function getListeners(): array
     {
         return [
-            'open-sidebar-notifications' => 'openSidebar',
-            'close-sidebar-notifications' => 'closeSidebar',
-            'notification-received' => 'fetchNotifications',
-            'notification-created' => 'fetchNotifications',
-            'notification-updated' => 'fetchNotifications',
+            'user-notification-show' => 'openSidebar',
+            'notification-received' => 'refreshNotifications',
+            'notification-created' => 'refreshNotifications',
         ];
     }
 }
