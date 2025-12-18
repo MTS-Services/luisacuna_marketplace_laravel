@@ -1,4 +1,5 @@
-<div>
+<div class="bg-cover bg-center"
+    style="background-image: url('{{ asset('assets/images/background/login-dark-background.png') }}');">
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password');
@@ -6,24 +7,29 @@
         }
     </script>
 
-<div class="min-h-[100vh] flex items-center justify-center text-text-white px-4  sm:px-6 lg:px-8 ">
+    <div class="min-h-[100vh] flex items-center justify-center text-text-white px-4  sm:px-6 lg:px-8 ">
         <form method="POST" wire:submit.prevent="login" class="w-full max-w-md sm:max-w-lg md:max-w-xl">
-            <div class="bg-bg-secondary rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col justify-between min-h-[75vh]">
+            <div class="bg-bg-secondary/75 backdrop-blur-sm rounded-2xl sm:p-8 p-20 shadow-lg flex flex-col justify-between min-h-[75vh]">
 
                 <!-- Header -->
                 <div class="mb-6 text-center">
+                    <div class="flex justify-center items-center h-[102px]">
+                        <img src="{{ asset('assets/images/background/login-logo.png') }}" alt=""
+                            class="max-w-full max-h-full object-contain">
+                    </div>  
                     <h2 class="text-3xl sm:text-4xl font-medium text-text-white">{{ __('Sign in') }}</h2>
                     <p class="text-text-white lg:text-xl sm:text-lg mt-2">
                         {{ __('Hi! Welcome back, you\'ve been missed') }}
                     </p>
                 </div>
 
+
                 <!-- Email -->
                 <div class="space-y-6">
                     <div class="mb-4 sm:mb-6 px-2 sm:px-6">
                         <label
                             class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">{{ __('Email') }}</label>
-                        <x-ui.input type="email" placeholder="example@gmail.com" wire:model="email" />
+                        <x-ui.input type="email" placeholder="example@gmail.com" wire:model="email" class="bg-bg-info! rounded-xl! border-0! focus:ring-0!" />
                         {{-- Error message --}}
                         <x-ui.input-error :messages="$errors->get('email')" />
                     </div>
@@ -37,7 +43,7 @@
                     <div class="mb-4 sm:mb-6 px-2 sm:px-6">
                         <x-ui.label
                             class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">{{ __('Password') }}</x-ui.label>
-                        <x-ui.input type="password" id="password" placeholder="Aex@8465" wire:model="password" />
+                        <x-ui.input type="password" id="password" placeholder="Aex@8465" wire:model="password" class="bg-bg-info! rounded-xl! border-0! focus:ring-0!" />
                         <x-ui.input-error :messages="$errors->get('password')" />
                     </div>
                 </div>
@@ -95,7 +101,7 @@
 
                     <!-- Sign up link -->
                     <div class="text-center text-sm text-text-white">
-                       {{ __(' Don\'t have an account?') }}
+                        {{ __(' Don\'t have an account?') }}
                         <a href="{{ route('register.signUp') }}"
                             class="text-purple-400 hover:underline">{{ __('Sign up') }}</a>
                     </div>

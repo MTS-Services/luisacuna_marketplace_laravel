@@ -147,11 +147,12 @@ class CustomNotification extends BaseModel
         int $actorId,
         string $actorType
     ): Builder {
-        return $query->whereDoesntHave('statuses', function ($q) use ($actorId, $actorType) {
+        $base =  $query->whereDoesntHave('statuses', function ($q) use ($actorId, $actorType) {
             $q->where('actor_id', $actorId)
                 ->where('actor_type', $actorType)
                 ->whereNotNull('read_at');
         });
+        return $base;
     }
 
     public function scopeReadForActor(
@@ -213,5 +214,14 @@ class CustomNotification extends BaseModel
 
             default   => $query->notDeletedForActor($actorId, $actorType),
         };
+    }
+
+    public function isRead(string $actorId, string $actorType): bool
+    {
+        return $this->statuses()
+            ->where('actor_id', decrypt($actorId))
+            ->where('actor_type', $actorType)
+            ->whereNotNull('read_at')
+            ->count();
     }
 }

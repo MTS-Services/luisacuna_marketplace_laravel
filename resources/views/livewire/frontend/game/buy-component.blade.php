@@ -1,17 +1,8 @@
-<section>
-    <div class="max-w-7xl mx-auto px-8 py-8">
+<main class="overflow-x-hidden bg-light-bg dark:bg-dark-bg">
+    <div class="max-w-7xl mx-auto px-4 py-8">
         <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" :game="$game" />
         <!-- Breadcrumb -->
-        <a href="{{ route('game.index', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug]) }}">
-            <div class="group flex items-center gap-2 my-8 text-lg font-semibold">
-                <span class="text-text-primary group-hover:text-pink-400 transition-colors duration-300">
-                    < </span>
-                        <h1 class="text-text-white group-hover:text-pink-400 transition-colors duration-300">
-                            {{ __('All Offers') }}
-                        </h1>
-            </div>
-
-        </a>
+        <livewire:frontend.partials.breadcrumb :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
 
         <div>
             <div class=" text-white min-h-screen">
@@ -94,4 +85,4 @@
             </a>
         </div>
 
-</section>
+</main>

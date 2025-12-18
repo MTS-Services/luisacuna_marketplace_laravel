@@ -2,7 +2,7 @@
     x-transition:enter-start="opacity-0 translate-x-full" x-transition:enter-end="opacity-100 translate-x-0"
     x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 translate-x-0"
     x-transition:leave-end="opacity-0 translate-x-full"
-    class="fixed right-0 top-0 h-full max-h-screen z-[60] py-4 pr-4 backdrop-blur-sm"
+    class="fixed right-0 top-0 h-full max-h-screen z-20 py-4 pr-4 backdrop-blur-sm"
     @open-sidebar-notifications.window="openSidebarNotifications = true"
     @close-sidebar-notifications.window="openSidebarNotifications = false"
     @click.away="openSidebarNotifications = false; $dispatch('close-sidebar-notifications')" style="display: none;">
@@ -37,12 +37,9 @@
                 <div class="divide-y divide-border">
                     @forelse ($notifications as $notification)
                         @php
-                            $isUnread = !$notification->statuses
-                                ->where('actor_id', admin()->id)
-                                ->where('read_at', '!=', null)
-                                ->count();
+                            $isUnread = !$notification->isRead(encrypt(admin()->id), get_class(admin()));
                         @endphp
-                        <div wire:key="notification-sidebar-{{ $notification->id }}"
+                        <div wire:key="notification-sidebar-{{ encrypt($notification->id) }}"
                             class="relative {{ $isUnread ? 'bg-zinc-50/30 dark:bg-zinc-950/20' : '' }}">
 
                             {{-- Left Border for Unread --}}
@@ -54,7 +51,7 @@
 
                             {{-- Content Container --}}
                             <div class="group hover:bg-hover transition-all duration-200 p-4 {{ $isUnread ? 'pl-5' : 'pl-4' }}"
-                                wire:click="markAsRead('{{ $notification->id }}')">
+                                wire:click="markAsRead('{{ encrypt($notification->id) }}')">
 
                                 <div class="flex items-start gap-3">
                                     {{-- Icon --}}
@@ -100,7 +97,7 @@
                                             <a href="{{ $notification->action }}" target="_blank"
                                                 rel="noopener noreferrer"
                                                 class="mt-2 inline-flex items-center gap-1 text-xs text-primary hover:text-primary-hover transition-colors"
-                                                onclick="event.stopPropagation()">
+                                                wire:click="markAsRead('{{ encrypt($notification->id) }}')">
                                                 <span>{{ __('View Details') }}</span>
                                                 <flux:icon name="arrow-up-right" class="w-3 h-3" />
                                             </a>
@@ -158,7 +155,8 @@
 
                     <x-ui.button href="{{ route('admin.notification.index') }}" wire:navigate
                         class="w-auto! {{ $unreadCount > 0 ? 'flex-1' : 'w-full' }} py-2! rounded-lg text-sm">
-                        <flux:icon name="arrow-right" class="w-4 h-4 inline mr-1.5 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
+                        <flux:icon name="arrow-right"
+                            class="w-4 h-4 inline mr-1.5 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                         {{ __('View All') }}
                     </x-ui.button>
                 </div>

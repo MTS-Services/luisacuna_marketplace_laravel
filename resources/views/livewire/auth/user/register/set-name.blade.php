@@ -1,8 +1,14 @@
 <div>
-    <div class="bg-bg-primary min-h-screen flex items-center justify-center p-4">
-        <div class="w-full  max-w-xl bg-gradient-to-br bg-bg-secondary rounded-2xl px-8 py-22 shadow-2xl ">
+    <div class="min-h-screen flex items-center justify-center p-4 bg-cover bg-center"
+        style="background-image: url('{{ asset('assets/images/background/login-dark-background.png') }}');">
+
+        <div class="w-full  max-w-xl bg-bg-secondary/75 rounded-2xl px-8 py-22 shadow-2xl">
             <!-- Header -->
             <div class="text-center mb-8">
+                <div class="mx-auto w-[420px] h-[102px]">
+                    <img src="{{ asset('assets/images/background/login-logo.png') }}" alt=""
+                        class="max-w-full max-h-full object-contain">
+                </div>
                 <h1 class="text-3xl sm:text-4xl font-medium text-text-white">{{ __('Sign Up') }}</h1>
                 <p class="text-text-white lg:text-xl sm:text-lg mt-2">{{ __('Hi! Welcome back, you\'ve been missed') }}
                 </p>

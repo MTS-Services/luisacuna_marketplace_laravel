@@ -1,4 +1,4 @@
-<section>
+<section class="pb-10">
     <div class="container ">
 
         <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" :game="$game" />
@@ -18,7 +18,7 @@
                         <div class="relative">
                             <input type="text" placeholder="Search" wire:model.live.debounce.500ms="search"
                                 wire:change="serachFilter"
-                                class="w-full bg-bg-primary rounded-full border border-zinc-700 px-4 py-2 pl-10 focus:outline-none focus:border-zinc-500">
+                                class="w-full bg-bg-transparent rounded-full border border-zinc-700 px-4 py-2 pl-10 focus:outline-none focus:border-zinc-500">
                             <span class="absolute left-3 top-2.5">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -54,7 +54,7 @@
 
 
                         
-                        <div class="flex justify-between rounded-full border border-zinc-700 bg-bg-primary items-center w-50 px-3 py-2 cursor-pointer"
+                        <div class="flex justify-between rounded-full border border-zinc-700 bg-bg-transparent items-center w-50 px-3 py-2 cursor-pointer"
                             @click="open = !open">
                             <span x-text="selectedOption || '{{ __('Platform') }}'"></span>
                             <flux:icon name="chevron-down" class="w-5 h-5 transition-transform duration-200"
@@ -95,7 +95,7 @@
                     <div class="flex-nowrap gap-5 relative hidden md:flex" x-data="{ open: false, selectedMin: '', selectedMax: '' }"
                         @click.away="open = false">
 
-                        <div class="price-input flex justify-between border border-zinc-700 bg-bg-primary items-center w-50 px-3 py-2 rounded-full cursor-pointer"
+                        <div class="price-input flex justify-between border border-zinc-700 bg-bg-transparent items-center w-50 px-3 py-2 rounded-full cursor-pointer"
                             @click="open = !open">
                             <span
                                 x-text="selectedMin && selectedMax ? `$${selectedMin} - $${selectedMax}` : 'Price'"></span>
@@ -154,7 +154,7 @@
                         <!-- Hidden Input Field -->
                         <input type="hidden" name="delivery_time" x-model="selectedValue">
 
-                        <div class="flex justify-between border border-zinc-700 bg-bg-primary items-center w-50 px-3 py-2 rounded-full cursor-pointer"
+                        <div class="flex justify-between border border-zinc-700 bg-bg-transparent items-center w-50 px-3 py-2 rounded-full cursor-pointer"
                             @click="open = !open">
                             <span x-text="selectedOption || '{{ __('Select Delivery Time') }}'"></span>
                             <flux:icon name="chevron-down" class="w-5 h-5 transition-transform duration-200"
@@ -254,7 +254,7 @@
                     </div>
                 </div>
 
-                <!-- Right Filters -->
+                <!-- Recommendation -->
                 <div class="gap-3 justify-end hidden md:flex">
 
                     <button
@@ -267,7 +267,7 @@
                         <!-- Hidden Input Field -->
                         <input type="hidden" name="recommendation" x-model="selectedValue">
 
-                        <div class="flex justify-between rounded-full border border-zinc-700 bg-bg-primary items-center w-50 px-3 py-2 cursor-pointer"
+                        <div class="flex justify-between rounded-full border border-zinc-700 bg-bg-transparent items-center w-50 px-3 py-2 cursor-pointer"
                             @click="open = !open">
                             <span x-text="selectedOption || '{{ __('Recomendation') }}'"></span>
                             <flux:icon name="chevron-down" class="w-5 h-5 transition-transform duration-200"
@@ -322,20 +322,8 @@
                 </div>
             </div>
 
-            <!-- Pagination (Outside of loading container) -->
-            {{-- <div class="flex justify-end items-center space-x-3 p-4 mt-10">
-                <button class="text-text-primary text-sm hover:text-zinc-500">{{ __('Previous') }}</button>
 
-                <button class="bg-zinc-600 text-white text-sm px-3 py-1 rounded">1</button>
-                <button class="text-text-primary text-sm hover:text-zinc-500">2</button>
-                <button class="text-text-primary text-sm hover:text-zinc-500">3</button>
-                <button class="text-text-primary text-sm hover:text-zinc-500">4</button>
-                <button class="text-text-primary text-sm hover:text-zinc-500">5</button>
-
-                <button class="text-text-primary text-sm hover:text-zinc-500">{{ __('Next') }}</button>
-            </div> --}}
-
-            {{ $datas->links() }}
+           <x-frontend.pagination-ui :pagination="$pagination" />
 
         </div>
     </div>
