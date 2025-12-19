@@ -1,13 +1,13 @@
 <x-frontend::app>
     <x-slot name="pageSlug">{{ __('register') }}</x-slot>
     @switch(Route::currentRouteName())
-        @case('register.emailVerify')
+        {{-- @case('register.emailVerify')
             <x-slot name="title">{{ __('Gmail Veryfication') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Register / Gmail Veryfication') }}</x-slot>
             <livewire:auth.user.register.set-email />
-        @break
+        @break --}}
 
-        @case('register.otp')
+        @case('register.emailVerify')
             <x-slot name="title">{{ __('Confirm your Gmail') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Register / Confirm your Gmail') }}</x-slot>
             <livewire:auth.user.otp-verify />
