@@ -5,7 +5,7 @@
 
 @if ($categorySlug == 'gift-card')
     <a href="{{ route('game.index', ['categorySlug' => $categorySlug, 'gameSlug' => $data->slug]) }}" wire:navigate>
-        <div class="relative bg-bg-secondary p-0 rounded-2xl w-full max-w-sm mx-auto sm:mx-0">
+        <div class="relative bg-bg-primary dark:bg-bg-secondary p-0 rounded-2xl w-full max-w-sm mx-auto sm:mx-0">
             <div class="images w-full h-60 sm:h-48 md:h-68">
                 <img src="{{ storage_url($data->logo) }}" alt="{{ $data->name }}"
                     class="w-full h-full object-cover rounded-lg">
@@ -17,7 +17,7 @@
     </a>
 @else
     <a href="{{ route('game.index', ['categorySlug' => $categorySlug, 'gameSlug' => $data->slug]) }}" wire:navigate>
-        <div class="bg-bg-secondary p-6 rounded-2xl w-full max-w-sm mx-auto sm:mx-0">
+        <div class="bg-bg-primary dark:bg-bg-secondary p-6 rounded-2xl w-full max-w-sm mx-auto sm:mx-0">
             <div class="images w-full h-60 sm:h-48 md:h-68">
                 <img src="{{ storage_url($data->logo) }}" alt="{{ $data->name }}"
                     class="w-full h-full object-cover rounded-lg">

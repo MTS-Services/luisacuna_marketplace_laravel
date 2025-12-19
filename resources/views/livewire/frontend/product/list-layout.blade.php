@@ -130,7 +130,7 @@
             </div>
 
             <div class="w-full md:w-[35%] mt-4 md:mt-0">
-                <div class="bg-bg-secondary rounded-2xl py-7 px-6">
+                <div class="bg-bg-primary dark:bg-bg-secondary rounded-2xl py-7 px-6">
                     <div class="flex items-center gap-1 mb-8">
                         <div class="w-8 h-8">
                             <img :src="data.logo" alt="" class="w-full h-full object-cover">
