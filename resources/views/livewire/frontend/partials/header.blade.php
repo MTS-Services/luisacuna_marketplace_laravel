@@ -83,7 +83,7 @@
     :aria-pressed="$flux.dark"
     class="flex items-center justify-center w-9 h-9 rounded-full
            transition-all duration-300
-           bg-zinc-200 dark:bg-zinc-700
+           {{-- bg-zinc-200 dark:bg-zinc-700 --}}
            text-zinc-700 dark:text-zinc-200">
 
     <!-- Sun -->
@@ -137,7 +137,7 @@
     :aria-pressed="$flux.dark"
     class="flex items-center justify-center w-9 h-9 rounded-full
            transition-all duration-300
-           bg-zinc-200 dark:bg-zinc-700
+           {{-- bg-zinc-200 dark:bg-zinc-700 --}}
            text-zinc-700 dark:text-zinc-200">
 
     <!-- Sun -->
