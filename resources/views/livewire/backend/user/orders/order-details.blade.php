@@ -7,6 +7,7 @@
             <x-phosphor name="less-than" variant="regular" class="w-4 h-4 text-zinc-400" />
             <h2 class="text-text-white text-base">
                 {{ __('All Orders') }}
+                
             </h2>
         </div>
 

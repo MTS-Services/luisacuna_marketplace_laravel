@@ -1,4 +1,4 @@
-<main class="overflow-x-hidden bg-light-bg dark:bg-dark-bg">
+<main class="overflow-x-hidden bg-page">
     <div class="max-w-7xl mx-auto px-4 py-8">
         <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" :game="$game" />
         <!-- Breadcrumb -->

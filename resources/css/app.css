@@ -459,32 +459,6 @@
     max-width: none;
 }
 
-@utility bg-dark-bg {
-    background-image: url('http://127.0.0.1:8000/assets/images/background/dark_background.png');
-    background-attachment: fixed;
-    background-position: 100% 100%;
-    background-size: cover;
-}
-@utility bg-light-bg {
-    background-image: url('http://127.0.0.1:8000/assets/images/background/light_background.png');
-    background-attachment: fixed;
-    background-position: 100% 100%;
-    background-size: cover;
-}
-
-@utility bg-dark-bg-login {
-    background-image: url('http://127.0.0.1:8000/assets/images/background/login-dark-background.png');
-    background-attachment: fixed;
-    background-position: 100% 100%;
-    background-size: cover;
-}
-@utility bg-light-bg-login {
-    background-image: url('http://127.0.0.1:8000/assets/images/background/login-light-background.png');
-    background-attachment: fixed;
-    background-position: 100% 100%;
-    background-size: cover;
-}
-
 
 button {
     @apply cursor-pointer transition-all duration-200 ease-in-out hover:scale-[1.01];
