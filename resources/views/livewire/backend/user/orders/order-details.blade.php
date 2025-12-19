@@ -176,8 +176,13 @@
             <!-- Order Created Message -->
             <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
                 <div>
-                    <p class="text-text-white text-base mb-2">{{ __('Order Created:') }} <a href="#">
-                            https://www.companyname.ga/order/d8bcd674-dbde-4d98-9175-a4a031845de0</a></p>
+                    <p class="text-text-white text-base mb-2 break-all">
+                        {{ __('Order Created:') }}
+                        <a href="#" class="text-accent">
+                            https://www.companyname.ga/order/d8bcd674-dbde-4d98-9175-a4a031845de0
+                        </a>
+                    </p>
+
                     <div class="bg-bg-info rounded-lg mt-4 px-6 py-3">
                         <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
                             <x-phosphor name="link" variant="" class="fill-zinc-500" />
