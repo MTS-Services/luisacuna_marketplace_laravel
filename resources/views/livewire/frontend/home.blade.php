@@ -15,9 +15,9 @@
             @endforelse
         </div>
 
-         <!-- Add Pagination and Navigation -->
+        <!-- Add Pagination and Navigation -->
         <div class="">
-            <div class="swiper-pagination"></div>
+            <div class="swiper-pagination pb-6"></div>
             <div class="swiper-button-next"></div>
             <div class="swiper-button-prev"></div>
         </div>
@@ -112,7 +112,7 @@
                 </div>
             </div>
         </section>
-{{--  --}}
+        {{--  --}}
         {{-- Top Selling Ends --}}
 
 
@@ -200,7 +200,7 @@
 
     <!-- FAQ Section -->
     <livewire:frontend.partials.faq :faqs_buyer="$faqs_buyer" :faqs_seller="$faqs_seller" />
-  
+
     <div class="my-20"></div>
 
 
@@ -225,60 +225,67 @@
             // Home Boosting Slider
 
             document.addEventListener('livewire:navigated', function() {
+
                 const swiper = new Swiper('.new-boosting', {
-                    loop: true,
+                    loop: false, // IMPORTANT for correct bullets
+                    slidesPerView: 1,
+                    slidesPerGroup: 1,
+                    spaceBetween: 20,
+
                     pagination: {
                         el: '.swiper-pagination',
                         clickable: true,
                     },
-                    // navigation: {
-                    //     nextEl: '.swiper-button-next',
-                    //     prevEl: '.swiper-button-prev',
-                    // },
+
                     autoplay: {
                         delay: 2500,
                         disableOnInteraction: false,
                     },
-                    slidesPerView: 1,
-                    spaceBetween: 20,
+
                     breakpoints: {
                         640: {
                             slidesPerView: 2,
+                            slidesPerGroup: 2,
                         },
-
                         1024: {
                             slidesPerView: 3,
+                            slidesPerGroup: 3,
                         },
                     },
                 });
 
             });
+
             // Home Popular Slider
 
+
+
             document.addEventListener('livewire:navigated', function() {
+
                 const swiper = new Swiper('.popular-games', {
-                    loop: true,
+                    loop: false, // IMPORTANT for correct bullets
+                    slidesPerView: 1,
+                    slidesPerGroup: 1,
+                    spaceBetween: 20,
+
                     pagination: {
                         el: '.swiper-pagination',
                         clickable: true,
                     },
-                    // navigation: {
-                    //     nextEl: '.swiper-button-next',
-                    //     prevEl: '.swiper-button-prev',
-                    // },
+
                     autoplay: {
                         delay: 2500,
                         disableOnInteraction: false,
                     },
-                    slidesPerView: 1,
-                    spaceBetween: 20,
+
                     breakpoints: {
                         640: {
                             slidesPerView: 2,
+                            slidesPerGroup: 2,
                         },
-
                         1024: {
                             slidesPerView: 3,
+                            slidesPerGroup: 3,
                         },
                     },
                 });
@@ -315,7 +322,7 @@
                 });
 
             });
-        </script>
+      
         </script>
     @endpush
 </main>
