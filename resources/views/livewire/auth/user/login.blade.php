@@ -1,4 +1,4 @@
-<div class="bg-cover bg-center  bg-light-bg-login dark:bg-dark-bg-login">
+<div class="bg-cover bg-center bg-page-login">
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password');

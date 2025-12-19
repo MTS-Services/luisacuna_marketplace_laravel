@@ -1,6 +1,6 @@
-<div>
+<div class="bg-bg-primary">
     <div class="container">
-        <div class="flex gap-4 items-center mt-10">
+        <div class="flex gap-4 items-center pt-10">
             <x-phosphor name="less-than" variant="regular" class="w-4 h-4 text-zinc-400" />
             <h2 class="text-text-white text-base">
                 {{ __('Back') }}
@@ -18,7 +18,7 @@
                     <p class="text-text-white text-3xl font-semibold">{{ __('Fortnite') }}</p>
                 </div>
             </div>
-            <div class="bg-bg-optional p-7 rounded-lg mt-10">
+            <div class="bg-bg-info p-7 rounded-lg mt-10">
                 <div class="flex gap-5">
                     <div>
                         <div class="w-10 h-10">
@@ -68,10 +68,10 @@
                 </div>
             </div>
             <div x-data="{ isExpanded: false }">
-                <div class="flex w-fit! py-3! px-6!">
+                {{-- <div class="flex w-fit! py-3! px-6!">
                     <x-ui.button @click="isExpanded = !isExpanded" class="w-fit! py!"
                         x-text="isExpanded ? 'Read less' : 'Read more'">{{ __('Read more') }}</x-ui.button>
-                </div>
+                </div> --}}
                 <div x-show="isExpanded" x-transition class="mt-5">
                     <h1 class="text-white text-2xl font-bold mb-6">{{ __('Description') }}</h1>
                     <div class="mb-6">
@@ -192,4 +192,5 @@
             </div>
         </div>
     </div>
+    <div class="pb-10 sm:pb-20 md:pb-32"></div>
 </div>
