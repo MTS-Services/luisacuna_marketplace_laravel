@@ -64,8 +64,7 @@
                     class="flex items-center gap-2 px-4 py-2.5 bg-bg-transparent rounded-full border! border-zinc-700!">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2l-7 7v5l-4 4v-9L3 6V4z" />
+                       
                     </svg>
                     <span class="text-text-white text-sm">
                         @if ($sortOrder === 'asc')
