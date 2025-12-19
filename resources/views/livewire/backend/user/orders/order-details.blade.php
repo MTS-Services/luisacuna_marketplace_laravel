@@ -1,5 +1,5 @@
-<main class="mx-auto bg-bg-primary">
-    <section class="container mx-auto">
+<section class="mx-auto bg-bg-primary">
+    <div class="container mx-auto">
         {{-- breadcrumb --}}
         <div class="flex gap-4 items-center py-10">
             <x-phosphor name="less-than" variant="regular" class="w-4 h-4 text-zinc-400" />
@@ -267,7 +267,7 @@
             </div>
 
         </div>
-        <div class="bg-bg-info rounded-lg mt-20 mb-29 py-8! px-4! md:py-20 md:px-10">
+        <div class="bg-bg-info rounded-lg mt-20 mb-24! !py-8 !px-4 md:!py-20 md:!px-10">
             <div class="flex items-center gap-3">
                 <div class="w-16 h-16">
                     <img src="{{ asset('assets/images/order/Security.png') }}" alt="Security tips"
@@ -283,5 +283,6 @@
                 </p>
             </div>
         </div>
-    </section>
-</main>
+    </div>
+    <div class="pb-10 sm:pb-20 md:pb-32"></div>
+</section>
