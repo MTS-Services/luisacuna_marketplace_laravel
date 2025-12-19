@@ -104,7 +104,7 @@
                     </div>
 
                     <!-- Add Pagination and Navigation -->
-                    <div class="mt-10">
+                    <div>
                         <div class="swiper-pagination"></div>
                         <div class="swiper-button-next"></div>
                         <div class="swiper-button-prev"></div>
@@ -112,7 +112,7 @@
                 </div>
             </div>
         </section>
-
+{{--  --}}
         {{-- Top Selling Ends --}}
 
 
@@ -120,7 +120,7 @@
     </section>
 
     <!-- How It Works Section -->
-    <section class="py-20">
+    <section class="py-20 pt-10">
         <div class="container mx-auto">
             <div class="mx-0 sm:mx-5 md:mx-10 lg:mx-14 xl:mx-20">
                 <div class="text-center mb-16">
@@ -200,9 +200,10 @@
 
     <!-- FAQ Section -->
     <livewire:frontend.partials.faq :faqs_buyer="$faqs_buyer" :faqs_seller="$faqs_seller" />
-    <div class="my-20 sm:my-40 md:my-60 lg:my-80 xl:my-96">
+  
+    <div class="my-20"></div>
 
-    </div>
+
     @push('scripts')
         <script>
             document.addEventListener('livewire:navigated', function() {
