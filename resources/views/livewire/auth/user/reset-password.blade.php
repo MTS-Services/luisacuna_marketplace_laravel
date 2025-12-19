@@ -128,10 +128,16 @@
 </div> --}}
 
 
-<div class="bg-cover bg-center  bg-light-bg-login dark:bg-dark-bg-login">
+<div class="bg-cover bg-center bg-page-login">
+    <script>
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === "password" ? "text" : "password";
+        }
+    </script>
 
     <div class="min-h-[100vh] flex items-center justify-center text-white px-4  sm:px-6 lg:px-8 ">
-        <form method="POST" wire:submit.prevent="login" class="w-full max-w-md sm:max-w-lg md:max-w-xl">
+        <form method="POST" wire:submit.prevent="resetPassword" class="w-full max-w-md sm:max-w-lg md:max-w-xl">
             <div
                 class="bg-zinc-900/40 dark:bg-bg-secondary/75 backdrop-blur-sm dark:backdrop-blur-sm rounded-2xl p-5 sm:p-20 my-20 shadow-lg flex flex-col justify-between min-h-[75vh]">
 
@@ -157,7 +163,7 @@
                         <span class="text-pink-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
                     <div class="" x-data="{
-                        password: @entangle('form.password'),
+                        password: @entangle('password'),
                         touched: false,
                     
                         get hasLowercase() {

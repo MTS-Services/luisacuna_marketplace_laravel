@@ -80,10 +80,10 @@
         </div>
     </div>
 </div> --}}
-<div class="bg-cover bg-center  bg-light-bg-login dark:bg-dark-bg-login">
+<div class="bg-cover bg-center bg-page-login">
 
     <div class="min-h-[100vh] flex items-center justify-center text-white px-4  sm:px-6 lg:px-8 ">
-        <form method="POST" wire:submit.prevent="login" class="w-full max-w-md sm:max-w-lg md:max-w-xl">
+        <form method="POST" wire:submit="save" class="w-full max-w-md sm:max-w-lg md:max-w-xl">
             <div
                 class="bg-zinc-900/40 dark:bg-bg-secondary/75 backdrop-blur-sm dark:backdrop-blur-sm rounded-2xl p-8 sm:p-20 my-20 shadow-lg flex flex-col justify-between min-h-[75vh]">
 
@@ -131,28 +131,28 @@
                         <span class="text-pink-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
                     <div class="" x-data="{
-                        password: @entangle('form.password'),
-                        touched: false,
-                    
-                        get hasLowercase() {
-                            return /[a-z]/.test(this.password);
-                        },
-                        get hasUppercase() {
-                            return /[A-Z]/.test(this.password);
-                        },
-                        get hasNumber() {
-                            return /[0-9]/.test(this.password);
-                        },
-                        get hasMinLength() {
-                            return this.password && this.password.length >= 8;
-                        },
-                        get noSpaces() {
-                            return this.password && this.password === this.password.trim() && this.password.length > 0;
-                        },
-                        get allValid() {
-                            return this.hasLowercase && this.hasUppercase && this.hasNumber && this.hasMinLength && this.noSpaces;
-                        }
-                    }">
+                            password: @entangle('password'),
+                            touched: false,
+                        
+                            get hasLowercase() {
+                                return /[a-z]/.test(this.password);
+                            },
+                            get hasUppercase() {
+                                return /[A-Z]/.test(this.password);
+                            },
+                            get hasNumber() {
+                                return /[0-9]/.test(this.password);
+                            },
+                            get hasMinLength() {
+                                return this.password && this.password.length >= 8;
+                            },
+                            get noSpaces() {
+                                return this.password && this.password === this.password.trim() && this.password.length > 0;
+                            },
+                            get allValid() {
+                                return this.hasLowercase && this.hasUppercase && this.hasNumber && this.hasMinLength && this.noSpaces;
+                            }
+                        }">
 
                         <!-- New Password -->
                         <div class="mb-4 sm:mb-7 px-2 sm:px-7">
