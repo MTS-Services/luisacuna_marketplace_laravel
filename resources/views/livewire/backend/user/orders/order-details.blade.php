@@ -97,47 +97,91 @@
                 </div>
             </div>
 
-            <div class="w-full lg:w-1/3 bg-bg-secondary p-4 sm:p-7 mt-10 lg:mt-0 rounded-lg">
-                <div class="flex gap-4 items-center">
-                    <h3 class="text-text-white text-2xl font-semibold">{{ __('Order cancelled') }}</h3>
-                </div>
-                <div class="">
-                    <div class="flex justify-between mt-7">
-                        <p class="text-text-white text-base font-semibold mb-2">{{ __('Game') }}</p>
-                        <div class="flex gap-2 items-center">
-                            <div>
-                                <div class="w-6 h-6">
-                                    <img src="{{ asset('assets/images/order.png') }}" alt="Product Name"
-                                        class="w-full h-full object-cover">
+            <div class="w-full lg:w-1/3">
+                <div class="bg-bg-secondary p-4 sm:p-7 mt-10 lg:mt-0 rounded-lg">
+                    <div class="flex gap-4 items-center">
+                        <h3 class="text-text-white text-2xl font-semibold">{{ __('Order cancelled') }}</h3>
+                    </div>
+                    <div class="">
+                        <div class="flex justify-between mt-7">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Game') }}</p>
+                            <div class="flex gap-2 items-center">
+                                <div>
+                                    <div class="w-6 h-6">
+                                        <img src="{{ asset('assets/images/order.png') }}" alt="Product Name"
+                                            class="w-full h-full object-cover">
+                                    </div>
                                 </div>
+                                <p class="text-text-white text-base font-normal">{{ __('Fortnite') }}</p>
                             </div>
-                            <p class="text-text-white text-base font-normal">{{ __('Fortnite') }}</p>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Username') }}</p>
+                            <p class="text-text-white text-base font-normal">{{ __('acuzone') }}</p>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Device') }}</p>
+                            <p class="text-text-white text-base font-normal">{{ __('PC') }}</p>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Seller') }}</p>
+                            <p class="text-text-white text-base font-normal">{{ __('D18QUAN Online') }}</p>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Total price') }}</p>
+                            <p class="text-text-white text-base font-normal">{{ __('$1.20') }}</p>
                         </div>
                     </div>
-                    <div class="flex justify-between mt-2">
-                        <p class="text-text-white text-base font-semibold mb-2">{{ __('Username') }}</p>
-                        <p class="text-text-white text-base font-normal">{{ __('acuzone') }}</p>
-                    </div>
-                    <div class="flex justify-between mt-2">
-                        <p class="text-text-white text-base font-semibold mb-2">{{ __('Device') }}</p>
-                        <p class="text-text-white text-base font-normal">{{ __('PC') }}</p>
-                    </div>
-                    <div class="flex justify-between mt-2">
-                        <p class="text-text-white text-base font-semibold mb-2">{{ __('Seller') }}</p>
-                        <p class="text-text-white text-base font-normal">{{ __('D18QUAN Online') }}</p>
-                    </div>
-                    <div class="flex justify-between mt-2">
-                        <p class="text-text-white text-base font-semibold mb-2">{{ __('Total price') }}</p>
-                        <p class="text-text-white text-base font-normal">{{ __('$1.20') }}</p>
+                    <div class="flex w-full md:w-auto justify-center items-center mt-10!">
+                        <a href="{{ route('user.order-description') }}">
+                            <x-ui.button class="w-fit! py-3! px-6!">
+                                {{ __('View full description') }}
+                                <x-phosphor-arrow-right-light
+                                    class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" /></x-ui.button>
+                        </a>
                     </div>
                 </div>
-                <div class="flex w-full md:w-auto justify-center items-center mt-10!">
-                    <a href="{{ route('user.order-description') }}">
-                        <x-ui.button class="w-fit! py-3! px-6!">
-                            {{ __('View full description') }}
-                            <x-phosphor-arrow-right-light
-                                class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" /></x-ui.button>
-                    </a>
+                <div class="bg-bg-secondary p-4 sm:p-7 mt-6 rounded-lg">
+                    <div class="flex gap-4 items-center">
+                        <h3 class="text-text-white text-2xl font-semibold">{{ __('Payment method') }}</h3>
+                    </div>
+                    <div class="">
+                        {{-- <div class="flex justify-between mt-7">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Game') }}</p>
+                            <div class="flex gap-2 items-center">
+                                <div>
+                                    <div class="w-6 h-6">
+                                        <img src="{{ asset('assets/images/order.png') }}" alt="Product Name"
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                                <p class="text-text-white text-base font-normal">{{ __('Fortnite') }}</p>
+                            </div>
+                        </div> --}}
+                        <div class="flex justify-between mt-2">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Order Price') }}</p>
+                            <p class="text-text-white text-base font-normal">{{ __('$963') }}</p>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Commission') }}</p>
+                            <p class="text-text-white text-base font-normal">{{ __('-$0.96') }}</p>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Our receive') }}</p>
+                            <p class="text-text-white text-base font-normal">{{ __('$867') }}</p>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <p class="text-text-white text-base font-normal">{{ __('Funds will be added to your Swapy balance Once the order is marked as received by the If the buyer does not confirm delivery within 3 days, it will be confirmed automatically') }}</p>
+                        </div>
+                    </div>
+                    <div class="flex w-full md:w-auto justify-center items-center mt-10!">
+                        <a href="{{ route('user.order-description') }}">
+                            <x-ui.button class="w-fit! py-3! px-6!">
+                                {{ __('View full description') }}
+                                <x-phosphor-arrow-right-light
+                                    class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" /></x-ui.button>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
