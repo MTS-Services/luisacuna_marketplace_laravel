@@ -1,4 +1,4 @@
-<main class="overflow-x-hidden bg-light-bg dark:bg-dark-bg">
+<main class="overflow-x-hidden bg-page">
    
 
 
