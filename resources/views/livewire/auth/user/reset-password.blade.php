@@ -128,7 +128,7 @@
 </div> --}}
 
 
-<div class="bg-cover bg-center  bg-light-bg-login dark:bg-dark-bg-login">
+<div class="bg-cover bg-center bg-page-login">
 
     <div class="min-h-[100vh] flex items-center justify-center text-white px-4  sm:px-6 lg:px-8 ">
         <form method="POST" wire:submit.prevent="login" class="w-full max-w-md sm:max-w-lg md:max-w-xl">
