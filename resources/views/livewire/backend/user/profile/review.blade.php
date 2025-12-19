@@ -351,9 +351,9 @@
             </div>
         @endif
 
-        <div class="pagination">
+        {{-- <div class="pagination">
             <x-frontend.pagination-ui />
-        </div>
+        </div> --}}
 
     </section>
 </div>

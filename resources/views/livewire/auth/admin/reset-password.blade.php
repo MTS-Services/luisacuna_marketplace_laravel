@@ -228,9 +228,9 @@
                             <x-ui.label
                                 class="block text-lg sm:text-2xl font-medium mb-1 sm:mb-4 text-white">{{ __('Confirm Password') }}</x-ui.label>
                             <x-ui.input type="password" id="confirm password" placeholder="Aex@8465"
-                                wire:model="confirm_password"
+                                wire:model="password_confirmation"
                                 class="bg-bg-info! rounded-xl! border-0! focus:ring-0! text-white! placeholder:text-white!" />
-                            <x-ui.input-error :messages="$errors->get('confirm_password')" />
+                            <x-ui.input-error :messages="$errors->get('password_confirmation')" />
                         </div>
                     </div>
                 </div>
@@ -244,7 +244,7 @@
                 @endif --}}
 
                 <!-- Next button -->
-                <div class=" flex justify-center px-2 sm:px-6 mb-5 sm:mb-11">
+                <div class=" flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
                     <x-ui.button type="submit" class="w-auto py-2! text-white text-base! font-semibold!">
                         {{ __('chnage password') }}
                     </x-ui.button>
