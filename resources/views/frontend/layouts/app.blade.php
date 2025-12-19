@@ -25,29 +25,24 @@
         [x-cloak] {
             display: none !important;
         }
-        .dark .bg-dark-bg {
-            background-image: url('{{ asset('/assets/images/background/dark_background.png') }}');
-            background-attachment: fixed;
-            background-position: 100% 100%;
-            background-size: cover;
-        }
-        .bg-light-bg {
-            background-image: url('{{ asset('/assets/images/background/light_background.png') }}');
-            background-attachment: fixed;
-            background-position: 100% 100%;
-            background-size: cover;
-        }
-        .dark .bg-dark-bg-login {
+      .bg-page {
+        background-image: url('{{ asset('/assets/images/background/light_background.png') }}');
+        background-attachment: fixed;
+        background-position: 100% 100%;
+        background-size: cover;
+     }
+     .dark .bg-page {
+        background-image: url('{{ asset('/assets/images/background/dark_background.png') }}') !important;
+    }
+  
+    .dark .bg-page-login {
         background-image: url('{{ asset('/assets/images/background/login-dark-background.png') }}');
         background-attachment: fixed;
         background-position: 100% 100%;
         background-size: cover;
     }
-    .bg-light-bg-login {
+    .bg-page-login {
         background-image: url('{{ asset('/assets/images/background/login-light-background.png') }}');
-        background-attachment: fixed;
-        background-position: 100% 100%;
-        background-size: cover;
     }
 
 
