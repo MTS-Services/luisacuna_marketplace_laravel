@@ -37,7 +37,7 @@
 
             <tbody class="divide-y divide-zinc-800">
                 @forelse ($data as $index => $item)
-                    <tr class="{{ $index % 2 === 0 ? 'bg-bg-primary' : 'bg-bg-secondary' }} hover:bg-bg-hover transition-colors">
+                    <tr class="{{ $index % 2 === 0 ? 'bg-bg-hover/50' : 'bg-bg-secondary/50' }} hover:bg-bg-hover transition-colors">
                         @foreach ($columns as $column)
                             <td class="px-2 sm:px-4 md:px-6 py-4 text-text-white text-xs sm:text-sm">
                                 @if (isset($column['format']) && is_callable($column['format']))
