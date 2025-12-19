@@ -6,7 +6,7 @@
     </section>
     {{-- profile header --}}
     <section
-        class="container bg-bg-secondary p-4 sm:p-10 rounded-2xl -mt-5 sm:-mt-10 shadow-xl mb-12 relative z-20!">
+        class="container p-4 sm:p-10 rounded-2xl -mt-5 sm:-mt-10 shadow-xl mb-12 relative z-20 bg-white dark:bg-bg-secondary isolate">
         <div class="">
             <div class="flex justify-between">
                 <div class="flex items-center gap-6 sm:gap-10">
