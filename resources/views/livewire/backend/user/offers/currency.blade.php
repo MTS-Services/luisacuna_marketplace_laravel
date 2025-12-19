@@ -5,7 +5,7 @@
             <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
 
                 <div class="relative w-full sm:w-35 lg:w-40 2xl:w-80">
-                    <x-ui.select>
+                    <x-ui.select class="bg-bg-primary!">
                         <option value="">{{ __('All Game') }}</option>
                         @foreach ($games as $game)
                             <option value="{{ $game->id }}">{{ $game->name }}</option>
@@ -14,9 +14,9 @@
                 </div>
 
                 <div class="relative w-full sm:w-35 lg:w-40 2xl:w-80">
-                    <x-ui.select>
+                    <x-ui.select class="bg-bg-primary!">
                         <option value="">{{ __('All') }}</option>
-                        <option value="game1">{{ __('Active offers') }}</option>
+                        <option value="game1" class="bg-bg-primary!">{{ __('Active offers') }}</option>
                         <option value="game2">{{ __('Paused offers') }}</option>
                         <option value="game3">{{ __('Closed offers') }}</option>
                     </x-ui.select>

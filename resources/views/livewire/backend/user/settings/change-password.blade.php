@@ -53,7 +53,7 @@
                         <div class="w-full">
                             <x-ui.label value="Old password:"
                                 class="text-base! font-semibold! mb-3! text-text-white!" />
-                            <x-ui.input type="password" placeholder="Enter old password"
+                            <x-ui.input type="password" placeholder="Enter old password" class="border-0! bg-bg-optional!  placeholder:text-text-white"
                                 wire:model="form.password_old" />
                             <x-ui.input-error :messages="$errors->get('form.password_old')" />
                         </div>
@@ -62,7 +62,7 @@
                         <div class="w-full">
                             <x-ui.label value="New password:"
                                 class="text-base! font-semibold! mb-3! text-text-white!" />
-                            <x-ui.input type="password" placeholder="Enter new password" wire:model="form.password"
+                            <x-ui.input type="password" placeholder="Enter new password" wire:model="form.password" class="border-0! bg-bg-optional!  placeholder:text-text-white"
                                 @blur="touched = true" />
                             <x-ui.input-error :messages="$errors->get('form.password')" />
                         </div>
@@ -132,13 +132,13 @@
                         <div class="w-full">
                             <x-ui.label value="Re-enter new password:"
                                 class="text-base! font-semibold! mb-3! text-text-white!" />
-                            <x-ui.input type="password" placeholder="Re-enter new password"
+                            <x-ui.input type="password" placeholder="Re-enter new password" class="border-0! bg-bg-optional!  placeholder:text-text-white"
                                 wire:model="form.password_confirmation" />
                             <x-ui.input-error :messages="$errors->get('form.password_confirmation')" />
                         </div>
 
                         <!-- Action Buttons -->
-                        <div class="flex items-center justify-end gap-4 mt-6">
+                        <div class="flex items-center justify-start gap-4 mt-6">
                             <x-ui.button wire:click="changePassword" class="w-fit! py-2!">
                                 <span wire:loading.remove wire:target="changePassword">
                                     {{ __('Change password') }}
