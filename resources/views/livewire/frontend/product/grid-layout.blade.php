@@ -238,7 +238,7 @@
                         <template x-if="window.innerWidth >= 640">
                             <template x-for="(tag, index) in tags" :key="index">
                                 <span
-                                    class="px-3 py-1 bg-bg-info rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-white"
+                                    class="px-3 py-1 bg-bg-primary dark:bg-bg-info rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-white"
                                     x-text="tag" @click="$wire.tagSelected(tag)"></span>
                             </template>
                         </template>

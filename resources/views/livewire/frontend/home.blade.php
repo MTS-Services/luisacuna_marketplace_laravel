@@ -4,17 +4,27 @@
 
     <div class="swiper swiper-hero">
         <div class="swiper-wrapper">
-              @forelse ($heros as $key=> $hero)
-    <div class="swiper-slide">
-        <x-home.hero :data="$hero" />
+            @forelse ($heros as $key=> $hero)
+                <div class="swiper-slide">
+                    <x-home.hero :data="$hero" />
+                </div>
+            @empty
+                <div class="swiper-slide">
+                    <x-home.hero :data="null" />
+                </div>
+            @endforelse
+        </div>
+
+         <!-- Add Pagination and Navigation -->
+        <div class="">
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+
     </div>
-@empty
-    <div class="swiper-slide">
-        <x-home.hero :data="null" />
-    </div>
-    @endforelse
-    </div>
-    </div>
+
+
     <section class="py-20" id="popular-games">
         {{-- New Bosting Games Section --}}
         <section class="container mx-auto mt-10">
