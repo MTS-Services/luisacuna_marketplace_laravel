@@ -1,21 +1,19 @@
-<main class="mx-auto">
+<main class="mx-auto bg-bg-primary">
     <section class="container mx-auto">
         {{-- breadcrumb --}}
-
-
-        <div class="flex gap-4 items-center my-10">
+        <div class="flex gap-4 items-center py-10">
             <x-phosphor name="less-than" variant="regular" class="w-4 h-4 text-zinc-400" />
             <h2 class="text-text-white text-base">
                 {{ __('All Orders') }}
-                
+
             </h2>
         </div>
-
         <div class="flex justify-between">
             <div class="flex gap-5">
                 <div>
                     <div class="w-10 h-10 md:w-16 md:h-16">
-                        <img src="{{ asset('assets/images/order/order.png') }}" alt="Product Name" class="w-full h-full rounded-lg">
+                        <img src="{{ asset('assets/images/order/order.png') }}" alt="Product Name"
+                            class="w-full h-full rounded-lg">
                     </div>
                 </div>
                 <div>
@@ -44,7 +42,8 @@
                     <div class="">
                         <div class="mt-7">
                             <p class="text-text-white text-base mb-2">{{ __('Dispute reason:') }}</p>
-                            <p class="text-text-white text-base sm:text-2xl font-semibold">{{ __('I have another issue') }}</p>
+                            <p class="text-text-white text-base sm:text-2xl font-semibold">
+                                {{ __('I have another issue') }}</p>
                         </div>
                         <div class="mt-5">
                             <p class="text-text-white text-base mb-2">{{ __('Cancelled by:') }}</p>
@@ -83,12 +82,18 @@
                             <x-phosphor-arrow-right-light
                                 class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" /></x-ui.button>
                     </div>
-                    <!-- Note -->
+                    {{-- <!-- Note -->
                     <p class="mt-4 text-xs text-text-white">
                         <span class="text-text-white text-base  font-semibold">{{ __('Note: ') }}</span>
                         {{ __('Spend your') }} <span class="text-pink-500">{{ __('"Company name"') }}</span>
                         {{ __('balance') }}
-                    </p>
+                    </p> --}}
+                    <div class="w-fit bg-bg-info rounded-lg mt-20 px-4 py-2 flex items-center gap-3">
+                        <x-phosphor name="info" variant="regular" class="w-6 h-6 text-zinc-400" />
+                        <p class="text-text-white text-xs font-normal">
+                            {{ __('Please DO NOT deliver order to buyer. The payment was returned back to the buyer.') }}
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -139,28 +144,48 @@
         <div class="bg-bg-info rounded-lg mt-20 p-5 sm:p-20">
 
             <!-- User Header -->
-            <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
+            <div
+                class="flex items-center justify-between bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
                 <div class="flex items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=D18QUANB&background=853EFF&color=fff" alt="User"
+                    <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
                         class="w-10 h-10 rounded-full">
                     <div>
                         <h3 class="text-text-white text-2xl font-semibold">{{ __('D18QUANB') }}</h3>
                         <p class="text-text-white text-base font-normal">{{ __('Order for Items') }}</p>
                     </div>
                 </div>
+
+                <div class="relative flex items-center ml-auto">
+                    <flux:icon name="magnifying-glass"
+                        class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 stroke-text-primary pointer-events-none z-10" />
+                    <input type="text" wire:model.live="search" placeholder="Search conversion"
+                        class="border dark:border-white border-gray-600 rounded-full py-2 pl-8 pr-2 text-sm focus:outline-none focus:border-purple-500 focus:bg-bg-primary w-full bg-transparent placeholder:text-text-primary">
+                </div>
             </div>
+            {{-- <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
+                <div class="flex items-center gap-3">
+                    <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
+                        class="w-10 h-10 rounded-full">
+                    <div>
+                        <h3 class="text-text-white text-2xl font-semibold">{{ __('D18QUANB') }}</h3>
+                        <p class="text-text-white text-base font-normal">{{ __('Order for Items') }}</p>
+                    </div>
+                </div>
+            </div> --}}
 
             <!-- Order Created Message -->
             <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
                 <div>
-                    {{-- <p class="text-text-white text-base mb-2">{{ __('Order Created:') }} <a href="#">
-                            https://www.companyname.ga/order/d8bcd674-dbde-4d98-9175-a4a031845de0</a></p> --}}
-                    <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
-                        <x-phosphor name="link" variant="" class="fill-zinc-500" />
+                    <p class="text-text-white text-base mb-2">{{ __('Order Created:') }} <a href="#">
+                            https://www.companyname.ga/order/d8bcd674-dbde-4d98-9175-a4a031845de0</a></p>
+                    <div class="bg-bg-info rounded-lg mt-4 px-6 py-3">
+                        <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
+                            <x-phosphor name="link" variant="" class="fill-zinc-500" />
 
-                        <span class="text-text-white">d8bcd674-dbde-4d98-9175-a4a031U58e0</span>
+                            <span class="text-text-white">d8bcd674-dbde-4d98-9175-a4a031U58e0</span>
+                        </div>
+                        <a class="text-text-white text-xs" href="#">www.companyname.com</a>
                     </div>
-                    <a class="text-text-white text-xs" href="#">www.companyname.com</a>
                 </div>
                 <p class="text-text-white text-xs text-right mt-3">Oct 20 2025</p>
             </div>
@@ -168,7 +193,7 @@
             <!-- Order Disputed -->
 
             <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
-                <div>
+                <div class="bg-bg-info rounded-lg mt-4 px-6 py-3">
                     <p class="text-text-white text-base mb-2">{{ __('Order Disputed by Buyer:') }}</p>
                     <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
                         <span class="text-text-white">{{ __('Reason: I don\'t want it anymore') }}</span>
@@ -180,7 +205,7 @@
             <!-- Buyer Message -->
             <div>
                 <div class="flex items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=User&background=853EFF&color=fff" alt="User"
+                    <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
                         class="w-10 h-10 rounded-full">
                     <div class="flex-1">
                         <div class="bg-primary-800 rounded-lg">
@@ -202,16 +227,16 @@
                         </div>
 
                     </div>
-                    <img src="https://ui-avatars.com/api/?name=User&background=853EFF&color=fff" alt="User"
+                    <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
                         class="w-10 h-10 rounded-full">
                 </div>
-                <p class="text-text-white text-right text-xs mt-1">Oct 20 2025</p>
+                <p class="text-text-white text-left text-xs mt-1">Oct 20 2025</p>
             </div>
 
             <!-- Buyer Response -->
             <div>
                 <div class="flex items-center gap-3 mt-10">
-                    <img src="https://ui-avatars.com/api/?name=User&background=853EFF&color=fff" alt="User"
+                    <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
                         class="w-10 h-10 rounded-full">
                     <div class="flex-1">
                         <div class="bg-primary-800 rounded-lg">
@@ -226,7 +251,7 @@
             <!-- Dispute Won -->
 
             <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mt-10">
-                <div>
+                <div class="bg-bg-info rounded-lg mt-4 px-6 py-3">
                     <p class="text-text-white text-base mb-2">{{ __('Order Disputed by Buyer:') }}</p>
                     <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
                         <span class="text-text-white">{{ __('Reason: I don\'t want it anymore') }}</span>
