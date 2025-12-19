@@ -80,4 +80,9 @@ class GridLayout extends Component
             'datas' => $this->datas
         ]);
     }
+
+    public function resetAllFilters(){
+        // $this->reset();
+        // $this->render()->skip()->dispatch();
+    }
 }

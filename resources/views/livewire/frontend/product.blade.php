@@ -17,22 +17,23 @@
             </h1>
         </div>
 
-     
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-6 mb-13">
-        <div>
-            <h2 class="font-semibold text-4xl pb-3">{{ $category->name }}</h2>
-            @if($category->icon)
-            <p class="text-base lg:text-xl text-text-white font-light pb-3 ">
-                {!! $category->meta_description !!}    
-            </p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-6 mb-13">
+            <div>
+                <h2 class="font-semibold text-4xl pb-3">{{ $category->name }}</h2>
+                @if ($category->icon)
+                    <p class="text-base lg:text-xl text-text-white font-light pb-3 ">
+                        {!! $category->meta_description !!}
+                    </p>
+                @endif
+            </div>
+            @if ($category->icon)
+                <div class="h-40 md:h-80 w-full rounded-2xl overflow-hidden bg-bg-secondary col-span-2">
+                    <img src="{{ storage_url($category->icon) }}" alt="category banner"
+                        class="w-full h-full object-cover rounded-lg">
+                </div>
             @endif
         </div>
-        @if($category->icon)
-        <div class="h-40 md:h-80 w-full rounded-2xl overflow-hidden bg-bg-secondary col-span-2">
-            <img src="{{ storage_url($category->icon) }}" alt="category banner" class="w-full h-full object-cover rounded-lg">
-        </div>
-        @endif
-    </div>
         {{-- Filter --}}
         {{-- <x-filter :sortOrder="$sortOrder" /> --}}
         {{-- Filter --}}
@@ -45,7 +46,6 @@
             <div class="flex-1 w-auto md:min-w-64">
                 <div class="relative">
                     <input type="text" placeholder="Search" wire:model.live.debounce.300ms="search"
-                        
                         class="w-full bg-bg-transparent rounded-full border border-zinc-700 px-4 py-2 pl-10 focus:outline-none focus:border-zinc-500">
                     <span class="absolute left-3 top-2.5">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -64,8 +64,7 @@
                     class="flex items-center gap-2 px-4 py-2.5 bg-bg-transparent rounded-full border! border-zinc-700!">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2l-7 7v5l-4 4v-9L3 6V4z" />
+
                     </svg>
                     <span class="text-text-white text-sm">
                         @if ($sortOrder === 'asc')
@@ -110,70 +109,74 @@
     {{-- popular Card --}}
 
     {{-- To Ensure that if it is not a gift card category then title will visible --}}
-    @if($categorySlug != 'gift-card')
-    <section class="container mx-auto mt-10">
-        <div class="title mt-10">
-            <h2 class="font-semibold text-40px">{{ __('Popular') }} {{ $categorySlug == 'top-up' || $categorySlug == 'coaching' ? 'Now' : ucfirst(str_replace('-', ' ', $categorySlug)) }}</h2>
-        </div>
-        <div wire:ignore class="swiper popular-currency">
-            <div class="swiper-wrapper py-10">
-                @foreach ($popular_games as $popular_game)
-                    <div class="swiper-slide">
-                        <x-product-card :data="$popular_game" :categorySlug="$categorySlug" />
-                    </div>
-                @endforeach
+    @if ($categorySlug != 'gift-card')
+        <section class="container mx-auto mt-10">
+            <div class="title mt-10">
+                <h2 class="font-semibold text-40px">{{ __('Popular') }}
+                    {{ $categorySlug == 'top-up' || $categorySlug == 'coaching' ? 'Now' : ucfirst(str_replace('-', ' ', $categorySlug)) }}
+                </h2>
             </div>
+            <div wire:ignore class="swiper popular-currency">
+                <div class="swiper-wrapper py-10">
+                    @foreach ($popular_games as $popular_game)
+                        <div class="swiper-slide">
+                            <x-product-card :data="$popular_game" :categorySlug="$categorySlug" />
+                        </div>
+                    @endforeach
+                </div>
 
-            <!-- Add Pagination and Navigation -->
-            <div class="mt-10">
-                <div class="swiper-pagination"></div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
+                <!-- Add Pagination and Navigation -->
+                <div class="mt-10">
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
     @endif
 
-        {{-- To Ensure that if it is not a gift card category then title will visible --}}
-    @if( $categorySlug == 'boosting'  || $categorySlug == 'coaching' || $categorySlug == 'top-up' )
-    <section class="container mx-auto mt-10">
-        <div class="title mt-10">
-            <h2 class="font-semibold text-40px">{{ __('New') }} {{ $categorySlug == 'top-up' || $categorySlug == 'coaching' ? 'Launched' :ucfirst(str_replace('-', ' ', $categorySlug)) }}</h2>
-        </div>
-        <div wire:ignore class="swiper new-boosting">
-            <div class="swiper-wrapper py-10">
-                @foreach ($new_boosting as $index => $boosting_game)
-
-                    <div class="swiper-slide">
-                        <x-product-card :data="$boosting_game" :categorySlug="$categorySlug" />
-                    </div>
-
-                @endforeach
+    {{-- To Ensure that if it is not a gift card category then title will visible --}}
+    @if ($categorySlug == 'boosting' || $categorySlug == 'coaching' || $categorySlug == 'top-up')
+        <section class="container mx-auto mt-10">
+            <div class="title mt-10">
+                <h2 class="font-semibold text-40px">{{ __('New') }}
+                    {{ $categorySlug == 'top-up' || $categorySlug == 'coaching' ? 'Launched' : ucfirst(str_replace('-', ' ', $categorySlug)) }}
+                </h2>
             </div>
+            <div wire:ignore class="swiper new-boosting">
+                <div class="swiper-wrapper py-10">
+                    @foreach ($new_boosting as $index => $boosting_game)
+                        <div class="swiper-slide">
+                            <x-product-card :data="$boosting_game" :categorySlug="$categorySlug" />
+                        </div>
+                    @endforeach
+                </div>
 
-            <!-- Add Pagination and Navigation -->
-            <div class="mt-10">
-                <div class="swiper-pagination"></div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
+                <!-- Add Pagination and Navigation -->
+                <div class="mt-10">
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
     @endif
 
     {{-- All Currency --}}
     <section class="container mx-auto mt-10">
         {{-- To Ensure that if it is not a gift card category then title will visible --}}
-        @if($categorySlug != 'gift-card')
-        <div class="title mb-10">
-            <h2 class="font-semibold text-40px">{{ __('All') }} {{ $categorySlug == 'top-up' || $categorySlug == 'coaching' ? 'Game' : Str::ucfirst($categorySlug) }}</h2>
-        </div>
+        @if ($categorySlug != 'gift-card')
+            <div class="title mb-10">
+                <h2 class="font-semibold text-40px">{{ __('All') }}
+                    {{ $categorySlug == 'top-up' || $categorySlug == 'coaching' ? 'Game' : Str::ucfirst($categorySlug) }}
+                </h2>
+            </div>
         @endif
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 {{$categorySlug == 'gift-card' ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}} gap-6 md:gap-8 lg:gap-6">
+        <div
+            class="grid grid-cols-1 sm:grid-cols-2 {{ $categorySlug == 'gift-card' ? 'lg:grid-cols-4' : 'lg:grid-cols-3' }} gap-6 md:gap-8 lg:gap-6">
 
             @foreach ($games as $game)
-           
                 <x-product-card :data="$game" :categorySlug="$categorySlug" />
             @endforeach
         </div>
@@ -183,30 +186,61 @@
     </section>
     @push('scripts')
         <script>
+            // document.addEventListener('livewire:navigated', function() {
+            //     const swiper = new Swiper('.popular-currency', {
+            //         loop: true,
+            //         pagination: {
+            //             el: '.swiper-pagination',
+            //             clickable: true,
+            //         },
+            //         // navigation: {
+            //         //     nextEl: '.swiper-button-next',
+            //         //     prevEl: '.swiper-button-prev',
+            //         // },
+            //         autoplay: {
+            //             delay: 2500,
+            //             disableOnInteraction: false,
+            //         },
+            //         slidesPerView: 1,
+            //         spaceBetween: 20,
+            //         breakpoints: {
+            //             640: {
+            //                 slidesPerView: 2,
+            //             },
+
+            //             1024: {
+            //                 slidesPerView: 3,
+            //             },
+            //         },
+            //     });
+
+            // });
             document.addEventListener('livewire:navigated', function() {
+
                 const swiper = new Swiper('.popular-currency', {
-                    loop: true,
+                    loop: false, // IMPORTANT for correct bullets
+                    slidesPerView: 1,
+                    slidesPerGroup: 1,
+                    spaceBetween: 20,
+
                     pagination: {
                         el: '.swiper-pagination',
                         clickable: true,
                     },
-                    // navigation: {
-                    //     nextEl: '.swiper-button-next',
-                    //     prevEl: '.swiper-button-prev',
-                    // },
+
                     autoplay: {
                         delay: 2500,
                         disableOnInteraction: false,
                     },
-                    slidesPerView: 1,
-                    spaceBetween: 20,
+
                     breakpoints: {
                         640: {
                             slidesPerView: 2,
+                            slidesPerGroup: 2,
                         },
-
                         1024: {
                             slidesPerView: 3,
+                            slidesPerGroup: 3,
                         },
                     },
                 });
@@ -214,36 +248,69 @@
             });
 
 
-            
+
+
             document.addEventListener('livewire:navigated', function() {
+
                 const swiper = new Swiper('.new-boosting', {
-                    loop: true,
+                    loop: false, // IMPORTANT for correct bullets
+                    slidesPerView: 1,
+                    slidesPerGroup: 1,
+                    spaceBetween: 20,
+
                     pagination: {
                         el: '.swiper-pagination',
                         clickable: true,
                     },
-                    // navigation: {
-                    //     nextEl: '.swiper-button-next',
-                    //     prevEl: '.swiper-button-prev',
-                    // },
+
                     autoplay: {
                         delay: 2500,
                         disableOnInteraction: false,
                     },
-                    slidesPerView: 1,
-                    spaceBetween: 20,
+
                     breakpoints: {
                         640: {
                             slidesPerView: 2,
+                            slidesPerGroup: 2,
                         },
-
                         1024: {
                             slidesPerView: 3,
+                            slidesPerGroup: 3,
                         },
                     },
                 });
 
             });
+
+            // document.addEventListener('livewire:navigated', function() {
+            //     const swiper = new Swiper('.new-boosting', {
+            //         loop: true,
+            //         pagination: {
+            //             el: '.swiper-pagination',
+            //             clickable: true,
+            //         },
+            //         // navigation: {
+            //         //     nextEl: '.swiper-button-next',
+            //         //     prevEl: '.swiper-button-prev',
+            //         // },
+            //         autoplay: {
+            //             delay: 2500,
+            //             disableOnInteraction: false,
+            //         },
+            //         slidesPerView: 1,
+            //         spaceBetween: 20,
+            //         breakpoints: {
+            //             640: {
+            //                 slidesPerView: 2,
+            //             },
+
+            //             1024: {
+            //                 slidesPerView: 3,
+            //             },
+            //         },
+            //     });
+
+            // });
         </script>
     @endpush
 </main>

@@ -38,8 +38,8 @@ class PurchasedOrders extends Component
                 'label' => 'Order Name',
                     'format' => fn($order) => '
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 xxs:w-10 xxs:h-10 rounded-lg flex-shrink-0">
-                        <img src="' . storage_url($order->product_logo) . '" 
+                    <div class="w-15 h-15  rounded-lg flex-shrink-0">
+                        <img src="' . storage_url('') . '" 
                             alt="' . $order->product_name . '" 
                             class="w-full h-full rounded-lg object-cover" />
                     </div>
