@@ -38,4 +38,7 @@ class ShopComponent extends Component
         ]);
     }
 
+    public function resetAllFilters(){
+        $this->reset();
+    }
 }
