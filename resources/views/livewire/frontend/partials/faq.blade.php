@@ -1,5 +1,5 @@
-    <section class="bg-transparent mt-32">
-        <div class="container bg-bg-primary p-0 sm:p-5 md:p-10 lg:p-14 xl:p-20 flex justify-center wrap flex-col rounded-2xl" x-data="{ active: 0, tab: 'buyers' }">
+    <section class="bg-transparent mt-32 ">
+        <div class="container bg-bg-primary p-6 lg:p-14 xl:p-20 flex justify-center wrap flex-col rounded-2xl" x-data="{ active: 0, tab: 'buyers' }">
 
             <h2 class="text-text-white text-[40px] text-center mb-10 font-semibold">{{ ' Frequently Asked Questions' }}
             </h2>
