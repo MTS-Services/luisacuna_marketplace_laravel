@@ -1,4 +1,4 @@
- <div class="flex gap-4 items-center my-10">
+ <div class="flex gap-4 items-center py-10">
      <div class="w-4 h-4">
          <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
      </div>
