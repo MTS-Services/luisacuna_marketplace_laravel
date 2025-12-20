@@ -7,7 +7,6 @@ use App\Enums\MessageType;
 use App\Models\Conversation;
 use App\Services\ConversationService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -23,6 +22,7 @@ class Message extends Component
     public $media = null;
     public bool $isLoading = false;
     public ?int $beforeMessageId = null;
+    public bool $isUserAtBottom = true; // Track if user is at bottom
 
     protected ConversationService $service;
 
@@ -34,14 +34,30 @@ class Message extends Component
     #[On('conversation-selected')]
     public function loadConversation(int $conversationId)
     {
-        $this->conversationId = $conversationId;
-        $this->conversation = Conversation::with(['participants.participant'])->find($conversationId);
-        $this->loadMessages();
-
-        // Mark messages as read when conversation is opened
-        if ($this->conversation) {
-            $this->service->markMessagesAsRead($this->conversation);
+        // Quick switch: Don't reload if same conversation
+        if ($this->conversationId === $conversationId && $this->conversation) {
+            return;
         }
+
+        $this->conversationId = $conversationId;
+
+        // Load conversation with minimal queries
+        $this->conversation = Conversation::select('id', 'conversation_uuid', 'subject', 'status')
+            ->with(['participants' => function ($query) {
+                $query->select('id', 'conversation_id', 'participant_id', 'participant_type')
+                    ->where('participant_id', '!=', Auth::id())
+                    ->where('is_active', true)
+                    ->with(['participant' => function ($q) {
+                        $q->select('id', 'first_name', 'last_name', 'username', 'avatar');
+                    }]);
+            }])
+            ->find($conversationId);
+
+        $this->loadMessages();
+        $this->isUserAtBottom = true;
+
+        // Dispatch event to JavaScript for initial setup
+        $this->dispatch('conversation-loaded', conversationId: $conversationId);
     }
 
     public function loadMessages()
@@ -100,19 +116,18 @@ class Message extends Component
             );
 
             if ($sentMessage) {
+                // Add message to local array immediately (optimistic update)
+                $this->messages[] = $sentMessage;
+
                 // Clear inputs
                 $this->message = '';
                 $this->media = null;
 
-                // Reload messages
-                $this->beforeMessageId = null;
-                $this->loadMessages();
+                // Always scroll to bottom when user sends message
+                $this->isUserAtBottom = true;
 
                 // Notify other components
-                $this->dispatch('new-message');
                 $this->dispatch('refresh-conversations');
-
-                // Scroll to bottom
                 $this->dispatch('scroll-to-bottom');
             } else {
                 $this->dispatch('error', message: 'Failed to send message');
@@ -131,11 +146,10 @@ class Message extends Component
         // Determine file type
         $mimeType = $file->getMimeType();
         $attachmentType = AttachmentType::FILE;
+        $thumbnailPath = null;
 
         if (str_starts_with($mimeType, 'image/')) {
             $attachmentType = AttachmentType::IMAGE;
-
-            // Create thumbnail for images
             $thumbnailPath = $this->createThumbnail($file);
         } elseif (str_starts_with($mimeType, 'video/')) {
             $attachmentType = AttachmentType::VIDEO;
@@ -146,23 +160,70 @@ class Message extends Component
         return [
             'type' => $attachmentType,
             'path' => $path,
-            'thumbnail' => $thumbnailPath ?? null,
+            'thumbnail' => $thumbnailPath,
         ];
     }
 
     protected function createThumbnail($file): ?string
     {
         try {
-            // Simple thumbnail creation (you can enhance this with intervention/image)
             $thumbnailPath = 'chat/thumbnails/' . uniqid() . '_thumb.jpg';
-
-            // For now, just copy the file (you should implement proper thumbnail generation)
             $file->storeAs('public', $thumbnailPath);
-
             return $thumbnailPath;
         } catch (\Exception $e) {
             return null;
         }
+    }
+
+    #[On('new-message-received')]
+    public function handleNewMessageReceived($messageData)
+    {
+        if (!$this->conversation || $messageData['conversation_id'] != $this->conversationId) {
+            return;
+        }
+
+        // Add new message to array
+        $newMessage = \App\Models\Message::with(['sender', 'attachments', 'readReceipts'])
+            ->find($messageData['id']);
+
+        if ($newMessage) {
+            $this->messages[] = $newMessage;
+
+            // Dispatch event to check scroll position
+            $this->dispatch('check-scroll-position');
+        }
+    }
+
+    #[On('mark-visible-as-read')]
+    public function markVisibleMessagesAsRead(array $visibleMessageIds)
+    {
+        if (!$this->conversation || empty($visibleMessageIds)) {
+            return;
+        }
+
+        // Mark only visible messages as read
+        $unreadMessages = $this->conversation->messages()
+            ->whereIn('id', $visibleMessageIds)
+            ->whereDoesntHave('readReceipts', function ($query) {
+                $query->where('reader_id', Auth::id())
+                    ->where('reader_type', \App\Models\User::class);
+            })
+            ->where('sender_id', '!=', Auth::id())
+            ->get();
+
+        foreach ($unreadMessages as $message) {
+            $this->service->markMessageAsRead($message);
+        }
+
+        if ($unreadMessages->isNotEmpty()) {
+            $this->dispatch('refresh-conversations');
+        }
+    }
+
+    #[On('user-scroll-position')]
+    public function updateScrollPosition(bool $isAtBottom)
+    {
+        $this->isUserAtBottom = $isAtBottom;
     }
 
     public function loadMoreMessages()
@@ -171,7 +232,6 @@ class Message extends Component
             return;
         }
 
-        // Get the oldest message ID
         $oldestMessage = collect($this->messages)->first();
         $this->beforeMessageId = $oldestMessage->id ?? null;
 
@@ -185,49 +245,8 @@ class Message extends Component
             if ($result && $result['messages']->isNotEmpty()) {
                 $olderMessages = $result['messages']->reverse()->values()->all();
                 $this->messages = array_merge($olderMessages, $this->messages);
+                $this->dispatch('maintain-scroll-position');
             }
-        }
-    }
-
-    #[On('refresh-messages')]
-    public function refreshMessages()
-    {
-        if ($this->conversation) {
-            // Only load new messages, not all messages
-            $this->loadNewMessages();
-        }
-    }
-
-    protected function loadNewMessages()
-    {
-        if (!$this->conversation || empty($this->messages)) {
-            return;
-        }
-
-        // Get the latest message ID we have
-        $latestMessageId = collect($this->messages)->last()->id ?? 0;
-
-        // Fetch only newer messages
-        $newMessages = $this->conversation->messages()
-            ->with(['sender', 'attachments', 'readReceipts.reader'])
-            ->where('id', '>', $latestMessageId)
-            ->orderBy('created_at', 'asc')
-            ->get();
-
-        if ($newMessages->isNotEmpty()) {
-            // Append new messages
-            $this->messages = array_merge($this->messages, $newMessages->all());
-
-            // Mark new messages as read
-            foreach ($newMessages as $message) {
-                if ($message->sender_id !== Auth::id()) {
-                    $this->service->markMessageAsRead($message);
-                }
-            }
-
-            // Notify to scroll and refresh conversations list
-            $this->dispatch('new-message-received');
-            $this->dispatch('refresh-conversations');
         }
     }
 
@@ -237,7 +256,12 @@ class Message extends Component
             $message = \App\Models\Message::find($messageId);
 
             if ($message && $this->service->deleteMessage($message)) {
-                $this->loadMessages();
+                // Remove from local array
+                $this->messages = collect($this->messages)
+                    ->reject(fn($msg) => $msg->id === $messageId)
+                    ->values()
+                    ->all();
+
                 $this->dispatch('success', message: 'Message deleted');
             } else {
                 $this->dispatch('error', message: 'Failed to delete message');

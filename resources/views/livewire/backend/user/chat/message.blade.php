@@ -26,133 +26,148 @@
 
         {{-- Messages Area --}}
         <div class="flex-1 overflow-y-auto custom-scrollbar p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6"
-            id="messagesContainer">
+            id="messagesContainer" data-conversation-id="{{ $conversation->id }}">
 
             @forelse($messages as $msg)
-                @if ($msg->sender_id == auth()->id())
-                    {{-- Current User Message --}}
-                    <div class="flex items-start gap-2 sm:gap-3 flex-row-reverse">
-                        @if (auth()->user()->avatar)
-                            <img src="{{ auth_storage_url(auth()->user()->avatar) }}"
-                                alt="{{ auth()->user()->full_name }}"
-                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
-                        @else
-                            <div
-                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
-                                {{ strtoupper(substr(auth()->user()->full_name, 0, 2)) }}
-                            </div>
-                        @endif
-
-                        <div class="flex flex-col gap-1 sm:gap-2 max-w-[75%] sm:max-w-md items-end">
-                            {{-- Attachments --}}
-                            @if ($msg->attachments && $msg->attachments->count() > 0)
-                                @foreach ($msg->attachments as $attachment)
-                                    <div class="relative mb-2">
-                                        @if (in_array($attachment->attachment_type->value, ['image', 'photo']))
-                                            <img src="{{ asset('storage/' . $attachment->file_path) }}"
-                                                class="rounded-lg max-w-full max-h-64 object-cover">
-                                        @else
-                                            <a href="{{ asset('storage/' . $attachment->file_path) }}"
-                                                class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
-                                                📎 {{ basename($attachment->file_path) }}
-                                            </a>
-                                        @endif
-
-                                        <a href="{{ asset('storage/' . $attachment->file_path) }}" download
-                                            class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
-                                            ⬇
-                                        </a>
-                                    </div>
-                                @endforeach
-                            @endif
-
-                            {{-- Message Body --}}
-                            @if ($msg->message_body)
+                <div class="message-item" data-message-id="{{ $msg->id }}">
+                    @if ($msg->sender_id == auth()->id())
+                        {{-- Current User Message --}}
+                        <div class="flex items-start gap-2 sm:gap-3 flex-row-reverse">
+                            @if (auth()->user()->avatar)
+                                <img src="{{ auth_storage_url(auth()->user()->avatar) }}"
+                                    alt="{{ auth()->user()->full_name }}"
+                                    class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
+                            @else
                                 <div
-                                    class="bg-gradient-to-r from-accent to-accent-foreground text-white px-3 sm:px-4 py-2 sm:py-3 rounded-2xl rounded-tr-none relative group">
-                                    <p class="text-xs sm:text-sm break-words">{{ $msg->message_body }}</p>
-
-                                    {{-- Message options --}}
-                                    <button wire:click="deleteMessage({{ $msg->id }})"
-                                        class="absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-700">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                            </path>
-                                        </svg>
-                                    </button>
+                                    class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
+                                    {{ strtoupper(substr(auth()->user()->full_name, 0, 2)) }}
                                 </div>
                             @endif
 
-                            <span class="text-[10px] sm:text-xs text-text-muted">
-                                {{ $msg->created_at->format('M d, Y h:i A') }}
-                                @if ($msg->readReceipts && $msg->readReceipts->where('reader_id', '!=', auth()->id())->count() > 0)
-                                    <span class="text-blue-500">✓✓</span>
-                                @else
-                                    <span class="text-gray-400">✓</span>
+                            <div class="flex flex-col gap-1 sm:gap-2 max-w-[75%] sm:max-w-md items-end">
+                                {{-- Attachments --}}
+                                @if ($msg->attachments && $msg->attachments->count() > 0)
+                                    @foreach ($msg->attachments as $attachment)
+                                        <div class="relative mb-2">
+                                            @if (in_array($attachment->attachment_type->value, ['image', 'photo']))
+                                                <img src="{{ asset('storage/' . $attachment->file_path) }}"
+                                                    class="rounded-lg max-w-full max-h-64 object-cover">
+                                            @else
+                                                <a href="{{ asset('storage/' . $attachment->file_path) }}"
+                                                    class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
+                                                    📎 {{ basename($attachment->file_path) }}
+                                                </a>
+                                            @endif
+
+                                            <a href="{{ asset('storage/' . $attachment->file_path) }}" download
+                                                class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
+                                                ⬇
+                                            </a>
+                                        </div>
+                                    @endforeach
                                 @endif
-                            </span>
-                        </div>
-                    </div>
-                @else
-                    {{-- Other User Message --}}
-                    <div class="flex items-start gap-2 sm:gap-3">
-                        @php
-                            $sender = $msg->sender;
-                        @endphp
 
-                        @if ($sender && $sender->avatar)
-                            <img src="{{ storage_url($sender->avatar) }}" alt="{{ $sender->full_name }}"
-                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
-                        @else
-                            <div
-                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
-                                {{ $sender ? strtoupper(substr($sender->full_name, 0, 2)) : 'S' }}
-                            </div>
-                        @endif
+                                {{-- Message Body --}}
+                                @if ($msg->message_body)
+                                    <div
+                                        class="bg-gradient-to-r from-accent to-accent-foreground text-white px-3 sm:px-4 py-2 sm:py-3 rounded-2xl rounded-tr-none relative group">
+                                        <p class="text-xs sm:text-sm break-words">{{ $msg->message_body }}</p>
 
-                        <div class="flex flex-col gap-1 sm:gap-2 max-w-[75%] sm:max-w-md">
-                            {{-- Attachments --}}
-                            @if ($msg->attachments && $msg->attachments->count() > 0)
-                                @foreach ($msg->attachments as $attachment)
-                                    <div class="relative mb-2">
-                                        @if (in_array($attachment->attachment_type->value, ['image', 'photo']))
-                                            <img src="{{ asset('storage/' . $attachment->file_path) }}"
-                                                class="rounded-lg max-w-full max-h-64 object-cover">
-                                        @else
-                                            <a href="{{ asset('storage/' . $attachment->file_path) }}"
-                                                class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
-                                                📎 {{ basename($attachment->file_path) }}
-                                            </a>
-                                        @endif
-
-                                        <a href="{{ asset('storage/' . $attachment->file_path) }}" download
-                                            class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
-                                            ⬇
-                                        </a>
+                                        {{-- Message options --}}
+                                        <button wire:click="deleteMessage({{ $msg->id }})"
+                                            class="absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-700">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                </path>
+                                            </svg>
+                                        </button>
                                     </div>
-                                @endforeach
-                            @endif
+                                @endif
 
-                            {{-- Message Body --}}
-                            @if ($msg->message_body)
+                                <span class="text-[10px] sm:text-xs text-text-muted">
+                                    {{ $msg->created_at->format('M d, Y h:i A') }}
+                                    @if ($msg->readReceipts && $msg->readReceipts->where('reader_id', '!=', auth()->id())->count() > 0)
+                                        <span class="text-blue-500">✓✓</span>
+                                    @else
+                                        <span class="text-gray-400">✓</span>
+                                    @endif
+                                </span>
+                            </div>
+                        </div>
+                    @else
+                        {{-- Other User Message --}}
+                        <div class="flex items-start gap-2 sm:gap-3">
+                            @php
+                                $sender = $msg->sender;
+                            @endphp
+
+                            @if ($sender && $sender->avatar)
+                                <img src="{{ storage_url($sender->avatar) }}" alt="{{ $sender->full_name }}"
+                                    class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
+                            @else
                                 <div
-                                    class="bg-bg-hover text-text-primary px-3 sm:px-4 py-2 sm:py-3 rounded-2xl rounded-tl-none">
-                                    <p class="text-xs sm:text-sm break-words">{{ $msg->message_body }}</p>
+                                    class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
+                                    {{ $sender ? strtoupper(substr($sender->full_name, 0, 2)) : 'S' }}
                                 </div>
                             @endif
 
-                            <span class="text-[10px] sm:text-xs text-text-muted">
-                                {{ $msg->created_at->format('M d, Y h:i A') }}
-                            </span>
+                            <div class="flex flex-col gap-1 sm:gap-2 max-w-[75%] sm:max-w-md">
+                                {{-- Attachments --}}
+                                @if ($msg->attachments && $msg->attachments->count() > 0)
+                                    @foreach ($msg->attachments as $attachment)
+                                        <div class="relative mb-2">
+                                            @if (in_array($attachment->attachment_type->value, ['image', 'photo']))
+                                                <img src="{{ asset('storage/' . $attachment->file_path) }}"
+                                                    class="rounded-lg max-w-full max-h-64 object-cover">
+                                            @else
+                                                <a href="{{ asset('storage/' . $attachment->file_path) }}"
+                                                    class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
+                                                    📎 {{ basename($attachment->file_path) }}
+                                                </a>
+                                            @endif
+
+                                            <a href="{{ asset('storage/' . $attachment->file_path) }}" download
+                                                class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
+                                                ⬇
+                                            </a>
+                                        </div>
+                                    @endforeach
+                                @endif
+
+                                {{-- Message Body --}}
+                                @if ($msg->message_body)
+                                    <div
+                                        class="bg-bg-hover text-text-primary px-3 sm:px-4 py-2 sm:py-3 rounded-2xl rounded-tl-none">
+                                        <p class="text-xs sm:text-sm break-words">{{ $msg->message_body }}</p>
+                                    </div>
+                                @endif
+
+                                <span class="text-[10px] sm:text-xs text-text-muted">
+                                    {{ $msg->created_at->format('M d, Y h:i A') }}
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                @endif
+                    @endif
+                </div>
             @empty
                 <div class="flex items-center justify-center h-full text-text-muted text-sm">
                     {{ __('No messages yet. Start the conversation!') }}
                 </div>
             @endforelse
+        </div>
+
+        {{-- Scroll to bottom button (shown when user scrolls up) --}}
+        <div id="scrollToBottomBtn"
+            class="hidden absolute bottom-24 right-8 bg-accent text-white p-3 rounded-full shadow-lg cursor-pointer hover:bg-accent-foreground transition-colors z-10"
+            onclick="scrollToBottom(true)">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3">
+                </path>
+            </svg>
+            <span id="newMessageCount"
+                class="hidden absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">0</span>
         </div>
 
         {{-- Message Input --}}
@@ -243,9 +258,122 @@
         </div>
     @endif
 </div>
+
 @script
     <script>
         let conversationChannel = null;
+        let isUserAtBottom = true;
+        let newMessageCount = 0;
+        let intersectionObserver = null;
+        let scrollTimeout = null;
+
+        // Initialize Intersection Observer for read receipts
+        function initIntersectionObserver() {
+            if (intersectionObserver) {
+                intersectionObserver.disconnect();
+            }
+
+            const container = document.getElementById('messagesContainer');
+            if (!container) return;
+
+            intersectionObserver = new IntersectionObserver((entries) => {
+                const visibleMessageIds = [];
+
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                        const messageId = entry.target.dataset.messageId;
+                        if (messageId) {
+                            visibleMessageIds.push(parseInt(messageId));
+                        }
+                    }
+                });
+
+                if (visibleMessageIds.length > 0) {
+                    $wire.call('markVisibleMessagesAsRead', visibleMessageIds);
+                }
+            }, {
+                root: container,
+                threshold: [0.5], // Message must be 50% visible
+                rootMargin: '0px'
+            });
+
+            // Observe all message items
+            document.querySelectorAll('.message-item').forEach(item => {
+                intersectionObserver.observe(item);
+            });
+        }
+
+        // Track scroll position
+        function handleScroll() {
+            const container = document.getElementById('messagesContainer');
+            if (!container) return;
+
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                const scrollTop = container.scrollTop;
+                const scrollHeight = container.scrollHeight;
+                const clientHeight = container.clientHeight;
+                const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
+
+                // User is at bottom if within 100px
+                isUserAtBottom = distanceFromBottom < 100;
+
+                // Update Livewire component
+                $wire.call('updateScrollPosition', isUserAtBottom);
+
+                // Show/hide scroll to bottom button
+                const btn = document.getElementById('scrollToBottomBtn');
+                if (btn) {
+                    if (!isUserAtBottom && newMessageCount > 0) {
+                        btn.classList.remove('hidden');
+                    } else {
+                        btn.classList.add('hidden');
+                        newMessageCount = 0;
+                        updateNewMessageCount();
+                    }
+                }
+            }, 150);
+        }
+
+        // Scroll to bottom function
+        function scrollToBottom(smooth = false) {
+            const container = document.getElementById('messagesContainer');
+            if (!container) return;
+
+            container.scrollTo({
+                top: container.scrollHeight,
+                behavior: smooth ? 'smooth' : 'auto'
+            });
+
+            isUserAtBottom = true;
+            newMessageCount = 0;
+            updateNewMessageCount();
+            document.getElementById('scrollToBottomBtn')?.classList.add('hidden');
+        }
+
+        // Update new message count badge
+        function updateNewMessageCount() {
+            const countBadge = document.getElementById('newMessageCount');
+            if (countBadge) {
+                if (newMessageCount > 0) {
+                    countBadge.textContent = newMessageCount;
+                    countBadge.classList.remove('hidden');
+                } else {
+                    countBadge.classList.add('hidden');
+                }
+            }
+        }
+
+        // Play notification sound
+        function playNotificationSound() {
+            try {
+                const audio = new Audio('/sounds/notification.mp3');
+                audio.volume = 0.3;
+                audio.play().catch(e => console.log('Audio blocked'));
+            } catch (e) {
+                console.log('Notification sound error:', e);
+            }
+        }
 
         // Listen for conversation selection
         Livewire.on('conversation-selected', (data) => {
@@ -256,62 +384,114 @@
                 window.Echo.leave(conversationChannel);
             }
 
+            // Reset state
+            newMessageCount = 0;
+            isUserAtBottom = true;
+            updateNewMessageCount();
+
             // Join new conversation channel
             if (conversationId) {
                 conversationChannel = `conversation.${conversationId}`;
 
                 console.log('🔌 Joining channel:', conversationChannel);
 
+                // window.Echo.private(conversationChannel)
+                //     .listen('.message.sent', (event) => {
+                //         console.log('📨 New message received:', event);
+
+                //         // Dispatch to Livewire
+                //         $wire.dispatch('new-message-received', { messageData: event });
+
+                //         // Play sound if not from current user
+                //         if (event.sender_id !== {{ auth()->id() }}) {
+                //             playNotificationSound();
+
+                //             // If user is not at bottom, increment count
+                //             if (!isUserAtBottom) {
+                //                 newMessageCount++;
+                //                 updateNewMessageCount();
+                //                 document.getElementById('scrollToBottomBtn')?.classList.remove('hidden');
+                //             }
+                //         }
+                //     });
+
                 window.Echo.private(conversationChannel)
                     .listen('.message.sent', (event) => {
                         console.log('📨 New message received:', event);
 
-                        // Refresh component to show new message
-                        // $wire.$refresh();
-                        Livewire.dispatch('refresh-messages');
+                        // ✅ Fixed dispatch
+                        $wire.dispatch('new-message-received', {
+                            messageData: event
+                        });
 
-                        // Scroll to bottom
-                        setTimeout(scrollToBottom, 100);
+                        if (event.sender_id !== {{ auth()->id() }}) {
+                            // playNotificationSound();
 
-                        // Play notification sound (optional)
-                        playNotificationSound();
+                            if (!isUserAtBottom) {
+                                newMessageCount++;
+                                updateNewMessageCount();
+                                document.getElementById('scrollToBottomBtn')?.classList.remove('hidden');
+                            }
+                        }
                     });
             }
-
-            // Scroll to bottom on load
-            setTimeout(scrollToBottom, 100);
         });
 
-        // Listen for new messages sent by current user
+        // Listen for conversation loaded
+        Livewire.on('conversation-loaded', () => {
+            setTimeout(() => {
+                scrollToBottom(false);
+                initIntersectionObserver();
+
+                // Attach scroll listener
+                const container = document.getElementById('messagesContainer');
+                if (container) {
+                    container.removeEventListener('scroll', handleScroll);
+                    container.addEventListener('scroll', handleScroll);
+                }
+            }, 100);
+        });
+
+        // Listen for scroll to bottom event
         Livewire.on('scroll-to-bottom', () => {
-            setTimeout(scrollToBottom, 100);
+            setTimeout(() => scrollToBottom(true), 100);
         });
 
-        function scrollToBottom() {
-            const container = document.getElementById('messagesContainer');
-            if (container) {
-                container.scrollTo({
-                    top: container.scrollHeight,
-                    behavior: 'smooth'
-                });
+        // Listen for check scroll position
+        Livewire.on('check-scroll-position', () => {
+            // If user is at bottom, auto-scroll to new message
+            if (isUserAtBottom) {
+                setTimeout(() => {
+                    scrollToBottom(true);
+                    initIntersectionObserver(); // Re-observe after new messages
+                }, 100);
+            } else {
+                // User is scrolled up, just re-observe
+                setTimeout(() => initIntersectionObserver(), 100);
             }
-        }
-
-        function playNotificationSound() {
-            try {
-                const audio = new Audio('/sounds/notification.mp3');
-                audio.volume = 0.3;
-                audio.play().catch(e => console.log('Audio blocked by browser'));
-            } catch (e) {
-                console.log('Notification sound error:', e);
-            }
-        }
+        });
 
         // Cleanup on navigation
         document.addEventListener('livewire:navigating', () => {
             if (conversationChannel) {
                 window.Echo.leave(conversationChannel);
             }
+            if (intersectionObserver) {
+                intersectionObserver.disconnect();
+            }
+            const container = document.getElementById('messagesContainer');
+            if (container) {
+                container.removeEventListener('scroll', handleScroll);
+            }
+        });
+
+        // Initialize on load
+        document.addEventListener('livewire:init', () => {
+            setTimeout(() => {
+                if (document.getElementById('messagesContainer')) {
+                    initIntersectionObserver();
+                }
+            }, 500);
         });
     </script>
 @endscript
