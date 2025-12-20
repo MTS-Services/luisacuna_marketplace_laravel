@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\User\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\User\OrderManagement\OrderController;
 use App\Http\Controllers\Backend\User\OfferManagement\UserOfferController;
 use App\Http\Controllers\Backend\User\OrderManagement\OngoingOrderController;
+use App\Http\Controllers\Backend\User\OrderManagement\OrderDetailsController;
 
 // , 'userVerify'
 Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->group(function () {
@@ -25,9 +26,8 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
             Route::get('/sold-orders', 'soldOrders')->name('sold-orders');
         });
 
-        Route::get('/order-details', function () {
-            return view('backend.user.pages.orders.order-details');
-        })->name('order-details');
+        Route::get('/order-details/{order}', [OrderDetailsController::class, 'orderDetails'])->name('order-details');
+
         Route::get('/order-description', function () {
             return view('backend.user.pages.orders.order-description');
         })->name('order-description');

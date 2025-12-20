@@ -27,19 +27,16 @@ class SoldOrders extends Component
     {
 
 
-        // Table columns configuration for orders
-        // Table columns configuration for orders
         $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
 
-        // dd($datas);
-          $columns = [
+        $columns = [
             [
                 'key' => 'name',
                 'label' => 'Order Name',
-                    'format' => fn($order) => '
+                'format' => fn($order) => '
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 xxs:w-10 xxs:h-10 rounded-lg flex-shrink-0">
                         <img src="' . storage_url($order->product_logo) . '" 
@@ -48,11 +45,11 @@ class SoldOrders extends Component
                     </div>
                     <div class="min-w-0">
                         <h3 class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">'
-                        . $order->product_name .
-                        '</h3>
+                    . $order->product_name .
+                    '</h3>
                         <p class="text-xs text-text-primary/80 truncate xxs:block py-1">'
-                        . 'Cheapest +75%  Discount' .
-                        '</p>
+                    . 'Cheapest +75%  Discount' .
+                    '</p>
                         <a
                             href="/"
                             class="text-bg-pink-500 text-xs"
@@ -85,11 +82,11 @@ class SoldOrders extends Component
                 'key' => 'status',
                 'label' => 'Order status',
                 // 'badge' => true,
-                   'format' => function ($data) {
-                        return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-text-primary text-xs font-medium badge bg-pink-500 ' . $data->status->value . '">' .
-                            $data->status->label() .
-                            '</span>';
-                    }
+                'format' => function ($data) {
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-text-primary text-xs font-medium badge bg-pink-500 ' . $data->status->value . '">' .
+                        $data->status->label() .
+                        '</span>';
+                }
             ],
             [
                 'key' => 'quantity',
