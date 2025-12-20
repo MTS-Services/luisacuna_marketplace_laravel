@@ -77,7 +77,7 @@
 
                     <!-- Button -->
                     <div class="flex w-full md:w-auto mt-10!">
-                        <x-ui.button class="w-fit! py-3! px-6!">
+                        <x-ui.button href="{{ route('user.OngoingOrder.details') }}" class="w-fit! py-3! px-6!">
                             {{ __('Buy again') }}
                             <x-phosphor-arrow-right-light
                                 class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" /></x-ui.button>
@@ -125,7 +125,12 @@
                         </div>
                         <div class="flex justify-between mt-2">
                             <p class="text-text-white text-base font-semibold mb-2">{{ __('Seller') }}</p>
-                            <p class="text-text-white text-base font-normal">{{ __('D18QUAN Online') }}</p>
+                            <p class="flex items-center gap-2 text-base font-normal">
+                                <span class="text-pink-500">{{ __('DI 8QUAN') }}</span>
+                                <span class="text-text-white">|</span>
+                                <span class="w-2.5 h-2.5 bg-green-500 rounded-full"></span>
+                                <span class="text-text-white">{{ __('Online') }}</span>
+                            </p>
                         </div>
                         <div class="flex justify-between mt-2">
                             <p class="text-text-white text-base font-semibold mb-2">{{ __('Total price') }}</p>
