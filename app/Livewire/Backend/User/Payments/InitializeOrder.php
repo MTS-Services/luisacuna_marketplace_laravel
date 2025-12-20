@@ -57,7 +57,7 @@ class InitializeOrder extends Component
             'grand_total' => ($this->product->price * $this->quantity),
         ]);
 
-        Session::driver('database')->put("checkout_{$token}", [
+        Session::driver('redis')->put("checkout_{$token}", [
             'order_id' => $order->id,
             'price_locked' => ($this->product->price * $this->quantity),
             'expires_at' => now()->addMinutes((int) env('ORDER_CHECKOUT_TIMEOUT_MINUTES', 10))->timestamp,
