@@ -97,7 +97,7 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
         return view('backend.user.pages.feedback.feedback');
     })->name('feedback');
     Route::get('/account-settings', function () {
-        return view('backend.user.pages.settings.account-seuserttings');
+        return view('backend.user.pages.settings.account-settings');
     })->name('account-settings');
 
     Route::get('/profile', function () {
