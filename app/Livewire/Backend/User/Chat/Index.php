@@ -3,37 +3,105 @@
 namespace App\Livewire\Backend\User\Chat;
 
 use App\Services\ConversationService;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class Index extends Component
 {
+    #[Url(as: 'search')]
+    public ?string $searchTerm = null;
 
-    public Collection $conversations;
+    #[Url(as: 'conversation')]
+    public ?int $selectedConversationId = null;
 
-    #[Url(as: 'perticipants')]
-    public ?string $perticipants = null;
+    public bool $unreadOnly = false;
+
+    public ?string $categoryFilter = null;
 
     protected ConversationService $service;
 
     public function boot(ConversationService $service)
     {
         $this->service = $service;
-        $this->conversations = new Collection();
     }
 
-    #[On('search', 'refresh', 'new-message')]
-    public function fetchConversations()
+    #[Computed]
+    public function conversations()
     {
-        $this->conversations =  $this->service->fetchConversationList(search: $this->perticipants);
+        $filters = [];
+
+        if ($this->unreadOnly) {
+            $filters['unread'] = true;
+        }
+
+        if ($this->categoryFilter) {
+            $filters['category'] = $this->categoryFilter;
+        }
+
+        return $this->service->fetchConversationList(
+            search: $this->searchTerm,
+            filters: $filters
+        );
     }
 
+    public function selectConversation(int $conversationId)
+    {
+        $this->selectedConversationId = $conversationId;
+        $this->dispatch('conversation-selected', conversationId: $conversationId);
+    }
+
+    #[On('new-message')]
+    public function handleNewMessage()
+    {
+        unset($this->conversations);
+        $this->dispatch('$refresh');
+    }
+
+    #[On('refresh-conversations')]
+    public function refreshConversations()
+    {
+        unset($this->conversations);
+    }
+
+    public function markAllAsRead()
+    {
+        try {
+            $conversations = $this->service->fetchConversationList();
+            
+            foreach ($conversations as $conversation) {
+                $this->service->markMessagesAsRead($conversation, Auth::id());
+            }
+
+            $this->dispatch('success', message: 'All messages marked as read');
+            $this->refreshConversations();
+        } catch (\Exception $e) {
+            $this->dispatch('error', message: 'Failed to mark messages as read');
+        }
+    }
+
+    public function updatedUnreadOnly()
+    {
+        unset($this->conversations);
+    }
+
+    public function updatedCategoryFilter()
+    {
+        unset($this->conversations);
+    }
+
+    public function getUnreadCountProperty()
+    {
+        return $this->service->getUnreadCount();
+    }
 
     public function render()
     {
-        $this->fetchConversations();
-        return view('livewire.backend.user.chat.index');
+        return view('livewire.backend.user.chat.index', [
+            'totalUnreadCount' => $this->unreadCount,
+        ]);
     }
 }

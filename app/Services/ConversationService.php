@@ -216,7 +216,8 @@ class ConversationService
             ->withCount([
                 'messages as unread_count' => function ($query) use ($userId) {
                     $query->whereDoesntHave('readReceipts', function ($q) use ($userId) {
-                        $q->where('user_id', $userId);
+                        $q->where('reader_id', $userId)
+                            ->where('reader_type', User::class);
                     })
                         ->where('sender_id', '!=', $userId);
                 }
@@ -315,17 +316,22 @@ class ConversationService
         MessageType $messageType = MessageType::TEXT,
         ?array $metadata = null,
         ?int $parentMessageId = null,
-        ?array $attachments = []
+        ?array $attachments = [],
+        ?int $orderId = null,
     ): ?Message {
-        $sender = $sender ?? Auth::user();
+        if ($orderId && !$sender) {
+            // System sender for order messages
+            $sender = null;
+        } else {
+            $sender = $sender ?? Auth::user();
 
-        // Verify sender is participant
-        if (!$this->isUserParticipant($conversation, $sender->id)) {
-            Log::warning('User not participant in conversation', [
-                'user_id' => $sender->id,
-                'conversation_id' => $conversation->id
-            ]);
-            return null;
+            if (!$this->isUserParticipant($conversation, $sender->id)) {
+                Log::warning('User not participant in conversation', [
+                    'user_id' => $sender->id,
+                    'conversation_id' => $conversation->id
+                ]);
+                return null;
+            }
         }
 
         try {
@@ -341,14 +347,14 @@ class ConversationService
                 // Create message
                 $message = $this->message->create([
                     'conversation_id' => $conversation->id,
-                    'sender_id' => $sender->id,
-                    'sender_type' => User::class,
+                    'sender_id' => $sender ? $sender->id : null,
+                    'sender_type' => $sender ? User::class : null,
                     'message_type' => $messageType,
                     'message_body' => $messageBody,
                     'metadata' => $metadata,
                     'parent_message_id' => $parentMessageId,
-                    'creater_id' => $sender->id,
-                    'creater_type' => User::class,
+                    'creater_id' => $sender ? $sender->id : null,
+                    'creater_type' => $sender ? User::class : null,
                 ]);
 
                 // Handle attachments
@@ -359,19 +365,21 @@ class ConversationService
                 // Update conversation last_message_at
                 $conversation->update([
                     'last_message_at' => now(),
-                    'updater_id' => $sender->id,
-                    'updater_type' => User::class,
+                    'updater_id' => $sender ? $sender->id : null,
+                    'updater_type' => $sender ? User::class : null,
                 ]);
 
-                // Mark as read for sender
-                $this->markMessageAsRead($message, $sender);
+                if ($sender) {
+                    // Mark as read for sender
+                    $this->markMessageAsRead($message, $sender);
+                }
 
                 return $message->load(['sender', 'attachments']);
             });
         } catch (Exception $e) {
             Log::error('Failed to send message', [
                 'conversation_id' => $conversation->id,
-                'sender_id' => $sender->id,
+                'sender_id' => $sender ? $sender->id : null,
                 'error' => $e->getMessage()
             ]);
             return null;
@@ -381,7 +389,7 @@ class ConversationService
     /**
      * Send message in conversation as order information by system
      */
-    public function sendOrderMessage(Order $order)
+    public function sendOrderMessage(Order $order): ?Conversation
     {
         $order->load('source.user');
         $buyer = Auth::user();
@@ -392,18 +400,21 @@ class ConversationService
         if (!$conversation) {
             return null;
         }
+        // dd($conversation, $order, $buyer, $seller);
 
         $this->sendMessage(
-            $conversation,
-            'New order Initiated. Order ID: ' . $order->order_id,
-            null,
-            MessageType::ORDER_NOTIFICATION,
-            [
-                'order_id' => $order->order_id,
+            conversation: $conversation,
+            messageBody: 'New order Initiated. Order ID: ' . $order->order_id,
+            sender: null,
+            messageType: MessageType::ORDER_NOTIFICATION,
+            metadata: [
+                'order_id' => $order->id,
+                'order_uid' => $order->order_id,
                 'buyer_id' => $buyer->id,
                 'seller_id' => $seller->id,
-                'order_status' => $order->status
-            ]
+                'order_status' => $order->status->value
+            ],
+            orderId: $order->id,
         );
 
         return $conversation;
@@ -497,7 +508,8 @@ class ConversationService
         // Don't create duplicate read receipts
         $existing = $this->readReceipt
             ->where('message_id', $message->id)
-            ->where('user_id', $reader->id)
+            ->where('reader_id', $reader->id)
+            ->where('reader_type', User::class)
             ->first();
 
         if ($existing) {
@@ -507,7 +519,8 @@ class ConversationService
         try {
             return $this->readReceipt->create([
                 'message_id' => $message->id,
-                'user_id' => $reader->id,
+                'reader_id' => $reader->id,
+                'reader_type' => User::class,
                 'read_at' => now(),
                 'creater_id' => $reader->id,
                 'creater_type' => User::class,
@@ -515,7 +528,8 @@ class ConversationService
         } catch (Exception $e) {
             Log::error('Failed to mark message as read', [
                 'message_id' => $message->id,
-                'user_id' => $reader->id,
+                'reader_id' => $reader->id,
+                'reader_type' => User::class,
                 'error' => $e->getMessage()
             ]);
             return null;
@@ -532,7 +546,8 @@ class ConversationService
         try {
             $unreadMessages = $conversation->messages()
                 ->whereDoesntHave('readReceipts', function ($query) use ($userId) {
-                    $query->where('user_id', $userId);
+                    $query->where('reader_id', $userId)
+                        ->where('reader_type', User::class);
                 })
                 ->where('sender_id', '!=', $userId)
                 ->pluck('id');
@@ -543,7 +558,8 @@ class ConversationService
 
             $readReceipts = $unreadMessages->map(fn($messageId) => [
                 'message_id' => $messageId,
-                'user_id' => $userId,
+                'reader_id' => $userId,
+                'reader_type' => User::class,
                 'read_at' => now(),
                 'creater_id' => $userId,
                 'creater_type' => User::class,
@@ -584,7 +600,8 @@ class ConversationService
                     ->where('is_active', true);
             })
             ->whereDoesntHave('readReceipts', function ($query) use ($userId) {
-                $query->where('user_id', $userId);
+                $query->where('reader_id', $userId)
+                    ->where('reader_type', User::class);
             })
             ->where('sender_id', '!=', $userId)
             ->count();
@@ -705,7 +722,8 @@ class ConversationService
             'total_participants' => $conversation->participants()->where('is_active', true)->count(),
             'unread_messages' => $conversation->messages()
                 ->whereDoesntHave('readReceipts', function ($query) {
-                    $query->where('user_id', Auth::id());
+                    $query->where('reader_id', Auth::id())
+                        ->where('reader_type', User::class);
                 })
                 ->where('sender_id', '!=', Auth::id())
                 ->count(),

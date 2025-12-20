@@ -65,12 +65,13 @@ class PaymentController extends Controller
                 ], 404);
             }
 
-            $startConversation = $this->conversationService->sendOrderMessage($order);
+
+            $conversation = $this->conversationService->sendOrderMessage($order);
 
             Log::info('Order conversation started', [
                 'order_id' => $order->order_id,
-                'conversation_id' => $startConversation->id,
-                'conversation_uuid' => $startConversation->conversation_uuid,
+                'conversation_id' => $conversation->id,
+                'conversation_uuid' => $conversation->conversation_uuid,
             ]);
 
             // Get payment method instance
@@ -78,7 +79,6 @@ class PaymentController extends Controller
 
             // Initialize payment (creates payment intent)
             $result = $paymentMethod->startPayment($order);
-            
 
             Log::info('Payment initialized successfully', [
                 'order_id' => $order->order_id,

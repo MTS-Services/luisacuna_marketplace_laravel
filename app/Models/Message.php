@@ -42,6 +42,7 @@ class Message extends AuditBaseModel implements Auditable
         'message_type' => MessageType::class,
         'edited_at' => 'datetime',
         'is_edited' => 'boolean',
+        'metadata' => 'array',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
