@@ -16,14 +16,6 @@
 
             <nav class="flex-1 px-3 py-4 space-y-2">
                 <div>
-                    {{-- <div class="w-10 h-10 rounded-full border-2 border-zinc-500 overflow-hidden">
-                     <img src="{{ storage_url('') }}" alt="" class="w-full h-full">
-                   </div>
-                   <div>
-                     <div>
-                         <h2>PixelStoreAt</h2>
-                     </div>
-                   </div> --}}
 
                     <div class="flex justify-between">
                         <div class="flex items-center w-full mb-3 gap-4 pb-5 border-b-2 border-bg-info">
