@@ -259,6 +259,7 @@
     @endif
 </div>
 
+
 @script
     <script>
         let conversationChannel = null;
@@ -266,8 +267,6 @@
         let newMessageCount = 0;
         let intersectionObserver = null;
         let scrollTimeout = null;
-        let pollingInterval = null; // For polling without broadcasting
-        let lastMessageId = null; // Track last message ID
 
         // Initialize Intersection Observer for read receipts
         function initIntersectionObserver() {
@@ -291,6 +290,7 @@
                 });
 
                 if (visibleMessageIds.length > 0) {
+                    // ✅ Use Livewire.find() to safely get component
                     const component = Livewire.find('{{ $this->getId() }}');
                     if (component) {
                         component.call('markVisibleMessagesAsRead', visibleMessageIds);
@@ -321,6 +321,7 @@
 
                 isUserAtBottom = distanceFromBottom < 100;
 
+                // ✅ Safe component access
                 const component = Livewire.find('{{ $this->getId() }}');
                 if (component) {
                     component.set('isUserAtBottom', isUserAtBottom);
@@ -376,61 +377,12 @@
             }
         }
 
-        /* =================================================================
-              POLLING METHOD - Without Broadcasting (Default) START.
-        ================================================================= */
-
-        // ✅ POLLING METHOD - Without Broadcasting (Default)
-        function startPolling() {
-            // Clear any existing polling
-            if (pollingInterval) {
-                clearInterval(pollingInterval);
-            }
-
-            // Poll every 500 milliseconds (adjust as needed)
-            pollingInterval = setInterval(() => {
-                const component = Livewire.find('{{ $this->getId() }}');
-                if (component) {
-                    component.call('pollForNewMessages').then((response) => {
-                        if (response && response.hasNewMessages) {
-                            // Play notification sound for new messages
-                            if (response.senderId !== {{ auth()->id() }}) {
-                                playNotificationSound();
-
-                                if (!isUserAtBottom) {
-                                    newMessageCount += response.newMessageCount || 1;
-                                    updateNewMessageCount();
-                                    document.getElementById('scrollToBottomBtn')?.classList.remove(
-                                    'hidden');
-                                }
-                            }
-                        }
-                    });
-                }
-            }, 500); // Poll every 500 milliseconds
-        }
-
-        function stopPolling() {
-            if (pollingInterval) {
-                clearInterval(pollingInterval);
-                pollingInterval = null;
-            }
-        }
-
-        /* =================================================================
-              POLLING METHOD - Without Broadcasting (Default) END.
-        ================================================================= */
         // ✅ Use proper Livewire event listeners
         document.addEventListener('livewire:initialized', () => {
             // Listen for conversation selection
             Livewire.on('conversation-selected', (event) => {
                 const conversationId = Array.isArray(event) ? event[0] : event.conversationId;
 
-                // ====================================================
-                // METHOD 1: WITH BROADCASTING (PUSHER/REVERB) START
-                // ====================================================
-                // Uncomment this block to use WebSocket broadcasting
-                /*
                 if (conversationChannel) {
                     window.Echo.leave(conversationChannel);
                 }
@@ -441,12 +393,14 @@
 
                 if (conversationId) {
                     conversationChannel = `conversation.${conversationId}`;
+
                     console.log('🔌 Joining channel:', conversationChannel);
 
                     window.Echo.private(conversationChannel)
                         .listen('.message.sent', (event) => {
-                            console.log('📨 New message received via WebSocket:', event);
+                            console.log('📨 New message received:', event);
 
+                            // ✅ Use Livewire.find() for safe component access
                             const component = Livewire.find('{{ $this->getId() }}');
                             if (component) {
                                 component.call('handleNewMessageReceived', event);
@@ -458,36 +412,12 @@
                                 if (!isUserAtBottom) {
                                     newMessageCount++;
                                     updateNewMessageCount();
-                                    document.getElementById('scrollToBottomBtn')?.classList.remove('hidden');
+                                    document.getElementById('scrollToBottomBtn')?.classList.remove(
+                                        'hidden');
                                 }
                             }
                         });
                 }
-                */
-
-                // ====================================================
-                // METHOD 1: WITH BROADCASTING (PUSHER/REVERB) END
-                // ====================================================
-
-                // ====================================================
-                // METHOD 2: WITHOUT BROADCASTING (POLLING) START
-                // ====================================================
-                // Comment this block if using broadcasting above
-                stopPolling(); // Stop previous polling
-
-                newMessageCount = 0;
-                isUserAtBottom = true;
-                updateNewMessageCount();
-                lastMessageId = null; // Reset last message ID
-
-                if (conversationId) {
-                    console.log('🔄 Starting polling for conversation:', conversationId);
-                    startPolling();
-                }
-                // ====================================================
-                // METHOD 2: WITHOUT BROADCASTING (POLLING) END
-                // ====================================================
-
             });
 
             // Listen for conversation loaded
@@ -500,12 +430,6 @@
                     if (container) {
                         container.removeEventListener('scroll', handleScroll);
                         container.addEventListener('scroll', handleScroll);
-                    }
-
-                    // Get the last message ID for polling reference
-                    const lastMessage = document.querySelector('.message-item:last-child');
-                    if (lastMessage) {
-                        lastMessageId = parseInt(lastMessage.dataset.messageId);
                     }
                 }, 100);
             });
@@ -527,15 +451,6 @@
                 }
             });
 
-            // Listen for new messages polled (from polling method)
-            Livewire.on('messages-updated', () => {
-                // Update last message ID
-                const lastMessage = document.querySelector('.message-item:last-child');
-                if (lastMessage) {
-                    lastMessageId = parseInt(lastMessage.dataset.messageId);
-                }
-            });
-
             // Initialize on load
             setTimeout(() => {
                 if (document.getElementById('messagesContainer')) {
@@ -546,34 +461,15 @@
 
         // Cleanup on navigation
         document.addEventListener('livewire:navigating', () => {
-            // Stop polling when navigating away
-            stopPolling();
-
-            // Clean up broadcasting channel if used
             if (conversationChannel) {
                 window.Echo.leave(conversationChannel);
             }
-
             if (intersectionObserver) {
                 intersectionObserver.disconnect();
             }
-
             const container = document.getElementById('messagesContainer');
             if (container) {
                 container.removeEventListener('scroll', handleScroll);
-            }
-        });
-
-        // Stop polling when tab is not visible (optional, saves resources)
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                stopPolling();
-            } else {
-                // Resume polling when tab becomes visible again
-                const container = document.getElementById('messagesContainer');
-                if (container && container.dataset.conversationId) {
-                    startPolling();
-                }
             }
         });
     </script>
