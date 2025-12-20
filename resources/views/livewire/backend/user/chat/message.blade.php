@@ -259,7 +259,7 @@
     @endif
 </div>
 
-@script
+{{-- @script
     <script>
         let conversationChannel = null;
         let isUserAtBottom = true;
@@ -492,6 +492,221 @@
                     initIntersectionObserver();
                 }
             }, 500);
+        });
+    </script>
+@endscript --}}
+
+@script
+    <script>
+        let conversationChannel = null;
+        let isUserAtBottom = true;
+        let newMessageCount = 0;
+        let intersectionObserver = null;
+        let scrollTimeout = null;
+
+        // Initialize Intersection Observer for read receipts
+        function initIntersectionObserver() {
+            if (intersectionObserver) {
+                intersectionObserver.disconnect();
+            }
+
+            const container = document.getElementById('messagesContainer');
+            if (!container) return;
+
+            intersectionObserver = new IntersectionObserver((entries) => {
+                const visibleMessageIds = [];
+
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                        const messageId = entry.target.dataset.messageId;
+                        if (messageId) {
+                            visibleMessageIds.push(parseInt(messageId));
+                        }
+                    }
+                });
+
+                if (visibleMessageIds.length > 0) {
+                    // ✅ Use Livewire.find() to safely get component
+                    const component = Livewire.find('{{ $this->getId() }}');
+                    if (component) {
+                        component.call('markVisibleMessagesAsRead', visibleMessageIds);
+                    }
+                }
+            }, {
+                root: container,
+                threshold: [0.5],
+                rootMargin: '0px'
+            });
+
+            document.querySelectorAll('.message-item').forEach(item => {
+                intersectionObserver.observe(item);
+            });
+        }
+
+        // Track scroll position
+        function handleScroll() {
+            const container = document.getElementById('messagesContainer');
+            if (!container) return;
+
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                const scrollTop = container.scrollTop;
+                const scrollHeight = container.scrollHeight;
+                const clientHeight = container.clientHeight;
+                const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
+
+                isUserAtBottom = distanceFromBottom < 100;
+
+                // ✅ Safe component access
+                const component = Livewire.find('{{ $this->getId() }}');
+                if (component) {
+                    component.set('isUserAtBottom', isUserAtBottom);
+                }
+
+                const btn = document.getElementById('scrollToBottomBtn');
+                if (btn) {
+                    if (!isUserAtBottom && newMessageCount > 0) {
+                        btn.classList.remove('hidden');
+                    } else {
+                        btn.classList.add('hidden');
+                        newMessageCount = 0;
+                        updateNewMessageCount();
+                    }
+                }
+            }, 150);
+        }
+
+        function scrollToBottom(smooth = false) {
+            const container = document.getElementById('messagesContainer');
+            if (!container) return;
+
+            container.scrollTo({
+                top: container.scrollHeight,
+                behavior: smooth ? 'smooth' : 'auto'
+            });
+
+            isUserAtBottom = true;
+            newMessageCount = 0;
+            updateNewMessageCount();
+            document.getElementById('scrollToBottomBtn')?.classList.add('hidden');
+        }
+
+        function updateNewMessageCount() {
+            const countBadge = document.getElementById('newMessageCount');
+            if (countBadge) {
+                if (newMessageCount > 0) {
+                    countBadge.textContent = newMessageCount;
+                    countBadge.classList.remove('hidden');
+                } else {
+                    countBadge.classList.add('hidden');
+                }
+            }
+        }
+
+        function playNotificationSound() {
+            try {
+                const audio = new Audio('/sounds/notification.mp3');
+                audio.volume = 0.3;
+                audio.play().catch(e => console.log('Audio blocked'));
+            } catch (e) {
+                console.log('Notification sound error:', e);
+            }
+        }
+
+        // ✅ Use proper Livewire event listeners
+        document.addEventListener('livewire:initialized', () => {
+            // Listen for conversation selection
+            Livewire.on('conversation-selected', (event) => {
+                const conversationId = Array.isArray(event) ? event[0] : event.conversationId;
+
+                if (conversationChannel) {
+                    window.Echo.leave(conversationChannel);
+                }
+
+                newMessageCount = 0;
+                isUserAtBottom = true;
+                updateNewMessageCount();
+
+                if (conversationId) {
+                    conversationChannel = `conversation.${conversationId}`;
+
+                    console.log('🔌 Joining channel:', conversationChannel);
+
+                    window.Echo.private(conversationChannel)
+                        .listen('.message.sent', (event) => {
+                            console.log('📨 New message received:', event);
+
+                            // ✅ Use Livewire.find() for safe component access
+                            const component = Livewire.find('{{ $this->getId() }}');
+                            if (component) {
+                                component.call('handleNewMessageReceived', event);
+                            }
+
+                            if (event.sender_id !== {{ auth()->id() }}) {
+                                playNotificationSound();
+
+                                if (!isUserAtBottom) {
+                                    newMessageCount++;
+                                    updateNewMessageCount();
+                                    document.getElementById('scrollToBottomBtn')?.classList.remove(
+                                        'hidden');
+                                }
+                            }
+                        });
+                }
+            });
+
+            // Listen for conversation loaded
+            Livewire.on('conversation-loaded', () => {
+                setTimeout(() => {
+                    scrollToBottom(false);
+                    initIntersectionObserver();
+
+                    const container = document.getElementById('messagesContainer');
+                    if (container) {
+                        container.removeEventListener('scroll', handleScroll);
+                        container.addEventListener('scroll', handleScroll);
+                    }
+                }, 100);
+            });
+
+            // Listen for scroll to bottom event
+            Livewire.on('scroll-to-bottom', () => {
+                setTimeout(() => scrollToBottom(true), 100);
+            });
+
+            // Listen for check scroll position
+            Livewire.on('check-scroll-position', () => {
+                if (isUserAtBottom) {
+                    setTimeout(() => {
+                        scrollToBottom(true);
+                        initIntersectionObserver();
+                    }, 100);
+                } else {
+                    setTimeout(() => initIntersectionObserver(), 100);
+                }
+            });
+
+            // Initialize on load
+            setTimeout(() => {
+                if (document.getElementById('messagesContainer')) {
+                    initIntersectionObserver();
+                }
+            }, 500);
+        });
+
+        // Cleanup on navigation
+        document.addEventListener('livewire:navigating', () => {
+            if (conversationChannel) {
+                window.Echo.leave(conversationChannel);
+            }
+            if (intersectionObserver) {
+                intersectionObserver.disconnect();
+            }
+            const container = document.getElementById('messagesContainer');
+            if (container) {
+                container.removeEventListener('scroll', handleScroll);
+            }
         });
     </script>
 @endscript
