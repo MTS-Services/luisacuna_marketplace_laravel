@@ -11,15 +11,8 @@ class OrderDetailsController extends Controller
 {
     protected $masterView = 'backend.user.pages.orders.order-details';
 
-
-    public function orderDetails(string $encryptedId)
+    public function orderDetails()
     {
-
-        $orderId = decrypt($encryptedId);
-       
-
-        return view($this->masterView, [
-            'orderId' => $orderId
-        ]);
+        return view($this->masterView);
     }
 }

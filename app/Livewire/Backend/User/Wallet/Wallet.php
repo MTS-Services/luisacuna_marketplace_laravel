@@ -85,7 +85,7 @@ class Wallet extends Component
                     'label' => 'Action',
                     'format' => fn($item) => '
                       <div class="flex items-center gap-3">
-                        <a href="' . route('user.order-details', ['id' => $item->ordered_id]) . '"  class="bg-zinc-500 hover:bg-zinc-600 text-white py-2 px-4 rounded-full">View</a>
+                        <a href="' . route('user.order-details') . '"  class="bg-zinc-500 hover:bg-zinc-600 text-white py-2 px-4 rounded-full">View</a>
                       </div>'
                 ],
             ];
