@@ -2,6 +2,9 @@
 
     <!-- Hero Section -->
 
+    <div>
+        <x-ui.custom-select2 class="w-full border-none bg-bg-zinc"  />
+    </div>
     <div class="swiper swiper-hero">
         <div class="swiper-wrapper">
             @forelse ($heros as $key=> $hero)

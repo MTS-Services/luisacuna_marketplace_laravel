@@ -22,6 +22,7 @@
 
     {{-- Dropdown Trigger --}}
     <div @click="open = !open"
+        {{-- {!! $attri !!} --}}
          class="flex justify-between bg-bg-primary items-center px-3 py-2 cursor-pointer border {{ $border }} {{ $rounded }} {{ $width }} {{ $mdWidth }}">
         <span x-text="selectedOption"></span>
         <svg class="w-5 h-5 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
