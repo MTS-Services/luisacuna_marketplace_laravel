@@ -24,23 +24,23 @@ class OrderCanceledDetails extends Component
         $this->service = $service;
     }
 
-    public function mount($orderId): void
+    public function mount(): void
     {
-        $this->data = $this->service->findData($orderId);
+        // $this->data = $this->service->findData($orderId);
 
-        if (!$this->data) {
-            abort(404, 'Order not found');
-        }
-        $product = $this->data->source;
+        // if (!$this->data) {
+        //     abort(404, 'Order not found');
+        // }
+        // $product = $this->data->source;
         
-        if (!$product) {
-            abort(404, 'Product not found for this order');
+        // if (!$product) {
+        //     abort(404, 'Product not found for this order');
             
-        }
+        // }
 
-        $this->sellerId = $product->user_id;
+        // $this->sellerId = $product->user_id;
 
-        $this->loadMessages();
+        // $this->loadMessages();
     }
 
     public function send()

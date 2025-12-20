@@ -26,7 +26,7 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
             Route::get('/sold-orders', 'soldOrders')->name('sold-orders');
         });
 
-        Route::get('/order-details/{order}', [OrderDetailsController::class, 'orderDetails'])->name('order-details');
+        Route::get('/order-details', [OrderDetailsController::class, 'orderDetails'])->name('order-details');
 
         Route::get('/order-description', function () {
             return view('backend.user.pages.orders.order-description');
