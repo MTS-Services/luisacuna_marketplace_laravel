@@ -148,8 +148,8 @@
                 </div>
             </div>
         </div>
+         {{-- 
         <div class="bg-bg-info rounded-lg">
-            <!-- User Header -->
             <div class="hidden md:flex items-center justify-between bg-zinc-500 rounded-tl-lg rounded-tr-lg p-5">
                 <div class="flex items-center gap-3">
                     <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
@@ -167,7 +167,6 @@
                 </div>
             </div>
             <div class="mt-12 p-4 sm:p-20">
-                <!-- User Header -->
                 <div
                     class="flex items-center justify-between bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
                     <div class="flex items-center gap-3">
@@ -178,15 +177,10 @@
                             <p class="text-text-white text-base font-normal">{{ __('Order for Items') }}</p>
                         </div>
                     </div>
-                    {{-- <div class="relative flex items-center ml-auto">
-                        <flux:icon name="magnifying-glass"
-                            class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 stroke-text-primary pointer-events-none z-10" />
-                        <input type="text" wire:model.live="search" placeholder="Search conversion"
-                            class="border dark:border-white border-gray-600 rounded-full py-2 pl-8 pr-2 text-sm focus:outline-none focus:border-zinc-500 focus:bg-bg-primary w-full bg-transparent placeholder:text-text-primary">
-                    </div> --}}
+                  
                 </div>
 
-                <!-- Order Created Message -->
+
                 <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
                     <div>
                         <p class="text-text-white text-base mb-2 break-all">
@@ -208,7 +202,7 @@
                     <p class="text-text-white text-xs text-right mt-3">Oct 20 2025</p>
                 </div>
 
-                <!-- Order Disputed -->
+
                 <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
                     <div class="bg-bg-info rounded-lg mt-4 px-6 py-3">
                         <p class="text-text-white text-base mb-2">{{ __('Order Disputed by Buyer:') }}</p>
@@ -219,7 +213,6 @@
                     <p class="text-text-white text-xs text-right mt-3">Oct 20 2025</p>
                 </div>
 
-                <!-- Buyer Message -->
                 <div>
                     <div class="flex items-center gap-3">
                         <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
@@ -234,7 +227,6 @@
                     <p class="text-text-white text-right text-xs mt-1">Oct 20 2025</p>
                 </div>
 
-                <!-- Seller Message -->
                 <div class="mt-10">
                     <div class="flex items-center gap-3">
                         <div class="flex-1">
@@ -250,7 +242,6 @@
                     <p class="text-text-white text-left text-xs mt-1">Oct 20 2025</p>
                 </div>
 
-                <!-- Buyer Response -->
                 <div>
                     <div class="flex items-center gap-3 mt-10">
                         <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
@@ -265,7 +256,6 @@
                     <p class="text-text-white text-right text-xs mt-1">Oct 20 2025</p>
                 </div>
 
-                <!-- Dispute Won -->
                 <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mt-10">
                     <div class="bg-bg-info rounded-lg mt-4 px-6 py-3">
                         <p class="text-text-white text-base mb-2">{{ __('Order Disputed by Buyer:') }}</p>
@@ -276,13 +266,19 @@
                     <p class="text-text-white text-xs text-right mt-3">Oct 30 2025</p>
                 </div>
 
-                <!-- Conversation Closed -->
                 <div class="bg-primary-800 rounded-lg mt-10">
                     <p class="bg-zinc-500 px-6 py-3 rounded-lg">
                         {{ __('this conversation is no longer active.') }}</p>
                 </div>
             </div>
+
         </div>
+        
+         --}}
+
+        <livewire:backend.user.chat />
+
+
         <div class="bg-bg-info rounded-lg mt-20 mb-24! !py-8 !px-4 md:!py-20 md:!px-10">
             <div class="flex items-center gap-3">
                 <div class="w-16 h-16">

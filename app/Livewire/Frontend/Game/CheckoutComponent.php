@@ -30,8 +30,9 @@ class CheckoutComponent extends Component
     }
     public function mount($slug, $token)
     {
+        dd('here');
         $key = $key = "checkout_{$token}";
-        $sessionKey = Session::driver('database')->get($key);
+        $sessionKey = Session::driver('redis')->get($key);
 
         if (!$sessionKey) {
             abort(404, 'Checkout link is invalid or has expired');
@@ -39,7 +40,7 @@ class CheckoutComponent extends Component
 
         // 2. Check if 10 minutes have passed
         if (now()->timestamp > $sessionKey['expires_at']) {
-            Session::driver('database')->forget($key);
+            Session::driver('redis')->forget($key);
             abort(403, 'Sorry, the checkout link has expired');
         }
 

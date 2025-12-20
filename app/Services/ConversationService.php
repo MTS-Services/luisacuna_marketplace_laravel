@@ -377,15 +377,15 @@ class ConversationService
                 }
 
                 // Broadcast to other participants in the conversation
-                broadcast(new MessageSent($message))->toOthers();
+                // broadcast(new MessageSent($message))->toOthers();
 
                 // Notify all participants that conversation was updated
-                $conversation->participants()
-                    ->where('participant_id', '!=', $sender?->id)
-                    ->where('is_active', true)
-                    ->each(function ($participant) use ($conversation) {
-                        broadcast(new ConversationUpdated($conversation, $participant->participant_id));
-                    });
+                // $conversation->participants()
+                //     ->where('participant_id', '!=', $sender?->id)
+                //     ->where('is_active', true)
+                //     ->each(function ($participant) use ($conversation) {
+                //         broadcast(new ConversationUpdated($conversation, $participant->participant_id));
+                //     });
 
                 return $message->load(['sender', 'attachments']);
             });
