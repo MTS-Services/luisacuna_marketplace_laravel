@@ -275,7 +275,7 @@
                 @endif --}}
 
                 <!-- Next button -->
-                <div class=" flex justify-center px-2 sm:px-6 mb-5 sm:mb-11">
+                <div class=" flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
                     <x-ui.button type="submit" class="w-auto py-2! text-white text-base! font-semibold!">
                         {{ __('chnage password') }}
                     </x-ui.button>

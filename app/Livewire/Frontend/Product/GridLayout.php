@@ -49,10 +49,7 @@ class GridLayout extends Component
         $this->game = $this->gameService->findData($gameSlug, 'slug')->load(['gameConfig', 'tags']) ;   
 
        
-        
-        $this->datas = $this->getDatas();
-
-        $this->pagination = $this->paginationData($this->datas);
+       
 
         $this->platforms = $this->platformService->getAllDatas() ?? [];
     }
@@ -75,6 +72,10 @@ class GridLayout extends Component
     }
     public function render()
     {
+         
+        $this->datas = $this->getDatas();
+
+        $this->pagination = $this->paginationData($this->datas);
        
         return view('livewire.frontend.product.grid-layout', [
             'datas' => $this->datas

@@ -39,12 +39,14 @@
 
             <!-- Actions -->
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{{ route('home') }}" class="btn btn-primary">
+                {{-- <a href="{{ route('home') }}" class="btn btn-primary">
                     Continue Shopping
-                </a>
-                {{-- <a href="{{ route('user.orders') }}" class="btn btn-outline">
-                    View My Orders
                 </a> --}}
+                <a href="{{ route('user.order-details', encrypt($order->id)) }}" class="btn btn-outline">
+                    View My Order
+                </a>
+
+
             </div>
         </div>
     </div>

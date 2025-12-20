@@ -325,7 +325,7 @@
                             {{ __('Log out all sessions') }}
                         </span>
                     </x-ui.button>
-                    <p class="text-xl font-normal text-text-primary">This button logs you out from a II devices and
+                    <p class="text-sm lg:text-xl font-normal text-text-primary">This button logs you out from a II devices and
                         browsers.</p>
                     <div class="text-xs flex flex-row gap-1">
                         <span class="text-pink-500">*</span>

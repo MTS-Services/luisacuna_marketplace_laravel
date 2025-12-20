@@ -20,12 +20,9 @@ class ProductService
         return $this->model->all($sortField, $order);
     }
 
-    public function findData($column_value, string $column_name = 'id'): ?Product
+public function findData($column_value, string $column_name = 'id')
     {
-
-        $model = $this->model;
-
-        return $model->where($column_name, $column_value)->first();
+        return $this->model->where($column_name, $column_value)->first();
     }
 
     public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
