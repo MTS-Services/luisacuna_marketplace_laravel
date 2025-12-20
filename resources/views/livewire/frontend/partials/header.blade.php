@@ -60,7 +60,9 @@
             <div class="flex items-center" x-data>
 
                 @guest
-                    <div class="flex bg-zinc-200 dark:bg-zinc-800 lg:p-1 rounded-full">
+                    <div class="flex 
+                    {{-- bg-zinc-200 dark:bg-zinc-800 --}}
+                     lg:p-1 rounded-full">
                         {{-- <!-- Light/Dark Mode Toggle -->
                         <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
                             class="flex items-center justify-center w-8 h-6 text-lg rounded-l-full transition-colors duration-200 xl:flex"
@@ -114,7 +116,9 @@
 
 
                 @auth
-                    <div class="hidden md:flex bg-zinc-200 dark:bg-zinc-800 lg:p-1 rounded-full">
+                    <div class="hidden md:flex 
+                    {{-- bg-zinc-200 dark:bg-zinc-800 --}}
+                     lg:p-1 rounded-full">
                         <!-- Light/Dark Mode Toggle -->
                         {{-- <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
                             class="flex items-center justify-center w-8 h-6 text-lg rounded-l-full transition-colors duration-200 xl:flex"
