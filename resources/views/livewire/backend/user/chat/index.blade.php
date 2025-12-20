@@ -182,13 +182,20 @@
     @script
         <script>
             const userId = {{ auth()->id() }};
+            let conversationPollingInterval = null;
 
-            console.log('🔌 Listening on user channel:', `user.${userId}`);
+            console.log('👤 User ID:', userId);
 
-            // Listen for conversation updates on user's private channel
+            // ====================================
+            // METHOD 1: WITH BROADCASTING (PUSHER/REVERB)
+            // ====================================
+            // Uncomment this block to use WebSocket broadcasting for conversation updates
+            /*
+            console.log('🔌 Listening on user channel with Broadcasting:', `user.${userId}`);
+
             window.Echo.private(`user.${userId}`)
                 .listen('.conversation.updated', (event) => {
-                    console.log('🔔 Conversation updated:', event);
+                    console.log('🔔 Conversation updated via WebSocket:', event);
 
                     // Refresh conversations list
                     $wire.$refresh();
@@ -197,6 +204,53 @@
             // Cleanup
             document.addEventListener('livewire:navigating', () => {
                 window.Echo.leave(`user.${userId}`);
+            });
+            */
+
+            // ====================================
+            // METHOD 2: WITHOUT BROADCASTING (POLLING)
+            // ====================================
+            // Comment this block if using broadcasting above
+            console.log('🔄 Starting conversation polling for user:', userId);
+
+            function startConversationPolling() {
+                if (conversationPollingInterval) {
+                    clearInterval(conversationPollingInterval);
+                }
+
+                // Poll every 5 seconds for conversation list updates
+                conversationPollingInterval = setInterval(() => {
+                    const component = Livewire.find('{{ $this->getId() }}');
+                    if (component) {
+                        component.call('pollForConversationUpdates');
+                    }
+                }, 5000); // Poll every 5 seconds
+            }
+
+            function stopConversationPolling() {
+                if (conversationPollingInterval) {
+                    clearInterval(conversationPollingInterval);
+                    conversationPollingInterval = null;
+                }
+            }
+
+            // Start polling when page loads
+            document.addEventListener('livewire:initialized', () => {
+                startConversationPolling();
+            });
+
+            // Stop polling when navigating away
+            document.addEventListener('livewire:navigating', () => {
+                stopConversationPolling();
+            });
+
+            // Pause polling when tab is not visible (saves resources)
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    stopConversationPolling();
+                } else {
+                    startConversationPolling();
+                }
             });
         </script>
     @endscript

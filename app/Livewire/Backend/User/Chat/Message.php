@@ -7,6 +7,7 @@ use App\Enums\MessageType;
 use App\Models\Conversation;
 use App\Services\ConversationService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -22,7 +23,8 @@ class Message extends Component
     public $media = null;
     public bool $isLoading = false;
     public ?int $beforeMessageId = null;
-    public bool $isUserAtBottom = true; // Track if user is at bottom
+    public bool $isUserAtBottom = true;
+    public ?int $lastPolledMessageId = null; // Track last polled message
 
     protected ConversationService $service;
 
@@ -34,14 +36,12 @@ class Message extends Component
     #[On('conversation-selected')]
     public function loadConversation(int $conversationId)
     {
-        // Quick switch: Don't reload if same conversation
         if ($this->conversationId === $conversationId && $this->conversation) {
             return;
         }
 
         $this->conversationId = $conversationId;
 
-        // Load conversation with minimal queries
         $this->conversation = Conversation::select('id', 'conversation_uuid', 'subject', 'status')
             ->with(['participants' => function ($query) {
                 $query->select('id', 'conversation_id', 'participant_id', 'participant_type')
@@ -56,7 +56,11 @@ class Message extends Component
         $this->loadMessages();
         $this->isUserAtBottom = true;
 
-        // Dispatch event to JavaScript for initial setup
+        // Set the last polled message ID
+        if (!empty($this->messages)) {
+            $this->lastPolledMessageId = collect($this->messages)->last()->id ?? null;
+        }
+
         $this->dispatch('conversation-loaded', conversationId: $conversationId);
     }
 
@@ -78,6 +82,57 @@ class Message extends Component
         }
     }
 
+    /**
+     * ✅ POLLING METHOD - Check for new messages without broadcasting
+     * This method is called by JavaScript setInterval
+     */
+    public function pollForNewMessages()
+    {
+        if (!$this->conversation) {
+            return ['hasNewMessages' => false];
+        }
+
+        // Get the ID of the last message we have
+        $lastMessageId = $this->lastPolledMessageId;
+
+        if (empty($this->messages)) {
+            $lastMessageId = 0;
+        } elseif (!$lastMessageId) {
+            $lastMessageId = collect($this->messages)->last()->id ?? 0;
+        }
+
+        // Query for new messages after the last polled message
+        $newMessages = $this->conversation->messages()
+            ->with(['sender', 'attachments', 'readReceipts'])
+            ->where('id', '>', $lastMessageId)
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        if ($newMessages->isNotEmpty()) {
+            // Add new messages to the array
+            foreach ($newMessages as $newMessage) {
+                $this->messages[] = $newMessage;
+            }
+
+            // Update last polled message ID
+            $this->lastPolledMessageId = $newMessages->last()->id;
+
+            // Dispatch event to check scroll position
+            $this->dispatch('check-scroll-position');
+            $this->dispatch('messages-updated');
+
+            // Return info about new messages
+            $lastNewMessage = $newMessages->last();
+            return [
+                'hasNewMessages' => true,
+                'newMessageCount' => $newMessages->count(),
+                'senderId' => $lastNewMessage->sender_id,
+            ];
+        }
+
+        return ['hasNewMessages' => false];
+    }
+
     public function sendMessage()
     {
         if (!$this->conversation) {
@@ -94,7 +149,6 @@ class Message extends Component
         try {
             $attachments = [];
 
-            // Handle file uploads
             if ($this->media) {
                 if (is_array($this->media)) {
                     foreach ($this->media as $file) {
@@ -107,7 +161,6 @@ class Message extends Component
 
             $messageType = !empty($attachments) ? MessageType::IMAGE : MessageType::TEXT;
 
-            // Send the message
             $sentMessage = $this->service->sendMessage(
                 conversation: $this->conversation,
                 messageBody: trim($this->message) ?: 'Sent an attachment',
@@ -116,19 +169,18 @@ class Message extends Component
             );
 
             if ($sentMessage) {
-                // Add message to local array immediately (optimistic update)
                 $this->messages[] = $sentMessage;
 
-                // Clear inputs
+                // Update last polled message ID
+                $this->lastPolledMessageId = $sentMessage->id;
+
                 $this->message = '';
                 $this->media = null;
-
-                // Always scroll to bottom when user sends message
                 $this->isUserAtBottom = true;
 
-                // Notify other components
                 $this->dispatch('refresh-conversations');
                 $this->dispatch('scroll-to-bottom');
+                $this->dispatch('messages-updated');
             } else {
                 $this->dispatch('error', message: 'Failed to send message');
             }
@@ -143,7 +195,6 @@ class Message extends Component
     {
         $path = $file->store('chat/attachments', 'public');
 
-        // Determine file type
         $mimeType = $file->getMimeType();
         $attachmentType = AttachmentType::FILE;
         $thumbnailPath = null;
@@ -175,6 +226,10 @@ class Message extends Component
         }
     }
 
+    /**
+     * ✅ BROADCASTING METHOD - Handle new message from WebSocket event
+     * This is called when using Pusher/Reverb broadcasting
+     */
     #[On('new-message-received')]
     public function handleNewMessageReceived($messageData)
     {
@@ -182,26 +237,25 @@ class Message extends Component
             return;
         }
 
-        // Add new message to array
         $newMessage = \App\Models\Message::with(['sender', 'attachments', 'readReceipts'])
             ->find($messageData['id']);
 
         if ($newMessage) {
             $this->messages[] = $newMessage;
 
-            // Dispatch event to check scroll position
+            // Update last polled message ID (in case user switches to polling)
+            $this->lastPolledMessageId = $newMessage->id;
+
             $this->dispatch('check-scroll-position');
         }
     }
 
-    #[On('mark-visible-as-read')]
     public function markVisibleMessagesAsRead(array $visibleMessageIds)
     {
         if (!$this->conversation || empty($visibleMessageIds)) {
             return;
         }
 
-        // Mark only visible messages as read
         $unreadMessages = $this->conversation->messages()
             ->whereIn('id', $visibleMessageIds)
             ->whereDoesntHave('readReceipts', function ($query) {
@@ -218,12 +272,6 @@ class Message extends Component
         if ($unreadMessages->isNotEmpty()) {
             $this->dispatch('refresh-conversations');
         }
-    }
-
-    #[On('user-scroll-position')]
-    public function updateScrollPosition(bool $isAtBottom)
-    {
-        $this->isUserAtBottom = $isAtBottom;
     }
 
     public function loadMoreMessages()
@@ -256,7 +304,6 @@ class Message extends Component
             $message = \App\Models\Message::find($messageId);
 
             if ($message && $this->service->deleteMessage($message)) {
-                // Remove from local array
                 $this->messages = collect($this->messages)
                     ->reject(fn($msg) => $msg->id === $messageId)
                     ->values()

@@ -259,243 +259,6 @@
     @endif
 </div>
 
-{{-- @script
-    <script>
-        let conversationChannel = null;
-        let isUserAtBottom = true;
-        let newMessageCount = 0;
-        let intersectionObserver = null;
-        let scrollTimeout = null;
-
-        // Initialize Intersection Observer for read receipts
-        function initIntersectionObserver() {
-            if (intersectionObserver) {
-                intersectionObserver.disconnect();
-            }
-
-            const container = document.getElementById('messagesContainer');
-            if (!container) return;
-
-            intersectionObserver = new IntersectionObserver((entries) => {
-                const visibleMessageIds = [];
-
-                entries.forEach(entry => {
-                    if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-                        const messageId = entry.target.dataset.messageId;
-                        if (messageId) {
-                            visibleMessageIds.push(parseInt(messageId));
-                        }
-                    }
-                });
-
-                if (visibleMessageIds.length > 0) {
-                    $wire.call('markVisibleMessagesAsRead', visibleMessageIds);
-                }
-            }, {
-                root: container,
-                threshold: [0.5], // Message must be 50% visible
-                rootMargin: '0px'
-            });
-
-            // Observe all message items
-            document.querySelectorAll('.message-item').forEach(item => {
-                intersectionObserver.observe(item);
-            });
-        }
-
-        // Track scroll position
-        function handleScroll() {
-            const container = document.getElementById('messagesContainer');
-            if (!container) return;
-
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(() => {
-                const scrollTop = container.scrollTop;
-                const scrollHeight = container.scrollHeight;
-                const clientHeight = container.clientHeight;
-                const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
-
-                // User is at bottom if within 100px
-                isUserAtBottom = distanceFromBottom < 100;
-
-                // Update Livewire component
-                $wire.call('updateScrollPosition', isUserAtBottom);
-
-                // Show/hide scroll to bottom button
-                const btn = document.getElementById('scrollToBottomBtn');
-                if (btn) {
-                    if (!isUserAtBottom && newMessageCount > 0) {
-                        btn.classList.remove('hidden');
-                    } else {
-                        btn.classList.add('hidden');
-                        newMessageCount = 0;
-                        updateNewMessageCount();
-                    }
-                }
-            }, 150);
-        }
-
-        // Scroll to bottom function
-        function scrollToBottom(smooth = false) {
-            const container = document.getElementById('messagesContainer');
-            if (!container) return;
-
-            container.scrollTo({
-                top: container.scrollHeight,
-                behavior: smooth ? 'smooth' : 'auto'
-            });
-
-            isUserAtBottom = true;
-            newMessageCount = 0;
-            updateNewMessageCount();
-            document.getElementById('scrollToBottomBtn')?.classList.add('hidden');
-        }
-
-        // Update new message count badge
-        function updateNewMessageCount() {
-            const countBadge = document.getElementById('newMessageCount');
-            if (countBadge) {
-                if (newMessageCount > 0) {
-                    countBadge.textContent = newMessageCount;
-                    countBadge.classList.remove('hidden');
-                } else {
-                    countBadge.classList.add('hidden');
-                }
-            }
-        }
-
-        // Play notification sound
-        function playNotificationSound() {
-            try {
-                const audio = new Audio('/sounds/notification.mp3');
-                audio.volume = 0.3;
-                audio.play().catch(e => console.log('Audio blocked'));
-            } catch (e) {
-                console.log('Notification sound error:', e);
-            }
-        }
-
-        // Listen for conversation selection
-        Livewire.on('conversation-selected', (data) => {
-            const conversationId = data.conversationId || data[0]?.conversationId || data[0];
-
-            // Leave previous channel
-            if (conversationChannel) {
-                window.Echo.leave(conversationChannel);
-            }
-
-            // Reset state
-            newMessageCount = 0;
-            isUserAtBottom = true;
-            updateNewMessageCount();
-
-            // Join new conversation channel
-            if (conversationId) {
-                conversationChannel = `conversation.${conversationId}`;
-
-                console.log('🔌 Joining channel:', conversationChannel);
-
-                // window.Echo.private(conversationChannel)
-                //     .listen('.message.sent', (event) => {
-                //         console.log('📨 New message received:', event);
-
-                //         // Dispatch to Livewire
-                //         $wire.dispatch('new-message-received', { messageData: event });
-
-                //         // Play sound if not from current user
-                //         if (event.sender_id !== {{ auth()->id() }}) {
-                //             playNotificationSound();
-
-                //             // If user is not at bottom, increment count
-                //             if (!isUserAtBottom) {
-                //                 newMessageCount++;
-                //                 updateNewMessageCount();
-                //                 document.getElementById('scrollToBottomBtn')?.classList.remove('hidden');
-                //             }
-                //         }
-                //     });
-
-                window.Echo.private(conversationChannel)
-                    .listen('.message.sent', (event) => {
-                        console.log('📨 New message received:', event);
-
-                        // ✅ Fixed dispatch
-                        $wire.dispatch('new-message-received', {
-                            messageData: event
-                        });
-
-                        if (event.sender_id !== {{ auth()->id() }}) {
-                            // playNotificationSound();
-
-                            if (!isUserAtBottom) {
-                                newMessageCount++;
-                                updateNewMessageCount();
-                                document.getElementById('scrollToBottomBtn')?.classList.remove('hidden');
-                            }
-                        }
-                    });
-            }
-        });
-
-        // Listen for conversation loaded
-        Livewire.on('conversation-loaded', () => {
-            setTimeout(() => {
-                scrollToBottom(false);
-                initIntersectionObserver();
-
-                // Attach scroll listener
-                const container = document.getElementById('messagesContainer');
-                if (container) {
-                    container.removeEventListener('scroll', handleScroll);
-                    container.addEventListener('scroll', handleScroll);
-                }
-            }, 100);
-        });
-
-        // Listen for scroll to bottom event
-        Livewire.on('scroll-to-bottom', () => {
-            setTimeout(() => scrollToBottom(true), 100);
-        });
-
-        // Listen for check scroll position
-        Livewire.on('check-scroll-position', () => {
-            // If user is at bottom, auto-scroll to new message
-            if (isUserAtBottom) {
-                setTimeout(() => {
-                    scrollToBottom(true);
-                    initIntersectionObserver(); // Re-observe after new messages
-                }, 100);
-            } else {
-                // User is scrolled up, just re-observe
-                setTimeout(() => initIntersectionObserver(), 100);
-            }
-        });
-
-        // Cleanup on navigation
-        document.addEventListener('livewire:navigating', () => {
-            if (conversationChannel) {
-                window.Echo.leave(conversationChannel);
-            }
-            if (intersectionObserver) {
-                intersectionObserver.disconnect();
-            }
-            const container = document.getElementById('messagesContainer');
-            if (container) {
-                container.removeEventListener('scroll', handleScroll);
-            }
-        });
-
-        // Initialize on load
-        document.addEventListener('livewire:init', () => {
-            setTimeout(() => {
-                if (document.getElementById('messagesContainer')) {
-                    initIntersectionObserver();
-                }
-            }, 500);
-        });
-    </script>
-@endscript --}}
-
 @script
     <script>
         let conversationChannel = null;
@@ -503,6 +266,8 @@
         let newMessageCount = 0;
         let intersectionObserver = null;
         let scrollTimeout = null;
+        let pollingInterval = null; // For polling without broadcasting
+        let lastMessageId = null; // Track last message ID
 
         // Initialize Intersection Observer for read receipts
         function initIntersectionObserver() {
@@ -526,7 +291,6 @@
                 });
 
                 if (visibleMessageIds.length > 0) {
-                    // ✅ Use Livewire.find() to safely get component
                     const component = Livewire.find('{{ $this->getId() }}');
                     if (component) {
                         component.call('markVisibleMessagesAsRead', visibleMessageIds);
@@ -557,7 +321,6 @@
 
                 isUserAtBottom = distanceFromBottom < 100;
 
-                // ✅ Safe component access
                 const component = Livewire.find('{{ $this->getId() }}');
                 if (component) {
                     component.set('isUserAtBottom', isUserAtBottom);
@@ -613,12 +376,54 @@
             }
         }
 
+        // ✅ POLLING METHOD - Without Broadcasting (Default)
+        function startPolling() {
+            // Clear any existing polling
+            if (pollingInterval) {
+                clearInterval(pollingInterval);
+            }
+
+            // Poll every 2 seconds (adjust as needed)
+            pollingInterval = setInterval(() => {
+                const component = Livewire.find('{{ $this->getId() }}');
+                if (component) {
+                    component.call('pollForNewMessages').then((response) => {
+                        if (response && response.hasNewMessages) {
+                            // Play notification sound for new messages
+                            if (response.senderId !== {{ auth()->id() }}) {
+                                playNotificationSound();
+
+                                if (!isUserAtBottom) {
+                                    newMessageCount += response.newMessageCount || 1;
+                                    updateNewMessageCount();
+                                    document.getElementById('scrollToBottomBtn')?.classList.remove(
+                                    'hidden');
+                                }
+                            }
+                        }
+                    });
+                }
+            }, 500); // Poll every 2 seconds
+        }
+
+        function stopPolling() {
+            if (pollingInterval) {
+                clearInterval(pollingInterval);
+                pollingInterval = null;
+            }
+        }
+
         // ✅ Use proper Livewire event listeners
         document.addEventListener('livewire:initialized', () => {
             // Listen for conversation selection
             Livewire.on('conversation-selected', (event) => {
                 const conversationId = Array.isArray(event) ? event[0] : event.conversationId;
 
+                // ====================================
+                // METHOD 1: WITH BROADCASTING (PUSHER/REVERB)
+                // ====================================
+                // Uncomment this block to use WebSocket broadcasting
+                /*
                 if (conversationChannel) {
                     window.Echo.leave(conversationChannel);
                 }
@@ -629,14 +434,12 @@
 
                 if (conversationId) {
                     conversationChannel = `conversation.${conversationId}`;
-
                     console.log('🔌 Joining channel:', conversationChannel);
 
                     window.Echo.private(conversationChannel)
                         .listen('.message.sent', (event) => {
-                            console.log('📨 New message received:', event);
+                            console.log('📨 New message received via WebSocket:', event);
 
-                            // ✅ Use Livewire.find() for safe component access
                             const component = Livewire.find('{{ $this->getId() }}');
                             if (component) {
                                 component.call('handleNewMessageReceived', event);
@@ -648,11 +451,27 @@
                                 if (!isUserAtBottom) {
                                     newMessageCount++;
                                     updateNewMessageCount();
-                                    document.getElementById('scrollToBottomBtn')?.classList.remove(
-                                        'hidden');
+                                    document.getElementById('scrollToBottomBtn')?.classList.remove('hidden');
                                 }
                             }
                         });
+                }
+                */
+
+                // ====================================
+                // METHOD 2: WITHOUT BROADCASTING (POLLING)
+                // ====================================
+                // Comment this block if using broadcasting above
+                stopPolling(); // Stop previous polling
+
+                newMessageCount = 0;
+                isUserAtBottom = true;
+                updateNewMessageCount();
+                lastMessageId = null; // Reset last message ID
+
+                if (conversationId) {
+                    console.log('🔄 Starting polling for conversation:', conversationId);
+                    startPolling();
                 }
             });
 
@@ -666,6 +485,12 @@
                     if (container) {
                         container.removeEventListener('scroll', handleScroll);
                         container.addEventListener('scroll', handleScroll);
+                    }
+
+                    // Get the last message ID for polling reference
+                    const lastMessage = document.querySelector('.message-item:last-child');
+                    if (lastMessage) {
+                        lastMessageId = parseInt(lastMessage.dataset.messageId);
                     }
                 }, 100);
             });
@@ -687,6 +512,15 @@
                 }
             });
 
+            // Listen for new messages polled (from polling method)
+            Livewire.on('messages-updated', () => {
+                // Update last message ID
+                const lastMessage = document.querySelector('.message-item:last-child');
+                if (lastMessage) {
+                    lastMessageId = parseInt(lastMessage.dataset.messageId);
+                }
+            });
+
             // Initialize on load
             setTimeout(() => {
                 if (document.getElementById('messagesContainer')) {
@@ -697,15 +531,34 @@
 
         // Cleanup on navigation
         document.addEventListener('livewire:navigating', () => {
+            // Stop polling when navigating away
+            stopPolling();
+
+            // Clean up broadcasting channel if used
             if (conversationChannel) {
                 window.Echo.leave(conversationChannel);
             }
+
             if (intersectionObserver) {
                 intersectionObserver.disconnect();
             }
+
             const container = document.getElementById('messagesContainer');
             if (container) {
                 container.removeEventListener('scroll', handleScroll);
+            }
+        });
+
+        // Stop polling when tab is not visible (optional, saves resources)
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopPolling();
+            } else {
+                // Resume polling when tab becomes visible again
+                const container = document.getElementById('messagesContainer');
+                if (container && container.dataset.conversationId) {
+                    startPolling();
+                }
             }
         });
     </script>
