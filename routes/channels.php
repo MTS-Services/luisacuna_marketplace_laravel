@@ -3,6 +3,7 @@
 use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Support\Facades\Broadcast;
+use App\Models\Conversation;
 
 
 /*
@@ -52,3 +53,31 @@ Broadcast::channel('user.{userId}', function ($user, $userId) {
 Broadcast::channel('admin.{adminId}', function ($admin, $adminId) {
     return (int) $admin->id === (int) $adminId;
 }, ['guards' => ['admin']]);
+
+
+// 🔥 NEW: Conversation channel for chat messages
+Broadcast::channel('conversation.{conversationId}', function ($user, $conversationId) {
+    $conversation = Conversation::find($conversationId);
+
+    if (!$conversation) {
+        return false;
+    }
+
+    // Check if user is an active participant in this conversation
+    $isParticipant = $conversation->participants()
+        ->where('participant_id', $user->id)
+        ->where('participant_type', User::class)
+        ->where('is_active', true)
+        ->exists();
+
+    if ($isParticipant) {
+        // Return user data for presence (optional, for "who's online" features)
+        return [
+            'id' => $user->id,
+            'name' => $user->full_name ?? $user->name,
+            'avatar' => $user->avatar,
+        ];
+    }
+
+    return false;
+}, ['guards' => ['web']]);

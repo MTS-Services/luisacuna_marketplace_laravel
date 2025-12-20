@@ -243,3 +243,75 @@
         </div>
     @endif
 </div>
+@script
+    <script>
+        let conversationChannel = null;
+
+        // Listen for conversation selection
+        Livewire.on('conversation-selected', (data) => {
+            const conversationId = data.conversationId || data[0]?.conversationId || data[0];
+
+            // Leave previous channel
+            if (conversationChannel) {
+                window.Echo.leave(conversationChannel);
+            }
+
+            // Join new conversation channel
+            if (conversationId) {
+                conversationChannel = `conversation.${conversationId}`;
+
+                console.log('🔌 Joining channel:', conversationChannel);
+
+                window.Echo.private(conversationChannel)
+                    .listen('.message.sent', (event) => {
+                        console.log('📨 New message received:', event);
+
+                        // Refresh component to show new message
+                        // $wire.$refresh();
+                        Livewire.dispatch('refresh-messages');
+
+                        // Scroll to bottom
+                        setTimeout(scrollToBottom, 100);
+
+                        // Play notification sound (optional)
+                        playNotificationSound();
+                    });
+            }
+
+            // Scroll to bottom on load
+            setTimeout(scrollToBottom, 100);
+        });
+
+        // Listen for new messages sent by current user
+        Livewire.on('scroll-to-bottom', () => {
+            setTimeout(scrollToBottom, 100);
+        });
+
+        function scrollToBottom() {
+            const container = document.getElementById('messagesContainer');
+            if (container) {
+                container.scrollTo({
+                    top: container.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        function playNotificationSound() {
+            try {
+                const audio = new Audio('/sounds/notification.mp3');
+                audio.volume = 0.3;
+                audio.play().catch(e => console.log('Audio blocked by browser'));
+            } catch (e) {
+                console.log('Notification sound error:', e);
+            }
+        }
+
+        // Cleanup on navigation
+        document.addEventListener('livewire:navigating', () => {
+            if (conversationChannel) {
+                window.Echo.leave(conversationChannel);
+            }
+        });
+    </script>
+@endscript

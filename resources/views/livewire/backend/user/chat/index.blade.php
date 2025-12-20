@@ -179,29 +179,24 @@
         }
     </script>
 
-    {{-- Livewire event handlers --}}
     @script
         <script>
-            let conversationRefreshInterval = null;
+            const userId = {{ auth()->id() }};
 
-            // Auto-refresh conversation list every 10 seconds
-            conversationRefreshInterval = setInterval(() => {
-                $wire.$refresh();
-                Livewire.dispatch('refresh-messages');
-            }, 100);
+            console.log('🔌 Listening on user channel:', `user.${userId}`);
 
-            // Clean up on navigation
+            // Listen for conversation updates on user's private channel
+            window.Echo.private(`user.${userId}`)
+                .listen('.conversation.updated', (event) => {
+                    console.log('🔔 Conversation updated:', event);
+
+                    // Refresh conversations list
+                    $wire.$refresh();
+                });
+
+            // Cleanup
             document.addEventListener('livewire:navigating', () => {
-                if (conversationRefreshInterval) {
-                    clearInterval(conversationRefreshInterval);
-                }
-            });
-
-            // Play notification sound on new message (optional)
-            Livewire.on('new-message', () => {
-                // Uncomment to enable sound notification
-                // const audio = new Audio('/sounds/notification.mp3');
-                // audio.play().catch(e => console.log('Audio play failed:', e));
+                window.Echo.leave(`user.${userId}`);
             });
         </script>
     @endscript

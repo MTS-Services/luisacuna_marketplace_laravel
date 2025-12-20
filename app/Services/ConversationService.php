@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Enums\ConversationStatus;
 use App\Enums\MessageType;
 use App\Enums\ParticipantRole;
+use App\Events\ConversationUpdated;
+use App\Events\MessageSent;
 use App\Models\Conversation;
 use App\Models\ConversationParticipant;
 use App\Models\Message;
@@ -374,6 +376,17 @@ class ConversationService
                     $this->markMessageAsRead($message, $sender);
                 }
 
+                // Broadcast to other participants in the conversation
+                broadcast(new MessageSent($message))->toOthers();
+
+                // Notify all participants that conversation was updated
+                $conversation->participants()
+                    ->where('participant_id', '!=', $sender?->id)
+                    ->where('is_active', true)
+                    ->each(function ($participant) use ($conversation) {
+                        broadcast(new ConversationUpdated($conversation, $participant->participant_id));
+                    });
+
                 return $message->load(['sender', 'attachments']);
             });
         } catch (Exception $e) {
@@ -579,7 +592,8 @@ class ConversationService
         } catch (Exception $e) {
             Log::error('Failed to mark messages as read', [
                 'conversation_id' => $conversation->id,
-                'user_id' => $userId,
+                'reader_id' => $userId,
+                'reader_type' => User::class,
                 'error' => $e->getMessage()
             ]);
             return 0;

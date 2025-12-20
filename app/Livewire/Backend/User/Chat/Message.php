@@ -37,7 +37,7 @@ class Message extends Component
         $this->conversationId = $conversationId;
         $this->conversation = Conversation::with(['participants.participant'])->find($conversationId);
         $this->loadMessages();
-        
+
         // Mark messages as read when conversation is opened
         if ($this->conversation) {
             $this->service->markMessagesAsRead($this->conversation);
@@ -127,14 +127,14 @@ class Message extends Component
     protected function uploadFile($file): array
     {
         $path = $file->store('chat/attachments', 'public');
-        
+
         // Determine file type
         $mimeType = $file->getMimeType();
         $attachmentType = AttachmentType::FILE;
 
         if (str_starts_with($mimeType, 'image/')) {
             $attachmentType = AttachmentType::IMAGE;
-            
+
             // Create thumbnail for images
             $thumbnailPath = $this->createThumbnail($file);
         } elseif (str_starts_with($mimeType, 'video/')) {
@@ -155,10 +155,10 @@ class Message extends Component
         try {
             // Simple thumbnail creation (you can enhance this with intervention/image)
             $thumbnailPath = 'chat/thumbnails/' . uniqid() . '_thumb.jpg';
-            
+
             // For now, just copy the file (you should implement proper thumbnail generation)
             $file->storeAs('public', $thumbnailPath);
-            
+
             return $thumbnailPath;
         } catch (\Exception $e) {
             return null;
@@ -217,7 +217,7 @@ class Message extends Component
         if ($newMessages->isNotEmpty()) {
             // Append new messages
             $this->messages = array_merge($this->messages, $newMessages->all());
-            
+
             // Mark new messages as read
             foreach ($newMessages as $message) {
                 if ($message->sender_id !== Auth::id()) {
@@ -235,7 +235,7 @@ class Message extends Component
     {
         try {
             $message = \App\Models\Message::find($messageId);
-            
+
             if ($message && $this->service->deleteMessage($message)) {
                 $this->loadMessages();
                 $this->dispatch('success', message: 'Message deleted');

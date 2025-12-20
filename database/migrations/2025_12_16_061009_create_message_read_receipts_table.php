@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('message_id')->index();
             $table->unsignedBigInteger('reader_id')->index();
-            $table->unsignedBigInteger('reader_type')->index();
+            $table->string('reader_type')->index();
             $table->timestamp('read_at');
             
             $table->foreign('message_id')->references('id')->on('messages')->onDelete('cascade');
