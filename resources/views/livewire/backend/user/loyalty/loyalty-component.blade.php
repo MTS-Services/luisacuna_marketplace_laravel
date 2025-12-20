@@ -3,7 +3,7 @@
         {{-- Top Cards Section --}}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             {{-- Bronze Level Card --}}
-            <div class="bg-bg-secondary rounded-2xl p-4 sm:p-10 border border-primary-700/30">
+            <div class="bg-bg-secondary rounded-2xl p-4 sm:p-10  border-primary-700/30">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-text-primary font-open-sans text-lg">{{ __('How it works?') }}</h3>
                     <div class="flex items-center gap-2 bg-zinc-50/10 px-3 py-1.5 rounded-full">
@@ -92,7 +92,7 @@
 
             @if ($achievements)
                 @forelse ($achievements as $achievement)
-                    <div class="glass-card rounded-2xl p-6 border border-primary-700/30">
+                    <div class="glass-card rounded-2xl p-6  border-primary-700/30">
                         <div class="flex items-center gap-4 mb-9">
                             <div
                                 class="bg-bg-secondary w-20 h-20 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -119,7 +119,7 @@
                         </div>
                     </div>
                 @empty
-                    <div class="bg-bg-primary rounded-2xl p-6 border border-primary-700/30 text-center lg:col-span-2">
+                    <div class="bg-bg-secondary rounded-2xl p-6  border-primary-700/30 text-center lg:col-span-2">
                         <h2 class="text-text-white font-open-sans text-3xl xl:text-4xl font-bold mb-6">
                             {{ __('No achievements') }}
                         </h2>
@@ -129,7 +129,7 @@
                     </div>
                 @endforelse
             @else
-                <div class="bg-bg-primary rounded-2xl p-6 border border-primary-700/30 text-center lg:col-span-2">
+                <div class="bg-bg-primary rounded-2xl p-6  border-primary-700/30 text-center lg:col-span-2">
                     <h2 class="text-text-white font-open-sans text-2xl sm:text-3xl xl:text-4xl font-bold mb-6">
                         {{ __('No achievements') }}
                     </h2>
@@ -141,7 +141,7 @@
         </div>
 
         {{-- CTA Card --}}
-        <div class="glass-card rounded-2xl p-4 sm:p-8 py-6 sm:py-12 bg-linear-to-r from-pink-500/20 to-pink-800 text-center">
+        <div class="glass-card rounded-2xl p-4 sm:p-8 py-6 sm:py-12 bg-linear-to-r from-zinc-500/30 from-0% via-zinc-500/30 via-20% to-pink-500/30 text-center">
             <h2 class="text-text-white font-open-sans text-2xl sm:text-3xl xl:text-4xl font-bold mb-6">
                 {{ __('Start Your Reward Journey Today') }}
             </h2>
