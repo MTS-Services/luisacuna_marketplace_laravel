@@ -1,5 +1,5 @@
 <header x-data="{ mobileMenuOpen: false, notification: false, dropdown: '', globalSearchModal: false, open: '' }" x-cloak
-    class="sticky top-0 z-50  {{ request()->routeIs('home') ? 'bg-bg-secondary via-text-text-white to-zinc-950/50 glass-card shadow-none!' : 'glass-card' }}">
+    class="sticky top-0 z-50   {{ request()->routeIs('home') ? 'bg-bg-secondary via-text-text-white to-zinc-950/50 glass-card shadow-none!' : 'bg-bg-secondary glass-card' }}">
     <div class=" px-4 py-4 flex items-center justify-between relative" x-cloak>
         <div class="flex flex-row-reverse items-center justify-center">
             <div class="hidden xxs:flex ml-4 lg:ml-0 scale-75 xl:scale-100">
