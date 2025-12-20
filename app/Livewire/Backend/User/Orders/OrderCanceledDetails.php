@@ -7,7 +7,7 @@ use App\Services\OrderService;
 use App\Services\OrderMessageService;
 use Livewire\WithFileUploads;
 
-class OrderDetails extends Component
+class OrderCanceledDetails extends Component
 {
     use WithFileUploads;
 
@@ -68,6 +68,6 @@ class OrderDetails extends Component
 
     public function render()
     {
-        return view('livewire.backend.user.orders.order-details');
+        return view('livewire.backend.user.orders.order-canceled-details');
     }
 }

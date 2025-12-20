@@ -33,8 +33,7 @@ class ListLayout extends Component
         $this->gameSlug = $gameSlug;
         $this->categorySlug = $categorySlug;
         $this->game = $this->gameService->findData($gameSlug, 'slug');
-        $this->datas = $this->getDatas();
-        $this->pagination = $this->paginationData($this->datas);
+
     }
    public function getDatas(){
         
@@ -82,7 +81,9 @@ class ListLayout extends Component
     public function render()
     {
        
-
+        $this->datas = $this->getDatas();
+        $this->pagination = $this->paginationData($this->datas);
+        
         return view('livewire.frontend.product.list-layout', [
             'gameSlug' => $this->gameSlug,
             'categorySlug' => $this->categorySlug,

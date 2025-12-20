@@ -2,11 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\Backend\User\OfferManagement\OfferController;
-use App\Http\Controllers\Backend\User\OfferManagement\UserOfferController;
-use App\Http\Controllers\Backend\User\OrderManagement\OrderController;
-use App\Http\Controllers\Backend\User\OrderManagement\OrderDetailsController;
 use App\Http\Controllers\SellerVerificationController;
+use App\Http\Controllers\Backend\User\OfferManagement\OfferController;
+use App\Http\Controllers\Backend\User\OrderManagement\OrderController;
+use App\Http\Controllers\Backend\User\OfferManagement\UserOfferController;
+use App\Http\Controllers\Backend\User\OrderManagement\OngoingOrderController;
+use App\Http\Controllers\Backend\User\OrderManagement\OrderDetailsController;
 
 // , 'userVerify'
 Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->group(function () {
@@ -30,6 +31,13 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
         Route::get('/order-description', function () {
             return view('backend.user.pages.orders.order-description');
         })->name('order-description');
+
+        Route::controller(OngoingOrderController::class)->name('OngoingOrder.')->prefix('OngoingOrder')->group(function () {
+            Route::get('/details', 'details')->name('details');
+            Route::get('/description', 'description')->name('description');
+        });
+
+
     });
 
     Route::group(['prefix' => 'offers'], function () {
