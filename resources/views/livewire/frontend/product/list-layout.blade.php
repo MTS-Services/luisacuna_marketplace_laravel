@@ -97,7 +97,7 @@
                                 logo: {{ Js::from(storage_url($game->logo)) }},
                                 delivery_timeline: {{ Js::from($data?->delivery_timeline ?? 'N/A') }}
                             }"
-                            class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300 cursor-pointer">
+                            class="bg-bg-primary dark:bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300 cursor-pointer">
 
                             <div class="flex items-center justify-between">
                                 <div class="w-6 h-6">
@@ -163,7 +163,7 @@
                     <div class="flex items-center gap-2 mt-8">
                         <flux:icon name="shield-check" class="w-6 h-6" />
                         <p class="text-text-white text-base font-semibold">{{ __('Money-back Guarantee') }}</p>
-                        <span class="text-xs text-zinc-200/60">{{ __('Protected by TradeShield') }}</span>
+                        <span class="text-xs text-text-primary dark:text-zinc-200/60">{{ __('Protected by TradeShield') }}</span>
                     </div>
 
                     <div class="flex items-center gap-2 mt-4">
@@ -188,7 +188,7 @@
                                 stroke-width="16" />
                         </svg>
                         <p class="text-text-white text-base font-semibold">{{ __('24/7 Live Support') }}</p>
-                        <span class="text-xs text-zinc-200/60">{{ __('We\'re always here to help') }}</span>
+                        <span class="text-xs text-text-primary dark:text-zinc-200/60">{{ __('We\'re always here to help') }}</span>
                     </div>
                 </div>
 
@@ -258,7 +258,7 @@
             <div class="py-7 space-y-7">
                 @forelse ($lists=[1,2,3,4,5,6] as $item)
                     <div
-                        class="flex justify-between items-center bg-bg-secondary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
+                        class="flex justify-between items-center bg-bg-primary dark:bg-bg-secondary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
                         <div class="px-4 py-3 flex items-center gap-4">
                             <div class="w-10 h-10">
                                 <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt=""
