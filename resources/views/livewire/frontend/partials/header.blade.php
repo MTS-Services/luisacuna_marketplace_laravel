@@ -61,7 +61,7 @@
 
                 @guest
                     <div class="flex bg-zinc-200 dark:bg-zinc-800 lg:p-1 rounded-full">
-                        <!-- Light/Dark Mode Toggle -->
+                        {{-- <!-- Light/Dark Mode Toggle -->
                         <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
                             class="flex items-center justify-center w-8 h-6 text-lg rounded-l-full transition-colors duration-200 xl:flex"
                             :class="!$flux.dark ? 'bg-zinc-400 text-text-white' :
@@ -74,7 +74,33 @@
                             :class="$flux.dark ? 'bg-zinc-400 text-text-white' :
                                 'bg-transparent text-zinc-600 dark:text-zinc-300'">
                             <flux:icon name="moon" class="w-5 h-5 stroke-current" />
-                        </button>
+                        </button> --}}
+
+
+                        <button
+    type="button"
+    @click="$flux.dark = !$flux.dark"
+    :aria-pressed="$flux.dark"
+    class="flex items-center justify-center w-9 h-9 rounded-full
+           transition-all duration-300
+           {{-- bg-zinc-200 dark:bg-zinc-700 --}}
+           text-zinc-700 dark:text-zinc-200">
+
+    <!-- Sun -->
+    <flux:icon
+        x-show="!$flux.dark"
+        name="sun"
+        class="w-5 h-5 transition-transform duration-300"
+    />
+
+    <!-- Half Moon -->
+    <flux:icon
+        x-show="$flux.dark"
+        name="moon"
+        class="w-5 h-5 transition-transform duration-300"
+    />
+</button>
+
 
                         {{-- <div x-show="$flux.dark" class="lg:hidden">
                         <flux:icon name="moon" class="w-5 h-5 stroke-current" @click="$flux.dark = false" />
@@ -90,7 +116,7 @@
                 @auth
                     <div class="hidden md:flex bg-zinc-200 dark:bg-zinc-800 lg:p-1 rounded-full">
                         <!-- Light/Dark Mode Toggle -->
-                        <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
+                        {{-- <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
                             class="flex items-center justify-center w-8 h-6 text-lg rounded-l-full transition-colors duration-200 xl:flex"
                             :class="!$flux.dark ? 'bg-zinc-400 text-text-white' :
                                 'bg-transparent text-zinc-600 dark:text-zinc-300'">
@@ -102,7 +128,34 @@
                             :class="$flux.dark ? 'bg-zinc-400 text-text-white' :
                                 'bg-transparent text-zinc-600 dark:text-zinc-300'">
                             <flux:icon name="moon" class="w-5 h-5 stroke-current" />
-                        </button>
+                        </button> --}}
+
+                        
+                        <button
+    type="button"
+    @click="$flux.dark = !$flux.dark"
+    :aria-pressed="$flux.dark"
+    class="flex items-center justify-center w-9 h-9 rounded-full
+           transition-all duration-300
+           {{-- bg-zinc-200 dark:bg-zinc-700 --}}
+           text-zinc-700 dark:text-zinc-200">
+
+    <!-- Sun -->
+    <flux:icon
+        x-show="!$flux.dark"
+        name="sun"
+        class="w-5 h-5 transition-transform duration-300"
+    />
+
+    <!-- Half Moon -->
+    <flux:icon
+        x-show="$flux.dark"
+        name="moon"
+        class="w-5 h-5 transition-transform duration-300"
+    />
+</button>
+
+                        
 
                         {{-- <div x-show="$flux.dark" class="lg:hidden">
                         <flux:icon name="moon" class="w-5 h-5 stroke-current" @click="$flux.dark = false" />

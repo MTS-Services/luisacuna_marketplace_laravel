@@ -47,7 +47,8 @@
         </div>
 
         <div class="mt-3 mb-6 flex items-center justify-between">
-            <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!"
+            <x-ui.select id="status-select"
+                class="py-0.5! w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!"
                 wire:model="selectedRegion" wire:change="serachFilter">
                 <option value="">{{ __('Global') }}</option>
                 <option value="completed">{{ __('Completed') }}</option>
@@ -90,17 +91,17 @@
                             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
                             x-transition:enter-end="opacity-100" wire:click="selectItem('{{ encrypt($data->id) }}')"
                             @click="data = { 
-                            name: '{{ substr($data->name, 0, 20) }}',
-                            quantity: {{ $data->quantity }},
-                            price: {{ $data->quantity * $data->price }},
-                            logo: '{{ storage_url($game->logo) }}',
-                            delivery_timeline: '{{ $data?->delivery_timeline ?? 'N/A' }}'
-                        }"
-                            class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
+                                name: {{ Js::from(substr($data->name, 0, 20)) }},
+                                quantity: {{ $data->quantity }},
+                                price: {{ $data->quantity * $data->price }},
+                                logo: {{ Js::from(storage_url($game->logo)) }},
+                                delivery_timeline: {{ Js::from($data?->delivery_timeline ?? 'N/A') }}
+                            }"
+                            class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300 cursor-pointer">
 
                             <div class="flex items-center justify-between">
                                 <div class="w-6 h-6">
-                                    <img src="{{ storage_url($game->logo) }}" alt=""
+                                    <img src="{{ storage_url($game->logo) }}" alt="{{ $game->name }}"
                                         class="w-full h-full object-cover">
                                 </div>
                                 <div>
@@ -111,12 +112,15 @@
                                 </div>
                             </div>
                             <h3 class="text-base font-semibold text-text-white mt-4">{{ $data->quantity }}</h3>
-                            <p class="text-xs text-text-white mt-2">{{ substr($data->name, 0, 20) }}</p>
-                            <span
-                                class="text-base font-semibold text-pink-500 mt-4">${{ $data->quantity * $data->price }}</span>
+                            <p class="text-xs text-text-white mt-2">{{ Str::limit($data->name, 20) }}</p>
+                            <span class="block text-base font-semibold text-pink-500 mt-4">
+                                ${{ number_format($data->quantity * $data->price, 2) }}
+                            </span>
                         </div>
                     @empty
-                        <h2>No Data Found</h2>
+                        <div class="col-span-full text-center py-8">
+                            <h2 class="text-text-white">No Data Found</h2>
+                        </div>
                     @endforelse
                 </div>
 
@@ -126,31 +130,30 @@
             </div>
 
             <div class="w-full md:w-[35%] mt-4 md:mt-0">
-                <div class="bg-bg-primary rounded-2xl py-7 px-6">
+                <div class="bg-bg-primary dark:bg-bg-secondary rounded-2xl py-7 px-6">
                     <div class="flex items-center gap-1 mb-8">
                         <div class="w-8 h-8">
                             <img :src="data.logo" alt="" class="w-full h-full object-cover">
                         </div>
                         <p x-text="data.name"></p>
                     </div>
-                    <span class="border-t-2 border-zinc-500 w-full inline-block"></span>
-                    <div class="flex items-center justify-between py-3">
+                    <div class="flex items-center justify-between py-3 border-t border-b  border-zinc-500 w-full">
                         <p class="text-base text-text-white"> {{ __('Delivery Timeline') }}</p>
                         <p class="text-base text-text-white font-semibold" x-text="data.delivery_timeline"></p>
                     </div>
-                    <span class="border-t-2 border-zinc-500 w-full inline-block"></span>
+                    <span class="w-full inline-block"></span>
                     <div class="mt-4">
                         @auth('web')
                             <form action="" wire:submit="submit">
-                                <x-ui.button wire:click="submit">
-                                    <span class="text-white group-hover:text-zinc-500">$</span>
+                                <x-ui.button wire:click="submit" class="py-2!">
+                                    <span class="text-white group-hover:text-zinc-500">PEN</span>
                                     <span x-text="data.price" class="text-white group-hover:text-zinc-500"></span>
                                     {{ ' Buy Now' }}</x-ui.button>
                             </form>
                         @else
                             <a href="{{ route('login') }}" wire:navigate
-                                class="bg-zinc-500 px-4 md:px-6 py-2 md:py-4 text-text-btn-primary hover:text-text-btn-secondary hover:bg-zinc-50 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group text-nowrap cursor-pointer">
-                                <span class="text-white group-hover:text-zinc-500">$</span>
+                                class="bg-zinc-500 px-4 md:px-6 py-2! md:py-4 text-text-btn-primary hover:text-text-btn-secondary hover:bg-zinc-50 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group text-nowrap cursor-pointer">
+                                <span class="text-white group-hover:text-zinc-500">PEN</span>
                                 <span x-text="data.price" class="text-white group-hover:text-zinc-500"></span>
                                 {{ ' Buy Now' }}
                             </a>
@@ -189,7 +192,7 @@
                     </div>
                 </div>
 
-                <div class="mt-6 bg-bg-primary rounded-2xl py-7 px-6">
+                <div class="mt-6 bg-bg-secondary rounded-2xl py-7 px-6">
                     <h3 class="text-text-white text-base font-semibold mb-2">{{ __('Delivery instructions') }}</h3>
                     <div class="flex gap-2">
                         <span class="text-sm text-text-white">{{ __('Welcome') }}</span>
@@ -255,7 +258,7 @@
             <div class="py-7 space-y-7">
                 @forelse ($lists=[1,2,3,4,5,6] as $item)
                     <div
-                        class="flex justify-between items-center bg-bg-primary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
+                        class="flex justify-between items-center bg-bg-secondary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
                         <div class="px-4 py-3 flex items-center gap-4">
                             <div class="w-10 h-10">
                                 <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt=""

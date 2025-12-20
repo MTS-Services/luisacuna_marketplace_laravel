@@ -19,27 +19,25 @@
                     <span class="text-8xl pr-2.5">
                         <flux:icon name="shield-check" class="stroke-zinc-500"></flux:icon>
                     </span>
-                    <p class="font-semibold text-base ">Seller ID verification</p>
+                    <p class="font-semibold text-2xl ">{{ __('Seller ID verification') }}</p>
                 </div>
                 <div class="text-sm text-text-primary font-normal pt-2">
                     Step <span>2</span>/<span>6</span>
                 </div>
             </div>
 
-            <div class="p-5 lg:px-15 lg:py-10 bg-bg-secondary dark:bg-bg-light-black rounded-2xl">
-                <div class="p-5 bg-bg-light-black shadow rounded-2xl">
-                    <h2 class="font-semibold text-text-primary text-base lg:text-2xl pb-5 text-left">Select the
-                        categories
-                        you'll
-                        be selling in:</h2>
+            <div class="p-5 lg:px-15 lg:py-10 bg-bg-info rounded-2xl">
+                <div class="p-5 bg-bg-info rounded-2xl">
+                    <h2 class="font-semibold text-text-primary text-base lg:text-2xl pb-5 text-left">
+                        {{ __('Select the categories you\'ll be selling in:') }}</h2>
 
                     @foreach ($categories as $value => $label)
                         <div class="flex items-center gap-3 mb-3">
                             <label class="relative inline-flex items-center">
-                                <input type="checkbox" wire:model="selectedCategories"
-                                    value="{{ $value }}" class="peer sr-only">
+                                <input type="checkbox" wire:model="selectedCategories" value="{{ $value }}"
+                                    class="peer sr-only">
                                 <div
-                                    class="w-4 h-4 rounded-full border border-zinc-400 peer-checked:bg-pink-500 peer-checked:border-pink-500 transition-colors">
+                                    class="w-4 h-4 rounded-full border border-pink-500 peer-checked:bg-pink-500 peer-checked:border-pink-500 transition-colors">
                                 </div>
                                 <span class="ml-2 cursor-pointer">{{ $label }}</span>
                             </label>
@@ -50,10 +48,10 @@
                     </div>
                 </div>
             </div>
-            
+
 
             <div class="flex justify-center space-x-4 pt-10">
-                <a wire:click.prevent="previousStep" wire:navigate class="px-8 py-2 cursor-pointer hover:bg-zinc-50 rounded-lg">
+                {{-- <a wire:click.prevent="previousStep" wire:navigate class="px-8 py-2 cursor-pointer hover:bg-zinc-50 rounded-lg">
                     BACK
                 </a>
                 <button wire:click="nextStep"  class="px-8 py-2 text-white rounded-lg transition" 
@@ -62,7 +60,19 @@
                         'bg-zinc-200 text-zinc-950 cursor-not-allowed': $wire.selectedCategories.length === 0
                     }">
                     NEXT
-                </button>
+                </button> --}}
+                <!-- Submit button -->
+                <div class=" flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
+                    <x-ui.button type="submit" wire:click.prevent="previousStep" wire:navigate
+                        class="w-auto py-2! text-white text-base! font-semibold!">
+                        {{ __('BACK') }}
+                    </x-ui.button>
+                </div>
+                <div class="  flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
+                    <x-ui.button type="submit" wire:click="nextStep" class="w-auto py-2!  text-base! font-semibold!">
+                        {{ __('NEXT') }}
+                    </x-ui.button>
+                </div>
             </div>
 
         </div>

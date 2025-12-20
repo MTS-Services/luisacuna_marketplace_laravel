@@ -1,13 +1,13 @@
-<section class=" mx-auto">
-    <section class="relative z-0">
+<section class="mx-auto">
+    <section class="relative z-0!">
         <div class="inner_banner h-16 sm:h-32">
             <img src="{{ asset('assets/images/user_profile/inner_banner.png') }}" alt="" class="w-full h-full">
         </div>
     </section>
     {{-- profile header --}}
     <section
-        class="relative z-20 container mx-auto bg-bg-secondary p-4 sm:p-10 rounded-2xl -mt-5 sm:-mt-10  shadow-xl mb-12">
-        <div class="relative z-20">
+        class="container p-4 sm:p-10 rounded-2xl -mt-5 sm:-mt-10 shadow-xl mb-12 relative z-20 bg-white dark:bg-bg-secondary isolate">
+        <div class="">
             <div class="flex justify-between">
                 <div class="flex items-center gap-6 sm:gap-10">
                     <div class="">

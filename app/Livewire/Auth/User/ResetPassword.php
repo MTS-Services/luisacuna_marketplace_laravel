@@ -21,10 +21,10 @@ class ResetPassword extends Component
 
     #[Locked]
     public string $email = '';
+    public $password = '';
+    public $password_confirmation = '';
 
-    public string $password = '';
 
-    public string $password_confirmation = '';
 
     /**
      * Mount the component.
@@ -75,8 +75,9 @@ class ResetPassword extends Component
     {
         try {
             $this->validate([
-                'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+                'password' => ['required', 'string', Rules\Password::defaults()],
             ]);
+
 
             // Find the user by email
             $user = User::where('email', $this->email)->first();
@@ -111,9 +112,8 @@ class ResetPassword extends Component
             Log::info('Password successfully reset for User: ' . $user->email);
 
             $this->success('Your password has been reset successfully. Please log in with your new password.');
-            
-            $this->redirect(route('login'), navigate: true);
 
+            $this->redirect(route('login'), navigate: true);
         } catch (ValidationException $e) {
             throw $e;
         } catch (\Throwable $e) {

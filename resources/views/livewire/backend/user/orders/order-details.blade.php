@@ -1,24 +1,13 @@
-<main class="mx-auto">
-    <section class="container mx-auto">
+<section class="mx-auto bg-bg-primary">
+    <div class="container mx-auto">
         {{-- breadcrumb --}}
-
-        <h2 class="text-text-white text-2xl font-semibold">
-            {{ $data->product->name ?? 'N/A' }}
-        </h2>
-
-        <p class="text-text-white">
-            Order ID: {{ $data->order_id }}
-        </p>
-
-
-
-        <div class="flex gap-4 items-center my-10">
+        <div class="flex gap-4 items-center py-10">
             <x-phosphor name="less-than" variant="regular" class="w-4 h-4 text-zinc-400" />
             <h2 class="text-text-white text-base">
                 {{ __('All Orders') }}
+
             </h2>
         </div>
-
         <div class="flex justify-between">
             <div class="flex gap-5">
                 <div>
@@ -32,7 +21,7 @@
                         {{ __('Mercury Spark — Ultimate 5-Star Boost') }}
                     </h2>
                     <p class="text-text-white font-normal text-base line-clamp-1">
-                        {{ __('Order ID: ') }} {{ $data->order_id }}</p>
+                        {{ __('Order ID: 98bc4674-4bde-4498-9175-a4a0318458e0') }}</p>
                 </div>
             </div>
             <div class="">
@@ -48,8 +37,7 @@
                         <div class="bg-bg-info rounded-full p-3">
                             <x-phosphor name="info" variant="regular" class="w-6 h-6 text-zinc-400" />
                         </div>
-                        <h3 class="text-text-white text-base sm:text-2xl font-semibold">{{ __('Order') }}
-                            {{ $data->status }}</h3>
+                        <h3 class="text-text-white text-base sm:text-2xl font-semibold">{{ __('Order cancelled') }}</h3>
                     </div>
                     <div class="">
                         <div class="mt-7">
@@ -94,80 +82,154 @@
                             <x-phosphor-arrow-right-light
                                 class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" /></x-ui.button>
                     </div>
-                    <!-- Note -->
+                    {{-- <!-- Note -->
                     <p class="mt-4 text-xs text-text-white">
                         <span class="text-text-white text-base  font-semibold">{{ __('Note: ') }}</span>
                         {{ __('Spend your') }} <span class="text-pink-500">{{ __('"Company name"') }}</span>
                         {{ __('balance') }}
-                    </p>
+                    </p> --}}
+                    <div class="w-fit bg-bg-info rounded-lg mt-20 px-4 py-2 flex items-center gap-3">
+                        <x-phosphor name="info" variant="regular" class="w-6 h-6 text-zinc-400" />
+                        <p class="text-text-white text-xs font-normal">
+                            {{ __('Please DO NOT deliver order to buyer. The payment was returned back to the buyer.') }}
+                        </p>
+                    </div>
                 </div>
             </div>
 
-            <div class="w-full lg:w-1/3 bg-bg-secondary p-4 sm:p-7 mt-10 lg:mt-0 rounded-lg">
-                <div class="flex gap-4 items-center">
-                    <h3 class="text-text-white text-2xl font-semibold">{{ __('Order cancelled') }}</h3>
-                </div>
-                <div class="">
-                    <div class="flex justify-between mt-7">
-                        <p class="text-text-white text-base font-semibold mb-2">{{ __('Game') }}</p>
-                        <div class="flex gap-2 items-center">
-                            <div>
-                                <div class="w-6 h-6">
-                                    <img src="{{ asset('assets/images/order.png') }}" alt="Product Name"
-                                        class="w-full h-full object-cover">
+            <div class="w-full lg:w-1/3">
+                <div class="bg-bg-secondary p-4 sm:p-7 mt-10 lg:mt-0 rounded-lg">
+                    <div class="flex gap-4 items-center">
+                        <h3 class="text-text-white text-2xl font-semibold">{{ __('Order cancelled') }}</h3>
+                    </div>
+                    <div class="">
+                        <div class="flex justify-between mt-7">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Game') }}</p>
+                            <div class="flex gap-2 items-center">
+                                <div>
+                                    <div class="w-6 h-6">
+                                        <img src="{{ asset('assets/images/order.png') }}" alt="Product Name"
+                                            class="w-full h-full object-cover">
+                                    </div>
                                 </div>
+                                <p class="text-text-white text-base font-normal">{{ __('Fortnite') }}</p>
                             </div>
-                            <p class="text-text-white text-base font-normal">{{ __('Fortnite') }}</p>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Username') }}</p>
+                            <p class="text-text-white text-base font-normal">{{ __('acuzone') }}</p>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Device') }}</p>
+                            <p class="text-text-white text-base font-normal">{{ __('PC') }}</p>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Seller') }}</p>
+                            <p class="text-text-white text-base font-normal">{{ __('D18QUAN Online') }}</p>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Total price') }}</p>
+                            <p class="text-text-white text-base font-normal">{{ __('$1.20') }}</p>
                         </div>
                     </div>
-                    <div class="flex justify-between mt-2">
-                        <p class="text-text-white text-base font-semibold mb-2">{{ __('Username') }}</p>
-                        <p class="text-text-white text-base font-normal">{{ __('acuzone') }}</p>
-                    </div>
-                    <div class="flex justify-between mt-2">
-                        <p class="text-text-white text-base font-semibold mb-2">{{ __('Device') }}</p>
-                        <p class="text-text-white text-base font-normal">{{ __('PC') }}</p>
-                    </div>
-                    <div class="flex justify-between mt-2">
-                        <p class="text-text-white text-base font-semibold mb-2">{{ __('Seller') }}</p>
-                        <p class="text-text-white text-base font-normal">{{ __('D18QUAN Online') }}</p>
-                    </div>
-                    <div class="flex justify-between mt-2">
-                        <p class="text-text-white text-base font-semibold mb-2">{{ __('Total price') }}</p>
-                        <p class="text-text-white text-base font-normal">{{ __('$1.20') }}</p>
+                    <div class="flex w-full md:w-auto justify-center items-center mt-10!">
+                        <a href="{{ route('user.order-description') }}">
+                            <x-ui.button class="w-fit! py-3! px-6!">
+                                {{ __('View full description') }}
+                                <x-phosphor-arrow-right-light
+                                    class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" /></x-ui.button>
+                        </a>
                     </div>
                 </div>
-                <div class="flex w-full md:w-auto justify-center items-center mt-10!">
-                    <a href="{{ route('user.order-description') }}">
-                        <x-ui.button class="w-fit! py-3! px-6!">
-                            {{ __('View full description') }}
-                            <x-phosphor-arrow-right-light
-                                class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" /></x-ui.button>
-                    </a>
+                <div class="bg-bg-secondary p-4 sm:p-7 mt-6 rounded-lg">
+                    <div class="flex gap-4 items-center">
+                        <h3 class="text-text-white text-2xl font-semibold">{{ __('Payment method') }}</h3>
+                    </div>
+                    <div class="">
+                        {{-- <div class="flex justify-between mt-7">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Game') }}</p>
+                            <div class="flex gap-2 items-center">
+                                <div>
+                                    <div class="w-6 h-6">
+                                        <img src="{{ asset('assets/images/order.png') }}" alt="Product Name"
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                                <p class="text-text-white text-base font-normal">{{ __('Fortnite') }}</p>
+                            </div>
+                        </div> --}}
+                        <div class="flex justify-between mt-2">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Order Price') }}</p>
+                            <p class="text-text-white text-base font-normal">{{ __('$963') }}</p>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Commission') }}</p>
+                            <p class="text-text-white text-base font-normal">{{ __('-$0.96') }}</p>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Our receive') }}</p>
+                            <p class="text-text-white text-base font-normal">{{ __('$867') }}</p>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <p class="text-text-white text-base font-normal">
+                                {{ __('Funds will be added to your Swapy balance Once the order is marked as received by the If the buyer does not confirm delivery within 3 days, it will be confirmed automatically') }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex w-full md:w-auto justify-center items-center mt-10!">
+                        <a href="{{ route('user.order-description') }}">
+                            <x-ui.button class="w-fit! py-3! px-6!">
+                                {{ __('View full description') }}
+                                <x-phosphor-arrow-right-light
+                                    class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" /></x-ui.button>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-        {{-- message --}}
+        <div class="bg-bg-info rounded-lg mt-20 p-5 sm:p-20">
 
-        {{-- <div class="bg-bg-info rounded-lg mt-20 p-5 sm:p-20">
-
-                <!-- User Header -->
-                <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
-                    <div class="flex items-center gap-3">
-                        <img src="https://ui-avatars.com/api/?name=D18QUANB&background=853EFF&color=fff" alt="User"
-                            class="w-10 h-10 rounded-full">
-                        <div>
-                            <h3 class="text-text-white text-2xl font-semibold">{{ __('D18QUANB') }}</h3>
-                            <p class="text-text-white text-base font-normal">{{ __('Order for Items') }}</p>
-                        </div>
+            <!-- User Header -->
+            <div
+                class="flex items-center justify-between bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
+                <div class="flex items-center gap-3">
+                    <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
+                        class="w-10 h-10 rounded-full">
+                    <div>
+                        <h3 class="text-text-white text-2xl font-semibold">{{ __('D18QUANB') }}</h3>
+                        <p class="text-text-white text-base font-normal">{{ __('Order for Items') }}</p>
                     </div>
                 </div>
 
-                <!-- Order Created Message -->
-                <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
+                <div class="relative flex items-center ml-auto">
+                    <flux:icon name="magnifying-glass"
+                        class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 stroke-text-primary pointer-events-none z-10" />
+                    <input type="text" wire:model.live="search" placeholder="Search conversion"
+                        class="border dark:border-white border-gray-600 rounded-full py-2 pl-8 pr-2 text-sm focus:outline-none focus:border-purple-500 focus:bg-bg-primary w-full bg-transparent placeholder:text-text-primary">
+                </div>
+            </div>
+            {{-- <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
+                <div class="flex items-center gap-3">
+                    <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
+                        class="w-10 h-10 rounded-full">
                     <div>
-                        <p class="text-text-white text-base mb-2">{{ __('Order Created:') }} <a href="#">
-                                https://www.companyname.ga/order/d8bcd674-dbde-4d98-9175-a4a031845de0</a></p>
+                        <h3 class="text-text-white text-2xl font-semibold">{{ __('D18QUANB') }}</h3>
+                        <p class="text-text-white text-base font-normal">{{ __('Order for Items') }}</p>
+                    </div>
+                </div>
+            </div> --}}
+
+            <!-- Order Created Message -->
+            <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
+                <div>
+                    <p class="text-text-white text-base mb-2 break-all">
+                        {{ __('Order Created:') }}
+                        <a href="#" class="text-accent">
+                            https://www.companyname.ga/order/d8bcd674-dbde-4d98-9175-a4a031845de0
+                        </a>
+                    </p>
+
+                    <div class="bg-bg-info rounded-lg mt-4 px-6 py-3">
                         <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
                             <x-phosphor name="link" variant="" class="fill-zinc-500" />
 
@@ -175,228 +237,103 @@
                         </div>
                         <a class="text-text-white text-xs" href="#">www.companyname.com</a>
                     </div>
-                    <p class="text-text-white text-xs text-right mt-3">Oct 20 2025</p>
                 </div>
-
-                <!-- Order Disputed -->
-
-                <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
-                    <div>
-                        <p class="text-text-white text-base mb-2">{{ __('Order Disputed by Buyer:') }}</p>
-                        <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
-                            <span class="text-text-white">{{ __('Reason: I don\'t want it anymore') }}</span>
-                        </div>
-                    </div>
-                    <p class="text-text-white text-xs text-right mt-3">Oct 20 2025</p>
-                </div>
-
-                <!-- Buyer Message -->
-                <div>
-                    <div class="flex items-center gap-3">
-                        <img src="https://ui-avatars.com/api/?name=User&background=853EFF&color=fff" alt="User"
-                            class="w-10 h-10 rounded-full">
-                        <div class="flex-1">
-                            <div class="bg-primary-800 rounded-lg">
-                                <x:input type="text" placeholder="Hi, what's the problem?" class="w-full" />
-                            </div>
-
-                        </div>
-                    </div>
-                    <p class="text-text-white text-right text-xs mt-1">Oct 20 2025</p>
-                </div>
-
-                <!-- Seller Message -->
-                <div class="mt-10">
-                    <div class="flex items-center gap-3">
-                        <div class="flex-1">
-                            <div class="bg-primary-800 rounded-lg">
-                                <p class="bg-zinc-500 px-6 py-3 text-right rounded-lg">
-                                    {{ __('Please cancel the order, I don\'t want it anymore.') }}</p>
-                            </div>
-
-                        </div>
-                        <img src="https://ui-avatars.com/api/?name=User&background=853EFF&color=fff" alt="User"
-                            class="w-10 h-10 rounded-full">
-                    </div>
-                    <p class="text-text-white text-right text-xs mt-1">Oct 20 2025</p>
-                </div>
-
-                <!-- Buyer Response -->
-                <div>
-                    <div class="flex items-center gap-3 mt-10">
-                        <img src="https://ui-avatars.com/api/?name=User&background=853EFF&color=fff" alt="User"
-                            class="w-10 h-10 rounded-full">
-                        <div class="flex-1">
-                            <div class="bg-primary-800 rounded-lg">
-                                <x:input type="text" wire:model.defer="messageText" wire:keydown.enter="send"
-                                    placeholder="Okay" class="w-full" />
-                            </div>
-
-                        </div>
-                    </div>
-                    <p class="text-text-white text-right text-xs mt-1">Oct 20 2025</p>
-                </div>
-
-                <!-- Dispute Won -->
-
-                <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mt-10">
-                    <div>
-                        <p class="text-text-white text-base mb-2">{{ __('Order Disputed by Buyer:') }}</p>
-                        <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
-                            <span class="text-text-white">{{ __('Reason: I don\'t want it anymore') }}</span>
-                        </div>
-                    </div>
-                    <p class="text-text-white text-xs text-right mt-3">Oct 30 2025</p>
-                </div>
-
-                <!-- Conversation Closed -->
-                <div class="bg-primary-800 rounded-lg mt-10">
-                    <p class="bg-zinc-500 px-6 py-3 rounded-lg">
-                        {{ __('this conversation is no longer active.') }}</p>
-                </div>
-
-            </div> --}}
-
-        <div class="bg-bg-info rounded-lg mt-20 p-5 sm:p-20">
-
-            <!-- User Header -->
-            <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
-                <div class="flex items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=D18QUANB&background=853EFF&color=fff" alt="User"
-                        class="w-10 h-10 rounded-full">
-                    <div>
-                        <h3 class="text-text-white text-2xl font-semibold">{{ __('D18QUANB') }}</h3>
-                        <p class="text-text-white text-base font-normal">{{ __('Order for Items') }}</p>
-                    </div>
-                </div>
+                <p class="text-text-white text-xs text-right mt-3">Oct 20 2025</p>
             </div>
 
-            {{-- ================= MESSAGES LOOP ================= --}}
-            @foreach ($messages as $msg)
-                {{-- Check if message has metadata indicating it's a system message --}}
-                @php
-                    $metadata = is_string($msg->metadata) ? json_decode($msg->metadata, true) : $msg->metadata;
-                    $isSystemMessage = isset($metadata['is_system_message']) && $metadata['is_system_message'] === true;
-                @endphp
+            <!-- Order Disputed -->
 
-                @if ($isSystemMessage)
-                    {{-- System Message --}}
-                    <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
-                        <p class="text-text-white text-base mb-2">
-                            {{ $msg->message_body }}
-                        </p>
-                        <p class="text-text-white text-xs text-start mt-3">
-                            {{ $msg->created_at_formatted }}
-                        </p>
+            <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
+                <div class="bg-bg-info rounded-lg mt-4 px-6 py-3">
+                    <p class="text-text-white text-base mb-2">{{ __('Order Disputed by Buyer:') }}</p>
+                    <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
+                        <span class="text-text-white">{{ __('Reason: I don\'t want it anymore') }}</span>
                     </div>
-                @else
-                    {{-- Regular Messages --}}
+                </div>
+                <p class="text-text-white text-xs text-right mt-3">Oct 20 2025</p>
+            </div>
 
-                    {{-- Auth User Message (Right side - auth user) --}}
-                    @if ($msg->sender_id == auth()->id())
-                        <div class="mt-10">
-                            <div class="flex items-center gap-3">
-                                <div class="flex-1">
-                                    <div class="bg-primary-800 rounded-lg">
-                                        <p class="bg-zinc-500 px-6 py-3 text-right rounded-lg text-text-white">
-                                            {{ $msg->message_body }}
-                                        </p>
-                                    </div>
-                                </div>
-                                {{-- <img src="https://ui-avatars.com/api/?name=Me&background=853EFF&color=fff"
-                                    alt="Me" class="w-10 h-10 rounded-full"> --}}
-                                @if ($msg->avatar)
-                                    {{-- Show actual avatar image --}}
-                                    <img src="{{ storage_url($msg->avatar) }}" alt="{{ $msg->full_name }}"
-                                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
-                                @else
-                                    {{-- Show initials --}}
-                                    <div
-                                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
-                                        {{ strtoupper(substr($msg->full_name, 0, 2)) }}
-                                    </div>
-                                @endif
-                            </div>
-                            <p class="text-text-white text-left text-xs mt-1">
-                                {{ $msg->created_at_formatted }}
-                            </p>
-                        </div>
-                    @else
-                        {{-- Other User Message (Left side) --}}
-
-                        <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mt-10">
-                            @if ($msg->attachments && $msg->attachments->count() > 0)
-                                @foreach ($msg->attachments as $attachment)
-                                    <div class="relative mb-2">
-                                        @if (
-                                            $attachment->attachment_type->value === 'image' ||
-                                                in_array($attachment->attachment_type->value, ['image', 'photo', 'picture']))
-                                            <img src="{{ asset('storage/' . $attachment->file_path) }}"
-                                                class="rounded-lg max-w-full">
-                                        @else
-                                            <a href="{{ asset('storage/' . $attachment->file_path) }}"
-                                                class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
-                                                📎 {{ basename($attachment->file_path) }}
-                                            </a>
-                                        @endif
-                                        <!-- Download Button -->
-                                        <a href="{{ asset('storage/' . $attachment->file_path) }}" download
-                                            class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
-                                            Download
-                                        </a>
-                                    </div>
-                                @endforeach
-                            @endif
-                            <div>
-                                <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
-                                    <span class="text-text-white">{{ $msg->message_body }}</span>
-                                </div>
-                            </div>
-                            <p class="text-text-white text-xs text-right mt-3">
-                                {{ $msg->created_at_formatted }}
-                            </p>
-                        </div>
-                    @endif
-                @endif
-            @endforeach
-
-
-            {{-- ================= INPUT BOX ================= --}}
-            <div class="mt-10">
+            <!-- Buyer Message -->
+            <div>
                 <div class="flex items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=Me&background=853EFF&color=fff"
+                    <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
                         class="w-10 h-10 rounded-full">
-
                     <div class="flex-1">
                         <div class="bg-primary-800 rounded-lg">
-                            <x:input wire:model.defer="messageText" wire:keydown.enter="send" type="text"
-                                placeholder="Okay" class="w-full" />
+                            <x:input type="text" placeholder="Hi, what's the problem?" class="w-full" />
                         </div>
+
                     </div>
                 </div>
+                <p class="text-text-white text-right text-xs mt-1">Oct 20 2025</p>
             </div>
 
-
-
-
-
-
-            <div class="bg-bg-info rounded-lg mt-20 mb-29 py-8! px-4! md:py-20 md:px-10">
+            <!-- Seller Message -->
+            <div class="mt-10">
                 <div class="flex items-center gap-3">
-                    <div class="w-16 h-16">
-                        <img src="{{ asset('assets/images/order/Security.png') }}" alt="Security tips"
-                            class="w-full h-full rounded-lg">
+                    <div class="flex-1">
+                        <div class="bg-primary-800 rounded-lg">
+                            <p class="bg-zinc-500 px-6 py-3 text-right rounded-lg">
+                                {{ __('Please cancel the order, I don\'t want it anymore.') }}</p>
+                        </div>
+
                     </div>
-                    <div class="">
-                        <h2 class="text-text-white text-3xl font-semibold">{{ __('Security tips') }}</h2>
+                    <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
+                        class="w-10 h-10 rounded-full">
+                </div>
+                <p class="text-text-white text-left text-xs mt-1">Oct 20 2025</p>
+            </div>
+
+            <!-- Buyer Response -->
+            <div>
+                <div class="flex items-center gap-3 mt-10">
+                    <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
+                        class="w-10 h-10 rounded-full">
+                    <div class="flex-1">
+                        <div class="bg-primary-800 rounded-lg">
+                            <x:input type="text" placeholder="Okay" class="w-full" />
+                        </div>
+
                     </div>
                 </div>
-                <div class="mt-8">
-                    <p class="text-text-white">
-                        {{ __('For your protection, you must always pay and communicate directly through the Eldorado website. If you stay on Eldorado throughout the entire transaction—from payment, to communication, to delivery—you are protected by Tradeshield. Additionally, be aware that sellers will never ask for your currency or items back after the order is delivered, so you should not respond to any messages requesting this.') }}
-                    </p>
+                <p class="text-text-white text-right text-xs mt-1">Oct 20 2025</p>
+            </div>
+
+            <!-- Dispute Won -->
+
+            <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mt-10">
+                <div class="bg-bg-info rounded-lg mt-4 px-6 py-3">
+                    <p class="text-text-white text-base mb-2">{{ __('Order Disputed by Buyer:') }}</p>
+                    <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
+                        <span class="text-text-white">{{ __('Reason: I don\'t want it anymore') }}</span>
+                    </div>
                 </div>
+                <p class="text-text-white text-xs text-right mt-3">Oct 30 2025</p>
+            </div>
+
+            <!-- Conversation Closed -->
+            <div class="bg-primary-800 rounded-lg mt-10">
+                <p class="bg-zinc-500 px-6 py-3 rounded-lg">
+                    {{ __('this conversation is no longer active.') }}</p>
+            </div>
+
+        </div>
+        <div class="bg-bg-info rounded-lg mt-20 mb-24! !py-8 !px-4 md:!py-20 md:!px-10">
+            <div class="flex items-center gap-3">
+                <div class="w-16 h-16">
+                    <img src="{{ asset('assets/images/order/Security.png') }}" alt="Security tips"
+                        class="w-full h-full rounded-lg">
+                </div>
+                <div class="">
+                    <h2 class="text-text-white text-3xl font-semibold">{{ __('Security tips') }}</h2>
+                </div>
+            </div>
+            <div class="mt-8">
+                <p class="text-text-white">
+                    {{ __('For your protection, you must always pay and communicate directly through the Eldorado website. If you stay on Eldorado throughout the entire transaction—from payment, to communication, to delivery—you are protected by Tradeshield. Additionally, be aware that sellers will never ask for your currency or items back after the order is delivered, so you should not respond to any messages requesting this.') }}
+                </p>
             </div>
         </div>
-    </section>
-</main>
+    </div>
+    <div class="pb-10 sm:pb-20 md:pb-32"></div>
+</section>

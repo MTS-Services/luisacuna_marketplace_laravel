@@ -12,7 +12,7 @@ trait WithPaginationData
     
     public $pagination = [];
 
-    protected $perPage = 15;
+    protected $perPage = 5;
 
     protected  $queryString = 1;
     protected function paginationData(LengthAwarePaginator $paginator): array

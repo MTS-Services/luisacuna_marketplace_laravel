@@ -1,9 +1,9 @@
-<main class="mx-auto">
+<main class="mx-auto bg-bg-primary">
     @if ($activeTab == 'giftcards' || $activeTab == 'topups')
         {{-- main --}}
         <section class="container">
-            <div class="w-full sm:w-sm md:w-md lg:w-md mt-6 border-2 border-zinc-800 rounded-lg">
-                <x-ui.select wire:model="country_id" id="country_id">
+            <div class="w-full sm:w-sm md:w-md lg:w-md mt-6 border rounded-lg">
+                <x-ui.select wire:model="country_id" id="country_id" class="border border-zinc-700! bg-transparent!" >
                     <option value="">{{ __('All Game') }}</option>
                     @foreach ($games as $game)
                         <option value="{{ $game->id }}">
@@ -15,7 +15,7 @@
 
             <div class="md:flex gap-6 h-auto mt-10">
 
-                <div class="w-full  grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4">
+                <div class="w-full  grid grid-cols-1 xxxs:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4">
                     <div
                         class="bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300">
                         <div class="flex items-center justify-between ">
