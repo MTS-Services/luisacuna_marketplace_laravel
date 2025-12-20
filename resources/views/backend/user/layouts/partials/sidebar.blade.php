@@ -15,6 +15,44 @@
             </div>
 
             <nav class="flex-1 px-3 py-4 space-y-2">
+                <div>
+                    {{-- <div class="w-10 h-10 rounded-full border-2 border-zinc-500 overflow-hidden">
+                     <img src="{{ storage_url('') }}" alt="" class="w-full h-full">
+                   </div>
+                   <div>
+                     <div>
+                         <h2>PixelStoreAt</h2>
+                     </div>
+                   </div> --}}
+
+                    <div class="flex justify-between">
+                        <div class="flex items-center w-full mb-3 gap-4 pb-5 border-b-2 border-bg-info">
+                            <div class="relative">
+                                <div class="w-15 h-15">
+                                    <img src="{{ auth_storage_url(user()->avatar) }}" alt=""
+                                        class="h-full w-full rounded-full border-2 border-text-white">
+                                </div>
+                                <div class="absolute -right-1.5 top-7.5  w-6 h-6 ">
+                                    <img src="{{ asset('assets/images/user_profile/Frame 1261153813.png') }}"
+                                        alt="" class="w-full h-full rounded-full">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex gap-2 items-center ">
+                                    <h3 class="text-2xl font-semibold text-text-white mb-2">
+                                        {{ user()->full_name }}
+                                    </h3>
+                                    <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
+                                </div>
+                                <div class="flex items-center text-text-primary text-xs">
+                                    <p>{{ __('Registered: 2/19/2023') }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
                 <!-- Orders Dropdown -->
                 <div x-data="{
                     ordersOpen: {{ in_array($pageSlug, ['purchased_orders', 'sold_orders']) ? 'true' : 'false' }},
@@ -49,7 +87,8 @@
                             class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'purchased_orders' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                             {{ __('Purchased orders') }}
                         </a>
-                        <a href="{{ route('user.order.sold-orders') }}" wire:navigate @click="$root.sidebarOpen = false"
+                        <a href="{{ route('user.order.sold-orders') }}" wire:navigate
+                            @click="$root.sidebarOpen = false"
                             class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'sold_orders' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                             {{ __('Sold orders') }}
                         </a>
