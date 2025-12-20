@@ -35,6 +35,8 @@
                             </svg>
                         </button>
                     @endforeach
+
+                    <a href="{{ route('user.bulk-upload.category') }}">Bulk Upload</a>
                 </div>
             @endif
 
