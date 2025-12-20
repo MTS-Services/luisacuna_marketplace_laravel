@@ -11,7 +11,7 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class Message extends Component
+class MessageWithBroadCast extends Component
 {
     use WithFileUploads;
 

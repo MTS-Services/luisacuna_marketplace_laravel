@@ -10,7 +10,7 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
-class Index extends Component
+class IndexWithBroadCast extends Component
 {
     #[Url(as: 'search')]
     public ?string $searchTerm = null;

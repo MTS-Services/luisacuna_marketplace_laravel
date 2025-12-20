@@ -186,9 +186,9 @@
 
             console.log('👤 User ID:', userId);
 
-            // ====================================
-            // METHOD 1: WITH BROADCASTING (PUSHER/REVERB)
-            // ====================================
+            // ====================================================
+            // METHOD 1: WITH BROADCASTING (PUSHER/REVERB) START
+            // ====================================================
             // Uncomment this block to use WebSocket broadcasting for conversation updates
             /*
             console.log('🔌 Listening on user channel with Broadcasting:', `user.${userId}`);
@@ -207,9 +207,13 @@
             });
             */
 
-            // ====================================
-            // METHOD 2: WITHOUT BROADCASTING (POLLING)
-            // ====================================
+            // ====================================================
+            // METHOD 1: WITH BROADCASTING (PUSHER/REVERB) END
+            // ====================================================
+
+            // ====================================================
+            // METHOD 2: WITHOUT BROADCASTING (POLLING) START
+            // ====================================================
             // Comment this block if using broadcasting above
             console.log('🔄 Starting conversation polling for user:', userId);
 
@@ -218,13 +222,13 @@
                     clearInterval(conversationPollingInterval);
                 }
 
-                // Poll every 5 seconds for conversation list updates
+                // Poll every 500 milliseconds for conversation list updates
                 conversationPollingInterval = setInterval(() => {
                     const component = Livewire.find('{{ $this->getId() }}');
                     if (component) {
                         component.call('pollForConversationUpdates');
                     }
-                }, 5000); // Poll every 5 seconds
+                }, 500); // Poll every 500 milliseconds
             }
 
             function stopConversationPolling() {
@@ -252,6 +256,10 @@
                     startConversationPolling();
                 }
             });
+
+            // ====================================================
+            // METHOD 2: WITHOUT BROADCASTING (POLLING) END
+            // ====================================================
         </script>
     @endscript
 </div>

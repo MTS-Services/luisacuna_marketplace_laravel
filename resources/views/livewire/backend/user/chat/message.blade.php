@@ -376,6 +376,10 @@
             }
         }
 
+        /* =================================================================
+              POLLING METHOD - Without Broadcasting (Default) START.
+        ================================================================= */
+
         // ✅ POLLING METHOD - Without Broadcasting (Default)
         function startPolling() {
             // Clear any existing polling
@@ -383,7 +387,7 @@
                 clearInterval(pollingInterval);
             }
 
-            // Poll every 2 seconds (adjust as needed)
+            // Poll every 500 milliseconds (adjust as needed)
             pollingInterval = setInterval(() => {
                 const component = Livewire.find('{{ $this->getId() }}');
                 if (component) {
@@ -403,7 +407,7 @@
                         }
                     });
                 }
-            }, 500); // Poll every 2 seconds
+            }, 500); // Poll every 500 milliseconds
         }
 
         function stopPolling() {
@@ -413,15 +417,18 @@
             }
         }
 
+        /* =================================================================
+              POLLING METHOD - Without Broadcasting (Default) END.
+        ================================================================= */
         // ✅ Use proper Livewire event listeners
         document.addEventListener('livewire:initialized', () => {
             // Listen for conversation selection
             Livewire.on('conversation-selected', (event) => {
                 const conversationId = Array.isArray(event) ? event[0] : event.conversationId;
 
-                // ====================================
-                // METHOD 1: WITH BROADCASTING (PUSHER/REVERB)
-                // ====================================
+                // ====================================================
+                // METHOD 1: WITH BROADCASTING (PUSHER/REVERB) START
+                // ====================================================
                 // Uncomment this block to use WebSocket broadcasting
                 /*
                 if (conversationChannel) {
@@ -458,9 +465,13 @@
                 }
                 */
 
-                // ====================================
-                // METHOD 2: WITHOUT BROADCASTING (POLLING)
-                // ====================================
+                // ====================================================
+                // METHOD 1: WITH BROADCASTING (PUSHER/REVERB) END
+                // ====================================================
+
+                // ====================================================
+                // METHOD 2: WITHOUT BROADCASTING (POLLING) START
+                // ====================================================
                 // Comment this block if using broadcasting above
                 stopPolling(); // Stop previous polling
 
@@ -473,6 +484,10 @@
                     console.log('🔄 Starting polling for conversation:', conversationId);
                     startPolling();
                 }
+                // ====================================================
+                // METHOD 2: WITHOUT BROADCASTING (POLLING) END
+                // ====================================================
+
             });
 
             // Listen for conversation loaded
