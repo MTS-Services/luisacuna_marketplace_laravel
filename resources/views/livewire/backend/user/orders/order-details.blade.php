@@ -145,8 +145,7 @@
         </div>
         <div class="bg-bg-info rounded-lg">
             <!-- User Header -->
-            <div
-                class="flex items-center justify-between bg-zinc-500 rounded-lg p-5 mb-10">
+            <div class="hidden md:flex items-center justify-between bg-zinc-500 rounded-tl-lg rounded-tr-lg p-5">
                 <div class="flex items-center gap-3">
                     <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
                         class="w-10 h-10 rounded-full">
@@ -159,10 +158,10 @@
                     <flux:icon name="magnifying-glass"
                         class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 stroke-text-primary pointer-events-none z-10" />
                     <input type="text" wire:model.live="search" placeholder="Search conversion"
-                        class="border dark:border-white border-gray-600 rounded-full py-2 pl-8 pr-2 text-sm focus:outline-none focus:border-purple-500 focus:bg-bg-primary w-full bg-transparent placeholder:text-text-primary">
+                        class="border dark:border-white border-gray-600 rounded-full py-2 pl-8 pr-2 text-sm focus:border-zinc-500 focus:bg-zinc-500 w-full bg-transparent placeholder:text-text-primary">
                 </div>
             </div>
-            <div class="mt-20 p-5 sm:p-20">
+            <div class="mt-12 p-4 sm:p-20">
                 <!-- User Header -->
                 <div
                     class="flex items-center justify-between bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
@@ -174,12 +173,12 @@
                             <p class="text-text-white text-base font-normal">{{ __('Order for Items') }}</p>
                         </div>
                     </div>
-                    <div class="relative flex items-center ml-auto">
+                    {{-- <div class="relative flex items-center ml-auto">
                         <flux:icon name="magnifying-glass"
                             class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 stroke-text-primary pointer-events-none z-10" />
                         <input type="text" wire:model.live="search" placeholder="Search conversion"
-                            class="border dark:border-white border-gray-600 rounded-full py-2 pl-8 pr-2 text-sm focus:outline-none focus:border-purple-500 focus:bg-bg-primary w-full bg-transparent placeholder:text-text-primary">
-                    </div>
+                            class="border dark:border-white border-gray-600 rounded-full py-2 pl-8 pr-2 text-sm focus:outline-none focus:border-zinc-500 focus:bg-bg-primary w-full bg-transparent placeholder:text-text-primary">
+                    </div> --}}
                 </div>
 
                 <!-- Order Created Message -->
