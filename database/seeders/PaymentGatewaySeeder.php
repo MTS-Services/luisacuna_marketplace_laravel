@@ -31,30 +31,22 @@ class PaymentGatewaySeeder extends Seeder
             ],
             [
                 'sort_order' => 2,
-                'name' => 'PayPal',
-                'slug' => 'paypal',
+                'name' => 'Crypto',
+                'slug' => 'crypto',
                 'icon' => null,
                 'live_data' => [
-                    'client_id' => '',
-                    'secret' => '',
+                    'api_key' => config('services.crypto.api_key', 'api_key_value'),
                 ],
                 'sandbox_data' => [
-                    'client_id' => '',
-                    'secret' => '',
+                    'api_key' => config('services.crypto.api_key', 'api_key_value'),
                 ],
                 'is_active' => true,
-            ],
+            ],        
             [
                 'sort_order' => 3,
-                'name' => 'Coinbase',
-                'slug' => 'coinbase',
+                'name' => 'Wallet',
+                'slug' => 'wallet',
                 'icon' => null,
-                'live_data' => [
-                    'api_key' => config('services.coinbase.api_key'),
-                ],
-                'sandbox_data' => [
-                    'api_key' => config('services.coinbase.api_key'),
-                ],
                 'is_active' => true,
             ],
         ];

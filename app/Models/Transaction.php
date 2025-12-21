@@ -13,8 +13,9 @@ class Transaction extends AuditBaseModel implements Auditable
  
     protected $fillable = [
         'sort_order',
- 
-      //here AuditColumns 
+
+        'source_id',
+        'source_type',
     ];
  
     protected $hidden = [

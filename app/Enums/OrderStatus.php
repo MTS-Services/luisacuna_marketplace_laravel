@@ -7,6 +7,7 @@ enum OrderStatus: string
     case ACTIVE = 'active';
     case PROCESSING = 'processing';
     case COMPLETED = 'completed';
+    case PAID = 'paid';
     case CANCELLED = 'cancelled';
     case INITIALIZED = 'initialized';
     case FAILED = 'failed';
@@ -17,6 +18,7 @@ enum OrderStatus: string
             self::ACTIVE => 'Active',
             self::PROCESSING => 'Processing',
             self::COMPLETED => 'Completed',
+            self::PAID => 'Paid',
             self::CANCELLED => 'Cancelled',
             self::INITIALIZED => 'Initialized',
             self::FAILED => 'Failed',
@@ -29,6 +31,7 @@ enum OrderStatus: string
             self::ACTIVE => 'badge-success',
             self::PROCESSING => 'badge-warning',
             self::COMPLETED => 'badge-info',
+            self::PAID => 'badge-primary',
             self::CANCELLED => 'badge-danger',
             self::INITIALIZED => 'badge-secondary',
             self::FAILED => 'badge-error',
