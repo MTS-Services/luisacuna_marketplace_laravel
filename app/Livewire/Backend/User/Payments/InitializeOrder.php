@@ -52,9 +52,11 @@ class InitializeOrder extends Component
             'user_id' => user()->id,
             'source_id' => $this->product->id,
             'source_type' => Product::class,
-            'total_amount' => $this->product->price,
+            'unit_price' => $this->product->price,
+            'total_amount' => ($this->product->price * $this->quantity),
             'tax_amount' => 0,
             'grand_total' => ($this->product->price * $this->quantity),
+            'quantity' => $this->quantity,
         ]);
 
         Session::driver('redis')->put("checkout_{$token}", [
@@ -63,7 +65,7 @@ class InitializeOrder extends Component
             'expires_at' => now()->addMinutes((int) env('ORDER_CHECKOUT_TIMEOUT_MINUTES', 10))->timestamp,
         ]);
         return $this->redirect(
-            route('game.checkout', ['slug' => encrypt($this->product->id), 'token' => $token]),
+            route('user.checkout', ['slug' => encrypt($this->product->id), 'token' => $token]),
             navigate: true
         );
     }

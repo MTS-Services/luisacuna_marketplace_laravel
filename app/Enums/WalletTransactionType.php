@@ -6,28 +6,24 @@ enum WalletTransactionType: string
 {
     case DEPOSIT = 'deposit';
     case WITHDRAWAL = 'withdrawal';
-    case TRANSFER = 'transfer';
-    case REVERSAL = 'reversal';
+    case PAYMENT = 'payment';
     case REFUND = 'refund';
-    case FEE = 'fee';
-    case PAYOUT = 'payout';
-    case CHARGE = 'charge';
-    case CHARGEBACK = 'chargeback';
-    case DISPUTE = 'dispute';
+    case TRANSFER_IN = 'transfer_in';
+    case TRANSFER_OUT = 'transfer_out';
+    case ADMIN_CREDIT = 'admin_credit';
+    case ADMIN_DEBIT = 'admin_debit';
 
     public function label(): string
     {
         return match ($this) {
             self::DEPOSIT => 'Deposit',
             self::WITHDRAWAL => 'Withdrawal',
-            self::TRANSFER => 'Transfer',
-            self::REVERSAL => 'Reversal',
+            self::PAYMENT => 'Payment',
             self::REFUND => 'Refund',
-            self::FEE => 'Fee',
-            self::PAYOUT => 'Payout',
-            self::CHARGE => 'Charge',
-            self::CHARGEBACK => 'Chargeback',
-            self::DISPUTE => 'Dispute'
+            self::TRANSFER_IN => 'Transfer In',
+            self::TRANSFER_OUT => 'Transfer Out',
+            self::ADMIN_CREDIT => 'Admin Credit',
+            self::ADMIN_DEBIT => 'Admin Debit',
         };
     }
 
@@ -35,15 +31,13 @@ enum WalletTransactionType: string
     {
         return match ($this) {
             self::DEPOSIT => 'badge-success',
-            self::WITHDRAWAL => 'badge-warning',
-            self::TRANSFER => 'badge-info',
-            self::REVERSAL => 'badge-danger',
-            self::REFUND => 'badge-secondary',
-            self::FEE => 'badge-dark',
-            self::PAYOUT => 'badge-primary',
-            self::CHARGE => 'badge-primary',
-            self::CHARGEBACK => 'badge-danger',
-            self::DISPUTE => 'badge-danger'
+            self::WITHDRAWAL => 'badge-danger',
+            self::PAYMENT => 'badge-primary',
+            self::REFUND => 'badge-warning',
+            self::TRANSFER_IN => 'badge-success',
+            self::TRANSFER_OUT => 'badge-danger',
+            self::ADMIN_CREDIT => 'badge-success',
+            self::ADMIN_DEBIT => 'badge-danger',
         };
     }
 
