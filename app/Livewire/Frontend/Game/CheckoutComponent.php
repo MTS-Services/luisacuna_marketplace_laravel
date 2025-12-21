@@ -30,7 +30,6 @@ class CheckoutComponent extends Component
     }
     public function mount($slug, $token)
     {
-        dd('here');
         $key = $key = "checkout_{$token}";
         $sessionKey = Session::driver('redis')->get($key);
 
