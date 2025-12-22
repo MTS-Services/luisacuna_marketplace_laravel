@@ -14,17 +14,29 @@ class WithdrawalDocument extends AuditBaseModel implements Auditable
     protected $fillable = [
         'sort_order',
         'withdrawal_request_id',
+        'verified_by',
         'document_type',
         'file_path',
         'file_name',
         'file_size',
         'mime_type',
-        'is_verified',
-        'verified_by',
         'verified_at',
-        'created_at',
 
-        //here AuditColumns
+
+        'creater_id',
+        'updater_id',
+        'deleter_id',
+        'restorer_id',
+
+        'creater_type',
+        'updater_type',
+        'deleter_type',
+        'restorer_type',
+
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'restored_at',
     ];
 
     protected $hidden = [

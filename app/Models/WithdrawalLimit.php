@@ -13,9 +13,7 @@ class WithdrawalLimit extends AuditBaseModel implements Auditable
 
     protected $fillable = [
         'sort_order',
-        'user_id',
         'withdrawal_method_id',
-        'role_name',
         'is_active',
         'daily_limit',
         'weekly_limit',
@@ -27,8 +25,15 @@ class WithdrawalLimit extends AuditBaseModel implements Auditable
         'priority',
 
 
+        'created_by',
+        'updated_by',
+        'deleted_by',
+        'restored_by',
 
-        //here AuditColumns
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'restored_at',
     ];
 
     protected $hidden = [

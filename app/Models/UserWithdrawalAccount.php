@@ -8,7 +8,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class UserWithdrawalAccount extends AuditBaseModel implements Auditable
 {
-    use   AuditableTrait;
+    use AuditableTrait;
     //
 
     protected $fillable = [
@@ -24,7 +24,21 @@ class UserWithdrawalAccount extends AuditBaseModel implements Auditable
         'verified_at',
         'last_used_at',
 
-      //here AuditColumns
+        'creater_id',
+        'updater_id',
+        'deleter_id',
+        'restorer_id',
+
+        'creater_type',
+        'updater_type',
+        'deleter_type',
+        'restorer_type',
+
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'restored_at',
+
     ];
 
     protected $hidden = [
@@ -39,11 +53,11 @@ class UserWithdrawalAccount extends AuditBaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     //
+    //
 
-     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
-                End of RELATIONSHIPS
-     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+               End of RELATIONSHIPS
+    =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
     public function __construct(array $attributes = [])
     {

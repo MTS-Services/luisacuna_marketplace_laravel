@@ -14,14 +14,26 @@ class WithdrawalStatusHistory extends AuditBaseModel implements Auditable
     protected $fillable = [
         'sort_order',
         'withdrawal_request_id',
+        'changed_by',
         'from_status',
         'to_status',
-        'changed_by',
         'notes',
         'metadata',
-        'created_at',
 
-      //here AuditColumns
+        'creater_id',
+        'updater_id',
+        'deleter_id',
+        'restorer_id',
+
+        'creater_type',
+        'updater_type',
+        'deleter_type',
+        'restorer_type',
+
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'restored_at',
     ];
 
     protected $hidden = [

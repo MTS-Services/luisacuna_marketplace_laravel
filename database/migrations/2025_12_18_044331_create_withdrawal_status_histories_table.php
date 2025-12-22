@@ -21,9 +21,7 @@ return new class extends Migration {
             $table->string('to_status', 50);
             $table->text('notes')->nullable();
             $table->json('metadata')->nullable()->comment('Additional data about status change');
-            // $table->timestamp('created_at')->useCurrent();
 
-            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('withdrawal_request_id')->references('id')->on('withdrawal_requests')->onDelete('cascade');
             $table->foreign('changed_by')->references('id')->on('users')->onDelete('cascade');
 

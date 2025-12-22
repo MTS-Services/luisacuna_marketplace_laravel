@@ -12,6 +12,7 @@ class WithdrawalRequest extends AuditBaseModel implements Auditable
     //
 
     protected $fillable = [
+        'sort_order',
         'user_id',
         'withdrawal_method_id',
         'amount',
@@ -21,10 +22,23 @@ class WithdrawalRequest extends AuditBaseModel implements Auditable
         'currency_id',
         'sort_order',
         'status',
-        'verified_at',
-        'last_used_at',
+        'notes',
 
-      //here AuditColumns
+
+        'creater_id',
+        'updater_id',
+        'deleter_id',
+        'restorer_id',
+
+        'creater_type',
+        'updater_type',
+        'deleter_type',
+        'restorer_type',
+
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'restored_at',
     ];
 
     protected $hidden = [

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserWithdrawalAccountStatus;
 use App\Traits\AuditColumnsTrait;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -22,7 +23,7 @@ return new class extends Migration {
             $table->json('account_data')->comment('Encrypted account details');
             $table->boolean('is_default')->default(false);
             $table->boolean('is_vsrified')->default(false)->comment('Whether account is verified');
-            $table->string('status')->comment('pending, active, declined')->default('pending');
+            $table->string('status')->default(UserWithdrawalAccountStatus::PENDING);
             $table->longText('note')->nullable();
             $table->timestamp('verified_at')->nullable();
             $table->timestamp('last_used_at')->nullable();
