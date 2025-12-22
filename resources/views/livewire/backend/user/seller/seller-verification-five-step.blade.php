@@ -18,7 +18,7 @@
                     <span class="text-8xl pr-2.5">
                         <flux:icon name="shield-check" class="stroke-zinc-500"></flux:icon>
                     </span>
-                    <p class="font-semibold text-2xl ">{{ __('Seller ID verification') }}</p>
+                    <p class="font-semibold text-xl sm:text-2xl ">{{ __('Seller ID verification') }}</p>
                 </div>
                 <div class="text-sm text-text-primary font-normal pt-2">
                     Step <span>5</span>/<span>6</span>
@@ -33,7 +33,7 @@
                                                 background') }}
                     </h2>
 
-                    <div class="px-8 text-left">
+                    <div class="px-0 sm:px-8 text-left">
                         <div class="flex justify-center mb-4">
                             <img src="{{ asset('assets/images/verfy.png') }}" alt="" class="mx-auto">
                         </div>
@@ -80,7 +80,7 @@
                     </div>
                 @else
                     <h2 class="text-base lg:text-xl font-semibold  mb-8 text-left">
-                        Take a photo of ultimate beneficial owner ID
+                        {{ __('Take a photo of ultimate beneficial owner ID') }}
                     </h2>
 
                     <div class="px-8">
@@ -94,15 +94,15 @@
                             <li class="flex items-start">
                                 <span class="mr-2">•</span>
                                 <span>
-                                    Accepted documents: **Driver's license, Government issued ID or Passport,
-                                    international student ID.**
+                                   {{ __(' Accepted documents: **Driver\'s license, Government issued ID or Passport,
+                                    international student ID.**') }}
                                 </span>
                             </li>
                             <li class="flex items-start">
                                 <span class="mr-2">•</span>
                                 <span>
-                                    Make sure personal details on the document are **clearly visible and easy to
-                                    read.**
+                                    {{ __('Make sure personal details on the document are **clearly visible and easy to
+                                    read.**') }}
                                 </span>
                             </li>
                         </ul>
@@ -113,8 +113,8 @@
                                 id="front_image">
 
                             <label for="front_image"
-                                class="shrink-0 px-6 py-1.5 bg-zinc-600 text-white font-semibold rounded-3xl hover:bg-gray-800 cursor-pointer transition duration-150 ease-in-out">
-                                Choose file
+                                class="shrink-0 px-6 py-1.5 bg-zinc-600 text-text-white font-semibold rounded-3xl hover:bg-gray-800 cursor-pointer transition duration-150 ease-in-out">
+                                {{ __('Choose file') }}
                             </label>
 
                             <div
@@ -122,15 +122,15 @@
                                 @if (isset($front_image))
                                     {{ $front_image->getClientOriginalName() }}
                                 @else
-                                    No file selected
+                                    {{ __('No file chosen') }}
                                 @endif
                             </div>
                         </div>
                         <p class="text-xs text-text-white text-center mt-2">
-                            Must be JPEG, PNG or HEIC and cannot exceed 10MB.
+                            {{ __('Must be JPEG, PNG or HEIC and cannot exceed 10MB.') }}
                         </p>
                         @error('ultimateBeneficialOwnerIdDocument')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            <span class="text-pink-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
                 @endif
@@ -148,13 +148,13 @@
                 </button> --}}
                 <div class=" flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
                     <x-ui.button type="submit" wire:click.prevent="previousStep" wire:navigate
-                        class="w-auto py-2! text-white text-base! font-semibold!">
-                        {{ __('BACK') }}
+                        class="w-auto py-2! text-text-white text-base! font-semibold!">
+                        {{ __('Back') }}
                     </x-ui.button>
                 </div>
                 <div class="  flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
                     <x-ui.button type="submit" wire:click="nextStep" class="w-auto py-2!  text-base! font-semibold!">
-                        {{ __('NEXT') }}
+                        {{ __('Next') }}
                     </x-ui.button>
                 </div>
             </div>
