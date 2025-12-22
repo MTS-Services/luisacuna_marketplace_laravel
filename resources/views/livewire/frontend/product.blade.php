@@ -2,7 +2,7 @@
     {{-- filter section --}}
     <section class="container mx-auto">
 
-        <div class="flex items-center gap-1 my-10 font-semibold">
+        {{-- <div class="flex items-center gap-1 my-10 font-semibold">
             <div class="w-4 h-4">
                 <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
             </div>
@@ -15,10 +15,10 @@
             <h1 class="text-text-white text-base">
                 {{ ucfirst(str_replace('-', ' ', $categorySlug)) }}
             </h1>
-        </div>
+        </div> --}}
+       
 
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-6 mb-13">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-6 mb-13 mt-15" >
             <div>
                 <h2 class="font-semibold text-4xl pb-3">{{ $category->name }}</h2>
                 @if ($category->icon)
@@ -57,15 +57,12 @@
                 </div>
             </div>
 
-            <div class="min-w-30 flex items-center justify-between gap-2 relative" x-data={filter:false}>
+            <div class="min-w-30 flex items-center justify-center gap-2 relative" x-data={filter:false}>
 
                 {{-- Filter Button --}}
                 <button @click="filter = !filter"
                     class="flex items-center gap-2 px-4 py-2.5 bg-bg-transparent rounded-full border! border-zinc-700!">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-
-                    </svg>
+                    
                     <span class="text-text-white text-sm">
                         @if ($sortOrder === 'asc')
                             {{ __('a-z') }}
@@ -117,7 +114,7 @@
                 </h2>
             </div>
             <div wire:ignore class="swiper popular-currency">
-                <div class="swiper-wrapper py-10">
+                <div class="swiper-wrapper pt-10">
                     @foreach ($popular_games as $popular_game)
                         <div class="swiper-slide">
                             <x-product-card :data="$popular_game" :categorySlug="$categorySlug" />
@@ -126,7 +123,7 @@
                 </div>
 
                 <!-- Add Pagination and Navigation -->
-                <div class="mt-10">
+                <div class="mt-12">
                     <div class="swiper-pagination"></div>
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
@@ -144,7 +141,7 @@
                 </h2>
             </div>
             <div wire:ignore class="swiper new-boosting">
-                <div class="swiper-wrapper py-10">
+                <div class="swiper-wrapper pt-10">
                     @foreach ($new_boosting as $index => $boosting_game)
                         <div class="swiper-slide">
                             <x-product-card :data="$boosting_game" :categorySlug="$categorySlug" />
@@ -153,7 +150,7 @@
                 </div>
 
                 <!-- Add Pagination and Navigation -->
-                <div class="mt-10">
+                <div class="mt-12">
                     <div class="swiper-pagination"></div>
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
@@ -168,7 +165,7 @@
         @if ($categorySlug != 'gift-card')
             <div class="title mb-10">
                 <h2 class="font-semibold text-40px">{{ __('All') }}
-                    {{ $categorySlug == 'top-up' || $categorySlug == 'coaching' ? 'Game' : Str::ucfirst($categorySlug) }}
+                    {{ $categorySlug == 'top-up' || $categorySlug == 'coaching' ? ($categorySlug == 'top-up' ? 'Top Up' : 'All brands for Coaching') : Str::ucfirst($categorySlug) }}
                 </h2>
             </div>
         @endif

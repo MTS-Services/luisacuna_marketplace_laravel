@@ -64,7 +64,7 @@
     </div>
 
         <div class="shrink-0 pt-4 flex items-center justify-center">
-                <x-ui.button href="{{ route('user.notifications') }}" wire:navigate class="py-2! max-w-80">
+                <x-ui.button href="{{ route('user.messages') }}" wire:navigate class="py-2! max-w-80">
                     {{ __('View all') }}
                 </x-ui.button>
             </div>
