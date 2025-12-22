@@ -24,17 +24,18 @@
     </div>
 
 
-    <section class="py-20" id="popular-games">
+    <section class="pt-30" id="popular-games">
         {{-- New Bosting Games Section --}}
-        <section class="container mx-auto mt-10">
+        <section class="container mx-auto">
             <div class="mx-0 sm:mx-5 md:mx-10 lg:mx-14 xl:mx-20">
-                <div class="title mt-10">
-                    <h2 class="text-40px font-bold mb-4 text-text-white">
+                <div class="title mb-10">
+                    <h2 class="text-40px font-semibold mb-4 text-text-white">
                         {{ __('Newly Boosting') }}
                     </h2>
                 </div>
+
                 <div wire:ignore class="swiper new-boosting">
-                    <div class="swiper-wrapper py-10">
+                    <div class="swiper-wrapper">
                         @foreach ($new_bostings as $index => $boosting)
                             <div class="swiper-slide">
                                 <x-game-card :data="$boosting" :categorySlug="'boosting'" />
@@ -43,7 +44,7 @@
                     </div>
 
                     <!-- Add Pagination and Navigation -->
-                    <div class="mt-10">
+                    <div class="mt-12">
                         <div class="swiper-pagination"></div>
                         <div class="swiper-button-next"></div>
                         <div class="swiper-button-prev"></div>
@@ -55,15 +56,15 @@
         {{-- New Boosting Ends --}}
 
         {{-- Popular Games Section --}}
-        <section class="container mx-auto mt-10">
+        <section class="container mx-auto mt-20">
             <div class="mx-0 sm:mx-5 md:mx-10 lg:mx-14 xl:mx-20">
-                <div class="title mt-10">
-                    <h2 class="text-40px font-bold mb-4 text-text-white">
+                <div class="title mb-10">
+                    <h2 class="text-40px font-semibold mb-4 text-text-white">
                         {{ __('Popular Games') }}
                     </h2>
                 </div>
                 <div wire:ignore class="swiper popular-games">
-                    <div class="swiper-wrapper py-10">
+                    <div class="swiper-wrapper ">
                         @foreach ($games as $game)
                             <div class="swiper-slide">
                                 <x-game-card :data="$game" />
@@ -72,7 +73,7 @@
                     </div>
 
                     <!-- Add Pagination and Navigation -->
-                    <div class="mt-10">
+                    <div class="mt-12">
                         <div class="swiper-pagination"></div>
                         <div class="swiper-button-next"></div>
                         <div class="swiper-button-prev"></div>
@@ -85,15 +86,15 @@
 
 
         {{-- Top selling  Section --}}
-        <section class="container mx-auto mt-10">
+        <section class="container mx-auto mt-20">
             <div class="mx-0 sm:mx-5 md:mx-10 lg:mx-14 xl:mx-20">
-                <div class="title mt-10">
-                    <h2 class="text-40px font-bold mb-4 text-text-white">
+                <div class="title mb-10">
+                    <h2 class="text-40px font-semibold mb-4 text-text-white">
                         {{ __('Top-Selling Offers') }}
                     </h2>
                 </div>
                 <div wire:ignore class="swiper top-sellings">
-                    <div class="swiper-wrapper py-10">
+                    <div class="swiper-wrapper py-0">
                         @foreach ($datas as $item)
                             <div class="swiper-slide">
                                 <x-ui.shop-card :gameSlug="$item->games->slug" :categorySlug="$item->category->slug" :data="$item"
@@ -103,7 +104,7 @@
                     </div>
 
                     <!-- Add Pagination and Navigation -->
-                    <div>
+                    <div class="mt-12">
                         <div class="swiper-pagination"></div>
                         <div class="swiper-button-next"></div>
                         <div class="swiper-button-prev"></div>
@@ -119,11 +120,11 @@
     </section>
 
     <!-- How It Works Section -->
-    <section class="py-20 pt-10">
+    <section class="py-20 pt-20">
         <div class="container mx-auto">
             <div class="mx-0 sm:mx-5 md:mx-10 lg:mx-14 xl:mx-20">
                 <div class="text-center mb-16">
-                    <h2 class="text-4xl font-bold mb-4 text-text-white">{{ __('How It Works') }}</h2>
+                    <h2 class="text-4xl font-semibold mb-4 text-text-white">{{ __('How It Works') }}</h2>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -143,7 +144,7 @@
                         <div class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
                             <img src="{{ asset('assets/images/home_page/verified_sellers.png') }}" alt="">
                         </div>
-                        <div class="absolute top-8 left-[-25%] z-20 hidden md:block">
+                        <div class="absolute top-8 left-[-30%] z-20 hidden md:block">
                             <img src="{{ asset('assets/images/home_page/right-arrow.png') }}" alt="">
                         </div>
                         <h3 class="font-semibold text-2xl mb-2 text-text-white">{{ __('Verified Sellers') }}</h3>
@@ -157,7 +158,7 @@
                         <div class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
                             <img src="{{ asset('assets/images/home_page/effortless_buying.png') }}" alt="">
                         </div>
-                        <div class="absolute top-8 left-[-25%] z-20 hidden md:block">
+                        <div class="absolute top-8 left-[-30%] z-20 hidden md:block">
                             <img src="{{ asset('assets/images/home_page/right-arrow.png') }}" alt="">
                         </div>
                         <h3 class="font-semibold text-2xl mb-2 text-text-white">
@@ -173,7 +174,9 @@
     </section>
 
     <!-- About Us Section -->
-    <section class="container p-5 md:p-10 xl:p-20 bg-gradient-to-r from-zinc-900  to-pink-950">
+    <section
+        class="container mt-10  p-5 md:p-10 xl:p-20 bg-gradient-to-r from-zinc-900
+         via-zinc-900 via-30%  to-pink-950/90">
         <div class="">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div>
@@ -200,7 +203,7 @@
     <!-- FAQ Section -->
     <livewire:frontend.partials.faq :faqs_buyer="$faqs_buyer" :faqs_seller="$faqs_seller" />
 
-    <div class="my-20"></div>
+    <div class="pt-130"></div>
 
 
     @push('scripts')
@@ -321,7 +324,6 @@
                 });
 
             });
-      
         </script>
     @endpush
 </main>
