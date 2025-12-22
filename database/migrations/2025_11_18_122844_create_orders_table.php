@@ -25,9 +25,12 @@ return new class extends Migration
             $table->string('source_type')->index();
             $table->string('status')->index()->default(OrderStatus::INITIALIZED->value);
 
-            $table->decimal('total_amount', 15, 2)->default(0);
-            $table->decimal('tax_amount', 15, 2)->default(0);
-            $table->decimal('grand_total', 15, 2)->default(0);
+            $table->decimal('unit_price', 20, 2)->default(0);
+            $table->decimal('total_amount', 20, 2)->default(0);
+            $table->decimal('tax_amount', 20, 2)->default(0);
+            $table->decimal('grand_total', 20, 2)->default(0);
+
+            $table->unsignedBigInteger('quantity')->default(1);
 
             $table->string('currency')->nullable()->index();
             $table->string('payment_method')->nullable();

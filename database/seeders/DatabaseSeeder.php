@@ -56,6 +56,9 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             FaqSeeder::class,
             GameConfigSeeder::class,
+
+            ProductSeeder::class,
+            WalletSeeder::class,
         ]);
     }
 }
