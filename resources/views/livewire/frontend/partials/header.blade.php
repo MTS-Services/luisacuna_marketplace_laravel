@@ -2,7 +2,7 @@
     class="sticky top-0 z-50   {{ request()->routeIs('home') ? 'bg-bg-secondary glass-card shadow-none!' : 'bg-bg-secondary glass-card' }}">
     <div class=" px-4 py-4 flex items-center justify-between relative" x-cloak>
         <div class="flex flex-row-reverse items-center justify-center">
-            <div class="hidden xxs:flex ml-4 lg:ml-0 scale-75 xl:scale-100">
+            <div class="hidden xxs:flex  lg:ml-0 scale-75 xl:scale-100">
                 <a href="{{ route('home') }}" wire:navigate>
                     <img src="{{ asset('assets/images/header_logo.png') }}" alt="{{ __('Logo') }}"></a>
             </div>
