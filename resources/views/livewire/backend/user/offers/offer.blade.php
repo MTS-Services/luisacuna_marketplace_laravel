@@ -240,6 +240,7 @@
                                             <x-ui.custom-option :value="$platform->id" :label="$platform->name" />
                                         @endforeach
                                     </x-ui.custom-select>
+                                    <x-ui.input-error :messages="$errors->get('platform_id')" />
                                 </div>
                             </div>
                         </div>
