@@ -18,7 +18,7 @@
                     <span class="text-8xl pr-2.5">
                         <flux:icon name="shield-check" class="stroke-zinc-500"></flux:icon>
                     </span>
-                    <p class="font-semibold text-2xl ">{{ __('Seller ID verification') }}</p>
+                    <p class="font-semibold text-xl sm:text-2xl ">{{ __('Seller ID verification') }}</p>
                 </div>
                 <div class="text-sm text-text-primary font-normal pt-2">
                     Step <span>6</span>/<span>6</span>
@@ -42,12 +42,12 @@
                         <li class="flex items-start">
                             <span class="mr-2">•</span>
                             <span
-                                class="text=text-white font-normal text-xl">{{ __('Please upload a photo where you are holding your ID next to your face.') }}</span>
+                                class="text=text-white font-normal text-xl text-left">{{ __('Please upload a photo where you are holding your ID next to your face.') }}</span>
                         </li>
                         <li class="flex items-start">
                             <span class="mr-2">•</span>
                             <span
-                                class="text=text-white font-normal text-xl">{{ __('Both your face and ID document must be clearly visible.') }}</span>
+                                class="text=text-white font-normal text-xl text-left">{{ __('Both your face and ID document must be clearly visible.') }}</span>
                         </li>
                     </ul>
 
@@ -57,7 +57,7 @@
 
                         <label for="selfie_image"
                             class="shrink-0 px-6 py-2 bg-zinc-600 rounded-3xl text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
-                            Choose file
+                            {{ __('Choose file') }}
                         </label>
 
                         <div
@@ -65,39 +65,39 @@
                             @if ($selfie_image)
                                 {{ $selfie_image->getClientOriginalName() }}
                             @else
-                                No file selected
+                                {{ __('No file selected') }}
                             @endif
                         </div>
                     </div>
 
                     <p class="text-xs text-center text-gray-500 mt-3">
-                        Must be JPEG, PNG or HEIC and cannot exceed 10MB.
+                        {{ __('Must be JPEG, PNG or HEIC and cannot exceed 10MB.') }}
                     </p>
 
                     @error('selfieWithId')
-                        <p class="text-red-500 text-sm text-center mt-2">{{ $message }}</p>
+                        <p class="text-pink-500 text-sm text-center mt-2">{{ $message }}</p>
                     @enderror
                 @else
-                    <h2 class="text-base lg:text-2xl font-bold text-left mb-6">Upload company documents</h2>
+                    <h2 class="text-base lg:text-2xl font-bold text-left mb-6">{{ __('Upload company documents') }}</h2>
 
                     <div class="max-w-2xl mx-auto mb-8">
                         <p class="text-gray-600 mb-6 text-center">
-                            Please upload documents to prove that the individual who submitted the ID is an owner of
-                            your company.
+                            {{ __('Please upload documents to prove that the individual who submitted the ID is an owner of
+                            your company.') }}
                         </p>
 
                         <div class="bg-gray-50 rounded-lg p-6 mb-6">
                             <ol class="space-y-3 text-sm text-gray-700">
-                                <li>1. Proof of ownership (an extract from a corporate registry or shareholder
+                                <li>{{ __('1. Proof of ownership (an extract from a corporate registry or shareholder
                                     register)
-                                    (required)</li>
-                                <li>2. Articles of Association (required)</li>
-                                <li>3. Proof of registered company address (utility bill or bank statement, not
+                                    (required)') }}</li>
+                                <li>{{ __('2. Articles of Association (required)') }}</li>
+                                <li>{{ __('3. Proof of registered company address (utility bill or bank statement, not
                                     older
-                                    than 3 months) (required)</li>
-                                <li>4. Misc docs (corporate structure, incorporation document, misc. company
+                                    than 3 months) (required)') }}</li>
+                                <li>{{ __('4. Misc docs (corporate structure, incorporation document, misc. company
                                     documents,
-                                    etc) (optional)</li>
+                                    etc) (optional)') }}</li>
                             </ol>
                         </div>
 
@@ -112,11 +112,8 @@
                                 </div>
                                 <div class="ml-3">
                                     <p class="text-sm text-zinc-700">
-                                        <strong>Note:</strong> If your company's owner is another company, you will
-                                        need
-                                        to upload documents for both entities and the corporate structure, leading
-                                        to
-                                        the UBO
+                                        <strong>{{ __('Note:') }}</strong>
+                                        {{ __(' If your company\'s owner is another company, you will need to upload documents for both entities and the corporate structure, leading to the UBO') }}
                                     </p>
                                 </div>
                             </div>
@@ -126,8 +123,8 @@
                             <input type="file" wire:model="selfie_image" accept=".jpg,.jpeg,.png,.heic,.pdf,.docx"
                                 class="hidden" id="selfie_image">
                             <label for="selfie_image"
-                                class="shrink-0 px-6 py-2 bg-zinc-600 flex justify-center w-40 rounded-lg mx-auto text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
-                                Choose file
+                                class="shrink-0 px-6 py-2 bg-zinc-600 flex justify-center w-40 rounded-lg mx-auto text-text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
+                                {{ __('Choose file') }}
                             </label>
                             @if (!empty($selfie_image))
                                 <div class="mt-3 space-y-2">
@@ -139,7 +136,7 @@
                         </div>
 
                         <p class="text-xs text-text-white text-center">
-                            Must be JPEG, PNG, HEIC, PDF, DOCX and cannot exceed 10MB.
+                            {{ __('Must be JPEG, PNG, HEIC, PDF, DOCX and cannot exceed 10MB.') }}
                         </p>
                     </div>
                 @endif
@@ -157,13 +154,13 @@
                     </button> --}}
                 <div class=" flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
                     <x-ui.button type="submit" wire:click.prevent="previousStep" wire:navigate
-                        class="w-auto py-2! text-white text-base! font-semibold!">
-                        {{ __('BACK') }}
+                        class="w-auto py-2! text-text-white text-base! font-semibold!">
+                        {{ __('Back') }}
                     </x-ui.button>
                 </div>
                 <div class="  flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
                     <x-ui.button type="submit" wire:click="submit" class="w-auto py-2!  text-base! font-semibold!">
-                        {{ __('NEXT') }}
+                        {{ __('Submit') }}
                     </x-ui.button>
                 </div>
             </div>
