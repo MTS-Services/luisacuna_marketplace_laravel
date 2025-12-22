@@ -1,7 +1,7 @@
  <div class="lg:col-span-2">
      <!-- Seller Info -->
      <div class="bg-bg-secondary  rounded-lg p-6 mb-6">
-         <div class="flex items-center gap-4 mb-6">
+         {{-- <div class="flex items-center gap-4 mb-6">
              @if ($user->avatar)
                  <img src="{{ storage_url($user->avatar) }}" alt="{{ $user->username ?? 'User Avatar' }}"
                      class="w-16 h-16 rounded-full border-2 border-purple-500">
@@ -21,9 +21,9 @@
                      <span>{{ __('2434 reviews') }}</span>
                  </div>
              </div>
-         </div>
+         </div> --}}
 
-         <div class="border-t border-b border-purple-500/60 pt-4 mb-4">
+         {{-- <div class="border-t border-b border-purple-500/60 pt-4 mb-4">
              <div class="flex justify-between items-center py-3">
                  <span class="text-text-primary sm:text-2xl md:text-3xl lg:text-4xl">{{ __('Delivery time') }}
                  </span>
@@ -33,12 +33,12 @@
                      @endforeach
                  </span>
              </div>
-         </div>
+         </div> --}}
 
 
 
          <!-- Product Title -->
-         <h1 class="sm:text-1xl md:text-2xl lg:text-3xl mb-6">{{ $product->name }}</h1>
+         <h1 class="sm:text-1xl md:text-2xl lg:text-3xl pb-6 mb-6 border-b border-purple-500/60">{{ $product->name }}</h1>
 
          <!-- How to Purchase -->
          <div class="mb-6">

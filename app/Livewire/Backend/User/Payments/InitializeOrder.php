@@ -3,11 +3,13 @@
 namespace App\Livewire\Backend\User\Payments;
 
 
+use App\Models\User;
 use App\Models\Product;
-use App\Services\OrderService;
-use App\Traits\Livewire\WithNotification;
-use Illuminate\Support\Facades\Session;
 use Livewire\Component;
+use App\Services\OrderService;
+use App\Services\OrderMessageService;
+use Illuminate\Support\Facades\Session;
+use App\Traits\Livewire\WithNotification;
 
 class InitializeOrder extends Component
 {
@@ -16,10 +18,10 @@ class InitializeOrder extends Component
     public ?Product $product = null;
     public int $quantity = 1;
 
-    protected OrderService $orderService ;
-    public function boot (OrderService $orderService)
+    protected OrderService $orderService;
+    public function boot(OrderService $orderService)
     {
-     $this->orderService = $orderService;   
+        $this->orderService = $orderService;
     }
 
     public function mount($productId)
@@ -50,21 +52,22 @@ class InitializeOrder extends Component
             'user_id' => user()->id,
             'source_id' => $this->product->id,
             'source_type' => Product::class,
-            'total_amount' => $this->product->price,
+            'unit_price' => $this->product->price,
+            'total_amount' => ($this->product->price * $this->quantity),
             'tax_amount' => 0,
             'grand_total' => ($this->product->price * $this->quantity),
+            'quantity' => $this->quantity,
         ]);
-        Session::driver('database')->put("checkout_{$token}", [
+
+        Session::driver('redis')->put("checkout_{$token}", [
             'order_id' => $order->id,
             'price_locked' => ($this->product->price * $this->quantity),
-            'expires_at' => now()->addMinutes((int) env('ORDER_CHECKOUT_TIMEOUT_MINUTES', 5))->timestamp,
+            'expires_at' => now()->addMinutes((int) env('ORDER_CHECKOUT_TIMEOUT_MINUTES', 10))->timestamp,
         ]);
         return $this->redirect(
-            route('game.checkout', ['slug' => encrypt($this->product->id), 'token' => $token]),
+            route('user.checkout', ['slug' => encrypt($this->product->id), 'token' => $token]),
             navigate: true
         );
-
-
     }
 
     public function render()

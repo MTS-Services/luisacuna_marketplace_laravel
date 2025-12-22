@@ -235,28 +235,42 @@ class User extends AuthBaseModel implements Auditable
             'user_id'
         );
     }
-    // public function Sender(): HasMany
-    // {
-    //     return $this->hasMany(OrderMessage::class, 'sender_id', 'id');
-    // }
-    // public function Receiver(): HasMany
-    // {
-    //     return $this->hasMany(OrderMessage::class, 'receiver_id', 'id');
-    // }
-    public function lastMessageWith()
+    public function Sender(): HasMany
     {
-        return $this->hasOne(OrderMessage::class, 'sender_id')
-            ->latest();
+        return $this->hasMany(Message::class, 'sender_id', 'id');
     }
+    public function Receiver(): HasMany
+    {
+        return $this->hasMany(Message::class, 'receiver_id', 'id');
+    }
+    public function orderMessages()
+    {
+        return $this->morphMany(OrderMessage::class, 'creater');
+    }
+
+    public function conversationParticipant()
+    {
+        return $this->morphMany(ConversationParticipant::class, 'participant_id');
+    }
+    public function messageReadReceipts()
+    {
+        return $this->hasMany(MessageReadReceipt::class, 'user_id', 'id');
+    }
+
+    // public function lastMessageWith()
+    // {
+    //     return $this->hasOne(OrderMessage::class, 'sender_id')
+    //         ->latest();
+    // }
 
     /**
      * Get unread messages from this user
      */
-    public function unreadMessagesFrom()
-    {
-        return $this->hasMany(OrderMessage::class, 'sender_id')
-            ->where('is_seen', false);
-    }
+    // public function unreadMessagesFrom()
+    // {
+    //     return $this->hasMany(OrderMessage::class, 'sender_id')
+    //         ->where('is_seen', false);
+    // }
     /*
     |--------------------------------------------------------------------------
     | Query Scopes

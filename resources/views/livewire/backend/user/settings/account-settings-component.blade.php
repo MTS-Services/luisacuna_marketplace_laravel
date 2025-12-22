@@ -34,7 +34,7 @@
                     <!-- Upload Area -->
                     <div class="flex flex-col">
                         <label for="imageUpload"
-                            class="bg-purple-600 hover:bg-purple-700 text-text-white font-medium py-2 px-4 rounded-full cursor-pointer transition text-sm w-fit">
+                            class="bg-zinc-500 hover:bg-bg-white hover:text-zinc-500 text-text-white font-medium py-2 px-4 rounded-full cursor-pointer transition text-sm w-fit">
                             {{ __('Upload image') }}
                         </label>
 
@@ -309,7 +309,33 @@
                 </form>
             </section>
 
+            {{-- Profile Details Section --}}
+            <section class="sm:bg-bg-secondary rounded-2xl  mt-5 sm:p-15 md:20">
+                
+
+                
+                <livewire:backend.user.settings.two-factor-authenticaiton />
+
+
+                <div class="bg-bg-info p-3 sm:p-6 rounded-lg mt-5">
+                    <x-ui.label value="Log out from all sessions"
+                        class="text-base! font-normal! mb-1! text-text-primary!" />
+                    <x-ui.button class="w-fit! py-2! my-2!">
+                        <span>
+                            {{ __('Log out all sessions') }}
+                        </span>
+                    </x-ui.button>
+                    <p class="text-sm lg:text-xl font-normal text-text-primary">This button logs you out from a II devices and
+                        browsers.</p>
+                    <div class="text-xs flex flex-row gap-1">
+                        <span class="text-pink-500">*</span>
+                    <p>This action can take up to 1 hours</p>
+                    </div>
+                </div>
+
+            </section>
+
             {{-- Email Notifications Section --}}
             <livewire:backend.user.settings.account-notification />
         </div>
-</section>
+    </section>

@@ -21,6 +21,8 @@ class AdminNotificationSent implements ShouldBroadcast, ShouldQueue
 
     public CustomNotification $notification;
 
+    public $queue = 'broadcasts';
+
     public function __construct(CustomNotification $notification)
     {
         $this->notification = $notification;

@@ -2,10 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\Backend\User\OfferManagement\OfferController;
-use App\Http\Controllers\Backend\User\OfferManagement\UserOfferController;
-use App\Http\Controllers\Backend\User\OrderManagement\OrderController;
 use App\Http\Controllers\SellerVerificationController;
+use App\Http\Controllers\Backend\User\OfferManagement\OfferController;
+use App\Http\Controllers\Backend\User\OrderManagement\OrderController;
+use App\Http\Controllers\Backend\User\OfferManagement\UserOfferController;
+use App\Http\Controllers\Backend\User\OrderManagement\OngoingOrderController;
+use App\Http\Controllers\Backend\User\OrderManagement\OrderDetailsController;
+use App\Livewire\Backend\User\Payments\Checkout;
 
 // , 'userVerify'
 Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->group(function () {
@@ -24,12 +27,16 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
             Route::get('/sold-orders', 'soldOrders')->name('sold-orders');
         });
 
-        Route::get('/order-details', function () {
-            return view('backend.user.pages.orders.order-details');
-        })->name('order-details');
+        Route::get('/order-details', [OrderDetailsController::class, 'orderDetails'])->name('order-details');
+
         Route::get('/order-description', function () {
             return view('backend.user.pages.orders.order-description');
         })->name('order-description');
+
+        Route::controller(OngoingOrderController::class)->name('OngoingOrder.')->prefix('OngoingOrder')->group(function () {
+            Route::get('/details', 'details')->name('details');
+            Route::get('/description', 'description')->name('description');
+        });
     });
 
     Route::group(['prefix' => 'offers'], function () {
@@ -72,7 +79,7 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
 
     Route::group(['prefix' => 'seller'], function () {
 
-        Route::get('verification/{step?}',[SellerVerificationController::class,'index'])->name('seller.verification');
+        Route::get('verification/{step?}', [SellerVerificationController::class, 'index'])->name('seller.verification');
         // Route::get('/verification', function () {
         //     return view('backend.user.pages.seller.seller-verification');
         // })->name('seller.verification');
@@ -104,10 +111,26 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
         return view('backend.user.pages.profile');
     })->name('profile');
 
-    Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
-    Route::post('/payment/card', [PaymentController::class, 'processCard'])->name('payment.card');
-    Route::post('/payment/digital-wallet', [PaymentController::class, 'processDigitalWallet'])->name('payment.digital-wallet');
-    Route::post('/payment/crypto', [PaymentController::class, 'processCrypto'])->name('payment.crypto');
-    Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
-    Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
+    Route::get('/checkout/{slug}/{token}', Checkout::class)->name('checkout');
+
+    Route::controller(PaymentController::class)->name('payment.')->prefix('payment')->group(function () {
+        // Initialize payment (create payment intent)
+        Route::post('/initialize', 'initializePayment')
+            ->name('initialize');
+
+        // Confirm payment (after frontend processing)
+        Route::post('/confirm', 'confirmPayment')
+            ->name('confirm');
+
+        // Success and failure pages
+        Route::get('/success', 'paymentSuccess')
+            ->name('success');
+
+        Route::get('/failed', 'paymentFailed')
+            ->name('failed');
+
+        // Get gateway configuration
+        Route::get('/gateway/{slug}', 'getGatewayConfig')
+            ->name('gateway.config');
+    });
 });

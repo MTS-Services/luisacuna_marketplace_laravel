@@ -1,5 +1,5 @@
-    <section class="bg-transparent mt-32">
-        <div class="container bg-bg-primary p-20 flex justify-center wrap flex-col rounded-2xl" x-data="{ active: 0, tab: 'buyers' }">
+    <section class="bg-transparent mt-32 ">
+        <div class="container bg-bg-primary p-6 lg:p-14 xl:p-20 flex justify-center wrap flex-col rounded-2xl" x-data="{ active: 0, tab: 'buyers' }">
 
             <h2 class="text-text-white text-[40px] text-center mb-10 font-semibold">{{ ' Frequently Asked Questions' }}
             </h2>
@@ -63,6 +63,7 @@
                                 stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                             </svg>
+                            
                         </div>
                         <p x-show="active === {{ $index }}" x-transition class="mt-2 text-text-secondery text-base">
                             {{ $faq->answer }}

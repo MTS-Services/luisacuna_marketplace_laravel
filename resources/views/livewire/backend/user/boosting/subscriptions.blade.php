@@ -1,4 +1,4 @@
-<div class="min-h-screen w-full px-4 py-10 flex justify-center">
+<div class="min-h-screen w-full px-4 py-10 flex justify-center bg-bg-primary">
     <div class="container bg-bg-secondary p-4 sm:p-10 md:p-20 rounded-2xl">
 
         <!-- Heading -->

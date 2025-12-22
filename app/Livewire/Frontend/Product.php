@@ -1,27 +1,30 @@
 <?php
  
 namespace App\Livewire\Frontend;
- 
+
+use App\Services\CategoryService;
 use Livewire\Component;
 use App\Services\GameService;
+use App\Traits\WithPaginationData;
 use Illuminate\Support\Facades\Log;
- 
+
 class Product extends Component
 {
+    use WithPaginationData;
     // Public properties
     public $categorySlug = null;
     public $search = '';
     public $sortOrder = 'default';
-    public $perPage = 9;
-    public $currentPage = 1;
+
  
     // Protected properties
     protected GameService $game_service;
     protected $allGamesCache = null;
- 
-    public function boot(GameService $game_service)
+    protected  CategoryService $categoryService;
+    public function boot(GameService $game_service , CategoryService $categoryService)
     {
         $this->game_service = $game_service;
+        $this->categoryService = $categoryService;
     }
     public function mount($categorySlug)
     {
@@ -30,11 +33,15 @@ class Product extends Component
     public function sortBy($order)
     {
         $this->sortOrder = $order;
-        $this->currentPage = 1;
     }
     public function render()
     {
         $games = $this->getGames();
+
+        $category = $this->categoryService->findData($this->categorySlug, 'slug');
+        // dd($games);
+
+        $this->pagination = $this->paginationData($games);
        
         $popular_games = $this->game_service->getAllDatas([
             'category' => $this->categorySlug,
@@ -42,12 +49,24 @@ class Product extends Component
             'relations' => ['tags', 'categories'],
             'sort_field' => 'name',
             'sort_direction' => 'asc',
+            'withProductCount' => true
         ]);
+
+        if($this->categorySlug == 'boosting' || $this->categorySlug == 'coaching' || $this->categorySlug == 'top-up') {
+            $new_boosting = $this->game_service->getAllDatas([
+            'category' => $this->categorySlug,
+            'relations' => ['tags', 'categories', ],
+            'withProductCount' => true
+          ]);
+        }
  
         return view('livewire.frontend.product', [
             'games' => $games ?? collect([]),
             'popular_games' => $popular_games ?? collect([]),
             'categorySlug' => $this->categorySlug,
+            // Only need in boosting page
+            'new_boosting' => $new_boosting ?? collect([]),
+            'category' => $category,
         ]);
     }
  
@@ -60,7 +79,7 @@ class Product extends Component
             $params = [
                 'category' => $this->categorySlug,
                 'relations' => ['tags', 'categories'],
-                'page' => $this->currentPage,
+                'withProductCount' => true,
             ];
 
           
@@ -103,7 +122,6 @@ class Product extends Component
     {
         $this->search = '';
         $this->sortOrder = 'default';
-        $this->currentPage = 1;
     }
 }
  
