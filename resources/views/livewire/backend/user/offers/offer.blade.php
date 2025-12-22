@@ -35,6 +35,25 @@
                             </svg>
                         </button>
                     @endforeach
+                    <a href="{{ route('user.bulk-upload.category') }}" class="w-full flex items-center justify-between p-4 bg-bg-info hover:bg-zinc-700/30 transition rounded-xl">
+
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 sm:w-16 sm:h-16">
+                                <img src="{{ asset('assets/images/bulk-upload.png') }}" alt="Category Name"
+                                    class="w-full h-full rounded-lg sm:rounded-xl object-cover">
+                            </div>
+
+                            <span class="text-2xl sm:text-3xl font-semibold text-text-white">{{ __('Bulk Upload') }}</span>
+                        </div>
+
+                        <svg class="w-6 h-6 fill-white" viewBox="0 0 256 256">
+                            <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128, 90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z">
+                            </path>
+                        </svg>
+                    </a>
+
+
+                    {{-- <a href="{{ route('user.bulk-upload.category') }}"></a> --}}
                 </div>
             @endif
 
@@ -257,15 +276,15 @@
                                 {{-- Validation errors (for non-dropdown fields) --}}
 
                                 @error("fields.{{ $config->id }}.value")
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                    <p class="text-pink-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             @endforeach
                         </div>
 
                         @if ($errors->any())
-                            <div class="text-red-500 text-start mt-4 py-2 px-3 bg-bg-primary rounded">
+                            <div class="text-pink-500 text-start mt-4 py-2 px-3 bg-bg-primary rounded">
                                 @foreach ($errors->all() as $error)
-                                    <p class="text-sm badge badge-danger text-red-600">{{ $error }}</p>
+                                    <p class="text-sm badge badge-danger text-pink-600">{{ $error }}</p>
                                 @endforeach
                             </div>
                         @endif
