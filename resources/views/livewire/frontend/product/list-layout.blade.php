@@ -105,7 +105,7 @@
                                         class="w-full h-full object-cover">
                                 </div>
                                 <div>
-                                    <a href="" class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl">
+                                    <a href="" class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl inline-block text-xs">
                                         <x-phosphor name="fire" variant="regular" class="inline-block fill-white" />
                                         {{ $game->tags->random()->name ?? '' }}
                                     </a>
@@ -192,7 +192,7 @@
                     </div>
                 </div>
 
-                <div class="mt-6 bg-bg-secondary rounded-2xl py-7 px-6">
+                <div class="mt-6 bg-bg-primary dark:bg-bg-secondary rounded-2xl py-7 px-6">
                     <h3 class="text-text-white text-base font-semibold mb-2">{{ __('Delivery instructions') }}</h3>
                     <div class="flex gap-2">
                         <span class="text-sm text-text-white">{{ __('Welcome') }}</span>
