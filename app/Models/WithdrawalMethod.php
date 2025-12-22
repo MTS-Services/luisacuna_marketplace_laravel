@@ -12,6 +12,7 @@ class WithdrawalMethod extends AuditBaseModel implements Auditable
     //
 
     protected $fillable = [
+
         'sort_order',
         'name',
         'code',
@@ -25,9 +26,16 @@ class WithdrawalMethod extends AuditBaseModel implements Auditable
         'fee_amount',
         'fee_percentage',
         'required_fields',
-        'display_order'
 
-      //here AuditColumns
+        'created_by',
+        'updated_by',
+        'deleted_by',
+        'restored_by',
+
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'restored_at',
     ];
 
     protected $hidden = [

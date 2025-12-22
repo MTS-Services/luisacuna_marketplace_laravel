@@ -6,25 +6,19 @@ use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class withdrawaldocuments extends AuditBaseModel implements Auditable
+class WithdrawalSetting extends AuditBaseModel implements Auditable
 {
-    use   AuditableTrait;
+    use AuditableTrait;
     //
 
     protected $fillable = [
         'sort_order',
-        'withdrawal_request_id',
-        'document_type',
-        'file_path',
-        'file_name',
-        'file_size',
-        'mime_type',
-        'is_verified',
-        'verified_by',
-        'verified_at',
-        'created_at',
-
-      //here AuditColumns
+        'setting_key',
+        'setting_value',
+        'setting_type',
+        'description',
+        'is_public',
+        //here AuditColumns
     ];
 
     protected $hidden = [
@@ -39,11 +33,11 @@ class withdrawaldocuments extends AuditBaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     //
+    //
 
-     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
-                End of RELATIONSHIPS
-     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+               End of RELATIONSHIPS
+    =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
     public function __construct(array $attributes = [])
     {

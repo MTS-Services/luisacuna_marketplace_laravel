@@ -5,9 +5,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
-     use AuditColumnsTrait;
+return new class extends Migration {
+    use AuditColumnsTrait;
     /**
      * Run the migrations.
      */
@@ -16,8 +15,8 @@ return new class extends Migration
         Schema::create('withdrawal_status_histories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-            $table->unsignedBigInteger('withdrawal_request_id')->constrained()->onDelete('cascade');
-            $table->unsignedBigInteger('changed_by')->nullable()->constrained('users')->onDelete('set null');
+            $table->unsignedBigInteger('withdrawal_request_id');
+            $table->unsignedBigInteger('changed_by')->nullable();
             $table->string('from_status', 50)->nullable();
             $table->string('to_status', 50);
             $table->text('notes')->nullable();
@@ -31,7 +30,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-           $this->addMorphedAuditColumns($table);
+            $this->addMorphedAuditColumns($table);
         });
     }
 
