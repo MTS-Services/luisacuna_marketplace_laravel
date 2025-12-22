@@ -5,7 +5,7 @@
         price: {{ $product->price }},
         stock: {{ $product->quantity }}
     }" wire:submit="submit">
-        <div class="bg-bg-secondary rounded-lg p-6 mb-6 ">
+        <div class="bg-bg-primary dark:bg-bg-secondary rounded-lg p-6 mb-6 ">
             <div class="pt-4 mb-8">
                 <div class="flex justify-between items-center ">
                     <span class="text-text-primary text-base">{{ __('Delivery time') }}
@@ -62,7 +62,7 @@
 
 
         <!-- Delivery Instructions -->
-        <div class="bg-bg-secondary rounded-lg  mb-6 px-4 py-4 ">
+        <div class="bg-bg-primary dark:bg-bg-secondary rounded-lg  mb-6 px-4 py-4 ">
 
             <div class="pt-4 mb-8">
                 <div class="flex justify-between items-center border-b border-zinc-500/60 pb-4">
@@ -140,27 +140,27 @@
             </div>
         </div>
         <!-- Delivery Instructions -->
-       <!-- Delivery Instructions -->
-        <div class="bg-bg-secondary rounded-lg  mb-6 px-4 py-4 ">
- 
- 
- 
- 
+        <!-- Delivery Instructions -->
+        <div class="bg-bg-primary dark:bg-bg-secondary rounded-lg  mb-6 px-4 py-4 ">
+
+
+
+
             <div class="  mt-2 pt-3 flex items-center justify-between gap-2">
- 
+
                 <div class="w-18 h-14 relative">
                     <img src="{{ storage_url('http://127.0.0.1:8000/assets/images/default_profile.jpg') }}"
                         class="w-14 h-14 rounded-full border-2 border-white" alt="profile" />
                     <span class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
- 
+
                 </div>
- 
+
                 <div class="w-full">
                     <p class="text-text-white font-medium flex items-center gap-2">
                         <span> {{ 'Username' }}</span>
                         <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
                     </p>
- 
+
                     <div class="flex items-center space-x-2 mt-0">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="w-5 h-5 fill-zinc-500">
@@ -171,11 +171,11 @@
                     </div>
                 </div>
             </div>
- 
+
             <h3 class="font-bold m-4">{{ __('Offer Description') }}</h3>
             <div class="flex gap-4 m-4">
                 <button class="text-sm">{{ __('What We provide in Fornite Account:') }}</button>
- 
+
             </div>
             <div class="flex items-start gap-2 m-4">
                 <svg width="20" height="20" fill="#a78bfa" viewBox="0 0 20 20">
@@ -188,7 +188,7 @@
                     <p class="font-semibold text-sm ">{{ __('Free Account') }}</p>
                 </div>
             </div>
- 
+
             <div class="flex items-start gap-2 m-4">
                 <svg width="20" height="20" fill="#a78bfa" viewBox="0 0 20 20">
                     <path fill-rule="evenodd"
@@ -200,7 +200,7 @@
                     <p class="font-semibold text-sm ">{{ __('0 Hours') }}</p>
                 </div>
             </div>
- 
+
             <div class="flex items-start gap-2 m-4">
                 <svg width="20" height="20" fill="#a78bfa" viewBox="0 0 20 20">
                     <path fill-rule="evenodd"
@@ -212,15 +212,15 @@
                     <p class="font-semibold text-sm ">{{ __('Epic Games') }}</p>
                 </div>
             </div>
- 
+
             <h1 class="m-4">{{ __("What We Don't Provide in Fornite Account:") }} </h1>
- 
+
             <p class="m-4">
                 {{ __("If you encounter issues, don't worry, I'm just a message away. I'm mostly online, but if I don't reply
-                                                                                immediately, I might be sleeping. I'll respond and resolve your issue as soon as I can. Please mark the
-                                                                                order as received after checking the account and provide feedback. Thank you. placeholder") }}
+                                                                                                immediately, I might be sleeping. I'll respond and resolve your issue as soon as I can. Please mark the
+                                                                                                order as received after checking the account and provide feedback. Thank you. placeholder") }}
             </p>
- 
+
             <button
                 class="bg-[#1a0b2e] text-pink-500 px-6 py-3 rounded flex items-center gap-2 hover:bg-[#2a1545] transition-colors mx-auto block">
                 View Less
@@ -230,91 +230,30 @@
                         clip-rule="evenodd" />
                 </svg>
             </button>
- 
- 
+
+
             <button class=" text-xl mt-4 mb-4 font-medium">{{ __('Recent feedback') }}</button>
             <!-- Seller Card -->
-            <div class="bg-bg-info text-white p-5 rounded-sm max-w-md border-b border-black/50">
-                <div class="flex items-start justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="#853EFF" viewBox="0 0 20 20">
-                            <path
-                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                        </svg>
-                        <h3 class="text-base font-medium">
-                            Items <span class="text-gray-400 font-normal">| Yeg***</span>
-                        </h3>
+            @foreach ([1, 2, 3, 4, 5] as $item)
+                <div class="bg-bg-optional dark:bg-bg-info text-white p-5  max-w-md mb-1">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="#853EFF" viewBox="0 0 20 20">
+                                <path
+                                    d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                            </svg>
+                            <h3 class="text-base font-medium">
+                                Items <span class="text-text-secondary font-normal">| Yeg***</span>
+                            </h3>
+                        </div>
+                        <span class="text-text-secondary text-sm whitespace-nowrap">24.10.25</span>
                     </div>
-                    <span class="text-gray-400 text-sm whitespace-nowrap">24.10.25</span>
+                    <p class="text-text-secondary text-sm">Yeg***</p>
                 </div>
-                <p class="text-gray-300 text-sm">Yeg***</p>
-            </div>
- 
-            <div class="bg-bg-info text-white p-5 rounded-sm max-w-md border-b border-black/50">
-                <div class="flex items-start justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="#853EFF" viewBox="0 0 20 20">
-                            <path
-                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                        </svg>
-                        <h3 class="text-base font-medium">
-                            Items <span class="text-gray-400 font-normal">| Yeg***</span>
-                        </h3>
-                    </div>
-                    <span class="text-gray-400 text-sm whitespace-nowrap">24.10.25</span>
-                </div>
-                <p class="text-gray-300 text-sm">Yeg***</p>
-            </div>
- 
-            <div class="bg-bg-info text-white p-5 rounded-sm max-w-md border-b border-black/50">
-                <div class="flex items-start justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="#853EFF" viewBox="0 0 20 20">
-                            <path
-                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                        </svg>
-                        <h3 class="text-base font-medium">
-                            Items <span class="text-gray-400 font-normal">| Yeg***</span>
-                        </h3>
-                    </div>
-                    <span class="text-gray-400 text-sm whitespace-nowrap">24.10.25</span>
-                </div>
-                <p class="text-gray-300 text-sm">Yeg***</p>
-            </div>
- 
-            <div class="bg-bg-info text-white p-5 rounded-sm max-w-md border-b border-black/50">
-                <div class="flex items-start justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="#853EFF" viewBox="0 0 20 20">
-                            <path
-                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                        </svg>
-                        <h3 class="text-base font-medium">
-                            Items <span class="text-gray-400 font-normal">| Yeg***</span>
-                        </h3>
-                    </div>
-                    <span class="text-gray-400 text-sm whitespace-nowrap">24.10.25</span>
-                </div>
-                <p class="text-gray-300 text-sm">Yeg***</p>
-            </div>
- 
-            <div class="bg-bg-info text-white p-5 rounded-sm max-w-md ">
-                <div class="flex items-start justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="#853EFF" viewBox="0 0 20 20">
-                            <path
-                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                        </svg>
-                        <h3 class="text-base font-medium">
-                            Items <span class="text-gray-400 font-normal">| Yeg***</span>
-                        </h3>
-                    </div>
-                    <span class="text-gray-400 text-sm whitespace-nowrap">24.10.25</span>
-                </div>
-                <p class="text-gray-300 text-sm">Yeg***</p>
-            </div>
+            @endforeach
+
         </div>
- 
+
 
 
     </form>
