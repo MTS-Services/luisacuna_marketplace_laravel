@@ -113,7 +113,7 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
 
     Route::get('/checkout/{slug}/{token}', Checkout::class)->name('checkout');
 
-    Route::controller(PaymentController::class)->name('payment.')->prefix('payment')->group(function () {
+    Route::controller(PaymentController::class)->middleware('paymentSecurity')->name('payment.')->prefix('payment')->group(function () {
         // Initialize payment (create payment intent)
         Route::post('/initialize', 'initializePayment')
             ->name('initialize');
