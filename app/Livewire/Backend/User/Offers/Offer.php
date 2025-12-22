@@ -187,7 +187,7 @@ class Offer extends Component
                 'delivery_timeline' => 'required|string|max:255',
                 'name' => 'required|string|max:255',
                 'fields' => 'nullable|array',
-                'fields.*.value' => 'required|string|max:255',
+                'fields.*.value' => 'required',
 
             ],
             [
@@ -199,6 +199,7 @@ class Offer extends Component
                 'deliveryMethod.required' => 'Delivery method is required.',
                 'name.required' => 'Name is required.',
                 'delivery_timeline' => "Delivery Timeline is required.",
+                'fields.*.required' => 'This Field must to be filled.',
             ]
 
         );
