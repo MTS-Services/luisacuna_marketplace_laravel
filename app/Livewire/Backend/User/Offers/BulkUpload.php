@@ -10,7 +10,7 @@ class BulkUpload extends Component
     use WithFileUploads;
 
     public $currentStep = 1;
-    public $uploadMethod = ''; // 'web' or 'csv'
+    public $uploadMethod = '';
     public $gameId;
     public $regionId;
     public $serverId;
@@ -20,52 +20,34 @@ class BulkUpload extends Component
     public function selectUploadMethod($method)
     {
         $this->uploadMethod = $method;
-        
-        if ($method === 'csv') {
-            $this->currentStep = 4;
-        } else {
-            $this->currentStep = 2;
-        }
+        $this->currentStep = 2;
     }
+
+
 
     public function selectGame()
     {
-       
-
         $this->currentStep = 3;
     }
 
     public function selectServerAndRegion()
     {
-        
-
-        // Ei khane apnar logic - offer create kora etc
-        session()->flash('success', 'Offers created successfully!');
-        
-        // Reset or redirect
-        $this->reset();
+        $this->currentStep = 4;
     }
+
 
     public function uploadFile()
     {
-      
-
-        
-        session()->flash('success', 'File uploaded successfully!');
-
-        $this->reset();
+        session()->flash('success', 'Process completed!');
     }
 
     public function back()
     {
         if ($this->currentStep > 1) {
             $this->currentStep--;
-            
-            if ($this->currentStep === 1) {
-                $this->uploadMethod = '';
-            }
         }
     }
+
 
     public function render()
     {
