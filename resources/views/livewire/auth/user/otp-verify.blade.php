@@ -70,24 +70,24 @@
                                     timeLeft: @entangle('remainingTime'),
                                     canResend: @entangle('canResend'),
                                     countdown: null,
-                                
+
                                     init() {
                                         if (this.timeLeft > 0) {
                                             this.startCountdown();
                                         }
-                                
+
                                         this.$watch('timeLeft', (value) => {
                                             if (value > 0 && !this.countdown) {
                                                 this.startCountdown();
                                             }
                                         });
                                     },
-                                
+
                                     startCountdown() {
                                         if (this.countdown) {
                                             clearInterval(this.countdown);
                                         }
-                                
+
                                         this.countdown = setInterval(() => {
                                             if (this.timeLeft > 0) {
                                                 this.timeLeft--;
@@ -98,7 +98,7 @@
                                             }
                                         }, 1000);
                                     },
-                                
+
                                     formatTime(seconds) {
                                         const mins = Math.floor(seconds / 60);
                                         const secs = seconds % 60;

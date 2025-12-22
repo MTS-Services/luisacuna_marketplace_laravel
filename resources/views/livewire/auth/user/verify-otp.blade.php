@@ -27,7 +27,7 @@
                     {{ __('Confirm your Gmail') }}</h2>
                 <p class="text-text-white lg:text-xl text-base">
                     {{ __(' We have sent a code in an Email message to ex**@gmaol.co To confirm your account, please enter the
-                                        code.') }}
+                                                                                code.') }}
                 </p>
             </div>
 
@@ -94,7 +94,7 @@
 
             <div class="text-center text-text-white text-sm">
                 {{ __('Don\'t have an account?') }}
-                <a href="{{ route('register.signUp') }}" class="text-zinc-400 hover:underline">{{__('Sign up')}}</a>
+                <a href="{{ route('register.signUp') }}" class="text-zinc-400 hover:underline">{{ __('Sign up') }}</a>
             </div>
         </form>
     </div>

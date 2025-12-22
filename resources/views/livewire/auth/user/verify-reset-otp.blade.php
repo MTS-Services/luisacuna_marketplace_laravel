@@ -66,22 +66,22 @@
         <div class="min-h-[100vh] flex items-center justify-center text-white px-4  sm:px-6 lg:px-8 ">
             <form method="POST"wire:submit="verifyOtp" class="w-full max-w-md sm:max-w-lg md:max-w-xl">
                 <div
-                    class="bg-zinc-900/40 dark:bg-bg-secondary/75 backdrop-blur-sm dark:backdrop-blur-sm rounded-2xl p-8 sm:p-20 my-20 shadow-lg flex flex-col justify-between min-h-[75vh]">
+                    class="bg-zinc-900/40 dark:bg-bg-secondary/75 backdrop-blur-sm dark:backdrop-blur-sm rounded-2xl shadow-lg flex flex-col justify-between p-8">
 
                     <!-- Header -->
-                    <div class="mb-5 sm:mb-11 text-center">
-                        <div class="flex justify-center items-center h-[102px] mb-5 sm:mb-11">
+                    <div class="text-center mb-4">
+                        <div class="flex justify-center items-center h-[102px]">
                             <img src="{{ asset('assets/images/background/login-logo.png') }}" alt=""
                                 class="max-w-full max-h-full object-contain">
                         </div>
                         <h2 class="text-4xl font-medium p-4 text-text-white">{{ __('Confirm your account') }}</h2>
-                        <p class="text-text-whitelg:text-xl text-sm">
+                        <p class="text-text-white lg:text-xl text-sm mt-2">
                             {{ __('We have sent a code in an Email message to ex***@gmail.com To confirm your account, please enter the code.') }}
                         </p>
                     </div>
-                    <div class="space-y-6">
-
-                        <div class="mb-4 sm:mb-7 px-2 sm:px-7">
+                    <div class="space-y-6 mb-4">
+                        <!-- Code input -->
+                        <div class="px-2 sm:px-7">
                             <label
                                 class="block text-lg sm:text-2xl font-medium mb-1 sm:mb-4 text-white">{{ __('Code') }}</label>
                             <x-ui.input type="text" placeholder="Enter your code" wire:model="form.code"
@@ -90,7 +90,7 @@
                             <x-ui.input-error :messages="$errors->get('form.code')" />
                         </div>
                         <!-- Submit button -->
-                        <div class=" flex justify-center px-2 sm:px-6 mt-11">
+                        <div class=" flex justify-center px-2 sm:px-6">
                             <x-ui.button type="submit" class="w-auto py-2! text-white text-base! font-semibold!">
                                 {{ __('Verify') }}
                             </x-ui.button>

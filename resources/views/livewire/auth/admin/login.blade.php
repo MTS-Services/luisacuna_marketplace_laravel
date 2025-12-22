@@ -91,11 +91,11 @@
     <div class="min-h-[100vh] flex items-center justify-center text-white px-4  sm:px-6 lg:px-8 ">
         <form method="POST" wire:submit.prevent="login" class="w-full max-w-md sm:max-w-lg md:max-w-xl">
             <div
-                class="bg-zinc-900/40 dark:bg-bg-secondary/75 backdrop-blur-sm dark:backdrop-blur-sm rounded-2xl p-8 sm:p-20 my-20 shadow-lg flex flex-col justify-between min-h-[75vh]">
+                class="bg-zinc-900/40 dark:bg-bg-secondary/75 backdrop-blur-sm dark:backdrop-blur-sm rounded-2xl p-8 shadow-lg flex flex-col justify-between ">
 
                 <!-- Header -->
-                <div class="mb-5 sm:mb-11 text-center">
-                    <div class="flex justify-center items-center h-[102px] mb-5 sm:mb-11">
+                <div class="mb-2 text-center">
+                    <div class="flex justify-center items-center h-[102px] mb-5">
                         <img src="{{ asset('assets/images/background/login-logo.png') }}" alt=""
                             class="max-w-full max-h-full object-contain">
                     </div>
@@ -108,7 +108,7 @@
 
                 <!-- Email -->
                 <div class="space-y-6">
-                    <div class="mb-4 sm:mb-7 px-2 sm:px-7">
+                    <div class="mb-4 px-2 sm:px-7">
                         <label
                             class="block text-lg sm:text-2xl font-medium mb-1 sm:mb-4 text-white">{{ __('Email') }}</label>
                         <x-ui.input type="email" placeholder="example@gmail.com" wire:model="email"
@@ -123,7 +123,7 @@
                     @enderror
 
                     <!-- Password -->
-                    <div class="mb-4 sm:mb-7 px-2 sm:px-6">
+                    <div class="mb-4 px-2 sm:px-6">
                         <x-ui.label
                             class="block text-lg sm:text-2xl font-medium mb-1 sm:mb-4 text-white">{{ __('Password') }}</x-ui.label>
                         <x-ui.input type="password" id="password" placeholder="Aex@8465" wire:model="password"
@@ -135,7 +135,7 @@
 
 
                 @if (Route::has('password.request'))
-                    <div class=" text-right px-2 sm:px-6 mb-5 sm:mb-12">
+                    <div class=" text-right px-2 sm:px-6 mb-5">
                         <a href="{{ route('admin.password.request') }}" wire:navigate
                             class="text-md text-pink-500 hover:underline">
                             {{ __('Forgot password?') }}
