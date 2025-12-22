@@ -1,7 +1,6 @@
 <main class="overflow-x-hidden  bg-page ">
 
     <!-- Hero Section -->
-
     <div class="swiper swiper-hero">
         <div class="swiper-wrapper">
             @forelse ($heros as $key=> $hero)
