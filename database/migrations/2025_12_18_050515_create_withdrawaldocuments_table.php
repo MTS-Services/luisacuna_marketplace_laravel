@@ -25,9 +25,9 @@ return new class extends Migration
             $table->string('mime_type', 100);
             $table->boolean('is_verified')->default(false);
             $table->timestamp('verified_at')->nullable();
-            $table->timestamp('created_at')->useCurrent();
+            // $table->timestamp('created_at')->useCurrent();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('withdrawal_request_id')->references('id')->on('withdrawal_requests')->onDelete('cascade');
             $table->foreign('verified_by')->references('id')->on('users')->onDelete('cascade');
 

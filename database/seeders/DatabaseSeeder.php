@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
 
             ApplicationSettingSeeder::class,
             PaymentGatewaySeeder::class,
-            WithdrawalGatewaySeeder::class,
+            // WithdrawalGatewaySeeder::class,
 
             RoleSeeder::class,
             PermissionSeeder::class,
