@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Backend\Admin\WithdrawalManagement\WithdrawalMethodController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Admin\ProductManagement\TopUpsController;
 use App\Http\Controllers\Backend\Admin\AuditingController;
@@ -107,6 +108,14 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
+        });
+    });
+    route::group(['prefix' => 'withdrawal-management', 'as' => 'wm.'], function () {
+        Route::controller(WithdrawalMethodController::class)->name('method.')->prefix('method')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+
         });
     });
 

@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\ActiveInactiveEnum;
+use App\Enums\WithdrawalFeeType;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\Builder;
 
 class WithdrawalMethod extends AuditBaseModel implements Auditable
 {
@@ -43,7 +46,8 @@ class WithdrawalMethod extends AuditBaseModel implements Auditable
     ];
 
     protected $casts = [
-        //
+        'status' => ActiveInactiveEnum::class,
+        'fee_type' => WithdrawalFeeType::class,
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -56,6 +60,19 @@ class WithdrawalMethod extends AuditBaseModel implements Auditable
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
+     public function scopeFilter(Builder $query, array $filters): Builder
+    {
+        return $query
+            ->when($filters['status'] ?? null, fn ($q, $status) =>
+                $q->where('status', $status)
+            )
+            ->when($filters['fee_type'] ?? null, fn ($q, $feeType) =>
+                $q->where('fee_type', $feeType)
+            )
+            ->when($filters['name'] ?? null, fn ($q, $name) =>
+                $q->where('name', 'like', "%{$name}%")
+            );
+    }
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -64,5 +81,5 @@ class WithdrawalMethod extends AuditBaseModel implements Auditable
         ]);
     }
 
-
+    
 }
