@@ -167,7 +167,7 @@ class Payment extends AuditBaseModel implements Auditable
             'user_id' => $this->user_id,
             'order_id' => $this->order_id,
             'type' => \App\Enums\TransactionType::PAYMENT,
-            'status' => \App\Enums\TransactionStatus::COMPLETED,
+            'status' => \App\Enums\TransactionStatus::PAID,
             'amount' => $this->amount,
             'currency' => $this->currency,
             'payment_gateway' => $this->payment_gateway,

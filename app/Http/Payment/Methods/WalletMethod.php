@@ -105,7 +105,7 @@ class WalletMethod extends PaymentMethod
                     'transaction_id' => generate_transaction_id_hybrid(),
                     'user_id' => $wallet->user_id,
                     'type' => TransactionType::WALLET->value,
-                    'status' => TransactionStatus::COMPLETED->value,
+                    'status' => TransactionStatus::PAID->value,
                     'calculation_type' => CalculationType::CREDIT->value,
                     'amount' => $order->grand_total,
                     'currency' => $wallet->currency_code,
@@ -130,7 +130,7 @@ class WalletMethod extends PaymentMethod
 
                 // 6. Mark transaction as completed
                 $paymentTransaction->update([
-                    'status' => TransactionStatus::COMPLETED->value,
+                    'status' => TransactionStatus::PAID->value,
                     'gateway_transaction_id' => $paymentTransaction->transaction_id,
                     'processed_at' => now(),
                 ]);

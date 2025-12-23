@@ -111,7 +111,7 @@ class PaymentObserver
                 'user_id' => $payment->user_id,
                 'order_id' => $payment->order_id,
                 'type' => TransactionType::PAYMENT->value,
-                'status' => TransactionStatus::COMPLETED->value,
+                'status' => TransactionStatus::PAID->value,
                 'amount' => $payment->amount,
                 'currency' => $payment->currency,
                 'payment_gateway' => $payment->payment_gateway,
