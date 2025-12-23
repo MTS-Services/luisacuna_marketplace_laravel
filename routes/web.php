@@ -6,6 +6,7 @@ use App\Http\Controllers\PaymentController;
 use App\Livewire\Test\Checkout;
 use App\Livewire\Test\Items;
 use App\Livewire\ToastDemo;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Redis;
 
@@ -47,7 +48,8 @@ Route::middleware(['auth:web'])->group(function () {
 
 // Webhook routes (no auth/CSRF middleware)
 Route::post('/webhook/stripe', [PaymentController::class, 'stripeWebhook'])
-    ->name('webhook.stripe');
+    ->name('webhook.stripe')
+    ->withoutMiddleware([VerifyCsrfToken::class]);
 // ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
 

@@ -14,14 +14,32 @@ class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
         AdminCreated::class => [
-           SendWelcomeEmail::class,
+            SendWelcomeEmail::class,
         ],
         AdminUpdated::class => [
             LogAdminActivity::class,
         ],
         AccountStatusChnage::class => [
             SendUserAccountStatusChangedEmail::class
-        ]
+        ],
+
+        \App\Events\PaymentCompleted::class => [
+            // \App\Listeners\SendPaymentNotification::class,
+            // \App\Listeners\UpdateUserStatistics::class,
+        ],
+
+        \App\Events\PaymentFailed::class => [
+            // \App\Listeners\SendPaymentFailedNotification::class,
+        ],
+
+        // Order Events
+        \App\Events\OrderCompleted::class => [
+            // \App\Listeners\SendOrderCompletedNotification::class,
+        ],
+
+        \App\Events\OrderPartiallyPaid::class => [
+            // Add listeners if needed
+        ],
 
     ];
 

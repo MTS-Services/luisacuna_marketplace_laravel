@@ -113,24 +113,12 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
 
     Route::get('/checkout/{slug}/{token}', Checkout::class)->name('checkout');
 
-    Route::controller(PaymentController::class)->middleware('paymentSecurity')->name('payment.')->prefix('payment')->group(function () {
-        // Initialize payment (create payment intent)
-        Route::post('/initialize', 'initializePayment')
-            ->name('initialize');
-
-        // Confirm payment (after frontend processing)
-        Route::post('/confirm', 'confirmPayment')
-            ->name('confirm');
-
-        // Success and failure pages
-        Route::get('/success', 'paymentSuccess')
-            ->name('success');
-
-        Route::get('/failed', 'paymentFailed')
-            ->name('failed');
-
-        // Get gateway configuration
-        Route::get('/gateway/{slug}', 'getGatewayConfig')
-            ->name('gateway.config');
-    });
+    Route::controller(PaymentController::class)
+        ->name('payment.')
+        ->prefix('payment')
+        ->group(function () {
+            Route::get('/success', 'paymentSuccess')->name('success');
+            Route::get('/failed', 'paymentFailed')->name('failed');
+            Route::get('/gateway/{slug}', 'getGatewayConfig')->name('gateway.config');
+        });
 });

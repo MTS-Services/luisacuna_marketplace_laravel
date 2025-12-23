@@ -4,6 +4,8 @@ namespace App\Http\Payment\Methods;
 
 use App\Enums\OrderStatus;
 use App\Enums\PaymentStatus;
+use App\Enums\TransactionStatus;
+use App\Enums\TransactionType;
 use App\Enums\WalletTransactionType;
 use App\Enums\CalculationType;
 use App\Http\Payment\PaymentMethod;
@@ -56,10 +58,12 @@ class WalletMethod extends PaymentMethod
                 ];
             }
 
+            $order->load('user');
+
             DB::beginTransaction();
 
             try {
-                // Create payment record
+                // 1. Create payment record (PENDING initially)
                 $payment = Payment::create([
                     'payment_id' => generate_payment_id(),
                     'user_id' => $order->user_id,
@@ -70,24 +74,39 @@ class WalletMethod extends PaymentMethod
                     'currency' => $wallet->currency_code,
                     'status' => PaymentStatus::PENDING->value,
                     'order_id' => $order->id,
+                    'creater_id' => $order->user_id,
+                    'creater_type' => get_class($order->user),
                 ]);
 
-                // Create transaction record
-                $transaction = Transaction::create([
+                // 2. Create main transaction record
+                $paymentTransaction = Transaction::create([
+                    'transaction_id' => generate_transaction_id_hybrid(),
+                    'user_id' => $order->user_id,
+                    'order_id' => $order->id,
+                    'type' => TransactionType::PAYMENT->value,
+                    'status' => TransactionStatus::PENDING->value,
+                    'amount' => $order->grand_total,
+                    'currency' => $wallet->currency_code,
+                    'payment_gateway' => $this->id,
                     'source_id' => $payment->id,
                     'source_type' => Payment::class,
+                    'net_amount' => $order->grand_total,
+                    'metadata' => [
+                        'payment_id' => $payment->payment_id,
+                        'wallet_payment' => true,
+                    ],
                 ]);
 
-                // Calculate new balance
+                // 3. Calculate new balance
                 $balanceBefore = $wallet->balance;
                 $balanceAfter = $balanceBefore - $order->grand_total;
 
-                // Create wallet transaction
+                // 4. Create wallet transaction
                 WalletTransaction::create([
                     'wallet_id' => $wallet->id,
-                    'transaction_id' => $transaction->id,
+                    'transaction_id' => $paymentTransaction->id,
                     'type' => WalletTransactionType::PAYMENT->value,
-                    'calculation_type' => CalculationType::DEBIT->value,
+                    'calculation_type' => CalculationType::CREDIT->value,
                     'amount' => $order->grand_total,
                     'balance_before' => $balanceBefore,
                     'balance_after' => $balanceAfter,
@@ -97,26 +116,35 @@ class WalletMethod extends PaymentMethod
                     'source_type' => Order::class,
                 ]);
 
-                // Update wallet balance
+                // Wallet Transaction to payout the order amount form wallet same as wallet debit transaction
+
+                // 5. Update wallet balance
                 $wallet->update([
                     'balance' => $balanceAfter,
                     'total_withdrawals' => $wallet->total_withdrawals + $order->grand_total,
                     'last_withdrawal_at' => now(),
                 ]);
 
-                // Update payment status
+                // 6. Mark transaction as completed
+                $paymentTransaction->update([
+                    'status' => TransactionStatus::COMPLETED->value,
+                    'gateway_transaction_id' => $paymentTransaction->transaction_id,
+                    'processed_at' => now(),
+                ]);
+
+                // 7. Mark payment as completed (this triggers PaymentObserver)
                 $payment->update([
                     'status' => PaymentStatus::COMPLETED->value,
-                    'transaction_id' => $transaction->id,
+                    'transaction_id' => $paymentTransaction->transaction_id,
                     'paid_at' => now(),
                     'metadata' => [
-                        'wallet_transaction_id' => $transaction->id,
+                        'wallet_transaction_id' => $paymentTransaction->id,
                         'balance_before' => $balanceBefore,
                         'balance_after' => $balanceAfter,
                     ],
                 ]);
 
-                // Update order status
+                // 8. Update order status (handled by PaymentObserver, but we do it here for immediate response)
                 $order->update([
                     'status' => OrderStatus::PAID->value,
                     'payment_method' => $this->name,
@@ -128,6 +156,7 @@ class WalletMethod extends PaymentMethod
                 Log::info('Wallet payment processed successfully', [
                     'order_id' => $order->order_id,
                     'payment_id' => $payment->payment_id,
+                    'transaction_id' => $paymentTransaction->transaction_id,
                     'amount' => $order->grand_total,
                     'balance_after' => $balanceAfter,
                 ]);
@@ -136,17 +165,16 @@ class WalletMethod extends PaymentMethod
                     'success' => true,
                     'message' => 'Payment successful! Amount deducted from your wallet.',
                     'payment_id' => $payment->payment_id,
+                    'transaction_id' => $paymentTransaction->transaction_id,
                     'order_id' => $order->order_id,
                     'amount_paid' => $order->grand_total,
                     'new_balance' => $balanceAfter,
                     'redirect_url' => route('user.payment.success', ['order_id' => $order->order_id]),
                 ];
-
             } catch (Exception $e) {
                 DB::rollBack();
                 throw $e;
             }
-
         } catch (Exception $e) {
             Log::error('Wallet payment failed', [
                 'order_id' => $order->order_id,
