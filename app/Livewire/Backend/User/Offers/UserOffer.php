@@ -43,13 +43,18 @@ class UserOffer extends Component
         $columns = [
             [
                 'key' => 'game',
-                'label' => 'Game',
-                'sortable' => false,
-                'format' => fn($item) =>
-                '<div class="flex items-center gap-3">
+                'label' =>  $this->categorySlug == 'top-up' ? 'Service' : 'Game',
+                'sortable' =>  $this->categorySlug == 'top-up' ? true : false,
+                'format' => function ($item)   {
+              if($this->categorySlug != 'top-up') {
+              return   '<div class="flex items-center gap-3">
                     <img src="' . ($item->games->logo) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item->games->name ?? 'Game') . '">
                     <span class="font-semibold text-text-white">' . ($item->games->name ?? '-') . '</span>
-                </div>'
+                </div>';
+              }else{
+              return ' <span class="font-semibold text-text-white">' . ($item->games->name ?? '-') . '</span>';
+              }
+                }
             ],
 
             [
