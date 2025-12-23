@@ -101,22 +101,25 @@ class WalletMethod extends PaymentMethod
                 $balanceBefore = $wallet->balance;
                 $balanceAfter = $balanceBefore - $order->grand_total;
 
-                // 4. Create wallet transaction
-                WalletTransaction::create([
-                    'wallet_id' => $wallet->id,
-                    'transaction_id' => $paymentTransaction->id,
-                    'type' => WalletTransactionType::PAYMENT->value,
+                Transaction::create([
+                    'transaction_id' => generate_transaction_id_hybrid(),
+                    'user_id' => $wallet->user_id,
+                    'type' => TransactionType::WALLET->value,
+                    'status' => TransactionStatus::COMPLETED->value,
                     'calculation_type' => CalculationType::CREDIT->value,
                     'amount' => $order->grand_total,
-                    'balance_before' => $balanceBefore,
-                    'balance_after' => $balanceAfter,
-                    'currency_code' => $wallet->currency_code,
-                    'notes' => 'Payment for Order #' . $order->order_id,
-                    'source_id' => $order->id,
-                    'source_type' => Order::class,
+                    'currency' => $wallet->currency_code,
+                    'payment_gateway' => $this->id,
+                    'source_id' => $wallet->id,
+                    'source_type' => Wallet::class,
+                    'fee_amount' => 0,
+                    'net_amount' => $order->grand_total,
+                    'metadata' => [
+                        'transaction_type' => TransactionType::WALLET->value,
+                        'wallet_owner_id' => $wallet->user_id,
+                    ],
+                    'notes' => 'Wallet credit of ' . number_format($order->grand_total, 2) . ' ' . $wallet->currency_code . ' for making payment for Order #' . $order->order_id,
                 ]);
-
-                // Wallet Transaction to payout the order amount form wallet same as wallet debit transaction
 
                 // 5. Update wallet balance
                 $wallet->update([

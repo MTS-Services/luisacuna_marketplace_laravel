@@ -89,12 +89,6 @@ class Transaction extends BaseModel
     {
         return $this->morphTo();
     }
-
-    public function walletTransaction(): HasOne
-    {
-        return $this->hasOne(WalletTransaction::class, 'transaction_id');
-    }
-
     /* SCOPES */
 
     public function scopeCompleted($query)
