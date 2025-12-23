@@ -4,10 +4,14 @@ namespace App\Http\Payment\Methods;
 
 use App\Enums\OrderStatus;
 use App\Enums\PaymentStatus;
+use App\Enums\TransactionStatus;
+use App\Enums\TransactionType;
 use App\Http\Payment\PaymentMethod;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Stripe\Stripe;
 use Stripe\Checkout\Session as StripeSession;
 use Stripe\PaymentIntent;
@@ -25,13 +29,16 @@ class StripeMethod extends PaymentMethod
         Stripe::setApiKey(config('services.stripe.secret'));
     }
 
-    /**
-     * Start payment - Create Stripe Checkout Session
-     */
     public function startPayment(Order $order, array $paymentData = []): array
     {
         try {
-            // Create or get existing payment record
+            // Eager load to prevent N+1
+            $order->load(['user', 'source.user']);
+
+            DB::beginTransaction();
+
+            $order->load('user');
+
             $payment = Payment::firstOrCreate(
                 [
                     'order_id' => $order->id,
@@ -40,16 +47,17 @@ class StripeMethod extends PaymentMethod
                 [
                     'payment_id' => generate_payment_id(),
                     'user_id' => $order->user_id,
-                    'name' => $order->user->full_name ?? null,
+                    'name' => $order?->user?->full_name ?? null,
                     'email_address' => $order->user->email ?? null,
                     'payment_gateway' => $this->id,
                     'amount' => $order->grand_total,
                     'currency' => $order->currency ?? 'USD',
                     'status' => PaymentStatus::PENDING->value,
+                    'creater_id' => $order->user_id,
+                    'creater_type' => get_class($order->user),
                 ]
             );
 
-            // Create Stripe Checkout Session
             $session = StripeSession::create([
                 'payment_method_types' => ['card'],
                 'line_items' => [
@@ -62,7 +70,7 @@ class StripeMethod extends PaymentMethod
                             ],
                             'unit_amount' => $this->convertToStripeAmount($order->grand_total, $payment->currency),
                         ],
-                        'quantity' => $order->quantity ?? 1,
+                        'quantity' => 1,
                     ],
                 ],
                 'mode' => 'payment',
@@ -72,12 +80,10 @@ class StripeMethod extends PaymentMethod
                     'order_id' => $order->order_id,
                     'payment_id' => $payment->payment_id,
                     'user_id' => $order->user_id,
-                    'quantity' => $order->quantity ?? 1,
                 ],
                 'customer_email' => $order->user->email ?? null,
             ]);
 
-            // Update payment with session ID
             $payment->update([
                 'payment_intent_id' => $session->id,
                 'metadata' => array_merge($payment->metadata ?? [], [
@@ -85,6 +91,9 @@ class StripeMethod extends PaymentMethod
                     'checkout_url' => $session->url,
                 ]),
             ]);
+
+            DB::commit();
+
 
             Log::info('Stripe Checkout Session created', [
                 'order_id' => $order->order_id,
@@ -113,9 +122,6 @@ class StripeMethod extends PaymentMethod
         }
     }
 
-    /**
-     * Confirm payment after Stripe Checkout
-     */
     public function confirmPayment(string $sessionId, ?string $paymentMethodId = null): array
     {
         try {
@@ -125,8 +131,7 @@ class StripeMethod extends PaymentMethod
                 throw new Exception('Stripe session not found');
             }
 
-            // Find payment by session ID
-            $payment = Payment::where('payment_intent_id', $sessionId)->first();
+            $payment = Payment::with(['order.user', 'user'])->where('payment_intent_id', $sessionId)->first();
 
             if (!$payment) {
                 throw new Exception('Payment record not found');
@@ -135,42 +140,74 @@ class StripeMethod extends PaymentMethod
             $order = $payment->order;
 
             if ($session->payment_status === 'paid') {
-                // Retrieve PaymentIntent for additional details
-                $paymentIntent = PaymentIntent::retrieve($session->payment_intent);
+                DB::beginTransaction();
 
-                // Update payment record
-                $payment->update([
-                    'status' => PaymentStatus::COMPLETED->value,
-                    'transaction_id' => $session->payment_intent,
-                    'payment_method_id' => $paymentIntent->payment_method ?? null,
-                    'card_brand' => $paymentIntent->charges->data[0]->payment_method_details->card->brand ?? null,
-                    'card_last4' => $paymentIntent->charges->data[0]->payment_method_details->card->last4 ?? null,
-                    'paid_at' => now(),
-                    'metadata' => array_merge($payment->metadata ?? [], [
-                        'payment_intent_id' => $session->payment_intent,
-                        'stripe_receipt_url' => $paymentIntent->charges->data[0]->receipt_url ?? null,
-                    ]),
-                ]);
+                try {
+                    $paymentIntent = PaymentIntent::retrieve($session->payment_intent);
 
-                // Update order status
-                $order->update([
-                    'status' => OrderStatus::PAID->value,
-                    'payment_method' => $this->name,
-                    'completed_at' => now(),
-                ]);
+                    // CRITICAL FIX: Create transaction record for Stripe payment
+                    $transaction = Transaction::create([
+                        'transaction_id' => generate_transaction_id_hybrid(),
+                        'user_id' => $payment->user_id,
+                        'order_id' => $order->id,
+                        'type' => TransactionType::PAYMENT->value,
+                        'status' => TransactionStatus::COMPLETED->value,
+                        'amount' => $payment->amount,
+                        'currency' => $payment->currency,
+                        'payment_gateway' => $this->id,
+                        'gateway_transaction_id' => $session->payment_intent,
+                        'source_id' => $payment->id,
+                        'source_type' => Payment::class,
+                        'net_amount' => $payment->amount,
+                        'metadata' => [
+                            'stripe_session_id' => $sessionId,
+                            'payment_intent_id' => $session->payment_intent,
+                            'receipt_url' => $paymentIntent->charges->data[0]->receipt_url ?? null,
+                        ],
+                        'processed_at' => now(),
+                    ]);
 
-                Log::info('Payment confirmed successfully', [
-                    'order_id' => $order->order_id,
-                    'payment_id' => $payment->payment_id,
-                    'session_id' => $sessionId,
-                ]);
+                    // Update payment record
+                    $payment->update([
+                        'status' => PaymentStatus::COMPLETED->value,
+                        'transaction_id' => $session->payment_intent,
+                        'payment_method_id' => $paymentIntent->payment_method ?? null,
+                        'card_brand' => $paymentIntent->charges->data[0]->payment_method_details->card->brand ?? null,
+                        'card_last4' => $paymentIntent->charges->data[0]->payment_method_details->card->last4 ?? null,
+                        'paid_at' => now(),
+                        'metadata' => array_merge($payment->metadata ?? [], [
+                            'payment_intent_id' => $session->payment_intent,
+                            'stripe_receipt_url' => $paymentIntent->charges->data[0]->receipt_url ?? null,
+                            'transaction_db_id' => $transaction->id,
+                        ]),
+                    ]);
 
-                return [
-                    'success' => true,
-                    'message' => 'Payment successful!',
-                    'order_id' => $order->order_id,
-                    'payment' => $payment,
-                ];
+                    // CRITICAL FIX: Update order status
+                    $order->update([
+                        'status' => OrderStatus::PAID->value,
+                        'payment_method' => $this->name,
+                        'completed_at' => now(),
+                    ]);
+
+                    DB::commit();
+
+                    Log::info('Payment confirmed successfully', [
+                        'order_id' => $order->order_id,
+                        'payment_id' => $payment->payment_id,
+                        'transaction_id' => $transaction->transaction_id,
+                        'session_id' => $sessionId,
+                    ]);
+
+                    return [
+                        'success' => true,
+                        'message' => 'Payment successful!',
+                        'order_id' => $order->order_id,
+                        'payment' => $payment,
+                    ];
+                } catch (Exception $e) {
+                    DB::rollBack();
+                    throw $e;
+                }
             }
 
             return [
@@ -190,12 +227,8 @@ class StripeMethod extends PaymentMethod
         }
     }
 
-    /**
-     * Convert amount to Stripe format (cents)
-     */
     protected function convertToStripeAmount(float $amount, string $currency): int
     {
-        // Zero-decimal currencies (e.g., JPY, KRW)
         $zeroDecimalCurrencies = ['BIF', 'CLP', 'DJF', 'GNF', 'JPY', 'KMF', 'KRW', 'MGA', 'PYG', 'RWF', 'UGX', 'VND', 'VUV', 'XAF', 'XOF', 'XPF'];
 
         if (in_array(strtoupper($currency), $zeroDecimalCurrencies)) {
@@ -205,9 +238,6 @@ class StripeMethod extends PaymentMethod
         return (int) round($amount * 100);
     }
 
-    /**
-     * Handle Stripe webhook notifications
-     */
     public function handleWebhook(array $payload): void
     {
         $eventType = $payload['type'] ?? null;
@@ -236,9 +266,6 @@ class StripeMethod extends PaymentMethod
         }
     }
 
-    /**
-     * Handle checkout session completed
-     */
     protected function handleCheckoutCompleted(array $session): void
     {
         try {
@@ -249,7 +276,7 @@ class StripeMethod extends PaymentMethod
                 return;
             }
 
-            $order = Order::where('order_id', $orderId)->first();
+            $order = Order::with(['latestPayment'])->where('order_id', $orderId)->first();
 
             if (!$order) {
                 Log::warning('Order not found for webhook', ['order_id' => $orderId]);
@@ -259,20 +286,51 @@ class StripeMethod extends PaymentMethod
             $payment = $order->latestPayment;
 
             if ($payment && $session['payment_status'] === 'paid') {
-                $payment->update([
-                    'status' => PaymentStatus::COMPLETED->value,
-                    'paid_at' => now(),
-                ]);
+                DB::beginTransaction();
 
-                $order->update([
-                    'status' => OrderStatus::PAID->value,
-                    'completed_at' => now(),
-                ]);
+                try {
+                    // CRITICAL FIX: Create transaction if not exists
+                    if (!Transaction::where('gateway_transaction_id', $session['payment_intent'])->exists()) {
+                        Transaction::create([
+                            'transaction_id' => generate_transaction_id_hybrid(),
+                            'user_id' => $payment->user_id,
+                            'order_id' => $order->id,
+                            'type' => TransactionType::PAYMENT->value,
+                            'status' => TransactionStatus::COMPLETED->value,
+                            'amount' => $payment->amount,
+                            'currency' => $payment->currency,
+                            'payment_gateway' => $this->id,
+                            'gateway_transaction_id' => $session['payment_intent'],
+                            'source_id' => $payment->id,
+                            'source_type' => Payment::class,
+                            'net_amount' => $payment->amount,
+                            'processed_at' => now(),
+                        ]);
+                    }
 
-                Log::info('Checkout session completed webhook processed', [
-                    'order_id' => $orderId,
-                    'session_id' => $session['id'],
-                ]);
+                    $payment->update([
+                        'status' => PaymentStatus::COMPLETED->value,
+                        'transaction_id' => $session['payment_intent'],
+                        'paid_at' => now(),
+                    ]);
+
+                    // CRITICAL FIX: Update order status
+                    $order->update([
+                        'status' => OrderStatus::PAID->value,
+                        'payment_method' => $this->name,
+                        'completed_at' => now(),
+                    ]);
+
+                    DB::commit();
+
+                    Log::info('Checkout session completed webhook processed', [
+                        'order_id' => $orderId,
+                        'session_id' => $session['id'],
+                    ]);
+                } catch (Exception $e) {
+                    DB::rollBack();
+                    throw $e;
+                }
             }
         } catch (Exception $e) {
             Log::error('Error processing checkout completed webhook', [
@@ -282,28 +340,35 @@ class StripeMethod extends PaymentMethod
         }
     }
 
-    /**
-     * Handle successful payment webhook
-     */
     protected function handlePaymentSuccess(array $paymentIntent): void
     {
         try {
-            $payment = Payment::where('transaction_id', $paymentIntent['id'])->first();
+            $payment = Payment::with(['order'])->where('transaction_id', $paymentIntent['id'])->first();
 
             if ($payment) {
-                $payment->update([
-                    'status' => PaymentStatus::COMPLETED->value,
-                    'paid_at' => now(),
-                ]);
+                DB::beginTransaction();
 
-                $payment->order->update([
-                    'status' => OrderStatus::PAID->value,
-                    'completed_at' => now(),
-                ]);
+                try {
+                    $payment->update([
+                        'status' => PaymentStatus::COMPLETED->value,
+                        'paid_at' => now(),
+                    ]);
 
-                Log::info('Payment success webhook processed', [
-                    'payment_id' => $payment->payment_id,
-                ]);
+                    $payment->order->update([
+                        'status' => OrderStatus::PAID->value,
+                        'payment_method' => $this->name,
+                        'completed_at' => now(),
+                    ]);
+
+                    DB::commit();
+
+                    Log::info('Payment success webhook processed', [
+                        'payment_id' => $payment->payment_id,
+                    ]);
+                } catch (Exception $e) {
+                    DB::rollBack();
+                    throw $e;
+                }
             }
         } catch (Exception $e) {
             Log::error('Error processing payment success webhook', [
@@ -312,13 +377,10 @@ class StripeMethod extends PaymentMethod
         }
     }
 
-    /**
-     * Handle failed payment webhook
-     */
     protected function handlePaymentFailed(array $paymentIntent): void
     {
         try {
-            $payment = Payment::where('payment_intent_id', $paymentIntent['id'])->first();
+            $payment = Payment::with(['order'])->where('payment_intent_id', $paymentIntent['id'])->first();
 
             if ($payment) {
                 $payment->update([
@@ -341,13 +403,10 @@ class StripeMethod extends PaymentMethod
         }
     }
 
-    /**
-     * Handle canceled payment webhook
-     */
     protected function handlePaymentCanceled(array $paymentIntent): void
     {
         try {
-            $payment = Payment::where('payment_intent_id', $paymentIntent['id'])->first();
+            $payment = Payment::with(['order'])->where('payment_intent_id', $paymentIntent['id'])->first();
 
             if ($payment) {
                 $payment->update([

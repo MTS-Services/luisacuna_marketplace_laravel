@@ -7,7 +7,16 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use App\Services\DeepLTranslationService;
 use App\Services\EnvEditorService;
+use App\Services\PaymentService;
 use App\Services\SettingsService;
+use App\Models\Order;
+use App\Models\Payment;
+use App\Models\Transaction;
+use App\Observers\OrderObserver;
+use App\Observers\PaymentObserver;
+use App\Observers\TransactionObserver;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +41,26 @@ class AppServiceProvider extends ServiceProvider
                 $app->make(EnvEditorService::class)
             );
         });
+
+        $this->app->singleton(PaymentService::class);
+
+        // Register Model Observers
+        Order::observe(OrderObserver::class);
+        Payment::observe(PaymentObserver::class);
+        Transaction::observe(TransactionObserver::class);
+
+        // Enable query logging in development
+        if (config('app.debug')) {
+            DB::listen(function ($query) {
+                if ($query->time > 100) { // Log slow queries (>100ms)
+                    Log::warning('Slow query detected', [
+                        'sql' => $query->sql,
+                        'bindings' => $query->bindings,
+                        'time' => $query->time . 'ms',
+                    ]);
+                }
+            });
+        }
     }
 
     /**

@@ -10,14 +10,8 @@ use App\Models\PaymentGateway;
 
 class PaymentManager
 {
-    /**
-     * The loaded payment methods.
-     */
     protected Collection $paymentMethods;
 
-    /**
-     * Construct a new payment manager instance.
-     */
     public function __construct()
     {
         $this->paymentMethods = collect([
@@ -27,9 +21,6 @@ class PaymentManager
         ]);
     }
 
-    /**
-     * Get the payment methods.
-     */
     public function getPaymentMethods(): Collection
     {
         return $this->paymentMethods;
@@ -38,14 +29,12 @@ class PaymentManager
     public function getPaymentMethod(string $type, ?PaymentGateway $gateway = null): ?PaymentMethod
     {
         $class = $this->paymentMethods->get($type);
-
         return $class ? app($class, $gateway ? ['gateway' => $gateway] : []) : null;
     }
 
     public function getPaymentMethodOrFail(string $slug, ?PaymentGateway $gateway = null): PaymentMethod
     {
         abort_if(!$this->paymentMethods->has($slug), 404);
-
         return $this->getPaymentMethod($slug, $gateway);
     }
 
