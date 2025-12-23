@@ -6,6 +6,7 @@ use App\Http\Controllers\SellerVerificationController;
 use App\Http\Controllers\Backend\User\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\User\OrderManagement\OrderController;
 use App\Http\Controllers\Backend\User\OfferManagement\UserOfferController;
+use App\Http\Controllers\Backend\User\OfferManagement\BulkUploadController;
 use App\Http\Controllers\Backend\User\OrderManagement\OngoingOrderController;
 use App\Http\Controllers\Backend\User\OrderManagement\OrderDetailsController;
 use App\Livewire\Backend\User\Payments\Checkout;
@@ -43,6 +44,9 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
 
         Route::controller(UserOfferController::class)->name('user-offer.')->prefix('offer')->group(function () {
             Route::get('/{categorySlug}', 'category')->name('category');
+        });
+        Route::controller(BulkUploadController::class)->name('bulk-upload.')->prefix('bulk-upload')->group(function () {
+            Route::get('category', 'category')->name('category');
         });
 
 

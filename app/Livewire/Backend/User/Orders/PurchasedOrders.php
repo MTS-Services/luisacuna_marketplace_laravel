@@ -51,7 +51,7 @@ class PurchasedOrders extends Component
                         . 'Cheapest +75%  Discount' .
                         '</p>
                         <a
-                            href="/"
+                            href="' . route('user.OngoingOrder.details') . '"
                             class="text-bg-pink-500 text-xs"
                         >
                         View Details 

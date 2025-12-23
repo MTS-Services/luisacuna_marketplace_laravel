@@ -15,7 +15,7 @@
     <button
         wire:click="previousPage"
         @disabled($current <= 1)
-        class="px-3 md:px-4 py-2 text-text-white shadow-2xl rounded-lg
+        class="px-3 md:px-4 py-2 text-white shadow-2xl rounded-lg
                hover:bg-bg-primary/60 transition-colors
                disabled:opacity-50 disabled:cursor-not-allowed">
         {{ __('Previous') }}
@@ -28,7 +28,7 @@
             class="px-3 md:px-4 py-2 rounded-lg transition-colors
             {{ $i == $current
                 ? 'bg-zinc-500 text-white font-semibold'
-                : 'text-text-white hover:bg-bg-primary/60' }}">
+                : 'text-white hover:bg-bg-primary/60' }}">
             {{ $i }}
         </button>
     @endfor
@@ -45,7 +45,7 @@
             class="px-3 md:px-4 py-2 rounded-lg transition-colors
             {{ $i == $current
                 ? 'bg-zinc-500 text-white font-semibold'
-                : 'text-text-white hover:bg-bg-primary/60' }}">
+                : 'text-white hover:bg-bg-primary/60' }}">
             {{ $i }}
         </button>
     @endfor
@@ -62,7 +62,7 @@
             class="px-3 md:px-4 py-2 rounded-lg transition-colors
             {{ $i == $current
                 ? 'bg-zinc-500 text-white font-semibold'
-                : 'text-text-white hover:bg-bg-primary/60' }}">
+                : 'text-white hover:bg-bg-primary/60' }}">
             {{ $i }}
         </button>
     @endfor
@@ -71,7 +71,7 @@
     <button
         wire:click="nextPage"
         @disabled($current >= $last)
-        class="px-3 md:px-4 py-2 text-text-white shadow-2xl rounded-lg
+        class="px-3 md:px-4 py-2 text-white shadow-2xl rounded-lg
                hover:bg-bg-primary/60 transition-colors
                disabled:opacity-50 disabled:cursor-not-allowed">
         {{ __('Next') }}

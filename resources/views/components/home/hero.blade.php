@@ -2,9 +2,16 @@
     'data' => null,
 ])
 
-<div class=" relative hidden md:flex overflow-hidden  bg-center h-[532px] bg-no-repeat bg-[length:100%_100%]  justify-center items-center"
+<div class="relative hidden md:flex overflow-hidden  bg-center h-[532px] bg-no-repeat bg-[length:100%_100%]  justify-center items-center"
     style="background-image: url('{{ storage_url($data->image) }}')">
-    <div class="bg-[#0f002978] py-30 bg-opacity-0 relative z-10 w-full">
+    <div
+    class="
+        py-30 relative z-10 w-full
+        bg-[#ffffff21] bg-opacity-70
+        dark:bg-[#0f002978] dark:bg-opacity-80
+    "
+>
+
         <div class="container py-30 relative z-10 align-left  w-100vw">
 
             <h2 class="text-5xl md:text-6xl font-semibold mb-6 text-text-white align-left">{{ $data->title }}</h2>
