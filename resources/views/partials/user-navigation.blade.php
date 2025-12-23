@@ -170,7 +170,7 @@
                                 @endforeach
                             </div>
                         @else
-                            
+
                             <h3
                                 class="text-xs font-semibold text-text-white/70 uppercase tracking-wider mb-2 pt-1 px-2.5">
                                 {{ __('SEARCH RESULTS') }}
