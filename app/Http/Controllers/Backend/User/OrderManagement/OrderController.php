@@ -7,15 +7,29 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    protected $masterView='backend.user.pages.orders.order';
+    protected $userMasterView='backend.user.pages.orders.order';
+    protected $frontendMasterView='backend.user.pages.orders.order-details';
 
     public function purchasedOrders()
     {
-        return view($this->masterView);
+        return view($this->userMasterView);
     }
 
     public function soldOrders()
     {
-        return view($this->masterView);
+        return view($this->userMasterView);
+    }
+
+    public function cancel($orderId)
+    {
+        return view($this->frontendMasterView, compact('orderId'));
+    }
+    public function complete($orderId)
+    {
+        return view($this->frontendMasterView, compact('orderId'));
+    }
+    public function detail($orderId)
+    {
+        return view($this->frontendMasterView, compact('orderId'));
     }
 }

@@ -77,7 +77,7 @@
 
                     <!-- Button -->
                     <div class="flex w-full md:w-auto mt-10!">
-                        <x-ui.button href="{{ route('user.OngoingOrder.details') }}" class="w-fit! py-3! px-6!">
+                        <x-ui.button href="" class="w-fit! py-3! px-6!">
                             {{ __('Buy again') }}
                             <x-phosphor-arrow-right-light
                                 class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" /></x-ui.button>
@@ -138,7 +138,7 @@
                         </div>
                     </div>
                     <div class="flex w-full md:w-auto justify-center items-center mt-10!">
-                        <a href="{{ route('user.order-description') }}">
+                        <a href="">
                             <x-ui.button class="w-fit! py-3! px-6!">
                                 {{ __('View full description') }}
                                 <x-phosphor-arrow-right-light
