@@ -77,9 +77,9 @@ class PaymentService
                 'paid_at' => now(),
             ], $additionalData));
 
-            if ($transaction->status !== TransactionStatus::COMPLETED) {
+            if ($transaction->status !== TransactionStatus::PAID) {
                 $transaction->update([
-                    'status' => TransactionStatus::COMPLETED->value,
+                    'status' => TransactionStatus::PAID->value,
                     'processed_at' => now(),
                 ]);
             }
@@ -262,7 +262,7 @@ class PaymentService
                 'user_id' => $payment->user_id,
                 'order_id' => $payment->order_id,
                 'type' => TransactionType::REFUND->value,
-                'status' => TransactionStatus::COMPLETED->value,
+                'status' => TransactionStatus::PAID->value,
                 'amount' => $refundAmount,
                 'currency' => $payment->currency,
                 'payment_gateway' => $payment->payment_gateway,

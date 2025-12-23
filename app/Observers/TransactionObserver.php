@@ -23,7 +23,7 @@ class TransactionObserver
         // If transaction is for wallet payment, update wallet statistics
         if (
             $transaction->payment_gateway === 'wallet' &&
-            $transaction->status === TransactionStatus::COMPLETED
+            $transaction->status === TransactionStatus::PAID
         ) {
             $this->updateWalletStats($transaction);
         }
@@ -37,7 +37,7 @@ class TransactionObserver
         // Check if status changed to COMPLETED
         if (
             $transaction->wasChanged('status') &&
-            $transaction->status === TransactionStatus::COMPLETED
+            $transaction->status === TransactionStatus::PAID
         ) {
 
             Log::info('Transaction completed', [

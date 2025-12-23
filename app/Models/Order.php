@@ -90,7 +90,7 @@ class Order extends AuditBaseModel implements Auditable
     public function completedTransactions(): HasMany
     {
         return $this->hasMany(Transaction::class, 'order_id')
-            ->where('status', \App\Enums\TransactionStatus::COMPLETED)
+            ->where('status', \App\Enums\TransactionStatus::PAID)
             ->where('type', \App\Enums\TransactionType::PAYMENT);
     }
 

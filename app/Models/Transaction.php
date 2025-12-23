@@ -93,7 +93,7 @@ class Transaction extends BaseModel
 
     public function scopeCompleted($query)
     {
-        return $query->where('status', TransactionStatus::COMPLETED);
+        return $query->where('status', TransactionStatus::PAID);
     }
 
     public function scopePending($query)
@@ -162,7 +162,7 @@ class Transaction extends BaseModel
 
     public function isCompleted(): bool
     {
-        return $this->status === TransactionStatus::COMPLETED;
+        return $this->status === TransactionStatus::PAID;
     }
 
     public function isPending(): bool
@@ -178,7 +178,7 @@ class Transaction extends BaseModel
     public function markAsCompleted(?string $gatewayTransactionId = null): bool
     {
         return $this->update([
-            'status' => TransactionStatus::COMPLETED,
+            'status' => TransactionStatus::PAID,
             'gateway_transaction_id' => $gatewayTransactionId ?? $this->gateway_transaction_id,
             'processed_at' => now(),
         ]);

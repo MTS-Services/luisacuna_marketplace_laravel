@@ -6,7 +6,7 @@ enum TransactionStatus: string
 {
     case PENDING = 'pending';
     case PROCESSING = 'processing';
-    case COMPLETED = 'completed';
+    case PAID = 'Paid';
     case FAILED = 'failed';
     case CANCELLED = 'cancelled';
     case REVERSED = 'reversed';
@@ -16,7 +16,7 @@ enum TransactionStatus: string
         return match ($this) {
             self::PENDING => 'Pending',
             self::PROCESSING => 'Processing',
-            self::COMPLETED => 'Completed',
+            self::PAID => 'Paid',
             self::FAILED => 'Failed',
             self::CANCELLED => 'Cancelled',
             self::REVERSED => 'Reversed',
@@ -28,7 +28,7 @@ enum TransactionStatus: string
         return match ($this) {
             self::PENDING => 'badge-warning',
             self::PROCESSING => 'badge-info',
-            self::COMPLETED => 'badge-success',
+            self::PAID => 'badge-success',
             self::FAILED => 'badge-error',
             self::CANCELLED => 'badge-neutral',
             self::REVERSED => 'badge-secondary',
