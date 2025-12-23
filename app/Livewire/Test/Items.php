@@ -37,7 +37,7 @@ class Items extends Component
             'tax_amount' => 0,
             'grand_total' => $item->price,
         ]);
-        Session::driver('database')->put("checkout_{$token}", [
+        Session::driver('redis')->put("checkout_{$token}", [
             'order_id' => $order->id,
             'price_locked' => $item->price,
             'expires_at' => now()->addMinutes((int) env('ORDER_CHECKOUT_TIMEOUT_MINUTES', 10))->timestamp,

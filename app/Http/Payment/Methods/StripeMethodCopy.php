@@ -13,7 +13,7 @@ use Stripe\PaymentIntent;
 use Stripe\PaymentMethod as StripePaymentMethod;
 use Exception;
 
-class StripeMethod extends PaymentMethod
+class StripeMethodCopy extends PaymentMethod
 {
     /**
      * The payment method id name.
@@ -58,6 +58,7 @@ class StripeMethod extends PaymentMethod
                 'currency' => $currency,
                 'payment_method' => 'stripe',
             ]);
+            $order->load('user');
 
             // Create payment record
             $payment = Payment::create([
@@ -69,6 +70,8 @@ class StripeMethod extends PaymentMethod
                 'currency' => $currency,
                 'status' => PaymentStatus::PENDING,
                 'order_id' => $order->id,
+                'creater_id' => $order->user_id,
+                'creater_type' => get_class($order->user),
             ]);
 
             // Create payment intent (without payment method)

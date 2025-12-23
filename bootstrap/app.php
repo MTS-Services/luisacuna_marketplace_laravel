@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\AdminVerifyMiddleware;
+use App\Http\Middleware\PaymentSecurityMiddleware;
 use App\Http\Middleware\UserVerifyMiddleware;
 use App\Http\Middleware\SetLocaleMiddleware as MultiLangSet;
 use Illuminate\Foundation\Application;
@@ -28,6 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
+            'paymentSecurity' => PaymentSecurityMiddleware::class,
         ]);
          $middleware->web(MultiLangSet::class);
         $middleware->api(MultiLangSet::class);

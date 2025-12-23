@@ -62,7 +62,6 @@ return [
         'mode' => env('STRIPE_MODE', 'live'),
     ],
 
-    
     'crypto' => [
         'api_key' => env('COINBASE_API_KEY'),
         'webhook_secret' => env('COINBASE_WEBHOOK_SECRET'),
