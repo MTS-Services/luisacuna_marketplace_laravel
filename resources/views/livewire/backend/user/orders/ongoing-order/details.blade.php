@@ -264,7 +264,7 @@
                         </div>
                     </div>
                     <div class="flex w-full md:w-auto justify-center items-center mt-10!">
-                        <a href="{{ route('user.OngoingOrder.description') }}">
+                        <a href="">
                             <x-ui.button class="w-fit! py-3! px-6!">
                                 {{ __('View full description') }}
                                 <x-phosphor-arrow-right-light

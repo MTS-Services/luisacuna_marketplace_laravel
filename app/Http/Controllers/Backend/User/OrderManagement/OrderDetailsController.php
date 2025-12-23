@@ -11,7 +11,20 @@ class OrderDetailsController extends Controller
 {
     protected $masterView = 'backend.user.pages.orders.order-details';
 
-    public function orderDetails()
+    // public function orderDetails()
+    // {
+    //     return view($this->masterView);
+    // }
+    public function cancel()
+    {
+        return view($this->masterView);
+    }
+    public function complete()
+    {
+        return view($this->masterView);
+    }
+
+    public function detail()
     {
         return view($this->masterView);
     }
