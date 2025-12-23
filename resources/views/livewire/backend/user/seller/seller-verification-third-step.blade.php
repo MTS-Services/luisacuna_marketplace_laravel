@@ -48,7 +48,7 @@
                 </div>
             </div>
 
-            <div class="flex justify-center space-x-4 pt-10">
+            <div class="flex justify-center">
                 {{-- <a wire:click.prevent="previousStep" wire:navigate class="px-8 cursor-pointer py-2  hover:bg-zinc-50 rounded-lg">
                     BACK
                 </a>
@@ -60,13 +60,13 @@
                     NEXT
                 </button> --}}
                 <!-- Submit button -->
-                <div class=" flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
+                <div class=" flex justify-center px-2 sm:px-6 mt-5 sm:mt-10">
                     <x-ui.button type="submit" wire:click.prevent="previousStep" wire:navigate
                         class="w-auto py-2! text-white text-base! font-semibold!">
                         {{ __('Back') }}
                     </x-ui.button>
                 </div>
-                <div class="  flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
+                <div class="  flex justify-center px-2 sm:px-6 mt-5 sm:mt-10">
                     <x-ui.button type="submit" wire:click="nextStep" class="w-auto py-2!  text-base! font-semibold!">
                         {{ __('Next') }}
                     </x-ui.button>

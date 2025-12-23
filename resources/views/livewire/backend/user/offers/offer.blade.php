@@ -1,5 +1,5 @@
 <div class="bg-bg-primary">
-    <div class="container pb-75">
+    <div class="container pb-10 sm:pb-20">
         <livewire:frontend.partials.breadcrumb :gameSlug="'currency'" :categorySlug="'sell currency'" />
         <div class="w-full mx-auto p-4 sm:p-10 md:p-20 rounded-2xl ">
             {{-- Step 1: Category Selection --}}
@@ -75,8 +75,8 @@
                             {{ __('Choose Game') }}
                         </h2>
 
-                        <div class="mx-auto w-1/2">
-                            <x-ui.custom-select :wireModel="'gameId'" :dropDownClass="'border-0!'" class="rounded-md!">
+                        <div class="mx-auto w-full sm:w-1/2">
+                            <x-ui.custom-select :wireModel="'gameId'" :dropDownClass="'border-0!'" class="rounded-md! border-0!">
                                 <x-ui.custom-option :value="null" :label="__('Select a game')" />
                                 @foreach ($games as $item)
                                     <x-ui.custom-option :value="$item->id" :label="$item->name" />
@@ -125,7 +125,7 @@
                             <div class="">
                                 <p class="text-text-white text-base font-normal text-end mb-2">{{ __('0/200') }}</p>
                                 <x-ui.textarea wire:model="name" placeholder="Type here......"
-                                    class="w-full bg-bg-primary! border-zinc-700 placeholder:text-text-primary "
+                                    class="w-full bg-bg-primary! placeholder:text-text-primary border-0!"
                                     rows="5"></x-ui.textarea>
                                 <p class="text-text-white text-base sm:text-xl font-normal mt-5">
                                     {{ __('Provide a descriptive title for your product. Consider the keywords buyers might use to find it. Place the most searchable words at the beginning of your title. The title must not exceed 160 characters.') }}
@@ -144,7 +144,7 @@
                             <div class="">
                                 <p class="text-text-white text-base font-normal text-end mb-2">{{ __('0/500') }}</p>
                                 <x-ui.textarea wire:model="description" placeholder="Type here......"
-                                    class="w-full bg-bg-primary! border-zinc-700 placeholder:text-text-primary "
+                                    class="w-full bg-bg-primary! border-zinc-700 placeholder:text-text-primary border-0"
                                     rows="5"></x-ui.textarea>
                                 <p class="text-text-white text-base sm:text-xl font-normal mt-5">
                                     {{ __('The listing title and description must be accurate and as informative as possible (no random or lottery). Misleading description is a violation of our ') }}
@@ -172,7 +172,7 @@
                             </p>
                             <x-ui.input-error :messages="$errors->get('delivery_timeline')" /> --}}
                             <div class="">
-                                <x-ui.custom-select :wireModel="'delivery_timeline'" :dropDownClass="'border-0!'" class="rounded-md!">
+                                <x-ui.custom-select :wireModel="'delivery_timeline'" :dropDownClass="'border-0!'" class="rounded-md! border-0">
                                     <x-ui.custom-option :value="null" :label="__('Delivery Timeline')" />
 
                                     @foreach ($timelineOptions as $timelineOption)
@@ -221,20 +221,20 @@
                                 <div class="w-full">
                                     <x-ui.label for="price" :value="__('Price')" required />
                                     <x-ui.input id="price" type="text" wire:model="price" placeholder="Price"
-                                        class="mt-2 block w-full text-text-primary placeholder:text-text-primary border border-zinc-700  focus:ring-0 bg-bg-primary!" />
+                                        class="mt-2 border-zinc-700 text-text-primary placeholder:text-text-primary border-0! focus:ring-0 bg-bg-primary!" />
                                     <x-ui.input-error :messages="$errors->get('price')" />
                                 </div>
                                 <div>
                                     <x-ui.label for="quantity" :value="__('Stock Quantity')" required />
                                     <x-ui.input id="quantity" type="text"
-                                        class="mt-2 border-zinc-700 text-text-primary placeholder:text-text-primary border  focus:ring-0 bg-bg-primary!"
+                                        class="mt-2 border-zinc-700 text-text-primary placeholder:text-text-primary border-0! focus:ring-0 bg-bg-primary!"
                                         wire:model="quantity" placeholder="quantity" />
                                     <x-ui.input-error :messages="$errors->get('quantity')" />
 
                                 </div>
                                 <div>
                                     <x-ui.label for="platform" :value="__('Platform')" required class="mb-2" />
-                                    <x-ui.custom-select :wireModel="'platform_id'" :dropDownClass="'border-0!'" class="rounded-md!">
+                                    <x-ui.custom-select :wireModel="'platform_id'" :dropDownClass="'border-0!'" class="rounded-md! border-0!">
                                         <x-ui.custom-option :value="null" :label="__('Delivery Timeline')" />
                                         @foreach ($platforms as $platform)
                                             <x-ui.custom-option :value="$platform->id" :label="$platform->name" />
@@ -312,7 +312,7 @@
                                                 $wireModel = 'fields.' . $config->id . '.value';
                                             @endphp
 
-                                            <x-ui.custom-select :wireModel="$wireModel" class="rounded-md!"
+                                            <x-ui.custom-select :wireModel="$wireModel" class="rounded-md! border-0!"
                                                 mdWidth="md:w-full" rounded="rounded" mdLeft="md:left-0">
                                                 <x-ui.custom-option :value="null" :label="'Select ' . $config->field_name" />
                                                 @foreach ($options as $key => $option)
@@ -339,7 +339,7 @@
                                         class="{{ in_array($config->filter_type, ['textarea', 'filter_by_textarea']) ? 'col-span-2' : '' }}">
                                         <x-ui.label :for="'fields.{{ $config->id }}.value'" :value="$config->field_name" class="mb-2" />
                                         <x-ui.input id="name" type="number"
-                                            class="bg-bg-primary! text-text-primary! dark:text-text-primary! placeholder:text-text-primary! border border-zinc-700 focus:border-0! focus:ring-0! rounded-lg px-3 py-2"
+                                            class="bg-bg-primary! text-text-primary! dark:text-text-primary! placeholder:text-text-primary! border-0! border-zinc-700 focus:border-0! focus:ring-0! rounded-lg px-3 py-2"
                                             wire:model="fields.{{ $config->id }}.value"
                                             placeholder="{{ $config->field_name }}" />
                                     </div>
@@ -352,7 +352,7 @@
 
                                             <x-ui.input type="text" placeholder="{{ $config->field_name }}"
                                                 wire:model="fields.{{ $config->id }}.value"
-                                                class="border-zinc-700 pl-7 bg-bg-primary! "
+                                                class="mt-2 border-zinc-700 text-text-primary placeholder:text-text-primary border-0! focus:ring-0 bg-bg-primary!"
                                                 x-model="fields.{{ $config->id }}.value" />
 
                                             <x-ui.input-error :messages="$errors->get('fields.{{ $config->id }}.value')" class="mt-2" />
@@ -379,7 +379,7 @@
 
                     <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
                         <div class="mt-8">
-                            <h2 class="text-xl sm:text-3xl font-semibold text-text-white">{{ __('Quantity') }}</h2>
+                            <h2 class="text-xl sm:text-3xl font-semibold text-text-white">{{ __('Fee structure') }}</h2>
                             <div class="border-t border-zinc-500 pt-4 mt-4 flex items-center gap-3"></div>
                             <div class="">
                                 <p class="text-text-white text-base sm:text-xl font-normal mt-5">
