@@ -109,4 +109,20 @@ return [
         'table' => 'failed_jobs',
     ],
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Queue Priorities
+    |--------------------------------------------------------------------------
+    |
+    | Define queue priorities. Higher numbers = higher priority
+    |
+    */
+    'priorities' => [
+        'payments' => 10,
+        'broadcasts' => 8,
+        'default' => 5,
+        'notifications' => 3,
+        'low' => 1,
+    ],
 ];
