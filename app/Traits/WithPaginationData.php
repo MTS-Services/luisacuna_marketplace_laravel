@@ -4,6 +4,7 @@
 namespace App\Traits;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 
 trait WithPaginationData
@@ -11,7 +12,7 @@ trait WithPaginationData
     use  WithPagination;
     
     public $pagination = [];
-
+   #[Url()]
     protected $perPage = 8;
 
     protected  $queryString = 1;
