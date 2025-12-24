@@ -4,8 +4,8 @@
         <div class="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-16">
-                    <h1 class="text-3xl font-bold mb-4">{{ __('How to Buy on Digital Commerce!') }}</h1>
-                    <p class="text-gray-500 max-w-2xl mx-auto">
+                    <h1 class="text-5xl font-semibold mb-4 text-text-primary">{{ __('How to Buy on Digital Commerce!') }}</h1>
+                    <p class="text-text-secondary max-w-5xl mx-auto">
                         {{ __('Welcome to Digital Commerce! Our platform is designed to make buying digital products easy, fast, and secure. Follow these simple steps to find and purchase your desired items with confidence.') }}
                     </p>
                 </div>
@@ -33,14 +33,17 @@
                                     </div>
                                     <h2 class="text-3xl font-bold text-pink-500 mb-4">
                                         {{ __('Find Your Desired Product') }}</h2>
-                                    <p class="text-gray-500 leading-relaxed text-lg">
+                                    <p class="text-text-secondary leading-relaxed text-lg">
                                         {{ __("Begin by browsing our extensive categories or use the search bar to find the specific digital product you're looking for. You can filter results by game, region, price, and delivery time to pinpoint the perfect item.") }}
                                     </p>
                                 </div>
                                 <div class="flex justify-center">
                                     <div class="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-8">
                                         <div
-                                            class="w-6 h-6 bg-pink-500 rounded-full border-4 border-slate-950 shadow-lg shadow-pink-500/50">
+                                            class="w-2 h-2 bg-pink-500 rounded-full ">
+                                        </div> 
+                                        <div
+                                            class="w-4 h-4 bg-transparent rounded-full border-2 border-pink-500 absolute top-[-50%] left-[-50%] ">
                                         </div>
                                     </div>
                                 </div>
@@ -53,7 +56,10 @@
                                 <div class="flex justify-center">
                                     <div class="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-8">
                                         <div
-                                            class="w-6 h-6 bg-pink-500 rounded-full border-4 border-slate-950 shadow-lg shadow-pink-500/50">
+                                            class="w-2 h-2 bg-pink-500 rounded-full ">
+                                        </div> 
+                                        <div
+                                            class="w-4 h-4 bg-transparent rounded-full border-2 border-pink-500 absolute top-[-50%] left-[-50%] ">
                                         </div>
                                     </div>
                                 </div>
@@ -64,7 +70,7 @@
                                     </div>
                                     <h2 class="text-3xl font-bold text-pink-500 mb-4">
                                         {{ __('Review Product Details & Seller Info') }}</h2>
-                                    <p class="text-gray-500 leading-relaxed text-lg">
+                                    <p class="text-text-secondary leading-relaxed text-lg">
                                         {{ __("Click on a product to view its full description, delivery time, and requirements. Pay attention to the seller's rating and reviews to ensure you're buying from a reputable source. If you have questions, use the 'Message Seller' option (if available).") }}
                                     </p>
                                 </div>
@@ -81,14 +87,17 @@
                                     </div>
                                     <h2 class="text-3xl font-bold text-pink-500 mb-4">{{ __('Add to Cart & Checkout') }}
                                     </h2>
-                                    <p class="text-gray-500 leading-relaxed text-lg">
+                                    <p class="text-text-secondary leading-relaxed text-lg">
                                         {{ __("Once you've found the right product, click 'Buy Now.' You'll be directed to the checkout page where you can review your order summary and add any optional notes for the seller.") }}
                                     </p>
                                 </div>
                                 <div class="flex justify-center">
                                     <div class="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-8">
                                         <div
-                                            class="w-6 h-6 bg-pink-500 rounded-full border-4 border-slate-950 shadow-lg shadow-pink-500/50">
+                                            class="w-2 h-2 bg-pink-500 rounded-full ">
+                                        </div> 
+                                        <div
+                                            class="w-4 h-4 bg-transparent rounded-full border-2 border-pink-500 absolute top-[-50%] left-[-50%] ">
                                         </div>
                                     </div>
                                 </div>
@@ -102,7 +111,10 @@
                                 <div class="flex justify-center">
                                     <div class="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-8">
                                         <div
-                                            class="w-6 h-6 bg-pink-500 rounded-full border-4 border-slate-950 shadow-lg shadow-pink-500/50">
+                                            class="w-2 h-2 bg-pink-500 rounded-full ">
+                                        </div> 
+                                        <div
+                                            class="w-4 h-4 bg-transparent rounded-full border-2 border-pink-500 absolute top-[-50%] left-[-50%] ">
                                         </div>
                                     </div>
                                 </div>
@@ -114,7 +126,7 @@
                                     </div>
                                     <h2 class="text-3xl font-bold text-pink-500 mb-4">
                                         {{ __('Review Product Details & Seller Info') }}</h2>
-                                    <p class="text-gray-500 leading-relaxed text-lg">
+                                    <p class="text-text-secondary leading-relaxed text-lg">
                                         {{ __("Click on a product to view its full description, delivery time, and requirements. Pay attention to the seller's rating and reviews to ensure you're buying from a reputable source. If you have questions, use the 'Message Seller' option (if available).") }}
                                     </p>
                                 </div>
@@ -133,14 +145,17 @@
 
                                     <h2 class="text-3xl font-bold text-pink-500 mb-4">
                                         {{ __('Add to Cart & Checkout') }}</h2>
-                                    <p class="text-gray-500 leading-relaxed text-lg">
+                                    <p class="text-text-secondary leading-relaxed text-lg">
                                         {{ __("Once you've found the right product, click 'Buy Now.' You'll be directed to the checkout page where you can review your order summary and add any optional notes for the seller.") }}
                                     </p>
                                 </div>
                                 <div class="flex justify-center">
                                     <div class="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-8">
                                         <div
-                                            class="w-6 h-6 bg-pink-500 rounded-full border-4 border-slate-950 shadow-lg shadow-pink-500/50">
+                                            class="w-2 h-2 bg-pink-500 rounded-full ">
+                                        </div> 
+                                        <div
+                                            class="w-4 h-4 bg-transparent rounded-full border-2 border-pink-500 absolute top-[-50%] left-[-50%] ">
                                         </div>
                                     </div>
                                 </div>
@@ -153,7 +168,10 @@
                                 <div class="flex justify-center">
                                     <div class="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-8">
                                         <div
-                                            class="w-6 h-6 bg-pink-500 rounded-full border-4 border-slate-950 shadow-lg shadow-pink-500/50">
+                                            class="w-2 h-2 bg-pink-500 rounded-full ">
+                                        </div> 
+                                        <div
+                                            class="w-4 h-4 bg-transparent rounded-full border-2 border-pink-500 absolute top-[-50%] left-[-50%] ">
                                         </div>
                                     </div>
                                 </div>
@@ -164,7 +182,7 @@
                                     </div>
                                     <h2 class="text-3xl font-bold text-pink-500 mb-4">
                                         {{ __('Review Product Details & Seller Info') }}</h2>
-                                    <p class="text-gray-500 leading-relaxed text-lg">
+                                    <p class="text-text-secondary leading-relaxed text-lg">
                                         {{ __("Click on a product to view its full description, delivery time, and requirements. Pay attention to the seller's rating and reviews to ensure you're buying from a reputable source. If you have questions, use the 'Message Seller' option (if available).") }}
                                     </p>
                                 </div>
@@ -173,7 +191,7 @@
                     </div>
                 </div>
 
-                <div class="mt-20 p-10 text-center rounded-lg dark:bg-bg-border2 bg-bg-primary shadow-2xl">
+                <div class="mt-20 p-10 text-center rounded-lg dark:bg-bg-secondary bg-bg-primary shadow-2xl">
                     <h2 class="text-3xl font-medium mb-4 tracking-wider text-text-white">
                         {{ __('Your Purchase is Protected!') }}
                     </h2>
@@ -183,7 +201,7 @@
                     </p>
 
                     <button
-                        class="px-8 py-3 bg-purple-600 text-white font-medium rounded-full hover:bg-gray-200 transition duration-300 shadow-md">
+                        class="px-8 py-3 bg-purple-600 text-white font-medium rounded-full hover:bg-gray-200  hover:text-zinc-500 transition duration-300 shadow-md">
                         {{ __('Start Shopping Now') }}
                     </button>
                 </div>
