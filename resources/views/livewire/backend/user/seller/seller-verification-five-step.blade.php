@@ -119,14 +119,14 @@
                                 <span class="mr-2">•</span>
                                 <span>
                                     {{ __(' Accepted documents: **Driver\'s license, Government issued ID or Passport,
-                                                                                                                                                                                                                                                                                                international student ID.**') }}
+                                                                                                                                                                                                                                                                                                                                                                                                            international student ID.**') }}
                                 </span>
                             </li>
                             <li class="flex items-start">
                                 <span class="mr-2">•</span>
                                 <span>
                                     {{ __('Make sure personal details on the document are **clearly visible and easy to
-                                                                                                                                                                                                                                                                                                read.**') }}
+                                                                                                                                                                                                                                                                                                                                                                                                            read.**') }}
                                 </span>
                             </li>
                         </ul>
@@ -158,27 +158,16 @@
                     </div>
                 @endif
             </div>
-            <div>
-
-            </div>
-            <div class="flex justify-center">
-                {{-- <a wire:click.prevent="previousStep" wire:navigate
-                    class="px-8 py-2 cursor-pointer text-text-white  rounded-lg hover:bg-gray-50">
-                    BACK
-                </a>
-                <button wire:click="nextStep" class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
-                    NEXT
-                </button> --}}
-                <div class="flex justify-center px-2 sm:px-6 mt-5 sm:mt-10">
-                    <x-ui.button type="submit" wire:click.prevent="previousStep" wire:navigate
-                        class="w-auto py-2! text-text-white text-base! font-semibold!">
+            <div class="flex gap-4 justify-center mt-5! sm:mt-10!">
+                <div class="flex justify-center">
+                    <x-ui.button type="submit" wire:click.prevent="previousStep" wire:navigate variant="secondary"
+                        class="w-auto py-2!">
                         {{ __('Back') }}
                     </x-ui.button>
                 </div>
-                <div class="flex justify-center px-2 sm:px-6 mt-5 sm:mt-10">
-                    <x-ui.button type="submit" wire:click="nextStep" class="w-auto py-2! text-base! font-semibold!">
-                        {{ __('Next') }}
-                    </x-ui.button>
+                <div class="flex justify-center">
+                    <x-ui.button type="submit" wire:click="nextStep"
+                        class="w-auto py-2!">{{ __('Next') }}</x-ui.button>
                 </div>
             </div>
         </div>
