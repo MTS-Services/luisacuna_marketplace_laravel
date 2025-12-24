@@ -175,12 +175,10 @@
                         clickable: true,
                     },
 
-                    // autoplay: {
-                    //     delay: 2500,
-                    //     disableOnInteraction: false,
-                    // },  
-
-                    autoplay: false,
+                    autoplay: {
+                        delay: 2500,
+                        disableOnInteraction: false,
+                    },
                     breakpoints: {
                         640: {
                             slidesPerView: 2,
