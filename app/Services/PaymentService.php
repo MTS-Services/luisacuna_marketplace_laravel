@@ -93,16 +93,6 @@ class PaymentService
                 'transaction_id' => $transaction->transaction_id,
                 'order_id' => $payment->order->order_id,
             ]);
-
-            try {
-                event(new \App\Events\PaymentCompleted($payment));
-            } catch (Exception $e) {
-                Log::error('Event dispatch failed', [
-                    'payment_id' => $payment->payment_id,
-                    'error' => $e->getMessage(),
-                ]);
-            }
-
             return true;
         } catch (Exception $e) {
             DB::rollBack();

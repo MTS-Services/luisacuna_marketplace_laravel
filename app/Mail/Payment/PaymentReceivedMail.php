@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Mail\Payment;
+
+use App\Models\Order;
+use App\Models\Payment;
+use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Queue\SerializesModels;
+
+class PaymentReceivedMail extends Mailable
+{
+    use Queueable, SerializesModels;
+
+    public function __construct(
+        public Order $order,
+        public Payment $payment
+    ) {
+        // Ensure relationships are loaded
+        $this->order->loadMissing(['user', 'source.user']);
+    }
+
+    public function envelope(): Envelope
+    {
+        return new Envelope(
+            subject: 'Payment Received - Order #' . $this->order->order_id,
+        );
+    }
+
+    public function content(): Content
+    {
+        return new Content(
+            view: 'emails.payment.payment-received',
+            with: [
+                'order' => $this->order,
+                'payment' => $this->payment,
+                'sellerName' => $this->order->source?->user?->full_name ?? $this->order->source?->user?->first_name ?? 'Seller',
+                'buyerName' => $this->order->user?->full_name ?? $this->order->user?->first_name ?? 'Customer',
+            ],
+        );
+    }
+
+    public function attachments(): array
+    {
+        return [];
+    }
+}
