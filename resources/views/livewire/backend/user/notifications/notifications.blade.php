@@ -1,7 +1,7 @@
 <div class="space-y-6">
 
     <div x-transition:enter="transition ease-out duration-100"
-        class="bg-bg-secondary backdrop:blur-md z-100 transition-all duration-300 min-h-screen text-text-text-white shadow-lg p-4 sm:p-8 md:p-12 lg:p-16 xl:p-20 rounded-2xl">
+        class="bg-bg-secondary backdrop:blur-md z-100 transition-all duration-300 min-h-auto text-text-text-white shadow-lg p-4 sm:p-8 md:p-12 lg:p-16 xl:p-20 rounded-2xl">
 
         <div class="mb-2">
             <!-- Header -->
@@ -67,6 +67,7 @@
                                 $isUnread = !$notification->isRead(encrypt(user()->id), get_class(user()));
                             @endphp
 
+                           <a href="{{ $notification->action }}" target="_blank" class="block">
                             <div wire:key="notification-{{ encrypt($notification->id) }}"
                                 class="group flex flex-col sm:flex-row gap-2 md:gap-4 hover:bg-zinc-800/50 rounded-xl p-4 transition-colors {{ $isUnread ? 'bg-bg-info' : '' }}">
 
@@ -95,7 +96,7 @@
                                             class="text-sm text-text-white dark:text-zinc-200/60 mt-1 leading-relaxed line-clamp-4">
                                             {{ $notification->data['message'] ?? '' }}
                                         </p>
-                                        @if ($notification->action)
+                                        {{-- @if ($notification->action)
                                             <a href="{{ $notification->action }}" target="_blank"
                                                 rel="noopener noreferrer"
                                                 class="mt-2 inline-flex items-center gap-1 text-xs text-pink-500 hover:text-pink-600 transition-colors"
@@ -103,7 +104,7 @@
                                                 <span>{{ __('View Details') }}</span>
                                                 <flux:icon name="arrow-up-right" class="w-3 h-3" />
                                             </a>
-                                        @endif
+                                        @endif --}}
                                     </div>
                                 </div>
 
@@ -131,18 +132,21 @@
                                             </button> --}}
                                         @endif
 
-                                        <button wire:click="deleteNotification('{{ encrypt($notification->id) }}')"
+                                        {{-- <button wire:click="deleteNotification('{{ encrypt($notification->id) }}')"
                                             wire:confirm="Are you sure you want to delete this notification?"
                                             wire:loading.attr="disabled"
                                             class="p-1.5 hover:bg-red-500/20 rounded-lg transition-colors"
                                             title="{{ __('Delete notification') }}">
                                             <flux:icon name="trash" class="w-4 h-4 text-red-500" />
-                                        </button>
+                                        </button> --}}
                                     </div>
                                 </div>
                             </div>
+                            </a>
                         @endforeach
                     </div>
+
+            
                 @endif
             </div>
         </div>
