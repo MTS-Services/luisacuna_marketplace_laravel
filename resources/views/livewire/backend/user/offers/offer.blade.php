@@ -1,7 +1,7 @@
 <div class="bg-bg-primary">
-    <div class="container pb-10 sm:pb-20">
+    <div class="container pb-10">
         <livewire:frontend.partials.breadcrumb :gameSlug="'currency'" :categorySlug="'sell currency'" />
-        <div class="w-full mx-auto p-4 sm:p-10 md:p-20 rounded-2xl ">
+        <div class="w-full mx-auto rounded-2xl ">
             {{-- Step 1: Category Selection --}}
             @if ($step === 1)
                 <div class="bg-bg-secondary p-4 sm:p-10 md:p-20 rounded-2xl ">
@@ -115,9 +115,24 @@
                 <h2 class="text-2xl sm:text-40px font-semibold text-center text-text-white mb-3">
                     {{ __('Sell Game ') . ucfirst($categoryName) }}
                 </h2>
-                <h2 class="text-xl sm:text-2xl text-center text-text-white mb-5 sm:mb-10">{{ __('Step 2/2') }}</h2>
+                {{-- <h2 class="text-xl sm:text-2xl text-center text-text-white mb-5 sm:mb-10">{{ __('Step 2/2') }}</h2> --}}
+                {{-- Selected Game Info --}}
+                @if ($gameId && $games->firstWhere('id', $gameId))
+                    @php
+                        $selectedGame = $games->firstWhere('id', $gameId);
+                    @endphp
+                    <div class="flex items-center justify-center gap-3 mb-5">
+                        @if ($selectedGame->logo)
+                            <img src="{{ storage_url($selectedGame->logo) }}" alt="{{ $selectedGame->name }}"
+                                class="w-12 h-12 sm:w-16 sm:h-16 rounded-lg object-cover">
+                        @endif
+                        <span class="text-lg sm:text-xl font-semibold text-text-white">
+                            {{ $selectedGame->name }}
+                        </span>
+                    </div>
+                @endif
 
-                <form wire:submit.prevent="submitOffer">
+                <form wire:submit.prevent="submitOffer" class="mt-10">
                     <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
                         <div class="mt-8">
                             <h2 class="text-xl sm:text-3xl font-semibold text-text-white">{{ __('Offer Title') }}</h2>
@@ -164,13 +179,6 @@
                         </h3>
 
                         <div class="space-y-4">
-                            {{-- <x-ui.custom-select label="Delivery Timeline" :options="$timelineOptions" class="rounded-md!"
-                                wireModel="delivery_timeline" mdWidth="md:w-full" rounded="rounded"
-                                mdLeft="md:left-0" />
-                            <p class="text-text-white text-base sm:text-xl font-normal mt-5">
-                                {{ __('Faster delivery time improves your offer\'s ranking in the offer list.') }}
-                            </p>
-                            <x-ui.input-error :messages="$errors->get('delivery_timeline')" /> --}}
                             <div class="">
                                 <x-ui.custom-select :wireModel="'delivery_timeline'" :dropDownClass="'border-0!'" class="rounded-md! border-0">
                                     <x-ui.custom-option :value="null" :label="__('Delivery Timeline')" />
@@ -234,7 +242,8 @@
                                 </div>
                                 <div>
                                     <x-ui.label for="platform" :value="__('Platform')" required class="mb-2" />
-                                    <x-ui.custom-select :wireModel="'platform_id'" :dropDownClass="'border-0!'" class="rounded-md! border-0!">
+                                    <x-ui.custom-select :wireModel="'platform_id'" :dropDownClass="'border-0!'"
+                                        class="rounded-md! border-0!">
                                         <x-ui.custom-option :value="null" :label="__('Delivery Timeline')" />
                                         @foreach ($platforms as $platform)
                                             <x-ui.custom-option :value="$platform->id" :label="$platform->name" />
@@ -246,32 +255,6 @@
                         </div>
                     </div>
 
-
-                    {{-- <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
-                        <h2 class="text-text-white font-semibold text-2xl sm:text-3xl mb-10">
-                            {{ __('Select delivery method') }}
-                        </h2>
-                        <div class="space-y-4">
-                            @foreach ($gameConfigs as $config)
-                                @if ($config->delivery_methods != null)
-                                    @foreach ($config->delivery_methods as $method)
-                                        <label class="flex items-center cursor-pointer group">
-                                            <input type="radio" name="delivery_method"
-                                                value="{{ $config->id }}|{{ $method }}"
-                                                wire:model.live="deliveryMethod"
-                                                class="w-5 h-5 accent-pink-500 bg-transparent border-2 border-zinc-700 cursor-pointer">
-                                            <span class="ml-3 text-text-white text-base transition-colors">
-                                                {{ ucfirst(str_replace('_', ' ', $method)) }}
-                                            </span>
-                                        </label>
-                                    @endforeach
-                                    @break
-                                @endif
-                            @endforeach
-                            <x-ui.input-error :messages="$errors->get('deliveryMethod')" />
-                        </div>
-                    </div> --}}
-
                     <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
                         <h2 class="text-2xl font-semibold text-text-white mb-2 sm:mb-7">
                             {{ __('Specific Attributes') }}
@@ -281,24 +264,6 @@
                             @foreach ($gameConfigs as $config)
                                 {{-- Dropdown --}}
                                 @if ($config->input_type == App\Enums\GameConfigInputType::SELECT_DROPDOWN)
-                                    {{-- <div
-                                        class="{{ in_array($config->filter_type, ['textarea', 'filter_by_textarea']) ? 'col-span-2' : '' }}">
-                                        <div>
-                                            <x-ui.label :for="'config_' . str_replace('-', '_', $config->slug)" :value="$config->field_name" class="mb-2">
-                                            </x-ui.label>
-                                            @php
-                                                $options = is_array($config->dropdown_values)
-                                                    ? $config->dropdown_values
-                                                    : json_decode($config->dropdown_values, true);
-                                                $wireModel = 'fields.' . $config->id . '.value';
-                                            @endphp
-                                            <x-ui.custom-select :label="$config->field_name" :options="$options" :wireModel="$wireModel"
-                                                class="rounded-md!" mdWidth="md:w-full" rounded="rounded"
-                                                mdLeft="md:left-0" />
-
-                                            <x-ui.input-error :messages="$errors->get($wireModel)" class="mt-2" />
-                                        </div>
-                                    </div> --}}
                                     <div
                                         class="{{ in_array($config->filter_type, ['textarea', 'filter_by_textarea']) ? 'col-span-2' : '' }}">
                                         <div>
@@ -379,35 +344,17 @@
 
                     <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
                         <div class="mt-8">
-                            <h2 class="text-xl sm:text-3xl font-semibold text-text-white">{{ __('Fee structure') }}</h2>
+                            <h2 class="text-xl sm:text-3xl font-semibold text-text-white">{{ __('Fee structure') }}
+                            </h2>
                             <div class="border-t border-zinc-500 pt-4 mt-4 flex items-center gap-3"></div>
                             <div class="">
                                 <p class="text-text-white text-base sm:text-xl font-normal mt-5">
                                     {{ __('Flat fee (per purchase): ') }} <span
                                         class="text-2xl font-semibold">{{ __('$0.00 USD') }}</span>
                                 </p>
-                                {{-- <p class="text-text-white text-base sm:text-xl font-normal mt-5">
-                                    {{ __('Percentage fee (per purchase): ') }} <span
-                                        class="text-2xl font-semibold">{{ __('5 % of Price') }}</span>
-                                </p> --}}
                             </div>
                         </div>
                     </div>
-
-                    {{-- <div class="flex items-center gap-2">
-                        <div class="">
-                            <x-ui.input type="checkbox" name="is_active" />
-                        </div>
-                        <p class="text-text-white">{{ __('I have read and agree to the ') }} <span
-                                class="text-pink-500">{{ __('Terms & Conditions') }}</span> </p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="">
-                            <x-ui.input type="checkbox" name="is_active" />
-                        </div>
-                        <p class="text-text-white">{{ __('I have read and agree to the ') }} <span
-                                class="text-pink-500">{{ __('Seller Rules.') }}</span> </p>
-                    </div> --}}
                     <div class="mt-10">
                         <x-ui.button type="submit" class="w-auto! py-2!">
                             {{ __('Place Offer') }}
