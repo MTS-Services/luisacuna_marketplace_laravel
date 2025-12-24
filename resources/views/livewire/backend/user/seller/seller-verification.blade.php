@@ -22,13 +22,14 @@
                     </div>
                 </div>
 
-                <h2 class="text-2xl font-bold dark:text-text-white text-zinc-500/80 mb-4">Seller verification required
+                <h2 class="text-2xl font-bold dark:text-text-white text-zinc-500/80 mb-4">{{ __('Seller verification required') }}
                 </h2>
 
-                <p class="dark:text-text-white text-zinc-500/50 mb-2">To sell currencies, please verify your identity
-                    first.</p>
-                <p class="dark:text-text-white text-zinc-500/50 mb-8">Our 24/7 support team will review your ID in up to
-                    15 minutes.</p>
+                <p class="dark:text-text-white text-zinc-500/50 mb-2">{{ __('To sell currencies, please verify your identity
+                    first.') }}</p>
+                <p class="dark:text-text-white text-zinc-500/50 mb-8">{{ __('Our 24/7 support team will review your ID in up to
+                    15 minutes.
+                    ') }}</p>
 
                 {{-- <a href="{{ route('user.seller.verification', ['step' => 1]) }}" class="bg-bg-primary rounded-lg p-6 mb-6 " > --}}
                 <a  class="cursor-pointer bg-bg-secondary rounded-lg p-6 mb-6 inline-block" wire:click.prevent="startVerification">
@@ -37,16 +38,15 @@
                             <img src="{{ asset('assets/images/verification.svg') }}" alt="">
                         </div>
                         <div class="flex-1 text-left">
-                            <p class="font-semibold">Seller Verification</p>
-                            <span class="inline-block px-3 py-1 bg-pink-500 text-white text-sm rounded-full">Documents
-                                required</span>
+                            <p class="font-semibold">{{ __('Seller Verification') }}</p>
+                            <span class="inline-block px-3 py-1 bg-pink-500 text-white text-sm rounded-full">{{ __('Documents required') }}</span>
                         </div>
                         <x-phosphor-caret-right class="w-6 h-6 fill-zinc-500" />
                     </div>
                 </a>
 
 
-                <a href="#" class="block mt-4 text-zinc-600/80 hover:underline">Why do I need to verify my ID?</a>
+                <a href="#" class="block mt-4 text-zinc-600/80 hover:underline">{{ __('Why do I need to verify my ID?') }}</a>
             </div>
             @elseif (!$sellerProfile->is_verified)
 
@@ -57,13 +57,10 @@
                     </div>
                 </div>
 
-                <h2 class="text-2xl font-bold dark:text-text-white text-zinc-500/80 mb-4">Your Documents are pending
-                </h2>
+                <h2 class="text-2xl font-bold dark:text-text-white text-zinc-500/80 mb-4">{{ __('Your Documents are pending') }}</h2>
 
-                <p class="dark:text-text-white text-zinc-500/50 mb-2">To sell currencies, please verify your identity
-                    first.</p>
-                <p class="dark:text-text-white text-zinc-500/50 mb-8">Our 24/7 support team will review your ID in up to
-                    15 minutes.</p>
+                <p class="dark:text-text-white text-zinc-500/50 mb-2">{{ __('To sell currencies, please verify your identity first.') }}</p>
+                <p class="dark:text-text-white text-zinc-500/50 mb-8">{{ __('Our 24/7 support team will review your ID in up to 15 minutes.') }}</p>
 
                 {{-- <a href="{{ route('user.seller.verification', ['step' => 1]) }}" class="bg-bg-primary rounded-lg p-6 mb-6 " > --}}
                 <a  class="cursor-not-allowed bg-bg-secondary rounded-lg p-6 mb-6 inline-block">
@@ -72,16 +69,15 @@
                             <img src="{{ asset('assets/images/verification.svg') }}" alt="">
                         </div>
                         <div class="flex-1 text-left">
-                            <p class="font-semibold">Seller Verification</p>
-                            <span class="inline-block px-3 py-1 bg-pink-500 text-white text-sm rounded-full">Documents
-                                required</span>
+                            <p class="font-semibold">{{ __('Seller Verification') }}</p>
+                            <span class="inline-block px-3 py-1 bg-pink-500 text-white text-sm rounded-full">{{ __('Documents required') }}</span>
                         </div>
                         <x-phosphor-caret-right class="w-6 h-6 fill-zinc-500" />
                     </div>
                 </a>
 
 
-                <a href="#" class="block mt-4 text-zinc-600/80 hover:underline">Why do I need to verify my ID?</a>
+                <a href="#" class="block mt-4 text-zinc-600/80 hover:underline">{{ __('Why do I need to verify my ID?') }}</a>
             </div>
             @else
                <div class="text-center">
@@ -91,13 +87,10 @@
                     </div>
                 </div>
 
-                <h2 class="text-2xl font-bold dark:text-text-white text-zinc-500/80 mb-4">Your Documents already been verified
-                </h2>
+                <h2 class="text-2xl font-bold dark:text-text-white text-zinc-500/80 mb-4">{{ __('Your Documents already been verified') }}</h2>
 
-                <p class="dark:text-text-white text-zinc-500/50 mb-2">To sell currencies, please verify your identity
-                    first.</p>
-                <p class="dark:text-text-white text-zinc-500/50 mb-8">Our 24/7 support team will review your ID in up to
-                    15 minutes.</p>
+                <p class="dark:text-text-white text-zinc-500/50 mb-2">{{ __('To sell currencies, please verify your identity first.') }}</p>
+                <p class="dark:text-text-white text-zinc-500/50 mb-8">{{ __('Our 24/7 support team will review your ID in up to 15 minutes.') }}</p>
 
                 {{-- <a href="{{ route('user.seller.verification', ['step' => 1]) }}" class="bg-bg-primary rounded-lg p-6 mb-6 " > --}}
                 <a  class="cursor-not-allowed bg-bg-secondary rounded-lg p-6 mb-6 inline-block">
@@ -106,16 +99,15 @@
                             <img src="{{ asset('assets/images/verification.svg') }}" alt="">
                         </div>
                         <div class="flex-1 text-left">
-                            <p class="font-semibold">Seller Verification</p>
-                            <span class="inline-block px-3 py-1 bg-pink-500 text-white text-sm rounded-full">Documents
-                                required</span>
+                            <p class="font-semibold">{{ __('Seller Verification') }}</p>
+                            <span class="inline-block px-3 py-1 bg-pink-500 text-white text-sm rounded-full">{{ __('Documents required') }}</span>
                         </div>
                         <x-phosphor-caret-right class="w-6 h-6 fill-zinc-500" />
                     </div>
                 </a>
 
 
-                <a href="#" class="block mt-4 text-zinc-600/80 hover:underline">Why do I need to verify my ID?</a>
+                <a href="#" class="block mt-4 text-zinc-600/80 hover:underline">{{ __('Why do I need to verify my ID?') }}</a>
             </div>
             @endif
       

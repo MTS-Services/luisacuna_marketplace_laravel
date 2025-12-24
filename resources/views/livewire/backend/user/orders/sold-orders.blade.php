@@ -4,26 +4,26 @@
 
             <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
 
-                <div class="relative w-full sm:w-56">
-                    <x-ui.select>
-                        <option value="">{{ __('All statuses') }}</option>
-                        @foreach ($statuses as $status)
-                            <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
-                        @endforeach
-                    </x-ui.select>
-                </div>
+                 <div class="py-0.5! w-full sm:w-70">
+            <x-ui.custom-select :wireModel="'status'" class="rounded!" label="All Statuses">
+                @foreach ($statuses as $status)
+                    <x-ui.custom-option label="{{ $status['label'] }}" value="{{ $status['value'] }}" />
+                @endforeach
+            </x-ui.custom-select>
+        </div>
+
+
+        <div class="py-0.5! w-full sm:w-70">
+            <x-ui.custom-select :wireModel="'status'" class="rounded!" label="Recent">
+
+               <x-ui.custom-option value="today" label="Today" />
+               <x-ui.custom-option value="week" label="This Week" />
+               <x-ui.custom-option value="month" label="This Month" />
+            </x-ui.custom-select>
+        </div>
 
                 <div class="relative w-full sm:w-56">
-                    <x-ui.select>
-                        <option value="">{{ __('Recent') }}</option>
-                        <option value="today">{{ __('Today') }}</option>
-                        <option value="week">{{ __('This Week') }}</option>
-                        <option value="month">{{ __('This Month') }}</option>
-                    </x-ui.select>
-                </div>
-
-                <div class="relative w-full sm:w-56">
-                    <x-ui.input type="text" placeholder="{{ __('Search') }}" class="pl-5" />
+                    <x-ui.input type="text" placeholder="{{ __('Search') }}" class="pl-5 border-zinc-500! placeholder:text-text-primary" />
                     <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                         <x-phosphor-magnifying-glass class="w-5 h-5 fill-text-text-white" />
                     </div>
@@ -32,7 +32,7 @@
             </div>
 
             <div class="flex w-full md:w-auto">
-                <x-ui.button class="w-fit! py!" x-data @click="$dispatch('open-modal', 'download-invoice-modal')">
+                <x-ui.button class="w-fit! py-2!" x-data @click="$dispatch('open-modal', 'download-invoice-modal')">
                     <x-phosphor-download
                         class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
                     {{ __('Download invoice') }}
@@ -48,7 +48,7 @@
         {{-- <x-frontend.pagination-ui :pagination="$pagination" /> --}}
     </div>
 
-    
+
     <!-- Download Invoice Modal -->
     <div x-data="{ show: false }" x-on:open-modal.window="if ($event.detail === 'download-invoice-modal') show = true"
         x-on:close-modal.window="if ($event.detail === 'download-invoice-modal') show = false"
@@ -56,7 +56,7 @@
         style="display: none;">
 
         <!-- Backdrop -->
-        <div class="fixed inset-0 bg-zinc-900/90 transition-opacity" x-show="show"
+        <div class="fixed inset-0 bg-bg-primary transition-opacity" x-show="show"
             x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
             x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click="show = false">
@@ -92,20 +92,20 @@
                         <label class="block text-sm font-medium text-gray-300 mb-2">
                             {{ __('Choose a month') }}
                         </label>
-                        <x-ui.select>
-                            <option value="">{{ __('January 2025') }}</option>
-                            <option value="">{{ __('February 2025') }}</option>
-                            <option value="">{{ __('March 2025') }}</option>
-                            <option value="">{{ __('April 2025') }}</option>
-                            <option value="">{{ __('May 2025') }}</option>
-                            <option value="">{{ __('June 2025') }}</option>
-                            <option value="">{{ __('July 2025') }}</option>
-                            <option value="">{{ __('August 2025') }}</option>
-                            <option value="">{{ __('September 2025') }}</option>
-                            <option value="">{{ __('October 2025') }}</option>
-                            <option value="">{{ __('November 2025') }}</option>
-                            <option value="">{{ __('December 2025') }}</option>
-                        </x-ui.select>
+                        <x-ui.custom-select class="rounded!">
+                            <x-ui.custom-option label="January 2025" />
+                            <x-ui.custom-option label="February 2025" />
+                            <x-ui.custom-option label="March 2025" />
+                            <x-ui.custom-option label="April 2025" />
+                            <x-ui.custom-option label="May 2025" />
+                            <x-ui.custom-option label="Jun 2025" />
+                            <x-ui.custom-option label="July 2025" />
+                            <x-ui.custom-option label="August 2025" />
+                            <x-ui.custom-option label="September 2025" />
+                            <x-ui.custom-option label="October 2025" />
+                            <x-ui.custom-option label="November 2025" />
+                            <x-ui.custom-option label="December 2025" />
+                        </x-ui.custom-select>
                     </div>
 
                     <!-- File Type Selection -->
@@ -114,22 +114,23 @@
                         <label class="block text-sm font-medium text-gray-300 mb-2">
                             {{ __('File type') }}
                         </label>
-                        <x-ui.select>
-                            <option value="">{{ __('PDF') }}</option>
-                            <option value="">{{ __('CSV') }}</option>
-                        </x-ui.select>
+                        <x-ui.custom-select class="rounded!">
+                            <x-ui.custom-option label="PDF" />
+                            <x-ui.custom-option label="CSV" />
+                        </x-ui.custom-select>
+
                     </div>
 
                     <!-- Action Buttons -->
                     <div class="flex gap-3 justify-between pt-4">
                         <div @click="show = false" class="flex w-full md:w-auto">
-                            <x-ui.button class="w-fit! py!" x-data
+                            <x-ui.button class="w-fit! py-2!" x-data
                                 @click="$dispatch('open-modal', 'download-invoice-modal')">
                                 {{ __('Cancel') }}
                             </x-ui.button>
                         </div>
                         <div class="flex w-full md:w-auto">
-                            <x-ui.button class="w-fit! py!" x-data
+                            <x-ui.button class="w-fit! py-2!" x-data
                                 @click="$dispatch('open-modal', 'download-invoice-modal')">
                                 {{ __('Download invoice') }}
                             </x-ui.button>

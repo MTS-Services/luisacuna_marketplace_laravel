@@ -38,7 +38,7 @@
             background-attachment: fixed;
             background-position: 100% 100%;
             background-size: cover;
-            overflow: hidden;
+            /* overflow: hidden; */
         }
 
         .bg-page::before {
