@@ -43,39 +43,38 @@
         <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-3 lg:gap-4">
 
             <!-- Left Side: Filters -->
-            <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+               <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
 
-                <!-- Game Filter -->
-                <div class="relative w-full sm:w-40 lg:w-44">
-                    <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                        <option value="">{{ __('All') }}</option>
-                        <option value="game1">{{ __('Purchases') }}</option>
-                        <option value="game2">{{ __('Salsas') }}</option>
-                        <option value="game3">{{ __('Withdrawals') }}</option>
+                <div class="relative w-full sm:w-56">
+                    <x-ui.select>
+                        <option value="">{{ __('All ') }}</option>
+                      
+                            <option value="purchased">{{ __('Pruchased') }}</option>
+                            <option value="sales">{{ __('Sales') }}</option>
+                            <option value="purchased">{{ __('Withdrawls') }}</option>
                     </x-ui.select>
                 </div>
 
-                <!-- Status Filter -->
-                <div class="relative w-full sm:w-40 lg:w-44">
-                    <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                        <option value="">{{ __('Select Month') }}</option>
-                        <option value="January">{{ __('January') }}</option>
-                        <option value="February">{{ __('February') }}</option>
-                        <option value="April">{{ __('April') }}</option>
-                        <option value="May">{{ __('May') }}</option>
-                        <option value="June">{{ __('June') }}</option>
-                        <option value="July">{{ __('July') }}</option>
-                        <option value="August">{{ __('August') }}</option>
-                        <option value="September">{{ __('September') }}</option>
-                        <option value="October">{{ __('October') }}</option>
-                        <option value="November">{{ __('November') }}</option>
-                        <option value="December">{{ __('December') }}</option>
+                <div class="relative w-full sm:w-56">
+                    <x-ui.select>
+                        <option value="">{{ __('Recent') }}</option>
+                        <option value="today">{{ __('Today') }}</option>
+                        <option value="week">{{ __('This Week') }}</option>
+                        <option value="month">{{ __('This Month') }}</option>
                     </x-ui.select>
                 </div>
+
+                <div class="relative w-full sm:w-56">
+                    <x-ui.input type="text" placeholder="{{ __('Search') }}" class="pl-5" />
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <x-phosphor-magnifying-glass class="w-5 h-5 fill-text-text-white" />
+                    </div>
+                </div>
+
             </div>
 
             <!-- Right Side: Search & Actions -->
-            {{-- <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
                 <!-- Manage Subscriptions Button -->
                 <a href="{{ route('user.subscriptions') }}">
                     <x-ui.button class="w-full sm:w-auto! py-2!">
@@ -83,7 +82,7 @@
                             class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Manage Subscriptions') }}</span>
                     </x-ui.button>
                 </a>
-            </div> --}}
+            </div>
         </div>
     </div>
     <div>
