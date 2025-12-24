@@ -10,6 +10,7 @@ use App\Http\Payment\PaymentMethod;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Transaction;
+use App\Services\ConversationService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Stripe\Stripe;
@@ -23,9 +24,9 @@ class StripeMethod extends PaymentMethod
     protected $name = 'Stripe';
     protected $requiresFrontendJs = false;
 
-    public function __construct($gateway = null)
+    public function __construct($gateway = null, ConversationService $conversationService)
     {
-        parent::__construct($gateway);
+        parent::__construct($gateway, $conversationService);
         Stripe::setApiKey(config('services.stripe.secret'));
     }
 
@@ -197,7 +198,8 @@ class StripeMethod extends PaymentMethod
                         'transaction_id' => $transaction->transaction_id,
                         'session_id' => $sessionId,
                     ]);
-
+                    $this->dispatchPaymentNotificationsOnce($payment);
+                    $this->sendOrderMessage($order);
                     return [
                         'success' => true,
                         'message' => 'Payment successful!',
