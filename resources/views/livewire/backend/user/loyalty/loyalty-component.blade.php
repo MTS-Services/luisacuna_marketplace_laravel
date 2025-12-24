@@ -1,7 +1,7 @@
 <div class="min-h-screen py-8 px-4">
     <div class="">
         {{-- Top Cards Section --}}
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-13">
             {{-- Bronze Level Card --}}
             <div class="bg-bg-secondary rounded-2xl p-4 sm:p-10  border-primary-700/30">
                 <div class="flex items-center justify-between mb-6">
@@ -79,7 +79,7 @@
         </div>
 
         {{-- Achievements Section --}}
-        <div class="mb-8">
+        <div class="mb-6">
             <div class="flex items-center gap-3 mb-2">
                 <h2 class="text-text-white font-open-sans text-2xl font-bold">{{ __('Achievements completed') }}</h2>
             </div>
@@ -87,7 +87,7 @@
         </div>
 
         {{-- Achievement Cards Grid --}}
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-13">
             {{-- Critic Achievement --}}
 
             @if ($achievements)
@@ -140,8 +140,14 @@
             @endif
         </div>
 
+       <div class="mb-6">
+            <div class="flex items-center gap-3 mb-2">
+                <h2 class="text-text-white font-open-sans text-2xl font-bold">{{ __('Dedication') }}</h2>
+            </div>
+            <p class="text-text-white text-sm ">{{ __('Purchase at least 2 products per game to earn points') }}</p>
+        </div>
         {{-- CTA Card --}}
-        <div class="glass-card rounded-2xl p-4 sm:p-8 py-6 sm:py-12 bg-linear-to-r from-zinc-500/30 from-0% via-zinc-500/30 via-20% to-pink-500/30 text-center">
+        <div class="glass-card rounded-2xl p-4 sm:p-8 py-6 sm:py-12 bg-linear-to-r from-zinc-500/30 from-0% via-zinc-500/30 via-20% to-pink-500/80 text-center">
             <h2 class="text-text-white font-open-sans text-2xl sm:text-3xl xl:text-4xl font-bold mb-6">
                 {{ __('Start Your Reward Journey Today') }}
             </h2>

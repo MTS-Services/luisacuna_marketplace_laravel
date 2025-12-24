@@ -1,5 +1,5 @@
-<section class="min-h-screen bg-bg-primary py-8">
-    <section class=" mx-auto px-4">
+<section class="min-h-screen bg-bg-primary pb-8">
+    <section class=" mx-auto px-0">
         {{-- Header Section --}}
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-2xl sm:text-3xl font-bold text-text-primary">{{ __('Account Settings') }}</h1>
@@ -20,11 +20,12 @@
 
         <div class=" mx-auto space-y-6">
             {{-- Profile Section --}}
-            <section class="sm:bg-bg-secondary rounded-2xl sm:p-15 md:20">
+            <section class="sm:bg-bg-secondary rounded-2xl sm:p-15 md:p-20 mb-20">
                 <h2 class="text-2xl sm:text-3xl font-semibold text-text-primary mb-8">{{ __('Profile') }}</h2>
 
 
-                <div class="flex items-start sm:items-center bg-bg-info rounded-lg gap-3 sm:gap-6 p-5 mb-6 w-full">
+                <div
+                    class="flex flex-col sm:flex-row items-center justify-center xxs:justify-start bg-bg-info rounded-lg gap-3 sm:gap-6 p-5 mb-6 w-full">
                     <!-- Profile Image -->
                     <div class="relative w-12 h-12 sm:w-20 sm:h-20">
                         <img src="{{ storage_url($existingFile) }}"
@@ -32,7 +33,7 @@
                     </div>
 
                     <!-- Upload Area -->
-                    <div class="flex flex-col">
+                    <div class="flex flex-col items-center! xxs:items-start!">
                         <label for="imageUpload"
                             class="bg-zinc-500 hover:bg-bg-white hover:text-zinc-500 text-text-white font-medium py-2 px-4 rounded-full cursor-pointer transition text-sm w-fit">
                             {{ __('Upload image') }}
@@ -46,7 +47,7 @@
                         </span>
 
                         @error('avatar')
-                            <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                            <span class="text-pink-500 text-xs mt-1">{{ $message }}</span>
                         @enderror
 
                         <div wire:loading wire:target="avatar" class="text-sm text-purple-600 mt-2">
@@ -54,6 +55,7 @@
                         </div>
                     </div>
                 </div>
+
 
 
 
@@ -95,8 +97,8 @@
             </section>
 
             {{-- Profile Details Section --}}
-            <section class="sm:bg-bg-secondary rounded-2xl  mt-5 sm:p-15 md:20">
-                <h2 class="text-2xl sm:text-3xl font-semibold text-text-white mb-8">{{ __('Profile') }}</h2>
+            <section class="sm:bg-bg-secondary rounded-2xl  mt-5 sm:p-15 md:p-20 mb-20">
+                <h2 class="text-2xl sm:text-3xl font-semibold text-text-white mb-8">{{ __('Personal info') }}</h2>
 
                 <form class="space-y-5">
 
@@ -310,26 +312,19 @@
             </section>
 
             {{-- Profile Details Section --}}
-            <section class="sm:bg-bg-secondary rounded-2xl  mt-5 sm:p-15 md:20">
-                
+            <section class="sm:bg-bg-secondary rounded-2xl  mt-5 sm:p-15 md:p-20 mt-20">
 
-                
                 <livewire:backend.user.settings.two-factor-authenticaiton />
-
 
                 <div class="bg-bg-info p-3 sm:p-6 rounded-lg mt-5">
                     <x-ui.label value="Log out from all sessions"
-                        class="text-base! font-normal! mb-1! text-text-primary!" />
-                    <x-ui.button class="w-fit! py-2! my-2!">
-                        <span>
-                            {{ __('Log out all sessions') }}
-                        </span>
-                    </x-ui.button>
-                    <p class="text-sm lg:text-xl font-normal text-text-primary">This button logs you out from a II devices and
-                        browsers.</p>
-                    <div class="text-xs flex flex-row gap-1">
+                        class="block text-sm font-medium text-text-primary mb-2" />
+                    <x-ui.button class="w-fit! py-2! my-2!">{{ __('Log out from all devices') }}</x-ui.button>
+                    <p class="text-sm lg:text-xl font-normal text-text-white">
+                        {{ __('This button logs you out from a II devices and browsers.') }}</p>
+                    <div class="text-xs flex flex-row gap-1 mt-2">
                         <span class="text-pink-500">*</span>
-                    <p>This action can take up to 1 hours</p>
+                        <p class="text-text-white text-xs ">{{ __('This action can take up to 1 hours') }}</p>
                     </div>
                 </div>
 
