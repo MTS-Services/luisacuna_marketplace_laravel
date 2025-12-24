@@ -127,7 +127,7 @@
                     <h2 class="text-2xl sm:text-40px font-semibold text-text-white">{{ __('How It Works') }}</h2>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
                     <!-- Step 1 -->
                     <div class="text-center">
                         <div class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
@@ -144,7 +144,7 @@
                         <div class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
                             <img src="{{ asset('assets/images/home_page/verified_sellers.png') }}" alt="">
                         </div>
-                        <div class="absolute top-8 left-[-30%] z-20 hidden md:block">
+                        <div class="absolute top-8 left-[-30%] z-20 hidden md:block w-[100px] xl:w-[180px]">
                             <img src="{{ asset('assets/images/home_page/right-arrow.png') }}" alt="">
                         </div>
                         <h3 class="font-semibold text-2xl mb-2 text-text-white">{{ __('Verified Sellers') }}</h3>
@@ -158,7 +158,7 @@
                         <div class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
                             <img src="{{ asset('assets/images/home_page/effortless_buying.png') }}" alt="">
                         </div>
-                        <div class="absolute top-8 left-[-30%] z-20 hidden md:block">
+                        <div class="absolute top-8 left-[-30%] z-20 hidden md:block w-[100px] xl:w-[180px]">
                             <img src="{{ asset('assets/images/home_page/right-arrow.png') }}" alt="">
                         </div>
                         <h3 class="font-semibold text-2xl mb-2 text-text-white">
