@@ -29,6 +29,7 @@ use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementTypeControlle
 use App\Http\Controllers\Backend\Admin\GatewayAndIntegration\GatewayAndIntegrationController;
 use App\Http\Controllers\Backend\Admin\NotificationManagement\AnnouncementController;
 use App\Http\Controllers\Backend\Admin\NotificationManagement\NotificationController;
+use App\Http\Controllers\Backend\Admin\OrderManagement\OrderController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\BoostingsController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\CurrencyController as ProductCurrencyController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\GiftCardsController;
@@ -159,7 +160,6 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
             Route::get('seller-verification', 'sellerVerification')->name('seller-verification');
             Route::get('seller-verification/verified', 'sellerVerified')->name('seller-verification.verified');
             Route::get('seller-verification/view/{id}', 'sellerVerificationView')->name('seller-verification.view');
-         
         });
     });
 
@@ -291,5 +291,10 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
     Route::controller(NotificationController::class)->name('notification.')->prefix('notification')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/show/{id}', 'show')->name('show');
+    });
+
+    Route::controller(OrderController::class)->name('orders.')->prefix('orders')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/show/{orderId}', 'show')->name('show');
     });
 });

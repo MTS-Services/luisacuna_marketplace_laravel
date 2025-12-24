@@ -2,15 +2,14 @@
     @if ($activeTab == 'giftcards' || $activeTab == 'topups')
         {{-- main --}}
         <section class="container">
-            <div class="w-full sm:w-sm md:w-md lg:w-md mt-6 border rounded-lg">
-                <x-ui.select wire:model="country_id" id="country_id" class="border border-zinc-700! bg-transparent!" >
+            <div class="w-full sm:w-sm md:w-md lg:w-md mt-6">
+                <x-ui.custom-select wire:model="game_id" id="game_id"
+                    class="border-zinc-500! bg-transparent! rounded-lg">
                     <option value="">{{ __('All Game') }}</option>
                     @foreach ($games as $game)
-                        <option value="{{ $game->id }}">
-                            {{ $game->name }}
-                        </option>
+                        <x-ui.custom-option value="{{ $game->id }}" label="{{ $game->name }}" />
                     @endforeach
-                </x-ui.select>
+                </x-ui.custom-select>
             </div>
 
             <div class="md:flex gap-6 h-auto mt-10">
@@ -264,16 +263,14 @@
         </section>
     @else
         {{-- select game --}}
-        <div class="w-full sm:w-sm md:w-md lg:w-md mt-6 border-2 border-zinc-800 rounded-lg">
-
-            <x-ui.select wire:model="country_id" id="country_id">
+        <div class="w-full sm:w-sm md:w-md lg:w-md mt-6">
+            <x-ui.custom-select wire:model="game_id" id="game_id"
+                class="border-zinc-500! bg-transparent! rounded-lg">
                 <option value="">{{ __('All Game') }}</option>
                 @foreach ($games as $game)
-                    <option value="{{ $game->id }}">
-                        {{ $game->name }}
-                    </option>
+                    <x-ui.custom-option value="{{ $game->id }}" label="{{ $game->name }}" />
                 @endforeach
-            </x-ui.select>
+            </x-ui.custom-select>
         </div>
 
         {{-- games --}}

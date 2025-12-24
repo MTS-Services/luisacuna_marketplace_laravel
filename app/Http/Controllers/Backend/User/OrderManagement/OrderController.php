@@ -21,11 +21,11 @@ class OrderController extends Controller
         return view($this->userMasterView);
     }
 
-    public function cancel(Order  $orderId)
+    public function cancel(string $orderId)
     {
         return view($this->frontendMasterView, compact('orderId'));
     }
-    public function complete(Order $orderId)
+    public function complete(string $orderId)
     {
         return view($this->frontendMasterView, compact('orderId'));
     }

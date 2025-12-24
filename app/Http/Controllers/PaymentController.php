@@ -68,7 +68,7 @@ class PaymentController extends Controller
     public function paymentFailed(Request $request)
     {
         $orderId = $request->query('order_id');
-        
+
         $order = Order::where('order_id', $orderId)
             ->with(['latestPayment', 'source'])
             ->first();
@@ -116,13 +116,11 @@ class PaymentController extends Controller
             }
 
             return response()->json(['status' => 'success']);
-
         } catch (\Stripe\Exception\SignatureVerificationException $e) {
             Log::error('Stripe webhook signature verification failed', [
                 'error' => $e->getMessage(),
             ]);
             return response()->json(['error' => 'Invalid signature'], 400);
-
         } catch (\Exception $e) {
             Log::error('Stripe webhook error', [
                 'error' => $e->getMessage(),
@@ -156,8 +154,8 @@ class PaymentController extends Controller
                 'gateway' => [
                     'slug' => $gateway->slug,
                     'name' => $gateway->name,
-                    'requires_frontend_js' => method_exists($paymentMethod, 'requiresFrontendJs') 
-                        ? $paymentMethod->requiresFrontendJs() 
+                    'requires_frontend_js' => method_exists($paymentMethod, 'requiresFrontendJs')
+                        ? $paymentMethod->requiresFrontendJs()
                         : false,
                 ],
             ];
@@ -174,7 +172,6 @@ class PaymentController extends Controller
             }
 
             return response()->json($config);
-
         } catch (\Exception $e) {
             Log::error('Get gateway config error', [
                 'slug' => $slug,
