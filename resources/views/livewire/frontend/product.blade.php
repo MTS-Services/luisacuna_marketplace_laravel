@@ -162,7 +162,6 @@
 
     @push('scripts')
         <script>
-           
             document.addEventListener('livewire:navigated', function() {
 
                 const swiper = new Swiper('.popular-currency', {
@@ -176,11 +175,12 @@
                         clickable: true,
                     },
 
-                    autoplay: {
-                        delay: 2500,
-                        disableOnInteraction: false,
-                    },
+                    // autoplay: {
+                    //     delay: 2500,
+                    //     disableOnInteraction: false,
+                    // },  
 
+                    autoplay: false,
                     breakpoints: {
                         640: {
                             slidesPerView: 2,
@@ -229,8 +229,6 @@
                 });
 
             });
-
-            
         </script>
     @endpush
 </main>
