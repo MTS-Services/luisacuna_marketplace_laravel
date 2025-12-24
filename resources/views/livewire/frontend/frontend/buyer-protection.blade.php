@@ -4,7 +4,7 @@
 
             <!-- Header -->
             <div class="text-center mb-10">
-                <h1 class="text-5xl font-bold mb-2">
+                <h1 class="text-5xl font-semibold mb-2">
                     {{ __('Trade Protect For Buyers') }}
                 </h1>
                 <p class="text-text-secondary text-sm">
