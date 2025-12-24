@@ -3,19 +3,19 @@
         @case('user.order.detail')
             <x-slot name="title">{{ __('Order Details') }}</x-slot>
             <x-slot name="pageSlug">{{ __('order_details') }}</x-slot>
-            <livewire:backend.user.orders.details :order="$orderId" />
+            <livewire:backend.user.orders.details :order-id="$orderId" />
         @break
 
         @case('user.order.cancel')
             <x-slot name="title">{{ __('Order Canceled') }}</x-slot>
             <x-slot name="pageSlug">{{ __('order_canceled') }}</x-slot>
-            <livewire:backend.user.orders.canceled :order="$orderId" />
+            <livewire:backend.user.orders.canceled :order-id="$orderId" />
         @break
 
         @case('user.order.complete')
             <x-slot name="title">{{ __('Order Completed') }}</x-slot>
             <x-slot name="pageSlug">{{ __('order_completed') }}</x-slot>
-            <livewire:backend.user.orders.complete :order="$orderId" />
+            <livewire:backend.user.orders.complete :order-id="$orderId" />
 
         @break
 

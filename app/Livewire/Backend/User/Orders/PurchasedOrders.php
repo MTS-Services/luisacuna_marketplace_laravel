@@ -51,8 +51,8 @@ class PurchasedOrders extends Component
                     . 'Cheapest +75%  Discount' .
                     '</p>
                         <a href="' . ($order->status->value === 'cancelled'
-                        ? route('user.order.cancel', ['orderId' => $order->id])
-                        : route('user.order.complete', ['orderId' => $order->id])
+                        ? route('user.order.cancel', ['orderId' => $order->order_id])
+                        : route('user.order.complete', ['orderId' => $order->order_id])
                         ) . '"
                         class="text-bg-pink-500 text-xs">
                             View Details 
