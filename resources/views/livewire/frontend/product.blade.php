@@ -44,8 +44,6 @@
                             {{ __('a-z') }}
                         @elseif($sortOrder === 'desc')
                             {{ __('z-a') }}
-                        @else
-                            {{ __('Default') }}
                         @endif
                     </span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
