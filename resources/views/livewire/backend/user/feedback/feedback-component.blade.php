@@ -1,4 +1,7 @@
 <div>
+    <div class="mb-8">
+        <h2 class="text-2xl sm:text-3xl font-bold text-text-primary">{{__('Feedback')}}</h2>
+    </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
         <!-- Completed Orders Card -->
         <div class="bg-bg-secondary p-6 rounded-2xl  hover:border-zinc-700 transition-all duration-300">

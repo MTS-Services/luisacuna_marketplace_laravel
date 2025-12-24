@@ -1,5 +1,5 @@
-<section class="min-h-screen bg-bg-primary py-8">
-    <section class=" mx-auto px-4">
+<section class="min-h-screen bg-bg-primary pb-8">
+    <section class=" mx-auto px-0">
         {{-- Header Section --}}
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-2xl sm:text-3xl font-bold text-text-primary">{{ __('Account Settings') }}</h1>
