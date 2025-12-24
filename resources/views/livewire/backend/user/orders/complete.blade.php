@@ -40,7 +40,7 @@
                         <div>
                             <h3 class="text-text-white text-base sm:text-2xl font-semibold">{{ __('Order Active') }}
                             </h3>
-                            <p class="text-text-white text-xs font-normal mt-2">{{ _('Jun 11, 2024, 1:22:12 AM') }}</p>
+                            <p class="text-text-white text-xs font-normal mt-2">{{ __('Jun 11, 2024, 1:22:12 AM') }}</p>
                         </div>
                     </div>
                     <div class="mt-7">
