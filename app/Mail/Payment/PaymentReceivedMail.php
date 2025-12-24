@@ -5,18 +5,14 @@ namespace App\Mail\Payment;
 use App\Models\Order;
 use App\Models\Payment;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class PaymentReceivedMail extends Mailable implements ShouldQueue
+class PaymentReceivedMail extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $tries = 3;
-    public $timeout = 60;
 
     public function __construct(
         public Order $order,
@@ -42,7 +38,6 @@ class PaymentReceivedMail extends Mailable implements ShouldQueue
                 'payment' => $this->payment,
                 'sellerName' => $this->order->source?->user?->full_name ?? $this->order->source?->user?->first_name ?? 'Seller',
                 'buyerName' => $this->order->user?->full_name ?? $this->order->user?->first_name ?? 'Customer',
-                'buyerUsername' => $this->order->user?->username ?? 'customer',
             ],
         );
     }

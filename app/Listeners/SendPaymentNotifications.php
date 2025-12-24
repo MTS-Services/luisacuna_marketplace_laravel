@@ -7,13 +7,12 @@ use App\Services\NotificationService;
 use App\Enums\CustomNotificationType;
 use App\Models\Admin;
 use App\Models\User;
-use App\Mail\Payment\PaymentSuccessMail;
-use App\Mail\Payment\PaymentReceivedMail;
-use App\Mail\Payment\AdminPaymentNotificationMail;
+use App\Jobs\Payment\SendPaymentSuccessEmailJob;
+use App\Jobs\Payment\SendPaymentReceivedEmailJob;
+use App\Jobs\Payment\SendAdminPaymentEmailJob;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Exception;
 
 class SendPaymentNotifications implements ShouldQueue
@@ -22,7 +21,7 @@ class SendPaymentNotifications implements ShouldQueue
 
     public $tries = 3;
     public $timeout = 120;
-    public $backoff = [10, 30, 60]; // Retry after 10s, 30s, 60s
+    public $backoff = [10, 30, 60];
 
     public function __construct(
         protected NotificationService $notificationService
@@ -99,11 +98,14 @@ class SendPaymentNotifications implements ShouldQueue
                 ],
             ]);
 
-            // Send email using Mailable
-            Mail::to($buyer->email)
-                ->queue(new PaymentSuccessMail($order, $payment));
+            // ✅ Dispatch email job instead of sending directly
+            SendPaymentSuccessEmailJob::dispatch(
+                $order->id,
+                $payment->id,
+                $buyer->email
+            );
 
-            Log::info('Buyer notified', [
+            Log::info('Buyer notified (in-app + email queued)', [
                 'buyer_id' => $buyer->id,
                 'buyer_email' => $buyer->email,
                 'order_id' => $order->order_id,
@@ -159,11 +161,14 @@ class SendPaymentNotifications implements ShouldQueue
                 ],
             ]);
 
-            // Send email using Mailable
-            Mail::to($seller->email)
-                ->queue(new PaymentReceivedMail($order, $payment));
+            // ✅ Dispatch email job instead of sending directly
+            SendPaymentReceivedEmailJob::dispatch(
+                $order->id,
+                $payment->id,
+                $seller->email
+            );
 
-            Log::info('Seller notified', [
+            Log::info('Seller notified (in-app + email queued)', [
                 'seller_id' => $seller->id,
                 'seller_email' => $seller->email,
                 'order_id' => $order->order_id,
@@ -211,13 +216,16 @@ class SendPaymentNotifications implements ShouldQueue
                 ],
             ]);
 
-            // Send email to all super administrators
+            // ✅ Dispatch email jobs instead of sending directly
             foreach ($admins as $admin) {
-                Mail::to($admin->email)
-                    ->queue(new AdminPaymentNotificationMail($order, $payment));
+                SendAdminPaymentEmailJob::dispatch(
+                    $order->id,
+                    $payment->id,
+                    $admin->email
+                );
             }
 
-            Log::info('Administrators notified', [
+            Log::info('Administrators notified (in-app + emails queued)', [
                 'admin_count' => $admins->count(),
                 'order_id' => $order->order_id,
             ]);

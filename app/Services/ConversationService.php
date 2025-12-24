@@ -54,7 +54,7 @@ class ConversationService
                     'subject' => $subject,
                     'note' => $note,
                     'status' => ConversationStatus::ACTIVE,
-                    'creater_id' => Auth::id(),
+                    'creater_id' => $participantOne->id,
                     'creater_type' => User::class,
                 ]);
 
@@ -150,7 +150,7 @@ class ConversationService
             'joined_at' => now(),
             'is_active' => true,
             'notification_enabled' => true,
-            'creater_id' => Auth::id(),
+            'creater_id' => $participant->id,
             'creater_type' => User::class,
         ]);
     }
@@ -376,16 +376,19 @@ class ConversationService
                     $this->markMessageAsRead($message, $sender);
                 }
 
-                // Broadcast to other participants in the conversation
-                // broadcast(new MessageSent($message))->toOthers();
+                if ($sender) {
 
-                // Notify all participants that conversation was updated
-                // $conversation->participants()
-                //     ->where('participant_id', '!=', $sender?->id)
-                //     ->where('is_active', true)
-                //     ->each(function ($participant) use ($conversation) {
-                //         broadcast(new ConversationUpdated($conversation, $participant->participant_id));
-                //     });
+                    // Broadcast to other participants in the conversation
+                    broadcast(new MessageSent($message))->toOthers();
+
+                    // Notify all participants that conversation was updated
+                    $conversation->participants()
+                        ->where('participant_id', '!=', $sender?->id)
+                        ->where('is_active', true)
+                        ->each(function ($participant) use ($conversation) {
+                            broadcast(new ConversationUpdated($conversation, $participant->participant_id));
+                        });
+                }
 
                 return $message->load(['sender', 'attachments']);
             });
@@ -404,9 +407,9 @@ class ConversationService
      */
     public function sendOrderMessage(Order $order): ?Conversation
     {
-        $order->load('source.user');
-        $buyer = Auth::user();
-        $seller = $order->source->user;
+        $order->load(['source.user', 'user']);
+        $buyer = $order?->user ?? Auth::guard('web')->user();
+        $seller = $order?->source?->user;
 
         $conversation = $this->startConversation($buyer, $seller);
 

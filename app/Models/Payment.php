@@ -68,13 +68,6 @@ class Payment extends AuditBaseModel implements Auditable
                 $payment->payment_id = generate_payment_id();
             }
         });
-
-        // Create transaction when payment is completed
-        // static::updated(function ($payment) {
-        //     if ($payment->wasChanged('status') && $payment->status === PaymentStatus::COMPLETED) {
-        //         $payment->createTransaction();
-        //     }
-        // });
     }
 
     /* RELATIONSHIPS */

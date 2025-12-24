@@ -5,25 +5,21 @@ namespace App\Mail\Payment;
 use App\Models\Order;
 use App\Models\Payment;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class AdminPaymentNotificationMail extends Mailable implements ShouldQueue
+class AdminPaymentNotificationMail extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $tries = 3;
-    public $timeout = 60;
 
     public function __construct(
         public Order $order,
         public Payment $payment
     ) {
         // Ensure relationships are loaded
-        $this->order->loadMissing('user');
+        $this->order->loadMissing(['user', 'source.user']);
     }
 
     public function envelope(): Envelope
