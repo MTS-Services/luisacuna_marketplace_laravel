@@ -43,15 +43,14 @@
         <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-3 lg:gap-4">
 
             <!-- Left Side: Filters -->
-               <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+            <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
 
                 <div class="relative w-full sm:w-56">
                     <x-ui.select>
-                        <option value="">{{ __('All ') }}</option>
-                      
-                            <option value="purchased">{{ __('Pruchased') }}</option>
-                            <option value="sales">{{ __('Sales') }}</option>
-                            <option value="purchased">{{ __('Withdrawls') }}</option>
+                        <option value="">{{ __('All statuses') }}</option>
+                        @foreach ($statuses as $status)
+                            <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
+                        @endforeach
                     </x-ui.select>
                 </div>
 

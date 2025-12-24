@@ -1,6 +1,7 @@
 <div class="min-h-screen py-8 px-4">
     <div class="">
         {{-- Top Cards Section --}}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-13">
             {{-- Bronze Level Card --}}
             <div class="bg-bg-secondary rounded-2xl p-4 sm:p-10  border-primary-700/30">
                 <div class="flex items-center justify-between mb-6">
