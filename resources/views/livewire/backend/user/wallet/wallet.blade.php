@@ -39,43 +39,47 @@
         </div>
     </div>
 
-    <div class=" p-4 w-full">
+    <div class="p-4 w-full">
         <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-3 lg:gap-4">
 
             <!-- Left Side: Filters -->
-            <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+            <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
 
-                <!-- Game Filter -->
-                <div class="relative w-full sm:w-40 lg:w-44">
-                    <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                        <option value="">{{ __('All') }}</option>
-                        <option value="game1">{{ __('Purchases') }}</option>
-                        <option value="game2">{{ __('Salsas') }}</option>
-                        <option value="game3">{{ __('Withdrawals') }}</option>
-                    </x-ui.select>
+                <div class="py-0.5! w-full sm:w-70">
+                    <x-ui.custom-select :wireModel="'status'" class="rounded!" label="All Statuses">
+                        <x-ui.custom-option label="purchased" value="{{ __('purchased') }}" />
+                        <x-ui.custom-option label="sales" value="{{ __('Sales') }}" />
+                        <x-ui.custom-option label="withdrawls" value="{{ __('Withdrawls') }}" />
+                    </x-ui.custom-select>
                 </div>
 
-                <!-- Status Filter -->
-                <div class="relative w-full sm:w-40 lg:w-44">
-                    <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                        <option value="">{{ __('Select Month') }}</option>
-                        <option value="January">{{ __('January') }}</option>
-                        <option value="February">{{ __('February') }}</option>
-                        <option value="April">{{ __('April') }}</option>
-                        <option value="May">{{ __('May') }}</option>
-                        <option value="June">{{ __('June') }}</option>
-                        <option value="July">{{ __('July') }}</option>
-                        <option value="August">{{ __('August') }}</option>
-                        <option value="September">{{ __('September') }}</option>
-                        <option value="October">{{ __('October') }}</option>
-                        <option value="November">{{ __('November') }}</option>
-                        <option value="December">{{ __('December') }}</option>
-                    </x-ui.select>
+                <div class="py-0.5! w-full sm:w-70">
+                    <x-ui.custom-select :wireModel="'time'" class="rounded!" label="Recent">
+                        <x-ui.custom-option value="today" label="Today" />
+                        <x-ui.custom-option value="week" label="This Week" />
+                        <x-ui.custom-option value="month" label="This Month" />
+                    </x-ui.custom-select>
                 </div>
+
+                {{-- <div class="relative w-full sm:w-56">
+                    <x-ui.input type="text" placeholder="{{ __('Search') }}" class="pl-5 border-zinc-500! placeholder:text-text-primary" />
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <x-phosphor-magnifying-glass class="w-5 h-5 fill-text-text-white" />
+                    </div>
+                </div> --}}
+
             </div>
 
             <!-- Right Side: Search & Actions -->
-            {{-- <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+                {{-- <div class="flex w-full md:w-auto">
+                    <x-ui.button class="w-fit! py-2!" x-data @click="$dispatch('open-modal', 'download-invoice-modal')">
+                        <x-phosphor-download
+                            class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
+                        {{ __('Download invoice') }}
+                    </x-ui.button>
+                </div> --}}
+
                 <!-- Manage Subscriptions Button -->
                 <a href="{{ route('user.subscriptions') }}">
                     <x-ui.button class="w-full sm:w-auto! py-2!">
@@ -83,9 +87,10 @@
                             class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Manage Subscriptions') }}</span>
                     </x-ui.button>
                 </a>
-            </div> --}}
+            </div>
         </div>
     </div>
+
     <div>
         <x-ui.user-table :data="$datas" :columns="$columns"
             emptyMessage="No data found. Add your first data to get started." class="rounded-lg overflow-hidden" />

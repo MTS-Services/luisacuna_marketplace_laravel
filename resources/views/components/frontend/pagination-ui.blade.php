@@ -1,6 +1,7 @@
 @props(['pagination' => []])
 
 @php
+
     $current = $pagination['current_page'];
     $last = $pagination['last_page'];
 
