@@ -1,8 +1,8 @@
 <div class="bg-bg-primary">
-    <div class="container pb-10 sm:pb-20">
+    <div class="container pb-10">
         <livewire:frontend.partials.breadcrumb :gameSlug="'currency'" :categorySlug="'sell currency'" />
         @if ($currentStep === 1)
-            <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
+            <div class="bg-bg-secondary rounded-2xl p-4 sm:p-10 md:p-20">
                 <h2 class="text-text-white text-2xl xl:text-40px font-semibold text-center">{{ __('Bulk Upload') }}</h2>
 
                 <div class="mt-10">
@@ -54,7 +54,7 @@
 
         {{-- Step 2: Choose Game --}}
         @if ($currentStep === 2)
-            <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
+            <div class="bg-bg-secondary rounded-2xl p-4 sm:p-10 md:p-20">
                 <h2 class="text-2xl sm:text-40px font-semibold text-center text-text-white mb-3">
                     {{ __('Sell Game Currency') }}
                 </h2>
@@ -85,14 +85,14 @@
 
 
 
-                <div class="flex gap-4 justify-center mt-5! sm:mt-10!">
-                    <div class="flex md:w-auto!">
-                        <x-ui.button wire:click="back"
-                            class="w-fit! py-2! px-4! text-text-white">{{ __('Back') }}</x-ui.button>
+                <div class="flex justify-center mt-5! sm:mt-10!">
+                    <div class="flex justify-center px-2 sm:px-6">
+                        <x-ui.button wire:click="back" variant="secondary" class="w-auto py-2!">
+                            {{ __('Back') }}
+                        </x-ui.button>
                     </div>
-                    <div class="flex md:w-auto!">
-                        <x-ui.button wire:click="selectGame"
-                            class="w-fit! py-2! px-4!">{{ __('Next') }}</x-ui.button>
+                    <div class="flex justify-center px-2 sm:px-6">
+                        <x-ui.button wire:click="selectGame" class="w-auto py-2!">{{ __('Next') }}</x-ui.button>
                     </div>
                 </div>
             </div>
@@ -100,7 +100,7 @@
 
         {{-- Step 3: Item Details (Region & Server) --}}
         @if ($currentStep === 3)
-            <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
+            <div class="bg-bg-secondary rounded-2xlp-4 sm:p-10 md:p-20">
                 <h2 class="text-2xl sm:text-40px font-semibold text-center text-text-white mb-3">
                     {{ __('Sell Game Currency') }}
                 </h2>
@@ -158,15 +158,15 @@
                         </p>
                     </div>
                 </div>
-
-                <div class="flex gap-4 justify-center mt-5! sm:mt-10!">
-                    <div class="flex md:w-auto!">
-                        <x-ui.button wire:click="back"
-                            class="w-fit! py-2! px-4! text-text-white">{{ __('Back') }}</x-ui.button>
+                <div class="flex justify-center mt-5! sm:mt-10!">
+                    <div class="flex justify-center px-2 sm:px-6">
+                        <x-ui.button wire:click="back" variant="secondary" class="w-auto py-2!">
+                            {{ __('Back') }}
+                        </x-ui.button>
                     </div>
-                    <div class="flex md:w-auto!">
+                    <div class="flex justify-center px-2 sm:px-6">
                         <x-ui.button wire:click="selectServerAndRegion"
-                            class="w-fit! py-2! px-4!">{{ __('Next') }}</x-ui.button>
+                            class="w-auto py-2!">{{ __('Next') }}</x-ui.button>
                     </div>
                 </div>
             </div>
@@ -174,7 +174,7 @@
 
         {{-- Step 4: CSV Upload --}}
         @if ($currentStep === 4)
-            <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
+            <div class="bg-bg-secondary rounded-2xl p-4 sm:p-10 md:p-20">
                 <h2 class="text-2xl sm:text-40px font-semibold text-center text-text-white mb-3">
                     {{ __('Bulk Upload') }}</h2>
 
@@ -240,15 +240,9 @@
                 @error('file')
                     <p class="text-pink-500 mt-2">{{ $message }}</p>
                 @enderror
-
-                <div class="flex gap-4 mt-9">
-                    <div class="flex md:w-auto!">
-                        <x-ui.button wire:click="back"
-                            class="w-fit! py-2! px-4! text-text-white">{{ __('Back') }}</x-ui.button>
-                    </div>
-                    <div class="flex md:w-auto!">
-                        <x-ui.button wire:click="uploadFile"
-                            class="w-fit! py-2! px-4!">{{ __('Upload') }}</x-ui.button>
+                <div class="flex justify-start mt-5! sm:mt-10!">
+                    <div class="flex justify-center px-2">
+                        <x-ui.button wire:click="uploadFile" class="w-auto py-2!">{{ __('Upload') }}</x-ui.button>
                     </div>
                 </div>
             </div>
