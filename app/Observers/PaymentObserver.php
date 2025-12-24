@@ -9,6 +9,7 @@ use App\Enums\PaymentStatus;
 use App\Enums\TransactionStatus;
 use App\Enums\TransactionType;
 use App\Enums\OrderStatus;
+use App\Events\PaymentSuccessEvent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
@@ -66,6 +67,10 @@ class PaymentObserver
                 ->onQueue('payments')
                 ->delay(now()->addSeconds(2)); // Small delay to ensure payment is committed
 
+            // ⭐ DISPATCH NOTIFICATION EVENT FOR COMPLETED PAYMENTS
+            if ($payment->status === PaymentStatus::COMPLETED) {
+                $this->dispatchPaymentNotifications($payment);
+            }
         } catch (\Exception $e) {
             // Release lock on failure
             Cache::forget($lockKey);
@@ -76,6 +81,37 @@ class PaymentObserver
             ]);
 
             throw $e;
+        }
+    }
+
+    /**
+     * Dispatch payment success notifications
+     */
+    protected function dispatchPaymentNotifications(Payment $payment): void
+    {
+        try {
+            // Ensure order relationship is loaded
+            $payment->loadMissing('order');
+
+            if (!$payment->order) {
+                Log::warning('Cannot dispatch notifications - order not found', [
+                    'payment_id' => $payment->payment_id,
+                ]);
+                return;
+            }
+
+            // Dispatch event to trigger notifications
+            event(new PaymentSuccessEvent($payment->order, $payment));
+
+            Log::info('Payment notification event dispatched', [
+                'payment_id' => $payment->payment_id,
+                'order_id' => $payment->order->order_id,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to dispatch payment notifications', [
+                'payment_id' => $payment->payment_id,
+                'error' => $e->getMessage(),
+            ]);
         }
     }
 

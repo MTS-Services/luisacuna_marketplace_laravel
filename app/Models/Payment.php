@@ -70,11 +70,11 @@ class Payment extends AuditBaseModel implements Auditable
         });
 
         // Create transaction when payment is completed
-        static::updated(function ($payment) {
-            if ($payment->wasChanged('status') && $payment->status === PaymentStatus::COMPLETED) {
-                $payment->createTransaction();
-            }
-        });
+        // static::updated(function ($payment) {
+        //     if ($payment->wasChanged('status') && $payment->status === PaymentStatus::COMPLETED) {
+        //         $payment->createTransaction();
+        //     }
+        // });
     }
 
     /* RELATIONSHIPS */
@@ -160,31 +160,31 @@ class Payment extends AuditBaseModel implements Auditable
     /**
      * Create a transaction record for this payment
      */
-    protected function createTransaction(): void
-    {
-        if ($this->transaction()->exists()) {
-            return; // Transaction already exists
-        }
+    // protected function createTransaction(): void
+    // {
+    //     if ($this->transaction()->exists()) {
+    //         return; // Transaction already exists
+    //     }
 
-        Transaction::create([
-            'user_id' => $this->user_id,
-            'order_id' => $this->order_id,
-            'type' => \App\Enums\TransactionType::PAYMENT,
-            'status' => \App\Enums\TransactionStatus::PAID,
-            'amount' => $this->amount,
-            'currency' => $this->currency,
-            'payment_gateway' => $this->payment_gateway,
-            'gateway_transaction_id' => $this->transaction_id,
-            'source_id' => $this->id,
-            'source_type' => self::class,
-            'fee_amount' => 0, // Calculate if needed
-            'net_amount' => $this->amount,
-            'metadata' => [
-                'payment_id' => $this->payment_id,
-                'payment_method_id' => $this->payment_method_id,
-                'payment_intent_id' => $this->payment_intent_id,
-            ],
-            'processed_at' => $this->paid_at,
-        ]);
-    }
+    //     Transaction::create([
+    //         'user_id' => $this->user_id,
+    //         'order_id' => $this->order_id,
+    //         'type' => \App\Enums\TransactionType::PAYMENT,
+    //         'status' => \App\Enums\TransactionStatus::PAID,
+    //         'amount' => $this->amount,
+    //         'currency' => $this->currency,
+    //         'payment_gateway' => $this->payment_gateway,
+    //         'gateway_transaction_id' => $this->transaction_id,
+    //         'source_id' => $this->id,
+    //         'source_type' => self::class,
+    //         'fee_amount' => 0, // Calculate if needed
+    //         'net_amount' => $this->amount,
+    //         'metadata' => [
+    //             'payment_id' => $this->payment_id,
+    //             'payment_method_id' => $this->payment_method_id,
+    //             'payment_intent_id' => $this->payment_intent_id,
+    //         ],
+    //         'processed_at' => $this->paid_at,
+    //     ]);
+    // }
 }
