@@ -3,7 +3,7 @@
         <!-- Completed Orders Card -->
         <div class="bg-bg-secondary p-6 rounded-2xl  hover:border-zinc-700 transition-all duration-300">
             <div class="flex flex-col space-y-4">
-                <div class="bg-bg-hover w-15 h-15 rounded-xl flex items-center justify-center">
+                <div class="bg-bg-info w-15 h-15 rounded-xl flex items-center justify-center">
                     <x-phosphor name="arrows-down-up" class="w-6 h-6 text-zinc-400 rotate-90" />
                 </div>
                 <div>
@@ -16,7 +16,7 @@
         <!-- Positive Feedback Card -->
         <div class="bg-bg-secondary p-6 rounded-2xl  hover:border-zinc-700 transition-all duration-300">
             <div class="flex flex-col space-y-4">
-                <div class="bg-bg-hover w-15 h-15 rounded-xl flex items-center justify-center">
+                <div class="bg-bg-info w-15 h-15 rounded-xl flex items-center justify-center">
                     <x-phosphor-thumbs-up-fill class="w-6 h-6 fill-zinc-500" />
                 </div>
                 <div>
@@ -29,7 +29,7 @@
         <!-- Negative Feedback Card -->
         <div class="bg-bg-secondary p-6 rounded-2xl  hover:border-zinc-700 transition-all duration-300">
             <div class="flex flex-col space-y-4">
-                <div class="bg-bg-hover w-15 h-15 rounded-xl flex items-center justify-center">
+                <div class="bg-bg-info w-15 h-15 rounded-xl flex items-center justify-center">
                     <x-phosphor-thumbs-up-fill class="w-6 h-6 fill-red-500 rotate-180" />
                 </div>
                 <div>
@@ -57,7 +57,7 @@
 <div class="py-15">
     <div class="max-w-8xl mx-auto bg-bg-secondary p-5 sm:p-15 rounded-lg">
         <!-- Filter Buttons -->
-        <div class="flex gap-1 xxxs:gap-3 mb-6">
+        <div class="flex gap-1 xxxs:gap-5 mb-6">
             <button wire:click="setTab('all')"
                 class="px-2 xxxs:px-6 py-1 xxxs:py-2.5 rounded-full font-medium transition-all duration-300 shadow-lg
                 {{ $activeTab === 'all' ? 'bg-accent text-text-white' : 'bg-zinc-50 text-accent hover:bg-gray-50' }}">
@@ -68,7 +68,7 @@
                 class="px-2 xxxs:px-6 py-1 xxxs:py-2.5 rounded-full font-medium transition-all duration-300 shadow-md flex items-center gap-2
                 {{ $activeTab === 'positive' ? 'bg-accent text-text-white' : 'bg-zinc-50 text-accent hover:bg-gray-50' }}">
                 {{ __('Positive') }}
-                <x-phosphor-thumbs-up-fill class="w-5 h-5 fill-current" />
+                <x-phosphor-thumbs-up-fill class="w-5 h-5 fill-zinc-500 "  />
             </button>
             
             <button wire:click="setTab('negative')"
@@ -88,36 +88,44 @@
                             @if($feedback['type'] === 'positive')
                                 <x-phosphor-thumbs-up-fill class="w-5 h-5 text-accent mt-1 flex-shrink-0" />
                             @else
-                                <x-phosphor-thumbs-down-fill class="w-5 h-5 text-red-500 mt-1 flex-shrink-0" />
+                                <x-phosphor-thumbs-down-fill  class="w-5 h-5 text-red-500 mt-1 fill-red-500 flex-shrink-0" />
                             @endif
                             
                             <div>
                                 <div class="flex items-center gap-2 mb-1">
                                     <span class="text-text-white font-semibold">{{ __($feedback['category']) }}</span>
                                     <span class="text-zinc-500">|</span>
-                                    <span class="text-zinc-400 text-sm">{{ __($feedback['username']) }}</span>
+                                    <span class="text-text-secondary text-sm">{{ __($feedback['username']) }}</span>
                                 </div>
                                 
                                 @if($feedback['type'] === 'positive')
-                                    <p class="text-zinc-400 text-sm">{{ __($feedback['comment']) }}</p>
+                                    <p class="text-text-secondary text-sm">{{ __($feedback['comment']) }}</p>
                                 @endif
                             </div>
                         </div>
-                        <span class="text-zinc-500 text-sm">{{ $feedback['date'] }}</span>
+                        <span class="text-text-secondary text-sm">{{ $feedback['date'] }}</span>
                     </div>
                     
                     @if($feedback['type'] === 'negative')
-                        <p class="text-zinc-400 text-sm leading-relaxed ml-8">
+                        <p class="text-text-secondary text-sm leading-relaxed ml-8">
                             {{ __($feedback['comment']) }}
                         </p>
                     @endif
                 </div>
             @empty
                 <div class="text-center py-10">
-                    <p class="text-zinc-400">{{ __('No feedback found') }}</p>
+                    <p class="text-text-secondary">{{ __('No feedback found') }}</p>
                 </div>
             @endforelse
         </div>
+    </div>
+    <div>
+        <ul class="flex justify-end items-center gap-1 mt-14 pr-4">
+            <li class="py-0.5 px-3 text-text-primary cursor-pointer rounded hover:bg-zinc-500">Previous</li>
+            <li class="py-0.5 px-3 text-text-primary cursor-pointer rounded hover:bg-zinc-500 ">1</li>
+            <li class="py-0.5 px-3 bg-zinc-500 text-text-primary cursor-pointer rounded hover:bg-zinc-500 ">2</li>
+            <li class="py-0.5 px-3 text-text-primary cursor-pointer rounded hover:bg-zinc-500" >Next</li>
+        </ul>
     </div>
 </div>
 </div>
