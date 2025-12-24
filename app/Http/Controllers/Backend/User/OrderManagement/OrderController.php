@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Backend\User\OrderManagement;
 
-use App\Http\Controllers\Controller;
+use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
@@ -20,11 +21,11 @@ class OrderController extends Controller
         return view($this->userMasterView);
     }
 
-    public function cancel($orderId)
+    public function cancel(Order  $orderId)
     {
         return view($this->frontendMasterView, compact('orderId'));
     }
-    public function complete($orderId)
+    public function complete(Order $orderId)
     {
         return view($this->frontendMasterView, compact('orderId'));
     }
