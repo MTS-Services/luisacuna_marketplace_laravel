@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use OwenIt\Auditing\Contracts\Auditable;
-
+use App\Observers\PaymentObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+ 
+#[ObservedBy([PaymentObserver::class])]
 class Payment extends AuditBaseModel implements Auditable
 {
     use AuditableTrait;
