@@ -138,7 +138,8 @@
                         </div>
                     </div>
                     <div class="flex w-full md:w-auto justify-center items-center mt-10!">
-                        <a href="">
+                        <a href="{{ route('user.order.detail', ['orderId' => $order->id]) }}">
+
                             <x-ui.button class="w-fit! py-3! px-6!">
                                 {{ __('View full description') }}
                                 <x-phosphor-arrow-right-light
