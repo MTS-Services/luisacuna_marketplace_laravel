@@ -88,7 +88,7 @@
                         {{ __('Spend your') }} <span class="text-pink-500">{{ __('"Company name"') }}</span>
                         {{ __('balance') }}
                     </p> --}}
-                    <div class="w-fit bg-bg-info rounded-lg mt-20 px-4 py-2 flex items-center gap-3">
+                    <div class="w-fit bg-bg-info rounded-lg mt-5 px-4 py-2 flex items-center gap-3">
                         <x-phosphor name="info" variant="regular" class="w-6 h-6 text-zinc-400" />
                         <p class="text-text-white text-xs font-normal">
                             {{ __('Please DO NOT deliver order to buyer. The payment was returned back to the buyer.') }}
@@ -149,7 +149,7 @@
                 </div>
             </div>
         </div>
-         {{-- 
+
         <div class="bg-bg-info rounded-lg">
             <div class="hidden md:flex items-center justify-between bg-zinc-500 rounded-tl-lg rounded-tr-lg p-5">
                 <div class="flex items-center gap-3">
@@ -178,7 +178,7 @@
                             <p class="text-text-white text-base font-normal">{{ __('Order for Items') }}</p>
                         </div>
                     </div>
-                  
+
                 </div>
 
 
@@ -274,13 +274,13 @@
             </div>
 
         </div>
-        
-         --}}
-
-        <livewire:backend.user.chat />
 
 
-        <div class="bg-bg-info rounded-lg mt-20 mb-24! !py-8 !px-4 md:!py-20 md:!px-10">
+
+        {{-- <livewire:backend.user.chat /> --}}
+
+
+        <div class="bg-bg-info rounded-lg mt-20 !py-8 !px-4 md:!py-20 md:!px-10">
             <div class="flex items-center gap-3">
                 <div class="w-16 h-16">
                     <img src="{{ asset('assets/images/order/Security.png') }}" alt="Security tips"
@@ -297,5 +297,5 @@
             </div>
         </div>
     </div>
-    <div class="pb-10 sm:pb-20 md:pb-32"></div>
+    <div class="pb-4 sm:pb-10 md:pb-20"></div>
 </section>
