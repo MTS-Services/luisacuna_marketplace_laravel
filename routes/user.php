@@ -26,18 +26,27 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
         Route::controller(OrderController::class)->name('order.')->prefix('order')->group(function () {
             Route::get('/purchased-orders', 'purchasedOrders')->name('purchased-orders');
             Route::get('/sold-orders', 'soldOrders')->name('sold-orders');
+            Route::get('/cancel/{orderId}', 'cancel')->name('cancel');
+            Route::get('/complete/{orderId}', 'complete')->name('complete');
+            Route::get('/detail/{orderId}', 'detail')->name('detail');
         });
 
-        Route::get('/order-details', [OrderDetailsController::class, 'orderDetails'])->name('order-details');
+        // Route::get('/order-details', [OrderDetailsController::class, 'orderDetails'])->name('order-details');
 
-        Route::get('/order-description', function () {
-            return view('backend.user.pages.orders.order-description');
-        })->name('order-description');
+        // Route::get('/order-description', function () {
+        //     return view('backend.user.pages.orders.order-description');
+        // })->name('order-description');
 
-        Route::controller(OngoingOrderController::class)->name('OngoingOrder.')->prefix('OngoingOrder')->group(function () {
-            Route::get('/details', 'details')->name('details');
-            Route::get('/description', 'description')->name('description');
-        });
+        // Route::controller(OngoingOrderController::class)->name('OngoingOrder.')->prefix('OngoingOrder')->group(function () {
+        //     Route::get('/details', 'details')->name('details');
+        //     Route::get('/description', 'description')->name('description');
+        // });
+
+
+
+        // Route::controller(OngoingOrderController::class)->name('')->prefix('order')->group(function () {
+            
+        // });
     });
 
     Route::group(['prefix' => 'offers'], function () {
@@ -117,24 +126,12 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
 
     Route::get('/checkout/{slug}/{token}', Checkout::class)->name('checkout');
 
-    Route::controller(PaymentController::class)->name('payment.')->prefix('payment')->group(function () {
-        // Initialize payment (create payment intent)
-        Route::post('/initialize', 'initializePayment')
-            ->name('initialize');
-
-        // Confirm payment (after frontend processing)
-        Route::post('/confirm', 'confirmPayment')
-            ->name('confirm');
-
-        // Success and failure pages
-        Route::get('/success', 'paymentSuccess')
-            ->name('success');
-
-        Route::get('/failed', 'paymentFailed')
-            ->name('failed');
-
-        // Get gateway configuration
-        Route::get('/gateway/{slug}', 'getGatewayConfig')
-            ->name('gateway.config');
-    });
+    Route::controller(PaymentController::class)
+        ->name('payment.')
+        ->prefix('payment')
+        ->group(function () {
+            Route::get('/success', 'paymentSuccess')->name('success');
+            Route::get('/failed', 'paymentFailed')->name('failed');
+            Route::get('/gateway/{slug}', 'getGatewayConfig')->name('gateway.config');
+        });
 });

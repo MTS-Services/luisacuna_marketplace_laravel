@@ -51,28 +51,33 @@
                 <!-- Left Side: Filters -->
                 <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
                     <!-- Game Filter -->
-                    <div class="relative w-full sm:w-40 lg:w-44">
-                        <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                            <option value="">{{ __('All Game') }}</option>
-                            @foreach ($games as $game)
-                                <option value="{{ $game->id }}">{{ $game->name }}</option>
+                    <div class="relative w-full sm:w-60 lg:w-60">
+
+                        <x-ui.custom-select class="rounded!" label="All Game">
+
+                             @foreach ($games as $game)
+
+                              <x-ui.custom-option value="{{ $game->id }}" label="{{ $game->name }}" />
+
                             @endforeach
-                        </x-ui.select>
+                        </x-ui.custom-select>
                     </div>
                     <!-- Status Filter -->
-                    <div class="relative w-full sm:w-40 lg:w-44">
-                        <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                            <option value="">{{ __('All Requests') }}</option>
-                            <option value="active">{{ __('In progress') }}</option>
-                            <option value="paused">{{ __('Completed') }}</option>
-                            <option value="closed">{{ __('Disputed') }}</option>
-                            <option value="closed">{{ __('Cancelled') }}</option>
-                        </x-ui.select>
+                    <div class="relative w-full sm:w-60 lg:w-60">
+                       <x-ui.custom-select class="rounded!" label="All request">
+
+                              <x-ui.custom-option value="in_progress" label="{{ __('In Progress') }}" />
+                              <x-ui.custom-option value="completed" label="{{ __('Completed') }}" />
+                              <x-ui.custom-option value="disputed" label="{{ __('Disputed') }}" />
+                              <x-ui.custom-option value="canceled" label="{{ __('Canceled') }}" />
+
+
+                        </x-ui.custom-select>
                     </div>
                 </div>
-                
+
                 <!-- New Offer Button -->
-                <x-ui.button 
+                <x-ui.button
                     class="w-full sm:w-fit! py-2!"
                     @click="showGameDropdown = !showGameDropdown; console.log('Button clicked, showGameDropdown:', showGameDropdown)">
                     <span class="text-text-btn-primary group-hover:text-text-btn-secondary">
@@ -90,8 +95,8 @@
     </div>
 
     {{-- Game Selection Dropdown - Same style as Category Hover --}}
-    <section class="fixed inset-x-0 top-[72px] z-50" 
-             x-show="showGameDropdown" 
+    <section class="fixed inset-x-0 top-[72px] z-50"
+             x-show="showGameDropdown"
              x-transition
              @click.outside="showGameDropdown = false"
              style="margin-top: 0;">
@@ -179,8 +184,8 @@
                     {{-- Search Bar --}}
                     <div class="mb-6 flex-shrink-0">
                         <div class="relative">
-                            <input type="text" 
-                                   wire:model.live.debounce.300ms="gameSearch" 
+                            <input type="text"
+                                   wire:model.live.debounce.300ms="gameSearch"
                                    placeholder="Search games..."
                                    class="w-full dark:bg-zinc-700 bg-gray-100 dark:text-white text-gray-900 border-0 rounded-full px-4 py-2.5 pl-4 pr-10 focus:outline-none focus:ring-2 dark:focus:ring-purple-500 focus:ring-purple-400 placeholder:text-gray-500 dark:placeholder:text-gray-400" />
                             <button class="absolute right-3 top-1/2 -translate-y-1/2 dark:text-gray-400 text-gray-500 hover:text-purple-500 transition">
@@ -205,7 +210,7 @@
                                     <div class="flex items-center gap-2.5 p-2.5 dark:hover:bg-purple-500/10 hover:bg-purple-100 rounded-lg transition cursor-pointer">
                                         <div class="w-6 h-6 flex-shrink-0">
                                             @if(isset($gameItem->logo))
-                                                <img src="{{ asset($gameItem->logo) }}"  
+                                                <img src="{{ asset($gameItem->logo) }}"
                                                     alt="{{ $gameItem->name }}"
                                                     class="w-full h-full object-contain rounded-lg">
                                             @else

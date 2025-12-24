@@ -8,7 +8,7 @@
                     <div class="flex flex-col lg:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
                             <p class="text-text-white">{{ __('Balance') }}</p>
-                            <h2 class="text-text-white text-2xl font-semibold mt-2">$12.00</h2>
+                            <h2 class="text-text-white text-2xl font-semibold mt-2">{{number_shorten($wallet->balance ?? 0)}}</h2>
                             <p class="text-text-white mt-2 text-sm md:text-base">
                                 {{ __('Withdrawals require $10 in completed sales') }}
                             </p>
@@ -33,7 +33,7 @@
                     <p class="text-text-white mt-2 text-sm md:text-base">
                         {{ __('Revenue from pending orders. Funds will be added to your balance when orders are Completed.') }}
                     </p>
-                    <h2 class="text-text-white text-2xl font-semibold mt-2">$5.00</h2>
+                    <h2 class="text-text-white text-2xl font-semibold mt-2">{{number_shorten($wallet->pending_balance ?? 0)}}</h2>
                 </div>
             </div>
         </div>
@@ -87,9 +87,9 @@
         </div>
     </div>
     <div>
-        <x-ui.user-table :data="$items" :columns="$columns"
+        <x-ui.user-table :data="$datas" :columns="$columns"
             emptyMessage="No data found. Add your first data to get started." class="rounded-lg overflow-hidden" />
-        <x-frontend.pagination-ui :pagination="$pagination" />
+        {{-- <x-frontend.pagination-ui :pagination="$pagination" /> --}}
     </div>
 
 </div>

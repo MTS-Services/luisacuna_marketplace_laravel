@@ -4,8 +4,8 @@ namespace App\Enums;
 
 enum CalculationType: string
 {
-    case CREDIT = 'credit';
-    case DEBIT = 'debit';
+    case CREDIT = 'credit'; // money out
+    case DEBIT = 'debit'; // money in
 
     public function label(): string
     {
@@ -18,8 +18,8 @@ enum CalculationType: string
     public function color(): string
     {
         return match ($this) {
-            self::CREDIT => 'badge-success',
-            self::DEBIT => 'badge-danger',
+            self::DEBIT => 'badge-success',
+            self::CREDIT => 'badge-danger',
         };
     }
 

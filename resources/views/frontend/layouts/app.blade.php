@@ -26,11 +26,32 @@
             display: none !important;
         }
 
-        .bg-page {
+        /* .bg-page {
             background-image: url('{{ asset('/assets/images/background/light_background.png') }}');
             background-attachment: fixed;
             background-position: 100% 100%;
             background-size: cover;
+        } */
+        .bg-page {
+            position: relative;
+            background-image: url('{{ asset('/assets/images/background/light_background.png') }}');
+            background-attachment: fixed;
+            background-position: 100% 100%;
+            background-size: cover;
+            /* overflow: hidden; */
+        }
+
+        .bg-page::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.548);
+            z-index: 1;
+        }
+
+        .bg-page>* {
+            position: relative;
+            z-index: 2;
         }
 
         .dark .bg-page {
@@ -38,6 +59,11 @@
             background-attachment: fixed;
             background-position: 100% 100%;
             background-size: cover;
+        }
+
+        .dark .bg-page::before {
+            content: none;
+            display: none;
         }
 
         .dark .bg-page-login {
