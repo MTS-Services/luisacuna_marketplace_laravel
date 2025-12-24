@@ -30,7 +30,7 @@
                 </x-ui.button>
             </div>
         </div>
-        <div class="block lg:flex gap-6 justify-between items-start mt-10 mb-20">
+        <div class="block lg:flex gap-6 justify-between items-start">
             <div class="w-full lg:w-2/3">
                 <div class=" bg-bg-secondary p-4 sm:p-10 rounded-[20px]">
                     <div class="flex gap-4 items-center">
@@ -232,7 +232,7 @@
                     </div>
                     <div class="">
                         <div class="flex justify-between mt-7">
-                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Game') }}</p>
+                            <p class="text-text-white text-base font-semibold">{{ __('Game') }}</p>
                             <div class="flex gap-2 items-center">
                                 <div>
                                     <div class="w-6 h-6">
@@ -244,15 +244,15 @@
                             </div>
                         </div>
                         <div class="flex justify-between mt-2">
-                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Username') }}</p>
+                            <p class="text-text-white text-base font-semibold">{{ __('Username') }}</p>
                             <p class="text-text-white text-base font-normal">{{ __('acuzone') }}</p>
                         </div>
                         <div class="flex justify-between mt-2">
-                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Device') }}</p>
+                            <p class="text-text-white text-base font-semibold">{{ __('Device') }}</p>
                             <p class="text-text-white text-base font-normal">{{ __('PC') }}</p>
                         </div>
                         <div class="flex justify-between mt-2">
-                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Seller') }}</p>
+                            <p class="text-text-white text-base font-semibold">{{ __('Seller') }}</p>
                             {{-- <p class="text-text-white text-base font-normal">{{ __('DI 8QUAN Online') }}</p> --}}
                             <p class="flex items-center gap-2 text-base font-normal">
                                 <span class="text-pink-500">{{ __('DI 8QUAN') }}</span>
@@ -275,5 +275,5 @@
             </div>
         </div>
     </div>
-    <div class="pb-10 sm:pb-20 md:pb-32"></div>
+    <div class="pb-10"></div>
 </section>
