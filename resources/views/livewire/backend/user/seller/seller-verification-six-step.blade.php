@@ -218,27 +218,16 @@
                     @enderror
                 @endif
             </div>
-
-            <div class="flex justify-center">
-                {{-- <a wire:click.prevent="previousStep" wire:navigate
-                        class="px-8 py-2 cursor-pointer hover:text-gray-700 rounded-lg hover:bg-gray-50">
-                        BACK
-                    </a>
-                    <button wire:click="submit" class="px-8 py-2 bg-zinc-500 text-white rounded-lg hover:bg-zinc-700"
-                        wire:loading.attr="disabled">
-                        <span wire:loading.remove wire:target="submit" class="text-white">SUBMIT</span>
-                        <span wire:loading wire:target="submit">Submitting...</span>
-                    </button> --}}
-                <div class=" flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
-                    <x-ui.button type="submit" wire:click.prevent="previousStep" wire:navigate
-                        class="w-auto py-2! text-text-white text-base! font-semibold!">
+            <div class="flex gap-4 justify-center mt-5! sm:mt-10!">
+                <div class="flex justify-center">
+                    <x-ui.button type="submit" wire:click.prevent="previousStep" wire:navigate variant="secondary"
+                        class="w-auto py-2!">
                         {{ __('Back') }}
                     </x-ui.button>
                 </div>
-                <div class="  flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
-                    <x-ui.button type="submit" wire:click="submit" class="w-auto py-2!  text-base! font-semibold!">
-                        {{ __('Submit') }}
-                    </x-ui.button>
+                <div class="flex justify-center">
+                    <x-ui.button type="submit" wire:click="submit"
+                        class="w-auto py-2!">{{ __('Submit') }}</x-ui.button>
                 </div>
             </div>
 

@@ -238,19 +238,19 @@
             <div class="section-title">📋 Transaction Details</div>
             <div class="details-grid">
                 <div class="detail-card">
-                    <div class="detail-label">Order ID</div>
+                    <div class="detail-label">Order ID: </div>
                     <div class="detail-value">#{{ $order->order_id }}</div>
                 </div>
                 <div class="detail-card">
-                    <div class="detail-label">Payment ID</div>
+                    <div class="detail-label">Payment ID: </div>
                     <div class="detail-value">{{ $payment->payment_id }}</div>
                 </div>
                 <div class="detail-card">
-                    <div class="detail-label">Payment Gateway</div>
+                    <div class="detail-label">Payment Gateway: </div>
                     <div class="detail-value">{{ ucfirst($payment->payment_gateway) }}</div>
                 </div>
                 <div class="detail-card">
-                    <div class="detail-label">Transaction Date</div>
+                    <div class="detail-label">Transaction Date: </div>
                     <div class="detail-value">{{ $payment->paid_at->format('M d, Y • h:i A') }}</div>
                 </div>
             </div>
@@ -258,17 +258,17 @@
             <div class="section-title">👤 Buyer Information</div>
             <div class="details-grid">
                 <div class="detail-card">
-                    <div class="detail-label">Name</div>
+                    <div class="detail-label">Name: </div>
                     <div class="detail-value">{{ $buyerName }}</div>
                 </div>
                 @if (isset($buyerUsername))
                     <div class="detail-card">
-                        <div class="detail-label">Username</div>
+                        <div class="detail-label">Username: </div>
                         <div class="detail-value">{{ $buyerUsername }}</div>
                     </div>
                 @endif
                 <div class="detail-card detail-card-full">
-                    <div class="detail-label">Email</div>
+                    <div class="detail-label">Email: </div>
                     <div class="detail-value">{{ $buyerEmail }}</div>
                 </div>
             </div>
@@ -276,17 +276,17 @@
             <div class="section-title">🏪 Seller Information</div>
             <div class="details-grid">
                 <div class="detail-card">
-                    <div class="detail-label">Name</div>
+                    <div class="detail-label">Name: </div>
                     <div class="detail-value">{{ $sellerName }}</div>
                 </div>
                 @if (isset($sellerUsername))
                     <div class="detail-card">
-                        <div class="detail-label">Username</div>
+                        <div class="detail-label">Username: </div>
                         <div class="detail-value">{{ $sellerUsername }}</div>
                     </div>
                 @endif
                 <div class="detail-card detail-card-full">
-                    <div class="detail-label">Email</div>
+                    <div class="detail-label">Email: </div>
                     <div class="detail-value">{{ $sellerEmail }}</div>
                 </div>
             </div>

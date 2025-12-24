@@ -104,7 +104,7 @@
                     </div>
                     <div class="">
                         <div class="flex justify-between mt-7">
-                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Game') }}</p>
+                            <p class="text-text-white text-base font-semibold">{{ __('Game') }}</p>
                             <div class="flex gap-2 items-center">
                                 <div>
                                     <div class="w-6 h-6">
@@ -116,15 +116,15 @@
                             </div>
                         </div>
                         <div class="flex justify-between mt-2">
-                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Username') }}</p>
+                            <p class="text-text-white text-base font-semibold">{{ __('Username') }}</p>
                             <p class="text-text-white text-base font-normal">{{ __('acuzone') }}</p>
                         </div>
                         <div class="flex justify-between mt-2">
-                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Device') }}</p>
+                            <p class="text-text-white text-base font-semibold">{{ __('Device') }}</p>
                             <p class="text-text-white text-base font-normal">{{ __('PC') }}</p>
                         </div>
                         <div class="flex justify-between mt-2">
-                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Seller') }}</p>
+                            <p class="text-text-white text-base font-semibold">{{ __('Seller') }}</p>
                             <p class="flex items-center gap-2 text-base font-normal">
                                 <span class="text-pink-500">{{ __('DI 8QUAN') }}</span>
                                 <span class="text-text-white">|</span>
@@ -133,7 +133,7 @@
                             </p>
                         </div>
                         <div class="flex justify-between mt-2">
-                            <p class="text-text-white text-base font-semibold mb-2">{{ __('Total price') }}</p>
+                            <p class="text-text-white text-base font-semibold">{{ __('Total price') }}</p>
                             <p class="text-text-white text-base font-normal">{{ __('$1.20') }}</p>
                         </div>
                     </div>
