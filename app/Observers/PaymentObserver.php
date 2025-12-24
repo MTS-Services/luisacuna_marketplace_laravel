@@ -2,195 +2,279 @@
 
 namespace App\Observers;
 
+use App\Jobs\SyncPaymentDataJob;
 use App\Models\Payment;
+use App\Models\Transaction;
 use App\Enums\PaymentStatus;
 use App\Enums\TransactionStatus;
 use App\Enums\TransactionType;
-use Illuminate\Support\Facades\Log;
+use App\Enums\OrderStatus;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
-/**
- * Payment Observer - Handles payment lifecycle events
- * 
- * IMPORTANT: This observer is called AFTER payment methods complete their work
- * It's a safety net for handling edge cases like:
- * - User loses internet after payment
- * - Webhook arrives before redirect
- * - Network issues during payment processing
- */
 class PaymentObserver
 {
     /**
-     * Handle the Payment "created" event.
-     */
-    public function created(Payment $payment): void
-    {
-        Log::info('Payment created', [
-            'payment_id' => $payment->payment_id,
-            'order_id' => $payment->order->order_id ?? 'N/A',
-            'amount' => $payment->amount,
-            'gateway' => $payment->payment_gateway,
-            'status' => $payment->status->value,
-        ]);
-    }
-
-    /**
-     * Handle the Payment "updated" event.
-     * This runs AFTER the payment is saved to database
+     * Handle Payment updated event.
      */
     public function updated(Payment $payment): void
     {
-        // Only process if status was changed to COMPLETED
-        if (!$payment->wasChanged('status') || $payment->status !== PaymentStatus::COMPLETED) {
+        // Only proceed if status changed
+        if (!$payment->wasChanged('status')) {
+            Log::info('Payment status unchanged, skipping', [
+                'payment_id' => $payment->payment_id,
+            ]);
             return;
         }
 
-        Log::info('Payment status changed to COMPLETED', [
+        // Only handle specific statuses
+        if (!in_array($payment->status, [
+            PaymentStatus::COMPLETED,
+            PaymentStatus::FAILED,
+            PaymentStatus::CANCELLED,
+            PaymentStatus::REFUNDED,
+            PaymentStatus::PARTIALLY_REFUNDED,
+        ], true)) {
+            Log::info('Payment status not supported, skipping', [
+                'payment_id' => $payment->payment_id,
+                'new_status' => $payment->status->value,
+            ]);
+            return;
+        }
+
+        Log::info('Payment status updated', [
             'payment_id' => $payment->payment_id,
-            'order_id' => $payment->order->order_id ?? 'N/A',
             'old_status' => $payment->getOriginal('status'),
+            'new_status' => $payment->status->value,
         ]);
+
+        // Idempotency check - prevent duplicate processing
+        $lockKey = "payment:sync:{$payment->id}:{$payment->status->value}";
+
+        if (!Cache::add($lockKey, true, now()->addMinutes(5))) {
+            Log::info('Payment sync already in progress, skipping', [
+                'payment_id' => $payment->payment_id,
+                'lock_key' => $lockKey,
+            ]);
+            return;
+        }
 
         try {
-            // Ensure transaction exists
-            // (Payment methods should have already created it, but this is a safety check)
-            $this->ensureTransactionExists($payment);
+            // Dispatch to queue for heavy operations
+            SyncPaymentDataJob::dispatch($payment)
+                ->onQueue('payments')
+                ->delay(now()->addSeconds(2)); // Small delay to ensure payment is committed
 
-            // Ensure order status is updated
-            // (Payment methods should have already done this, but this ensures it)
-            $this->ensureOrderStatusUpdated($payment);
-
-            // Dispatch events for notifications, etc.
-            event(new \App\Events\PaymentCompleted($payment));
-
-            Log::info('Payment completion processing successful', [
-                'payment_id' => $payment->payment_id,
-                'order_id' => $payment->order->order_id ?? 'N/A',
-            ]);
         } catch (\Exception $e) {
-            Log::error('Post-payment processing failed', [
+            // Release lock on failure
+            Cache::forget($lockKey);
+
+            Log::error('Failed to dispatch payment sync job', [
                 'payment_id' => $payment->payment_id,
-                'order_id' => $payment->order->order_id ?? 'N/A',
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
             ]);
 
-            // Don't throw - payment is already saved
-            // Instead, dispatch a job to retry
-            // dispatch(new \App\Jobs\RetryPaymentProcessing($payment->id));
+            throw $e;
         }
     }
 
     /**
-     * Ensure transaction record exists for completed payment
-     * This is a safety net - payment methods should create transactions
+     * Create or update transaction based on payment status.
+     * This method can still be called synchronously if needed.
      */
-    protected function ensureTransactionExists(Payment $payment): void
+    public function syncTransaction(Payment $payment): void
     {
-        // Check if transaction already exists
-        $existingTransaction = \App\Models\Transaction::where('source_id', $payment->id)
-            ->where('source_type', Payment::class)
-            ->first();
+        // Idempotency check for transaction creation
+        $transactionLockKey = "transaction:create:{$payment->id}";
 
-        if ($existingTransaction) {
-            Log::debug('Transaction already exists', [
+        if (!Cache::add($transactionLockKey, true, now()->addMinutes(5))) {
+            Log::info('Transaction creation already in progress', [
                 'payment_id' => $payment->payment_id,
-                'transaction_id' => $existingTransaction->transaction_id,
             ]);
             return;
         }
 
-        // Create transaction as safety net
-        Log::warning('Creating missing transaction in observer (should have been created by payment method)', [
+        try {
+            DB::transaction(function () use ($payment) {
+                // Lock the transaction row to prevent race conditions
+                $transaction = Transaction::where('source_id', $payment->id)
+                    ->where('source_type', Payment::class)
+                    ->lockForUpdate()
+                    ->first();
+
+                $transactionStatus = $this->mapPaymentStatusToTransactionStatus($payment->status);
+
+                if (!$transaction) {
+                    $this->createTransaction($payment, $transactionStatus);
+                } else {
+                    // Update transaction if status changed
+                    if ($transaction->status !== $transactionStatus) {
+                        $transaction->update([
+                            'status' => $transactionStatus,
+                            'processed_at' => now(),
+                            'failure_reason' => $payment->status === PaymentStatus::FAILED
+                                ? ($payment->notes ?? 'Payment failed')
+                                : null,
+                        ]);
+
+                        Log::info('Transaction status synced', [
+                            'transaction_id' => $transaction->transaction_id,
+                            'payment_id' => $payment->payment_id,
+                            'new_status' => $transactionStatus->value,
+                        ]);
+                    }
+                }
+            });
+        } finally {
+            // Always release the lock
+            Cache::forget($transactionLockKey);
+        }
+    }
+
+    /**
+     * Create a new transaction for the payment.
+     */
+    protected function createTransaction(Payment $payment, TransactionStatus $status): void
+    {
+        // Double-check transaction doesn't exist (extra safety)
+        $exists = Transaction::where('source_id', $payment->id)
+            ->where('source_type', Payment::class)
+            ->exists();
+
+        if ($exists) {
+            Log::warning('Transaction already exists, skipping creation', [
+                'payment_id' => $payment->payment_id,
+            ]);
+            return;
+        }
+
+        Log::info('Creating transaction via observer', [
             'payment_id' => $payment->payment_id,
+            'status' => $status->value,
         ]);
 
-        DB::transaction(function () use ($payment) {
-            \App\Models\Transaction::create([
-                'transaction_id' => generate_transaction_id_hybrid(),
-                'user_id' => $payment->user_id,
-                'order_id' => $payment->order_id,
-                'type' => TransactionType::PAYMENT->value,
-                'status' => TransactionStatus::PAID->value,
-                'amount' => $payment->amount,
-                'currency' => $payment->currency,
-                'payment_gateway' => $payment->payment_gateway,
-                'gateway_transaction_id' => $payment->transaction_id,
-                'source_id' => $payment->id,
-                'source_type' => Payment::class,
-                'net_amount' => $payment->amount,
-                'metadata' => [
-                    'payment_id' => $payment->payment_id,
-                    'created_by' => 'observer_safety_net',
-                ],
-                'processed_at' => $payment->paid_at ?? now(),
-            ]);
-        });
+        Transaction::create([
+            'transaction_id' => generate_transaction_id_hybrid(),
+            'user_id' => $payment->user_id,
+            'order_id' => $payment->order_id,
+            'type' => TransactionType::PAYMENT,
+            'status' => $status,
+            'amount' => $payment->amount,
+            'currency' => $payment->currency,
+            'payment_gateway' => $payment->payment_gateway,
+            'gateway_transaction_id' => $payment->transaction_id,
+            'source_id' => $payment->id,
+            'source_type' => Payment::class,
+            'fee_amount' => 0, // Calculate if needed
+            'net_amount' => $payment->amount,
+            'metadata' => [
+                'payment_id' => $payment->payment_id,
+                'payment_method_id' => $payment->payment_method_id,
+                'payment_intent_id' => $payment->payment_intent_id,
+                'created_by' => 'payment_observer',
+            ],
+            'processed_at' => $payment->paid_at ?? now(),
+            'failure_reason' => $payment->status === PaymentStatus::FAILED
+                ? ($payment->notes ?? 'Payment failed')
+                : null,
+        ]);
     }
 
     /**
-     * Ensure order status is updated based on payment
-     * This is a safety net - payment methods should update order status
+     * Map payment status to transaction status.
      */
-    protected function ensureOrderStatusUpdated(Payment $payment): void
+    protected function mapPaymentStatusToTransactionStatus(PaymentStatus $paymentStatus): TransactionStatus
     {
-        $order = $payment->order;
+        return match ($paymentStatus) {
+            PaymentStatus::COMPLETED => TransactionStatus::PAID,
+            PaymentStatus::FAILED, PaymentStatus::CANCELLED => TransactionStatus::FAILED,
+            PaymentStatus::REFUNDED, PaymentStatus::PARTIALLY_REFUNDED => TransactionStatus::REVERSED,
+            default => TransactionStatus::PENDING,
+        };
+    }
 
-        if (!$order) {
-            Log::error('Order not found for payment', [
+    /**
+     * Update order status based on payment status.
+     */
+    public function syncOrderStatus(Payment $payment): void
+    {
+        // Idempotency check for order update
+        $orderLockKey = "order:update:{$payment->order_id}:{$payment->status->value}";
+
+        if (!Cache::add($orderLockKey, true, now()->addMinutes(5))) {
+            Log::info('Order update already in progress', [
                 'payment_id' => $payment->payment_id,
                 'order_id' => $payment->order_id,
             ]);
             return;
         }
 
-        // Refresh order to get latest data
-        $order->refresh();
+        try {
+            DB::transaction(function () use ($payment) {
+                // Lock the order row
+                $order = $payment->order()->lockForUpdate()->first();
 
-        // Check if order needs status update
-        if (
-            $order->status === \App\Enums\OrderStatus::INITIALIZED ||
-            $order->status === \App\Enums\OrderStatus::PENDING
-        ) {
+                if (!$order) {
+                    Log::error('Order not found for payment', [
+                        'payment_id' => $payment->payment_id,
+                        'order_id' => $payment->order_id,
+                    ]);
+                    return;
+                }
 
-            Log::info('Updating order status in observer', [
-                'order_id' => $order->order_id,
-                'old_status' => $order->status->value,
-            ]);
+                // Don't update terminal order statuses
+                if (in_array($order->status, [
+                    OrderStatus::COMPLETED,
+                    OrderStatus::CANCELLED,
+                    OrderStatus::REFUNDED,
+                    OrderStatus::FAILED,
+                ], true)) {
+                    Log::info('Order already in terminal status, skipping update', [
+                        'order_id' => $order->id,
+                        'current_status' => $order->status->value,
+                    ]);
+                    return;
+                }
 
-            DB::transaction(function () use ($order, $payment) {
-                $order->updateStatusBasedOnPayment();
+                $newStatus = $this->mapPaymentStatusToOrderStatus($payment->status);
 
-                // Ensure payment method is set
-                if (!$order->payment_method) {
-                    $order->update([
-                        'payment_method' => ucfirst($payment->payment_gateway),
+                if ($newStatus && $order->status !== $newStatus) {
+                    $updateData = ['status' => $newStatus];
+
+                    // Set payment method only for successful payments
+                    if ($payment->status === PaymentStatus::COMPLETED && !$order->payment_method) {
+                        $updateData['payment_method'] = ucfirst($payment->payment_gateway);
+                    }
+
+                    $order->update($updateData);
+
+                    Log::info('Order status synced', [
+                        'order_id' => $order->id,
+                        'payment_id' => $payment->payment_id,
+                        'old_status' => $order->getOriginal('status'),
+                        'new_status' => $newStatus->value,
                     ]);
                 }
             });
+        } finally {
+            // Always release the lock
+            Cache::forget($orderLockKey);
         }
     }
 
     /**
-     * Handle the Payment "deleted" event.
+     * Map payment status to order status.
      */
-    public function deleted(Payment $payment): void
+    protected function mapPaymentStatusToOrderStatus(PaymentStatus $paymentStatus): ?OrderStatus
     {
-        Log::warning('Payment deleted', [
-            'payment_id' => $payment->payment_id,
-            'order_id' => $payment->order->order_id ?? 'N/A',
-            'amount' => $payment->amount,
-        ]);
-    }
-
-    /**
-     * Handle the Payment "restored" event.
-     */
-    public function restored(Payment $payment): void
-    {
-        Log::info('Payment restored', [
-            'payment_id' => $payment->payment_id,
-            'order_id' => $payment->order->order_id ?? 'N/A',
-        ]);
+        return match ($paymentStatus) {
+            PaymentStatus::COMPLETED => OrderStatus::PAID,
+            PaymentStatus::FAILED => OrderStatus::FAILED,
+            PaymentStatus::CANCELLED => OrderStatus::CANCELLED,
+            PaymentStatus::PARTIALLY_REFUNDED => OrderStatus::PARTIALLY_REFUNDED,
+            PaymentStatus::REFUNDED => OrderStatus::REFUNDED,
+            default => null,
+        };
     }
 }
