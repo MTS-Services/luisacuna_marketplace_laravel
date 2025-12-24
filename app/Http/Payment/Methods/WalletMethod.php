@@ -6,14 +6,13 @@ use App\Enums\OrderStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\TransactionStatus;
 use App\Enums\TransactionType;
-use App\Enums\WalletTransactionType;
 use App\Enums\CalculationType;
 use App\Http\Payment\PaymentMethod;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Wallet;
 use App\Models\Transaction;
-use App\Models\WalletTransaction;
+use App\Services\ConversationService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Exception;
@@ -24,18 +23,14 @@ class WalletMethod extends PaymentMethod
     protected $name = 'Wallet';
     protected $requiresFrontendJs = false;
 
-    public function __construct($gateway = null)
+    public function __construct($gateway = null, ConversationService $conversationService)
     {
-        parent::__construct($gateway);
+        parent::__construct($gateway, $conversationService);
     }
 
-    /**
-     * Start payment - Process wallet payment immediately
-     */
     public function startPayment(Order $order, array $paymentData = []): array
     {
         try {
-            // Get or create user wallet
             $wallet = Wallet::firstOrCreate(
                 ['user_id' => $order->user_id],
                 [
@@ -48,7 +43,6 @@ class WalletMethod extends PaymentMethod
                 ]
             );
 
-            // Check if user has sufficient balance
             if ($wallet->balance < $order->grand_total) {
                 return [
                     'success' => false,
@@ -63,7 +57,10 @@ class WalletMethod extends PaymentMethod
             DB::beginTransaction();
 
             try {
-                // 1. Create payment record (PENDING initially)
+                $balanceBefore = $wallet->balance;
+                $balanceAfter = $balanceBefore - $order->grand_total;
+
+                // 1. Create payment record
                 $payment = Payment::create([
                     'payment_id' => generate_payment_id(),
                     'user_id' => $order->user_id,
@@ -72,8 +69,15 @@ class WalletMethod extends PaymentMethod
                     'payment_gateway' => $this->id,
                     'amount' => $order->grand_total,
                     'currency' => $wallet->currency_code,
-                    'status' => PaymentStatus::PENDING->value,
+                    'status' => PaymentStatus::COMPLETED->value, // Direct COMPLETED status
                     'order_id' => $order->id,
+                    'paid_at' => now(), // Set immediately
+                    'transaction_id' => null, // Will be set below
+                    'metadata' => [
+                        'wallet_payment' => true,
+                        'balance_before' => $balanceBefore,
+                        'balance_after' => $balanceAfter,
+                    ],
                     'creater_id' => $order->user_id,
                     'creater_type' => get_class($order->user),
                 ]);
@@ -84,23 +88,32 @@ class WalletMethod extends PaymentMethod
                     'user_id' => $order->user_id,
                     'order_id' => $order->id,
                     'type' => TransactionType::PAYMENT->value,
-                    'status' => TransactionStatus::PENDING->value,
+                    'status' => TransactionStatus::PAID->value, // Direct PAID status
                     'amount' => $order->grand_total,
                     'currency' => $wallet->currency_code,
                     'payment_gateway' => $this->id,
+                    'gateway_transaction_id' => null,
                     'source_id' => $payment->id,
                     'source_type' => Payment::class,
                     'net_amount' => $order->grand_total,
+                    'processed_at' => now(),
                     'metadata' => [
                         'payment_id' => $payment->payment_id,
                         'wallet_payment' => true,
                     ],
                 ]);
 
-                // 3. Calculate new balance
-                $balanceBefore = $wallet->balance;
-                $balanceAfter = $balanceBefore - $order->grand_total;
+                // Update payment with transaction_id
+                $payment->update([
+                    'transaction_id' => $paymentTransaction->transaction_id,
+                ]);
 
+                // Update transaction with self-referencing ID
+                $paymentTransaction->update([
+                    'gateway_transaction_id' => $paymentTransaction->transaction_id,
+                ]);
+
+                // 3. Create wallet credit transaction
                 Transaction::create([
                     'transaction_id' => generate_transaction_id_hybrid(),
                     'user_id' => $wallet->user_id,
@@ -118,36 +131,17 @@ class WalletMethod extends PaymentMethod
                         'transaction_type' => TransactionType::WALLET->value,
                         'wallet_owner_id' => $wallet->user_id,
                     ],
-                    'notes' => 'Wallet credit of ' . number_format($order->grand_total, 2) . ' ' . $wallet->currency_code . ' for making payment for Order #' . $order->order_id,
+                    'notes' => 'Wallet credit of ' . number_format($order->grand_total, 2) . ' ' . $wallet->currency_code . ' for Order #' . $order->order_id,
                 ]);
 
-                // 5. Update wallet balance
+                // 4. Update wallet balance
                 $wallet->update([
                     'balance' => $balanceAfter,
                     'total_withdrawals' => $wallet->total_withdrawals + $order->grand_total,
                     'last_withdrawal_at' => now(),
                 ]);
 
-                // 6. Mark transaction as completed
-                $paymentTransaction->update([
-                    'status' => TransactionStatus::PAID->value,
-                    'gateway_transaction_id' => $paymentTransaction->transaction_id,
-                    'processed_at' => now(),
-                ]);
-
-                // 7. Mark payment as completed (this triggers PaymentObserver)
-                $payment->update([
-                    'status' => PaymentStatus::COMPLETED->value,
-                    'transaction_id' => $paymentTransaction->transaction_id,
-                    'paid_at' => now(),
-                    'metadata' => [
-                        'wallet_transaction_id' => $paymentTransaction->id,
-                        'balance_before' => $balanceBefore,
-                        'balance_after' => $balanceAfter,
-                    ],
-                ]);
-
-                // 8. Update order status (handled by PaymentObserver, but we do it here for immediate response)
+                // 5. Update order status
                 $order->update([
                     'status' => OrderStatus::PAID->value,
                     'payment_method' => $this->name,
@@ -163,6 +157,9 @@ class WalletMethod extends PaymentMethod
                     'amount' => $order->grand_total,
                     'balance_after' => $balanceAfter,
                 ]);
+
+                $this->dispatchPaymentNotificationsOnce($payment);
+                $this->sendOrderMessage($order);
 
                 return [
                     'success' => true,
@@ -193,9 +190,6 @@ class WalletMethod extends PaymentMethod
         }
     }
 
-    /**
-     * Confirm payment - Not needed for wallet (payment is instant)
-     */
     public function confirmPayment(string $transactionId, ?string $paymentMethodId = null): array
     {
         return [
@@ -204,9 +198,6 @@ class WalletMethod extends PaymentMethod
         ];
     }
 
-    /**
-     * Get user wallet balance
-     */
     public function getWalletBalance(int $userId): array
     {
         $wallet = Wallet::where('user_id', $userId)->first();
@@ -228,9 +219,6 @@ class WalletMethod extends PaymentMethod
         ];
     }
 
-    /**
-     * Check if user has sufficient balance
-     */
     public function hasSufficientBalance(int $userId, float $amount): bool
     {
         $wallet = Wallet::where('user_id', $userId)->first();
