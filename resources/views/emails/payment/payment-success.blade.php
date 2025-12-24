@@ -223,19 +223,19 @@
 
             <div class="details-card">
                 <div class="detail-row">
-                    <span class="detail-label">Order ID</span>
+                    <span class="detail-label">Order ID: </span>
                     <span class="detail-value">#{{ $order->order_id }}</span>
                 </div>
                 <div class="detail-row">
-                    <span class="detail-label">Payment Method</span>
+                    <span class="detail-label">Payment Method: </span>
                     <span class="detail-value">{{ ucfirst($payment->payment_gateway) }}</span>
                 </div>
                 <div class="detail-row">
-                    <span class="detail-label">Transaction ID</span>
+                    <span class="detail-label">Transaction ID: </span>
                     <span class="detail-value">{{ $payment->payment_id }}</span>
                 </div>
                 <div class="detail-row">
-                    <span class="detail-label">Date & Time</span>
+                    <span class="detail-label">Date & Time: </span>
                     <span class="detail-value">{{ $payment->paid_at->format('M d, Y • h:i A') }}</span>
                 </div>
             </div>

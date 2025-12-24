@@ -6,7 +6,7 @@
                 {{ __('Back') }}
             </h2>
         </div>
-        <div class="bg-bg-secondary p-4 sm:p-10 md:p-20 rounded-lg mt-10 md:mt-44">
+        <div class="bg-bg-secondary p-4 sm:p-10 md:p-20 rounded-lg mt-10">
             <div class="flex mt-7">
                 <div class="flex gap-2">
                     <div>
@@ -78,7 +78,7 @@
                 </div>
 
                 <!-- Read More Button -->
-                <div x-show="!isExpanded" class="flex w-fit! py-3! px-6!">
+                <div x-show="!isExpanded" class="flex w-fit!">
                     <x-ui.button @click="isExpanded = true" class="w-fit! py-3!"
                         x-text="isExpanded ? 'Read less' : 'Read more'">{{ __('Read more') }}</x-ui.button>
                 </div>
@@ -143,14 +143,14 @@
                                                         fortnite-gift-ideas') }}
                         </p>
                     </div>
-                    <div class="flex w-fit! py-3! px-6!">
+                    <div class="flex w-fit!">
                         <x-ui.button @click="isExpanded = false"
                             class="w-fit! py-3!">{{ __('Read less') }}</x-ui.button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="bg-bg-info px-4 sm:px-10 md:px-20 py-4 sm:py-10 rounded-2xl mt-10">
+        <div class="bg-bg-info px-4 sm:px-10 md:px-20 py-4 sm:py-10 rounded-2xl mt-20">
             <h2 class="text-text-white text-2xl font-semibold">{{ __('Seller') }}</h2>
             <div class="mt-3">
                 <div class="pt-4 mt-4 flex items-center gap-5">
@@ -167,7 +167,7 @@
                 </div>
             </div>
         </div>
-        <div class="bg-bg-info px-4 sm:px-10 md:px-20 py-4 sm:py-10 rounded-2xl mt-10 mb-10 sm:mb-32">
+        <div class="bg-bg-info px-4 sm:px-10 md:px-20 py-4 sm:py-10 rounded-2xl mt-20">
             <h2 class="text-text-white text-2xl font-semibold">{{ __('Payment') }}</h2>
             <div class="flex justify-between mt-3">
                 <p class="text-text-white text-base font-semibold mb-2">{{ __('Total price') }}</p>
@@ -197,5 +197,5 @@
             </div>
         </div>
     </div>
-    <div class="pb-10 sm:pb-20 md:pb-32"></div>
+    <div class="pb-10"></div>
 </div>

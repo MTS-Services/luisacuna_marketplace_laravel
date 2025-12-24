@@ -58,64 +58,6 @@
                         // ],
                     ]" />
 
-
-
-
-                <x-backend.navlink type="dropdown" icon="gamepad-directional" name="Game Management" :page_slug="$active"
-                    :items="[
-                        [
-                            'name' => 'Categories',
-                            'route' => route('admin.gm.category.index'),
-                            'icon' => 'gamepad-2',
-                            'active' => 'game-category',
-                            'permission' => 'category-list',
-                        ],
-                    
-                        // [
-                        //     'name' => 'Servers',
-                        //     'route' => route('admin.gm.server.index'),
-                        //     'icon' => 'swords',
-                        //     'active' => 'server',
-                        //     'permission' => 'server-list',
-                        // ],
-                    
-                        [
-                            'name' => 'Platforms',
-                            'route' => route('admin.gm.platform.index'),
-                            'icon' => 'swords',
-                            'active' => 'game-platform',
-                            'permission' => 'platform-list',
-                        ],
-                    
-                        [
-                            'name' => 'Games',
-                            'route' => route('admin.gm.game.index'),
-                            'icon' => 'swords',
-                            'active' => 'game',
-                            'permission' => 'game-list',
-                        ],
-                    
-                        // [
-                        //     'name' => 'Rarity',
-                        //     'route' => route('admin.gm.rarity.index'),
-                        //     'icon' => 'swords',
-                        //     'active' => 'game-rarity',
-                        // ],
-                    
-                        // [
-                        //     'name' => 'Pending Users',
-                        //     'route' => '#',
-                        //     'icon' => 'user-plus',
-                        //     'active' => 'admin-users-pending',
-                        // ],
-                    
-                        // [
-                        //     'name' => 'Banned Users',
-                        //     'route' => '#',
-                        //     'icon' => 'user-round-x',
-                        //     'active' => 'admin-users-banned',
-                        // ],
-                    ]" />
                 <x-backend.navlink type="dropdown" icon="user-group" name="Users" :page_slug="$active"
                     :items="[
                         [
