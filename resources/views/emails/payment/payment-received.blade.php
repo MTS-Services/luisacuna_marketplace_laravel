@@ -253,37 +253,37 @@
             <p class="message">Excellent news! You have received a new payment for your service.</p>
 
             <div class="amount-card">
-                <div class="amount-label">Amount Received</div>
+                <div class="amount-label">Amount Received: </div>
                 <div class="amount">{{ $payment->currency }} {{ number_format($payment->amount, 2) }}</div>
             </div>
 
             <div class="details-card">
                 <div class="detail-row">
-                    <span class="detail-label">Order ID</span>
+                    <span class="detail-label">Order ID: </span>
                     <span class="detail-value">#{{ $order->order_id }}</span>
                 </div>
                 <div class="detail-row">
-                    <span class="detail-label">Payment Method</span>
+                    <span class="detail-label">Payment Method: </span>
                     <span class="detail-value">{{ ucfirst($payment->payment_gateway) }}</span>
                 </div>
                 <div class="detail-row">
-                    <span class="detail-label">Buyer Name</span>
+                    <span class="detail-label">Buyer Name: </span>
                     <span class="detail-value">{{ $buyerName }}</span>
                 </div>
                 @if (isset($buyerUsername))
                     <div class="detail-row">
-                        <span class="detail-label">Buyer Username</span>
+                        <span class="detail-label">Buyer Username: </span>
                         <span class="detail-value">{{ $buyerUsername }}</span>
                     </div>
                 @endif
                 <div class="detail-row">
-                    <span class="detail-label">Date & Time</span>
+                    <span class="detail-label">Date & Time: </span>
                     <span class="detail-value">{{ $payment->paid_at->format('M d, Y • h:i A') }}</span>
                 </div>
             </div>
 
             <div class="info-box">
-                <div class="info-title">Next Steps:</div>
+                <div class="info-title">Next Steps: </div>
                 <ul class="info-list">
                     <li>Review the order requirements carefully</li>
                     <li>Begin working on order fulfillment</li>

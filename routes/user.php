@@ -13,12 +13,12 @@ use App\Livewire\Backend\User\Payments\Checkout;
 Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->group(function () {
 
 
-    Route::controller(OrderController::class)->name('order.')->prefix('order')->group(function () {
+    Route::controller(OrderController::class)->name('order.')->prefix('orders')->group(function () {
         Route::get('/purchased-orders', 'purchasedOrders')->name('purchased-orders');
         Route::get('/sold-orders', 'soldOrders')->name('sold-orders');
         Route::get('/cancel/{orderId}', 'cancel')->name('cancel');
         Route::get('/complete/{orderId}', 'complete')->name('complete');
-        Route::get('/detail/{orderId}', 'detail')->name('detail');
+        Route::get('/details/{orderId}', 'detail')->name('detail');
     });
 
 

@@ -1,6 +1,6 @@
 <div>
 
-    <div class="bg-bg-primary pt-6">
+    <div class="bg-bg-primary pt-12">
 
         <div class="text-center mb-10">
             <h1 class="text-3xl font-bold mb-2">{{ __('Trade Protect For Buyers') }}</h1>
