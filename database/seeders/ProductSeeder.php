@@ -21,7 +21,7 @@ class ProductSeeder extends Seeder
         $platforms = Platform::pluck('id');
         $users = User::pluck('id');
         $categories = Category::all();
-        $productsPerCategory = 5;
+        $productsPerCategory = 50;
 
         $deliveryItems = ['Instant Delivery', '1 Hour Delivery', '3 Day Delivery', '24 Hour Delivery', '7 Day Delivery', '30 Day Delivery'];
 
