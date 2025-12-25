@@ -37,8 +37,9 @@ class BuyComponent extends Component
     public function render()
     {
         $othersSellerProducts =  $this->othersSellerProducts();
+        $this->paginationData($othersSellerProducts);
         return view('livewire.frontend.game.buy-component', [
-            'pagination' => $this->paginationData($othersSellerProducts),
+
             'relatedProducts' => $othersSellerProducts,
         ]);
     }
@@ -46,6 +47,7 @@ class BuyComponent extends Component
     public function othersSellerProducts(){
       return  $this->service->getPaginatedData($this->perPage, [
             'categorySlug' => $this->categorySlug,
+            'gameSlug' => $this->gameSlug,
         ]);
     }
 }

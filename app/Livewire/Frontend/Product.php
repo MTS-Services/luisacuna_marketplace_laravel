@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace App\Livewire\Frontend;
 
 use App\Services\CategoryService;
@@ -16,7 +16,7 @@ class Product extends Component
     public $search = '';
     public $sortOrder = 'default';
 
- 
+
     // Protected properties
     protected GameService $game_service;
     protected $allGamesCache = null;
@@ -41,8 +41,8 @@ class Product extends Component
         $category = $this->categoryService->findData($this->categorySlug, 'slug');
         // dd($games);
 
-        $this->pagination = $this->paginationData($games);
-       
+        $this->paginationData($games);
+
         $popular_games = $this->game_service->getAllDatas([
             'category' => $this->categorySlug,
             'tag' => 'popular',
@@ -59,7 +59,7 @@ class Product extends Component
             'withProductCount' => true
           ]);
         }
- 
+
         return view('livewire.frontend.product', [
             'games' => $games ?? collect([]),
             'popular_games' => $popular_games ?? collect([]),
@@ -69,12 +69,12 @@ class Product extends Component
             'category' => $category,
         ]);
     }
- 
- 
+
+
     protected function getGames()
     {
 
-         
+
         try {
             $params = [
                 'category' => $this->categorySlug,
@@ -82,47 +82,46 @@ class Product extends Component
                 'withProductCount' => true,
             ];
 
-          
+
 
             if (!empty($this->search)) {
-              
+
                 $params['search'] = $this->search;
             }
- 
+
             if ($this->sortOrder !== 'default') {
                 $params['sort_field'] = 'name';
                 $params['sort_direction'] = $this->sortOrder;
             }
- 
+
             $games = $this->game_service->paginateDatas($this->perPage, $params);
- 
+
             return $games;
         } catch (\Exception $e) {
             Log::error('Error fetching games: ' . $e->getMessage());
             return collect([]);
         }
     }
- 
+
     protected function applySorting($collection)
     {
         if ($collection === null || $collection->isEmpty()) {
             return collect([]);
         }
- 
+
         if ($this->sortOrder === 'asc') {
             return $collection->sortBy('name')->values();
         } elseif ($this->sortOrder === 'desc') {
             return $collection->sortByDesc('name')->values();
         }
- 
+
         return $collection;
     }
- 
+
     public function resetFilters()
     {
         $this->search = '';
         $this->sortOrder = 'default';
     }
 }
- 
- 
+
