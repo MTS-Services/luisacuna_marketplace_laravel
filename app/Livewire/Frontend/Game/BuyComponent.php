@@ -4,11 +4,13 @@ namespace App\Livewire\Frontend\Game;
 
 
 use App\Services\ProductService;
+use App\Traits\WithPaginationData;
 use Livewire\Component;
 
 class BuyComponent extends Component
 {
 
+    use WithPaginationData;
     public $gameSlug;
     public $categorySlug;
     public $productId;
@@ -16,6 +18,7 @@ class BuyComponent extends Component
     public $game;
     public $user;
     protected ProductService $service;
+
     public function boot(ProductService $service)
     {
         $this->service = $service;
@@ -28,9 +31,21 @@ class BuyComponent extends Component
         $this->product = $this->service->findData($this->productId)->load(['games', 'user']);
         $this->game = $this->product->games;
         $this->user = $this->product->user;
+
+
     }
     public function render()
     {
-        return view('livewire.frontend.game.buy-component');
+        $othersSellerProducts =  $this->othersSellerProducts();
+        return view('livewire.frontend.game.buy-component', [
+            'pagination' => $this->paginationData($othersSellerProducts),
+            'relatedProducts' => $othersSellerProducts,
+        ]);
+    }
+
+    public function othersSellerProducts(){
+      return  $this->service->getPaginatedData($this->perPage, [
+            'categorySlug' => $this->categorySlug,
+        ]);
     }
 }

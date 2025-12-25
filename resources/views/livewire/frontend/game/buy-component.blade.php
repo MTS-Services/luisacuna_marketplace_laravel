@@ -36,7 +36,8 @@
         <!-- Product Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 ">
             <!-- Card 1 -->
-            <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'productId' => encrypt($product->id)]) }}"
+            @forelse ( $relatedProducts as $relatedProduct)
+                 <a href="{{ route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'productId' => encrypt($product->id)]) }}"
                 wire:navigate>
                 <!-- Card -->
                 <div class="bg-bg-primary rounded-2xl p-5 shadow-lg transition">
@@ -96,6 +97,11 @@
                     </div>
                 </div>
             </a>
+            @empty
+
+            @endforelse
+
         </div>
+          <x-frontend.pagination-ui :pagination="$pagination" />
 
 </main>
