@@ -127,7 +127,7 @@
                     <p class="text-pink-500 text-base font-semibold mt-2">{{ __('Your money is always safe') }}</p>
                     <p class="text-text-white text-base font-normal mt-4">
                         {{ __('We hold your payment until you confirm you\'ve received what you paid for.
-                                                                    If the seller can\'t complete the delivery or any other issue arises, your money is protected and will be fully refunded to your SWAPY.GG wallet.') }}
+                                                                                                                                                                                            If the seller can\'t complete the delivery or any other issue arises, your money is protected and will be fully refunded to your SWAPY.GG wallet.') }}
                     </p>
                 </div>
             </div>
@@ -240,17 +240,45 @@
                                 <p class="text-text-white font-normal text-xs">{{ __('Subtotal:') }}</p>
                                 <p class="text-text-white font-semibold text-base">{{ __('25.81 PEN') }}</p>
                             </div>
+
                             <div class="flex justify-between mb-2">
                                 <div class="flex gap-1 items-center">
                                     <p class="text-text-white font-normal text-xs">{{ __('Payment Fee') }}</p>
-                                    <x-phosphor name="question" variant="variant"
-                                        class="fill-zinc-200 w-5 h-5" />
+                                    <button type="button" onclick="openPaymentFeeModal()"
+                                        class="focus:outline-none">
+                                        <x-phosphor name="question" variant="variant"
+                                            class="fill-zinc-200 w-5 h-5 cursor-pointer hover:fill-zinc-300 transition-colors" />
+                                    </button>
                                 </div>
                                 <p class="text-text-white font-semibold text-base">{{ __('+ 2.66 PEN') }}</p>
                             </div>
+
                             <div class="flex justify-between mb-2">
                                 <p class="text-text-white font-normal text-xs">{{ __('Use Wallet Balance') }}</p>
                                 <p class="text-text-white font-semibold text-base">{{ __('0.00 USD') }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Modal -->
+                        <div id="paymentFeeModal"
+                            class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                            <div class="bg-bg-secondary rounded-2xl p-6 max-w-md w-full mx-4 relative">
+                                <!-- Close Button -->
+                                <button type="button" onclick="closePaymentFeeModal()"
+                                    class="absolute top-4 right-4 text-text-white hover:text-gray-300 transition-colors">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+
+                                <!-- Modal Content -->
+                                <h2 class="text-text-white font-semibold text-2xl mb-4 pr-8">
+                                    {{ __('Why do I Pay Payment Fee ?') }}
+                                </h2>
+                                <p class="text-text-white font-normal text-base text-justify">
+                                    {{ __('Payment fee is collected to pay for service related to the product, which is a standard practice in e-commerce and other industries. In detail, it is applied to cover services rendered to the consumer as well as administrative or processing costs, such as payment processing fee and 24/7 customer support.') }}
+                                </p>
                             </div>
                         </div>
                         <div class="mt-5">
@@ -267,7 +295,33 @@
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
+    @push('scripts')
+        <script>
+            function openPaymentFeeModal() {
+                document.getElementById('paymentFeeModal').classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closePaymentFeeModal() {
+                document.getElementById('paymentFeeModal').classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+
+            // Close modal when clicking outside
+            document.getElementById('paymentFeeModal')?.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closePaymentFeeModal();
+                }
+            });
+
+            // Close modal on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closePaymentFeeModal();
+                }
+            });
+        </script>
+    @endpush
 </div>
