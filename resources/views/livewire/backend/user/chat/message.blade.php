@@ -90,59 +90,107 @@
                             </div>
                         </div>
                     @else
+                        @php
+                            $sender = $msg->sender;
+                        @endphp
                         {{-- Other User Message --}}
-                        <div class="flex items-start gap-2 sm:gap-3">
-                            @php
-                                $sender = $msg->sender;
-                            @endphp
+                        @if ($sender)
+                            <div class="flex items-start gap-2 sm:gap-3">
 
-                            @if ($sender && $sender->avatar)
-                                <img src="{{ storage_url($sender->avatar) }}" alt="{{ $sender->full_name }}"
-                                    class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
-                            @else
-                                <div
-                                    class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
-                                    {{ $sender ? strtoupper(substr($sender->full_name, 0, 2)) : 'S' }}
-                                </div>
-                            @endif
 
-                            <div class="flex flex-col gap-1 sm:gap-2 max-w-[75%] sm:max-w-md">
-                                {{-- Attachments --}}
-                                @if ($msg->attachments && $msg->attachments->count() > 0)
-                                    @foreach ($msg->attachments as $attachment)
-                                        <div class="relative mb-2">
-                                            @if (in_array($attachment->attachment_type->value, ['image', 'photo']))
-                                                <img src="{{ asset('storage/' . $attachment->file_path) }}"
-                                                    class="rounded-lg max-w-full max-h-64 object-cover cursor-pointer"
-                                                    wire:click="ShowAttachemntImage('{{ encrypt(asset('storage/' . $attachment->file_path)) }}')">
-                                            @else
-                                                <a href="{{ asset('storage/' . $attachment->file_path) }}"
-                                                    class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
-                                                    📎 {{ basename($attachment->file_path) }}
-                                                </a>
-                                            @endif
-
-                                            <a href="{{ asset('storage/' . $attachment->file_path) }}" download
-                                                class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
-                                                ⬇
-                                            </a>
-                                        </div>
-                                    @endforeach
-                                @endif
-
-                                {{-- Message Body --}}
-                                @if ($msg->message_body)
+                                @if ($sender && $sender->avatar)
+                                    <img src="{{ storage_url($sender->avatar) }}" alt="{{ $sender->full_name }}"
+                                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0 border-2 border-zinc-400">
+                                @else
                                     <div
-                                        class="bg-bg-hover text-text-primary px-3 sm:px-4 py-2 sm:py-3 rounded-2xl rounded-tl-none">
-                                        <p class="text-xs sm:text-sm break-words">{{ $msg->message_body }}</p>
+                                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground border-2 border-zinc-400  flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
+                                        {{ $sender ? strtoupper(substr($sender->full_name, 0, 2)) : 'S' }}
                                     </div>
                                 @endif
 
-                                <span class="text-[10px] sm:text-xs text-text-muted">
-                                    {{ $msg->created_at->format('M d, Y h:i A') }}
-                                </span>
+                                <div class="flex flex-col gap-1 sm:gap-2 max-w-[75%] sm:max-w-md">
+                                    {{-- Attachments --}}
+                                    @if ($msg->attachments && $msg->attachments->count() > 0)
+                                        @foreach ($msg->attachments as $attachment)
+                                            <div class="relative mb-2">
+                                                @if (in_array($attachment->attachment_type->value, ['image', 'photo']))
+                                                    <img src="{{ asset('storage/' . $attachment->file_path) }}"
+                                                        class="rounded-lg max-w-full max-h-64 object-cover cursor-pointer"
+                                                        wire:click="ShowAttachemntImage('{{ encrypt(asset('storage/' . $attachment->file_path)) }}')">
+                                                @else
+                                                    <a href="{{ asset('storage/' . $attachment->file_path) }}"
+                                                        class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
+                                                        📎 {{ basename($attachment->file_path) }}
+                                                    </a>
+                                                @endif
+
+                                                <a href="{{ asset('storage/' . $attachment->file_path) }}" download
+                                                    class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
+                                                    ⬇
+                                                </a>
+                                            </div>
+                                        @endforeach
+                                    @endif
+
+                                    {{-- Message Body --}}
+                                    @if ($msg->message_body)
+                                        <div
+                                            class="bg-bg-hover text-text-primary px-3 sm:px-4 py-2 sm:py-3 rounded-2xl rounded-tl-none">
+                                            <p class="text-xs sm:text-sm break-words">{{ $msg->message_body }}</p>
+                                        </div>
+                                    @endif
+
+                                    <span class="text-[10px] sm:text-xs text-text-muted">
+                                        {{ $msg->created_at->format('M d, Y h:i A') }}
+                                    </span>
+                                </div>
+                            </div>
+                        @else
+
+                        <div class="flex items-start gap-2 sm:gap-3">
+
+                            <div class="bg-bg-info border-l-3 border-pink-500  rounded-3xl  p-5 w-full" >
+
+                                    <div class="flex flex-col gap-1 sm:gap-2 w-full sm:max-w-full">
+                                        {{-- Attachments --}}
+                                        @if ($msg->attachments && $msg->attachments->count() > 0)
+                                            @foreach ($msg->attachments as $attachment)
+                                                <div class="relative mb-2">
+                                                    @if (in_array($attachment->attachment_type->value, ['image', 'photo']))
+                                                        <img src="{{ asset('storage/' . $attachment->file_path) }}"
+                                                            class="rounded-lg max-w-full max-h-64 object-cover cursor-pointer"
+                                                            wire:click="ShowAttachemntImage('{{ encrypt(asset('storage/' . $attachment->file_path)) }}')">
+                                                    @else
+                                                        <a href="{{ asset('storage/' . $attachment->file_path) }}"
+                                                            class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
+                                                            📎 {{ basename($attachment->file_path) }}
+                                                        </a>
+                                                    @endif
+
+                                                    <a href="{{ asset('storage/' . $attachment->file_path) }}" download
+                                                        class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
+                                                        ⬇
+                                                    </a>
+                                                </div>
+                                            @endforeach
+                                        @endif
+
+                                        {{-- Message Body --}}
+                                        @if ($msg->message_body)
+                                            <div
+                                                class=" text-text-primary px-3 sm:px-4 py-2 sm:py-3 rounded-2xl rounded-tl-none">
+                                                <p class="text-xs sm:text-sm break-words">{{ $msg->message_body }}</p>
+                                            </div>
+                                        @endif
+
+                                        <p class="text-[10px] sm:text-xs text-text-muted text-end">
+                                            {{ $msg->created_at->format('M d, Y h:i A') }}
+                                        </p>
+                                    </div>
                             </div>
                         </div>
+
+                        @endif
                     @endif
                 </div>
             @empty
@@ -172,8 +220,8 @@
                 <button type="button" wire:click="closeImageOverlay"
                     class="absolute top-4 right-4 text-white hover:text-gray-300 z-50">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
                     </svg>
                 </button>
 
@@ -181,8 +229,7 @@
                 <div class="relative max-w-7xl max-h-full" wire:click.stop>
                     <img src="{{ decrypt($selectedImageUrl) }}" alt="Full size image"
                         class="max-w-full max-h-[90vh] object-contain cursor-zoom-in transition-transform duration-200"
-                        id="zoomableImage"
-                        onclick="toggleZoom(event)">
+                        id="zoomableImage" onclick="toggleZoom(event)">
 
                     {{-- Download Button --}}
                     <a href="{{ decrypt($selectedImageUrl) }}" download
