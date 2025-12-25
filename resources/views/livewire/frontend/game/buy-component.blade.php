@@ -1,14 +1,14 @@
 <main class="overflow-x-hidden bg-page">
-    <div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="max-w-7xl mx-auto px-4 py-8 mb-10">
         <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" :game="$game" />
         <!-- Breadcrumb -->
-        <livewire:frontend.partials.breadcrumb :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+        {{-- <livewire:frontend.partials.breadcrumb :gameSlug="$gameSlug" :categorySlug="$categorySlug" /> --}}
 
         <div>
             <div class=" text-white min-h-screen">
                 <div class="w-full mx-auto">
                     <!-- Main Content Grid -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">
 
                         <!-- Left Column - Product Details -->
                         <x-currency.game-information :game="$game" :user="$user" :product="$product" />

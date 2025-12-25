@@ -1,7 +1,7 @@
 <header class=" sm:py-4 sm:px-8 lg:py-0 lg:px-2">
     <div class=" text-white lg:px-18 md:px-0">
         <div
-            class="container mx-auto flex flex-col md:flex-row gap-4 md:items-center justify-between w-full px-0 sm:px-0 sm:py-6 lg:py-0 lg:px-0 mt-4">
+            class="container mx-auto flex flex-col md:flex-row gap-4 md:items-center justify-between w-full px-0 sm:px-0 sm:py-6 lg:py-0 lg:px-0 mt-4 py-5">
      
             <div class="flex gap-2">
                 @if($game->logo && false)

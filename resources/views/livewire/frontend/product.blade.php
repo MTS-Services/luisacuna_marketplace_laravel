@@ -34,48 +34,43 @@
                 </div>
             </div>
 
-<div class="min-w-30 flex items-center justify-center gap-2 relative" x-data="{ filter: false }">
-    {{-- Filter Button --}}
-    <button @click="filter = !filter"
-        class="flex items-center gap-2 px-4 py-2.5 bg-bg-transparent rounded-full border border-zinc-700 relative z-10">
+            <div class="min-w-30 flex items-center justify-center gap-2 relative" x-data="{ filter: false }">
+                {{-- Filter Button --}}
+                <button @click="filter = !filter"
+                    class="flex items-center gap-2 px-4 py-2.5 bg-bg-transparent rounded-full border border-zinc-700 relative z-10">
 
-        <span class="text-text-white text-sm">
-            @if ($sortOrder === 'asc')
-                {{ __('a-z') }}
-            @elseif($sortOrder === 'desc')
-                {{ __('z-a') }}
-            @else
-                {{ __('Filter') }}
-            @endif
-        </span>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
-            </path>
-        </svg>
-    </button>
+                    <span class="text-text-white text-sm">
+                        @if ($sortOrder === 'asc')
+                            {{ __('a-z') }}
+                        @elseif($sortOrder === 'desc')
+                            {{ __('z-a') }}
+                        @else
+                            {{ __('Filter') }}
+                        @endif
+                    </span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                        </path>
+                    </svg>
+                </button>
 
-    {{-- Dropdown --}}
-    <div class="absolute top-full mt-2 right-0 shadow-glass-card min-w-31 z-50" 
-         x-show="filter" 
-         x-transition
-         x-cloak 
-         @click.outside="filter = false">
-        <div class="bg-bg-primary rounded-md p-4 border border-zinc-700">
-            <div class="flex flex-col gap-2">
-                <button wire:click="sortBy('asc')" 
-                        @click="setTimeout(() => filter = false, 50)"
-                        class="text-left px-3 py-2 rounded transition {{ $sortOrder === 'asc' ? 'bg-bg-hover' : 'hover:bg-bg-hover' }}">
-                    {{ __('A-Z') }}
-                </button>
-                <button wire:click="sortBy('desc')" 
-                        @click="setTimeout(() => filter = false, 50)"
-                        class="text-left px-3 py-2 rounded transition {{ $sortOrder === 'desc' ? 'bg-bg-hover' : 'hover:bg-bg-hover' }}">
-                    {{ __('Z-A') }}
-                </button>
+                {{-- Dropdown --}}
+                <div class="absolute top-full mt-2 right-0 shadow-glass-card min-w-31 z-50" x-show="filter" x-transition
+                    x-cloak @click.outside="filter = false">
+                    <div class="bg-bg-primary rounded-md p-4 border border-zinc-700">
+                        <div class="flex flex-col gap-2">
+                            <button wire:click="sortBy('asc')" @click="setTimeout(() => filter = false, 50)"
+                                class="text-left px-3 py-2 rounded transition {{ $sortOrder === 'asc' ? 'bg-bg-hover' : 'hover:bg-bg-hover' }}">
+                                {{ __('A-Z') }}
+                            </button>
+                            <button wire:click="sortBy('desc')" @click="setTimeout(() => filter = false, 50)"
+                                class="text-left px-3 py-2 rounded transition {{ $sortOrder === 'desc' ? 'bg-bg-hover' : 'hover:bg-bg-hover' }}">
+                                {{ __('Z-A') }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
         </div>
     </section>
 
