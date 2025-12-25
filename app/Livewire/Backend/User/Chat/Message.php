@@ -329,6 +329,25 @@ class Message extends Component
             ->first()?->participant;
     }
 
+// Add these properties
+public $showImageOverlay = false;
+public $selectedImageUrl = null;
+
+// Add these methods
+public function ShowAttachemntImage($encryptedUrl)
+{
+    $this->showImageOverlay = true;
+    $this->selectedImageUrl = $encryptedUrl;
+}
+
+public function closeImageOverlay()
+{
+    $this->showImageOverlay = false;
+    $this->selectedImageUrl = null;
+    $this->dispatch('image-overlay-closed');
+}
+
+
     public function render()
     {
         return view('livewire.backend.user.chat.message', [

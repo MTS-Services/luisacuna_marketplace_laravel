@@ -262,7 +262,7 @@
                         </div>
                         <!-- Profile & Logout -->
                         <div class="space-y-1">
-                            <a href="{{ route('user.profile') }}" wire:navigate @click="open = false"
+                            <a href="{{ route('profile', user()->username) }}" wire:navigate @click="open = false"
                                 class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all {{ $pageSlug === 'profile' ? 'bg-zinc-800 text-white' : 'text-zinc-300 hover:text-white hover:bg-zinc-800/50' }}">
                                 <flux:icon name="user" class="w-4 h-4" />
                                 <span>{{__('View Profile')}}</span>
