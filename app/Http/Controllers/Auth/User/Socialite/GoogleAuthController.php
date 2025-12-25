@@ -57,7 +57,7 @@ class GoogleAuthController extends Controller
 
             Auth::login($user);
 
-            return redirect()->intended('user/orders/purchased-orders');
+            return redirect()->route('profile', $user->username);
         } catch (\Exception $e) {
             return redirect('/login')->with('error', 'Failed to login with Google');
         }

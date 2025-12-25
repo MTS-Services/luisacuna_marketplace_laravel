@@ -109,7 +109,7 @@
 
                     <!-- Action Buttons -->
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="{{ route('user.profile') }}"
+                        <a href="{{ route('profile', user()->username) }}"
                             class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-xl font-semibold text-center hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl">
                             Go to Dashboard
                         </a>

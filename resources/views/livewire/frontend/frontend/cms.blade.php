@@ -12,6 +12,19 @@
                 {!! $cms?->content !!}
             </div>
 
+             <div class="flex justify-end space-x-4 pt-10">
+                <button
+                    class="flex items-center px-5 py-2.5 rounded-full bg-gray-100 text-text-purple font-medium transition duration-150 text-sm shadow-md">
+                    <x-phosphor-thumbs-up-fill class="w-5 h-5 fill-zinc-500 mr-2" />
+                    {{ __("It's helpful") }}
+                </button>
+
+                <button
+                    class="flex items-center px-5 py-2.5 rounded-full bg-gray-100 text-text-purple font-medium transition duration-150 text-sm shadow-md">
+                    <x-phosphor-thumbs-down-fill class="w-5 h-5 fill-zinc-500 mr-2" />
+                    {{ __("It's not helpful") }}
+                </button>
+            </div>
         </div>
     </div>
 </div>

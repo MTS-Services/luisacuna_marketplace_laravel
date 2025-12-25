@@ -44,8 +44,6 @@
                             {{ __('a-z') }}
                         @elseif($sortOrder === 'desc')
                             {{ __('z-a') }}
-                        @else
-                            {{ __('Default') }}
                         @endif
                     </span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -162,7 +160,6 @@
 
     @push('scripts')
         <script>
-           
             document.addEventListener('livewire:navigated', function() {
 
                 const swiper = new Swiper('.popular-currency', {
@@ -180,7 +177,6 @@
                         delay: 2500,
                         disableOnInteraction: false,
                     },
-
                     breakpoints: {
                         640: {
                             slidesPerView: 2,
@@ -229,8 +225,6 @@
                 });
 
             });
-
-            
         </script>
     @endpush
 </main>

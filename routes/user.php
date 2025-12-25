@@ -93,9 +93,9 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
         return view('backend.user.pages.settings.account-settings');
     })->name('account-settings');
 
-    Route::get('/profile', function () {
-        return view('backend.user.pages.profile');
-    })->name('profile');
+    // Route::get('/profile', function () {
+    //     return view('backend.user.pages.profile');
+    // })->name('profile');
 
     Route::get('/checkout/{slug}/{token}', Checkout::class)->name('checkout');
 
