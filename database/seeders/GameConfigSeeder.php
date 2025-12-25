@@ -12,438 +12,206 @@ use Illuminate\Support\Facades\Log;
 
 class GameConfigSeeder extends Seeder
 {
-    protected GameConfigService $gameConfigService;
-
-    public function __construct(GameConfigService $gameConfigService)
-    {
-        $this->gameConfigService = $gameConfigService;
-    }
-
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $this->command->info('🎮 Starting Game Config Seeder...');
+        $this->command->info('🎮 GameConfigSeeder started');
+
+        /** @var GameConfigService $service */
+        $service = app(GameConfigService::class);
 
         $games = Game::with('categories')->get();
 
         if ($games->isEmpty()) {
-            $this->command->warn('⚠️  No games found. Please run GameSeeder first.');
+            $this->command->warn('⚠️ No games found. Run GameSeeder first.');
             return;
         }
 
-        $totalConfigs = 0;
+        $totalFields = 0;
 
         foreach ($games as $game) {
-            $this->command->info("📦 Processing game: {$game->name}");
-
-            if ($game->categories->isEmpty()) {
-                $this->command->warn("   ⚠️  No categories assigned to {$game->name}");
-                continue;
-            }
+            $this->command->info("📦 Game: {$game->name}");
 
             foreach ($game->categories as $category) {
-                $gameCategory = GameCategory::where('game_id', $game->id)
-                    ->where('category_id', $category->id)
-                    ->first();
+
+                $gameCategory = GameCategory::where([
+                    'game_id' => $game->id,
+                    'category_id' => $category->id,
+                ])->first();
 
                 if (!$gameCategory) {
-                    $this->command->warn("   ⚠️  Game category not found for {$category->name}");
+                    $this->command->warn("   ⚠️ Missing GameCategory ({$category->name})");
                     continue;
                 }
 
                 try {
-                    // Get sample configs for this category
-                    $configs = $this->getSampleConfigsForCategory($game, $category);
+                    $fields = $this->getConfigsForCategory($category->slug);
 
-                    // Save using service
-                    $this->gameConfigService->saveConfiguration(
+                    $service->saveConfiguration(
                         $gameCategory,
                         $game->id,
                         $category->id,
-                        $configs['delivery_methods'],
-                        $configs['fields']
+                        $this->deliveryMethods(),
+                        $fields
                     );
 
-                    $fieldCount = count($configs['fields']);
-                    $totalConfigs += $fieldCount;
+                    $count = count($fields);
+                    $totalFields += $count;
 
-                    $this->command->info("   ✅ Created {$fieldCount} fields for category: {$category->name}");
-                } catch (\Exception $e) {
-                    $this->command->error("   ❌ Error creating config for {$category->name}: {$e->getMessage()}");
-                    Log::error('GameConfigSeeder error', [
-                        'game' => $game->name,
-                        'category' => $category->name,
+                    $this->command->info("   ✅ {$category->name}: {$count} fields saved");
+                } catch (\Throwable $e) {
+                    Log::error('GameConfigSeeder failed', [
+                        'game_id' => $game->id,
+                        'category_id' => $category->id,
                         'error' => $e->getMessage(),
                     ]);
+
+                    $this->command->error("   ❌ {$category->name}: {$e->getMessage()}");
                 }
             }
 
             $this->command->newLine();
         }
 
-        $this->command->info("🎉 Game Config Seeder completed! Total configs created: {$totalConfigs}");
+        $this->command->info("🎉 GameConfigSeeder finished. Total fields created: {$totalFields}");
     }
 
-    /**
-     * Get sample configurations for a specific category
-     */
-    protected function getSampleConfigsForCategory(Game $game, $category): array
-    {
-        // Get category-specific configs
-        $categoryConfigs = $this->getCategorySpecificConfigs($category->slug);
+    /* ============================================================
+        DELIVERY METHODS
+    ============================================================ */
 
-        // If no specific config, use default
-        if (empty($categoryConfigs)) {
-            $categoryConfigs = $this->getDefaultConfigs();
-        }
-
-        return [
-            'delivery_methods' => $this->getDeliveryMethodsForCategory(),
-            'fields' => $categoryConfigs,
-        ];
-    }
-
-    /**
-     * Get delivery methods based on category
-     */
-    protected function getDeliveryMethodsForCategory(): array
+    protected function deliveryMethods(): array
     {
         return ['instant', 'manual'];
     }
 
-    /**
-     * Get category-specific configurations
-     */
-    protected function getCategorySpecificConfigs(string $categorySlug): array
-    {
-        $slug = strtolower($categorySlug);
+    /* ============================================================
+        CATEGORY CONFIG ROUTER
+    ============================================================ */
 
-        return match ($slug) {
-            'accounts' => $this->getAccountsConfigs(),
-            'gold', 'currency' => $this->getGoldConfigs(),
-            'items' => $this->getItemsConfigs(),
-            'boosting' => $this->getBoostingConfigs(),
-            'power-leveling' => $this->getPowerLevelingConfigs(),
-            'coaching' => $this->getCoachingConfigs(),
-            'services' => $this->getServicesConfigs(),
-            default => $this->getDefaultConfigs(),
+    protected function getConfigsForCategory(string $slug): array
+    {
+        return match (strtolower($slug)) {
+            'accounts' => $this->accounts(),
+            'gold', 'currency' => $this->currency(),
+            'items' => $this->items(),
+            'boosting' => $this->boosting(),
+            'power-leveling' => $this->powerLeveling(),
+            'coaching' => $this->coaching(),
+            'services' => $this->services(),
+            default => $this->default(),
         };
     }
 
-    /**
-     * Accounts category configs
-     */
-    protected function getAccountsConfigs(): array
+    /* ============================================================
+        CONFIG DEFINITIONS
+    ============================================================ */
+
+    protected function accounts(): array
     {
         return [
-            [
-                'id' => null,
-                'field_name' => 'Account Level',
-                'slug' => 'account-level',
-                'input_type' => GameConfigInputType::NUMBER->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_RANGE->value,
-                'dropdown_values' => '',
-                'sort_order' => 0,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Server Region',
-                'slug' => 'server-region',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'North America, Europe, Asia, South America, Oceania',
-                'sort_order' => 1,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Account Rank',
-                'slug' => 'account-rank',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'Bronze, Silver, Gold, Platinum, Diamond, Master, Grandmaster',
-                'sort_order' => 2,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Champions/Heroes Owned',
-                'slug' => 'champions-owned',
-                'input_type' => GameConfigInputType::NUMBER->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_RANGE->value,
-                'dropdown_values' => '',
-                'sort_order' => 3,
-            ],
+            $this->select('Server Region', 'server-region', 'NA, EU, Asia, SA, OCE', 0),
+            $this->select('Account Rank', 'account-rank', 'Bronze, Silver, Gold, Platinum, Diamond, Master', 1),
+            $this->number('Account Level', 'account-level', 2),
+            $this->number('Heroes Owned', 'heroes-owned', 3),
         ];
     }
 
-    /**
-     * Gold/Currency category configs
-     */
-    protected function getGoldConfigs(): array
+    protected function currency(): array
     {
         return [
-            [
-                'id' => null,
-                'field_name' => 'Amount',
-                'slug' => 'amount',
-                'input_type' => GameConfigInputType::NUMBER->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_RANGE->value,
-                'dropdown_values' => '',
-                'sort_order' => 0,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Server',
-                'slug' => 'server',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'NA, EU, Asia, OCE, SA',
-                'sort_order' => 1,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Delivery Speed',
-                'slug' => 'delivery-speed',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'Instant, 1-2 Hours, 3-6 Hours, 12-24 Hours',
-                'sort_order' => 2,
-            ],
+            $this->number('Amount', 'amount', 0),
+            $this->select('Server', 'server', 'NA, EU, Asia, OCE', 1),
+            $this->select('Delivery Speed', 'delivery-speed', 'Instant, 1-2 Hours, 6-12 Hours', 2),
         ];
     }
 
-    /**
-     * Items category configs
-     */
-    protected function getItemsConfigs(): array
+    protected function items(): array
     {
         return [
-            [
-                'id' => null,
-                'field_name' => 'Item Type',
-                'slug' => 'item-type',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'Weapon, Armor, Accessory, Consumable, Material, Mount, Pet',
-                'sort_order' => 0,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Item Rarity',
-                'slug' => 'item-rarity',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'Common, Uncommon, Rare, Epic, Legendary, Mythic',
-                'sort_order' => 1,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Quantity',
-                'slug' => 'quantity',
-                'input_type' => GameConfigInputType::NUMBER->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_RANGE->value,
-                'dropdown_values' => '',
-                'sort_order' => 2,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Server',
-                'slug' => 'server',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'NA, EU, Asia, OCE',
-                'sort_order' => 3,
-            ],
+            $this->select('Item Type', 'item-type', 'Weapon, Armor, Consumable, Material', 0),
+            $this->select('Rarity', 'rarity', 'Common, Rare, Epic, Legendary', 1),
+            $this->number('Quantity', 'quantity', 2),
         ];
     }
 
-    /**
-     * Boosting category configs
-     */
-    protected function getBoostingConfigs(): array
+    protected function boosting(): array
     {
         return [
-            [
-                'id' => null,
-                'field_name' => 'Current Rank',
-                'slug' => 'current-rank',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'Bronze, Silver, Gold, Platinum, Diamond',
-                'sort_order' => 0,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Desired Rank',
-                'slug' => 'desired-rank',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'Silver, Gold, Platinum, Diamond, Master, Grandmaster',
-                'sort_order' => 1,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Boost Type',
-                'slug' => 'boost-type',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'Solo Queue, Duo Queue, Placement Matches, Win Boosting',
-                'sort_order' => 2,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Server Region',
-                'slug' => 'server-region',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'NA, EU West, EU East, Asia, OCE',
-                'sort_order' => 3,
-            ],
+            $this->select('Current Rank', 'current-rank', 'Bronze, Silver, Gold, Platinum, Diamond', 0),
+            $this->select('Target Rank', 'target-rank', 'Gold, Platinum, Diamond, Master', 1),
+            $this->select('Queue Type', 'queue-type', 'Solo, Duo', 2),
         ];
     }
 
-    /**
-     * Power Leveling category configs
-     */
-    protected function getPowerLevelingConfigs(): array
+    protected function powerLeveling(): array
     {
         return [
-            [
-                'id' => null,
-                'field_name' => 'Current Level',
-                'slug' => 'current-level',
-                'input_type' => GameConfigInputType::NUMBER->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_RANGE->value,
-                'dropdown_values' => '',
-                'sort_order' => 0,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Desired Level',
-                'slug' => 'desired-level',
-                'input_type' => GameConfigInputType::NUMBER->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_RANGE->value,
-                'dropdown_values' => '',
-                'sort_order' => 1,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Leveling Method',
-                'slug' => 'leveling-method',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'Questing, Dungeon Grinding, PvP, Mixed',
-                'sort_order' => 2,
-            ],
+            $this->number('Current Level', 'current-level', 0),
+            $this->number('Target Level', 'target-level', 1),
         ];
     }
 
-    /**
-     * Coaching category configs
-     */
-    protected function getCoachingConfigs(): array
+    protected function coaching(): array
     {
         return [
-            [
-                'id' => null,
-                'field_name' => 'Session Duration',
-                'slug' => 'session-duration',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => '1 Hour, 2 Hours, 3 Hours, 5 Hours, 10 Hours',
-                'sort_order' => 0,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Focus Area',
-                'slug' => 'focus-area',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'Mechanics, Strategy, Character Specific, Team Play, Meta Analysis',
-                'sort_order' => 1,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Skill Level',
-                'slug' => 'skill-level',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'Beginner, Intermediate, Advanced, Expert',
-                'sort_order' => 2,
-            ],
+            $this->select('Session Length', 'session-length', '1 Hour, 2 Hours, 5 Hours', 0),
+            $this->select('Skill Level', 'skill-level', 'Beginner, Intermediate, Advanced', 1),
         ];
     }
 
-    /**
-     * Services category configs
-     */
-    protected function getServicesConfigs(): array
+    protected function services(): array
     {
         return [
-            [
-                'id' => null,
-                'field_name' => 'Service Type',
-                'slug' => 'service-type',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'Achievement, Quest Completion, Raid Carry, Dungeon Run, Event Service',
-                'sort_order' => 0,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Difficulty',
-                'slug' => 'difficulty',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'Normal, Hard, Heroic, Mythic, Nightmare',
-                'sort_order' => 1,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Completion Time',
-                'slug' => 'completion-time',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => '1-3 Days, 3-7 Days, 1-2 Weeks, 2-4 Weeks',
-                'sort_order' => 2,
-            ],
+            $this->select('Service Type', 'service-type', 'Quest, Dungeon, Raid, Achievement', 0),
+            $this->select('Difficulty', 'difficulty', 'Normal, Hard, Mythic', 1),
         ];
     }
 
-    /**
-     * Default configs for categories without specific configurations
-     */
-    protected function getDefaultConfigs(): array
+    protected function default(): array
     {
         return [
-            [
-                'id' => null,
-                'field_name' => 'Server',
-                'slug' => 'server',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'North America, Europe, Asia, Oceania',
-                'sort_order' => 0,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Quantity',
-                'slug' => 'quantity',
-                'input_type' => GameConfigInputType::NUMBER->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_RANGE->value,
-                'dropdown_values' => '',
-                'sort_order' => 1,
-            ],
-            [
-                'id' => null,
-                'field_name' => 'Delivery Time',
-                'slug' => 'delivery-time',
-                'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
-                'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
-                'dropdown_values' => 'Instant, 1-2 Hours, 3-6 Hours, 12-24 Hours, 1-3 Days',
-                'sort_order' => 2,
-            ],
+            $this->select('Server', 'server', 'NA, EU, Asia, OCE', 0),
+            $this->number('Quantity', 'quantity', 1),
+        ];
+    }
+
+    /* ============================================================
+        FIELD BUILDERS (REUSABLE)
+    ============================================================ */
+
+    protected function select(
+        string $name,
+        string $slug,
+        string $values,
+        int $order
+    ): array {
+        return [
+            'id' => null,
+            'field_name' => $name,
+            'slug' => $slug,
+            'input_type' => GameConfigInputType::SELECT_DROPDOWN->value,
+            'filter_type' => GameConfigFilterType::FILTER_BY_SELECT->value,
+            'dropdown_values' => $values,
+            'sort_order' => $order,
+        ];
+    }
+
+    protected function number(
+        string $name,
+        string $slug,
+        int $order
+    ): array {
+        return [
+            'id' => null,
+            'field_name' => $name,
+            'slug' => $slug,
+            'input_type' => GameConfigInputType::NUMBER->value,
+            'filter_type' => GameConfigFilterType::FILTER_BY_RANGE->value,
+            'dropdown_values' => '',
+            'sort_order' => $order,
         ];
     }
 }
