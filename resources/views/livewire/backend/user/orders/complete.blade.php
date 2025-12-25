@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="">
-                <x-ui.button class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!">
+                <x-ui.button wire:click="cancelOrder" class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!">
                     {{ __('Cancel') }}
                 </x-ui.button>
             </div>
