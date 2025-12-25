@@ -5,10 +5,10 @@
 
 
 
-        <div class="max-w-7xl mx-auto lg:px-8 lg:py-8">
+        <div class="max-w-7xl mx-auto lg:px-8 lg:py-10">
             <!-- Breadcrumb -->
 
-            <livewire:frontend.partials.breadcrumb :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+            {{-- <livewire:frontend.partials.breadcrumb :gameSlug="$gameSlug" :categorySlug="$categorySlug" /> --}}
 
             <!-- Filters Section -->
             <div class="mb-8 space-y-4">
