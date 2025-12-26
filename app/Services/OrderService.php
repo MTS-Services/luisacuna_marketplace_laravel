@@ -37,24 +37,10 @@ class OrderService
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
         $orders = $this->model->query()
-            ->with(['source', 'user'])
+            ->with(['source.user', 'user'])
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
-
-        $orders->getCollection()->transform(function ($order) {
-            $order->product_name = $order->source?->name ?? 'N/A';
-            $order->product_logo = $order->source?->logo ?? asset('default-image.png');
-            $order->product_subtitle = $order->source?->subtitle ?? '';
-            $order->product_type = $order->source?->type ?? 'N/A';
-            $order->seller_name = $order->source?->seller?->name ?? 'N/A';
-
-            $order->total_quantity = 1;
-            $order->total_price = $order->grand_total;
-
-            return $order;
-        });
-
         return $orders;
     }
 
@@ -80,9 +66,7 @@ class OrderService
 
     public function createData(array $data): Order
     {
-        return DB::transaction(function () use ($data) {
-            return $this->model->create($data);
-        });
+        return $this->model->create($data);
     }
 
     // Manage Function According to your need
