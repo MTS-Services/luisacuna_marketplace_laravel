@@ -32,7 +32,8 @@
             {{-- Per Page --}}
             @if ($showPerPage)
                 <div class="w-full sm:w-auto">
-                    <select wire:model.live="{{ $perPageProperty }}" class="select w-full sm:w-auto min-w-[140px] shadow-shadow-primary">
+                    <select wire:model.live="{{ $perPageProperty }}"
+                        class="select w-full sm:w-auto min-w-[140px] shadow-shadow-primary">
                         @foreach ($perPageOptions as $option)
                             <option value="{{ $option }}">{{ $option }} {{ __('per page') }}</option>
                         @endforeach
@@ -43,7 +44,8 @@
             {{-- Status Filter --}}
             @if (!empty($statuses))
                 <div class="w-full sm:w-auto">
-                    <select wire:model.live="statusFilter" class="select w-full sm:w-auto min-w-[140px] shadow-shadow-primary">
+                    <select wire:model.live="statusFilter"
+                        class="select w-full sm:w-auto min-w-[140px] shadow-shadow-primary">
                         <option value="">{{ __('All Statuses') }}</option>
                         @foreach ($statuses as $status)
                             <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
@@ -116,7 +118,8 @@
                     {{-- Bulk Select Checkbox --}}
                     @if ($showBulkActions)
                         <th scope="col" class="w-12 px-4 py-3 text-center">
-                            <input type="checkbox" wire:model.live="selectAll" class="checkbox w-5 h-5 rounded shadow-shadow-primary checkbox-accent">
+                            <input type="checkbox" wire:model.live="selectAll"
+                                class="checkbox w-5 h-5 rounded shadow-shadow-primary checkbox-accent">
                         </th>
                     @endif
 
@@ -140,7 +143,7 @@
 
                     {{-- Column Headers --}}
                     @foreach ($columns as $column)
-                        @if ($column['key'] === 'id')
+                        @if ($column['key'] === 'id' && $showRowNumber)
                             @continue
                         @endif
                         <th scope="col"
@@ -197,7 +200,7 @@
 
                         {{-- Data Columns --}}
                         @foreach ($columns as $column)
-                            @if ($column['key'] === 'id')
+                            @if ($column['key'] === 'id' && $showRowNumber)
                                 @continue
                             @endif
                             <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">

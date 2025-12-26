@@ -203,6 +203,38 @@
                 <x-backend.navlink type="dropdown" icon="box" name="Products" :page_slug="$active"
                     :items="$productItems" />
 
+                <x-backend.navlink type="dropdown" icon="layers" name="Orders" :page_slug="$active"
+                    :items="[
+                        [
+                            'name' => 'All Orders',
+                            'route' => route('admin.orders.index'),
+                            'icon' => 'trophy',
+                            'active' => 'order-management',
+                            'permission' => 'rank-list',
+                        ],
+                        [
+                            'name' => 'Paid Orders',
+                            'route' => route('admin.orders.paid-orders'),
+                            'icon' => 'award',
+                            'active' => 'paid-orders',
+                            'permission' => 'achievement-type-list',
+                        ],
+                        [
+                            'name' => 'Complete Orders',
+                            'route' => route('admin.orders.completed-orders'),
+                            'icon' => 'medal',
+                            'active' => 'completed-orders',
+                            'permission' => 'achievement-list',
+                        ],
+                        [
+                            'name' => 'Cancelled Orders',
+                            'route' => route('admin.orders.cancelled-orders'),
+                            'icon' => 'medal',
+                            'active' => 'cancelled-orders',
+                            'permission' => 'achievement-list',
+                        ],
+                    ]" />
+
                 <x-backend.navlink type="dropdown" icon="layers" name="Level Management" :page_slug="$active"
                     :items="[
                         [
