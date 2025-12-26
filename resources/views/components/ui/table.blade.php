@@ -342,13 +342,18 @@
                                                             {{-- 🪄 Case 4: Alpine.js x-on:click --}}
                                                         @elseif (!empty($action['x_click']))
                                                             @php
-                                                                // Replace {param} or {value} placeholders in x_click string
+                                                                $param = $action['param'] ?? ($action['key'] ?? 'id');
+                                                                $actionValue = data_get($item, $param);
+                                                                $jsValue = is_numeric($actionValue)
+                                                                    ? $actionValue
+                                                                    : json_encode($actionValue); // safe string
                                                                 $xClick = str_replace(
                                                                     ['{param}', '{value}'],
-                                                                    $actionValue,
+                                                                    $jsValue,
                                                                     $action['x_click'],
                                                                 );
                                                             @endphp
+
 
                                                             <button type="button" x-on:click="{{ $xClick }}"
                                                                 class="block px-4 py-2 w-full text-left text-sm dark:text-zinc-100! dark:hover:text-zinc-900! hover:bg-zinc-300 hover:text-gray-900">
