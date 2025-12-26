@@ -9,6 +9,7 @@ use Livewire\WithPagination;
 
 trait WithPaginationData
 {
+    
     use  WithPagination;
 
     public $pagination = [];
