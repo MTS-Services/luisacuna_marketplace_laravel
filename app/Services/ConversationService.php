@@ -706,10 +706,10 @@ class ConversationService
     /**
      * Get conversation by UUID
      */
-    public function findByUuid(string $uuid): ?Conversation
+    public function findConversation(string $value, string $column = 'conversation_uuid'): ?Conversation
     {
         return $this->conversation
-            ->where('conversation_uuid', $uuid)
+            ->where($column, $value)
             ->first();
     }
 
@@ -749,6 +749,273 @@ class ConversationService
                 ->where('participant_role', ParticipantRole::ADMIN)
                 ->where('is_active', true)
                 ->exists(),
+        ];
+    }
+
+    /**
+     * Fetch all conversations for admin (no filtering by user)
+     */
+    public function fetchAllConversationsForAdmin(
+        ?string $search = null,
+        ?array $filters = [],
+        ?int $perPage = null
+    ) {
+        $query = $this->conversation
+            ->with([
+                'participants' => function ($query) {
+                    $query->where('is_active', true)
+                        ->with('participant:id,first_name,last_name,username,email,avatar');
+                },
+                'messages' => function ($query) {
+                    $query->latest()->limit(1)->with('sender:id,first_name,last_name,username,avatar');
+                }
+            ])
+            ->withCount([
+                'messages as total_messages',
+                'participants as active_participants' => function ($query) {
+                    $query->where('is_active', true);
+                }
+            ]);
+
+        // Apply search filter
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('subject', 'like', "%{$search}%")
+                    ->orWhere('conversation_uuid', 'like', "%{$search}%")
+                    ->orWhereHas('participants', function ($participantQuery) use ($search) {
+                        $participantQuery->where('is_active', true)
+                            ->whereHasMorph(
+                                'participant',
+                                [User::class],
+                                function ($userQuery) use ($search) {
+                                    $userQuery->where(function ($nameQuery) use ($search) {
+                                        $nameQuery->where('first_name', 'like', "%{$search}%")
+                                            ->orWhere('last_name', 'like', "%{$search}%")
+                                            ->orWhere('username', 'like', "%{$search}%")
+                                            ->orWhere('email', 'like', "%{$search}%")
+                                            ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$search}%"]);
+                                    });
+                                }
+                            );
+                    });
+            });
+        }
+
+        // Apply status filter
+        if (isset($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        // Apply date filters
+        if (isset($filters['date_from'])) {
+            $query->whereDate('created_at', '>=', $filters['date_from']);
+        }
+
+        if (isset($filters['date_to'])) {
+            $query->whereDate('created_at', '<=', $filters['date_to']);
+        }
+
+        // Apply admin involvement filter
+        if (isset($filters['admin_involved']) && $filters['admin_involved']) {
+            $query->whereHas('participants', function ($q) {
+                $q->where('participant_role', ParticipantRole::ADMIN)
+                    ->where('is_active', true);
+            });
+        }
+
+        $baseQuery = $query->orderByDesc('last_message_at')
+            ->orderByDesc('created_at');
+
+        if ($perPage) {
+            return $baseQuery->paginate($perPage);
+        }
+        return $baseQuery->get();
+    }
+
+    /**
+     * Fetch conversation messages for admin (no participant check)
+     */
+    public function fetchConversationMessagesForAdmin(
+        Conversation $conversation,
+        int $perPage = 50,
+        ?int $beforeMessageId = null
+    ) {
+        $messagesQuery = $conversation->messages()
+            ->with([
+                'sender:id,first_name,last_name,username,avatar',
+                'attachments',
+                'readReceipts.reader:id,first_name,last_name,username'
+            ])
+            ->orderByDesc('created_at');
+
+        // Pagination by message ID for infinite scroll
+        if ($beforeMessageId) {
+            $messagesQuery->where('id', '<', $beforeMessageId);
+        }
+
+        $messages = $messagesQuery->paginate($perPage);
+
+        return [
+            'conversation' => $conversation->load('participants.participant'),
+            'messages' => $messages,
+        ];
+    }
+
+    /**
+     * Admin interrupts/joins conversation
+     */
+    public function adminJoinConversation(Conversation $conversation, \App\Models\Admin $admin): ?ConversationParticipant
+    {
+        try {
+            // Check if admin already participant
+            $existingParticipant = $conversation->participants()
+                ->where('participant_id', $admin->id)
+                ->where('participant_type', \App\Models\Admin::class)
+                ->first();
+
+            if ($existingParticipant) {
+                // Reactivate if inactive
+                if (!$existingParticipant->is_active) {
+                    $existingParticipant->update([
+                        'is_active' => true,
+                        'left_at' => null,
+                        'joined_at' => now(),
+                    ]);
+                }
+                return $existingParticipant;
+            }
+
+            // Add admin as participant
+            $participant = $this->participant->create([
+                'conversation_id' => $conversation->id,
+                'participant_id' => $admin->id,
+                'participant_type' => \App\Models\Admin::class,
+                'participant_role' => ParticipantRole::ADMIN,
+                'joined_at' => now(),
+                'is_active' => true,
+                'notification_enabled' => true,
+                'creater_id' => $admin->id,
+                'creater_type' => \App\Models\Admin::class,
+            ]);
+
+            // Send system message about admin joining
+            $this->sendMessage(
+                conversation: $conversation,
+                messageBody: "Admin {$admin->name} has joined the conversation.",
+                sender: null, // System message
+                messageType: MessageType::SYSTEM_NOTIFICATION ?? MessageType::TEXT,
+            );
+
+            return $participant;
+        } catch (Exception $e) {
+            Log::error('Failed to add admin to conversation', [
+                'conversation_id' => $conversation->id,
+                'admin_id' => $admin->id,
+                'error' => $e->getMessage()
+            ]);
+            return null;
+        }
+    }
+
+    /**
+     * Admin sends message in conversation
+     */
+    public function adminSendMessage(
+        Conversation $conversation,
+        \App\Models\Admin $admin,
+        string $messageBody,
+        MessageType $messageType = MessageType::TEXT,
+        ?array $metadata = null,
+        ?int $parentMessageId = null,
+        ?array $attachments = []
+    ): ?Message {
+        // Ensure admin is participant first
+        $this->adminJoinConversation($conversation, $admin);
+
+        try {
+            return DB::transaction(function () use (
+                $conversation,
+                $admin,
+                $messageBody,
+                $messageType,
+                $metadata,
+                $parentMessageId,
+                $attachments
+            ) {
+                // Create message
+                $message = $this->message->create([
+                    'conversation_id' => $conversation->id,
+                    'sender_id' => $admin->id,
+                    'sender_type' => \App\Models\Admin::class,
+                    'message_type' => $messageType,
+                    'message_body' => $messageBody,
+                    'metadata' => $metadata,
+                    'parent_message_id' => $parentMessageId,
+                    'creater_id' => $admin->id,
+                    'creater_type' => \App\Models\Admin::class,
+                ]);
+
+                // Handle attachments
+                if (!empty($attachments)) {
+                    $this->attachFilesToMessage($message, $attachments);
+                }
+
+                // Update conversation last_message_at
+                $conversation->update([
+                    'last_message_at' => now(),
+                    'updater_id' => $admin->id,
+                    'updater_type' => \App\Models\Admin::class,
+                ]);
+
+                // Broadcast to users
+                broadcast(new MessageSent($message->load(['sender', 'attachments'])))->toOthers();
+
+                // Notify all non-admin participants
+                $conversation->participants()
+                    ->where('participant_type', User::class)
+                    ->where('is_active', true)
+                    ->each(function ($participant) use ($conversation) {
+                        broadcast(new ConversationUpdated($conversation, $participant->participant_id));
+                    });
+
+                return $message->load(['sender', 'attachments']);
+            });
+        } catch (Exception $e) {
+            Log::error('Failed to send admin message', [
+                'conversation_id' => $conversation->id,
+                'admin_id' => $admin->id,
+                'error' => $e->getMessage()
+            ]);
+            return null;
+        }
+    }
+
+    /**
+     * Get conversation statistics for admin dashboard
+     */
+    public function getAdminDashboardStats(): array
+    {
+        return [
+            'total_conversations' => $this->conversation->count(),
+            'active_conversations' => $this->conversation
+                ->where('status', ConversationStatus::ACTIVE)
+                ->count(),
+            'conversations_with_admin' => $this->conversation
+                ->whereHas('participants', function ($query) {
+                    $query->where('participant_role', ParticipantRole::ADMIN)
+                        ->where('is_active', true);
+                })
+                ->count(),
+            'total_messages_today' => $this->message
+                ->whereDate('created_at', today())
+                ->count(),
+            'recent_conversations' => $this->conversation
+                ->with(['participants.participant', 'messages' => function ($q) {
+                    $q->latest()->limit(1);
+                }])
+                ->orderByDesc('last_message_at')
+                ->limit(5)
+                ->get(),
         ];
     }
 }

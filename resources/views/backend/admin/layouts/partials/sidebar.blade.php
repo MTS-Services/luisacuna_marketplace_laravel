@@ -288,8 +288,8 @@
                 <x-sidebar-separator title="Support" />
                 <x-backend.navlink type="single" icon="megaphone" name="Announcements" :route="route('admin.announcement.index')"
                     active="announcement" :page_slug="$active" />
-                <x-backend.navlink type="single" icon="messages-square" name="Chat List" :route="route('admin.chat.index')"
-                    active="chat" :page_slug="$active" />
+                <x-backend.navlink type="single" icon="messages-square" name="Chat List" :route="route('admin.conversation.index')"
+                    active="admin-conversations" :page_slug="$active" />
                 <x-backend.navlink type="dropdown" icon="headset" name="Supports" :page_slug="$active"
                     :items="[
                         [
