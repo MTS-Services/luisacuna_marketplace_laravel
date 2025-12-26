@@ -10,27 +10,56 @@
                     <div class="">
                         <h3 class="text-2xl font-semibold text-text-white">{{ __('Description') }}</h3>
                     </div>
-                    <div class="">
-                        <x-flux::icon name="pencil-square" class="w-5 h-5 inline-block" stroke="white" />
-                    </div>
+
+                    @if(isLoggedIn())
+
+                        @if(auth()->user()->id == $user->id)
+                            <div class="" >
+                                @if(!$editMode)
+                                <button type="button" class="" wire:click="switchToEditMode">
+                                    <flux:icon name="pencil-square" class="w-5 h-5 inline-block" stroke="white" />
+                                </button>
+                                @else 
+                                {{-- <x-flux::icon name="pencil-cross" class="w-5 h-5 inline-block" stroke="white" /> --}}
+                                <button type="button" class="" wire:click="switchToEditMode">
+                                    <flux:icon name="x-mark" class="w-5 h-5 inline-block" stroke="white" />
+                                </button>
+
+                                <button type="button" class="" wire:click="save">
+                                   <flux:icon name="check" class="w-5 h-5 inline-block" stroke="white" />
+                                </button>
+                             
+                              
+                                @endif
+                            </div>
+                        @endif
+                    @endif
+                   
+                   
                 </div>
                 <div class="mt-2">
+                   @if(!$editMode)
                     <div class="">
                         <p class="text-base text-text-white">
-                            {{ __('Hey there!') }}
+                            {{ $description ?? 'N/A' }}
                         </p>
                     </div>
+                    @else 
+
                     <div class="">
-                        <p class="text-base text-text-white">
-                            {{ __('At PixelStoreLAT, we bring you the best digital deals, game keys, and in-game items —fast, safe, and hassle-free. Trusted by thousands of gamers worldwide with 97% positive reviews. Level up your experience with us today!') }}
-                        </p>
+                       <x-ui.textarea wire:model="description" class="w-full" placeholder="{{ __('Description') }}" >
+                            {{ $user->description}}
+                       </x-ui.textarea>
+                       
                     </div>
+
+                    @endif
                 </div>
             </div>
             <div class="p-6 bg-bg-info rounded-2xl">
                 <div class="">
                     <p class="text-base text-text-white">
-                        {{ __('Registered: Feb 20, 2023') }}
+                        {{ __('Registered:') }} {{ $user->created_at_formatted ?? 'N/A' }}
                     </p>
                 </div>
             </div>
