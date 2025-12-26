@@ -34,10 +34,12 @@ class ProfileCategoryItems extends Component
 
     public function mount(User $user){
         $this->user = $user; 
-       $this->list_type = $this->categoryService->findData($this->activeTab, 'slug')->layout->value;
+     
     }
     public function render()
-    {   $products = $this->getProducts();
+    {  
+         $this->list_type = $this->categoryService->findData($this->activeTab, 'slug')->layout->value;
+        $products = $this->getProducts();
         $games = $this->gameService->getAllDatas();
         $this->paginationData($products);
         return view('livewire.backend.user.profile.profile-category-items', [
