@@ -21,7 +21,7 @@ class ProductSeeder extends Seeder
         $platforms = Platform::pluck('id');
         $users = User::pluck('id');
         $categories = Category::all();
-        $productsPerCategory = 50;
+        $productsPerCategory = 1;
 
         $deliveryItems = ['Instant Delivery', '1 Hour Delivery', '3 Day Delivery', '24 Hour Delivery', '7 Day Delivery', '30 Day Delivery'];
 
@@ -43,7 +43,7 @@ class ProductSeeder extends Seeder
                         'description' => $game->description,
                         'delivery_timeline' => $deliveryItems[$i % count($deliveryItems)],
                         'price'       => (($i * 10) + rand(1, 100)),
-                        'quantity'    => $i * 10,
+                        'quantity'    => rand(500, 1000),
                         'platform_id' => $platforms->random(),
                         'status'      => ActiveInactiveEnum::ACTIVE->value,
                     ]);

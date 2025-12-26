@@ -89,6 +89,11 @@ class Category extends AuditBaseModel implements Auditable
         return $this->hasMany(Product::class, 'category_id', 'id');
     }
 
+    public function userProduct($userId)
+    {
+        return $this->products()->where('user_id', $userId)->count();
+    }
+
 
     /* ================================================================
      |  Translation Helper Methods (Convenience)

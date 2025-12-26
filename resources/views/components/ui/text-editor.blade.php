@@ -91,7 +91,7 @@
         tinymce.remove();
         this.editor = null;
 
-        this.value = ''; // reset value
+        {{-- this.value = ''; // reset value --}}
         this.$nextTick(() => {
             this.initEditor();
         });
