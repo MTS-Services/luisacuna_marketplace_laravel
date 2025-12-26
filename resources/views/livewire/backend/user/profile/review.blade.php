@@ -1,5 +1,5 @@
 <div class="bg-bg-primary pb-10">
-  <livewire:backend.user.profile.profile-component :user="$user" />
+    <livewire:backend.user.profile.profile-component :user="$user" />
     <section class="container mx-auto bg-bg-secondary p-5! sm:p-10! rounded-2xl mb-10">
         <div class="">
             <h2 class="font-semibold text-3xl">{{ __('Reviews') }}</h2>
@@ -9,21 +9,25 @@
                 <button wire:navigate wire:click="switchReviewItem('all')"
                     class="{{ $reviewItem === 'all' ? 'bg-zinc-500 text-text-white' : 'bg-zinc-50 text-zinc-500' }} font-semibold border-1 border-zinc-500 py-1 px-2 xxs:py-2 xxs:px-4 sm:py-3 sm:px-6 rounded-2xl">{{ __('All') }}</button>
             </div>
-            <div class="">
+            <div>
                 <button wire:navigate wire:click="switchReviewItem('positive')"
-                    class="{{ $reviewItem === 'positive' ? 'bg-zinc-500 text-text-white' : 'bg-zinc-50 text-zinc-500' }} font-semibold border-1 border-zinc-500 py-1 px-2 xxs:py-2 xxs:px-4 sm:py-3 sm:px-6 rounded-2xl inline-block">
-                    {!! $reviewItem === 'positive'
-                        ? '<img src="' . asset('assets/images/user_profile/thumb up filled.svg') . '" alt="" class="inline-block">'
-                        : '<img src="' . asset('assets/images/user_profile/thumb up filled.svg') . '" alt="" class="inline-block">' !!}
+                    class="{{ $reviewItem === 'positive' ? 'bg-zinc-500 text-text-white' : 'bg-zinc-50 text-zinc-500' }} font-semibold border-1 border-zinc-500 py-1 px-2 xxs:py-2 xxs:px-4 sm:py-3 sm:px-6 rounded-2xl inline-flex items-center gap-2 justify-center">
+
                     {{ __('Positive') }}
+                    {{-- <x-phosphor name="thumbs-up" variant="solid" class="fill-zinc-500 w-6 h-6 p-0! m-0!" /> --}}
+                    <x-phosphor name="thumbs-up" variant="solid"
+                        class="{{ $reviewItem === 'positive' ? 'fill-white' : 'fill-zinc-500' }} w-6 h-6 p-0! m-0!" />
                 </button>
             </div>
-            <div class="">
+            <div>
                 <button wire:navigate wire:click="switchReviewItem('negative')"
-                    class="{{ $reviewItem === 'negative' ? 'bg-zinc-500 text-text-white' : 'bg-zinc-50 text-zinc-500' }} border-1 border-zinc-500 font-semibold py-1 px-2 xxs:py-2 xxs:px-4 sm:py-3 sm:px-6 rounded-2xl inline-block">
-                    <img src="{{ asset('assets/images/user_profile/Subtract.png') }}" alt=""
-                        class="inline-block">
+                    class="{{ $reviewItem === 'negative' ? 'bg-zinc-500 text-text-white' : 'bg-zinc-50 text-zinc-500' }} font-semibold border-1 border-zinc-500 py-1 px-2 xxs:py-2 xxs:px-4 sm:py-3 sm:px-6 rounded-2xl inline-flex items-center gap-2 justify-center">
+
                     {{ __('Negative') }}
+
+                    {{-- <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}" alt=""
+                        class="inline-block"> --}}
+                    <x-phosphor name="thumbs-down" variant="solid" class="fill-[#AF0F0F] w-6 h-6 p-0! m-0!" />
                 </button>
             </div>
         </div>
@@ -33,8 +37,7 @@
                     <div class="">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
-                                <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}"
-                                    alt="">
+                                <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}" alt="">
                                 <p class="font-semibold text-2xl">{{ __('Items') }}</p>
                                 <span class="border-l border-text-white self-stretch"></span>
                                 <p class="text-xs">{{ __('Yeg***') }}</p>

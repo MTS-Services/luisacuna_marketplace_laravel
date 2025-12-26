@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 
 namespace App\Traits;
@@ -10,15 +10,15 @@ use Livewire\WithPagination;
 trait WithPaginationData
 {
     use  WithPagination;
-    
+
     public $pagination = [];
    #[Url()]
     protected $perPage = 8;
 
     protected  $queryString = 1;
-    protected function paginationData(LengthAwarePaginator $paginator): array
+    protected function paginationData(LengthAwarePaginator $paginator): void
     {
-        return [
+        $this->pagination =  [
             'current_page' => $paginator->currentPage(),
             'last_page'    => $paginator->lastPage(),
             'per_page'     => $paginator->perPage(),

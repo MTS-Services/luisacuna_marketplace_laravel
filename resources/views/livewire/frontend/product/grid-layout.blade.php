@@ -5,10 +5,10 @@
 
 
 
-        <div class="max-w-7xl mx-auto lg:px-8 lg:py-8">
+        <div class="max-w-7xl mx-auto lg:px-8 lg:py-10">
             <!-- Breadcrumb -->
 
-            <livewire:frontend.partials.breadcrumb :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
+            {{-- <livewire:frontend.partials.breadcrumb :gameSlug="$gameSlug" :categorySlug="$categorySlug" /> --}}
 
             <!-- Filters Section -->
             <div class="mb-8 space-y-4">
@@ -45,22 +45,22 @@
 
                     {{-- Custom Select --}}
 
-                       
+
                     <div class="flex-nowrap gap-5 relative hidden md:flex" x-data="{ open: false, selectedOption: '', selectedValue: '' }"
                         @click.away="open = false">
 
-                      
+
                         <input type="hidden" x-model="selectedValue" wire:model.live="platformId">
 
 
-                        
+
                         <div class="flex justify-between rounded-full border border-zinc-700 bg-bg-transparent items-center w-50 px-3 py-2 cursor-pointer"
                             @click="open = !open">
                             <span x-text="selectedOption || '{{ __('Platform') }}'"></span>
                             <flux:icon name="chevron-down" class="w-5 h-5 transition-transform duration-200"
                                 x-bind:class="open ? 'rotate-180' : ''" />
                         </div>
-                        
+
                         <!-- Dropdown Menu with Smooth Animation -->
                         <div class="absolute top-[110%] left-0 w-50 rounded bg-bg-primary border border-zinc-500 z-20 overflow-hidden origin-top h-[40vh] overflow-y-auto"
                             x-show="open" x-transition:enter="transition ease-out duration-300 transform"
@@ -81,13 +81,13 @@
                                        {{ $platform->name }}
                                     </li>
                                     @endforeach
-                                   
-                                    
+
+
                                 </ol>
                             </div>
                         </div>
                     </div>
-                    
+
 
 
                     {{-- Custom Select --}}

@@ -5,7 +5,7 @@
         price: {{ $product->price }},
         stock: {{ $product->quantity }}
     }" wire:submit="submit">
-        <div class="bg-bg-primary dark:bg-bg-secondary rounded-lg p-6 mb-6 ">
+        <div class="bg-bg-primary dark:bg-bg-secondary rounded-lg p-6 mb-6">
             <div class="pt-4 mb-8">
                 <div class="flex justify-between items-center ">
                     <span class="text-text-primary text-base">{{ __('Delivery time') }}
@@ -52,7 +52,6 @@
                             <span>{{ $config->value }}</span>
                         </div>
                     @endforeach
-
                 </div>
             </div>
         </div>
@@ -217,8 +216,8 @@
 
             <p class="m-4">
                 {{ __("If you encounter issues, don't worry, I'm just a message away. I'm mostly online, but if I don't reply
-                                                                                                immediately, I might be sleeping. I'll respond and resolve your issue as soon as I can. Please mark the
-                                                                                                order as received after checking the account and provide feedback. Thank you. placeholder") }}
+                                                                                                                                immediately, I might be sleeping. I'll respond and resolve your issue as soon as I can. Please mark the
+                                                                                                                                order as received after checking the account and provide feedback. Thank you. placeholder") }}
             </p>
 
             <button
@@ -232,7 +231,7 @@
             </button>
 
 
-            <button class=" text-xl mt-4 mb-4 font-medium">{{ __('Recent feedback') }}</button>
+            <button class=" text-3xl mt-5 mb-4 font-semibold">{{ __('Recent feedback') }}</button>
             <!-- Seller Card -->
             @foreach ([1, 2, 3, 4, 5] as $item)
                 <div class="bg-bg-optional dark:bg-bg-info text-white p-5  max-w-md mb-1">
@@ -251,7 +250,9 @@
                     <p class="text-text-secondary text-sm">Yeg***</p>
                 </div>
             @endforeach
-
+            <div class="mt-5">
+                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{ __('All feedback') }}</x-ui.button>
+            </div>
         </div>
 
 

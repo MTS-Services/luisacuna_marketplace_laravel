@@ -14,12 +14,12 @@ class ListLayout extends Component
 {
     use WithPaginationData;
     public  $gameSlug ;
-    public $categorySlug; 
+    public $categorySlug;
     public $game;
     protected $datas;
     public $product;
 
-   
+
 
     protected ProductService $productService;
     protected OrderService $orderService;
@@ -36,7 +36,7 @@ class ListLayout extends Component
 
     }
    public function getDatas(){
-        
+
      return  $this->productService->getPaginatedData($this->perPage = 2 , [
 
             'gameSlug' => $this->gameSlug,
@@ -54,8 +54,8 @@ class ListLayout extends Component
     }
 
     public function submit(){
-      
-       
+
+
         $token = bin2hex(random_bytes(126));
         $order = $this->orderService->createData([
             'order_id' => generate_order_id_hybrid(),
@@ -80,16 +80,16 @@ class ListLayout extends Component
     }
     public function render()
     {
-       
+
         $this->datas = $this->getDatas();
-        $this->pagination = $this->paginationData($this->datas);
-        
+        $this->paginationData($this->datas);
+
         return view('livewire.frontend.product.list-layout', [
             'gameSlug' => $this->gameSlug,
             'categorySlug' => $this->categorySlug,
             'game' => $this->game,
             'datas' => $this->datas,
-           
+
         ]);
     }
 
