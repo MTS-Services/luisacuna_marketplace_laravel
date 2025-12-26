@@ -21,7 +21,7 @@ use App\Http\Controllers\Backend\Admin\GameManagement\PlatformController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\AccountController;
 use App\Http\Controllers\Backend\Admin\ReviewManagement\PageViewController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
-use App\Http\Controllers\Backend\Admin\ChatManagement\ChatController;
+use App\Http\Controllers\Backend\Admin\ConversationManagement\ConversationController;
 use App\Http\Controllers\Backend\Admin\FeeSettingsManagement\FeeSettingsController;
 use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementController;
@@ -283,9 +283,9 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
         Route::get('/show/{id}', 'show')->name('show');
     });
 
-    Route::controller(ChatController::class)->name('chat.')->prefix('chat')->group(function () {
+    Route::controller(ConversationController::class)->name('conversation.')->prefix('conversations')->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/chat/{id}', 'chat')->name('chat');
+        Route::get('/show/{id}', 'show')->name('show');
     });
 
     Route::controller(NotificationController::class)->name('notification.')->prefix('notification')->group(function () {
