@@ -55,13 +55,13 @@ class CancelledOrders extends Component
                 'key' => 'user_id',
                 'label' => 'Buyer',
                 'sortable' => true,
-                'format' => fn($order) => $order->user->full_name,
+                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->user->username]) . '"><span class="text-text-white text-xs xxs:text-sm md:text-base truncate">' . $order->user->full_name . '</span></a>'
             ],
             [
                 'key' => 'source_id',
                 'label' => 'Seller',
                 'sortable' => true,
-                'format' => fn($order) => $order->source->user->full_name,
+                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->source->user->username]) . '"><span class="text-text-white text-xs xxs:text-sm md:text-base truncate">' . $order->source->user->full_name . '</span></a>'
             ],
             [
                 'key' => 'total_amount',
