@@ -39,8 +39,8 @@ class PurchasedOrders extends Component
                 'format' => fn($order) => '
                 <div class="flex items-center gap-3">
                     <div class="w-15 h-15  rounded-lg flex-shrink-0">
-                        <img src="' . storage_url('') . '" 
-                            alt="' . $order->product_name . '" 
+                        <img src="' . storage_url($order?->source?->game?->logo) . '"
+                            alt="' . $order->source->name . '" 
                             class="w-full h-full rounded-lg object-cover" />
                     </div>
                     <div class="min-w-0">
@@ -53,7 +53,7 @@ class PurchasedOrders extends Component
                         <a href="' . ($order->status->value === 'cancelled'
                         ? route('user.order.cancel', ['orderId' => $order->order_id])
                         : route('user.order.complete', ['orderId' => $order->order_id])
-                        ) . '"
+                    ) . '"
                         class="text-bg-pink-500 text-xs">
                             View Details 
                             <flux:icon name="arrow-right" class="w-4 h-4" />
@@ -67,10 +67,16 @@ class PurchasedOrders extends Component
                 'label' => 'Type',
                 'format' => fn($order) => $order->product_type
             ],
+            // [
+            //     'key' => 'seller',
+            //     'label' => 'Seller',
+            //     'format' => fn($order) => $order->seller_name
+            // ],
             [
-                'key' => 'seller',
+                'key' => 'source_id',
                 'label' => 'Seller',
-                'format' => fn($order) => $order->seller_name
+                'sortable' => true,
+                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->source->user->username]) . '"><span class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">' . $order->source->user->full_name . '</span></a>'
             ],
             [
                 'key' => 'created_at',
@@ -97,7 +103,7 @@ class PurchasedOrders extends Component
             [
                 'key' => 'grand_total',
                 'label' => 'Price ($)',
-                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">$' . number_format($order->total_price, 2) . '</span>'
+                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">$' . $order->total_amount . '</span>'
             ],
         ];
 
