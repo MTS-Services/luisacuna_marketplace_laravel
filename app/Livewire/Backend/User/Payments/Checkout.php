@@ -47,7 +47,7 @@ class Checkout extends Component
         }
 
         $this->order = $this->orderService->findData($sessionKey['order_id']);
-        $this->order->load(['user', 'source.platform', 'source.product_configs.game_configs', 'source.user' ]);
+        $this->order->load(['user', 'source.platform', 'source.product_configs.game_configs', 'source.user', 'source.game', 'source.user.wallet' ]);
 
         if (!$this->order || $this->order->status !== OrderStatus::INITIALIZED) {
             abort(404, 'Checkout link is invalid or has expired');

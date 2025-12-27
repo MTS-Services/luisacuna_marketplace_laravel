@@ -36,7 +36,7 @@
                         <div class="flex items-center justify-between">
                             <div class="block xxs:flex gap-4">
                                 <div class="w-15 h-15">
-                                    <img src="{{ storage_url($order->source->logo) }}" alt=""
+                                    <img src="{{ storage_url($order->source?->game->logo) }}" alt=""
                                         class="w-full h-full object-cover rounded-lg flex items-center">
                                 </div>
                                 <div class="">
@@ -46,14 +46,14 @@
                             </div>
                             <div class="">
                                 <span class="text-text-white font-bold text-2xl">
-                                    ${{ number_format($order->grand_total, 2) }}
+                                    {{ currency_exchange($order->unit_price) }}
                                 </span>
                             </div>
                         </div>
                         <div class="  mt-2 pt-3 flex items-center justify-between gap-2">
 
                             <div class="w-18 h-14 relative">
-                                <img src="{{ storage_url($order->source?->user?->avatar) }}"
+                                <img src="{{ auth_storage_url($order->source?->user?->avatar) }}"
                                     class="w-14 h-14 rounded-full border-2 border-white" alt="profile" />
                                 <span
                                     class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
@@ -83,30 +83,32 @@
                     <h2 class="text-2xl font-semibold text-text-white mb-4 pb-3">{{ __('2. Order Summary') }}</h2>
                     <h5 class="text-text-white text-base font-semibold ">{{ __('Order details') }}</h5>
                     <div class="mt-4">
-                        @if($order->source?->delivery_timeline)
-                        <div class="flex justify-between mb-2">
-                            <p class="text-text-white font-base text-xs">{{ __('Delivery time:') }}</p>
-                            <p class="text-text-white font-base text-xs">{{ $order->source?->delivery_timeline }}</p>
-                        </div>
+                        @if ($order->source?->delivery_timeline)
+                            <div class="flex justify-between mb-2">
+                                <p class="text-text-white font-base text-xs">{{ __('Delivery time:') }}</p>
+                                <p class="text-text-white font-base text-xs">{{ $order->source?->delivery_timeline }}
+                                </p>
+                            </div>
                         @endif
-                        @if($order->source?->delivery_timeline)
-                        <div class="flex justify-between mb-2">
-                            <p class="text-text-white font-base text-xs">{{ __('Platform:') }}</p>
-                            <p class="text-text-white font-base text-xs">{{ $order->source?->platform?->name }}</p>
-                        </div>
+                        @if ($order->source?->delivery_timeline)
+                            <div class="flex justify-between mb-2">
+                                <p class="text-text-white font-base text-xs">{{ __('Platform:') }}</p>
+                                <p class="text-text-white font-base text-xs">{{ $order->source?->platform?->name }}</p>
+                            </div>
                         @endif
 
                         @foreach ($order->source?->product_configs as $config)
-                        @if (!$config->game_configs->field_name)
-                            @continue
-                        @endif
+                            @if (!$config->game_configs->field_name)
+                                @continue
+                            @endif
 
-                        <div class="flex justify-between mb-2">
-                            <p class="text-text-white font-base text-xs">{{ $config->game_configs->field_name }}</p>
-                            <p class="text-text-white font-base text-xs">{{ $config->value }}</p>
-                        </div>
-                    @endforeach
-                        
+                            <div class="flex justify-between mb-2">
+                                <p class="text-text-white font-base text-xs">{{ $config->game_configs->field_name }}
+                                </p>
+                                <p class="text-text-white font-base text-xs">{{ $config->value }}</p>
+                            </div>
+                        @endforeach
+
                         <div class="flex justify-between mb-2">
                             <p class="text-text-white font-base text-xs">{{ __('Skins:') }}</p>
                             <p class="text-text-white font-base text-xs">{{ __('145') }}</p>
@@ -136,7 +138,7 @@
                     <p class="text-pink-500 text-base font-semibold mt-2">{{ __('Your money is always safe') }}</p>
                     <p class="text-text-white text-base font-normal mt-4">
                         {{ __('We hold your payment until you confirm you\'ve received what you paid for.
-                                                                                                                                                                                            If the seller can\'t complete the delivery or any other issue arises, your money is protected and will be fully refunded to your SWAPY.GG wallet.') }}
+                                                                                                                                                                                                                                            If the seller can\'t complete the delivery or any other issue arises, your money is protected and will be fully refunded to your SWAPY.GG wallet.') }}
                     </p>
                 </div>
             </div>
@@ -182,7 +184,7 @@
                                     @if ($gatewayItem->slug === 'wallet' && $walletBalance !== null)
                                         <span
                                             class="text-sm font-medium {{ $walletBalance >= $order->grand_total ? 'text-green-400' : 'text-red-400' }}">
-                                            (${{ number_format($walletBalance, 2) }})
+                                            ({{ currency_exchange($walletBalance) }})
                                         </span>
                                     @endif
                                 </div>
@@ -213,7 +215,7 @@
                                     <div>
                                         <p class="font-bold">Insufficient Balance</p>
                                         <p class="text-sm">You need
-                                            ${{ number_format($order->grand_total - $walletBalance, 2) }} more to
+                                            ${{ currency_exchange($order->grand_total - $walletBalance) }} more to
                                             complete
                                             this purchase.</p>
                                     </div>
@@ -247,7 +249,7 @@
                         <div class="mt-6">
                             <div class="flex justify-between mb-2">
                                 <p class="text-text-white font-normal text-xs">{{ __('Subtotal:') }}</p>
-                                <p class="text-text-white font-semibold text-base">{{ __('25.81 PEN') }}</p>
+                                <p class="text-text-white font-semibold text-base">{{ currency_exchange($order->grand_total) }}</p>
                             </div>
 
                             <div class="flex justify-between mb-2">
@@ -264,7 +266,8 @@
 
                             <div class="flex justify-between mb-2">
                                 <p class="text-text-white font-normal text-xs">{{ __('Use Wallet Balance') }}</p>
-                                <p class="text-text-white font-semibold text-base">{{ __('0.00 USD') }}</p>
+                                <p class="text-text-white font-semibold text-base">
+                                    {{ currency_exchange($walletBalance) }}</p>
                             </div>
                         </div>
 
