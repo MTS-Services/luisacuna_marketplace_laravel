@@ -43,8 +43,6 @@ class Detail extends Component
 
         $this->order->load(['user', 'source.user', 'source.game', 'transactions']);
 
-
-
         $this->orderDetailModalShow = true;
         $this->isLoading = false;
     }
