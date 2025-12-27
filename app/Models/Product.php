@@ -73,6 +73,10 @@ class Product extends BaseModel implements Auditable
     {
         return $this->belongsTo(Game::class, 'game_id', 'id');
     }
+    public function game()
+    {
+        return $this->belongsTo(Game::class, 'game_id', 'id');
+    }
 
     public function product_configs()
     {

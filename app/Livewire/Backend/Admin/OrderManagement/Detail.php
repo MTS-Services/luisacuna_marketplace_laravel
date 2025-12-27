@@ -3,20 +3,28 @@
 namespace App\Livewire\Backend\Admin\OrderManagement;
 
 use App\Models\Order;
-use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\Attributes\On;
+use App\Services\OrderService;
 
 class Detail extends Component
 {
     public bool $isLoading = true;
-    public bool $orderDetailModalShow = true;
-    public Order $order;
+    public bool $orderDetailModalShow = false;
+    // public Order $order;
+    public $order;
 
-    public function boot()
+
+    protected OrderService $orderService;
+
+    public function boot(OrderService $orderService)
     {
-        $this->order = new Order();
+        $this->orderService = $orderService;
     }
-
+    // public function boot()
+    // {
+    //     $this->order = new Order();
+    // }
     public function closeModal()
     {
         $this->orderDetailModalShow = false;
@@ -30,6 +38,14 @@ class Detail extends Component
     #[On('order-detail-modal-open')]
     public function fetchOrderDetail($orderId)
     {
-        $this->order = Order::where('order_id', $orderId)->with(['user', 'source'])->first();
+        $this->isLoading = true;
+        $this->order = $this->orderService->findData($orderId, 'order_id');
+
+        $this->order->load(['user', 'source.user', 'source.game', 'transactions']);
+
+
+
+        $this->orderDetailModalShow = true;
+        $this->isLoading = false;
     }
 }
