@@ -2,12 +2,13 @@
 
 namespace App\Livewire\Backend\User\Profile;
 
-use App\Models\Category;
+
 use App\Models\User;
 use App\Services\CategoryService;
 use App\Services\GameService;
 use App\Services\ProductService;
 use App\Traits\WithPaginationData;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 use Livewire\Attributes\Url;
 
@@ -23,7 +24,9 @@ class ProfileCategoryItems extends Component
      protected GameService $gameService;
      protected ProductService $productService;
      protected CategoryService $categoryService ;
-     protected User $user;
+  
+     #[Locked]
+     public int $userId;
     public function boot(GameService $gameService, ProductService $productService, CategoryService $categoryService)
     {
 
@@ -33,7 +36,7 @@ class ProfileCategoryItems extends Component
     }
 
     public function mount(User $user){
-        $this->user = $user; 
+        $this->userId = $user->id; 
      
     }
     public function render()
@@ -53,7 +56,7 @@ class ProfileCategoryItems extends Component
        return $this->productService->getPaginatedData($this->perPage, [
             'categorySlug' => $this->activeTab,
             'relations' => ['games'], 
-            'user_id' => $this->user->id,
+            'user_id' => $this->userId,
         ]);
     }
 }
