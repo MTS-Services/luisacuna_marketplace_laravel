@@ -4,7 +4,6 @@ namespace App\Livewire\Backend\Admin\ProfileManagement;
 
 use App\Models\Admin;
 use Livewire\Component;
-use App\Services\RoleService;
 use Livewire\WithFileUploads;
 use App\Services\AdminService;
 use Illuminate\Support\Facades\Log;
@@ -22,13 +21,11 @@ class Edit extends Component
     public $existingFiles;
 
     protected AdminService $service;
-    protected RoleService $roleService;
 
 
-    public function boot(AdminService $service, RoleService $roleService)
+    public function boot(AdminService $service)
     {
         $this->service = $service;
-        $this->roleService = $roleService;
     }
 
     public function mount(Admin $data): void
@@ -41,10 +38,7 @@ class Edit extends Component
 
     public function render()
     {
-        $roles = $this->roleService->getAllDatas();
-        return view('livewire.backend.admin.profile-management.edit', [
-            'roles' => $roles
-        ]);
+        return view('livewire.backend.admin.profile-management.edit');
     }
 
     public function save()
