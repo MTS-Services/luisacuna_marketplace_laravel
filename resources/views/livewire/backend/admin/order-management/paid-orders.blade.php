@@ -12,4 +12,5 @@
     <x-ui.table :data="$datas" :columns="$columns" :actions="$actions" :showRowNumber="false"
        :mobileVisibleColumns="2" searchProperty="search" perPageProperty="perPage" :showBulkActions="false"
         emptyMessage="No data found. Create your first data to get started." />
+
 </section>

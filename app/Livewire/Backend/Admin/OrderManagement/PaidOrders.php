@@ -79,11 +79,11 @@ class PaidOrders extends Component
             ],
         ];
         $actions = [
-            [
-                'key' => 'id',
-                'label' => 'Show',
-                // 'route' => '',
-                'encrypt' => true
+           [
+                'key' => 'order_id',
+                'label' => 'View',
+                'x_click' => "\$dispatch('order-detail-modal-open', { orderId: '{value}' }); console.log('open');",
+
             ],
 
         ];
@@ -91,6 +91,7 @@ class PaidOrders extends Component
             ['value' => 'delete', 'label' => 'Delete'],
 
         ];
+
         return view('livewire.backend.admin.order-management.paid-orders', [
             'datas' => $datas,
             'columns' => $columns,
