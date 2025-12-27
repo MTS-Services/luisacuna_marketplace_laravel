@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\TransactionStatus;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -35,12 +36,14 @@ class TransactionService
             // Scout Search
 
             return $this->model::search($search)
+                ->valided()
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
         }
 
         // // Normal Eloquent Query
         return $this->model->query()
+            ->valided()
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);

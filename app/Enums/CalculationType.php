@@ -23,6 +23,23 @@ enum CalculationType: string
         };
     }
 
+    public function textColor(): string
+    {
+        return match ($this) {
+            self::DEBIT => 'text-green-500',
+            self::CREDIT => 'text-red-500',
+        };
+    }
+
+    public function prefix(): string
+    {
+        return match ($this) {
+            self::DEBIT => '+',
+            self::CREDIT => '-',
+        };
+    }
+
+
     public static function options(): array
     {
         return array_map(
