@@ -98,7 +98,7 @@
                 </a>
             @endauth
             <!-- Guarantees -->
-            {{-- <div class="space-y-4">
+            <div class="space-y-4">
                 <!-- Money-back -->
                 <div class="flex items-start gap-3">
                     <svg class="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
@@ -144,7 +144,7 @@
                         <p class="text-xs text-gray-400">{{ __('We\'re always here to help') }}</p>
                     </div>
                 </div>
-            </div> --}}
+            </div>
         </div>
         <!-- Delivery Instructions -->
         <!-- Delivery Instructions -->
