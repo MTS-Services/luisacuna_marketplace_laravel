@@ -1,4 +1,5 @@
 <div class="mx-auto bg-page">
+    
     <form action="#">
         <div class="container mx-auto">
             <div class="flex items-center gap-2 my-8 text-lg font-semibold">

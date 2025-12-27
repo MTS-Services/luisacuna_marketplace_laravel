@@ -53,7 +53,7 @@
                         <div class="  mt-2 pt-3 flex items-center justify-between gap-2">
 
                             <div class="w-18 h-14 relative">
-                                <img src="{{ storage_url('http://127.0.0.1:8000/assets/images/default_profile.jpg') }}"
+                                <img src="{{ storage_url($order->source?->user?->avatar) }}"
                                     class="w-14 h-14 rounded-full border-2 border-white" alt="profile" />
                                 <span
                                     class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
@@ -62,7 +62,7 @@
 
                             <div class="w-full">
                                 <p class="text-text-white font-medium flex items-center gap-2">
-                                    <span> {{ 'Username' }}</span>
+                                    <span> {{ $order->user->fullname }}</span>
                                     <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
                                 </p>
 
@@ -83,36 +83,45 @@
                     <h2 class="text-2xl font-semibold text-text-white mb-4 pb-3">{{ __('2. Order Summary') }}</h2>
                     <h5 class="text-text-white text-base font-semibold ">{{ __('Order details') }}</h5>
                     <div class="mt-4">
+                        @if($order->source?->delivery_timeline)
                         <div class="flex justify-between mb-2">
                             <p class="text-text-white font-base text-xs">{{ __('Delivery time:') }}</p>
-                            <p class="text-text-white font-base text-xs">{{ __('16') }}</p>
+                            <p class="text-text-white font-base text-xs">{{ $order->source?->delivery_timeline }}</p>
                         </div>
+                        @endif
+                        @if($order->source?->delivery_timeline)
                         <div class="flex justify-between mb-2">
                             <p class="text-text-white font-base text-xs">{{ __('Platform:') }}</p>
-                            <p class="text-text-white font-base text-xs">{{ __('PC') }}</p>
+                            <p class="text-text-white font-base text-xs">{{ $order->source?->platform?->name }}</p>
                         </div>
+                        @endif
+
+                        @foreach ($order->source?->product_configs as $config)
+                        @if (!$config->game_configs->field_name)
+                            @continue
+                        @endif
+
+                        <div class="flex justify-between mb-2">
+                            <p class="text-text-white font-base text-xs">{{ $config->game_configs->field_name }}</p>
+                            <p class="text-text-white font-base text-xs">{{ $config->value }}</p>
+                        </div>
+                    @endforeach
+                        
                         <div class="flex justify-between mb-2">
                             <p class="text-text-white font-base text-xs">{{ __('Skins:') }}</p>
                             <p class="text-text-white font-base text-xs">{{ __('145') }}</p>
                         </div>
                     </div>
-                    <h5 class="text-text-white text-base font-semibold ">{{ __('Order details') }}</h5>
+
+                    <h5 class="text-text-white text-base font-semibold mt-5 ">{{ __('Order details') }}</h5>
                     <div class="mt-4">
                         <div class="flex justify-between mb-2">
                             <p class="text-text-white font-base text-xs">{{ __('Email:') }}</p>
-                            <p class="text-text-white font-base text-xs">{{ __('example@gmail.com') }}</p>
+                            <p class="text-text-white font-base text-xs">{{ $order->user->email }}</p>
                         </div>
                         <div class="flex justify-between mb-2">
                             <p class="text-text-white font-base text-xs">{{ __('Username    :') }}</p>
-                            <p class="text-text-white font-base text-xs">{{ __('xyz') }}</p>
-                        </div>
-                        <div class="flex justify-between mb-2">
-                            <p class="text-text-white font-base text-xs">{{ __('Skins:') }}</p>
-                            <p class="text-text-white font-base text-xs">{{ __('example') }}</p>
-                        </div>
-                        <div class="flex justify-between mb-2">
-                            <p class="text-text-white font-base text-xs">{{ __('Region:') }}</p>
-                            <p class="text-text-white font-base text-xs">{{ __('NA') }}</p>
+                            <p class="text-text-white font-base text-xs">{{ $order->user->username }}</p>
                         </div>
                     </div>
                 </div>
