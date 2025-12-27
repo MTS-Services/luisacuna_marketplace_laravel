@@ -4,40 +4,31 @@ namespace App\Enums;
 
 enum TransactionType: string
 {
-    case PAYMENT = 'payment';
-    case WALLET = 'wallet';
-    case REFUND = 'refund';
+    case PURCHSED = 'purchased';
+    case SALES = 'sales';
     case WITHDRAWAL = 'withdrawal';
-    case DEPOSIT = 'deposit';
-    case TRANSFER = 'transfer';
-    case FEE = 'fee';
-    case COMMISSION = 'commission';
+    case REFUND = 'refund';
+    case TOPUP = 'topup';
 
     public function label(): string
     {
         return match ($this) {
-            self::PAYMENT => 'Payment',
-            self::WALLET => 'Wallet',
-            self::REFUND => 'Refund',
+            self::PURCHSED => 'Purchased',
+            self::SALES => 'Sales',
             self::WITHDRAWAL => 'Withdrawal',
-            self::DEPOSIT => 'Deposit',
-            self::TRANSFER => 'Transfer',
-            self::FEE => 'Fee',
-            self::COMMISSION => 'Commission',
+            self::REFUND => 'Refund',
+            self::TOPUP => 'Top Up',
         };
     }
 
     public function color(): string
     {
         return match ($this) {
-            self::PAYMENT => 'badge-primary',
-            self::WALLET => 'badge-info',
-            self::REFUND => 'badge-warning',
-            self::WITHDRAWAL => 'badge-danger',
-            self::DEPOSIT => 'badge-success',
-            self::TRANSFER => 'badge-info',
-            self::FEE => 'badge-secondary',
-            self::COMMISSION => 'badge-accent',
+            self::PURCHSED => 'badge-success',
+            self::SALES => 'badge-info',
+            self::WITHDRAWAL => 'badge-warning',
+            self::REFUND => 'badge-danger',
+            self::TOPUP => 'badge-primary',
         };
     }
 

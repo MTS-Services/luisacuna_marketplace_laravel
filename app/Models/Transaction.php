@@ -20,25 +20,33 @@ class Transaction extends BaseModel
 
     protected $fillable = [
         'sort_order',
+
+        'correlation_id',
         'transaction_id',
         'user_id',
+
         'type',
         'status',
         'calculation_type',
+
         'amount',
+        'fee_amount',
+        'net_amount',
         'currency',
+
+        'balance_snapshot',
+
         'payment_gateway',
         'gateway_transaction_id',
         'order_id',
+
         'source_id',
         'source_type',
-        'fee_amount',
-        'net_amount',
+
         'metadata',
         'notes',
         'failure_reason',
         'processed_at',
-
     ];
 
     protected $casts = [
@@ -156,6 +164,14 @@ class Transaction extends BaseModel
         }
 
         return $query;
+    }
+
+    public function scopeValided(Builder $query)
+    {
+        $query->whereNotIn('status', [
+            TransactionStatus::FAILED,
+            TransactionStatus::PENDING,
+        ]);
     }
 
     /* HELPER METHODS */

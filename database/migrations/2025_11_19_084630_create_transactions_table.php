@@ -19,26 +19,31 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
 
-            // Transaction Identifier
-            $table->string('transaction_id', 20)->unique()->index();
+            // 1. Linking & Auditing
+            $table->uuid('correlation_id')->nullable()->index()
+                ->comment('Links multiple rows (e.g., Stripe Deposit + Wallet Purchase)');
 
-            // User Information
+            $table->string('transaction_id', 50)->unique()->index();
             $table->unsignedBigInteger('user_id')->index();
 
-            // Transaction Type & Status
-            $table->string('type', 50)->index()->comment('Type: payment, refund, withdrawal, deposit, etc.');
+            // 2. The Transaction Details
+            $table->string('type', 50)->index()->comment('Type: PURCHASED, REFUNDED, etc.');
             $table->string('status', 20)->default(TransactionStatus::PENDING->value)->index();
-            $table->string('calculation_type', 20)->nullable()->index()->comment('indicates whether the transaction is a credit or debit'); // uses CalculationType enum
+            $table->string('calculation_type', 20)->nullable()->index()->comment('indicates whether the transaction is a credit or debit'); // DEBIT, CREDIT
 
-            // Amount Details 
+            // 3. Financial Data (Using your 20,2 precision)
             $table->decimal('amount', 20, 2)->index();
-            $table->string('currency', 3)->default('USD')->index();
+            $table->decimal('fee_amount', 20, 2)->default(0);
+            $table->decimal('net_amount', 20, 2)->default(0);
+            $table->string('currency', 3)->default('USD');
 
-            // Payment Gateway Information (if applicable)
-            $table->string('payment_gateway', 50)->nullable()->index();
-            $table->string('gateway_transaction_id')->nullable()->index()->comment('External gateway reference ID');
+            // 4. Balance Snapshot (Crucial for accounting)
+            $table->decimal('balance_snapshot', 20, 2)->index()
+                ->comment('The wallet balance immediately AFTER this transaction occurred');
 
-            // Related Order (if applicable)
+            // 5. Gateway & Relations
+            $table->string('payment_gateway', 50)->nullable()->index(); // 'stripe', 'crypto', 'wallet'
+            $table->string('gateway_transaction_id')->nullable()->index();
             $table->unsignedBigInteger('order_id')->nullable()->index();
 
             // Source Polymorphic Relationship (Payment, Withdrawal, etc.)
@@ -46,15 +51,11 @@ return new class extends Migration
             $table->string('source_type')->nullable()->index();
 
             // Fees & Net Amount
-            $table->decimal('fee_amount', 20, 2)->default(0)->comment('Transaction fee if any');
-            $table->decimal('net_amount', 20, 2)->default(0)->comment('Amount after fees');
 
             // Additional Information
             $table->json('metadata')->nullable();
             $table->text('notes')->nullable();
             $table->text('failure_reason')->nullable();
-
-            // Timestamps
             $table->timestamp('processed_at')->nullable()->index();
 
             $table->timestamps();

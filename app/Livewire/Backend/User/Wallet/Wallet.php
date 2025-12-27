@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\User\Wallet;
 
+use App\Enums\CalculationType;
 use App\Models\Wallet as ModelWallet;
 use App\Services\TransactionService;
 use Livewire\Component;
@@ -29,29 +30,30 @@ class Wallet extends Component
             perPage: $this->perPage,
             filters: $this->filter()
         );
+        $datas->load(['order', 'source']);
         // Table columns configuration
         $columns = [
             [
-                'key' => 'transaction_id',
-                'label' => 'Transaction ID',
+                'key' => 'created_at',
+                'label' => 'Date Created',
+                'format' => fn($item) => $item->created_at_formatted
             ],
             [
-                'key' => 'amount',
-                'label' => 'Amount',
+                'key' => 'net_amount',
+                'label' => 'Balance',
+                'format' => fn($item) =>
+                '<span class="font-semibold ' . $item->calculation_type->textColor() . ' ">' . $item->calculation_type->prefix() . ' ' . currency_exchange($item->net_amount ?? 0) . '</span>'
             ],
             [
-                'key' => 'currency',
-                'label' => 'Currency',
+                'key' => 'order_id',
+                'label' => 'Order ID',
+                'format' => fn($item) => $item->order?->order_id ?? ' - '
             ],
             [
-                'key' => 'status',
-                'label' => 'Status',
-                'sortable' => true,
-                'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
-                        $data->status->label() .
-                        '</span>';
-                }
+                'key' => 'notes',
+                'label' => 'Description',
+                'format' => fn($item) =>
+                '<span class="line-clamp-2">' . $item->notes . '</span>'
             ],
             [
                 'key' => 'action',
