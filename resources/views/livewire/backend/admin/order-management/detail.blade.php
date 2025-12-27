@@ -83,7 +83,7 @@
                                     <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
                                         <span class="text-text-muted text-sm">{{ __('Status: ') }}</span>
                                         <span
-                                            class="text-text-white font-medium">{{ $order?->status?->label() }}</span>
+                                            class="text-text-white font-medium badge badge-soft {{ $order->status->color() }}">{{ $order?->status?->label() }}</span>
                                     </div>
                                     <div class="flex justify-between items-center">
                                         <span class="text-text-muted text-sm">{{ __('Total Amount: ') }}</span>
@@ -151,14 +151,15 @@
                                         class="text-text-white font-bold">{{ $order?->source?->user?->full_name }}</a>
                                 </div>
                                 <div class="flex gap-2 items-center pb-2">
-                                    <p class="text-text-white font-bold">{{ __('User Name: ') }}</p>
+                                    <p class="text-text-muted text-xs break-all font-semibold">{{ __('User Name: ') }}
+                                    </p>
                                     <a href="{{ route('profile', $order?->source?->user?->username) }}"
-                                        class="text-text-muted text-xs">{{ $order?->source?->user?->username }}</a>
+                                        class="text-text-muted text-xs underline">{{ $order?->source?->user?->username }}</a>
                                 </div>
                                 <div class="flex gap-2 items-center pb-2">
-                                    <p class="text-text-white font-bold">{{ __('Email: ') }}</p>
+                                    <p class="text-text-muted text-xs break-all font-semibold">{{ __('Email: ') }}</p>
                                     <a href="mailto:{{ $order?->source?->user?->email }}"
-                                        class="text-text-muted text-xs break-all">{{ $order?->source?->user?->email }}</a>
+                                        class="text-text-muted text-xs break-all underline">{{ $order?->source?->user?->email }}</a>
                                 </div>
                             </div>
                         </div>
@@ -181,14 +182,15 @@
                                         class="text-text-white font-bold">{{ $order?->user?->full_name }}</a>
                                 </div>
                                 <div class="flex gap-2 items-center pb-2">
-                                    <p class="text-text-white font-bold">{{ __('User Name: ') }}</p>
+                                    <p class="text-text-muted text-xs break-all font-semibold">{{ __('User Name: ') }}
+                                    </p>
                                     <a href="{{ route('profile', $order?->user?->username) }}"
-                                        class="text-text-muted text-xs">{{ $order?->user?->username }}</a>
+                                        class="text-text-muted text-xs underline">{{ $order?->user?->username }}</a>
                                 </div>
                                 <div class="flex gap-2 items-center pb-2">
-                                    <p class="text-text-white font-bold">{{ __('Email: ') }}</p>
+                                    <p class="text-text-muted text-xs break-all font-semibold">{{ __('Email: ') }}</p>
                                     <a href="mailto:{{ $order?->user?->email }}"
-                                        class="text-text-muted text-xs">{{ $order?->user?->email }}</a>
+                                        class="text-text-muted text-xs underline">{{ $order?->user?->email }}</a>
                                 </div>
                             </div>
                         </div>
