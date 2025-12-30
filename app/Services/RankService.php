@@ -2,15 +2,16 @@
 
 namespace App\Services;
 
-use App\Actions\Rank\AssignRankAction;
 use App\Models\Rank;
+use App\Models\UserRank;
 use App\Enums\RankStatus;
 use App\Actions\Rank\BulkAction;
 use App\Actions\Rank\CreateAction;
 use App\Actions\Rank\DeleteAction;
 use App\Actions\Rank\UpdateAction;
+use Illuminate\Support\Facades\DB;
 use App\Actions\Rank\RestoreAction;
-use App\Models\UserRank;
+use App\Actions\Rank\AssignRankAction;
 use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Contracts\RankRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -84,6 +85,45 @@ class RankService
 
         return max(0, $nextRank->minimum_points - $userPoints);
     }
+
+
+
+    public function getRankByPoints(int $points): ?Rank
+    {
+        return Rank::where('minimum_points', '<=', $points)
+            ->where('maximum_points', '>=', $points)
+            ->with('achievements')
+            ->first();
+    }
+
+
+
+    // REDEEM
+    public function redeemUserPoints($user, $points = 10000): bool
+    {
+        if (($user->userPoint->points ?? 0) < $points) {
+            return false;
+        }
+
+        DB::transaction(function () use ($user, $points) {
+            $user->userPoint->points -= $points;
+            $user->userPoint->save();
+
+
+            $wallet = $user->wallet;
+
+            if (!$wallet) {
+                $wallet = $user->wallet()->create([
+                    'balance' => 0,
+                ]);
+            }
+            $wallet->balance += 1;
+            $wallet->save();
+        });
+
+        return true;
+    }
+
 
     /* ================== ================== ==================
     *                   Action Executions

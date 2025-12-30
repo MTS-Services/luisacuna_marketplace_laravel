@@ -14,6 +14,7 @@ class PurchasedOrders extends Component
     public $showDeleteModal = false;
     public $deleteItemId = null;
     public $perPage = 7;
+    public $status = null;
 
 
     protected OrderService $service;
@@ -62,11 +63,11 @@ class PurchasedOrders extends Component
                 </div>
         '
             ],
-            [
-                'key' => 'type',
-                'label' => 'Type',
-                'format' => fn($order) => $order->product_type
-            ],
+            // [
+            //     'key' => 'type',
+            //     'label' => 'Type',
+            //     'format' => fn($order) => $order->product_type
+            // ],
             // [
             //     'key' => 'seller',
             //     'label' => 'Seller',
@@ -119,6 +120,7 @@ class PurchasedOrders extends Component
     {
         return [
             'search' => $this->search ?? null,
+             'status' => $this->status ?? null,
             'sort_field' => $this->sortField ?? 'created_at',
             'sort_direction' => $this->sortDirection ?? 'desc',
             'user_id' => user()->id,
