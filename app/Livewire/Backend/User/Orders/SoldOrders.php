@@ -4,8 +4,10 @@ namespace App\Livewire\Backend\User\Orders;
 
 use Livewire\Component;
 use App\Enums\OrderStatus;
+use App\Models\Order;
 use Livewire\WithPagination;
 use App\Services\OrderService;
+use Illuminate\Support\Facades\Auth;
 
 class SoldOrders extends Component
 {
@@ -25,12 +27,11 @@ class SoldOrders extends Component
 
     public function render()
     {
-
-
         $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
+        dd($datas);
 
         $columns = [
             [
@@ -38,9 +39,9 @@ class SoldOrders extends Component
                 'label' => 'Order Name',
                 'format' => fn($order) => '
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 xxs:w-10 xxs:h-10 rounded-lg flex-shrink-0">
-                        <img src="' . storage_url($order->product_logo) . '" 
-                            alt="' . $order->product_name . '" 
+                    <div class="w-15 h-15  rounded-lg flex-shrink-0">
+                        <img src="' . storage_url($order?->source?->game?->logo) . '"
+                            alt="' . $order->source->name . '" 
                             class="w-full h-full rounded-lg object-cover" />
                     </div>
                     <div class="min-w-0">
@@ -50,12 +51,13 @@ class SoldOrders extends Component
                         <p class="text-xs text-text-primary/80 truncate xxs:block py-1">'
                     . 'Cheapest +75%  Discount' .
                     '</p>
-                        <a
-                            href="/"
-                            class="text-bg-pink-500 text-xs"
-                        >
-                        View Details 
-                        <flux:icon name="arrow-right" class="w-4 h-4" />
+                        <a href="' . ($order->status->value === 'cancelled'
+                        ? route('user.order.cancel', ['orderId' => $order->order_id])
+                        : route('user.order.complete', ['orderId' => $order->order_id])
+                    ) . '"
+                        class="text-bg-pink-500 text-xs">
+                            View Details 
+                            <flux:icon name="arrow-right" class="w-4 h-4" />
                         </a>
                     </div>
                 </div>
@@ -114,7 +116,7 @@ class SoldOrders extends Component
             'search' => $this->search ?? null,
             'sort_field' => $this->sortField ?? 'created_at',
             'sort_direction' => $this->sortDirection ?? 'desc',
-            'product_creator_id' => user()->id,
+            'seller_id' => user()->id,
         ];
     }
 }
