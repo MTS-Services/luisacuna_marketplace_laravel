@@ -15,6 +15,7 @@ class Wallet extends Component
     public $perPage = 10;
     public $search = '';
     public ?ModelWallet $wallet = null;
+    public $status; 
 
     protected TransactionService $transactionService;
 
@@ -76,6 +77,7 @@ class Wallet extends Component
     {
         return [
             'search' => $this->search,
+            'status' => $this->status ?? null,
             'user_id' => user()->id,
             'sort_field' => 'created_at',
             'sort_direction' => 'desc',
