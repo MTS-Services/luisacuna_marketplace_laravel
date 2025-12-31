@@ -3,9 +3,7 @@
 namespace App\Livewire\Backend\User\Chat;
 
 use App\Services\ConversationService;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
@@ -17,7 +15,7 @@ class Index extends Component
     public ?string $searchTerm = null;
 
     #[Url(as: 'conversation')]
-    public ?int $selectedConversationId = null;
+    public ?string $selectedConversationId = null;
 
     public bool $unreadOnly = false;
 

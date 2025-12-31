@@ -62,6 +62,8 @@ class GridLayout extends Component
 
             'categorySlug' => $this->categorySlug,
 
+            'skipSelf' => true
+
 
         ]);
     }

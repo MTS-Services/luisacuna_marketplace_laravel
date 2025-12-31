@@ -105,6 +105,12 @@ class Product extends BaseModel implements Auditable
         if ($filters['page'] ?? null) {
             $query->where('status', $filters['status']);
         }
+
+        $query->when( $filters['skipSelf'] ?? null, function ($query, $skipSelf) {
+            if($skipSelf){
+                $query->where('id', '!=', user()->id ?? 0 );
+            }
+        });
         
         if (!empty($filters['isStocked'])) {
             $query->where('quantity', '>', 0);
