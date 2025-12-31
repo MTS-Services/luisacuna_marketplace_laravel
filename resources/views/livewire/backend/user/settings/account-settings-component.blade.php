@@ -51,7 +51,7 @@
 
 
                 {{-- Bio Textarea --}}
-                <div class="p-6 bg-bg-info rounded-lg" x-data="{ editMode: false }">
+                {{-- <div class="p-6 bg-bg-info rounded-lg" x-data="{ editMode: false }">
                     <div class="flex justify-between items-center gap-6 mb-3">
                         <h2 class="block text-base font-medium text-text-primary">{{ __('Your description') }}</h2>
                         <p class="px-2 py-1.5 sm:px-4 sm:py-3 bg-zinc-50/20 justify-end rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition"
@@ -75,7 +75,6 @@
                                     placeholder="Write a short bio about yourself..." wire:model="form.description"></textarea>
                             </div>
                         </div>
-                        {{-- Action Buttons --}}
                         <div class="flex justify-start gap-3 mt-6">
                             <x-ui.button wire:click="updateProfile" @click="editMode = false" class="w-fit! py-2!">
                                 {{ __('Save changes') }}
@@ -83,7 +82,43 @@
                         </div>
                     </div>
 
-                    {{-- </form> --}}
+                </div> --}}
+                <div class="p-6 bg-bg-info rounded-lg" x-data="{ editMode: false }">
+                    <div class="flex justify-between items-center gap-6 mb-3">
+                        <h2 class="block text-base font-medium text-text-primary">{{ __('Your description') }}</h2>
+                        <p class="px-2 py-1.5 sm:px-4 sm:py-3 bg-zinc-50/20 justify-end rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition"
+                            @click="editMode = true">
+                            <x-phosphor name="note-pencil" variant="regular" />
+                        </p>
+                    </div>
+
+                    <!-- Display Mode -->
+                    <div x-show="!editMode" x-cloak>
+                        <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
+                            <p class="text-text-white text-xs">{{ user()->description ?? 'Description no abailable' }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Edit Mode -->
+                    <div x-show="editMode" x-cloak class="bg-bg-info p-3 sm:p-6 rounded-lg mt-3">
+                        <textarea rows="4" wire:model.defer="form.description"
+                            class="w-full border border-zinc-300 bg-bg-info rounded-lg px-4 py-3 text-text-primary placeholder:text-text-muted focus:outline-hidden focus:ring-2 focus:ring-accent resize-none"
+                            placeholder="Write a short bio about yourself..."></textarea>
+
+                        <div class="flex justify-start gap-3 mt-6">
+                            <x-ui.button wire:click="updateProfile" @click="editMode = false" class="w-fit! py-2!">
+                                {{ __('Save changes') }}
+                            </x-ui.button>
+                            <button type="button" @click="editMode = false"
+                                class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition">
+                                {{ __('Cancel') }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- </form> --}}
             </section>
 
             {{-- Profile Details Section --}}
@@ -92,9 +127,10 @@
 
                 <form class="space-y-5">
 
-
                     {{-- First Name --}}
-                    <div x-data="{ editMode: false }" @profile-updated.window="editMode = false">
+                    <div x-data="{
+                        editMode: @error('form.first_name') true @else false @enderror
+                    }" @profile-updated.window="editMode = false">
                         <div class="p-3 sm:p-6 bg-bg-info rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('First name:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
@@ -107,17 +143,14 @@
                                 </div>
                             </div>
                         </div>
-                        @error('form.first_name')
-                            <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                        @enderror
+
                         <div x-show="editMode" x-cloak class="bg-bg-info p-3 sm:p-6 rounded-lg">
                             <label
                                 class="block text-sm font-medium text-text-primary mb-2">{{ __('First name:') }}</label>
                             <div class="relative">
-                                <input type="text" wire:model.defer="form.first_name"
+                                <input type="text" wire:model="form.first_name"
                                     class="w-full bg-bg-info border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                     placeholder="Enter first name">
-                                <x-ui.input-error :messages="$errors->get('form.first_name')" />
                                 <button type="button"
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-text-muted hover:text-text-primary">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -126,6 +159,10 @@
                                     </svg>
                                 </button>
                             </div>
+                            @error('form.first_name')
+                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+
                             <div class="flex justify-start gap-3 mt-4">
                                 <x-ui.button wire:click="updateProfile" class="w-fit! py-2!">
                                     {{ __('Save changes') }}
@@ -138,14 +175,15 @@
                         </div>
                     </div>
 
-
                     {{-- Last name --}}
-                    <div x-data="{ editMode: false }">
+                    <div x-data="{
+                        editMode: @error('form.last_name') true @else false @enderror
+                    }" @profile-updated.window="editMode = false">
                         <div class="p-3 sm:p-6 bg-bg-info rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Last name:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
-                                    <p class="text-text-white text-xs">{{ user()->last_name }}</p>
+                                    <p class="text-text-white text-xs">{{ $form->last_name }}</p>
                                 </div>
                                 <div @click="editMode = true"
                                     class="px-2 py-1.5 sm:px-4 sm:py-3 bg-zinc-50/20 rounded-lg shrink-0 self-start cursor-pointer hover:bg-zinc-50/30 transition">
@@ -153,19 +191,14 @@
                                 </div>
                             </div>
                         </div>
-                        @error('form.last_name')
-                            <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                        @enderror
 
                         <div x-show="editMode" x-cloak class="bg-bg-info p-3 sm:p-6 rounded-lg">
                             <label
                                 class="block text-sm font-medium text-text-primary mb-2">{{ __('Last name:') }}</label>
                             <div class="relative">
-                                <input type="text" name="company" value="{{ user()->last_name }}"
-                                    wire:model.defer="form.last_name"
+                                <input type="text" wire:model="form.last_name"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
-                                    placeholder="Enter company name">
-                                <x-ui.input-error :messages="$errors->get('form.last_name')" />
+                                    placeholder="Enter last name">
                                 <button type="button"
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-text-muted hover:text-text-primary">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -174,9 +207,12 @@
                                     </svg>
                                 </button>
                             </div>
+                            @error('form.last_name')
+                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+
                             <div class="flex justify-start gap-3 mt-4">
-                                <x-ui.button wire:click="updateProfile" @click="editMode = false"
-                                    class="w-fit! py-2!">
+                                <x-ui.button wire:click="updateProfile" class="w-fit! py-2!">
                                     {{ __('Save changes') }}
                                 </x-ui.button>
                                 <button type="button" @click="editMode = false"
@@ -188,17 +224,19 @@
                     </div>
 
                     {{-- Email --}}
-                    <div x-data="{ editMode: false }">
+                    <div x-data="{
+                        editMode: @error('form.email') true @else false @enderror
+                    }" @profile-updated.window="editMode = false">
                         <div class="p-3 sm:p-6 bg-bg-info rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Email:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full">
                                     <div class="p-3 bg-zinc-50/20 rounded-lg">
-                                        <p class="text-text-white text-xs">{{ user()->email }}</p>
+                                        <p class="text-text-white text-xs">{{ $form->email }}</p>
                                     </div>
                                     <div class="mt-2">
-                                        <p class="text-text-white text-sm sm:text-xl"><span
-                                                class="text-pink-500">{{ __('Verified') }}</span>
+                                        <p class="text-text-white text-sm sm:text-xl">
+                                            <span class="text-pink-500">{{ __('Verified') }}</span>
                                             {{ __('This email is linked to your account. It is not visible to other users.') }}
                                         </p>
                                     </div>
@@ -209,26 +247,21 @@
                                 </div>
                             </div>
                         </div>
-                        @error('form.email')
-                            <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                        @enderror
 
                         <div x-show="editMode" x-cloak class="bg-bg-info p-3 sm:p-6 rounded-lg">
                             <label
                                 class="block text-sm font-medium text-text-primary mb-2">{{ __('Email:') }}</label>
                             <div class="relative">
-                                <input type="email" name="email" value="" wire:model.defer="form.email"
+                                <input type="email" wire:model="form.email"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                     placeholder="Enter email">
-                                <x-ui.input-error :messages="$errors->get('form.email')" />
-                                <span
-                                    class="absolute top-1/2 -translate-y-1/2 right-3 text-xs text-text-muted bg-bg-primary px-2 py-1 rounded">
-                                    {{ __('This field is linked and can only be filled in once for user') }}
-                                </span>
                             </div>
+                            @error('form.email')
+                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+
                             <div class="flex justify-start gap-3 mt-4">
-                                <x-ui.button wire:click="updateProfile" @click="editMode = false"
-                                    class="w-fit! py-2!">
+                                <x-ui.button wire:click="updateProfile" class="w-fit! py-2!">
                                     {{ __('Save changes') }}
                                 </x-ui.button>
                                 <button type="button" @click="editMode = false"
@@ -242,13 +275,13 @@
                     {{-- Username --}}
                     <div x-data="{
                         editMode: @error('form.username') true @else false @enderror
-                    }">
+                    }" @profile-updated.window="editMode = false">
                         <div class="p-3 sm:p-6 bg-bg-info rounded-lg" x-show="!editMode">
                             <h2 class="block text-base font-medium text-text-primary mb-2">{{ __('Username:') }}</h2>
                             <div class="flex items-center gap-2 sm:gap-6 w-full">
                                 <div class="w-full">
                                     <div class="p-3 bg-zinc-50/20 rounded-lg">
-                                        <p class="text-text-white text-xs">{{ user()->username }}</p>
+                                        <p class="text-text-white text-xs">{{ $form->username }}</p>
                                     </div>
                                     <div class="mt-2">
                                         <p class="text-text-white text-sm sm:text-xl">
@@ -262,19 +295,14 @@
                                 </div>
                             </div>
                         </div>
-                        @error('form.username')
-                            <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                        @enderror
 
                         <div x-show="editMode" x-cloak class="bg-bg-info p-3 sm:p-6 rounded-lg">
                             <label
                                 class="block text-sm font-medium text-text-primary mb-2">{{ __('Username:') }}</label>
                             <div class="relative">
-                                <input type="text" name="Username" value="PixelStoreLAT"
-                                    wire:model.defer="form.username"
+                                <input type="text" wire:model="form.username"
                                     class="w-full bg-bg-secondary border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
-                                    placeholder="Enter location">
-                                <x-ui.input-error :messages="$errors->get('form.username')" />
+                                    placeholder="Enter username">
                                 <button type="button"
                                     class="absolute top-1/2 -translate-y-1/2 right-3 text-text-muted hover:text-text-primary">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -283,9 +311,12 @@
                                     </svg>
                                 </button>
                             </div>
+                            @error('form.username')
+                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+
                             <div class="flex justify-start gap-3 mt-4">
-                                <x-ui.button wire:click="updateProfile" @click="editMode = false"
-                                    class="w-fit! py-2!">
+                                <x-ui.button wire:click="updateProfile" class="w-fit! py-2!">
                                     {{ __('Save changes') }}
                                 </x-ui.button>
                                 <button type="button" @click="editMode = false"
