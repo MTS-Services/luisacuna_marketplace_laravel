@@ -37,7 +37,7 @@ class OrderService
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
         $orders = $this->model->query()
-            ->with(['source.user', 'user'])
+            ->with(['source.user', 'user', 'source.game'])
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);

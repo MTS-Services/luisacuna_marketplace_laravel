@@ -324,19 +324,19 @@
                             'name' => 'Terms & Conditions',
                             'route' => route('admin.cms.terms-condition'),
                             'icon' => 'notebook-text',
-                            'active' => 'admin.cms.terms-condition',
+                            'active' => 'terms_condition',
                         ],
                         [
                             'name' => 'Privacy Policy',
                             'route' => route('admin.cms.privacy-policy'),
                             'icon' => 'notepad-text',
-                            'active' => 'admin.cms.privacy-policy',
+                            'active' => 'privacy_policy',
                         ],
                         [
                             'name' => 'Refunds Policy',
                             'route' => route('admin.cms.refund-policy'),
                             'icon' => 'notepad-text-dashed',
-                            'active' => 'admin.cms.refund-policy',
+                            'active' => 'refund_policy',
                         ],
                     ]" />
                 <x-sidebar-separator title="System" />
@@ -442,7 +442,7 @@
 
                 <div class="space-y-2">
                     <flux:separator class="bg-accent!" />
-                    <x-backend.navlink type="single" icon="user" name="Profile" active="profile"
+                    <x-backend.navlink type="single" icon="user" name="Profile" active="profile" :route="route('admin.profile.index')"
                         :page_slug="$active" />
                     <button wire:click="logout" class="w-full text-left">
                         <x-backend.navlink type="single" icon="power" name="Logout" />

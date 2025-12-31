@@ -34,6 +34,7 @@ use App\Http\Controllers\Backend\Admin\ProductManagement\BoostingsController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\CurrencyController as ProductCurrencyController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\GiftCardsController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\ItemsController;
+use App\Http\Controllers\Backend\Admin\ProfileManagement\ProfileController;
 
 Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
@@ -299,5 +300,9 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
         Route::get('/completed-orders', 'completedOrders')->name('completed-orders');
         Route::get('/cancelled-orders', 'cancelledOrders')->name('cancelled-orders');
         Route::get('/show/{orderId}', 'show')->name('show');
+    });
+    Route::controller(ProfileController::class)->name('profile.')->prefix('profile')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/edit/{id}', 'edit')->name('edit');
     });
 });
