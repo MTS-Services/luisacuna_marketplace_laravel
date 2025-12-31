@@ -29,8 +29,8 @@
                     <td>{{ $order->order_id }}</td>
                     <td>{{ $order->source->name ?? '' }}</td>
                     <td>{{ $order->user->full_name ?? '' }}</td>
-                    <td>{{ $order->total_quantity }}</td>
-                    <td>{{ $order->total_amount }}</td>
+                    <td>{{ $order->quantity }}</td>
+                    <td>{{ currency_exchange($order->total_amount) }}</td>
                     <td>{{ $order->status->label() }}</td>
                     <td>{{ $order->created_at->format('Y-m-d') }}</td>
                 </tr>
