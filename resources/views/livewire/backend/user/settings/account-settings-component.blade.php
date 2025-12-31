@@ -95,8 +95,12 @@
                     <!-- Display Mode -->
                     <div x-show="!editMode" x-cloak>
                         <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
-                            <p class="text-text-white text-xs">{{ user()->description ?? 'Description no abailable' }}
+                            {{-- <p class="text-text-white text-xs">{{ user()->description ?? 'Description no abailable' }}
+                            </p> --}}
+                            <p class="text-text-white text-xs">
+                                {{ user()->description ? user()->description : 'Description not available' }}
                             </p>
+
                         </div>
                     </div>
 
