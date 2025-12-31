@@ -39,6 +39,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $query = $this->model->query();
         $this->commonQuery($query, $status, $layout, $trashed, $selects);
+        $query->with('products');
         return $query->orderBy($sortField, $order)->get();
     }
     public function findData($column_value, string $column_name, $status, $layout, $trashed): ?Category
