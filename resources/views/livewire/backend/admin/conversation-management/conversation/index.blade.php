@@ -215,4 +215,48 @@
             </div>
         </div>
     </div>
+
 </div>
+@script
+    <script>
+        let conversationPollingInterval = null;
+
+        window.startConversationPolling = () => {
+            if (conversationPollingInterval) {
+                clearInterval(conversationPollingInterval);
+            }
+
+            // Poll every 500 milliseconds for conversation list updates
+            conversationPollingInterval = setInterval(() => {
+                const component = Livewire.find('{{ $this->getId() }}');
+                if (component) {
+                    component.call('refreshConversations');
+                }
+            }, 500); // Poll every 500 milliseconds
+        };
+
+        window.stopConversationPolling = () => {
+            if (conversationPollingInterval) {
+                clearInterval(conversationPollingInterval);
+                conversationPollingInterval = null;
+            }
+        };
+        document.addEventListener('livewire:initialized', () => {
+            startConversationPolling();
+        });
+
+        // Stop polling when navigating away
+        document.addEventListener('livewire:navigating', () => {
+            stopConversationPolling();
+        });
+
+        // Pause polling when tab is not visible (saves resources)
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopConversationPolling();
+            } else {
+                startConversationPolling();
+            }
+        });
+    </script>
+@endscript
