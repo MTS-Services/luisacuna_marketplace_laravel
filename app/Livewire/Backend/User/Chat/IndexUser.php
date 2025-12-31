@@ -17,7 +17,7 @@ class IndexUser extends Component
     public ?string $searchTerm = null;
 
     #[Url(as: 'conversation')]
-    public ?int $selectedConversationId = null;
+    public ?string $selectedConversationId = null;
 
     public bool $unreadOnly = false;
 
