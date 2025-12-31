@@ -2,28 +2,29 @@
     <div class="p-4 w-full">
         <div class="flex flex-col xl:flex-row justify-between items-center gap-4">
 
-        <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+            <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
 
-            <div class="py-0.5! w-full sm:w-70">
-                <x-ui.custom-select :wireModel="'status'" class="rounded!" label="All Statuses">
-                    @foreach ($statuses as $status)
-                        <x-ui.custom-option label="{{ $status['label'] }}" value="{{ $status['value'] }}" />
-                    @endforeach
-                </x-ui.custom-select>
-            </div>
+                <div class="py-0.5! w-full sm:w-70">
+                    <x-ui.custom-select :wireModel="'status'" class="rounded!" label="All Statuses">
+                        @foreach ($statuses as $status)
+                            <x-ui.custom-option label="{{ $status['label'] }}" value="{{ $status['value'] }}" />
+                        @endforeach
+                    </x-ui.custom-select>
+                </div>
 
 
-            <div class="py-0.5! w-full sm:w-70">
-                <x-ui.custom-select :wireModel="'created_at'" class="rounded!" label="Recent">
+                <div class="py-0.5! w-full sm:w-70">
+                    <x-ui.custom-select :wireModel="'created_at'" class="rounded!" label="Recent">
 
-                <x-ui.custom-option value="today" label="Today" />
-                <x-ui.custom-option value="week" label="This Week" />
-                <x-ui.custom-option value="month" label="This Month" />
-                </x-ui.custom-select>
-            </div>
+                        <x-ui.custom-option value="today" label="Today" />
+                        <x-ui.custom-option value="week" label="This Week" />
+                        <x-ui.custom-option value="month" label="This Month" />
+                    </x-ui.custom-select>
+                </div>
 
                 <div class="relative w-full sm:w-56">
-                    <x-ui.input type="text" wire:model.live="search" placeholder="{{ __('Search') }}" class="pl-5 border-zinc-500! placeholder:text-text-primary" />
+                    <x-ui.input type="text" wire:model.live="search" placeholder="{{ __('Search') }}"
+                        class="pl-5 border-zinc-500! placeholder:text-text-primary" />
                     <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                         <x-phosphor-magnifying-glass class="w-5 h-5 fill-text-text-white" />
                     </div>
@@ -42,7 +43,7 @@
         </div>
     </div>
     <div>
- 
+
         <x-ui.user-table :data="$datas" :columns="$columns"
             emptyMessage="No data found. Add your first data to get started." class="rounded-lg overflow-hidden" />
 
@@ -93,19 +94,10 @@
                         <label class="block text-sm font-medium text-gray-300 mb-2">
                             {{ __('Choose a month') }}
                         </label>
-                        <x-ui.custom-select class="rounded!">
-                            <x-ui.custom-option label="January 2025" />
-                            <x-ui.custom-option label="February 2025" />
-                            <x-ui.custom-option label="March 2025" />
-                            <x-ui.custom-option label="April 2025" />
-                            <x-ui.custom-option label="May 2025" />
-                            <x-ui.custom-option label="Jun 2025" />
-                            <x-ui.custom-option label="July 2025" />
-                            <x-ui.custom-option label="August 2025" />
-                            <x-ui.custom-option label="September 2025" />
-                            <x-ui.custom-option label="October 2025" />
-                            <x-ui.custom-option label="November 2025" />
-                            <x-ui.custom-option label="December 2025" />
+                        <x-ui.custom-select wire:model="selectedMonth" class="rounded!">
+                            @foreach ($months as $month)
+                                <x-ui.custom-option value="{{ $month['value'] }}" label="{{ $month['label'] }}" />
+                            @endforeach
                         </x-ui.custom-select>
                     </div>
 
@@ -115,9 +107,13 @@
                         <label class="block text-sm font-medium text-gray-300 mb-2">
                             {{ __('File type') }}
                         </label>
-                        <x-ui.custom-select class="rounded!">
+                        {{-- <x-ui.custom-select class="rounded!">
                             <x-ui.custom-option label="PDF" />
                             <x-ui.custom-option label="CSV" />
+                        </x-ui.custom-select> --}}
+                        <x-ui.custom-select wire:model="fileType" class="rounded!">
+                            <x-ui.custom-option value="pdf" label="PDF" />
+                            <x-ui.custom-option value="csv" label="CSV" />
                         </x-ui.custom-select>
 
                     </div>
@@ -130,12 +126,15 @@
                                 {{ __('Cancel') }}
                             </x-ui.button>
                         </div>
-                        <div class="flex w-full md:w-auto">
+                        <x-ui.button wire:click="downloadInvoice" class="w-fit! py-2!">
+                            {{ __('Download invoice') }}
+                        </x-ui.button>
+                        {{-- <div class="flex w-full md:w-auto">
                             <x-ui.button class="w-fit! py-2!" x-data
                                 @click="$dispatch('open-modal', 'download-invoice-modal')">
                                 {{ __('Download invoice') }}
                             </x-ui.button>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

@@ -60,6 +60,27 @@ class OrderService
         return $this->model->count($filters);
     }
 
+
+    // OrderService.php এ add করো
+
+    public function getOrdersByMonthForSeller(int $sellerId, int $month, int $year): Collection
+    {
+        return $this->model->query()
+            ->with(['source.user', 'user', 'source.game'])
+            ->whereHasMorph('source', ['App\Models\Product'], function ($q) use ($sellerId) {
+                $q->where('user_id', $sellerId);
+            })
+            ->whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    public function calculateMonthlyTotal(Collection $orders): float
+    {
+        return $orders->sum('grand_total');
+    }
+
     /* ================== ================== ==================
      *                   Action Executions
      * ================== ================== ================== */
