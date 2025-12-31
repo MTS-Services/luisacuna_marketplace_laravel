@@ -40,9 +40,9 @@ class UserForm extends Form
 
         $rules = [
             'first_name' => 'required|string|max:255',
-            'last_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
             'username' => $this->isUpdating() 
-                ? 'nullable|string|max:255|regex:/^[A-Za-z0-9_\-\$]+$/|unique:users,username,' . $this->user_id 
+                ? 'required|string|max:255|regex:/^[A-Za-z0-9_\-\$]+$/|unique:users,username,' . $this->user_id 
                 : 'required|string|max:255|unique:users,username|regex:/^[A-Za-z0-9_\-\$]+$/',
             'date_of_birth' => 'nullable|date',
             'email' => 'required|email|max:255|unique:users,email,' . $this->user_id,
