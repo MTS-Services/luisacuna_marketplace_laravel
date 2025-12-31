@@ -31,7 +31,7 @@ class Shop extends Component
         $this->user = $user;
 
         $this->categories = $this->service->getDatas();
-        $this->categories->load('products');
+        // $this->categories->load('products');
 
     }
     public function render()
