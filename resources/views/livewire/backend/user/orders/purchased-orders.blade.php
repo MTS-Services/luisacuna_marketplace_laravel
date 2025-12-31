@@ -23,7 +23,7 @@
 
 
         <div class="py-0.5! w-full sm:w-70">
-            <x-ui.custom-select :wireModel="'status'" class="rounded!" label="Recent">
+            <x-ui.custom-select :wireModel="'order_date'" class="rounded!" label="Recent">
 
                <x-ui.custom-option value="today" label="Today" />
                <x-ui.custom-option value="week" label="This Week" />
