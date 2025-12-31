@@ -48,4 +48,13 @@ class TransactionService
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
     }
+
+    public function findData($column_value, string $column_name = 'id'): ?Transaction
+    {
+        $model = $this->model;
+
+        return $model->with(['source', 'user'])
+            ->where($column_name, $column_value)
+            ->first();
+    }
 }
