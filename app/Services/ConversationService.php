@@ -716,9 +716,21 @@ class ConversationService
     /**
      * Search messages within conversation
      */
-    public function searchMessages(Conversation $conversation, string $search, int $perPage = 20)
+    // public function searchMessages(Conversation $conversation, string $search, int $perPage = 20)
+    // {
+    //     if (!$this->isUserParticipant($conversation, Auth::id())) {
+    //         return null;
+    //     }
+
+    //     return $conversation->messages()
+    //         ->where('message_body', 'like', "%{$search}%")
+    //         ->with(['sender:id,first_name,last_name', 'attachments'])
+    //         ->orderByDesc('created_at')
+    //         ->paginate($perPage);
+    // }
+    public function searchMessages(Conversation $conversation, string $search)
     {
-        if (!$this->isUserParticipant($conversation, Auth::id())) {
+        if (!$this->thisUserParticipant($conversation, Auth::id())) {
             return null;
         }
 
@@ -726,8 +738,15 @@ class ConversationService
             ->where('message_body', 'like', "%{$search}%")
             ->with(['sender:id,first_name,last_name', 'attachments'])
             ->orderByDesc('created_at')
-            ->paginate($perPage);
+            ->get();
     }
+
+
+    private function thisUserParticipant(Conversation $conversation, $userId)
+    {
+        return $conversation->participants()->where('participant_id', $userId)->exists();
+    }
+
 
     /**
      * Get conversation statistics
