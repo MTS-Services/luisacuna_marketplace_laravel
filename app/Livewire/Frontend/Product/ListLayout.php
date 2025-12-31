@@ -43,6 +43,8 @@ class ListLayout extends Component
 
             'categorySlug' => $this->categorySlug,
 
+            'skipSelf' => true
+
 
         ]);
     }

@@ -60,6 +60,8 @@ class Header extends Component
         }
     }
 
+    
+
     public function render()
     {
         // $categories= Category::where('status','active')->get();
