@@ -19,7 +19,7 @@ class SoldOrders extends Component
     public $deleteItemId = null;
     public $perPage = 7;
     public $status;
-    public $created_at;
+    public $order_date;
     public $search;
     public $months = [];
     public $selectedMonth;
@@ -213,7 +213,7 @@ class SoldOrders extends Component
         return [
             'search' => $this->search ?? null,
             'status' => $this->status ?? null,
-            'created_at' => $this->created_at ?? null,
+            'order_date' => $this->order_date  ?? null,
             'sort_field' => $this->sortField ?? 'created_at',
             'sort_direction' => $this->sortDirection ?? 'desc',
             'seller_id' => user()->id,
