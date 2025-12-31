@@ -58,7 +58,7 @@
                 </div>
             </div>
 
-            <div class="border-t border-zinc-500 mt-2 pt-3 flex items-center justify-between gap-3">
+            <a href="{{ route('profile', ['username' => $data->user->username]) ?? '' }}" class="border-t border-zinc-500 mt-2 pt-3 flex items-center justify-between gap-3">
 
                 <div class="w-18 h-14 relative ">
                     <img src="{{ storage_url($data->user->avatar) }}"
@@ -82,7 +82,7 @@
                         <p class="text-text-secondary text-xs">99.3% <span class="ml-1">(234)</span></p>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </a>
 </div>

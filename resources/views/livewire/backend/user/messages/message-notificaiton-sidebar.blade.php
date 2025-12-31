@@ -20,10 +20,7 @@
             </button>
         </div>
         <div>
-            <button wire:click="markAllAsRead" wire:loading.attr="disabled" 
-            {{-- :disabled="@js($isLoading || $notifications->isEmpty())" --}}
-                
-                >
+            <button wire:click="markAllAsRead" wire:loading.attr="disabled" :disabled="@js($isLoading || $conversations->isEmpty())">
                 <span wire:loading.remove wire:target="markAllAsRead"
                     class="text-sm text-pink-500 hover:text-text-hover">
                     {{ __('Mark all as read') }}
@@ -37,53 +34,66 @@
 
     <div class="flex-1 overflow-y-auto">
         
-        @foreach([1,2,3,4,5] as  $item)
-        <div class="flex justify-start p-4 rounded hover:bg-bg-info">
+
+                      @forelse($conversations  as  $conversation)
+                             @php
+                                $otherParticipant = $conversation->participants->first()?->participant;
+                                $lastMessage = $conversation->messages->first();
+                            @endphp
+        <a class="flex justify-start p-4 rounded hover:bg-bg-info" href="{{ route('user.messages', ['conversation' => $conversation->conversation_uuid]) }}">
             <div class="relative">
+               
                 <div class="border borer-white w-12 h-12 rounded-full overflow-hidden">
-                    <img src="{{ storage_url('') }}" alt="" class="w-full h-full">
+                    <img src="{{ storage_url($otherParticipant->avatar) }}" alt="{{ $otherParticipant->full_name }}" class="w-full h-full">
                 </div>
                 <div class="h-3 w-3 bg-[#12D212] border border-white rounded-full absolute top-8 right-0">
 
                 </div>
             </div>
             <div class="relative w-full pl-3">
-                <h2 class="text-base font-semibold text-text-primary">Ltc_spamz </h2>
+                <h2 class="text-base font-semibold text-text-primary">{{ $otherParticipant->full_name }} </h2>
                 <p class="font-normal text-xs text-text-secondary mt-1">
-                    Order for Items Do you sell stuff for call of duty moder
+                    {{ $lastMessage->message_body }}
                 </p>
                 <div class="absolute top-0 right-0 ">
                     <p class="text-text-secondary text-xs font-normal" >
-                        Sep 20
+                        {{ $lastMessage->created_at->diffForHumans() }}
                     </p>
                 </div>
             </div>
-        </div>
+        </a>
 
-        @endforeach
+        @empty
+            <div class="flex flex-col items-center justify-center py-16 text-center">
+                <div
+                    class="w-16 h-16 bg-zinc-200 dark:bg-zinc-300/10 rounded-full flex items-center justify-center mb-4">
+                    <flux:icon name="bell-slash" class="w-8 h-8 stroke-zinc-500" />
+                </div>
+                <h4 class="text-base font-semibold text-text-white mb-1">
+                    {{ __('No Messages') }}
+                </h4>
+                <p class="text-sm text-text-secondary">
+                    {{ __("You're all caught up!") }}
+                </p>
+            </div>
+        @endforelse
     </div>
 
+    @if($conversations->count() > 4)
         <div class="shrink-0 pt-4 flex items-center justify-center">
                 <x-ui.button href="{{ route('user.messages') }}" wire:navigate class="py-2! max-w-80">
                     {{ __('View all') }}
                 </x-ui.button>
-            </div>
-    {{-- <div wire:loading.remove wire:target="fetchNotifications">
-        @if (!$isLoading && $notifications->count() > 0)
-            <div class="shrink-0 pt-4 flex items-center justify-center">
-                <x-ui.button href="{{ route('user.notifications') }}" wire:navigate class="py-2! max-w-80">
-                    {{ __('View all') }}
-                </x-ui.button>
-            </div>
-        @endif
-    </div>  --}}
+        </div>
+    @endif
+   
 </div>
 
 @push('scripts')
     <script>
         // Listen for real-time notifications
-        window.addEventListener('notification-received', () => {
-            Livewire.dispatch('notification-received');
+        window.addEventListener('message-received', () => {
+            Livewire.dispatch('message-received');
         });
     </script>
 @endpush

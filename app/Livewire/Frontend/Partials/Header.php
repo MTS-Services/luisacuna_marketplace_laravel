@@ -4,8 +4,10 @@ namespace App\Livewire\Frontend\Partials;
 
 use Livewire\Component;
 use App\Models\Category;
+use App\Models\Conversation;
 use App\Services\GameService;
 use App\Services\CategoryService;
+use App\Services\ConversationService;
 use App\Services\CurrencyService;
 use App\Services\LanguageService;
 use App\Services\NotificationService;
@@ -18,6 +20,7 @@ class Header extends Component
     public string $search = '';
 
     public int $unreadNotificationCount = 0;
+    public int $unreadMessageCount = 0;
 
     public $categories;
     public $sortField;
@@ -32,15 +35,18 @@ class Header extends Component
     protected LanguageService $languageService;
     protected CurrencyService $currencyService;
     protected NotificationService $notificationService;
+    protected ConversationService $conversationService;
 
-    public function boot(LanguageService $languageService, CategoryService $categoryService, GameService $game_service, CurrencyService $currencyService, NotificationService $notificationService)
+    public function boot(LanguageService $languageService, CategoryService $categoryService, GameService $game_service, CurrencyService $currencyService, NotificationService $notificationService, ConversationService $conversationService)
     {
         $this->languageService = $languageService;
         $this->categoryService = $categoryService;
         $this->game_service = $game_service;
         $this->currencyService = $currencyService;
+
         if (auth()->guard('web')->check()) {
             $this->notificationService = $notificationService;
+            $this->conversationService = $conversationService;
         }
     }
 
@@ -59,6 +65,18 @@ class Header extends Component
             $this->unreadNotificationCount = $this->notificationService->getUnreadCount();
         }
     }
+
+    #[On('message-created')]
+    #[On('message-updated')]
+    #[On('message-received')]
+    #[On('message-read')]
+    public function refreshMessageCount()
+    {
+        if (auth()->guard('web')->check()) {
+            $this->unreadMessageCount = $this->conversationService->getUnreadCount();
+        }
+    }
+    
 
     public function render()
     {
