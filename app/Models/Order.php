@@ -210,6 +210,35 @@ class Order extends AuditBaseModel implements Auditable
             $query->whereDate('created_at', $created_at);
         });
 
+
+
+        // created_at
+        $query->when($filters['order_date'] ?? null, function ($query, $created_at) {
+            switch ($created_at) {
+                case 'today':
+                    $query->whereDate('created_at', now());
+                    break;
+
+                case 'week':
+                    $query->whereBetween('created_at', [
+                        now()->startOfWeek(),
+                        now()->endOfWeek()
+                    ]);
+                    break;
+
+                case 'month':
+                    $query->whereMonth('created_at', now()->month)
+                        ->whereYear('created_at', now()->year);
+                    break;
+
+                default:
+                    // If the value is a specific date (optional)
+                    $query->whereDate('created_at', $created_at);
+                    break;
+            }
+        });
+
+
         return $query;
     }
 

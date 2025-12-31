@@ -15,6 +15,7 @@ class PurchasedOrders extends Component
     public $deleteItemId = null;
     public $perPage = 7;
     public $status = null;
+    public $order_date;
 
 
     protected OrderService $service;
@@ -111,7 +112,8 @@ class PurchasedOrders extends Component
     {
         return [
             'search' => $this->search ?? null,
-             'status' => $this->status ?? null,
+            'status' => $this->status ?? null,
+            'order_date' => $this->order_date  ?? null,
             'sort_field' => $this->sortField ?? 'created_at',
             'sort_direction' => $this->sortDirection ?? 'desc',
             'user_id' => user()->id,
