@@ -91,7 +91,7 @@ class PurchasedOrders extends Component
             [
                 'key' => 'quantity',
                 'label' => 'Quantity',
-                'format' => fn($order) => $order->total_quantity ?? 1
+                'format' => fn($order) => $order?->quantity
             ],
             [
                 'key' => 'grand_total',
