@@ -16,6 +16,9 @@ class SoldOrders extends Component
     public $showDeleteModal = false;
     public $deleteItemId = null;
     public $perPage = 7;
+    public $status;
+    public $created_at;
+    public $search;
 
 
     protected OrderService $service;
@@ -29,13 +32,13 @@ class SoldOrders extends Component
     {
         $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
-            filters: $this->getFilters()
+            filters: $this->getFilters(),
         );
-        dd($datas);
+
 
         $columns = [
             [
-                'key' => 'name',
+                'key' => 'id',
                 'label' => 'Order Name',
                 'format' => fn($order) => '
                 <div class="flex items-center gap-3">
@@ -46,10 +49,10 @@ class SoldOrders extends Component
                     </div>
                     <div class="min-w-0">
                         <h3 class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">'
-                    . $order->product_name .
+                    . $order->source->name .
                     '</h3>
                         <p class="text-xs text-text-primary/80 truncate xxs:block py-1">'
-                    . 'Cheapest +75%  Discount' .
+                    . $order?->source?->name .
                     '</p>
                         <a href="' . ($order->status->value === 'cancelled'
                         ? route('user.order.cancel', ['orderId' => $order->order_id])
@@ -63,15 +66,16 @@ class SoldOrders extends Component
                 </div>
         '
             ],
-            [
-                'key' => 'type',
-                'label' => 'Type',
-                'format' => fn($order) => $order->product_type
-            ],
-            [
-                'key' => 'seller',
+            // [
+            //     'key' => 'type',
+            //     'label' => 'Type',
+            //     'format' => fn($order) => $order->product_type
+            // ],
+                       [
+                'key' => 'source_id',
                 'label' => 'Seller',
-                'format' => fn($order) => $order->seller_name
+                'sortable' => true,
+                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->source->user->username]) . '"><span class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">' . $order->source->user->full_name . '</span></a>'
             ],
             [
                 'key' => 'created_at',
@@ -85,7 +89,7 @@ class SoldOrders extends Component
                 'label' => 'Order status',
                 // 'badge' => true,
                 'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-text-primary text-xs font-medium badge bg-pink-500 ' . $data->status->value . '">' .
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-text-primary text-xs font-medium badge ' . $data->status->color() . '">' .
                         $data->status->label() .
                         '</span>';
                 }
@@ -98,7 +102,7 @@ class SoldOrders extends Component
             [
                 'key' => 'grand_total',
                 'label' => 'Price ($)',
-                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">$' . number_format($order->total_price, 2) . '</span>'
+                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' .  currency_exchange($order->total_amount)  . '</span>'
             ],
         ];
 
@@ -114,6 +118,8 @@ class SoldOrders extends Component
     {
         return [
             'search' => $this->search ?? null,
+            'status' => $this->status ?? null,
+            'created_at' => $this->created_at ?? null,
             'sort_field' => $this->sortField ?? 'created_at',
             'sort_direction' => $this->sortDirection ?? 'desc',
             'seller_id' => user()->id,

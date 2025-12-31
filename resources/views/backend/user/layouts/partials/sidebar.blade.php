@@ -31,7 +31,7 @@
                             </div>
                             <div>
                                 <div class="flex gap-2 items-center ">
-                                    <h3 class="text-2xl font-semibold text-text-white mb-2">
+                                    <h3 class="text-2xl font-semibold text-text-white mb-2 line-clamp-2">
                                         {{ user()->full_name }}
                                     </h3>
                                     <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
