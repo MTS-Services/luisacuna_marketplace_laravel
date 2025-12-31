@@ -81,10 +81,10 @@ class SoldOrders extends Component
             //     'format' => fn($order) => $order->product_type
             // ],
             [
-                'key' => 'source_id',
-                'label' => 'Seller',
+                'key' => 'user_id',
+                'label' => 'Buyer',
                 'sortable' => true,
-                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->source->user->username]) . '"><span class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">' . $order->source->user->full_name . '</span></a>'
+                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->user->username]) . '"><span class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">' . $order->user->full_name . '</span></a>'
             ],
             [
                 'key' => 'created_at',
@@ -98,7 +98,7 @@ class SoldOrders extends Component
                 'label' => 'Order status',
                 // 'badge' => true,
                 'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-text-primary text-xs font-medium badge ' . $data->status->color() . '">' .
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-xs font-medium badge ' . $data->status->color() . '">' .
                         $data->status->label() .
                         '</span>';
                 }

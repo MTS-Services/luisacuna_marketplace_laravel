@@ -83,7 +83,7 @@ class PurchasedOrders extends Component
                 'label' => 'Order status',
                 // 'badge' => true,
                 'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-text-primary text-xs font-medium badge ' . $data->status->color() . '">' .
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-xs font-medium badge ' . $data->status->color() . '">' .
                         $data->status->label() .
                         '</span>';
                 }
