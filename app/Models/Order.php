@@ -164,11 +164,25 @@ class Order extends AuditBaseModel implements Auditable
 
     public function scopeFilter(Builder $query, array $filters)
     {
-       
+
+        // $query->when($filters['search'] ?? null, function ($query, $search) {
+        //     $query->where(function ($query) use ($search) {
+        //         $query->where('order_id', 'like', '%' . $search . '%')
+        //             ->orWhere('notes', 'like', '%' . $search . '%');
+        //     });
+        // });
+
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
                 $query->where('order_id', 'like', '%' . $search . '%')
-                    ->orWhere('notes', 'like', '%' . $search . '%');
+                    ->orWhere('notes', 'like', '%' . $search . '%')
+                    ->orWhereHas('user', function ($q) use ($search) {
+                        $q->where('username', 'like', '%' . $search . '%');
+                    })
+                    // Search in the related source (Product) name
+                    ->orWhereHasMorph('source', ['App\Models\Product'], function ($q) use ($search) {
+                        $q->where('name', 'like', '%' . $search . '%');
+                    });
             });
         });
 

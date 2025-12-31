@@ -67,7 +67,7 @@ class PurchasedOrders extends Component
             [
                 'key' => 'source_id',
                 'label' => 'Seller',
-                'sortable' => true,
+                // 'sortable' => true,
                 'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->source->user->username]) . '"><span class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">' . $order->source->user->full_name . '</span></a>'
             ],
             [
@@ -95,7 +95,7 @@ class PurchasedOrders extends Component
             [
                 'key' => 'grand_total',
                 'label' => 'Price ($)',
-                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">$' . $order->total_amount . '</span>'
+                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' . currency_exchange($order->total_amount) . '</span>'
             ],
         ];
 

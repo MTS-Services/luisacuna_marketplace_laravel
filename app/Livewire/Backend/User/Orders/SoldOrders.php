@@ -52,7 +52,7 @@ class SoldOrders extends Component
                     . $order->source->name .
                     '</h3>
                         <p class="text-xs text-text-primary/80 truncate xxs:block py-1">'
-                    . $order?->soruce?->name .
+                    . $order?->source?->name .
                     '</p>
                         <a href="' . ($order->status->value === 'cancelled'
                         ? route('user.order.cancel', ['orderId' => $order->order_id])
@@ -102,7 +102,7 @@ class SoldOrders extends Component
             [
                 'key' => 'grand_total',
                 'label' => 'Price ($)',
-                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">$' . number_format($order->total_price, 2) . '</span>'
+                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' .  currency_exchange($order->total_amount)  . '</span>'
             ],
         ];
 
