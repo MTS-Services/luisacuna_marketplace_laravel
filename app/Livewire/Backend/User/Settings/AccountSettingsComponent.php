@@ -75,14 +75,11 @@ class AccountSettingsComponent extends Component
     public function updateProfile()
     {
         try {
-            $validated = $this->form->validate();
+            $data = $this->form->validate();
 
-            $updatedUser = $this->service->updateData(user()->id, $validated);
-
+            $updatedUser = $this->service->updateData(user()->id, $data);
             $this->mount();
-
             $this->success(__('Profile updated successfully!'));
-
             $this->dispatch('profile-updated');
 
             return $this->redirect(route('user.account-settings'), navigate: true);
