@@ -3,20 +3,10 @@
         {{-- Header Section --}}
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-2xl sm:text-3xl font-bold text-text-primary">{{ __('Account Settings') }}</h1>
-            <x-ui.button href="#" class="w-fit! sm:w-auto! py-2!">
+            {{-- <x-ui.button href="#" class="w-fit! sm:w-auto! py-2!">
                 {{ __('Seller API') }}
-            </x-ui.button>
+            </x-ui.button> --}}
         </div>
-        {{-- All errors --}}
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li class="text-xs !text-red-600 dark:!text-red-400 space-y-1">{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
 
         <div class=" mx-auto space-y-6">
             {{-- Profile Section --}}
