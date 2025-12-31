@@ -75,7 +75,6 @@ class SoldOrders extends Component
             [
                 'key' => 'user_id',
                 'label' => 'Buyer',
-                'sortable' => true,
                 'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->user->username]) . '"><span class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">' . $order->user->full_name . '</span></a>'
             ],
             [
