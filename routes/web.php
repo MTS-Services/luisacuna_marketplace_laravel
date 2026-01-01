@@ -3,6 +3,7 @@
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\MultiLangController;
 use App\Http\Controllers\PaymentController;
+use App\Livewire\FileManager;
 use App\Livewire\ImageUploader;
 use App\Livewire\Test\Checkout;
 use App\Livewire\Test\Items;
@@ -158,6 +159,7 @@ Route::get('/test-cloudinary', function () {
 });
 
 Route::get('/image-uploader', ImageUploader::class)->name('image-uploader');
+Route::get('/file-manager', FileManager::class)->name('file-manager');
 
 Route::get('/toastDemo', ToastDemo::class)->name('toastDemo');
 require __DIR__ . '/auth.php';

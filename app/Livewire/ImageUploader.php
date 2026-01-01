@@ -2,27 +2,31 @@
 
 namespace App\Livewire;
 
-use App\Models\CloudinaryFile;
+use App\Services\CloudinaryService;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\Validate;
 
 class ImageUploader extends Component
 {
     use WithFileUploads;
 
+    #[Validate('required|file|max:10240')]
     public $photo;
+
     public $uploadedPhotos = [];
     public $uploading = false;
 
-    protected $rules = [
-        'photo' => 'required|image|max:10240', // 10MB Max
-    ];
+    protected CloudinaryService $cloudinaryService;
 
-    public function updatedPhoto()
+    public function boot(CloudinaryService $cloudinaryService)
     {
-        $this->validate();
+        $this->cloudinaryService = $cloudinaryService;
+    }
+
+    public function mount()
+    {
+        $this->loadUploadedPhotos();
     }
 
     public function uploadImage()
@@ -31,46 +35,55 @@ class ImageUploader extends Component
         $this->uploading = true;
 
         try {
-            // Upload using Cloudinary Facade
-            $result = Cloudinary::upload($this->photo->getRealPath(), [
-                'folder' => env('CLOUDINARY_PREFIX', 'swapy') . '/uploads/images',
+            // Upload using the service
+            $file = $this->cloudinaryService->upload($this->photo, [
+                'folder' => 'uploads/images',
+                'tags' => ['user-upload', 'image'],
+                'description' => 'User uploaded image',
             ]);
 
-            $publicId = $result->getPublicId();
-            $secureUrl = $result->getSecurePath();
+            if ($file) {
+                $this->uploadedPhotos[] = [
+                    'id' => $file->id,
+                    'path' => $file->public_id,
+                    'url' => $file->url,
+                    'name' => $file->original_filename,
+                    'thumbnail' => $file->thumbnail_url,
+                ];
 
-            // Store in array for display
-            $this->uploadedPhotos[] = [
-                'path' => $publicId,
-                'url' => $secureUrl,
-                'name' => $this->photo->getClientOriginalName(),
-            ];
-
-            // Save to database
-            CloudinaryFile::create([
-                'user_id' => auth()->id(),
-                'public_id' => $publicId,
-                'url' => $secureUrl,
-                'resource_type' => 'image',
-                'format' => $result->getExtension(),
-                'size' => $result->getSize(),
-                'width' => $result->getWidth(),
-                'height' => $result->getHeight(),
-                'original_filename' => $this->photo->getClientOriginalName(),
-            ]);
-
-            session()->flash('message', 'Image uploaded successfully!');
-            $this->reset('photo');
+                session()->flash('message', 'Image uploaded successfully!');
+                $this->reset('photo');
+            } else {
+                session()->flash('error', 'Upload failed. Please try again.');
+            }
         } catch (\Exception $e) {
-            Log::error('Cloudinary Upload Error', [
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-
             session()->flash('error', 'Upload failed: ' . $e->getMessage());
         } finally {
             $this->uploading = false;
         }
+    }
+
+    public function uploadMultiple()
+    {
+        $this->validate([
+            'photos.*' => 'required|image|max:10240',
+        ]);
+
+        $result = $this->cloudinaryService->uploadMultiple($this->photos, [
+            'folder' => 'uploads/images',
+            'tags' => ['user-upload', 'batch'],
+        ]);
+
+        if ($result['success_count'] > 0) {
+            session()->flash('message', "{$result['success_count']} images uploaded successfully!");
+            $this->loadUploadedPhotos();
+        }
+
+        if ($result['failed_count'] > 0) {
+            session()->flash('error', "{$result['failed_count']} images failed to upload.");
+        }
+
+        $this->reset('photos');
     }
 
     public function deleteImage($index)
@@ -78,24 +91,33 @@ class ImageUploader extends Component
         try {
             $photo = $this->uploadedPhotos[$index];
 
-            // Delete from Cloudinary
-            Cloudinary::destroy($photo['path']);
+            $deleted = $this->cloudinaryService->delete($photo['path']);
 
-            // Delete from database
-            CloudinaryFile::where('public_id', $photo['path'])->delete();
-
-            // Remove from array
-            unset($this->uploadedPhotos[$index]);
-            $this->uploadedPhotos = array_values($this->uploadedPhotos);
-
-            session()->flash('message', 'Image deleted successfully!');
+            if ($deleted) {
+                unset($this->uploadedPhotos[$index]);
+                $this->uploadedPhotos = array_values($this->uploadedPhotos);
+                session()->flash('message', 'Image deleted successfully!');
+            } else {
+                session()->flash('error', 'Delete failed. Please try again.');
+            }
         } catch (\Exception $e) {
-            Log::error('Cloudinary Delete Error', [
-                'message' => $e->getMessage(),
-            ]);
-
             session()->flash('error', 'Delete failed: ' . $e->getMessage());
         }
+    }
+
+    protected function loadUploadedPhotos()
+    {
+        $files = $this->cloudinaryService->getFilesByUser(auth()->id(), 'image');
+
+        $this->uploadedPhotos = $files->map(function ($file) {
+            return [
+                'id' => $file->id,
+                'path' => $file->public_id,
+                'url' => $file->url,
+                'name' => $file->original_filename,
+                'thumbnail' => $file->thumbnail_url,
+            ];
+        })->toArray();
     }
 
     public function render()
