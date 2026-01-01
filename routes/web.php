@@ -3,6 +3,8 @@
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\MultiLangController;
 use App\Http\Controllers\PaymentController;
+use App\Livewire\FileUploader;
+use App\Livewire\ImageUploader;
 use App\Livewire\Test\Checkout;
 use App\Livewire\Test\Items;
 use App\Livewire\ToastDemo;
@@ -136,9 +138,19 @@ Route::get('/send', function () {
     return view('send');
 });
 Route::post('/send-notification', [App\Http\Controllers\TestController::class, 'sendNotification'])->name('send-notification');
-Route::get('/buttons', function () {
-    return view('button-showcase');
+
+Route::get('/cloudinary', ImageUploader::class)->name('image-uploader');
+Route::get('/file-uploader', FileUploader::class)->name('file-uploader');
+
+Route::get('/test-cloudinary', function () {
+    dd([
+        'cloud_name' => config('cloudinary.cloud_name'),
+        'api_key' => config('cloudinary.api_key'),
+        'api_secret' => config('cloudinary.api_secret'),
+    ]);
 });
+
+
 
 Route::get('/toastDemo', ToastDemo::class)->name('toastDemo');
 require __DIR__ . '/auth.php';
