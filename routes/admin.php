@@ -309,7 +309,7 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
     Route::controller(FinanceController::class)->name('finance.')->prefix('finance')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/top-ups', 'topUps')->name('top-ups');
-        Route::get('/purchased ', 'purchased')->name('purchased');
+       Route::get('/purchased', 'purchased')->name('purchased');
         Route::get('/withdrawals', 'withdrawals')->name('withdrawals');
     });
 });
