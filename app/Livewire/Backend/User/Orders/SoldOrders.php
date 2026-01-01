@@ -118,11 +118,37 @@ class SoldOrders extends Component
     {
         return [
             'search' => $this->search ?? null,
-            'status' => $this->status ?? null,
             'order_date' => $this->order_date  ?? null,
             'sort_field' => $this->sortField ?? 'created_at',
             'sort_direction' => $this->sortDirection ?? 'desc',
             'seller_id' => user()->id,
+             'exclude_status' => OrderStatus::INITIALIZED,
+             
         ];
+    }
+
+
+    public function downloadInvoice()
+    {
+        $orders = $this->service->getAllOrdersForSeller(
+            $this->getFilters()
+        );
+
+        if ($orders->isEmpty()) {
+            session()->flash('error', 'No data found to download.');
+            return;
+        }
+        $invoiceId = 'INV-' . strtoupper(uniqid());
+        $pdf = Pdf::loadView('pdf-template.invoice', [
+            'orders' => $orders,
+            'seller' => Auth::user(),
+            'date'   => now()->format('d M Y'),
+            'invoiceId' => $invoiceId
+        ]);
+
+        return response()->streamDownload(
+            fn() => print($pdf->output()),
+            'sold-orders-invoice-' . now()->format('Y-m-d') . '.pdf'
+        );
     }
 }
