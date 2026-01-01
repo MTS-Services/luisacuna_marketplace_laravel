@@ -20,10 +20,10 @@
                 <div
                     class="sticky top-8 glass-card rounded-3xl p-8 shadow-sm border border-zinc-200/50 dark:border-zinc-700/30 backdrop-blur-md">
                     <div class="flex flex-col items-center text-center">
-                        <div class="relative group cursor-pointer">
+                        <div class="relative group">
                             <div
                                 class="relative w-40 h-40 rounded-full overflow-hidden border-4 border-zinc-200 dark:border-zinc-800 shadow-xl">
-                                <img src="{{ storage_url($admin->avatar) }}" alt="Profile"
+                                <img src="{{ auth_storage_url(admin()->avatar) }}" alt="{{ admin()->name }}"
                                     class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
                             </div>
                         </div>
