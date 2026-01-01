@@ -112,7 +112,7 @@ class PurchasedOrders extends Component
     {
         return [
             'search' => $this->search ?? null,
-            'status' => $this->status ?? null,
+            'exclude_status' => OrderStatus::INITIALIZED,
             'order_date' => $this->order_date  ?? null,
             'sort_field' => $this->sortField ?? 'created_at',
             'sort_direction' => $this->sortDirection ?? 'desc',
