@@ -1,4 +1,3 @@
-
 <x-admin::app>
     <x-slot name="pageSlug">{{ __('finance-management') }}</x-slot>
     @switch(Route::currentRouteName())
@@ -28,4 +27,15 @@
             <x-slot name="breadcrumb">{{ __('Order Management / All Orders List') }}</x-slot>
             <livewire:backend.admin.finance-management.all-transactions />
     @endswitch
+
+
+    <livewire:backend.admin.finance-management.details />
+
+
+    <script>
+        window.addEventListener('transactions-detail-modal-open', () => {
+            console.log('WINDOW EVENT RECEIVED');
+        });
+    </script>
+
 </x-admin::app>
