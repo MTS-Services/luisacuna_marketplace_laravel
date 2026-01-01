@@ -1,9 +1,10 @@
-<div x-data="{ transactionDetailModalShow: @entangle('transactionDetailModalShow').live }" @order-detail-modal-open.window="transactionDetailModalShow = true;"
-    x-show="transactionDetailModalShow" x-transition:enter="transition ease-out duration-300"
-    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-    x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
-    x-transition:leave-end="opacity-0" x-cloak
-    class="fixed inset-0 h-screen z-30 bg-black/5 backdrop-blur-lg flex items-center justify-center">
+<div x-data="{ transactionDetailModalShow: @entangle('transactionDetailModalShow').live }"
+    @order-detail-modal-open.window="transactionDetailModalShow = true; console.log('open order detail');"
+    x-show="transactionDetailModalShow"
+    class="fixed inset-0 bg-black backdrop-blur-md z-20 flex items-center justify-center "
+    x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" x-cloak>
 
     @if ($isLoading)
         <div class="bg-main/90 backdrop-blur-xl rounded-3xl p-10 max-w-md w-full shadow-2xl border border-white/10
@@ -32,10 +33,10 @@
         </div>
     @else
         @if ($transaction)
-            <div class="bg-main rounded-2xl pb-4 sm:pb-6 lg:pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl w-full shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="bg-main rounded-2xl p-4 sm:p-6 lg:p-8 max-w-7xl w-full shadow-2xl max-h-[90vh] overflow-y-auto">
 
                 <!-- Header Section -->
-                <div class="flex items-center justify-between pt-4 sm:pt-6 lg:pt-8 pb-6 sticky top-0 z-20  bg-main/95 backdrop-blur border-b border-white/10 mb-5">
+                <div class="flex items-center justify-between pb-6">
                     <div>
                         <h2
                             class="text-text-text-white text-2xl md:text-3xl font-bold tracking-tight flex items-center gap-3">
@@ -142,7 +143,7 @@
                                 <div class="flex justify-between items-start pb-3 border-b border-zinc-800">
                                     <span class="text-text-muted text-sm">{{ __('Transaction Type') }}</span>
                                     <span
-                                        class="font-medium text-sm badge badge-soft {{ $transaction->type->color() }}">{{ $transaction?->type->label() }}</span>
+                                        class="text-text-white font-medium text-sm badge badge-soft {{ $transaction->type->color() }}">{{ $transaction?->type->label() }}</span>
                                 </div>
                                 <div class="flex justify-between items-start">
                                     <span class="text-text-muted text-sm">{{ __('Date') }}</span>
@@ -191,14 +192,14 @@
                                 {{ __('Additional Information') }}
                             </h3>
 
-                            <!-- Grid Wrapper -->
-                            <div class="relative grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-6">
+                            <!-- Grid -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                                 <!-- LEFT COLUMN -->
                                 <div class="space-y-4">
 
                                     @if ($transaction?->order?->order_id)
-                                        <div class="p-4 rounded-xl">
+                                        <div class="p-4 rounded-xl bg-main">
                                             <p class="text-text-white text-xs uppercase tracking-wide mb-2">
                                                 {{ __('Order ID') }}
                                             </p>
@@ -209,7 +210,7 @@
                                     @endif
 
                                     @if ($transaction->status)
-                                        <div class="p-4 rounded-xl">
+                                        <div class="p-4 rounded-xl bg-main">
                                             <p class="text-text-white text-xs uppercase tracking-wide mb-2">
                                                 {{ __('Note') }}
                                             </p>
@@ -220,7 +221,7 @@
                                     @endif
 
                                     @if ($transaction->payment_gateway)
-                                        <div class="p-4 rounded-xl">
+                                        <div class="p-4 rounded-xl bg-main">
                                             <p class="text-text-white text-xs uppercase tracking-wide mb-2">
                                                 {{ __('Payment Gateway') }}
                                             </p>
@@ -232,14 +233,11 @@
 
                                 </div>
 
-                                <!-- VERTICAL DIVIDER (Only Desktop) -->
-                                <div class="hidden md:block w-px bg-zinc-800 rounded-full"></div>
-
                                 <!-- RIGHT COLUMN -->
                                 <div class="space-y-4">
 
                                     @if ($transaction->gateway_transaction_id)
-                                        <div class="p-4 rounded-xl">
+                                        <div class="p-4 rounded-xl bg-main">
                                             <p class="text-text-white text-xs uppercase tracking-wide mb-2">
                                                 {{ __('Gateway Transaction ID') }}
                                             </p>
@@ -250,7 +248,7 @@
                                     @endif
 
                                     @if ($transaction->notes)
-                                        <div class="p-4 rounded-xl">
+                                        <div class="p-4 rounded-xl bg-main">
                                             <p class="text-text-white text-xs uppercase tracking-wide mb-2">
                                                 {{ __('Notes') }}
                                             </p>
@@ -264,8 +262,22 @@
 
                             </div>
                         </div>
-
                     @endif
+
+
+
+                    <!-- Action Buttons -->
+                    {{-- <div class="flex justify-end gap-3 pt-4">
+                        <a href=""
+                            class="px-6 py-2.5 bg-slate-700 hover:bg-slate-600 text-text-white rounded-lg font-medium transition-all duration-200 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                            Back to List
+                        </a>
+                    </div> --}}
+
                 </div>
             </div>
         @else
@@ -274,6 +286,5 @@
             </div>
         @endif
     @endif
-
 
 </div>
