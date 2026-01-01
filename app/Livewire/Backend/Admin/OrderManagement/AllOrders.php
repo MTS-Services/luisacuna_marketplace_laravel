@@ -3,6 +3,7 @@
 namespace App\Livewire\Backend\Admin\OrderManagement;
 
 use Livewire\Component;
+use App\Enums\OrderStatus;
 use App\Services\OrderService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
@@ -118,7 +119,7 @@ class AllOrders extends Component
     protected function getFilters(): array
     {
         return [
-            'status'         => $this->statusFilter,
+            'exclude_status' => OrderStatus::INITIALIZED,
             'sort_field'     => $this->sortField,
             'sort_direction' => $this->sortDirection,
         ];
