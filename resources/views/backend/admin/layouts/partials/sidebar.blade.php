@@ -287,12 +287,7 @@
                             'icon' => 'dollar-sign',
                             'active' => 'withdrawals',
                         ],
-                        [
-                            'name' => 'Escrow',
-                            'route' => '#',
-                            'icon' => 'heart-handshake',
-                            'active' => 'withdrawal',
-                        ],
+
                     ]" />
                 <x-backend.navlink type="single" icon="percent" name="Fee Settings" :route="route('admin.fee-settings.fee-settings')"
                     active="fee-settings" :page_slug="$active" />

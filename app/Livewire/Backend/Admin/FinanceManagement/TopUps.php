@@ -68,9 +68,9 @@ class TopUps extends Component
         ];
         $actions = [
             [
-                'key' => 'order_id',
+                'key' => 'transaction_id',
                 'label' => 'View',
-                 'x_click' => "\$dispatch('transaction-detail-modal-open', { transactionId: '{value}' }); console.log('open');",
+                'x_click' => "\$dispatch('transaction-detail-modal-open', { transactionId: '{value}' }); console.log('open');",
 
 
             ],
