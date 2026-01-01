@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use App\Models\Order;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
+use App\Enums\OrderStatus;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class OrderService
 {
@@ -62,20 +63,36 @@ class OrderService
     }
 
 
-    // OrderService.php এ add করো
-
-    public function getOrdersByMonthForSeller(int $sellerId, int $month, int $year): Collection
+    // OrderService.
+    public function getAllOrdersForSeller(array $filters)
     {
-        return $this->model->query()
+        return Order::query()
             ->with(['source.user', 'user', 'source.game'])
-            ->whereHasMorph('source', ['App\Models\Product'], function ($q) use ($sellerId) {
-                $q->where('user_id', $sellerId);
+            ->whereHasMorph('source', ['App\Models\Product'], function ($q) use ($filters) {
+                $q->where('user_id', $filters['seller_id']);
             })
-            ->whereYear('created_at', $year)
-            ->whereMonth('created_at', $month)
-            ->orderBy('created_at', 'desc')
+            // Skip INITIALIZED orders
+            ->where('status', '!=', OrderStatus::INITIALIZED->value)
+            ->when(
+                $filters['status'] ?? null,
+                fn($q, $status) => $q->where('status', $status)
+            )
+            ->when(
+                $filters['search'] ?? null,
+                fn($q, $search) => $q->where('order_id', 'like', "%{$search}%")
+            )
+            ->when($filters['order_date'] ?? null, function ($q, $date) {
+                match ($date) {
+                    'today' => $q->whereDate('created_at', today()),
+                    'week'  => $q->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]),
+                    'month' => $q->whereMonth('created_at', now()->month),
+                };
+            })
+            ->latest()
             ->get();
     }
+
+
 
     public function calculateMonthlyTotal(Collection $orders): float
     {
