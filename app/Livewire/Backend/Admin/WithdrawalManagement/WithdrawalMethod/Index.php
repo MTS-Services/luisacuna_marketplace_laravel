@@ -41,11 +41,11 @@ class Index extends Component
                 'label' => 'Icon',
                 'format' => function ($data) {
                     return '<div class="flex items-center justify-center text-xs text-gray-500">
-                        '.(! empty($data->icon)
-                                    ? '<img src="'.storage_url($data->icon).'" 
-                                   alt="'.e($data->name).'" 
+                        ' . (!empty($data->icon)
+                        ? '<img src="' . storage_url($data->icon) . '"
+                                   alt="' . e($data->name) . '"
                                    class="h-8 w-8 object-contain rounded">'
-                                    : '<span>No Icon</span>').'
+                        : '<span>No Icon</span>') . '
                     </div>';
                 },
             ],
@@ -55,20 +55,20 @@ class Index extends Component
                 'sortable' => true,
                 'format' => function ($data) {
                     return '<span class="text-sm font-medium text-gray-800">'
-                        .e($data->name).
+                        . e($data->name) .
                         '</span>';
                 },
-          ],
+            ],
             [
                 'key' => 'code',
                 'label' => 'Code',
                 'sortable' => true,
                 'format' => function ($data) {
                     return '<span class="text-sm text-gray-600">'
-                        .e($data->code).
+                        . e($data->code) .
                         '</span>';
                 },
-          ],
+            ],
             [
                 'key' => 'status',
                 'label' => 'Status',
@@ -78,11 +78,11 @@ class Index extends Component
                         $data->status->label() .
                         '</span>';
                 }
-          ],
+            ],
         ];
 
         $actions = [
-            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.bm.banner.edit', 'encrypt' => true],
+            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.wm.method.edit', 'encrypt' => true],
             ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete', 'encrypt' => true],
         ];
 
@@ -109,7 +109,7 @@ class Index extends Component
     public function delete(): void
     {
         try {
-            if (! $this->deleteId) {
+            if (!$this->deleteId) {
                 $this->warning('No data selected');
 
                 return;
@@ -119,7 +119,7 @@ class Index extends Component
 
             $this->success('Data deleted successfully');
         } catch (\Exception $e) {
-            $this->error('Failed to delete data: '.$e->getMessage());
+            $this->error('Failed to delete data: ' . $e->getMessage());
         }
     }
 
