@@ -14,7 +14,7 @@ class Details extends Component
     {
         $this->data = Product::findOrFail($productId)
             ->with('user', 'category', 'platform', 'games', 'game')
-            ->first();
+            ->findOrFail($productId);
 
             // dd($this->data);
 

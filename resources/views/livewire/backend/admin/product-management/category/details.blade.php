@@ -11,23 +11,13 @@
                         <x-ui.button
                             x-on:click="$dispatch('show-translation-modal', {
                                 modelId: '{{ encrypt($data->id) }}',
-                                modelType: '{{ base64_encode(\App\Models\Category::class) }}'
+                                modelType: '{{ base64_encode(\App\Models\Product::class) }}'
                             })"
                             variant="secondary" class="w-auto py-2! text-nowrap">
                             <flux:icon name="arrows-pointing-out"
                                 class="w-4 h-4 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
                             {{ __('Manage Translations') }}
                         </x-ui.button>
-
-                        {{-- <x-ui.button
-                            x-on:click="$dispatch('show-translation-modal', [
-                            'modelId' => '{{ encrypt($data->id) }}',
-                            'modelType' => {{ app\Models\Category::class }}])"
-                            variant="tertiary" class="w-auto py-2! text-nowrap">
-                            <flux:icon name="plus-circle"
-                                class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
-                            {{ __('Add Translation') }}
-                        </x-ui.button> --}}
 
                         <x-ui.button href="{{ route('admin.gm.category.index') }}" class="w-auto py-2! text-nowrap">
                             <flux:icon name="arrow-left"
@@ -83,7 +73,7 @@
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('seller') }}</p>
 
-                                <a href="{{ route('profile', $data->user->username) }}" target="_blank"
+                                <a href="{{ route('profile', $data->user?->username) }}" target="_blank"
                                     class="text-zinc-500 text-lg font-bold">{{ $data->user->full_name ?? 'N/A' }}</a>
                             </div>
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
