@@ -45,6 +45,8 @@ class ProfileCategoryItems extends Component
         $products = $this->getProducts();
         $games = $this->gameService->getAllDatas();
         $this->paginationData($products);
+
+        // dd($products);
         return view('livewire.backend.user.profile.profile-category-items', [
             'products' => $products,
             'games' => $games,
@@ -57,6 +59,9 @@ class ProfileCategoryItems extends Component
             'categorySlug' => $this->activeTab,
             'relations' => ['games'], 
             'user_id' => $this->userId,
+            'productTranslations' => function ($query) {
+                $query->where('language_id', get_language_id());
+            }
         ]);
     }
 }

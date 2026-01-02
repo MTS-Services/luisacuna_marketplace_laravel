@@ -41,6 +41,9 @@ public function findData($column_value, string $column_name = 'id')
         return $this->model->query()
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
+            ->with(['productTranslations' => function ($query) {
+                $query->where('language_id', get_language_id());
+            }])
             ->paginate($perPage);
     }
 

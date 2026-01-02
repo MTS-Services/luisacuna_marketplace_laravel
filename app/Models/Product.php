@@ -84,6 +84,31 @@ class Product extends BaseModel implements Auditable
     }
 
 
+
+    public function productTranslations()
+    {
+        return $this->hasMany(ProductTranslation::class, 'product_id', 'id');
+    }
+
+
+    public function getTranslationConfig(): array
+    {
+        return [
+            'fields' => ['name', 'description', 'delivery_timeline','price', 'quantity'],
+            'relation' => 'productTranslations',
+            'model' => ProductTranslation::class,
+            'foreign_key' => 'product_id',
+            'field_mapping' => [
+                'name' => 'name',
+                'description' => 'description',
+                'delivery_timeline' => 'delivery_timeline',
+                'price' => 'price',
+                'quantity' => 'quantity',
+            ],
+        ];
+    }
+
+
     public function scopeFilter(Builder $query, $filters): Builder
     {
 
@@ -106,17 +131,17 @@ class Product extends BaseModel implements Auditable
             $query->where('status', $filters['status']);
         }
 
-        $query->when( $filters['skipSelf'] ?? null, function ($query, $skipSelf) {
-            if($skipSelf){
-                $query->where('id', '!=', user()->id ?? 0 );
+        $query->when($filters['skipSelf'] ?? null, function ($query, $skipSelf) {
+            if ($skipSelf) {
+                $query->where('id', '!=', user()->id ?? 0);
             }
         });
-        
+
         if (!empty($filters['isStocked'])) {
             $query->where('quantity', '>', 0);
         }
 
-        if($filters['user_id'] ?? null){
+        if ($filters['user_id'] ?? null) {
             $query->where('user_id', $filters['user_id']);
         }
         return $query;
