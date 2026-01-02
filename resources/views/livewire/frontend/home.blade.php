@@ -65,7 +65,7 @@
                 </div>
                 <div wire:ignore class="swiper popular-games">
                     <div class="swiper-wrapper ">
-                        @foreach ($games as $game)
+                        @foreach ($popular_games as $game)
                             <div class="swiper-slide">
                                 <x-game-card :data="$game" />
                             </div>
