@@ -1,5 +1,5 @@
 <footer class="dark:bg-bg-secondary">
-    <div class="pt-12">
+    <div class="pt-10">
         <div class="container flex flex-col md:flex-row justify-start gap-8 mb-12">
             <div class="w-full md:w-1/4 flex flex-col items-start justify-start md:justify-start">
                 <div class="mb-4">

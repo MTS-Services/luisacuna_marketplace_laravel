@@ -29,13 +29,26 @@
 
                 @if ($accountType == 0)
                     <h2 class="text-base lg:text-xl font-semibold  mb-8 text-left">
-                        {{ __('Take a photo of your ID and swapy.gg in
-                                                background') }}
+                        {{ __('Take a photo of your ID and swapy.gg in background') }}
                     </h2>
 
                     <div class="px-0 sm:px-8 text-left">
                         <div class="flex justify-center mb-4">
-                            <img src="{{ asset('assets/images/verfy.png') }}" alt="" class="mx-auto">
+                            {{-- @if ($front_image)
+                                <img src="{{ $front_image->temporaryUrl() }}" alt="Preview"
+                                    class="w-32 h-32 object-cover">
+                            @endif --}}
+                            {{-- <img src="{{ asset('assets/images/verfy.png') }}" alt="" class="mx-auto"> --}}
+
+                            @if ($front_image)
+                                <div class="w-[100px] h-[100px] sm:w-[510px] sm:h-[382px]">
+                                    <img src="{{ $front_image->temporaryUrl() }}" alt="Selfie with ID illustration"
+                                        class="mx-auto w-full h-full object-cover"
+                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                                </div>
+                            @else
+                                <img src="{{ asset('assets/images/verfy.png') }}" alt="" class="mx-auto">
+                            @endif
                         </div>
 
                         <ul class="space-y-2  font-lato mb-6 ">
@@ -56,6 +69,8 @@
                         <div class="flex items-center  max-w-88 mx-auto  rounded-lg overflow-hidden">
                             <input type="file" wire:model="front_image" accept="image/*" class="hidden"
                                 id="idDocument">
+
+
 
                             <label for="idDocument"
                                 class="shrink-0 px-6 py-1.5 bg-zinc-600 text-white font-semibold rounded-3xl hover:bg-gray-800 cursor-pointer transition duration-150 ease-in-out">
@@ -86,29 +101,37 @@
                     <div class="px-8">
                         {{-- Placeholder for the ID illustration image from the provided screenshot --}}
                         <div class="flex justify-center mb-6">
-                            <img src="{{ asset('assets/images/ubo-verification-image.webp') }}"
-                                alt="Ultimate beneficial owner ID illustration" class="mx-auto">
+                            {{-- <img src="{{ asset('assets/images/ubo-verification-image.webp') }}"
+                                alt="Ultimate beneficial owner ID illustration" class="mx-auto"> --}}
+                            @if ($front_image)
+                                <div class="w-[100px] h-[100px] sm:w-[510px] sm:h-[382px]">
+                                    <img src="{{ $front_image->temporaryUrl() }}" alt="Selfie with ID illustration"
+                                        class="mx-auto w-full h-full object-cover"
+                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                                </div>
+                            @else
+                                <img src="{{ asset('assets/images/verfy.png') }}" alt="" class="mx-auto">
+                            @endif
                         </div>
 
                         <ul class="space-y-2 font-lato mb-6">
                             <li class="flex items-start">
                                 <span class="mr-2">•</span>
                                 <span>
-                                   {{ __(' Accepted documents: **Driver\'s license, Government issued ID or Passport,
-                                    international student ID.**') }}
+                                    {{ __(' Accepted documents: **Driver\'s license, Government issued ID or Passport,
+                                                                                                                                                                                                                                                                                                                                                                                                            international student ID.**') }}
                                 </span>
                             </li>
                             <li class="flex items-start">
                                 <span class="mr-2">•</span>
                                 <span>
                                     {{ __('Make sure personal details on the document are **clearly visible and easy to
-                                    read.**') }}
+                                                                                                                                                                                                                                                                                                                                                                                                            read.**') }}
                                 </span>
                             </li>
                         </ul>
 
-                        <div
-                            class="flex items-center max-w-88 mx-auto border border-zinc-100 rounded-lg overflow-hidden">
+                        <div class="flex items-center max-w-88 mx-auto rounded-lg overflow-hidden">
                             <input type="file" wire:model="front_image" accept="image/*" class="hidden"
                                 id="front_image">
 
@@ -135,27 +158,16 @@
                     </div>
                 @endif
             </div>
-            <div>
-
-            </div>
-            <div class="flex justify-center space-x-4 pt-10">
-                {{-- <a wire:click.prevent="previousStep" wire:navigate
-                    class="px-8 py-2 cursor-pointer text-text-white  rounded-lg hover:bg-gray-50">
-                    BACK
-                </a>
-                <button wire:click="nextStep" class="px-8 py-2 bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg ">
-                    NEXT
-                </button> --}}
-                <div class=" flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
-                    <x-ui.button type="submit" wire:click.prevent="previousStep" wire:navigate
-                        class="w-auto py-2! text-text-white text-base! font-semibold!">
+            <div class="flex gap-4 justify-center mt-5! sm:mt-10!">
+                <div class="flex justify-center">
+                    <x-ui.button type="submit" wire:click.prevent="previousStep" wire:navigate variant="secondary"
+                        class="w-auto py-2!">
                         {{ __('Back') }}
                     </x-ui.button>
                 </div>
-                <div class="  flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
-                    <x-ui.button type="submit" wire:click="nextStep" class="w-auto py-2!  text-base! font-semibold!">
-                        {{ __('Next') }}
-                    </x-ui.button>
+                <div class="flex justify-center">
+                    <x-ui.button type="submit" wire:click="nextStep"
+                        class="w-auto py-2!">{{ __('Next') }}</x-ui.button>
                 </div>
             </div>
         </div>

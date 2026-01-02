@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Gate;
 use App\Services\DeepLTranslationService;
 use App\Services\EnvEditorService;
 use App\Services\SettingsService;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -39,7 +41,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
         config([
             'debugbar.enabled' => app_setting('app_debug', false),
         ]);

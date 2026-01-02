@@ -2,10 +2,7 @@
 
 namespace App\Livewire\Frontend\Game;
 
-use App\Models\Product;
 use App\Services\CategoryService;
-use App\Services\GameService;
-use App\Services\ProductService;
 use Livewire\Component;
 
 class ShopComponent extends Component

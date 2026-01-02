@@ -62,6 +62,8 @@ class GridLayout extends Component
 
             'categorySlug' => $this->categorySlug,
 
+            'skipSelf' => true
+
 
         ]);
     }
@@ -75,7 +77,7 @@ class GridLayout extends Component
          
         $this->datas = $this->getDatas();
 
-        $this->pagination = $this->paginationData($this->datas);
+        $this->paginationData($this->datas);
        
         return view('livewire.frontend.product.grid-layout', [
             'datas' => $this->datas

@@ -73,6 +73,10 @@ class Product extends BaseModel implements Auditable
     {
         return $this->belongsTo(Game::class, 'game_id', 'id');
     }
+    public function game()
+    {
+        return $this->belongsTo(Game::class, 'game_id', 'id');
+    }
 
     public function product_configs()
     {
@@ -102,6 +106,19 @@ class Product extends BaseModel implements Auditable
             $query->where('status', $filters['status']);
         }
 
+        $query->when( $filters['skipSelf'] ?? null, function ($query, $skipSelf) {
+            if($skipSelf){
+                $query->where('id', '!=', user()->id ?? 0 );
+            }
+        });
+        
+        if (!empty($filters['isStocked'])) {
+            $query->where('quantity', '>', 0);
+        }
+
+        if($filters['user_id'] ?? null){
+            $query->where('user_id', $filters['user_id']);
+        }
         return $query;
     }
 

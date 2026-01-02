@@ -18,11 +18,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends AuthBaseModel implements Auditable
 {
-    use  TwoFactorAuthenticatable, AuditableTrait, HasTranslations, Notifiable;
+    use  TwoFactorAuthenticatable, AuditableTrait, HasTranslations, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -158,6 +158,11 @@ class User extends AuthBaseModel implements Auditable
     |--------------------------------------------------------------------------
     */
 
+    public function wallet(): HasOne
+    {
+        return $this->hasOne(Wallet::class, 'user_id', 'id');
+    }
+
     public function userTranslations(): HasMany
     {
         return $this->hasMany(UserTranslations::class, 'user_id', 'id');
@@ -243,10 +248,6 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->hasMany(Message::class, 'receiver_id', 'id');
     }
-    public function orderMessages()
-    {
-        return $this->morphMany(OrderMessage::class, 'creater');
-    }
 
     public function conversationParticipant()
     {
@@ -257,20 +258,6 @@ class User extends AuthBaseModel implements Auditable
         return $this->hasMany(MessageReadReceipt::class, 'user_id', 'id');
     }
 
-    // public function lastMessageWith()
-    // {
-    //     return $this->hasOne(OrderMessage::class, 'sender_id')
-    //         ->latest();
-    // }
-
-    /**
-     * Get unread messages from this user
-     */
-    // public function unreadMessagesFrom()
-    // {
-    //     return $this->hasMany(OrderMessage::class, 'sender_id')
-    //         ->where('is_seen', false);
-    // }
     /*
     |--------------------------------------------------------------------------
     | Query Scopes

@@ -1,4 +1,4 @@
-<main class="overflow-x-hidden  bg-page ">
+<main class="overflow-x-hidden bg-page">
 
     <!-- Hero Section -->
     <div class="swiper swiper-hero">
@@ -24,12 +24,12 @@
     </div>
 
 
-    <section class="pt-30" id="popular-games">
+    <section class="mt-10 sm:mt-20" id="popular-games">
         {{-- New Bosting Games Section --}}
         <section class="container mx-auto">
             <div class="mx-0 sm:mx-5 md:mx-10 lg:mx-14 xl:mx-20">
-                <div class="title mb-10">
-                    <h2 class="text-40px font-semibold mb-4 text-text-white">
+                <div class="title mb-5 sm:mb-10">
+                    <h2 class="text-2xl sm:text-40px font-semibold text-text-white">
                         {{ __('Newly Boosting') }}
                     </h2>
                 </div>
@@ -56,10 +56,10 @@
         {{-- New Boosting Ends --}}
 
         {{-- Popular Games Section --}}
-        <section class="container mx-auto mt-20">
+        <section class="container mx-auto mt-10 sm:mt-20">
             <div class="mx-0 sm:mx-5 md:mx-10 lg:mx-14 xl:mx-20">
-                <div class="title mb-10">
-                    <h2 class="text-40px font-semibold mb-4 text-text-white">
+                <div class="title mb-5 sm:mb-10">
+                    <h2 class="text-2xl sm:text-40px font-semibold text-text-white">
                         {{ __('Popular Games') }}
                     </h2>
                 </div>
@@ -86,10 +86,10 @@
 
 
         {{-- Top selling  Section --}}
-        <section class="container mx-auto mt-20">
+        <section class="container mx-auto mt-10 sm:mt-20">
             <div class="mx-0 sm:mx-5 md:mx-10 lg:mx-14 xl:mx-20">
-                <div class="title mb-10">
-                    <h2 class="text-40px font-semibold mb-4 text-text-white">
+                <div class="title mb-5 sm:mb-10">
+                    <h2 class="text-2xl sm:text-40px font-semibold text-text-white">
                         {{ __('Top-Selling Offers') }}
                     </h2>
                 </div>
@@ -120,14 +120,14 @@
     </section>
 
     <!-- How It Works Section -->
-    <section class="py-20 pt-20">
+    <section class="mt-10 sm:mt-20">
         <div class="container mx-auto">
             <div class="mx-0 sm:mx-5 md:mx-10 lg:mx-14 xl:mx-20">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl font-semibold mb-4 text-text-white">{{ __('How It Works') }}</h2>
+                <div class="text-center mb-5 sm:mb-10">
+                    <h2 class="text-2xl sm:text-40px font-semibold text-text-white">{{ __('How It Works') }}</h2>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
                     <!-- Step 1 -->
                     <div class="text-center">
                         <div class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
@@ -144,7 +144,7 @@
                         <div class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
                             <img src="{{ asset('assets/images/home_page/verified_sellers.png') }}" alt="">
                         </div>
-                        <div class="absolute top-8 left-[-30%] z-20 hidden md:block">
+                        <div class="absolute top-8 left-[-30%] z-20 hidden md:block w-[100px] xl:w-[180px]">
                             <img src="{{ asset('assets/images/home_page/right-arrow.png') }}" alt="">
                         </div>
                         <h3 class="font-semibold text-2xl mb-2 text-text-white">{{ __('Verified Sellers') }}</h3>
@@ -158,7 +158,7 @@
                         <div class="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl">
                             <img src="{{ asset('assets/images/home_page/effortless_buying.png') }}" alt="">
                         </div>
-                        <div class="absolute top-8 left-[-30%] z-20 hidden md:block">
+                        <div class="absolute top-8 left-[-30%] z-20 hidden md:block w-[100px] xl:w-[180px]">
                             <img src="{{ asset('assets/images/home_page/right-arrow.png') }}" alt="">
                         </div>
                         <h3 class="font-semibold text-2xl mb-2 text-text-white">
@@ -175,7 +175,7 @@
 
     <!-- About Us Section -->
     <section
-        class="container mt-10  p-5 md:p-10 xl:p-20 bg-gradient-to-r from-zinc-900
+        class="container mt-10 sm:mt-20 p-5 md:p-10 xl:p-20 bg-gradient-to-r from-zinc-900
          via-zinc-900 via-30%  to-pink-950/90">
         <div class="">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -203,7 +203,7 @@
     <!-- FAQ Section -->
     <livewire:frontend.partials.faq :faqs_buyer="$faqs_buyer" :faqs_seller="$faqs_seller" />
 
-    <div class="pt-130"></div>
+    <div class="mt-20"></div>
 
 
     @push('scripts')

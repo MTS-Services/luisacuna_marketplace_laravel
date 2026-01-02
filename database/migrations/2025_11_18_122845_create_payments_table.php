@@ -51,10 +51,8 @@ return new class extends Migration
             // Timestamps
             $table->timestamp('paid_at')->nullable(); // ADDED - When payment completed
 
-
-            $table->softDeletes();
             $table->timestamps();
-
+            $table->softDeletes();
             $this->addMorphedAuditColumns($table);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade')->onUpdate('cascade');

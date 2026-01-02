@@ -11,20 +11,33 @@
         </div>
 
         <!-- Game Card -->
-        <div class="bg-bg-info rounded-xl p-3 sm:p-10">
-            <div class="flex items-center gap-3">
-                <div class="w-16 h-16">
-                    <img src="{{ asset('assets/images/subcribe/sub (2).png') }}"
-                        class="w-full h-full rounded-2xl object-cover">
+        <div x-data="{ open: false }" class="bg-bg-info rounded-xl p-3 sm:p-10">
+            <!-- Header -->
+            <div class="flex justify-between cursor-pointer" @click="open = !open">
+                <div class="flex items-center gap-3">
+                    <div class="w-16 h-16">
+                        <img src="{{ asset('assets/images/subcribe/sub (2).png') }}"
+                            class="w-full h-full rounded-2xl object-cover">
+                    </div>
+                    <div>
+                        <h2 class="text-text-white font-semibold text-xl sm:text-3xl mb-1">{{ __('Anime Vanguards') }}
+                        </h2>
+                        <p class="text-pink-500 text-base font-normal">{{ __('Subscribe 3/6') }}</p>
+                    </div>
                 </div>
+
+                <!-- Arrow -->
                 <div>
-                    <h2 class="text-text-white font-semibold text-xl sm:text-3xl mb-1">{{ __('Anime Vanguards') }}</h2>
-                    <p class="text-pink-500 text-base font-normal">{{ __('Subscribe 3/6') }}</p>
+                    <svg class="w-5 h-5 text-text-white transition-transform duration-300"
+                        :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
                 </div>
             </div>
 
-            <!-- Toggles -->
-            <div class="mt-6 space-y-5">
+            <!-- Collapsible Content (Toggles) -->
+            <div x-show="open" x-transition.origin.top class="mt-6 space-y-5">
                 <!-- Unit Obtaining -->
                 <div class="flex justify-between items-center text-text-white">
                     <h2 class="text-text-white text-base sm:text-2xl font-semibold">{{ __('Unit Obtaining') }}</h2>
@@ -39,13 +52,10 @@
                     </label>
                 </div>
 
-
-
-
                 <!-- Points & Currency -->
                 <div class="flex justify-between items-center text-text-white">
                     <h2 class="text-text-white text-base sm:text-2xl font-semibold">{{ __('Points & Currency') }}</h2>
-                   <label class="relative inline-flex items-center cursor-pointer">
+                    <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" class="sr-only peer">
                         <!-- Slider background -->
                         <div class="w-10 h-5 rounded-full transition-all bg-gray-600 peer-checked:bg-bg-white"></div>
@@ -70,11 +80,10 @@
                     </label>
                 </div>
 
-
                 <!-- Stage Carry -->
                 <div class="flex justify-between items-center text-text-white">
                     <h2 class="text-text-white text-base sm:text-2xl font-semibold">{{ __('Stage Carry') }}</h2>
-                   <label class="relative inline-flex items-center cursor-pointer">
+                    <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" class="sr-only peer">
                         <!-- Slider background -->
                         <div class="w-10 h-5 rounded-full transition-all bg-gray-600 peer-checked:bg-bg-white"></div>

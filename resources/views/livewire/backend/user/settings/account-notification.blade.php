@@ -1,4 +1,4 @@
- <section class="sm:bg-bg-secondary rounded-2xl sm:p-15 md:20">
+ <section class="sm:bg-bg-secondary rounded-2xl sm:p-15 md:p-20 mt-20">
      <h2 class="text-2xl sm:text-3xl font-semibold text-text-white mb-6">{{ __('Email notifications') }}
      </h2>
 

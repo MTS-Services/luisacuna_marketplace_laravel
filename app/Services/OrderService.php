@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use App\Models\Order;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
+use App\Enums\OrderStatus;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class OrderService
 {
@@ -33,28 +34,15 @@ class OrderService
 
     public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
+        // dd($filters['order_date'] ?? 'order_date not set');
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
         $orders = $this->model->query()
-            ->with(['source', 'user'])
+            ->with(['source.user', 'user', 'source.game'])
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
-
-        $orders->getCollection()->transform(function ($order) {
-            $order->product_name = $order->source?->name ?? 'N/A';
-            $order->product_logo = $order->source?->logo ?? asset('default-image.png');
-            $order->product_subtitle = $order->source?->subtitle ?? '';
-            $order->product_type = $order->source?->type ?? 'N/A';
-            $order->seller_name = $order->source?->seller?->name ?? 'N/A';
-
-            $order->total_quantity = 1;
-            $order->total_price = $order->grand_total;
-
-            return $order;
-        });
-
         return $orders;
     }
 
@@ -74,15 +62,50 @@ class OrderService
         return $this->model->count($filters);
     }
 
+
+    // OrderService.
+    public function getAllOrdersForSeller(array $filters)
+    {
+        return Order::query()
+            ->with(['source.user', 'user', 'source.game'])
+            ->whereHasMorph('source', ['App\Models\Product'], function ($q) use ($filters) {
+                $q->where('user_id', $filters['seller_id']);
+            })
+            // Skip INITIALIZED orders
+            ->where('status', '!=', OrderStatus::INITIALIZED->value)
+            ->when(
+                $filters['status'] ?? null,
+                fn($q, $status) => $q->where('status', $status)
+            )
+            ->when(
+                $filters['search'] ?? null,
+                fn($q, $search) => $q->where('order_id', 'like', "%{$search}%")
+            )
+            ->when($filters['order_date'] ?? null, function ($q, $date) {
+                match ($date) {
+                    'today' => $q->whereDate('created_at', today()),
+                    'week'  => $q->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]),
+                    'month' => $q->whereMonth('created_at', now()->month),
+                };
+            })
+            ->latest()
+            ->get();
+    }
+
+
+
+    public function calculateMonthlyTotal(Collection $orders): float
+    {
+        return $orders->sum('grand_total');
+    }
+
     /* ================== ================== ==================
      *                   Action Executions
      * ================== ================== ================== */
 
     public function createData(array $data): Order
     {
-        return DB::transaction(function () use ($data) {
-            return $this->model->create($data);
-        });
+        return $this->model->create($data);
     }
 
     // Manage Function According to your need

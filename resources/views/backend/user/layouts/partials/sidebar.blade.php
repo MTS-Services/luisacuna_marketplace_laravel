@@ -31,7 +31,7 @@
                             </div>
                             <div>
                                 <div class="flex gap-2 items-center ">
-                                    <h3 class="text-2xl font-semibold text-text-white mb-2">
+                                    <h3 class="text-2xl font-semibold text-text-white mb-2 line-clamp-2">
                                         {{ user()->full_name }}
                                     </h3>
                                     <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
@@ -118,7 +118,7 @@
                         @foreach ($categories as $category)
                             <a href="{{ route('user.user-offer.category', $category->slug) }}" wire:navigate
                                 @click="$root.sidebarOpen = false"
-                                class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base rounded-lg transition-all text-text-white hover:bg-pink-500/50 
+                                class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base rounded-lg transition-all text-text-white hover:bg-pink-500/50
                                 {{ request()->route('categorySlug') === $category->slug ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                                 {{ $category->name }}
                             </a>

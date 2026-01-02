@@ -47,33 +47,18 @@
 
                 </div>
             </div>
-
-            <div class="flex justify-center space-x-4 pt-10">
-                {{-- <a wire:click.prevent="previousStep" wire:navigate class="px-8 cursor-pointer py-2  hover:bg-zinc-50 rounded-lg">
-                    BACK
-                </a>
-                <button wire:click="nextStep" class="px-8 py-2 text-white rounded-lg transition" 
-                    :class="{
-                        'bg-zinc-600 hover:bg-zinc-700': $wire.selectedCategories.length > 0,
-                        'bg-zinc-200 text-zinc-950 cursor-pointer!': $wire.selectedCategories.length === 0
-                    }">
-                    NEXT
-                </button> --}}
-                <!-- Submit button -->
-                <div class=" flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
-                    <x-ui.button type="submit" wire:click.prevent="previousStep" wire:navigate
-                        class="w-auto py-2! text-white text-base! font-semibold!">
+            <div class="flex gap-4 justify-center mt-5! sm:mt-10!">
+                <div class="flex justify-center">
+                    <x-ui.button type="submit" wire:click.prevent="previousStep" wire:navigate variant="secondary"
+                        class="w-auto py-2!">
                         {{ __('Back') }}
                     </x-ui.button>
                 </div>
-                <div class="  flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
-                    <x-ui.button type="submit" wire:click="nextStep" class="w-auto py-2!  text-base! font-semibold!">
-                        {{ __('Next') }}
-                    </x-ui.button>
+                <div class="flex justify-center">
+                    <x-ui.button type="submit" wire:click="nextStep"
+                        class="w-auto py-2!">{{ __('Next') }}</x-ui.button>
                 </div>
             </div>
-
         </div>
-
     </div>
 </div>

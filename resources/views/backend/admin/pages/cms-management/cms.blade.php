@@ -1,5 +1,7 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{ __('CMS Management') }}</x-slot>
+    <x-slot name="pageSlug">
+        {{ $type->value }}
+    </x-slot>
     <x-slot name="title">{{ $type->label() }}</x-slot>
     <x-slot name="breadcrumb">{{ $type->label() }}</x-slot>
 

@@ -14,12 +14,12 @@ class ListLayout extends Component
 {
     use WithPaginationData;
     public  $gameSlug ;
-    public $categorySlug; 
+    public $categorySlug;
     public $game;
     protected $datas;
     public $product;
 
-   
+
 
     protected ProductService $productService;
     protected OrderService $orderService;
@@ -36,12 +36,14 @@ class ListLayout extends Component
 
     }
    public function getDatas(){
-        
+
      return  $this->productService->getPaginatedData($this->perPage = 2 , [
 
             'gameSlug' => $this->gameSlug,
 
             'categorySlug' => $this->categorySlug,
+
+            'skipSelf' => true
 
 
         ]);
@@ -54,8 +56,8 @@ class ListLayout extends Component
     }
 
     public function submit(){
-      
-       
+
+
         $token = bin2hex(random_bytes(126));
         $order = $this->orderService->createData([
             'order_id' => generate_order_id_hybrid(),
@@ -66,7 +68,7 @@ class ListLayout extends Component
             'tax_amount' => 0,
             'grand_total' => ($this->product->price * $this->product->quantity),
         ]);
-        Session::driver('database')->put("checkout_{$token}", [
+        Session::driver('redis')->put("checkout_{$token}", [
             'order_id' => $order->id,
             'price_locked' => ($this->product->price * $this->product->quantity) ,
             'expires_at' => now()->addMinutes((int) env('ORDER_CHECKOUT_TIMEOUT_MINUTES', 5))->timestamp,
@@ -80,16 +82,16 @@ class ListLayout extends Component
     }
     public function render()
     {
-       
+
         $this->datas = $this->getDatas();
-        $this->pagination = $this->paginationData($this->datas);
-        
+        $this->paginationData($this->datas);
+
         return view('livewire.frontend.product.list-layout', [
             'gameSlug' => $this->gameSlug,
             'categorySlug' => $this->categorySlug,
             'game' => $this->game,
             'datas' => $this->datas,
-           
+
         ]);
     }
 

@@ -2,7 +2,7 @@
     class="sticky top-0 z-50   {{ request()->routeIs('home') ? 'bg-bg-secondary glass-card shadow-none!' : 'bg-bg-secondary glass-card' }}">
     <div class=" px-4 py-4 flex items-center justify-between relative" x-cloak>
         <div class="flex flex-row-reverse items-center justify-center">
-            <div class="hidden xxs:flex ml-4 lg:ml-0 scale-75 xl:scale-100">
+            <div class="hidden xxs:flex  lg:ml-0 scale-75 xl:scale-100">
                 <a href="{{ route('home') }}" wire:navigate>
                     <img src="{{ asset('assets/images/header_logo.png') }}" alt="{{ __('Logo') }}"></a>
             </div>
@@ -42,17 +42,12 @@
                         @click="$dispatch('user-message-notification-show')">
                         <div class="relative inline-flex">
                             <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-text-white" />
-
-                             <span
-                                    class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 text-[10px] text-white">
-                                    {{ __('0') }}
-                                </span>
-                            {{-- @if ($unreadNotificationCount > 0)
+                            @if ($unreadMessageCount > 0)
                                 <span
                                     class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 text-[10px] text-white">
-                                    {{ $unreadNotificationCount }}
+                                    {{ $unreadMessageCount }}
                                 </span>
-                            @endif --}}
+                            @endif
                         </div>
                     </button>
 

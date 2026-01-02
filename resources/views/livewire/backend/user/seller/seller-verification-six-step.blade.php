@@ -29,44 +29,60 @@
 
 
                 @if ($accountType == 0)
-                    <h2 class="text-base lg:text-2xl leading-2 font-semibold  mb-4 text-left">
-                        {{ __('Take a selfie with your ID') }}</h2>
+                    <div>
+                        <h2 class="text-base lg:text-2xl leading-2 font-semibold  mb-4 text-left">
+                            {{ __('Take a selfie with your ID') }}</h2>
 
-                    <div class="flex justify-center mb-6">
-                        <img src="{{ asset('assets/images/Frame-2147226340.png') }}" alt="Selfie with ID illustration"
-                            class="mx-auto"
-                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                    </div>
-
-                    <ul class="space-y-3 text-gray-700 mb-6 max-w-md mx-auto">
-                        <li class="flex items-start">
-                            <span class="mr-2">•</span>
-                            <span
-                                class="text=text-white font-normal text-xl text-left">{{ __('Please upload a photo where you are holding your ID next to your face.') }}</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="mr-2">•</span>
-                            <span
-                                class="text=text-white font-normal text-xl text-left">{{ __('Both your face and ID document must be clearly visible.') }}</span>
-                        </li>
-                    </ul>
-
-                    <div class="flex items-center max-w-md mx-auto  rounded-lg overflow-hidden">
-                        <input type="file" wire:model="selfie_image" accept="image/*" class="hidden"
-                            id="selfie_image">
-
-                        <label for="selfie_image"
-                            class="shrink-0 px-6 py-2 bg-zinc-600 rounded-3xl text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
-                            {{ __('Choose file') }}
-                        </label>
-
-                        <div
-                            class="p-2 text-sm w-full text-primary-100 truncate  bg-bg-light-black shadow rounded-sm ml-2 text-left">
+                        <div class="flex justify-center mb-6">
                             @if ($selfie_image)
-                                {{ $selfie_image->getClientOriginalName() }}
+                                <div class="w-[100px] h-[100px] sm:w-[510px] sm:h-[382px]">
+                                    <img src="{{ $selfie_image->temporaryUrl() }}" alt="Selfie with ID illustration"
+                                        class="mx-auto w-full h-full object-cover"
+                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                                </div>
                             @else
-                                {{ __('No file selected') }}
+                                <img src="{{ asset('assets/images/Frame-2147226340.png') }}"
+                                    alt="Selfie with ID illustration" class="mx-auto"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                             @endif
+                        </div>
+
+                        {{-- @if ($selfie_image)
+                                <img src="{{ $selfie_image->temporaryUrl() }}" alt="Preview"
+                                    class="w-32 h-32 object-cover">
+                            @endif --}}
+
+
+
+                        <ul class="space-y-3 text-gray-700 mb-6 max-w-md mx-auto">
+                            <li class="flex items-start">
+                                <span class="mr-2">•</span>
+                                <span
+                                    class="text=text-white font-normal text-xl text-left">{{ __('Please upload a photo where you are holding your ID next to your face.') }}</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="mr-2">•</span>
+                                <span
+                                    class="text=text-white font-normal text-xl text-left">{{ __('Both your face and ID document must be clearly visible.') }}</span>
+                            </li>
+                        </ul>
+
+                        <div class="flex items-center max-w-md mx-auto  rounded-lg overflow-hidden">
+                            <input type="file" wire:model.live="selfie_image" accept="image/*" class="hidden"
+                                id="selfie_image">
+                            <label for="selfie_image"
+                                class="shrink-0 px-6 py-2 bg-zinc-600 rounded-3xl text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
+                                {{ __('Choose file') }}
+                            </label>
+
+                            <div
+                                class="p-2 text-sm w-full text-primary-100 truncate  bg-bg-light-black shadow rounded-sm ml-2 text-left">
+                                @if ($selfie_image)
+                                    {{ $selfie_image->getClientOriginalName() }}
+                                @else
+                                    {{ __('No file selected') }}
+                                @endif
+                            </div>
                         </div>
                     </div>
 
@@ -78,26 +94,23 @@
                         <p class="text-pink-500 text-sm text-center mt-2">{{ $message }}</p>
                     @enderror
                 @else
-                    <h2 class="text-base lg:text-2xl font-bold text-left mb-6">{{ __('Upload company documents') }}</h2>
+                    {{-- <h2 class="text-base lg:text-2xl font-bold text-left mb-6">{{ __('Upload company documents') }}
+                    </h2>
 
                     <div class="max-w-2xl mx-auto mb-8">
                         <p class="text-gray-600 mb-6 text-center">
-                            {{ __('Please upload documents to prove that the individual who submitted the ID is an owner of
-                            your company.') }}
+                            {{ __('Please upload documents to prove that the individual who submitted the ID is an owner of your company.') }}
                         </p>
 
                         <div class="bg-gray-50 rounded-lg p-6 mb-6">
                             <ol class="space-y-3 text-sm text-gray-700">
-                                <li>{{ __('1. Proof of ownership (an extract from a corporate registry or shareholder
-                                    register)
-                                    (required)') }}</li>
+                                <li>{{ __('1. Proof of ownership (an extract from a corporate registry or shareholder register) (required)') }}
+                                </li>
                                 <li>{{ __('2. Articles of Association (required)') }}</li>
-                                <li>{{ __('3. Proof of registered company address (utility bill or bank statement, not
-                                    older
-                                    than 3 months) (required)') }}</li>
-                                <li>{{ __('4. Misc docs (corporate structure, incorporation document, misc. company
-                                    documents,
-                                    etc) (optional)') }}</li>
+                                <li>{{ __('3. Proof of registered company address (utility bill or bank statement, not older than 3 months) (required)') }}
+                                </li>
+                                <li>{{ __('4. Misc docs (corporate structure, incorporation document, misc. company documents, etc) (optional)') }}
+                                </li>
                             </ol>
                         </div>
 
@@ -138,30 +151,83 @@
                         <p class="text-xs text-text-white text-center">
                             {{ __('Must be JPEG, PNG, HEIC, PDF, DOCX and cannot exceed 10MB.') }}
                         </p>
+                    </div> --}}
+                    <div>
+                        <h2 class="text-base lg:text-2xl leading-2 font-semibold  mb-4 text-left">
+                            {{ __('Take a selfie with your ID') }}</h2>
+
+                        <div class="flex justify-center mb-6">
+                            @if ($selfie_image)
+                                <div class="w-[100px] h-[100px] sm:w-[510px] sm:h-[382px]">
+                                    <img src="{{ $selfie_image->temporaryUrl() }}" alt="Selfie with ID illustration"
+                                        class="mx-auto w-full h-full object-cover"
+                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                                </div>
+                            @else
+                                <img src="{{ asset('assets/images/Frame-2147226340.png') }}"
+                                    alt="Selfie with ID illustration" class="mx-auto"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                            @endif
+                        </div>
+
+                        {{-- @if ($selfie_image)
+                                <img src="{{ $selfie_image->temporaryUrl() }}" alt="Preview"
+                                    class="w-32 h-32 object-cover">
+                            @endif --}}
+
+
+
+                        <ul class="space-y-3 text-gray-700 mb-6 max-w-md mx-auto">
+                            <li class="flex items-start">
+                                <span class="mr-2">•</span>
+                                <span
+                                    class="text=text-white font-normal text-xl text-left">{{ __('Please upload a photo where you are holding your ID next to your face.') }}</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="mr-2">•</span>
+                                <span
+                                    class="text=text-white font-normal text-xl text-left">{{ __('Both your face and ID document must be clearly visible.') }}</span>
+                            </li>
+                        </ul>
+
+                        <div class="flex items-center max-w-md mx-auto  rounded-lg overflow-hidden">
+                            <input type="file" wire:model.live="selfie_image" accept="image/*" class="hidden"
+                                id="selfie_image">
+                            <label for="selfie_image"
+                                class="shrink-0 px-6 py-2 bg-zinc-600 rounded-3xl text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
+                                {{ __('Choose file') }}
+                            </label>
+
+                            <div
+                                class="p-2 text-sm w-full text-primary-100 truncate  bg-bg-light-black shadow rounded-sm ml-2 text-left">
+                                @if ($selfie_image)
+                                    {{ $selfie_image->getClientOriginalName() }}
+                                @else
+                                    {{ __('No file selected') }}
+                                @endif
+                            </div>
+                        </div>
                     </div>
+
+                    <p class="text-xs text-center text-gray-500 mt-3">
+                        {{ __('Must be JPEG, PNG or HEIC and cannot exceed 10MB.') }}
+                    </p>
+
+                    @error('selfieWithId')
+                        <p class="text-pink-500 text-sm text-center mt-2">{{ $message }}</p>
+                    @enderror
                 @endif
             </div>
-
-            <div class="flex justify-center space-x-4 pt-10">
-                {{-- <a wire:click.prevent="previousStep" wire:navigate
-                        class="px-8 py-2 cursor-pointer hover:text-gray-700 rounded-lg hover:bg-gray-50">
-                        BACK
-                    </a>
-                    <button wire:click="submit" class="px-8 py-2 bg-zinc-500 text-white rounded-lg hover:bg-zinc-700"
-                        wire:loading.attr="disabled">
-                        <span wire:loading.remove wire:target="submit" class="text-white">SUBMIT</span>
-                        <span wire:loading wire:target="submit">Submitting...</span>
-                    </button> --}}
-                <div class=" flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
-                    <x-ui.button type="submit" wire:click.prevent="previousStep" wire:navigate
-                        class="w-auto py-2! text-text-white text-base! font-semibold!">
+            <div class="flex gap-4 justify-center mt-5! sm:mt-10!">
+                <div class="flex justify-center">
+                    <x-ui.button type="submit" wire:click.prevent="previousStep" wire:navigate variant="secondary"
+                        class="w-auto py-2!">
                         {{ __('Back') }}
                     </x-ui.button>
                 </div>
-                <div class="  flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
-                    <x-ui.button type="submit" wire:click="submit" class="w-auto py-2!  text-base! font-semibold!">
-                        {{ __('Submit') }}
-                    </x-ui.button>
+                <div class="flex justify-center">
+                    <x-ui.button type="submit" wire:click="submit"
+                        class="w-auto py-2!">{{ __('Submit') }}</x-ui.button>
                 </div>
             </div>
 

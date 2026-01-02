@@ -1,8 +1,8 @@
 <div class="bg-bg-primary">
-    <div class="container pb-48">
+    <div class="container pb-10">
         <livewire:frontend.partials.breadcrumb :gameSlug="'currency'" :categorySlug="'sell currency'" />
         @if ($currentStep === 1)
-            <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
+            <div class="bg-bg-secondary rounded-2xl p-4 sm:p-10 md:p-20">
                 <h2 class="text-text-white text-2xl xl:text-40px font-semibold text-center">{{ __('Bulk Upload') }}</h2>
 
                 <div class="mt-10">
@@ -54,7 +54,7 @@
 
         {{-- Step 2: Choose Game --}}
         @if ($currentStep === 2)
-            <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
+            <div class="bg-bg-secondary rounded-2xl p-4 sm:p-10 md:p-20">
                 <h2 class="text-2xl sm:text-40px font-semibold text-center text-text-white mb-3">
                     {{ __('Sell Game Currency') }}
                 </h2>
@@ -65,21 +65,34 @@
                         {{ __('Choose Game') }}
                     </h2>
 
-                    <x-ui.custom-select :rounded="'rounded'" :label="__('Select a game')" :wireModel="'gameId'" class="border-0!" />
+                    {{-- <x-ui.custom-select :rounded="'rounded'" :label="__('Select a game')" :wireModel="'gameId'" class="border-0!" /> --}}
+
+
+
+                    <div class="mx-auto w-full sm:w-1/2">
+                        <x-ui.custom-select :wireModel="'gameId'" :dropDownClass="'border-0!'" class="rounded-md! border-0!">
+                            <x-ui.custom-option :value="null" :label="__('Select a game')" />
+                            {{-- @foreach ($games as $item)
+                                <x-ui.custom-option :value="$item->id" :label="$item->name" />
+                            @endforeach --}}
+                        </x-ui.custom-select>
+                    </div>
 
                     @error('gameId')
                         <p class="text-pink-500 text-center mt-2">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <div class="flex gap-4 justify-center mt-5! sm:mt-10!">
-                    <div class="flex md:w-auto!">
-                        <x-ui.button wire:click="back"
-                            class="w-fit! py-2! px-4! text-text-white">{{ __('Back') }}</x-ui.button>
+
+
+                <div class="flex justify-center mt-5! sm:mt-10!">
+                    <div class="flex justify-center px-2 sm:px-6">
+                        <x-ui.button wire:click="back" variant="secondary" class="w-auto py-2!">
+                            {{ __('Back') }}
+                        </x-ui.button>
                     </div>
-                    <div class="flex md:w-auto!">
-                        <x-ui.button wire:click="selectGame"
-                            class="w-fit! py-2! px-4!">{{ __('Next') }}</x-ui.button>
+                    <div class="flex justify-center px-2 sm:px-6">
+                        <x-ui.button wire:click="selectGame" class="w-auto py-2!">{{ __('Next') }}</x-ui.button>
                     </div>
                 </div>
             </div>
@@ -87,7 +100,7 @@
 
         {{-- Step 3: Item Details (Region & Server) --}}
         @if ($currentStep === 3)
-            <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
+            <div class="bg-bg-secondary rounded-2xlp-4 sm:p-10 md:p-20">
                 <h2 class="text-2xl sm:text-40px font-semibold text-center text-text-white mb-3">
                     {{ __('Sell Game Currency') }}
                 </h2>
@@ -101,8 +114,16 @@
                     <div class="w-full">
                         <x-ui.label :for="'region'" :value="'Region:'"
                             class="mb-5! text-xl! xxs:text-2xl! font-semibold!"></x-ui.label>
-                        <x-ui.custom-select :rounded="'rounded'" :label="__('Select a region')" :wireModel="'regionId'"
-                            class="border-0! w-full!" :mdWidth="'md:w-full'" :mdLeft="'md:left-0'" :border="'border-transparent'" />
+                        {{-- <x-ui.custom-select :rounded="'rounded'" :label="__('Select a region')" :wireModel="'regionId'"
+                            class="border-0! w-full!" :mdWidth="'md:w-full'" :mdLeft="'md:left-0'" :border="'border-transparent'" /> --}}
+                        <div class="">
+                            <x-ui.custom-select :wireModel="'regionId'" :dropDownClass="'border-0!'" class="rounded-md! border-0!">
+                                <x-ui.custom-option :value="null" :label="__('Select a region')" />
+                                {{-- @foreach ($games as $item)
+                                <x-ui.custom-option :value="$item->id" :label="$item->name" />
+                            @endforeach --}}
+                            </x-ui.custom-select>
+                        </div>
 
                         @error('regionId')
                             <p class="text-pink-500 text-center mt-2">{{ $message }}</p>
@@ -111,9 +132,19 @@
 
                     <div class="w-full mt-5">
                         <x-ui.label :for="'server'" :value="'Server:'"
-                            class="mb-5! text-xl! xxs:text-2xl! font-semibold!"></x-ui.label>
-                        <x-ui.custom-select :rounded="'rounded'" :label="__('Select Server')" :wireModel="'serverId'"
-                            class="border-0! w-full!" :mdWidth="'md:w-full'" :mdLeft="'md:left-0'" :border="'border-transparent'" />
+                            class="mb-5! text-xl! xxs:text-2xl! font-semibold! w-full!"></x-ui.label>
+                        {{-- <x-ui.custom-select :rounded="'rounded'" :label="__('Select Server')" :wireModel="'serverId'"
+                            class="border-0! w-full!" :mdWidth="'md:w-full'" :mdLeft="'md:left-0'" :border="'border-transparent'" /> --}}
+
+
+                        <div class="">
+                            <x-ui.custom-select :wireModel="'serverId'" :dropDownClass="'border-0!'" class="rounded-md! border-0!">
+                                <x-ui.custom-option :value="null" :label="__('Select Server')" />
+                                {{-- @foreach ($games as $item)
+                                <x-ui.custom-option :value="$item->id" :label="$item->name" />
+                            @endforeach --}}
+                            </x-ui.custom-select>
+                        </div>
 
                         @error('serverId')
                             <p class="text-pink-500 text-center mt-2">{{ $message }}</p>
@@ -127,15 +158,15 @@
                         </p>
                     </div>
                 </div>
-
-                <div class="flex gap-4 justify-center mt-5! sm:mt-10!">
-                    <div class="flex md:w-auto!">
-                        <x-ui.button wire:click="back"
-                            class="w-fit! py-2! px-4! text-text-white">{{ __('Back') }}</x-ui.button>
+                <div class="flex justify-center mt-5! sm:mt-10!">
+                    <div class="flex justify-center px-2 sm:px-6">
+                        <x-ui.button wire:click="back" variant="secondary" class="w-auto py-2!">
+                            {{ __('Back') }}
+                        </x-ui.button>
                     </div>
-                    <div class="flex md:w-auto!">
+                    <div class="flex justify-center px-2 sm:px-6">
                         <x-ui.button wire:click="selectServerAndRegion"
-                            class="w-fit! py-2! px-4!">{{ __('Next') }}</x-ui.button>
+                            class="w-auto py-2!">{{ __('Next') }}</x-ui.button>
                     </div>
                 </div>
             </div>
@@ -143,7 +174,7 @@
 
         {{-- Step 4: CSV Upload --}}
         @if ($currentStep === 4)
-            <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
+            <div class="bg-bg-secondary rounded-2xl p-4 sm:p-10 md:p-20">
                 <h2 class="text-2xl sm:text-40px font-semibold text-center text-text-white mb-3">
                     {{ __('Bulk Upload') }}</h2>
 
@@ -163,11 +194,13 @@
                     </div>
                     <div class="flex items-center gap-2">
                         <x-phosphor name="paperclip" variant="regular" class="w-5 h-5 fill-pink-500" />
-                        <p class="text-pink-500 text-xs xxs:text-base font-normal">{{ __('WOW Mists of Pandaria Example') }}</p>
+                        <p class="text-pink-500 text-xs xxs:text-base font-normal">
+                            {{ __('WOW Mists of Pandaria Example') }}</p>
                     </div>
                     <div class="flex items-center gap-2">
                         <x-phosphor name="paperclip" variant="regular" class="w-5 h-5 fill-pink-500" />
-                        <p class="text-pink-500 text-xs xxs:text-base font-normal">{{ __('WOW Classic Era Example') }}</p>
+                        <p class="text-pink-500 text-xs xxs:text-base font-normal">{{ __('WOW Classic Era Example') }}
+                        </p>
                     </div>
                     <div class="flex items-center gap-2">
                         <x-phosphor name="paperclip" variant="regular" class="w-5 h-5 fill-pink-500" />
@@ -194,7 +227,8 @@
                         class="bg-bg-primary text-text-white font-medium py-2 px-4 rounded-lg cursor-pointer transition-colors inline-block hover:bg-opacity-90 mt-2 xxs:mt-0">
                         {{ __('Choose File') }}
                     </label>
-                    <input id="file-input-alt" type="file" wire:model="file" accept=".csv" class="hidden w-full">
+                    <input id="file-input-alt" type="file" wire:model="file" accept=".csv"
+                        class="hidden w-full">
 
                     @if ($file)
                         <span class="text-text-white py-2">{{ $file->getClientOriginalName() }}</span>
@@ -206,15 +240,9 @@
                 @error('file')
                     <p class="text-pink-500 mt-2">{{ $message }}</p>
                 @enderror
-
-                <div class="flex gap-4 mt-9">
-                    <div class="flex md:w-auto!">
-                        <x-ui.button wire:click="back"
-                            class="w-fit! py-2! px-4! text-text-white">{{ __('Back') }}</x-ui.button>
-                    </div>
-                    <div class="flex md:w-auto!">
-                        <x-ui.button wire:click="uploadFile"
-                            class="w-fit! py-2! px-4!">{{ __('Upload') }}</x-ui.button>
+                <div class="flex justify-start mt-5! sm:mt-10!">
+                    <div class="flex justify-center px-2">
+                        <x-ui.button wire:click="uploadFile" class="w-auto py-2!">{{ __('Upload') }}</x-ui.button>
                     </div>
                 </div>
             </div>

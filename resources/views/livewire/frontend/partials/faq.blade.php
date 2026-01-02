@@ -1,9 +1,20 @@
-<section class="bg-transparent mt-30 ">
-    <div class="container bg-bg-primary p-6 lg:p-14 xl:p-20 flex justify-center wrap flex-col rounded-2xl" x-data="{ active: null, tab: 'buyers' }">
+@php 
 
-        <h2 class="text-text-white text-[40px] text-center mb-10 font-semibold">{{ 'Frequently Asked Questions' }}
+$routeName = Route::currentRouteName();
+
+
+
+@endphp
+
+<section class=" {{ $routeName == 'faq' ? 'bg-bg-primary' : 'bg-transparent'}} pt-20">
+    <div class="container {{ $routeName == 'faq' ? 'bg-bg-secondary' : 'bg-bg-primary'}} p-6 lg:p-14 xl:p-20 flex justify-center wrap flex-col rounded-2xl" x-data="{ active: null, tab: 'buyers' }">
+
+        <h2 class="text-text-white text-2xl sm:text-40px text-center mb-3 font-semibold">{{ 'Frequently Asked Questions' }}
         </h2>
 
+        @if($routeName == 'faq')
+        <p class="mb-10 text-2xl text-text-secondery text-center">Everything you need to know about buying and selling on Swapy.gg.</p>
+        @endif
         <!-- Tabs -->
         <div class="max-w-xs mx-auto flex justify-between mb-10 bg-bg-secondary rounded-full px-3 py-3">
             <button @click="tab = 'buyers'; active = null" 
@@ -24,7 +35,7 @@
         <template x-if="tab === 'buyers'">
             <div class="space-y-4">
                 @foreach ($faqs_buyer as $index => $faq)
-                    <div class="bg-bg-secondary rounded-xl p-4 cursor-pointer"
+                    <div class=" {{ $routeName == 'faq' ? 'bg-bg-info' : 'bg-bg-secondary'}}  rounded-xl p-4 cursor-pointer"
                         @click="active === {{ $index }} ? active = null : active = {{ $index }}">
                         <div class="flex justify-between items-center">
                             <h3 class="text-text-white text-xl font-semibold">{{ $faq->question }}</h3>
@@ -46,7 +57,7 @@
         <template x-if="tab === 'sellers'">
             <div class="space-y-4">
                 @foreach ($faqs_seller as $index => $faq)
-                    <div class="bg-bg-secondary rounded-xl p-4 cursor-pointer"
+                    <div class=" {{ $routeName == 'faq' ? 'bg-bg-info' : 'bg-bg-secondary'}}  rounded-xl p-4 cursor-pointer"
                         @click="active === {{ $index }} ? active = null : active = {{ $index }}">
                         <div class="flex justify-between items-center">
                             <h3 class="text-text-white text-xl font-semibold">{{ $faq->question }}</h3>
@@ -64,4 +75,5 @@
             </div>
         </template>
     </div>
+    <div class=" {{ $routeName == 'faq' ? 'pt-30' : 'pt-0'}}  "></div>
 </section>

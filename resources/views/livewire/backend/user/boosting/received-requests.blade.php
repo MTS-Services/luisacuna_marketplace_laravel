@@ -5,25 +5,29 @@
             <!-- Left Side: Filters -->
             <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
 
-                <!-- Game Filter -->
-                <div class="relative w-full sm:w-40 lg:w-44">
-                    <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                        <option value="">{{ __('All Game') }}</option>
-                        @foreach ($games as $game)
-                            <option value="{{ $game->id }}">{{ $game->name }}</option>
-                        @endforeach
-                    </x-ui.select>
-                </div>
+               <div class="relative w-full sm:w-60 lg:w-60">
 
-                <!-- Status Filter -->
-                <div class="relative w-full sm:w-40 lg:w-60">
-                    <x-ui.select class="bg-surface-card border border-border-primary py-1.5! rounded-lg">
-                        <option value="">{{ __('Waiting for your offer') }}</option>
-                        <option value="active">{{ __('Offer submitted') }}</option>
-                        <option value="paused">{{ __('Won offer') }}</option>
-                        <option value="closed">{{ __('Lost offer') }}</option>
-                    </x-ui.select>
-                </div>
+                        <x-ui.custom-select class="rounded!" label="All Game">
+
+                             @foreach ($games as $game)
+
+                              <x-ui.custom-option value="{{ $game->id }}" label="{{ $game->name }}" />
+
+                            @endforeach
+                        </x-ui.custom-select>
+                    </div>
+                    <!-- Status Filter -->
+                    <div class="relative w-full sm:w-60 lg:w-60">
+                       <x-ui.custom-select class="rounded!" label="Waiting for your offer">
+
+                              <x-ui.custom-option value="in_progress" label="{{ __('In Progress') }}" />
+                              <x-ui.custom-option value="completed" label="{{ __('Completed') }}" />
+                              <x-ui.custom-option value="disputed" label="{{ __('Disputed') }}" />
+                              <x-ui.custom-option value="canceled" label="{{ __('Canceled') }}" />
+
+
+                        </x-ui.custom-select>
+                    </div>
             </div>
             <!-- New Offer Button -->
             <a href="{{ route('user.subscriptions') }}">

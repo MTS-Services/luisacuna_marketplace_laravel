@@ -22,7 +22,7 @@
                     <p class="font-semibold text-xl sm:text-2xl ">{{ __('Seller ID verification') }}</p>
                 </div>
                 <div class="text-sm text-text-primary font-normal pt-2">
-                    Step <span>2</span>/<span>6</span>
+                    {{ __('Step') }} <span>2</span>/<span>6</span>
                 </div>
             </div>
 
@@ -33,13 +33,11 @@
 
                     @foreach ($categories as $value => $label)
                         <div class="flex items-center gap-3 mb-3">
-                            <label class="relative inline-flex items-center">
+                            <label class="relative inline-flex items-center cursor-pointer text-base!">
                                 <input type="checkbox" wire:model="selectedCategories" value="{{ $value }}"
-                                    class="peer sr-only">
-                                <div
-                                    class="w-4 h-4 rounded-full border border-pink-500 peer-checked:bg-pink-500 peer-checked:border-pink-500 transition-colors">
-                                </div>
-                                <span class="ml-2 cursor-pointer">{{ $label }}</span>
+                                    class="radio bg-transparent checked:before:bg-pink-500! checked:border-pink-500 border-pink-500 scale-75!"
+                                    checked>
+                                <span class="ml-2">{{ $label }}</span>
                             </label>
                         </div>
                     @endforeach
@@ -49,33 +47,18 @@
                 </div>
             </div>
 
-
-            <div class="flex justify-center space-x-4 pt-10">
-                {{-- <a wire:click.prevent="previousStep" wire:navigate class="px-8 py-2 cursor-pointer hover:bg-zinc-50 rounded-lg">
-                    BACK
-                </a>
-                <button wire:click="nextStep"  class="px-8 py-2 text-white rounded-lg transition" 
-                    :class="{
-                        'bg-zinc-600 hover:bg-zinc-700': $wire.selectedCategories.length > 0,
-                        'bg-zinc-200 text-zinc-950 cursor-not-allowed': $wire.selectedCategories.length === 0
-                    }">
-                    NEXT
-                </button> --}}
-                <!-- Submit button -->
-                <div class=" flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
+            <div class="flex gap-4 justify-center mt-5! sm:mt-10!">
+                <div class="flex justify-center">
                     <x-ui.button type="submit" wire:click.prevent="previousStep" wire:navigate
-                        class="w-auto py-2! text-white text-base! font-semibold!">
+                        variant="secondary" class="w-auto py-2!">
                         {{ __('Back') }}
                     </x-ui.button>
                 </div>
-                <div class="  flex justify-center px-2 sm:px-6 mt-5 sm:mt-11">
-                    <x-ui.button type="submit" wire:click="nextStep" class="w-auto py-2!  text-base! font-semibold!">
-                        {{ __('Next') }}
-                    </x-ui.button>
+                <div class="flex justify-center">
+                    <x-ui.button type="submit" wire:click="nextStep"
+                        class="w-auto py-2!">{{ __('Next') }}</x-ui.button>
                 </div>
             </div>
-
         </div>
-
     </div>
 </div>

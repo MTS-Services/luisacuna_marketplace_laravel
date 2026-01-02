@@ -5,7 +5,6 @@ namespace App\Enums;
 enum PaymentStatus: string
 {
     case PENDING = 'pending';
-    case PROCESSING = 'processing';
     case COMPLETED = 'completed';
     case FAILED = 'failed';
     case REFUNDED = 'refunded';
@@ -16,10 +15,10 @@ enum PaymentStatus: string
     {
         return match ($this) {
             self::PENDING => 'Pending',
-            self::PROCESSING => 'Processing',
             self::COMPLETED => 'Completed',
             self::FAILED => 'Failed',
             self::REFUNDED => 'Refunded',
+            self::PARTIALLY_REFUNDED => 'Partially Refunded',
             self::CANCELLED => 'Cancelled',
         };
     }
@@ -28,10 +27,10 @@ enum PaymentStatus: string
     {
         return match ($this) {
             self::PENDING => 'badge-warning',
-            self::PROCESSING => 'badge-info',
             self::COMPLETED => 'badge-success',
             self::FAILED => 'badge-error',
             self::REFUNDED => 'badge-secondary',
+            self::PARTIALLY_REFUNDED => 'badge-info',
             self::CANCELLED => 'badge-neutral',
         };
     }
@@ -42,17 +41,5 @@ enum PaymentStatus: string
             fn($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
-    }
-
-
-    case PAYMENT_GATEWAY_STRIPE = 'stripe';
-    case PAYMENT_GATEWAY_COINBASE = 'coinbase';
-
-    public function gateway(): string
-    {
-        return match ($this) {
-            self::PAYMENT_GATEWAY_STRIPE => 'Stripe',
-            self::PAYMENT_GATEWAY_COINBASE => 'Coinbase',
-        };
     }
 }

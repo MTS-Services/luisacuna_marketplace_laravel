@@ -16,10 +16,14 @@ class PageInnerHeader extends Component
     {
         $this->gameSlug = $gameSlug;
         $this->categorySlug = $categorySlug;
-        $this->game = $game;
+        $this->game = $game->load('categories');
+     
     }
     public function render()
     {
-        return view('livewire.frontend.partials.page-inner-header');
+        return view('livewire.frontend.partials.page-inner-header',[
+            'categories' => $this->game->categories ?? [],
+        ]);
+
     }
 }
