@@ -12,20 +12,22 @@
                 </h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-2.5 pb-6">
                     @forelse($this->content['popular'] ?? [] as $item)
-                        <a href="{{ route('game.index', ['gameSlug' => $item['slug'], 'categorySlug' => $gameCategorySlug]) }}"
+                        <a href="{{ route('game.index', ['gameSlug' => $item->slug, 'categorySlug' => $gameCategorySlug]) }}"
                             wire:navigate>
                             <div
                                 class="flex items-center gap-2.5 p-2 dark:hover:bg-purple-500/10 hover:bg-purple-100 rounded-lg transition cursor-pointer">
                                 <div class="w-6 h-6 flex-shrink-0 ">
-                                    <img src="{{ asset($item['logo']) }}" alt="{{ $item['name'] }}"
+                                    <img src="{{ asset($item->logo) }}" alt="{{ $item->name }}"
                                         class="w-full h-full object-contain rounded-lg">
                                 </div>
-                                <p class="text-base font-normal dark:text-white text-gray-900">{{ $item['name'] }}</p>
+                                {{-- <p class="text-base font-normal dark:text-white text-gray-900">{{ $item['name'] }}</p> --}}
+                                <p class="text-base font-normal dark:text-white text-gray-900">{{ $item->gameTranslations->first()?->name ?? $item->name }}</p>
                             </div>
+
                         </a>
                     @empty
                         <div class="col-span-2 text-center py-8">
-                            <p class="dark:text-gray-400 text-gray-600">No popular games found</p>
+                            <p class="dark:text-gray-400 text-gray-600">{{ __('No popular games found') }}</p>
                         </div>
                     @endforelse
                 </div>
@@ -60,13 +62,13 @@
                 {{-- All Games List with Scrolling --}}
                 <div class="flex-1 overflow-hidden flex flex-col">
                     <p class="text-xs font-semibold dark:text-gray-400 text-gray-600 px-2.5 mb-4 flex-shrink-0">
-                        All Games
+                        {{ __('All Games') }}
                     </p>
 
                     <div class="overflow-y-auto pr-2 space-y-2 flex-1 custom-scrollbar">
                         @forelse($this->content['all'] ?? [] as $gameItem)
                             <a href="{{ route('game.index', [
-                                'gameSlug' => $gameItem['slug'],
+                                'gameSlug' => $gameItem->slug,
                                 'categorySlug' => $gameCategorySlug,
                             ]) }}"
                                 wire:navigate>
@@ -75,22 +77,22 @@
                                     class="flex items-center gap-2.5 p-2.5 dark:hover:bg-purple-500/10 hover:bg-purple-100 rounded-lg transition cursor-pointer">
 
                                     <div class="w-6 h-6 flex-shrink-0">
-                                        @if (is_array($gameItem) && isset($gameItem['logo']))
-                                            <img src="{{ storage_url($gameItem['logo']) }}"
-                                                alt="{{ is_array($gameItem) ? $gameItem['name'] : $gameItem }}"
+                                        @if (isset($gameItem->logo))
+                                            <img src="{{ storage_url($gameItem->logo) }}"
+                                                alt="{{ $gameItem?->name ?? $gameItem }}"
                                                 class="w-full h-full object-contain rounded-lg">
                                         @else
                                             <div
                                                 class="w-full h-full rounded bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
                                                 <span class="text-white text-xs font-bold">
-                                                    {{ substr($gameItem['name'], 0, 1) }}
+                                                    {{ substr($gameItem->name, 0, 1) }}
                                                 </span>
                                             </div>
                                         @endif
                                     </div>
 
                                     <p class="text-sm font-normal dark:text-white text-gray-900">
-                                        {{ $gameItem['name'] }}
+                                        {{ $gameItem->gameTranslations->first()?->name ?? $gameItem->name }}
                                     </p>
                                 </div>
                             </a>

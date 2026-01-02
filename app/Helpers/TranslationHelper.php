@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Language;
+
 if (!function_exists('translate_text')) {
     /**
      * Quick helper to translate text
@@ -19,5 +21,20 @@ if (!function_exists('get_deepl_languages')) {
     {
         $translator = app(\App\Services\DeepLTranslationService::class);
         return $translator->getTargetLanguages();
+    }
+}
+
+
+if (!function_exists('get_language_id')) {
+    /**
+     * Get available DeepL languages
+     */
+    function get_language_id()
+    {
+        $language = Language::where('locale', app()->getLocale())->first();
+        if(!$language) {
+            $language = Language::where('locale', 'en')->first();
+        }
+        return $language->id;
     }
 }

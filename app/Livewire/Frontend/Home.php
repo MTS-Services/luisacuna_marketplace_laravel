@@ -105,14 +105,15 @@ class Home extends Component
         $games = $this->gameService->getAllDatas();
         $heros = $this->heroService->getAllDatas();
 
+        
+
         $tag = $this->tagService->findData('popular', 'slug');
 
         //Popular Games
-        $games = $tag->games()->latest()->take(6)->get();
-        
-        $games->load('categories');
+        $popular_games = $tag->games()->with(['categories','gameTranslations' => function ($query) {
+                $query->where('language_id', get_language_id());
+            }])->latest()->take(6)->get();
 
-        //Boosting Games
 
         $new_bostings = $this->gameService->paginateDatas(12, [
             'categorySlug' => 'boosting',
@@ -122,6 +123,7 @@ class Home extends Component
         
         return view('livewire.frontend.home', [
             'games' => $games,
+            'popular_games' => $popular_games,
             'heros' => $heros,
             'datas' => $this->datas,
             'new_bostings' => $new_bostings
