@@ -1,6 +1,6 @@
 <div class="max-w-7xl mx-auto p-6 space-y-8">
     @push('styles')
-        <link rel="stylesheet" href="{{ asset('assets/css/ckEditor.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/tinymce.css') }}">
     @endpush
     @if (session()->has('message'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
