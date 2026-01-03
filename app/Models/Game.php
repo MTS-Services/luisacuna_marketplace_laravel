@@ -165,6 +165,12 @@ class Game extends AuditBaseModel implements Auditable
             }
         }
 
+        $query->when($filters['tag'] ?? null, function ($query, $tag) {
+            $query->whereHas('tags', function ($q) use ($tag) {
+                $q->where('tags.slug', $tag);
+            }) ;    
+        });
+
         $query->when($filters['status'] ?? null, function ($query, $status) {
             $query->where('status', $status);
         })
