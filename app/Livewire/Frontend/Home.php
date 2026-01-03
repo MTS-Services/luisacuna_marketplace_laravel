@@ -75,14 +75,6 @@ class Home extends Component
 
         $this->platforms = $this->platformService->getAllDatas() ?? [];
     }
-    public function saveContent()
-    {
-        dd($this->content);
-    }
-    public function saveContent2()
-    {
-        dd($this->content);
-    }
 
     // public $faqType = "buyer";
     public function getFaqs()
@@ -102,10 +94,8 @@ class Home extends Component
     public function render()
     {
 
-        $games = $this->gameService->getAllDatas();
+       
         $heros = $this->heroService->getAllDatas();
-
-        
 
         $tag = $this->tagService->findData('popular', 'slug');
 
@@ -124,7 +114,6 @@ class Home extends Component
 
         
         return view('livewire.frontend.home', [
-            'games' => $games,
             'popular_games' => $popular_games,
             'heros' => $heros,
             'datas' => $this->datas,
