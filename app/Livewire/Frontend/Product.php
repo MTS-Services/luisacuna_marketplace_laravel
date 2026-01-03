@@ -21,7 +21,7 @@ class Product extends Component
     protected GameService $game_service;
     protected $allGamesCache = null;
     protected  CategoryService $categoryService;
-    public function boot(GameService $game_service , CategoryService $categoryService)
+    public function boot(GameService $game_service, CategoryService $categoryService)
     {
         $this->game_service = $game_service;
         $this->categoryService = $categoryService;
@@ -43,7 +43,7 @@ class Product extends Component
 
         $this->paginationData($games);
 
-        $popular_games = $this->game_service->paginateDatas(10, [
+        $popular_games = $this->game_service->latestData(10, [
             'category' => $this->categorySlug,
             'tag' => 'popular',
             'relations' => ['tags', 'categories'],
@@ -53,15 +53,15 @@ class Product extends Component
         ]);
 
 
-     
-        
-        
-        if($this->categorySlug == 'boosting' || $this->categorySlug == 'coaching' || $this->categorySlug == 'top-up') {
-            $new_boosting = $this->game_service->paginateDatas(10, [
-            'category' => $this->categorySlug,
-            'relations' => ['tags', 'categories', ],
-            'withProductCount' => true
-          ]);
+
+
+
+        if ($this->categorySlug == 'boosting' || $this->categorySlug == 'coaching' || $this->categorySlug == 'top-up') {
+            $new_boosting = $this->game_service->latestData(10, [
+                'category' => $this->categorySlug,
+                'relations' => ['tags', 'categories',],
+                'withProductCount' => true
+            ]);
         }
 
         return view('livewire.frontend.product', [
@@ -128,4 +128,3 @@ class Product extends Component
         $this->sortOrder = 'default';
     }
 }
-
