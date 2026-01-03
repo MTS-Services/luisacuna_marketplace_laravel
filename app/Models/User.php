@@ -467,4 +467,15 @@ class User extends AuthBaseModel implements Auditable
             ],
         ];
     }
+
+
+    public function cloudinaryFiles()
+    {
+        return $this->hasMany(CloudinaryFile::class);
+    }
+
+    public function images()
+    {
+        return $this->cloudinaryFiles()->where('resource_type', 'image');
+    }
 }

@@ -3,16 +3,15 @@
 namespace App\Livewire;
 
 use App\Models\CloudinaryFile;
-use App\Services\CloudinaryService;
+use App\Traits\HasCloudinaryUploads;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
-use Livewire\Attributes\Validate;
 use Livewire\Attributes\On;
 
 class FileManager extends Component
 {
-    use WithFileUploads, WithPagination;
+    use WithFileUploads, WithPagination, HasCloudinaryUploads;
 
     // Upload properties
     public $file;
@@ -47,17 +46,10 @@ class FileManager extends Component
     // Files
     public $uploadedFiles = [];
 
-    protected CloudinaryService $cloudinaryService;
-
     protected $rules = [
         'file' => 'nullable|file|max:102400', // 100MB
         'multipleFiles.*' => 'file|max:102400',
     ];
-
-    public function boot(CloudinaryService $cloudinaryService)
-    {
-        $this->cloudinaryService = $cloudinaryService;
-    }
 
     public function mount()
     {
@@ -112,16 +104,28 @@ class FileManager extends Component
             // Set specific folder based on type
             if ($this->uploadType !== 'auto') {
                 $options['folder'] = "uploads/{$this->uploadType}s";
+            } else {
+                $options['folder'] = "uploads/files";
             }
 
             // Simulate progress
             $this->uploadProgress = 30;
 
-            $uploaded = $this->cloudinaryService->upload($this->file, $options);
+            $file = $this->uploadAndSave(
+                file: $this->file,
+                modelClass: CloudinaryFile::class,
+                additionalData: [
+                    'user_id' => auth()->id(),
+                ],
+                uploadOptions: [
+                    'folder' => $options['folder'],
+                ]
+            );
+
 
             $this->uploadProgress = 100;
 
-            if ($uploaded) {
+            if ($file) {
                 session()->flash('message', 'File uploaded successfully!');
                 $this->reset(['file', 'uploadType']);
                 $this->uploadType = 'auto';
@@ -129,7 +133,6 @@ class FileManager extends Component
             } else {
                 session()->flash('error', 'Upload failed. Please try again.');
             }
-
         } catch (\Exception $e) {
             session()->flash('error', 'Upload failed: ' . $e->getMessage());
         } finally {
@@ -166,7 +169,6 @@ class FileManager extends Component
 
             $this->reset('multipleFiles');
             $this->showUploadModal = false;
-
         } catch (\Exception $e) {
             session()->flash('error', 'Upload failed: ' . $e->getMessage());
         } finally {
@@ -181,13 +183,13 @@ class FileManager extends Component
     {
         try {
             $file = CloudinaryFile::find($fileId);
-            
+
             if (!$file) {
                 session()->flash('error', 'File not found.');
                 return;
             }
 
-            $deleted = $this->cloudinaryService->delete($file);
+            $deleted = $this->deleteAndRemove($file);
 
             if ($deleted) {
                 session()->flash('message', 'File deleted successfully!');
@@ -195,7 +197,6 @@ class FileManager extends Component
             } else {
                 session()->flash('error', 'Failed to delete file.');
             }
-
         } catch (\Exception $e) {
             session()->flash('error', 'Delete failed: ' . $e->getMessage());
         }
@@ -225,7 +226,6 @@ class FileManager extends Component
             if ($result['failed_count'] > 0) {
                 session()->flash('error', "{$result['failed_count']} files failed to delete.");
             }
-
         } catch (\Exception $e) {
             session()->flash('error', 'Bulk delete failed: ' . $e->getMessage());
         }
@@ -237,7 +237,7 @@ class FileManager extends Component
     public function showDetails($fileId)
     {
         $file = CloudinaryFile::find($fileId);
-        
+
         if ($file) {
             $this->selectedFile = $file->toArray();
             $this->showDetailsModal = true;
@@ -250,7 +250,7 @@ class FileManager extends Component
     public function openEditModal($fileId)
     {
         $file = CloudinaryFile::find($fileId);
-        
+
         if ($file) {
             $this->selectedFile = $file->toArray();
             $this->editDescription = $file->description ?? '';
@@ -270,7 +270,7 @@ class FileManager extends Component
 
         try {
             $file = CloudinaryFile::find($this->selectedFile['id']);
-            
+
             if (!$file) {
                 session()->flash('error', 'File not found.');
                 return;
@@ -291,7 +291,6 @@ class FileManager extends Component
             } else {
                 session()->flash('error', 'Failed to update metadata.');
             }
-
         } catch (\Exception $e) {
             session()->flash('error', 'Update failed: ' . $e->getMessage());
         }
@@ -303,7 +302,7 @@ class FileManager extends Component
     public function downloadFile($fileId)
     {
         $file = CloudinaryFile::find($fileId);
-        
+
         if ($file) {
             return redirect($file->url);
         }

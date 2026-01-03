@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\Cloudinary\CloudinaryService;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -26,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
         // Register EnvEditorService as singleton
         $this->app->singleton(EnvEditorService::class, function ($app) {
             return new EnvEditorService();
+        });
+
+        $this->app->singleton(CloudinaryService::class, function ($app) {
+            return new CloudinaryService();
         });
 
         // Register SettingsService as singleton

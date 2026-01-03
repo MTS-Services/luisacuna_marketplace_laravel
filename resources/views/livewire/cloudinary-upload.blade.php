@@ -67,42 +67,11 @@
 
             {{-- Upload Section --}}
             <div class="mb-8">
-                <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-blue-500 transition-colors duration-300"
-                    x-data="{ dragging: false }" x-on:dragover.prevent="dragging = true"
-                    x-on:dragleave.prevent="dragging = false"
-                    x-on:drop.prevent="dragging = false; $wire.upload('photo', $event.dataTransfer.files[0])"
-                    :class="{ 'border-blue-500 bg-blue-50': dragging }">
+                <div
+                    class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-blue-500 transition-colors duration-300">
 
                     <div class="space-y-4">
-                        {{-- Upload Icon --}}
-                        <div class="flex justify-center">
-                            <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                            </svg>
-                        </div>
-
-                        {{-- Upload Instructions --}}
-                        <div>
-                            <label for="file-upload" class="cursor-pointer">
-                                <span
-                                    class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 4v16m8-8H4" />
-                                    </svg>
-                                    Choose Image
-                                </span>
-                                <input id="file-upload" type="file" wire:model="photo" accept="image/*"
-                                    class="hidden">
-                            </label>
-                            <p class="mt-2 text-sm text-gray-500">or drag and drop</p>
-                        </div>
-
-                        <p class="text-xs text-gray-500">
-                            PNG, JPG, GIF, WEBP up to 10MB
-                        </p>
+                        <input type="file" wire:model.live="photo" class="input input-primary">
 
                         {{-- File Info --}}
                         @error('photo')
@@ -136,20 +105,8 @@
                     <div class="mt-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 shadow-inner">
                         <div class="flex items-start space-x-4">
                             <div class="flex-shrink-0">
-                                @if (str_contains($photo->getMimeType(), 'image'))
-                                    <img src="{{ $photo->temporaryUrl() }}" alt="Preview"
-                                        class="h-32 w-32 object-cover rounded-lg shadow-md border-2 border-white ring-2 ring-gray-200">
-                                @elseif (str_contains($photo->getMimeType(), 'video'))
-                                    <video src="{{ $photo->temporaryUrl() }}"
-                                        class="h-32 w-32 object-cover rounded-lg shadow-md border-2 border-white ring-2 ring-gray-200"
-                                        controls></video>
-                                @else
-                                    <svg class="w-32 h-32 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                    </svg>
-                                @endif
+                                <img src="{{ $photo->temporaryUrl() }}" alt="Preview"
+                                    class="h-32 w-32 object-cover rounded-lg shadow-md border-2 border-white ring-2 ring-gray-200">
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center justify-between mb-3">
@@ -186,7 +143,7 @@
                                             Uploading...
                                         </span>
                                     </button>
-                                    <button wire:click="$set('photo', null)"
+                                    <button wire:click="$set('image', null)"
                                         class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
                                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
@@ -203,13 +160,13 @@
             </div>
 
             {{-- Uploaded Images Gallery --}}
-            @if (count($uploadedPhotos) > 0)
+            @if (count($photos) > 0)
                 <div class="border-t border-gray-200 pt-8">
                     <div class="flex items-center justify-between mb-6">
                         <div>
                             <h3 class="text-xl font-bold text-gray-900">Uploaded Images</h3>
-                            <p class="text-sm text-gray-500 mt-1">{{ count($uploadedPhotos) }}
-                                {{ Str::plural('image', count($uploadedPhotos)) }} uploaded</p>
+                            <p class="text-sm text-gray-500 mt-1">{{ count($photos) }}
+                                {{ Str::plural('image', count($photos)) }} uploaded</p>
                         </div>
                         <button wire:click="clearAll" wire:confirm="Are you sure you want to delete all images?"
                             class="text-sm text-red-600 hover:text-red-700 font-medium">
@@ -218,12 +175,12 @@
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        @foreach ($uploadedPhotos as $index => $photo)
+                        @foreach ($photos as $index => $image)
                             <div
                                 class="group relative bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden">
                                 {{-- Image --}}
                                 <div class="aspect-w-16 aspect-h-12 bg-gray-200">
-                                    <img src="{{ $photo['url'] }}" alt="{{ $photo['name'] }}"
+                                    <img src="{{ $image['url'] }}" alt="{{ $image['name'] }}"
                                         class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
                                 </div>
 
@@ -232,7 +189,7 @@
                                     class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
                                     <div class="flex space-x-2">
                                         {{-- View Button --}}
-                                        <a href="{{ $photo['url'] }}" target="_blank"
+                                        <a href="{{ $image['url'] }}" target="_blank"
                                             class="inline-flex items-center px-3 py-2 bg-white text-gray-700 rounded-lg hover:bg-gray-100 transition-colors duration-200 shadow-lg">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
@@ -259,8 +216,8 @@
                                 {{-- Image Info --}}
                                 <div class="p-4 bg-white">
                                     <p class="text-sm font-medium text-gray-900 truncate"
-                                        title="{{ $photo['name'] }}">
-                                        {{ $photo['name'] }}
+                                        title="{{ $image['name'] }}">
+                                        {{ $image['name'] }}
                                     </p>
                                     <div class="mt-2 flex items-center justify-between text-xs text-gray-500">
                                         <span class="inline-flex items-center">
@@ -271,7 +228,7 @@
                                             </svg>
                                             Image
                                         </span>
-                                        <button onclick="navigator.clipboard.writeText('{{ $photo['url'] }}')"
+                                        <button onclick="navigator.clipboard.writeText('{{ $image['url'] }}')"
                                             class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
