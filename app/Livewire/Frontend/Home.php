@@ -109,12 +109,14 @@ class Home extends Component
 
         $tag = $this->tagService->findData('popular', 'slug');
 
-        //Popular Games
+        //Popular Games 
+        // Only Take 6 datas    
         $popular_games = $tag?->games()->with(['categories','gameTranslations' => function ($query) {
                 $query->where('language_id', get_language_id());
             }])->latest()->take(6)->get();
 
 
+        // Only Paginate 12 Datas
         $new_bostings = $this->gameService->paginateDatas(12, [
             'categorySlug' => 'boosting',
             'relations' => ['categories'],
