@@ -125,7 +125,7 @@
             document.addEventListener('livewire:navigated', () => {
                 setTimeout(() => {
                     window.dispatchEvent(new CustomEvent('reset-tinymce-initiallized'));
-                }, 100);
+                }, 500);
             });
         </script>
     @endpush
