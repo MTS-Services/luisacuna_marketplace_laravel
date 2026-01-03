@@ -264,23 +264,30 @@
                 <x-backend.navlink type="dropdown" icon="currency-dollar" name="Finance Management" :page_slug="$active"
                     :items="[
                         [
-                            'name' => 'Transactions',
-                            'route' => '#',
+                            'name' => 'All Transactions',
+                            'route' => route('admin.finance.index'),
                             'icon' => 'badge-dollar-sign',
-                            'active' => 'transaction',
+                            'active' => 'finance-management',
+                        ],
+                        [
+                            'name' => 'Top Ups',
+                            'route' => route('admin.finance.top-ups'),
+                            'icon' => 'dollar-sign',
+                            'active' => 'top-ups',
+                        ],
+                        [
+                            'name' => 'purchased',
+                            'route' => route('admin.finance.purchased'),
+                            'icon' => 'dollar-sign',
+                            'active' => 'purchased',
                         ],
                         [
                             'name' => 'Withdrawals',
-                            'route' => '#',
+                            'route' => route('admin.finance.withdrawals'),
                             'icon' => 'dollar-sign',
-                            'active' => 'withdrawal',
+                            'active' => 'withdrawals',
                         ],
-                        [
-                            'name' => 'Escrow',
-                            'route' => '#',
-                            'icon' => 'heart-handshake',
-                            'active' => 'withdrawal',
-                        ],
+
                     ]" />
                 <x-backend.navlink type="single" icon="percent" name="Fee Settings" :route="route('admin.fee-settings.fee-settings')"
                     active="fee-settings" :page_slug="$active" />

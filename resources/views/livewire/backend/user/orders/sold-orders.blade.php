@@ -32,13 +32,18 @@
 
             </div>
 
-            <div class="flex w-full md:w-auto">
+            <x-ui.button class="w-fit! py-2!" wire:click="downloadInvoice" wire:loading.attr="disabled">
+                <x-phosphor-download class="w-5 h-5" />
+                {{ __('Download invoice') }}
+            </x-ui.button>
+
+            {{-- <div class="flex w-full md:w-auto">
                 <x-ui.button class="w-fit! py-2!" x-data @click="$dispatch('open-modal', 'download-invoice-modal')">
                     <x-phosphor-download
                         class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
                     {{ __('Download invoice') }}
                 </x-ui.button>
-            </div>
+            </div> --}}
 
         </div>
     </div>
@@ -53,5 +58,5 @@
 
     <!-- Download Invoice Modal -->
 
-    <livewire:backend.user.orders.invoice-download />
+    {{-- <livewire:backend.user.orders.invoice-download /> --}}
 </div

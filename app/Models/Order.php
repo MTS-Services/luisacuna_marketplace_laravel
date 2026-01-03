@@ -194,6 +194,10 @@ class Order extends AuditBaseModel implements Auditable
             $query->where('status', $status);
         });
 
+        $query->when($filters['exclude_status'] ?? null, function ($query, $status) {
+            $query->where('status', '!=', $status);
+        });
+
         // product owner filter (logged in user is the creator)
         $query->when($filters['seller_id'] ?? null, function ($query, $ownerId) {
             $query->whereHas('source', function ($q) use ($ownerId) {

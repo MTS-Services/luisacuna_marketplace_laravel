@@ -318,7 +318,7 @@
         scroll-behavior: smooth;
         scrollbar-width: thin;
         scrollbar-color: var(--color-accent) var(--color-accent-content) !important;
-        @apply transition-colors duration-200 ease-in-out text-text-primary;
+        @apply transition-colors duration-200 ease-in-out;
     }
 
     h1,

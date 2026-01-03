@@ -9,34 +9,61 @@
 </head>
 
 <body>
-    <h2>Sales Invoice - {{ $month }}/{{ $year }}</h2>
 
-    <table width="100%" border="1" cellspacing="0" cellpadding="6">
+
+
+    <p><strong>Invoice ID:</strong> {{ $invoiceId }}</p>
+
+
+    <p>Date: {{ now()->format('Y-m-d') }}</p>
+
+
+
+    @php
+        $totalAmount = 0;
+    @endphp
+
+    <table width="100%" cellspacing="0" cellpadding="7" style="border-collapse: collapse; border: 1px solid #000;">
         <thead>
             <tr>
-                <th>Order ID</th>
-                <th>Product</th>
-                <th>Buyer</th>
-                <th>Qty</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Date</th>
+                <th style="border: 1px solid #000;">Order ID</th>
+                <th style="border: 1px solid #000;">Product</th>
+                <th style="border: 1px solid #000;">Buyer</th>
+                <th style="border: 1px solid #000;">Qty</th>
+                <th style="border: 1px solid #000;">Currency</th>
+                <th style="border: 1px solid #000;">Amount</th>
+                <th style="border: 1px solid #000;">Status</th>
+                <th style="border: 1px solid #000;">Date</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($orders as $order)
+                @php $totalAmount += $order->total_amount; @endphp
                 <tr>
-                    <td>{{ $order->order_id }}</td>
-                    <td>{{ $order->source->name ?? '' }}</td>
-                    <td>{{ $order->user->full_name ?? '' }}</td>
-                    <td>{{ $order->quantity }}</td>
-                    <td>{{ currency_exchange($order->total_amount) }}</td>
-                    <td>{{ $order->status->label() }}</td>
-                    <td>{{ $order->created_at->format('Y-m-d') }}</td>
+                    <td style="border: 1px solid #000;">{{ $order->order_id }}</td>
+                    <td style="border: 1px solid #000;">{{ $order->source->name ?? '' }}</td>
+                    <td style="border: 1px solid #000;">{{ $order->user->full_name ?? '' }}</td>
+                    <td style="border: 1px solid #000;">{{ $order->quantity }}</td>
+                    <td style="border: 1px solid #000;">{{ $order->currency }}</td>
+                    <td style="border: 1px solid #000;">{{ $order->total_amount }}</td>
+                    <td style="border: 1px solid #000;">{{ $order->status->label() }}</td>
+                    <td style="border: 1px solid #000;">{{ $order->created_at->format('Y-m-d') }}</td>
                 </tr>
             @endforeach
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" align="right" style="border: 1px solid #000;"><strong>Total Amount</strong></td>
+                <td style="border: 1px solid #000;"><strong>{{ $totalAmount }}</strong></td>
+                <td colspan="2" style="border: 1px solid #000;"></td>
+            </tr>
+        </tfoot>
+
     </table>
+
+
+    <p style="text-align: center">Generate by automatically</p>
+
 </body>
 
 </html>

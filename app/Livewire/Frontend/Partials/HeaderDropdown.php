@@ -40,46 +40,31 @@ class HeaderDropdown extends Component
             return ['popular' => [], 'all' => []];
         }
 
-        // Get games with 'popular' tag for this category
-        $popularGames = Game::whereHas('categories', function ($query) use ($category) {
-                $query->where('categories.id', $category->id);
+        $query = Game::query();
+
+        $query->with(['tags', 'categories', 'gameTranslations' => function ($query) {
+                $query->where('language_id', get_language_id());
+            }])
+            ->active()
+            ->whereHas('categories', function ($query) use ($category) {
+                    $query->where('categories.id', $category->id);
             })
-            ->whereHas('tags', function ($query) {
+            ->orderBy('name', 'asc');
+        // Get games with 'popular' tag for this category
+        $popularGames = clone $query->whereHas('tags', function ($query) {
                 $query->where('tags.slug', 'popular'); // or use tag name/id
             })
-            ->active()
-            ->with(['tags', 'categories'])
-            ->orderBy('name', 'asc')
             ->take(12)
-            ->get()
-            ->map(function ($game) {
-                return [
-                    'name' => $game->name,
-                    'logo' => $game->logo, 
-                    'slug' => $game->slug,
-                ];
-            });
+            ->get();
+
         // Get all games for this category (for the sidebar)
-         $allGames = Game::whereHas('categories', function ($query) use ($category) {
-                    $query->where('categories.id', $category->id);
-                })
-                ->active()
-                ->when($this->search, function ($query) {
+         $allGames = clone $query->when($this->search, function ($query) {
                     $query->where('name', 'like', '%' . $this->search . '%');
                 })
-                ->orderBy('name', 'asc')
-                ->get()
-                ->map(function ($game) {
-                    return [
-                        'name' => $game->name,
-                        'slug' => $game->slug,
-                        'logo' => $game->logo, // null or path
-                    ];
-                })
-                ->toArray();
+                ->get();
 
             return [
-                'popular' => $popularGames->toArray(),
+                'popular' => $popularGames,
                 'all' => $allGames,
             ];
 

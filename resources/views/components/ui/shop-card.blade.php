@@ -33,9 +33,10 @@
                 <p class="text-text-secondary text-sm mt-4 max-w-[60%]">
                 
                    <p class="text-start w-full">
-                     {{
+                     {{-- {{
                         $data->name ?? ''
-                    }}
+                    }} --}}
+                     {{ $data->productTranslations->first()?->name ?? $data->name }}
                    </p>
                 <img class="w-16 h-16 rounded float-right" src="{{ storage_url($game->logo) }}"
                     alt="Image">
