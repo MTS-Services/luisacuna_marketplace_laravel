@@ -35,9 +35,9 @@ class GridLayout extends Component
 
     public $category_id = 0;
     #[Url()]
-    public float $min_price;
+    public float $min_price=0;
     #[Url()]
-    public float $max_price;
+    public float $max_price=0;
 
 
 
