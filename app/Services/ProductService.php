@@ -29,12 +29,16 @@ public function findData($column_value, string $column_name = 'id')
     {
 
         $search = $filters['search'] ?? null;
+
         $sortField = $filters['sort_field'] ?? 'created_at';
+
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
+
+       
         if ($search) {
             // Scout Search
-            return Game::search($search)
+            return Product::search($search)
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
         }

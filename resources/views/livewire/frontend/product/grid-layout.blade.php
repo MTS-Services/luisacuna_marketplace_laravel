@@ -14,10 +14,11 @@
             <div class="mb-8 space-y-4">
                 <div class="flex gap-4 justify-between items-center md:justify-start relative" x-data={filter:false}>
 
+
+                    {{-- Search --}}
                     <div class="flex-1 w-auto md:min-w-64">
                         <div class="relative">
-                            <input type="text" placeholder="Search" wire:model.live.debounce.500ms="search"
-                                wire:change="serachFilter"
+                            <input type="text" placeholder="Search" wire:model.live="search"
                                 class="w-full bg-bg-transparent rounded-full border border-zinc-700 px-4 py-2 pl-10 focus:outline-none focus:border-zinc-500">
                             <span class="absolute left-3 top-2.5">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -43,56 +44,28 @@
                     </div>
 
 
-                    {{-- Custom Select --}}
+                    {{-- Platforms --}}
 
 
-                    <div class="flex-nowrap gap-5 relative hidden md:flex" x-data="{ open: false, selectedOption: '', selectedValue: '' }"
-                        @click.away="open = false">
+                    <div class="w-auto md:min-w-64">
+                        <x-ui.custom-select wire-model="platform_id" :wire-live="true"
+                            class="rounded-full bg-transparent" label="Platforms">
 
+                            <x-ui.custom-option label="All Platforms" value="" />
 
-                        <input type="hidden" x-model="selectedValue" wire:model.live="platformId">
-
-
-
-                        <div class="flex justify-between rounded-full border border-zinc-700 bg-bg-transparent items-center w-50 px-3 py-2 cursor-pointer"
-                            @click="open = !open">
-                            <span x-text="selectedOption || '{{ __('Platform') }}'"></span>
-                            <flux:icon name="chevron-down" class="w-5 h-5 transition-transform duration-200"
-                                x-bind:class="open ? 'rotate-180' : ''" />
-                        </div>
-
-                        <!-- Dropdown Menu with Smooth Animation -->
-                        <div class="absolute top-[110%] left-0 w-50 rounded bg-bg-primary border border-zinc-500 z-20 overflow-hidden origin-top h-[40vh] overflow-y-auto"
-                            x-show="open" x-transition:enter="transition ease-out duration-300 transform"
-                            x-transition:enter-start="opacity-0 scale-y-0"
-                            x-transition:enter-end="opacity-100 scale-y-100"
-                            x-transition:leave="transition ease-in duration-200 transform"
-                            x-transition:leave-start="opacity-100 scale-y-100"
-                            x-transition:leave-end="opacity-0 scale-y-0" @click.stop>
-                            <div class="px-2 py-5">
-                                <ol class="list space-y-2">
-                                    <li class="py-3 px-2 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                        @click="selectedOption = '{{ __('Platform') }}'; selectedValue = ''; $wire.selectedPlatform = ''; open = false;">
-                                        {{ __('Platform') }}
-                                    </li>
-                                    @foreach ($platforms as $platform )
-                                        <li class="py-3 px-2 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                        @click="selectedOption = '{{ $platform->name }}'; selectedValue = '{{ $platform->id}}';  $wire.set('platformId', {{ $platform->id }}); open = false; ">
-                                       {{ $platform->name }}
-                                    </li>
-                                    @endforeach
-
-
-                                </ol>
-                            </div>
-                        </div>
+                            @foreach ($platforms as $platform)
+                                <x-ui.custom-option label="{{ $platform->name }}" value="{{ $platform->id }}" />
+                            @endforeach
+                        </x-ui.custom-select>
                     </div>
 
 
-
-                    {{-- Custom Select --}}
-
-                    <div class="flex-nowrap gap-5 relative hidden md:flex" x-data="{ open: false, selectedMin: '', selectedMax: '' }"
+                    {{-- Price Filters --}}
+                    <div class="flex-nowrap gap-5 relative hidden md:flex" x-data="{
+                        open: false,
+                        selectedMin: @entangle('min_price').live,
+                        selectedMax: @entangle('max_price').live
+                      }"
                         @click.away="open = false">
 
                         <div class="price-input flex justify-between border border-zinc-700 bg-bg-transparent items-center w-50 px-3 py-2 rounded-full cursor-pointer"
@@ -115,31 +88,32 @@
                                     <div class="relative flex-1">
                                         <span
                                             class="absolute left-3 top-1/2 -translate-y-1/2 text-text-primary pointer-events-none">$</span>
-                                        <x-ui.input type="text" placeholder="Min" wire:model="minPrice"
-                                            class="border-zinc-700 pl-7" x-model="selectedMin" />
+                                        <x-ui.input type="text" placeholder="Min" class="border-zinc-700 pl-7"
+                                            x-model="selectedMin" />
                                     </div>
                                     <div class="relative flex-1">
                                         <span
                                             class="absolute left-3 top-1/2 -translate-y-1/2 text-text-primary pointer-events-none">$</span>
-                                        <x-ui.input type="text" placeholder="Max" wire:model="maxPrice"
-                                            class="border-zinc-700 pl-7" x-model="selectedMax" />
+                                        <x-ui.input type="text" placeholder="Max" class="border-zinc-700 pl-7"
+                                            x-model="selectedMax" />
                                     </div>
                                     <x-ui.button class="py-2! px-3! w-auto! rounded! hidden md:flex bg-transparent!"
-                                        :variant="'primary'"
-                                        @click="selectedMin = ''; selectedMax = ''; $wire.minPrice = ''; $wire.maxPrice = ''; $wire.call('serachFilter')">
+                                        :variant="'primary'" @click="selectedMin = ''; selectedMax = '';">
                                         <flux:icon name="trash" class="w-5 h-5" />
                                     </x-ui.button>
                                 </div>
                                 <ol class="list pt-2.5 space-y-2">
+
                                     <li class="py-3 px-2 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                        data-min="100" data-max="500"
-                                        @click="selectedMin = $el.dataset.min; selectedMax = $el.dataset.max; $wire.minPrice = $el.dataset.min; $wire.maxPrice = $el.dataset.max; open = false; $wire.call('serachFilter')">
-                                        $100 to $500
+                                        data-min="0" data-max="100"
+                                        @click="selectedMin = $el.dataset.min; selectedMax = $el.dataset.max; open = false;">
+                                        $0 to $100
                                     </li>
+
                                     <li class="py-3 px-2 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                        data-min="500" data-max="1000"
-                                        @click="selectedMin = $el.dataset.min; selectedMax = $el.dataset.max; $wire.minPrice = $el.dataset.min; $wire.maxPrice = $el.dataset.max; open = false; $wire.call('serachFilter')">
-                                        $500 to $1000
+                                        data-min="101" data-max="1000"
+                                        @click="selectedMin = $el.dataset.min; selectedMax = $el.dataset.max; open = false;">
+                                        $101 to $1000
                                     </li>
                                 </ol>
                             </div>
@@ -147,45 +121,21 @@
                     </div>
 
 
+                    {{-- Dellivery Timeline --}}
 
-                    <div class="flex-nowrap gap-5 relative hidden md:flex" x-data="{ open: false, selectedOption: '', selectedValue: '' }"
-                        @click.away="open = false">
+                    <div class="w-auto md:min-w-64">
+                        <x-ui.custom-select wire-model="delivery_timeline" :wire-live="true"
+                            class="rounded-full bg-transparent" label="Delivery Timeline">
 
-                        <!-- Hidden Input Field -->
-                        <input type="hidden" name="delivery_time" x-model="selectedValue">
+                            <x-ui.custom-option label="All Timeline" value="" />
 
-                        <div class="flex justify-between border border-zinc-700 bg-bg-transparent items-center w-50 px-3 py-2 rounded-full cursor-pointer"
-                            @click="open = !open">
-                            <span x-text="selectedOption || '{{ __('Select Delivery Time') }}'"></span>
-                            <flux:icon name="chevron-down" class="w-5 h-5 transition-transform duration-200"
-                                x-bind:class="open ? 'rotate-180' : ''" />
-                        </div>
-
-                        <div class="absolute top-[110%] left-0 w-50 rounded bg-bg-primary border border-zinc-700 z-20 overflow-hidden origin-top"
-                            x-show="open" x-transition:enter="transition ease-out duration-300 transform"
-                            x-transition:enter-start="opacity-0 scale-y-0"
-                            x-transition:enter-end="opacity-100 scale-y-100"
-                            x-transition:leave="transition ease-in duration-200 transform"
-                            x-transition:leave-start="opacity-100 scale-y-100"
-                            x-transition:leave-end="opacity-0 scale-y-0" @click.stop>
-                            <div class="px-5 py-5">
-                                <ol class="list space-y-2">
-                                    <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                        @click="selectedOption = '{{ __('Select Delivery Time') }}'; selectedValue = ''; $wire.selectedDeliveryTime = ''; open = false; $wire.call('serachFilter')">
-                                        {{ __('Select Delivery Time') }}
-                                    </li>
-                                    <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                        @click="selectedOption = '{{ __('Instant Delivery') }}'; selectedValue = 'instant'; $wire.selectedDeliveryTime = 'instant'; open = false; $wire.call('serachFilter')">
-                                        {{ __('Instant Delivery') }}
-                                    </li>
-                                    <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                        @click="selectedOption = '{{ __('In a Week') }}'; selectedValue = 'week'; $wire.selectedDeliveryTime = 'week'; open = false; $wire.call('serachFilter')">
-                                        {{ __('In a Week') }}
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
+                            @foreach ($delivery_timelines as $delivery_timeline)
+                                <x-ui.custom-option label="{{ $delivery_timeline['label'] }}"
+                                    value="{{ $delivery_timeline['value'] }}" />
+                            @endforeach
+                        </x-ui.custom-select>
                     </div>
+
 
 
                     <x-ui.button
@@ -193,7 +143,8 @@
                         :variant="'primary'" wire:click="resetAllFilters">
                         {{ __('Clear All') }}
                     </x-ui.button>
-                    <button @click="filter = !filter"
+
+                    {{-- <button @click="filter = !filter"
                         class="flex items-center gap-2 border border-zinc-500 rounded-full px-5 py-2 hover:bg-zinc-600  transition md:hidden group"
                         :class="{ 'bg-zinc-600': filter }">
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -205,7 +156,7 @@
                         </svg>
                         <span class="group-hover:text-white transition-color duration-300"
                             :class="{ 'text-white': filter }">{{ __('Filter') }}</span>
-                    </button>
+                    </button> --}}
                     {{-- This filter for mobile Menu --}}
 
                     <x-currency.mobile-filter />
@@ -214,45 +165,49 @@
 
                 </div>
 
+<div x-data="{
+                showAll: false,
+                limit: 5,
+                tags: [
+                    'Robux',
+                    'Steal A Brainrot',
+                ],
+                search: @entangle('search').live
+             }" class="w-full">
+    <div class="flex flex-wrap gap-2 sm:gap-3 transition-all duration-300">
+        <!-- Mobile View -->
+        <template x-if="window.innerWidth < 640">
+            <template x-for="(tag, index) in (showAll ? tags : tags.slice(0, limit))"
+                :key="index">
+                <span
+                    class="px-3 py-1 bg-bg-info rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-white"
+                    
+                    x-text="tag" 
+                    @click="search = tag"></span>
+            </template>
+        </template>
 
-                <div x-data="{
-                    showAll: false,
-                    limit: 5,
-                    tags: [
-                        'Robux',
-                        'Steal A Brainrot',
-                    ]
-                }" class="w-full">
-                    <div class="flex flex-wrap gap-2 sm:gap-3 transition-all duration-300">
-                        <!-- Mobile View -->
-                        <template x-if="window.innerWidth < 640">
-                            <template x-for="(tag, index) in (showAll ? tags : tags.slice(0, limit))"
-                                :key="index">
-                                <span
-                                    class="px-3 py-1 bg-bg-info rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-white"
-                                    x-text="tag" @click="$wire.tagSelected(tag)"></span>
-                            </template>
-                        </template>
+        <!-- Desktop View -->
+        <template x-if="window.innerWidth >= 640">
+            <template x-for="(tag, index) in tags" :key="index">
+                <span
+                    class="px-3 py-1 bg-bg-primary dark:bg-bg-info rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-white"
+                    
+                    x-text="tag" 
+                    @click="search = tag"></span>
+            </template>
+        </template>
 
-                        <!-- Desktop View -->
-                        <template x-if="window.innerWidth >= 640">
-                            <template x-for="(tag, index) in tags" :key="index">
-                                <span
-                                    class="px-3 py-1 bg-bg-primary dark:bg-bg-info rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-white"
-                                    x-text="tag" @click="$wire.tagSelected(tag)"></span>
-                            </template>
-                        </template>
-
-                        <!-- Toggle Button (Mobile Only) -->
-                        <button @click="showAll = !showAll"
-                            class="flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary transition sm:hidden">
-                            <svg :class="{ 'rotate-180': showAll }" class="w-6 h-6 transition-transform duration-300"
-                                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+        <!-- Toggle Button (Mobile Only) -->
+        <button @click="showAll = !showAll"
+            class="flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary transition sm:hidden">
+            <svg :class="{ 'rotate-180': showAll }" class="w-6 h-6 transition-transform duration-300"
+                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+        </button>
+    </div>
+</div>
 
                 <!-- Recommendation -->
                 <div class="gap-3 justify-end hidden md:flex">
@@ -284,15 +239,15 @@
                             <div class="px-5 py-5">
                                 <ol class="list space-y-2">
                                     <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                        @click="selectedOption = '{{ __('Platform') }}'; selectedValue = ''; $wire.selectedPlatform = ''; open = false; $wire.call('serachFilter')">
+                                        @click="selectedOption = '{{ __('Platform') }}'; selectedValue = ''; $wire.selectedPlatform = ''; open = false;">
                                         {{ __('Platform') }}
                                     </li>
                                     <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                        @click="selectedOption = 'Device 1'; selectedValue = 'device1'; $wire.selectedPlatform = 'device1'; open = false; $wire.call('serachFilter')">
+                                        @click="selectedOption = 'Device 1'; selectedValue = 'device1'; $wire.selectedPlatform = 'device1'; open = false; ">
                                         Device 1
                                     </li>
                                     <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                        @click="selectedOption = 'Device 2'; selectedValue = 'device2'; $wire.selectedPlatform = 'device2'; open = false; $wire.call('serachFilter')">
+                                        @click="selectedOption = 'Device 2'; selectedValue = 'device2'; $wire.selectedPlatform = 'device2'; open = false; ">
                                         Device 2
                                     </li>
                                 </ol>
@@ -323,7 +278,7 @@
             </div>
 
 
-           <x-frontend.pagination-ui :pagination="$pagination" />
+            <x-frontend.pagination-ui :pagination="$pagination" />
 
         </div>
     </div>
