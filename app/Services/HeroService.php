@@ -35,6 +35,11 @@ class HeroService
         return $model->where($column_name, $column_value)->first();
     }
 
+    public function latestData($limit = 10 , $filters = []):Collection {
+        
+        return $this->model->query()->filter($filters)->limit($limit)->get();
+    }
+
     public function getFristData(array $filters = [], $sortField = 'created_at', $order = 'desc'): ?Hero
     {
         $query = $this->model->query();

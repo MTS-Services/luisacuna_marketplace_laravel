@@ -38,6 +38,11 @@ class GameService
             ->get();
     }
 
+
+    public function latestData(int $limit = 10 , $filters = []):Collection {
+
+        return $this->model->query()->filter($filters)->limit($limit)->get();
+    }
     public function findData(mixed $value, string $column = 'id', bool $withTrashed = false): ?Game
     {
         $query = $this->model->newQuery();

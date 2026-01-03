@@ -43,8 +43,6 @@ class Product extends Component
 
         $this->paginationData($games);
 
-
-        // ?? NOte here Have to work !! it's not working
         $popular_games = $this->game_service->paginateDatas(10, [
             'category' => $this->categorySlug,
             'tag' => 'popular',
