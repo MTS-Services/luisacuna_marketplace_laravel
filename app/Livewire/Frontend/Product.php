@@ -45,7 +45,7 @@ class Product extends Component
 
 
         // ?? NOte here Have to work !! it's not working
-        $popular_games = $this->game_service->paginateDatas(12, [
+        $popular_games = $this->game_service->paginateDatas(10, [
             'category' => $this->categorySlug,
             'tag' => 'popular',
             'relations' => ['tags', 'categories'],
@@ -55,11 +55,11 @@ class Product extends Component
         ]);
 
 
-        // dd($popular_games); 
+     
         
         
         if($this->categorySlug == 'boosting' || $this->categorySlug == 'coaching' || $this->categorySlug == 'top-up') {
-            $new_boosting = $this->game_service->getAllDatas([
+            $new_boosting = $this->game_service->paginateDatas(10, [
             'category' => $this->categorySlug,
             'relations' => ['tags', 'categories', ],
             'withProductCount' => true

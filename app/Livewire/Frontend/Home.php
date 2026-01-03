@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend;
 
+use App\Enums\FaqStatus;
 use App\Enums\FaqType;
 use Livewire\Component;
 use App\Services\FaqService;
@@ -14,8 +15,6 @@ use App\Services\PlatformService;
 class Home extends Component
 {
 
-    public $faqs_seller;
-    public  $faqs_buyer;
     public $input;
     public $email;
     public $password;
@@ -31,8 +30,9 @@ class Home extends Component
     public $categorySlug;
     public $gameSlug;
     protected $datas;
-    
 
+
+    public $faqs_type = FaqType::BUYER->value;
 
     protected GameService $gameService;
     protected FaqService $faqService;
@@ -41,6 +41,7 @@ class Home extends Component
     protected TagService $tagService;
     protected ProductService $productService;
     protected PlatformService $platformService;
+
     public function boot(GameService $gameService, HeroService $heroService, TagService $tagService,  FaqService $faqService, PlatformService $platformService, ProductService $productService,)
     {
         $this->tagService = $tagService;
@@ -53,15 +54,6 @@ class Home extends Component
 
     public function mount($gameSlug = null, $categorySlug = null)
     {
-        $faqs = $this->getFaqs();
-
-        $this->faqs_buyer =  $faqs->filter(function ($faq) {
-            return $faq->type == FaqType::BUYER;
-        });
-
-        $this->faqs_seller =  $faqs->filter(function ($faq) {
-            return $faq->type == FaqType::SELLER;
-        });
 
         $this->gameSlug = $gameSlug;
         $this->categorySlug = $categorySlug;
@@ -76,11 +68,7 @@ class Home extends Component
         $this->platforms = $this->platformService->getAllDatas() ?? [];
     }
 
-    // public $faqType = "buyer";
-    public function getFaqs()
-    {
-        return $this->faqService->getActiveData();
-    }
+
     public function getDatas()
     {
         return $this->productService->getPaginatedData($this->perPage, [
@@ -94,16 +82,16 @@ class Home extends Component
     public function render()
     {
 
-       
+
         $heros = $this->heroService->getAllDatas();
 
         $tag = $this->tagService->findData('popular', 'slug');
 
         //Popular Games 
         // Only Take 6 datas    
-        $popular_games = $tag?->games()->with(['categories','gameTranslations' => function ($query) {
-                $query->where('language_id', get_language_id());
-            }])->latest()->take(6)->get();
+        $popular_games = $tag?->games()->with(['categories', 'gameTranslations' => function ($query) {
+            $query->where('language_id', get_language_id());
+        }])->latest()->take(6)->get();
 
 
         // Only Paginate 12 Datas
@@ -112,12 +100,13 @@ class Home extends Component
             'relations' => ['categories'],
         ]);
 
-        
+
         return view('livewire.frontend.home', [
             'popular_games' => $popular_games,
             'heros' => $heros,
             'datas' => $this->datas,
-            'new_bostings' => $new_bostings
+            'new_bostings' => $new_bostings,
+
         ]);
     }
 }
