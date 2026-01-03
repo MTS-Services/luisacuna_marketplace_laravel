@@ -491,17 +491,3 @@ select:focus[data-flux-control] {
 .animate-shimmer {
     animation: shimmer 1.5s infinite ease-in-out;
 }
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    all: revert;
-}
-
-p,
-a {
-    all: revert;
-}
