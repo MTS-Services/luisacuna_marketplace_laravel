@@ -16,26 +16,34 @@ $routeName = Route::currentRouteName();
         <p class="mb-10 text-2xl text-text-secondery text-center">Everything you need to know about buying and selling on Swapy.gg.</p>
         @endif
         <!-- Tabs -->
-        <div class="max-w-xs mx-auto flex justify-between mb-10 bg-bg-secondary rounded-full px-3 py-3">
-            <button @click="tab = 'buyers'; active = null" 
-                :class="tab === 'buyers' ? 'bg-bg-hover px-5 py-3 rounded-full shadow-lg text-text-white' :
-                    'text-text-secondery px-5 py-3'"
-                class="transition-colors duration-300 font-normal text-xl">
-                {{ 'For Buyers' }}
-            </button>
-            <button @click="tab = 'sellers'; active = null" 
-                :class="tab === 'sellers' ? 'bg-bg-hover px-5 py-3 rounded-full shadow-lg text-text-white' :
-                    'text-text-secondery px-5 py-3'"
-                class="transition-colors duration-300 font-normal text-xl">
-                {{ __('For Sellers') }}
-            </button>
-        </div>
+<div class="max-w-xs mx-auto flex justify-between mb-10 bg-bg-secondary rounded-full px-3 py-3">
+    <button
+        wire:click="changeFaqType('{{ \App\Enums\FaqType::BUYER->value }}')"
+        class="transition-colors duration-300 font-normal text-xl
+            {{ $faqs_type === \App\Enums\FaqType::BUYER->value
+                ? 'bg-bg-hover px-5 py-3 rounded-full shadow-lg text-text-white'
+                : 'text-text-secondery px-5 py-3' }}">
+        For Buyers
+    </button>
+
+    <button
+        wire:click="changeFaqType('{{ \App\Enums\FaqType::SELLER->value }}')"
+        class="transition-colors duration-300 font-normal text-xl
+            {{ $faqs_type === \App\Enums\FaqType::SELLER->value
+                ? 'bg-bg-hover px-5 py-3 rounded-full shadow-lg text-text-white'
+                : 'text-text-secondery px-5 py-3' }}">
+        For Sellers
+    </button>
+</div>
+
 
         <!-- FAQ Items for Buyers -->
         <template x-if="tab === 'buyers'">
             <div class="space-y-4">
-                @foreach ($faqs_buyer as $index => $faq)
-                    <div class=" {{ $routeName == 'faq' ? 'bg-bg-info' : 'bg-bg-secondary'}}  rounded-xl p-4 cursor-pointer"
+                @if($faqs_type ==  \App\Enums\FaqType::BUYER->value) 
+                @foreach ($faqs as $index => $faq)
+              
+                <div class=" {{ $routeName == 'faq' ? 'bg-bg-info' : 'bg-bg-secondary'}}  rounded-xl p-4 cursor-pointer"
                         @click="active === {{ $index }} ? active = null : active = {{ $index }}">
                         <div class="flex justify-between items-center">
                             <h3 class="text-text-white text-xl font-semibold">{{ $faq->question }}</h3>
@@ -50,13 +58,16 @@ $routeName = Route::currentRouteName();
                         </p>
                     </div>
                 @endforeach
+                @endif
             </div>
         </template>
 
         <!-- FAQ Items for Sellers -->
         <template x-if="tab === 'sellers'">
             <div class="space-y-4">
-                @foreach ($faqs_seller as $index => $faq)
+                @if($faqs_type ==  \App\Enums\FaqType::SELLER->value) 
+                
+                @foreach ($faqs as $index => $faq)
                     <div class=" {{ $routeName == 'faq' ? 'bg-bg-info' : 'bg-bg-secondary'}}  rounded-xl p-4 cursor-pointer"
                         @click="active === {{ $index }} ? active = null : active = {{ $index }}">
                         <div class="flex justify-between items-center">
@@ -72,6 +83,7 @@ $routeName = Route::currentRouteName();
                         </p>
                     </div>
                 @endforeach
+                @endif
             </div>
         </template>
     </div>
