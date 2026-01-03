@@ -22,7 +22,6 @@ class Product extends BaseModel implements Auditable
         'game_id',
 
         'slug',
-        'name',
         'description',
         'price',
         'name',
@@ -168,25 +167,24 @@ class Product extends BaseModel implements Auditable
 /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
         End of RELATIONSHIPS
 =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
-#[SearchUsingPrefix(['id', 'name', 'description', 'delivery_timeline', 'price'])]
+#[SearchUsingPrefix([ 'name', 'description', 'delivery_timeline', 'price'])]
 public function toSearchableArray(): array
 {
     // Load the game with its tags
-    if (!$this->relationLoaded('game')) {
-        $this->load(['game:id,name', 'game.tags:id,name']);
-    }
+    // if (!$this->relationLoaded('game')) {
+    //     $this->load(['game:id,name', 'game.tags:id,name']);
+    // }
     
-    // Since there's only ONE game, just pluck the tag names directly
-    $gameTags = $this->game?->tags->pluck('name')->all() ?? [];
+    // // Since there's only ONE game, just pluck the tag names directly
+    // $gameTags = $this->game?->tags->pluck('name')->all() ?? [];
 
     return [
-        'id' => $this->id,
         'name' => $this->name,
         'description' => $this->description,
         'price' => (double) $this->price,
         'delivery_timeline' => $this->delivery_timeline,
-        'game_tags' => $gameTags,
-        'game_name' => $this->game?->name,
+      //  'game_tags' => $gameTags,
+     //   'game_name' => $this->game?->name,
     ];
 }
 
