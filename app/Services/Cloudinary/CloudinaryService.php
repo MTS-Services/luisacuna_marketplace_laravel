@@ -116,6 +116,12 @@ class CloudinaryService
     public function delete(string $publicId, string $resourceType = 'image'): bool
     {
         try {
+            Log::info('Deleting file from Cloudinary', [
+                'public_id' => $publicId,
+                'resource_type' => $resourceType,
+            ]);
+
+            // Delete using cloudinary() helper or UploadApi)
             $result = cloudinary()->uploadApi()->destroy($publicId, [
                 'resource_type' => $resourceType,
                 'invalidate' => true,
