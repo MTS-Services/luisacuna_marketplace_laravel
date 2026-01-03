@@ -201,7 +201,7 @@
     </section>
 
     <!-- FAQ Section -->
-    <livewire:frontend.partials.faq :faqs_buyer="$faqs_buyer" :faqs_seller="$faqs_seller" />
+    <livewire:frontend.partials.faq />
 
     <div class="mt-20"></div>
 

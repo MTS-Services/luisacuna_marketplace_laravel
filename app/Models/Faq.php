@@ -82,6 +82,7 @@ class Faq extends AuditBaseModel implements Auditable
         return $query->where('status', FaqType::SELLER);
     }
 
+    
     /*
     |--------------------------------------------------------------------------
     | Scout Search Configuration
