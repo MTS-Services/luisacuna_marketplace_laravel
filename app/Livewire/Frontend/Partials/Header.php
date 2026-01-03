@@ -76,7 +76,7 @@ class Header extends Component
             $this->unreadMessageCount = $this->conversationService->getUnreadCount();
         }
     }
-    
+
 
     public function render()
     {
@@ -84,8 +84,6 @@ class Header extends Component
         $this->languages = $this->languageService->getAllDatas();
         $this->categories = $this->categoryService->getDatas(status: "active");
         $this->currencies = $this->currencyService->getAllDatas();
-
-        // dd($this->currencies);
 
         $popular_games = collect();
         $search_results = collect();

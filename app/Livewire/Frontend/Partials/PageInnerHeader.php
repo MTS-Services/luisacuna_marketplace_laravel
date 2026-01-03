@@ -16,14 +16,23 @@ class PageInnerHeader extends Component
     {
         $this->gameSlug = $gameSlug;
         $this->categorySlug = $categorySlug;
-        $this->game = $game->load('categories');
-     
+        $this->game = $game->load([
+            'categories.categoryTranslations' => function ($query) {
+                $query->where('language_id', get_language_id());
+            },
+            'gameTranslations' => function ($query) {
+                $query->where('language_id', get_language_id());
+            }
+        ]);
+
+        // $this->game = $game->load(['categories', 'gameTranslations' => function ($query) {
+        //     $query->where('language_id', get_language_id());
+        // }]);
     }
     public function render()
     {
-        return view('livewire.frontend.partials.page-inner-header',[
+        return view('livewire.frontend.partials.page-inner-header', [
             'categories' => $this->game->categories ?? [],
         ]);
-
     }
 }

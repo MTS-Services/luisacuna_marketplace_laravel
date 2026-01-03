@@ -251,6 +251,7 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
         Route::controller(ProductCurrencyController::class)->name('category.')->prefix('category')->group(function () {
             Route::get('/{categorySlug}', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
+            Route::get('/details/{id}', 'details')->name('details');
         });
 
         // Route::controller(AccountController::class)->name('account.')->prefix('account')->group(function () {
@@ -309,7 +310,7 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
     Route::controller(FinanceController::class)->name('finance.')->prefix('finance')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/top-ups', 'topUps')->name('top-ups');
-       Route::get('/purchased', 'purchased')->name('purchased');
+        Route::get('/purchased', 'purchased')->name('purchased');
         Route::get('/withdrawals', 'withdrawals')->name('withdrawals');
     });
 });

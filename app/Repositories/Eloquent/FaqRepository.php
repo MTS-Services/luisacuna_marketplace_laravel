@@ -6,7 +6,6 @@ use App\Models\Faq;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\FaqRepositoryInterface;
 class FaqRepository implements FaqRepositoryInterface
 {

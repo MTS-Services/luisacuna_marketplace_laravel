@@ -8,14 +8,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class InvoiceDownload extends Component
 {
-
-    public $showDeleteModal = false;
-    public $deleteItemId = null;
-    public $perPage = 7;
-    public $status;
-    public $order_date;
-    public $search;
-    public $months = [];
+    
+    public $months;
     public $selectedMonth;
     public $fileType = 'pdf';
 
@@ -72,7 +66,6 @@ class InvoiceDownload extends Component
             year: (int) $year
         );
 
-        // ✅ CSV
         if ($this->fileType === 'csv') {
             return response()->streamDownload(function () use ($orders) {
 
@@ -104,13 +97,16 @@ class InvoiceDownload extends Component
             }, "sales-invoice-{$year}-{$month}.csv");
         }
 
-        // ✅ PDF
         if ($this->fileType === 'pdf') {
+
+            $invoiceId = 'INV-' . strtoupper(uniqid());
+
             $pdf = Pdf::loadView('pdf-template.invoice', [
                 'orders' => $orders,
                 'month'  => $month,
                 'year'   => $year,
                 'seller' => user(),
+                'invoiceId' => $invoiceId,
             ]);
 
             return response()->streamDownload(

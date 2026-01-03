@@ -37,15 +37,26 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     public function getData(string $sortField, $order, $status, $layout, $trashed, ?array $selects): Collection
     {
+
         $query = $this->model->query();
         $this->commonQuery($query, $status, $layout, $trashed, $selects);
-        $query->with('products');
+        $query->with([
+            'products',
+            'categoryTranslations' => function ($query) {
+                $query->where('language_id', get_language_id());
+            }
+        ]);
         return $query->orderBy($sortField, $order)->get();
     }
     public function findData($column_value, string $column_name, $status, $layout, $trashed): ?Category
     {
         $query = $this->model->query();
         $this->commonQuery($query, $status, $layout, $trashed);
+        $query->with([
+            'categoryTranslations' => function ($query) {
+                $query->where('language_id', get_language_id());
+            }
+        ]);
         return $query->where($column_name, $column_value)->first();
     }
     public function getPaginatedData(int $perPage, array $filters, string $sortField, $order, $status, $layout, $trashed): LengthAwarePaginator

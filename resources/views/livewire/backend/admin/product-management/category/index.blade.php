@@ -24,7 +24,7 @@
 
 
     {{-- Table Component --}}
-    <x-ui.table :data="$categories" :columns="$columns" :actions="$actions" :bulkActions="$bulkActions" :bulkAction="$bulkAction"
+    <x-ui.table :data="$categories" :columns="$columns" :actions="$actions"
         :statuses="$statuses" :selectedIds="$selectedIds" :mobileVisibleColumns="2" searchProperty="search" perPageProperty="perPage"
         :showBulkActions="false" emptyMessage="No Category found. Create your first admin to get started." />
 
