@@ -110,7 +110,7 @@ class Home extends Component
         $tag = $this->tagService->findData('popular', 'slug');
 
         //Popular Games
-        $popular_games = $tag->games()->with(['categories','gameTranslations' => function ($query) {
+        $popular_games = $tag?->games()->with(['categories','gameTranslations' => function ($query) {
                 $query->where('language_id', get_language_id());
             }])->latest()->take(6)->get();
 
