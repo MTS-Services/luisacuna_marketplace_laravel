@@ -101,7 +101,7 @@ class GridLayout extends Component
 
             'skipSelf' => true,
 
-            'serach' => $this->search,
+            'search' => $this->search,
 
             'platform_id' => $this->platform_id,
 
