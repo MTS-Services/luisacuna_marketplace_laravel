@@ -36,15 +36,15 @@
 @media (prefers-color-scheme: dark) {
     :root {
         /* Full Opacity HEX Colors */
-        --clr-purple-light: #f0f;
+        --clr-purple-light: #f0f !important;
         /* 181, 160, 255 */
-        --clr-purple-mid: #fff000;
+        --clr-purple-mid: #fff000 !important;
         /* 155, 135, 232 */
-        --clr-purple-dark: #00f;
+        --clr-purple-dark: #00f !important;
         /* 139, 120, 216 */
-        --clr-purple-lightest: #0f0;
+        --clr-purple-lightest: #0f0 !important;
         /* 197, 180, 255 */
-        --clr-white: #f00f;
+        --clr-white: #f00f !important;
         /* 255, 255, 255 */
 
         /* RGB Components for Transparent/Variable Colors (Base Colors) */
