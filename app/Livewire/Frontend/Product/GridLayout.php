@@ -6,6 +6,7 @@ use App\Services\GameService;
 use App\Services\PlatformService;
 use App\Services\ProductService;
 use App\Traits\WithPaginationData;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class GridLayout extends Component
@@ -16,13 +17,27 @@ class GridLayout extends Component
 
     public $platforms;
 
-   
-
     public $categorySlug;
 
     public $gameSlug;
 
+    public $delivery_timelines;
+
     protected $datas;
+
+    // This Serach
+    #[Url()]
+    public $search = '';
+
+    public $platform_id = '';
+    #[Url()]
+    public $delivery_timeline = '';
+
+    public $category_id = 0;
+    #[Url()]
+    public float $min_price=0;
+    #[Url()]
+    public float $max_price=0;
 
 
 
@@ -48,7 +63,28 @@ class GridLayout extends Component
 
         $this->game = $this->gameService->findData($gameSlug, 'slug')->load(['gameConfig', 'tags']) ;   
 
-       
+       $this->delivery_timelines = [
+             [
+                'label' => 'Instant Delivery',
+                'value' => 'Instant Delivery',
+             ], 
+             [
+                'label' => '1 Hour',
+                'value' => '1 Hour',
+             ], 
+             [
+                'label' => '2 Hour',
+                'value' => '2 Hour',
+             ], 
+             [
+                'label' => '3 Hour',
+                'value' => '3 Hour',
+             ], 
+             [
+                'label' => '4 Hour',
+                'value' => '4 Hour',
+             ], 
+       ];
        
 
         $this->platforms = $this->platformService->getAllDatas() ?? [];
@@ -56,25 +92,34 @@ class GridLayout extends Component
 
     public function getDatas(){
         
+       
      return  $this->productService->getPaginatedData($this->perPage, [
 
             'gameSlug' => $this->gameSlug,
 
             'categorySlug' => $this->categorySlug,
 
-            'skipSelf' => true
+            'skipSelf' => true,
 
+            'serach' => $this->search,
+
+            'platform_id' => $this->platform_id,
+
+            'delivery_timeline' => $this->delivery_timeline,
+
+            'category_id' => $this->category_id,
+
+            'min_price' => $this->min_price,
+
+            'max_price' => $this->max_price,
 
         ]);
     }
 
-    public function serachFilters(){
-       
-       
-    }
     public function render()
     {
          
+
         $this->datas = $this->getDatas();
 
         $this->paginationData($this->datas);
@@ -85,7 +130,12 @@ class GridLayout extends Component
     }
 
     public function resetAllFilters(){
-        // $this->reset();
-        // $this->render()->skip()->dispatch();
+
+       $this->search = '';
+       $this->platform_id = '';
+       $this->delivery_timeline = '';
+       $this->category_id = 0;
+       $this->min_price = 0;
+       $this->max_price = 0;
     }
 }
