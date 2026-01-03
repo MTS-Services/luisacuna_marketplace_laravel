@@ -23,7 +23,7 @@
 /* ================= GOOGLE FONTS ================= */
 
 :root {
-    
+
     /* Base Colors */
     --color-black: #000000;
     --color-white: #ffffff;
@@ -131,12 +131,12 @@
 
 @theme {
 
-    --color-light-image: 
+    --color-light-image:
 
-    /* ======================================================
+        /* ======================================================
     	 	 	 	 	 	 # Colors
     ======================================================== */
-    --color-zinc-50: var(--color-primary-50);
+        --color-zinc-50: var(--color-primary-50);
     --color-zinc-100: var(--color-primary-100);
     --color-zinc-200: var(--color-primary-200);
     --color-zinc-300: var(--color-primary-300);
@@ -423,7 +423,7 @@
 
     /* === Global Swiper Pagination Style === */
     .swiper-pagination-bullet {
-        @apply !w-4 !h-2.5 !bg-zinc-300 dark:bg-white! !rounded-md !transition-all duration-300 ease-in-out !opacity-100;
+        @apply !w-4 !h-2.5 !bg-zinc-300 dark:bg-white ! !rounded-md !transition-all duration-300 ease-in-out !opacity-100;
     }
 
     .swiper-pagination .swiper-pagination-bullet-active {
@@ -490,4 +490,18 @@ select:focus[data-flux-control] {
 
 .animate-shimmer {
     animation: shimmer 1.5s infinite ease-in-out;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    all: revert;
+}
+
+p,
+a {
+    all: revert;
 }
