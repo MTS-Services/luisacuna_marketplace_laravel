@@ -2,10 +2,8 @@
 
 namespace App\Livewire\Frontend;
 
-use App\Enums\FaqStatus;
 use App\Enums\FaqType;
 use Livewire\Component;
-use App\Services\FaqService;
 use App\Services\TagService;
 use App\Services\GameService;
 use App\Services\HeroService;
@@ -35,18 +33,16 @@ class Home extends Component
     public $faqs_type = FaqType::BUYER->value;
 
     protected GameService $gameService;
-    protected FaqService $faqService;
 
     protected HeroService $heroService;
     protected TagService $tagService;
     protected ProductService $productService;
     protected PlatformService $platformService;
 
-    public function boot(GameService $gameService, HeroService $heroService, TagService $tagService,  FaqService $faqService, PlatformService $platformService, ProductService $productService,)
+    public function boot(GameService $gameService, HeroService $heroService, TagService $tagService, PlatformService $platformService, ProductService $productService,)
     {
         $this->tagService = $tagService;
         $this->gameService = $gameService;
-        $this->faqService = $faqService;
         $this->heroService = $heroService;
         $this->productService = $productService;
         $this->platformService = $platformService;
@@ -64,8 +60,6 @@ class Home extends Component
         // Fetch product datas
         $this->datas = $this->getDatas();
 
-
-        $this->platforms = $this->platformService->getAllDatas() ?? [];
     }
 
 
