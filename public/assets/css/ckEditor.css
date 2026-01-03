@@ -1,10 +1,15 @@
 :root {
     /* Full Opacity HEX Colors */
-    --clr-purple-light: #b5a0ff;        /* 181, 160, 255 */
-    --clr-purple-mid: #9b87e8;          /* 155, 135, 232 */
-    --clr-purple-dark: #8b78d8;         /* 139, 120, 216 */
-    --clr-purple-lightest: #c5b4ff;     /* 197, 180, 255 */
-    --clr-white: #ffffff;               /* 255, 255, 255 */
+    --clr-purple-light: #b5a0ff;
+    /* 181, 160, 255 */
+    --clr-purple-mid: #9b87e8;
+    /* 155, 135, 232 */
+    --clr-purple-dark: #8b78d8;
+    /* 139, 120, 216 */
+    --clr-purple-lightest: #c5b4ff;
+    /* 197, 180, 255 */
+    --clr-white: #ffffff;
+    /* 255, 255, 255 */
 
     /* RGB Components for Transparent/Variable Colors (Base Colors) */
     --rgb-purple-light: 181, 160, 255;
@@ -12,19 +17,62 @@
     --rgb-purple-dark: 139, 120, 216;
     --rgb-purple-lightest: 197, 180, 255;
     --rgb-white: 255, 255, 255;
-    --rgb-purple-deep: 107, 87, 180;    /* For border/bg opacity: rgba(107, 87, 180, ...) */
-    --rgb-header-start: 204, 194, 245;  /* For header gradient: rgba(204, 194, 245, ...) */
-    --rgb-header-end: 174, 161, 235;    /* For header gradient: rgba(174, 161, 235, ...) */
-    --rgb-border-glow: 206, 193, 247;   /* For header border glow: rgba(206, 193, 247, ...) */
-    --rgb-statusbar-start: 170, 155, 228; /* For statusbar gradient: rgba(170, 155, 228, ...) */
-    --rgb-statusbar-end: 166, 153, 221;   /* For statusbar gradient: rgba(166, 153, 221, ...) */
-    --rgb-btn-bg-base: 158, 136, 240;   /* For button background: rgba(158, 136, 240, 0.25) */
+    --rgb-purple-deep: 107, 87, 180;
+    /* For border/bg opacity: rgba(107, 87, 180, ...) */
+    --rgb-header-start: 204, 194, 245;
+    /* For header gradient: rgba(204, 194, 245, ...) */
+    --rgb-header-end: 174, 161, 235;
+    /* For header gradient: rgba(174, 161, 235, ...) */
+    --rgb-border-glow: 206, 193, 247;
+    /* For header border glow: rgba(206, 193, 247, ...) */
+    --rgb-statusbar-start: 170, 155, 228;
+    /* For statusbar gradient: rgba(170, 155, 228, ...) */
+    --rgb-statusbar-end: 166, 153, 221;
+    /* For statusbar gradient: rgba(166, 153, 221, ...) */
+    --rgb-btn-bg-base: 158, 136, 240;
+    /* For button background: rgba(158, 136, 240, 0.25) */
+}
+
+.dark :root {
+    /* Full Opacity HEX Colors */
+    --clr-purple-light: #f0f;
+    /* 181, 160, 255 */
+    --clr-purple-mid: #fff000;
+    /* 155, 135, 232 */
+    --clr-purple-dark: #00f;
+    /* 139, 120, 216 */
+    --clr-purple-lightest: #0f0;
+    /* 197, 180, 255 */
+    --clr-white: #f00f;
+    /* 255, 255, 255 */
+
+    /* RGB Components for Transparent/Variable Colors (Base Colors) */
+    --rgb-purple-light: 181, 160, 255;
+    --rgb-purple-mid: 155, 135, 232;
+    --rgb-purple-dark: 139, 120, 216;
+    --rgb-purple-lightest: 197, 180, 255;
+    --rgb-white: 255, 255, 255;
+    --rgb-purple-deep: 107, 87, 180;
+    /* For border/bg opacity: rgba(107, 87, 180, ...) */
+    --rgb-header-start: 204, 194, 245;
+    /* For header gradient: rgba(204, 194, 245, ...) */
+    --rgb-header-end: 174, 161, 235;
+    /* For header gradient: rgba(174, 161, 235, ...) */
+    --rgb-border-glow: 206, 193, 247;
+    /* For header border glow: rgba(206, 193, 247, ...) */
+    --rgb-statusbar-start: 170, 155, 228;
+    /* For statusbar gradient: rgba(170, 155, 228, ...) */
+    --rgb-statusbar-end: 166, 153, 221;
+    /* For statusbar gradient: rgba(166, 153, 221, ...) */
+    --rgb-btn-bg-base: 158, 136, 240;
+    /* For button background: rgba(158, 136, 240, 0.25) */
 }
 
 /* Main Container */
-#tinymce{
+#tinymce {
     padding: 0 !important;
 }
+
 .tox-tinymce {
     border: 2px solid transparent !important;
     border-radius: 20px !important;
@@ -50,10 +98,13 @@
 }
 
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 0.5;
         transform: scale(1);
     }
+
     50% {
         opacity: 0.8;
         transform: scale(1.05);
@@ -527,6 +578,7 @@
     0% {
         background-position: -1000px 0;
     }
+
     100% {
         background-position: 1000px 0;
     }
