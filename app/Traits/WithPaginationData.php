@@ -17,7 +17,7 @@ trait WithPaginationData
     protected $perPage = 12;
 
     protected  $queryString = 1;
-    protected function paginationData(LengthAwarePaginator $paginator): void
+    public function paginationData(LengthAwarePaginator $paginator): void
     {
         $this->pagination =  [
             'current_page' => $paginator->currentPage(),
