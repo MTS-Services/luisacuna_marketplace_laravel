@@ -36,14 +36,19 @@ class ProfileCategoryItems extends Component
     }
 
     public function mount(User $user){
+
         $this->userId = $user->id; 
+
      
     }
     public function render()
     {  
-         $this->list_type = $this->categoryService->findData($this->activeTab, 'slug')->layout->value;
+        $this->list_type = $this->categoryService->findData($this->activeTab, 'slug')->layout->value;
+       
         $products = $this->getProducts();
-        $games = $this->gameService->getAllDatas();
+
+        $games = $this->gameService->randomData(100);
+        
         $this->paginationData($products);
 
         // dd($products);
