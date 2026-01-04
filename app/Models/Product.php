@@ -132,7 +132,7 @@ class Product extends BaseModel implements Auditable
         }
 
         $query->when($filters['skipSelf'] ?? null, function ($query, $skipSelf) {
-                $query->where('id', '!=', user()->id ?? 0);
+                $query->where('user_id', '!=', user()->id ?? 0);
 
         });
 
