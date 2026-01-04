@@ -56,7 +56,7 @@
                             <div class="flex justify-between items-center py-3 bg-green-50 rounded-lg px-4 mt-4">
                                 <span class="text-gray-700 font-semibold text-lg">Total Paid:</span>
                                 <span
-                                    class="font-bold text-2xl text-green-600">${{ number_format($order->grand_total, 2) }}</span>
+                                    class="font-bold text-2xl text-green-600">{{ currency_symbol() }}{{ currency_exchange($order->grand_total) }}</span>
                             </div>
                         </div>
                     </div>

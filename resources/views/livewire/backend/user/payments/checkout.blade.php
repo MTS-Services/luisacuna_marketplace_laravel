@@ -46,7 +46,7 @@
                             </div>
                             <div class="">
                                 <span class="text-text-white font-bold text-2xl">
-                                    {{ currency_exchange($order->unit_price) }}
+                                    {{ currency_symbol() }}{{ currency_exchange($order->unit_price) }}
                                 </span>
                             </div>
                         </div>
@@ -184,7 +184,7 @@
                                     @if ($gatewayItem->slug === 'wallet' && $walletBalance !== null)
                                         <span
                                             class="text-sm font-medium {{ $walletBalance >= $order->grand_total ? 'text-green-400' : 'text-red-400' }}">
-                                            ({{ currency_exchange($walletBalance) }})
+                                            ( {{ currency_symbol() }}{{ currency_exchange($walletBalance) }})
                                         </span>
                                     @endif
                                 </div>
@@ -215,7 +215,7 @@
                                     <div>
                                         <p class="font-bold">Insufficient Balance</p>
                                         <p class="text-sm">You need
-                                            ${{ currency_exchange($order->grand_total - $walletBalance) }} more to
+                                            {{ currency_symbol() }}{{ currency_exchange($order->grand_total - $walletBalance) }} more to
                                             complete
                                             this purchase.</p>
                                     </div>
@@ -249,7 +249,7 @@
                         <div class="mt-6">
                             <div class="flex justify-between mb-2">
                                 <p class="text-text-white font-normal text-xs">{{ __('Subtotal:') }}</p>
-                                <p class="text-text-white font-semibold text-base">{{ currency_exchange($order->grand_total) }}</p>
+                                <p class="text-text-white font-semibold text-base">{{ currency_symbol() }}{{ currency_exchange($order->grand_total) }}</p>
                             </div>
 
                             <div class="flex justify-between mb-2">
@@ -261,13 +261,13 @@
                                             class="fill-zinc-200 w-5 h-5 cursor-pointer hover:fill-zinc-300 transition-colors" />
                                     </button>
                                 </div>
-                                <p class="text-text-white font-semibold text-base">{{ __('+ 2.66 PEN') }}</p>
+                                <p class="text-text-white font-semibold text-base">{{ __('+ 2.66') }}{{ currency_symbol() }}</p>
                             </div>
 
                             <div class="flex justify-between mb-2">
                                 <p class="text-text-white font-normal text-xs">{{ __('Use Wallet Balance') }}</p>
                                 <p class="text-text-white font-semibold text-base">
-                                    {{ currency_exchange($walletBalance) }}</p>
+                                    {{ currency_symbol() }}{{ currency_exchange($walletBalance) }}</p>
                             </div>
                         </div>
 
@@ -295,7 +295,7 @@
                         </div>
                         <div class="mt-5">
                             <x-ui.button type="submit" wire:loading.remove wire:target="processPayment"
-                                class="px-4! py-2! sm:px-6! sm:py-3!">{{ currency_exchange($order->grand_total) }}
+                                class="px-4! py-2! sm:px-6! sm:py-3!">{{ currency_symbol() }}{{ currency_exchange($order->grand_total) }}
                                 {{ __('| Pay Now') }}</x-ui.button>
                         </div>
                         <div class="flex gap-2 mt-4">

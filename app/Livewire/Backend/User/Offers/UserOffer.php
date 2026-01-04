@@ -47,15 +47,15 @@ class UserOffer extends Component
                 'key' => 'game',
                 'label' =>  $this->categorySlug == 'top-up' ? 'Service' : 'Game',
                 'sortable' =>  $this->categorySlug == 'top-up' ? true : false,
-                'format' => function ($item)   {
-              if($this->categorySlug != 'top-up') {
-              return   '<div class="flex items-center gap-3">
+                'format' => function ($item) {
+                    if ($this->categorySlug != 'top-up') {
+                        return   '<div class="flex items-center gap-3">
                     <img src="' . ($item->games->logo) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item->games->name ?? 'Game') . '">
                     <span class="font-semibold text-text-white">' . ($item->games->name ?? '-') . '</span>
                 </div>';
-              }else{
-              return ' <span class="font-semibold text-text-white">' . ($item->games->name ?? '-') . '</span>';
-              }
+                    } else {
+                        return ' <span class="font-semibold text-text-white">' . ($item->games->name ?? '-') . '</span>';
+                    }
                 }
             ],
 
@@ -66,7 +66,11 @@ class UserOffer extends Component
             [
                 'key' => 'price',
                 'label' => 'Price',
+                'format' => function ($item) {
+                    return currency_symbol() . ' ' .  currency_exchange($item->price);
+                }
             ],
+
             [
                 'key' => 'status',
                 'label' => 'Status',

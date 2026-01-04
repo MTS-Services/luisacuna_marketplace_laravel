@@ -92,7 +92,7 @@ class PurchasedOrders extends Component
             [
                 'key' => 'grand_total',
                 'label' => 'Price',
-                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' . currency_exchange($order->total_amount) . '</span>'
+                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' .  currency_symbol() . currency_exchange($order->total_amount) . '</span>'
             ],
         ];
 
