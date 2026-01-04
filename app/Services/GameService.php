@@ -43,6 +43,14 @@ class GameService
 
         return $this->model->query()->filter($filters)->limit($limit)->get();
     }
+
+    public function randomData(int $limit = 100 , $filters = []):Collection {
+
+        return $this->model->query()->filter($filters)->inRandomOrder()->limit($limit)->get();
+    }
+
+
+
     public function findData(mixed $value, string $column = 'id', bool $withTrashed = false): ?Game
     {
         $query = $this->model->newQuery();

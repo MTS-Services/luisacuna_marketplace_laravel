@@ -40,6 +40,7 @@ class GridLayout extends Component
     public float $max_price=0;
 
 
+    public $tags = [];
 
     protected PlatformService $platformService;
     protected ProductService $productService;
@@ -60,8 +61,8 @@ class GridLayout extends Component
 
         $this->categorySlug = $categorySlug;
 
-
         $this->game = $this->gameService->findData($gameSlug, 'slug')->load(['gameConfig', 'tags']) ;   
+
 
        $this->delivery_timelines = [
              [
@@ -84,11 +85,23 @@ class GridLayout extends Component
                 'label' => '4 Hour',
                 'value' => '4 Hour',
              ], 
+
+            
        ];
        
 
-        $this->platforms = $this->platformService->getAllDatas() ?? [];
-    }
+    $this->platforms = $this->platformService->getAllDatas() ?? [];
+
+   
+    // Formatting Tags
+    $tags = $this->game->tags->pluck('name')->toArray();
+    $gameConfigs = $this->game->gameConfig->pluck('dropdown_values')->toArray();
+    $array = collect($gameConfigs) ->filter(fn ($value) => !is_null($value))->values()->toArray();
+    $platforms = $this->platforms->pluck('name')->toArray();
+    $shuffledTags = collect(array_merge($tags, $platforms, array_merge(...$array)))->shuffle()->values()->toArray();
+
+    $this->tags = $shuffledTags;
+}
 
     public function getDatas(){
         
