@@ -29,16 +29,12 @@ public function findData($column_value, string $column_name = 'id')
     {
 
         $search = $filters['search'] ?? null;
-
         $sortField = $filters['sort_field'] ?? 'created_at';
-
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
-
-       
         if ($search) {
             // Scout Search
-            return Product::search($search)
+            return Game::search($search)
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
         }
@@ -58,7 +54,6 @@ public function findData($column_value, string $column_name = 'id')
 
     public function searchData(string $query, $sortField = 'created_at', $order = 'desc'): Collection
     {
-        // return $this->model->search($query, $sortField, $order);
         return Collection::empty();
     }
 
@@ -92,8 +87,6 @@ public function findData($column_value, string $column_name = 'id')
 
 
                 foreach ($dynamic_data as $index => $datas) {
-
-                    //Not need to assing product id because CreateMany automatically assign this according relations
                     $configs[] = [
                         'game_config_id' => $index,
                         'value' => $datas['value'],
@@ -115,11 +108,6 @@ public function findData($column_value, string $column_name = 'id')
         });
     }
 
-    // public function updateData(int $id, array $data): Product
-    // {
-    //   //  return $this->updateAction->execute($id, $data);
-    //    return new Product();
-    // }
 
     public function updateData(int $id, array $data): Product
     {
@@ -138,20 +126,6 @@ public function findData($column_value, string $column_name = 'id')
             return $product->fresh();
         });
     }
-
-
-
-
-    // public function deleteData(int $id, bool $forceDelete = false, ?int $actionerId = null): bool
-    // {
-    //     if ($actionerId == null) {
-    //         $actionerId = admin()->id;
-    //     }
-
-    //     return true;
-    //     // return $this->deleteAction->execute($id, $forceDelete, $actionerId);
-    // }
-
 
     public function deleteProduct(int $id)
     {
