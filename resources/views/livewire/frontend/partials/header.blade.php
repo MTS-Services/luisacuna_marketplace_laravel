@@ -8,8 +8,8 @@
                     class="inline-block inline-flex gap-1 items-center justify-center">
 
                     {{-- <img src="{{ asset('assets/images/header_logo.png') }}" alt="{{ __('Logo') }}"></a> --}}
-                    <x-cloudinary::image public-id="{{ app_logo() }}" width="30" removeBackground height="30" crop="fill"
-                        alt="Uploaded File" class="rounded w-8 h-8" />
+                    <x-cloudinary::image public-id="{{ app_logo() }}" width="270" removeBackground height="270"
+        crop="scale" sizes="100vw" alt="Uploaded File" class="rounded" />>
                     <p>
                         {{ short_name() }}
                     </p>
