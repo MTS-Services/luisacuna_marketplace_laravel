@@ -33,9 +33,10 @@
                 <p class="text-text-secondary text-sm mt-4 max-w-[60%]">
                 
                    <p class="text-start w-full">
-                     {{
+                     {{-- {{
                         $data->name ?? ''
-                    }}
+                    }} --}}
+                     {{ $data->productTranslations->first()?->name ?? $data->name }}
                    </p>
                 <img class="w-16 h-16 rounded float-right" src="{{ storage_url($game->logo) }}"
                     alt="Image">
@@ -43,7 +44,7 @@
 
             <div class=" flex items-center justify-between ">
                 <span class="text-text-white font-medium text-lg">
-                   {{ currency_exchange($data->price) }}
+                  {{ currency_symbol() }}{{ currency_exchange($data->price) }}
                 </span>
                 <div class="flex items-center space-x-1 text-text-secondary text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 stroke-text-primary" viewBox="0 0 15 15"
@@ -58,7 +59,7 @@
                 </div>
             </div>
 
-            <div class="border-t border-zinc-500 mt-2 pt-3 flex items-center justify-between gap-3">
+            <a href="{{ route('profile', ['username' => $data->user->username]) ?? '' }}" class="border-t border-zinc-500 mt-2 pt-3 flex items-center justify-between gap-3">
 
                 <div class="w-18 h-14 relative ">
                     <img src="{{ storage_url($data->user->avatar) }}"
@@ -82,7 +83,7 @@
                         <p class="text-text-secondary text-xs">99.3% <span class="ml-1">(234)</span></p>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </a>
 </div>

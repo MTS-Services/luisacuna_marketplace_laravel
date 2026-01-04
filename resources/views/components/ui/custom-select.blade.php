@@ -4,23 +4,30 @@
     'options' => [],
     'wireModel' => null,
     'dropDownClasses' => '',
+    'wireLive' => false,
 ])
 
 <div class="relative w-full" x-data="{
     open: false,
     selectedOption: @js($label),
+    selectedValue: @entangle($wireModel){{ $wireLive ? '.live' : '' }},
     wireModel: @js($wireModel),
-    onChange: @js($onChange)
-}"
-    @click.away="open = false">
-
-    {{-- Hidden input for wire:model --}}
-    <input type="hidden" wire:model="{{ $wireModel }}">
+    onChange: @js($onChange),
+    selectOption(value, label) {
+        this.selectedValue = value;
+        this.selectedOption = label;
+        this.open = false;
+        
+        // Call onChange callback if provided
+        if (this.onChange) {
+            window[this.onChange](value);
+        }
+    }
+}" @click.away="open = false">
 
     {{-- Dropdown Trigger --}}
     <div @click="open = !open" {!! $attributes->merge([
-        'class' =>
-            'flex justify-between bg-bg-primary items-center px-3 py-2 cursor-pointer border border-zinc-700 rounded-full w-full',
+        'class' => 'flex justify-between bg-bg-primary items-center px-3 py-2 cursor-pointer border border-zinc-700 rounded-full w-full',
     ]) !!}>
         <span x-text="selectedOption"></span>
         <svg class="w-5 h-5 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none"

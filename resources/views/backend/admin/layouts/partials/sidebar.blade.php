@@ -203,7 +203,7 @@
                 <x-backend.navlink type="dropdown" icon="box" name="Products" :page_slug="$active"
                     :items="$productItems" />
 
-                <x-backend.navlink type="dropdown" icon="layers" name="Orders" :page_slug="$active"
+                <x-backend.navlink type="dropdown" icon="layers" name="Order Management" :page_slug="$active"
                     :items="[
                         [
                             'name' => 'All Orders',
@@ -264,23 +264,30 @@
                 <x-backend.navlink type="dropdown" icon="currency-dollar" name="Finance Management" :page_slug="$active"
                     :items="[
                         [
-                            'name' => 'Transactions',
-                            'route' => '#',
+                            'name' => 'All Transactions',
+                            'route' => route('admin.finance.index'),
                             'icon' => 'badge-dollar-sign',
-                            'active' => 'transaction',
+                            'active' => 'finance-management',
+                        ],
+                        [
+                            'name' => 'Top Ups',
+                            'route' => route('admin.finance.top-ups'),
+                            'icon' => 'dollar-sign',
+                            'active' => 'top-ups',
+                        ],
+                        [
+                            'name' => 'purchased',
+                            'route' => route('admin.finance.purchased'),
+                            'icon' => 'dollar-sign',
+                            'active' => 'purchased',
                         ],
                         [
                             'name' => 'Withdrawals',
-                            'route' => '#',
+                            'route' => route('admin.finance.withdrawals'),
                             'icon' => 'dollar-sign',
-                            'active' => 'withdrawal',
+                            'active' => 'withdrawals',
                         ],
-                        [
-                            'name' => 'Escrow',
-                            'route' => '#',
-                            'icon' => 'heart-handshake',
-                            'active' => 'withdrawal',
-                        ],
+
                     ]" />
                 <x-backend.navlink type="single" icon="percent" name="Fee Settings" :route="route('admin.fee-settings.fee-settings')"
                     active="fee-settings" :page_slug="$active" />
@@ -288,8 +295,8 @@
                 <x-sidebar-separator title="Support" />
                 <x-backend.navlink type="single" icon="megaphone" name="Announcements" :route="route('admin.announcement.index')"
                     active="announcement" :page_slug="$active" />
-                <x-backend.navlink type="single" icon="messages-square" name="Chat List" :route="route('admin.chat.index')"
-                    active="chat" :page_slug="$active" />
+                <x-backend.navlink type="single" icon="messages-square" name="Chat List" :route="route('admin.conversation.index')"
+                    active="admin-conversations" :page_slug="$active" />
                 <x-backend.navlink type="dropdown" icon="headset" name="Supports" :page_slug="$active"
                     :items="[
                         [
@@ -324,19 +331,19 @@
                             'name' => 'Terms & Conditions',
                             'route' => route('admin.cms.terms-condition'),
                             'icon' => 'notebook-text',
-                            'active' => 'admin.cms.terms-condition',
+                            'active' => 'terms_condition',
                         ],
                         [
                             'name' => 'Privacy Policy',
                             'route' => route('admin.cms.privacy-policy'),
                             'icon' => 'notepad-text',
-                            'active' => 'admin.cms.privacy-policy',
+                            'active' => 'privacy_policy',
                         ],
                         [
                             'name' => 'Refunds Policy',
                             'route' => route('admin.cms.refund-policy'),
                             'icon' => 'notepad-text-dashed',
-                            'active' => 'admin.cms.refund-policy',
+                            'active' => 'refund_policy',
                         ],
                     ]" />
                 <x-sidebar-separator title="System" />
@@ -442,7 +449,7 @@
 
                 <div class="space-y-2">
                     <flux:separator class="bg-accent!" />
-                    <x-backend.navlink type="single" icon="user" name="Profile" active="profile"
+                    <x-backend.navlink type="single" icon="user" name="Profile" active="profile" :route="route('admin.profile.index')"
                         :page_slug="$active" />
                     <button wire:click="logout" class="w-full text-left">
                         <x-backend.navlink type="single" icon="power" name="Logout" />

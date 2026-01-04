@@ -18,11 +18,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends AuthBaseModel implements Auditable
 {
-    use  TwoFactorAuthenticatable, AuditableTrait, HasTranslations, Notifiable;
+    use  TwoFactorAuthenticatable, AuditableTrait, HasTranslations, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -466,5 +466,16 @@ class User extends AuthBaseModel implements Auditable
                 'last_name' => 'last_name',
             ],
         ];
+    }
+
+
+    public function cloudinaryFiles()
+    {
+        return $this->hasMany(CloudinaryFile::class);
+    }
+
+    public function images()
+    {
+        return $this->cloudinaryFiles()->where('resource_type', 'image');
     }
 }

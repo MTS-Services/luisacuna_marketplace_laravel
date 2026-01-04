@@ -7,21 +7,23 @@ use Livewire\Component;
 use App\Services\GameService;
 use App\Traits\WithPaginationData;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\Url;
 
 class Product extends Component
 {
     use WithPaginationData;
     // Public properties
     public $categorySlug = null;
+    #[Url()]
     public $search = '';
-    public $sortOrder = 'default';
+    #[Url()]
+    public $sortOrder = '';
 
 
     // Protected properties
     protected GameService $game_service;
-    protected $allGamesCache = null;
     protected  CategoryService $categoryService;
-    public function boot(GameService $game_service , CategoryService $categoryService)
+    public function boot(GameService $game_service, CategoryService $categoryService)
     {
         $this->game_service = $game_service;
         $this->categoryService = $categoryService;
@@ -30,20 +32,17 @@ class Product extends Component
     {
         $this->categorySlug = $categorySlug;
     }
-    public function sortBy($order)
-    {
-        $this->sortOrder = $order;
-    }
     public function render()
     {
+
         $games = $this->getGames();
 
+       
         $category = $this->categoryService->findData($this->categorySlug, 'slug');
-        // dd($games);
 
         $this->paginationData($games);
 
-        $popular_games = $this->game_service->getAllDatas([
+        $popular_games = $this->game_service->latestData(10, [
             'category' => $this->categorySlug,
             'tag' => 'popular',
             'relations' => ['tags', 'categories'],
@@ -52,12 +51,12 @@ class Product extends Component
             'withProductCount' => true
         ]);
 
-        if($this->categorySlug == 'boosting' || $this->categorySlug == 'coaching' || $this->categorySlug == 'top-up') {
-            $new_boosting = $this->game_service->getAllDatas([
-            'category' => $this->categorySlug,
-            'relations' => ['tags', 'categories', ],
-            'withProductCount' => true
-          ]);
+        if ($this->categorySlug == 'boosting' || $this->categorySlug == 'coaching' || $this->categorySlug == 'top-up') {
+            $new_boosting = $this->game_service->latestData(10, [
+                'category' => $this->categorySlug,
+                'relations' => ['tags', 'categories',],
+                'withProductCount' => true
+            ]);
         }
 
         return view('livewire.frontend.product', [
@@ -74,54 +73,34 @@ class Product extends Component
     protected function getGames()
     {
 
+        if($this->sortOrder == 'all') $this->resetFilters(); 
 
         try {
             $params = [
                 'category' => $this->categorySlug,
                 'relations' => ['tags', 'categories'],
                 'withProductCount' => true,
+                'search' => $this->search,
             ];
-
-
-
-            if (!empty($this->search)) {
-
-                $params['search'] = $this->search;
-            }
-
-            if ($this->sortOrder !== 'default') {
+            if($this->sortOrder){
                 $params['sort_field'] = 'name';
                 $params['sort_direction'] = $this->sortOrder;
             }
 
+           
             $games = $this->game_service->paginateDatas($this->perPage, $params);
 
             return $games;
+
         } catch (\Exception $e) {
             Log::error('Error fetching games: ' . $e->getMessage());
             return collect([]);
         }
     }
 
-    protected function applySorting($collection)
-    {
-        if ($collection === null || $collection->isEmpty()) {
-            return collect([]);
-        }
-
-        if ($this->sortOrder === 'asc') {
-            return $collection->sortBy('name')->values();
-        } elseif ($this->sortOrder === 'desc') {
-            return $collection->sortByDesc('name')->values();
-        }
-
-        return $collection;
-    }
-
     public function resetFilters()
     {
         $this->search = '';
-        $this->sortOrder = 'default';
+        $this->sortOrder = '';
     }
 }
-

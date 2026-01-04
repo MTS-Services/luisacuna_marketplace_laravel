@@ -105,10 +105,12 @@
                                         class="w-full h-full object-cover">
                                 </div>
                                 <div>
-                                    <a href="" class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl inline-block text-xs">
-                                        <x-phosphor name="fire" variant="regular" class="inline-block fill-white" />
-                                        {{ $game->tags->random()->name ?? '' }}
-                                    </a>
+                                    @if($game?->tags && $game->tags->isNotEmpty())
+                                        <a href="" class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl inline-block text-xs">
+                                            <x-phosphor name="fire" variant="regular" class="inline-block fill-white" />
+                                            {{ $game->tags->random()->name }}
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
                             <h3 class="text-base font-semibold text-text-white mt-4">{{ $data->quantity }}</h3>

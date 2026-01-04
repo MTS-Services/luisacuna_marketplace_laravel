@@ -1,6 +1,6 @@
 <section>
     @push('styles')
-        <link rel="stylesheet" href="{{ asset('assets/css/ckEditor.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/tinymce.css') }}">
     @endpush
     {{-- Page Header --}}
     <div class="glass-card rounded-2xl p-6 mb-6">

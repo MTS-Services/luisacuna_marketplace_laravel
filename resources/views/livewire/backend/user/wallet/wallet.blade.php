@@ -8,9 +8,11 @@
                     <div class="flex flex-col lg:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
                             <p class="text-text-white">{{ __('Balance') }}</p>
-                            <h2 class="text-text-white text-2xl font-semibold mt-2">{{number_shorten($wallet->balance ?? 0)}}</h2>
+                            <h2 class="text-text-white text-2xl font-semibold mt-2">
+                                {{ currency_symbol() }}{{ currency_exchange($wallet->balance ?? 0) }}</h2>
                             <p class="text-text-white mt-2 text-sm md:text-base">
-                                {{ __('Withdrawals require $10 in completed sales') }}
+                                {{ __('Withdrawals require') }} {{ currency_symbol() }}{{ currency_exchange(10) }}
+                                {{ __('in completed sales') }}
                             </p>
                             <a href="#" class="text-pink-500 mt-2 inline-block">{{ __('Learn more') }}</a>
                         </div>
@@ -33,7 +35,8 @@
                     <p class="text-text-white mt-2 text-sm md:text-base">
                         {{ __('Revenue from pending orders. Funds will be added to your balance when orders are Completed.') }}
                     </p>
-                    <h2 class="text-text-white text-2xl font-semibold mt-2">{{number_shorten($wallet->pending_balance ?? 0)}}</h2>
+                    <h2 class="text-text-white text-2xl font-semibold mt-2">
+                        {{ currency_symbol() }}{{ currency_exchange($wallet->pending_balance ?? 0) }}</h2>
                 </div>
             </div>
         </div>
@@ -72,14 +75,6 @@
 
             <!-- Right Side: Search & Actions -->
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
-                {{-- <div class="flex w-full md:w-auto">
-                    <x-ui.button class="w-fit! py-2!" x-data @click="$dispatch('open-modal', 'download-invoice-modal')">
-                        <x-phosphor-download
-                            class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
-                        {{ __('Download invoice') }}
-                    </x-ui.button>
-                </div> --}}
-
                 <!-- Manage Subscriptions Button -->
                 <a href="{{ route('user.subscriptions') }}">
                     <x-ui.button class="w-full sm:w-auto! py-2!">

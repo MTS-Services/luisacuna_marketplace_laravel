@@ -4,7 +4,7 @@
     <section class="container mx-auto relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-6 mb-13 mt-15">
             <div>
-                <h2 class="font-semibold text-4xl pb-3">{{ $category->name }}</h2>
+                <h2 class="font-semibold text-4xl pb-3">{{ $category->categoryTranslations->first()->name ?? $category->name }}</h2>
                 @if ($category->icon)
                     <p class="text-base lg:text-xl text-text-white font-light pb-3 ">
                         {!! $category->meta_description !!}
@@ -36,7 +36,22 @@
 
             <div class="min-w-30 flex items-center justify-center gap-2 relative" x-data="{ filter: false }">
                 {{-- Filter Button --}}
-                <button @click="filter = !filter"
+                {{-- <x-ui.custom-select label="Filter" wire-model="sortOrder" :wire-live="true" class="w-full sm:w-70">
+                    <x-ui.custom-option label="Default" value="all" />
+                    <x-ui.custom-option label="A-Z" value="asc" />
+                    <x-ui.custom-option label="Z-A" value="desc" />
+                </x-ui.custom-select> --}}
+
+                <x-ui.select wire:model.live="sortOrder" class="rounded-full! bg-transparent! border-zinc-500!">
+                    <option value="all">Default</option>
+                    <option value="asc">A-Z</option>
+                    <option value="desc">Z-A</option>
+                </x-ui.select>
+
+
+
+
+                {{-- <button @click="filter = !filter"
                     class="flex items-center gap-2 px-4 py-2.5 bg-bg-transparent rounded-full border border-zinc-700 relative z-10">
 
                     <span class="text-text-white text-sm">
@@ -54,7 +69,6 @@
                     </svg>
                 </button>
 
-                {{-- Dropdown --}}
                 <div class="absolute top-full mt-2 right-0 shadow-glass-card min-w-31 z-50" x-show="filter" x-transition
                     x-cloak @click.outside="filter = false">
                     <div class="bg-bg-primary rounded-md p-4 border border-zinc-700">
@@ -69,7 +83,7 @@
                             </button>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </section>

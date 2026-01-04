@@ -38,7 +38,7 @@
 
                 @forelse ($products as $product)
                     <div
-                        class="bg-bg-primary dark:bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300 cursor-pointer">
+                        class="bg-bg-primary shadow-sm dark:bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300 cursor-pointer">
 
                         <div class="flex items-center justify-between">
                             <div class="w-6 h-6">
@@ -47,11 +47,13 @@
                             </div>
 
                             <div>
+                              @if($product?->games?->tags?->isNotEmpty())
                                 <a href="#"
-                                    class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl inline-block text-xs">
+                                class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl inline-block text-xs">
                                     <x-phosphor name="fire" variant="regular" class="inline-block fill-white" />
-                                    {{ $product->games->tags->random()->name ?? '' }}
+                                    {{ $product->games->tags->random()->name }}
                                 </a>
+                             @endif
                             </div>
                         </div>
 

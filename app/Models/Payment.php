@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use OwenIt\Auditing\Contracts\Auditable;
 use App\Observers\PaymentObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
- 
+
 #[ObservedBy([PaymentObserver::class])]
 class Payment extends AuditBaseModel implements Auditable
 {
@@ -162,7 +162,7 @@ class Payment extends AuditBaseModel implements Auditable
     //     Transaction::create([
     //         'user_id' => $this->user_id,
     //         'order_id' => $this->order_id,
-    //         'type' => \App\Enums\TransactionType::PAYMENT,
+    //         'type' => \App\Enums\TransactionType::PURCHSED,
     //         'status' => \App\Enums\TransactionStatus::PAID,
     //         'amount' => $this->amount,
     //         'currency' => $this->currency,

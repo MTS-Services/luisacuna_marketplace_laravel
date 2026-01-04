@@ -24,6 +24,7 @@
                     </div>
                     <div class="text-center mb-4">
                         <div class="flex justify-between">
+                            {{-- @dd($currentRank->name) --}}
                             <h4 class="text-text-white font-semibold text-xl mb-2">{{ $currentRank?->name ?? 'N/A' }}
                             </h4>
                             <div class="text-text-white text-sm">
@@ -61,7 +62,10 @@
                 </div>
 
                 <p class="text-text-white/90 text-sm mb-6">
-                    {{ __('Collect a minimum of 10,000 points and unlock a $1 reward.') }}
+                    {{-- {{ __('Collect a minimum of 10,000 points and unlock a $1 reward.') }} --}}
+                    {{ __('Collect a minimum of 10,000 points and unlock a :symbol :amount reward.', ['symbol' => currency_symbol(), 'amount' => currency_exchange(1),]) }}
+
+
                 </p>
 
                 <div class="border-t-3 border-pink-600 mb-6"></div>
@@ -69,11 +73,18 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="text-text-white font-bold text-2xl mb-1">{{ __('10,000 points') }}</div>
-                        <div class="text-text-white/70 text-sm">{{ __('$1 Store credit') }}</div>
+                        <div class="text-text-white/70 text-sm">{{ __(':amount Store credit', ['amount' => currency_exchange(1)]) }}</div>
+                        {{-- <div class="text-text-white/70 text-sm">{{ __('$1 Store credit') }}</div> --}}
                     </div>
-                    <x-ui.button class="sm:w-auto! py-2!">
+                    {{-- <x-ui.button class="sm:w-auto! py-2!">
                         {{ __('Redeem') }}
-                    </x-ui.button>
+                    </x-ui.button> --}}
+                    <button wire:click="redeemPoints" @disabled(!$canRedeem)
+                        class="px-5 py-2 rounded-full text-white
+    {{ !$canRedeem ? 'bg-gray-400 cursor-not-allowed' : 'bg-purple-500 hover:bg-purple-600' }}">
+                        Redeem
+                    </button>
+
                 </div>
             </div>
         </div>
@@ -106,7 +117,8 @@
                             </div>
                         </div>
                         <div class="flex items-center justify-between text-sm mb-2">
-                            <span class="text-text-white text-base sm:text-xl">{{ __('0 / 1 To unlock') }}</span>
+                            <span
+                                class="text-text-white text-base sm:text-xl">{{ $achievement->target_value }}{{ __(' To unlock') }}</span>
                             <div class="flex items-center gap-1">
                                 <x-phosphor-coin class="fill-yellow-500 w-4 h-4" weight="fill" />
                                 <span
@@ -114,7 +126,8 @@
                             </div>
                         </div>
                         <div class="w-full bg-white rounded-full h-2">
-                            <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full" style="width: 10%">
+                            <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full"
+                                style="width: {{ $progress }}%">
                             </div>
                         </div>
                     </div>
@@ -140,14 +153,15 @@
             @endif
         </div>
 
-       <div class="mb-6">
+        <div class="mb-6">
             <div class="flex items-center gap-3 mb-2">
                 <h2 class="text-text-white font-open-sans text-2xl font-bold">{{ __('Dedication') }}</h2>
             </div>
             <p class="text-text-white text-sm ">{{ __('Purchase at least 2 products per game to earn points') }}</p>
         </div>
         {{-- CTA Card --}}
-        <div class="glass-card rounded-2xl p-4 sm:p-8 py-6 sm:py-12 bg-linear-to-r from-zinc-500/30 from-0% via-zinc-500/30 via-20% to-pink-500/80 text-center">
+        <div
+            class="glass-card rounded-2xl p-4 sm:p-8 py-6 sm:py-12 bg-linear-to-r from-zinc-500/30 from-0% via-zinc-500/30 via-20% to-pink-500/80 text-center">
             <h2 class="text-text-white font-open-sans text-2xl sm:text-3xl xl:text-4xl font-bold mb-6">
                 {{ __('Start Your Reward Journey Today') }}
             </h2>

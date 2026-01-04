@@ -28,7 +28,6 @@ class AccountNotification extends Component
     {
         $user = user();
         
-        // Get notification settings (must exist)
         $notificationSettings = $this->service->getNotificationSettings($user->id);
     
         
@@ -50,7 +49,6 @@ class AccountNotification extends Component
     public function updated($propertyName)
     {
         try {
-            // Update through UpdateNotificationAction via service 
             $this->service->updateNotificationSetting(
                 user()->id,
                 $propertyName,
@@ -60,7 +58,6 @@ class AccountNotification extends Component
 
             $this->dispatch('profile-updated');
             
-            // $this->dispatch('success', 'Notification setting updated successfully.');
         } catch (\Exception $e) {
             Log::error('Failed to update notification', [
                 'property' => $propertyName,

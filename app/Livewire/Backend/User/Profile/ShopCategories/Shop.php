@@ -18,11 +18,10 @@ class Shop extends Component
     public $categories = [];
 
     protected CategoryService $service ;
-    protected ProductService $productService;
-    public function boot(CategoryService $Service, ProductService $productService)
+    
+    public function boot(CategoryService $Service,)
     {
         $this->service = $Service;
-        $this->productService = $productService;
 
     }
     public function mount(User $user)
@@ -31,7 +30,7 @@ class Shop extends Component
         $this->user = $user;
 
         $this->categories = $this->service->getDatas();
-        $this->categories->load('products');
+        // $this->categories->load('products');
 
     }
     public function render()

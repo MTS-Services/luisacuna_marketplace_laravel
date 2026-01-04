@@ -50,11 +50,6 @@ class Wallet extends BaseModel
         return $this->belongsTo(User::class);
     }
 
-    public function walletTransactions(): HasMany
-    {
-        return $this->hasMany(WalletTransaction::class);
-    }
-
     /* ==============================================================
                 RELATIONSHIPS - END
      ============================================================== */

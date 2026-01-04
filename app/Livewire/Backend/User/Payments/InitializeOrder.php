@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Product;
 use Livewire\Component;
 use App\Services\OrderService;
+use App\Services\ProductService;
 use Illuminate\Support\Facades\Session;
 use App\Traits\Livewire\WithNotification;
 
@@ -18,14 +19,18 @@ class InitializeOrder extends Component
 
     protected OrderService $orderService;
 
-    public function boot(OrderService $orderService)
+    protected ProductService $productService;
+    public function boot(OrderService $orderService, ProductService $productService)
     {
         $this->orderService = $orderService;
+        $this->productService = $productService;
     }
 
     public function mount($productId)
     {
-        $this->product = Product::where('id', decrypt($productId))->first();
+        $this->product= $this->productService->findData(decrypt($productId));
+        // $this->product = Product::where('id', decrypt($productId))->first();
+        $this->product->load(['user.seller', 'platform', 'product_configs.game_configs']);
     }
 
     public function updatedQuantity()
