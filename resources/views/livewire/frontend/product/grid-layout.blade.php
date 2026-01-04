@@ -12,11 +12,11 @@
 
             <!-- Filters Section -->
             <div class="mb-8 space-y-4">
-                <div class="flex gap-4 justify-between items-center md:justify-start relative" x-data={filter:false}>
+                <div class="flex gap-4 flex-col md:flex-row justify-between items-center md:justify-start relative" x-data={filter:false}>
 
 
                     {{-- Search --}}
-                    <div class="flex-1 w-auto md:min-w-64">
+                    <div class="flex-1 w-full md:min-w-64">
                         <div class="relative">
                             <input type="text" placeholder="Search" wire:model.live="search"
                                 class="w-full bg-bg-transparent rounded-full border border-zinc-700 px-4 py-2 pl-10 focus:outline-none focus:border-zinc-500">
@@ -47,7 +47,7 @@
                     {{-- Platforms --}}
 
 
-                    <div class="w-auto md:min-w-64">
+                    <div class="w-full md:min-w-64">
                         <x-ui.custom-select wire-model="platform_id" :wire-live="true"
                             class="rounded-full bg-transparent" label="Platforms">
 
@@ -123,7 +123,7 @@
 
                     {{-- Dellivery Timeline --}}
 
-                    <div class="w-auto md:min-w-64">
+                    <div class="w-full md:min-w-64">
                         <x-ui.custom-select wire-model="delivery_timeline" :wire-live="true"
                             class="rounded-full bg-transparent" label="Delivery Timeline">
 
@@ -139,7 +139,7 @@
 
 
                     <x-ui.button
-                        class="py-2! px-3! w-auto! rounded-full  hidden md:flex bg-transparent! text-text-primary! font-normal "
+                        class="w-full! md:w-auto! py-2! px-3!  rounded-full  md:flex bg-transparent! text-text-primary! font-normal "
                         :variant="'primary'" wire:click="resetAllFilters">
                         {{ __('Clear All') }}
                     </x-ui.button>
