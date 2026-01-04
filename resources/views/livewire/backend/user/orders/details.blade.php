@@ -171,11 +171,11 @@
             <h2 class="text-text-white text-2xl font-semibold">{{ __('Payment') }}</h2>
             <div class="flex justify-between mt-3">
                 <p class="text-text-white text-base font-semibold mb-2">{{ __('Total price') }}</p>
-                <p class="text-text-white text-base font-normal">{{ __('$1.20') }}</p>
+                <p class="text-text-white text-base font-normal">{{ currency_symbol() }}{{ currency_exchange(1.20) }}</p>
             </div>
             <div class="flex justify-between mt-2">
                 <p class="text-text-white text-base font-semibold mb-2">{{ __('Payment fee') }}</p>
-                <p class="text-text-white text-base font-normal">{{ __('$0.00') }}</p>
+                <p class="text-text-white text-base font-normal">{{ currency_symbol() }}{{ currency_exchange(0.00) }}</p>
             </div>
             <div class="flex justify-between mt-2">
                 <p class="text-text-white text-base font-semibold mb-2">{{ __('Quantity') }}</p>
@@ -188,12 +188,12 @@
             </div>
             <div class="flex justify-between mt-2">
                 <p class="text-text-white text-base font-semibold mb-2">{{ __('“Company” balance') }}</p>
-                <p class="text-text-white text-base font-normal">{{ __('$1.20') }}</p>
+                <p class="text-text-white text-base font-normal">{{ currency_symbol() }}{{ currency_exchange(1.20) }}</p>
             </div>
             <div class="border-t border-zinc-500 pt-4 mt-4 flex items-center gap-3"></div>
             <div class="flex justify-between mt-2">
                 <p class="text-text-white text-2xl font-semibold mb-2">{{ __('Total:') }}</p>
-                <p class="text-text-white text-base font-normal">{{ __('$0.00') }}</p>
+                <p class="text-text-white text-base font-normal">{{ currency_symbol() }}{{ currency_exchange(0.00) }}</p>
             </div>
         </div>
     </div>
