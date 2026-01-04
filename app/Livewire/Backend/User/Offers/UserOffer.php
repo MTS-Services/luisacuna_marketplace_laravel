@@ -108,7 +108,7 @@ class UserOffer extends Component
             ],
             [
                 'icon' => 'pencil-simple-fill',
-                'route' => 'user.offers',
+                'route' => 'user.offer.edit',
                 'label' => 'Edit',
             ],
             [
