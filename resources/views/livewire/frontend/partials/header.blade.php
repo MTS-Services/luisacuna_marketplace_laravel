@@ -1,14 +1,15 @@
 <header x-data="{ mobileMenuOpen: false, notification: false, dropdown: '', globalSearchModal: false, open: '' }" x-cloak
     class="sticky top-0 z-50   {{ request()->routeIs('home') ? 'bg-bg-secondary glass-card shadow-none!' : 'bg-bg-secondary glass-card' }}">
     <div class=" px-4 py-4 flex items-center justify-between relative" x-cloak>
-       
+
         <div class="flex flex-row-reverse items-center justify-center">
             <div class="hidden xxs:flex  lg:ml-0 scale-75 xl:scale-100">
-                <a href="{{ route('home') }}" wire:navigate class="inline-block inline-flex gap-1 items-center justify-center">
+                <a href="{{ route('home') }}" wire:navigate
+                    class="inline-block inline-flex gap-1 items-center justify-center">
 
                     {{-- <img src="{{ asset('assets/images/header_logo.png') }}" alt="{{ __('Logo') }}"></a> --}}
-                    <x-cloudinary::image public-id="{{ app_logo() }}" width="32" removeBackground height="24"
-        crop="scale" sizes="100vw" alt="Uploaded File" class="rounded" />
+                    <x-cloudinary::image public-id="{{ app_logo() }}" width="30" removeBackground height="30" crop="fill"
+                        alt="Uploaded File" class="rounded w-8 h-8" />
                     <p>
                         {{ short_name() }}
                     </p>
@@ -24,7 +25,7 @@
             </button>
         </div>
 
-        
+
         @include('partials.user-navigation')
 
         {{-- Main Navigation Icons --}}
@@ -75,7 +76,7 @@
                         </div>
                     </button>
                 </div>
-                
+
                 <livewire:backend.user.messages.message-notificaiton-sidebar />
 
                 <livewire:backend.user.notifications.notification-sidebar />
