@@ -15,34 +15,47 @@
     <div class="glass-card rounded-2xl p-6 mb-6">
         <form wire:submit="save">
 
-            <div>
-                <x-ui.label for="name" :value="__('Name')" />
-                <x-ui.input id="name" type="text" class="mt-1 block w-full" wire:model="form.name"
-                    placeholder="Name" />
-                <x-ui.input-error :messages="$errors->get('form.name')" class="mt-2" />
+            <!-- Fields -->
+            <div class="mt-6 space-y-4 grid gap-5">
+                <div>
+                    <x-ui.label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Icon') }}
+                        <small>{{ __('(200x200)') }}</small></x-ui.label>
+                    <x-ui.file-input wire:model="form.icon" accept="image/*" :error="$errors->first('form.icon')"
+                        hint="Upload a profile picture (Max: 1MB) height: 200px width: 200px" />
+                    <x-ui.input-error :messages="$errors->get('form.icon')" class="mt-2" />
+                </div>
             </div>
-            <div>
-                <x-ui.label for="text_color" :value="__('Text Color')" />
-                <x-ui.input id="text_color" type="color" class="mt-1 block w-full" wire:model="form.text_color"
-                    placeholder="Text Color" />
-                <x-ui.input-error :messages="$errors->get('form.text_color')" class="mt-2" />
+            <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
+                <div>
+                    <x-ui.label for="name" :value="__('Name')" />
+                    <x-ui.input id="name" type="text" class="mt-1 block w-full" wire:model="form.name"
+                        placeholder="Name" />
+                    <x-ui.input-error :messages="$errors->get('form.name')" class="mt-2" />
+                </div>
+                <div>
+                    <x-ui.label for="text_color" :value="__('Text Color')" />
+                    <x-ui.input id="text_color" type="color" class="mt-1 block w-full" wire:model="form.text_color"
+                        placeholder="Text Color" />
+                    <x-ui.input-error :messages="$errors->get('form.text_color')" class="mt-2" />
+                </div>
+                <div>
+                    <x-ui.label for="bg_color" :value="__('Background Color')" />
+                    <x-ui.input id="bg_color" type="color" class="mt-1 block w-full" wire:model="form.bg_color"
+                        placeholder="Text Color" />
+                    <x-ui.input-error :messages="$errors->get('form.bg_color')" class="mt-2" />
+                </div>
+                <div>
+                    <x-ui.label for="status" :value="__('Status')" />
+                    <x-ui.select id="status" class="mt-1 block w-full" wire:model="form.status">
+                        <option value="">{{ __('Select Status') }}</option>
+                        @foreach ($statuses as $status)
+                            <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
+                        @endforeach
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('form.status')" class="mt-2" />
+                </div>
             </div>
-            <div>
-                <x-ui.label for="bg_color" :value="__('Background Color')" />
-                <x-ui.input id="bg_color" type="color" class="mt-1 block w-full" wire:model="form.bg_color"
-                    placeholder="Text Color" />
-                <x-ui.input-error :messages="$errors->get('form.bg_color')" class="mt-2" />
-            </div>
-            <div>
-                <x-ui.label for="status" :value="__('Status')" />
-                <x-ui.select id="status" class="mt-1 block w-full" wire:model="form.status">
-                    <option value="">{{ __('Select Status') }}</option>
-                    @foreach ($statuses as $status)
-                        <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
-                    @endforeach
-                </x-ui.select>
-                <x-ui.input-error :messages="$errors->get('form.status')" class="mt-2" />
-            </div>
+
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
