@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div>
-                <x-ui.button href="{{ route('user.seller.verification') }}" wire:navigate
+                <x-ui.button href="{{ route('user.offers') }}" wire:navigate
                     class="m-auto! py-1! lg:py-2!">
                     {{ __('Sell') }}
                 </x-ui.button>
