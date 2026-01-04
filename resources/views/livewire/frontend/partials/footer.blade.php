@@ -6,7 +6,8 @@
                      <a href="{{ route('home') }}" wire:navigate class="inline-block inline-flex gap-1 items-center justify-center">
 
                     {{-- <img src="{{ asset('assets/images/header_logo.png') }}" alt="{{ __('Logo') }}"></a> --}}
-                    <img src=" {{storage_url( app_logo() )}}" alt="{{ __('Logo') }}" class="w-20 h-12">
+                    <x-cloudinary::image public-id="{{ app_logo() }}" width="32" removeBackground height="24"
+        crop="scale" sizes="100vw" alt="Uploaded File" class="rounded" />
                     <p>
                         {{ short_name() }}
                     </p>
@@ -48,7 +49,7 @@
                         <li><a href="{{ route('buyer-protection') }}" wire:navigate
                                 class="hover:text-purple-400 transition text-text-secondary text-md">{{ __('Buyer Protection') }}</a>
                         </li>
-                        <li> <a href="{{ route('register.signUp') }}" wire:navigate
+                        <li> <a href="{{ route('user.offers') }}" wire:navigate
                                 class="hover:text-purple-400 transition text-text-secondary text-md">{{ __('Become a Seller') }}</a>
                         </li>
                         <li><a href="{{ route('how-to-sell') }}" wire:navigate

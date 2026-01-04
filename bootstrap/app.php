@@ -4,6 +4,7 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\AdminVerifyMiddleware;
 use App\Http\Middleware\PaymentSecurityMiddleware;
 use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Middleware\SellerMiddleware;
 use App\Http\Middleware\UserVerifyMiddleware;
 use App\Http\Middleware\SetLocaleMiddleware as MultiLangSet;
 use Illuminate\Foundation\Application;
@@ -32,6 +33,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role_or_permission' => RoleOrPermissionMiddleware::class,
             'paymentSecurity' => PaymentSecurityMiddleware::class,
             'guest' => RedirectIfAuthenticated::class,//RedirectIfAuthenticated::class
+            'seller' => SellerMiddleware::class
         ]);
          $middleware->web(MultiLangSet::class);
         $middleware->api(MultiLangSet::class);
