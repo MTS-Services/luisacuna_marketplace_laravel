@@ -3,9 +3,14 @@
         <div class="container flex flex-col md:flex-row justify-start gap-8 mb-12">
             <div class="w-full md:w-1/4 flex flex-col items-start justify-start md:justify-start">
                 <div class="mb-4">
-                    <a href="{{ route('home') }}">
-                        <img src="{{ asset('assets/images/header_logo.png') }}" alt="">
-                    </a>
+                     <a href="{{ route('home') }}" wire:navigate class="inline-block inline-flex gap-1 items-center justify-center">
+
+                    {{-- <img src="{{ asset('assets/images/header_logo.png') }}" alt="{{ __('Logo') }}"></a> --}}
+                    <img src=" {{storage_url( app_logo() )}}" alt="{{ __('Logo') }}" class="w-20 h-12">
+                    <p>
+                        {{ short_name() }}
+                    </p>
+                </a>
                 </div>
                 <p class="text-text-secondary text-md text-center md:text-start">
                     {{ __('Digital Commerce connects buyers and verified sellers for secure, fast, and seamless digital transactions.') }}
