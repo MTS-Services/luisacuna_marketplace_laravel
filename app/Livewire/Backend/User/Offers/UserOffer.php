@@ -3,9 +3,11 @@
 namespace App\Livewire\Backend\User\Offers;
 
 use Livewire\Component;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Services\ProductService;
 use App\Enums\ActiveInactiveEnum;
 use App\Services\OfferItemService;
+use Illuminate\Support\Facades\Auth;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 
@@ -19,6 +21,7 @@ class UserOffer extends Component
     public $deleteItemId;
     public $url;
     public $search = '';
+    public $offers;
 
 
     protected ProductService $service;
@@ -74,8 +77,6 @@ class UserOffer extends Component
             [
                 'key' => 'status',
                 'label' => 'Status',
-
-                'sortable' => true,
                 'format' => function ($data) {
                     return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
                         $data->status->label() .
@@ -187,5 +188,28 @@ class UserOffer extends Component
         $data = $this->service->findData($id)->load(['category', 'games']);
         $url = route('game.buy', ['gameSlug' => $data->games->slug, 'categorySlug' => $data->category->slug, 'productId' => encrypt($id)]);
         $this->url = $url;
+    }
+
+
+    public function offerExport()
+    {
+        $offers = $this->service->getPaginatedData();
+
+        if ($offers->isEmpty()) {
+            session()->flash('error', 'No data found to download.');
+            return;
+        }
+        $invoiceId = 'INV-' . strtoupper(uniqid());
+        $pdf = Pdf::loadView('pdf-template.offer', [
+            'offers' => $offers,
+            'seller' => Auth::user(),
+            'date'   => now()->format('d M Y'),
+            'invoiceId' => $invoiceId
+        ]);
+
+        return response()->streamDownload(
+            fn() => print($pdf->output()),
+            'sold-orders-invoice-' . now()->format('Y-m-d') . '.pdf'
+        );
     }
 }

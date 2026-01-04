@@ -57,7 +57,7 @@
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('Price') }}</p>
 
-                                <p class="text-slate-400 text-lg font-bold"></p>{{ $data->price ?? 'N/A' }}</p>
+                                <p class="text-slate-400 text-lg font-bold"></p> {{ currency_symbol() }}{{ $data->price ?? 'N/A' }}</p>
                             </div>
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('Quantity') }}</p>
