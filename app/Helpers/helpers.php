@@ -578,9 +578,30 @@ if (!function_exists('currency_exchange')) {
             return $price;
         }
         $convertedAmount = $price * ($selectedCurrency->exchange_rate / $defaultCurrency->exchange_rate);
-        return $selectedCurrency->symbol . number_format($convertedAmount, $selectedCurrency->decimal_places);
+        return $convertedAmount;
     }
 }
+
+
+if (!function_exists('currency_symbol')) {
+    function currency_symbol()
+    {
+        $defaultCurrency = Currency::where('is_default', true)->first();
+
+        if (!$defaultCurrency) {
+            return '';
+        }
+
+        $selectedCurrencyCode = session('currency', $defaultCurrency->code);
+
+        $selectedCurrency = Currency::where('code', $selectedCurrencyCode)->first();
+
+        return $selectedCurrency?->symbol ?? '';
+    }
+}
+
+
+
 
 if (!function_exists('number_shorten')) {
     /**
@@ -619,7 +640,7 @@ if (!function_exists('number_shorten')) {
             $number_format = number_format($number / 1000000000000, $precision);
             $suffix = 'T';
         }
-        
+
         // Remove unnecessary .0
         if ($precision > 0) {
             $dotzero = '.' . str_repeat('0', $precision);

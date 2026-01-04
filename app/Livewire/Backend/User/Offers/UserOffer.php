@@ -20,6 +20,7 @@ class UserOffer extends Component
     public $url;
     public $search = '';
 
+
     protected ProductService $service;
 
     public function boot(ProductService $service)
@@ -38,6 +39,7 @@ class UserOffer extends Component
         $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
+
         );
 
         $columns = [
@@ -45,15 +47,15 @@ class UserOffer extends Component
                 'key' => 'game',
                 'label' =>  $this->categorySlug == 'top-up' ? 'Service' : 'Game',
                 'sortable' =>  $this->categorySlug == 'top-up' ? true : false,
-                'format' => function ($item)   {
-              if($this->categorySlug != 'top-up') {
-              return   '<div class="flex items-center gap-3">
+                'format' => function ($item) {
+                    if ($this->categorySlug != 'top-up') {
+                        return   '<div class="flex items-center gap-3">
                     <img src="' . ($item->games->logo) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item->games->name ?? 'Game') . '">
                     <span class="font-semibold text-text-white">' . ($item->games->name ?? '-') . '</span>
                 </div>';
-              }else{
-              return ' <span class="font-semibold text-text-white">' . ($item->games->name ?? '-') . '</span>';
-              }
+                    } else {
+                        return ' <span class="font-semibold text-text-white">' . ($item->games->name ?? '-') . '</span>';
+                    }
                 }
             ],
 
@@ -62,13 +64,13 @@ class UserOffer extends Component
                 'label' => 'Quantity',
             ],
             [
-                'key' => 'min_quantity',
-                'label' => 'Minimum quantity',
-            ],
-            [
                 'key' => 'price',
                 'label' => 'Price',
+                'format' => function ($item) {
+                    return currency_symbol() . ' ' .  currency_exchange($item->price);
+                }
             ],
+
             [
                 'key' => 'status',
                 'label' => 'Status',
@@ -120,6 +122,7 @@ class UserOffer extends Component
             'datas' => $datas,
             'columns' => $columns,
             'actions' => $actions,
+            'pagination' => $datas,
             'statuses' => ActiveInactiveEnum::options(),
         ]);
     }
@@ -178,18 +181,6 @@ class UserOffer extends Component
             'categorySlug' => $this->categorySlug,
         ];
     }
-    // public function copyItemLink($id)
-    // {
-    //     $data = $this->service->findData($id)->load(['category', 'games']);
-    //     $url = route('game.buy', [
-    //         'gameSlug' => $data->games->slug,
-    //         'categorySlug' => $data->category->slug,
-    //         'productId' => encrypt($id)
-    //     ]);
-
-    //     $this->dispatchBrowserEvent('copy-link', ['url' => $url]);
-    // }
-
     public function copyItemLink($id)
     {
 

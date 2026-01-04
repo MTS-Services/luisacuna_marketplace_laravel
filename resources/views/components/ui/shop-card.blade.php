@@ -44,9 +44,7 @@
 
             <div class=" flex items-center justify-between ">
                 <span class="text-text-white font-medium text-lg">
-                   {{ currency_exchange($data->price) }}
-
-               
+                  {{ currency_symbol() }}{{ currency_exchange($data->price) }}
                 </span>
                 <div class="flex items-center space-x-1 text-text-secondary text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 stroke-text-primary" viewBox="0 0 15 15"

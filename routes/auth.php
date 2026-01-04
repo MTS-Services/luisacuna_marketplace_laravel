@@ -20,12 +20,12 @@ Route::middleware('guest:web')->group(function () {
     })->name('login');
 
 
-        Route::controller(RegisterController::class)->name('register.')->prefix('register')->group(function () {
-            Route::get('/', 'signUp')->name('signUp');
-            Route::get('/email-verify', 'emailVerify')->name('emailVerify');
-            Route::get('/otp', 'otp')->name('otp');
-            Route::get('/password', 'password')->name('password');
-        });
+    Route::controller(RegisterController::class)->name('register.')->prefix('register')->group(function () {
+        Route::get('/', 'signUp')->name('signUp');
+        Route::get('/email-verify', 'emailVerify')->name('emailVerify');
+        Route::get('/otp', 'otp')->name('otp');
+        Route::get('/password', 'password')->name('password');
+    });
 
 
 
