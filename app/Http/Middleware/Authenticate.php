@@ -17,8 +17,7 @@ class Authenticate
     {
          if (!$request->expectsJson()) {
             // Check if this is an admin route
-            if ($request->is('admin') || $request->is('admin/*')) {
-                
+            if ($request->is('admin') || $request->is('admin/*')) {               
                 return redirect()->route('admin.login');
             }
             
