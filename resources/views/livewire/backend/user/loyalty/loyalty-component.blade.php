@@ -113,7 +113,6 @@
                             </div>
                         </div>
                         <div class="flex items-center justify-between text-sm mb-2">
-                            {{-- <span class="text-text-white text-base sm:text-xl">{{ __('0 / 1 To unlock') }}</span> --}}
                             <span class="text-text-white text-base sm:text-xl">{{ $achievement->target_value }}{{ __(' To unlock') }}</span>
                             <div class="flex items-center gap-1">
                                 <x-phosphor-coin class="fill-yellow-500 w-4 h-4" weight="fill" />

@@ -13,7 +13,7 @@ class PurchasedOrders extends Component
 
     public $showDeleteModal = false;
     public $deleteItemId = null;
-    public $perPage = 7;
+    public $perPage = 2;
     public $status = null;
     public $order_date;
 
@@ -27,13 +27,10 @@ class PurchasedOrders extends Component
 
     public function render()
     {
-        // Table columns configuration for orders
         $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
-
-        // dd($datas);  
         $columns = [
             [
                 'key' => 'id',
@@ -68,8 +65,7 @@ class PurchasedOrders extends Component
             [
                 'key' => 'source_id',
                 'label' => 'Seller',
-                // 'sortable' => true,
-                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->source->user->username]) . '"><span class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">' . $order->source->user->full_name . '</span></a>'
+                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->source->user->username]) . ' " target="_blank"><span class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">' . $order->source->user->full_name . '</span></a>'
             ],
             [
                 'key' => 'created_at',
@@ -78,10 +74,10 @@ class PurchasedOrders extends Component
                     return $data->created_at_formatted;
                 }
             ],
+            
             [
                 'key' => 'status',
                 'label' => 'Order status',
-                // 'badge' => true,
                 'format' => function ($data) {
                     return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-xs font-medium badge ' . $data->status->color() . '">' .
                         $data->status->label() .
@@ -95,7 +91,7 @@ class PurchasedOrders extends Component
             ],
             [
                 'key' => 'grand_total',
-                'label' => 'Price ($)',
+                'label' => 'Price',
                 'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' . currency_exchange($order->total_amount) . '</span>'
             ],
         ];
@@ -103,7 +99,6 @@ class PurchasedOrders extends Component
         return view('livewire.backend.user.orders.purchased-orders', [
             'datas' => $datas,
             'columns' => $columns,
-            // 'pagination' => $pagination,
             'statuses' => OrderStatus::options(),
         ]);
     }
