@@ -23,7 +23,7 @@ class ShopComponent extends Component
 
         $this->categorySlug = $categorySlug;
 
-        $this->layoutView =   $this->categoryService->findData($categorySlug, 'slug')->layout->value;
+        $this->layoutView =   $this->categoryService->findData($categorySlug, 'slug')?->layout?->value;
 
     }
 

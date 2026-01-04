@@ -5,6 +5,7 @@
 @import './iziToast.css';
 @import "tailwindcss";
 @import "../../vendor/livewire/flux/dist/flux.css";
+@plugin "@tailwindcss/typography";
 @plugin "daisyui";
 
 /* ================= CUSTOM CSS START ================= */
@@ -23,7 +24,7 @@
 /* ================= GOOGLE FONTS ================= */
 
 :root {
-    
+
     /* Base Colors */
     --color-black: #000000;
     --color-white: #ffffff;
@@ -131,12 +132,12 @@
 
 @theme {
 
-    --color-light-image: 
+    --color-light-image:
 
-    /* ======================================================
+        /* ======================================================
     	 	 	 	 	 	 # Colors
     ======================================================== */
-    --color-zinc-50: var(--color-primary-50);
+        --color-zinc-50: var(--color-primary-50);
     --color-zinc-100: var(--color-primary-100);
     --color-zinc-200: var(--color-primary-200);
     --color-zinc-300: var(--color-primary-300);
@@ -318,7 +319,7 @@
         scroll-behavior: smooth;
         scrollbar-width: thin;
         scrollbar-color: var(--color-accent) var(--color-accent-content) !important;
-        @apply transition-colors duration-200 ease-in-out text-text-primary;
+        @apply transition-colors duration-200 ease-in-out;
     }
 
     h1,
@@ -423,7 +424,7 @@
 
     /* === Global Swiper Pagination Style === */
     .swiper-pagination-bullet {
-        @apply !w-4 !h-2.5 !bg-zinc-300 dark:bg-white! !rounded-md !transition-all duration-300 ease-in-out !opacity-100;
+        @apply !w-4 !h-2.5 !bg-zinc-300 dark:!bg-white !rounded-md !transition-all duration-300 ease-in-out !opacity-100;
     }
 
     .swiper-pagination .swiper-pagination-bullet-active {
@@ -433,6 +434,24 @@
     .mobile-nav-item {
         @apply text-text-primary hover:bg-bg-secondary block px-3 py-2 rounded-md text-base font-medium;
     }
+}
+
+/* Custom Prose Styles for TinyMCE Content */
+.prose {
+    --tw-prose-body: var(--color-text-primary);
+    --tw-prose-headings: var(--color-text-primary);
+    --tw-prose-links: var(--color-accent);
+    --tw-prose-bold: var(--color-text-primary);
+    --tw-prose-counters: var(--color-text-muted);
+    --tw-prose-bullets: var(--color-text-muted);
+    --tw-prose-quotes: var(--color-text-primary);
+    --tw-prose-code: var(--color-text-primary);
+
+    /* Invert colors for dark mode */
+    --tw-prose-invert-body: var(--color-text-primary-dark);
+    --tw-prose-invert-headings: var(--color-text-primary-dark);
+    --tw-prose-invert-links: var(--color-accent-dark);
+    --tw-prose-invert-bold: var(--color-text-primary-dark);
 }
 
 @utility container {

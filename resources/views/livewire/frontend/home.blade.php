@@ -65,7 +65,7 @@
                 </div>
                 <div wire:ignore class="swiper popular-games">
                     <div class="swiper-wrapper ">
-                        @foreach ($games as $game)
+                        @foreach ($popular_games as $game)
                             <div class="swiper-slide">
                                 <x-game-card :data="$game" />
                             </div>
@@ -95,9 +95,9 @@
                 </div>
                 <div wire:ignore class="swiper top-sellings">
                     <div class="swiper-wrapper py-0">
-                        @foreach ($datas as $item)
+                        @foreach ($top_selling_products as $product)
                             <div class="swiper-slide">
-                                <x-ui.shop-card :gameSlug="$item->games->slug" :categorySlug="$item->category->slug" :data="$item"
+                                <x-ui.shop-card :gameSlug="$product->games->slug" :categorySlug="$product->category->slug" :data="$product"
                                     :game="$game" />
                             </div>
                         @endforeach
@@ -201,7 +201,7 @@
     </section>
 
     <!-- FAQ Section -->
-    <livewire:frontend.partials.faq :faqs_buyer="$faqs_buyer" :faqs_seller="$faqs_seller" />
+    <livewire:frontend.partials.faq />
 
     <div class="mt-20"></div>
 

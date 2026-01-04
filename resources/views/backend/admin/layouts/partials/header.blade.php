@@ -28,7 +28,7 @@
                     icon="magnifying-glass" /> --}}
 
                 {{-- --}}
-                <flux:button x-data x-on:click="$flux.dark = !$flux.dark" variant="subtle"
+                <flux:button x-data x-on:click="$flux.dark = !$flux.dark; window.dispatchEvent(new CustomEvent('reset-tinymce-initiallized'))" variant="subtle"
                     aria-label="{{ __('Toggle dark mode') }}">
                     <flux:icon name="moon" class="w-5 h-5" x-show="$flux.dark" />
                     <flux:icon name="sun" class="w-5 h-5" x-show="!$flux.dark" />

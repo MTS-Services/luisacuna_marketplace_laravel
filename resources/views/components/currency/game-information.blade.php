@@ -38,10 +38,10 @@
 
 
          <!-- Product Title -->
-         <h1 class="sm:text-1xl md:text-2xl lg:text-3xl pb-6 mb-6 border-b border-purple-500/60">{{ $product->name }}</h1>
+         <h1 class="sm:text-1xl md:text-2xl lg:text-3xl pb-6 mb-6 border-b text-text-primary border-purple-500/60">{{ $product->name }}</h1>
 
          <!-- How to Purchase -->
-         <div class="mb-6">
+         <div class="mb-6 text-text-primary">
              {!! $product->description !!}
          </div>
 

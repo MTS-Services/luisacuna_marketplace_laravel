@@ -107,7 +107,7 @@
                             clip-rule="evenodd"></path>
                     </svg>
                     <div>
-                        <p class="font-semibold text-sm">{{ __('Money-back Guarantee') }}</p>
+                        <p class="font-semibold text-sm text-text-primary">{{ __('Money-back Guarantee') }}</p>
                         <p class="text-xs text-gray-400">{{ __('Protected by TradeShield') }}</p>
                     </div>
                 </div>
@@ -120,7 +120,7 @@
                         </path>
                     </svg>
                     <div class="flex">
-                        <p class="font-semibold text-sm">{{ __('Fast Checkout Options') }}</p>
+                        <p class="font-semibold text-sm text-text-primary">{{ __('Fast Checkout Options') }}</p>
                         <div class="flex gap-0 ">
                             <span class="text-xs   px-2 rounded">
                                 <img src="{{ asset('assets/images/GooglePay-Light 1.svg') }}" alt="">
@@ -140,7 +140,7 @@
                         </path>
                     </svg>
                     <div>
-                        <p class="font-semibold text-sm">{{ __('24/7 Live Support') }}</p>
+                        <p class="font-semibold text-sm text-text-primary">{{ __('24/7 Live Support') }}</p>
                         <p class="text-xs text-gray-400">{{ __('We\'re always here to help') }}</p>
                     </div>
                 </div>
@@ -163,7 +163,7 @@
                 </div>
 
                 <div class="w-full">
-                    <p class="text-text-white font-medium flex items-center gap-2">
+                    <p class="text-text-primary font-medium flex items-center gap-2">
                         <span> {{ $product->user->full_name }}</span>
                         @if ($product->user->seller?->seller_verified_at)
                             <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
@@ -181,7 +181,7 @@
                 </div>
             </div>
 
-            <h3 class="font-bold m-4">{{ __('Seller Description') }}</h3>
+            <h3 class="font-bold m-4 text-text-primary">{{ __('Seller Description') }}</h3>
             <div x-data="{
                 expanded: false,
                 limit: 50,
@@ -227,7 +227,7 @@
         
 
 
-            <button class=" text-3xl mt-5 mb-4 font-semibold">{{ __('Recent feedback') }}</button>
+            <button class=" text-3xl mt-5 mb-4 font-semibold text-text-primary">{{ __('Recent feedback') }}</button>
             <!-- Seller Card -->
             @foreach ([1, 2] as $item)
                 <div class="bg-bg-optional dark:bg-bg-info text-white p-5  max-w-md mb-1">
@@ -237,7 +237,7 @@
                                 <path
                                     d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
                             </svg>
-                            <h3 class="text-base font-medium">
+                            <h3 class="text-base font-medium  text-text-primary">
                                 Items <span class="text-text-secondary font-normal">| Yeg***</span>
                             </h3>
                         </div>
