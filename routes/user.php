@@ -48,6 +48,7 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
         //     return view('backend.user.pages.offers.gift-cards');
         // })->name('gift-cards');
         Route::get('create/', [OfferController::class, 'index'])->name('offers')->middleware('seller');
+        Route::get('edit/{encrypted_id}', [OfferController::class, 'edit'])->name('offer.edit')->middleware('seller');
     });
 
 
