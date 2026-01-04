@@ -8,15 +8,12 @@ use App\Enums\OrderStatus;
 use Livewire\WithPagination;
 use App\Services\OrderService;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class SoldOrders extends Component
 {
     use WithPagination;
 
-    public $showDeleteModal = false;
-    public $deleteItemId = null;
     public $perPage = 7;
     public $status;
     public $order_date;
@@ -67,11 +64,6 @@ class SoldOrders extends Component
                 </div>
         '
             ],
-            // [
-            //     'key' => 'type',
-            //     'label' => 'Type',
-            //     'format' => fn($order) => $order->product_type
-            // ],
             [
                 'key' => 'user_id',
                 'label' => 'Buyer',
@@ -87,7 +79,6 @@ class SoldOrders extends Component
             [
                 'key' => 'status',
                 'label' => 'Order status',
-                // 'badge' => true,
                 'format' => function ($data) {
                     return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-xs font-medium badge ' . $data->status->color() . '">' .
                         $data->status->label() .
@@ -101,7 +92,7 @@ class SoldOrders extends Component
             ],
             [
                 'key' => 'grand_total',
-                'label' => 'Price ($)',
+                'label' => 'Price',
                 'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' .  currency_exchange($order->total_amount)  . '</span>'
             ],
         ];
@@ -109,7 +100,6 @@ class SoldOrders extends Component
         return view('livewire.backend.user.orders.sold-orders', [
             'datas' => $datas,
             'columns' => $columns,
-            // 'pagination' => $pagination,
             'statuses' => OrderStatus::options(),
         ]);
     }

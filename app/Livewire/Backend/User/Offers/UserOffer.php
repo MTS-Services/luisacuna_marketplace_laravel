@@ -20,6 +20,7 @@ class UserOffer extends Component
     public $url;
     public $search = '';
 
+
     protected ProductService $service;
 
     public function boot(ProductService $service)
@@ -38,6 +39,7 @@ class UserOffer extends Component
         $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
+
         );
 
         $columns = [
@@ -60,10 +62,6 @@ class UserOffer extends Component
             [
                 'key' => 'quantity',
                 'label' => 'Quantity',
-            ],
-            [
-                'key' => 'min_quantity',
-                'label' => 'Minimum quantity',
             ],
             [
                 'key' => 'price',
@@ -120,6 +118,7 @@ class UserOffer extends Component
             'datas' => $datas,
             'columns' => $columns,
             'actions' => $actions,
+            'pagination' => $datas,
             'statuses' => ActiveInactiveEnum::options(),
         ]);
     }
@@ -178,18 +177,6 @@ class UserOffer extends Component
             'categorySlug' => $this->categorySlug,
         ];
     }
-    // public function copyItemLink($id)
-    // {
-    //     $data = $this->service->findData($id)->load(['category', 'games']);
-    //     $url = route('game.buy', [
-    //         'gameSlug' => $data->games->slug,
-    //         'categorySlug' => $data->category->slug,
-    //         'productId' => encrypt($id)
-    //     ]);
-
-    //     $this->dispatchBrowserEvent('copy-link', ['url' => $url]);
-    // }
-
     public function copyItemLink($id)
     {
 

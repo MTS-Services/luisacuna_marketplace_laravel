@@ -21,7 +21,6 @@ class Index extends Component
 
     public ?string $categoryFilter = null;
 
-    // For tracking conversation updates in polling mode
     public ?string $lastConversationHash = null;
 
     protected ConversationService $service;
@@ -56,31 +55,23 @@ class Index extends Component
         $this->dispatch('conversation-selected', conversationId: $conversationId);
     }
 
-    /**
-     * ✅ POLLING METHOD - Check for conversation updates without broadcasting
-     * This method is called by JavaScript setInterval
-     */
+
     public function pollForConversationUpdates()
     {
-        // Get current conversation list
         $currentConversations = $this->service->fetchConversationList(
             search: $this->searchTerm,
             filters: $this->getFiltersArray()
         );
 
-        // Create a hash of the current state (IDs + last message timestamps + unread counts)
         $currentHash = $this->generateConversationHash($currentConversations);
 
-        // Check if there are changes
         if ($this->lastConversationHash !== null && $this->lastConversationHash !== $currentHash) {
-            // Conversations have changed, refresh the list
             unset($this->conversations);
             $this->lastConversationHash = $currentHash;
 
             return ['hasUpdates' => true];
         }
 
-        // Update hash for next poll
         $this->lastConversationHash = $currentHash;
 
         return ['hasUpdates' => false];
@@ -125,15 +116,12 @@ class Index extends Component
         return $filters;
     }
 
-    /**
-     * ✅ BROADCASTING METHOD - Handle new message event from WebSocket
-     * This is called when using Pusher/Reverb broadcasting
-     */
+
     #[On('new-message')]
     public function handleNewMessage()
     {
         unset($this->conversations);
-        $this->lastConversationHash = null; // Reset hash
+        $this->lastConversationHash = null;
         $this->dispatch('$refresh');
     }
 
@@ -141,7 +129,7 @@ class Index extends Component
     public function refreshConversations()
     {
         unset($this->conversations);
-        $this->lastConversationHash = null; // Reset hash
+        $this->lastConversationHash = null;
     }
 
     public function markAllAsRead()
@@ -184,7 +172,6 @@ class Index extends Component
 
     public function mount()
     {
-        // Initialize hash on mount
         if ($this->conversations->isNotEmpty()) {
             $this->lastConversationHash = $this->generateConversationHash($this->conversations);
         }
