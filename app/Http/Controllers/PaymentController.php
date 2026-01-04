@@ -59,7 +59,7 @@ class PaymentController extends Controller
             abort(403, 'Unauthorized access');
         }
 
-        return view('payment.success', compact('order'));
+        return redirect()->route('user.order.complete', ['orderId' => $orderId]);
     }
 
     /**
