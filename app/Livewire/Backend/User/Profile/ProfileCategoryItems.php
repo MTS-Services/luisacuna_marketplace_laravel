@@ -19,10 +19,15 @@ class ProfileCategoryItems extends Component
      #[Url(keep: true)]
     public $activeTab = 'currency';
 
+
+    public $game_id;
+
     public $list_type = 'list_grid';
 
      protected GameService $gameService;
+
      protected ProductService $productService;
+     
      protected CategoryService $categoryService ;
   
      #[Locked]
@@ -64,6 +69,7 @@ class ProfileCategoryItems extends Component
             'categorySlug' => $this->activeTab,
             'relations' => ['games'], 
             'user_id' => $this->userId,
+            'game_id' => $this->game_id,
             'productTranslations' => function ($query) {
                 $query->where('language_id', get_language_id());
             }
