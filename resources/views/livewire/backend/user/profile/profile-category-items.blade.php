@@ -3,7 +3,7 @@
 
     {{-- select game --}}
     <div class="w-full sm:w-sm md:w-md lg:w-md mt-6">
-        <x-ui.custom-select wire:model="game_id" id="game_id" class="border-zinc-500! bg-transparent! rounded-lg">
+        <x-ui.custom-select wire-model="game_id" :wire-live="true" id="game_id" class="border-zinc-500! bg-transparent! rounded-lg">
             <option value="">{{ __('All Game') }}</option>
             @foreach ($games as $game)
                 <x-ui.custom-option value="{{ $game->id }}" label="{{ $game->name }}" />

@@ -11,6 +11,7 @@ class ShopComponent extends Component
     public $categorySlug;
     public $layoutView = 'list_grid';
 
+
     protected CategoryService $categoryService;
 
     public function boot( CategoryService $categoryService)
@@ -19,6 +20,7 @@ class ShopComponent extends Component
     }
     public function mount($gameSlug, $categorySlug)
     {
+
         $this->gameSlug = $gameSlug;
 
         $this->categorySlug = $categorySlug;
