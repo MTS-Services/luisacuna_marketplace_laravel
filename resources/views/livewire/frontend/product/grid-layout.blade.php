@@ -165,45 +165,40 @@
 
                 </div>
 
-                <div x-data="{
-                    showAll: false,
-                    limit: 5,
-                    tags: [
-                        'Robux',
-                        'Steal A Brainrot',
-                    ],
-                    search: @entangle('search').live
-                }" class="w-full">
-                    <div class="flex flex-wrap gap-2 sm:gap-3 transition-all duration-300">
-                        <!-- Mobile View -->
-                        <template x-if="window.innerWidth < 640">
-                            <template x-for="(tag, index) in (showAll ? tags : tags.slice(0, limit))"
-                                :key="index">
-                                <span
-                                    class="px-3 py-1 bg-bg-info rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-white"
-                                    x-text="tag" @click="search = tag"></span>
-                            </template>
-                        </template>
+               <div x-data="{
+    showAll: false,
+    limit: 5,
+    tags: @js($tags),
+    search: @entangle('search').live
+}" class="w-full">
+    <div class="flex flex-wrap gap-2 sm:gap-3 transition-all duration-300">
+        <!-- All Tags (Desktop shows all, Mobile shows limited) -->
+        <template x-for="(tag, index) in (window.innerWidth < 640 ? (showAll ? tags : tags.slice(0, limit)) : tags)" :key="index">
+            <span
+                class="px-3 py-1 bg-bg-primary dark:bg-bg-info rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-white"
+                x-text="tag" 
+                @click="search = tag">
+            </span>
+        </template>
 
-                        <!-- Desktop View -->
-                        <template x-if="window.innerWidth >= 640">
-                            <template x-for="(tag, index) in tags" :key="index">
-                                <span
-                                    class="px-3 py-1 bg-bg-primary dark:bg-bg-info rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-white"
-                                    x-text="tag" @click="search = tag"></span>
-                            </template>
-                        </template>
-
-                        <!-- Toggle Button (Mobile Only) -->
-                        <button @click="showAll = !showAll"
-                            class="flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary transition sm:hidden">
-                            <svg :class="{ 'rotate-180': showAll }" class="w-6 h-6 transition-transform duration-300"
-                                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+        <!-- Toggle Button (Mobile Only - Shows when tags exceed limit) -->
+        <template x-if="window.innerWidth < 640 && tags.length > limit">
+            <button 
+                @click="showAll = !showAll"
+                class="px-3 py-1 bg-bg-secondary dark:bg-bg-secondary rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-primary flex items-center gap-1">
+                <span x-text="showAll ? 'Show Less' : 'Show More'"></span>
+                <svg :class="{ 'rotate-180': showAll }" 
+                     class="w-4 h-4 transition-transform duration-300"
+                     fill="none" 
+                     stroke="currentColor" 
+                     stroke-width="2" 
+                     viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+        </template>
+    </div>
+</div>
 
                 <!-- Recommendation -->
                 <div class="gap-3 justify-end hidden md:flex">
