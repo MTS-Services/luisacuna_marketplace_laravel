@@ -10,12 +10,14 @@ use App\Models\UserRank;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Services\Cloudinary\CloudinaryService;
 use Illuminate\Support\Facades\Log;
 
 class CreateAction
 {
     public function __construct(
-        protected UserRepositoryInterface $interface
+        protected UserRepositoryInterface $interface,
+         protected CloudinaryService $cloudinaryService
     ) {}
 
     public function execute(array $data): User
@@ -23,9 +25,9 @@ class CreateAction
         return DB::transaction(function () use ($data) {
 
             if ($data['avatar']) {
-                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $data['avatar']->getClientOriginalName();
-                $data['avatar'] = Storage::disk('public')->putFileAs('users', $data['avatar'], $fileName);
+                
+                $uploadedAvatar = $this->cloudinaryService->upload($data['avatar'], ['folder' => 'users']);
+                $data['avatar'] = $uploadedAvatar->publicId;
             }
 
 
