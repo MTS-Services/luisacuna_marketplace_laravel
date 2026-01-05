@@ -62,7 +62,10 @@
                 </div>
 
                 <p class="text-text-white/90 text-sm mb-6">
-                    {{ __('Collect a minimum of 10,000 points and unlock a $1 reward.') }}
+                    {{-- {{ __('Collect a minimum of 10,000 points and unlock a $1 reward.') }} --}}
+                    {{ __('Collect a minimum of 10,000 points and unlock a :symbol :amount reward.', ['symbol' => currency_symbol(), 'amount' => currency_exchange(1),]) }}
+
+
                 </p>
 
                 <div class="border-t-3 border-pink-600 mb-6"></div>
@@ -70,7 +73,8 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="text-text-white font-bold text-2xl mb-1">{{ __('10,000 points') }}</div>
-                        <div class="text-text-white/70 text-sm">{{ __('$1 Store credit') }}</div>
+                        <div class="text-text-white/70 text-sm">{{ __(':amount Store credit', ['amount' => currency_exchange(1)]) }}</div>
+                        {{-- <div class="text-text-white/70 text-sm">{{ __('$1 Store credit') }}</div> --}}
                     </div>
                     {{-- <x-ui.button class="sm:w-auto! py-2!">
                         {{ __('Redeem') }}
@@ -113,7 +117,8 @@
                             </div>
                         </div>
                         <div class="flex items-center justify-between text-sm mb-2">
-                            <span class="text-text-white text-base sm:text-xl">{{ $achievement->target_value }}{{ __(' To unlock') }}</span>
+                            <span
+                                class="text-text-white text-base sm:text-xl">{{ $achievement->target_value }}{{ __(' To unlock') }}</span>
                             <div class="flex items-center gap-1">
                                 <x-phosphor-coin class="fill-yellow-500 w-4 h-4" weight="fill" />
                                 <span
@@ -121,7 +126,8 @@
                             </div>
                         </div>
                         <div class="w-full bg-white rounded-full h-2">
-                            <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full" style="width: {{ $progress }}%">
+                            <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full"
+                                style="width: {{ $progress }}%">
                             </div>
                         </div>
                     </div>

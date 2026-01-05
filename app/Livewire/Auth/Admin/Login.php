@@ -32,7 +32,7 @@ class Login extends Component
     {
         $this->validate();
 
-        $this->ensureIsNotRateLimited();
+        $this->ensureIsNotRateLimited();        
 
         $user = $this->validateCredentials();
 

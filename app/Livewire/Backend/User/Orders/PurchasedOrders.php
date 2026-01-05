@@ -4,16 +4,17 @@ namespace App\Livewire\Backend\User\Orders;
 
 use Livewire\Component;
 use App\Enums\OrderStatus;
-use App\Services\OrderService;
 use Livewire\WithPagination;
+use App\Services\OrderService;
+use App\Traits\WithPaginationData;
 
 class PurchasedOrders extends Component
 {
-    use WithPagination;
+    use WithPaginationData;
 
     public $showDeleteModal = false;
     public $deleteItemId = null;
-    public $perPage = 2;
+    // public $perPage = 2;
     public $status = null;
     public $order_date;
 
@@ -28,7 +29,7 @@ class PurchasedOrders extends Component
     public function render()
     {
         $datas = $this->service->getPaginatedData(
-            perPage: $this->perPage,
+            // perPage: $this->perPage,
             filters: $this->getFilters()
         );
         $columns = [
@@ -92,7 +93,7 @@ class PurchasedOrders extends Component
             [
                 'key' => 'grand_total',
                 'label' => 'Price',
-                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' . currency_exchange($order->total_amount) . '</span>'
+                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' .  currency_symbol() . currency_exchange($order->total_amount) . '</span>'
             ],
         ];
 

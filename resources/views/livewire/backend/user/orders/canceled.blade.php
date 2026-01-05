@@ -3,25 +3,26 @@
         {{-- breadcrumb --}}
         <div class="flex gap-4 items-center py-10">
             <x-phosphor name="less-than" variant="regular" class="w-4 h-4 text-zinc-400" />
-            <h2 class="text-text-white text-base">
+            <a href="{{ route('user.order.detail', ['orderId' => $order->order_id]) }}" class="text-text-white text-base">
                 {{ __('All Orders') }}
 
-            </h2>
+            </a>
         </div>
         <div class="flex justify-between">
             <div class="flex gap-5">
                 <div>
                     <div class="w-10 h-10 md:w-16 md:h-16">
-                        <img src="{{ asset('assets/images/order/order.png') }}" alt="Product Name"
-                            class="w-full h-full rounded-lg">
+                        <x-cloudinary::image public-id="{{ $order?->source?->game?->logo }}" width="50"
+                            height="50" crop="scale" sizes="100vw" alt="{{ $order?->source?->game?->name }}"
+                            class="rounded" />
                     </div>
                 </div>
                 <div>
                     <h2 class="text-text-white text-2xl font-semibold line-clamp-1">
-                        {{ __('Mercury Spark — Ultimate 5-Star Boost') }}
+                        {{ $order?->source?->name }}
                     </h2>
                     <p class="text-text-white font-normal text-base line-clamp-1">
-                        {{ __('Order ID: 98bc4674-4bde-4498-9175-a4a0318458e0') }}</p>
+                        {{ __('Order ID:') }} {{ $order->order_id }}</p>
                 </div>
             </div>
             <div class="">
@@ -108,25 +109,30 @@
                             <div class="flex gap-2 items-center">
                                 <div>
                                     <div class="w-6 h-6">
-                                        <img src="{{ asset('assets/images/order.png') }}" alt="Product Name"
-                                            class="w-full h-full object-cover">
+                                        {{-- <img src="{{ asset('assets/images/order.png') }}" alt="Product Name"
+                                            class="w-full h-full object-cover"> --}}
+                                        <x-cloudinary::image public-id="{{ $order?->source?->game?->logo }}"
+                                            width="50" height="50" crop="scale" sizes="100vw"
+                                            alt="{{ $order?->source?->game?->name }}" class="rounded" />
                                     </div>
                                 </div>
-                                <p class="text-text-white text-base font-normal">{{ __('Fortnite') }}</p>
+                                <p class="text-text-white text-base font-normal">{{ $order?->source?->game?->name }}
+                                </p>
                             </div>
                         </div>
                         <div class="flex justify-between mt-2">
                             <p class="text-text-white text-base font-semibold">{{ __('Username') }}</p>
-                            <p class="text-text-white text-base font-normal">{{ __('acuzone') }}</p>
+                            <p class="text-text-white text-base font-normal">{{ $order?->user?->username }}</p>
                         </div>
                         <div class="flex justify-between mt-2">
                             <p class="text-text-white text-base font-semibold">{{ __('Device') }}</p>
-                            <p class="text-text-white text-base font-normal">{{ __('PC') }}</p>
+                            <p class="text-text-white text-base font-normal">{{ $order?->source?->platform?->name }}
+                            </p>
                         </div>
                         <div class="flex justify-between mt-2">
                             <p class="text-text-white text-base font-semibold">{{ __('Seller') }}</p>
                             <p class="flex items-center gap-2 text-base font-normal">
-                                <span class="text-pink-500">{{ __('DI 8QUAN') }}</span>
+                                <span class="text-pink-500">{{ $order?->source?->user?->username }}</span>
                                 <span class="text-text-white">|</span>
                                 <span class="w-2.5 h-2.5 bg-green-500 rounded-full"></span>
                                 <span class="text-text-white">{{ __('Online') }}</span>
@@ -134,7 +140,8 @@
                         </div>
                         <div class="flex justify-between mt-2">
                             <p class="text-text-white text-base font-semibold">{{ __('Total price') }}</p>
-                            <p class="text-text-white text-base font-normal">{{ __('$1.20') }}</p>
+                            <p class="text-text-white text-base font-normal">
+                                {{ currency_symbol() }}{{ currency_exchange($order?->total_amount) }}</p>
                         </div>
                     </div>
                     <div class="flex w-full md:w-auto justify-center items-center mt-10!">
@@ -150,7 +157,7 @@
             </div>
         </div>
 
-        <div class="bg-bg-info rounded-lg">
+        {{-- <div class="bg-bg-info rounded-lg">
             <div class="hidden md:flex items-center justify-between bg-zinc-500 rounded-tl-lg rounded-tr-lg p-5">
                 <div class="flex items-center gap-3">
                     <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
@@ -273,6 +280,11 @@
                 </div>
             </div>
 
+        </div> --}}
+
+        <div class="bg-bg-info rounded-lg mt-10">
+            <!-- User Header -->
+            <livewire:backend.user.chat.message :key="'message-' . $conversationId" />
         </div>
 
 

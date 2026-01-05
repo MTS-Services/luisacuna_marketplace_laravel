@@ -43,7 +43,7 @@ class Wallet extends Component
                 'key' => 'net_amount',
                 'label' => 'Balance',
                 'format' => fn($item) =>
-                '<span class="font-semibold ' . $item->calculation_type->textColor() . ' ">' . $item->calculation_type->prefix() . ' ' . currency_exchange($item->net_amount ?? 0) . '</span>'
+                '<span class="font-semibold ' . $item->calculation_type->textColor() . ' ">' . $item->calculation_type->prefix() . ' ' . currency_symbol() . currency_exchange($item->net_amount ?? 0) . '</span>'
             ],
             [
                 'key' => 'order_id',

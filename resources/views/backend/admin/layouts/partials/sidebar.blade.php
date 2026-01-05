@@ -249,7 +249,7 @@
                             'route' => route('admin.rm.achievementType.index'),
                             'icon' => 'award',
                             'active' => 'achievement-type',
-                            'permission' => 'achievement-type-list',
+                            // 'permission' => 'achievement-type-list',
                         ],
                         [
                             'name' => 'Achievements',

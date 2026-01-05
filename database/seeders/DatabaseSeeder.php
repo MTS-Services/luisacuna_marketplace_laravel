@@ -57,6 +57,7 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             FaqSeeder::class,
             GameConfigSeeder::class,
+            FeeSettingSeeder::class,
 
             ProductSeeder::class,
             WalletSeeder::class,

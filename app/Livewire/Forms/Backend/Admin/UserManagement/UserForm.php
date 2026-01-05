@@ -50,7 +50,7 @@ class UserForm extends Form
             'phone' => 'nullable|string|max:20',
             'account_status' => 'required|string|in:' . implode(',', array_column(UserAccountStatus::cases(), 'value')),
             'reason' => $reasonRule,
-            'avatar' => 'nullable|image|max:2048|dimensions:max_width=300,max_height=300',
+            'avatar' => 'nullable|image|max:2048',
             'remove_file' => 'nullable|boolean',
             'description' => 'nullable|string|max:500',
         ];

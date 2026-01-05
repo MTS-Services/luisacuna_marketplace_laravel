@@ -9,9 +9,9 @@
                         <div>
                             <p class="text-text-white">{{ __('Balance') }}</p>
                             <h2 class="text-text-white text-2xl font-semibold mt-2">
-                                {{ currency_exchange($wallet->balance ?? 0) }}</h2>
+                                {{ currency_symbol() }}{{ currency_exchange($wallet->balance ?? 0) }}</h2>
                             <p class="text-text-white mt-2 text-sm md:text-base">
-                                {{ __('Withdrawals require') }} {{ currency_exchange(10) }}
+                                {{ __('Withdrawals require') }} {{ currency_symbol() }}{{ currency_exchange(10) }}
                                 {{ __('in completed sales') }}
                             </p>
                             <a href="#" class="text-pink-500 mt-2 inline-block">{{ __('Learn more') }}</a>
@@ -36,7 +36,7 @@
                         {{ __('Revenue from pending orders. Funds will be added to your balance when orders are Completed.') }}
                     </p>
                     <h2 class="text-text-white text-2xl font-semibold mt-2">
-                        {{ currency_exchange($wallet->pending_balance ?? 0) }}</h2>
+                        {{ currency_symbol() }}{{ currency_exchange($wallet->pending_balance ?? 0) }}</h2>
                 </div>
             </div>
         </div>

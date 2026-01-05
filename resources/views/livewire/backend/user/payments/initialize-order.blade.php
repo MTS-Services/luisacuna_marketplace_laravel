@@ -2,7 +2,7 @@
 
     <form x-data="{
         quantity: @entangle('quantity').live,
-        price: {{ $product->price }},
+        price: {{ currency_exchange($product->price) }},
         stock: {{ $product->quantity }}
     }" wire:submit="submit">
         <div class="bg-bg-primary dark:bg-bg-secondary rounded-lg p-6 mb-6">
@@ -85,8 +85,9 @@
             <!-- Buy Button -->
             @auth('web')
                 <x-ui.button class="w-full  py-2!" type="submit">
-                    PEN<span x-text="(quantity * price).toFixed(2)"
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary "></span>
+                    {{ currency_symbol() }}<span x-text="(quantity * price).toFixed(2)"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary ">
+                    </span>
                     {{ __('| Buy Now') }}
                 </x-ui.button>
             @else
@@ -223,8 +224,8 @@
             </div>
 
         </div>
-          <div class="bg-bg-primary dark:bg-bg-secondary rounded-lg   mt-6 px-4 py-4 ">
-        
+        <div class="bg-bg-primary dark:bg-bg-secondary rounded-lg   mt-6 px-4 py-4 ">
+
 
 
             <button class=" text-3xl mt-5 mb-4 font-semibold text-text-primary">{{ __('Recent feedback') }}</button>
@@ -249,7 +250,7 @@
             <div class="mt-5">
                 <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{ __('All feedback') }}</x-ui.button>
             </div>
-          </div>
+        </div>
 
     </form>
 

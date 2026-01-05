@@ -93,14 +93,14 @@ class SoldOrders extends Component
             [
                 'key' => 'grand_total',
                 'label' => 'Price',
-                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' .  currency_exchange($order->total_amount)  . '</span>'
+                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' . currency_symbol() . currency_exchange($order->total_amount)  . '</span>'
             ],
         ];
 
         return view('livewire.backend.user.orders.sold-orders', [
             'datas' => $datas,
             'columns' => $columns,
-            'statuses' => OrderStatus::options(),
+            'statuses' => OrderStatus::options(),   
         ]);
     }
 

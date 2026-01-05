@@ -79,7 +79,7 @@ if (!function_exists('theme_mode')) {
 if (!function_exists('app_logo')) {
     function app_logo()
     {
-        return app_setting('app_logo', config('app.app_logo', asset('assets/default/logo.svg')));
+        return app_setting('app_logo', config('app.app_logo', 'laravel-2_ywme21'));
     }
 }
 if (!function_exists('app_favicon')) {

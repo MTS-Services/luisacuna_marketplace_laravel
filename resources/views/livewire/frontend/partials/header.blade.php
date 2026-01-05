@@ -1,10 +1,19 @@
 <header x-data="{ mobileMenuOpen: false, notification: false, dropdown: '', globalSearchModal: false, open: '' }" x-cloak
     class="sticky top-0 z-50   {{ request()->routeIs('home') ? 'bg-bg-secondary glass-card shadow-none!' : 'bg-bg-secondary glass-card' }}">
     <div class=" px-4 py-4 flex items-center justify-between relative" x-cloak>
+
         <div class="flex flex-row-reverse items-center justify-center">
             <div class="hidden xxs:flex  lg:ml-0 scale-75 xl:scale-100">
-                <a href="{{ route('home') }}" wire:navigate>
-                    <img src="{{ asset('assets/images/header_logo.png') }}" alt="{{ __('Logo') }}"></a>
+                <a href="{{ route('home') }}" wire:navigate
+                    class="inline-block inline-flex gap-1 items-center justify-center">
+
+                    {{-- <img src="{{ asset('assets/images/header_logo.png') }}" alt="{{ __('Logo') }}"></a> --}}
+                    <x-cloudinary::image public-id="{{ app_logo() }}" removeBackground crop="scale" sizes="100vw"
+                       class="rounded w-8 h-6" alt="{{ site_name() }}" />
+                    <p>
+                        {{ short_name() }}
+                    </p>
+                </a>
             </div>
             {{-- Mobile menu button --}}
             <button @click="mobileMenuOpen = !mobileMenuOpen"
@@ -15,6 +24,8 @@
                 </svg>
             </button>
         </div>
+
+
         @include('partials.user-navigation')
 
         {{-- Main Navigation Icons --}}
@@ -65,7 +76,7 @@
                         </div>
                     </button>
                 </div>
-                
+
                 <livewire:backend.user.messages.message-notificaiton-sidebar />
 
                 <livewire:backend.user.notifications.notification-sidebar />
@@ -74,7 +85,7 @@
             <div class="flex items-center" x-data>
 
                 @guest
-                    <div class="flex 
+                    <div class="flex
                     {{-- bg-zinc-200 dark:bg-zinc-800 --}}
                      lg:p-1 rounded-full">
                         {{-- <!-- Light/Dark Mode Toggle -->
@@ -122,7 +133,7 @@
 
                 @auth
                     <div
-                        class="hidden md:flex 
+                        class="hidden md:flex
                     {{-- bg-zinc-200 dark:bg-zinc-800 --}}
                      lg:p-1 rounded-full">
                         <!-- Light/Dark Mode Toggle -->

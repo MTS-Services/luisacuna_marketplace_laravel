@@ -3,8 +3,15 @@
         <div class="container flex flex-col md:flex-row justify-start gap-8 mb-12">
             <div class="w-full md:w-1/4 flex flex-col items-start justify-start md:justify-start">
                 <div class="mb-4">
-                    <a href="{{ route('home') }}">
-                        <img src="{{ asset('assets/images/header_logo.png') }}" alt="">
+                    <a href="{{ route('home') }}" wire:navigate
+                        class="inline-block inline-flex gap-1 items-center justify-center">
+
+                        {{-- <img src="{{ asset('assets/images/header_logo.png') }}" alt="{{ __('Logo') }}"></a> --}}
+                        <x-cloudinary::image public-id="{{ app_logo() }}" removeBackground crop="scale" sizes="100vw"
+                            alt="{{ site_name() }}" class="rounded w-8 h-6" />
+                        <p>
+                            {{ short_name() }}
+                        </p>
                     </a>
                 </div>
                 <p class="text-text-secondary text-md text-center md:text-start">
@@ -43,7 +50,7 @@
                         <li><a href="{{ route('buyer-protection') }}" wire:navigate
                                 class="hover:text-purple-400 transition text-text-secondary text-md">{{ __('Buyer Protection') }}</a>
                         </li>
-                        <li> <a href="{{ route('register.signUp') }}" wire:navigate
+                        <li> <a href="{{ route('user.offers') }}" wire:navigate
                                 class="hover:text-purple-400 transition text-text-secondary text-md">{{ __('Become a Seller') }}</a>
                         </li>
                         <li><a href="{{ route('how-to-sell') }}" wire:navigate

@@ -20,10 +20,10 @@
                         hint="Upload a profile picture (Max: 2MB)" />
 
                 </div>
-                <div class="w-full col-span-2">
+                {{-- <div class="w-full col-span-2">
                     <x-ui.file-input wire:model="form.avatars" label="Profile Pictures" accept="image/*"
                         :error="$errors->first('form.avatars')" hint="Upload a profile picture (Max: 2MB)" multiple />
-                </div>
+                </div> --}}
                 <div class="w-full col-span-2">
                     <x-ui.label value="Name" class="mb-1" />
                     <x-ui.input type="text" placeholder="Name" wire:model="form.name" />
