@@ -26,9 +26,9 @@ window.Swiper = Swiper;
 import './echo';
 import './iziToast';
 
-import { initializeFirebaseMessaging } from './firebase';
+// import { initializeFirebaseMessaging } from './firebase';
 
-// Initialize Firebase when the app loads
-document.addEventListener('DOMContentLoaded', () => {
-    initializeFirebaseMessaging();
-});
+// // Initialize Firebase when the app loads
+// document.addEventListener('DOMContentLoaded', () => {
+//     initializeFirebaseMessaging();
+// });

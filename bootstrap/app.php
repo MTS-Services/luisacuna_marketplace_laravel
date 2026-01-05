@@ -7,6 +7,7 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\SellerMiddleware;
 use App\Http\Middleware\UserVerifyMiddleware;
 use App\Http\Middleware\SetLocaleMiddleware as MultiLangSet;
+use App\Http\Middleware\ValidateDeviceSession;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -17,7 +18,7 @@ use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        channels: __DIR__.'/../routes/channels.php',
+        channels: __DIR__ . '/../routes/channels.php',
         web: __DIR__ . '/../routes/web.php',
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
@@ -32,11 +33,26 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
             'paymentSecurity' => PaymentSecurityMiddleware::class,
-            'guest' => RedirectIfAuthenticated::class,//RedirectIfAuthenticated::class
-            'seller' => SellerMiddleware::class
+            'guest' => RedirectIfAuthenticated::class, //RedirectIfAuthenticated::class
+            'seller' => SellerMiddleware::class,
         ]);
-         $middleware->web(MultiLangSet::class);
+        $middleware->web(MultiLangSet::class);
         $middleware->api(MultiLangSet::class);
+
+        // $middleware->append(ValidateDeviceSession::class);
+        // $middleware->group('web', [
+        //     ValidateDeviceSession::class . ':web',
+        // ]);
+
+        // $middleware->group('admin', [
+        //     ValidateDeviceSession::class . ':admin',
+        // ]);
+        //  $middleware->web(append: [
+        //     ValidateDeviceSession::class . ':web',
+        // ]);
+        $middleware->appendToGroup('web', [
+            ValidateDeviceSession::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -10,6 +10,7 @@ use App\Traits\AuditableTrait;
 use Illuminate\Support\Carbon;
 use App\Traits\HasTranslations;
 use App\Enums\UserAccountStatus;
+use App\Traits\HasDeviceManagement;
 use OwenIt\Auditing\Contracts\Auditable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -22,7 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends AuthBaseModel implements Auditable
 {
-    use  TwoFactorAuthenticatable, AuditableTrait, HasTranslations, Notifiable, SoftDeletes;
+    use  TwoFactorAuthenticatable, AuditableTrait, HasTranslations, Notifiable, SoftDeletes, HasDeviceManagement;
 
     /**
      * The attributes that are mass assignable.
@@ -75,6 +76,9 @@ class User extends AuthBaseModel implements Auditable
 
         'last_synced_at',
         'language_id',
+
+        'session_version',
+        'all_devices_logged_out_at',
 
         'creater_type',
         'updater_type',

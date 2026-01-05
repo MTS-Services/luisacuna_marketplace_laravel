@@ -19,7 +19,7 @@ class SendDeviceNotification extends Component
 
     public function mount()
     {
-        $this->deviceToken = 'c5niCKwZRzPqpbbihfRusH:APA91bGxuXLYsEADO7zzp6nKIcsSdk1w1-cGoAjUWKxBD157qNKuN0vczVfJx1fGWoGrJYFEB0nEIHeKz1Nn2xROBv9s4ckdVUAAsIjlGzF9mf32drM_aC8';
+        $this->deviceToken = 'cmbyjIuxZXIGqbrCg-MtG5:APA91bF317KPDLWEROLxHemYOLOydQ0E_94fcQSPmWhR1cyha4VMqYQwJnjQE8ldXhypAFo85JmrvyuhdxuoDcDRW0h0YKKhejdoQ1chbzVPTPSjjeFmQX4';
         $this->title = 'Test Title';
         $this->body = 'Test Body | Hello World! 👋';
     }
