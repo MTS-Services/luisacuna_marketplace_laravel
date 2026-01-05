@@ -3,12 +3,19 @@
 namespace App\Livewire\Backend\User\Offers;
 
 use App\Models\Game;
+use App\Models\User;
+use App\Models\Product;
 use App\Models\Platform;
 use Livewire\Component;
+use App\Models\UserPoint;
+use App\Models\Achievement;
 use App\Services\GameService;
+use App\Models\AchievementType;
+use App\Services\ProductService;
 use App\Services\CategoryService;
 use App\Services\PlatformService;
-use App\Services\ProductService;
+use Illuminate\Support\Facades\DB;
+use App\Services\AchievementService;
 use App\Traits\Livewire\WithNotification;
 
 class Offer extends Component
@@ -64,27 +71,29 @@ class Offer extends Component
     protected GameService $gameService;
     protected PlatformService $platformService;
     protected ProductService $productService;
+    protected AchievementService $achievementService;
 
     public $timelineOptions = [];
 
 
-    public function boot(CategoryService $categoryService, GameService $gameService, PlatformService $platformService, ProductService $productService)
+    public function boot(CategoryService $categoryService, GameService $gameService, PlatformService $platformService, ProductService $productService, AchievementService $achievementService)
     {
         $this->categoryService = $categoryService;
         $this->gameService = $gameService;
         $this->platformService = $platformService;
         $this->productService = $productService;
+        $this->achievementService = $achievementService;
     }
 
     public function updatedDeliveryMethod($deliveryMethod)
     {
         // Update timeline options based on delivery method
         if ($deliveryMethod === 'manual') {
-            $this->timelineOptions = ['1 Hour', '2 Hours', '3 Hours', '4 Hours']; 
+            $this->timelineOptions = ['1 Hour', '2 Hours', '3 Hours', '4 Hours'];
         } else {
             $this->timelineOptions = ["Instant Delivery", '1 Hour', '2 Hours', '3 Hours', '4 Hours'];
         }
-        
+
         // Reset delivery time when method changes
         $this->delivery_timeline = null;
     }
@@ -158,21 +167,7 @@ class Offer extends Component
 
     public function submitOffer()
     {
-        // For Test
-        // $arr = [
-        //     'game_id' => $this->gameId,
-        //     'category_id' => $this->categoryId,
-        //     'delivery_method' => $this->deliveryMethod,
-        //     'platform'=> $this->platform,
-        //     'price' => $this->price,
-        //     'stock_quantity' => $this->stock_quantity,
-        //     'description' => $this->description,
-        //     'config_server' => $this->config_server,
-        //     'config_faction' => $this->config_faction,
-        //     'config_number_of_skin' => $this->config_number_of_skin,
-        //     'config_rare_skin' => $this->config_rare_skin
 
-        // ];
 
         $data = $this->validate(
             [
@@ -203,7 +198,7 @@ class Offer extends Component
 
         );
         $data['user_id'] = user()->id;
-        
+
         if ($data['gameId']) {
             $data['game_id'] = $data['gameId'];
             unset($data['gameId']);
@@ -222,10 +217,19 @@ class Offer extends Component
 
         $createdData = $this->productService->createData($data);
 
-      
-       // success
 
-       $this->toastSuccess('Offer created successfully');
+        // success
+
+        $this->toastSuccess('Offer created successfully');
+
+        // Reset properties
+        $this->resetField();
+
+        return redirect(route('user.user-offer.category', $createdData->category->slug));
+
+        // success
+
+        $this->toastSuccess('Offer created successfully');
 
         // Reset properties
         $this->resetField();
@@ -266,7 +270,6 @@ class Offer extends Component
         $this->quantity = null;
         $this->description = null;
         $this->name = null;
-
     }
 
     public function serachFilter() {}

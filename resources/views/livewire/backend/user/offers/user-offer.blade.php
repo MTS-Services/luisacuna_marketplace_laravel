@@ -31,8 +31,7 @@
             </div>
 
             <div class="w-full lg:w-auto flex items-center gap-2 justify-between">
-                <x-ui.button class="w-auto! py-2!" variant="secondary" x-data
-                    @click="$dispatch('open-modal', 'export')">
+                <x-ui.button class="w-auto! py-2!" variant="secondary" wire:click="offerExport" wire:loading.attr="disabled">
                     <x-phosphor-download class="w-5 h-5 fill-accent group-hover:fill-white" />
                     <span class="text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Export') }}</span>
                 </x-ui.button>
