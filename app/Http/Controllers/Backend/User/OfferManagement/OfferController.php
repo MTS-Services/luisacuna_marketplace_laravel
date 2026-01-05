@@ -18,6 +18,12 @@ class OfferController extends Controller
         return view($this->masterView);
     }
 
+    
+    public function edit($encrypted_id){
+
+        return view($this->masterView, compact('encrypted_id'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

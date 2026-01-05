@@ -4,7 +4,6 @@ namespace App\Livewire\Backend\User\Offers;
 
 use App\Models\Game;
 use App\Models\Platform;
-use App\Models\Product;
 use Livewire\Component;
 use App\Services\GameService;
 use App\Services\CategoryService;
