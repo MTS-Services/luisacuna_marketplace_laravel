@@ -8,7 +8,7 @@
 
             </h2>
         </div>
-        <div class="flex justify-between">
+        <div class="flex justify-between mb-5">
             <div class="flex gap-5">
                 <div>
                     <div class="w-10 h-10 md:w-16 md:h-16">

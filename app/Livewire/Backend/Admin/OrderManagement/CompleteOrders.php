@@ -65,9 +65,9 @@ class CompleteOrders extends Component
             ],
             [
                 'key' => 'total_amount',
-                'label' => 'Price ($)',
+                'label' => 'Price',
                 'sortable' => true,
-                'format' => fn($order) => currency_exchange($order->total_amount),
+                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' . currency_symbol() . $order->total_amount  . '</span>'
             ],
             [
                 'key' => 'created_at',
