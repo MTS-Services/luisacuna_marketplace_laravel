@@ -3,7 +3,7 @@
     <div class="flex flex-col sm:flex-row gap-4">
         <div class="py-0.5! w-full sm:w-70">
             <x-ui.custom-select wire-model="status" :wire-live="true" class="rounded!" label="All Statuses">
-                @foreach ($statuses as $status)
+                @foreach ($statuses as $status) 
                     <x-ui.custom-option label="{{ $status['label'] }}" value="{{ $status['value'] }}" />
                 @endforeach
             </x-ui.custom-select>
@@ -25,7 +25,7 @@
         <x-ui.user-table :data="$datas" :columns="$columns"
             emptyMessage="No data found. Add your first data to get started." class="rounded-lg overflow-hidden" />
 
-        <x-frontend.pagination-ui :pagination="$datas" />
+       <x-frontend.pagination-ui :pagination="$pagination" />
     </div>
 
 </div>
