@@ -6,6 +6,7 @@ use App\Enums\AdminStatus;
 use App\Models\Admin;
 use App\Models\Role;
 use App\Services\AdminService;
+use App\Services\Cloudinary\CloudinaryService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -25,7 +26,10 @@ class Index extends Component
 
     protected AdminService $service;
 
-    public function boot(AdminService $service)
+    protected CloudinaryService $cloudinaryService;
+
+
+    public function boot(AdminService $service, CloudinaryService $cloudinaryService)
     {
         $this->service = $service;
     }
@@ -39,7 +43,15 @@ class Index extends Component
 
 
         $columns = [
-
+            [
+                'key' => 'avatar',
+                'label' => 'avatar',
+                'format' => function ($data) {
+                    return $data->avatar
+                        ? '<img src="' . $this->cloudinaryService->getUrlFromPublicId($data->avatar) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
+                }
+            ],
             [
                 'key' => 'name',
                 'label' => 'Name',

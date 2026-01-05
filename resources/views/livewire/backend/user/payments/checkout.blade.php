@@ -25,7 +25,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
             <!-- 1. Order Summary & Payment Details (Right Column - 2/3) -->
-            <div class="col-span-1 lg:col-span-8 bg-bg-secondary rounded-xl p-6 lg:p-10">
+            <div class="col-span-1 lg:col-span-8 bg-zinc-50 dark:bg-bg-secondary rounded-xl p-6 lg:p-10">
 
                 <!-- Order Summary Card -->
                 <div class="card bg-bg-primary rounded-2xl shadow-inner p-6">
@@ -144,7 +144,7 @@
 
             <!-- 2. Payment Gateways (Left Column - 1/3) -->
             <div class="col-span-1 lg:col-span-4">
-                <div class=" bg-bg-secondary rounded-xl p-10">
+                <div class="bg-zinc-50 dark:bg-bg-secondary rounded-xl p-10">
                     <h2 class="text-2xl font-semibold text-text-white mb-4 border-b border-zinc-500 pb-3">
                         {{ __('3. Choose Method') }}
                     </h2>
@@ -153,21 +153,21 @@
                         @forelse ($gateways as $gatewayItem)
                             <div wire:click="$set('gateway', '{{ $gatewayItem->slug }}')"
                                 class="gateway-label flex items-center p-4 rounded-xl transition-all duration-300 border-2 cursor-pointer
-                                {{ $gatewayItem->slug === $gateway ? 'border-primary bg-primary/10' : 'border-gray-700 hover:border-gray-600 bg-gray-800/50' }}">
+                                {{ $gatewayItem->slug === $gateway ? 'border-zinc-500 bg-bg-secondary' : 'border-none bg-bg-primary' }}">
 
                                 <div class="flex items-center justify-between w-full">
                                     <div class="flex items-center gap-3">
                                         @if ($gatewayItem->slug === 'card')
-                                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                            <svg class="w-5 h-5 text-text-white" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <rect x="2" y="5" width="20" height="14" rx="2"
                                                     stroke-width="2" />
                                                 <path d="M2 10h20" stroke-width="2" />
                                             </svg>
                                         @elseif($gatewayItem->slug === 'crypto')
-                                            <span class="text-gray-400 text-lg font-bold">₿</span>
+                                            <span class="text-text-white text-lg font-bold">₿</span>
                                         @elseif($gatewayItem->slug === 'wallet')
-                                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                            <svg class="w-5 h-5 text-text-white" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path d="M21 12V7H5a2 2 0 01-2-2V4a2 2 0 012-2h14v5"
                                                     stroke-width="2" />
@@ -177,7 +177,7 @@
                                         @endif
 
                                         <span
-                                            class="text-base font-normal text-gray-300">{{ $gatewayItem->name }}</span>
+                                            class="text-base font-normal text-text-white">{{ $gatewayItem->name }}</span>
                                     </div>
 
                                     @if ($gatewayItem->slug === 'wallet' && $walletBalance !== null)

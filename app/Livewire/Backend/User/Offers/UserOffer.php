@@ -2,11 +2,14 @@
 
 namespace App\Livewire\Backend\User\Offers;
 
+use App\Models\Product;
 use Livewire\Component;
+use App\Services\GameService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Services\ProductService;
 use App\Enums\ActiveInactiveEnum;
 use App\Services\OfferItemService;
+use App\Traits\WithPaginationData;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
@@ -14,7 +17,7 @@ use App\Traits\Livewire\WithNotification;
 class UserOffer extends Component
 {
 
-    use WithDataTable, WithNotification;
+    use WithNotification, WithPaginationData;
 
     public $categorySlug;
     public $showDeleteModal = false;
@@ -22,28 +25,34 @@ class UserOffer extends Component
     public $url;
     public $search = '';
     public $offers;
+    public $status = null;
+    public $game_id = null;
 
 
     protected ProductService $service;
+    protected GameService $gameService;
 
-    public function boot(ProductService $service)
+    public function boot(ProductService $service, GameService $gameService)
     {
         $this->service = $service;
+        $this->gameService = $gameService;
     }
 
     public function mount($categorySlug)
     {
         $this->categorySlug = $categorySlug;
     }
-
     public function render()
     {
 
         $datas = $this->service->getPaginatedData(
-            perPage: $this->perPage,
-            filters: $this->getFilters()
+            // perPage: $this->perPage,
+            filters: $this->getFilters(),
 
         );
+        // if ($this->status) {
+        //     dd($this->status);
+        // }   
 
         $columns = [
             [
@@ -119,12 +128,14 @@ class UserOffer extends Component
             ],
         ];
 
+        $this->PaginationData($datas);
         return view('livewire.backend.user.offers.user-offer', [
             'datas' => $datas,
             'columns' => $columns,
             'actions' => $actions,
-            'pagination' => $datas,
+            'game_id' => $this->game_id ?? null,
             'statuses' => ActiveInactiveEnum::options(),
+            'games' => $this->gameService->getAllDatas(),
         ]);
     }
     public function pauseOffer(int $productId)
@@ -176,6 +187,8 @@ class UserOffer extends Component
     {
         return [
             'search' => $this->search ?? null,
+            'status' => $this->status ?? null,
+            'game_id' => $this->game_id ?? null, 
             'sort_field' => $this->sortField ?? 'created_at',
             'sort_direction' => $this->sortDirection ?? 'desc',
             'user_id' => user()->id,

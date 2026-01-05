@@ -21,6 +21,7 @@
     </div>
 
     {{-- Table Component --}}
+
     <x-ui.table :data="$datas" :columns="$columns" :actions="$actions" :bulkActions="$bulkActions" :bulkAction="$bulkAction"
         :statuses="$statuses" :selectedIds="$selectedIds" :mobileVisibleColumns="2" searchProperty="search" perPageProperty="perPage"
         :showBulkActions="true" emptyMessage="No data found. Create your first data to get started." />

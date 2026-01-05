@@ -131,7 +131,7 @@ class Product extends BaseModel implements Auditable
             $query->where('user_id', $filters['user_id']);
         }
 
-        if ($filters['page'] ?? null) {
+        if ($filters['status'] ?? null) {
             $query->where('status', $filters['status']);
         }
 

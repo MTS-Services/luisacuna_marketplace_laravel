@@ -31,7 +31,7 @@ class TagForm extends Form
         $rules = [
             'name' => 'required|string|max:255',
             'status' => 'required|string|in:' . implode(',', array_column(TagStatus::cases(), 'value')),
-            'icon' => 'nullable|image|max:2048|dimensions:max_width=200,max_height=200',
+            'icon' => 'nullable|image|max:2048',
             'remove_file' => 'nullable|boolean',
             'text_color' => 'nullable|string',
             'bg_color' => 'nullable|string',

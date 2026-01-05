@@ -31,6 +31,7 @@ class Edit extends Component
      */
     public function mount(Tag $data): void
     {
+
         $this->form->setData($data);
         $this->data = $data;
         $this->existingFile = $data->icon;
@@ -54,7 +55,11 @@ class Edit extends Component
         $data = $this->form->validate();
 
         try {
+            
             $data['updated_by'] = admin()->id;
+
+            $data['slug'] = str()->slug($data['name']);
+
             $this->service->updateData($this->data->id, $data);
 
             $this->success('Data updated successfully.');
