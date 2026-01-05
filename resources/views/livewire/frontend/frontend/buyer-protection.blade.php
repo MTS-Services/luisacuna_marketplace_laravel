@@ -149,10 +149,10 @@
                 <p class="text-text-white mb-6 max-w-3xl mx-auto">
                     {{ __('Digital Commerce priorities your security. Our escrow system safeguards your payment until you confirm delivery, and our Buyer Protection Policy ensures fair resolution in case of any issues. Buy with absolute confidence!') }}
                 </p>
-                <button
+                <x-ui.button href="{{ url('/') }}"
                     class="px-6 py-3 bg-purple-800 text-text-secondery font-medium rounded-full hover:bg-bg-white hover:text-zinc-500">
                     {{ __('Start Shopping Now') }}
-                </button>
+                </x-ui.button>
             </div>
 
         </div>

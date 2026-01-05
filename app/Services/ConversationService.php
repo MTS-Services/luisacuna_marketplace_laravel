@@ -344,7 +344,8 @@ class ConversationService
                 $messageType,
                 $metadata,
                 $parentMessageId,
-                $attachments
+                $attachments,
+                $orderId
             ) {
                 // Create message
                 $message = $this->message->create([
@@ -353,6 +354,7 @@ class ConversationService
                     'sender_type' => $sender ? User::class : null,
                     'message_type' => $messageType,
                     'message_body' => $messageBody,
+                    'order_id' => $orderId ? $orderId : null,
                     'metadata' => $metadata,
                     'parent_message_id' => $parentMessageId,
                     'creater_id' => $sender ? $sender->id : null,

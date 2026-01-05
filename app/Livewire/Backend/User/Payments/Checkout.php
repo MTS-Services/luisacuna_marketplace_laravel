@@ -47,7 +47,7 @@ class Checkout extends Component
         }
 
         $this->order = $this->orderService->findData($sessionKey['order_id']);
-        $this->order->load(['user', 'source.platform', 'source.product_configs.game_configs', 'source.user', 'source.game', 'source.user.wallet' ]);
+        $this->order->load(['user', 'source.platform', 'source.product_configs.game_configs', 'source.user', 'source.game', 'source.user.wallet']);
 
         if (!$this->order || $this->order->status !== OrderStatus::INITIALIZED) {
             abort(404, 'Checkout link is invalid or has expired');
@@ -149,7 +149,7 @@ class Checkout extends Component
                     return redirect()->to($result['redirect_url']);
                 } else {
                     session()->flash('success', $result['message']);
-                    return redirect()->route('user.payment.success', ['order_id' => $this->order->order_id]);
+                    return redirect()->route('user.order.complete', ['orderId' => $this->order->order_id]);
                 }
             } else {
                 session()->flash('error', $result['message'] ?? 'Payment processing failed');
