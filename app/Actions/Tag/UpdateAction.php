@@ -54,7 +54,8 @@ class UpdateAction
 
                     // Store new file
                       $newSingleIconPath = $this->cloudinaryService->upload($uploadedIcon, ['folder' => 'tags']);
-                     $newData['icon'] = $newSingleIconPath->publicId;
+                    
+                      $newData['icon'] = $newSingleIconPath->publicId;
                 }
 
                 // Remove file requested
@@ -72,6 +73,8 @@ class UpdateAction
                 }
 
                 unset($newData['remove_file']);
+
+               
 
                 $this->interface->update($id, $newData);
                 return $findData->fresh();

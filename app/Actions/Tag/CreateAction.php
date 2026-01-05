@@ -7,7 +7,7 @@ use App\Models\Tag;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\Contracts\TagRepositoryInterface;
 use App\Services\Cloudinary\CloudinaryService;
-use Storage;
+
 
 
 class CreateAction
@@ -25,10 +25,12 @@ class CreateAction
             if ($data['icon']) {
                  
                 $uploadIcon = $this->cloudinaryService->upload($data['icon'], ['folder' => 'tags']);
-                $data['icon'] = $uploadIcon->publicId;
-            }
-            $newData = $this->interface->create($data);
 
+                $data['icon'] = $uploadIcon->publicId;
+
+            }
+            
+            $newData = $this->interface->create($data);
             return $newData->fresh();
         });
     }
