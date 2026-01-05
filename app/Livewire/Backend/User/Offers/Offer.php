@@ -218,35 +218,6 @@ class Offer extends Component
         $createdData = $this->productService->createData($data);
 
 
-
-
-        $userId = user()->id;
-        $userProductCount = Product::where('user_id', $userId)->count();
-        $achievements = Achievement::whereNotNull('target_value')
-            ->whereHas('achievementType', function ($query) {
-                $query->where('name', 'Offer Create');
-            })
-            ->get();
-
-        foreach ($achievements as $achievement) {
-            if ($achievement->target_value == $userProductCount) {
-
-                $alreadyRewarded = UserPoint::where('user_id', $userId)
-                    ->where('note', 'achievement_' . $achievement->id)
-                    ->exists();
-
-                if (!$alreadyRewarded) {
-                    $userPoint = UserPoint::firstOrNew(['user_id' => $userId]);
-                    $userPoint->points = ($userPoint->points ?? 0) + $achievement->point_reward;
-                    $userPoint->note = 'achievement_' . $achievement->id;
-                    $userPoint->save();
-                }
-            }
-        }
-
-
-
-
         // success
 
         $this->toastSuccess('Offer created successfully');
