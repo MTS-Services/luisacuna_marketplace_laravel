@@ -51,6 +51,7 @@ class Create extends Component
     {
         $data = $this->form->validate();
 
+
         try {
             $data['created_by'] = admin()->id;
 

@@ -7,7 +7,9 @@ use App\Enums\GameStatus;
 use App\Models\Category;
 use App\Models\Game;
 use App\Models\GameCategory;
+use App\Services\Cloudinary\CloudinaryService;
 use App\Traits\FileManagementTrait;
+use Cloudinary\Cloudinary;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -20,6 +22,7 @@ class GameService
         protected Game $model,
         protected Category $category,
         protected GameCategory $gameCategory,
+        protected CloudinaryService $cloudinaryService,
         protected ?int $adminId = null
     ) {
         $this->adminId ??= admin()?->id;
@@ -151,10 +154,14 @@ class GameService
     {
         $data['created_by'] = $this->adminId;
         if (isset($data['logo'])) {
-            $data['logo'] = $this->handleSingleFileUpload(newFile: $data['logo'], folderName: 'games');
+            $uploaded = $this->cloudinaryService->upload($data['logo'], ['folder' => 'games']);
+            $data['logo'] = $uploaded->publicId;
+
         }
         if (isset($data['banner'])) {
-            $data['banner'] = $this->handleSingleFileUpload(newFile: $data['banner'], folderName: 'games');
+            $uploaded = $this->cloudinaryService->upload($data['banner'], ['folder' => 'games']);
+            $data['banner'] = $uploaded->publicId;
+
         }
 
         if (!empty($data['meta_keywords']) && is_string($data['meta_keywords'])) {
@@ -174,6 +181,7 @@ class GameService
 
         $logoPath = $game->logo;
         if (isset($data['logo'])) {
+             $uploaded = $this->cloudinaryService->upload($data['logo'], ['folder' => 'games']);
             $logoPath = $this->handleSingleFileUpload(newFile: $data['logo'], oldPath: $game->logo, removeKey: $data['remove_logo'] ?? false, folderName: 'games');
         }
         $data['logo'] = $logoPath;

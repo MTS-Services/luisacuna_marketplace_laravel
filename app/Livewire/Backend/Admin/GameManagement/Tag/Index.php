@@ -3,9 +3,11 @@
 namespace App\Livewire\Backend\Admin\GameManagement\Tag;
 
 use App\Enums\TagStatus;
+use App\Services\Cloudinary\CloudinaryService;
 use App\Services\TagService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Foundation\Cloud;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -22,9 +24,11 @@ class Index extends Component
 
 
     protected TagService $service;
-    public function boot(TagService $service)
+    protected CloudinaryService $cloudinaryService;
+    public function boot(TagService $service, CloudinaryService $cloudinaryService)
     {
         $this->service = $service;
+        $this->cloudinaryService = $cloudinaryService;
     }
     public function render()
     {

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\HeroStatus;
 use App\Models\Hero;
+use App\Services\Cloudinary\CloudinaryService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
@@ -13,7 +14,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class HeroService
 {
-    public function __construct(protected Hero $model) {}
+    public function __construct(protected Hero $model, protected CloudinaryService $cloudinaryService) {}
 
 
     /* ================== ================== ==================
@@ -90,14 +91,13 @@ class HeroService
     {  return DB::transaction(function () use ($data) {
 
             if ($data['image']) {
-                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $data['image']->getClientOriginalName();
-                $data['image'] = Storage::disk('public')->putFileAs('banners', $data['image'], $fileName);
+                $uploadedData =  $this->cloudinaryService->upload($data['image'], ['folder' => 'banners']);
+                $data['image'] = $uploadedData->publicId;
+
             }
              if ($data['mobile_image']) {
-                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $data['mobile_image']->getClientOriginalName();
-                $data['mobile_image'] = Storage::disk('public')->putFileAs('banners', $data['mobile_image'], $fileName);
+                 $uploadedData =  $this->cloudinaryService->upload($data['mobile_image'], ['folder' => 'banners']);
+                $data['mobile_image'] = $uploadedData->publicId;
             }
             $data['target'] = $data['target'] ?? '_self';
             $data['status'] = $data['status'] ?? HeroStatus::ACTIVE;
@@ -133,18 +133,16 @@ class HeroService
                 
                 if ($uploadedImage instanceof UploadedFile) {
                     // Delete old file permanently (File deletion is non-reversible)
-                    if (!empty($oldImagePath) && Storage::disk('public')->exists($oldImagePath)) {
-                        Storage::disk('public')->delete($oldImagePath);
+                    if (!empty($oldImagePath)) { 
+                        $this->cloudinaryService->delete($oldImagePath);
                     }
-                    // Store the new file and track path for rollback
-                    $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                    $fileName = $prefix . '-' . $uploadedImage->getClientOriginalName();
-
-                    $newSingleImagePath = Storage::disk('public')->putFileAs('banners', $uploadedImage, $fileName);
+                    $uploadedData =  $this->cloudinaryService->upload($uploadedImage, ['folder' => 'banners']);
+                    $newSingleImagePath = $uploadedData->publicId;
                     $newData['image'] = $newSingleImagePath;
+
                 } elseif ($newData['remove_file']) {
-                    if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
-                        Storage::disk('public')->delete($oldImagePath);
+                    if ($oldImagePath) {
+                        $this->cloudinaryService->delete($oldImagePath);
                     }
                     $newData['image'] = null;
                 }
@@ -163,18 +161,16 @@ class HeroService
      
                 if ($uploadedImageMobile instanceof UploadedFile) {
                     // Delete old file permanently (File deletion is non-reversible)
-                   if (!empty($oldImagePathMobile) && Storage::disk('public')->exists($oldImagePathMobile)) {
-                        Storage::disk('public')->delete($oldImagePathMobile);
+                    if (!empty($oldImagePathMobile)) { 
+                        $this->cloudinaryService->delete($oldImagePathMobile);
                     }
-                    // Store the new file and track path for rollback
-                    $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                    $fileName = $prefix . '-' . $uploadedImageMobile->getClientOriginalName();
-
-                    $newSingleImagePathMobile = Storage::disk('public')->putFileAs('banners', $uploadedImageMobile, $fileName);
+                    $uploadedData =  $this->cloudinaryService->upload($uploadedImageMobile, ['folder' => 'banners']);
+                    $newSingleImagePathMobile = $uploadedData->publicId;
                     $newData['mobile_image'] = $newSingleImagePathMobile;
+
                 } elseif ($newData['remove_file_mobile']) {
-                    if ($oldImagePath && Storage::disk('public')->exists($oldImagePathMobile)) {
-                        Storage::disk('public')->delete($oldImagePathMobile);
+                    if ($oldImagePath) {
+                        $this->cloudinaryService->delete($oldImagePathMobile);
                     }
                     $newData['mobile_image'] = null;
                 }
@@ -183,6 +179,7 @@ class HeroService
                 if (!$newData['remove_file_mobile'] && !$newSingleImagePathMobile) {
                     $newData['mobile_image'] = $oldImagePathMobile ?? null;
                 }
+                
                 unset($newData['remove_file_mobile']);
 
             $model->update($newData);
@@ -212,11 +209,11 @@ class HeroService
         $deleted =  $model->delete();
 
         if($deleted){
-            if (Storage::disk('public')->exists($image_url))  {
-                Storage::disk('public')->delete($image_url);
+            if($image_url){
+                $this->cloudinaryService->delete($image_url);
             }
-            if (Storage::disk('public')->exists($mobile_image_url))  {
-                Storage::disk('public')->delete($mobile_image_url);
+            if($mobile_image_url){
+                $this->cloudinaryService->delete($mobile_image_url);
             }
         }
         return $deleted;

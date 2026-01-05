@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Admin\UserManagement\User\Seller;
 use Livewire\Component;
 use App\Services\UserService;
 use App\Enums\UserAccountStatus;
+use App\Services\Cloudinary\CloudinaryService;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
@@ -21,10 +22,13 @@ class AllSeller extends Component
     public $bulkAction = '';
     public $showDeleteModal = false;
     public $showBulkActionModal = false;
+    protected CloudinaryService $cloudinaryService;
 
-    public function boot(UserService $service)
+    public function boot(UserService $service, CloudinaryService $cloudinaryService)
     {
         $this->service = $service;
+
+        $this->cloudinaryService = $cloudinaryService;
     }
 
     public function render()
@@ -37,7 +41,15 @@ class AllSeller extends Component
         // $users = $this->userService->getAllUsers();
 
         $columns = [
-            
+            [
+                'key' => 'icon',
+                'label' => 'icon',
+                'format' => function ($data) {
+                    return $data->avatar
+                        ? '<img src="' . $this->cloudinaryService->getUrlFromPublicId($data->avatar) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
+                }
+            ],
             [
                 'key' => 'first_name',
                 'label' => 'Name',
