@@ -17,6 +17,13 @@ class SendDeviceNotification extends Component
         $this->firebaseNotificationService = $firebaseNotificationService;
     }
 
+    public function mount()
+    {
+        $this->deviceToken = 'c5niCKwZRzPqpbbihfRusH:APA91bGxuXLYsEADO7zzp6nKIcsSdk1w1-cGoAjUWKxBD157qNKuN0vczVfJx1fGWoGrJYFEB0nEIHeKz1Nn2xROBv9s4ckdVUAAsIjlGzF9mf32drM_aC8';
+        $this->title = 'Test Title';
+        $this->body = 'Test Body | Hello World! 👋';
+    }
+
     public function render()
     {
         return view('livewire.send-device-notification');
