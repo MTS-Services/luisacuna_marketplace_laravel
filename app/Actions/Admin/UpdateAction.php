@@ -5,6 +5,7 @@ namespace App\Actions\Admin;
 use App\Events\Admin\AdminUpdated;
 use App\Models\Admin;
 use App\Repositories\Contracts\AdminRepositoryInterface;
+use App\Services\Cloudinary\CloudinaryService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +16,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class UpdateAction
 {
     public function __construct(
-        protected AdminRepositoryInterface $interface
+        protected AdminRepositoryInterface $interface,
+        protected CloudinaryService $cloudinaryService,
     ) {}
 
     public function execute(int $id, array $data): Admin
@@ -43,23 +45,25 @@ class UpdateAction
 
                 if ($uploadedAvatar instanceof UploadedFile) {
                     // Delete old file permanently (File deletion is non-reversible)
-                    if ($oldAvatarPath && Storage::disk('public')->exists($oldAvatarPath)) {
-                        Storage::disk('public')->delete($oldAvatarPath);
-                    }
-                    // Store the new file and track path for rollback
-                    $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                    $fileName = $prefix . '-' . $uploadedAvatar->getClientOriginalName();
+                    if ($oldAvatarPath) {
+                        $this->cloudinaryService->delete($oldAvatarPath);
+                     }
 
-                    $newSingleAvatarPath = Storage::disk('public')->putFileAs('admins', $uploadedAvatar, $fileName);
+                    $uploadedAvatar = $this->cloudinaryService->upload($uploadedAvatar, ['folder' => 'admins']);
+
+                    $newSingleAvatarPath = $uploadedAvatar->publicId;
+
                     $newData['avatar'] = $newSingleAvatarPath;
+
                 } elseif (Arr::get($data, 'remove_file')) {
-                    if ($oldAvatarPath && Storage::disk('public')->exists($oldAvatarPath)) {
-                        Storage::disk('public')->delete($oldAvatarPath);
+                    if ($oldAvatarPath) {
+                        $this->cloudinaryService->delete($oldAvatarPath);
                     }
                     $newData['avatar'] = null;
                 }
                 // Cleanup temporary/file object keys
                 if (!$newData['remove_file'] && !$newSingleAvatarPath) {
+                    dd('checked');
                     $newData['avatar'] = $oldAvatarPath ?? null;
                 }
                 unset($newData['remove_file']);
@@ -111,7 +115,7 @@ class UpdateAction
 
                 // --- 4. Update Admin ---
                 Log::info('Data sent to repository', ['data' => $newData]);
-
+               
                 $updated = $this->interface->update($id, $newData);
 
                 if (!$updated) {

@@ -7,13 +7,14 @@ use App\Jobs\TranslateCategoryJob;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
+use App\Services\Cloudinary\CloudinaryService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UpdateAction
 {
-    public function __construct(protected CategoryRepositoryInterface $interface) {}
+    public function __construct(protected CategoryRepositoryInterface $interface, protected CloudinaryService $cloudinaryService) {}
 
     public function execute(int $id, array $data): Category
     {
@@ -42,18 +43,18 @@ class UpdateAction
                 $uploadedIcon = Arr::get($data, 'icon');
 
                 if ($uploadedIcon instanceof UploadedFile) {
-                    // Delete old file permanently
-                    if ($oldIconPath && Storage::disk('public')->exists($oldIconPath)) {
-                        Storage::disk('public')->delete($oldIconPath);
-                    }
+                   
+                    if ($oldIconPath) {
+                        $this->cloudinaryService->delete($oldIconPath);
+                     }
 
-                    $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                    $fileName = $prefix . '-' . $uploadedIcon->getClientOriginalName();
+                    $uploadedIcon = $this->cloudinaryService->upload($uploadedIcon, ['folder' => 'icons']);
 
-                    $newSingleIconPath = Storage::disk('public')
-                        ->putFileAs('icons', $uploadedIcon, $fileName);
+                    $newSingleIconPath = $uploadedIcon->publicId;
 
                     $newData['icon'] = $newSingleIconPath;
+
+                    
                 } elseif (Arr::get($data, 'remove_file')) {
                     // Delete requested file
                     if ($oldIconPath && Storage::disk('public')->exists($oldIconPath)) {
@@ -65,12 +66,16 @@ class UpdateAction
 
                 // Cleanup icon values
                 if (empty($newData['remove_file']) && !$newSingleIconPath) {
+                    
                     $newData['icon'] = $oldIconPath ?? null;
+
                 }
 
                 unset($newData['remove_file']);
 
                 // ---- UPDATE ----
+
+              
                 $updated = $this->interface->update($id, $newData);
 
                 if (!$updated) {

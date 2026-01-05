@@ -52,11 +52,15 @@ class Create extends Component
     {
         $data = $this->form->validate();
 
+
         try {
             $data['created_by'] = admin()->id;
 
-            $this->service->createData($data);
+            $data['slug'] = str()->slug($data['name']);
 
+           
+            $this->service->createData($data);
+           
             $this->success('Data created successfully.');
 
             return $this->redirect(route('admin.gm.tag.index'), navigate: true);
