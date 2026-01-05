@@ -6,13 +6,14 @@ namespace App\Actions\Tag;
 use App\Models\Tag;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\Contracts\TagRepositoryInterface;
+use App\Services\Cloudinary\CloudinaryService;
 use Storage;
 
 
 class CreateAction
 {
 
-    public function __construct(protected TagRepositoryInterface $interface)
+    public function __construct(protected TagRepositoryInterface $interface, protected CloudinaryService $cloudinaryService)
     {
     }
 
@@ -22,9 +23,9 @@ class CreateAction
         return DB::transaction(function () use ($data) {
 
             if ($data['icon']) {
-                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $data['icon']->getClientOriginalName();
-                $data['icon'] = Storage::disk('public')->putFileAs('tags', $data['icon'], $fileName);
+                 
+                $uploadIcon = $this->cloudinaryService->upload($data['icon'], ['folder' => 'tags']);
+                $data['icon'] = $uploadIcon->publicId;
             }
             $newData = $this->interface->create($data);
 

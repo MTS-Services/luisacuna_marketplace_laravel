@@ -10,6 +10,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Repositories\Contracts\TagRepositoryInterface;
+use App\Services\Cloudinary\CloudinaryService;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Throwable;
@@ -18,7 +19,7 @@ class UpdateAction
 {
     use WithNotification;
 
-    public function __construct(protected TagRepositoryInterface $interface)
+    public function __construct(protected TagRepositoryInterface $interface, protected CloudinaryService $cloudinaryService)
     {
     }
 
@@ -47,18 +48,13 @@ class UpdateAction
                 if ($uploadedIcon instanceof UploadedFile) {
 
                     // Delete old file if exists
-                    if ($oldIconPath && Storage::disk('public')->exists($oldIconPath)) {
-                        Storage::disk('public')->delete($oldIconPath);
+                    if ($oldIconPath) {
+                       $this->cloudinaryService->delete($oldIconPath);
                     }
 
                     // Store new file
-                    $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                    $fileName = $prefix . '-' . $uploadedIcon->getClientOriginalName();
-
-                    $newSingleIconPath = Storage::disk('public')
-                        ->putFileAs('tags', $uploadedIcon, $fileName);
-
-                    $newData['icon'] = $newSingleIconPath;
+                      $newSingleIconPath = $this->cloudinaryService->upload($uploadedIcon, ['folder' => 'tags']);
+                     $newData['icon'] = $newSingleIconPath->publicId;
                 }
 
                 // Remove file requested
