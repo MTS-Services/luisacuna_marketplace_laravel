@@ -64,27 +64,6 @@
                         sizes="100vw" alt="{{ $data?->source?->game?->name }}" class="rounded w-full h-full" />
                 </div>
             </div>
-            {{-- <div x-data="{ isExpanded: false }" class="mt-10">
-                <h1 class="text-text-white text-2xl font-bold mb-6">{{ __('Description') }}</h1>
-                <p>
-                    {{ $data?->source?->game?->description }}
-                </p>
-                <!-- Read More Button -->
-                <div x-show="!isExpanded" class="flex w-fit!">
-                    <x-ui.button @click="isExpanded = true" class="w-fit! py-3!"
-                        x-text="isExpanded ? 'Read less' : 'Read more'">{{ __('Read more') }}</x-ui.button>
-                </div>
-                <div x-show="isExpanded" x-transition class="mt-5">
-                    <p>
-                        {{ $data?->source?->game?->description }}
-                    </p>
-                    <div class="flex w-fit!">
-                        <x-ui.button @click="isExpanded = false"
-                            class="w-fit! py-3!">{{ __('Read less') }}</x-ui.button>
-                    </div>
-                </div>
-            </div> --}}
-
             <div x-data="{ isExpanded: false }" class="mt-10">
                 <h1 class="text-text-white text-2xl font-bold mb-6">{{ __('Description') }}</h1>
                 <div x-show="!isExpanded">
