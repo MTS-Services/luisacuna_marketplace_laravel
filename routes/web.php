@@ -4,6 +4,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\MultiLangController;
 use App\Http\Controllers\PaymentController;
 use App\Livewire\CloudinaryUpload;
+use App\Livewire\DeviceManagement;
 use App\Livewire\FileManager;
 use App\Livewire\ImageUploader;
 use App\Livewire\SendDeviceNotification;
@@ -168,6 +169,7 @@ Route::get('/fcm', function () {
     return view('generate-fcm');
 });
 Route::get('/send-fcm', SendDeviceNotification::class)->name('send-fcm');
+Route::get('/device-manage', DeviceManagement::class)->name('device-manage');
 
 Route::get('/toastDemo', ToastDemo::class)->name('toastDemo');
 require __DIR__ . '/auth.php';

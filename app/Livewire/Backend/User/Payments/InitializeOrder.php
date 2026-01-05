@@ -55,7 +55,7 @@ class InitializeOrder extends Component
 
         $totalAmount = $unitPrice * $quantity;
 
-        $buyerTaxPercent = (float) $fee->buyer_fee; // e.g. 10%
+        $buyerTaxPercent = (float) $fee->buyer_fee ?? 0; // e.g. 10%
 
         $taxAmount = ($totalAmount * $buyerTaxPercent) / 100;
         $grandTotal = $totalAmount + $taxAmount;

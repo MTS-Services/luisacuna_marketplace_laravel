@@ -296,6 +296,62 @@
             }
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Livewire initialized');
+            // Handle Livewire errors (401 from middleware)
+            document.addEventListener('livewire:response', function(event) {
+                const response = event.detail.response;
+
+                if (response && response.status === 401) {
+                    console.log('Session terminated by server (401)');
+                    handleSessionTermination();
+                }
+            });
+
+            // Handle fetch/axios errors globally
+            window.addEventListener('unhandledrejection', function(event) {
+                if (event.reason && event.reason.response && event.reason.response.status === 401) {
+                    console.log('Session terminated (401 from fetch)');
+                    handleSessionTermination();
+                }
+            });
+
+            // Intercept Livewire requests
+            if (typeof Livewire !== 'undefined') {
+                Livewire.hook('request', ({
+                    respond
+                }) => {
+                    respond(({
+                        status,
+                        response
+                    }) => {
+                        if (status === 401) {
+                            console.log('Session terminated by Livewire (401)');
+                            handleSessionTermination();
+                        }
+                    });
+                });
+            }
+
+            function handleSessionTermination() {
+                // Clear everything
+                localStorage.clear();
+                sessionStorage.clear();
+
+                // Show message
+                alert('Your session has been terminated. Please login again.');
+
+                // Force redirect to login (hard reload)
+                window.location.href = '{{ route('admin.login') }}';
+
+                // If somehow the above doesn't work, force reload
+                setTimeout(() => {
+                    window.location.reload(true);
+                }, 100);
+            }
+        });
+    </script>
     @stack('scripts')
 
     <style>
