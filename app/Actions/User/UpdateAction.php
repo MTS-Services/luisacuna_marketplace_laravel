@@ -14,12 +14,14 @@ use Illuminate\Support\Facades\Storage;
 use App\Events\User\AccountStatusChnage;
 use App\Mail\User\UserAccountStatusChanged;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Services\Cloudinary\CloudinaryService;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UpdateAction
 {
     public function __construct(
-        protected UserRepositoryInterface $interface
+        protected UserRepositoryInterface $interface,
+        protected CloudinaryService $cloudinaryService,
     ) {}
 
     public function execute(int $id, array $data): User
@@ -46,28 +48,29 @@ class UpdateAction
 
                 if ($uploadedAvatar instanceof UploadedFile) {
                     // Delete old file permanently (File deletion is non-reversible)
-                    if ($oldAvatarPath && Storage::disk('public')->exists($oldAvatarPath)) {
-                        Storage::disk('public')->delete($oldAvatarPath);
-                    }
+                    if ($oldAvatarPath) {
+                        $this->cloudinaryService->delete($oldAvatarPath);
+                     }
                     // Store the new file and track path for rollback
-                    $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                    $fileName = $prefix . '-' . $uploadedAvatar->getClientOriginalName();
 
-                    $newSingleAvatarPath = Storage::disk('public')->putFileAs('users', $uploadedAvatar, $fileName);
+                    $uploadedAvatar = $this->cloudinaryService->upload($uploadedAvatar, ['folder' => 'users']);
+
+                    $newSingleAvatarPath = $uploadedAvatar->publicId;
                     $newData['avatar'] = $newSingleAvatarPath;
+
                 } elseif (Arr::get($data, 'remove_file')) {
-                    if ($oldAvatarPath && Storage::disk('public')->exists($oldAvatarPath)) {
-                        Storage::disk('public')->delete($oldAvatarPath);
-                    }
+                  
+                    if ($oldAvatarPath) {
+                        $this->cloudinaryService->delete($oldAvatarPath);
+                     }
+
                     $newData['avatar'] = null;
                 }
-                // Cleanup temporary/file object keys
-                // if (!$newData['remove_file'] && !$newSingleAvatarPath) {
-                //     $newData['avatar'] = $oldAvatarPath ?? null;
-                // }
 
                 if (!isset($newData['remove_file']) || (!$newData['remove_file'] && !$newSingleAvatarPath)) {
+                    
                     $newData['avatar'] = $oldAvatarPath ?? null;
+
                 }
                 unset($newData['remove_file']);
 
@@ -79,7 +82,9 @@ class UpdateAction
                     unset($newData['password']);
                 }
 
+                
                 $updated = $this->interface->update($id, $newData);
+
 
                 if (!$updated) {
                     throw new \Exception('Failed to update Data');

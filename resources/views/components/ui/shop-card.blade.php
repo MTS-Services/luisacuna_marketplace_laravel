@@ -15,18 +15,12 @@
 
             <div class="flex justify-between items-start">
                 <div class="flex items-center space-x-2">
-                    @if ($game->logo)
+                 
                         <div
-                            class="bg-orange text-text-white font-bold rounded-md overflow-hidden w-6 h-6 flex items-center justify-center">
-                            {{-- <img src="{{ storage_url($game->logo) }}" alt=""> --}}
-
-                            <x-cloudinary::image public-id="{{ $game->logo }}" alt="{{ $data->name }}" />
+                            class="bg-orange text-text-white font-bold rounded-md w-8 h-8 inline-flex items-center justify-center">
+                            {{ substr($game->name, 0, 1) }}
                         </div>
-                    @else
-                        <div
-                            class="bg-orange text-text-white font-bold rounded-md w-6 h-6 flex items-center justify-center">
-                            {{ substr($game->name, 0, 1) }}</div>
-                    @endif
+                   
 
                     <span class="text-green w-full text-base font-medium">{{ $data->platform->name }}</span>
                 </div>

@@ -9,7 +9,7 @@
 
                     {{-- <img src="{{ asset('assets/images/header_logo.png') }}" alt="{{ __('Logo') }}"></a> --}}
                     <x-cloudinary::image public-id="{{ app_logo() }}" removeBackground crop="scale" sizes="100vw"
-                        alt="Uploaded File" class="rounded w-8 h-6" alt="{{ site_name() }}" />
+                       class="rounded w-8 h-6" alt="{{ site_name() }}" />
                     <p>
                         {{ short_name() }}
                     </p>
