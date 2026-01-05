@@ -4,7 +4,8 @@
     <section class="container mx-auto relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-6 mb-13 mt-15">
             <div>
-                <h2 class="font-semibold text-4xl pb-3">{{ $category->categoryTranslations->first()->name ?? $category->name }}</h2>
+                <h2 class="font-semibold text-4xl pb-3">
+                    {{ $category->categoryTranslations->first()->name ?? $category->name }}</h2>
                 @if ($category->icon)
                     <p class="text-base lg:text-xl text-text-white font-light pb-3 ">
                         {!! $category->meta_description !!}
