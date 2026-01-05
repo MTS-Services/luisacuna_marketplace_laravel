@@ -279,7 +279,8 @@
                             <p class="text-text-white text-xs font-semibold mb-2">{{ __('UPDATED BY') }}
                             </p>
                             <p class="text-slate-400 text-lg font-bold">
-                                {{ getAuditorName($user->updater) ?? 'N/A' }}
+                                {{ getAuditorName($user->updater) ?? 'N/A' }} 
+                                {{-- {{ __('N/A') }} --}}
                             </p>
                         </div>
 
