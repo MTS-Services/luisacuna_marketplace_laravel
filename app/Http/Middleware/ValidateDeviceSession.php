@@ -34,10 +34,11 @@ class ValidateDeviceSession
     /**
      * Handle an incoming request.
      */
-    public function handle(Request $request, Closure $next, string $guard = null): Response
+    public function handle(Request $request, Closure $next, ?string $guard = null): Response
     {
-        $guard = $guard ?: 'web';
-
+        if (!$guard) {
+            $guard = $this->detectAuthGuard($request);
+        }
         // Skip validation for excluded routes
         if ($this->shouldSkipValidation($request)) {
             Log::debug('Skipping validation', ['route' => $request->route()?->getName()]);
@@ -103,6 +104,35 @@ class ValidateDeviceSession
     }
 
     /**
+     * Detect which guard the user is authenticated with.
+     */
+    protected function detectAuthGuard(Request $request): string
+    {
+        // Check if authenticated as admin first
+        if (Auth::guard('admin')->check()) {
+            return 'admin';
+        }
+
+        // Check if authenticated as regular user
+        if (Auth::guard('web')->check()) {
+            return 'web';
+        }
+
+        // Check route patterns to determine intended guard
+        $routeName = $request->route()?->getName();
+        if ($routeName && str_starts_with($routeName, 'admin.')) {
+            return 'admin';
+        }
+
+        // Check URL path
+        if ($request->is('admin/*') || $request->is('admin')) {
+            return 'admin';
+        }
+
+        // Default to web
+        return 'web';
+    }
+    /**
      * Check if device is valid.
      */
     protected function isDeviceValid($user, $device): bool
@@ -159,6 +189,7 @@ class ValidateDeviceSession
             $possibleKeys = [
                 'laravel_session:' . $sessionId,
                 'laravel_database_' . $sessionId,
+                'laravel_cache_' . $sessionId,
                 $sessionId,
                 $redisKey,
             ];

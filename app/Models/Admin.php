@@ -6,6 +6,7 @@ use App\Enums\AdminStatus;
 use App\Enums\OtpType;
 use App\Models\AuthBaseModel;
 use App\Traits\AuditableTrait;
+use App\Traits\HasDeviceManagement;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
@@ -16,7 +17,7 @@ use Illuminate\Notifications\Notifiable;
 
 class Admin extends AuthBaseModel implements Auditable
 {
-    use TwoFactorAuthenticatable, AuditableTrait, Searchable, HasRoles, Notifiable;
+    use TwoFactorAuthenticatable, AuditableTrait, Searchable, HasRoles, Notifiable, HasDeviceManagement;
 
     protected $guard_name = 'admin';
 
@@ -37,6 +38,9 @@ class Admin extends AuthBaseModel implements Auditable
         'two_factor_recovery_codes',
         'last_login_at',
         'last_login_ip',
+
+        'session_version',
+        'all_devices_logged_out_at',
 
         'created_by',
         'updated_by',
@@ -67,6 +71,7 @@ class Admin extends AuthBaseModel implements Auditable
             'otp_expires_at' => 'datetime',
             'status' => AdminStatus::class,
             'two_factor_confirmed_at' => 'datetime',
+            'all_devices_logged_out_at' => 'datetime',
         ];
     }
 

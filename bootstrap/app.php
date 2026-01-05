@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\AdminVerifyMiddleware;
+use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\PaymentSecurityMiddleware;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\SellerMiddleware;
@@ -26,6 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustProxies(at: '*', headers: Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_PROTO);
         $middleware->alias([
+            'auth' => Authenticate::class,
             'admin' => AdminMiddleware::class,
             'adminVerify' => AdminVerifyMiddleware::class,
             'userVerify' => UserVerifyMiddleware::class,

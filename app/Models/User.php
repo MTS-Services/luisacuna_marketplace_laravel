@@ -127,6 +127,7 @@ class User extends AuthBaseModel implements Auditable
             'privacy_accepted_at'    => 'datetime',
             'last_synced_at'         => 'datetime',
             'two_factor_confirmed_at' => 'datetime',
+            'all_devices_logged_out_at' => 'datetime',
             'date_of_birth'          => 'date',
 
             'two_factor_enabled'     => 'boolean',

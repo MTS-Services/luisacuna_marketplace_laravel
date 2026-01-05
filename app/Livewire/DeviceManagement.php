@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\Attributes\On;
 
@@ -11,15 +13,29 @@ class DeviceManagement extends Component
     public $showConfirmModal = false;
     public $actionType = null;
     public $selectedDeviceId = null;
+    public $authorized = null;
+
 
     public function mount()
     {
+        $user = Auth::guard('web')->user();
+        $admin = Auth::guard('admin')->user();
+        if (!$user && !$admin) {
+            Log::warning('Unauthorized access to device management. Redirecting to login page.');
+            return $this->redirectIntended(
+                default: route('login'),
+                navigate: true
+            );
+        }
+
+
+        $this->authorized = $admin ? $admin : $user;
         $this->loadDevices();
     }
 
     public function loadDevices()
     {
-        $this->devices = user()
+        $this->devices = $this->authorized
             ->devices()
             ->orderBy('last_used_at', 'desc')
             ->get()
@@ -57,7 +73,7 @@ class DeviceManagement extends Component
             return;
         }
 
-        $device = user()->devices()->find($this->selectedDeviceId);
+        $device = $this->authorized->devices()->find($this->selectedDeviceId);
 
         if (!$device) {
             $this->dispatch('notify', [
@@ -75,7 +91,7 @@ class DeviceManagement extends Component
             return;
         }
 
-        if (user()->logoutDevice($this->selectedDeviceId)) {
+        if ($this->authorized->logoutDevice($this->selectedDeviceId)) {
             $this->dispatch('notify', [
                 'type' => 'success',
                 'message' => 'Device logged out successfully.'
@@ -94,7 +110,7 @@ class DeviceManagement extends Component
 
     public function logoutAllDevices()
     {
-        $count = user()->logoutAllDevices(includingCurrent: false);
+        $count = $this->authorized->logoutAllDevices(includingCurrent: false);
 
         $this->dispatch('notify', [
             'type' => 'success',
@@ -107,7 +123,7 @@ class DeviceManagement extends Component
 
     public function removeDevice($deviceId)
     {
-        $device = user()->devices()->find($deviceId);
+        $device = $this->authorized->devices()->find($deviceId);
 
         if (!$device) {
             $this->dispatch('notify', [
@@ -125,7 +141,7 @@ class DeviceManagement extends Component
             return;
         }
 
-        if (user()->removeDevice($deviceId)) {
+        if ($this->authorized->removeDevice($deviceId)) {
             $this->dispatch('notify', [
                 'type' => 'success',
                 'message' => 'Device removed successfully.'

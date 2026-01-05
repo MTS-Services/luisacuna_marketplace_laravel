@@ -169,7 +169,7 @@ Route::get('/fcm', function () {
     return view('generate-fcm');
 });
 Route::get('/send-fcm', SendDeviceNotification::class)->name('send-fcm');
-Route::get('/device-manage', DeviceManagement::class)->name('device-manage')->middleware('auth:web');
+Route::get('/device-manage', DeviceManagement::class)->name('device-manage');
 
 Route::get('/toastDemo', ToastDemo::class)->name('toastDemo');
 require __DIR__ . '/auth.php';
