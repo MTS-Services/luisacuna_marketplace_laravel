@@ -23,6 +23,14 @@
             <livewire:backend.admin.order-management.cancelled-orders />
         @break
 
+        
+        @case('admin.orders.show')
+            <x-slot name="pageSlug">{{ __('order-details') }}</x-slot>
+            <x-slot name="title">{{ __('Order Details') }}</x-slot>
+            <x-slot name="breadcrumb">{{ __('Order Management / Order Details') }}</x-slot>
+            <livewire:backend.admin.order-management.detail :data="$data" />
+        @break
+
         @default
             <x-slot name="title">{{ __('All Orders') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Order Management / All Orders List') }}</x-slot>
@@ -30,12 +38,12 @@
     @endswitch
 
 
-    <livewire:backend.admin.order-management.detail />
+    {{-- <livewire:backend.admin.order-management.detail /> --}}
 
 
-    <script>
+    {{-- <script>
         window.addEventListener('order-detail-modal-open', () => {
             console.log('WINDOW EVENT RECEIVED');
         });
-    </script>
+    </script> --}}
 </x-admin::app>

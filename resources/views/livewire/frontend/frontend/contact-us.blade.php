@@ -1,6 +1,6 @@
 <div>
 
-<div class="bg-bg-primary text-white">
+<div class="bg-bg-primary text-text-white">
 
     <div class="max-w-6xl mx-auto px-4 py-16 pb-30">
 
@@ -17,7 +17,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
             <!-- Box 1 -->
-            <div class="bg-bg-secondary rounded-xl p-18 shadow-md text-center">
+            <div class="bg-bg-secondary rounded-xl p-5 sm:p-18 shadow-md text-center">
                 <h2 class="text-xl font-semibold mb-4">{{__('Marketing Sponsorship')}}</h2>
 
                 <p class="text-text-secondary mb-6 leading-relaxed">
@@ -45,7 +45,7 @@
 
 
             <!-- Box 2 -->
-            <div class=" bg-bg-secondary rounded-xl p-18 shadow-md text-center">
+            <div class=" bg-bg-secondary rounded-xl p-5 sm:p-18 shadow-md text-center">
                 <h2 class="text-xl font-semibold mb-4">{{__('Digital Distribution')}}</h2>
                 <p class="text-text-secondary mb-6 leading-relaxed">
                     {{__('Increase your sales for Direct Top-Ups, Gift Cards, or Video Game Keys through Swapy.gg. Contact us at.')}}
@@ -70,7 +70,7 @@
             </div>
 
             <!-- Box 3 -->
-            <div class="bg-bg-secondary rounded-xl p-18 shadow-md text-center">
+            <div class="bg-bg-secondary rounded-xl p-5 sm:p-18 shadow-md text-center">
                 <h2 class="text-xl font-semibold mb-4">{{__('Careers at Swapy.gg')}}</h2>
                 <p class="text-text-secondary mb-6 leading-relaxed">
                     {{__("Want to be part of the Swapy.gg global team? If you're passionate about gaming and skilled at writing engaging blog posts, contact us at.")}}
@@ -94,7 +94,7 @@
             </div>
 
             <!-- Box 4 -->
-            <div class="bg-bg-secondary rounded-xl p-18 shadow-md text-center">
+            <div class="bg-bg-secondary rounded-xl p-5 sm:p-18 shadow-md text-center">
                 <h2 class="text-xl font-semibold mb-4">{{__('Legal Department')}}</h2>
                 <p class="text-text-secondary mb-6 leading-relaxed">
                     {{__('For any questions regarding legal matters or other general inquiries, please contact us at:.')}}
