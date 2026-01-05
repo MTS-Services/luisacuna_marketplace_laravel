@@ -114,7 +114,7 @@ class Index extends Component
 
                 return;
             }
-            $this->heroService->deleteData(decrypt($this->deleteId));
+            $this->service->deleteData(decrypt($this->deleteId));
             $this->reset(['deleteId', 'showDeleteModal']);
 
             $this->success('Data deleted successfully');

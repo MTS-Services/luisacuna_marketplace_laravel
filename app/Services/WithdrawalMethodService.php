@@ -163,37 +163,17 @@ class WithdrawalMethodService
     }
 
 
-    // public function deleteData(int $id):bool
-    // {
-    // return  DB::transaction(function () use ($id) {
-    //     $image_url = null ; $mobile_image_url = null;
-    //     $model = $this->findData($id);
-    //     if (!$model) {
-    //         return false;
-    //     }
-
-    //     if ($model->image) {
-    //         $image_url = $model->image;
-
-    //     }
-    //     if ($model->mobile_image) {
-    //         $mobile_image_url = $model->mobile_image;
-
-    //     }
-
-    //     $deleted =  $model->delete();
-
-    //     if($deleted){
-    //         if (Storage::disk('public')->exists($image_url))  {
-    //             Storage::disk('public')->delete($image_url);
-    //         }
-    //         if (Storage::disk('public')->exists($mobile_image_url))  {
-    //             Storage::disk('public')->delete($mobile_image_url);
-    //         }
-    //     }
-    //     return $deleted;
-    //  });
-    // }
+    public function deleteData(int $id): bool
+    {
+        return DB::transaction(function () use ($id) {
+            $model = $this->findData($id);
+            if (!$model) {
+                return false;
+            }
+            $deleted = $model->delete();
+            return $deleted;
+        });
+    }
 
 
 }
