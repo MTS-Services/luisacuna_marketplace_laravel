@@ -36,8 +36,8 @@
                 <div
                     class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-pink-100 overflow-hidden flex justify-center text-ceneter items-center">
                     @if ($user->avatar)
-                        <img src="{{ Storage::url($user->avatar) }}" alt="Profile Image"
-                            class="w-full h-full object-cover">
+                        <x-cloudinary::image public-id="{{ $user->avatar }}" removeBackground crop="scale" sizes="100vw"
+                       class="rounded w-full height-full" alt="{{ $user->full_name}}" />
                     @else
                         <span class="font-bold text-3xl">
                             {{ strtoupper(substr($user->username, 0, 2)) }}
