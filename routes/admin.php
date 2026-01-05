@@ -72,6 +72,7 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
     Route::group(['prefix' => 'game-management', 'as' => 'gm.'], function () {
 
         Route::controller(CategoryController::class)->name('category.')->prefix('category')->group(function () {
+           
             Route::get('/', 'index')->name('index');
             // Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
