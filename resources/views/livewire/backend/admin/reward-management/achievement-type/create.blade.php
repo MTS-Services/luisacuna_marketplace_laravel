@@ -10,7 +10,7 @@
     {{-- is_active --}}
     <div class="w-full text-left! mt-2">
         <input type="checkbox" wire:model="form.is_active" />
-        <x-ui.label value="Is Featured" class="mb-1 inline" />
+        <x-ui.label value="Is Active" class="mb-1 inline" />
         <x-ui.input-error :messages="$errors->get('form.is_active')" />
     </div>
 

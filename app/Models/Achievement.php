@@ -87,7 +87,10 @@ class Achievement extends AuditBaseModel implements Auditable
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-
+    public function progress()
+    {
+        return $this->hasMany(UserAchievementProgress::class);
+    }
 
     /* ================================================================
      |  Query Scopes

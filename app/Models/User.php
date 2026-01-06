@@ -271,6 +271,10 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->hasMany(Feedback::class, 'target_user_id', 'id');
     }
+    public function AchievementProgress()
+    {
+        return $this->hasMany(UserAchievementProgress::class, 'user_id', 'id');
+    }
 
     /*
     |--------------------------------------------------------------------------
