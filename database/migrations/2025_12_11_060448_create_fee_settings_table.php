@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('buyer_fee');
             $table->string('status')->index()->default(FeeSettingStatus::ACTIVE);
 
-
             $table->softDeletes();
             $table->timestamps();
 
