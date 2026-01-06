@@ -181,7 +181,7 @@ class GeneralSettings extends Component
         if (!$this->$fileProperty) {
             return;
         }
-
+        
         // Upload the new file
         $uploadedPath = $this->settingsService->uploadFile(
             $this->$fileProperty,
