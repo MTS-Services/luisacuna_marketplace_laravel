@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Log;
 use App\Livewire\Forms\Backend\Admin\UserManagement\UserForm;
+use App\Services\Cloudinary\CloudinaryService;
 use Illuminate\Support\Facades\Storage;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
@@ -31,10 +32,11 @@ class AccountSettingsComponent extends Component
 
     public UserForm $form;
     protected UserService $service;
-
-    public function boot(UserService $service)
+    protected CloudinaryService $cloudinaryService;
+    public function boot(UserService $service, CloudinaryService $cloudinaryService)
     {
         $this->service = $service;
+        $this->cloudinaryService = $cloudinaryService;
     }
 
     public function mount()
@@ -64,7 +66,8 @@ class AccountSettingsComponent extends Component
                 'avatar' => 'image|max:2048'
             ]);
 
-            $path = $this->avatar->store('users', 'public');
+            $uploaded = $this->cloudinaryService->upload($this->avatar, ['folder' => 'users']);
+            $path = $uploaded->publicId;
             auth()->user()->update([
                 'avatar' => $path,
             ]);
