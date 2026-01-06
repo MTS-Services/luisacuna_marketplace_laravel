@@ -212,13 +212,15 @@
                         <div class="space-y-4">
                             <div class="">
                                 @php 
-                                dd($deliveryMethod == 'instant');
+                               
                                  $isInstantDelivery = $deliveryMethod == 'instant' ? $timelineOptions['instant'] : 'Choose';
+                             
                                 @endphp
-                                <x-ui.custom-select :wireModel="'delivery_timeline'" :dropDownClass="'border-0!'" class="rounded-md! border-0 bg-bg-info!" :label="$isInstantDelivery">
+                                <x-ui.custom-select :wireModel="'delivery_timeline'" :dropDownClass="'border-0!'" class="rounded-md! border-0 bg-bg-info!" label="{{ $isInstantDelivery }}">
                                    
 
                                     @foreach ($timelineOptions as $timelineOption)
+                                     
                                         {{-- @dd($timelineOption) --}}
                                         <x-ui.custom-option :value="$timelineOption" :label="$timelineOption" />
                                     @endforeach
