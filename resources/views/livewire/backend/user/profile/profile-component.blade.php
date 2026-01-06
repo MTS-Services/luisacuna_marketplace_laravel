@@ -13,7 +13,7 @@
                     <div class="">
                         <div class="relative">
                             <div class="w-20 h-20 sm:w-40 sm:h-40">
-                    <x-cloudinary::image publicId="{{ $user->avatar }}" alt="{{ $user->name}}" class="h-full w-full rounded-full border-2 border-text-white" />
+                    <x-cloudinary::image publicId="{{ $user->avatar_url }}" alt="{{ $user->name}}" class="h-full w-full rounded-full border-2 border-text-white" />
 
                                 
                             </div>

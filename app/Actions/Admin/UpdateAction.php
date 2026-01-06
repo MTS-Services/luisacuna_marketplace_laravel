@@ -63,7 +63,7 @@ class UpdateAction
                 }
                 // Cleanup temporary/file object keys
                 if (!$newData['remove_file'] && !$newSingleAvatarPath) {
-                    dd('checked');
+                   
                     $newData['avatar'] = $oldAvatarPath ?? null;
                 }
                 unset($newData['remove_file']);

@@ -13,6 +13,7 @@
             </div>
         </div>
     </div>
+    
 
     <div class="rounded-xl p-6 min-h-[500px] flex flex-row gap-5">
         {{-- PERSONAL INFO (Default Tab) --}}
@@ -25,7 +26,7 @@
                     class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-pink-100 overflow-hidden flex justify-center text-center items-center">
                     @if ($data->user->avatar)
                        
-                    <x-cloudinary::image publicId="{{ $data->user->avatar }}" alt="{{ $data->user->name}}" class="w-full h-full object-cover" />
+                    <x-cloudinary::image publicId="{{ $data->user->avatar_url }}" alt="{{ $data->user->name}}" class="w-full h-full object-cover" />
                         
                     @else
                         <span class="font-bold text-3xl">
