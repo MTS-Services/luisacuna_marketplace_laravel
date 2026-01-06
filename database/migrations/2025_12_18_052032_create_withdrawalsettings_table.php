@@ -13,14 +13,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('gateways', function (Blueprint $table) {
+        Schema::create('withdrawalsettings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
+            $table->string('setting_key', 100)->unique();
+            $table->text('setting_value');
+            $table->string('setting_type', 50)->default('string')->comment('string, number, boolean, json');
+            $table->text('description')->nullable();
+            $table->boolean('is_public')->default(false)->comment('Can be accessed by users');
 
             $table->softDeletes();
             $table->timestamps();
 
-            $this->addAdminAuditColumns($table);
+           $this->addMorphedAuditColumns($table);
         });
     }
 
@@ -29,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('gateways');
+        Schema::dropIfExists('withdrawalsettings');
     }
 };
