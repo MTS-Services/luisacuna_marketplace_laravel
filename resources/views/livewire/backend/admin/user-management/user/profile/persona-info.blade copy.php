@@ -25,8 +25,9 @@
                 <h2 class="text-xl text-text-primary font-semibold mb-6">{{__('Profile Image')}}</h2>
 
                 <div class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-red-100 overflow-hidden">
-                    <img src="{{ asset('storage/' . $user->avatar) }}" alt="Profile Image"
-                        class="w-full h-full object-cover">
+                   
+                    <x-cloudinary::image publicId="{{ $user->avatar }}" alt="{{ $user->name}}" class="w-full h-full object-cover" />
+
                 </div>
 
                 <div class="flex flex-col items-center justify-between mb-8">
