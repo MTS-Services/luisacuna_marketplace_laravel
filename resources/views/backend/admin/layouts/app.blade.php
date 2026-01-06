@@ -10,7 +10,7 @@
         {{ site_name() }}
     </title>
    @php
-    $cloudinaryService = new \CloudinaryLabs\CloudinaryLaravel\CloudinaryService();
+    $cloudinaryService = new \App\Services\Cloudinary\CloudinaryService();
 
    @endphp
     <link rel="shortcut icon" href="{{ $cloudinaryService->getUrlFromPublicId(app_favicon()) }}" type="image/x-icon">
