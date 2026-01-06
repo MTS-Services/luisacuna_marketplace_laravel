@@ -10,14 +10,19 @@ class Details extends Component
 {
 
     public Order $data;
+    public $isVisitSeller = false;
+
+
     protected OrderService $orderService;
 
-    public function boot(OrderService $orderService){
+    public function boot(OrderService $orderService)
+    {
         $this->orderService = $orderService;
     }
     public function mount($orderId): void
     {
         $this->data = $this->orderService->findData($orderId, 'order_id');
+        $this->isVisitSeller = $this->data->user_id !== user()->id;
 
         // dd($this->data);
     }

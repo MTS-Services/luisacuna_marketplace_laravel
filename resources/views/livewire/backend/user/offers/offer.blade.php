@@ -18,11 +18,12 @@
                                 class="w-full flex items-center justify-between p-4 bg-bg-info hover:bg-zinc-700/30 transition rounded-xl">
                                 <div class="flex items-center space-x-3">
                                     <div class="w-8 h-8 sm:w-16 sm:h-16">
-                                        @if ($category->image)
-                                            <img src="{{ storage_url($category->image) }}" alt="{{ $category->name }}"
-                                                class="w-full h-full rounded-lg sm:rounded-xl object-cover">
+                                        @if ($category->icon)
+
+                                            <x-cloudinary::image public-id="{{ $category->icon }}" class="w-full h-full rounded-lg sm:rounded-xl object-cover" crop="scale" 
+                                                alt="{{ $category->name }}" />
                                         @else
-                                            <img src="{{ storage_url($category->image) }}" alt="{{ $category->name }}"
+                                            <img src="{{ storage_url('') }}" alt="{{ $category->name }}"
                                                 class="w-full h-full rounded-lg sm:rounded-xl object-cover">
                                         @endif
                                     </div>
@@ -76,8 +77,8 @@
                         </h2>
 
                         <div class="mx-auto w-full sm:w-1/2">
-                            <x-ui.custom-select :wireModel="'gameId'" :dropDownClass="'border-0!'" class="rounded-md! border-0! bg-bg-info!">
-                                <x-ui.custom-option :value="null" :label="__('Select a game')" />
+                            <x-ui.custom-select :wireModel="'gameId'" :dropDownClass="'border-0!'" class="rounded-md! border-0! bg-bg-info!" label="Select Game">
+                               
                                 @foreach ($games as $item)
                                     <x-ui.custom-option :value="$item->id" :label="$item->name" />
                                 @endforeach
@@ -123,8 +124,10 @@
                     @endphp
                     <div class="flex items-center justify-center gap-3 mb-5">
                         @if ($selectedGame->logo)
-                            <img src="{{ storage_url($selectedGame->logo) }}" alt="{{ $selectedGame->name }}"
-                                class="w-12 h-12 sm:w-16 sm:h-16 rounded-lg object-cover">
+
+                            <x-cloudinary::image public-id="{{ $selectedGame->logo }}" alt="{{ $selectedGame->name }}" class="w-12 h-12 sm:w-16 sm:h-16 rounded-lg object-cover" crop="scale"
+                            />
+                            
                         @endif
                         <span class="text-lg sm:text-xl font-semibold text-text-white">
                             {{ $selectedGame->name }}
@@ -174,50 +177,55 @@
                             {{ __('Delivery') }}
                         </h2>
                         <div class="border-t border-zinc-500 pt-4 mt-4 flex items-center gap-3"></div>
-                        <h3 class="text-text-white text-lg sm:text-xl font-medium mb-6">
+                      
+                        <div class="space-y-4">
+                            @foreach ($gameConfigs as $config)
+                                @if ($config->delivery_methods != null)
+                                    <label class="flex items-center cursor-pointer group">
+                                            <input type="radio" 
+                                                value="manual"
+                                                wire:model.live="deliveryMethod"
+                                                class="w-5 h-5 accent-pink-500 bg-transparent border-2 border-zinc-700 cursor-pointer">
+                                            <span class="ml-3 text-text-white text-base transition-colors">
+                                                Manual
+                                            </span>
+                                    </label>
+                                    
+                                    <label class="flex items-center cursor-pointer group">
+                                            <input type="radio" name="delivery_method"
+                                                value="instant"
+                                                wire:model.live="deliveryMethod"
+                                                class="w-5 h-5 accent-pink-500 bg-transparent border-2 border-zinc-700 cursor-pointer">
+                                            <span class="ml-3 text-text-white text-base transition-colors">
+                                               Auto
+                                            </span>
+                                    </label>
+
+                                    @break
+                                @endif
+                            @endforeach
+                            <x-ui.input-error :messages="$errors->get('deliveryMethod')" />
+                        </div>
+                          <h3 class="text-text-white text-lg sm:text-xl font-medium mb-6">
                             {{ __('Guaranteed Delivery Time:') }}
                         </h3>
-
                         <div class="space-y-4">
                             <div class="">
-                                <x-ui.custom-select :wireModel="'delivery_timeline'" :dropDownClass="'border-0!'" class="rounded-md! border-0 bg-bg-info!">
-                                    <x-ui.custom-option :value="null" :label="__('Delivery Timeline')" />
+                                @php 
+                               
+                                 $isInstantDelivery = $deliveryMethod == 'instant' ? $timelineOptions['instant'] : 'Choose';
+                             
+                                @endphp
+                                <x-ui.custom-select :wireModel="'delivery_timeline'" :dropDownClass="'border-0!'" class="rounded-md! border-0 bg-bg-info!" label="{{ $isInstantDelivery }}">
+                                   
 
                                     @foreach ($timelineOptions as $timelineOption)
+                                     
                                         {{-- @dd($timelineOption) --}}
                                         <x-ui.custom-option :value="$timelineOption" :label="$timelineOption" />
                                     @endforeach
                                 </x-ui.custom-select>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
-                        <h2 class="text-text-white font-semibold text-2xl sm:text-3xl mb-10">
-                            {{ __('Delivery method') }}
-                        </h2>
-                        <div class="border-t border-zinc-500 pt-4 mt-4 flex items-center gap-3"></div>
-                        <h3 class="text-text-white text-lg sm:text-xl font-medium mb-6">
-                            {{ __('Chose delivery method') }}
-                        </h3>
-                        <div class="space-y-4">
-                            @foreach ($gameConfigs as $config)
-                                @if ($config->delivery_methods != null)
-                                    @foreach ($config->delivery_methods as $method)
-                                        <label class="flex items-center cursor-pointer group">
-                                            <input type="radio" name="delivery_method"
-                                                value="{{ $config->id }}|{{ $method }}"
-                                                wire:model.live="deliveryMethod"
-                                                class="w-5 h-5 accent-pink-500 bg-transparent border-2 border-zinc-700 cursor-pointer">
-                                            <span class="ml-3 text-text-white text-base transition-colors">
-                                                {{ ucfirst(str_replace('_', ' ', $method)) }}
-                                            </span>
-                                        </label>
-                                    @endforeach
-                                    @break
-                                @endif
-                            @endforeach
-                            <x-ui.input-error :messages="$errors->get('deliveryMethod')" />
                         </div>
                     </div>
 

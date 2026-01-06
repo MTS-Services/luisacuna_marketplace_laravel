@@ -263,6 +263,15 @@ class User extends AuthBaseModel implements Auditable
         return $this->hasMany(MessageReadReceipt::class, 'user_id', 'id');
     }
 
+    public function author()
+    {
+        return $this->hasMany(Feedback::class, 'author_id', 'id');
+    }
+    public function targetUser()
+    {
+        return $this->hasMany(Feedback::class, 'target_user_id', 'id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Query Scopes
@@ -345,8 +354,8 @@ class User extends AuthBaseModel implements Auditable
     {
         $name = $this->display_name ?? $this->full_name ?? $this->username;
         return $this->avatar
-            ? asset('storage/' . $this->avatar)
-            : 'https://ui-avatars.com/api/?name=' . urlencode($name);
+            ? $this->avatar
+            : 'default_avatar';
     }
 
     public function getDateOfBirthAttribute($value)

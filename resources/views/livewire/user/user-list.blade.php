@@ -119,7 +119,7 @@
                             </td>
                             <td>{{ $user->id }}</td>
                             <td>
-                    <x-cloudinary::image publicId="{{ $user->avatar }}" alt="{{ $user->name}}" class="w-10 h-10 rounded-full" />
+                    <x-cloudinary::image publicId="{{ $user->avatar_url }}" alt="{{ $user->name}}" class="w-10 h-10 rounded-full" />
 
                                
                             </td>

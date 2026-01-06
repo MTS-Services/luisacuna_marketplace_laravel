@@ -90,6 +90,6 @@
         </div>
     </div>
     <div class="bg-bg-primary py-4 text-center text-md text-text-secondary">
-        <p class="text-text-secondary">{{ __('© 2025 DigitalCommerce. All rights reserved') }}</p>
+        <p class="text-text-secondary">{{ __('© 2025 Swapy.gg. Operated by SWAPY SERVICES LIMITED. Registered in England & Wales (No. 16886669). Registered at 71-75 Shelton Street, Covent Garden, London, WC2H 9JQ.') }}</p>
     </div>
 </footer>

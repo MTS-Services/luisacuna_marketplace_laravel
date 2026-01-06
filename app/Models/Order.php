@@ -99,6 +99,11 @@ class Order extends AuditBaseModel implements Auditable
             ->where('type', \App\Enums\TransactionType::PURCHSED);
     }
 
+    public function feedback()
+    {
+        return $this->hasOne(Feedback::class, 'order_id');
+    }
+
     /* HELPER METHODS */
 
     public function filter(Builder $query, array $filters): Builder
