@@ -64,22 +64,34 @@
                         sizes="100vw" alt="{{ $data?->source?->game?->name }}" class="rounded w-full h-full" />
                 </div>
             </div>
-            <div x-data="{ isExpanded: false }" class="mt-10">
-                <h1 class="text-text-white text-2xl font-bold mb-6">{{ __('Description') }}</h1>
+            <div x-data="{
+                isExpanded: false,
+                isOverflow: false
+            }" x-init="$nextTick(() => {
+                const el = $refs.desc;
+                isOverflow = el.scrollHeight > el.clientHeight;
+            })" class="mt-10">
+                <h1 class="text-text-white text-2xl font-bold mb-6">
+                    {{ __('Description') }}
+                </h1>
+
                 <div x-show="!isExpanded">
-                    <p class="line-clamp-2">
+                    <p x-ref="desc" class="line-clamp-2">
                         {{ $data?->source?->description }}
                     </p>
-                    <div class="flex w-fit mt-3">
+
+                    <div x-show="isOverflow" class="flex w-fit mt-3">
                         <x-ui.button @click="isExpanded = true" class="w-fit! py-3!">
                             {{ __('Read more') }}
                         </x-ui.button>
                     </div>
                 </div>
+
                 <div x-show="isExpanded" x-transition>
                     <p>
                         {{ $data?->source?->description }}
                     </p>
+
                     <div class="flex w-fit mt-3">
                         <x-ui.button @click="isExpanded = false" class="w-fit! py-3!">
                             {{ __('Read less') }}
@@ -92,19 +104,32 @@
         <div class="bg-bg-info px-4 sm:px-10 md:px-20 py-4 sm:py-10 rounded-2xl mt-20">
             <h2 class="text-text-white text-2xl font-semibold">{{ __('Seller') }}</h2>
             <div class="mt-3">
-                <div class="pt-4 mt-4 flex items-center gap-5">
-                    <div class="w-14 h-14">
-                        <x-cloudinary::image public-id="{{ $data?->source?->user?->avatar }}" width="50"
-                            height="50" crop="scale" sizes="100vw" alt="{{ $data?->source?->user?->username }}"
-                            class="rounded" />
+                @if ($isVisitSeller)
+                    <div class="pt-4 mt-4 flex items-center gap-5">
+                        <div class="w-14 h-14">
+                            <x-cloudinary::image public-id="{{ $data?->user?->avatar }}" width="50"
+                                height="50" crop="scale" sizes="100vw"
+                                alt="{{ $data?->user?->username }}" class="rounded" />
+                        </div>
+                        <div>
+                            <a href="{{ route('profile', $data?->user?->username) }}" target="_blank" class="font-semibold ">{{ $data?->user?->full_name }}</a>
+                        </div>
                     </div>
-                    <div>
-                        <p class="font-semibold ">{{ $data?->source?->user?->full_name }}</p>
-                        <p class="text-sm text-text-white "> <img class="inline mr-2"
-                                src="{{ asset('assets/images/thumb up filled.png') }}" alt="">
-                            {{ __('99.3% | 2434 reviews | 1642 Sold') }}</p>
+                @else
+                    <div class="pt-4 mt-4 flex items-center gap-5">
+                        <div class="w-14 h-14">
+                            <x-cloudinary::image public-id="{{ $data?->source?->user?->avatar }}" width="50"
+                                height="50" crop="scale" sizes="100vw"
+                                alt="{{ $data?->source?->user?->username }}" class="rounded" />
+                        </div>
+                        <div>
+                            <a href="{{ route('profile', $data?->source?->user?->username) }}" target="_blank" class="font-semibold ">{{ $data?->source?->user?->full_name }}</a>
+                            <p class="text-sm text-text-white "> <img class="inline mr-2"
+                                    src="{{ asset('assets/images/thumb up filled.png') }}" alt="">
+                                {{ __('99.3% | ')}}  {{ $data?->feedback?->count() ?? 0 }} {{ __(' reviews | ') }} {{ $data?->count() ?? 0 }} {{ __('Sold') }} </p>
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
         <div class="bg-bg-info px-4 sm:px-10 md:px-20 py-4 sm:py-10 rounded-2xl mt-20">
@@ -135,7 +160,7 @@
                 <p class="text-text-white text-2xl font-semibold mb-2">{{ __('Total:') }}</p>
                 <p class="text-text-white text-base font-normal">
                     {{ currency_symbol() }}
-                    {{ currency_exchange(($data?->source?->price ?? 0) * ($data?->quantity ?? 1) + ($data?->tax_amount ?? 0)) }}
+                    {{ currency_exchange($data?->grand_total) }}
                 </p>
 
             </div>

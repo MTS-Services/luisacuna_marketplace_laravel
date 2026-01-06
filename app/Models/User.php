@@ -263,6 +263,15 @@ class User extends AuthBaseModel implements Auditable
         return $this->hasMany(MessageReadReceipt::class, 'user_id', 'id');
     }
 
+    public function author()
+    {
+        return $this->hasMany(Feedback::class, 'author_id', 'id');
+    }
+    public function targetUser()
+    {
+        return $this->hasMany(Feedback::class, 'target_user_id', 'id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Query Scopes

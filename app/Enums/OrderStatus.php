@@ -23,7 +23,7 @@ enum OrderStatus: string
             self::PENDING => 'Pending',
             self::PENDING_PAYMENT => 'Pending Payment',
             self::PARTIALLY_PAID => 'Partially Paid',
-            self::PAID => 'Paid',
+            self::PAID => 'Progress',
             self::PROCESSING => 'Processing',
             self::COMPLETED => 'Completed',
             self::CANCELLED => 'Cancelled',
