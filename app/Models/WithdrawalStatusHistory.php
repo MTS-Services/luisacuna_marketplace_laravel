@@ -2,18 +2,26 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
+use App\Models\AuditBaseModel;
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class WithdrawalGateway extends BaseModel
+class WithdrawalStatusHistory extends AuditBaseModel implements Auditable
 {
+    use   AuditableTrait;
+    //
 
     protected $fillable = [
         'sort_order',
-        'name',
-        'slug',
-        'icon',
-        'data',
-        'status',
+        'withdrawal_request_id',
+        'from_status',
+        'to_status',
+        'changed_by',
+        'notes',
+        'metadata',
+        'created_at',
+
+      //here AuditColumns
     ];
 
     protected $hidden = [
@@ -21,16 +29,16 @@ class WithdrawalGateway extends BaseModel
     ];
 
     protected $casts = [
-        'status' => 'boolean',
+        //
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    //
+     //
 
-    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
@@ -41,4 +49,6 @@ class WithdrawalGateway extends BaseModel
             //
         ]);
     }
+
+
 }

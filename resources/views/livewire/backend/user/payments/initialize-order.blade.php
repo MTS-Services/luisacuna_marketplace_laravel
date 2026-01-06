@@ -157,8 +157,9 @@
             <div class="  mt-2 pt-3 flex items-center justify-between gap-2">
 
                 <div class="w-18 h-14 relative">
-                    <img src="{{ auth_storage_url($product->user->avatar) }}"
-                        class="w-14 h-14 rounded-full border-2 border-white" alt="profile" />
+                   
+                    <x-cloudinary::image publicId="{{ $product->user->avatar }}" alt="{{ $product->user->name}}" class="w-full h-full object-cover" />
+                    
                     <span class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
 
                 </div>

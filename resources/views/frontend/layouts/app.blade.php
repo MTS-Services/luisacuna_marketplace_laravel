@@ -9,7 +9,10 @@
         {{ isset($title) ? $title . ' - ' : '' }}
         {{ site_name() }}
     </title>
-    <link rel="shortcut icon" href="{{ storage_url(app_favicon()) }}" type="image/x-icon">
+     @php
+    $cloudinaryService = new \App\Services\Cloudinary\CloudinaryService();
+    @endphp
+    <link rel="shortcut icon" href="{{ $cloudinaryService->getUrlFromPublicId(app_favicon()) }}" type="image/x-icon">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 

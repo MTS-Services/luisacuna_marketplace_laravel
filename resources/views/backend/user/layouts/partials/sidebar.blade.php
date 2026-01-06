@@ -21,8 +21,8 @@
                         <div class="flex items-center w-full mb-3 gap-4 pb-5 border-b-2 border-bg-info">
                             <div class="relative">
                                 <div class="w-15 h-15">
-                                    <img src="{{ auth_storage_url(user()->avatar) }}" alt=""
-                                        class="h-full w-full rounded-full border-2 border-text-white">
+                                    <x-cloudinary::image publicId="{{ user()->avatar }}" class="w-full h-full rounded-full" />
+
                                 </div>
                                 <div class="absolute -right-1.5 top-7.5  w-6 h-6 ">
                                     <img src="{{ asset('assets/images/user_profile/Frame 1261153813.png') }}"

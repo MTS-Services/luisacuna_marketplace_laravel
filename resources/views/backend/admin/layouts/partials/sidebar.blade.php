@@ -347,6 +347,15 @@
                         ],
                     ]" />
                 <x-sidebar-separator title="System" />
+                <x-backend.navlink type="dropdown" icon="squares-exclude" name="Withdrawal Management"
+                    :page_slug="$active" :items="[
+                        [
+                            'name' => 'Withdrawal Methods',
+                            'route' => route('admin.wm.method.index'),
+                            'icon' => 'wallet-minimal',
+                            'active' => 'withdrawal-method',
+                        ],
+                    ]" />
                 <x-backend.navlink type="dropdown" icon="squares-exclude" name="Gateway's & Integration"
                     :page_slug="$active" :items="[
                         [

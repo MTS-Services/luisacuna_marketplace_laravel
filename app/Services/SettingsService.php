@@ -3,14 +3,21 @@
 namespace App\Services;
 
 use App\Models\ApplicationSetting;
+use App\Services\Cloudinary\CloudinaryService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Exception;
+use Illuminate\Foundation\Cloud;
 
 class SettingsService
 {
+    protected CloudinaryService $cloudinaryService;
+    public function __construct() { 
+
+        $this->cloudinaryService = app(CloudinaryService::class);
+    }
     /**
      * Get a single setting value
      */
@@ -91,12 +98,11 @@ class SettingsService
     public function uploadFile(UploadedFile $file, string $key): ?string
     {
         try {
-            $timestamp = time();
-            $originalName = $file->getClientOriginalName();
-            $fileName = "IMX-{$key}-{$timestamp}-{$originalName}";
-
-            $path = $file->storeAs('settings', $fileName, 'public');
-
+          
+            $uploaded = $this->cloudinaryService->upload($file, ['folder'=> "settings"]);
+            
+            $path = $uploaded->publicId;
+            
             return $path ?: null;
         } catch (Exception $e) {
             Log::error("File upload failed for '{$key}'", [
