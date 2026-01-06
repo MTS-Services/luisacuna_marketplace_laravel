@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Device;
-use App\Services\FirebaseNotificationService;
+use App\Services\FirebaseService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Log;
@@ -29,54 +29,88 @@ trait HasDeviceManagement
     }
 
     /**
-     * Register a new device.
+     * Register a new device - ALWAYS create new record per session.
+     * Each browser profile/tab gets its own session = own device record.
      */
     public function registerDevice(array $deviceData): Device
     {
-        // Deactivate any existing device with same FCM token
-        $this->devices()
-            ->where('fcm_token', $deviceData['fcm_token'])
-            ->where('session_id', '!=', session()->getId())
-            ->update(['is_active' => false]);
+        $sessionId = session()->getId();
 
-        // Check if device already exists for this session
-        $device = $this->devices()
-            ->where('session_id', session()->getId())
+        // Check if device with THIS session already exists
+        $existingDevice = $this->devices()
+            ->where('session_id', $sessionId)
             ->first();
 
-        if ($device) {
-            // Update existing device
-            $device->update([
-                'fcm_token' => $deviceData['fcm_token'],
-                'device_type' => $deviceData['device_type'] ?? 'web',
-                'device_name' => $deviceData['device_name'] ?? null,
-                'device_model' => $deviceData['device_model'] ?? null,
-                'os_version' => $deviceData['os_version'] ?? null,
-                'app_version' => $deviceData['app_version'] ?? null,
+        if ($existingDevice) {
+            // Update existing device for this session
+            $existingDevice->update([
+                'fcm_token' => $deviceData['fcm_token'] ?? $existingDevice->fcm_token,
                 'ip_address' => request()->ip(),
                 'user_agent' => request()->userAgent(),
                 'is_active' => true,
                 'last_used_at' => now(),
+                'logged_out_at' => null,
+                'device_name' => $deviceData['device_name'] ?? $existingDevice->device_name,
+                'device_model' => $deviceData['device_model'] ?? $existingDevice->device_model,
+                'os_version' => $deviceData['os_version'] ?? $existingDevice->os_version,
+                'app_version' => $deviceData['app_version'] ?? $existingDevice->app_version,
+                'device_fingerprint' => $deviceData['device_fingerprint'] ?? $existingDevice->device_fingerprint,
             ]);
 
-            return $device;
+            Log::info('Device updated for session', [
+                'device_id' => $existingDevice->id,
+                'session_id' => $sessionId,
+            ]);
+
+            return $existingDevice;
         }
 
-        // Create new device
-        return $this->devices()->create([
-            'fcm_token' => $deviceData['fcm_token'],
+        // Create new device for this session
+        $device = $this->devices()->create([
+            'fcm_token' => $deviceData['fcm_token'] ?? null,
             'device_type' => $deviceData['device_type'] ?? 'web',
             'device_name' => $deviceData['device_name'] ?? null,
             'device_model' => $deviceData['device_model'] ?? null,
             'os_version' => $deviceData['os_version'] ?? null,
             'app_version' => $deviceData['app_version'] ?? null,
-            'session_id' => session()->getId(),
+            'session_id' => $sessionId,
             'ip_address' => request()->ip(),
             'user_agent' => request()->userAgent(),
-            'device_fingerprint' => $deviceData['device_fingerprint'] ?? Str::random(32),
+            'device_fingerprint' => $deviceData['device_fingerprint'] ?? $this->generateDeviceFingerprint($deviceData),
             'is_active' => true,
             'last_used_at' => now(),
         ]);
+
+        Log::info('New device created', [
+            'device_id' => $device->id,
+            'session_id' => $sessionId,
+            'fingerprint' => $deviceData['device_fingerprint'] ?? 'none',
+        ]);
+
+        return $device;
+    }
+
+    /**
+     * Generate unique device fingerprint.
+     */
+    protected function generateDeviceFingerprint(array $deviceData): string
+    {
+        // If frontend provided fingerprint, use it
+        if (!empty($deviceData['device_fingerprint'])) {
+            return $deviceData['device_fingerprint'];
+        }
+
+        // Generate server-side fingerprint from available data
+        $components = [
+            $deviceData['device_name'] ?? 'unknown',
+            $deviceData['device_model'] ?? 'unknown',
+            $deviceData['os_version'] ?? 'unknown',
+            // $deviceData['fcm_token'] ?? 'unknown',
+            request()->userAgent(),
+            // Don't include IP as it can change
+        ];
+
+        return hash('sha256', implode('|', $components));
     }
 
     /**
@@ -86,7 +120,8 @@ trait HasDeviceManagement
     {
         return $this->devices()
             ->bySession(session()->getId())
-            ->first(); // Don't filter by active here
+            ->active()
+            ->first();
     }
 
     /**
@@ -98,11 +133,10 @@ trait HasDeviceManagement
 
         if ($device) {
             $device->logout();
-            
-            // Delete Redis session immediately
-            $this->deleteRedisSession($device->session_id);
-            
+
+            // Send Firebase notification
             $this->sendLogoutNotification($device);
+
             return true;
         }
 
@@ -114,52 +148,29 @@ trait HasDeviceManagement
      */
     public function logoutAllDevices(bool $includingCurrent = false): int
     {
-        DB::beginTransaction();
-        
-        try {
-            // Update logout timestamp
-            $this->update(['all_devices_logged_out_at' => now()]);
+        // Increment session version to invalidate all sessions
+        $this->increment('session_version');
+        $this->update(['all_devices_logged_out_at' => now()]);
 
-            // Get devices to logout
-            $query = $this->devices()->active();
+        // Get devices to logout
+        $query = $this->devices()->active();
 
-            if (!$includingCurrent) {
-                $currentSessionId = session()->getId();
-                $query->where('session_id', '!=', $currentSessionId);
-            }
-
-            $devices = $query->get();
-            $count = $devices->count();
-
-            // Logout each device and destroy their Redis sessions
-            foreach ($devices as $device) {
-                $device->logout();
-                
-                // Delete Redis session immediately
-                $this->deleteRedisSession($device->session_id);
-                
-                // Send Firebase notification
-                $this->sendLogoutNotification($device, true);
-            }
-
-            DB::commit();
-            
-            Log::info('Logged out from all devices', [
-                'user_id' => $this->id,
-                'count' => $count,
-                'including_current' => $includingCurrent,
-            ]);
-
-            return $count;
-            
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Failed to logout all devices', [
-                'user_id' => $this->id,
-                'error' => $e->getMessage(),
-            ]);
-            throw $e;
+        if (!$includingCurrent) {
+            $query->where('session_id', '!=', session()->getId());
         }
+
+        $devices = $query->get();
+        $count = $devices->count();
+
+        // Logout each device
+        foreach ($devices as $device) {
+            $device->logout();
+
+            // Send Firebase notification to each device
+            $this->sendLogoutNotification($device, true);
+        }
+
+        return $count;
     }
 
     /**
@@ -171,19 +182,10 @@ trait HasDeviceManagement
 
         if ($device && $device->is_active) {
             $device->logout();
-            
-            // Delete Redis session immediately
-            $this->deleteRedisSession($device->session_id);
-            
+
             // Send Firebase notification
             $this->sendLogoutNotification($device);
-            
-            Log::info('Device logged out', [
-                'user_id' => $this->id,
-                'device_id' => $deviceId,
-                'session_id' => $device->session_id,
-            ]);
-            
+
             return true;
         }
 
@@ -198,15 +200,8 @@ trait HasDeviceManagement
         $device = $this->devices()->find($deviceId);
 
         if ($device) {
-            if ($device->is_active) {
-                $device->logout();
-                
-                // Delete Redis session
-                $this->deleteRedisSession($device->session_id);
-                
-                $this->sendLogoutNotification($device);
-            }
-            
+            $device->logout();
+            $this->sendLogoutNotification($device);
             return $device->delete();
         }
 
@@ -214,38 +209,11 @@ trait HasDeviceManagement
     }
 
     /**
-     * Delete session from Redis.
-     * This is the KEY function that actually logs out the browser!
-     */
-    protected function deleteRedisSession(string $sessionId): void
-    {
-        try {
-            // Laravel stores sessions in Redis with this prefix
-            $sessionPrefix = config('database.redis.options.prefix', 'laravel_database_');
-            $sessionKey = $sessionPrefix . session()->getName() . ':' . $sessionId;
-            
-            // Delete from Redis
-            Redis::del($sessionKey);
-            
-            Log::info('Redis session deleted', [
-                'session_id' => $sessionId,
-                'redis_key' => $sessionKey,
-            ]);
-            
-        } catch (\Exception $e) {
-            Log::error('Failed to delete Redis session', [
-                'session_id' => $sessionId,
-                'error' => $e->getMessage(),
-            ]);
-        }
-    }
-
-    /**
      * Send logout notification via Firebase.
      */
     protected function sendLogoutNotification(Device $device, bool $isAllDevices = false): void
     {
-        if (!$device->fcm_token || str_starts_with($device->fcm_token, 'web_')) {
+        if (!$device->fcm_token) {
             return;
         }
 
@@ -257,8 +225,9 @@ trait HasDeviceManagement
             ? 'You have been logged out from all devices. Please login again if this wasn\'t you.'
             : 'You have been logged out from this device. Please login again if this wasn\'t you.';
 
+        // Send Firebase notification
         try {
-            $firebaseService = App::make(FirebaseNotificationService::class);
+            $firebaseService = App::make(FirebaseService::class);
             $firebaseService->sendToDevice(
                 $device->fcm_token,
                 $title,
@@ -266,16 +235,9 @@ trait HasDeviceManagement
                 [
                     'type' => 'force_logout',
                     'device_id' => $device->id,
-                    'session_id' => $device->session_id,
                     'timestamp' => now()->toIso8601String(),
                 ]
             );
-            
-            Log::info('Logout notification sent', [
-                'device_id' => $device->id,
-                'fcm_token' => substr($device->fcm_token, 0, 10) . '...',
-            ]);
-            
         } catch (\Exception $e) {
             Log::error('Failed to send logout notification', [
                 'device_id' => $device->id,
@@ -291,61 +253,72 @@ trait HasDeviceManagement
     {
         $staleDevices = $this->devices()
             ->where(function ($query) use ($days) {
-                $query->where('last_used_at', '<', now()->subDays($days))
-                    ->orWhere(function ($q) use ($days) {
-                        $q->where('is_active', false)
-                            ->where('logged_out_at', '<', now()->subDays($days));
-                    });
+                // Inactive devices older than X days
+                $query->where('is_active', false)
+                    ->where('logged_out_at', '<', now()->subDays($days));
+            })
+            ->orWhere(function ($query) use ($days) {
+                // Active but not used for X days
+                $query->where('last_used_at', '<', now()->subDays($days));
             });
 
         $count = $staleDevices->count();
-        
-        // Delete their Redis sessions too
-        foreach ($staleDevices->get() as $device) {
-            $this->deleteRedisSession($device->session_id);
-        }
-        
         $staleDevices->delete();
 
         return $count;
     }
 
     /**
-     * Check if session is valid (called by middleware).
+     * Get grouped devices by fingerprint for display.
+     * Shows similar devices grouped together but maintains separate sessions.
+     */
+    public function getGroupedDevices()
+    {
+        return $this->devices()
+            ->orderBy('last_used_at', 'desc')
+            ->get()
+            ->groupBy('device_fingerprint')
+            ->map(function ($devices) {
+                // If multiple devices share same fingerprint, show them as group
+                return [
+                    'fingerprint' => $devices->first()->device_fingerprint,
+                    'device_name' => $devices->first()->device_name,
+                    'device_model' => $devices->first()->device_model,
+                    'sessions' => $devices->map(function ($device) {
+                        return [
+                            'id' => $device->id,
+                            'session_id' => $device->session_id,
+                            'is_active' => $device->is_active,
+                            'is_current' => $device->session_id === session()->getId(),
+                            'last_used_at' => $device->last_used_at,
+                            'ip_address' => $device->ip_address,
+                        ];
+                    }),
+                ];
+            })
+            ->values();
+    }
+
+    /**
+     * Check if session is valid based on session_version.
      */
     public function isSessionValid(): bool
     {
         $device = $this->getCurrentDevice();
 
-        // If no device found, session is invalid
+        // If no device found, allow it (device will be created during login)
         if (!$device) {
-            Log::warning('No device found for session', [
-                'user_id' => $this->id,
-                'session_id' => session()->getId(),
-            ]);
+            return true;
+        }
+
+        // Check if device was logged out after it was created
+        if (
+            $this->all_devices_logged_out_at &&
+            $device->created_at < $this->all_devices_logged_out_at
+        ) {
             return false;
         }
 
-        // Check if device is inactive
-        if (!$device->is_active) {
-            Log::warning('Device is inactive', [
-                'user_id' => $this->id,
-                'device_id' => $device->id,
-            ]);
-            return false;
-        }
-
-        // Check if all devices were logged out after this device was created
-        if ($this->all_devices_logged_out_at && 
-            $device->created_at < $this->all_devices_logged_out_at) {
-            Log::warning('Device created before logout all', [
-                'user_id' => $this->id,
-                'device_created' => $device->created_at,
-                'logged_out_all_at' => $this->all_devices_logged_out_at,
-            ]);
-            return false;
-        }
-
-        return true;
+        return $device->is_active;
     }
 }

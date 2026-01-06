@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Services\FirebaseNotificationService;
+use App\Services\FirebaseService;
 use Livewire\Component;
 
 class SendDeviceNotification extends Component
@@ -11,10 +11,10 @@ class SendDeviceNotification extends Component
     public $title;
     public $body;
 
-    protected FirebaseNotificationService $firebaseNotificationService;
-    public function boot(FirebaseNotificationService $firebaseNotificationService)
+    protected FirebaseService $firebaseService;
+    public function boot(FirebaseService $firebaseService)
     {
-        $this->firebaseNotificationService = $firebaseNotificationService;
+        $this->firebaseService = $firebaseService;
     }
 
     public function mount()
@@ -31,7 +31,7 @@ class SendDeviceNotification extends Component
 
     public function sendNotification()
     {
-        $this->firebaseNotificationService->sendToDevice($this->deviceToken, $this->title, $this->body);
+        $this->firebaseService->sendToDevice($this->deviceToken, $this->title, $this->body);
         return true;
     }
 }

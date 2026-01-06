@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('source_type')->index();
 
             // Device identification
-            $table->string('fcm_token')->index();
-            $table->string('device_type')->index(); // ios, android, web
+            $table->string('fcm_token')->nullable()->index();
+            $table->string('device_type')->default('web')->index(); // ios, android, web
             $table->string('device_name')->nullable();
             $table->string('device_model')->nullable();
             $table->string('os_version')->nullable();
@@ -38,7 +38,7 @@ return new class extends Migration
             $table->timestamp('logged_out_at')->nullable();
 
             // Security
-            $table->string('device_fingerprint')->nullable(); // Unique device identifier
+            $table->string('device_fingerprint')->nullable()->index(); // Unique device identifier
 
             $table->softDeletes();
             $table->timestamps();
