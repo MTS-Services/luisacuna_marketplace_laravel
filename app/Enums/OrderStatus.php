@@ -10,6 +10,7 @@ enum OrderStatus: string
     case PARTIALLY_PAID = 'partially_paid';
     case PAID = 'paid';
     case PROCESSING = 'processing';
+    case DELIVERED = 'delivered';
     case COMPLETED = 'completed';
     case CANCELLED = 'cancelled';
     case REFUNDED = 'refunded';
