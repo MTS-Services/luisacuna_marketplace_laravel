@@ -132,8 +132,9 @@ trait HasDeviceManagement
         $device = $this->getCurrentDevice();
 
         if ($device) {
+            session()->invalidate();
+            session()->regenerateToken();
             $device->logout();
-
             // Send Firebase notification
             $this->sendLogoutNotification($device);
 

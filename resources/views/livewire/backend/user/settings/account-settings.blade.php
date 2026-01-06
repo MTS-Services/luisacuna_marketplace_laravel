@@ -329,7 +329,16 @@
                 <div class="bg-bg-info p-3 sm:p-6 rounded-lg mt-5">
                     <x-ui.label value="Log out from all sessions"
                         class="block text-sm font-medium text-text-primary mb-2" />
-                    <x-ui.button class="w-fit! py-2! my-2!">{{ __('Log out from all devices') }}</x-ui.button>
+                    <x-ui.button class="w-fit! py-2! my-2!" wire:click="logoutFromAllDevices">
+                        <span wire:loading.remove wire:target="logoutFromAllDevices"
+                            class="text-text-btn-primary group-hover:text-text-btn-secondary transition-all duration-300">
+                            {{ __('Log out from all devices') }}
+                        </span>
+                        <span wire:loading wire:target="logoutFromAllDevices"
+                            class="text-text-btn-primary group-hover:text-text-btn-secondary transition-all duration-300">
+                            {{ __('Logging out from all devices...') }}
+                        </span>
+                    </x-ui.button>
                     <p class="text-sm lg:text-xl font-normal text-text-white">
                         {{ __('This button logs you out from a II devices and browsers.') }}</p>
                     <div class="text-xs flex flex-row gap-1 mt-2">
