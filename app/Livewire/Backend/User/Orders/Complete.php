@@ -12,6 +12,7 @@ class Complete extends Component
     public Order $order;
     public $isVisitSeller = false;
     public $conversationId = null;
+    public $commentText = '';
 
 
     protected OrderService $orderService;

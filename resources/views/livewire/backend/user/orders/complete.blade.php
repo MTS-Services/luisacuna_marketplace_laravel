@@ -43,7 +43,7 @@
         </div>
         <div class="block lg:flex gap-6 justify-between items-start">
             <div class="w-full lg:w-2/3">
-                <div class=" bg-bg-secondary p-4 sm:p-10 rounded-[20px]">
+                <div class=" bg-bg-secondary p-4 sm:p-10 rounded-2xl">
                     <div class="flex gap-4 items-center">
                         <div class="bg-bg-info rounded-full p-3">
                             <x-phosphor name="check" variant="regular" class="w-9 h-9 text-zinc-400" />
@@ -62,20 +62,95 @@
                     </div>
                 </div>
 
-                <div class=" bg-bg-secondary p-4 sm:p-10 rounded-[20px] mt-6">
-                    <div class="flex gap-4 items-center">
-                        <div>
-                            <h3 class="text-text-white text-base sm:text-2xl font-semibold">{{ __('Buyer feedback') }}
-                            </h3>
-                        </div>
-                    </div>
-                    <div class="bg-bg-info flex items-center gap-2 rounded-lg py-3 px-6 mt-7">
-                        <x-phosphor name="thumbs-up" variant="solid" class="w-5 h-5 fill-zinc-700" />
-                        <p class="text-text-white text-base font-normal">
-                            {{ __('GGWP!') }}</p>
-                    </div>
-                </div>
 
+
+                @if (!$isVisitSeller)
+                    <div class="bg-bg-secondary p-4 sm:p-10 rounded-2xl mt-6">
+                        <div class="flex gap-4 items-center">
+                            <div>
+                                <h3 class="text-text-white text-base sm:text-2xl font-semibold">
+                                    {{ empty($feedback) ? __('Add feedback') : __('Your Feedback') }}
+                                </h3>
+                            </div>
+                        </div>
+                        @if (empty($feedback))
+                            <div class="">
+                                <div class="flex gap-2 my-4">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="feedback" value="up" class="sr-only peer">
+                                        <div
+                                            class="bg-bg-secondary dark:bg-bg-primary rounded-lg p-3 peer-checked:ring-2 peer-checked:ring-zinc-500 transition-all">
+                                            <x-phosphor name="thumbs-up" variant="solid"
+                                                class="w-10 h-10 fill-zinc-500 peer-checked:fill-zinc-600" />
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="feedback" value="down" class="sr-only peer">
+                                        <div
+                                            class="bg-bg-secondary dark:bg-bg-primary rounded-lg p-3 peer-checked:ring-2 peer-checked:ring-pink-500 transition-all">
+                                            <x-phosphor name="thumbs-down" variant="solid"
+                                                class="w-10 h-10 fill-pink-500 peer-checked:fill-pink-600" />
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="mb-6">
+                                    <label class="block text-text-white font-medium mb-2">
+                                        {{ __('Your Comment') }}
+                                    </label>
+                                    <textarea wire:model="commentText" rows="5" class="w-full bg-bg-info text-text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent resize-none text-xs sm:text-sm"
+                                        placeholder="{{ __('Write your comment here...') }}">
+                                </textarea>
+                                    @error('commentText')
+                                        <span class="text-pink-500 text-sm">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="flex justify-end gap-3">
+                                    <div wire:click="closeCommentModal" class="w-full md:w-auto">
+                                        <x-ui.button type="submit" variant="secondary"
+                                            class="w-auto py-2!">{{ __('Cancel') }}</x-ui.button>
+                                    </div>
+                                    <div wire:click="submitComment" class="w-full md:w-auto">
+                                        <x-ui.button class="w-auto py-2!">{{ __('Submit') }}</x-ui.button>
+                                    </div>
+                                </div>
+                            </div>
+                        @else
+                            <div
+                                class="bg-bg-info flex items-center gap-2 rounded-lg py-3 px-6 mt-7 hover:opacity-80 transition-opacity">
+                                <x-phosphor name="thumbs-up" variant="solid" class="w-5 h-5 fill-zinc-700" />
+                                <p class="text-text-white text-base font-normal">
+                                    {{ __('GGWP!') }}
+                                </p>
+                            </div>
+                        @endif
+                    </div>
+                @else
+                    <div class="bg-bg-secondary p-4 sm:p-10 rounded-2xl mt-6">
+                        <div class="flex gap-4 items-center">
+                            <div>
+                                <h3 class="text-text-white text-base sm:text-2xl font-semibold">
+                                    {{ __('Seller feedback') }}
+                                </h3>
+                            </div>
+                        </div>
+                        @if (empty($feedback))
+                            <div
+                                class="bg-bg-info flex items-center gap-2 rounded-lg py-3 px-6 mt-7 hover:opacity-80 transition-opacity">
+                                <p class="text-text-white text-base font-normal">
+                                    {{ __('No feedback') }}
+                                </p>
+                            </div>
+                        @else
+                            <div
+                                class="bg-bg-info flex items-center gap-2 rounded-lg py-3 px-6 mt-7 hover:opacity-80 transition-opacity">
+                                <x-phosphor name="thumbs-up" variant="solid" class="w-5 h-5 fill-zinc-700" />
+                                <p class="text-text-white text-base font-normal">
+                                    {{ __('GGWP!') }}
+                                </p>
+                            </div>
+                        @endif
+                    </div>
+                @endif
                 <div class="bg-bg-info rounded-lg mt-10">
                     <!-- User Header -->
                     <livewire:backend.user.chat.message :key="'message-' . $conversationId" />
