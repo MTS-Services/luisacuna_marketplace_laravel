@@ -25,15 +25,17 @@
 
         @auth
             <flux:navlist variant="outline">
-                <flux:navlist.item icon="user-circle" href="#">{{__('Profile')}}</flux:navlist.item>
-                <flux:navlist.item icon="envelope" href="#">{{__('Messages')}}</flux:navlist.item>
-                <flux:navlist.item icon="wrench-screwdriver" href="#">{{__('Settings')}}</flux:navlist.item>
-                <flux:navlist.item icon="credit-card" href="#">{{__('Billing')}}</flux:navlist.item>
-                <flux:navlist.item icon="arrow-right-start-on-rectangle" href="#">{{__('Logout')}}</flux:navlist.item>
+                <flux:navlist.item icon="user-circle" href="#">{{ __('Profile') }}</flux:navlist.item>
+                <flux:navlist.item icon="envelope" href="#">{{ __('Messages') }}</flux:navlist.item>
+                <flux:navlist.item icon="wrench-screwdriver" href="#">{{ __('Settings') }}</flux:navlist.item>
+                <flux:navlist.item icon="credit-card" href="#">{{ __('Billing') }}</flux:navlist.item>
+                <flux:navlist.item icon="arrow-right-start-on-rectangle" href="#">{{ __('Logout') }}
+                </flux:navlist.item>
             </flux:navlist>
         @else
             <flux:navlist variant="outline">
-                <flux:navlist.item icon="log-in" href="{{ route('login') }}" wire:navigate>{{__('Login')}}</flux:navlist.item>
+                <flux:navlist.item icon="log-in" href="{{ route('login') }}" wire:navigate>{{ __('Login') }}
+                </flux:navlist.item>
                 <flux:navlist.item icon="user-plus" href="{{ route('register') }}" wire:navigate>{{ __('Register') }}
                 </flux:navlist.item>
             </flux:navlist>

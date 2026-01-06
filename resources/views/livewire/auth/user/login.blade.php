@@ -102,24 +102,22 @@
         </form>
     </div>
 
-    <!-- Firebase FCM Integration - Only for notifications -->
+    <!-- Firebase FCM Integration -->
     @push('scripts')
         <script type="module">
-            // Firebase configuration
+            // Firebase configuration - Replace with your actual config
             const firebaseConfig = {
-                apiKey: "AIzaSyAHRdYjEG3k1JzYR7OW31bLfC71qi0UNCY",
-                authDomain: "skywalker-notification.firebaseapp.com",
-                projectId: "skywalker-notification",
-                storageBucket: "skywalker-notification.firebasestorage.app",
-                messagingSenderId: "624087602629",
-                appId: "1:624087602629:web:e0bd6c7aaef5ccea2c27ac",
-                measurementId: "G-QZWS5CXB81"
+                apiKey: "{{ config('firebase.api_key') }}",
+                authDomain: "{{ config('firebase.auth_domain') }}",
+                projectId: "{{ config('firebase.project_id') }}",
+                storageBucket: "{{ config('firebase.storage_bucket') }}",
+                messagingSenderId: "{{ config('firebase.messaging_sender_id') }}",
+                appId: "{{ config('firebase.app_id') }}"
             };
-
-            const vapidKey = "BMP4uIYiZZxGFnZWbQR5Ak93lcODHEZedo8A19Lpm7CV3OG31oE5a6aSmF0c6XnFHAxbN0C19b2TWZv6aUaF8uA";
 
             // Check if Firebase is supported in this browser
             if ('serviceWorker' in navigator && 'Notification' in window) {
+                // Import Firebase modules
                 import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js').then(({
                     initializeApp
                 }) => {
@@ -138,29 +136,29 @@
                                 Notification.requestPermission().then((permission) => {
                                     if (permission === 'granted') {
                                         registerFCMToken(messaging);
+                                    } else {
+                                        console.log('Notification permission denied');
                                     }
                                 });
                             } else if (Notification.permission === 'granted') {
                                 registerFCMToken(messaging);
                             }
 
-                            // Handle foreground messages - Just show notification
+                            // Handle foreground messages
                             onMessage(messaging, (payload) => {
                                 console.log('Message received in foreground:', payload);
 
-                                // Show notification
-                                if (payload.notification) {
-                                    new Notification(payload.notification.title, {
-                                        body: payload.notification.body,
-                                        icon: '/assets/images/logo.png'
-                                    });
-                                }
-
-                                // If it's a logout notification, inform user to reload
+                                // Check if it's a force logout message
                                 if (payload.data && payload.data.type === 'force_logout') {
-                                    console.log(
-                                        'Logout notification received - please navigate or reload page to complete logout'
-                                        );
+                                    handleForceLogout(payload);
+                                } else {
+                                    // Show notification
+                                    if (payload.notification) {
+                                        new Notification(payload.notification.title, {
+                                            body: payload.notification.body,
+                                            icon: '/assets/images/logo.png'
+                                        });
+                                    }
                                 }
                             });
 
@@ -170,12 +168,14 @@
 
                         function registerFCMToken(messaging) {
                             getToken(messaging, {
-                                vapidKey: vapidKey
+                                vapidKey: "{{ config('firebase.vapid_key') }}"
                             }).then((token) => {
                                 if (token) {
                                     console.log('FCM Token:', token);
                                     // Send token to Livewire component
                                     @this.call('setFcmToken', token);
+
+                                    // Store in localStorage for later use
                                     localStorage.setItem('fcm_token', token);
                                 }
                             }).catch((error) => {
@@ -183,7 +183,47 @@
                             });
                         }
 
+                        function handleForceLogout(payload) {
+                            // Show alert
+                            alert(payload.notification?.body || 'You have been logged out from this device.');
+
+                            // Clear local storage
+                            localStorage.clear();
+                            sessionStorage.clear();
+
+                            // Make logout request to server
+                            fetch('{{ route('logout') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                        .content,
+                                    'Accept': 'application/json',
+                                },
+                                credentials: 'same-origin'
+                            }).then(() => {
+                                // Reload page to trigger logout
+                                window.location.href = '{{ route('login') }}';
+                            }).catch(() => {
+                                // Even if request fails, redirect to login
+                                window.location.href = '{{ route('login') }}';
+                            });
+                        }
+
                     });
+                });
+            } else {
+                console.log('Browser does not support Firebase Messaging or Service Workers');
+            }
+
+            // Listen for force logout messages from service worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.addEventListener('message', (event) => {
+                    if (event.data && event.data.type === 'force_logout') {
+                        alert(event.data.message || 'You have been logged out from this device.');
+                        localStorage.clear();
+                        sessionStorage.clear();
+                        window.location.href = '{{ route('login') }}';
+                    }
                 });
             }
         </script>

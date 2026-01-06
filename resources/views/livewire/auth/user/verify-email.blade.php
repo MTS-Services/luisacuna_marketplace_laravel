@@ -14,8 +14,11 @@
             {{ __('Resend verification email') }}
         </flux:button>
 
-        <flux:link class="text-sm cursor-pointer" wire:click="logout">
-            {{ __('Log out') }}
-        </flux:link>
+        <form action="{{ route('logout') }}" method="POST" class="w-full">
+            @csrf
+            <flux:button type="submit" variant="primary" class="w-full">
+                {{ __('Log out') }}
+            </flux:button>
+        </form>
     </div>
 </div>

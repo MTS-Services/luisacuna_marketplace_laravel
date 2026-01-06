@@ -3,19 +3,17 @@
 namespace App\Livewire\Actions;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
-class Logout
+class AdminLogout
 {
-    /**
-     * Log the current user out of the application.
-     */
     public function __invoke()
     {
-        Auth::guard('web')->user()->logoutCurrentDevice();
+        Log::info('Admin logged out');
+        Auth::guard('admin')->user()->logoutCurrentDevice();
         Session::invalidate();
         Session::regenerateToken();
-
         return redirect('/');
     }
 }
