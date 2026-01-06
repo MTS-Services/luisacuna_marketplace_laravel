@@ -29,7 +29,6 @@ class PurchasedOrders extends Component
     public function render()
     {
         $datas = $this->service->getPaginatedData(
-            // perPage: $this->perPage,
             filters: $this->getFilters()
         );
         $columns = [
@@ -75,7 +74,7 @@ class PurchasedOrders extends Component
                     return $data->created_at_formatted;
                 }
             ],
-            
+
             [
                 'key' => 'status',
                 'label' => 'Order status',
@@ -97,6 +96,7 @@ class PurchasedOrders extends Component
             ],
         ];
 
+        $this->PaginationData($datas);
         return view('livewire.backend.user.orders.purchased-orders', [
             'datas' => $datas,
             'columns' => $columns,
@@ -108,8 +108,9 @@ class PurchasedOrders extends Component
     {
         return [
             'search' => $this->search ?? null,
+            'status' => $this->status ?? null,
             'exclude_status' => OrderStatus::INITIALIZED,
-            'order_date' => $this->order_date  ?? null,
+            'order_date' => $this->order_date ?? null,
             'sort_field' => $this->sortField ?? 'created_at',
             'sort_direction' => $this->sortDirection ?? 'desc',
             'user_id' => user()->id,

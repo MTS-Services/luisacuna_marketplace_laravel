@@ -4,6 +4,7 @@ namespace App\Actions\Platform;
 
 use App\Models\Platform;
 use App\Repositories\Contracts\PlatformRepositoryInterface;
+use App\Services\Cloudinary\CloudinaryService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -13,7 +14,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class UpdateAction
 {
     public function __construct(
-        protected PlatformRepositoryInterface $interface
+        protected PlatformRepositoryInterface $interface,
+        protected CloudinaryService $cloudinaryService
     ) {
     }
 
@@ -40,20 +42,18 @@ class UpdateAction
 
                 if ($uploadedIcon instanceof UploadedFile) {
                     // Delete old file permanently (File deletion is non-reversible)
-                    if ($oldIconPath && Storage::disk('public')->exists($oldIconPath)) {
-                        Storage::disk('public')->delete($oldIconPath);
+                    if ($oldIconPath) {
+                       $this->cloudinaryService->delete($oldIconPath);
                     }
-                    // Store the new file and track path for rollback
-                    $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                    $fileName = $prefix . '-' . $uploadedIcon->getClientOriginalName();
 
-                    $newSingleIconPath = Storage::disk('public')->putFileAs('servers', $uploadedIcon, $fileName);
-
+                    $newSingleIconPath = $this->cloudinaryService->upload($uploadedIcon, ['folder' => 'platforms']);
+                    $newSingleIconPath = $newSingleIconPath->publicId;
                     $newData['icon'] = $newSingleIconPath;
 
+                 
                 } elseif (Arr::get($data, 'remove_file')) {
-                    if ($oldIconPath && Storage::disk('public')->exists($oldIconPath)) {
-                        Storage::disk('public')->delete($oldIconPath);
+                    if ($oldIconPath) {
+                       $this->cloudinaryService->delete($oldIconPath);
                     }
                     $newData['icon'] = null;
                 }
@@ -63,9 +63,11 @@ class UpdateAction
                 }
                 unset($newData['remove_file']);
 
-
+         
+            
             $updated = $this->interface->update($id, $newData);
 
+          
             if (!$updated) {
 
                 Log::error('Failed to update data in repository', ['data_id' => $id]);

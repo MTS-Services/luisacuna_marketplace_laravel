@@ -99,8 +99,6 @@
                     </p>
                 </div>
 
-
-
                 <div class="space-y-6">
                     <!-- First name Input -->
                     <div class="mb-4 sm:mb-7 px-2 sm:px-7">

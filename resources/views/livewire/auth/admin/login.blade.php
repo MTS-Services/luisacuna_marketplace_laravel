@@ -1,85 +1,3 @@
-{{-- <div class="container min-h-[80vh] py-10">
-    <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
-        }
-    </script>
-
-    <div class="min-h-[70vh] flex items-center justify-center text-text-white px-4  sm:px-6 lg:px-8 ">
-        <form method="POST" wire:submit.prevent="login" class="w-full max-w-md sm:max-w-lg md:max-w-xl">
-            <div class="bg-bg-secondary rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col justify-between min-h-[55vh]">
-
-                <!-- Header -->
-                <div class="mb-6 text-center">
-                    <h2 class="text-3xl sm:text-4xl font-medium text-text-white">{{__('Sign in')}}</h2>
-                    <p class="text-text-white lg:text-xl sm:text-lg mt-2">
-                        {{ __('Hi! Welcome back, you’ve been missed') }}
-                    </p>
-                </div>
-
-                <!-- Email -->
-                <div class="mb-4 sm:mb-6 px-2 sm:px-6">
-                    <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">{{__('Email')}}</label>
-                    <x-ui.input type="email" placeholder="example@gmail.com" wire:model="email"
-                        />
-
-                    @error('email')
-                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <!-- Error message -->
-                @error('message')
-                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                @enderror
-
-                <!-- Password -->
-                <div class=" sm:mb-6 px-2 sm:px-6">
-                    <label class="block text-lg sm:text-2xl font-medium mb-2 text-text-white">{{__('Password')}}</label>
-                    <div class="relative">
-                        <x-ui.input type="password" id="password" placeholder="Aex@8465" wire:model="password"
-                            />
-                        <button type="button" onclick="togglePassword()"
-                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-zinc-300">
-                            <svg class="w-5 h-5" fill="none" stroke="gray" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                </path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Error message -->
-                @error('password')
-                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                @enderror
-
-                @if (Route::has('admin.password.request'))
-                    <div class=" text-right px-2 sm:px-6 mb-2">
-                        <a href="{{ route('admin.password.request') }}" wire:navigate
-                            class="text-md text-accent hover:underline">
-                            {{ __('Forgot password?') }}
-                        </a>
-                    </div>
-                @endif
-
-                <!-- Sign in button -->
-                <div class=" flex justify-center px-2 sm:px-6 mb-2 sm:mb-6">
-                    <x-ui.button type="submit"
-                        class="w-auto py-2!">
-                        {{ __('Sign in') }}
-                    </x-ui.button>
-                </div>
-
-            </div>
-        </form>
-    </div>
-</div> --}}
-
 <div class="bg-cover bg-center bg-page-login">
     <script>
         function togglePassword() {
@@ -152,4 +70,90 @@
             </div>
         </form>
     </div>
+
+    @push('scripts')
+        <script type="module">
+            // Firebase configuration
+            const firebaseConfig = {
+                apiKey: "AIzaSyAHRdYjEG3k1JzYR7OW31bLfC71qi0UNCY",
+                authDomain: "skywalker-notification.firebaseapp.com",
+                projectId: "skywalker-notification",
+                storageBucket: "skywalker-notification.firebasestorage.app",
+                messagingSenderId: "624087602629",
+                appId: "1:624087602629:web:e0bd6c7aaef5ccea2c27ac",
+                measurementId: "G-QZWS5CXB81"
+            };
+
+            const vapidKey = "BMP4uIYiZZxGFnZWbQR5Ak93lcODHEZedo8A19Lpm7CV3OG31oE5a6aSmF0c6XnFHAxbN0C19b2TWZv6aUaF8uA";
+
+            // Check if Firebase is supported in this browser
+            if ('serviceWorker' in navigator && 'Notification' in window) {
+                import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js').then(({
+                    initializeApp
+                }) => {
+                    import('https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js').then(({
+                        getMessaging,
+                        getToken,
+                        onMessage
+                    }) => {
+
+                        try {
+                            const app = initializeApp(firebaseConfig);
+                            const messaging = getMessaging(app);
+
+                            // Request notification permission
+                            if (Notification.permission === 'default') {
+                                Notification.requestPermission().then((permission) => {
+                                    if (permission === 'granted') {
+                                        registerFCMToken(messaging);
+                                    }
+                                });
+                            } else if (Notification.permission === 'granted') {
+                                registerFCMToken(messaging);
+                            }
+
+                            // Handle foreground messages - Just show notification
+                            onMessage(messaging, (payload) => {
+                                console.log('Message received in foreground:', payload);
+
+                                // Show notification
+                                if (payload.notification) {
+                                    new Notification(payload.notification.title, {
+                                        body: payload.notification.body,
+                                        icon: '/assets/images/logo.png'
+                                    });
+                                }
+
+                                // If it's a logout notification, inform user to reload
+                                if (payload.data && payload.data.type === 'force_logout') {
+                                    console.log(
+                                        'Logout notification received - please navigate or reload page to complete logout'
+                                    );
+                                }
+                            });
+
+                        } catch (error) {
+                            console.error('Firebase initialization error:', error);
+                        }
+
+                        function registerFCMToken(messaging) {
+                            getToken(messaging, {
+                                vapidKey: vapidKey
+                            }).then((token) => {
+                                if (token) {
+                                    console.log('FCM Token:', token);
+                                    // Send token to Livewire component
+                                    @this.call('setFcmToken', token);
+                                    localStorage.setItem('fcm_token', token);
+                                }
+                            }).catch((error) => {
+                                console.error('Error getting FCM token:', error);
+                            });
+                        }
+
+                    });
+                });
+            }
+        </script>
+    @endpush
 </div>

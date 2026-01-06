@@ -17,7 +17,7 @@
                 <div class="flex items-center space-x-2">
                  
                         <div
-                            class="bg-orange text-text-white font-bold rounded-md w-8 h-8 inline-flex items-center justify-center">
+                            class="bg-orange text-text-white font-bold rounded-md w-13.5 h-8 inline-flex items-center justify-center">
                             {{ substr($game->name, 0, 1) }}
                         </div>
                    

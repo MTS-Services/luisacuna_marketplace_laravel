@@ -9,11 +9,11 @@ use Livewire\WithPagination;
 
 trait WithPaginationData
 {
-    
+
     use  WithPagination;
 
     public $pagination = [];
-   #[Url()]
+    #[Url()]
     protected $perPage = 12;
 
     protected  $queryString = 1;
@@ -28,6 +28,4 @@ trait WithPaginationData
             'to'           => $paginator->lastItem(),
         ];
     }
-
-
 }

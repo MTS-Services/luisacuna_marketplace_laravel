@@ -3,9 +3,11 @@
 namespace App\Livewire\Backend\Admin\GameManagement\Tag;
 
 use App\Enums\TagStatus;
+use App\Services\Cloudinary\CloudinaryService;
 use App\Services\TagService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Foundation\Cloud;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -22,9 +24,11 @@ class Index extends Component
 
 
     protected TagService $service;
-    public function boot(TagService $service)
+    protected CloudinaryService $cloudinaryService;
+    public function boot(TagService $service, CloudinaryService $cloudinaryService)
     {
         $this->service = $service;
+        $this->cloudinaryService = $cloudinaryService;
     }
     public function render()
     {
@@ -35,15 +39,7 @@ class Index extends Component
         $datas->load('creater_admin');
 
         $columns = [
-            [
-                'key' => 'icon',
-                'label' => 'icon',
-                'format' => function ($data) {
-                    return $data->icon
-                        ? '<img src="' . Storage::url($data->icon) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
-                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
-                }
-            ],
+       
             [
                 'key' => 'name',
                 'label' => 'Name',

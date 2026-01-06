@@ -40,7 +40,7 @@ class CategoryForm extends Form
             'layout' => 'required|string|in:' . implode(',', array_column(CategoryLayout::cases(), 'value')),
             'meta_title' => 'nullable|string',
             'meta_description' => 'nullable|string',
-            'icon' => 'nullable|image|max:1024|dimensions:max_width=200,max_height=200',
+            'icon' => 'nullable|image|max:1024',
             'remove_file' => 'nullable|boolean',
         ];
     }
