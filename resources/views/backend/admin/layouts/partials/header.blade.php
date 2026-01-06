@@ -1,4 +1,5 @@
 <header class="sticky top-0 z-10 pt-6 px-4 xl:px-6">
+
     <div class="glass-card rounded-2xl shadow-shadow-secondary dark:shadow-shadow-secondary-dark">
         <div class="flex items-center justify-between p-4 lg:p-6">
             <div class="flex items-center gap-4">
@@ -62,7 +63,8 @@
                             {{-- <img src="{{ auth_storage_url(admin()->avatar) }}" alt="{{ admin()->name }}"
                                 class="object-cover w-full h-full"> --}}
 
-                            <x-cloudinary::image publicId="{{ admin()->avatar }}"
+                               
+                            <x-cloudinary::image publicId="{{ admin()->avatar_url }}"
                                 class="object-cover w-full h-full" alt="{{  admin()->name }}" />
                         </div>
                     </button>

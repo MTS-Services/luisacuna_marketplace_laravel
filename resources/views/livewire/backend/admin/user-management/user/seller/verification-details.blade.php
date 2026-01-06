@@ -13,6 +13,7 @@
             </div>
         </div>
     </div>
+    
 
     <div class="rounded-xl p-6 min-h-[500px] flex flex-row gap-5">
         {{-- PERSONAL INFO (Default Tab) --}}
