@@ -53,7 +53,7 @@
 
                                             @else
 
-                                                <a href="{{  $cloudinaryService->getUrlFromPublicId($attachment->file_path))}}"
+                                                <a href="{{  $cloudinaryService->getUrlFromPublicId($attachment->file_path)}}"
                                                     class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
                                                     📎 {{ basename($cloudinaryService->getUrlFromPublicId($attachment->file_path)) }}
                                                 </a>
