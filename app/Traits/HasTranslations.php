@@ -16,15 +16,17 @@ trait HasTranslations
      */
     public function dispatchTranslation(
         string $defaultLanguageLocale = 'en',
-        ?array $targetLanguageIds = null
+        ?array $targetLanguageIds = null,
+        bool $forceTranslation = false
     ): void {
-        $config = $this->getTranslationConfig();
-        $enabled = auto_translate();
+        $enabled = $forceTranslation || auto_translate();
 
         if (!$enabled) {
             Log::info('Auto translation is disabled in config.');
             return;
         }
+        $config = $this->getTranslationConfig();
+
         Log::info('Dispatching translation job for model', [
             'model' => get_class($this),
             'model_id' => $this->id,
