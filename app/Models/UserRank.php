@@ -14,7 +14,6 @@ class UserRank extends AuditBaseModel implements Auditable
         'sort_order',
         'user_id',
         'rank_level',
-        'is_active',
         'activated_at',
 
         'creater_type',

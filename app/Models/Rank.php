@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Rank extends AuditBaseModel implements Auditable
 {
-    use   AuditableTrait;
+    use AuditableTrait;
     use HasFactory;
 
     protected $fillable = [
@@ -43,7 +43,7 @@ class Rank extends AuditBaseModel implements Auditable
 
     protected $casts = [
         //
-        'status'    => RankStatus::class,
+        'status' => RankStatus::class,
         'restored_at' => 'datetime',
     ];
 
@@ -55,9 +55,10 @@ class Rank extends AuditBaseModel implements Auditable
     {
         return $this->hasMany(Achievement::class, 'rank_id', 'id');
     }
-    public function userRanks(): HasMany
+    public function users()
     {
-        return $this->hasMany(UserRank::class, 'rank_level', 'id');
+        return $this->belongsToMany(User::class, 'user_ranks')
+            ->withPivot('activated_at', 'rank_level');
     }
 
     // public function AchievementProgress()

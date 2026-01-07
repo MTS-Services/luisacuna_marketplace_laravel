@@ -41,9 +41,9 @@ class LoyaltyComponent extends Component
         $this->availablePoints = $userPoints;
         $this->canRedeem = $userPoints >= 10000;
 
-        $this->currentRank = $this->rankService->getRankByPoints($userPoints);
+        $this->currentRank = $this->rankService->getUserRank();
 
-        $this->rank = $this->currentRank;
+        // $this->rank = $this->currentRank;
         $this->achievements = $this->currentRank?->achievements;
 
         if ($this->currentRank) {

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Rank;
+use App\Models\User;
 use App\Models\UserRank;
 use App\Enums\RankStatus;
 use App\Actions\Rank\BulkAction;
@@ -27,11 +28,12 @@ class RankService
         protected RestoreAction $restoreAction,
         protected BulkAction $bulkAction,
         protected AssignRankAction $assignRankAction,
-    ) {}
+    ) {
+    }
 
     /* ================== ================== ==================
-    *                          Find Methods
-    * ================== ================== ================== */
+     *                          Find Methods
+     * ================== ================== ================== */
 
     public function getAllDatas($sortField = 'created_at', $order = 'desc'): Collection
     {
@@ -88,12 +90,43 @@ class RankService
 
 
 
-    public function getRankByPoints(int $points): ?Rank
+    // public function getRankByPoints(int $points): ?Rank
+    // {
+    //     return Rank::where('minimum_points', '<=', $points)
+    //         ->where('maximum_points', '>=', $points)
+    //         ->with('achievements.progress')
+    //         ->first();
+    // }
+
+    public function getUserRank($userId = null)
     {
-        return Rank::where('minimum_points', '<=', $points)
-            ->where('maximum_points', '>=', $points)
-            ->with('achievements.progress')
+        $userId = $userId ?? user()->id;
+
+        $user = User::where('id', $userId)
+            ->whereHas('activeRank.achievements', function ($q) use ($userId) {
+                $q->whereHas('progress', function ($q) use ($userId) {
+                    $q->where('user_id', $userId)
+                        ->whereNotNull('unlocked_at')
+                        ->whereNull('achieved_at');
+                });
+            })
+            ->with([
+                'activeRank.achievements' => function ($q) use ($userId) {
+                    $q->whereHas('progress', function ($q) use ($userId) {
+                        $q->where('user_id', $userId)
+                            ->whereNotNull('unlocked_at')
+                            ->whereNull('achieved_at');
+                    })
+                        ->with([
+                            'progress' => function ($q) use ($userId) {
+                                $q->where('user_id', $userId)->whereNotNull('unlocked_at')->whereNull('achieved_at');
+                            }
+                        ]);
+                }
+            ])
             ->first();
+
+        return $user->activeRank;
     }
 
 
@@ -126,8 +159,8 @@ class RankService
 
 
     /* ================== ================== ==================
-    *                   Action Executions
-    * ================== ================== ================== */
+     *                   Action Executions
+     * ================== ================== ================== */
 
     public function createData(array $data): Rank
     {
@@ -202,8 +235,8 @@ class RankService
     }
 
     /* ================== ================== ==================
-    *                   Accessors (optionals)
-    * ================== ================== ================== */
+     *                   Accessors (optionals)
+     * ================== ================== ================== */
 
     public function getActiveData($sortField = 'created_at', $order = 'desc'): Collection
     {
