@@ -187,7 +187,7 @@ class Admin extends AuthBaseModel implements Auditable
     {
         return $this->avatar
             ? asset('storage/' . $this->avatar)
-            : 'https://ui-avatars.com/api/?name=' . urlencode($this->name);
+            : 'default_avatar';
     }
 
     /*

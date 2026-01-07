@@ -358,8 +358,8 @@ class User extends AuthBaseModel implements Auditable
     {
         $name = $this->display_name ?? $this->full_name ?? $this->username;
         return $this->avatar
-            ? asset('storage/' . $this->avatar)
-            : 'https://ui-avatars.com/api/?name=' . urlencode($name);
+            ? $this->avatar
+            : 'default_avatar';
     }
 
     public function getDateOfBirthAttribute($value)

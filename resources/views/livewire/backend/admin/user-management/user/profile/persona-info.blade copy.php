@@ -26,7 +26,7 @@
 
                 <div class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-red-100 overflow-hidden">
                    
-                    <x-cloudinary::image publicId="{{ $user->avatar }}" alt="{{ $user->name}}" class="w-full h-full object-cover" />
+                    <x-cloudinary::image publicId="{{ $user->avatar_url }}" alt="{{ $user->name}}" class="w-full h-full object-cover" />
 
                 </div>
 

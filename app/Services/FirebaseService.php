@@ -9,7 +9,7 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 
-class FirebaseNotificationService
+class FirebaseService
 {
     protected $messaging;
 

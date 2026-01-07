@@ -1,19 +1,18 @@
 @props([
     'data' => null,
 ])
-@php 
- $service = new  \App\Services\Cloudinary\CloudinaryService();
+@php
+    $service = new \App\Services\Cloudinary\CloudinaryService();
 
-@endphp 
+@endphp
 <div class="relative hidden md:flex overflow-hidden  bg-center h-[532px] bg-no-repeat bg-[length:100%_100%]  justify-center items-center"
-    style="background-image: url('{{ $service->getUrlFromPublicId($data->image ?? '')  }}')">
+    style="background-image: url('{{ $service->getUrlFromPublicId($data->image ?? '') }}')">
     <div
-    class="
+        class="
         py-30 relative z-10 w-full
         bg-[#ffffff21] bg-opacity-70
         dark:bg-[#0f002978] dark:bg-opacity-80
-    "
->
+    ">
 
         <div class="container py-30 relative z-10 align-left  w-100vw">
 
@@ -35,7 +34,10 @@
 </div>
 <section
     class=" relative flex md:hidden overflow-hidden  bg-center h-[532px] bg-no-repeat bg-[length:100%_100%]  justify-center items-center"
-    style="background-image: url('{{ $service->getUrlFromPublicId($data->mobile_image?? '') }}')">
+    <<<<<<< HEAD style="background-image: url('{{ $service->getUrlFromPublicId($data->mobile_image ?? '') }}')">
+    =======
+    style="background-image: url('{{ $service->getUrlFromPublicId($data->mobile_image ?? '') }}')">
+    >>>>>>> main
     <div class="bg-[#0f002978] py-30 bg-opacity-0 relative z-10 w-full">
         <div class="container py-30 relative z-10 align-left  w-100vw">
 

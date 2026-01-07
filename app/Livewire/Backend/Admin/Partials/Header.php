@@ -28,15 +28,6 @@ class Header extends Component
         $this->unreadExists();
     }
 
-    public function logout()
-    {
-        Auth::guard('admin')->logout();
-        session()->invalidate();
-        session()->regenerateToken();
-        return $this->redirectIntended(default: route('home', absolute: false), navigate: true);
-    }
-
-
     #[On('notification-updated')]
     public function unreadExists()
     {

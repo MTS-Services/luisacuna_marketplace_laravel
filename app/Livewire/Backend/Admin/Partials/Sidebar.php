@@ -23,13 +23,6 @@ class Sidebar extends Component
         $this->active = $active;
     }
 
-    public function logout()
-    {
-        Auth::guard('admin')->logout();
-        session()->invalidate();
-        session()->regenerateToken();
-        return $this->redirectIntended(default: route('home', absolute: false), navigate: true);
-    }
     public function render()
     {
         $this->categories = $this->categoryService->getDatas(status: "active");
