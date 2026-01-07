@@ -18,7 +18,7 @@
                         <div class="relative">
                             <div
                                 class="w-26 h-26 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
-                                <img src="{{ storage_url($rank?->icon) }}" alt="" class="w-full h-full">
+                                <img src="{{ storage_url($rank?->icon) }}" alt="{{ $rank?->name }}" class="w-full h-full">
                             </div>
                         </div>
                     </div>
@@ -108,7 +108,7 @@
                         <div class="flex items-center gap-4 mb-9">
                             <div
                                 class="bg-bg-secondary w-20 h-20 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <img src="{{ storage_url($achievement->icon) }}" alt=""
+                                <img src="{{ storage_url($achievement->icon) }}" alt="{{ $achievement->title }}"
                                     class="w-full h-full rounded-xl">
                             </div>
                             <div class="flex-1">
