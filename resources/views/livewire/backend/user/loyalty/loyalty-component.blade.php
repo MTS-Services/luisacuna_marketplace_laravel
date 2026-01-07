@@ -18,7 +18,7 @@
                         <div class="relative">
                             <div
                                 class="w-26 h-26 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
-                                <img src="{{ storage_url($rank?->icon) }}" alt="" class="w-full h-full">
+                                <img src="{{ storage_url($rank?->icon) }}" alt="{{ $rank?->name }}" class="w-full h-full">
                             </div>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
 
                 <p class="text-text-white/90 text-sm mb-6">
                     {{-- {{ __('Collect a minimum of 10,000 points and unlock a $1 reward.') }} --}}
-                    {{ __('Collect a minimum of 10,000 points and unlock a :symbol :amount reward.', ['symbol' => currency_symbol(), 'amount' => currency_exchange(1),]) }}
+                    {{ __('Collect a minimum of 10,000 points and unlock a :symbol :amount reward.', ['symbol' => currency_symbol(), 'amount' => currency_exchange(1)]) }}
 
 
                 </p>
@@ -73,7 +73,8 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="text-text-white font-bold text-2xl mb-1">{{ __('10,000 points') }}</div>
-                        <div class="text-text-white/70 text-sm">{{ __(':amount Store credit', ['amount' => currency_exchange(1)]) }}</div>
+                        <div class="text-text-white/70 text-sm">
+                            {{ __(':amount Store credit', ['amount' => currency_exchange(1)]) }}</div>
                         {{-- <div class="text-text-white/70 text-sm">{{ __('$1 Store credit') }}</div> --}}
                     </div>
                     {{-- <x-ui.button class="sm:w-auto! py-2!">
@@ -94,7 +95,7 @@
             <div class="flex items-center gap-3 mb-2">
                 <h2 class="text-text-white font-open-sans text-2xl font-bold">{{ __('Achievements completed') }}</h2>
             </div>
-            <p class="text-text-white text-sm ">0 / {{ $achievements?->count() ?? 0 }} {{ __('completed') }}</p>
+            <p class="text-text-white text-sm ">{{ $completedAchievements }} / {{ $achievements?->count() ?? 0 }} {{ __('completed') }}</p>
         </div>
 
         {{-- Achievement Cards Grid --}}
@@ -107,7 +108,7 @@
                         <div class="flex items-center gap-4 mb-9">
                             <div
                                 class="bg-bg-secondary w-20 h-20 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <img src="{{ storage_url($achievement->icon) }}" alt=""
+                                <img src="{{ storage_url($achievement->icon) }}" alt="{{ $achievement->title }}"
                                     class="w-full h-full rounded-xl">
                             </div>
                             <div class="flex-1">
@@ -117,17 +118,25 @@
                             </div>
                         </div>
                         <div class="flex items-center justify-between text-sm mb-2">
-                            <span
-                                class="text-text-white text-base sm:text-xl">{{ $achievement->target_value }}{{ __(' To unlock') }}</span>
+                            <span class="text-text-white text-base sm:text-xl">
+                                {{ $achievement->progress->first()?->current_progress ?? 0 }}
+                                / {{ $achievement->target_value }} {{ __('To unlock') }}
+                            </span>
+
                             <div class="flex items-center gap-1">
                                 <x-phosphor-coin class="fill-yellow-500 w-4 h-4" weight="fill" />
                                 <span
                                     class="text-text-white font-semibold text-base sm:text-xl">+{{ $achievement->point_reward }}</span>
                             </div>
                         </div>
+                        @php
+                            $current = $achievement->progress->first()?->current_progress ?? 0 ;
+                            $target = $achievement->target_value ?? 1;
+                            $percent = min(($current / $target) * 100, 100);
+                        @endphp
                         <div class="w-full bg-white rounded-full h-2">
                             <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full"
-                                style="width: {{ $progress }}%">
+                                style="width: {{ $percent }}%">
                             </div>
                         </div>
                     </div>

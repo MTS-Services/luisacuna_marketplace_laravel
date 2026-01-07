@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Rank;
 use App\Models\Achievement;
 use App\Enums\AchievementStatus;
 use App\Actions\Achievement\BulkAction;
@@ -73,8 +74,24 @@ class AchievementService
     *                   Action Executions
     * ================== ================== ================== */
 
+    // public function createData(array $data): Achievement
+    // {
+    //     return $this->createAction->execute($data);
+    // }
+
     public function createData(array $data): Achievement
     {
+        $rank = Rank::findOrFail($data['rank_id']);
+
+        $totalPoints = Achievement::where('rank_id', $data['rank_id'])
+            ->sum('point_reward');
+
+        $newPonits = (int) $data['point_reward'];
+        if (($totalPoints + $newPonits) > $rank->maximum_points) {
+            throw new \Exception(
+                "This Achievement's points exceed the total allowed points for this Rank ({$rank->maximum_points})"
+            );
+        }
         return $this->createAction->execute($data);
     }
 

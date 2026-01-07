@@ -33,7 +33,7 @@ class Rank extends AuditBaseModel implements Auditable
         'restored_by',
 
 
-      //here AuditColumns
+        //here AuditColumns
     ];
 
     protected $hidden = [
@@ -52,16 +52,21 @@ class Rank extends AuditBaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     public function achievements(): HasMany
-     {
-         return $this->hasMany(Achievement::class, 'rank_id', 'id');
-     }
-     public function userRanks(): HasMany
-     {
-         return $this->hasMany(UserRank::class, 'rank_level', 'id');
-     }
+    public function achievements(): HasMany
+    {
+        return $this->hasMany(Achievement::class, 'rank_id', 'id');
+    }
+    public function userRanks(): HasMany
+    {
+        return $this->hasMany(UserRank::class, 'rank_level', 'id');
+    }
 
-     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+    public function AchievementProgress()
+    {
+        return $this->hasMany(UserAchievementProgress::class, 'rank_id', 'id');
+    }
+
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
@@ -124,6 +129,4 @@ class Rank extends AuditBaseModel implements Auditable
             //
         ]);
     }
-
-
 }
