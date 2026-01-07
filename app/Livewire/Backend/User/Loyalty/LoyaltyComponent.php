@@ -14,7 +14,7 @@ class LoyaltyComponent extends Component
 
     public $user = null;
     public $rank = null;
-    public $achievements = [];
+    public $achievements;
     public $currentRank = null;
     public $nextRank = null;
     public $pointsNeeded = 0;
@@ -22,6 +22,8 @@ class LoyaltyComponent extends Component
 
     public $canRedeem = false;
     public $availablePoints = 0;
+    public $completedAchievements = 0;
+    public $totalAchievements = 0;
 
     protected UserService $userService;
     protected RankService $rankService;
@@ -55,6 +57,14 @@ class LoyaltyComponent extends Component
         $this->progress = $maxPoints > 0
             ? ($userPoints / $maxPoints) * 100
             : 0;
+
+
+        $this->completedAchievements = $this->achievements
+            ?->filter(function ($achievement) {
+                $current = $achievement->progress->first()?->current_progress ?? 0;
+                return $current >= $achievement->target_value;
+            })
+            ->count() ?? 0;
     }
     public function render()
     {
@@ -75,7 +85,7 @@ class LoyaltyComponent extends Component
         $this->availablePoints = $user->userPoint->points;
         $this->canRedeem = $this->availablePoints >= 10000;
 
-       $this->success('Points redeemed successfully');
+        $this->success('Points redeemed successfully');
 
         return redirect()->route('user.loyalty');
     }

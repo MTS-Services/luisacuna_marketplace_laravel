@@ -92,7 +92,7 @@ class RankService
     {
         return Rank::where('minimum_points', '<=', $points)
             ->where('maximum_points', '>=', $points)
-            ->with('achievements')
+            ->with('achievements.progress')
             ->first();
     }
 
