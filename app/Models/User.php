@@ -220,14 +220,14 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->belongsToMany(Rank::class, 'user_ranks')
             ->wherePivot('activated_at', '!=', null)
-            ->withPivot('activated_at','rank_level')
+            ->withPivot('activated_at','rank_id')
             ->limit(1);
     }
 
     public function ranks()
     {
         return $this->belongsToMany(Rank::class, 'user_ranks')
-            ->withPivot('activated_at', 'rank_level')
+            ->withPivot('activated_at', 'rank_id')
             ->withTimestamps();
     }
 
@@ -250,7 +250,7 @@ class User extends AuthBaseModel implements Auditable
         return $this->hasManyThrough(
             User::class,
             UserRank::class,
-            'rank_level',
+            'rank_id',
             'id',
             'id',
             'user_id'

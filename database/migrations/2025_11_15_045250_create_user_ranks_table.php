@@ -17,14 +17,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('rank_level');
+            $table->unsignedBigInteger('rank_id');
             // $table->boolean('is_active')->default(true);
             $table->timestamp('activated_at');
 
 
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('rank_level')->references('id')->on('ranks')->onDelete('cascade');
+            $table->foreign('rank_id')->references('id')->on('ranks')->onDelete('cascade');
 
             $table->softDeletes();
             $table->timestamps();

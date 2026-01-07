@@ -13,6 +13,7 @@ use App\Actions\Rank\UpdateAction;
 use Illuminate\Support\Facades\DB;
 use App\Actions\Rank\RestoreAction;
 use App\Actions\Rank\AssignRankAction;
+use App\Models\Achievement;
 use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Contracts\RankRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -101,32 +102,26 @@ class RankService
     public function getUserRank($userId = null)
     {
         $userId = $userId ?? user()->id;
+        $rank = User::findOrfail($userId)?->activeRank?->first();
+        return $rank;
+    }
 
-        $user = User::where('id', $userId)
-            ->whereHas('activeRank.achievements', function ($q) use ($userId) {
-                $q->whereHas('progress', function ($q) use ($userId) {
-                    $q->where('user_id', $userId)
-                        ->whereNotNull('unlocked_at')
-                        ->whereNull('achieved_at');
-                });
-            })
-            ->with([
-                'activeRank.achievements' => function ($q) use ($userId) {
-                    $q->whereHas('progress', function ($q) use ($userId) {
-                        $q->where('user_id', $userId)
-                            ->whereNotNull('unlocked_at')
-                            ->whereNull('achieved_at');
-                    })
+    public function getUserAchievements($userId = null, $rankId = null)
+    {
+        $userId = $userId ?? user()->id;
+        $rankId = $rankId ?? $this->getUserRank($userId)->id;
+
+        $achievements = Achievement::where('rank_id', $rankId)
                         ->with([
                             'progress' => function ($q) use ($userId) {
-                                $q->where('user_id', $userId)->whereNotNull('unlocked_at')->whereNull('achieved_at');
+                                $q->where('user_id', $userId)->whereNotNull('unlocked_at');
                             }
-                        ]);
-                }
-            ])
-            ->first();
-
-        return $user->activeRank;
+                        ])->whereHas('progress', function ($q) use ($userId) {
+                            $q->where('user_id', $userId)
+                                ->whereNotNull('unlocked_at');
+                                // ->whereNull('achieved_at');
+                        })->get();
+        return $achievements;
     }
 
 

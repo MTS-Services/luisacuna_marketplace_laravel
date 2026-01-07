@@ -8,8 +8,8 @@
                     <h3 class="text-text-primary font-open-sans text-lg">{{ __('How it works?') }}</h3>
                     <div class="flex items-center gap-2 bg-zinc-50/10 px-3 py-1.5 rounded-full">
                         <x-phosphor-coin class="fill-yellow-500 w-5 h-5" weight="fill" />
-                        {{-- <span class="text-text-white font-semibold">{{ user()->rank_points }}</span> --}}
-                        <span class="text-text-white font-semibold">{{ $user->userPoint?->points ?? 0 }}</span>
+                        {{-- <span class="text-text-white font-semibold">{{ $currentRank->userPoint->points }}</span> --}}
+                        {{-- <span class="text-text-white font-semibold">{{ $currentRank->userPoint->points }}</span> --}}
                     </div>
                 </div>
 
@@ -18,7 +18,7 @@
                         <div class="relative">
                             <div
                                 class="w-26 h-26 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
-                                <img src="{{ storage_url($rank?->icon) }}" alt="{{ $rank?->name }}"
+                                <img src="{{ storage_url($rank?->icon) }}" alt="{{ $user?->rank?->name }}"
                                     class="w-full h-full">
                             </div>
                         </div>
@@ -104,6 +104,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-13">
             {{-- Critic Achievement --}}
 
+            @dd($achievements)
             @if ($achievements)
                 @forelse ($achievements as $achievement)
                     <div class="glass-card rounded-2xl p-6  border-primary-700/30">
@@ -121,8 +122,9 @@
                         </div>
                         <div class="flex items-center justify-between text-sm mb-2">
                             <span class="text-text-white text-base sm:text-xl">
-                          0
-                                / {{ $achievement->target_value }} {{ __('To unlock') }}
+                                {{-- @dd($achievement) --}}
+                                {{ $achievement?->progress->first()->current_progress }} /
+                                {{ $achievement->target_value }} {{ __('To unlock') }}
                             </span>
                             <div class="flex items-center gap-1">
                                 <x-phosphor-coin class="fill-yellow-500 w-4 h-4" weight="fill" />

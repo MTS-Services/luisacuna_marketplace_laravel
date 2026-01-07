@@ -13,7 +13,7 @@ class UserRank extends AuditBaseModel implements Auditable
     protected $fillable = [
         'sort_order',
         'user_id',
-        'rank_level',
+        'rank_id',
         'activated_at',
 
         'creater_type',
@@ -43,7 +43,7 @@ class UserRank extends AuditBaseModel implements Auditable
     }
     public function rank()
     {
-        return $this->belongsTo(Rank::class, 'rank_level', 'id');
+        return $this->belongsTo(Rank::class, 'rank_id', 'id');
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

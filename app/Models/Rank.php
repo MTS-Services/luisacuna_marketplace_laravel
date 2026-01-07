@@ -58,7 +58,7 @@ class Rank extends AuditBaseModel implements Auditable
     public function users()
     {
         return $this->belongsToMany(User::class, 'user_ranks')
-            ->withPivot('activated_at', 'rank_level');
+            ->withPivot('activated_at', 'rank_id');
     }
 
     // public function AchievementProgress()
