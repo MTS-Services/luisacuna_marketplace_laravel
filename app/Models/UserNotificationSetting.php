@@ -2,46 +2,45 @@
 
 namespace App\Models;
 
-use App\Models\AuditBaseModel;
+use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class UsersNotificationSetting extends AuditBaseModel implements Auditable
+class UserNotificationSetting extends BaseModel implements Auditable
 {
-    use   AuditableTrait;
-    //
+    use AuditableTrait;
 
     protected $fillable = [
         'sort_order',
         'user_id',
+
         'new_order',
         'new_message',
-        'new_request',
-        'message_received',
-        'status_changed',
-        'request_rejected',
-        'dispute_created',
-        'payment_received',
-
-
-
-        'creater_type',
-        'updater_type',
-        'deleter_type',
-        'creater_id',
-        'updater_id',
-        'deleter_id',
-        'restorer_id',
-
-
+        'order_update',
+        'dispute_update',
+        'payment_update',
+        'withdrawal_update',
+        'verification_update',
+        'boosting_offer',
     ];
 
     protected $hidden = [
-        //
+        'id',
+        'created_at',
+        'updated_at',
     ];
 
     protected $casts = [
-        //
+        'sort_order' => 'integer',
+        'new_order' => 'boolean',
+        'new_message' => 'boolean',
+        'order_update' => 'boolean',
+        'dispute_update' => 'boolean',
+        'payment_update' => 'boolean',
+        'withdrawal_update' => 'boolean',
+        'verification_update' => 'boolean',
+        'boosting_offer' => 'boolean',
+        'user_id' => 'integer',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
