@@ -16,9 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('achievement_id')->index();
-            $table->unsignedBigInteger('rank_id')->nullable()->index();
+            $table->unsignedBigInteger('rank_id')->index();
             $table->integer('current_progress')->default(0);
             $table->timestamp('unlocked_at')->nullable()->index();
+            $table->timestamp('achieved_at')->nullable()->index();
 
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -28,7 +29,7 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->unique(['user_id', 'achievement_id', 'rank_id', 'unlocked_at'], 'user_achievement_unique');
+            $table->unique(['user_id', 'achievement_id', 'rank_id', 'unlocked_at', 'achieved_at'], 'user_achievement_unique');
         });
     }
 
