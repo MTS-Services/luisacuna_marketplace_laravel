@@ -45,7 +45,7 @@ class Cms extends AuditBaseModel implements Auditable
         return $this->hasMany(CmsTranslation::class, 'cms_id', 'id');
     }
 
-
+ 
     /* =========================================
             Translation Configuration
      ========================================= */

@@ -6,7 +6,9 @@ use App\Enums\FaqStatus;
 use App\Enums\FaqType;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
+use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -17,7 +19,7 @@ class Faq extends AuditBaseModel implements Auditable
 
 
 
-    use AuditableTrait, Searchable;
+    use AuditableTrait, Searchable, HasTranslations;
 
     protected $table = 'faq';
 
@@ -46,6 +48,31 @@ class Faq extends AuditBaseModel implements Auditable
     | Relationships
     |--------------------------------------------------------------------------
     */
+
+    
+   public function faqTranslations(): HasMany
+    {
+        return $this->hasMany(FaqTranslation::class, 'cms_id', 'id');
+    }
+
+ 
+    /* =========================================
+            Translation Configuration
+     ========================================= */
+
+    public function getTranslationConfig(): array
+    {
+        return [
+            'fields' => ['question', 'answer'],
+            'relation' => 'faqTranslations',
+            'model' => FaqTranslation::class,
+            'foreign_key' => 'faq_id',
+            'field_mapping' => [
+                'question' => 'question',
+                'answer' => 'answer',
+            ]
+        ];
+    }
 
     public function games()
     {
