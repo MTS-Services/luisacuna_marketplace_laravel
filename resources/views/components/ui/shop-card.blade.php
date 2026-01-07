@@ -15,16 +15,16 @@
 
             <div class="flex justify-between items-start">
                 <div class="flex items-center space-x-2">
-                 
-                        <div
-                            class="bg-orange text-text-white font-bold rounded-md w-13.5 h-8 inline-flex items-center justify-center">
-                            {{ substr($game->name, 0, 1) }}
-                        </div>
-                   
 
-                    <span class="text-green w-full text-base font-medium">{{ $data->platform->name }}</span>
+                    <div
+                        class="bg-orange text-text-white font-bold rounded-md w-13.5 h-8 inline-flex items-center justify-center">
+                        {{ substr($game?->name, 0, 1) }}
+                    </div>
+
+
+                    <span class="text-green w-full text-base font-medium">{{ $data?->platform?->name }}</span>
                 </div>
-                <span class="text-text-secondary text-sm">• Stacked</span>
+                <span class="text-text-secondary text-sm">{{ __('• Stacked') }}</span>
             </div>
 
             <div class="flex justify-between my-2">
@@ -34,10 +34,9 @@
                     {{-- {{
                         $data->name ?? ''
                     }} --}}
-                    {{ $data->productTranslations->first()?->name ?? $data->name }}
+                    {{ $data->name }}
                 </p>
-                {{-- <img class="w-16 h-16 rounded float-right" src="{{ storage_url($game->logo) }}" alt="Image"> --}}
-                <x-cloudinary::image public-id="{{ $game->logo }}" alt="{{ $data->name }}"
+                <x-cloudinary::image public-id="{{ $game->logo ?? '' }}" alt="{{ $game->name }}"
                     class="w-16 h-16 rounded float-right" />
 
             </div>
@@ -64,7 +63,8 @@
                 class="border-t border-zinc-500 mt-2 pt-3 flex items-center justify-between gap-3">
 
                 <div class="w-18 h-14 relative ">
-                    <x-cloudinary::image publicId="{{ $data->user->avatar_url }}" alt="{{ $data->user->name}}" class="w-14 h-14 rounded-full border-2 border-white" />
+                    <x-cloudinary::image publicId="{{ $data?->user?->avatar_url ?? '' }}"
+                        alt="{{ $data?->user?->name ?? '' }}" class="w-14 h-14 rounded-full border-2 border-white" />
 
                     <span class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
 
@@ -72,7 +72,7 @@
 
                 <div class="w-full ">
                     <p class="text-text-white font-semibold text-base flex items-center gap-2">
-                        <span> {{ $data->user->first_name ?? $data->user->username }}</span>
+                        <span> {{ $data?->user?->first_name ?? $data?->user?->username }}</span>
                         <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
                     </p>
 

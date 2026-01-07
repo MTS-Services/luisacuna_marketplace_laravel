@@ -158,46 +158,70 @@ class Game extends AuditBaseModel implements Auditable
         return $query->where('status', GameStatus::UPCOMING);
     }
 
+    // public function scopeFilter(Builder $query, array $filters): Builder
+    // {
+    //     if (!empty($filters['relations'])) {
+
+    //         $query->with($filters['relations']);
+    //     }
+
+    //     // Add withCount for products
+    //     if (!empty($filters['withProductCount']) && !empty($filters['category'])) {
+    //         $category = Category::where('slug', $filters['category'])->first();
+    //         if ($category) {
+    //             $query->withCount(['products' => function ($q) use ($category) {
+    //                 $q->where('category_id', $category->id);
+    //             }]);
+    //         }
+    //     }
+
+    //     $query->when($filters['tag'] ?? null, function ($query, $tag) {
+    //         $query->whereHas('tags', function ($q) use ($tag) {
+    //             $q->where('tags.slug', $tag);
+    //         });
+    //     });
+
+    //     $query->when($filters['status'] ?? null, function ($query, $status) {
+    //         $query->where('status', $status);
+    //     })
+
+    //         ->when($filters['category'] ?? '', function ($query, $category) {
+    //             $query->whereHas('categories', function ($q) use ($category) {
+    //                 $q->where('categories.slug', $category);
+    //             });
+    //         })
+    //         ->when($filters['tag'] ?? null, function ($query, $tag) {
+    //             $query->whereHas('tags', function ($q) use ($tag) {
+    //                 $q->where('tags.slug', $tag);
+    //             });
+    //         })
+    //     ;
+    //     return $query;
+    // }
+
     public function scopeFilter(Builder $query, array $filters): Builder
     {
-        if (!empty($filters['relations'])) {
+        $query->when($filters['status'] ?? null, function (Builder $query, $status) {
+            $query->where('status', $status);
+        });
 
-            $query->with($filters['relations']);
-        }
-
-        // Add withCount for products
-        if (!empty($filters['withProductCount']) && !empty($filters['category'])) {
-            $category = Category::where('slug', $filters['category'])->first();
-            if ($category) {
-                $query->withCount(['products' => function ($q) use ($category) {
-                    $q->where('category_id', $category->id);
-                }]);
-            }
-        }
-
-        $query->when($filters['tag'] ?? null, function ($query, $tag) {
-            $query->whereHas('tags', function ($q) use ($tag) {
+        // Filter by tag slug
+        $query->when($filters['tag'] ?? null, function (Builder $query, string $tag) {
+            $query->whereHas('tags', function (Builder $q) use ($tag) {
                 $q->where('tags.slug', $tag);
             });
         });
 
-        $query->when($filters['status'] ?? null, function ($query, $status) {
-            $query->where('status', $status);
-        })
+        // Filter by category slug
+        $query->when($filters['categorySlug'] ?? null, function (Builder $query, string $slug) {
+            $query->whereHas('categories', function (Builder $q) use ($slug) {
+                $q->where('categories.slug', $slug);
+            });
+        });
 
-            ->when($filters['category'] ?? '', function ($query, $category) {
-                $query->whereHas('categories', function ($q) use ($category) {
-                    $q->where('categories.slug', $category);
-                });
-            })
-            ->when($filters['tag'] ?? null, function ($query, $tag) {
-                $query->whereHas('tags', function ($q) use ($tag) {
-                    $q->where('tags.slug', $tag);
-                });
-            })
-        ;
         return $query;
     }
+
     public function scopeByCategory(Builder $query, string $Categoryslug): Builder
     {
         return $query->whereHas('categories', function ($q) use ($Categoryslug) {

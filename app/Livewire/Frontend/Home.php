@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Livewire\Frontend;
+
 use Livewire\Component;
 use App\Services\GameService;
 use App\Services\HeroService;
@@ -28,20 +29,8 @@ class Home extends Component
 
     public function mount($gameSlug = null, $categorySlug = null)
     {
-
         $this->gameSlug = $gameSlug;
         $this->categorySlug = $categorySlug;
-
-    }
-
-
-    public function getTopSellingDatas()
-    {
-        return $this->productService->getPaginatedData($this->perPage, [
-            'gameSlug' => $this->gameSlug,
-            'categorySlug' => $this->categorySlug,
-            'relations' => ['games', 'category'],
-        ]);
     }
 
 
@@ -49,24 +38,29 @@ class Home extends Component
     {
 
         $heros = $this->heroService->latestData(6);
-  
+
         $popular_games = $this->gameService->latestData(10, [
             'tag' => 'popular',
         ]);
+        $popular_games->load(['tags', 'categories']);
 
-  
         // Only Paginate 12 Datas
         $new_bostings = $this->gameService->latestData(10, [
             'categorySlug' => 'boosting',
-            'relations' => ['categories'],
         ]);
-       
+        $new_bostings->load(['categories']);
 
+
+        $topSelling = $this->productService->getPaginatedData($this->perPage, [
+            'gameSlug' => $this->gameSlug,
+            'categorySlug' => $this->categorySlug
+        ]);
+        $topSelling->load(['game', 'category', 'platform', 'user']);
 
         return view('livewire.frontend.home', [
             'popular_games' => $popular_games,
             'heros' => $heros,
-            'top_selling_products' =>  $this->getTopSellingDatas(),
+            'top_selling_products' => $topSelling,
             'new_bostings' => $new_bostings,
         ]);
     }
