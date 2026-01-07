@@ -127,12 +127,12 @@ class Game extends AuditBaseModel implements Auditable
         ];
     }
 
-    public function getTranslatedNameAttribute($languageIdOrLocale): string
+    public function translatedName($languageIdOrLocale): string
     {
         return $this->getTranslated('name', $languageIdOrLocale) ?? $this->name;
     }
 
-    public function getTranslatedDescriptionAttribute($languageIdOrLocale): string
+    public function translatedDescription($languageIdOrLocale): string
     {
         return $this->getTranslated('description', $languageIdOrLocale) ?? $this->description;
     }
@@ -258,13 +258,11 @@ class Game extends AuditBaseModel implements Auditable
         return is_null($this->deleted_at);
     }
 
-    // public function __construct(array $attributes = [])
-    // {
-    //     parent::__construct($attributes);
-    //     $this->appends = array_merge(parent::getAppends(), [
-    //         'status_label',
-    //         'status_color',
-    //     ]);
-    // }
-
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->appends = array_merge(parent::getAppends(), [
+            //
+        ]);
+    }
 }
