@@ -287,7 +287,6 @@
                             'icon' => 'dollar-sign',
                             'active' => 'withdrawals',
                         ],
-
                     ]" />
                 <x-backend.navlink type="single" icon="percent" name="Fee Settings" :route="route('admin.fee-settings.fee-settings')"
                     active="fee-settings" :page_slug="$active" />
@@ -356,7 +355,7 @@
                             'active' => 'withdrawal-method',
                         ],
                     ]" />
-                <x-backend.navlink type="dropdown" icon="squares-exclude" name="Gateway's & Integration"
+                {{-- <x-backend.navlink type="dropdown" icon="squares-exclude" name="Gateway's & Integration"
                     :page_slug="$active" :items="[
                         [
                             'name' => 'Payment Gateway\'s',
@@ -376,8 +375,8 @@
                             'icon' => 'languages',
                             'active' => 'translation-key',
                         ],
-                    ]" />
-                <x-backend.navlink type="dropdown" icon="radiation" name="Track Management" :page_slug="$active"
+                    ]" /> --}}
+                <x-backend.navlink type="dropdown" icon="radiation" name="Audit Management" :page_slug="$active"
                     :items="[
                         [
                             'name' => 'Audit Logs',

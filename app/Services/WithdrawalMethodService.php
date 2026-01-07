@@ -98,13 +98,12 @@ class WithdrawalMethodService
             $newData = $data;
 
             // --- 1. Single Avatar Handling ---
-            $oldImagePath = Arr::get($oldData, 'image');
-            $uploadedImage = Arr::get($data, 'image');
+            $oldImagePath = Arr::get($oldData, 'icon');
+            $uploadedImage = Arr::get($data, 'icon');
 
 
 
             if ($uploadedImage instanceof UploadedFile) {
-                // Delete old file permanently (File deletion is non-reversible)
                 if (!empty($oldImagePath) && Storage::disk('public')->exists($oldImagePath)) {
                     Storage::disk('public')->delete($oldImagePath);
                 }
@@ -112,51 +111,20 @@ class WithdrawalMethodService
                 $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
                 $fileName = $prefix . '-' . $uploadedImage->getClientOriginalName();
 
-                $newSingleImagePath = Storage::disk('public')->putFileAs('banners', $uploadedImage, $fileName);
-                $newData['image'] = $newSingleImagePath;
+                $newSingleImagePath = Storage::disk('public')->putFileAs('withdrawal-method-icons', $uploadedImage, $fileName);
+                $newData['icon'] = $newSingleImagePath;
             } elseif ($newData['remove_file']) {
                 if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
                     Storage::disk('public')->delete($oldImagePath);
                 }
-                $newData['image'] = null;
+                $newData['icon'] = null;
             }
 
             // Cleanup temporary/file object keys
             if (!$newData['remove_file'] && !$newSingleImagePath) {
-                $newData['image'] = $oldImagePath ?? null;
+                $newData['icon'] = $oldImagePath ?? null;
             }
             unset($newData['remove_file']);
-
-
-            //Mobile Image
-            $oldImagePathMobile = Arr::get($oldData, 'mobile_image');
-            $uploadedImageMobile = Arr::get($data, 'mobile_image');
-
-
-            if ($uploadedImageMobile instanceof UploadedFile) {
-                // Delete old file permanently (File deletion is non-reversible)
-                if (!empty($oldImagePathMobile) && Storage::disk('public')->exists($oldImagePathMobile)) {
-                    Storage::disk('public')->delete($oldImagePathMobile);
-                }
-                // Store the new file and track path for rollback
-                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $uploadedImageMobile->getClientOriginalName();
-
-                $newSingleImagePathMobile = Storage::disk('public')->putFileAs('banners', $uploadedImageMobile, $fileName);
-                $newData['mobile_image'] = $newSingleImagePathMobile;
-            } elseif ($newData['remove_file_mobile']) {
-                if ($oldImagePath && Storage::disk('public')->exists($oldImagePathMobile)) {
-                    Storage::disk('public')->delete($oldImagePathMobile);
-                }
-                $newData['mobile_image'] = null;
-            }
-
-            // Cleanup temporary/file object keys
-            if (!$newData['remove_file_mobile'] && !$newSingleImagePathMobile) {
-                $newData['mobile_image'] = $oldImagePathMobile ?? null;
-            }
-            unset($newData['remove_file_mobile']);
-
             $model->update($newData);
             return $model->fresh();
         });
