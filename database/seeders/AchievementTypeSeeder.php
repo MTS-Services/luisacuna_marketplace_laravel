@@ -17,7 +17,7 @@ class AchievementTypeSeeder extends Seeder
         AchievementType::insert([
             [
                 'sort_order' => 1,
-                'name' => 'First Login',
+                'name' => 'Product Purchase',
                 'is_active' => true,
                 'created_by' => 1,
                 'updated_by' => 1,
