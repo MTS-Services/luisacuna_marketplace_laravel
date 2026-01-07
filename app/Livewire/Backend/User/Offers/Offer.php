@@ -87,11 +87,13 @@ class Offer extends Component
 
     public function updatedDeliveryMethod($deliveryMethod)
     {
+
+      
         // Update timeline options based on delivery method
-        if ($deliveryMethod === 'manual') {
-            $this->timelineOptions = ['1 Hour', '2 Hours', '3 Hours', '4 Hours'];
+        if ($deliveryMethod == "manual") {
+            $this->timelineOptions = delivery_timelines($this->deliveryMethod);
         } else {
-            $this->timelineOptions = ["Instant Delivery", '1 Hour', '2 Hours', '3 Hours', '4 Hours'];
+             $this->timelineOptions = delivery_timelines($this->deliveryMethod);
         }
 
         // Reset delivery time when method changes

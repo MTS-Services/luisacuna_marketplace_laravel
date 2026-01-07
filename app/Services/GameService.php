@@ -14,6 +14,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class GameService
 {
@@ -35,19 +36,21 @@ class GameService
         return $this->model->newQuery()
             ->filter($filters)
             ->orderBy($sortField, $order)
-            ->with(['categories','gameTranslations' => function ($query) {
+            ->with(['categories', 'gameTranslations' => function ($query) {
                 $query->where('language_id', get_language_id());
             }])
             ->get();
     }
 
 
-    public function latestData(int $limit = 10 , $filters = []):Collection {
+    public function latestData(int $limit = 10, $filters = []): Collection
+    {
 
         return $this->model->query()->filter($filters)->limit($limit)->get();
     }
 
-    public function randomData(int $limit = 100 , $filters = []):Collection {
+    public function randomData(int $limit = 100, $filters = []): Collection
+    {
 
         return $this->model->query()->filter($filters)->inRandomOrder()->limit($limit)->get();
     }
@@ -68,11 +71,11 @@ class GameService
         $search = $filters['search'] ?? null;
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
-    
+
 
         if ($search) {
             // Scout Search
-            
+
             return Game::search($search)
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
@@ -81,12 +84,11 @@ class GameService
         // // Normal Eloquent Query
         return $this->model->query()
             ->filter($filters)
-             ->with(['categories','gameTranslations' => function ($query) {
+            ->with(['categories', 'gameTranslations' => function ($query) {
                 $query->where('language_id', get_language_id());
             }])
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
-
     }
 
     public function trashedPaginatedDatas(int $perPage = 15, array $filters = []): LengthAwarePaginator
@@ -156,12 +158,10 @@ class GameService
         if (isset($data['logo'])) {
             $uploaded = $this->cloudinaryService->upload($data['logo'], ['folder' => 'games']);
             $data['logo'] = $uploaded->publicId;
-
         }
         if (isset($data['banner'])) {
             $uploaded = $this->cloudinaryService->upload($data['banner'], ['folder' => 'games']);
             $data['banner'] = $uploaded->publicId;
-
         }
 
         if (!empty($data['meta_keywords']) && is_string($data['meta_keywords'])) {
@@ -172,16 +172,33 @@ class GameService
 
             $data['meta_keywords'] = json_encode(array_values($keywords));
         }
-        return $this->model->create($data);
+        $result = $this->model->create($data);
+        $freshData = $result->fresh();
+
+        Log::info('New game created', [
+            'game_id' => $freshData->id,
+            'game_name' => $freshData->name
+        ]);
+
+        $freshData->dispatchTranslation(
+            defaultLanguageLocale: 'en',
+            targetLanguageIds: null
+        );
+        return $freshData;
     }
 
     public function update(int $id, array $data): bool
     {
         $game = $this->findData($id);
+        if (!$game) return false;
+
+        $oldData = $game;
+        $nameChanged = isset($data['name']) && $data['name'] !== $oldData['name'];
+        $DescriptionChanged = isset($data['description']) && $data['description'] !== $oldData['description'];
 
         $logoPath = $game->logo;
         if (isset($data['logo'])) {
-             $uploaded = $this->cloudinaryService->upload($data['logo'], ['folder' => 'games']);
+            $uploaded = $this->cloudinaryService->upload($data['logo'], ['folder' => 'games']);
             $logoPath = $this->handleSingleFileUpload(newFile: $data['logo'], oldPath: $game->logo, removeKey: $data['remove_logo'] ?? false, folderName: 'games');
         }
         $data['logo'] = $logoPath;
@@ -202,7 +219,24 @@ class GameService
         }
 
         $data['updated_by'] = $this->adminId;
-        return $game ? $game->update($data) : false;
+        $newData = $game->update($data);
+
+        $newData = $game->fresh();
+
+        if ($nameChanged || $DescriptionChanged) {
+            Log::info('Category name changed, dispatching translation job', [
+                'category_id' => $id,
+                'old_name' => $oldData['name'],
+                'new_name' => $newData['name']
+            ]);
+
+            $newData->dispatchTranslation(
+                defaultLanguageLocale: 'en',
+                targetLanguageIds: null
+            );
+        }
+
+        return true;
     }
 
     public function delete(int $id, bool $force = false): bool

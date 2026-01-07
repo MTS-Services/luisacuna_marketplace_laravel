@@ -24,6 +24,9 @@
     </div>
 
 
+    {{-- <x-cloudinary::image publicId="default_avatar" width="auto" height="auto" quality="auto" format="auto"
+        alt="avatar" class="" /> --}}
+
     <section class="mt-10 sm:mt-20" id="popular-games">
         {{-- New Bosting Games Section --}}
         <section class="container mx-auto">

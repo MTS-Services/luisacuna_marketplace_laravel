@@ -52,8 +52,6 @@
                             <h3 class="text-text-white text-base sm:text-2xl font-semibold">
                                 {{ $order->status->label() }}
                             </h3>
-                            <p class="text-text-white text-xs font-normal mt-2">{{ dateTimeFormat($order->created_at) }}
-                            </p>
                         </div>
                     </div>
                     <div class="mt-7">
@@ -74,52 +72,72 @@
                             </div>
                         </div>
                         @if (empty($feedback))
-                            <div class="">
-                                <div class="flex gap-2 my-4">
-                                    <label class="cursor-pointer">
-                                        <input type="radio" name="feedback" value="up" class="sr-only peer">
-                                        <div
-                                            class="bg-bg-secondary dark:bg-bg-primary rounded-lg p-3 peer-checked:ring-2 peer-checked:ring-zinc-500 transition-all">
-                                            <x-phosphor name="thumbs-up" variant="solid"
-                                                class="w-10 h-10 fill-zinc-500 peer-checked:fill-zinc-600" />
-                                        </div>
-                                    </label>
-                                    <label class="cursor-pointer">
-                                        <input type="radio" name="feedback" value="down" class="sr-only peer">
-                                        <div
-                                            class="bg-bg-secondary dark:bg-bg-primary rounded-lg p-3 peer-checked:ring-2 peer-checked:ring-pink-500 transition-all">
-                                            <x-phosphor name="thumbs-down" variant="solid"
-                                                class="w-10 h-10 fill-pink-500 peer-checked:fill-pink-600" />
-                                        </div>
-                                    </label>
-                                </div>
-                                <div class="mb-6">
-                                    <label class="block text-text-white font-medium mb-2">
-                                        {{ __('Your Comment') }}
-                                    </label>
-                                    <textarea wire:model="commentText" rows="5" class="w-full bg-bg-info text-text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent resize-none text-xs sm:text-sm"
-                                        placeholder="{{ __('Write your comment here...') }}">
-                                </textarea>
-                                    @error('commentText')
+                            <form wire:submit.prevent="submitFeedback" method="POST">
+                                <div class="">
+                                    <div class="flex gap-2 my-4">
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="type" wire:model="type"
+                                                value="{{ \App\Enums\FeedbackType::POSITIVE->value }}"
+                                                class="sr-only peer">
+                                            <div
+                                                class="bg-bg-secondary dark:bg-bg-primary rounded-lg p-3 peer-checked:ring-2 peer-checked:ring-zinc-500 transition-all">
+                                                <x-phosphor name="thumbs-up" variant="solid"
+                                                    class="w-10 h-10 fill-zinc-500 peer-checked:fill-zinc-600" />
+                                            </div>
+                                        </label>
+
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="type" wire:model="type"
+                                                value="{{ \App\Enums\FeedbackType::NEGATIVE->value }}"
+                                                class="sr-only peer">
+                                            <div
+                                                class="bg-bg-secondary dark:bg-bg-primary rounded-lg p-3 peer-checked:ring-2 peer-checked:ring-pink-500 transition-all">
+                                                <x-phosphor name="thumbs-down" variant="solid"
+                                                    class="w-10 h-10 fill-pink-500 peer-checked:fill-pink-600" />
+                                            </div>
+                                        </label>
+                                    </div>
+                                    @error('type')
                                         <span class="text-pink-500 text-sm">{{ $message }}</span>
                                     @enderror
-                                </div>
-                                <div class="flex justify-end gap-3">
-                                    <div wire:click="closeCommentModal" class="w-full md:w-auto">
-                                        <x-ui.button type="submit" variant="secondary"
-                                            class="w-auto py-2!">{{ __('Cancel') }}</x-ui.button>
+
+                                    <div class="mb-6">
+                                        <label class="block text-text-white font-medium mb-2">
+                                            {{ __('Your Comment') }}
+                                        </label>
+                                        <textarea wire:model="commentText" rows="5"
+                                            class="w-full bg-bg-info text-text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent resize-none text-xs sm:text-sm"
+                                            placeholder="{{ __('Write your comment here...') }}"> </textarea>
+                                        @error('commentText')
+                                            <span class="text-pink-500 text-sm">{{ $message }}</span>
+                                        @enderror
                                     </div>
-                                    <div wire:click="submitComment" class="w-full md:w-auto">
-                                        <x-ui.button class="w-auto py-2!">{{ __('Submit') }}</x-ui.button>
+
+                                    <div class="flex justify-end gap-3">
+                                        <div class="w-full md:w-auto">
+                                            <x-ui.button type="submit" class="w-auto py-2!">
+                                                {{ __('Submit') }}
+                                            </x-ui.button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         @else
                             <div
                                 class="bg-bg-info flex items-center gap-2 rounded-lg py-3 px-6 mt-7 hover:opacity-80 transition-opacity">
-                                <x-phosphor name="thumbs-up" variant="solid" class="w-5 h-5 fill-zinc-700" />
+                                {{-- @if ($feedback->type === \App\Enums\FeedbackType::POSITIVE->value)
+                                    <x-phosphor name="thumbs-up" variant="solid" class="w-5 h-5 fill-zinc-700" />
+                                @else
+                                    <x-phosphor name="thumbs-down" variant="solid" class="w-5 h-5 fill-pink-600" />
+                                @endif --}}
+                                {{-- <flux:icon name="{{ $feedback->type->icon() }}"
+                                    class="w-5 h-5 {{ $feedback->type->iconColor() }}" /> --}}
+
+                                <x-phosphor name="{{ $feedback->type->icon() }}" variant="solid"
+                                    class="w-5 h-5 {{ $feedback->type->iconColor() }}" />
+
                                 <p class="text-text-white text-base font-normal">
-                                    {{ __('GGWP!') }}
+                                    {{ $feedback->message }}
                                 </p>
                             </div>
                         @endif
@@ -129,26 +147,28 @@
                         <div class="flex gap-4 items-center">
                             <div>
                                 <h3 class="text-text-white text-base sm:text-2xl font-semibold">
-                                    {{ __('Seller feedback') }}
+                                    {{ __('Buyer feedback') }}
                                 </h3>
                             </div>
                         </div>
-                        @if (empty($feedback))
+                        @if ($feedback)
+                            <div
+                                class="bg-bg-info flex items-center gap-2 rounded-lg py-3 px-6 mt-7 hover:opacity-80 transition-opacity">
+                                <x-phosphor name="{{ $feedback->type->icon() }}" variant="solid"
+                                    class="w-5 h-5 {{ $feedback->type->iconColor() }}" />
+                                <p class="text-text-white text-base font-normal">
+                                    {{ $feedback->message }}
+                                </p>
+                            </div>
+                        @else
                             <div
                                 class="bg-bg-info flex items-center gap-2 rounded-lg py-3 px-6 mt-7 hover:opacity-80 transition-opacity">
                                 <p class="text-text-white text-base font-normal">
                                     {{ __('No feedback') }}
                                 </p>
                             </div>
-                        @else
-                            <div
-                                class="bg-bg-info flex items-center gap-2 rounded-lg py-3 px-6 mt-7 hover:opacity-80 transition-opacity">
-                                <x-phosphor name="thumbs-up" variant="solid" class="w-5 h-5 fill-zinc-700" />
-                                <p class="text-text-white text-base font-normal">
-                                    {{ __('GGWP!') }}
-                                </p>
-                            </div>
                         @endif
+
                     </div>
                 @endif
                 <div class="bg-bg-info rounded-lg mt-10">
@@ -224,15 +244,25 @@
                             </p>
                         </div>
                         <div class="flex justify-between mt-2">
-                            <p class="text-text-white text-base font-semibold">{{ __('Seller') }}</p>
-                            <p class="flex items-center gap-2 text-base font-normal">
-                                <a href="{{ route('profile', $order?->source?->user?->username) }}"
-                                    class="text-pink-500 inline-block">{{ $order?->source?->user?->username }}</a>
-                                <span class="text-text-white">|</span>
-                                <span class="w-2.5 h-2.5 bg-green-500 rounded-full"></span>
-                                <span class="text-text-white">{{ __('Online') }}</span>
-                            </p>
-
+                            @if ($isVisitSeller)
+                                <p class="text-text-white text-base font-semibold">{{ __('Buyer') }}</p>
+                                <p class="flex items-center gap-2 text-base font-normal">
+                                    <a href="{{ route('profile', $order?->user?->username) }}"
+                                        class="text-pink-500 inline-block">{{ $order?->user?->username }}</a>
+                                    <span class="text-text-white">|</span>
+                                    <span class="w-2.5 h-2.5 bg-green-500 rounded-full"></span>
+                                    <span class="text-text-white">{{ __('Online') }}</span>
+                                </p>
+                            @else
+                                <p class="text-text-white text-base font-semibold">{{ __('Seller') }}</p>
+                                <p class="flex items-center gap-2 text-base font-normal">
+                                    <a href="{{ route('profile', $order?->source?->user?->username) }}"
+                                        class="text-pink-500 inline-block">{{ $order?->source?->user?->username }}</a>
+                                    <span class="text-text-white">|</span>
+                                    <span class="w-2.5 h-2.5 bg-green-500 rounded-full"></span>
+                                    <span class="text-text-white">{{ __('Online') }}</span>
+                                </p>
+                            @endif
                         </div>
                     </div>
                     <div class="flex w-full md:w-auto justify-center items-center mt-10!">

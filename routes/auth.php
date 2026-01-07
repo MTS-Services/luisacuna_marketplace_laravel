@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\User\VerifyEmailController as UserVerifyEmailContr
 use App\Http\Controllers\Auth\Admin\VerifyEmailController as AdminVerifyEmailController;
 use App\Http\Controllers\Auth\User\RegisterController;
 use App\Http\Controllers\Auth\User\TwoFactorController as UserTwoFactorController;
+use App\Livewire\Actions\AdminLogout;
 use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Route;
 
@@ -129,7 +130,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
             ->name('verification.verify');
     });
 
-    Route::post('logout', Logout::class)->name('logout');
+    Route::post('logout', AdminLogout::class)->name('logout');
 });
 
 

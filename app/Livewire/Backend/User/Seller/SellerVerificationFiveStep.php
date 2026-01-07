@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Backend\User\Seller;
 
+use App\Services\Cloudinary\CloudinaryService;
 use App\Traits\FileManagementTrait;
+use Illuminate\Foundation\Cloud;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -14,7 +16,10 @@ class SellerVerificationFiveStep extends Component
     public $accountType;
     public $front_image;
 
-
+    protected CloudinaryService $cloudinaryService;
+    public function boot(CloudinaryService $cloudinaryService){
+        $this->cloudinaryService = $cloudinaryService;
+    }
 
 
     public function mount()
@@ -38,7 +43,12 @@ class SellerVerificationFiveStep extends Component
             'front_image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:10240',
         ]);
 
-        $tempPath = $this->handleSingleFileUpload(newFile: $validated['front_image'], folderName: 'temp');
+       try {
+            $uploadedFile = $this->cloudinaryService->upload($validated['front_image'], ['folder' => 'seller_profiles']);
+          $tempPath = $uploadedFile->publicId;
+        } catch (\Exception $e) {
+           $tempPath = null;
+        }
 
         Session::put('kyc_' . user()->id, array_merge(
             Session::get('kyc_' . user()->id),

@@ -13,6 +13,7 @@
             </div>
         </div>
     </div>
+    
 
     <div class="rounded-xl p-6 min-h-[500px] flex flex-row gap-5">
         {{-- PERSONAL INFO (Default Tab) --}}
@@ -25,7 +26,7 @@
                     class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-pink-100 overflow-hidden flex justify-center text-center items-center">
                     @if ($data->user->avatar)
                        
-                    <x-cloudinary::image publicId="{{ $data->user->avatar }}" alt="{{ $data->user->name}}" class="w-full h-full object-cover" />
+                    <x-cloudinary::image publicId="{{ $data->user->avatar_url }}" alt="{{ $data->user->name}}" class="w-full h-full object-cover" />
                         
                     @else
                         <span class="font-bold text-3xl">
@@ -168,9 +169,12 @@
                         <div class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
                             <p class="text-text-white text-xs font-semibold mb-2">{{ __('IDENTIFICATION DOCUMENT') }}
                             </p>
+                            @php 
+                                $cloudinaryService = new \App\Services\Cloudinary\CloudinaryService();
+                            @endphp
                             @if ($data->identification)
-                                <a href="{{ storage_url($data->identification) }}" target="_blank"
-                                    class="text-blue-600 underline">
+                                <a href="{{ $cloudinaryService->getUrlFromPublicId($data->identification ?? '')}}" target="_blank"
+                                    class="text-zinc-500 underline">
                                     {{ __('Download') }}
                                 </a>
                             @else
@@ -182,8 +186,8 @@
                                 class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('SELFIE IMAGE') }}</p>
                                 @if ($data->selfie_image)
-                                    <a href="{{ storage_url($data->selfie_image) }}" target="_blank"
-                                        class="text-blue-600 underline">
+                                    <a href="{{  $cloudinaryService->getUrlFromPublicId($data->selfie_image ?? '') }}" target="_blank"
+                                        class="text-zinc-500 underline">
                                         {{ __('Download') }}
                                     </a>
                                 @else
@@ -195,8 +199,8 @@
                                 class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('COMPANY DOCUMENT') }}</p>
                                 @if ($data->company_documents)
-                                    <a href="{{ storage_url($data->company_documents) }}" target="_blank"
-                                        class="text-blue-600 underline">
+                                    <a href="{{  $cloudinaryService->getUrlFromPublicId($data->company_documents ?? '') }}" target="_blank"
+                                        class="text-zinc-500 underline">
                                         {{ __('Download') }}
                                     </a>
                                 @else

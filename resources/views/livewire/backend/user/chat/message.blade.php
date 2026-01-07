@@ -42,17 +42,24 @@
                                     @foreach ($msg->attachments as $attachment)
                                         <div class="relative mb-2">
                                             @if (in_array($attachment->attachment_type->value, ['image', 'photo']))
-                                                <img src="{{ asset('storage/' . $attachment->file_path) }}"
+                                            @php 
+                                            $cloudinaryService  = new \App\Services\Cloudinary\CloudinaryService();
+                                            @endphp
+                                                {{-- <img src="{{ asset('storage/' . $attachment->file_path) }}"
                                                     class="rounded-lg max-w-full max-h-64 object-cover cursor-pointer"
-                                                    wire:click="ShowAttachemntImage('{{ encrypt(asset('storage/' . $attachment->file_path)) }}')">
+                                                    wire:click="ShowAttachemntImage('{{ encrypt(asset('storage/' . $attachment->file_path)) }}')"> --}}
+
+                                                    <x-cloudinary::image public-id="{{ $attachment->file_path }}" wire:click="ShowAttachemntImage('{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}')" alt="Uploaded File" class=" rounded-lg max-w-full max-h-64 object-cover cursor-pointer" />
+
                                             @else
-                                                <a href="{{ asset('storage/' . $attachment->file_path) }}"
+
+                                                <a href="{{  $cloudinaryService->getUrlFromPublicId($attachment->file_path))}}"
                                                     class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
-                                                    📎 {{ basename($attachment->file_path) }}
+                                                    📎 {{ basename($cloudinaryService->getUrlFromPublicId($attachment->file_path)) }}
                                                 </a>
                                             @endif
 
-                                            <a href="{{ asset('storage/' . $attachment->file_path) }}" download
+                                            <a href="{{  $cloudinaryService->getUrlFromPublicId($attachment->file_path)  }}" download
                                                 class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
                                                 ⬇
                                             </a>
@@ -99,8 +106,9 @@
 
 
                                 @if ($sender && $sender->avatar)
-                                    <img src="{{ storage_url($sender->avatar) }}" alt="{{ $sender->full_name }}"
-                                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0 border-2 border-zinc-400">
+
+                                   <x-cloudinary::image public-id="{{ $attachment->file_path }}" alt="{{ $sender->full_name }}" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0 border-2 border-zinc-400" />
+
                                 @else
                                     <div
                                         class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground border-2 border-zinc-400  flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
@@ -114,17 +122,18 @@
                                         @foreach ($msg->attachments as $attachment)
                                             <div class="relative mb-2">
                                                 @if (in_array($attachment->attachment_type->value, ['image', 'photo']))
-                                                    <img src="{{ asset('storage/' . $attachment->file_path) }}"
+                                                    {{-- <img src="{{ asset('storage/' . $attachment->file_path) }}"
                                                         class="rounded-lg max-w-full max-h-64 object-cover cursor-pointer"
-                                                        wire:click="ShowAttachemntImage('{{ encrypt(asset('storage/' . $attachment->file_path)) }}')">
+                                                        wire:click="ShowAttachemntImage('{{ encrypt(asset('storage/' . $attachment->file_path)) }}')"> --}}
+                                                    <x-cloudinary::image public-id="{{ $attachment->file_path }}" wire:click="ShowAttachemntImage('{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}')" alt="Uploaded File" class=" rounded-lg max-w-full max-h-64 object-cover cursor-pointer" />
                                                 @else
-                                                    <a href="{{ asset('storage/' . $attachment->file_path) }}"
+                                                    <a href="{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}"
                                                         class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
-                                                        📎 {{ basename($attachment->file_path) }}
+                                                        📎 {{ basename($cloudinaryService->getUrlFromPublicId($attachment->file_path)) }}
                                                     </a>
                                                 @endif
 
-                                                <a href="{{ asset('storage/' . $attachment->file_path) }}" download
+                                                <a href="{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}" download
                                                     class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
                                                     ⬇
                                                 </a>
@@ -157,17 +166,20 @@
                                             @foreach ($msg->attachments as $attachment)
                                                 <div class="relative mb-2">
                                                     @if (in_array($attachment->attachment_type->value, ['image', 'photo']))
-                                                        <img src="{{ asset('storage/' . $attachment->file_path) }}"
+                                                        {{-- <img src="{{ asset('storage/' . $attachment->file_path) }}"
                                                             class="rounded-lg max-w-full max-h-64 object-cover cursor-pointer"
-                                                            wire:click="ShowAttachemntImage('{{ encrypt(asset('storage/' . $attachment->file_path)) }}')">
+                                                            wire:click="ShowAttachemntImage('{{ encrypt(asset('storage/' . $attachment->file_path)) }}')"> --}}
+
+                                                    <x-cloudinary::image public-id="{{ $attachment->file_path }}" wire:click="ShowAttachemntImage('{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}')" alt="Uploaded File" class=" rounded-lg max-w-full max-h-64 object-cover cursor-pointer" />
+                                                            
                                                     @else
-                                                        <a href="{{ asset('storage/' . $attachment->file_path) }}"
+                                                        <a href="{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}"
                                                             class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
-                                                            📎 {{ basename($attachment->file_path) }}
+                                                            📎 {{ basename($cloudinaryService->getUrlFromPublicId($attachment->file_path)) }}
                                                         </a>
                                                     @endif
 
-                                                    <a href="{{ asset('storage/' . $attachment->file_path) }}" download
+                                                    <a href="{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}" download
                                                         class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
                                                         ⬇
                                                     </a>

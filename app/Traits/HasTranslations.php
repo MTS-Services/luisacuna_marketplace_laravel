@@ -25,6 +25,10 @@ trait HasTranslations
             Log::info('Auto translation is disabled in config.');
             return;
         }
+        Log::info('Dispatching translation job for model', [
+            'model' => get_class($this),
+            'model_id' => $this->id,
+        ]);
 
         TranslateModelJob::dispatch(
             model: $this,
