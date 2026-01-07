@@ -9,6 +9,7 @@ use App\Repositories\Contracts\CurrencyRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CurrencyRepository implements CurrencyRepositoryInterface
 {
@@ -118,6 +119,18 @@ class CurrencyRepository implements CurrencyRepositoryInterface
     public function create(array $data): Currency
     {
         $currency =  $this->model->create($data);
+
+        if($currency){
+            Log::info("Currency Translations Created", [
+                'currency_id' => $currency->id,
+                'name' => $currency->name
+            ]);
+            $currency = $currency->fresh();
+             $currency->dispatchTranslation(
+                defaultLanguageLocale: 'en',
+                targetLanguageIds: null
+            );
+        }
         
         $defaultCurrency = $this->getDefaultCurrency();
 
@@ -137,11 +150,15 @@ class CurrencyRepository implements CurrencyRepositoryInterface
     public function update(int $id, array $data): bool
     {
         return DB::transaction(function () use ($id, $data) {
-            $findData = $this->find($id);
 
+
+            $findData = $this->find($id);
+           
             if (!$findData) {
                 return false;
             }
+            
+            $nameChanged = $findData['name'] != $data['name']; 
 
             // Check if exchange_rate is being updated
             if (isset($data['exchange_rate']) && $data['exchange_rate'] != $findData->exchange_rate) {
@@ -172,7 +189,20 @@ class CurrencyRepository implements CurrencyRepositoryInterface
                 }
             }
 
-            return $findData->update($data);
+          $updated =   $findData->update($data);
+            if($nameChanged){
+                $newData = $findData->fresh();
+                Log::info("Currency Translations Updated", [
+                    'currency_id' => $newData->id,
+                    'name' => $newData->name
+                ]);
+                $newData->dispatchTranslation(
+                    defaultLanguageLocale: 'en',
+                    targetLanguageIds: null
+                );
+            }
+            
+            return $updated ;
         });
     }
 

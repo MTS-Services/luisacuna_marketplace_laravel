@@ -2,12 +2,11 @@
  
 namespace App\Models;
  
-use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use OwenIt\Auditing\Contracts\Auditable;
  
-class CmsTranslation extends AuditBaseModel implements Auditable
+class CmsTranslation extends BaseModel implements Auditable
 {
     use   AuditableTrait;
     //
@@ -36,7 +35,7 @@ class CmsTranslation extends AuditBaseModel implements Auditable
      //
     public function cms(): BelongsTo
     {
-        return $this->belongsTo(Cms::class, 'cmd_id', 'id');
+        return $this->belongsTo(Cms::class, 'cms_id', 'id');
     }
     public function language(): BelongsTo
     {
