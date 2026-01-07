@@ -234,7 +234,7 @@
                     {{ __('Reset All') }}
                 </x-ui.button>
 
-                <x-ui.button class="w-auto! py-2!" type="submit" @click="syncFields">
+                <x-ui.button class="w-auto! py-2!" type="submit" x-on:click="fields.length > 0 ? syncFields() : null">
                     <span wire:loading.remove wire:target="save"
                         class="text-text-btn-primary group-hover:text-text-btn-secondary">
                         {{ __('Update Withdrawal Method') }}

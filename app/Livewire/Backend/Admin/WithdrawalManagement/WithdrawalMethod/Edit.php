@@ -59,8 +59,7 @@ class Edit extends Component
             $this->service->updateData($this->data->id, $data);
             Log::info('Data updated successfully', ['data_id' => $this->data->id]);
             $this->success('Data updated successfully');
-            return redirect()->route('admin.wm.withdrawal.index');
-
+            return redirect()->route('admin.wm.method.index');
         } catch (\Exception $e) {
             Log::error('Failed to update User', [
                 'user_id' => $this->dataId,
@@ -73,15 +72,13 @@ class Edit extends Component
 
     public function cancel(): void
     {
-        $this->redirect(route('admin.wm.withdrawal.index'), navigate: true);
+        $this->redirect(route('admin.wm.method.index'), navigate: true);
     }
 
     public function resetForm()
     {
         $this->form->reset();
         $this->form->setData($this->data);
-
-        $this->showReasonField = false;
         $this->existingFile = $this->data->icon;
         $this->dispatch('file-input-reset');
     }

@@ -119,6 +119,7 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/view/{id}', 'show')->name('view');
 
         });
     });

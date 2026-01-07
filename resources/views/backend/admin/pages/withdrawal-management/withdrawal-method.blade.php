@@ -9,6 +9,11 @@
             <x-slot name="breadcrumb">{{ __('Withdrawal Method Management / Withdrawal Method Edit') }}</x-slot>
             <livewire:backend.admin.withdrawal-management.withdrawal-method.edit :data="$data" />
         @break;
+        @case('admin.wm.method.view')
+       
+            <x-slot name="breadcrumb">{{ __('Withdrawal Method Management / Withdrawal Method View') }}</x-slot>
+            <livewire:backend.admin.withdrawal-management.withdrawal-method.show :data="$data" />
+        @break;
         @case('admin.wm.method.create')
        
             <x-slot name="breadcrumb">{{ __('Withdrawal Method Management / Withdrawal Method Create') }}</x-slot>

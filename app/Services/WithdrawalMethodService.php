@@ -11,11 +11,10 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 class WithdrawalMethodService
 {
-    public function __construct(protected WithdrawalMethod $model)
-    {
-    }
+    public function __construct(protected WithdrawalMethod $model) {}
 
 
     /* ================== ================== ==================
@@ -80,52 +79,56 @@ class WithdrawalMethodService
             $newData = $this->model->create($data);
             return $newData->fresh();
         });
-
     }
+   
     public function updateData(int $id, array $data): ?WithdrawalMethod
     {
         return DB::transaction(function () use ($id, $data) {
 
-
             $model = $this->findData($id);
-            $newIconPath = null;
             if (!$model) {
                 return null;
             }
 
-
-            $oldData = $model->getAttributes();
             $newData = $data;
-
-            // --- 1. Single Avatar Handling ---
-            $oldImagePath = Arr::get($oldData, 'icon');
+            
+            $oldImagePath = $model->icon;
             $uploadedImage = Arr::get($data, 'icon');
-
-
-
+            $removeFile = Arr::get($data, 'remove_file', false);
+            $newSingleImagePath = null;
+            
             if ($uploadedImage instanceof UploadedFile) {
-                if (!empty($oldImagePath) && Storage::disk('public')->exists($oldImagePath)) {
-                    Storage::disk('public')->delete($oldImagePath);
-                }
-                // Store the new file and track path for rollback
-                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $uploadedImage->getClientOriginalName();
-
-                $newSingleImagePath = Storage::disk('public')->putFileAs('withdrawal-method-icons', $uploadedImage, $fileName);
-                $newData['icon'] = $newSingleImagePath;
-            } elseif ($newData['remove_file']) {
+                
                 if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
                     Storage::disk('public')->delete($oldImagePath);
                 }
+
+                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+                $fileName = $prefix . '-' . $uploadedImage->getClientOriginalName();
+
+                $newSingleImagePath = Storage::disk('public')
+                    ->putFileAs('withdrawal-method-icons', $uploadedImage, $fileName);
+
+                $newData['icon'] = $newSingleImagePath;
+            }
+            
+            elseif ($removeFile) {
+
+                if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
+                    Storage::disk('public')->delete($oldImagePath);
+                }
+
                 $newData['icon'] = null;
             }
-
-            // Cleanup temporary/file object keys
-            if (!$newData['remove_file'] && !$newSingleImagePath) {
-                $newData['icon'] = $oldImagePath ?? null;
+            
+            else {
+                $newData['icon'] = $oldImagePath;
             }
+            
             unset($newData['remove_file']);
+
             $model->update($newData);
+
             return $model->fresh();
         });
     }
@@ -142,6 +145,4 @@ class WithdrawalMethodService
             return $deleted;
         });
     }
-
-
 }

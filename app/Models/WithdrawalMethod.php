@@ -48,28 +48,35 @@ class WithdrawalMethod extends AuditBaseModel implements Auditable
     protected $casts = [
         'status' => ActiveInactiveEnum::class,
         'fee_type' => WithdrawalFeeType::class,
+        'required_fields' => 'array',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     //
+    //
 
-     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     public function scopeFilter(Builder $query, array $filters): Builder
+    public function scopeFilter(Builder $query, array $filters): Builder
     {
         return $query
-            ->when($filters['status'] ?? null, fn ($q, $status) =>
+            ->when(
+                $filters['status'] ?? null,
+                fn($q, $status) =>
                 $q->where('status', $status)
             )
-            ->when($filters['fee_type'] ?? null, fn ($q, $feeType) =>
+            ->when(
+                $filters['fee_type'] ?? null,
+                fn($q, $feeType) =>
                 $q->where('fee_type', $feeType)
             )
-            ->when($filters['name'] ?? null, fn ($q, $name) =>
+            ->when(
+                $filters['name'] ?? null,
+                fn($q, $name) =>
                 $q->where('name', 'like', "%{$name}%")
             );
     }
@@ -80,6 +87,4 @@ class WithdrawalMethod extends AuditBaseModel implements Auditable
             //
         ]);
     }
-
-    
 }
