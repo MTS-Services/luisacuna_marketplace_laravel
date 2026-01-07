@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\CmsType;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Cms extends AuditBaseModel implements Auditable
@@ -38,6 +39,28 @@ class Cms extends AuditBaseModel implements Auditable
 
     //
 
+   public function gameTranslations(): HasMany
+    {
+        return $this->hasMany(CmsTranslation::class, 'cms_id', 'id');
+    }
+
+
+    /* =========================================
+            Translation Configuration
+     ========================================= */
+
+    public function getTranslationConfig(): array
+    {
+        return [
+            'fields' => ['content'],
+            'relation' => 'gameTranslations',
+            'model' => CmsTranslation::class,
+            'foreign_key' => 'cms_id',
+            'field_mapping' => [
+                'content' => 'content',
+            ]
+        ];
+    }
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
