@@ -45,8 +45,7 @@ class GameService
 
     public function latestData(int $limit = 10, $filters = []): Collection
     {
-
-        return $this->model->query()->filter($filters)->limit($limit)->get();
+        return $this->model->query()->with(['gameTranslations'])->filter($filters)->orderBy('created_at', 'desc')->limit($limit)->get();
     }
 
     public function randomData(int $limit = 100, $filters = []): Collection

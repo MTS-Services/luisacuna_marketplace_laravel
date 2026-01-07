@@ -51,24 +51,45 @@ trait HasTranslations
     /**
      * Get translated value for a specific language
      */
-    public function getTranslated(string $field, $languageIdOrLocale): ?string
+    // public function getTranslated(string $field, $languageIdOrLocale): ?string
+    // {
+    //     $config = $this->getTranslationConfig();
+    //     $relation = $config['relation'];
+
+    //     if (is_numeric($languageIdOrLocale)) {
+    //         $translation = $this->$relation()
+    //             ->where('language_id', $languageIdOrLocale)
+    //             ->first();
+    //     } else {
+    //         $translation = $this->$relation()
+    //             ->whereHas('language', function ($query) use ($languageIdOrLocale) {
+    //                 $query->where('locale', $languageIdOrLocale);
+    //             })
+    //             ->first();
+    //     }
+
+    //     $mappedField = $config['field_mapping'][$field] ?? $field;
+    //     return $translation?->$mappedField;
+    // }
+
+    public function getTranslated(string $field, string|int $languageIdOrLocale): ?string
     {
         $config = $this->getTranslationConfig();
         $relation = $config['relation'];
-
-        if (is_numeric($languageIdOrLocale)) {
-            $translation = $this->$relation()
-                ->where('language_id', $languageIdOrLocale)
-                ->first();
-        } else {
-            $translation = $this->$relation()
-                ->whereHas('language', function ($query) use ($languageIdOrLocale) {
-                    $query->where('locale', $languageIdOrLocale);
-                })
-                ->first();
-        }
-
         $mappedField = $config['field_mapping'][$field] ?? $field;
+
+        // Always work with collection
+        $translations = $this->relationLoaded($relation)
+            ? $this->$relation
+            : $this->$relation()->with('language')->get();
+
+        $translation = is_numeric($languageIdOrLocale)
+            ? $translations->firstWhere('language_id', (int) $languageIdOrLocale)
+            : $translations->first(
+                fn($t) => $t->relationLoaded('language')
+                    && $t->language->locale === $languageIdOrLocale
+            );
+
         return $translation?->$mappedField;
     }
 
