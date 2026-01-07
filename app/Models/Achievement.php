@@ -82,15 +82,15 @@ class Achievement extends AuditBaseModel implements Auditable
 
         return $this->hasMany(AchievementsTranslation::class, 'achievement_id', 'id');
     }
+    public function progress()
+    {
+        return $this->hasMany(UserAchievementProgress::class);
+    }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    public function progress()
-    {
-        return $this->hasMany(UserAchievementProgress::class);
-    }
 
     /* ================================================================
      |  Query Scopes
