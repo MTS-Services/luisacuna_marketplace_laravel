@@ -6,12 +6,13 @@ use App\Enums\LanguageDirection;
 use App\Enums\LanguageStatus;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\AuditableTrait;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Language extends AuditBaseModel implements Auditable
 {
     use  AuditableTrait;
-    
+
     protected $fillable = [
         'sort_order',
         'locale',
@@ -42,10 +43,10 @@ class Language extends AuditBaseModel implements Auditable
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
 
-
-
-
-
+    public function gameTranslations(): HasMany
+    {
+        return $this->hasMany(GameTranslation::class, 'language_id', 'id');
+    }
 
     /*
     |--------------------------------------------------------------------------

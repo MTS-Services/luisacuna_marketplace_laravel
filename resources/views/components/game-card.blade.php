@@ -16,7 +16,7 @@
         </div>
         <div class="">
             <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white line-clamp-1">
-                {{ $data->gameTranslations->first()?->name ?? $data->name }}</h3>
+                {{ $data->translatedName(app()->getLocale()) }}</h3>
             {{-- <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5  text-text-white line-clamp-1">
                 {{ $data->name }}</h3> --}}
 

@@ -4,12 +4,12 @@ namespace App\Models;
 
 
 use App\Traits\AuditableTrait;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class GameTranslation extends BaseModel implements Auditable
 {
     use AuditableTrait;
-    //
 
     protected $fillable = [
         "sort_order",
@@ -17,9 +17,6 @@ class GameTranslation extends BaseModel implements Auditable
         "game_id",
         "name",
         "description",
-
-
-        //here AuditColumns
     ];
 
     protected $hidden = [
@@ -34,12 +31,11 @@ class GameTranslation extends BaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    //
-    public function game()
+    public function game(): BelongsTo
     {
         return $this->belongsTo(Game::class, 'game_id', 'id');
     }
-    public function language()
+    public function language(): BelongsTo
     {
         return $this->belongsTo(Language::class, 'language_id', 'id');
     }
@@ -55,6 +51,4 @@ class GameTranslation extends BaseModel implements Auditable
             //
         ]);
     }
-
-
 }
