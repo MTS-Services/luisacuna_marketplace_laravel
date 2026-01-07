@@ -16,6 +16,7 @@ class UserAchievementProgress extends BaseModel
         'rank_id',
         'current_progress',
         'unlocked_at',
+        'achieved_at',
         'created_at',
         'updated_at',
 

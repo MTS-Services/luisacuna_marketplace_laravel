@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Rank extends AuditBaseModel implements Auditable
 {
     use   AuditableTrait;
-    /** @use HasFactory<\Database\Factories\RankFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -61,10 +60,10 @@ class Rank extends AuditBaseModel implements Auditable
         return $this->hasMany(UserRank::class, 'rank_level', 'id');
     }
 
-    public function AchievementProgress()
-    {
-        return $this->hasMany(UserAchievementProgress::class, 'rank_id', 'id');
-    }
+    // public function AchievementProgress()
+    // {
+    //     return $this->hasMany(UserAchievementProgress::class, 'rank_id', 'id');
+    // }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS

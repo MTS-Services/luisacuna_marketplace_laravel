@@ -217,7 +217,7 @@ class User extends AuthBaseModel implements Auditable
     }
     public function userRank(): HasOne
     {
-        return $this->hasOne(UserRank::class, 'user_id', 'id');
+        return $this->hasOne(UserRank::class, 'user_id', 'id')->where('activated_at', '!=', null);
     }
 
     public function userPoint(): HasOne
