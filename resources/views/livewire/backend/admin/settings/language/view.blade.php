@@ -214,7 +214,7 @@
                         <p class="text-gray-500 dark:text-gray-400 mb-1 text-sm uppercase tracking-wider">{{__('Created By')}}</p>
                         <div class="flex items-center gap-2">
                             @if($data->creater_admin->avatar)
-                                <img src="{{ asset('storage/' . $data->creater_admin->avatar) }}"
+                                <img src="{{ auth_storage_url($data->creater_admin->avatar) }}"
                                      alt="{{ $data->creater_admin->name }}"
                                      class="w-8 h-8 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600">
                             @endif
@@ -231,7 +231,7 @@
                         <p class="text-gray-500 dark:text-gray-400 mb-1 text-sm uppercase tracking-wider">{{__('Updated By')}}</p>
                         <div class="flex items-center gap-2">
                             @if($data->updater_admin->avatar)
-                                <img src="{{ asset('storage/' . $data->updater_admin->avatar) }}"
+                                <img src="{{ auth_storage_url($data?->updater_admin?->avatar) }}"
                                      alt="{{ $data->updater_admin->name }}"
                                      class="w-8 h-8 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600">
                             @endif

@@ -119,7 +119,7 @@
                             </td>
                             <td>{{ $user->id }}</td>
                             <td>
-                    <img src="{{ storage_url($user->avatar) }}" alt="{{ $user->name}}" class="w-10 h-10 rounded-full" />
+                    <img src="{{ auth_storage_url($user->avatar) }}" alt="{{ $user->name}}" class="w-10 h-10 rounded-full" />
 
                                
                             </td>

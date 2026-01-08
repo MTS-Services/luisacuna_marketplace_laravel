@@ -6,7 +6,7 @@
                 @if ($otherParticipant)
                     <div class="bg-bg-primary dark:bg-bg-secondary rounded-full p-0.5">
                         @if ($otherParticipant->avatar)
-                            <img src="{{ storage_url($otherParticipant->avatar) }}"
+                            <img src="{{ auth_storage_url($otherParticipant->avatar) }}"
                                 alt="{{ $otherParticipant->full_name }}"
                                 class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
                         @else
@@ -50,7 +50,7 @@
                         {{-- Current User Message --}}
                         <div class="flex items-start gap-2 sm:gap-3 flex-row-reverse">
                             @if ($msg && $msg->avatar)
-                                <img src="{{ storage_url($msg->avatar) }}" alt="{{ $msg->full_name }}"
+                                <img src="{{ auth_storage_url($msg->avatar) }}" alt="{{ $msg->full_name }}"
                                     class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0 border-2 border-zinc-400">
                             @else
                                 <div

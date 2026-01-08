@@ -9,8 +9,8 @@
         {{ isset($title) ? $title . ' - ' : '' }}
         {{ site_name() }}
     </title>
-     @php
-    $cloudinaryService = new \App\Services\Cloudinary\CloudinaryService();
+    @php
+        $cloudinaryService = new \App\Services\Cloudinary\CloudinaryService();
     @endphp
     <link rel="shortcut icon" href="{{ $cloudinaryService->getUrlFromPublicId(app_favicon()) }}" type="image/x-icon">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -37,7 +37,7 @@
         } */
         .bg-page {
             position: relative;
-            background-image: url('{{ asset('/assets/images/background/light_background.png') }}');
+            background-image: url('{{ storage_url("light_background_ufntjw", ["width" => 1920, "height" => 1080, "crop" => "fill", "gravity" => "auto", "quality" => "auto:best", "fetch_format" => "auto", "flags" => "progressive"]) }}');
             background-attachment: fixed;
             background-position: 100% 100%;
             background-size: cover;
@@ -58,7 +58,7 @@
         }
 
         .dark .bg-page {
-            background-image: url('{{ asset('/assets/images/background/dark_background.png') }}') !important;
+            background-image: url('{{ storage_url("dark-background1111_ak9llp",["width" => 1920, "height" => 1080, "crop" => "fill", "gravity" => "auto", "quality" => "auto:best", "fetch_format" => "auto", "flags" => "progressive"]) }}') !important;
             background-attachment: fixed;
             background-position: 100% 100%;
             background-size: cover;
@@ -70,14 +70,14 @@
         }
 
         .dark .bg-page-login {
-            background-image: url('{{ asset('/assets/images/background/login-dark-background.png') }}');
+            background-image: url('{{ storage_url("login-dark-background_f5wrrf",["width" => 1920, "height" => 1080, "crop" => "fill", "gravity" => "auto", "quality" => "auto:best", "fetch_format" => "auto", "flags" => "progressive"]) }}');
             background-attachment: fixed;
             background-position: 100% 100%;
             background-size: cover;
         }
 
         .bg-page-login {
-            background-image: url('{{ asset('/assets/images/background/login-light-background.png') }}');
+            background-image: url('{{ storage_url("login-light-background_bf6xyv", ["width" => 1920, "height" => 1080, "crop" => "fill", "gravity" => "auto", "quality" => "auto:best", "fetch_format" => "auto", "flags" => "progressive"]) }}');
             background-attachment: fixed;
             background-position: 100% 100%;
             background-size: cover;

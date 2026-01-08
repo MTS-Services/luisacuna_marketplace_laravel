@@ -104,7 +104,7 @@
                 @if ($isVisitSeller)
                     <div class="pt-4 mt-4 flex items-center gap-5">
                         <div class="w-14 h-14">
-                            <img src="{{storage_url( $data?->user?->avatar) }}" 
+                            <img src="{{ auth_storage_url( $data?->user?->avatar) }}" 
                                 alt="{{ $data?->user?->full_name }}" class="rounded" />
                         </div>
                         <div>
@@ -114,7 +114,7 @@
                 @else
                     <div class="pt-4 mt-4 flex items-center gap-5">
                         <div class="w-14 h-14">
-                            <img src="{{ $data?->source?->user?->avatar }}" 
+                            <img src="{{ auth_storage_url($data?->source?->user?->avatar) }}" 
                                 alt="{{ $data?->source?->user?->full_name }}" class="rounded" />
                         </div>
                         <div>
