@@ -3,7 +3,7 @@
     <button @click="open = !open"
         class="flex items-center rounded-lg text-text-white transition-all focus:outline-none mr-3 ml-1.5">
         <div class="w-7 h-7 lg:w-9 lg:h-9 rounded-full shadow-lg overflow-hidden">
-                <x-cloudinary::image publicId="{{ user()->avatar_url }}" class="w-full h-full object-cover" alt="{{ user()->full_name ?? 'User Avatar' }}" />
+                <img src="{{ storage_url(user()->avatar) }}" class="w-full h-full object-cover" alt="{{ user()->full_name ?? 'User Avatar' }}" />
         </div>
     </button>
 
@@ -19,7 +19,7 @@
             <div class="flex items-center gap-2">
                 <div class="w-10 h-10 lg:w-14 lg:h-14 rounded-full shadow-lg overflow-hidden">
                     
-                <x-cloudinary::image publicId="{{ user()->avatar_url }}" class="w-full h-full rounded-full" alt="{{ user()->full_name ?? 'User Avatar' }}" />
+                <img src="{{ storage_url(user()->avatar) }}" class="w-full h-full rounded-full" alt="{{ user()->full_name ?? 'User Avatar' }}" />
 
                 </div>
                 <div class="flex flex-col gap-1.5">
