@@ -62,11 +62,8 @@
                     <button @click="open = !open" class="avatar">
                         <div class="w-8 rounded-xl">
 
-                            {{-- <img src="{{ auth_storage_url(admin()->avatar) }}" alt="{{ admin()->name }}"
-                                class="object-cover w-full h-full"> --}}
-                               
-                            <x-cloudinary::image publicId="{{ admin()->avatar_url }}"
-                                class="object-cover w-full h-full" alt="{{  admin()->name }}" />
+                            <img src="{{ auth_storage_url(admin()->avatar) }}" alt="{{ admin()->full_name }}"
+                                class="object-cover w-full h-full">
                         </div>
                     </button>
 

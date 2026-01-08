@@ -4,17 +4,12 @@ namespace App\Livewire\Backend\User\Offers;
 
 use App\Models\Game;
 use App\Models\User;
-use App\Models\Product;
 use App\Models\Platform;
 use Livewire\Component;
-use App\Models\UserPoint;
-use App\Models\Achievement;
 use App\Services\GameService;
-use App\Models\AchievementType;
 use App\Services\ProductService;
 use App\Services\CategoryService;
 use App\Services\PlatformService;
-use Illuminate\Support\Facades\DB;
 use App\Services\AchievementService;
 use App\Traits\Livewire\WithNotification;
 
@@ -214,6 +209,7 @@ class Offer extends Component
         if ($data['price']) {
             $data['price'] = $data['price'] * 1;
         }
+
 
 
 
