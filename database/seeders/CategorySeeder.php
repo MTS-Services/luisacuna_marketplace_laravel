@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Enums\CategoryStatus;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
-use App\Enums\CategoryStatus;
 
 class CategorySeeder extends Seeder
 {
@@ -20,7 +20,7 @@ class CategorySeeder extends Seeder
                 'slug' => 'currency',
                 'meta_title' => 'Robux',
                 'meta_description' => 'Robux',
-                'icon' => '',
+                'icon' => '17155284_fdzxvx',
                 'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
@@ -32,7 +32,7 @@ class CategorySeeder extends Seeder
                 'slug' => 'gift-card',
                 'meta_title' => 'Grow A Garden',
                 'meta_description' => 'Grow A Garden',
-                'icon' => '',
+                'icon' => 'images_2_xafprk',
                 'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
@@ -44,7 +44,7 @@ class CategorySeeder extends Seeder
                 'slug' => 'boosting',
                 'meta_title' => 'boosting',
                 'meta_description' => 'boosting',
-                'icon' => '',
+                'icon' => '6106288_v43lr8',
                 'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
@@ -57,7 +57,7 @@ class CategorySeeder extends Seeder
                 'slug' => 'items',
                 'meta_title' => 'Hunty Zombie',
                 'meta_description' => 'Hunty Zombie',
-                'icon' => '',
+                'icon' => '8161879_u4xaky',
                 'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
@@ -69,7 +69,7 @@ class CategorySeeder extends Seeder
                 'slug' => 'accounts',
                 'meta_title' => '99 Nights In The Forest',
                 'meta_description' => '99 Nights In The Forest',
-                'icon' => '',
+                'icon' => 'images_3_uirzjr',
                 'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
@@ -81,7 +81,7 @@ class CategorySeeder extends Seeder
                 'slug' => 'top-up',
                 'meta_title' => 'Prospecting',
                 'meta_description' => 'Prospecting',
-                'icon' => '',
+                'icon' => '5894760_r5ptrc',
                 'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
@@ -93,12 +93,12 @@ class CategorySeeder extends Seeder
                 'slug' => 'coaching',
                 'meta_title' => 'All Star Tower Defense X',
                 'meta_description' => 'All Star Tower Defense X',
-                'icon' => '',
+                'icon' => '13322748_s4nflz',
                 'status' => CategoryStatus::ACTIVE->value,
                 'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
         ]);
     }
 }
