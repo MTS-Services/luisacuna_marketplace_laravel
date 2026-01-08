@@ -11,7 +11,6 @@ use App\Models\Product;
 use App\Models\ProductConfig;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Carbon;
 
 class ProductSeeder extends Seeder
 {

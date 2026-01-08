@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Repositories\Contracts\FaqRepositoryInterface;
+use Illuminate\Support\Facades\Log;
+
 class FaqRepository implements FaqRepositoryInterface
 {
     /**
@@ -111,18 +113,51 @@ class FaqRepository implements FaqRepositoryInterface
 
     public function create(array $data): Faq
     {
-        return $this->model->create($data);
+        $data =  $this->model->create($data);
+
+        if(!empty($data)){
+          Log::info('Faq Translation created', [
+            'faq_id' => $data->id,
+            'question' => $data->question,
+            'answer' => $data->answer
+        ]);
+        $data= $data->fresh();
+         $data->dispatchTranslation(
+                defaultLanguageLocale: 'en',
+                targetLanguageIds: null
+        );
+
+        return $data;
+        }
     }
 
     public function update(int $id, array $data): bool
     {
         $findData = $this->find($id);
-
+        $oldData = $findData;
+        $answerChanged = $data['answer'] != $oldData->answer;
+        $questionChanged = $data['question'] != $oldData->question;
         if (!$findData) {
             return false;
         }
 
-        return $findData->update($data);
+        $updated =  $findData->update($data);
+
+        if($updated){
+            if($answerChanged || $questionChanged){
+                Log::info('Faq Translation updated', [
+                    'faq_id' => $findData->id,
+                    'question' => $findData->question,
+                    'answer' => $findData->answer
+                ]);
+                $findData = $findData->fresh();
+                $findData->dispatchTranslation(
+                    defaultLanguageLocale: 'en',
+                    targetLanguageIds: null
+                );
+            }
+        }
+        return $updated;
     }
 
     public function delete(int $id, int $actionerId): bool

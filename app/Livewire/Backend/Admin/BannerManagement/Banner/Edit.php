@@ -48,7 +48,7 @@ class Edit extends Component
             $this->data = $this->heroService->updateData($this->data->id, $data);
 
             $this->success(__('Banner updated successfully.'));
-            $this->data->fresh();
+            $this->data;
 
         } catch (\Exception $e) {
 

@@ -13,17 +13,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_translations', function (Blueprint $table) {
+        Schema::create('cms_translations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
+            $table->unsignedBigInteger('cms_id')->index();
             $table->unsignedBigInteger('language_id')->index();
-            $table->unsignedBigInteger('user_id')->index();
+           
+            $table->longText('content');
 
-            $table->string('description')->nullable()->index();
-            
+           
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('cms_id')->references('id')->on('cms')->onDelete('cascade');
             $table->foreign('language_id')->references('id')->on('languages')->onDelete('cascade');
         });
     }
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_translations');
+        Schema::dropIfExists('cms_translations');
     }
 };

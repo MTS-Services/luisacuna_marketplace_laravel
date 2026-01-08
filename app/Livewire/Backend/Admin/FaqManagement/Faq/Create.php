@@ -46,8 +46,9 @@ class Create extends Component
      */
     public function save(): mixed
 {
+    $data = $this->form->validate();
     try {
-        $this->service->createData($this->form->toArray());
+        $this->service->createData($data);
         $this->success('Faq created successfully');
 
         return redirect()->route('admin.flm.faq.index');

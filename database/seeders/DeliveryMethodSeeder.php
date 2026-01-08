@@ -16,12 +16,12 @@ class DeliveryMethodSeeder extends Seeder
             [
                 'name' => 'Manual Delivery',
                 'slug' => 'manual-delivery',
-                'image' => 'https://placehold.co/400x400/ff0000/ffffff?text=Manual+Delivery',
+                'image' => 'ffffff_aa0hbl',
             ],
             [
                 'name' => 'instant Delivery',
                 'slug' => 'instant-delivery',
-                'image' => 'https://placehold.co/400x400/00ff00/ffffff?text=Instant+Delivery',
+                'image' => 'ffffff_1_jhvgjk',
             ],
         ]);
     }

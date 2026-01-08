@@ -59,10 +59,19 @@ class CreateAction
             // Dispatch translation job (English is default, will be saved but not translated)
             Log::info('Dispatching TranslateModelJob for userId: ' . $freshData->id);
 
-            $freshData->dispatchTranslation(
-                defaultLanguageLocale: 'en',
+            // $freshData->dispatchTranslation(
+            //     defaultLanguageLocale: 'en',
+
+            //     targetLanguageIds: null
+            // );\
+
+              $freshData->dispatchTranslation(
+                defaultLanguageLocale: app()->getLocale() ?? 'en',
+                forceTranslation: true,
                 targetLanguageIds: null
             );
+
+           
 
             return $freshData;
         });

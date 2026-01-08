@@ -13,18 +13,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_translations', function (Blueprint $table) {
+        Schema::create('feedback_translations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('language_id')->index();
-            $table->unsignedBigInteger('user_id')->index();
 
-            $table->string('description')->nullable()->index();
-            
+            $table->unsignedBigInteger('feedback_id')->index();
+
+            $table->text('message');
+
+            $table->foreign('feedback_id')->references('id')->on('feedback')->onDelete('cascade');
+            $table->foreign('language_id')->references('id')->on('languages')->onDelete('cascade');
+
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('language_id')->references('id')->on('languages')->onDelete('cascade');
+           // $this->addMorphedAuditColumns($table);
+            // $this->addAdminAuditColumns($table);
         });
     }
 
@@ -33,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_translations');
+        Schema::dropIfExists('feedback_translations');
     }
 };
