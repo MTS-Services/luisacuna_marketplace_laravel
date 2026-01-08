@@ -57,8 +57,14 @@
                     </div>
                 </div>
             @empty
-                <div>
-                    No sd dslkjl;kkl
+                <div class="p-10 bg-bg-info rounded-2xl flex flex-col items-center justify-center text-center">
+                    <x-phosphor-chat-centered-dots class="w-12 h-12 mb-3 opacity-50" />
+                    <p class="text-lg font-medium opacity-70">
+                        {{ __('No feedback found yet') }}
+                    </p>
+                    <p class="text-sm opacity-50">
+                        {{ __('When you receive feedback, it will appear here.') }}
+                    </p>
                 </div>
             @endforelse
         </div>
