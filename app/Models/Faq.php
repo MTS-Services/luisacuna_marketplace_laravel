@@ -74,15 +74,7 @@ class Faq extends AuditBaseModel implements Auditable
         ];
     }
 
-    public function games()
-    {
-        return $this->belongsToMany(
-            Game::class,
-            'faq_game',     // FIX: use correct pivot table
-            'faq_id',
-            'game_id'
-        );
-    }
+
 
     /*
     |--------------------------------------------------------------------------

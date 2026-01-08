@@ -41,7 +41,11 @@ class Language extends AuditBaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-
+    public function productTranslations()
+    {
+        return $this->hasMany(ProductTranslation::class, 'product_id', 'id');
+    }
+    
     public function gameTranslations(): HasMany
     {
         return $this->hasMany(GameTranslation::class, 'language_id', 'id');
@@ -66,7 +70,18 @@ class Language extends AuditBaseModel implements Auditable
         return $this->hasMany(FeedbackTranslation::class, 'feedback_id', 'id');
     }
 
-    /*
+   public function heroTranslations(): HasMany
+     {
+         return $this->hasMany(HeroTranslation::class, 'hero_id', 'id');
+     }
+
+     public function userTranslations(): HasMany 
+     {
+         return $this->hasMany(UserTranslations::class, 'user_id', 'id');
+     }
+
+
+     /*
     |--------------------------------------------------------------------------
     | Query Scopes
     |--------------------------------------------------------------------------

@@ -5,13 +5,15 @@ namespace App\Models;
 use App\Enums\HeroStatus;
 use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
+use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use OwenIt\Auditing\Contracts\Auditable;
  
 class Hero extends BaseModel implements Auditable
 {
-    use   AuditableTrait;
+    use   AuditableTrait, HasTranslations;
     //
  
     protected $fillable = [
@@ -41,6 +43,28 @@ class Hero extends BaseModel implements Auditable
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
  
      //
+
+
+     public function heroTranslations(): HasMany
+     {
+         return $this->hasMany(HeroTranslation::class, 'hero_id', 'id');
+     }
+
+
+    //  Game translation Config
+    public function getTranslationConfig(): array
+    {
+        return [
+            'fields' => ['title', 'content'],
+            'relation' => 'heroTranslations',
+            'model' => HeroTranslation::class,
+            'foreign_key' => 'hero_id',
+            'field_mapping' => [
+                'title' => 'title',
+                'content' => 'content',
+            ]
+        ];
+    }
 
      public function scopeFilter(Builder $query, $filters): Builder
      {
