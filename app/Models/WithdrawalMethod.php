@@ -80,6 +80,10 @@ class WithdrawalMethod extends AuditBaseModel implements Auditable
                 $q->where('name', 'like', "%{$name}%")
             );
     }
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', ActiveInactiveEnum::ACTIVE->value);
+    }
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);

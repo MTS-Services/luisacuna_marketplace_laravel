@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserWithdrawalAccount extends AuditBaseModel implements Auditable
 {
@@ -18,30 +19,66 @@ class UserWithdrawalAccount extends AuditBaseModel implements Auditable
         'account_name',
         'account_data',
         'is_default',
-        'is_vsrified',
+        'is_verified',
         'status',
         'note',
         'verified_at',
         'last_used_at',
-
-      //here AuditColumns
-    ];
-
-    protected $hidden = [
-        //
     ];
 
     protected $casts = [
-        //
+        'account_data' => 'array',
+        'is_default' => 'boolean',
+        'is_verified' => 'boolean',
+        'verified_at' => 'datetime',
+        'last_used_at' => 'datetime',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     //
+    // Relationships
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
-     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+    public function withdrawalMethod(): BelongsTo
+    {
+        return $this->belongsTo(WithdrawalMethod::class);
+    }
+
+    // Scopes
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
+
+    public function scopeDefault($query)
+    {
+        return $query->where('is_default', true);
+    }
+
+    public function scopeVerified($query)
+    {
+        return $query->where('is_verified', true);
+    }
+
+    // Mutators
+    public function setIsDefaultAttribute($value)
+    {
+        if ($value) {
+            // Remove default from other accounts
+            static::where('user_id', $this->user_id)
+                ->where('id', '!=', $this->id)
+                ->update(['is_default' => false]);
+        }
+
+        $this->attributes['is_default'] = $value;
+    }
+
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
@@ -52,6 +89,4 @@ class UserWithdrawalAccount extends AuditBaseModel implements Auditable
             //
         ]);
     }
-
-
 }
