@@ -62,7 +62,7 @@
                 </div>
             @endforelse
         </div>
-        {{-- <x-frontend.pagination-ui :pagination="$pagination" /> --}}
+        <x-frontend.pagination-ui :pagination="$pagination" />
 
 
     </section>
