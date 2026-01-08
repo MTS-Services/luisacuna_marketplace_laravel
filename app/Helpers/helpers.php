@@ -99,7 +99,7 @@ if (!function_exists('admin')) {
 if (!function_exists('storage_url')) {
     function storage_url($urlOrArray, ?array $transform = [])
     {
-        $image = asset('assets/images/no_img.jpg');
+        $image = 'no_image';
 
         $transform = array_merge(
             array(
