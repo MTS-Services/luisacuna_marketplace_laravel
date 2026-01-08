@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('rank_id');
-            // $table->boolean('is_active')->default(true);
+            $table->boolean('is_running')->default(true);
             $table->timestamp('activated_at');
 
 

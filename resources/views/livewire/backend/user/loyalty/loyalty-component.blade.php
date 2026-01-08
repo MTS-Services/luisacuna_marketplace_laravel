@@ -83,7 +83,7 @@
                     </x-ui.button> --}}
                     <button wire:click="redeemPoints" @disabled(!$canRedeem)
                         class="px-5 py-2 rounded-full text-white
-    {{ !$canRedeem ? 'bg-gray-400 cursor-not-allowed' : 'bg-purple-500 hover:bg-purple-600' }}">
+                        {{ !$canRedeem ? 'bg-gray-400 cursor-not-allowed' : 'bg-purple-500 hover:bg-purple-600' }}">
                         {{ __('Redeem') }}
                     </button>
 
