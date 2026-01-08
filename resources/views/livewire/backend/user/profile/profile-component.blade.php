@@ -13,7 +13,7 @@
                     <div class="">
                         <div class="relative">
                             <div class="w-20 h-20 sm:w-40 sm:h-40">
-                            <img src="{{ storage_url($user->avatar) }}" alt="{{ $user->name}}" class="h-full w-full rounded-full border-2 border-text-white" />
+                            <img src="{{ auth_storage_url($user?->avatar) }}" alt="{{ $user->name}}" class="h-full w-full rounded-full border-2 border-text-white" />
                             </div>
                             <div class="absolute -right-5 top-7 sm:-right-3 sm:top-20 w-10 h-10 sm:w-12 sm:h-12">
                                 <img src="{{ asset('assets/images/user_profile/Frame 1261153813.png') }}" alt=""
