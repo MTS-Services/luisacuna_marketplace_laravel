@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Enums\LanguageDirection;
 use App\Enums\LanguageStatus;
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -42,13 +41,47 @@ class Language extends AuditBaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-
+    public function productTranslations()
+    {
+        return $this->hasMany(ProductTranslation::class, 'product_id', 'id');
+    }
+    
     public function gameTranslations(): HasMany
     {
         return $this->hasMany(GameTranslation::class, 'language_id', 'id');
+    } 
+    public function cmsTranslations(): HasMany
+    {
+        return $this->hasMany(CmsTranslation::class, 'language_id', 'id');
     }
 
-    /*
+    public function currencyTranslations()
+    {
+        return $this->hasMany(CurrencyTranslation::class, 'currency_id', 'id');
+    }
+
+       public function faqTranslations(): HasMany
+    {
+        return $this->hasMany(FaqTranslation::class, 'faq_id', 'id');
+    }
+
+    public function feedbackTranslations(): HasMany
+    {
+        return $this->hasMany(FeedbackTranslation::class, 'feedback_id', 'id');
+    }
+
+   public function heroTranslations(): HasMany
+     {
+         return $this->hasMany(HeroTranslation::class, 'hero_id', 'id');
+     }
+
+     public function userTranslations(): HasMany 
+     {
+         return $this->hasMany(UserTranslations::class, 'user_id', 'id');
+     }
+
+
+     /*
     |--------------------------------------------------------------------------
     | Query Scopes
     |--------------------------------------------------------------------------

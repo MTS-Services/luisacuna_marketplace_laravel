@@ -141,20 +141,17 @@ class UpdateAction
                 }
 
 
-                $firstNameChanged = isset($newData['first_name']) && $newData['first_name'] !== $oldData['first_name'];
-                $lastNameChanged = isset($newData['last_name']) && $newData['last_name'] !== $oldData['last_name'];
+                $changedDescription = isset($newData['description']) && $newData['description'] !== $oldData['description'];
                 // ---- RE-TRANSLATE IF NAME CHANGED ----
-                if ($firstNameChanged || $lastNameChanged) {
-                    Log::info('User Frist name name changed, dispatching translation job', [
+                if ($changedDescription) {
+                    Log::info('User Translations Updated', [
                         'user_id' => $id,
-                        'old_first_name' => $oldData['first_name'],
-                        'new_first_name' => $newData['first_name'],
-                        'old_last_name' => $oldData['last_name'],
-                        'new_last_name' => $newData['last_name'],
+                        'description' => $oldData['description'],
                     ]);
 
-                    $freshData->dispatchTranslation(
-                        defaultLanguageLocale: 'en',
+                     $freshData->dispatchTranslation(
+                        defaultLanguageLocale: app()->getLocale() ?? 'en',
+                        forceTranslation: true,
                         targetLanguageIds: null
                     );
                 }

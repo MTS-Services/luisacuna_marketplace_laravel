@@ -486,13 +486,12 @@ class User extends AuthBaseModel implements Auditable
     public function getTranslationConfig(): array
     {
         return [
-            'fields' => ['first_name', 'last_name'],
+            'fields' => ['description'],
             'relation' => 'userTranslations',
             'model' => UserTranslations::class,
             'foreign_key' => 'user_id',
             'field_mapping' => [
-                'first_name' => 'first_name',
-                'last_name' => 'last_name',
+                'description' => 'description',
             ],
         ];
     }

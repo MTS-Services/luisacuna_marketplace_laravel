@@ -1,51 +1,54 @@
 <?php
-
+ 
 namespace App\Models;
-
+ 
 use App\Models\BaseModel;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
-class CurrencyTranslation extends BaseModel
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
+ 
+class FeedbackTranslation extends BaseModel implements Auditable
 {
-
+    use   AuditableTrait;
+    //
+ 
     protected $fillable = [
         'sort_order',
-        'name',
-        'currency_id',
+        'id',
         'language_id',
-        //here AuditColumns 
+        'feedback_id',
+        'message',
+ 
+      //here AuditColumns 
     ];
-
+ 
     protected $hidden = [
         //
     ];
-
+ 
     protected $casts = [
         //
     ];
-
+ 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+ 
+     //
 
-    //
+     public function feedback()
+     {
+         return $this->belongsTo(Feedback::class, 'feedback_id', 'id');
+     }
 
-    public function currency():BelongsTo
-    {
-        return $this->belongsTo(Currency::class, 'currency_id', 'id');
-    }
-
-      public function language():BelongsTo
-    {
-        return $this->belongsTo(Currency::class, 'currency_id', 'id');
-    }
-
-
-
-    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+     public function language()
+     {
+         return $this->belongsTo(Language::class, 'language_id', 'id');
+     }
+ 
+     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
-
+ 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -53,4 +56,6 @@ class CurrencyTranslation extends BaseModel
             //
         ]);
     }
+ 
+ 
 }
