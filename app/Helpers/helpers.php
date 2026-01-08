@@ -123,7 +123,7 @@ if (!function_exists('storage_url')) {
 
             foreach ($urlOrArray as $index => $url) {
 
-                $result .= ($url && $url != '')
+                $result .= ($url && ($url != '' || $url != null))
                     ? $cloudinaryService->getTransformedUrl($url, $transform)
                     : $image;
 
@@ -134,7 +134,7 @@ if (!function_exists('storage_url')) {
             return $result;
         } else {
 
-            return ($urlOrArray && $urlOrArray != '')
+            return ($urlOrArray && ($urlOrArray != '' || $urlOrArray != null))
                 ? $cloudinaryService->getTransformedUrl($urlOrArray, $transform)
                 : $image;
         }
@@ -163,7 +163,7 @@ if (!function_exists('auth_storage_url')) {
         $cloudinaryService = app(CloudinaryService::class);
 
 
-        return ($url && $url != '')
+        return ($url && ($url != '' || $url != null))
             ? $cloudinaryService->getTransformedUrl($url, $transform)
             : $image;
     }
