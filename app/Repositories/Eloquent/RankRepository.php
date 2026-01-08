@@ -232,7 +232,7 @@ class RankRepository implements RankRepositoryInterface
     {
         $value = $this->userRank->updateOrCreate(
             ['user_id' => $userId],
-            ['rank_level' => $rankId]
+            ['rank_id' => $rankId]
         );
         return $value;
     }

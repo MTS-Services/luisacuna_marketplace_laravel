@@ -7,6 +7,7 @@ use App\Enums\UserType;
 use App\Enums\UserStatus;
 use App\Enums\userKycStatus;
 use App\Traits\AuditableTrait;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 use App\Traits\HasTranslations;
 use App\Enums\UserAccountStatus;
@@ -151,7 +152,7 @@ class User extends AuthBaseModel implements Auditable
             }
         });
         static::created(function ($user) {
-            UsersNotificationSetting::create([
+            UserNotificationSetting::create([
                 'user_id' => $user->id,
             ]);
         });
@@ -215,9 +216,19 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->hasMany(User::class, 'unbanned_by', 'id');
     }
-    public function userRank(): HasOne
+    public function activeRank(): BelongsToMany
     {
-        return $this->hasOne(UserRank::class, 'user_id', 'id');
+        return $this->belongsToMany(Rank::class, 'user_ranks')
+            ->wherePivot('activated_at', '!=', null)
+            ->withPivot('activated_at','rank_id')
+            ->limit(1);
+    }
+
+    public function ranks()
+    {
+        return $this->belongsToMany(Rank::class, 'user_ranks')
+            ->withPivot('activated_at', 'rank_id')
+            ->withTimestamps();
     }
 
     public function userPoint(): HasOne
@@ -229,9 +240,9 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->morphMany(Audit::class, 'user');
     }
-    public function UserNotificationSetting(): HasOne
+    public function notificationSetting(): HasOne
     {
-        return $this->hasOne(UsersNotificationSetting::class, 'user_id', 'id');
+        return $this->hasOne(UserNotificationSetting::class, 'user_id', 'id');
     }
 
     public function rankedUsers(): HasManyThrough
@@ -239,7 +250,7 @@ class User extends AuthBaseModel implements Auditable
         return $this->hasManyThrough(
             User::class,
             UserRank::class,
-            'rank_level',
+            'rank_id',
             'id',
             'id',
             'user_id'

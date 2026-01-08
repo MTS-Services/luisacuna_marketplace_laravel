@@ -44,7 +44,7 @@ class CreateAction
             ]);
             UserRank::create([
                 'user_id' => $newData->id,
-                'rank_level' => $lowestRank->id,
+                'rank_id' => $lowestRank->id,
                 'activated_at' => now(),
                 'is_active' => 1,
             ]);

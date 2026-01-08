@@ -8,8 +8,8 @@
                     <h3 class="text-text-primary font-open-sans text-lg">{{ __('How it works?') }}</h3>
                     <div class="flex items-center gap-2 bg-zinc-50/10 px-3 py-1.5 rounded-full">
                         <x-phosphor-coin class="fill-yellow-500 w-5 h-5" weight="fill" />
-                        {{-- <span class="text-text-white font-semibold">{{ user()->rank_points }}</span> --}}
-                        <span class="text-text-white font-semibold">{{ $user->userPoint?->points ?? 0 }}</span>
+                        {{-- <span class="text-text-white font-semibold">{{ $currentRank->userPoint->points }}</span> --}}
+                        {{-- <span class="text-text-white font-semibold">{{ $currentRank->userPoint->points }}</span> --}}
                     </div>
                 </div>
 
@@ -18,7 +18,8 @@
                         <div class="relative">
                             <div
                                 class="w-26 h-26 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
-                                <img src="{{ storage_url($rank?->icon) }}" alt="{{ $rank?->name }}" class="w-full h-full">
+                                <img src="{{ storage_url($rank?->icon) }}" alt="{{ $user?->rank?->name }}"
+                                    class="w-full h-full">
                             </div>
                         </div>
                     </div>
@@ -82,8 +83,8 @@
                     </x-ui.button> --}}
                     <button wire:click="redeemPoints" @disabled(!$canRedeem)
                         class="px-5 py-2 rounded-full text-white
-    {{ !$canRedeem ? 'bg-gray-400 cursor-not-allowed' : 'bg-purple-500 hover:bg-purple-600' }}">
-                        Redeem
+                        {{ !$canRedeem ? 'bg-gray-400 cursor-not-allowed' : 'bg-purple-500 hover:bg-purple-600' }}">
+                        {{ __('Redeem') }}
                     </button>
 
                 </div>
@@ -95,13 +96,15 @@
             <div class="flex items-center gap-3 mb-2">
                 <h2 class="text-text-white font-open-sans text-2xl font-bold">{{ __('Achievements completed') }}</h2>
             </div>
-            <p class="text-text-white text-sm ">{{ $completedAchievements }} / {{ $achievements?->count() ?? 0 }} {{ __('completed') }}</p>
+            <p class="text-text-white text-sm ">{{ $completedAchievements }} / {{ $achievements?->count() ?? 0 }}
+                {{ __('completed') }}</p>
         </div>
 
         {{-- Achievement Cards Grid --}}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-13">
             {{-- Critic Achievement --}}
 
+            @dd($achievements)
             @if ($achievements)
                 @forelse ($achievements as $achievement)
                     <div class="glass-card rounded-2xl p-6  border-primary-700/30">
@@ -119,24 +122,18 @@
                         </div>
                         <div class="flex items-center justify-between text-sm mb-2">
                             <span class="text-text-white text-base sm:text-xl">
-                                {{ $achievement->progress->first()?->current_progress ?? 0 }}
-                                / {{ $achievement->target_value }} {{ __('To unlock') }}
+                                {{-- @dd($achievement) --}}
+                                {{ $achievement?->progress->first()->current_progress }} /
+                                {{ $achievement->target_value }} {{ __('To unlock') }}
                             </span>
-
                             <div class="flex items-center gap-1">
                                 <x-phosphor-coin class="fill-yellow-500 w-4 h-4" weight="fill" />
                                 <span
                                     class="text-text-white font-semibold text-base sm:text-xl">+{{ $achievement->point_reward }}</span>
                             </div>
                         </div>
-                        @php
-                            $current = $achievement->progress->first()?->current_progress ?? 0 ;
-                            $target = $achievement->target_value ?? 1;
-                            $percent = min(($current / $target) * 100, 100);
-                        @endphp
                         <div class="w-full bg-white rounded-full h-2">
-                            <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full"
-                                style="width: {{ $percent }}%">
+                            <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full" style="width: %">
                             </div>
                         </div>
                     </div>
