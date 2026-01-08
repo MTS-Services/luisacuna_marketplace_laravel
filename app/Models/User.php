@@ -151,7 +151,7 @@ class User extends AuthBaseModel implements Auditable
             }
         });
         static::created(function ($user) {
-            UsersNotificationSetting::create([
+            UserNotificationSetting::create([
                 'user_id' => $user->id,
             ]);
         });
@@ -229,9 +229,9 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->morphMany(Audit::class, 'user');
     }
-    public function UserNotificationSetting(): HasOne
+    public function notificationSetting(): HasOne
     {
-        return $this->hasOne(UsersNotificationSetting::class, 'user_id', 'id');
+        return $this->hasOne(UserNotificationSetting::class, 'user_id', 'id');
     }
 
     public function rankedUsers(): HasManyThrough
