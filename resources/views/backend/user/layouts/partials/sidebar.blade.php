@@ -26,7 +26,7 @@
 
                                 </div>
                                 <div class="absolute -right-1.5 top-7.5  w-6 h-6 ">
-                                    <img src="{{ asset('assets/images/user_profile/Frame 1261153813.png') }}"
+                                    <img src="{{ asset(storage_url('Frame_1261153813_bcf4vf') ) }}"
                                         alt="" class="w-full h-full rounded-full">
                                 </div>
                             </div>
