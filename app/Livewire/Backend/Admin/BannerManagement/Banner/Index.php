@@ -45,7 +45,7 @@ class Index extends Component
                 'label' => 'Icon',
                 'format' => function ($data){
                     if(!empty($data->image)){
-                      return ' <img src="'. $this->cloudinaryService->getUrlFromPublicId($data->image).' alt="" class="w-20 h-auto">';
+                      return ' <img src="'. storage_url($data->image).' alt="" class="w-20 h-auto">';
                     }else{
                         return 'NO Image';
                     }

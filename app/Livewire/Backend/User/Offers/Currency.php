@@ -140,7 +140,7 @@ class Currency extends Component
                 'key' => 'name',
                 'label' => 'Game',
                 'sortable' => true,
-                'format' => fn($item) => '<div class="flex items-center gap-3"><img src="' . ($item->game_image ?? null) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item->name ?? 'Game') . '"><span class="font-semibold text-text-white">' . ($item->name ?? '-') . '</span></div>'
+                'format' => fn($item) => '<div class="flex items-center gap-3"><img src="' . storage_url($item->game_image) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item->name ?? 'Game') . '"><span class="font-semibold text-text-white">' . ($item->name ?? '-') . '</span></div>'
             ],
             [
                 'key' => 'quantity',

@@ -6,7 +6,7 @@
             <div class="flex gap-2">
                 @if($game->logo && false)
                 <div class="h-8 w-8 bg-orange-500 rounded flex items-center justify-center font-medium">
-                    <img src="{{ storage_url($game->logo) }}" alt="{{ $game->name}}">
+                    <img src="{{ storage_url($game?->logo) }}" alt="{{ $game->name}}">
                 </div>
                 @else
                 <div class="h-8 w-8 bg-orange-500 rounded flex items-center justify-center font-medium">
