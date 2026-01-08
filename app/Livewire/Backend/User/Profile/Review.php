@@ -38,9 +38,11 @@ class Review extends Component
     public function render()
     {
         $feedbacks = $this->service->getPaginatedData(
-            perPage: 1,
+            perPage: 10,
             filters: $this->getFilters()
         );
+
+        $this->paginationData($feedbacks);
         return view('livewire.backend.user.profile.review', [
             'feedbacks' => $feedbacks
         ]);

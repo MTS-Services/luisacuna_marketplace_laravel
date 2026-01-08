@@ -52,7 +52,7 @@ class ProfileCategoryItems extends Component
        
         $products = $this->getProducts();
 
-        $games = $this->gameService->randomData(100);
+        $games = $this->gameService->randomData(50);
         
         $this->paginationData($products);
 
