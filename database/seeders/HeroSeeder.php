@@ -21,7 +21,7 @@ class HeroSeeder extends Seeder
                     'action_title' => 'Shop Now',
                     'action_url' => '/shop',
                     'image' => 'b8139764f2bfc9cf363d2632afd404c8dad49732_1_ieucbr',
-                    'mobile_image' => 'heroes/hero1.jpg',
+                    'mobile_image' => 'mobiles_vaeibm',
                     'target' => '_self',
                     'status' => 'active',
                 ], [
@@ -30,7 +30,7 @@ class HeroSeeder extends Seeder
                     'action_title' => 'Shop Now 2',
                     'action_url' => '/shop',
                     'image' => 'b8139764f2bfc9cf363d2632afd404c8dad49732_1_ieucbr',
-                    'mobile_image' => 'heroes/hero1.jpg',
+                    'mobile_image' => 'mobiles_vaeibm',
                     'target' => '_self',
                     'status' => 'active',
                 ],
@@ -40,7 +40,7 @@ class HeroSeeder extends Seeder
                     'action_title' => 'Shop Now 3',
                     'action_url' => '/shop',
                     'image' => 'b8139764f2bfc9cf363d2632afd404c8dad49732_1_ieucbr',
-                    'mobile_image' => 'heroes/hero1.jpg',
+                    'mobile_image' => 'mobiles_vaeibm',
                     'target' => '_self',
                     'status' => 'active',
                 ],
@@ -50,7 +50,7 @@ class HeroSeeder extends Seeder
                     'action_title' => 'Shop Now',
                     'action_url' => '/shop',
                     'image' => 'b8139764f2bfc9cf363d2632afd404c8dad49732_1_ieucbr',
-                    'mobile_image' => 'heroes/hero1.jpg',
+                    'mobile_image' => 'mobiles_vaeibm',
                     'target' => '_self',
                     'status' => 'active',
                 ],
@@ -60,7 +60,7 @@ class HeroSeeder extends Seeder
                     'action_title' => 'Shop Now',
                     'action_url' => '/shop',
                     'image' => 'b8139764f2bfc9cf363d2632afd404c8dad49732_1_ieucbr',
-                    'mobile_image' => 'heroes/hero1.jpg',
+                    'mobile_image' => 'mobiles_vaeibm',
                     'target' => '_self',
                     'status' => 'active',
                 ], [
@@ -69,7 +69,7 @@ class HeroSeeder extends Seeder
                     'action_title' => 'Shop Now 2',
                     'action_url' => '/shop',
                     'image' => 'b8139764f2bfc9cf363d2632afd404c8dad49732_1_ieucbr',
-                    'mobile_image' => 'heroes/hero1.jpg',
+                    'mobile_image' => 'mobiles_vaeibm',
                     'target' => '_self',
                     'status' => 'active',
                 ],
@@ -79,12 +79,11 @@ class HeroSeeder extends Seeder
                     'action_title' => 'Shop Now 3',
                     'action_url' => '/shop',
                     'image' => 'b8139764f2bfc9cf363d2632afd404c8dad49732_1_ieucbr',
-                    'mobile_image' => 'heroes/hero1.jpg',
+                    'mobile_image' => 'mobiles_vaeibm',
                     'target' => '_self',
                     'status' => 'active',
                 ],
             ]
         );
-
     }
 }

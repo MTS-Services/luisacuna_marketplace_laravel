@@ -78,9 +78,16 @@ public function findData($column_value, string $column_name = 'id')
 
             $dynamic_data = $data['fields'] ?? [];
             $delivery_method = $data['deliveryMethod'] ?? null;
-            unset($data['fields']);
-            
             $data['delivery_method'] = $delivery_method;
+            unset($data['fields']);
+            unset($data['deliveryMethod']);
+            
+
+
+
+
+
+           
 
             $record = $this->model->create($data);
 

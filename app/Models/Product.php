@@ -28,7 +28,6 @@ class Product extends BaseModel implements Auditable
         'name',
         'quantity',
         'minimum_offer_quantity',
-        'delivery_method',
         'status',
         'platform_id',
         'delivery_timeline',
