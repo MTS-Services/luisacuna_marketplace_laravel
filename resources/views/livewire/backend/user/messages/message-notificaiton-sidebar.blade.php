@@ -44,7 +44,7 @@
             <div class="relative">
                
                 <div class="border borer-white w-12 h-12 rounded-full overflow-hidden">
-                    <img src="{{ storage_url($otherParticipant->avatar) }}" alt="{{ $otherParticipant->full_name }}" class="w-full h-full">
+                    <img src="{{ auth_storage_url($otherParticipant->avatar) }}" alt="{{ $otherParticipant->full_name }}" class="w-full h-full">
                 </div>
                 <div class="h-3 w-3 bg-[#12D212] border border-white rounded-full absolute top-8 right-0">
 

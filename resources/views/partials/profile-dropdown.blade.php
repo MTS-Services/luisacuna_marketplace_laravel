@@ -19,7 +19,7 @@
             <div class="flex items-center gap-2">
                 <div class="w-10 h-10 lg:w-14 lg:h-14 rounded-full shadow-lg overflow-hidden">
                     
-                <img src="{{ storage_url(user()->avatar) }}" class="w-full h-full rounded-full" alt="{{ user()->full_name ?? 'User Avatar' }}" />
+                <img src="{{ auth_storage_url(user()->avatar) }}" class="w-full h-full rounded-full" alt="{{ user()->full_name ?? 'User Avatar' }}" />
 
                 </div>
                 <div class="flex flex-col gap-1.5">
