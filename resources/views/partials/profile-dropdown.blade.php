@@ -3,7 +3,7 @@
     <button @click="open = !open"
         class="flex items-center rounded-lg text-text-white transition-all focus:outline-none mr-3 ml-1.5">
         <div class="w-7 h-7 lg:w-9 lg:h-9 rounded-full shadow-lg overflow-hidden">
-                <img src="{{ storage_url(user()->avatar) }}" class="w-full h-full object-cover" alt="{{ user()->full_name ?? 'User Avatar' }}" />
+                <img src="{{ auth_storage_url(user()->avatar) }}" class="w-full h-full object-cover" alt="{{ user()->full_name ?? 'User Avatar' }}" />
         </div>
     </button>
 

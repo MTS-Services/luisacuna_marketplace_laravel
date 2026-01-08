@@ -6,15 +6,15 @@
             <div>
                 <h2 class="font-semibold text-4xl pb-3">
                     {{ $category->categoryTranslations->first()->name ?? $category->name }}</h2>
-                @if ($category->icon)
+                @if ($categorySlug == 'top-up')
                     <p class="text-base lg:text-xl text-text-white font-light pb-3 ">
-                        {!! $category->meta_description !!}
+                       {{ __("Different from gift cards or vouchers, U7BUY provides a Top Up service with which you can add funds directly to your balance. It contains a large variety, including mobile games, live streaming, shopping, entertainment, etc.") }}
                     </p>
                 @endif
             </div>
-            @if ($category->icon)
+            @if ($categorySlug == 'top-up')
                 <div class="h-40 md:h-80 w-full rounded-2xl overflow-hidden bg-bg-secondary col-span-2">
-                    <img src="{{ storage_url($category->icon) }}" alt="category banner"
+                    <img src="{{ storage_url('top-up-default') }}" alt="category banner"
                         class="w-full h-full object-cover rounded-lg">
                 </div>
             @endif
