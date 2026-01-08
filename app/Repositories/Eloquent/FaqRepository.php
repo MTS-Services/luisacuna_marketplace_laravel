@@ -127,6 +127,7 @@ class FaqRepository implements FaqRepositoryInterface
                 targetLanguageIds: null
         );
 
+        return $data;
         }
     }
 

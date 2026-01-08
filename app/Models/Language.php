@@ -61,6 +61,11 @@ class Language extends AuditBaseModel implements Auditable
         return $this->hasMany(FaqTranslation::class, 'faq_id', 'id');
     }
 
+    public function feedbackTranslations(): HasMany
+    {
+        return $this->hasMany(FeedbackTranslation::class, 'feedback_id', 'id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Query Scopes
