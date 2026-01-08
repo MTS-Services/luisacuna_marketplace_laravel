@@ -190,7 +190,7 @@
                     {{-- <button class="btn-primary">
                         <span><x-flux::icon name="user" class="w-6 h-6 inline-block" stroke="white" /></span>
                         Explore Products</button> --}}
-                    <x-ui.button class=" mt-10! py-3! px-4! w-auto! text-base font-normal ">
+                    <x-ui.button class=" mt-10! py-3! px-4! w-auto! text-base font-normal " href="#popular-games">
 
                         {{ __('Explore Products') }}
                     </x-ui.button>
