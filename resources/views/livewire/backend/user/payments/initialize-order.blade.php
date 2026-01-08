@@ -158,7 +158,7 @@
 
                 <div class="w-18 h-14 relative">
                    
-                    <x-cloudinary::image publicId="{{ $product->user->avatar_url }}" alt="{{ $product->user->name}}" class="w-full h-full object-cover" />
+                    <img src="{{ storage_url($product->user->avatar) }}" alt="{{ $product->user->full_name}}" class="w-full h-full object-cover" />
                     
                     <span class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
 
