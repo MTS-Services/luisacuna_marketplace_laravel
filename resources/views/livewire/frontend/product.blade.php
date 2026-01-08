@@ -14,7 +14,7 @@
             </div>
             @if ($categorySlug == 'top-up')
                 <div class="h-40 md:h-80 w-full rounded-2xl overflow-hidden bg-bg-secondary col-span-2">
-                    <img src="{{ storage_url('top-up-default') }}" alt="category banner"
+                    <img src="{{ storage_url('top-up-default', ['height' => 320, 'width' => 'auto' , 'crop' => 'scale']) }}" alt="category banner"
                         class="w-full h-full object-cover rounded-lg">
                 </div>
             @endif
