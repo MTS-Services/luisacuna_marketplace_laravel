@@ -102,6 +102,11 @@ class OrderService
         return $orders->sum('grand_total');
     }
 
+        public function countByStatus(OrderStatus $status): int
+    {
+        return $this->model->where('status', $status->value)->count();
+    }
+
     /* ================== ================== ==================
      *                   Action Executions
      * ================== ================== ================== */
