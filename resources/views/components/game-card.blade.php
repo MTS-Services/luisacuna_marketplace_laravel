@@ -11,7 +11,8 @@
         <div class="bg-bg-info images w-full h-60 sm:h-48 md:h-68">
             {{-- <img src="{{ storage_url($data->logo) }}" alt="{{ $data->name }}"
                 class="w-full h-full object-cover rounded-lg"> --}}
-            <x-cloudinary::image public-id="{{ $data->logo }}" alt="{{ $data->name }}"
+            <x-cloudinary::image public-id="{{ $data->logo }}" alt="{{ $data->name }}" with="auto" height="auto"
+                quality="auto" format="auto" 
                 class="w-full h-full object-cover rounded-lg" />
         </div>
         <div class="">

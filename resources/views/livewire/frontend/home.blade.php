@@ -24,8 +24,7 @@
     </div>
 
 
-    {{-- <x-cloudinary::image publicId="default_avatar" width="auto" height="auto" quality="auto" format="auto"
-        alt="avatar" class="" /> --}}
+    {{-- <img src="{{ storage_url('default_avatar', ['width' => 1920, 'height' => 1080]) }}" alt="default_avatar"> --}}
 
     <section class="mt-10 sm:mt-20" id="popular-games">
         {{-- New Bosting Games Section --}}
