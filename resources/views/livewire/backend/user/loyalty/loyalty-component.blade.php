@@ -104,7 +104,6 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-13">
             {{-- Critic Achievement --}}
 
-            @dd($achievements)
             @if ($achievements)
                 @forelse ($achievements as $achievement)
                     <div class="glass-card rounded-2xl p-6  border-primary-700/30">
