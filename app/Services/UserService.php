@@ -9,7 +9,7 @@ use App\Actions\User\CreateAction;
 use App\Actions\User\DeleteAction;
 use App\Actions\User\UpdateAction;
 use App\Actions\User\RestoreAction;
-use App\Models\UsersNotificationSetting;
+use App\Models\UserNotificationSetting;
 use Illuminate\Database\Eloquent\Collection;
 use App\Actions\User\UpdateNotificationAction;
 use App\Repositories\Contracts\UserRepositoryInterface;
@@ -25,6 +25,7 @@ class UserService
         protected BulkAction $bulkAction,
         protected RestoreAction $restoreAction,
         protected UpdateNotificationAction $updateNotificationAction,
+        protected UserNotificationSetting $userNotificationSettingModel
     ) {}
 
     public function getAllDatas(): Collection
@@ -186,30 +187,11 @@ class UserService
         return $this->bulkAction->execute($ids, 'forceDelete', null, null);
     }
 
-
-
-
-    /**
-     * Update single notification setting
-     */
-    public function updateNotificationSetting(int $userId, string $field, bool $value): UsersNotificationSetting
+    public function updateNotificationSettings(int $userId, array $data)
     {
-        return $this->updateNotificationAction->execute($userId, $field, $value);
-    }
-
-    /**
-     * Update multiple notification settings
-     */
-    // public function updateMultipleNotificationSettings(int $userId, array $settings): UsersNotificationSetting
-    // {
-    //     return $this->updateNotificationAction->executeMultiple($userId, $settings);
-    // }
-
-    /**
-     * Get user notification settings
-     */
-    public function getNotificationSettings(int $userId): ?UsersNotificationSetting
-    {
-        return $this->interface->getNotificationSettings($userId);
+        return $this->userNotificationSettingModel::updateOrCreate(
+            ['user_id' => $userId],
+            $data
+        );
     }
 }
