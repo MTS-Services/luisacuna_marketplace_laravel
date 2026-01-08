@@ -5,13 +5,14 @@ namespace App\Models;
 use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
 use App\Enums\ActiveInactiveEnum;
+use App\Traits\HasTranslations;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 
 class Product extends BaseModel implements Auditable
 {
-    use   AuditableTrait;
+    use   AuditableTrait, HasTranslations;
     //
 
     protected $fillable = [
@@ -31,6 +32,7 @@ class Product extends BaseModel implements Auditable
         'status',
         'platform_id',
         'delivery_timeline',
+        'delivery_method',
 
         'creater_id',
         'creater_type',
@@ -94,7 +96,7 @@ class Product extends BaseModel implements Auditable
     public function getTranslationConfig(): array
     {
         return [
-            'fields' => ['name', 'description', 'delivery_timeline','price', 'quantity'],
+            'fields' => ['name', 'description', 'delivery_timeline', 'quantity', 'delivery_method'],
             'relation' => 'productTranslations',
             'model' => ProductTranslation::class,
             'foreign_key' => 'product_id',
@@ -102,8 +104,8 @@ class Product extends BaseModel implements Auditable
                 'name' => 'name',
                 'description' => 'description',
                 'delivery_timeline' => 'delivery_timeline',
-                'price' => 'price',
                 'quantity' => 'quantity',
+                'delivery_method' => 'delivery_method'
             ],
         ];
     }

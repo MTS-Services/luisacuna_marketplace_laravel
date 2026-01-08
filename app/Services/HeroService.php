@@ -9,6 +9,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -105,7 +106,17 @@ class HeroService
             $newData = $this->model->create($data);
             // Dispatch event
 
-            return $newData->fresh();
+            $freshData =  $newData->fresh();
+
+            if($freshData){
+                Log::info('Hero Translations Created', ['hero_id' => $freshData->id, 'content' => $freshData->message]);
+
+                $freshData->dispatchTranslation(
+                    defaultLanguageLocale: app()->getLocale() ?? 'en',
+                    forceTranslation: true,
+                    targetLanguageIds: null
+                );
+            }
         });
         
     }
@@ -114,17 +125,19 @@ class HeroService
         return DB::transaction(function () use ($id, $data) {
 
             
-            $model = $this->findData($id);
+            $hero = $this->findData($id);
             $newSingleImagePath = null;
             $newSingleImagePathMobile = null;
-            if (!$model) {
+            if (!$hero) {
                 return null;
             }
 
             
-                $oldData = $model->getAttributes();
+                $oldData = $hero->getAttributes();
                 $newData = $data;
 
+                $titleChanged = $oldData['title'] !== $newData['title'];
+                $contentChanged = $oldData['content'] !== $newData['content'];
                 // --- 1. Single Avatar Handling ---
                 $oldImagePath = Arr::get($oldData, 'image');
                 $uploadedImage = Arr::get($data, 'image');
@@ -182,8 +195,28 @@ class HeroService
                 
                 unset($newData['remove_file_mobile']);
 
-            $model->update($newData);
-            return $model->fresh();
+            $update = $hero->update($newData);
+            
+              if($update){
+
+                if($titleChanged || $contentChanged){
+
+                    $freshData = $hero->fresh();
+
+                    Log::info('Hero Translations Created', ['hero_id' => $freshData->id, 'content' => $freshData->message]);
+
+                $freshData->dispatchTranslation(
+                    defaultLanguageLocale: app()->getLocale() ?? 'en',
+                    forceTranslation: true,
+                    targetLanguageIds: null
+                );
+
+                }
+               
+            }
+
+            return $hero->fresh();
+           
         });
     }
 
