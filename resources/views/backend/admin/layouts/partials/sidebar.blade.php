@@ -457,7 +457,7 @@
 
                 <div class="space-y-2">
                     <flux:separator class="bg-accent!" />
-                    <x-backend.navlink type="single" icon="user" name="Profile" active="profile" :route="route('admin.profile.index')"
+                    <x-backend.navlink type="single" icon="user" name="Profile " active="profile" :route="route('admin.profile.index')"
                         :page_slug="$active" />
 
                     <form action="{{ route('admin.logout') }}" method="post" class="w-full inline-block">
