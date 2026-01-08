@@ -16,7 +16,7 @@
                         </x-ui.button>
 
                 <x-ui.button href="{{ route('admin.gm.game.index') }}" type='accent' class="w-auto! py-2!">
-                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
+                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-text-btn-primary  group-hover:stroke-text-btn-secondary  " />
                     {{ __('Back') }}
                 </x-ui.button>
             </div>

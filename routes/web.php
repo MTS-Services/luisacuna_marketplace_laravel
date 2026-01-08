@@ -3,9 +3,15 @@
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\MultiLangController;
 use App\Http\Controllers\PaymentController;
+use App\Livewire\CloudinaryUpload;
+use App\Livewire\DeviceManagement;
+use App\Livewire\FileManager;
+use App\Livewire\ImageUploader;
+use App\Livewire\SendDeviceNotification;
 use App\Livewire\Test\Checkout;
 use App\Livewire\Test\Items;
 use App\Livewire\ToastDemo;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Redis;
 
@@ -47,7 +53,8 @@ Route::middleware(['auth:web'])->group(function () {
 
 // Webhook routes (no auth/CSRF middleware)
 Route::post('/webhook/stripe', [PaymentController::class, 'stripeWebhook'])
-    ->name('webhook.stripe');
+    ->name('webhook.stripe')
+    ->withoutMiddleware([VerifyCsrfToken::class]);
 // ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
 
@@ -137,6 +144,32 @@ Route::post('/send-notification', [App\Http\Controllers\TestController::class, '
 Route::get('/buttons', function () {
     return view('button-showcase');
 });
+
+Route::get('/test-cloudinary', function () {
+    try {
+        $config = config('filesystems.disks.cloudinary');
+        dd([
+            'config' => $config,
+            'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+            'can_connect' => true,
+        ]);
+    } catch (\Exception $e) {
+        dd([
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString(),
+        ]);
+    }
+});
+
+Route::get('/image-uploader', ImageUploader::class)->name('image-uploader');
+Route::get('/file-manager', FileManager::class)->name('file-manager');
+Route::get('/cloudinary', CloudinaryUpload::class)->name('cloudinary-upload');
+
+Route::get('/fcm', function () {
+    return view('generate-fcm');
+});
+Route::get('/send-fcm', SendDeviceNotification::class)->name('send-fcm');
+Route::get('/device-manage', DeviceManagement::class)->name('device-manage');
 
 Route::get('/toastDemo', ToastDemo::class)->name('toastDemo');
 require __DIR__ . '/auth.php';

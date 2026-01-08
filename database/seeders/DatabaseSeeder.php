@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
 
             ApplicationSettingSeeder::class,
             PaymentGatewaySeeder::class,
-            WithdrawalGatewaySeeder::class,
+            // WithdrawalGatewaySeeder::class,
+            WithdrawalMethodSeeder::class,
 
             RoleSeeder::class,
             PermissionSeeder::class,
@@ -53,9 +54,13 @@ class DatabaseSeeder extends Seeder
 
             DeliveryMethodSeeder::class,
             HeroSeeder::class,
-            ProductSeeder::class,
+            // ProductSeeder::class,
             FaqSeeder::class,
             GameConfigSeeder::class,
+            FeeSettingSeeder::class,
+
+            ProductSeeder::class,
+            WalletSeeder::class,
         ]);
     }
 }

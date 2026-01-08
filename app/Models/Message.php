@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\MessageType;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Message extends AuditBaseModel implements Auditable
@@ -71,6 +72,10 @@ class Message extends AuditBaseModel implements Auditable
         return $this->hasMany(MessageReadReceipt::class, 'message_id', 'id');
     }
 
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class, 'order_id', 'id');
+    }
 
 
     // public function receiver()

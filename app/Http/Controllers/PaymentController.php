@@ -7,160 +7,13 @@ use App\Models\Payment;
 use App\Models\PaymentGateway;
 use App\Services\ConversationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
-
     public function __construct(protected ConversationService $conversationService) {}
-
-    public function initializePayment(Request $request)
-    {
-        try {
-            // Validate input
-            $validator = Validator::make($request->all(), [
-                'order_id' => 'required|exists:orders,order_id',
-                'gateway' => 'required|string|exists:payment_gateways,slug',
-            ]);
-
-            if ($validator->fails()) {
-                Log::warning('Payment initialization validation failed', [
-                    'errors' => $validator->errors(),
-                    'input' => $request->all(),
-                ]);
-
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Validation failed',
-                    'errors' => $validator->errors(),
-                ], 422);
-            }
-
-            // Get order
-            $order = Order::where('order_id', $request->input('order_id'))->first();
-
-            if (!$order) {
-                Log::warning('Order not found', ['order_id' => $request->input('order_id')]);
-
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Order not found.',
-                ], 404);
-            }
-
-            // Get payment gateway
-            $gateway = PaymentGateway::where('slug', $request->input('gateway'))
-                ->where('is_active', true)
-                ->first();
-
-            if (!$gateway) {
-                Log::warning('Payment gateway not found or inactive', [
-                    'gateway_slug' => $request->input('gateway'),
-                ]);
-
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Selected payment gateway is not available.',
-                ], 404);
-            }
-
-
-            $conversation = $this->conversationService->sendOrderMessage($order);
-
-            Log::info('Order conversation started', [
-                'order_id' => $order->order_id,
-                'conversation_id' => $conversation->id,
-                'conversation_uuid' => $conversation->conversation_uuid,
-            ]);
-
-            // Get payment method instance
-            $paymentMethod = $gateway->paymentMethod();
-
-            // Initialize payment (creates payment intent)
-            $result = $paymentMethod->startPayment($order);
-
-            Log::info('Payment initialized successfully', [
-                'order_id' => $order->order_id,
-                'gateway' => $gateway->slug,
-                'result' => $result,
-            ]);
-
-            return response()->json($result);
-        } catch (\Exception $e) {
-            Log::error('Payment initialization error', [
-                'order_id' => $request->input('order_id'),
-                'gateway' => $request->input('gateway'),
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred while initializing payment: ' . $e->getMessage(),
-                'error_details' => config('app.debug') ? $e->getMessage() : null,
-            ], 500);
-        }
-    }
-
-    /**
-     * Confirm payment (after frontend processing)
-     */
-    public function confirmPayment(Request $request)
-    {
-        try {
-            $validator = Validator::make($request->all(), [
-                'payment_intent_id' => 'required|string',
-                'payment_method_id' => 'nullable|string',
-                'gateway' => 'required|string|exists:payment_gateways,slug',
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'errors' => $validator->errors(),
-                ], 422);
-            }
-
-            // Get payment gateway
-            $gateway = PaymentGateway::where('slug', $request->input('gateway'))->first();
-
-            if (!$gateway) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Payment gateway not found.',
-                ], 404);
-            }
-
-            // Get payment method instance
-            $paymentMethod = $gateway->paymentMethod();
-
-            // Confirm payment
-            $result = $paymentMethod->confirmPayment(
-                $request->input('payment_intent_id'),
-                $request->input('payment_method_id')
-            );
-
-            Log::info('Payment confirmed', [
-                'payment_intent_id' => $request->input('payment_intent_id'),
-                'result' => $result,
-            ]);
-
-            return response()->json($result);
-        } catch (\Exception $e) {
-            Log::error('Payment confirmation error', [
-                'payment_intent_id' => $request->input('payment_intent_id'),
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred while confirming payment: ' . $e->getMessage(),
-                'error_details' => config('app.debug') ? $e->getMessage() : null,
-            ], 500);
-        }
-    }
 
     /**
      * Payment success page
@@ -168,13 +21,45 @@ class PaymentController extends Controller
     public function paymentSuccess(Request $request)
     {
         $orderId = $request->query('order_id');
-        $order = Order::where('order_id', $orderId)->with('latestPayment')->first();
+        $sessionId = $request->query('session_id');
+
+        // If coming from Stripe, confirm the payment
+        if ($sessionId) {
+            $gateway = PaymentGateway::where('slug', 'stripe')->first();
+            if ($gateway) {
+                try {
+                    $paymentMethod = $gateway->paymentMethod();
+                    $result = $paymentMethod->confirmPayment($sessionId);
+
+                    if (!$result['success']) {
+                        Log::warning('Payment confirmation failed on success page', [
+                            'session_id' => $sessionId,
+                            'order_id' => $orderId,
+                        ]);
+                    }
+                } catch (\Exception $e) {
+                    Log::error('Error confirming payment on success page', [
+                        'session_id' => $sessionId,
+                        'error' => $e->getMessage(),
+                    ]);
+                }
+            }
+        }
+
+        $order = Order::where('order_id', $orderId)
+            ->with(['latestPayment', 'source', 'user'])
+            ->first();
 
         if (!$order) {
             abort(404, 'Order not found');
         }
 
-        return view('payment.success', compact('order'));
+        // Security: Verify order belongs to authenticated user
+        if ($order->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized access');
+        }
+
+        return redirect()->route('user.order.complete', ['orderId' => $orderId]);
     }
 
     /**
@@ -183,13 +68,21 @@ class PaymentController extends Controller
     public function paymentFailed(Request $request)
     {
         $orderId = $request->query('order_id');
-        $order = Order::where('order_id', $orderId)->with('latestPayment')->first();
+
+        $order = Order::where('order_id', $orderId)
+            ->with(['latestPayment', 'source'])
+            ->first();
+
+        // Security: Verify order belongs to authenticated user if order exists
+        if ($order && $order->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized access');
+        }
 
         return view('payment.failed', compact('order'));
     }
 
     /**
-     * Handle Stripe webhook
+     * Handle Stripe webhook notifications
      */
     public function stripeWebhook(Request $request)
     {
@@ -210,9 +103,11 @@ class PaymentController extends Controller
                 $event = json_decode($payload, true);
             }
 
-            Log::info('Stripe webhook received', ['event_type' => $event['type'] ?? 'unknown']);
+            Log::info('Stripe webhook received', [
+                'event_type' => $event['type'] ?? 'unknown',
+                'event_id' => $event['id'] ?? null,
+            ]);
 
-            // Get payment gateway
             $gateway = PaymentGateway::where('slug', 'stripe')->first();
 
             if ($gateway) {
@@ -222,7 +117,9 @@ class PaymentController extends Controller
 
             return response()->json(['status' => 'success']);
         } catch (\Stripe\Exception\SignatureVerificationException $e) {
-            Log::error('Stripe webhook signature verification failed', ['error' => $e->getMessage()]);
+            Log::error('Stripe webhook signature verification failed', [
+                'error' => $e->getMessage(),
+            ]);
             return response()->json(['error' => 'Invalid signature'], 400);
         } catch (\Exception $e) {
             Log::error('Stripe webhook error', [
@@ -234,7 +131,7 @@ class PaymentController extends Controller
     }
 
     /**
-     * Get payment gateway configuration for frontend
+     * Get gateway configuration for frontend
      */
     public function getGatewayConfig(Request $request, string $slug)
     {
@@ -252,25 +149,40 @@ class PaymentController extends Controller
 
             $paymentMethod = $gateway->paymentMethod();
 
-            return response()->json([
+            $config = [
                 'success' => true,
                 'gateway' => [
                     'slug' => $gateway->slug,
                     'name' => $gateway->name,
-                    'requires_frontend_js' => method_exists($paymentMethod, 'requiresFrontendJs') ? $paymentMethod->requiresFrontendJs() : false,
-                    'js_sdk_url' => method_exists($paymentMethod, 'getJsSDKUrl') ? $paymentMethod->getJsSDKUrl() : null,
-                    'publishable_key' => $gateway->slug === 'stripe' ? config('services.stripe.key') : null,
+                    'requires_frontend_js' => method_exists($paymentMethod, 'requiresFrontendJs')
+                        ? $paymentMethod->requiresFrontendJs()
+                        : false,
                 ],
-            ]);
+            ];
+
+            // Add Stripe-specific config
+            if ($gateway->slug === 'stripe') {
+                $config['gateway']['publishable_key'] = config('services.stripe.key');
+            }
+
+            // Add Wallet-specific config
+            if ($gateway->slug === 'wallet' && method_exists($paymentMethod, 'getWalletBalance')) {
+                $walletInfo = $paymentMethod->getWalletBalance(Auth::id());
+                $config['gateway']['wallet'] = $walletInfo;
+            }
+
+            return response()->json($config);
         } catch (\Exception $e) {
             Log::error('Get gateway config error', [
                 'slug' => $slug,
+                'user_id' => Auth::id(),
                 'error' => $e->getMessage(),
             ]);
 
             return response()->json([
                 'success' => false,
-                'message' => 'Error retrieving gateway configuration: ' . $e->getMessage(),
+                'message' => 'Error retrieving gateway configuration.',
+                'error_details' => config('app.debug') ? $e->getMessage() : null,
             ], 500);
         }
     }

@@ -21,8 +21,8 @@
                         <div class="flex items-center w-full mb-3 gap-4 pb-5 border-b-2 border-bg-info">
                             <div class="relative">
                                 <div class="w-15 h-15">
-                                    <img src="{{ auth_storage_url(user()->avatar) }}" alt=""
-                                        class="h-full w-full rounded-full border-2 border-text-white">
+                                    <x-cloudinary::image publicId="{{ user()->avatar }}" class="w-full h-full rounded-full" />
+
                                 </div>
                                 <div class="absolute -right-1.5 top-7.5  w-6 h-6 ">
                                     <img src="{{ asset('assets/images/user_profile/Frame 1261153813.png') }}"
@@ -31,7 +31,7 @@
                             </div>
                             <div>
                                 <div class="flex gap-2 items-center ">
-                                    <h3 class="text-2xl font-semibold text-text-white mb-2">
+                                    <h3 class="text-2xl font-semibold text-text-white mb-2 line-clamp-2">
                                         {{ user()->full_name }}
                                     </h3>
                                     <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
@@ -88,8 +88,8 @@
                 </div>
                 <!-- Offers Dropdown -->
                 <div x-data="{
-                    ordersOpen: {{ in_array($pageSlug, ['currency', 'accounts', 'top-ups', 'items', 'gift-cards']) ? 'true' : 'false' }},
-                    isActive: {{ in_array($pageSlug, ['currency', 'accounts', 'top-ups', 'items', 'gift-cards']) ? 'true' : 'false' }}
+                    ordersOpen: {{ in_array($pageSlug, $categories->pluck('slug')->toArray()) ? 'true' : 'false' }},
+                    isActive: {{ in_array($pageSlug, $categories->pluck('slug')->toArray()) ? 'true' : 'false' }}
                 }">
                     <!-- Offers button -->
                     <button x-cloak @click="ordersOpen = !ordersOpen"
@@ -116,9 +116,10 @@
                     <!-- Dropdown links -->
                     <div x-show="ordersOpen" x-collapse x-cloak class="mt-1 ml-6 sm:ml-8 space-y-1">
                         @foreach ($categories as $category)
+                       
                             <a href="{{ route('user.user-offer.category', $category->slug) }}" wire:navigate
                                 @click="$root.sidebarOpen = false"
-                                class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base rounded-lg transition-all text-text-white hover:bg-pink-500/50 
+                                class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base rounded-lg transition-all text-text-white hover:bg-pink-500/50
                                 {{ request()->route('categorySlug') === $category->slug ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                                 {{ $category->name }}
                             </a>
@@ -240,3 +241,6 @@
         </div>
     </aside>
 </div>
+
+
+

@@ -1,4 +1,5 @@
 <header class="sticky top-0 z-10 pt-6 px-4 xl:px-6">
+
     <div class="glass-card rounded-2xl shadow-shadow-secondary dark:shadow-shadow-secondary-dark">
         <div class="flex items-center justify-between p-4 lg:p-6">
             <div class="flex items-center gap-4">
@@ -28,8 +29,9 @@
                     icon="magnifying-glass" /> --}}
 
                 {{-- --}}
-                <flux:button x-data x-on:click="$flux.dark = !$flux.dark" variant="subtle"
-                    aria-label="{{ __('Toggle dark mode') }}">
+                <flux:button x-data
+                    x-on:click="$flux.dark = !$flux.dark; window.dispatchEvent(new CustomEvent('reset-tinymce-initiallized'))"
+                    variant="subtle" aria-label="{{ __('Toggle dark mode') }}">
                     <flux:icon name="moon" class="w-5 h-5" x-show="$flux.dark" />
                     <flux:icon name="sun" class="w-5 h-5" x-show="!$flux.dark" />
                 </flux:button>
@@ -43,7 +45,8 @@
                 <button @click="$dispatch('open-sidebar-notifications')"
                     class="relative p-2 rounded-xl hover:bg-bg-black/10 dark:hover:bg-bg-white/10 transition-colors">
                     <flux:icon name="bell" class="w-5 h-5" />
-                    <span x-data="{showNotificationIndicator: @entangle('showNotificationIndicator').live}" x-show="showNotificationIndicator" class="absolute top-1 right-1 w-2 h-2 bg-secondary-500 rounded-full">
+                    <span x-data="{ showNotificationIndicator: @entangle('showNotificationIndicator').live }" x-show="showNotificationIndicator"
+                        class="absolute top-1 right-1 w-2 h-2 bg-secondary-500 rounded-full">
                         <span class="absolute inset-0 w-2 h-2 bg-secondary-500 rounded-full animate-ping"></span>
                     </span>
                 </button>
@@ -58,8 +61,12 @@
 
                     <button @click="open = !open" class="avatar">
                         <div class="w-8 rounded-xl">
-                            <img src="{{ auth_storage_url(admin()->avatar) }}" alt="{{ admin()->name }}"
-                                class="object-cover w-full h-full">
+
+                            {{-- <img src="{{ auth_storage_url(admin()->avatar) }}" alt="{{ admin()->name }}"
+                                class="object-cover w-full h-full"> --}}
+                               
+                            <x-cloudinary::image publicId="{{ admin()->avatar_url }}"
+                                class="object-cover w-full h-full" alt="{{  admin()->name }}" />
                         </div>
                     </button>
 
@@ -80,8 +87,13 @@
                         <a href="#"
                             class="block px-4 py-2 text-text-primary hover:bg-bg-white/10 transition-colors">{{ __('Settings') }}</a>
                         <div class="border-t border-white/10 my-2"></div>
-                        <button wire:click="logout"
-                            class="block px-4 py-2 text-text-primary hover:bg-bg-white/10 transition-colors">{{ __('Sign out') }}</button>
+                        <form action="{{ route('admin.logout') }}" method="post">
+                            @csrf
+                            <button type="submit"
+                                class="block px-4 py-2 text-text-primary hover:bg-bg-white/10 transition-colors">
+                                <span wire:loading.remove wire:target="logout">{{ __('Sign out') }}</span>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

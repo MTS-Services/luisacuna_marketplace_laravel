@@ -53,8 +53,9 @@
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('Icon') }}</p>
                                 @if ($data->icon)
-                                    <img src="{{ Storage::url($data->icon) ?? 'N/A' }}" alt=""
-                                        class="rounded overflow-hidden h-10 w-10">
+                                    {{-- <img src="{{ Storage::url($data->icon) ?? 'N/A' }}" alt=""
+                                        class="rounded overflow-hidden h-10 w-10"> --}}
+                                  <x-cloudinary::image class="rounded overflow-hidden h-10 w-10" :public-id="$data->icon" />
                                 @else
                                     <div
                                         class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">

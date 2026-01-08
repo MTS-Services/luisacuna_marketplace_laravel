@@ -25,7 +25,7 @@ class CategoryService
         protected UpdateAction $updateAction,
     ) {}
 
-    public function getDatas($sortField = 'created_at', $order = 'desc', $status = false, $layout = false, $trashed = false, ?array $selects = null): Collection
+    public function getDatas($sortField = 'created_at', $order = 'desc', $status = 'active', $layout = false, $trashed = false, ?array $selects = null): Collection
     {
         return $this->interface->getData($sortField, $order, $status, $layout, $trashed, $selects);
     }

@@ -59,10 +59,10 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
         'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
+        'mode' => env('STRIPE_MODE', 'live'),
     ],
 
-    
-    'coinbase' => [
+    'crypto' => [
         'api_key' => env('COINBASE_API_KEY'),
         'webhook_secret' => env('COINBASE_WEBHOOK_SECRET'),
     ],

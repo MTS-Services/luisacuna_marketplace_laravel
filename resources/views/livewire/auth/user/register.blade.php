@@ -3,7 +3,7 @@
         <div class="w-full  max-w-lg bg-gradient-to-br bg-bg-primary rounded-2xl  px-8 py-22 shadow-2xl ">
             <!-- Header -->
             <div class="text-center mb-8">
-                <h1 class="text-4xl font-medium text-white mb-4">Create Password</h1>
+                <h1 class="text-4xl font-medium text-white mb-4">Create Password </h1>
                 <p class="text-gray-300">Hi! Welcome back, you've been missed</p>
             </div>
 

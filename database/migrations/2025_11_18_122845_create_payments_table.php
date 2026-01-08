@@ -35,7 +35,7 @@ return new class extends Migration
             // Amount Details
             $table->decimal('amount', 15, 2);
             $table->string('currency', 3)->default('USD');
-            $table->string('status', 20)->default('pending')->index();
+            $table->string('status', 20)->default(PaymentStatus::PENDING)->index();
 
             // Card Details - ADDED
             $table->string('card_brand', 20)->nullable();
@@ -51,10 +51,8 @@ return new class extends Migration
             // Timestamps
             $table->timestamp('paid_at')->nullable(); // ADDED - When payment completed
 
-
-            $table->softDeletes();
             $table->timestamps();
-
+            $table->softDeletes();
             $this->addMorphedAuditColumns($table);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade')->onUpdate('cascade');

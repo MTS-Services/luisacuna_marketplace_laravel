@@ -1,6 +1,7 @@
 @props(['pagination' => []])
 
 @php
+
     $current = $pagination['current_page'];
     $last = $pagination['last_page'];
 
@@ -9,13 +10,13 @@
 @endphp
 
 @if ($last > 1)
-<div class="flex flex-wrap items-center justify-end mt-8 text-sm gap-2">
+<div class="flex flex-wrap items-center justify-end mt-8 text-sm gap-2 mb-7">
 
     {{-- Previous --}}
     <button
         wire:click="previousPage"
         @disabled($current <= 1)
-        class="px-3 md:px-4 py-2 text-text-white shadow-2xl rounded-lg
+        class="px-3 md:px-4 py-2 text-text-primary shadow-2xl rounded-lg
                hover:bg-bg-primary/60 transition-colors
                disabled:opacity-50 disabled:cursor-not-allowed">
         {{ __('Previous') }}
@@ -27,8 +28,8 @@
             wire:click="gotoPage({{ $i }})"
             class="px-3 md:px-4 py-2 rounded-lg transition-colors
             {{ $i == $current
-                ? 'bg-zinc-500 text-white font-semibold'
-                : 'text-text-white hover:bg-bg-primary/60' }}">
+                ? 'bg-zinc-500 text-text-primary font-semibold'
+                : 'text-text-primary hover:bg-bg-primary/60' }}">
             {{ $i }}
         </button>
     @endfor
@@ -44,8 +45,8 @@
             wire:click="gotoPage({{ $i }})"
             class="px-3 md:px-4 py-2 rounded-lg transition-colors
             {{ $i == $current
-                ? 'bg-zinc-500 text-white font-semibold'
-                : 'text-text-white hover:bg-bg-primary/60' }}">
+                ? 'bg-zinc-500 text-text-primary font-semibold'
+                : 'text-text-primary hover:bg-bg-primary/60' }}">
             {{ $i }}
         </button>
     @endfor
@@ -61,8 +62,8 @@
             wire:click="gotoPage({{ $i }})"
             class="px-3 md:px-4 py-2 rounded-lg transition-colors
             {{ $i == $current
-                ? 'bg-zinc-500 text-white font-semibold'
-                : 'text-text-white hover:bg-bg-primary/60' }}">
+                ? 'bg-zinc-500 text-text-primary font-semibold'
+                : 'text-text-primary hover:bg-bg-primary/60' }}">
             {{ $i }}
         </button>
     @endfor
@@ -71,7 +72,7 @@
     <button
         wire:click="nextPage"
         @disabled($current >= $last)
-        class="px-3 md:px-4 py-2 text-text-white shadow-2xl rounded-lg
+        class="px-3 md:px-4 py-2 text-text-primary shadow-2xl rounded-lg
                hover:bg-bg-primary/60 transition-colors
                disabled:opacity-50 disabled:cursor-not-allowed">
         {{ __('Next') }}

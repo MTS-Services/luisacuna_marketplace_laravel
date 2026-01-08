@@ -6,6 +6,7 @@ use App\Enums\AdminStatus;
 use App\Models\Admin;
 use App\Models\Role;
 use App\Services\AdminService;
+use App\Services\Cloudinary\CloudinaryService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -25,7 +26,10 @@ class Index extends Component
 
     protected AdminService $service;
 
-    public function boot(AdminService $service)
+    protected CloudinaryService $cloudinaryService;
+
+
+    public function boot(AdminService $service, CloudinaryService $cloudinaryService)
     {
         $this->service = $service;
     }
@@ -35,26 +39,18 @@ class Index extends Component
         $datas = $this->service->getPaginatedData(
             perPage: $this->perPage,
             filters: $this->getFilters()
-        )->load('role','creater_admin');
-        
+        )->load('role', 'creater_admin');
+
 
         $columns = [
             [
                 'key' => 'avatar',
-                'label' => 'Avatar',
+                'label' => 'avatar',
                 'format' => function ($data) {
-                    return $data->avatar_url
-                        ? '<img src="' . $data->avatar_url . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                    return $data->avatar
+                        ? '<img src="' . $this->cloudinaryService->getUrlFromPublicId($data->avatar) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
                         : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
                 }
-            ],
-            [
-                'key' => 'role_id',
-                'label' => 'Role',
-                'format'=> function ($data) {
-                    return $data->role?->name;
-                },
-                'sortable' => true
             ],
             [
                 'key' => 'name',
@@ -66,7 +62,15 @@ class Index extends Component
                 'label' => 'Email',
                 'sortable' => true
             ],
-           [
+            [
+                'key' => 'role_id',
+                'label' => 'Role',
+                'format' => function ($data) {
+                    return $data->role?->name;
+                },
+                'sortable' => true
+            ],
+            [
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
@@ -131,7 +135,7 @@ class Index extends Component
         ]);
     }
 
-       public function confirmDelete($id): void
+    public function confirmDelete($id): void
     {
         $this->deleteId = $id;
         $this->showDeleteModal = true;
@@ -145,7 +149,7 @@ class Index extends Component
                 return;
             }
 
-            if(decrypt($this->deleteId) == admin()->id){
+            if (decrypt($this->deleteId) == admin()->id) {
                 $this->warning('You cannot delete your own account');
                 $this->deleteId = null;
                 return;
@@ -170,7 +174,7 @@ class Index extends Component
         try {
             $dataStatus = AdminStatus::from($status);
 
-             match ($dataStatus) {
+            match ($dataStatus) {
                 AdminStatus::ACTIVE => $this->service->updateStatusData($id, AdminStatus::ACTIVE),
                 AdminStatus::INACTIVE => $this->service->updateStatusData($id, AdminStatus::INACTIVE),
                 AdminStatus::PENDING => $this->service->updateStatusData($id, AdminStatus::SUSPENDED),
@@ -220,7 +224,7 @@ class Index extends Component
     protected function bulkDelete(): void
     {
 
-        if(in_array(admin()->id, $this->selectedIds)){
+        if (in_array(admin()->id, $this->selectedIds)) {
             $this->warning('You cannot delete your own account');
             $this->selectedIds = [];
             return;
@@ -233,12 +237,12 @@ class Index extends Component
 
     protected function bulkUpdateStatus(AdminStatus $status): void
     {
-        if(in_array(admin()->id, $this->selectedIds)){
+        if (in_array(admin()->id, $this->selectedIds)) {
             $this->warning('You cannot change your own account');
             $this->selectedIds = [];
             return;
         }
-         $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
+        $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
         $this->success("{$count} Data updated successfully");
     }
 
@@ -252,7 +256,7 @@ class Index extends Component
         ];
     }
 
-   protected function getSelectableIds(): array
+    protected function getSelectableIds(): array
     {
         $data = $this->service->getPaginatedData(
             perPage: $this->perPage,

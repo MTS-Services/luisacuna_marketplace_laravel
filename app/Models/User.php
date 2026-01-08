@@ -7,9 +7,11 @@ use App\Enums\UserType;
 use App\Enums\UserStatus;
 use App\Enums\userKycStatus;
 use App\Traits\AuditableTrait;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 use App\Traits\HasTranslations;
 use App\Enums\UserAccountStatus;
+use App\Traits\HasDeviceManagement;
 use OwenIt\Auditing\Contracts\Auditable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -18,11 +20,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends AuthBaseModel implements Auditable
 {
-    use  TwoFactorAuthenticatable, AuditableTrait, HasTranslations, Notifiable;
+    use  TwoFactorAuthenticatable, AuditableTrait, HasTranslations, Notifiable, SoftDeletes, HasDeviceManagement;
 
     /**
      * The attributes that are mass assignable.
@@ -76,6 +78,9 @@ class User extends AuthBaseModel implements Auditable
         'last_synced_at',
         'language_id',
 
+        'session_version',
+        'all_devices_logged_out_at',
+
         'creater_type',
         'updater_type',
         'deleter_type',
@@ -123,6 +128,7 @@ class User extends AuthBaseModel implements Auditable
             'privacy_accepted_at'    => 'datetime',
             'last_synced_at'         => 'datetime',
             'two_factor_confirmed_at' => 'datetime',
+            'all_devices_logged_out_at' => 'datetime',
             'date_of_birth'          => 'date',
 
             'two_factor_enabled'     => 'boolean',
@@ -146,7 +152,7 @@ class User extends AuthBaseModel implements Auditable
             }
         });
         static::created(function ($user) {
-            UsersNotificationSetting::create([
+            UserNotificationSetting::create([
                 'user_id' => $user->id,
             ]);
         });
@@ -157,6 +163,11 @@ class User extends AuthBaseModel implements Auditable
     | Relationships
     |--------------------------------------------------------------------------
     */
+
+    public function wallet(): HasOne
+    {
+        return $this->hasOne(Wallet::class, 'user_id', 'id');
+    }
 
     public function userTranslations(): HasMany
     {
@@ -205,9 +216,19 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->hasMany(User::class, 'unbanned_by', 'id');
     }
-    public function userRank(): HasOne
+    public function activeRank(): BelongsToMany
     {
-        return $this->hasOne(UserRank::class, 'user_id', 'id');
+        return $this->belongsToMany(Rank::class, 'user_ranks')
+            ->wherePivot('activated_at', '!=', null)
+            ->withPivot('activated_at','rank_id')
+            ->limit(1);
+    }
+
+    public function ranks()
+    {
+        return $this->belongsToMany(Rank::class, 'user_ranks')
+            ->withPivot('activated_at', 'rank_id')
+            ->withTimestamps();
     }
 
     public function userPoint(): HasOne
@@ -219,9 +240,9 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->morphMany(Audit::class, 'user');
     }
-    public function UserNotificationSetting(): HasOne
+    public function notificationSetting(): HasOne
     {
-        return $this->hasOne(UsersNotificationSetting::class, 'user_id', 'id');
+        return $this->hasOne(UserNotificationSetting::class, 'user_id', 'id');
     }
 
     public function rankedUsers(): HasManyThrough
@@ -229,7 +250,7 @@ class User extends AuthBaseModel implements Auditable
         return $this->hasManyThrough(
             User::class,
             UserRank::class,
-            'rank_level',
+            'rank_id',
             'id',
             'id',
             'user_id'
@@ -243,10 +264,6 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->hasMany(Message::class, 'receiver_id', 'id');
     }
-    public function orderMessages()
-    {
-        return $this->morphMany(OrderMessage::class, 'creater');
-    }
 
     public function conversationParticipant()
     {
@@ -257,20 +274,19 @@ class User extends AuthBaseModel implements Auditable
         return $this->hasMany(MessageReadReceipt::class, 'user_id', 'id');
     }
 
-    // public function lastMessageWith()
-    // {
-    //     return $this->hasOne(OrderMessage::class, 'sender_id')
-    //         ->latest();
-    // }
+    public function author()
+    {
+        return $this->hasMany(Feedback::class, 'author_id', 'id');
+    }
+    public function targetUser()
+    {
+        return $this->hasMany(Feedback::class, 'target_user_id', 'id');
+    }
+    public function AchievementProgress()
+    {
+        return $this->hasMany(UserAchievementProgress::class, 'user_id', 'id');
+    }
 
-    /**
-     * Get unread messages from this user
-     */
-    // public function unreadMessagesFrom()
-    // {
-    //     return $this->hasMany(OrderMessage::class, 'sender_id')
-    //         ->where('is_seen', false);
-    // }
     /*
     |--------------------------------------------------------------------------
     | Query Scopes
@@ -353,8 +369,8 @@ class User extends AuthBaseModel implements Auditable
     {
         $name = $this->display_name ?? $this->full_name ?? $this->username;
         return $this->avatar
-            ? asset('storage/' . $this->avatar)
-            : 'https://ui-avatars.com/api/?name=' . urlencode($name);
+            ? $this->avatar
+            : 'default_avatar';
     }
 
     public function getDateOfBirthAttribute($value)
@@ -479,5 +495,16 @@ class User extends AuthBaseModel implements Auditable
                 'last_name' => 'last_name',
             ],
         ];
+    }
+
+
+    public function cloudinaryFiles()
+    {
+        return $this->hasMany(CloudinaryFile::class);
+    }
+
+    public function images()
+    {
+        return $this->cloudinaryFiles()->where('resource_type', 'image');
     }
 }

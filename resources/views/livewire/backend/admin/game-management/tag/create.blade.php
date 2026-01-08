@@ -18,11 +18,11 @@
             <!-- Fields -->
             <div class="mt-6 space-y-4 grid gap-5">
                 <div>
-                    <x-ui.label
-                        class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Icon') }}</x-ui.label>
+                    <x-ui.label class="block text-sm font-medium dark:text-gray-300 mb-2">{{ __('Icon') }}
+                        <small>{{ __('(200x200)') }}</small></x-ui.label>
                     <x-ui.file-input wire:model="form.icon" accept="image/*" :error="$errors->first('form.icon')"
                         hint="Upload a profile picture (Max: 1MB) height: 200px width: 200px" />
-                    <x-ui.input-error :messages="$errors->get('form.icon')" class="mt-2" />
+                    {{-- <x-ui.input-error :messages="$errors->get('form.icon')" class="mt-2" /> --}}
                 </div>
             </div>
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
@@ -34,13 +34,13 @@
                 </div>
                 <div>
                     <x-ui.label for="text_color" :value="__('Text Color')" />
-                    <x-ui.input id="text_color" type="color" class="mt-1 block w-full" wire:model="form.text_color"
+                    <x-ui.input id="text_color" type="color" class="mt-1 block w-full p-0! h-11!" wire:model="form.text_color"
                         placeholder="Text Color" />
                     <x-ui.input-error :messages="$errors->get('form.text_color')" class="mt-2" />
                 </div>
                 <div>
                     <x-ui.label for="bg_color" :value="__('Background Color')" />
-                    <x-ui.input id="bg_color" type="color" class="mt-1 block w-full" wire:model="form.bg_color"
+                    <x-ui.input id="bg_color" type="color" class="mt-1 block w-full p-0! h-11!" wire:model="form.bg_color"
                         placeholder="Text Color" />
                     <x-ui.input-error :messages="$errors->get('form.bg_color')" class="mt-2" />
                 </div>

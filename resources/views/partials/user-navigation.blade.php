@@ -8,7 +8,7 @@
                     'active': open == '{{ $category->slug }}' ||
                         {{ request()->routeIs($category->slug) ? 'true' : 'false' }}
                 }">
-                <span class="relative z-10">{{ $category['name'] }}</span>
+                <span class="relative z-10">{{ $category->categoryTranslations->first()?->name ?? $category->name }}</span>
                 <span
                     class="absolute bottom-0 left-0 w-full h-0.5 bg-blue-500 transform scale-x-0 transition-transform duration-300 ease-in-out origin-left"
                     :class="{
@@ -161,16 +161,16 @@
                                     <a href="{{ route('game.index', ['gameSlug' => $item->slug, 'categorySlug' => $category->slug]) }}" wire:navigate
                                         class="flex items-center gap-3 p-2 hover:bg-purple-500/10 rounded-lg transition cursor-pointer">
                                         <div class="w-6 h-6 flex items-center justify-center">
-                                            <img src="{{ storage_url($item->logo) }}" alt="{{ $item['name'] }}"
+                                            <img src="{{ storage_url($item->logo) }}" alt="{{ $item->name }}"
                                                 class="w-full h-full object-contain">
                                         </div>
-                                        <p class="text-base lg:text-lg font-normal text-text-white">{{ $item['name'] }}
+                                        <p class="text-base lg:text-lg font-normal text-text-white">{{ $item->gameTranslations->first()?->name ?? $item->name }}
                                         </p>
                                     </a>
                                 @endforeach
                             </div>
                         @else
-                            
+
                             <h3
                                 class="text-xs font-semibold text-text-white/70 uppercase tracking-wider mb-2 pt-1 px-2.5">
                                 {{ __('SEARCH RESULTS') }}

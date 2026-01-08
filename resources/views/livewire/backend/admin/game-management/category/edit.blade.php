@@ -1,6 +1,6 @@
 <section>
     @push('styles')
-        <link rel="stylesheet" href="{{ asset('assets/css/ckEditor.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/tinymce.css') }}">
     @endpush
     <div class="glass-card rounded-2xl p-6 mb-6">
         <div class="flex items-center justify-between">
@@ -41,11 +41,11 @@
                 </div>
 
                 {{-- slug --}}
-                <div class="w-full">
+                {{-- <div class="w-full">
                     <x-ui.label value="Slug" class="mb-1" />
                     <x-ui.input type="text" placeholder="Slug" id="slug" wire:model="form.slug" />
                     <x-ui.input-error :messages="$errors->get('form.slug')" />
-                </div>
+                </div> --}}
 
                 {{-- meta title --}}
                 <div class="w-full">

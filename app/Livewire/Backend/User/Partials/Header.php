@@ -17,14 +17,6 @@ class Header extends Component
         $this->breadcrumb = $breadcrumb;
     }
 
-    public function logout()
-    {
-        Auth::guard('web')->logout();
-        Session::invalidate();
-        Session::regenerateToken();
-        return $this->redirectIntended(default: route('login', absolute: false), navigate: true);
-    }
-
     public function render()
     {
         return view('backend.user.layouts.partials.header');

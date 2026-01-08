@@ -6,44 +6,29 @@ use App\Http\Controllers\SellerVerificationController;
 use App\Http\Controllers\Backend\User\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\User\OrderManagement\OrderController;
 use App\Http\Controllers\Backend\User\OfferManagement\UserOfferController;
-use App\Http\Controllers\Backend\User\OrderManagement\OngoingOrderController;
-use App\Http\Controllers\Backend\User\OrderManagement\OrderDetailsController;
+use App\Http\Controllers\Backend\User\OfferManagement\BulkUploadController;
+use App\Livewire\Backend\User\Payments\Checkout;
 
 // , 'userVerify'
 Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->group(function () {
 
-    Route::group(['prefix' => 'orders'], function () {
-        // Route::get('/purchased-orders', function () {
-        //     return view('backend.user.pages.orders.purchased-orders');
-        // })->name('purchased-orders');
-        // Route::get('/sold-orders', function () {
-        //     return view('backend.user.pages.orders.sold-orders');
-        // })->name('sold-orders');
 
-
-        Route::controller(OrderController::class)->name('order.')->prefix('order')->group(function () {
-            Route::get('/purchased-orders', 'purchasedOrders')->name('purchased-orders');
-            Route::get('/sold-orders', 'soldOrders')->name('sold-orders');
-        });
-
-        Route::get('/order-details', [OrderDetailsController::class, 'orderDetails'])->name('order-details');
-
-        Route::get('/order-description', function () {
-            return view('backend.user.pages.orders.order-description');
-        })->name('order-description');
-
-        Route::controller(OngoingOrderController::class)->name('OngoingOrder.')->prefix('OngoingOrder')->group(function () {
-            Route::get('/details', 'details')->name('details');
-            Route::get('/description', 'description')->name('description');
-        });
-
-
+    Route::controller(OrderController::class)->name('order.')->prefix('orders')->group(function () {
+        Route::get('/purchased-orders', 'purchasedOrders')->name('purchased-orders');
+        Route::get('/sold-orders', 'soldOrders')->name('sold-orders');
+        Route::get('/cancel/{orderId}', 'cancel')->name('cancel');
+        Route::get('/complete/{orderId}', 'complete')->name('complete');
+        Route::get('/details/{orderId}', 'detail')->name('detail');
     });
+
 
     Route::group(['prefix' => 'offers'], function () {
 
         Route::controller(UserOfferController::class)->name('user-offer.')->prefix('offer')->group(function () {
             Route::get('/{categorySlug}', 'category')->name('category');
+        });
+        Route::controller(BulkUploadController::class)->name('bulk-upload.')->prefix('bulk-upload')->group(function () {
+            Route::get('category', 'category')->name('category');
         });
 
 
@@ -62,7 +47,8 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
         // Route::get('/gift-cards', function () {
         //     return view('backend.user.pages.offers.gift-cards');
         // })->name('gift-cards');
-        Route::get('offers/', [OfferController::class, 'index'])->name('offers');
+        Route::get('create/', [OfferController::class, 'index'])->name('offers')->middleware('seller');
+        Route::get('edit/{encrypted_id}', [OfferController::class, 'edit'])->name('offer.edit')->middleware('seller');
     });
 
 
@@ -80,10 +66,8 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
 
     Route::group(['prefix' => 'seller'], function () {
 
-        Route::get('verification/{step?}',[SellerVerificationController::class,'index'])->name('seller.verification');
-        // Route::get('/verification', function () {
-        //     return view('backend.user.pages.seller.seller-verification');
-        // })->name('seller.verification');
+        Route::get('verification/{step?}', [SellerVerificationController::class, 'index'])->name('seller.verification');
+
     });
 
 
@@ -108,14 +92,18 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
         return view('backend.user.pages.settings.account-settings');
     })->name('account-settings');
 
-    Route::get('/profile', function () {
-        return view('backend.user.pages.profile');
-    })->name('profile');
+    // Route::get('/profile', function () {
+    //     return view('backend.user.pages.profile');
+    // })->name('profile');
 
-    Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
-    Route::post('/payment/card', [PaymentController::class, 'processCard'])->name('payment.card');
-    Route::post('/payment/digital-wallet', [PaymentController::class, 'processDigitalWallet'])->name('payment.digital-wallet');
-    Route::post('/payment/crypto', [PaymentController::class, 'processCrypto'])->name('payment.crypto');
-    Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
-    Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
+    Route::get('/checkout/{slug}/{token}', Checkout::class)->name('checkout');
+
+    Route::controller(PaymentController::class)
+        ->name('payment.')
+        ->prefix('payment')
+        ->group(function () {
+            Route::get('/success', 'paymentSuccess')->name('success');
+            Route::get('/failed', 'paymentFailed')->name('failed');
+            Route::get('/gateway/{slug}', 'getGatewayConfig')->name('gateway.config');
+        });
 });

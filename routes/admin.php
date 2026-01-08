@@ -1,8 +1,8 @@
 <?php
 
 
+use App\Http\Controllers\Backend\Admin\WithdrawalManagement\WithdrawalMethodController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Backend\Admin\ProductManagement\TopUpsController;
 use App\Http\Controllers\Backend\Admin\AuditingController;
 use App\Http\Controllers\Backend\Admin\CmsManagement\CmsController;
 use App\Http\Controllers\Backend\Admin\FaqManagement\FaqController;
@@ -14,25 +14,29 @@ use App\Http\Controllers\Backend\Admin\UserManagement\UserController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\OfferManagement\OfferController;
+use App\Http\Controllers\Backend\Admin\OrderManagement\OrderController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\RankController;
 use App\Http\Controllers\Backend\Admin\BannerManagement\BannerController;
 use App\Http\Controllers\Backend\Admin\GameManagement\CategoryController;
 use App\Http\Controllers\Backend\Admin\GameManagement\PlatformController;
+use App\Http\Controllers\Backend\Admin\ProductManagement\ItemsController;
+use App\Http\Controllers\Backend\Admin\ProductManagement\TopUpsController;
+use App\Http\Controllers\Backend\Admin\FinanceManagement\FinanceController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\AccountController;
+use App\Http\Controllers\Backend\Admin\ProfileManagement\ProfileController;
 use App\Http\Controllers\Backend\Admin\ReviewManagement\PageViewController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
-use App\Http\Controllers\Backend\Admin\ChatManagement\ChatController;
-use App\Http\Controllers\Backend\Admin\FeeSettingsManagement\FeeSettingsController;
+use App\Http\Controllers\Backend\Admin\ProductManagement\BoostingsController;
+use App\Http\Controllers\Backend\Admin\ProductManagement\GiftCardsController;
 use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementTypeController;
-use App\Http\Controllers\Backend\Admin\GatewayAndIntegration\GatewayAndIntegrationController;
+use App\Http\Controllers\Backend\Admin\FeeSettingsManagement\FeeSettingsController;
+use App\Http\Controllers\Backend\Admin\ConversationManagement\ConversationController;
 use App\Http\Controllers\Backend\Admin\NotificationManagement\AnnouncementController;
 use App\Http\Controllers\Backend\Admin\NotificationManagement\NotificationController;
-use App\Http\Controllers\Backend\Admin\ProductManagement\BoostingsController;
+use App\Http\Controllers\Backend\Admin\GatewayAndIntegration\GatewayAndIntegrationController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\CurrencyController as ProductCurrencyController;
-use App\Http\Controllers\Backend\Admin\ProductManagement\GiftCardsController;
-use App\Http\Controllers\Backend\Admin\ProductManagement\ItemsController;
 
 Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
@@ -69,8 +73,9 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
     Route::group(['prefix' => 'game-management', 'as' => 'gm.'], function () {
 
         Route::controller(CategoryController::class)->name('category.')->prefix('category')->group(function () {
+           
             Route::get('/', 'index')->name('index');
-            Route::get('/create', 'create')->name('create');
+            // Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
             Route::get('/view/{id}', 'show')->name('view');
             Route::get('/trash', 'trash')->name('trash');
@@ -107,6 +112,14 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
+        });
+    });
+    route::group(['prefix' => 'withdrawal-management', 'as' => 'wm.'], function () {
+        Route::controller(WithdrawalMethodController::class)->name('method.')->prefix('method')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+
         });
     });
 
@@ -159,7 +172,6 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
             Route::get('seller-verification', 'sellerVerification')->name('seller-verification');
             Route::get('seller-verification/verified', 'sellerVerified')->name('seller-verification.verified');
             Route::get('seller-verification/view/{id}', 'sellerVerificationView')->name('seller-verification.view');
-         
         });
     });
 
@@ -249,6 +261,7 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
         Route::controller(ProductCurrencyController::class)->name('category.')->prefix('category')->group(function () {
             Route::get('/{categorySlug}', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
+            Route::get('/details/{id}', 'details')->name('details');
         });
 
         // Route::controller(AccountController::class)->name('account.')->prefix('account')->group(function () {
@@ -283,13 +296,31 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
         Route::get('/show/{id}', 'show')->name('show');
     });
 
-    Route::controller(ChatController::class)->name('chat.')->prefix('chat')->group(function () {
+    Route::controller(ConversationController::class)->name('conversation.')->prefix('conversations')->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/chat/{id}', 'chat')->name('chat');
+        Route::get('/show/{id}', 'show')->name('show');
     });
 
     Route::controller(NotificationController::class)->name('notification.')->prefix('notification')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/show/{id}', 'show')->name('show');
+    });
+
+    Route::controller(OrderController::class)->name('orders.')->prefix('orders')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/paid-orders', 'paidOrders')->name('paid-orders');
+        Route::get('/completed-orders', 'completedOrders')->name('completed-orders');
+        Route::get('/cancelled-orders', 'cancelledOrders')->name('cancelled-orders');
+        Route::get('/show/{orderId}', 'show')->name('show');
+    });
+    Route::controller(ProfileController::class)->name('profile.')->prefix('profile')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/edit/{id}', 'edit')->name('edit');
+    });
+    Route::controller(FinanceController::class)->name('finance.')->prefix('finance')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/top-ups', 'topUps')->name('top-ups');
+        Route::get('/purchased', 'purchased')->name('purchased');
+        Route::get('/withdrawals', 'withdrawals')->name('withdrawals');
     });
 });

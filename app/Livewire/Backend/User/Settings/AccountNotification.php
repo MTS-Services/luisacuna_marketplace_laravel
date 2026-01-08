@@ -8,14 +8,18 @@ use Livewire\Component;
 
 class AccountNotification extends Component
 {
-    public bool $new_order = false;
-    public bool $new_message = false;
-    public bool $new_request = false;
-    public bool $message_received = false;
-    public bool $status_changed = false;
-    public bool $request_rejected = false;
-    public bool $dispute_created = false;
-    public bool $payment_received = false;
+    public array $settings = [
+        'new_order' => false,
+        'new_message' => false,
+        'order_update' => false,
+        'dispute_update' => false,
+        'payment_update' => false,
+        'withdrawal_update' => false,
+        'verification_update' => false,
+        'boosting_offer' => false,
+    ];
+
+    public bool $all_notifications = false;
 
     protected UserService $service;
 
@@ -26,48 +30,56 @@ class AccountNotification extends Component
 
     public function mount()
     {
-        $user = user();
-        
-        // Get notification settings (must exist)
-        $notificationSettings = $this->service->getNotificationSettings($user->id);
-    
-        
-        $this->new_order = $notificationSettings->new_order;
-        $this->new_message = $notificationSettings->new_message;
-        $this->new_request = $notificationSettings->new_request;
-        $this->message_received = $notificationSettings->message_received;
-        $this->status_changed = $notificationSettings->status_changed;
-        $this->request_rejected = $notificationSettings->request_rejected;
-        $this->dispute_created = $notificationSettings->dispute_created;
-        $this->payment_received = $notificationSettings->payment_received;
+        $notificationSettings = user()->notificationSetting;
+
+        if ($notificationSettings) {
+            foreach (array_keys($this->settings) as $key) {
+                $this->settings[$key] = (bool) $notificationSettings->$key;
+            }
+        }
+
+        $this->checkIfAllEnabled();
+    }
+
+    public function updated($propertyName, $value)
+    {
+        try {
+            if ($propertyName === 'all_notifications') {
+                $this->toggleAll($value);
+            } else {
+                $actualKey = str_replace('settings.', '', $propertyName);
+
+                // Update specific database field
+                $this->service->updateNotificationSettings(user()->id, [
+                    $actualKey => $value
+                ]);
+
+                $this->checkIfAllEnabled();
+            }
+        } catch (\Exception $e) {
+            Log::error('Failed to update settings: ' . $e->getMessage());
+        }
+    }
+
+    private function toggleAll(bool $status)
+    {
+        // Update local state
+        foreach ($this->settings as $key => $val) {
+            $this->settings[$key] = $status;
+        }
+
+        // Mass update database
+        $this->service->updateNotificationSettings(user()->id, $this->settings);
+    }
+
+    private function checkIfAllEnabled()
+    {
+        // If any setting is false, the master toggle must be false
+        $this->all_notifications = !in_array(false, $this->settings, true);
     }
 
     public function render()
     {
         return view('livewire.backend.user.settings.account-notification');
-    }
-
-    public function updated($propertyName)
-    {
-        try {
-            // Update through UpdateNotificationAction via service 
-            $this->service->updateNotificationSetting(
-                user()->id,
-                $propertyName,
-                $this->$propertyName
-            );
-            $this->success('Data updated successfully.');
-
-            $this->dispatch('profile-updated');
-            
-            // $this->dispatch('success', 'Notification setting updated successfully.');
-        } catch (\Exception $e) {
-            Log::error('Failed to update notification', [
-                'property' => $propertyName,
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            $this->dispatch('error', 'Failed to update: ' . $e->getMessage());
-        }
     }
 }

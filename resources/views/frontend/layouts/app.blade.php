@@ -9,7 +9,10 @@
         {{ isset($title) ? $title . ' - ' : '' }}
         {{ site_name() }}
     </title>
-    <link rel="shortcut icon" href="{{ storage_url(app_favicon()) }}" type="image/x-icon">
+     @php
+    $cloudinaryService = new \App\Services\Cloudinary\CloudinaryService();
+    @endphp
+    <link rel="shortcut icon" href="{{ $cloudinaryService->getUrlFromPublicId(app_favicon()) }}" type="image/x-icon">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 
@@ -26,11 +29,32 @@
             display: none !important;
         }
 
-        .bg-page {
+        /* .bg-page {
             background-image: url('{{ asset('/assets/images/background/light_background.png') }}');
             background-attachment: fixed;
             background-position: 100% 100%;
             background-size: cover;
+        } */
+        .bg-page {
+            position: relative;
+            background-image: url('{{ asset('/assets/images/background/light_background.png') }}');
+            background-attachment: fixed;
+            background-position: 100% 100%;
+            background-size: cover;
+            /* overflow: hidden; */
+        }
+
+        .bg-page::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.548);
+            z-index: 1;
+        }
+
+        .bg-page>* {
+            position: relative;
+            z-index: 2;
         }
 
         .dark .bg-page {
@@ -38,6 +62,11 @@
             background-attachment: fixed;
             background-position: 100% 100%;
             background-size: cover;
+        }
+
+        .dark .bg-page::before {
+            content: none;
+            display: none;
         }
 
         .dark .bg-page-login {
@@ -172,6 +201,62 @@
                         console.error('❌ Error on private admin channel:', error);
                     });
             @endif
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Livewire initialized');
+            // Handle Livewire errors (401 from middleware)
+            document.addEventListener('livewire:response', function(event) {
+                const response = event.detail.response;
+
+                if (response && response.status === 401) {
+                    console.log('Session terminated by server (401)');
+                    handleSessionTermination();
+                }
+            });
+
+            // Handle fetch/axios errors globally
+            window.addEventListener('unhandledrejection', function(event) {
+                if (event.reason && event.reason.response && event.reason.response.status === 401) {
+                    console.log('Session terminated (401 from fetch)');
+                    handleSessionTermination();
+                }
+            });
+
+            // Intercept Livewire requests
+            if (typeof Livewire !== 'undefined') {
+                Livewire.hook('request', ({
+                    respond
+                }) => {
+                    respond(({
+                        status,
+                        response
+                    }) => {
+                        if (status === 401) {
+                            console.log('Session terminated by Livewire (401)');
+                            handleSessionTermination();
+                        }
+                    });
+                });
+            }
+
+            function handleSessionTermination() {
+                // Clear everything
+                localStorage.clear();
+                sessionStorage.clear();
+
+                // Show message
+                alert('Your session has been terminated. Please login again.');
+
+                // Force redirect to login (hard reload)
+                window.location.href = '{{ route('login') }}';
+
+                // If somehow the above doesn't work, force reload
+                setTimeout(() => {
+                    window.location.reload(true);
+                }, 100);
+            }
         });
     </script>
     @stack('scripts')

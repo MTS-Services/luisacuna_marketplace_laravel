@@ -2,15 +2,18 @@
 
 namespace App\Services;
 
-use App\Actions\Rank\AssignRankAction;
 use App\Models\Rank;
+use App\Models\User;
+use App\Models\UserRank;
 use App\Enums\RankStatus;
 use App\Actions\Rank\BulkAction;
 use App\Actions\Rank\CreateAction;
 use App\Actions\Rank\DeleteAction;
 use App\Actions\Rank\UpdateAction;
+use Illuminate\Support\Facades\DB;
 use App\Actions\Rank\RestoreAction;
-use App\Models\UserRank;
+use App\Actions\Rank\AssignRankAction;
+use App\Models\Achievement;
 use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Contracts\RankRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -26,11 +29,12 @@ class RankService
         protected RestoreAction $restoreAction,
         protected BulkAction $bulkAction,
         protected AssignRankAction $assignRankAction,
-    ) {}
+    ) {
+    }
 
     /* ================== ================== ==================
-    *                          Find Methods
-    * ================== ================== ================== */
+     *                          Find Methods
+     * ================== ================== ================== */
 
     public function getAllDatas($sortField = 'created_at', $order = 'desc'): Collection
     {
@@ -85,9 +89,73 @@ class RankService
         return max(0, $nextRank->minimum_points - $userPoints);
     }
 
+
+
+    // public function getRankByPoints(int $points): ?Rank
+    // {
+    //     return Rank::where('minimum_points', '<=', $points)
+    //         ->where('maximum_points', '>=', $points)
+    //         ->with('achievements.progress')
+    //         ->first();
+    // }
+
+    public function getUserRank($userId = null)
+    {
+        $userId = $userId ?? user()->id;
+        $rank = User::findOrfail($userId)?->activeRank?->first();
+        return $rank;
+    }
+
+    public function getUserAchievements($userId = null, $rankId = null)
+    {
+        $userId = $userId ?? user()->id;
+        $rankId = $rankId ?? $this->getUserRank($userId)->id;
+
+        $achievements = Achievement::where('rank_id', $rankId)
+                        ->with([
+                            'progress' => function ($q) use ($userId) {
+                                $q->where('user_id', $userId)->whereNotNull('unlocked_at');
+                            }
+                        ])->whereHas('progress', function ($q) use ($userId) {
+                            $q->where('user_id', $userId)
+                                ->whereNotNull('unlocked_at');
+                                // ->whereNull('achieved_at');
+                        })->get();
+        return $achievements;
+    }
+
+
+
+    // REDEEM
+    public function redeemUserPoints($user, $points = 10000): bool
+    {
+        if (($user->userPoint->points ?? 0) < $points) {
+            return false;
+        }
+
+        DB::transaction(function () use ($user, $points) {
+            $user->userPoint->points -= $points;
+            $user->userPoint->save();
+
+
+            $wallet = $user->wallet;
+
+            if (!$wallet) {
+                $wallet = $user->wallet()->create([
+                    'balance' => 0,
+                ]);
+            }
+            $wallet->balance += 1;
+            $wallet->save();
+        });
+
+        return true;
+    }
+
+
     /* ================== ================== ==================
-    *                   Action Executions
-    * ================== ================== ================== */
+     *                   Action Executions
+     * ================== ================== ================== */
 
     public function createData(array $data): Rank
     {
@@ -162,8 +230,8 @@ class RankService
     }
 
     /* ================== ================== ==================
-    *                   Accessors (optionals)
-    * ================== ================== ================== */
+     *                   Accessors (optionals)
+     * ================== ================== ================== */
 
     public function getActiveData($sortField = 'created_at', $order = 'desc'): Collection
     {

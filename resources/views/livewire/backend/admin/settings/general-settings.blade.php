@@ -39,7 +39,7 @@
             class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2">
         </div>
 
-        <div class="relative z-10">
+        <div class="relative z-0">
             <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                 <div class="flex items-center gap-4">
                     <div class="p-3 bg-primary/10 rounded-xl">

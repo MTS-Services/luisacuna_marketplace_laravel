@@ -37,11 +37,12 @@ if (!function_exists('dateTimeHumanFormat')) {
     }
 }
 
-if(!function_exists('isLoggedIn')) {
+if (!function_exists('isLoggedIn')) {
 
-   function isLoggedIn() {
-       return Auth::check();
-   }
+    function isLoggedIn()
+    {
+        return Auth::check();
+    }
 }
 
 if (!function_exists('user')) {
@@ -561,22 +562,91 @@ if (!function_exists('category_route')) {
 }
 
 
-if(!function_exists('currency_exchange')) {
-    function currency_exchange($price) {
+if (!function_exists('currency_exchange')) {
+    function currency_exchange($price)
+    {
         $defaultCurrency = Currency::where('is_default', true)->first();
 
-        if(!$defaultCurrency) {
+        if (!$defaultCurrency) {
             return $price;
         }
         $selectedCurrencyCode = session('currency', $defaultCurrency->code);
 
         $selectedCurrency = Currency::where('code', $selectedCurrencyCode)->first();
 
-        if(!$selectedCurrency) {
+        if (!$selectedCurrency) {
             return $price;
         }
         $convertedAmount = $price * ($selectedCurrency->exchange_rate / $defaultCurrency->exchange_rate);
-        return $selectedCurrency->symbol . number_format($convertedAmount, $selectedCurrency->decimal_places);
+        return $convertedAmount;
     }
 }
 
+
+if (!function_exists('currency_symbol')) {
+    function currency_symbol()
+    {
+        $defaultCurrency = Currency::where('is_default', true)->first();
+
+        if (!$defaultCurrency) {
+            return '';
+        }
+
+        $selectedCurrencyCode = session('currency', $defaultCurrency->code);
+
+        $selectedCurrency = Currency::where('code', $selectedCurrencyCode)->first();
+
+        return $selectedCurrency?->symbol ?? '';
+    }
+}
+
+
+
+
+if (!function_exists('number_shorten')) {
+    /**
+     * Shorten a number to a human-readable format.
+     * 
+     * @param int|float $number The number to shorten
+     * @param int $precision The number of decimal places to round to
+     * @return string The shortened number
+     * 
+     * Examples:
+     * number_shorten(1234) // 1.2k
+     * number_shorten(1234567) // 1.2M
+     * number_shorten(1234567890) // 1.2B
+     * number_shorten(1234567890123) // 1.2T
+     */
+    function number_shorten($number, $precision = 1)
+    {
+        if ($number < 900) {
+            // 0 - 900
+            $number_format = number_format($number, $precision);
+            $suffix = '';
+        } elseif ($number < 900000) {
+            // 0.9k-850k
+            $number_format = number_format($number / 1000, $precision);
+            $suffix = 'k';
+        } elseif ($number < 900000000) {
+            // 0.9m-850m
+            $number_format = number_format($number / 1000000, $precision);
+            $suffix = 'M';
+        } elseif ($number < 900000000000) {
+            // 0.9b-850b
+            $number_format = number_format($number / 1000000000, $precision);
+            $suffix = 'B';
+        } else {
+            // 0.9t+
+            $number_format = number_format($number / 1000000000000, $precision);
+            $suffix = 'T';
+        }
+
+        // Remove unnecessary .0
+        if ($precision > 0) {
+            $dotzero = '.' . str_repeat('0', $precision);
+            $number_format = str_replace($dotzero, '', $number_format);
+        }
+
+        return $number_format . $suffix;
+    }
+}

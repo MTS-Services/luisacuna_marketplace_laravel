@@ -26,9 +26,10 @@ class RefreshConfiguration extends Command
     public function handle()
     {
         $this->call('config:clear');
-        $this->call('cache:clear');
         $this->call('route:clear');
         $this->call('view:clear');
+        $this->call('event:clear');
+        $this->call('cache:clear');
         $this->call('optimize:clear');
         $this->call('config:cache');
         $this->call('icons:cache');

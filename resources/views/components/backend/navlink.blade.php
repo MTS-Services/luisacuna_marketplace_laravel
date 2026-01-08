@@ -8,6 +8,7 @@
     'type' => 'dropdown', // 'dropdown' or 'single' - determines if main item is clickable
     'route' => '', // Route for main item when type is 'single'
     'permission' => '',
+    'isSubmission' => false,
 ])
 
 @php
@@ -83,8 +84,7 @@
     }
 
     $isAnyActive = $isMainActive || $isDropdownActive;
-    $shouldShowComponent =
-        $type === 'single' ? empty($permission) || admin()->can($permission) : count($items) > 0;
+    $shouldShowComponent = $type === 'single' ? empty($permission) || admin()->can($permission) : count($items) > 0;
 
 @endphp
 
@@ -115,34 +115,65 @@
         @if ($type === 'single')
             <!-- Single Navlink (like original single-navlink) -->
             @if (empty($permission) || admin()->can($permission))
-                <a href="{{ $route }}" wire:navigate
-                    class="sidebar-item flex items-center gap-4 p-1 rounded-xl hover:bg-hover transition-all duration-200 group {{ $isMainActive ? 'bg-primary hover:bg-primary/80' : '' }}">
-                    <div
-                        class="w-9 h-9 glass-card shadow-shadow-primary rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform relative {{ $isMainActive ? 'bg-primary border-none ' : '' }}">
-                        <flux:icon name="{{ $defaultParentIcon }}"
-                            class="w-5 h-5 shrink-0 {{ $isMainActive ? 'stroke-white' : 'stroke-text-base' }}" />
-                        <!-- Active indicator for collapsed state -->
-                        <div x-show="!((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) && {{ $isAnyActive ? 'true' : 'false' }}"
-                            class="absolute -top-1 -right-1 w-3 h-3 bg-main/50 rounded-full animate-pulse invisible"
-                            :class="{
-                                'visible': !((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) &&
-                                    {{ $isAnyActive ? 'true' : 'false' }}
-                            }">
+                @if (!$isSubmission)
+                    <a href="{{ $route }}" wire:navigate
+                        class="sidebar-item flex items-center gap-4 p-1 rounded-xl hover:bg-hover transition-all duration-200 group {{ $isMainActive ? 'bg-primary hover:bg-primary/80' : '' }}">
+                        <div
+                            class="w-9 h-9 glass-card shadow-shadow-primary rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform relative {{ $isMainActive ? 'bg-primary border-none ' : '' }}">
+                            <flux:icon name="{{ $defaultParentIcon }}"
+                                class="w-5 h-5 shrink-0 {{ $isMainActive ? 'stroke-white' : 'stroke-text-base' }}" />
+                            <!-- Active indicator for collapsed state -->
+                            <div x-show="!((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) && {{ $isAnyActive ? 'true' : 'false' }}"
+                                class="absolute -top-1 -right-1 w-3 h-3 bg-main/50 rounded-full animate-pulse invisible"
+                                :class="{
+                                    'visible': !((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) &&
+                                        {{ $isAnyActive ? 'true' : 'false' }}
+                                }">
+                            </div>
                         </div>
-                    </div>
-                    <span x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)"
-                        x-transition:enter="transition-all duration-300 delay-75"
-                        x-transition:enter-start="opacity-0 translate-x-4"
-                        x-transition:enter-end="opacity-100 translate-x-0"
-                        x-transition:leave="transition-all duration-200"
-                        x-transition:leave-start="opacity-100 translate-x-0"
-                        x-transition:leave-end="opacity-0 -translate-x-4"
-                        class="text-sm {{ $isMainActive ? 'text-accent-content font-medium ' : 'text-text-base ' }}">{{ __($name) }}</span>
-                    <div x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)"
-                        class="ml-auto {{ $isMainActive ? 'block' : 'hidden' }}">
-                        <div class="w-2 h-2 bg-main/50 rounded-full animate-pulse"></div>
-                    </div>
-                </a>
+                        <span x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)"
+                            x-transition:enter="transition-all duration-300 delay-75"
+                            x-transition:enter-start="opacity-0 translate-x-4"
+                            x-transition:enter-end="opacity-100 translate-x-0"
+                            x-transition:leave="transition-all duration-200"
+                            x-transition:leave-start="opacity-100 translate-x-0"
+                            x-transition:leave-end="opacity-0 -translate-x-4"
+                            class="text-sm {{ $isMainActive ? 'text-accent-content font-medium ' : 'text-text-base ' }}">{{ __($name) }}</span>
+                        <div x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)"
+                            class="ml-auto {{ $isMainActive ? 'block' : 'hidden' }}">
+                            <div class="w-2 h-2 bg-main/50 rounded-full animate-pulse"></div>
+                        </div>
+                    </a>
+                @else
+                    <button type="submit"
+                        class="sidebar-item flex w-full items-center gap-4 p-1 rounded-xl hover:bg-hover transition-all duration-200 group {{ $isMainActive ? 'bg-primary hover:bg-primary/80' : '' }}">
+                        <div
+                            class="w-9 h-9 glass-card shadow-shadow-primary rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform relative {{ $isMainActive ? 'bg-primary border-none ' : '' }}">
+                            <flux:icon name="{{ $defaultParentIcon }}"
+                                class="w-5 h-5 shrink-0 {{ $isMainActive ? 'stroke-white' : 'stroke-text-base' }}" />
+                            <!-- Active indicator for collapsed state -->
+                            <div x-show="!((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) && {{ $isAnyActive ? 'true' : 'false' }}"
+                                class="absolute -top-1 -right-1 w-3 h-3 bg-main/50 rounded-full animate-pulse invisible"
+                                :class="{
+                                    'visible': !((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) &&
+                                        {{ $isAnyActive ? 'true' : 'false' }}
+                                }">
+                            </div>
+                        </div>
+                        <span x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)"
+                            x-transition:enter="transition-all duration-300 delay-75"
+                            x-transition:enter-start="opacity-0 translate-x-4"
+                            x-transition:enter-end="opacity-100 translate-x-0"
+                            x-transition:leave="transition-all duration-200"
+                            x-transition:leave-start="opacity-100 translate-x-0"
+                            x-transition:leave-end="opacity-0 -translate-x-4"
+                            class="text-sm {{ $isMainActive ? 'text-accent-content font-medium ' : 'text-text-base ' }}">{{ __($name) }}</span>
+                        <div x-show="(desktop && sidebar_expanded) || (!desktop && mobile_menu_open)"
+                            class="ml-auto {{ $isMainActive ? 'block' : 'hidden' }}">
+                            <div class="w-2 h-2 bg-main/50 rounded-full animate-pulse"></div>
+                        </div>
+                    </button>
+                @endif
             @endif
         @else
             <!-- Dropdown Button -->

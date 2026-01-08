@@ -5,7 +5,7 @@ namespace App\Repositories\Eloquent;
 use App\Models\User;
 use App\Enums\UserType;
 use Illuminate\Support\Facades\DB;
-use App\Models\UsersNotificationSetting;
+use App\Models\UserNotificationSetting;
 use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -220,50 +220,5 @@ class UserRepository implements UserRepositoryInterface
     public function bulkForceDelete(array $ids): int
     {
         return $this->model->withTrashed()->whereIn('id', $ids)->forceDelete();
-    }
-
-
-
-    /* ================== ================== ==================
-    *                  Accessor Methods (Optional)
-    * ================== ================== ================== */
-
-
-
-
-    /**
-     * Update notification setting for a user
-     */
-    public function updateNotificationSetting(int $userId, string $field, bool $value): bool
-    {
-        $user = $this->find($userId);
-
-        if (!$user) {
-            return false;
-        }
-
-        // Get notification settings (must exist)
-        $notificationSetting = UsersNotificationSetting::where('user_id', $userId)->first();
-
-        if (!$notificationSetting) {
-            throw new \Exception('Notification settings not found for this user');
-        }
-
-        // Update the specific field
-        return $notificationSetting->update([$field => $value]);
-    }
-
-    /**
-     * Get notification settings for a user
-     */
-    public function getNotificationSettings(int $userId): ?UsersNotificationSetting
-    {
-        $user = $this->find($userId);
-
-        if (!$user) {
-            return null;
-        }
-
-        return UsersNotificationSetting::where('user_id', $userId)->first();
     }
 }

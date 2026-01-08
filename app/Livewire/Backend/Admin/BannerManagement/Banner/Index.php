@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Admin\BannerManagement\Banner;
 use App\Enums\HeroStatus;
 use App\Livewire\Forms\BannerForm;
 use App\Models\Hero;
+use App\Services\Cloudinary\CloudinaryService;
 use App\Services\HeroService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
@@ -22,10 +23,13 @@ class Index extends Component
   
     protected HeroService $heroService;
 
+    protected CloudinaryService $cloudinaryService;
+
     public Hero $data;
-    public function boot(HeroService $heroService)
+    public function boot(HeroService $heroService, CloudinaryService $cloudinaryService)
     {
         $this->heroService = $heroService;
+        $this->cloudinaryService = $cloudinaryService;
     }
     public function render()
     {
@@ -41,7 +45,7 @@ class Index extends Component
                 'label' => 'Icon',
                 'format' => function ($data){
                     if(!empty($data->image)){
-                      return ' <img src="'. storage_url($data->image).' alt="">';
+                      return ' <img src="'. $this->cloudinaryService->getUrlFromPublicId($data->image).' alt="" class="w-20 h-auto">';
                     }else{
                         return 'NO Image';
                     }

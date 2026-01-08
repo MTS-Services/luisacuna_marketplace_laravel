@@ -5,9 +5,9 @@ namespace App\Livewire\Backend\Admin\ProductManagement\Category;
 use Livewire\Component;
 use App\Services\ProductService;
 use App\Enums\ActiveInactiveEnum;
+use App\Services\Cloudinary\CloudinaryService;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
-use Illuminate\Support\Facades\Storage;
 use App\Traits\Livewire\WithNotification;
 
 class Index extends Component
@@ -15,21 +15,21 @@ class Index extends Component
     use WithDataTable, WithNotification;
 
     public $statusFilter = '';
-    public $showDeleteModal = false;
-    public $deleteCategoryId = null;
-    public $bulkAction = '';
-    public $showBulkActionModal = false;
-    public $deleteId = null;
+
+
     public $categoryFilter = null;
     public $categorySlug = null;
+    // public $categorySlug;
 
 
 
     protected ProductService $service;
 
-    public function boot(ProductService $service)
+    protected CloudinaryService $cloudinaryService;
+    public function boot(ProductService $service, CloudinaryService $cloudinaryService)
     {
         $this->service = $service;
+        $this->cloudinaryService = $cloudinaryService;
     }
 
     public function mount($categorySlug)
@@ -57,26 +57,29 @@ class Index extends Component
                 'sortable' => false,
                 'format' => fn($item) =>
                 '<div class="flex items-center gap-3">
-                    <img src="' . ($item->games->logo) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item->games->slug ?? 'Game') . '">
+                    <img src="' . $this->cloudinaryService->getUrlFromPublicId($item->games?->logo) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item->games->slug ?? 'Game') . '">
                     <span class="font-semibold text-text-white">' . ($item->games->slug ?? '-') . '</span>
                 </div>'
             ],
-             [
-                'key' => 'name',
+            [
+                'key' => 'username',
                 'label' => 'Name',
                 'sortable' => true,
                 'format' => fn($item) =>
-                '<a href="' . route('admin.am.admin.view', encrypt($item->id)) . '" class="font-semibold text-text-white">' . ($item->user->username ?? '-') . '</a>'
+                '<a href="' . ($item->user ? route('profile', ['username' => $item->user->username]) : '#') . '" target="_blank" class="font-semibold text-text-white">' .
+                    ($item->user->username ?? '-') .
+                    '</a>'
             ],
+
             [
                 'key' => 'quantity',
                 'label' => 'Quantity',
                 'sortable' => true,
             ],
             [
-                'key' => 'price',
+                'key' => 'grand_total',
                 'label' => 'Price',
-                'sortable' => true,
+                'format' => fn($item) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' . currency_symbol() . $item->price  . '</span>'
             ],
             [
                 'key' => 'status',
@@ -100,7 +103,12 @@ class Index extends Component
         ];
 
         $actions = [
-            ['key' => 'id', 'label' => 'View', 'route' => 'admin.gm.category.view', 'encrypt' => true],
+            [
+                'key' => 'id',
+                'label' => 'View',
+                'route' => 'admin.pm.category.details',
+                'encrypt' => true
+            ],
         ];
 
         $bulkActions = [
@@ -112,34 +120,12 @@ class Index extends Component
         return view('livewire.backend.admin.product-management.category.index', [
             'categories' => $datas,
             'statuses' => ActiveInactiveEnum::options(),
-            // 'layouts' => ::options(),
             'columns' =>  $columns,
             'actions' => $actions,
             'bulkActions' => $bulkActions,
         ]);
     }
 
-    public function confirmDelete($id): void
-    {
-        $this->deleteId = $id;
-        $this->showDeleteModal = true;
-    }
-
-    public function delete(): void
-    {
-        try {
-            if (!$this->deleteId) {
-                $this->warning('No data selected');
-                return;
-            }
-            $this->service->deleteData(($this->deleteId));
-            $this->reset(['deleteId', 'showDeleteModal']);
-
-            $this->success('Data deleted successfully');
-        } catch (\Exception $e) {
-            $this->error('Failed to delete data: ' . $e->getMessage());
-        }
-    }
 
     public function resetFilters(): void
     {
@@ -147,66 +133,6 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function changeStatus($id, $status): void
-    {
-        try {
-            $dataStatus = ActiveInactiveEnum::from($status);
-
-            match ($dataStatus) {
-                ActiveInactiveEnum::ACTIVE => $this->service->updateStatusData($id, ActiveInactiveEnum::ACTIVE),
-                ActiveInactiveEnum::INACTIVE => $this->service->updateStatusData($id, ActiveInactiveEnum::INACTIVE),
-                default => null,
-            };
-
-            $this->success('Data status updated successfully');
-        } catch (\Exception $e) {
-            $this->error('Failed to update status: ' . $e->getMessage());
-        }
-    }
-
-    public function confirmBulkAction(): void
-    {
-        if (empty($this->selectedIds) || empty($this->bulkAction)) {
-            $this->warning('Please select data and an action');
-            Log::info('No data selected or no bulk action selected');
-            return;
-        }
-
-        $this->showBulkActionModal = true;
-    }
-
-    public function executeBulkAction(): void
-    {
-        $this->showBulkActionModal = false;
-
-        try {
-            match ($this->bulkAction) {
-                'delete' => $this->bulkDelete(),
-                'active' => $this->bulkUpdateStatus(ActiveInactiveEnum::ACTIVE),
-                'inactive' => $this->bulkUpdateStatus(ActiveInactiveEnum::INACTIVE),
-                default => null,
-            };
-
-            $this->selectedIds = [];
-            $this->selectAll = false;
-            $this->bulkAction = '';
-        } catch (\Exception $e) {
-            $this->error('Bulk action failed: ' . $e->getMessage());
-        }
-    }
-
-    protected function bulkDelete(): void
-    {
-        $count =  $this->service->bulkDeleteData($this->selectedIds);
-        $this->success("{$count} Data deleted successfully");
-    }
-
-    protected function bulkUpdateStatus(ActiveInactiveEnum $status): void
-    {
-        $count = count($this->selectedIds);
-        $this->service->bulkUpdateStatus($this->selectedIds, $status);
-        $this->success("{$count} Data updated successfully");
-    }
 
     protected function getFilters(): array
     {

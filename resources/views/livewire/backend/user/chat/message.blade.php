@@ -1,18 +1,21 @@
 <div class="flex flex-col h-full">
     @if ($conversation)
         {{-- Chat Header --}}
-        <div class="p-3 sm:p-4 flex items-center bg-zinc-50/10 rounded-t-lg justify-between">
+        <div class="p-3 sm:p-4 flex items-center bg-zinc-500 rounded-t-lg justify-between">
             <div class="flex items-center gap-2 sm:gap-3">
                 @if ($otherParticipant)
-                    @if ($otherParticipant->avatar)
-                        <img src="{{ storage_url($otherParticipant->avatar) }}" alt="{{ $otherParticipant->full_name }}"
-                            class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
-                    @else
-                        <div
-                            class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
-                            {{ strtoupper(substr($otherParticipant->full_name, 0, 2)) }}
-                        </div>
-                    @endif
+                    <div class="bg-bg-primary dark:bg-bg-secondary rounded-full p-0.5">
+                        @if ($otherParticipant->avatar)
+                            <img src="{{ storage_url($otherParticipant->avatar) }}"
+                                alt="{{ $otherParticipant->full_name }}"
+                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
+                        @else
+                            <div
+                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
+                                {{ strtoupper(substr($otherParticipant->full_name, 0, 2)) }}
+                            </div>
+                        @endif
+                    </div>
 
                     <div>
                         <h3 class="text-text-primary font-semibold text-sm sm:text-base">
@@ -33,33 +36,30 @@
                     @if ($msg->sender_id == auth()->id())
                         {{-- Current User Message --}}
                         <div class="flex items-start gap-2 sm:gap-3 flex-row-reverse">
-                            @if (auth()->user()->avatar)
-                                <img src="{{ auth_storage_url(auth()->user()->avatar) }}"
-                                    alt="{{ auth()->user()->full_name }}"
-                                    class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
-                            @else
-                                <div
-                                    class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
-                                    {{ strtoupper(substr(auth()->user()->full_name, 0, 2)) }}
-                                </div>
-                            @endif
-
                             <div class="flex flex-col gap-1 sm:gap-2 max-w-[75%] sm:max-w-md items-end">
                                 {{-- Attachments --}}
                                 @if ($msg->attachments && $msg->attachments->count() > 0)
                                     @foreach ($msg->attachments as $attachment)
                                         <div class="relative mb-2">
                                             @if (in_array($attachment->attachment_type->value, ['image', 'photo']))
-                                                <img src="{{ asset('storage/' . $attachment->file_path) }}"
-                                                    class="rounded-lg max-w-full max-h-64 object-cover">
+                                            @php 
+                                            $cloudinaryService  = new \App\Services\Cloudinary\CloudinaryService();
+                                            @endphp
+                                                {{-- <img src="{{ asset('storage/' . $attachment->file_path) }}"
+                                                    class="rounded-lg max-w-full max-h-64 object-cover cursor-pointer"
+                                                    wire:click="ShowAttachemntImage('{{ encrypt(asset('storage/' . $attachment->file_path)) }}')"> --}}
+
+                                                    <x-cloudinary::image public-id="{{ $attachment->file_path }}" wire:click="ShowAttachemntImage('{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}')" alt="Uploaded File" class=" rounded-lg max-w-full max-h-64 object-cover cursor-pointer" />
+
                                             @else
-                                                <a href="{{ asset('storage/' . $attachment->file_path) }}"
+
+                                                <a href="{{  $cloudinaryService->getUrlFromPublicId($attachment->file_path)}}"
                                                     class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
-                                                    📎 {{ basename($attachment->file_path) }}
+                                                    📎 {{ basename($cloudinaryService->getUrlFromPublicId($attachment->file_path)) }}
                                                 </a>
                                             @endif
 
-                                            <a href="{{ asset('storage/' . $attachment->file_path) }}" download
+                                            <a href="{{  $cloudinaryService->getUrlFromPublicId($attachment->file_path)  }}" download
                                                 class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
                                                 ⬇
                                             </a>
@@ -74,7 +74,7 @@
                                         <p class="text-xs sm:text-sm break-words">{{ $msg->message_body }}</p>
 
                                         {{-- Message options --}}
-                                        <button wire:click="deleteMessage({{ $msg->id }})"
+                                        <button type="button" wire:click="deleteMessage({{ $msg->id }})"
                                             class="absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-700">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
@@ -97,58 +97,112 @@
                             </div>
                         </div>
                     @else
+                        @php
+                            $sender = $msg->sender;
+                        @endphp
                         {{-- Other User Message --}}
-                        <div class="flex items-start gap-2 sm:gap-3">
-                            @php
-                                $sender = $msg->sender;
-                            @endphp
+                        @if ($sender)
+                            <div class="flex items-start gap-2 sm:gap-3">
 
-                            @if ($sender && $sender->avatar)
-                                <img src="{{ storage_url($sender->avatar) }}" alt="{{ $sender->full_name }}"
-                                    class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
-                            @else
-                                <div
-                                    class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
-                                    {{ $sender ? strtoupper(substr($sender->full_name, 0, 2)) : 'S' }}
-                                </div>
-                            @endif
 
-                            <div class="flex flex-col gap-1 sm:gap-2 max-w-[75%] sm:max-w-md">
-                                {{-- Attachments --}}
-                                @if ($msg->attachments && $msg->attachments->count() > 0)
-                                    @foreach ($msg->attachments as $attachment)
-                                        <div class="relative mb-2">
-                                            @if (in_array($attachment->attachment_type->value, ['image', 'photo']))
-                                                <img src="{{ asset('storage/' . $attachment->file_path) }}"
-                                                    class="rounded-lg max-w-full max-h-64 object-cover">
-                                            @else
-                                                <a href="{{ asset('storage/' . $attachment->file_path) }}"
-                                                    class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
-                                                    📎 {{ basename($attachment->file_path) }}
-                                                </a>
-                                            @endif
+                                @if ($sender && $sender->avatar)
 
-                                            <a href="{{ asset('storage/' . $attachment->file_path) }}" download
-                                                class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
-                                                ⬇
-                                            </a>
-                                        </div>
-                                    @endforeach
-                                @endif
+                                   <x-cloudinary::image public-id="{{ $attachment->file_path }}" alt="{{ $sender->full_name }}" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0 border-2 border-zinc-400" />
 
-                                {{-- Message Body --}}
-                                @if ($msg->message_body)
+                                @else
                                     <div
-                                        class="bg-bg-hover text-text-primary px-3 sm:px-4 py-2 sm:py-3 rounded-2xl rounded-tl-none">
-                                        <p class="text-xs sm:text-sm break-words">{{ $msg->message_body }}</p>
+                                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-accent to-accent-foreground border-2 border-zinc-400  flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
+                                        {{ $sender ? strtoupper(substr($sender->full_name, 0, 2)) : 'S' }}
                                     </div>
                                 @endif
 
-                                <span class="text-[10px] sm:text-xs text-text-muted">
-                                    {{ $msg->created_at->format('M d, Y h:i A') }}
-                                </span>
+                                <div class="flex flex-col gap-1 sm:gap-2 max-w-[75%] sm:max-w-md">
+                                    {{-- Attachments --}}
+                                    @if ($msg->attachments && $msg->attachments->count() > 0)
+                                        @foreach ($msg->attachments as $attachment)
+                                            <div class="relative mb-2">
+                                                @if (in_array($attachment->attachment_type->value, ['image', 'photo']))
+                                                    {{-- <img src="{{ asset('storage/' . $attachment->file_path) }}"
+                                                        class="rounded-lg max-w-full max-h-64 object-cover cursor-pointer"
+                                                        wire:click="ShowAttachemntImage('{{ encrypt(asset('storage/' . $attachment->file_path)) }}')"> --}}
+                                                    <x-cloudinary::image public-id="{{ $attachment->file_path }}" wire:click="ShowAttachemntImage('{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}')" alt="Uploaded File" class=" rounded-lg max-w-full max-h-64 object-cover cursor-pointer" />
+                                                @else
+                                                    <a href="{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}"
+                                                        class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
+                                                        📎 {{ basename($cloudinaryService->getUrlFromPublicId($attachment->file_path)) }}
+                                                    </a>
+                                                @endif
+
+                                                <a href="{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}" download
+                                                    class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
+                                                    ⬇
+                                                </a>
+                                            </div>
+                                        @endforeach
+                                    @endif
+
+                                    {{-- Message Body --}}
+                                    @if ($msg->message_body)
+                                        <div
+                                            class="bg-bg-hover text-text-primary px-3 sm:px-4 py-2 sm:py-3 rounded-2xl rounded-tl-none">
+                                            <p class="text-xs sm:text-sm break-words">{{ $msg->message_body }}</p>
+                                        </div>
+                                    @endif
+
+                                    <span class="text-[10px] sm:text-xs text-text-muted">
+                                        {{ $msg->created_at->format('M d, Y h:i A') }}
+                                    </span>
+                                </div>
+                            </div>
+                        @else
+
+                        <div class="flex items-start gap-2 sm:gap-3">
+
+                            <div class="bg-bg-info border-l-3 border-pink-500  rounded-3xl  p-5 w-full" >
+
+                                    <div class="flex flex-col gap-1 sm:gap-2 w-full sm:max-w-full">
+                                        {{-- Attachments --}}
+                                        @if ($msg->attachments && $msg->attachments->count() > 0)
+                                            @foreach ($msg->attachments as $attachment)
+                                                <div class="relative mb-2">
+                                                    @if (in_array($attachment->attachment_type->value, ['image', 'photo']))
+                                                        {{-- <img src="{{ asset('storage/' . $attachment->file_path) }}"
+                                                            class="rounded-lg max-w-full max-h-64 object-cover cursor-pointer"
+                                                            wire:click="ShowAttachemntImage('{{ encrypt(asset('storage/' . $attachment->file_path)) }}')"> --}}
+
+                                                    <x-cloudinary::image public-id="{{ $attachment->file_path }}" wire:click="ShowAttachemntImage('{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}')" alt="Uploaded File" class=" rounded-lg max-w-full max-h-64 object-cover cursor-pointer" />
+                                                            
+                                                    @else
+                                                        <a href="{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}"
+                                                            class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
+                                                            📎 {{ basename($cloudinaryService->getUrlFromPublicId($attachment->file_path)) }}
+                                                        </a>
+                                                    @endif
+
+                                                    <a href="{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}" download
+                                                        class="absolute top-1 right-1 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded hover:bg-opacity-70">
+                                                        ⬇
+                                                    </a>
+                                                </div>
+                                            @endforeach
+                                        @endif
+
+                                        {{-- Message Body --}}
+                                        @if ($msg->message_body)
+                                            <div
+                                                class=" text-text-primary px-3 sm:px-4 py-2 sm:py-3 rounded-2xl rounded-tl-none">
+                                                <p class="text-xs sm:text-sm break-words">{{ $msg->message_body }}</p>
+                                            </div>
+                                        @endif
+
+                                        <p class="text-[10px] sm:text-xs text-text-muted text-end">
+                                            {{ $msg->created_at->format('M d, Y h:i A') }}
+                                        </p>
+                                    </div>
                             </div>
                         </div>
+
+                        @endif
                     @endif
                 </div>
             @empty
@@ -158,7 +212,7 @@
             @endforelse
         </div>
 
-        {{-- Scroll to bottom button (shown when user scrolls up) --}}
+        {{-- Scroll to bottom button --}}
         <div id="scrollToBottomBtn"
             class="hidden absolute bottom-24 right-8 bg-accent text-white p-3 rounded-full shadow-lg cursor-pointer hover:bg-accent-foreground transition-colors z-10"
             onclick="scrollToBottom(true)">
@@ -170,9 +224,65 @@
                 class="hidden absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">0</span>
         </div>
 
+        {{-- Image Overlay Modal --}}
+        @if ($showImageOverlay && $selectedImageUrl)
+            <div class="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+                wire:click="closeImageOverlay">
+                {{-- Close Button --}}
+                <button type="button" wire:click="closeImageOverlay"
+                    class="absolute top-4 right-4 text-white hover:text-gray-300 z-50">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+
+                {{-- Image Container with Zoom --}}
+                <div class="relative max-w-7xl max-h-full" wire:click.stop>
+                    <img src="{{ decrypt($selectedImageUrl) }}" alt="Full size image"
+                        class="max-w-full max-h-[90vh] object-contain cursor-zoom-in transition-transform duration-200"
+                        id="zoomableImage" onclick="toggleZoom(event)">
+
+                    {{-- Download Button --}}
+                    <a href="{{ decrypt($selectedImageUrl) }}" download
+                        class="absolute bottom-4 right-4 bg-white text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-100 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        Download
+                    </a>
+                </div>
+            </div>
+        @endif
+
         {{-- Message Input --}}
         <div class="p-3 sm:p-4 border-t border-zinc-700">
             <form wire:submit.prevent="sendMessage">
+                @if ($media)
+                    <div class="mt-2 flex flex-wrap gap-2 justify-start mb-2">
+                        @if (is_array($media))
+                            @foreach ($media as $index => $file)
+                                <div class="relative inline-block">
+                                    <img src="{{ $file->temporaryUrl() }}" class="w-16 h-16 rounded object-cover" />
+                                    <button type="button" wire:click="removeMedia({{ $index }})"
+                                        class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600">
+                                        ×
+                                    </button>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="relative inline-block">
+                                <img src="{{ $media->temporaryUrl() }}" class="w-16 h-16 rounded object-cover" />
+                                <button type="button" wire:click="$set('media', null)"
+                                    class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600">
+                                    ×
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                @endif
+
                 <div class="flex items-end gap-2 sm:gap-3">
                     <div class="flex-1 relative">
                         <textarea wire:model="message" wire:keydown.enter.prevent="sendMessage" rows="1"
@@ -214,34 +324,6 @@
                         </div>
                     </div>
                 </div>
-
-                @if ($media)
-                    <div class="mt-2 flex flex-wrap gap-2">
-                        @if (is_array($media))
-                            @foreach ($media as $index => $file)
-                                <div class="relative inline-block">
-                                    <span class="text-xs text-text-secondary bg-bg-hover px-2 py-1 rounded">
-                                        {{ $file->getClientOriginalName() }}
-                                    </span>
-                                    <button type="button" wire:click="$set('media.{{ $index }}', null)"
-                                        class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                                        ×
-                                    </button>
-                                </div>
-                            @endforeach
-                        @else
-                            <div class="relative inline-block">
-                                <span class="text-xs text-text-secondary bg-bg-hover px-2 py-1 rounded">
-                                    {{ $media->getClientOriginalName() }}
-                                </span>
-                                <button type="button" wire:click="$set('media', null)"
-                                    class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                                    ×
-                                </button>
-                            </div>
-                        @endif
-                    </div>
-                @endif
             </form>
         </div>
     @else
@@ -266,10 +348,9 @@
         let newMessageCount = 0;
         let intersectionObserver = null;
         let scrollTimeout = null;
-        let pollingInterval = null; // For polling without broadcasting
-        let lastMessageId = null; // Track last message ID
+        let pollingInterval = null;
+        let lastMessageId = null;
 
-        // Initialize Intersection Observer for read receipts
         function initIntersectionObserver() {
             if (intersectionObserver) {
                 intersectionObserver.disconnect();
@@ -291,10 +372,7 @@
                 });
 
                 if (visibleMessageIds.length > 0) {
-                    const component = Livewire.find('{{ $this->getId() }}');
-                    if (component) {
-                        component.call('markVisibleMessagesAsRead', visibleMessageIds);
-                    }
+                    @this.call('markVisibleMessagesAsRead', visibleMessageIds);
                 }
             }, {
                 root: container,
@@ -307,7 +385,6 @@
             });
         }
 
-        // Track scroll position
         function handleScroll() {
             const container = document.getElementById('messagesContainer');
             if (!container) return;
@@ -320,11 +397,7 @@
                 const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
 
                 isUserAtBottom = distanceFromBottom < 100;
-
-                const component = Livewire.find('{{ $this->getId() }}');
-                if (component) {
-                    component.set('isUserAtBottom', isUserAtBottom);
-                }
+                @this.set('isUserAtBottom', isUserAtBottom);
 
                 const btn = document.getElementById('scrollToBottomBtn');
                 if (btn) {
@@ -376,38 +449,26 @@
             }
         }
 
-        /* =================================================================
-              POLLING METHOD - Without Broadcasting (Default) START.
-        ================================================================= */
-
-        // ✅ POLLING METHOD - Without Broadcasting (Default)
         function startPolling() {
-            // Clear any existing polling
             if (pollingInterval) {
                 clearInterval(pollingInterval);
             }
 
-            // Poll every 500 milliseconds (adjust as needed)
             pollingInterval = setInterval(() => {
-                const component = Livewire.find('{{ $this->getId() }}');
-                if (component) {
-                    component.call('pollForNewMessages').then((response) => {
-                        if (response && response.hasNewMessages) {
-                            // Play notification sound for new messages
-                            if (response.senderId !== {{ auth()->id() }}) {
-                                playNotificationSound();
+                @this.call('pollForNewMessages').then((response) => {
+                    if (response && response.hasNewMessages) {
+                        if (response.senderId !== {{ auth()->id() }}) {
+                            playNotificationSound();
 
-                                if (!isUserAtBottom) {
-                                    newMessageCount += response.newMessageCount || 1;
-                                    updateNewMessageCount();
-                                    document.getElementById('scrollToBottomBtn')?.classList.remove(
-                                    'hidden');
-                                }
+                            if (!isUserAtBottom) {
+                                newMessageCount += response.newMessageCount || 1;
+                                updateNewMessageCount();
+                                document.getElementById('scrollToBottomBtn')?.classList.remove('hidden');
                             }
                         }
-                    });
-                }
-            }, 500); // Poll every 500 milliseconds
+                    }
+                });
+            }, 500);
         }
 
         function stopPolling() {
@@ -417,164 +478,110 @@
             }
         }
 
-        /* =================================================================
-              POLLING METHOD - Without Broadcasting (Default) END.
-        ================================================================= */
-        // ✅ Use proper Livewire event listeners
-        document.addEventListener('livewire:initialized', () => {
-            // Listen for conversation selection
-            Livewire.on('conversation-selected', (event) => {
-                const conversationId = Array.isArray(event) ? event[0] : event.conversationId;
+        Livewire.on('conversation-selected', (data) => {
+            const conversationId = data[0]?.conversationId || data[0];
 
-                // ====================================================
-                // METHOD 1: WITH BROADCASTING (PUSHER/REVERB) START
-                // ====================================================
-                // Uncomment this block to use WebSocket broadcasting
-                /*
-                if (conversationChannel) {
-                    window.Echo.leave(conversationChannel);
+            stopPolling();
+            newMessageCount = 0;
+            isUserAtBottom = true;
+            updateNewMessageCount();
+            lastMessageId = null;
+
+            if (conversationId) {
+                console.log('🔄 Starting polling for conversation:', conversationId);
+                startPolling();
+            }
+        });
+
+        Livewire.on('conversation-loaded', () => {
+            setTimeout(() => {
+                scrollToBottom(false);
+                initIntersectionObserver();
+
+                const container = document.getElementById('messagesContainer');
+                if (container) {
+                    container.removeEventListener('scroll', handleScroll);
+                    container.addEventListener('scroll', handleScroll);
                 }
 
-                newMessageCount = 0;
-                isUserAtBottom = true;
-                updateNewMessageCount();
-
-                if (conversationId) {
-                    conversationChannel = `conversation.${conversationId}`;
-                    console.log('🔌 Joining channel:', conversationChannel);
-
-                    window.Echo.private(conversationChannel)
-                        .listen('.message.sent', (event) => {
-                            console.log('📨 New message received via WebSocket:', event);
-
-                            const component = Livewire.find('{{ $this->getId() }}');
-                            if (component) {
-                                component.call('handleNewMessageReceived', event);
-                            }
-
-                            if (event.sender_id !== {{ auth()->id() }}) {
-                                playNotificationSound();
-
-                                if (!isUserAtBottom) {
-                                    newMessageCount++;
-                                    updateNewMessageCount();
-                                    document.getElementById('scrollToBottomBtn')?.classList.remove('hidden');
-                                }
-                            }
-                        });
-                }
-                */
-
-                // ====================================================
-                // METHOD 1: WITH BROADCASTING (PUSHER/REVERB) END
-                // ====================================================
-
-                // ====================================================
-                // METHOD 2: WITHOUT BROADCASTING (POLLING) START
-                // ====================================================
-                // Comment this block if using broadcasting above
-                stopPolling(); // Stop previous polling
-
-                newMessageCount = 0;
-                isUserAtBottom = true;
-                updateNewMessageCount();
-                lastMessageId = null; // Reset last message ID
-
-                if (conversationId) {
-                    console.log('🔄 Starting polling for conversation:', conversationId);
-                    startPolling();
-                }
-                // ====================================================
-                // METHOD 2: WITHOUT BROADCASTING (POLLING) END
-                // ====================================================
-
-            });
-
-            // Listen for conversation loaded
-            Livewire.on('conversation-loaded', () => {
-                setTimeout(() => {
-                    scrollToBottom(false);
-                    initIntersectionObserver();
-
-                    const container = document.getElementById('messagesContainer');
-                    if (container) {
-                        container.removeEventListener('scroll', handleScroll);
-                        container.addEventListener('scroll', handleScroll);
-                    }
-
-                    // Get the last message ID for polling reference
-                    const lastMessage = document.querySelector('.message-item:last-child');
-                    if (lastMessage) {
-                        lastMessageId = parseInt(lastMessage.dataset.messageId);
-                    }
-                }, 100);
-            });
-
-            // Listen for scroll to bottom event
-            Livewire.on('scroll-to-bottom', () => {
-                setTimeout(() => scrollToBottom(true), 100);
-            });
-
-            // Listen for check scroll position
-            Livewire.on('check-scroll-position', () => {
-                if (isUserAtBottom) {
-                    setTimeout(() => {
-                        scrollToBottom(true);
-                        initIntersectionObserver();
-                    }, 100);
-                } else {
-                    setTimeout(() => initIntersectionObserver(), 100);
-                }
-            });
-
-            // Listen for new messages polled (from polling method)
-            Livewire.on('messages-updated', () => {
-                // Update last message ID
                 const lastMessage = document.querySelector('.message-item:last-child');
                 if (lastMessage) {
                     lastMessageId = parseInt(lastMessage.dataset.messageId);
                 }
-            });
-
-            // Initialize on load
-            setTimeout(() => {
-                if (document.getElementById('messagesContainer')) {
-                    initIntersectionObserver();
-                }
-            }, 500);
+            }, 100);
         });
 
-        // Cleanup on navigation
-        document.addEventListener('livewire:navigating', () => {
-            // Stop polling when navigating away
-            stopPolling();
+        Livewire.on('scroll-to-bottom', () => {
+            setTimeout(() => scrollToBottom(true), 100);
+        });
 
-            // Clean up broadcasting channel if used
-            if (conversationChannel) {
-                window.Echo.leave(conversationChannel);
+        Livewire.on('check-scroll-position', () => {
+            if (isUserAtBottom) {
+                setTimeout(() => {
+                    scrollToBottom(true);
+                    initIntersectionObserver();
+                }, 100);
+            } else {
+                setTimeout(() => initIntersectionObserver(), 100);
             }
+        });
 
+        Livewire.on('messages-updated', () => {
+            const lastMessage = document.querySelector('.message-item:last-child');
+            if (lastMessage) {
+                lastMessageId = parseInt(lastMessage.dataset.messageId);
+            }
+        });
+
+        document.addEventListener('livewire:navigating', () => {
+            stopPolling();
+            if (conversationChannel) {
+                window.Echo?.leave(conversationChannel);
+            }
             if (intersectionObserver) {
                 intersectionObserver.disconnect();
             }
-
             const container = document.getElementById('messagesContainer');
             if (container) {
                 container.removeEventListener('scroll', handleScroll);
             }
         });
 
-        // Stop polling when tab is not visible (optional, saves resources)
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 stopPolling();
             } else {
-                // Resume polling when tab becomes visible again
                 const container = document.getElementById('messagesContainer');
                 if (container && container.dataset.conversationId) {
                     startPolling();
                 }
             }
+        });
+
+        setTimeout(() => {
+            if (document.getElementById('messagesContainer')) {
+                initIntersectionObserver();
+            }
+        }, 500);
+
+        // Image Zoom Functionality
+        let isZoomed = false;
+        window.toggleZoom = function(event) {
+            const img = event.target;
+            if (!isZoomed) {
+                img.style.transform = 'scale(2)';
+                img.style.cursor = 'zoom-out';
+                isZoomed = true;
+            } else {
+                img.style.transform = 'scale(1)';
+                img.style.cursor = 'zoom-in';
+                isZoomed = false;
+            }
+        }
+
+        // Reset zoom when overlay closes
+        Livewire.on('image-overlay-closed', () => {
+            isZoomed = false;
         });
     </script>
 @endscript

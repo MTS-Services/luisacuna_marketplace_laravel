@@ -58,64 +58,6 @@
                         // ],
                     ]" />
 
-
-
-
-                <x-backend.navlink type="dropdown" icon="gamepad-directional" name="Game Management" :page_slug="$active"
-                    :items="[
-                        [
-                            'name' => 'Categories',
-                            'route' => route('admin.gm.category.index'),
-                            'icon' => 'gamepad-2',
-                            'active' => 'game-category',
-                            'permission' => 'category-list',
-                        ],
-                    
-                        // [
-                        //     'name' => 'Servers',
-                        //     'route' => route('admin.gm.server.index'),
-                        //     'icon' => 'swords',
-                        //     'active' => 'server',
-                        //     'permission' => 'server-list',
-                        // ],
-                    
-                        [
-                            'name' => 'Platforms',
-                            'route' => route('admin.gm.platform.index'),
-                            'icon' => 'swords',
-                            'active' => 'game-platform',
-                            'permission' => 'platform-list',
-                        ],
-                    
-                        [
-                            'name' => 'Games',
-                            'route' => route('admin.gm.game.index'),
-                            'icon' => 'swords',
-                            'active' => 'game',
-                            'permission' => 'game-list',
-                        ],
-                    
-                        // [
-                        //     'name' => 'Rarity',
-                        //     'route' => route('admin.gm.rarity.index'),
-                        //     'icon' => 'swords',
-                        //     'active' => 'game-rarity',
-                        // ],
-                    
-                        // [
-                        //     'name' => 'Pending Users',
-                        //     'route' => '#',
-                        //     'icon' => 'user-plus',
-                        //     'active' => 'admin-users-pending',
-                        // ],
-                    
-                        // [
-                        //     'name' => 'Banned Users',
-                        //     'route' => '#',
-                        //     'icon' => 'user-round-x',
-                        //     'active' => 'admin-users-banned',
-                        // ],
-                    ]" />
                 <x-backend.navlink type="dropdown" icon="user-group" name="Users" :page_slug="$active"
                     :items="[
                         [
@@ -261,6 +203,38 @@
                 <x-backend.navlink type="dropdown" icon="box" name="Products" :page_slug="$active"
                     :items="$productItems" />
 
+                <x-backend.navlink type="dropdown" icon="layers" name="Order Management" :page_slug="$active"
+                    :items="[
+                        [
+                            'name' => 'All Orders',
+                            'route' => route('admin.orders.index'),
+                            'icon' => 'trophy',
+                            'active' => 'order-management',
+                            'permission' => 'rank-list',
+                        ],
+                        [
+                            'name' => 'Paid Orders',
+                            'route' => route('admin.orders.paid-orders'),
+                            'icon' => 'award',
+                            'active' => 'paid-orders',
+                            'permission' => 'achievement-type-list',
+                        ],
+                        [
+                            'name' => 'Complete Orders',
+                            'route' => route('admin.orders.completed-orders'),
+                            'icon' => 'medal',
+                            'active' => 'completed-orders',
+                            'permission' => 'achievement-list',
+                        ],
+                        [
+                            'name' => 'Cancelled Orders',
+                            'route' => route('admin.orders.cancelled-orders'),
+                            'icon' => 'medal',
+                            'active' => 'cancelled-orders',
+                            'permission' => 'achievement-list',
+                        ],
+                    ]" />
+
                 <x-backend.navlink type="dropdown" icon="layers" name="Level Management" :page_slug="$active"
                     :items="[
                         [
@@ -275,7 +249,7 @@
                             'route' => route('admin.rm.achievementType.index'),
                             'icon' => 'award',
                             'active' => 'achievement-type',
-                            'permission' => 'achievement-type-list',
+                            // 'permission' => 'achievement-type-list',
                         ],
                         [
                             'name' => 'Achievements',
@@ -290,22 +264,28 @@
                 <x-backend.navlink type="dropdown" icon="currency-dollar" name="Finance Management" :page_slug="$active"
                     :items="[
                         [
-                            'name' => 'Transactions',
-                            'route' => '#',
+                            'name' => 'All Transactions',
+                            'route' => route('admin.finance.index'),
                             'icon' => 'badge-dollar-sign',
-                            'active' => 'transaction',
+                            'active' => 'finance-management',
+                        ],
+                        [
+                            'name' => 'Top Ups',
+                            'route' => route('admin.finance.top-ups'),
+                            'icon' => 'dollar-sign',
+                            'active' => 'top-ups',
+                        ],
+                        [
+                            'name' => 'purchased',
+                            'route' => route('admin.finance.purchased'),
+                            'icon' => 'dollar-sign',
+                            'active' => 'purchased',
                         ],
                         [
                             'name' => 'Withdrawals',
-                            'route' => '#',
+                            'route' => route('admin.finance.withdrawals'),
                             'icon' => 'dollar-sign',
-                            'active' => 'withdrawal',
-                        ],
-                        [
-                            'name' => 'Escrow',
-                            'route' => '#',
-                            'icon' => 'heart-handshake',
-                            'active' => 'withdrawal',
+                            'active' => 'withdrawals',
                         ],
                     ]" />
                 <x-backend.navlink type="single" icon="percent" name="Fee Settings" :route="route('admin.fee-settings.fee-settings')"
@@ -314,8 +294,8 @@
                 <x-sidebar-separator title="Support" />
                 <x-backend.navlink type="single" icon="megaphone" name="Announcements" :route="route('admin.announcement.index')"
                     active="announcement" :page_slug="$active" />
-                <x-backend.navlink type="single" icon="messages-square" name="Chat List" :route="route('admin.chat.index')"
-                    active="chat" :page_slug="$active" />
+                <x-backend.navlink type="single" icon="messages-square" name="Chat List" :route="route('admin.conversation.index')"
+                    active="admin-conversations" :page_slug="$active" />
                 <x-backend.navlink type="dropdown" icon="headset" name="Supports" :page_slug="$active"
                     :items="[
                         [
@@ -350,22 +330,31 @@
                             'name' => 'Terms & Conditions',
                             'route' => route('admin.cms.terms-condition'),
                             'icon' => 'notebook-text',
-                            'active' => 'admin.cms.terms-condition',
+                            'active' => 'terms_condition',
                         ],
                         [
                             'name' => 'Privacy Policy',
                             'route' => route('admin.cms.privacy-policy'),
                             'icon' => 'notepad-text',
-                            'active' => 'admin.cms.privacy-policy',
+                            'active' => 'privacy_policy',
                         ],
                         [
                             'name' => 'Refunds Policy',
                             'route' => route('admin.cms.refund-policy'),
                             'icon' => 'notepad-text-dashed',
-                            'active' => 'admin.cms.refund-policy',
+                            'active' => 'refund_policy',
                         ],
                     ]" />
                 <x-sidebar-separator title="System" />
+                <x-backend.navlink type="dropdown" icon="squares-exclude" name="Withdrawal Management"
+                    :page_slug="$active" :items="[
+                        [
+                            'name' => 'Withdrawal Methods',
+                            'route' => route('admin.wm.method.index'),
+                            'icon' => 'wallet-minimal',
+                            'active' => 'withdrawal-method',
+                        ],
+                    ]" />
                 <x-backend.navlink type="dropdown" icon="squares-exclude" name="Gateway's & Integration"
                     :page_slug="$active" :items="[
                         [
@@ -468,11 +457,13 @@
 
                 <div class="space-y-2">
                     <flux:separator class="bg-accent!" />
-                    <x-backend.navlink type="single" icon="user" name="Profile" active="profile"
+                    <x-backend.navlink type="single" icon="user" name="Profile" active="profile" :route="route('admin.profile.index')"
                         :page_slug="$active" />
-                    <button wire:click="logout" class="w-full text-left">
-                        <x-backend.navlink type="single" icon="power" name="Logout" />
-                    </button>
+
+                    <form action="{{ route('admin.logout') }}" method="post" class="w-full inline-block">
+                        @csrf
+                        <x-backend.navlink type="single" icon="power" name="Logout" :isSubmission="true" />
+                    </form>
                 </div>
             </nav>
         </div>

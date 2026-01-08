@@ -5,7 +5,9 @@ namespace App\Livewire\Backend\User\Chat;
 use App\Enums\AttachmentType;
 use App\Enums\MessageType;
 use App\Models\Conversation;
+use App\Services\Cloudinary\CloudinaryService;
 use App\Services\ConversationService;
+use Cloudinary\Cloudinary;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\On;
@@ -28,9 +30,12 @@ class Message extends Component
 
     protected ConversationService $service;
 
-    public function boot(ConversationService $service)
+    protected CloudinaryService $cloudinaryService;
+
+    public function boot(ConversationService $service, CloudinaryService $cloudinaryService)
     {
         $this->service = $service;
+        $this->cloudinaryService = $cloudinaryService;
     }
 
     #[On('conversation-selected')]
@@ -193,7 +198,15 @@ class Message extends Component
 
     protected function uploadFile($file): array
     {
-        $path = $file->store('chat/attachments', 'public');
+        
+        
+        $uploadedFile = $this->cloudinaryService->upload($file, ['folder'=> "chats"]);
+        $path = $uploadedFile->publicId;
+    
+        
+
+
+
 
         $mimeType = $file->getMimeType();
         $attachmentType = AttachmentType::FILE;
@@ -218,8 +231,9 @@ class Message extends Component
     protected function createThumbnail($file): ?string
     {
         try {
-            $thumbnailPath = 'chat/thumbnails/' . uniqid() . '_thumb.jpg';
-            $file->storeAs('public', $thumbnailPath);
+          
+            $uploadedFile = $this->cloudinaryService->upload($file, ['folder'=> "chats/thumbnails"]);
+            $thumbnailPath = $uploadedFile->publicId;
             return $thumbnailPath;
         } catch (\Exception $e) {
             return null;
@@ -328,6 +342,25 @@ class Message extends Component
             ->where('participant_id', '!=', Auth::id())
             ->first()?->participant;
     }
+
+// Add these properties
+public $showImageOverlay = false;
+public $selectedImageUrl = null;
+
+// Add these methods
+public function ShowAttachemntImage($encryptedUrl)
+{
+    $this->showImageOverlay = true;
+    $this->selectedImageUrl = $encryptedUrl;
+}
+
+public function closeImageOverlay()
+{
+    $this->showImageOverlay = false;
+    $this->selectedImageUrl = null;
+    $this->dispatch('image-overlay-closed');
+}
+
 
     public function render()
     {

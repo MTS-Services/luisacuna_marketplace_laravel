@@ -20,12 +20,14 @@
             {{-- Left Column --}}
             <div class="flex flex-col h-auto px-4   ">
                 <h2 class="text-xl font-semibold mb-6 border-b border-zinc-100 pb-2 text-text-primary">
-                    {{ __('Profile Image') }}</h2>
+                    {{ __('Profile Image ') }}</h2>
                 <div
                     class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-pink-100 overflow-hidden flex justify-center text-ceneter items-center">
+                  
                     @if ($data->avatar)
-                        <img src="{{ Storage::url($data->avatar) }}" alt="Profile Image"
-                            class="w-full h-full object-cover">
+                        <x-cloudinary::image public-id="{{ $data->avatar_url }}"
+                            crop="cover" sizes="100vw" alt="{{ $data->name }}"
+                            class="rounded w-full h-full object-cover" />
                     @else
                         <span class="font-bold text-3xl">
                             {{ strtoupper(substr($data->name, 0, 2)) }}

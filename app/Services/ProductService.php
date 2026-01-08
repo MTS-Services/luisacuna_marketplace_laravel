@@ -41,6 +41,9 @@ public function findData($column_value, string $column_name = 'id')
         return $this->model->query()
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
+            ->with(['productTranslations' => function ($query) {
+                $query->where('language_id', get_language_id());
+            }])
             ->paginate($perPage);
     }
 
@@ -51,7 +54,6 @@ public function findData($column_value, string $column_name = 'id')
 
     public function searchData(string $query, $sortField = 'created_at', $order = 'desc'): Collection
     {
-        // return $this->model->search($query, $sortField, $order);
         return Collection::empty();
     }
 
@@ -85,8 +87,6 @@ public function findData($column_value, string $column_name = 'id')
 
 
                 foreach ($dynamic_data as $index => $datas) {
-
-                    //Not need to assing product id because CreateMany automatically assign this according relations
                     $configs[] = [
                         'game_config_id' => $index,
                         'value' => $datas['value'],
@@ -108,11 +108,6 @@ public function findData($column_value, string $column_name = 'id')
         });
     }
 
-    // public function updateData(int $id, array $data): Product
-    // {
-    //   //  return $this->updateAction->execute($id, $data);
-    //    return new Product();
-    // }
 
     public function updateData(int $id, array $data): Product
     {
@@ -131,20 +126,6 @@ public function findData($column_value, string $column_name = 'id')
             return $product->fresh();
         });
     }
-
-
-
-
-    // public function deleteData(int $id, bool $forceDelete = false, ?int $actionerId = null): bool
-    // {
-    //     if ($actionerId == null) {
-    //         $actionerId = admin()->id;
-    //     }
-
-    //     return true;
-    //     // return $this->deleteAction->execute($id, $forceDelete, $actionerId);
-    // }
-
 
     public function deleteProduct(int $id)
     {

@@ -14,8 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Rank extends AuditBaseModel implements Auditable
 {
-    use   AuditableTrait;
-    /** @use HasFactory<\Database\Factories\RankFactory> */
+    use AuditableTrait;
     use HasFactory;
 
     protected $fillable = [
@@ -33,7 +32,7 @@ class Rank extends AuditBaseModel implements Auditable
         'restored_by',
 
 
-      //here AuditColumns
+        //here AuditColumns
     ];
 
     protected $hidden = [
@@ -44,7 +43,7 @@ class Rank extends AuditBaseModel implements Auditable
 
     protected $casts = [
         //
-        'status'    => RankStatus::class,
+        'status' => RankStatus::class,
         'restored_at' => 'datetime',
     ];
 
@@ -52,16 +51,22 @@ class Rank extends AuditBaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     public function achievements(): HasMany
-     {
-         return $this->hasMany(Achievement::class, 'rank_id', 'id');
-     }
-     public function userRanks(): HasMany
-     {
-         return $this->hasMany(UserRank::class, 'rank_level', 'id');
-     }
+    public function achievements(): HasMany
+    {
+        return $this->hasMany(Achievement::class, 'rank_id', 'id');
+    }
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_ranks')
+            ->withPivot('activated_at', 'rank_id');
+    }
 
-     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+    // public function AchievementProgress()
+    // {
+    //     return $this->hasMany(UserAchievementProgress::class, 'rank_id', 'id');
+    // }
+
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
@@ -124,6 +129,4 @@ class Rank extends AuditBaseModel implements Auditable
             //
         ]);
     }
-
-
 }

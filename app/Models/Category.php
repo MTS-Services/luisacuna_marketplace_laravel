@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
+use App\Enums\CategoryLayout;
+use App\Enums\CategoryStatus;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use App\Traits\HasTranslations;
-use App\Enums\CategoryStatus;
-use App\Enums\CategoryLayout;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Category extends AuditBaseModel implements Auditable
 {
@@ -87,6 +87,11 @@ class Category extends AuditBaseModel implements Auditable
     public function products()
     {
         return $this->hasMany(Product::class, 'category_id', 'id');
+    }
+
+    public function userProduct($userId)
+    {
+        return $this->products()->where('user_id', $userId)->count();
     }
 
 

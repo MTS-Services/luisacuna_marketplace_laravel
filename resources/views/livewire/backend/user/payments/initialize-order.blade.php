@@ -2,19 +2,11 @@
 
     <form x-data="{
         quantity: @entangle('quantity').live,
-        price: {{ $product->price }},
+        price: {{ currency_exchange($product->price) }},
         stock: {{ $product->quantity }}
     }" wire:submit="submit">
-        <div class="bg-bg-secondary rounded-lg p-6 mb-6 ">
-            <div class="pt-4 mb-8">
-                <div class="flex justify-between items-center ">
-                    <span class="text-text-primary text-base">{{ __('Delivery time') }}
-                    </span>
-                    <span class="text-gray-100 sm:text-sm bg-pink-500  px-3 py-1 rounded-full">
-                        {{ $product->delivery_timeline }}
-                    </span>
-                </div>
-            </div>
+        <div class="bg-bg-primary dark:bg-bg-secondary rounded-lg p-6 mb-6">
+
 
             <div class="pt-4 mb-6">
                 <div class="flex justify-between items-center ">
@@ -26,7 +18,7 @@
             {{-- order incriment decriment --}}
             <div class="py-4 rounded-lg max-w-xl mx-auto">
                 <div class="flex items-center justify-between gap-2">
-                    <x-ui.button class="w-auto! py-1! px-3! rounded!"
+                    <x-ui.button class="w-auto! py-1.5! px-2.5! rounded!"
                         x-on:click.prevent="quantity = Math.max(1, quantity - 1)">
                         <flux:icon name="minus"
                             class="w-5 h-5 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
@@ -35,7 +27,7 @@
                     <x-ui.input type="number" x-model.number="quantity" min="1" :max="$product->quantity"
                         class="text-center w-22 py-1! px-3! border-zinc-500" />
 
-                    <x-ui.button class="w-auto! py-1! px-3! rounded!"
+                    <x-ui.button class="w-auto! py-1.5! px-2.5! rounded!"
                         x-on:click.prevent="quantity = Math.min(stock, quantity + 1)">
                         <flux:icon name="plus"
                             class="w-5 h-5 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
@@ -43,16 +35,31 @@
                 </div>
 
                 <div>
+                    <div class="pt-4">
+                        <div class="flex justify-between items-center ">
+                            <span class="text-xs text-text-secondary">{{ __('Delivery time') }}
+                            </span>
+                            <span class="text-xs text-text-secondary">
+                                {{ $product->delivery_timeline }}
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-center mt-2 ">
+                            <span class="text-xs text-text-secondary">{{ __('Platform') }}
+                            </span>
+                            <span class="text-xs text-text-secondary">
+                                {{ $product->platform->name }}
+                            </span>
+                        </div>
+                    </div>
                     @foreach ($product->product_configs as $config)
                         @if (!$config->game_configs->field_name)
                             @continue
                         @endif
-                        <div class="flex justify-between mt-3 text-xs text-gray-400">
+                        <div class="flex justify-between mt-2 text-xs text-text-secondary">
                             <span>{{ $config->game_configs->field_name }}</span>
                             <span>{{ $config->value }}</span>
                         </div>
                     @endforeach
-
                 </div>
             </div>
         </div>
@@ -62,9 +69,9 @@
 
 
         <!-- Delivery Instructions -->
-        <div class="bg-bg-secondary rounded-lg  mb-6 px-4 py-4 ">
+        <div class="bg-bg-primary dark:bg-bg-secondary rounded-lg   px-4 py-4 ">
 
-            <div class="pt-4 mb-8">
+            {{-- <div class="pt-4 mb-8">
                 <div class="flex justify-between items-center border-b border-zinc-500/60 pb-4">
                     <span class="text-text-primary text-base">{{ __('Price') }}
                     </span>
@@ -74,20 +81,21 @@
                             class="text-text-btn-primary group-hover:text-text-btn-secondary"></span>
                     </span>
                 </div>
-            </div>
+            </div> --}}
             <!-- Buy Button -->
             @auth('web')
-                <x-ui.button class="w-full mb-6 py-2!" type="submit">
-                    PEN <span x-text="(quantity * price).toFixed(2)"
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary "></span>
-                    {{ __('Buy Now') }}
+                <x-ui.button class="w-full  py-2!" type="submit">
+                    {{ currency_symbol() }}<span x-text="(quantity * price).toFixed(2)"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary ">
+                    </span>
+                    {{ __('| Buy Now') }}
                 </x-ui.button>
             @else
                 <a href="{{ route('login') }}" wire:navigate
-                    class="bg-zinc-500 px-4 md:px-6 py-2! md:py-2! text-text-btn-primary hover:text-text-btn-secondary hover:bg-zinc-50 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group text-nowrap cursor-pointer w-full mb-6">
-                    PEN <span x-text="(quantity * price).toFixed(2)"
+                    class="bg-zinc-500 px-4  py-2!  text-text-btn-primary hover:text-text-btn-secondary hover:bg-zinc-50 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group text-nowrap cursor-pointer w-full mb-6">
+                    PEN<span x-text="(quantity * price).toFixed(2)"
                         class=" text-text-btn-primary group-hover:text-text-btn-secondary"></span>
-                    {{ __('Buy Now') }}
+                    {{ __('| Buy Now') }}
                 </a>
             @endauth
             <!-- Guarantees -->
@@ -100,7 +108,7 @@
                             clip-rule="evenodd"></path>
                     </svg>
                     <div>
-                        <p class="font-semibold text-sm">{{ __('Money-back Guarantee') }}</p>
+                        <p class="font-semibold text-sm text-text-primary">{{ __('Money-back Guarantee') }}</p>
                         <p class="text-xs text-gray-400">{{ __('Protected by TradeShield') }}</p>
                     </div>
                 </div>
@@ -113,7 +121,7 @@
                         </path>
                     </svg>
                     <div class="flex">
-                        <p class="font-semibold text-sm">{{ __('Fast Checkout Options') }}</p>
+                        <p class="font-semibold text-sm text-text-primary">{{ __('Fast Checkout Options') }}</p>
                         <div class="flex gap-0 ">
                             <span class="text-xs   px-2 rounded">
                                 <img src="{{ asset('assets/images/GooglePay-Light 1.svg') }}" alt="">
@@ -133,34 +141,37 @@
                         </path>
                     </svg>
                     <div>
-                        <p class="font-semibold text-sm">{{ __('24/7 Live Support') }}</p>
+                        <p class="font-semibold text-sm text-text-primary">{{ __('24/7 Live Support') }}</p>
                         <p class="text-xs text-gray-400">{{ __('We\'re always here to help') }}</p>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Delivery Instructions -->
-       <!-- Delivery Instructions -->
-        <div class="bg-bg-secondary rounded-lg  mb-6 px-4 py-4 ">
- 
- 
- 
- 
+        <!-- Delivery Instructions -->
+        <div class="bg-bg-primary dark:bg-bg-secondary rounded-lg   mt-6 px-4 py-4 ">
+
+
+
+
             <div class="  mt-2 pt-3 flex items-center justify-between gap-2">
- 
+
                 <div class="w-18 h-14 relative">
-                    <img src="{{ storage_url('http://127.0.0.1:8000/assets/images/default_profile.jpg') }}"
-                        class="w-14 h-14 rounded-full border-2 border-white" alt="profile" />
+                   
+                    <x-cloudinary::image publicId="{{ $product->user->avatar_url }}" alt="{{ $product->user->name}}" class="w-full h-full object-cover" />
+                    
                     <span class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
- 
+
                 </div>
- 
+
                 <div class="w-full">
-                    <p class="text-text-white font-medium flex items-center gap-2">
-                        <span> {{ 'Username' }}</span>
-                        <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
+                    <p class="text-text-primary font-medium flex items-center gap-2">
+                        <span> {{ $product->user->full_name }}</span>
+                        @if ($product->user->seller?->seller_verified_at)
+                            <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
+                        @endif
                     </p>
- 
+
                     <div class="flex items-center space-x-2 mt-0">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="w-5 h-5 fill-zinc-500">
@@ -171,151 +182,76 @@
                     </div>
                 </div>
             </div>
- 
-            <h3 class="font-bold m-4">{{ __('Offer Description') }}</h3>
-            <div class="flex gap-4 m-4">
-                <button class="text-sm">{{ __('What We provide in Fornite Account:') }}</button>
- 
+
+            <h3 class="font-bold m-4 text-text-primary">{{ __('Seller Description') }}</h3>
+            <div x-data="{
+                expanded: false,
+                limit: 50,
+                fullText: `{!! addslashes($product->user->description ?? '') !!}`,
+                get words() {
+                    // Remove HTML tags and split into words
+                    return this.fullText.replace(/(<([^>]+)>)/gi, '').trim().split(/\s+/);
+                },
+                get shortText() {
+                    return this.words.slice(0, this.limit).join(' ');
+                },
+                get hasMore() {
+                    return this.words.length > this.limit;
+                }
+            }" class="m-4">
+
+                <!-- Description -->
+                <p class="text-text-secondary text-sm">
+                    <span x-show="!expanded">
+                        <span x-text="shortText"></span>
+                        <span x-show="hasMore">...</span>
+                    </span>
+
+                    <span x-show="expanded" x-html="fullText" x-cloak></span>
+                </p>
+
+                <!-- Toggle Button -->
+                <button type="button" x-show="hasMore" @click="expanded = !expanded"
+                    class="flex items-center justify-center mx-auto mt-2 text-pink-500 font-semibold gap-1">
+                    <span x-text="expanded ? 'View Less' : 'View More'"></span>
+                    <svg class="w-6 h-6 transition-transform duration-200" :class="expanded ? 'rotate-180' : ''"
+                        fill="#ff2e91" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </button>
+
             </div>
-            <div class="flex items-start gap-2 m-4">
-                <svg width="20" height="20" fill="#a78bfa" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd"
-                        d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm9.707 5.707a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clip-rule="evenodd">
-                    </path>
-                </svg>
-                <div>
-                    <p class="font-semibold text-sm ">{{ __('Free Account') }}</p>
-                </div>
-            </div>
- 
-            <div class="flex items-start gap-2 m-4">
-                <svg width="20" height="20" fill="#a78bfa" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd"
-                        d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm9.707 5.707a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clip-rule="evenodd">
-                    </path>
-                </svg>
-                <div>
-                    <p class="font-semibold text-sm ">{{ __('0 Hours') }}</p>
-                </div>
-            </div>
- 
-            <div class="flex items-start gap-2 m-4">
-                <svg width="20" height="20" fill="#a78bfa" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd"
-                        d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm9.707 5.707a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clip-rule="evenodd">
-                    </path>
-                </svg>
-                <div>
-                    <p class="font-semibold text-sm ">{{ __('Epic Games') }}</p>
-                </div>
-            </div>
- 
-            <h1 class="m-4">{{ __("What We Don't Provide in Fornite Account:") }} </h1>
- 
-            <p class="m-4">
-                {{ __("If you encounter issues, don't worry, I'm just a message away. I'm mostly online, but if I don't reply
-                                                                                immediately, I might be sleeping. I'll respond and resolve your issue as soon as I can. Please mark the
-                                                                                order as received after checking the account and provide feedback. Thank you. placeholder") }}
-            </p>
- 
-            <button
-                class="bg-[#1a0b2e] text-pink-500 px-6 py-3 rounded flex items-center gap-2 hover:bg-[#2a1545] transition-colors mx-auto block">
-                View Less
-                <svg class="w-6 h-6" fill="#ff2e91" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd"
-                        d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
-                        clip-rule="evenodd" />
-                </svg>
-            </button>
- 
- 
-            <button class=" text-xl mt-4 mb-4 font-medium">{{ __('Recent feedback') }}</button>
+
+        </div>
+        <div class="bg-bg-primary dark:bg-bg-secondary rounded-lg   mt-6 px-4 py-4 ">
+
+
+
+            <button class=" text-3xl mt-5 mb-4 font-semibold text-text-primary">{{ __('Recent feedback') }}</button>
             <!-- Seller Card -->
-            <div class="bg-bg-info text-white p-5 rounded-sm max-w-md border-b border-black/50">
-                <div class="flex items-start justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="#853EFF" viewBox="0 0 20 20">
-                            <path
-                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                        </svg>
-                        <h3 class="text-base font-medium">
-                            Items <span class="text-gray-400 font-normal">| Yeg***</span>
-                        </h3>
+            @foreach ([1, 2] as $item)
+                <div class="bg-bg-optional dark:bg-bg-info text-white p-5  max-w-md mb-1">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="#853EFF" viewBox="0 0 20 20">
+                                <path
+                                    d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                            </svg>
+                            <h3 class="text-base font-medium  text-text-primary">
+                                Items <span class="text-text-secondary font-normal">| Yeg***</span>
+                            </h3>
+                        </div>
+                        <span class="text-text-secondary text-sm whitespace-nowrap">24.10.25</span>
                     </div>
-                    <span class="text-gray-400 text-sm whitespace-nowrap">24.10.25</span>
+                    <p class="text-text-secondary text-sm">Yeg***</p>
                 </div>
-                <p class="text-gray-300 text-sm">Yeg***</p>
-            </div>
- 
-            <div class="bg-bg-info text-white p-5 rounded-sm max-w-md border-b border-black/50">
-                <div class="flex items-start justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="#853EFF" viewBox="0 0 20 20">
-                            <path
-                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                        </svg>
-                        <h3 class="text-base font-medium">
-                            Items <span class="text-gray-400 font-normal">| Yeg***</span>
-                        </h3>
-                    </div>
-                    <span class="text-gray-400 text-sm whitespace-nowrap">24.10.25</span>
-                </div>
-                <p class="text-gray-300 text-sm">Yeg***</p>
-            </div>
- 
-            <div class="bg-bg-info text-white p-5 rounded-sm max-w-md border-b border-black/50">
-                <div class="flex items-start justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="#853EFF" viewBox="0 0 20 20">
-                            <path
-                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                        </svg>
-                        <h3 class="text-base font-medium">
-                            Items <span class="text-gray-400 font-normal">| Yeg***</span>
-                        </h3>
-                    </div>
-                    <span class="text-gray-400 text-sm whitespace-nowrap">24.10.25</span>
-                </div>
-                <p class="text-gray-300 text-sm">Yeg***</p>
-            </div>
- 
-            <div class="bg-bg-info text-white p-5 rounded-sm max-w-md border-b border-black/50">
-                <div class="flex items-start justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="#853EFF" viewBox="0 0 20 20">
-                            <path
-                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                        </svg>
-                        <h3 class="text-base font-medium">
-                            Items <span class="text-gray-400 font-normal">| Yeg***</span>
-                        </h3>
-                    </div>
-                    <span class="text-gray-400 text-sm whitespace-nowrap">24.10.25</span>
-                </div>
-                <p class="text-gray-300 text-sm">Yeg***</p>
-            </div>
- 
-            <div class="bg-bg-info text-white p-5 rounded-sm max-w-md ">
-                <div class="flex items-start justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="#853EFF" viewBox="0 0 20 20">
-                            <path
-                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                        </svg>
-                        <h3 class="text-base font-medium">
-                            Items <span class="text-gray-400 font-normal">| Yeg***</span>
-                        </h3>
-                    </div>
-                    <span class="text-gray-400 text-sm whitespace-nowrap">24.10.25</span>
-                </div>
-                <p class="text-gray-300 text-sm">Yeg***</p>
+            @endforeach
+            <div class="mt-5">
+                <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{ __('All feedback') }}</x-ui.button>
             </div>
         </div>
- 
-
 
     </form>
 

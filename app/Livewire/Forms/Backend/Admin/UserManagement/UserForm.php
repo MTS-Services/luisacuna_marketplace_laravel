@@ -3,46 +3,28 @@
 namespace App\Livewire\Forms\Backend\Admin\UserManagement;
 
 use Livewire\Form;
-
 use App\Enums\UserAccountStatus;
 use Illuminate\Http\UploadedFile;
 use Livewire\Attributes\Locked;
-
 
 class UserForm extends Form
 {
     #[Locked]
     public ?int $user_id = null;
 
-    public ?string $first_name = '';
-
-    public ?string $last_name = '';
-
-    public ?string $username = null;
-
-    public ?string $date_of_birth = '';
-
-    public ?string $display_name = '';
-
-    public ?string $email = '';
-
-    public ?string $password = '';
-
-    public ?string $password_confirmation = '';
-
-    public ?string $phone = '';
-
-    public string $account_status;
-
+    public string $first_name = '';
+    public string $last_name = '';
+    public string $username = '';
+    public string $date_of_birth = '';
+    public string $display_name = '';
+    public string $email = '';
+    public string $password = '';
+    public string $password_confirmation = '';
+    public string $phone = '';
+    public string $account_status = '';
     public ?string $reason = null;
-    public ?string $description = '';
+    public string $description = '';
 
-
-    // public ?UploadedFile $avatar = null;
-
-    // public bool $remove_avatar = false;
-
-    // public ?bool $remove_file = false;
     public ?UploadedFile $avatar = null;
     public $avatars = null;
 
@@ -50,9 +32,7 @@ class UserForm extends Form
     public bool $remove_file = false;
     public array $removed_files = [];
 
-
     public ?string $originalAccountStatus = null;
-
 
     public function rules(): array
     {
@@ -60,16 +40,17 @@ class UserForm extends Form
 
         $rules = [
             'first_name' => 'required|string|max:255',
-            'last_name' => 'nullable|string|max:255',
-            'username' => $this->isUpdating() ? 'nullable|string|max:255|regex:/^[A-Za-z0-9_\-\$]+$/|unique:users,username,' . $this->user_id : 'required|string|max:255|unique:users,username|regex:/^[A-Za-z0-9_\-\$]+$/',
+            'last_name' => 'required|string|max:255',
+            'username' => $this->isUpdating() 
+                ? 'required|string|max:255|regex:/^[A-Za-z0-9_\-\$]+$/|unique:users,username,' . $this->user_id 
+                : 'required|string|max:255|unique:users,username|regex:/^[A-Za-z0-9_\-\$]+$/',
             'date_of_birth' => 'nullable|date',
             'email' => 'required|email|max:255|unique:users,email,' . $this->user_id,
             'password' => $this->isUpdating() ? 'nullable|string|min:8' : 'required|string|min:8|confirmed',
             'phone' => 'nullable|string|max:20',
             'account_status' => 'required|string|in:' . implode(',', array_column(UserAccountStatus::cases(), 'value')),
             'reason' => $reasonRule,
-            'avatar' => 'nullable|image|max:2048|dimensions:max_width=300,max_height=300',
-            // Track removed files
+            'avatar' => 'nullable|image|max:2048',
             'remove_file' => 'nullable|boolean',
             'description' => 'nullable|string|max:500',
         ];
@@ -80,16 +61,16 @@ class UserForm extends Form
     public function setData($user): void
     {
         $this->user_id = $user->id;
-        $this->first_name = $user->first_name;
-        $this->last_name = $user->last_name;
-        $this->username = $user->username ?? null;
-        $this->date_of_birth = $user->date_of_birth;
-        $this->email = $user->email;
-        $this->phone = $user->phone;
-        $this->account_status = $user->account_status->value;
-        $this->originalAccountStatus = $user->account_status->value;
+        $this->first_name = $user->first_name ?? '';
+        $this->last_name = $user->last_name ?? '';
+        $this->username = $user->username ?? '';
+        $this->date_of_birth = $user->date_of_birth ?? '';
+        $this->email = $user->email ?? '';
+        $this->phone = $user->phone ?? '';
+        $this->account_status = $user->account_status->value ?? UserAccountStatus::ACTIVE->value;
+        $this->originalAccountStatus = $user->account_status->value ?? UserAccountStatus::ACTIVE->value;
         $this->reason = null;
-        $this->description = $user->description;
+        $this->description = $user->description ?? '';
     }
 
     public function reset(...$properties): void
@@ -116,15 +97,6 @@ class UserForm extends Form
         return !empty($this->user_id);
     }
 
-    // protected function isAccountStatusChanged(): bool
-    // {
-    //     // Update user account_status change  check if account_status was changed
-    //     return $this->isUpdating() &&
-    //         $this->originalAccountStatus !== null &&
-    //         $this->originalAccountStatus !== $this->account_status;
-    // }
-
-    // Public helper method - Blade
     public function shouldShowReasonField(): bool
     {
         return $this->isAccountStatusChanged();
@@ -157,5 +129,19 @@ class UserForm extends Form
 
         return $data;
     }
+
+    public function all(): array
+    {
+        return [
+            'user_id' => $this->user_id,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'username' => $this->username,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'date_of_birth' => $this->date_of_birth,
+            'description' => $this->description,
+            'account_status' => $this->account_status,
+        ];
+    }
 }
-        

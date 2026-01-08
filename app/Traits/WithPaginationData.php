@@ -1,23 +1,25 @@
-<?php 
+<?php
 
 
 namespace App\Traits;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 
 trait WithPaginationData
 {
-    use  WithPagination;
-    
-    public $pagination = [];
 
-    protected $perPage = 15;
+    use  WithPagination;
+
+    public $pagination = [];
+    #[Url()]
+    protected $perPage = 12;
 
     protected  $queryString = 1;
-    protected function paginationData(LengthAwarePaginator $paginator): array
+    public function paginationData(LengthAwarePaginator $paginator): void
     {
-        return [
+        $this->pagination =  [
             'current_page' => $paginator->currentPage(),
             'last_page'    => $paginator->lastPage(),
             'per_page'     => $paginator->perPage(),
@@ -26,6 +28,4 @@ trait WithPaginationData
             'to'           => $paginator->lastItem(),
         ];
     }
-
-
 }

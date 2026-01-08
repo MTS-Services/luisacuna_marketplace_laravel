@@ -1,10 +1,19 @@
 <header x-data="{ mobileMenuOpen: false, notification: false, dropdown: '', globalSearchModal: false, open: '' }" x-cloak
-    class="sticky top-0 z-50   {{ request()->routeIs('home') ? 'bg-bg-secondary via-text-text-white to-zinc-950/50 glass-card shadow-none!' : 'bg-bg-secondary glass-card' }}">
+    class="sticky top-0 z-50   {{ request()->routeIs('home') ? 'bg-bg-secondary glass-card shadow-none!' : 'bg-bg-secondary glass-card' }}">
     <div class=" px-4 py-4 flex items-center justify-between relative" x-cloak>
+
         <div class="flex flex-row-reverse items-center justify-center">
-            <div class="hidden xxs:flex ml-4 lg:ml-0 scale-75 xl:scale-100">
-                <a href="{{ route('home') }}" wire:navigate>
-                    <img src="{{ asset('assets/images/header_logo.png') }}" alt="{{ __('Logo') }}"></a>
+            <div class="hidden xxs:flex  lg:ml-0 scale-75 xl:scale-100">
+                <a href="{{ route('home') }}" wire:navigate
+                    class="inline-block inline-flex gap-1 items-center justify-center">
+
+                    {{-- <img src="{{ asset('assets/images/header_logo.png') }}" alt="{{ __('Logo') }}"></a> --}}
+                    <x-cloudinary::image public-id="{{ app_logo() }}" removeBackground crop="scale" sizes="100vw"
+                        class="rounded w-8 h-6" alt="{{ site_name() }}" />
+                    <p>
+                        {{ short_name() }}
+                    </p>
+                </a>
             </div>
             {{-- Mobile menu button --}}
             <button @click="mobileMenuOpen = !mobileMenuOpen"
@@ -15,6 +24,8 @@
                 </svg>
             </button>
         </div>
+
+
         @include('partials.user-navigation')
 
         {{-- Main Navigation Icons --}}
@@ -34,10 +45,23 @@
 
             @auth('web')
                 <div class="flex items-center justify-center gap-1">
-                    <a href="{{ route('user.messages') }}" wire:navigate
-                        class=" rounded-full bg-transparent  transition-colors">
+                    {{-- <a href="{{ route('user.messages') }}" wire:navigate
+                        class="">
                         <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-text-white" />
-                    </a>
+                    </a> --}}
+                    <button class="py-0.5 mt-1 rounded-full bg-transparent transition-colors"
+                        @click="$dispatch('user-message-notification-show')">
+                        <div class="relative inline-flex">
+                            <flux:icon name="chat-bubble-oval-left" class="w-6 h-6 text-text-text-white" />
+                            @if ($unreadMessageCount > 0)
+                                <span
+                                    class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 text-[10px] text-white">
+                                    {{ $unreadMessageCount }}
+                                </span>
+                            @endif
+                        </div>
+                    </button>
+
                     <button class="py-0.5 mt-1 rounded-full bg-transparent transition-colors"
                         @click="$dispatch('user-notification-show')">
                         <div class="relative inline-flex">
@@ -53,13 +77,15 @@
                     </button>
                 </div>
 
+                <livewire:backend.user.messages.message-notificaiton-sidebar />
+
                 <livewire:backend.user.notifications.notification-sidebar />
             @endauth
 
             <div class="flex items-center" x-data>
 
                 @guest
-                    <div class="flex 
+                    <div class="flex
                     {{-- bg-zinc-200 dark:bg-zinc-800 --}}
                      lg:p-1 rounded-full">
                         {{-- <!-- Light/Dark Mode Toggle -->
@@ -107,31 +133,13 @@
 
                 @auth
                     <div
-                        class="hidden md:flex 
+                        class="hidden md:flex
                     {{-- bg-zinc-200 dark:bg-zinc-800 --}}
                      lg:p-1 rounded-full">
-                        <!-- Light/Dark Mode Toggle -->
-                        {{-- <button type="button" @click="$flux.dark = false" :aria-pressed="!$flux.dark"
-                            class="flex items-center justify-center w-8 h-6 text-lg rounded-l-full transition-colors duration-200 xl:flex"
-                            :class="!$flux.dark ? 'bg-zinc-400 text-text-white' :
-                                'bg-transparent text-zinc-600 dark:text-zinc-300'">
-                            <flux:icon name="sun" class="w-5 h-5 stroke-white" />
-                        </button>
-
-                        <button type="button" @click="$flux.dark = true" :aria-pressed="$flux.dark"
-                            class="flex items-center justify-center w-8 h-6 text-lg rounded-r-full transition-colors duration-200 xl:flex"
-                            :class="$flux.dark ? 'bg-zinc-400 text-text-white' :
-                                'bg-transparent text-zinc-600 dark:text-zinc-300'">
-                            <flux:icon name="moon" class="w-5 h-5 stroke-current" />
-                        </button> --}}
 
 
                         <button type="button" @click="$flux.dark = !$flux.dark" :aria-pressed="$flux.dark"
-                            class="flex items-center justify-center w-9 h-9 rounded-full
-           transition-all duration-300
-           {{-- bg-zinc-200 dark:bg-zinc-700 --}}
-           text-zinc-700 dark:text-zinc-200">
-
+                            class="flex items-center justify-center w-9 h-9 rounded-fulltransition-all duration-300 text-zinc-700 dark:text-zinc-200">
                             <!-- Sun -->
                             <flux:icon x-show="!$flux.dark" name="sun"
                                 class="w-5 h-5 transition-transform duration-300" />

@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\User\VerifyEmailController as UserVerifyEmailContr
 use App\Http\Controllers\Auth\Admin\VerifyEmailController as AdminVerifyEmailController;
 use App\Http\Controllers\Auth\User\RegisterController;
 use App\Http\Controllers\Auth\User\TwoFactorController as UserTwoFactorController;
+use App\Livewire\Actions\AdminLogout;
 use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Route;
 
@@ -20,12 +21,12 @@ Route::middleware('guest:web')->group(function () {
     })->name('login');
 
 
-        Route::controller(RegisterController::class)->name('register.')->prefix('register')->group(function () {
-            Route::get('/', 'signUp')->name('signUp');
-            Route::get('/email-verify', 'emailVerify')->name('emailVerify');
-            Route::get('/otp', 'otp')->name('otp');
-            Route::get('/password', 'password')->name('password');
-        });
+    Route::controller(RegisterController::class)->name('register.')->prefix('register')->group(function () {
+        Route::get('/', 'signUp')->name('signUp');
+        Route::get('/email-verify', 'emailVerify')->name('emailVerify');
+        Route::get('/otp', 'otp')->name('otp');
+        Route::get('/password', 'password')->name('password');
+    });
 
 
 
@@ -129,7 +130,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
             ->name('verification.verify');
     });
 
-    Route::post('logout', Logout::class)->name('logout');
+    Route::post('logout', AdminLogout::class)->name('logout');
 });
 
 

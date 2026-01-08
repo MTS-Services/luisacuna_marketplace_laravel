@@ -14,12 +14,12 @@
 
         <!-- Password Change Modal -->
         @if ($showModal)
-            <div class="fixed inset-0 dark:bg-bg-primary bg-black/50 flex items-center justify-center z-50"
+
+            <div class="fixed inset-0 dark:bg-bg-primary bg-black/50 flex items-center justify-center z-50 P-5"
                 @click.self="$wire.closeModal()">
-                <div class="dark:bg-bg-secondary bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl"
+                <div class="dark:bg-bg-secondary bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl m-2"
                     x-data="{
                         password: @entangle('form.password'),
-                        touched: false,
                     
                         get hasLowercase() {
                             return /[a-z]/.test(this.password);
@@ -34,7 +34,9 @@
                             return this.password && this.password.length >= 8;
                         },
                         get noSpaces() {
-                            return this.password && this.password === this.password.trim() && this.password.length > 0;
+                            if (!this.password) return false;
+                            const spaceCount = (this.password.match(/ /g) || []).length;
+                            return spaceCount <= 1 && this.password === this.password.trim() && this.password.length > 0;
                         },
                         get allValid() {
                             return this.hasLowercase && this.hasUppercase && this.hasNumber && this.hasMinLength && this.noSpaces;
@@ -53,7 +55,8 @@
                         <div class="w-full">
                             <x-ui.label value="Old password:"
                                 class="text-base! font-semibold! mb-3! text-text-white!" />
-                            <x-ui.input type="password" placeholder="Enter old password" class="border-0! bg-bg-optional!  placeholder:text-text-white"
+                            <x-ui.input type="password" placeholder="Enter old password"
+                                class="border-0! bg-bg-info!  placeholder:text-text-white"
                                 wire:model="form.password_old" />
                             <x-ui.input-error :messages="$errors->get('form.password_old')" />
                         </div>
@@ -62,67 +65,69 @@
                         <div class="w-full">
                             <x-ui.label value="New password:"
                                 class="text-base! font-semibold! mb-3! text-text-white!" />
-                            <x-ui.input type="password" placeholder="Enter new password" wire:model="form.password" class="border-0! bg-bg-optional!  placeholder:text-text-white"
-                                @blur="touched = true" />
+                            <x-ui.input type="password" placeholder="Enter new password" wire:model="form.password"
+                                class="border-0! bg-bg-info!  placeholder:text-text-white" />
                             <x-ui.input-error :messages="$errors->get('form.password')" />
                         </div>
 
-                        <!-- Validation Rules (Show after touch) -->
-                        <div x-show="touched" x-transition>
+                        <!-- Validation Rules (Always Visible) -->
+                        <div class="space-y-2">
                             <!-- Lowercase Letter -->
                             <div class="flex items-center gap-2">
                                 <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500"
                                     x-show="!hasLowercase" />
                                 <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500"
                                     x-show="hasLowercase" x-cloak />
+                                {{-- <x-phosphor name="check" variant="regular"
+                                    x-bind:class="hasLowercase ? 'w-4 h-4 text-green-500' : 'w-4 h-4 text-zinc-500'" /> --}}
                                 <p class="text-xs font-normal"
-                                    :class="hasLowercase ? 'text-zinc-500' : 'text-text-white'">
+                                    x-bind:class="hasLowercase ? 'text-green-500' : 'text-text-white'">
                                     {{ __('Password must contain a lowercase letter') }}
                                 </p>
                             </div>
 
                             <!-- Uppercase Letter -->
-                            <div class="flex items-center gap-2 mt-2">
-                                <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500"
-                                    x-show="!hasUppercase" />
-                                <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500"
-                                    x-show="hasUppercase" x-cloak />
+                            <div class="flex items-center gap-2">
+                                <x-phosphor name="check" variant="regular"
+                                    x-bind:class="hasUppercase ? 'w-4 h-4 text-green-500' : 'w-4 h-4 text-zinc-500'" />
                                 <p class="text-xs font-normal"
-                                    :class="hasUppercase ? 'text-zinc-500' : 'text-text-white'">
+                                    x-bind:class="hasUppercase ? 'text-green-500' : 'text-text-white'">
                                     {{ __('Password must contain an uppercase letter') }}
                                 </p>
                             </div>
 
                             <!-- Number -->
-                            <div class="flex items-center gap-2 mt-2">
+                            <div class="flex items-center gap-2">
                                 <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500"
-                                    x-show="!hasNumber" />
+                                    x-show="!hasUppercase" />
                                 <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500"
-                                    x-show="hasNumber" x-cloak />
-                                <p class="text-xs font-normal" :class="hasNumber ? 'text-zinc-500' : 'text-text-white'">
+                                    x-show="hasUppercase" x-cloak />
+                                <p class="text-xs font-normal"
+                                    x-bind:class="hasNumber ? 'text-green-500' : 'text-text-white'">
                                     {{ __('Password must contain a number') }}
                                 </p>
                             </div>
 
                             <!-- Min Length -->
-                            <div class="flex items-center gap-2 mt-2">
+                            <div class="flex items-center gap-2">
                                 <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500"
                                     x-show="!hasMinLength" />
                                 <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500"
                                     x-show="hasMinLength" x-cloak />
                                 <p class="text-xs font-normal"
-                                    :class="hasMinLength ? 'text-zinc-500' : 'text-text-white'">
+                                    x-bind:class="hasMinLength ? 'text-green-500' : 'text-text-white'">
                                     {{ __('Password must be at least 8 characters long') }}
                                 </p>
                             </div>
 
                             <!-- No Spaces -->
-                            <div class="flex items-center gap-2 mt-2">
+                            <div class="flex items-center gap-2">
                                 <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500"
                                     x-show="!noSpaces" />
                                 <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500"
                                     x-show="noSpaces" x-cloak />
-                                <p class="text-xs font-normal" :class="noSpaces ? 'text-zinc-500' : 'text-text-white'">
+                                <p class="text-xs font-normal"
+                                    x-bind:class="noSpaces ? 'text-green-500' : 'text-text-white'">
                                     {{ __('Password must not contain leading or trailing spaces') }}
                                 </p>
                             </div>
@@ -132,7 +137,8 @@
                         <div class="w-full">
                             <x-ui.label value="Re-enter new password:"
                                 class="text-base! font-semibold! mb-3! text-text-white!" />
-                            <x-ui.input type="password" placeholder="Re-enter new password" class="border-0! bg-bg-optional!  placeholder:text-text-white"
+                            <x-ui.input type="password" placeholder="Re-enter new password"
+                                class="border-0! bg-bg-info!  placeholder:text-text-white"
                                 wire:model="form.password_confirmation" />
                             <x-ui.input-error :messages="$errors->get('form.password_confirmation')" />
                         </div>
