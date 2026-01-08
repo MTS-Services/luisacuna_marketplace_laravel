@@ -80,7 +80,7 @@ class WithdrawalMethodService
             return $newData->fresh();
         });
     }
-   
+
     public function updateData(int $id, array $data): ?WithdrawalMethod
     {
         return DB::transaction(function () use ($id, $data) {
@@ -90,15 +90,19 @@ class WithdrawalMethodService
                 return null;
             }
 
-            $newData = $data;
+            $data['status'] = $data['status'] ?? ActiveInactiveEnum::ACTIVE;
+            $data['fee_type'] = $data['fee_type'] ?? WithdrawalFeeType::FIXED;
+            $data['required_fields'] = json_encode($data['required_fields']);
             
+            $newData = $data;
+
             $oldImagePath = $model->icon;
             $uploadedImage = Arr::get($data, 'icon');
             $removeFile = Arr::get($data, 'remove_file', false);
             $newSingleImagePath = null;
-            
+
             if ($uploadedImage instanceof UploadedFile) {
-                
+
                 if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
                     Storage::disk('public')->delete($oldImagePath);
                 }
@@ -110,21 +114,17 @@ class WithdrawalMethodService
                     ->putFileAs('withdrawal-method-icons', $uploadedImage, $fileName);
 
                 $newData['icon'] = $newSingleImagePath;
-            }
-            
-            elseif ($removeFile) {
+            } elseif ($removeFile) {
 
                 if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
                     Storage::disk('public')->delete($oldImagePath);
                 }
 
                 $newData['icon'] = null;
-            }
-            
-            else {
+            } else {
                 $newData['icon'] = $oldImagePath;
             }
-            
+
             unset($newData['remove_file']);
 
             $model->update($newData);
