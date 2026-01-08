@@ -2,18 +2,25 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
+use App\Models\AuditBaseModel;
+use App\Traits\AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class WithdrawalGateway extends BaseModel
+class UserAchievementProgress extends BaseModel
 {
-
     protected $fillable = [
+        'id',
         'sort_order',
-        'name',
-        'slug',
-        'icon',
-        'data',
-        'status',
+        'user_id',
+        'achievement_id',
+        'rank_id',
+        'current_progress',
+        'unlocked_at',
+        'achieved_at',
+        'created_at',
+        'updated_at',
+
+
     ];
 
     protected $hidden = [
@@ -21,14 +28,26 @@ class WithdrawalGateway extends BaseModel
     ];
 
     protected $casts = [
-        'status' => 'boolean',
+        //
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    //
+    public function user()
+    {
+        return $this->belongsTo(User::class , 'user_id', 'id');
+    }
+    public function achievement()
+    {
+        return $this->belongsTo(Achievement::class , 'achievement_id', 'id');
+    }
+
+    public function rank()
+    {
+        return $this->belongsTo(Rank::class , 'rank_id', 'id');
+    }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS

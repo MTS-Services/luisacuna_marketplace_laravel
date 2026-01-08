@@ -3,7 +3,7 @@
 namespace App\Repositories\Contracts;
 
 use App\Models\User;
-use App\Models\UsersNotificationSetting;
+use App\Models\UserNotificationSetting;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -71,8 +71,4 @@ interface UserRepositoryInterface
     public function getActive(): Collection;
 
     public function getInactive(): Collection;
-
-    public function updateNotificationSetting(int $userId, string $field, bool $value): bool;
-
-    public function getNotificationSettings(int $userId): ?UsersNotificationSetting;
 }

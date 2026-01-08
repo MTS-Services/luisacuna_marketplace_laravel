@@ -25,7 +25,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
             <!-- 1. Order Summary & Payment Details (Right Column - 2/3) -->
-            <div class="col-span-1 lg:col-span-8 bg-bg-secondary rounded-xl p-6 lg:p-10">
+            <div class="col-span-1 lg:col-span-8 bg-zinc-50 dark:bg-bg-secondary rounded-xl p-6 lg:p-10">
 
                 <!-- Order Summary Card -->
                 <div class="card bg-bg-primary rounded-2xl shadow-inner p-6">
@@ -137,15 +137,14 @@
                     </div>
                     <p class="text-pink-500 text-base font-semibold mt-2">{{ __('Your money is always safe') }}</p>
                     <p class="text-text-white text-base font-normal mt-4">
-                        {{ __('We hold your payment until you confirm you\'ve received what you paid for.
-                                                                                                                                                                                                                                            If the seller can\'t complete the delivery or any other issue arises, your money is protected and will be fully refunded to your SWAPY.GG wallet.') }}
+                        {{ __('We hold your payment until you confirm you\'ve received what you paid for. If the seller can\'t complete the delivery or any other issue arises, your money is protected and will be fully refunded to your SWAPY.GG wallet.') }}
                     </p>
                 </div>
             </div>
 
             <!-- 2. Payment Gateways (Left Column - 1/3) -->
             <div class="col-span-1 lg:col-span-4">
-                <div class=" bg-bg-secondary rounded-xl p-10">
+                <div class="bg-zinc-50 dark:bg-bg-secondary rounded-xl p-10">
                     <h2 class="text-2xl font-semibold text-text-white mb-4 border-b border-zinc-500 pb-3">
                         {{ __('3. Choose Method') }}
                     </h2>
@@ -154,21 +153,21 @@
                         @forelse ($gateways as $gatewayItem)
                             <div wire:click="$set('gateway', '{{ $gatewayItem->slug }}')"
                                 class="gateway-label flex items-center p-4 rounded-xl transition-all duration-300 border-2 cursor-pointer
-                                {{ $gatewayItem->slug === $gateway ? 'border-primary bg-primary/10' : 'border-gray-700 hover:border-gray-600 bg-gray-800/50' }}">
+                                {{ $gatewayItem->slug === $gateway ? 'border-zinc-500 bg-bg-secondary' : 'border-none bg-bg-primary' }}">
 
                                 <div class="flex items-center justify-between w-full">
                                     <div class="flex items-center gap-3">
                                         @if ($gatewayItem->slug === 'card')
-                                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                            <svg class="w-5 h-5 text-text-white" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <rect x="2" y="5" width="20" height="14" rx="2"
                                                     stroke-width="2" />
                                                 <path d="M2 10h20" stroke-width="2" />
                                             </svg>
                                         @elseif($gatewayItem->slug === 'crypto')
-                                            <span class="text-gray-400 text-lg font-bold">₿</span>
+                                            <span class="text-text-white text-lg font-bold">₿</span>
                                         @elseif($gatewayItem->slug === 'wallet')
-                                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                            <svg class="w-5 h-5 text-text-white" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path d="M21 12V7H5a2 2 0 01-2-2V4a2 2 0 012-2h14v5"
                                                     stroke-width="2" />
@@ -178,13 +177,13 @@
                                         @endif
 
                                         <span
-                                            class="text-base font-normal text-gray-300">{{ $gatewayItem->name }}</span>
+                                            class="text-base font-normal text-text-white">{{ $gatewayItem->name }}</span>
                                     </div>
 
                                     @if ($gatewayItem->slug === 'wallet' && $walletBalance !== null)
                                         <span
                                             class="text-sm font-medium {{ $walletBalance >= $order->grand_total ? 'text-green-400' : 'text-red-400' }}">
-                                            ( {{ currency_symbol() }}{{ currency_exchange($walletBalance) }})
+                                            ({{ currency_symbol() }}{{ currency_exchange($walletBalance) }})
                                         </span>
                                     @endif
                                 </div>
@@ -198,7 +197,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.398 16c-.77 1.333.192 3 1.732 3z" />
                                     </svg>
-                                    <span>No payment gateways are currently configured.</span>
+                                    <span>{{ __('No payment gateways are currently configured.') }}</span>
                                 </div>
                             </div>
                         @endforelse
@@ -213,11 +212,10 @@
                                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.398 16c-.77 1.333.192 3 1.732 3z" />
                                     </svg>
                                     <div>
-                                        <p class="font-bold">Insufficient Balance</p>
-                                        <p class="text-sm">You need
-                                            {{ currency_symbol() }}{{ currency_exchange($order->grand_total - $walletBalance) }} more to
-                                            complete
-                                            this purchase.</p>
+                                        <p class="font-bold">{{ __('Insufficient Balance') }}</p>
+                                        <p class="text-sm">{{ __('You need') }}
+                                            {{ currency_symbol() }}{{ currency_exchange($order->grand_total - $walletBalance) }}
+                                            {{ __('more to complete this purchase.') }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -249,7 +247,8 @@
                         <div class="mt-6">
                             <div class="flex justify-between mb-2">
                                 <p class="text-text-white font-normal text-xs">{{ __('Subtotal:') }}</p>
-                                <p class="text-text-white font-semibold text-base">{{ currency_symbol() }}{{ currency_exchange($order->grand_total) }}</p>
+                                <p class="text-text-white font-semibold text-base">
+                                    {{ currency_symbol() }}{{ currency_exchange($order->total_amount) }}</p>
                             </div>
 
                             <div class="flex justify-between mb-2">
@@ -261,7 +260,8 @@
                                             class="fill-zinc-200 w-5 h-5 cursor-pointer hover:fill-zinc-300 transition-colors" />
                                     </button>
                                 </div>
-                                <p class="text-text-white font-semibold text-base">{{ __('+ 2.66') }}{{ currency_symbol() }}</p>
+                                <p class="text-text-white font-semibold text-base">
+                                    {{ currency_exchange($order->tax_amount) }}{{ currency_symbol() }}</p>
                             </div>
 
                             <div class="flex justify-between mb-2">
@@ -294,6 +294,8 @@
                             </div>
                         </div>
                         <div class="mt-5">
+                            <x-ui.button type="submit" wire:loading wire:target="processPayment"
+                                class="px-4! py-2! sm:px-6! sm:py-3!">{{ __('Processing...') }}</x-ui.button>
                             <x-ui.button type="submit" wire:loading.remove wire:target="processPayment"
                                 class="px-4! py-2! sm:px-6! sm:py-3!">{{ currency_symbol() }}{{ currency_exchange($order->grand_total) }}
                                 {{ __('| Pay Now') }}</x-ui.button>

@@ -12,8 +12,7 @@ class Logout
      */
     public function __invoke()
     {
-        Auth::guard('web')->logout();
-
+        Auth::guard('web')->user()->logoutCurrentDevice();
         Session::invalidate();
         Session::regenerateToken();
 

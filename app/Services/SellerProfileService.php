@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\SellerProfile;
+use App\Services\Cloudinary\CloudinaryService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class SellerProfileService{
 
-    public function __construct(protected SellerProfile $model){
+    public function __construct(protected SellerProfile $model, protected CloudinaryService $cloudinaryService) {
         
     }
 
@@ -50,35 +51,18 @@ class SellerProfileService{
        return DB::transaction(function () use ($data) {
             $categories = [];
 
-            if (isset($data['identification'])) {
-
-                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . basename($data['identification']);
-
-                if (Storage::exists($data['identification'])) {
-
-                    $fileName = uniqid('IMX') . '-' . time() . '-' . basename($data['identification']);
-
-                    $finalPath = Storage::disk('public')->putFileAs(
-                        'seller_kyc',
-                        new \Illuminate\Http\File(storage_path('app/private/' . $data['identification'])),
-                        $fileName
-                    );
-                   Storage::delete($data['identification']);
-
-                    $data['identification'] = $finalPath;
-                }
-            }
-
+           
             if (isset($data['selfie_image'])) {
-                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $data['selfie_image']->getClientOriginalName();
-                $data['selfie_image'] = Storage::disk('public')->putFileAs('seller_profiles', $data['selfie_image'], $fileName);
+
+                $uploadedFile = $this->cloudinaryService->upload($data['selfie_image'], ['folder' => 'seller_profiles']);
+
+                $data['selfie_image'] = $uploadedFile->publicId;
+
             }
             if (isset($data['company_documents'])) {
-                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $data['company_documents']->getClientOriginalName();
-                $data['company_documents'] = Storage::disk('public')->putFileAs('seller_profiles', $data['company_documents'], $fileName);
+
+                $uploadedFile = $this->cloudinaryService->upload($data['company_documents'], ['folder' => 'seller_profiles']);
+                $data['company_documents'] = $uploadedFile->publicId;
             }
 
             if ($data['categories']) {

@@ -249,7 +249,7 @@
                             'route' => route('admin.rm.achievementType.index'),
                             'icon' => 'award',
                             'active' => 'achievement-type',
-                            'permission' => 'achievement-type-list',
+                            // 'permission' => 'achievement-type-list',
                         ],
                         [
                             'name' => 'Achievements',
@@ -287,7 +287,6 @@
                             'icon' => 'dollar-sign',
                             'active' => 'withdrawals',
                         ],
-
                     ]" />
                 <x-backend.navlink type="single" icon="percent" name="Fee Settings" :route="route('admin.fee-settings.fee-settings')"
                     active="fee-settings" :page_slug="$active" />
@@ -347,6 +346,15 @@
                         ],
                     ]" />
                 <x-sidebar-separator title="System" />
+                <x-backend.navlink type="dropdown" icon="squares-exclude" name="Withdrawal Management"
+                    :page_slug="$active" :items="[
+                        [
+                            'name' => 'Withdrawal Methods',
+                            'route' => route('admin.wm.method.index'),
+                            'icon' => 'wallet-minimal',
+                            'active' => 'withdrawal-method',
+                        ],
+                    ]" />
                 <x-backend.navlink type="dropdown" icon="squares-exclude" name="Gateway's & Integration"
                     :page_slug="$active" :items="[
                         [
@@ -451,9 +459,11 @@
                     <flux:separator class="bg-accent!" />
                     <x-backend.navlink type="single" icon="user" name="Profile" active="profile" :route="route('admin.profile.index')"
                         :page_slug="$active" />
-                    <button wire:click="logout" class="w-full text-left">
-                        <x-backend.navlink type="single" icon="power" name="Logout" />
-                    </button>
+
+                    <form action="{{ route('admin.logout') }}" method="post" class="w-full inline-block">
+                        @csrf
+                        <x-backend.navlink type="single" icon="power" name="Logout" :isSubmission="true" />
+                    </form>
                 </div>
             </nav>
         </div>

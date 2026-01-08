@@ -8,198 +8,179 @@
 
             </h2>
         </div>
-        <div class="flex justify-between">
+        <div class="flex justify-between mb-5">
             <div class="flex gap-5">
                 <div>
                     <div class="w-10 h-10 md:w-16 md:h-16">
-                        <img src="{{ asset('assets/images/order/order.png') }}" alt="Product Name"
-                            class="w-full h-full rounded-lg">
+                        <x-cloudinary::image public-id="{{ $order?->source?->game?->logo }}" width="50"
+                            height="50" crop="scale" sizes="100vw" alt="{{ $order?->source?->game?->name }}"
+                            class="rounded" />
                     </div>
                 </div>
                 <div>
                     <h2 class="text-text-white text-2xl font-semibold line-clamp-1">
-                        {{ __('Mercury Spark — Ultimate 5-Star Boost') }}
+                        {{ $order?->source?->name }}
                     </h2>
                     <p class="text-text-white font-normal text-base line-clamp-1">
-                        {{ __('Order ID: 98bc4674-4bde-4498-9175-a4a0318458e0') }}</p>
+                        {{ __('Order ID:') }} {{ $order->order_id }}
+                    </p>
                 </div>
             </div>
-            <div class="">
-                <x-ui.button wire:click="cancelOrder" class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!">
-                    {{ __('Cancel') }}
-                </x-ui.button>
+            <div>
+                @if ($isVisitSeller)
+                    <x-ui.button wire:click="cancelOrder"
+                        class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!">
+                        {{ __('Cancel') }}
+                    </x-ui.button>
+                @else
+                    <x-ui.button wire:click="cancelOrder"
+                        class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!">
+                        {{ __('Dispute') }}
+                    </x-ui.button>
+                @endif
+
             </div>
         </div>
         <div class="block lg:flex gap-6 justify-between items-start">
             <div class="w-full lg:w-2/3">
-                <div class=" bg-bg-secondary p-4 sm:p-10 rounded-[20px]">
+                <div class=" bg-bg-secondary p-4 sm:p-10 rounded-2xl">
                     <div class="flex gap-4 items-center">
                         <div class="bg-bg-info rounded-full p-3">
                             <x-phosphor name="check" variant="regular" class="w-9 h-9 text-zinc-400" />
                         </div>
                         <div>
-                            <h3 class="text-text-white text-base sm:text-2xl font-semibold">{{ __('Order Active') }}
+                            <h3 class="text-text-white text-base sm:text-2xl font-semibold">
+                                {{ $order->status->label() }}
                             </h3>
-                            <p class="text-text-white text-xs font-normal mt-2">{{ __('Jun 11, 2024, 1:22:12 AM') }}</p>
                         </div>
                     </div>
                     <div class="mt-7">
                         <p class="text-text-white text-base font-normal mb-2">
-                            {{ __('Order is marked as completed. Funds will be added to your Eldorado balance.') }}</p>
+                            {{ $order->notes ?? __('No notes') }}</p>
                     </div>
                 </div>
 
-                <div class=" bg-bg-secondary p-4 sm:p-10 rounded-[20px] mt-6">
-                    <div class="flex gap-4 items-center">
-                        <div>
-                            <h3 class="text-text-white text-base sm:text-2xl font-semibold">{{ __('Buyer feedback') }}
-                            </h3>
+
+
+                @if (!$isVisitSeller)
+                    <div class="bg-bg-secondary p-4 sm:p-10 rounded-2xl mt-6">
+                        <div class="flex gap-4 items-center">
+                            <div>
+                                <h3 class="text-text-white text-base sm:text-2xl font-semibold">
+                                    {{ empty($feedback) ? __('Add feedback') : __('Your Feedback') }}
+                                </h3>
+                            </div>
                         </div>
-                    </div>
-                    <div class="bg-bg-info flex items-center gap-2 rounded-lg py-3 px-6 mt-7">
-                        <x-phosphor name="thumbs-up" variant="solid" class="w-5 h-5 fill-zinc-700" />
-                        <p class="text-text-white text-base font-normal">
-                            {{ __('GGWP!') }}</p>
-                    </div>
-                </div>
+                        @if (empty($feedback))
+                            <form wire:submit.prevent="submitFeedback" method="POST">
+                                <div class="">
+                                    <div class="flex gap-2 my-4">
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="type" wire:model="type"
+                                                value="{{ \App\Enums\FeedbackType::POSITIVE->value }}"
+                                                class="sr-only peer">
+                                            <div
+                                                class="bg-bg-secondary dark:bg-bg-primary rounded-lg p-3 peer-checked:ring-2 peer-checked:ring-zinc-500 transition-all">
+                                                <x-phosphor name="thumbs-up" variant="solid"
+                                                    class="w-10 h-10 fill-zinc-500 peer-checked:fill-zinc-600" />
+                                            </div>
+                                        </label>
 
-                <div class="bg-bg-info rounded-lg mt-20">
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="type" wire:model="type"
+                                                value="{{ \App\Enums\FeedbackType::NEGATIVE->value }}"
+                                                class="sr-only peer">
+                                            <div
+                                                class="bg-bg-secondary dark:bg-bg-primary rounded-lg p-3 peer-checked:ring-2 peer-checked:ring-pink-500 transition-all">
+                                                <x-phosphor name="thumbs-down" variant="solid"
+                                                    class="w-10 h-10 fill-pink-500 peer-checked:fill-pink-600" />
+                                            </div>
+                                        </label>
+                                    </div>
+                                    @error('type')
+                                        <span class="text-pink-500 text-sm">{{ $message }}</span>
+                                    @enderror
+
+                                    <div class="mb-6">
+                                        <label class="block text-text-white font-medium mb-2">
+                                            {{ __('Your Comment') }}
+                                        </label>
+                                        <textarea wire:model="commentText" rows="5"
+                                            class="w-full bg-bg-info text-text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent resize-none text-xs sm:text-sm"
+                                            placeholder="{{ __('Write your comment here...') }}"> </textarea>
+                                        @error('commentText')
+                                            <span class="text-pink-500 text-sm">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="flex justify-end gap-3">
+                                        <div class="w-full md:w-auto">
+                                            <x-ui.button type="submit" class="w-auto py-2!">
+                                                {{ __('Submit') }}
+                                            </x-ui.button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        @else
+                            <div
+                                class="bg-bg-info flex items-center gap-2 rounded-lg py-3 px-6 mt-7 hover:opacity-80 transition-opacity">
+                                {{-- @if ($feedback->type === \App\Enums\FeedbackType::POSITIVE->value)
+                                    <x-phosphor name="thumbs-up" variant="solid" class="w-5 h-5 fill-zinc-700" />
+                                @else
+                                    <x-phosphor name="thumbs-down" variant="solid" class="w-5 h-5 fill-pink-600" />
+                                @endif --}}
+                                {{-- <flux:icon name="{{ $feedback->type->icon() }}"
+                                    class="w-5 h-5 {{ $feedback->type->iconColor() }}" /> --}}
+
+                                <x-phosphor name="{{ $feedback->type->icon() }}" variant="solid"
+                                    class="w-5 h-5 {{ $feedback->type->iconColor() }}" />
+
+                                <p class="text-text-white text-base font-normal">
+                                    {{ $feedback->message }}
+                                </p>
+                            </div>
+                        @endif
+                    </div>
+                @else
+                    <div class="bg-bg-secondary p-4 sm:p-10 rounded-2xl mt-6">
+                        <div class="flex gap-4 items-center">
+                            <div>
+                                <h3 class="text-text-white text-base sm:text-2xl font-semibold">
+                                    {{ __('Buyer feedback') }}
+                                </h3>
+                            </div>
+                        </div>
+                        @if ($feedback)
+                            <div
+                                class="bg-bg-info flex items-center gap-2 rounded-lg py-3 px-6 mt-7 hover:opacity-80 transition-opacity">
+                                <x-phosphor name="{{ $feedback->type->icon() }}" variant="solid"
+                                    class="w-5 h-5 {{ $feedback->type->iconColor() }}" />
+                                <p class="text-text-white text-base font-normal">
+                                    {{ $feedback->message }}
+                                </p>
+                            </div>
+                        @else
+                            <div
+                                class="bg-bg-info flex items-center gap-2 rounded-lg py-3 px-6 mt-7 hover:opacity-80 transition-opacity">
+                                <p class="text-text-white text-base font-normal">
+                                    {{ __('No feedback') }}
+                                </p>
+                            </div>
+                        @endif
+
+                    </div>
+                @endif
+                <div class="bg-bg-info rounded-lg mt-10">
                     <!-- User Header -->
-                    <div
-                        class="hidden md:flex items-center justify-between bg-zinc-500 rounded-tl-lg rounded-tr-lg p-5">
-                        <div class="flex items-center gap-3">
-                            <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
-                                class="w-10 h-10 rounded-full">
-                            <div>
-                                <h3 class="text-text-white text-2xl font-semibold">{{ __('D18QUANB') }}</h3>
-                                <p class="text-text-white text-base font-normal">{{ __('Order for Items') }}</p>
-                            </div>
-                        </div>
-                        <div class="relative flex items-center ml-auto">
-                            <flux:icon name="magnifying-glass"
-                                class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 stroke-text-primary pointer-events-none z-10" />
-                            <input type="text" wire:model.live="search" placeholder="Search conversion"
-                                class="border dark:border-white border-gray-600 rounded-full py-2 pl-8 pr-2 text-sm focus:border-zinc-500 focus:bg-zinc-500 w-full bg-transparent placeholder:text-text-primary">
-                        </div>
-                    </div>
-                    <div class="mt-12 p-4 sm:p-20">
-                        <!-- Order Created Message -->
-                        <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mb-10">
-                            <div>
-                                <p class="text-text-white text-base mb-2 break-all">
-                                    {{ __('Order Created:') }}
-                                    <a href="#" class="text-accent">
-                                        https://www.companyname.ga/order/d8bcd674-dbde-4d98-9175-a4a031845de0
-                                    </a>
-                                </p>
-
-                                <div class="bg-bg-info rounded-lg mt-4 px-6 py-3">
-                                    <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
-                                        <x-phosphor name="link" variant="" class="fill-zinc-500" />
-
-                                        <span class="text-text-white">d8bcd674-dbde-4d98-9175-a4a031U58e0</span>
-                                    </div>
-                                    <a class="text-text-white text-xs" href="#">www.companyname.com</a>
-                                </div>
-                            </div>
-                            <p class="text-text-white text-xs text-right mt-3">Oct 20 2025</p>
-                        </div>
-
-                        <!-- Buyer Message -->
-                        <div>
-                            <div class="flex items-center gap-3">
-                                <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
-                                    class="w-10 h-10 rounded-full">
-                                <div class="flex-1">
-                                    <div class="bg-primary-800 rounded-lg">
-                                        <x:input type="text" placeholder="Hi, what's the problem?" class="w-full" />
-                                    </div>
-
-                                </div>
-                            </div>
-                            <p class="text-text-white text-right text-xs mt-1">Oct 20 2025</p>
-                        </div>
-
-                        <!-- Seller Message -->
-                        <div class="mt-10">
-                            <div class="flex items-center gap-3">
-                                <div class="flex-1">
-                                    <div class="bg-primary-800 rounded-lg">
-                                        <p class="bg-zinc-500 px-6 py-3 text-right rounded-lg">
-                                            {{ __('Please cancel the order, I don\'t want it anymore.') }}</p>
-                                    </div>
-
-                                </div>
-                                <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
-                                    class="w-10 h-10 rounded-full">
-                            </div>
-                            <p class="text-text-white text-left text-xs mt-1">Oct 20 2025</p>
-                        </div>
-
-                        <!-- Buyer Response -->
-                        <div>
-                            <div class="flex items-center gap-3 mt-10">
-                                <img src="{{ asset('assets/images/order/seller.png') }}" alt="User"
-                                    class="w-10 h-10 rounded-full">
-                                <div class="flex-1">
-                                    <div class="bg-primary-800 rounded-lg">
-                                        <x:input type="text" placeholder="Okay" class="w-full" />
-                                    </div>
-
-                                </div>
-                            </div>
-                            <p class="text-text-white text-right text-xs mt-1">Oct 20 2025</p>
-                        </div>
-
-                        <!-- Dispute Won -->
-                        <div class="bg-bg-secondary rounded-lg p-5 border-l-4 border-pink-500 mt-10">
-                            <div class="bg-bg-info rounded-lg mt-4 px-6 py-3">
-                                <p class="text-text-white text-base mb-2">
-                                    {{ __('Order Delivered. If you received goods or services, please mark this Order as "Received" and leave feedback. If you were happy with your buying experience, consider leaving a Trustpilot review, we greatly appreciate it!') }}
-                                </p>
-                                <div class="flex items-center gap-2 text-primary-400 text-sm mb-1">
-                                    <a href="#"
-                                        class="text-text-white text-xs">{{ __('www.companyname.com') }}</a>
-                                </div>
-                            </div>
-                            <p class="text-text-white text-xs text-right mt-3">Oct 30 2025</p>
-                        </div>
-
-
-                        <div class="flex items-end gap-2 sm:gap-3 mt-10">
-                            <div class="flex-1 relative">
-                                <textarea wire:model="message" wire:keydown.enter.prevent="sendMessage" rows="1"
-                                    placeholder="Say something....."
-                                    class="w-full bg-bg-info text-text-white px-3 sm:px-4 py-2 sm:py-3 pr-12 sm:pr-14 rounded-lg     focus:outline-none focus:ring-2 focus:ring-accent resize-none text-xs sm:text-sm"
-                                    style="min-height: 40px; max-height: 120px;"></textarea>
-                                <div
-                                    class="absolute right-2 sm:right-3 bottom-3 sm:bottom-4 flex items-center gap-1 sm:gap-2">
-                                    <label
-                                        class="cursor-pointer text-text-muted hover:text-text-primary transition-colors">
-                                        <input type="file" wire:model="media" class="hidden" accept="image/*"
-                                            multiple>
-                                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13">
-                                            </path>
-                                        </svg>
-                                    </label>
-                                    <button wire:click="sendMessage"
-                                        class="text-text-muted hover:text-text-primary transition-colors">
-                                        <x-phosphor name="paper-plane-tilt" variant="" class="" />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <livewire:backend.user.chat.message :key="'message-' . $conversationId" />
                 </div>
             </div>
             <div class="w-full lg:w-1/3">
                 <div class="bg-bg-secondary rounded-[20px] p-7 mb-6 mt-6 md:mt-0">
                     <p class="text-2xl font-semibold mb-6">{{ __('Delivery time') }}</p>
 
-                    <div class="flex items-center justify-between text-center">
+                    {{-- <div class="flex items-center justify-between text-center">
                         <!-- Hours -->
                         <div class="flex-1">
                             <p class="text-3xl text-text-white font-semibold">7</p>
@@ -223,6 +204,11 @@
                             <p class="text-3xl font-semibold">52</p>
                             <p class="text-xl text-text-white font-normal mt-1">{{ __('Seconds') }}</p>
                         </div>
+                    </div> --}}
+                    <div class="flex items-center justify-between text-center">
+                        <div class="flex-1">
+                            {{ $order?->source?->delivery_timeline }}
+                        </div>
                     </div>
                 </div>
 
@@ -236,40 +222,56 @@
                             <div class="flex gap-2 items-center">
                                 <div>
                                     <div class="w-6 h-6">
-                                        <img src="{{ asset('assets/images/order.png') }}" alt="Product Name"
-                                            class="w-full h-full object-cover">
+                                        <x-cloudinary::image public-id="{{ $order?->source?->game?->logo }}"
+                                            width="50" height="50"
+                                            class="w-full h-full object-cover rounded-full" />
+
                                     </div>
                                 </div>
-                                <p class="text-text-white text-base font-normal">{{ __('Fortnite') }}</p>
+                                <p class="text-text-white text-base font-normal">{{ $order?->source?->game?->name }}
+                                </p>
                             </div>
                         </div>
                         <div class="flex justify-between mt-2">
                             <p class="text-text-white text-base font-semibold">{{ __('Username') }}</p>
-                            <p class="text-text-white text-base font-normal">{{ __('acuzone') }}</p>
+                            <a href="{{ route('profile', $order?->user?->username) }}"
+                                class="text-text-white text-base font-normal">
+                                {{ $order?->user->username }}</a>
                         </div>
                         <div class="flex justify-between mt-2">
                             <p class="text-text-white text-base font-semibold">{{ __('Device') }}</p>
-                            <p class="text-text-white text-base font-normal">{{ __('PC') }}</p>
+                            <p class="text-text-white text-base font-normal">{{ $order?->source?->platform?->name }}
+                            </p>
                         </div>
                         <div class="flex justify-between mt-2">
-                            <p class="text-text-white text-base font-semibold">{{ __('Seller') }}</p>
-                            {{-- <p class="text-text-white text-base font-normal">{{ __('DI 8QUAN Online') }}</p> --}}
-                            <p class="flex items-center gap-2 text-base font-normal">
-                                <span class="text-pink-500">{{ __('DI 8QUAN') }}</span>
-                                <span class="text-text-white">|</span>
-                                <span class="w-2.5 h-2.5 bg-green-500 rounded-full"></span>
-                                <span class="text-text-white">{{ __('Online') }}</span>
-                            </p>
-
+                            @if ($isVisitSeller)
+                                <p class="text-text-white text-base font-semibold">{{ __('Buyer') }}</p>
+                                <p class="flex items-center gap-2 text-base font-normal">
+                                    <a href="{{ route('profile', $order?->user?->username) }}"
+                                        class="text-pink-500 inline-block">{{ $order?->user?->username }}</a>
+                                    <span class="text-text-white">|</span>
+                                    <span class="w-2.5 h-2.5 bg-green-500 rounded-full"></span>
+                                    <span class="text-text-white">{{ __('Online') }}</span>
+                                </p>
+                            @else
+                                <p class="text-text-white text-base font-semibold">{{ __('Seller') }}</p>
+                                <p class="flex items-center gap-2 text-base font-normal">
+                                    <a href="{{ route('profile', $order?->source?->user?->username) }}"
+                                        class="text-pink-500 inline-block">{{ $order?->source?->user?->username }}</a>
+                                    <span class="text-text-white">|</span>
+                                    <span class="w-2.5 h-2.5 bg-green-500 rounded-full"></span>
+                                    <span class="text-text-white">{{ __('Online') }}</span>
+                                </p>
+                            @endif
                         </div>
                     </div>
                     <div class="flex w-full md:w-auto justify-center items-center mt-10!">
-                        <a href="{{ route('user.order.detail', ['orderId' => $order->order_id]) }}">
-                            <x-ui.button class="w-fit! py-3! px-6!">
-                                {{ __('View full description') }}
-                                <x-phosphor-arrow-right-light
-                                    class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" /></x-ui.button>
-                        </a>
+
+                        <x-ui.button class="w-fit! py-3! px-6!"
+                            href="{{ route('user.order.detail', ['orderId' => $order->order_id]) }}">
+                            {{ __('View full description') }}
+                            <x-phosphor-arrow-right-light
+                                class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" /></x-ui.button>
                     </div>
                 </div>
             </div>

@@ -24,6 +24,9 @@
     </div>
 
 
+    {{-- <x-cloudinary::image publicId="default_avatar" width="auto" height="auto" quality="auto" format="auto"
+        alt="avatar" class="" /> --}}
+
     <section class="mt-10 sm:mt-20" id="popular-games">
         {{-- New Bosting Games Section --}}
         <section class="container mx-auto">
@@ -97,8 +100,8 @@
                     <div class="swiper-wrapper py-0">
                         @foreach ($top_selling_products as $product)
                             <div class="swiper-slide">
-                                <x-ui.shop-card :gameSlug="$product->games->slug" :categorySlug="$product->category->slug" :data="$product"
-                                    :game="$game" />
+                                <x-ui.shop-card :gameSlug="$product->game->slug" :categorySlug="$product->category->slug" :data="$product"
+                                    :game="$product->game" />
                             </div>
                         @endforeach
                     </div>

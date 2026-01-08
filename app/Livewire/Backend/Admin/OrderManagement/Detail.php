@@ -9,41 +9,13 @@ use App\Services\OrderService;
 
 class Detail extends Component
 {
-    public bool $isLoading = true;
-    public bool $orderDetailModalShow = false;
-    // public Order $order;
-    public $order;
-
-
-    protected OrderService $orderService;
-
-    public function boot(OrderService $orderService)
+    public Order $data;
+    public function mount(Order $data): void
     {
-        $this->orderService = $orderService;
+        $this->data = $data;
     }
-    // public function boot()
-    // {
-    //     $this->order = new Order();
-    // }
-    public function closeModal()
-    {
-        $this->orderDetailModalShow = false;
-    }
-
     public function render()
     {
         return view('livewire.backend.admin.order-management.detail');
-    }
-
-    #[On('order-detail-modal-open')]
-    public function fetchOrderDetail($orderId)
-    {
-        $this->isLoading = true;
-        $this->order = $this->orderService->findData($orderId, 'order_id');
-
-        $this->order->load(['user', 'source.user', 'source.game', 'transactions']);
-
-        $this->orderDetailModalShow = true;
-        $this->isLoading = false;
     }
 }

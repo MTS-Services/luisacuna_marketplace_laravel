@@ -19,7 +19,7 @@ class PersonaInfo extends Component
 
     public function mount(User $user)
     {
-        $this->user = $user;
+        $this->user = $user->load('updater');
     }
 
     public function render()

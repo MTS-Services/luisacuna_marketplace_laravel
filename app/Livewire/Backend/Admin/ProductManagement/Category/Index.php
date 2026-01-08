@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Admin\ProductManagement\Category;
 use Livewire\Component;
 use App\Services\ProductService;
 use App\Enums\ActiveInactiveEnum;
+use App\Services\Cloudinary\CloudinaryService;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
@@ -24,9 +25,11 @@ class Index extends Component
 
     protected ProductService $service;
 
-    public function boot(ProductService $service)
+    protected CloudinaryService $cloudinaryService;
+    public function boot(ProductService $service, CloudinaryService $cloudinaryService)
     {
         $this->service = $service;
+        $this->cloudinaryService = $cloudinaryService;
     }
 
     public function mount($categorySlug)
@@ -54,26 +57,29 @@ class Index extends Component
                 'sortable' => false,
                 'format' => fn($item) =>
                 '<div class="flex items-center gap-3">
-                    <img src="' . ($item->games->logo) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item->games->slug ?? 'Game') . '">
+                    <img src="' . $this->cloudinaryService->getUrlFromPublicId($item->games?->logo) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item->games->slug ?? 'Game') . '">
                     <span class="font-semibold text-text-white">' . ($item->games->slug ?? '-') . '</span>
                 </div>'
             ],
             [
-                'key' => 'name',
+                'key' => 'username',
                 'label' => 'Name',
                 'sortable' => true,
                 'format' => fn($item) =>
-                '<a href="' . route('admin.am.admin.view', encrypt($item->id)) . '" class="font-semibold text-text-white">' . ($item->user->username ?? '-') . '</a>'
+                '<a href="' . ($item->user ? route('profile', ['username' => $item->user->username]) : '#') . '" target="_blank" class="font-semibold text-text-white">' .
+                    ($item->user->username ?? '-') .
+                    '</a>'
             ],
+
             [
                 'key' => 'quantity',
                 'label' => 'Quantity',
                 'sortable' => true,
             ],
             [
-                'key' => 'price',
+                'key' => 'grand_total',
                 'label' => 'Price',
-                'sortable' => true,
+                'format' => fn($item) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' . currency_symbol() . $item->price  . '</span>'
             ],
             [
                 'key' => 'status',
@@ -114,7 +120,6 @@ class Index extends Component
         return view('livewire.backend.admin.product-management.category.index', [
             'categories' => $datas,
             'statuses' => ActiveInactiveEnum::options(),
-            // 'layouts' => ::options(),
             'columns' =>  $columns,
             'actions' => $actions,
             'bulkActions' => $bulkActions,

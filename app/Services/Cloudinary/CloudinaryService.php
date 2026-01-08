@@ -186,6 +186,22 @@ class CloudinaryService
         }
     }
 
+    public function getUrlFromPublicId(string $publicId)
+    {
+        try {
+            if (empty($publicId)) {
+                return null;
+            }
+            $result = cloudinary()->image($publicId)->toUrl();
+            return $result ?? null;
+        } catch (\Exception $e) {
+            Log::error('Failed to get Cloudinary file info', [
+                'public_id' => $publicId,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
     /**
      * Generate transformation URL
      *

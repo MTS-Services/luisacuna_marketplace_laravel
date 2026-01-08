@@ -13,62 +13,64 @@
             <span class="text-text-primary">{{ __('Shop') }}</span>
         </div>
 
-        <div class="mt-8">
-            <div class="flex items-center justify-between">
-                <div>
-                    <span class="text-base font-semibold">{{ __('Select region') }}</span>
-                </div>
-
-                <div class="block md:hidden relative z-10" x-data="{ open: false }">
-                    <div @click="open = !open" class="cursor-pointer inline-block">
-                        <x-phosphor name="sort-ascending" variant="bold" class="fill-white w-6 h-6" />
-                    </div>
-
-                    <div x-show="open" @click.outside="open = false"
-                        x-transition:enter="transition ease-out duration-100"
-                        x-transition:enter-start="transform opacity-0 scale-95"
-                        x-transition:enter-end="transform opacity-100 scale-100"
-                        x-transition:leave="transition ease-in duration-75"
-                        x-transition:leave-start="transform opacity-100 scale-100"
-                        x-transition:leave-end="transform opacity-0 scale-95"
-                        class="absolute right-0 mt-2 w-48 p-2 bg-bg-primary rounded-2xl shadow-lg origin-top-right"
-                        style="display: none;">
-                        <a href="#"
-                            class="text-text-white block px-3 py-2 text-sm hover:bg-zinc-700 rounded-lg transition-colors duration-150">
-                            {{ __('Lowest To Highest') }}
-                        </a>
-                        <a href="#"
-                            class="text-text-white block px-3 py-2 text-sm hover:bg-zinc-700 rounded-lg transition-colors duration-150">
-                            {{ __('Highest to Lowest') }}
-                        </a>
-                    </div>
-                </div>
-            </div>
+       <div class="mt-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <span class="text-base font-semibold">{{ __('Select Filter') }}</span>
         </div>
 
+        <div class="block md:hidden relative z-10" x-data="{ open: false }">
+            <div @click="open = !open" class="cursor-pointer inline-block">
+                <x-phosphor name="sort-ascending" variant="bold" class="fill-white w-6 h-6" />
+            </div>
+
+            <div x-show="open" @click.outside="open = false"
+                x-transition:enter="transition ease-out duration-100"
+                x-transition:enter-start="transform opacity-0 scale-95"
+                x-transition:enter-end="transform opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-75"
+                x-transition:leave-start="transform opacity-100 scale-100"
+                x-transition:leave-end="transform opacity-0 scale-95"
+                class="absolute right-0 mt-2 w-48 p-2 bg-bg-primary rounded-2xl shadow-lg origin-top-right"
+                style="display: none;">
+                <a href="#" 
+                    @click.prevent="$wire.set('sortDirection', 'asc'); open = false"
+                    class="text-text-white block px-3 py-2 text-sm hover:bg-zinc-700 rounded-lg transition-colors duration-150">
+                    {{ __('Lowest To Highest') }}
+                </a>
+                <a href="#" 
+                    @click.prevent="$wire.set('sortDirection', 'desc'); open = false"
+                    class="text-text-white block px-3 py-2 text-sm hover:bg-zinc-700 rounded-lg transition-colors duration-150">
+                    {{ __('Highest to Lowest') }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
         <div class="mt-3 mb-6 flex items-center justify-between">
-            <x-ui.select id="status-select"
-                class="py-0.5! w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!"
-                wire:model="selectedRegion" wire:change="serachFilter">
-                <option value="">{{ __('Global') }}</option>
-                <option value="completed">{{ __('Completed') }}</option>
-                <option value="pending">{{ __('Pending') }}</option>
-                <option value="processing">{{ __('Processing') }}</option>
-            </x-ui.select>
+           
 
-            <div class="flex flex-row gap-5">
-                <x-ui.select id="status-select"
-                    class="py-0.5! w-auto! pl-5! hidden md:flex rounded-full! bg-transparent! border! border-zinc-700!"
-                    wire:model.live="selectedSort" wire:change="serachFilter">
-                    <option value="">{{ __('Sort by') }}</option>
-                    <option value="">{{ __('Lowest to Highest') }}</option>
-                    <option value="">{{ __('Highest to Lowest') }}</option>
-                </x-ui.select>
+            <x-ui.custom-select wire-model="serach" :wire-live="true" class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!" label="Filter" >
+                
+                <x-ui.custom-option label="All" value="all" />
 
-                <x-ui.button wire:click="changeView"
-                    class="py-2! px-4! w-auto! flex md:hidden rounded! border! border-zinc-700!" variant="secondary">
-                    {{ __('Grid') }}
-                </x-ui.button>
+                @foreach($tags as $tag)
+                     <x-ui.custom-option label="{{ $tag }}" value="{{ $tag }}" />
+
+                @endforeach
+
+            </x-ui.custom-select>
+
+
+            <div class="w-auto! sm:w-70!   hidden md:flex ">
+                <x-ui.custom-select wire-model="sortDirection" :wire-live="true"  class="pl-5! rounded-full! bg-transparent! border! border-zinc-700!" label="Sort By" >
+            
+                <x-ui.custom-option label="{{ __('Lowest to Highest') }}" value="{{ __('asc') }}" />
+
+                <x-ui.custom-option label="{{ __('Highest to Lowest') }}" value="{{ __('desc') }}" />
+
+            </x-ui.custom-select>
             </div>
         </div>
 
@@ -80,7 +82,7 @@
     {{-- Main content --}}
     <section class="container">
         <div class="md:flex gap-6 h-auto" x-data={data:{}}>
-            <div class="relative min-h-[40vh]">
+            <div class="relative min-h-auto md:min-h-[40vh] ">
                 <x-loading-animation :target="'selectedSort, selectedRegion, resetAllFilters'" :style="'list'" />
             </div>
 

@@ -3,9 +3,9 @@
 namespace App\Livewire\Auth\Admin;
 
 use App\Models\Admin;
-use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -23,7 +23,15 @@ class Login extends Component
     #[Validate('required|string')]
     public string $password = '';
 
-    public bool $remember = false;
+    public bool $remember = true;
+
+    // Device registration fields
+    public string $fcmToken = '';
+    public string $deviceType = 'web';
+    public string $deviceName = '';
+    public string $deviceModel = '';
+    public string $osVersion = '';
+    public string $appVersion = '';
 
     /**
      * Handle an incoming authentication request.
@@ -32,14 +40,22 @@ class Login extends Component
     {
         $this->validate();
 
-        $this->ensureIsNotRateLimited();        
+        $this->ensureIsNotRateLimited();
 
-        $user = $this->validateCredentials();
+        $admin = $this->validateCredentials();
 
-        if (Features::canManageTwoFactorAuthentication() && $user->hasEnabledTwoFactorAuthentication()) {
+        if (Features::canManageTwoFactorAuthentication() && $admin->hasEnabledTwoFactorAuthentication()) {
             Session::put([
-                'login.id' => $user->getKey(),
+                'login.id' => $admin->getKey(),
                 'login.remember' => $this->remember,
+                'login.device_info' => [
+                    'fcm_token' => $this->fcmToken,
+                    'device_type' => $this->deviceType,
+                    'device_name' => $this->deviceName ?: $this->detectBrowser(),
+                    'device_model' => $this->deviceModel ?: $this->detectOS(),
+                    'os_version' => $this->osVersion,
+                    'app_version' => $this->appVersion,
+                ],
             ]);
 
             $this->redirect(route('admin.two-factor.login'), navigate: true);
@@ -47,20 +63,104 @@ class Login extends Component
             return;
         }
 
-        Auth::guard('admin')->login($user, $this->remember);
-
-        RateLimiter::clear($this->throttleKey());
-        Session::regenerate();
-
-        $this->redirectIntended(default: route('admin.dashboard', absolute: false), navigate: true);
+        $this->performLogin($admin);
     }
 
     /**
-     * Validate the user's credentials.
+     * Perform the actual login process.
+     */
+    protected function performLogin(Admin $admin): void
+    {
+
+        RateLimiter::clear($this->throttleKey());
+        Auth::guard('admin')->login($admin, $this->remember);
+        Session::regenerate();
+
+        $admin->update([
+            'last_login_at' => now(),
+            'last_login_ip' => request()->ip(),
+        ]);
+
+        $this->registerAdminDevice($admin);
+
+        Log::info('Admin login successful', [
+            'admin_id' => $admin->id,
+            'session_id' => session()->getId(),
+            'ip' => request()->ip(),
+        ]);
+
+        $this->redirectIntended(default: route('admin.dashboard', absolute: false), navigate: false);
+    }
+
+    /**
+     * Register admin's device after successful login.
+     */
+    protected function registerAdminDevice(Admin $admin): void
+    {
+        try {
+            // Set device registration pending flag
+            session()->put('device_registration_pending', true);
+
+            $deviceData = [
+                'fcm_token' => $this->fcmToken ?: 'web_' . session()->getId(),
+                'device_type' => $this->deviceType,
+                'device_name' => $this->deviceName ?: $this->detectBrowser(),
+                'device_model' => $this->deviceModel ?: $this->detectOS(),
+                'os_version' => $this->osVersion ?: $this->detectOSVersion(),
+                'app_version' => $this->appVersion,
+            ];
+
+            $device = $admin->registerDevice($deviceData);
+
+            // Remove pending flag
+            session()->forget('device_registration_pending');
+
+            Log::info('Device registered', [
+                'admin_id' => $admin->id,
+                'device_id' => $device->id,
+                'session_id' => session()->getId(),
+            ]);
+        } catch (\Exception $e) {
+            // Remove pending flag on error
+            session()->forget('device_registration_pending');
+
+            // Log error but don't prevent login
+            Log::error('Failed to register device on login', [
+                'admin_id' => $admin->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+        }
+    }
+
+    /**
+     * Set FCM token from frontend (called via Livewire).
+     */
+    public function setFcmToken(string $token): void
+    {
+        $this->fcmToken = $token;
+    }
+
+    /**
+     * Set device information from frontend.
+     */
+    public function setDeviceInfo(array $deviceInfo): void
+    {
+        $this->fcmToken = $deviceInfo['fcm_token'] ?? '';
+        $this->deviceType = $deviceInfo['device_type'] ?? 'web';
+        $this->deviceName = $deviceInfo['device_name'] ?? '';
+        $this->deviceModel = $deviceInfo['device_model'] ?? '';
+        $this->osVersion = $deviceInfo['os_version'] ?? '';
+        $this->appVersion = $deviceInfo['app_version'] ?? '';
+    }
+
+
+    /**
+     * Validate the admin's credentials.
      */
     protected function validateCredentials(): Admin
     {
-        // 1. Correctly get the Admin provider and retrieve the user by email
+        // 1. Correctly get the Admin provider and retrieve the admin by email
         $provider = Auth::guard('admin')->getProvider();
         $admin = $provider->retrieveByCredentials(['email' => $this->email]);
 
@@ -103,5 +203,80 @@ class Login extends Component
     protected function throttleKey(): string
     {
         return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
+    }
+
+    /**
+     * Detect browser from user agent.
+     */
+    protected function detectBrowser(): string
+    {
+        $userAgent = request()->userAgent();
+
+        if (str_contains($userAgent, 'Firefox')) return 'Firefox';
+        if (str_contains($userAgent, 'Edg')) return 'Edge';
+        if (str_contains($userAgent, 'Chrome')) return 'Chrome';
+        if (str_contains($userAgent, 'Safari')) return 'Safari';
+        if (str_contains($userAgent, 'Opera') || str_contains($userAgent, 'OPR')) return 'Opera';
+
+        return 'Unknown Browser';
+    }
+
+    /**
+     * Detect OS from user agent.
+     */
+    protected function detectOS(): string
+    {
+        $userAgent = request()->userAgent();
+
+        if (str_contains($userAgent, 'Windows NT 10.0')) return 'Windows 10/11';
+        if (str_contains($userAgent, 'Windows')) return 'Windows';
+        if (str_contains($userAgent, 'Macintosh') || str_contains($userAgent, 'Mac OS')) return 'macOS';
+        if (str_contains($userAgent, 'Linux')) return 'Linux';
+        if (str_contains($userAgent, 'Android')) return 'Android';
+        if (str_contains($userAgent, 'iPhone') || str_contains($userAgent, 'iPad')) return 'iOS';
+
+        return 'Unknown OS';
+    }
+
+    /**
+     * Detect OS version from user agent.
+     */
+    protected function detectOSVersion(): string
+    {
+        $userAgent = request()->userAgent();
+
+        if (preg_match('/Windows NT ([\d.]+)/', $userAgent, $matches)) {
+            $versions = ['10.0' => '10/11', '6.3' => '8.1', '6.2' => '8', '6.1' => '7'];
+            return $versions[$matches[1]] ?? $matches[1];
+        }
+
+        if (preg_match('/Mac OS X ([\d_]+)/', $userAgent, $matches)) {
+            return str_replace('_', '.', $matches[1]);
+        }
+
+        if (preg_match('/Android ([\d.]+)/', $userAgent, $matches)) {
+            return $matches[1];
+        }
+
+        if (preg_match('/OS ([\d_]+)/', $userAgent, $matches)) {
+            return str_replace('_', '.', $matches[1]);
+        }
+
+        return '';
+    }
+
+    public function mount()
+    {
+        if (Auth::guard('admin')->check()) {
+            return $this->redirectIntended(
+                default: route('admin.dashboard', absolute: false),
+                navigate: true
+            );
+        }
+
+        // Auto-detect device info on mount
+        $this->deviceName = $this->detectBrowser();
+        $this->deviceModel = $this->detectOS();
+        $this->osVersion = $this->detectOSVersion();
     }
 }

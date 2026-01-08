@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\Models\Order;
+use App\Models\UserPoint;
 use App\Enums\OrderStatus;
+use App\Models\Achievement;
 use Illuminate\Support\Facades\DB;
+use App\Models\UserAchievementProgress;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -103,10 +106,135 @@ class OrderService
      *                   Action Executions
      * ================== ================== ================== */
 
-    public function createData(array $data): Order
+    // public function createData(array $data): Order
+    // {
+    //     return $this->model->create($data);
+    // }
+
+
+    // public function createData(array $data)
+    // {
+    //     $product = $this->model->create($data);
+    //     $achievements = Achievement::whereNotNull('target_value')
+    //         ->whereHas('achievementType', function ($query) {
+    //             $query->where('name', 'Product Purchase');
+    //         })
+    //         ->get();
+
+    //     foreach ($achievements as $achievement) {
+
+    //         $progress = UserAchievementProgress::firstOrCreate(
+    //             [
+    //                 'user_id' => user()->id,
+    //                 'achievement_id' => $achievement->id,
+
+    //             ],
+    //             [
+    //                 'current_progress' => 0,
+    //             ]
+    //         );
+    //         $progress->increment('current_progress');
+
+    //         if ($progress->current_progress >= $achievement->target_value) {
+    //             $userPoints = UserPoint::firstOrCreate(
+    //                 ['user_id' => user()->id],
+    //                 ['points' => 0]
+    //             );
+
+    //             $userPoints->increment('points', $achievement->point_reward);
+    //         }
+    //     }
+    //     return $product;
+    // }
+
+    // public function createData(array $data)
+    // {
+    //     $product = $this->model->create($data);
+
+    //     $achievements = Achievement::whereNotNull('target_value')
+    //         ->whereHas('achievementType', function ($query) {
+    //             $query->where('name', 'Product Purchase');
+    //         })
+    //         ->get();
+
+    //     foreach ($achievements as $achievement) {
+    //         $rankId = $achievement->rank_id ?? null;
+    //         $progress = UserAchievementProgress::firstOrCreate(
+    //             [
+    //                 'user_id' => user()->id,
+    //                 'achievement_id' => $achievement->id,
+    //                 'rank_id' => $rankId,
+    //                 'unlocked_at' => now(),
+    //             ],
+    //             [
+    //                 'current_progress' => 0,
+    //             ]
+    //         );
+
+    //         $progress->increment('current_progress');
+
+    //         if ($progress->current_progress >= $achievement->target_value) {
+    //             $userPoints = UserPoint::firstOrCreate(
+    //                 ['user_id' => user()->id],
+    //                 ['points' => 0],
+
+    //             );
+
+    //             $userPoints->increment('points', $achievement->point_reward);
+    //         }
+    //     }
+
+    //     return $product;
+    // }
+
+
+    public function createData(array $data)
     {
-        return $this->model->create($data);
+        $product = $this->model->create($data);
+
+        $achievements = Achievement::whereNotNull('target_value')
+            ->whereHas('achievementType', function ($query) {
+                $query->where('name', 'Product Purchase');
+            })
+            ->get();
+
+        foreach ($achievements as $achievement) {
+
+            $rankId = $achievement->rank_id;
+            $progress = UserAchievementProgress::where('user_id', user()->id)
+                ->where('achievement_id', $achievement->id)
+                ->whereNull('achieved_at')
+                ->latest()
+                ->first();
+            if (!$progress || $progress->current_progress >= $achievement->target_value) {
+
+                $progress = UserAchievementProgress::create([
+                    'user_id' => user()->id,
+                    'achievement_id' => $achievement->id,
+                    'rank_id' => $rankId,
+                    'current_progress' => 0,
+                    'unlocked_at' => now(),
+                ]);
+            }
+            $progress->increment('current_progress');
+            if ($progress->current_progress == $achievement->target_value) {
+                $progress->update([
+                    'achieved_at' => now(),
+                ]);
+                $userPoints = UserPoint::firstOrCreate(
+                    ['user_id' => user()->id],
+                    ['points' => 0]
+                );
+
+                $userPoints->increment('points', $achievement->point_reward);
+            }
+        }
+
+        return $product;
     }
+
+
+
 
     // Manage Function According to your need
     public function updateData(int $id, array $data): Order

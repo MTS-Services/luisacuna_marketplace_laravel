@@ -66,13 +66,10 @@ return new class extends Migration {
             $table->timestamp('last_synced_at')->nullable();
 
             $table->rememberToken();
+            $table->string('session_version')->default('1')->index();
+            $table->timestamp('all_devices_logged_out_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
-
-
-            // $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
-            // $table->foreign('language_id')->references('id')->on('languages')->onDelete('cascade')->onUpdate('cascade');
-            // $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade')->onUpdate('cascade');
             $this->addMorphedAuditColumns($table);
         });
 
@@ -100,6 +97,6 @@ return new class extends Migration {
         Schema::dropIfExists('sessions');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('users');
-        Schema::dropIfExists('google_id', );
+        Schema::dropIfExists('google_id',);
     }
 };

@@ -1,40 +1,47 @@
 <?php
- 
+
 namespace App\Models;
- 
+
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
- 
-class Withdrawal extends AuditBaseModel implements Auditable
+
+class WithdrawalStatusHistory extends AuditBaseModel implements Auditable
 {
     use   AuditableTrait;
     //
- 
+
     protected $fillable = [
         'sort_order',
- 
-      //here AuditColumns 
+        'withdrawal_request_id',
+        'from_status',
+        'to_status',
+        'changed_by',
+        'notes',
+        'metadata',
+        'created_at',
+
+      //here AuditColumns
     ];
- 
+
     protected $hidden = [
         //
     ];
- 
+
     protected $casts = [
         //
     ];
- 
+
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
- 
+
      //
- 
+
      /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
- 
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -42,6 +49,6 @@ class Withdrawal extends AuditBaseModel implements Auditable
             //
         ]);
     }
- 
- 
+
+
 }

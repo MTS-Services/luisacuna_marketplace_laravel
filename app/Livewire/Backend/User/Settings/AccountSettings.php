@@ -6,11 +6,12 @@ use Livewire\Component;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Log;
 use App\Livewire\Forms\Backend\Admin\UserManagement\UserForm;
+use App\Services\Cloudinary\CloudinaryService;
 use Illuminate\Support\Facades\Storage;
 use App\Traits\Livewire\WithNotification;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
-class AccountSettingsComponent extends Component
+class AccountSettings extends Component
 {
     use WithFileUploads, WithNotification;
 
@@ -31,10 +32,11 @@ class AccountSettingsComponent extends Component
 
     public UserForm $form;
     protected UserService $service;
-
-    public function boot(UserService $service)
+    protected CloudinaryService $cloudinaryService;
+    public function boot(UserService $service, CloudinaryService $cloudinaryService)
     {
         $this->service = $service;
+        $this->cloudinaryService = $cloudinaryService;
     }
 
     public function mount()
@@ -42,7 +44,7 @@ class AccountSettingsComponent extends Component
         $user = user();
         $this->form->setData($user);
         $this->existingFile = $user->avatar;
-        
+
         // Explicitly fill form data
         $this->form->fill([
             'user_id' => $user->id,
@@ -64,11 +66,12 @@ class AccountSettingsComponent extends Component
                 'avatar' => 'image|max:2048'
             ]);
 
-            $path = $this->avatar->store('users', 'public');
+            $uploaded = $this->cloudinaryService->upload($this->avatar, ['folder' => 'users']);
+            $path = $uploaded->publicId;
             auth()->user()->update([
                 'avatar' => $path,
             ]);
-            
+
             $this->success(__('Profile photo updated successfully!'));
         } catch (\Exception $e) {
             $this->error(__('Profile photo update failed!'));
@@ -91,7 +94,7 @@ class AccountSettingsComponent extends Component
 
             // Validate the form
             $validatedData = $this->form->validate();
-            
+
             logger()->info('Validated Data:', $validatedData);
 
             $updatedUser = $this->service->updateData(user()->id, $validatedData);
@@ -101,7 +104,6 @@ class AccountSettingsComponent extends Component
             $this->dispatch('profile-updated');
 
             return $this->redirect(route('user.account-settings'), navigate: true);
-            
         } catch (\Illuminate\Validation\ValidationException $e) {
             logger()->error('Validation Error:', [
                 'errors' => $e->errors(),
@@ -109,7 +111,6 @@ class AccountSettingsComponent extends Component
             ]);
             $this->error(__('Validation failed. Please check all fields.'));
             throw $e;
-            
         } catch (\Exception $e) {
             Log::error('User profile update failed', [
                 'user_id' => user()->id,
@@ -121,8 +122,16 @@ class AccountSettingsComponent extends Component
         }
     }
 
+    public function logoutFromAllDevices()
+    {
+        $count = user()->logoutAllDevices(includingCurrent: false);
+        Log::info("User logged out from {$count} device(s).");
+        $this->toastSuccess("Successfully logged out from {$count} device(s).");
+    }
+
+
     public function render()
     {
-        return view('livewire.backend.user.settings.account-settings-component');
+        return view('livewire.backend.user.settings.account-settings');
     }
 }

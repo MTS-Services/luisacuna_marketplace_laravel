@@ -47,7 +47,8 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
         // Route::get('/gift-cards', function () {
         //     return view('backend.user.pages.offers.gift-cards');
         // })->name('gift-cards');
-        Route::get('offers/', [OfferController::class, 'index'])->name('offers');
+        Route::get('create/', [OfferController::class, 'index'])->name('offers')->middleware('seller');
+        Route::get('edit/{encrypted_id}', [OfferController::class, 'edit'])->name('offer.edit')->middleware('seller');
     });
 
 
@@ -66,9 +67,7 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
     Route::group(['prefix' => 'seller'], function () {
 
         Route::get('verification/{step?}', [SellerVerificationController::class, 'index'])->name('seller.verification');
-        // Route::get('/verification', function () {
-        //     return view('backend.user.pages.seller.seller-verification');
-        // })->name('seller.verification');
+
     });
 
 

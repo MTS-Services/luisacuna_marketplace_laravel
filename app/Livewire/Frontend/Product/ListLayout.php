@@ -5,9 +5,11 @@ namespace App\Livewire\Frontend\Product;
 use App\Models\Product;
 use App\Services\GameService;
 use App\Services\OrderService;
+use App\Services\PlatformService;
 use App\Services\ProductService;
 use App\Traits\WithPaginationData;
 use Illuminate\Support\Facades\Session;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class ListLayout extends Component
@@ -18,34 +20,64 @@ class ListLayout extends Component
     public $game;
     protected $datas;
     public $product;
-
-
+    #[Url()]
+    public $serach = '';
+    public $sortBy = 'price';
+    public $tags = [];
+    public $sortDirection = 'asc';
 
     protected ProductService $productService;
     protected OrderService $orderService;
     protected GameService $gameService;
-    public function boot(ProductService $productService, OrderService $orderService, GameService $gameService){
+    protected PlatformService $platformService;
+    public function boot(ProductService $productService, OrderService $orderService, GameService $gameService, PlatformService $platformService){
+
         $this->productService = $productService;
+
         $this->orderService = $orderService;
+
         $this->gameService = $gameService;
+
+        $this->platformService = $platformService;
     }
     public function mount($gameSlug, $categorySlug ){
+
         $this->gameSlug = $gameSlug;
+
         $this->categorySlug = $categorySlug;
-        $this->game = $this->gameService->findData($gameSlug, 'slug');
+
+        $this->game = $this->gameService->findData($gameSlug, 'slug')->load(['tags', 'gameConfig', 'platforms']);
+
+        
+        // Formatting Tags
+        $tags = $this->game->tags->pluck('name')->toArray();
+
+        $platforms = $this->platformService->getAllDatas()->pluck('name')->toArray();
+
+
+        $gameConfigs = $this->game->gameConfig->pluck('dropdown_values')->toArray();
+        $array = collect($gameConfigs) ->filter(fn ($value) => !is_null($value))->values()->toArray();
+
+        $shuffledTags = collect(array_merge($tags, $platforms, array_merge(...$array)))->shuffle()->values()->toArray();
+
+        $this->tags = $shuffledTags;
 
     }
    public function getDatas(){
 
-     return  $this->productService->getPaginatedData($this->perPage = 2 , [
+     return  $this->productService->getPaginatedData($this->perPage , [
 
             'gameSlug' => $this->gameSlug,
 
             'categorySlug' => $this->categorySlug,
 
-            'skipSelf' => true
+            'skipSelf' => true, 
 
+            'serach' => $this->serach, 
 
+            'sort_field' => $this->sortBy,
+
+            'sort_direction' => $this->sortDirection,
         ]);
     }
     public function selectItem($ecnryptedId){

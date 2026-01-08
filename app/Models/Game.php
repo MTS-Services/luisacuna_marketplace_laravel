@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Game extends AuditBaseModel implements Auditable
 {
     use  AuditableTrait, Searchable, HasTranslations;
-    //
 
     protected $fillable = [
 
@@ -59,8 +58,11 @@ class Game extends AuditBaseModel implements Auditable
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
-    //
 
+    public function gameTranslations(): HasMany
+    {
+        return $this->hasMany(GameTranslation::class, 'game_id', 'id');
+    }
 
     public function categories(): BelongsToMany
     {
@@ -96,25 +98,6 @@ class Game extends AuditBaseModel implements Auditable
         );
     }
 
-    public function gameTranslations()
-    {
-        return $this->hasMany(GameTranslation::class, 'game_id', 'id');
-    }
-
-
-    public function getTranslationConfig(): array
-    {
-        return [
-            'fields' => ['name', 'description'],
-            'relation' => 'gameTranslations',
-            'model' => GameTranslation::class,
-            'foreign_key' => 'game_id',
-            'field_mapping' => [
-                'name' => 'name',
-                'description' => 'description',
-            ],
-        ];
-    }
 
     public function gameConfig()
     {
@@ -126,6 +109,33 @@ class Game extends AuditBaseModel implements Auditable
         return $this->hasMany(Product::class, 'game_id', 'id');
     }
 
+    /* =========================================
+            Translation Configuration
+     ========================================= */
+
+    public function getTranslationConfig(): array
+    {
+        return [
+            'fields' => ['name', 'description'],
+            'relation' => 'gameTranslations',
+            'model' => GameTranslation::class,
+            'foreign_key' => 'game_id',
+            'field_mapping' => [
+                'name' => 'name',
+                'description' => 'description',
+            ]
+        ];
+    }
+
+    public function translatedName($languageIdOrLocale): string
+    {
+        return $this->getTranslated('name', $languageIdOrLocale) ?? $this->name;
+    }
+
+    public function translatedDescription($languageIdOrLocale): string
+    {
+        return $this->getTranslated('description', $languageIdOrLocale) ?? $this->description;
+    }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
             Query Scopes
@@ -137,7 +147,7 @@ class Game extends AuditBaseModel implements Auditable
         return $query->where('status', GameStatus::ACTIVE);
     }
 
-   
+
     public function scopeInactive(Builder $query): Builder
     {
         return $query->where('status', GameStatus::INACTIVE);
@@ -148,48 +158,71 @@ class Game extends AuditBaseModel implements Auditable
         return $query->where('status', GameStatus::UPCOMING);
     }
 
+    // public function scopeFilter(Builder $query, array $filters): Builder
+    // {
+    //     if (!empty($filters['relations'])) {
+
+    //         $query->with($filters['relations']);
+    //     }
+
+    //     // Add withCount for products
+    //     if (!empty($filters['withProductCount']) && !empty($filters['category'])) {
+    //         $category = Category::where('slug', $filters['category'])->first();
+    //         if ($category) {
+    //             $query->withCount(['products' => function ($q) use ($category) {
+    //                 $q->where('category_id', $category->id);
+    //             }]);
+    //         }
+    //     }
+
+    //     $query->when($filters['tag'] ?? null, function ($query, $tag) {
+    //         $query->whereHas('tags', function ($q) use ($tag) {
+    //             $q->where('tags.slug', $tag);
+    //         });
+    //     });
+
+    //     $query->when($filters['status'] ?? null, function ($query, $status) {
+    //         $query->where('status', $status);
+    //     })
+
+    //         ->when($filters['category'] ?? '', function ($query, $category) {
+    //             $query->whereHas('categories', function ($q) use ($category) {
+    //                 $q->where('categories.slug', $category);
+    //             });
+    //         })
+    //         ->when($filters['tag'] ?? null, function ($query, $tag) {
+    //             $query->whereHas('tags', function ($q) use ($tag) {
+    //                 $q->where('tags.slug', $tag);
+    //             });
+    //         })
+    //     ;
+    //     return $query;
+    // }
+
     public function scopeFilter(Builder $query, array $filters): Builder
     {
-        if(!empty($filters['relations'])){
-
-            $query->with($filters['relations']);
-        }
-
-         // Add withCount for products
-        if(!empty($filters['withProductCount']) && !empty($filters['category'])) {
-            $category = Category::where('slug', $filters['category'])->first();
-            if($category) {
-                $query->withCount(['products' => function ($q) use ($category) {
-                    $q->where('category_id', $category->id);
-                }]);
-            }
-        }
-
-        $query->when($filters['tag'] ?? null, function ($query, $tag) {
-            $query->whereHas('tags', function ($q) use ($tag) {
-                $q->where('tags.slug', $tag);
-            }) ;    
+        $query->when($filters['status'] ?? null, function (Builder $query, $status) {
+            $query->where('status', $status);
         });
 
-        $query->when($filters['status'] ?? null, function ($query, $status) {
-            $query->where('status', $status);
-        })
-
-        ->when($filters['category'] ?? '', function ($query, $category) {
-            $query->whereHas('categories', function ($q) use ($category) {
-                $q->where('categories.slug', $category);
-            });
-
-        })
-        ->when($filters['tag'] ?? null, function ($query, $tag) {
-            $query->whereHas('tags', function ($q) use ($tag) {
+        // Filter by tag slug
+        $query->when($filters['tag'] ?? null, function (Builder $query, string $tag) {
+            $query->whereHas('tags', function (Builder $q) use ($tag) {
                 $q->where('tags.slug', $tag);
             });
-        })
-        ;
+        });
+
+        // Filter by category slug
+        $query->when($filters['categorySlug'] ?? null, function (Builder $query, string $slug) {
+            $query->whereHas('categories', function (Builder $q) use ($slug) {
+                $q->where('categories.slug', $slug);
+            });
+        });
+
         return $query;
     }
-     public function scopeByCategory(Builder $query , string $Categoryslug): Builder
+
+    public function scopeByCategory(Builder $query, string $Categoryslug): Builder
     {
         return $query->whereHas('categories', function ($q) use ($Categoryslug) {
             $q->where('categories.slug', $Categoryslug);
@@ -249,13 +282,11 @@ class Game extends AuditBaseModel implements Auditable
         return is_null($this->deleted_at);
     }
 
-    // public function __construct(array $attributes = [])
-    // {
-    //     parent::__construct($attributes);
-    //     $this->appends = array_merge(parent::getAppends(), [
-    //         'status_label',
-    //         'status_color',
-    //     ]);
-    // }
-
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->appends = array_merge(parent::getAppends(), [
+            //
+        ]);
+    }
 }

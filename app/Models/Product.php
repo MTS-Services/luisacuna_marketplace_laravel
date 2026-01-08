@@ -123,11 +123,15 @@ class Product extends BaseModel implements Auditable
             });
         }
 
+        if ($filters['game_id'] ?? null) {
+            $query->where('game_id', $filters['game_id']);
+        }
+
         if ($filters['user_id'] ?? null) {
             $query->where('user_id', $filters['user_id']);
         }
 
-        if ($filters['page'] ?? null) {
+        if ($filters['status'] ?? null) {
             $query->where('status', $filters['status']);
         }
 

@@ -6,33 +6,28 @@
 
                 <!-- Game Filter -->
                 <div class="relative w-full sm:w-60">
-                        <x-ui.custom-select class="rounded!" label="All Game">
-                            <x-ui.custom-option label="January 2025" />
-                            <x-ui.custom-option label="February 2025" />
-                            <x-ui.custom-option label="March 2025" />
-                        </x-ui.custom-select>
-               </div>
-                  <!-- Game Filter -->
-               <div class="relative w-full sm:w-60">
-                        <x-ui.custom-select class="rounded!" label="All ">
-                            <x-ui.custom-option label="January 2025" />
-                            <x-ui.custom-option label="February 2025" />
-                            <x-ui.custom-option label="March 2025" />
-                        </x-ui.custom-select>
-               </div>
+                    <x-ui.custom-select wire-model="game_id" :wire-live="true" class="rounded!" label="All Game">
+                        <x-ui.custom-option label="All Game" value="" />
 
-                <div class="relative w-full sm:w-60">
-                    <x-ui.input type="text" placeholder="{{ __('Search') }}" class="pl-5 py-2! text-text-white rounded! placeholder:text-text-primary border-zinc-500"
-                        wire:model.live.debounce.300ms="search" />
-                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        <x-phosphor-magnifying-glass class="w-5 h-5 fill-text-text-white" />
-                    </div>
+                        @foreach ($games as $game)
+                            <x-ui.custom-option label="{{ $game->name }}" value="{{ $game->id }}" />
+                        @endforeach
+                    </x-ui.custom-select>
+                </div>
+
+                <!-- Game Filter -->
+                <div class="py-0.5! w-full sm:w-70">
+                    <x-ui.custom-select wire-model="status" :wire-live="true" class="rounded!" label="All">
+                        @foreach ($statuses as $status)
+                            <x-ui.custom-option label="{{ $status['label'] }}" value="{{ $status['value'] }}" />
+                        @endforeach
+                    </x-ui.custom-select>
                 </div>
             </div>
 
             <div class="w-full lg:w-auto flex items-center gap-2 justify-between">
-                <x-ui.button class="w-auto! py-2!" variant="secondary" x-data
-                    @click="$dispatch('open-modal', 'export')">
+                <x-ui.button class="w-auto! py-2!" variant="secondary" wire:click="offerExport"
+                    wire:loading.attr="disabled">
                     <x-phosphor-download class="w-5 h-5 fill-accent group-hover:fill-white" />
                     <span class="text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Export') }}</span>
                 </x-ui.button>
@@ -49,8 +44,10 @@
     </div>
     <div>
         <x-ui.user-table :data="$datas" :columns="$columns" :actions="$actions" searchProperty="search"
-            emptyMessage="No data found. Add your first data to get started." class="rounded-lg overflow-hidden" />
-        {{-- <x-frontend.pagination-ui :pagination="$pagination" /> --}}
+            perPageProperty="perPage" emptyMessage="No data found. Add your first data to get started."
+            class="rounded-lg overflow-hidden" />
+
+        <x-frontend.pagination-ui :pagination="$pagination" />
     </div>
 
 

@@ -4,8 +4,10 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\MultiLangController;
 use App\Http\Controllers\PaymentController;
 use App\Livewire\CloudinaryUpload;
+use App\Livewire\DeviceManagement;
 use App\Livewire\FileManager;
 use App\Livewire\ImageUploader;
+use App\Livewire\SendDeviceNotification;
 use App\Livewire\Test\Checkout;
 use App\Livewire\Test\Items;
 use App\Livewire\ToastDemo;
@@ -162,6 +164,12 @@ Route::get('/test-cloudinary', function () {
 Route::get('/image-uploader', ImageUploader::class)->name('image-uploader');
 Route::get('/file-manager', FileManager::class)->name('file-manager');
 Route::get('/cloudinary', CloudinaryUpload::class)->name('cloudinary-upload');
+
+Route::get('/fcm', function () {
+    return view('generate-fcm');
+});
+Route::get('/send-fcm', SendDeviceNotification::class)->name('send-fcm');
+Route::get('/device-manage', DeviceManagement::class)->name('device-manage');
 
 Route::get('/toastDemo', ToastDemo::class)->name('toastDemo');
 require __DIR__ . '/auth.php';

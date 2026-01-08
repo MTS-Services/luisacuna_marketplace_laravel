@@ -47,7 +47,7 @@ class AllOrders extends Component
                 <div class="flex items-center gap-3">
                     <div class="min-w-0">
                         <h3 class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">'
-                    . $order->source->name .
+                    . $order->source?->name .
                     '</h3>
                     </div>
                 </div>'
@@ -56,13 +56,13 @@ class AllOrders extends Component
                 'key' => 'user_id',
                 'label' => 'Buyer',
                 'sortable' => true,
-                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->user->username]) . '"><span class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">' . $order->user->full_name . '</span></a>'
+                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->user?->username]) . '" target="_blank"><span class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">' . $order->user?->full_name . '</span></a>'
             ],
             [
                 'key' => 'source_id',
                 'label' => 'Seller',
                 'sortable' => true,
-                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->source->user->username]) . '"><span class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">' . $order->source->user->full_name . '</span></a>'
+                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->source->user->username]) . '" target="_blank"><span class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">' . $order->source->user->full_name . '</span></a>'
             ],
             [
                 'key' => 'status',
@@ -77,9 +77,9 @@ class AllOrders extends Component
             ],
             [
                 'key' => 'total_amount',
-                'label' => 'Price ($)',
+                'label' => 'Price',
                 'sortable' => true,
-                'format' => fn($order) => $order->total_amount,
+                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' . currency_symbol() . $order->total_amount  . '</span>'
             ],
             [
                 'key' => 'created_at',
@@ -91,11 +91,17 @@ class AllOrders extends Component
             ],
         ];
         $actions = [
-            [
-                'key' => 'order_id',
-                'label' => 'View',
-                'x_click' => "\$dispatch('order-detail-modal-open', { orderId: '{value}' }); console.log('open');",
+            // [
+            //     'key' => 'order_id',
+            //     'label' => 'View',
+            //     'x_click' => "\$dispatch('order-detail-modal-open', { orderId: '{value}' }); console.log('open');",
 
+            // ],
+             [
+                'key' => 'id', 
+                'label' => 'View', 
+                'route' => 'admin.orders.show', 
+                'encrypt' => true
             ],
         ];
         $bulkActions = [
