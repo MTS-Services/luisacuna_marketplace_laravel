@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\FeedbackType;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Feedback;
@@ -56,11 +57,14 @@ class FeedbackService
 
         $data = $this->model->create($data);
 
-        if(!empty($data)){
+        if (!empty($data)) {
             $freshData = $data->fresh();
-            Log::info("Feedback Translations Created", [
-                'feedback_id' => $freshData->id,
-                'content' => $freshData->message]
+            Log::info(
+                "Feedback Translations Created",
+                [
+                    'feedback_id' => $freshData->id,
+                    'content' => $freshData->message
+                ]
             );
             $freshData->dispatchTranslation(
                 defaultLanguageLocale: app()->getLocale() ?? 'en',
@@ -69,6 +73,12 @@ class FeedbackService
             );
         }
 
-        return $data; 
+        return $data;
+    }
+
+    public function countByType(FeedbackType $type): int
+    {
+        return $this->model->where('target_user_id', user()->id)
+            ->where('type', $type->value)->count();
     }
 }
