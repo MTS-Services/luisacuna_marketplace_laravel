@@ -6,6 +6,7 @@ use App\Enums\OtpType;
 use App\Models\Currency;
 use Illuminate\Support\Str;
 use App\Models\OtpVerification;
+use App\Services\Cloudinary\CloudinaryService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
@@ -61,10 +62,59 @@ if (!function_exists('admin')) {
 
 // ==================== Existing Storage Helpers ====================
 
+// if (!function_exists('storage_url')) {
+//     function storage_url($urlOrArray)
+//     {
+//         $image = asset('assets/images/no_img.jpg');
+
+//         if (is_array($urlOrArray) || is_object($urlOrArray)) {
+//             $result = '';
+//             $count = 0;
+//             $itemCount = count($urlOrArray);
+
+//             foreach ($urlOrArray as $index => $url) {
+
+//                 $result .= $url
+//                     ? (Str::startsWith($url, ['http://', 'https://'])
+//                         ? $url
+//                         : asset('storage/' . $url))
+//                     : $image;
+
+//                 $result .= ($count === $itemCount - 1) ? '' : ', ';
+//                 $count++;
+//             }
+
+//             return $result;
+//         } else {
+
+//             return $urlOrArray
+//                 ? (Str::startsWith($urlOrArray, ['http://', 'https://'])
+//                     ? $urlOrArray
+//                     : asset('storage/' . $urlOrArray))
+//                 : $image;
+//         }
+//     }
+// }
+
 if (!function_exists('storage_url')) {
-    function storage_url($urlOrArray)
+    function storage_url($urlOrArray, ?array $transform = [])
     {
-        $image = asset('assets/images/no_img.jpg');
+        $image = 'no_image';
+
+        $transform = array_merge(
+            array(
+                'width' => 300,
+                'height' => 300,
+                'crop' => 'auto',
+                'quality' => 'auto',
+                'fetch_format' => 'auto',
+                'dpr' => 'auto',
+            ),
+            $transform
+        );
+
+
+        $cloudinaryService = app(CloudinaryService::class);
 
         if (is_array($urlOrArray) || is_object($urlOrArray)) {
             $result = '';
@@ -73,10 +123,8 @@ if (!function_exists('storage_url')) {
 
             foreach ($urlOrArray as $index => $url) {
 
-                $result .= $url
-                    ? (Str::startsWith($url, ['http://', 'https://'])
-                        ? $url
-                        : asset('storage/' . $url))
+                $result .= ($url && ($url != '' || $url != null))
+                    ? $cloudinaryService->getTransformedUrl($url, $transform)
                     : $image;
 
                 $result .= ($count === $itemCount - 1) ? '' : ', ';
@@ -86,10 +134,8 @@ if (!function_exists('storage_url')) {
             return $result;
         } else {
 
-            return $urlOrArray
-                ? (Str::startsWith($urlOrArray, ['http://', 'https://'])
-                    ? $urlOrArray
-                    : asset('storage/' . $urlOrArray))
+            return ($urlOrArray && ($urlOrArray != '' || $urlOrArray != null))
+                ? $cloudinaryService->getTransformedUrl($urlOrArray, $transform)
                 : $image;
         }
     }
@@ -97,17 +143,43 @@ if (!function_exists('storage_url')) {
 
 
 if (!function_exists('auth_storage_url')) {
-    function auth_storage_url($url)
+    function auth_storage_url($url, ?array $transform = [])
     {
-        $image = asset('assets/images/default_profile.jpg');
+        $image = 'default_avatar';
 
-        return $url
-            ? (Str::startsWith($url, ['http://', 'https://'])
-                ? $url
-                : asset('storage/' . $url))
+        $transform = array_merge(
+            array(
+                'width' => 200,
+                'height' => 200,
+                'quality' => 'auto',
+                'fetch_format' => 'auto',
+                'dpr' => 'auto',
+                'crop' => 'fill',
+                'gravity' => 'face',
+                'radius' => 'max',
+            ),
+            $transform
+        );
+        $cloudinaryService = app(CloudinaryService::class);
+
+
+        return ($url && ($url != '' || $url != null))
+            ? $cloudinaryService->getTransformedUrl($url, $transform)
             : $image;
     }
 }
+// if (!function_exists('auth_storage_url')) {
+//     function auth_storage_url($url)
+//     {
+//         $image = asset('assets/images/default_profile.jpg');
+
+//         return $url
+//             ? (Str::startsWith($url, ['http://', 'https://'])
+//                 ? $url
+//                 : asset('storage/' . $url))
+//             : $image;
+//     }
+// }
 
 
 

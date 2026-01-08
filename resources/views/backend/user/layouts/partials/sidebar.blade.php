@@ -21,7 +21,8 @@
                         <div class="flex items-center w-full mb-3 gap-4 pb-5 border-b-2 border-bg-info">
                             <div class="relative">
                                 <div class="w-15 h-15">
-                                    <x-cloudinary::image publicId="{{ user()->avatar }}" class="w-full h-full rounded-full" />
+                                   
+                                    <img src="{{ auth_storage_url(user()->avatar) }}" alt="{{ user()->full_name }}" class="w-full h-full rounded-full">
 
                                 </div>
                                 <div class="absolute -right-1.5 top-7.5  w-6 h-6 ">
@@ -116,7 +117,6 @@
                     <!-- Dropdown links -->
                     <div x-show="ordersOpen" x-collapse x-cloak class="mt-1 ml-6 sm:ml-8 space-y-1">
                         @foreach ($categories as $category)
-                       
                             <a href="{{ route('user.user-offer.category', $category->slug) }}" wire:navigate
                                 @click="$root.sidebarOpen = false"
                                 class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base rounded-lg transition-all text-text-white hover:bg-pink-500/50
@@ -241,6 +241,3 @@
         </div>
     </aside>
 </div>
-
-
-

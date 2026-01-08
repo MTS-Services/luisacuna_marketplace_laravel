@@ -26,7 +26,7 @@
                     class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-pink-100 overflow-hidden flex justify-center text-center items-center">
                     @if ($data->user->avatar)
                        
-                    <x-cloudinary::image publicId="{{ $data->user->avatar_url }}" alt="{{ $data->user->name}}" class="w-full h-full object-cover" />
+                    <img src="{{ storage_url($data?->user?->avatar) }}"  alt="{{ $data?->user?->name}}" class="w-full h-full object-cover" />
                         
                     @else
                         <span class="font-bold text-3xl">

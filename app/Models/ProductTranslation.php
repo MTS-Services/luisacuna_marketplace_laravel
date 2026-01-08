@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\AuditBaseModel;
+use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class ProductTranslation extends AuditBaseModel implements Auditable
+class ProductTranslation extends BaseModel implements Auditable
 {
     use   AuditableTrait;
     //
@@ -20,6 +20,7 @@ class ProductTranslation extends AuditBaseModel implements Auditable
         "delivery_timeline",
         "price",
         "quantity",
+        'delivery_method'
 
         //here AuditColumns 
     ];

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Cms;
 use App\Enums\CmsType;
+use Illuminate\Support\Facades\Log;
 
 class CmsService
 {
@@ -31,13 +32,32 @@ class CmsService
 
         $cms = $this->model->where('type', $typeValue)->first();
 
+        
+
         if ($cms) {
+
+            $oldData = $cms;
+            $contentChange = isset($data['content']) && $data['content'] !== $oldData['content'];
             // Update existing
-            $cms->update([
+            $newData = $cms->update([
                 'content' => $data['content'],
                 'sort_order' => $data['sort_order'] ?? $cms->sort_order,
                 'updated_by' => $data['updated_by'] ?? $this->adminId,
             ]);
+
+            $freshData = $cms->fresh();
+
+         if ($contentChange) {
+             Log::info('Cms Translationsd Created', [
+            'cms_id' => $freshData->id,
+            'content' => $freshData->content
+            ]);
+
+            $freshData->dispatchTranslation(
+                defaultLanguageLocale: 'en',
+                targetLanguageIds: null
+            );
+        }
         } else {
             // Create new if not exists
             $cms = $this->model->create([
@@ -47,6 +67,20 @@ class CmsService
                 'created_by' => $data['updated_by'] ?? $this->adminId,
                 'updated_by' => $data['updated_by'] ?? $this->adminId,
             ]);
+
+            $freshData = $cms->fresh();
+
+            Log::info('Cms Translation Created', [
+            'cms_id' => $freshData->id,
+            'content' => $freshData->content
+            ]);
+
+            $freshData->dispatchTranslation(
+                defaultLanguageLocale: 'en',
+                targetLanguageIds: null
+            );
+            return $freshData;
+
         }
 
         return $cms->fresh();

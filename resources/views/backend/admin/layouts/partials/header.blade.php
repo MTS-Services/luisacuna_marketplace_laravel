@@ -53,20 +53,12 @@
 
                 <div class="relative" x-data="{ open: false }">
 
-                    {{-- <button @click="open = !open"
-                     class=" flex items-center gap-2 p-1 rounded-xl hover:bg-bg-white/10 transition-colors">
-                      <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face&auto=format"
-                           alt="Profile" class="avatar rounded-lg object-cover">
-                    </button> --}}
-
+                  
                     <button @click="open = !open" class="avatar">
                         <div class="w-8 rounded-xl">
 
-                            {{-- <img src="{{ auth_storage_url(admin()->avatar) }}" alt="{{ admin()->name }}"
-                                class="object-cover w-full h-full"> --}}
-                               
-                            <x-cloudinary::image publicId="{{ admin()->avatar_url }}"
-                                class="object-cover w-full h-full" alt="{{  admin()->name }}" />
+                            <img src="{{ auth_storage_url(admin()->avatar) }}" alt="{{ admin()->full_name }}"
+                                class="object-cover w-full h-full">
                         </div>
                     </button>
 

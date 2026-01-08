@@ -160,7 +160,7 @@ class Accounts extends Component
                     'sortable' => true,
                     'format' => fn($item) => '
                       <div class="flex items-center gap-3">
-                        <img src="' . ($item->game_image ?? '/default.png') . '" 
+                        <img src="' .storage_url($item->game_image) . '" 
                             class="w-14 h-14 rounded-lg object-cover flex-shrink-0" 
                             alt="' . e($item->name ?? 'Game') . '">
                         <div class="flex flex-col">

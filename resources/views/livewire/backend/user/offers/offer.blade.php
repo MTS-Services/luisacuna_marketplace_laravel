@@ -20,7 +20,7 @@
                                     <div class="w-8 h-8 sm:w-16 sm:h-16">
                                         @if ($category->icon)
 
-                                            <x-cloudinary::image public-id="{{ $category->icon }}" class="w-full h-full rounded-lg sm:rounded-xl object-cover" crop="scale" 
+                                            <img src="{{ storage_url($category->icon) }}" class="w-full h-full rounded-lg sm:rounded-xl object-cover" crop="scale" 
                                                 alt="{{ $category->name }}" />
                                         @else
                                             <img src="{{ storage_url('') }}" alt="{{ $category->name }}"
@@ -125,7 +125,7 @@
                     <div class="flex items-center justify-center gap-3 mb-5">
                         @if ($selectedGame->logo)
 
-                            <x-cloudinary::image public-id="{{ $selectedGame->logo }}" alt="{{ $selectedGame->name }}" class="w-12 h-12 sm:w-16 sm:h-16 rounded-lg object-cover" crop="scale"
+                            <img src="{{ storage_url($selectedGame->logo) }}" alt="{{ $selectedGame->name }}" class="w-12 h-12 sm:w-16 sm:h-16 rounded-lg object-cover" crop="scale"
                             />
                             
                         @endif

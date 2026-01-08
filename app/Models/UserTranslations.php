@@ -13,8 +13,7 @@ class UserTranslations extends BaseModel implements Auditable
 
     protected $fillable = [
         'sort_order',
-        'first_name',
-        'last_name',
+        'description',
         'user_id',
         'language_id',
 

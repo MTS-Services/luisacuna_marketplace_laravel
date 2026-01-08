@@ -38,10 +38,10 @@ class FaqForm extends Form
     public function setData(Faq $data): void
     {
 
-        // $this->question = $data->status->value;
-        // $this->answer = $data->status->value;
-        // $this->status = $data->status->value;
-        $this->type = $data->status->value;
+        $this->status = $data->status->value;
+        $this->answer = $data->answer;
+        $this->question = $data->question;
+        $this->type = $data->type->value;
 
     }
 

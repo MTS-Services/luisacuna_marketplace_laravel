@@ -62,7 +62,7 @@ class UserOffer extends Component
                 'format' => function ($item) {
                     if ($this->categorySlug != 'top-up') {
                         return   '<div class="flex items-center gap-3">
-                    <img src="' . ($item->games->logo) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item->games->name ?? 'Game') . '">
+                    <img src="' . storage_url($item?->games?->logo) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item?->games?->name ?? 'Game') . '">
                     <span class="font-semibold text-text-white">' . ($item->games->name ?? '-') . '</span>
                 </div>';
                     } else {

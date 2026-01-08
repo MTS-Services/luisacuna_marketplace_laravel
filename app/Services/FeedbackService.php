@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Feedback;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
 
 class FeedbackService
 {
@@ -52,6 +53,22 @@ class FeedbackService
 
     public function createData(array $data): Feedback
     {
-        return $this->model->create($data);
+
+        $data = $this->model->create($data);
+
+        if(!empty($data)){
+            $freshData = $data->fresh();
+            Log::info("Feedback Translations Created", [
+                'feedback_id' => $freshData->id,
+                'content' => $freshData->message]
+            );
+            $freshData->dispatchTranslation(
+                defaultLanguageLocale: app()->getLocale() ?? 'en',
+                forceTranslation: true,
+                targetLanguageIds: null
+            );
+        }
+
+        return $data; 
     }
 }

@@ -175,12 +175,12 @@
                         <!-- File Preview -->
                         <div class="aspect-square bg-gray-100 flex items-center justify-center overflow-hidden">
                             @if ($uploadedFile['resource_type'] === 'image')
-                                <x-cloudinary::image public-id="{{ $uploadedFile['public_id'] }}" width="270"
-                                    removeBackground height="270" crop="scale" sizes="100vw"
-                                    alt="Uploaded File" class="rounded" />
+                                <img src="{{ $uploadedFile['public_id'] }}" 
+                                    alt="attachment" class="rounded" />
+
+                                
                             @elseif ($uploadedFile['resource_type'] === 'video')
-                                <x-cloudinary::image public-id="cld-sample-5" width="270" removeBackground
-                                    height="270" crop="scale" sizes="100vw" assetType="video"
+                                <img src="{{ storage_url('cld-sample-5') }}" 
                                     alt="Uploaded File" class="rounded" />
                                 <x-cloudinary::video public-id="{{ $uploadedFile['public_id'] }}" width="250"
                                     height="300" alt="Uploaded File" class="rounded" controls />

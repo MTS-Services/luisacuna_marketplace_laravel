@@ -3,10 +3,8 @@
 namespace Database\Seeders;
 
 use App\Enums\RankStatus;
-use App\Models\Admin;
 use App\Models\Rank;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class RankSeeder extends Seeder
 {
@@ -21,7 +19,7 @@ class RankSeeder extends Seeder
                 'slug' => 'bronze',
                 'minimum_points' => 0,
                 'maximum_points' => 999,
-                'icon' => '🥉',
+                'icon' => 'images_5_ybuvyj',
                 'status' => RankStatus::ACTIVE->value,
             ],
             [
@@ -30,7 +28,7 @@ class RankSeeder extends Seeder
                 'slug' => 'silver',
                 'minimum_points' => 1000,
                 'maximum_points' => 4999,
-                'icon' => '🥈',
+                'icon' => '17155284_1_yopz2t',
                 'status' => RankStatus::ACTIVE->value,
             ],
             [
@@ -39,7 +37,7 @@ class RankSeeder extends Seeder
                 'slug' => 'gold',
                 'minimum_points' => 5000,
                 'maximum_points' => 9999,
-                'icon' => '🥇',
+                'icon' => '9590147_hka5mg',
                 'status' => RankStatus::ACTIVE->value,
             ],
             [
@@ -48,7 +46,7 @@ class RankSeeder extends Seeder
                 'slug' => 'platinum',
                 'minimum_points' => 10000,
                 'maximum_points' => 19999,
-                'icon' => '💎',
+                'icon' => '16680510_gwtgjr',
                 'status' => RankStatus::ACTIVE->value,
             ],
         ]);

@@ -5,11 +5,13 @@ namespace App\Models;
 use App\Enums\FeedbackType;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
+use App\Traits\HasTranslations;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Feedback extends AuditBaseModel implements Auditable
 {
-    use   AuditableTrait;
+    use   AuditableTrait, HasTranslations;
     //
 
     protected $fillable = [
@@ -58,9 +60,28 @@ class Feedback extends AuditBaseModel implements Auditable
         return $this->belongsTo(Order::class, 'order_id', 'id');
     }
 
-    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
-                End of RELATIONSHIPS
-     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+    public function feedbackTranslations(): HasMany
+    {
+        return $this->hasMany(FeedbackTranslation::class, 'feedback_id', 'id');
+    }
+
+        /* =========================================
+            Translation Configuration
+     ========================================= */
+
+    public function getTranslationConfig(): array
+    {
+        return [
+            'fields' => ['message'],
+            'relation' => 'feedbackTranslations',
+            'model' => FeedbackTranslation::class,
+            'foreign_key' => 'feedback_id',
+            'field_mapping' => [
+                'message' => 'message',
+            ]
+        ];
+    }
+ 
 
     public function __construct(array $attributes = [])
     {

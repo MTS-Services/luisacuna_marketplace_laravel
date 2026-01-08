@@ -101,7 +101,7 @@
             <!-- Guarantees -->
             <div class="space-y-4">
                 <!-- Money-back -->
-                <div class="flex items-start gap-3">
+                <div class="flex items-start gap-3 mt-4">
                     <svg class="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd"
                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -157,10 +157,9 @@
             <div class="  mt-2 pt-3 flex items-center justify-between gap-2">
 
                 <div class="w-18 h-14 relative">
-
-                    <x-cloudinary::image publicId="{{ $product->user->avatar_url }}" alt="{{ $product->user->name }}"
-                        class="w-full h-full object-cover" />
-
+                   
+                    <img src="{{ storage_url($product->user->avatar) }}" alt="{{ $product->user->full_name}}" class="w-full h-full object-cover" />
+                    
                     <span class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
 
                 </div>
