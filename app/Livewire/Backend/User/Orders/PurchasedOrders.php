@@ -47,9 +47,9 @@ class PurchasedOrders extends Component
                     . $order->source->name .
                     '</h3>
                         <p class="text-xs text-text-primary/80 truncate xxs:block py-1">'
-                    . $order?->soruce?->name .
+                    . $order?->source?->name .
                     '</p>
-                        <a href="' . ($order->status->value === 'cancelled'
+                        <a href="' . ($order->status->value === OrderStatus::CANCELLED
                         ? route('user.order.cancel', ['orderId' => $order->order_id])
                         : route('user.order.complete', ['orderId' => $order->order_id])
                     ) . '"

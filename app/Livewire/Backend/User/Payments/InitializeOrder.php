@@ -4,6 +4,7 @@ namespace App\Livewire\Backend\User\Payments;
 
 use App\Models\User;
 use App\Models\Product;
+use App\Services\FeedbackService;
 use App\Services\FeeSettingsService;
 use Livewire\Component;
 use App\Services\OrderService;
@@ -17,22 +18,27 @@ class InitializeOrder extends Component
 
     public ?Product $product = null;
     public int $quantity = 1;
+    public $feedbacks;
 
     protected OrderService $orderService;
     protected ProductService $productService;
     protected FeeSettingsService $feeSettingsService;
-    public function boot(OrderService $orderService, ProductService $productService, FeeSettingsService $feeSettingsService)
+    protected FeedbackService $feedbackService;
+    public function boot(OrderService $orderService, ProductService $productService, FeeSettingsService $feeSettingsService, FeedbackService $feedbackService)
     {
         $this->orderService = $orderService;
         $this->productService = $productService;
         $this->feeSettingsService = $feeSettingsService;
+        $this->feedbackService = $feedbackService;
+        $this->feedbacks = collect([]);
     }
 
     public function mount($productId)
     {
         $this->product = $this->productService->findData(decrypt($productId));
-        // $this->product = Product::where('id', decrypt($productId))->first();
-        $this->product->load(['user.seller', 'platform', 'product_configs.game_configs']);
+        $this->product->load(['user.seller', 'platform', 'product_configs.game_configs', 'orders.feedbacks']);
+        $this->feedbacks = $this->product->feedbacks;
+        $this->feedbacks = $this->product->feedbacks()->latest()->take(6)->get();
     }
 
     public function updatedQuantity()

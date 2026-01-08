@@ -2,13 +2,11 @@
 
 namespace App\Http\Payment\Methods;
 
-use App\Enums\OrderStatus;
-use App\Enums\PaymentStatus;
+
 use App\Http\Payment\PaymentMethod;
 use App\Models\Order;
 use App\Models\Payment;
-use Illuminate\Support\Facades\Log;
-use Exception;
+
 
 class CryptoMethod extends PaymentMethod
 {
