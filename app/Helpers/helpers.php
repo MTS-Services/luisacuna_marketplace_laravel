@@ -125,7 +125,7 @@ if (!function_exists('storage_url')) {
 
                 $result .= ($url && ($url != '' || $url != null))
                     ? $cloudinaryService->getTransformedUrl($url, $transform)
-                    : $image;
+                    : $cloudinaryService->getTransformedUrl($image, $transform);
 
                 $result .= ($count === $itemCount - 1) ? '' : ', ';
                 $count++;
@@ -136,7 +136,7 @@ if (!function_exists('storage_url')) {
 
             return ($urlOrArray && ($urlOrArray != '' || $urlOrArray != null))
                 ? $cloudinaryService->getTransformedUrl($urlOrArray, $transform)
-                : $image;
+                : $cloudinaryService->getTransformedUrl($image, $transform);
         }
     }
 }
@@ -165,7 +165,7 @@ if (!function_exists('auth_storage_url')) {
 
         return ($url && ($url != '' || $url != null))
             ? $cloudinaryService->getTransformedUrl($url, $transform)
-            : $image;
+            : $cloudinaryService->getTransformedUrl($image, $transform);
     }
 }
 // if (!function_exists('auth_storage_url')) {
