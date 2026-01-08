@@ -22,7 +22,7 @@ class Complete extends Component
     public $commentText = '';
     public $type;
     public $rating;
-    public $feedback = null;
+    public $feedback;
 
 
     protected OrderService $orderService;
@@ -36,12 +36,24 @@ class Complete extends Component
     public function mount(string $orderId)
     {
         $this->order = $this->orderService->findData($orderId, 'order_id');
-        $this->order->load(['user', 'source.user', 'source.game', 'source.platform', 'transactions', 'messages.conversation']);
+        $this->order->load([
+            'user',
+            'source.user',
+            'source.game',
+            'source.platform',
+            'transactions',
+            'messages.conversation'
+        ]);
         $this->isVisitSeller = $this->order->user_id !== user()->id;
         $this->conversationId = $this->order->messages?->first()?->conversation->id ?? null;
         $this->dispatch('conversation-selected', conversationId: $this->conversationId);
-        $this->feedback = $this->feedbackService->getByOrderAndUser($this->order->id, user()->id);
     }
+
+    public function fetchFeedback()
+    {
+        $this->feedback = $this->feedbackService->getFeedbackByOrder($this->order->id, $this->isVisitSeller);
+    }
+
     public function cancelOrder()
     {
         $this->order->status = OrderStatus::CANCELLED->value;
@@ -51,6 +63,7 @@ class Complete extends Component
     }
     public function render()
     {
+        $this->fetchFeedback();
         return view('livewire.backend.user.orders.complete');
     }
     public function submitFeedback()
@@ -76,8 +89,6 @@ class Complete extends Component
         $this->dispatch('close-modal');
         $this->success(__('Feedback submitted successfully!'));
 
-       return $this->redirect( route('user.order.complete', ['orderId' => $this->order->order_id]), navigate: true);
-
-
+        $this->fetchFeedback();
     }
 }

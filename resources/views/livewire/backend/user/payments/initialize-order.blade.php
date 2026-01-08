@@ -157,9 +157,10 @@
             <div class="  mt-2 pt-3 flex items-center justify-between gap-2">
 
                 <div class="w-18 h-14 relative">
-                   
-                    <x-cloudinary::image publicId="{{ $product->user->avatar_url }}" alt="{{ $product->user->name}}" class="w-full h-full object-cover" />
-                    
+
+                    <x-cloudinary::image publicId="{{ $product->user->avatar_url }}" alt="{{ $product->user->name }}"
+                        class="w-full h-full object-cover" />
+
                     <span class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
 
                 </div>
@@ -231,26 +232,33 @@
 
             <button class=" text-3xl mt-5 mb-4 font-semibold text-text-primary">{{ __('Recent feedback') }}</button>
             <!-- Seller Card -->
-            @foreach ([1, 2] as $item)
-                <div class="bg-bg-optional dark:bg-bg-info text-white p-5  max-w-md mb-1">
+            @foreach ($feedbacks as $key => $feedback)
+                @if ($key === $feedbacks->count() - 1)
+                    @continue
+                @endif
+                <div class="bg-bg-optional dark:bg-bg-info text-text-white p-5  max-w-md mb-1">
                     <div class="flex items-start justify-between mb-3">
                         <div class="flex items-center gap-2">
-                            <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="#853EFF" viewBox="0 0 20 20">
-                                <path
-                                    d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                            </svg>
-                            <h3 class="text-base font-medium  text-text-primary">
-                                Items <span class="text-text-secondary font-normal">| Yeg***</span>
+                            <x-phosphor name="{{ $feedback->type->icon() }}" variant="solid"
+                                class="w-5 h-5 {{ $feedback->type->iconColor() }}" />
+                            <h3 class="text-base font-medium  text-text-primary line-clamp-1">{{ $product->name }}
                             </h3>
                         </div>
-                        <span class="text-text-secondary text-sm whitespace-nowrap">24.10.25</span>
+                        <span class="text-text-secondary text-sm whitespace-nowrap">
+                            {{ $feedback->created_at->format('Y-m-d') }}</span>
                     </div>
-                    <p class="text-text-secondary text-sm">Yeg***</p>
+                    <p class="text-text-secondary text-sm line-clamp-1">{{ $feedback->message }}</p>
                 </div>
             @endforeach
-            <div class="mt-5">
+            {{-- <div class="mt-5">
                 <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{ __('All feedback') }}</x-ui.button>
-            </div>
+            </div> --}}
+
+            @if ($feedbacks->count() > 5)
+                <div class="mt-5">
+                    <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{ __('All feedback') }}</x-ui.button>
+                </div>
+            @endif
         </div>
 
     </form>

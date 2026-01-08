@@ -69,4 +69,20 @@ class Feedback extends AuditBaseModel implements Auditable
             //
         ]);
     }
+
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['type'] ?? null, function ($query, $type) {
+            $query->where('type', $type);
+        });
+        $query->when($filters['target_user_id'] ?? null, function ($query, $userId) {
+            $query->where('target_user_id', $userId);
+        });
+        $query->when($filters['author_id'] ?? null, function ($query, $userId) {
+            $query->where('author_id', $userId);
+        });
+
+        return $query;
+    }
 }
