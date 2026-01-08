@@ -7,6 +7,7 @@ use App\Enums\MessageType;
 use App\Enums\ParticipantRole;
 use App\Events\ConversationUpdated;
 use App\Events\MessageSent;
+use App\Models\Admin;
 use App\Models\Conversation;
 use App\Models\ConversationParticipant;
 use App\Models\Message;
@@ -885,13 +886,13 @@ class ConversationService
     /**
      * Admin interrupts/joins conversation
      */
-    public function adminJoinConversation(Conversation $conversation, \App\Models\Admin $admin): ?ConversationParticipant
+    public function adminJoinConversation(Conversation $conversation, Admin $admin): ?ConversationParticipant
     {
         try {
             // Check if admin already participant
             $existingParticipant = $conversation->participants()
                 ->where('participant_id', $admin->id)
-                ->where('participant_type', \App\Models\Admin::class)
+                ->where('participant_type', Admin::class)
                 ->first();
 
             if ($existingParticipant) {
@@ -910,13 +911,13 @@ class ConversationService
             $participant = $this->participant->create([
                 'conversation_id' => $conversation->id,
                 'participant_id' => $admin->id,
-                'participant_type' => \App\Models\Admin::class,
+                'participant_type' => Admin::class,
                 'participant_role' => ParticipantRole::ADMIN,
                 'joined_at' => now(),
                 'is_active' => true,
                 'notification_enabled' => true,
                 'creater_id' => $admin->id,
-                'creater_type' => \App\Models\Admin::class,
+                'creater_type' => Admin::class,
             ]);
 
             // Send system message about admin joining
@@ -924,7 +925,7 @@ class ConversationService
                 conversation: $conversation,
                 messageBody: "Admin {$admin->name} has joined the conversation.",
                 sender: null, // System message
-                messageType: MessageType::SYSTEM_NOTIFICATION ?? MessageType::TEXT,
+                messageType: MessageType::SYSTEM ?? MessageType::TEXT,
             );
 
             return $participant;
@@ -967,13 +968,13 @@ class ConversationService
                 $message = $this->message->create([
                     'conversation_id' => $conversation->id,
                     'sender_id' => $admin->id,
-                    'sender_type' => \App\Models\Admin::class,
+                    'sender_type' => Admin::class,
                     'message_type' => $messageType,
                     'message_body' => $messageBody,
                     'metadata' => $metadata,
                     'parent_message_id' => $parentMessageId,
                     'creater_id' => $admin->id,
-                    'creater_type' => \App\Models\Admin::class,
+                    'creater_type' => Admin::class,
                 ]);
 
                 // Handle attachments
@@ -985,7 +986,7 @@ class ConversationService
                 $conversation->update([
                     'last_message_at' => now(),
                     'updater_id' => $admin->id,
-                    'updater_type' => \App\Models\Admin::class,
+                    'updater_type' => Admin::class,
                 ]);
 
                 // Broadcast to users
