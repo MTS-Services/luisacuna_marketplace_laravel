@@ -44,7 +44,7 @@ enum OrderStatus: string
             self::PARTIALLY_PAID => 'badge-info',
             self::PAID => 'badge-success',
             self::PROCESSING => 'badge-primary',
-            self::DELIVERED => 'badge-success',
+            self::DELIVERED => 'badge-info',
             self::COMPLETED => 'badge-success',
             self::CANCELLED => 'badge-neutral',
             self::REFUNDED => 'badge-secondary',
