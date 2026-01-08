@@ -9,7 +9,7 @@
     href="{{ route('game.index', ['gameSlug' => $data->slug, 'categorySlug' => $categorySlug ?? $data->categories->first()->slug]) }}">
     <div class="bg-bg-primary dark:bg-bg-secondary p-6 rounded-2xl">
         <div class="bg-bg-info images w-full h-60 sm:h-48 md:h-68">
-            <img src="{{ storage_url($data->logo) }}" alt="{{ $data->name }}"
+            <img src="{{ storage_url(storage_url($data?->logo)) }}" alt="{{ $data->name }}"
                 class="w-full h-full object-cover rounded-lg">
            
         </div>

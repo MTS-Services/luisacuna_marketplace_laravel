@@ -22,7 +22,7 @@
                             <div class="relative">
                                 <div class="w-15 h-15">
                                    
-                                    <img src="{{ auth_storage_url($user->avatar) }}" alt="{{ user()->full_name }}" class="w-full h-full rounded-full">
+                                    <img src="{{ auth_storage_url(user()->avatar) }}" alt="{{ user()->full_name }}" class="w-full h-full rounded-full">
 
                                 </div>
                                 <div class="absolute -right-1.5 top-7.5  w-6 h-6 ">

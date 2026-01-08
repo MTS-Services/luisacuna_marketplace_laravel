@@ -57,7 +57,7 @@ class Index extends Component
                 'sortable' => false,
                 'format' => fn($item) =>
                 '<div class="flex items-center gap-3">
-                    <img src="' . $this->cloudinaryService->getUrlFromPublicId($item->games?->logo) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item->games->slug ?? 'Game') . '">
+                    <img src="' . storage_url($item->games?->logo) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item->games->slug ?? 'Game') . '">
                     <span class="font-semibold text-text-white">' . ($item->games->slug ?? '-') . '</span>
                 </div>'
             ],

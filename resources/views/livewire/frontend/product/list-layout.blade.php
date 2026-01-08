@@ -103,7 +103,7 @@
 
                             <div class="flex items-center justify-between">
                                 <div class="w-6 h-6">
-                                    <img src="{{ storage_url($game->logo) }}" alt="{{ $game->name }}"
+                                    <img src="{{ storage_url($game?->logo) }}" alt="{{ $game->name }}"
                                         class="w-full h-full object-cover">
                                 </div>
                                 <div>
