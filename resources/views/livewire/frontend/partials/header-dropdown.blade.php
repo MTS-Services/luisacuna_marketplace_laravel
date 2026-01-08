@@ -17,7 +17,7 @@
                             <div
                                 class="flex items-center gap-2.5 p-2 dark:hover:bg-purple-500/10 hover:bg-purple-100 rounded-lg transition cursor-pointer">
                                 <div class="w-6 h-6 flex-shrink-0 ">
-                                    <img src="{{ asset($item->logo) }}" alt="{{ $item->name }}"
+                                    <img src="{{ storage_url($item->logo) }}" alt="{{ $item->name }}"
                                         class="w-full h-full object-contain rounded-lg">
                                 </div>
                                 {{-- <p class="text-base font-normal dark:text-white text-gray-900">{{ $item['name'] }}</p> --}}
