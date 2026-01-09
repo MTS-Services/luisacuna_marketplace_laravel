@@ -520,6 +520,6 @@ class User extends AuthBaseModel implements Auditable
 
     public function offlineStatus(): string
     {
-        return (!$this->isOnline() && $this->last_seen_at !== null && $this->last_seen_at->diffInMinutes(now()) < 60) ? round($this->last_seen_at->diffInMinutes(now())) . ' min' : 'Offline';
+        return (!$this->isOnline() && $this->last_seen_at !== null && $this->last_seen_at->diffInMinutes(now()) < 60) ? round($this->last_seen_at->diffInMinutes(now())) . ' min ago' : 'Offline';
     }
 }

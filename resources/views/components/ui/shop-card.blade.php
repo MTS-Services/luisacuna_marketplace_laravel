@@ -36,7 +36,8 @@
                     }} --}}
                     {{ $data->name }}
                 </p>
-                <img src="{{ storage_url($game->logo) }}" alt="{{ $game->name}}"  class="w-16 h-16 rounded float-right" />
+                <img src="{{ storage_url($game->logo) }}" alt="{{ $game->name }}"
+                    class="w-16 h-16 rounded float-right" />
 
             </div>
 
@@ -64,7 +65,6 @@
                 <div class="w-18 h-14 relative ">
                     <x-cloudinary::image publicId="{{ $data?->user?->avatar_url ?? '' }}"
                         alt="{{ $data?->user?->name ?? '' }}" class="w-14 h-14 rounded-full border-2 border-white" />
-
                     @if ($data?->user?->isOnline())
                         <span
                             class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>

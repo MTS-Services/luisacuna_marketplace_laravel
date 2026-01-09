@@ -23,15 +23,6 @@ class Authenticate extends Middleware
     public function handle($request, Closure $next, ...$guards)
     {
         $this->authenticate($request, $guards);
-        if (Auth::guard('web')->check() && $request->routeIs('user.*')) {
-            $userId = user()->id;
-            User::where('id', $userId)
-                ->update([
-                    'last_seen_at' => now(),
-                    'updated_at' => now()
-                ]);
-
-        }
         return $next($request);
     }
 

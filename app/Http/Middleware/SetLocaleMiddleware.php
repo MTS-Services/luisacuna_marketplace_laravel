@@ -2,9 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,6 +24,14 @@ class SetLocaleMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $locale = null;
+        if (Auth::guard('web')->check()) {
+            $userId = user()->id;
+            User::where('id', $userId)
+                ->update([
+                    'last_seen_at' => now(),
+                    'updated_at' => now()
+                ]);
+        }
 
         // Get the list of all available language JSON files from the root 'lang' directory.
         $langFiles = File::glob(base_path('lang') . '/*.json');
