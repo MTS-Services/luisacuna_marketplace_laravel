@@ -24,6 +24,10 @@
 
 <body x-data="{ sidebarOpen: false, mobileMenuOpen: false }" class="h-full max-h-screen antialiased bg-bg-primary">
 
+    @auth
+        <livewire:backend.user.user-heartbeat />
+    @endauth
+
     <div class="flex flex-col h-screen">
         @if (
             !(request()->routeIs('login') ||

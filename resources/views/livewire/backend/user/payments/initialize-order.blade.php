@@ -158,11 +158,15 @@
 
                 <div class="w-18 h-14 relative">
 
-                    <img src="{{ auth_storage_url($product?->user?->avatar) }}" alt="{{ $product?->user?->full_name }}"
-                        class="w-full h-full object-cover rounded-full" />
-
-                    <span class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
-
+                    <img src="{{ auth_storage_url($product?->user?->avatar) }}"
+                        alt="{{ $product?->user?->full_name }}" class="w-full h-full object-cover rounded-full" />
+                    @if ($product?->user?->isOnline())
+                        <span
+                            class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
+                    @else
+                        <span
+                            class="absolute bottom-0 right-0 w-5 h-5 bg-gray-400 border-2 border-white rounded-full"></span>
+                    @endif
                 </div>
 
                 <div class="w-full">

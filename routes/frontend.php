@@ -53,7 +53,4 @@ Route::controller(FrontendController::class)->group(function () {
     Route::get('/privacy-policy', 'privacyPolicy')->name('privacy-policy');
 });
 Route::get('/users/{username}', [UserProfileController::class, 'index'])->name('profile');
-// Route::controller(UserProfileController::class)->name('profile.')->prefix('profile')->group(function () {
-//     Route::get('/{username}', 'index')->name('index');
 
-// });

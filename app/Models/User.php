@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends AuthBaseModel implements Auditable
 {
-    use  TwoFactorAuthenticatable, AuditableTrait, HasTranslations, Notifiable, SoftDeletes, HasDeviceManagement;
+    use TwoFactorAuthenticatable, AuditableTrait, HasTranslations, Notifiable, SoftDeletes, HasDeviceManagement;
 
     /**
      * The attributes that are mass assignable.
@@ -47,6 +47,7 @@ class User extends AuthBaseModel implements Auditable
         'google_id',
         'avatar',
         'date_of_birth',
+        'last_seen_at',
 
         'timezone',
         // 'language_id',
@@ -119,24 +120,25 @@ class User extends AuthBaseModel implements Auditable
     protected function casts(): array
     {
         return [
-            'email_verified_at'      => 'datetime',
-            'phone_verified_at'      => 'datetime',
-            'otp_expires_at'         => 'datetime',
-            'last_login_at'          => 'datetime',
-            'locked_until'           => 'datetime',
-            'terms_accepted_at'      => 'datetime',
-            'privacy_accepted_at'    => 'datetime',
-            'last_synced_at'         => 'datetime',
+            'email_verified_at' => 'datetime',
+            'phone_verified_at' => 'datetime',
+            'otp_expires_at' => 'datetime',
+            'last_login_at' => 'datetime',
+            'locked_until' => 'datetime',
+            'terms_accepted_at' => 'datetime',
+            'privacy_accepted_at' => 'datetime',
+            'last_synced_at' => 'datetime',
             'two_factor_confirmed_at' => 'datetime',
             'all_devices_logged_out_at' => 'datetime',
-            'date_of_birth'          => 'date',
+            'date_of_birth' => 'date',
 
-            'two_factor_enabled'     => 'boolean',
-            'password'               => 'hashed',
+            'two_factor_enabled' => 'boolean',
+            'password' => 'hashed',
 
-            'user_type'              => UserType::class,
-            'account_status'         => UserAccountStatus::class,
-            'kyc_status'             => userKycStatus::class,
+            'user_type' => UserType::class,
+            'account_status' => UserAccountStatus::class,
+            'kyc_status' => userKycStatus::class,
+            'last_seen_at' => 'datetime',
         ];
     }
 
@@ -507,5 +509,17 @@ class User extends AuthBaseModel implements Auditable
     public function images()
     {
         return $this->cloudinaryFiles()->where('resource_type', 'image');
+    }
+
+
+
+    public function isOnline(): bool
+    {
+        return $this->last_seen_at !== null && $this->last_seen_at->gt(now()->subMinutes(2));
+    }
+
+    public function offlineStatus(): string
+    {
+        return (!$this->isOnline() && $this->last_seen_at !== null && $this->last_seen_at->diffInMinutes(now()) < 60) ? round($this->last_seen_at->diffInMinutes(now())) . ' min ago' : 'Offline';
     }
 }
