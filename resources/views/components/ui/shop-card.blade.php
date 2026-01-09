@@ -62,9 +62,16 @@
                 class="border-t border-zinc-500 mt-2 pt-3 flex items-center justify-between gap-3">
 
                 <div class="w-18 h-14 relative ">
-                    <img src="{{ auth_storage_url($data?->user?->avatar) }}"
-                        alt="{{ $data?->user?->name }}" class="w-14 h-14 rounded-full border-2 border-white" />
-                    <span class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
+                    <x-cloudinary::image publicId="{{ $data?->user?->avatar_url ?? '' }}"
+                        alt="{{ $data?->user?->name ?? '' }}" class="w-14 h-14 rounded-full border-2 border-white" />
+
+                    @if ($data?->user?->isOnline())
+                        <span
+                            class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
+                    @else
+                        <span
+                            class="absolute bottom-0 right-0 w-5 h-5 bg-gray-400 border-2 border-white rounded-full"></span>
+                    @endif
 
                 </div>
 
@@ -73,7 +80,6 @@
                         <span> {{ $data?->user?->first_name ?? $data?->user?->username }}</span>
                         <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
                     </p>
-
                     <div class="flex items-center space-x-2 mt-1">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="w-5 h-5 fill-zinc-500">
