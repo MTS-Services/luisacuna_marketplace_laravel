@@ -11,8 +11,7 @@
         transform: scale(1.02);
     }
     .box-shadow {
-        /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); */
-        0 1px 1px rgba(255, 255, 255, 0.05);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     }
 </style>
 
