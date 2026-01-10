@@ -82,8 +82,7 @@ class CancelledOrders extends Component
             [
                 'key' => 'order_id',
                 'label' => 'View',
-                'x_click' => "\$dispatch('order-detail-modal-open', { orderId: '{value}' }); console.log('open');",
-
+                'route' => 'admin.orders.show',
             ],
 
         ];

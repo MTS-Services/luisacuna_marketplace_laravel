@@ -20,7 +20,7 @@ class OrderController extends Controller
         return view($this->masterView);
     }
 
-    public function paidOrders()
+    public function progressOrders()
     {
         return view($this->masterView);
     }
@@ -33,11 +33,9 @@ class OrderController extends Controller
         return view($this->masterView);
     }
 
-    public function show($id)
+    public function show($orderID)
     {
-
-
-        $data = $this->service->findData(decrypt($id));
+        $data = $this->service->findData(column_value: $orderID, column_name: 'order_id');
         if (!$data) {
             abort(404);
         }

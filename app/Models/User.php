@@ -522,4 +522,10 @@ class User extends AuthBaseModel implements Auditable
     {
         return (!$this->isOnline() && $this->last_seen_at !== null && $this->last_seen_at->diffInMinutes(now()) < 60) ? round($this->last_seen_at->diffInMinutes(now())) . ' min ago' : 'Offline';
     }
+
+    public function isVerifiedSeller(): bool
+    {
+        $this->load('seller');
+        return (bool) $this->seller?->seller_verified_at;
+    }
 }

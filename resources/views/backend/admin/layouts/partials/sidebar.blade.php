@@ -213,10 +213,10 @@
                             'permission' => 'rank-list',
                         ],
                         [
-                            'name' => 'Paid Orders',
-                            'route' => route('admin.orders.paid-orders'),
+                            'name' => 'Progress Orders',
+                            'route' => route('admin.orders.progress-orders'),
                             'icon' => 'award',
-                            'active' => 'paid-orders',
+                            'active' => 'progress-orders',
                             'permission' => 'achievement-type-list',
                         ],
                         [

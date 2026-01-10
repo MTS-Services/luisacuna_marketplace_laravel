@@ -91,17 +91,11 @@ class AllOrders extends Component
             ],
         ];
         $actions = [
-            // [
-            //     'key' => 'order_id',
-            //     'label' => 'View',
-            //     'x_click' => "\$dispatch('order-detail-modal-open', { orderId: '{value}' }); console.log('open');",
 
-            // ],
-             [
-                'key' => 'id', 
-                'label' => 'View', 
-                'route' => 'admin.orders.show', 
-                'encrypt' => true
+            [
+                'key' => 'order_id',
+                'label' => 'View',
+                'route' => 'admin.orders.show',
             ],
         ];
         $bulkActions = [

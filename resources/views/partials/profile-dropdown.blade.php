@@ -3,7 +3,8 @@
     <button @click="open = !open"
         class="flex items-center rounded-lg text-text-white transition-all focus:outline-none mr-3 ml-1.5">
         <div class="w-7 h-7 lg:w-9 lg:h-9 rounded-full shadow-lg overflow-hidden">
-                <img src="{{ auth_storage_url(user()->avatar) }}" class="w-full h-full object-cover" alt="{{ user()->full_name ?? 'User Avatar' }}" />
+            <img src="{{ auth_storage_url(user()->avatar) }}" class="w-full h-full object-cover"
+                alt="{{ user()->full_name ?? 'User Avatar' }}" />
         </div>
     </button>
 
@@ -18,8 +19,9 @@
         <div class="px-2 py-5 flex items-center justify-between shadow-lg bg-bg-secondary">
             <div class="flex items-center gap-2">
                 <div class="w-10 h-10 lg:w-14 lg:h-14 rounded-full shadow-lg overflow-hidden">
-                    
-                <img src="{{ auth_storage_url(user()->avatar) }}" class="w-full h-full rounded-full" alt="{{ user()->full_name ?? 'User Avatar' }}" />
+
+                    <img src="{{ auth_storage_url(user()->avatar) }}" class="w-full h-full rounded-full"
+                        alt="{{ user()->full_name ?? 'User Avatar' }}" />
 
                 </div>
                 <div class="flex flex-col gap-1.5">
@@ -29,12 +31,14 @@
                     <p class="text-xs text-zinc-400 truncate">{{ user()->email }}</p>
                 </div>
             </div>
-            <div>
-                <x-ui.button href="{{ route('user.offers') }}" wire:navigate
-                    class="m-auto! py-1! lg:py-2!">
-                    {{ __('Sell') }}
-                </x-ui.button>
-            </div>
+            @if (user()->isVerifiedSeller())
+                <div>
+                    <x-ui.button href="{{ route('user.seller.verification') }}" wire:navigate
+                        class="m-auto! py-1! lg:py-2!">
+                        {{ __('Sell') }}
+                    </x-ui.button>
+                </div>
+            @endif
         </div>
 
         <div class="flex-1 px-3 py-4 space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto">
@@ -97,31 +101,11 @@
                     @foreach ($categories as $category)
                         <a href="{{ route('user.user-offer.category', $category->slug) }}" wire:navigate
                             @click="$root.sidebarOpen = false"
-                            class="block px-2 sm:px-3 py-2 text-xs sm:text-sm lg:text-base rounded-lg transition-all text-text-white hover:bg-pink-500/50 
+                            class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-bg-hover 
                                 {{ request()->route('categorySlug') === $category->slug ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                             {{ $category->name }}
                         </a>
                     @endforeach
-                    {{-- <a href="{{ route('user.offer.currency') }}" wire:navigate @click="$root.sidebarOpen = false"
-                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'currency' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
-                        {{ __('Currency') }}
-                    </a>
-                    <a href="{{ route('user.offer.accounts') }}" wire:navigate @click="$root.sidebarOpen = false"
-                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'accounts' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
-                        {{ __('Accounts') }}
-                    </a>
-                    <a href="{{ route('user.offer.top-ups') }}" wire:navigate @click="$root.sidebarOpen = false"
-                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'top-ups' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
-                        {{ __('Top Ups') }}
-                    </a>
-                    <a href="{{ route('user.offer.items') }}" wire:navigate @click="$root.sidebarOpen = false"
-                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'items' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
-                        {{ __('Items') }}
-                    </a>
-                    <a href="{{ route('user.offer.gift-cards') }}" wire:navigate @click="$root.sidebarOpen = false"
-                        class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'gift-cards' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
-                        {{ __('Gift Cards') }}
-                    </a> --}}
                 </div>
             </div>
 
