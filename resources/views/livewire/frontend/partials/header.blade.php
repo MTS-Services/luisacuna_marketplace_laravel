@@ -8,8 +8,7 @@
                     class="inline-block inline-flex gap-1 items-center justify-center">
 
                     {{-- <img src="{{ asset('assets/images/header_logo.png') }}" alt="{{ __('Logo') }}"></a> --}}
-                    <img src="{{ storage_url(app_logo()) }}"
-                        class="rounded w-8 h-6" alt="{{ site_name() }}" />
+                    <img src="{{ storage_url(app_logo()) }}" class="rounded w-8 h-6" alt="{{ site_name() }}" />
                     <p>
                         {{ short_name() }}
                     </p>
@@ -105,10 +104,7 @@
 
 
                         <button type="button" @click="$flux.dark = !$flux.dark" :aria-pressed="$flux.dark"
-                            class="flex items-center justify-center w-9 h-9 rounded-full
-           transition-all duration-300
-           {{-- bg-zinc-200 dark:bg-zinc-700 --}}
-           text-zinc-700 dark:text-zinc-200">
+                            class="flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300 {{-- bg-zinc-200 dark:bg-zinc-700 --}} text-zinc-700 dark:text-zinc-200">
 
                             <!-- Sun -->
                             <flux:icon x-show="!$flux.dark" name="sun"

@@ -29,15 +29,17 @@ class GridLayout extends Component
     #[Url()]
     public $search = '';
 
+
     public $platform_id = '';
+
     #[Url()]
     public $delivery_timeline = '';
 
     public $category_id = 0;
     #[Url()]
-    public float $min_price = 0;
+    public $min_price = 0;
     #[Url()]
-    public float $max_price = 0;
+    public $max_price = 0;
 
 
     public $tags = [];
@@ -91,7 +93,7 @@ class GridLayout extends Component
         ];
 
 
-        $this->platforms = $this->platformService->getAllDatas() ?? [];
+        $this->platforms = $this->platformService->getAllDatas('name', 'asc') ?? [];
 
 
         // Formatting Tags
@@ -104,39 +106,22 @@ class GridLayout extends Component
         $this->tags = $shuffledTags;
     }
 
-    public function getDatas()
-    {
-
-
-        return  $this->productService->getPaginatedData($this->perPage, [
-
-            'gameSlug' => $this->gameSlug,
-
-            'categorySlug' => $this->categorySlug,
-
-            'skipSelf' => true,
-
-            'search' => $this->search,
-
-            'platform_id' => $this->platform_id,
-
-            'delivery_timeline' => $this->delivery_timeline,
-
-            'category_id' => $this->category_id,
-
-            'min_price' => $this->min_price,
-
-            'max_price' => $this->max_price,
-
-        ]);
-    }
-
     public function render()
     {
 
 
-        $this->datas = $this->getDatas();
-        // dd($this->datas);
+        $this->datas = $this->productService->getPaginatedData($this->perPage, [
+            'gameSlug' => $this->gameSlug,
+            'categorySlug' => $this->categorySlug,
+            'skipSelf' => true,
+            'search' => $this->search,
+            'platform_id' => $this->platform_id,
+            'delivery_timeline' => $this->delivery_timeline,
+            'category_id' => $this->category_id,
+            'min_price' => $this->min_price,
+            'max_price' => $this->max_price,
+        ]);
+        $this->datas->load('user');
 
         $this->paginationData($this->datas);
 
@@ -148,10 +133,18 @@ class GridLayout extends Component
     public function resetAllFilters()
     {
 
-        $this->search = '';
-        $this->platform_id = '';
-        $this->delivery_timeline = '';
-        $this->category_id = 0;
+        $this->reset([
+            'search',
+            'platform_id',
+            'delivery_timeline',
+            'category_id',
+            'min_price',
+            'max_price',
+        ]);
+    }
+
+    public function restPrice()
+    {
         $this->min_price = 0;
         $this->max_price = 0;
     }

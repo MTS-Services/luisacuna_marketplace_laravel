@@ -90,16 +90,16 @@
                                         <span
                                             class="absolute left-3 top-1/2 -translate-y-1/2 text-text-primary pointer-events-none">$</span>
                                         <x-ui.input type="text" placeholder="Min" class="border-zinc-700 pl-7"
-                                            x-model="selectedMin" />
+                                            x-model.live="selectedMin" />
                                     </div>
                                     <div class="relative flex-1">
                                         <span
                                             class="absolute left-3 top-1/2 -translate-y-1/2 text-text-primary pointer-events-none">$</span>
                                         <x-ui.input type="text" placeholder="Max" class="border-zinc-700 pl-7"
-                                            x-model="selectedMax" />
+                                            x-model.live="selectedMax" />
                                     </div>
                                     <x-ui.button class="py-2! px-3! w-auto! rounded! hidden md:flex bg-transparent!"
-                                        :variant="'primary'" @click="selectedMin = ''; selectedMax = '';">
+                                        :variant="'primary'" wire:click="restPrice">
                                         <flux:icon name="trash" class="w-5 h-5" />
                                     </x-ui.button>
                                 </div>
