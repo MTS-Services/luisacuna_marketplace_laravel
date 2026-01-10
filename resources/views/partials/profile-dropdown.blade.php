@@ -225,7 +225,7 @@
                                     </button>
                                 </div>
 
-                                <x-language-switcher />
+                                <x-language-switcher :currencies="$currencies" />
                             </div>
                         </div>
                     </template>

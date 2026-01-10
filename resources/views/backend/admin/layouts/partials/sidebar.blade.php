@@ -200,7 +200,7 @@
 
 
                 {{-- Dropdown Component --}}
-                <x-backend.navlink type="dropdown" icon="box" name="Products" :page_slug="$active"
+                <x-backend.navlink type="dropdown" icon="box" name="Product Management" :page_slug="$active"
                     :items="$productItems" />
 
                 <x-backend.navlink type="dropdown" icon="layers" name="Order Management" :page_slug="$active"
