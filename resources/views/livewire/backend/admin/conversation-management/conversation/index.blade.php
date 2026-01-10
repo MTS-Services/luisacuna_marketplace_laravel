@@ -142,7 +142,7 @@
                                 <div class="flex -space-x-2">
                                     @foreach ($conversation->participants->take(2) as $participant)
                                         @if ($participant->participant?->avatar)
-                                            <img src="{{ storage_url($participant->participant->avatar) }}"
+                                            <img src="{{auth_storage_url($participant?->participant?->avatar) }}"
                                                 alt="{{ $participant->participant->full_name ?? 'User' }}"
                                                 class="w-10 h-10 rounded-full border-2 border-white dark:border-gray-800">
                                         @else
