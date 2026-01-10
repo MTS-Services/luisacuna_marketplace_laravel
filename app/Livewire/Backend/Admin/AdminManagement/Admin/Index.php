@@ -48,7 +48,7 @@ class Index extends Component
                 'label' => 'avatar',
                 'format' => function ($data) {
                     return $data->avatar
-                        ? '<img src="' . storage_url($data->avatar) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        ? '<img src="' . auth_storage_url($data->avatar) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
                         : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
                 }
             ],

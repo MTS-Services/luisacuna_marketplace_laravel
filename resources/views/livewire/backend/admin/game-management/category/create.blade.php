@@ -80,7 +80,7 @@
             {{-- meta description --}}
             <div class="w-full mt-2">
                 <x-ui.label value="Meta Description" class="mb-1" />
-                <x-ui.text-editor model="form.meta_description" id="meta_description"
+                <x-ui.textarea model="form.meta_description" id="meta_description"
                     placeholder="Enter your main content here..." :height="350" />
 
                 <x-ui.input-error :messages="$errors->get('form.meta_description')" />

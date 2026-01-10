@@ -83,9 +83,10 @@
                 </div>
             </div> --}}
             <!-- Buy Button -->
+            {{-- @dd(currency_symbol()) --}}
             @auth('web')
                 <x-ui.button class="w-full  py-2!" type="submit">
-                    {{ currency_symbol() }}<span x-text="(quantity * price).toFixed(2)"
+                    {{ strtoupper(currency_code()) }}<span x-text="(quantity * price).toFixed(2)"
                         class="text-text-btn-primary group-hover:text-text-btn-secondary ">
                     </span>
                     {{ __('| Buy Now') }}
@@ -93,7 +94,7 @@
             @else
                 <a href="{{ route('login') }}" wire:navigate
                     class="bg-zinc-500 px-4  py-2!  text-text-btn-primary hover:text-text-btn-secondary hover:bg-zinc-50 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group text-nowrap cursor-pointer w-full mb-6">
-                    PEN<span x-text="(quantity * price).toFixed(2)"
+                    {{ strtoupper(currency_code()) }}<span x-text="(quantity * price).toFixed(2)"
                         class=" text-text-btn-primary group-hover:text-text-btn-secondary"></span>
                     {{ __('| Buy Now') }}
                 </a>

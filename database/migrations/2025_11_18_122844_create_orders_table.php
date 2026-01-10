@@ -37,6 +37,8 @@ return new class extends Migration
 
             $table->text('notes')->nullable();
 
+            $table->boolean('is_disputed')->default(false);
+
             $table->timestamp('completed_at')->nullable()->index();
 
             $table->softDeletes();

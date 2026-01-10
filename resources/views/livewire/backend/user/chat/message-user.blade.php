@@ -121,7 +121,7 @@
 
 
                                 @if ($sender && $sender->avatar)
-                                    <img src="{{ storage_url($sender->avatar) }}" alt="{{ $sender->full_name }}"
+                                    <img src="{{ auth_storage_url($sender->avatar) }}" alt="{{ $sender->full_name }}"
                                         class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0 border-2 border-zinc-400">
                                 @else
                                     <div

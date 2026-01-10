@@ -59,12 +59,13 @@
                 </div>
             </div>
 
-            <a href="{{ route('profile', ['username' => $data->user->username]) ?? '' }}"
+            <a href="{{ route('profile', ['username' => $data?->user?->username ?? '']) }}"
                 class="border-t border-zinc-500 mt-2 pt-3 flex items-center justify-between gap-3">
 
                 <div class="w-18 h-14 relative ">
-                    <x-cloudinary::image publicId="{{ $data?->user?->avatar_url ?? '' }}"
-                        alt="{{ $data?->user?->name ?? '' }}" class="w-14 h-14 rounded-full border-2 border-white" />
+                    <img src="{{ auth_storage_url($data?->user?->avatar ?? '') }}"
+                        class="w-14 h-14 rounded-full border-2 border-white "
+                        alt="{{ $data?->user?->full_name ?? '' }}" />
                     @if ($data?->user?->isOnline())
                         <span
                             class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>

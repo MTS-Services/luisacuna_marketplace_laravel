@@ -127,8 +127,8 @@
                             </span>
                         </div>
                     @empty
-                        <div class="col-span-full text-center py-8">
-                            <h2 class="text-text-white">No Data Found</h2>
+                        <div class="col-span-full">
+                            <x-ui.empty-card />
                         </div>
                     @endforelse
                 </div>
