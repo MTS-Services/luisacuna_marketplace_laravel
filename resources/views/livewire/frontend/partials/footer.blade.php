@@ -40,7 +40,7 @@
                 <div>
                     <h4 class="font-bold mb-4 text-text-white text-xl">{{ __('Quick Links') }}</h4>
                     <ul class="space-y-2 text-sm text-text-secondary">
-                        <li><a href="{{ route('home') }}#popular-games" wire:navigate
+                        <li><a href="{{ route('home') }}#popular-games"
                                 class="hover:text-purple-400 transition text-text-secondary text-md">{{ __('Explore Products') }}</a>
                         </li>
                         <li><a href="{{ route('how-to-buy') }}" wire:navigate
