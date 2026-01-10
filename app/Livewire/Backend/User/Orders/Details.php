@@ -21,6 +21,7 @@ class Details extends Component
     }
     public function mount($orderId): void
     {
+        
         $this->data = $this->orderService->findData($orderId, 'order_id');
         $this->isVisitSeller = $this->data->user_id !== user()->id;
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 class OrderController extends Controller
 {
     protected $userMasterView='backend.user.pages.orders.order';
+    
     protected $frontendMasterView='backend.user.pages.orders.order-details';
 
     public function purchasedOrders()
