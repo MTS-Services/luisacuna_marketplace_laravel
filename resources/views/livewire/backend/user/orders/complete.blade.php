@@ -335,17 +335,14 @@
 
                 {{-- Modal Body --}}
                 <div class="p-6">
-                    <p class="text-text-primary">
-                        {{ __('Please describe the issue with this order. Our team will review your dispute and contact you shortly.') }}
-                    </p>
-                    
+
                     <div class="mt-4">
                         <label class="block text-text-white font-medium mb-2">
                             {{ __('Dispute Reason') }}
                         </label>
                         <textarea 
                             wire:model="disputeReason"
-                            rows="5"
+                            rows="2"
                             class="w-full bg-bg-info text-text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
                             placeholder="{{ __('Explain why you are opening a dispute...') }}"></textarea>
                         @error('disputeReason')
