@@ -18,6 +18,7 @@ class FeedbackComponent extends Component
     #[Url(keep: true)]
     public string $type = 'all';
     public $reviewItem = null;
+    public $product_id = null;
 
     protected FeedbackService $service;
     protected OrderService $orderService;
@@ -37,15 +38,13 @@ class FeedbackComponent extends Component
     public function render()
     {
 
+        // dd($this->getFilters());
+
         $positive = $this->service->countByType(FeedbackType::POSITIVE);
         $negative = $this->service->countByType(FeedbackType::NEGATIVE);
         $order = $this->orderService->countByStatus(OrderStatus::COMPLETED);
 
-        $total = $positive + $negative;
-
-        $feedbackScore = $total > 0
-            ? round(($positive / $total) * 100, 2)
-            : 0;
+        $feedbackScore = feedback_calculate($positive, $negative);
 
 
 
@@ -68,6 +67,7 @@ class FeedbackComponent extends Component
         return [
             'target_user_id' => user()->id,
             'type' => $this->typeMatch($this->type),
+            'product_id' => $this->product_id,
         ];
     }
 

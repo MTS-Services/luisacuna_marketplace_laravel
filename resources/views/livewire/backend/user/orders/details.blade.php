@@ -121,7 +121,7 @@
                             <a href="{{ route('profile', $data?->source?->user?->username) }}" target="_blank" class="font-semibold ">{{ $data?->source?->user?->full_name }}</a>
                             <p class="text-sm text-text-white "> <img class="inline mr-2"
                                     src="{{ asset('assets/images/thumb up filled.png') }}" alt="">
-                                {{ __('99.3% | ')}}  {{ $data?->feedback?->count() ?? 0 }} {{ __(' reviews | ') }} {{ $data?->count() ?? 0 }} {{ __('Sold') }} </p>
+                                 {{ feedback_calculate($positiveFeedbacksCount, $negativeFeedbacksCount) }} % {{ __(' | ')}}  {{ $data?->feedback?->count() ?? 0 }} {{ __(' reviews | ') }} {{ $data?->count() ?? 0 }} {{ __('Sold') }} </p>
                         </div>
                     </div>
                 @endif
