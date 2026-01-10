@@ -57,60 +57,61 @@
                 </div>
 
                 <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
-                    <h2 class="text-text-white font-semibold text-2xl sm:text-3xl">
-                        {{ __('Delivery') }}
-                    </h2>
-                    <div class="border-t border-zinc-500 pt-4 mt-4 flex items-center gap-3"></div>
-                    <h3 class="text-text-white text-lg sm:text-xl font-medium mb-6">
-                        {{ __('Guaranteed Delivery Time:') }}
-                    </h3>
+                        <h2 class="text-text-white font-semibold text-2xl sm:text-3xl">
+                            {{ __('Delivery') }}
+                        </h2>
+                        <div class="border-t border-zinc-500 pt-4 mt-4 flex items-center gap-3"></div>
+                      
+                        <div class="space-y-4">
+                            @foreach ($offer->game->gameConfig as $config)
+                                @if ($config->delivery_methods != null)
+                                    <label class="flex items-center cursor-pointer group">
+                                            <input type="radio" 
+                                                value="manual"
+                                                wire:model.live="deliveryMethod"
+                                                class="w-5 h-5 accent-pink-500 bg-transparent border-2 border-zinc-700 cursor-pointer">
+                                            <span class="ml-3 text-text-white text-base transition-colors">
+                                                Manual
+                                            </span>
+                                    </label>
+                                    
+                                    <label class="flex items-center cursor-pointer group">
+                                            <input type="radio" name="delivery_method"
+                                                value="instant"
+                                                wire:model.live="deliveryMethod"
+                                                class="w-5 h-5 accent-pink-500 bg-transparent border-2 border-zinc-700 cursor-pointer">
+                                            <span class="ml-3 text-text-white text-base transition-colors">
+                                               Auto
+                                            </span>
+                                    </label>
 
-                    <div class="space-y-4">
-                        <div class="">
-                            <x-ui.custom-select :wireModel="'delivery_timeline'" :dropDownClass="'border-0!'"
-                                class="rounded-md! border-0 bg-bg-info!">
-                                @if($offer->delivery_timeline)
-                                <x-ui.custom-option :value="$offer->delivery_timeline" :label="$offer->delivery_timeline" />
-                                @else
-
+                                    @break
                                 @endif
-                                @foreach ($timelineOptions as $timelineOption)
-                                    {{-- @dd($timelineOption) --}}
-                                    <x-ui.custom-option :value="$timelineOption" :label="$timelineOption" />
-                                @endforeach
-                            </x-ui.custom-select>
+                            @endforeach
+                            <x-ui.input-error :messages="$errors->get('deliveryMethod')" />
+                        </div>
+                          <h3 class="text-text-white text-lg sm:text-xl font-medium mb-6 mt-3">
+                            {{ __('Guaranteed Delivery Time:') }}
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="">
+                                @php 
+                               
+                                 $isInstantDelivery = $deliveryMethod == 'instant' ? $timelineOptions['instant'] : 'Choose';
+                             
+                                @endphp
+                                <x-ui.custom-select :wireModel="'delivery_timeline'" :dropDownClass="'border-0!'" class="rounded-md! border-0 bg-bg-info!" label="{{ $isInstantDelivery }}">
+                                   
+
+                                    @foreach ($timelineOptions as $timelineOption)
+                                     
+                                        {{-- @dd($timelineOption) --}}
+                                        <x-ui.custom-option :value="$timelineOption" :label="$timelineOption" />
+                                    @endforeach
+                                </x-ui.custom-select>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
-                    <h2 class="text-text-white font-semibold text-2xl sm:text-3xl mb-10">
-                        {{ __('Delivery method') }}
-                    </h2>
-                    <div class="border-t border-zinc-500 pt-4 mt-4 flex items-center gap-3"></div>
-                    <h3 class="text-text-white text-lg sm:text-xl font-medium mb-6">
-                        {{ __('Chose delivery method') }}
-                    </h3>
-                    <div class="space-y-4">
-                        @foreach ($offer->game->gameConfig as $config)
-                            @if ($config->delivery_methods != null)
-                                @foreach ($config->delivery_methods as $method)
-                                    <label class="flex items-center cursor-pointer group">
-                                        <input type="radio" name="delivery_method"
-                                            value="{{ $config->id }}|{{ $method }}"
-                                            wire:model.live="deliveryMethod"
-                                            class="w-5 h-5 accent-pink-500 bg-transparent border-2 border-zinc-700 cursor-pointer">
-                                        <span class="ml-3 text-text-white text-base transition-colors">
-                                            {{ ucfirst(str_replace('_', ' ', $method)) }}
-                                        </span>
-                                    </label>
-                                @endforeach
-                                @break
-                            @endif
-                        @endforeach
-                        <x-ui.input-error :messages="$errors->get('deliveryMethod')" />
-                    </div>
-                </div>
 
                 <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
                     <div class="mt-8">
@@ -135,7 +136,6 @@
                                 <x-ui.label for="platform" :value="__('Platform')" required class="mb-2" />
                                 <x-ui.custom-select :wireModel="'platform_id'" :dropDownClass="'border-0!'"
                                     class="rounded-md! border-0! bg-bg-info!">
-                                    <x-ui.custom-option :value="null" :label="__('Delivery Timeline')" />
                                     @foreach ($platforms as $platform)
                                         <x-ui.custom-option :value="$platform->id" :label="$platform->name" />
                                     @endforeach
@@ -171,7 +171,7 @@
 
                                         <x-ui.custom-select :wireModel="$wireModel" class="rounded-md! border-0! bg-bg-info!"
                                             mdWidth="md:w-full" rounded="rounded" mdLeft="md:left-0">
-                                            <x-ui.custom-option :value="null" :label="'Select ' . $config->field_name" />
+                                           
                                             @foreach ($options as $key => $option)
                                                 <x-ui.custom-option :value="is_array($option) ? $option['value'] : $key" :label="is_array($option) ? $option['label'] : $option" />
                                             @endforeach
