@@ -6,6 +6,7 @@ use App\Services\NotificationService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -15,7 +16,7 @@ class NotificationSidebar extends Component
 
     public bool $UserNotificationShow = false;
     public Collection $notifications;
-    public bool $isLoading = false;
+    public bool $isLoading = true;
 
     protected NotificationService $service;
 
@@ -58,6 +59,13 @@ class NotificationSidebar extends Component
         }
     }
 
+    #[Computed]
+    public function unreadCount(): int
+    {
+        return $this->service->getUnreadCount(null);
+    }
+
+
     public function markAsRead(string $encryptedId): void
     {
         $id = decrypt($encryptedId);
@@ -65,6 +73,7 @@ class NotificationSidebar extends Component
             $this->service->markAsRead($id);
             $this->fetchNotifications();
             $this->dispatch('notification-read');
+            $this->unreadCount();
         } catch (\Exception $e) {
             Log::error('Failed to mark notification as read', [
                 'id' => $id,
@@ -79,6 +88,7 @@ class NotificationSidebar extends Component
             $count = $this->service->markAllAsRead();
             $this->fetchNotifications();
             $this->dispatch('all-notifications-read');
+            $this->unreadCount();
             $this->toastSuccess(__('Marked :count notifications as read', ['count' => $count]));
         } catch (\Exception $e) {
             Log::error('Failed to mark all notifications as read', [
