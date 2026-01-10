@@ -19,7 +19,7 @@ class Detail extends Component
         // Capture previous URL, fallback to the default route if no referrer exists
         $this->backUrl = url()->previous() !== url()->current()
             ? url()->previous()
-            : route('admin.gm.category.index');
+            : route('admin.orders.index');
     }
 
     public function render()
