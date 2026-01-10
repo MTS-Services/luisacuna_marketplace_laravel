@@ -404,7 +404,7 @@
 
                  <div class="mt-8 lg:px-78 px-0">
                     <x-ui.button href="#" class="w-auto py-3!">
-                       $  {{ $order->grand_total }}{{ __('| Buy now') }}
+                       {{ strtoupper(currency_code()).' '. $order->grand_total }}{{ __('| Buy now') }}
                     </x-ui.button>
                 </div>
             </div>
