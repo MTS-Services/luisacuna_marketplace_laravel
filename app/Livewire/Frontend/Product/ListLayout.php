@@ -3,19 +3,20 @@
 namespace App\Livewire\Frontend\Product;
 
 use App\Models\Product;
+use Livewire\Component;
+use App\Enums\FeedbackType;
+use Livewire\Attributes\Url;
 use App\Services\GameService;
 use App\Services\OrderService;
-use App\Services\PlatformService;
 use App\Services\ProductService;
+use App\Services\PlatformService;
 use App\Traits\WithPaginationData;
 use Illuminate\Support\Facades\Session;
-use Livewire\Attributes\Url;
-use Livewire\Component;
 
 class ListLayout extends Component
 {
     use WithPaginationData;
-    public  $gameSlug ;
+    public  $gameSlug;
     public $categorySlug;
     public $game;
     protected $datas;
@@ -26,11 +27,16 @@ class ListLayout extends Component
     public $tags = [];
     public $sortDirection = 'asc';
 
+
+    public $positiveFeedbacksCount;
+    public $negativeFeedbacksCount;
+
     protected ProductService $productService;
     protected OrderService $orderService;
     protected GameService $gameService;
     protected PlatformService $platformService;
-    public function boot(ProductService $productService, OrderService $orderService, GameService $gameService, PlatformService $platformService){
+    public function boot(ProductService $productService, OrderService $orderService, GameService $gameService, PlatformService $platformService)
+    {
 
         $this->productService = $productService;
 
@@ -40,7 +46,8 @@ class ListLayout extends Component
 
         $this->platformService = $platformService;
     }
-    public function mount($gameSlug, $categorySlug ){
+    public function mount($gameSlug, $categorySlug)
+    {
 
         $this->gameSlug = $gameSlug;
 
@@ -48,7 +55,7 @@ class ListLayout extends Component
 
         $this->game = $this->gameService->findData($gameSlug, 'slug')->load(['tags', 'gameConfig', 'platforms']);
 
-        
+
         // Formatting Tags
         $tags = $this->game->tags->pluck('name')->toArray();
 
@@ -56,38 +63,27 @@ class ListLayout extends Component
 
 
         $gameConfigs = $this->game->gameConfig->pluck('dropdown_values')->toArray();
-        $array = collect($gameConfigs) ->filter(fn ($value) => !is_null($value))->values()->toArray();
+        $array = collect($gameConfigs)->filter(fn($value) => !is_null($value))->values()->toArray();
 
         $shuffledTags = collect(array_merge($tags, $platforms, array_merge(...$array)))->shuffle()->values()->toArray();
 
         $this->tags = $shuffledTags;
 
-    }
-   public function getDatas(){
-
-     return  $this->productService->getPaginatedData($this->perPage , [
-
-            'gameSlug' => $this->gameSlug,
-
-            'categorySlug' => $this->categorySlug,
-
-            'skipSelf' => true, 
-
-            'serach' => $this->serach, 
-
-            'sort_field' => $this->sortBy,
-
-            'sort_direction' => $this->sortDirection,
-        ]);
-    }
-    public function selectItem($ecnryptedId){
-
-      $this->product = $this->productService->findData(decrypt($ecnryptedId));
-
-      $this->skipRender();
+        $allFeedbacks = $this->product?->user?->feedbacksReceived()->get();
+        $this->positiveFeedbacksCount = $this->product?->user?->feedbacksReceived()->where('type', FeedbackType::POSITIVE->value)->count();
+        $this->negativeFeedbacksCount = $this->product?->user?->feedbacksReceived()->where('type', FeedbackType::NEGATIVE->value)->count();
     }
 
-    public function submit(){
+    public function selectItem($ecnryptedId)
+    {
+
+        $this->product = $this->productService->findData(decrypt($ecnryptedId));
+        $this->product->load(['user.feedbacksReceived', 'platform', 'product_configs.game_configs', 'orders.feedbacks']);
+        // $this->skipRender();
+    }
+
+    public function submit()
+    {
 
 
         $token = bin2hex(random_bytes(126));
@@ -102,20 +98,33 @@ class ListLayout extends Component
         ]);
         Session::driver('redis')->put("checkout_{$token}", [
             'order_id' => $order->id,
-            'price_locked' => ($this->product->price * $this->product->quantity) ,
+            'price_locked' => ($this->product->price * $this->product->quantity),
             'expires_at' => now()->addMinutes((int) env('ORDER_CHECKOUT_TIMEOUT_MINUTES', 5))->timestamp,
         ]);
         return $this->redirect(
             route('game.checkout', ['slug' => encrypt($this->product->id), 'token' => $token]),
             navigate: true
         );
-
-
     }
     public function render()
     {
 
-        $this->datas = $this->getDatas();
+
+        $this->datas = $this->productService->getPaginatedData($this->perPage, [
+
+            'gameSlug' => $this->gameSlug,
+
+            'categorySlug' => $this->categorySlug,
+
+            'skipSelf' => true,
+
+            'serach' => $this->serach,
+
+            'sort_field' => $this->sortBy,
+
+            'sort_direction' => $this->sortDirection,
+        ]);
+        $this->datas->load('user.feedbacksReceived', 'game', 'category', 'platform', 'user.wallet');
         $this->paginationData($this->datas);
 
         return view('livewire.frontend.product.list-layout', [
@@ -126,6 +135,4 @@ class ListLayout extends Component
 
         ]);
     }
-
-
 }

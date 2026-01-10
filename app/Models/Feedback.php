@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Product;
 use App\Enums\FeedbackType;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use App\Traits\HasTranslations;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Feedback extends AuditBaseModel implements Auditable
 {
@@ -65,7 +66,7 @@ class Feedback extends AuditBaseModel implements Auditable
         return $this->hasMany(FeedbackTranslation::class, 'feedback_id', 'id');
     }
 
-        /* =========================================
+    /* =========================================
             Translation Configuration
      ========================================= */
 
@@ -81,7 +82,7 @@ class Feedback extends AuditBaseModel implements Auditable
             ]
         ];
     }
- 
+
 
     public function __construct(array $attributes = [])
     {
@@ -103,7 +104,13 @@ class Feedback extends AuditBaseModel implements Auditable
         $query->when($filters['author_id'] ?? null, function ($query, $userId) {
             $query->where('author_id', $userId);
         });
-        
+        $query->when($filters['product_id'] ?? null, function ($query, $productId) {
+            $query->whereHas('order', function ($q) use ($productId) {
+                $q->where('source_id', $productId)
+                    ->where('source_type', \App\Models\Product::class);
+            });
+        });
+
 
 
         return $query;
