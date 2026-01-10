@@ -55,7 +55,7 @@ class Home extends Component
             'gameSlug' => $this->gameSlug,
             'categorySlug' => $this->categorySlug
         ]);
-        $topSelling->load(['game', 'category', 'platform', 'user']);
+        $topSelling->load(['game', 'category', 'platform', 'user.feedbacksReceived']);
 
         return view('livewire.frontend.home', [
             'popular_games' => $popular_games,
