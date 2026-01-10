@@ -738,3 +738,12 @@ if (!function_exists('number_shorten')) {
         return $number_format . $suffix;
     }
 }
+
+
+if (!function_exists('feedback_calculate')) {
+    function feedback_calculate($positive, $negative)
+    {
+        $total = $positive + $negative;
+        return $total > 0 ? round(($positive / $total) * 100, 2) : 0;
+    }
+}
