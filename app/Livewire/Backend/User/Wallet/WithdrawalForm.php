@@ -9,10 +9,11 @@ use Illuminate\Support\Facades\Log;
 use App\Services\WithdrawalMethodService;
 use App\Services\UserWithdrawalAccountService;
 use App\Models\WithdrawalMethod as ModelsWithdrawalMethod;
+use App\Traits\Livewire\WithNotification;
 
 class WithdrawalForm extends Component
 {
-    use WithFileUploads;
+    use WithFileUploads, WithNotification;
 
     public ModelsWithdrawalMethod $method;
 
@@ -48,13 +49,13 @@ class WithdrawalForm extends Component
             // Create the withdrawal account
             $validated['user_id'] = user()->id;
             $validated['withdrawal_method_id'] = $this->method->id;
-            $validated['status'] = 'pending';
             $account = $this->userWithdrawalAccountService->createAccount($validated);
-            dd($account);
+            if (!$account) {
+                $this->error('Failed to create withdrawal account.');
+                return;
+            }
 
-            // Flash success message
-            session()->flash('success', 'Withdrawal account added successfully! Awaiting admin verification.');
-
+            $this->toastSuccess('Withdrawal account created successfully.');
             // Reset form
             $this->resetForm();
 
@@ -63,22 +64,23 @@ class WithdrawalForm extends Component
         } catch (\Exception $e) {
             // Log error
             Log::error('Error creating withdrawal account: ' . $e->getMessage());
-
-            // Flash error message
-            session()->flash('error', 'Failed to add withdrawal account. Please try again.');
+            $this->error('Failed to create withdrawal account.');
         }
     }
 
     public function resetForm()
     {
         $this->account_name = '';
+        $this->account_data = [];
 
-        foreach (json_decode($this->method->required_fields, true) as $fieldName => $fieldRules) {
-            $this->account_data[$fieldName] = '';
+        foreach (json_decode($this->method->required_fields, true) as $field) {
+            $name = Str::slug($field['name'], '_');
+            $this->account_data[$name] = '';
         }
 
         $this->resetValidation();
     }
+
 
     public function getRules(): array
     {

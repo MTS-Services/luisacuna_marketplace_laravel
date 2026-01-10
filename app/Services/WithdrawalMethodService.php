@@ -21,11 +21,15 @@ class WithdrawalMethodService
      *                          Find Methods
      * ================== ================== ================== */
 
-    public function getAllDatas($sortField = 'created_at', $order = 'desc'): Collection
+    public function getAllDatas($sortField = 'created_at', $order = 'desc', array $with = []): Collection
     {
-        $query = $this->model->query();
-        return $query->orderBy($sortField, $order)->get();
+        return $this->model
+            ->query()
+            ->with($with)
+            ->orderBy($sortField, $order)
+            ->get();
     }
+
 
     public function findData($column_value, string $column_name = 'id', bool $trashed = false): ?WithdrawalMethod
     {
@@ -93,7 +97,7 @@ class WithdrawalMethodService
             $data['status'] = $data['status'] ?? ActiveInactiveEnum::ACTIVE;
             $data['fee_type'] = $data['fee_type'] ?? WithdrawalFeeType::FIXED;
             $data['required_fields'] = json_encode($data['required_fields']);
-            
+
             $newData = $data;
 
             $oldImagePath = $model->icon;

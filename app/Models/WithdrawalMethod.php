@@ -8,6 +8,7 @@ use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class WithdrawalMethod extends AuditBaseModel implements Auditable
 {
@@ -55,7 +56,14 @@ class WithdrawalMethod extends AuditBaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-    //
+    public function user()
+    {
+        return $this->hasMany(UserWithdrawalAccount::class);
+    }
+    public function userWithdrawalAccounts(): HasMany
+    {
+        return $this->hasMany(UserWithdrawalAccount::class);
+    }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
