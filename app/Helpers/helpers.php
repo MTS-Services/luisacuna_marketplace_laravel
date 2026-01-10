@@ -671,6 +671,22 @@ if (!function_exists('currency_symbol')) {
         return $selectedCurrency?->symbol ?? '';
     }
 }
+if (!function_exists('currency_code')) {
+    function currency_code()
+    {
+        $defaultCurrency = Currency::where('is_default', true)->first();
+
+        if (!$defaultCurrency) {
+            return '';
+        }
+
+        $selectedCurrencyCode = session('currency', $defaultCurrency->code);
+
+        $selectedCurrency = Currency::where('code', $selectedCurrencyCode)->first();
+
+        return $selectedCurrency?->code ?? '';
+    }
+}
 
 
 
