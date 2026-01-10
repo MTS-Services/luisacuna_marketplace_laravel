@@ -39,6 +39,7 @@ class Edit extends Component
 
     public function mount($encrypted_id) {
         $this->encryptedId = $encrypted_id;
+        $this->updatedDeliveryMethod($this->deliveryMethod);
     }
 
 
