@@ -11,23 +11,36 @@ use Illuminate\Support\Facades\App;
 
 class MultiLangController extends Controller
 {
-    public function __construct(protected LanguageService $languageService, protected CurrencyService $currencyService) { }
+    public function __construct(
+        protected LanguageService $languageService,
+        protected CurrencyService $currencyService
+    ) {}
+
     public function langChange(Request $request): RedirectResponse
     {
         $lang = $request->lang;
-        $currency = $request->currency;
+        $currencyCode = $request->currency;
 
-        if (!in_array($lang, $this->languageService->getActiveData()->pluck('locale')->toArray())) {
+        // Validate Language
+        $activeLanguages = $this->languageService->getActiveData();
+        if (!in_array($lang, $activeLanguages->pluck('locale')->toArray())) {
             abort(400);
         }
 
-        if (!in_array($currency, $this->currencyService->getActiveData()->pluck('code')->toArray())) {
+        // Validate Currency and Retrieve Symbol
+        $activeCurrencies = $this->currencyService->getActiveData();
+        $currencyData = $activeCurrencies->where('code', $currencyCode)->first();
+
+        if (!$currencyData) {
             abort(400);
         }
 
+        // Store both code and symbol in Session
         Session::put('locale', $lang);
-        Session::put('currency', $currency);
+        Session::put('currency', $currencyData->code);
+        Session::put('currency_symbol', $currencyData->symbol);
 
+        // Apply Locale immediately for the redirect response
         App::setLocale($lang);
 
         return redirect()->back();

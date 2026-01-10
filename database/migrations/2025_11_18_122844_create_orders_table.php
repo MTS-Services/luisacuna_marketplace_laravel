@@ -32,6 +32,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('quantity')->default(1);
 
+            $table->string('purchase_currency')->nullable()->index();
             $table->string('currency')->nullable()->index();
             $table->string('payment_method')->nullable();
 

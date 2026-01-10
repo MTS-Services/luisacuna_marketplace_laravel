@@ -526,6 +526,6 @@ class User extends AuthBaseModel implements Auditable
     public function isVerifiedSeller(): bool
     {
         $this->load('seller');
-        return (bool) $this->seller?->seller_verified_at;
+        return (bool) $this->seller?->seller_verified_at !== null;
     }
 }

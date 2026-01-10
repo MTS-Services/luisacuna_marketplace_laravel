@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
-class Checkout extends Component
+class CheckoutCopy extends Component
 {
     public ?Order $order;
     public ?Collection $gateways;
@@ -21,12 +21,6 @@ class Checkout extends Component
     public ?float $walletBalance = null;
     public bool $showWalletWarning = false;
     public bool $processing = false;
-    
-    // New properties for top-up modal
-    public bool $showTopUpModal = false;
-    public ?string $topUpGateway = null;
-    public ?float $requiredTopUpAmount = null;
-    public ?Collection $topUpGateways;
 
     protected OrderService $orderService;
     protected PaymentService $paymentService;
@@ -46,6 +40,7 @@ class Checkout extends Component
             abort(404, 'Checkout link is invalid or has expired');
         }
 
+        // Check if 10 minutes have passed
         if (now()->timestamp > $sessionKey['expires_at']) {
             Session::driver('redis')->forget($key);
             abort(403, 'Sorry, the checkout link has expired');
@@ -66,9 +61,7 @@ class Checkout extends Component
 
         $this->gateway = $this->gateways->first()?->slug;
 
-        // Load top-up gateways (exclude wallet)
-        $this->topUpGateways = $this->gateways->filter(fn($g) => $g->slug !== 'wallet');
-
+        // Load wallet balance directly (fast)
         if ($this->gateways->where('slug', 'wallet')->isNotEmpty()) {
             $this->loadWalletBalance();
         }
@@ -77,6 +70,7 @@ class Checkout extends Component
     protected function loadWalletBalance()
     {
         try {
+            // Single optimized query
             $this->walletBalance = Wallet::where('user_id', $this->order->user_id)
                 ->value('balance') ?? 0;
         } catch (\Exception $e) {
@@ -90,6 +84,7 @@ class Checkout extends Component
 
     public function updatedGateway()
     {
+        // Check wallet balance when wallet is selected
         if ($this->gateway === 'wallet' && $this->walletBalance !== null) {
             $this->showWalletWarning = $this->walletBalance < $this->order->grand_total;
         } else {
@@ -103,10 +98,12 @@ class Checkout extends Component
     }
 
     /**
-     * Process payment with wallet top-up logic
+     * Process payment using Service Layer
+     * This is now just a thin wrapper around the service
      */
     public function processPayment()
     {
+        // Prevent double submission
         if ($this->processing) {
             return;
         }
@@ -118,6 +115,7 @@ class Checkout extends Component
         ]);
 
         try {
+            // Security check: Verify order belongs to authenticated user
             if ($this->order->user_id !== user()->id) {
                 Log::warning('Unauthorized payment attempt', [
                     'order_id' => $this->order->order_id,
@@ -128,16 +126,7 @@ class Checkout extends Component
                 return;
             }
 
-            // Check if wallet is selected and balance is insufficient
-            if ($this->gateway === 'wallet' && $this->walletBalance < $this->order->grand_total) {
-                $this->requiredTopUpAmount = $this->order->grand_total - $this->walletBalance;
-                $this->showTopUpModal = true;
-                $this->topUpGateway = $this->topUpGateways->first()?->slug;
-                $this->processing = false;
-                return;
-            }
-
-            // Process normal payment (wallet with sufficient balance or other gateways)
+            // Use PaymentService to process payment
             $result = $this->paymentService->processPayment(
                 order: $this->order,
                 gateway: $this->gateway,
@@ -151,9 +140,11 @@ class Checkout extends Component
                     'user_id' => user()->id,
                 ]);
 
+                // Handle different payment methods
                 if ($this->gateway === 'stripe' && isset($result['checkout_url'])) {
                     return redirect()->to($result['checkout_url']);
                 } elseif ($this->gateway === 'wallet' && isset($result['redirect_url'])) {
+                    // Wallet payment is instant, redirect to success page
                     session()->flash('success', $result['message']);
                     return redirect()->to($result['redirect_url']);
                 } else {
@@ -175,68 +166,5 @@ class Checkout extends Component
         } finally {
             $this->processing = false;
         }
-    }
-
-    /**
-     * Process top-up and then payment
-     */
-    public function processTopUpAndPayment()
-    {
-        if ($this->processing) {
-            return;
-        }
-
-        $this->processing = true;
-
-        $this->validate([
-            'topUpGateway' => 'required|in:' . $this->topUpGateways->pluck('slug')->join(','),
-        ]);
-
-        try {
-            // Process top-up payment through selected gateway
-            $result = $this->paymentService->processTopUpAndPayment(
-                order: $this->order,
-                topUpGateway: $this->topUpGateway,
-                topUpAmount: $this->requiredTopUpAmount,
-                paymentData: []
-            );
-
-            if ($result['success']) {
-                Log::info('Top-up payment initialized successfully', [
-                    'order_id' => $this->order->order_id,
-                    'top_up_gateway' => $this->topUpGateway,
-                    'top_up_amount' => $this->requiredTopUpAmount,
-                    'user_id' => user()->id,
-                ]);
-
-                // Redirect to payment gateway
-                if (isset($result['checkout_url'])) {
-                    return redirect()->to($result['checkout_url']);
-                } else {
-                    session()->flash('success', $result['message']);
-                    return redirect()->route('user.order.complete', ['orderId' => $this->order->order_id]);
-                }
-            } else {
-                session()->flash('error', $result['message'] ?? 'Top-up payment failed');
-                $this->closeTopUpModal();
-            }
-        } catch (\Exception $e) {
-            Log::error('Top-up payment processing error', [
-                'order_id' => $this->order->order_id,
-                'top_up_gateway' => $this->topUpGateway,
-                'error' => $e->getMessage(),
-            ]);
-
-            session()->flash('error', 'An unexpected error occurred. Please try again.');
-            $this->closeTopUpModal();
-        } finally {
-            $this->processing = false;
-        }
-    }
-
-    public function closeTopUpModal()
-    {
-        $this->showTopUpModal = false;
-        $this->topUpGateway = null;
     }
 }

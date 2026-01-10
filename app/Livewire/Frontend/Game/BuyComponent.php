@@ -32,7 +32,6 @@ class BuyComponent extends Component
         $this->game = $this->product->games;
         $this->user = $this->product->user;
 
-
     }
     public function render()
     {

@@ -27,6 +27,7 @@ class Order extends AuditBaseModel implements Auditable
         'tax_amount',
         'grand_total',
         'currency',
+        'purchase_currency',
         'payment_method',
         'quantity',
         'notes',

@@ -66,6 +66,10 @@ class InitializeOrder extends Component
         $taxAmount = ($totalAmount * $buyerTaxPercent) / 100;
         $grandTotal = $totalAmount + $taxAmount;
 
+        // Get currency from session
+        $sessionCurrency = session('currency', 'USD');
+        $sessionSymbol   = session('currency_symbol', '$');
+
 
         $token = bin2hex(random_bytes(126));
         $ordId = generate_order_id_hybrid();
@@ -85,6 +89,7 @@ class InitializeOrder extends Component
             'notes'        => 'Order initiated by ' . user()->username . ', and the order ID is ' . $ordId,
 
             'currency'     => 'USD',
+            'purchase_currency' => $sessionCurrency,
             'creater_id'   => user()->id,
             'creater_type' => User::class,
         ]);

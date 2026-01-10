@@ -15,6 +15,7 @@ use App\Models\Wallet;
 use App\Services\ConversationService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Stripe\Stripe;
 use Stripe\Checkout\Session as StripeSession;
 use Stripe\PaymentIntent;
@@ -35,32 +36,51 @@ class StripeMethod extends PaymentMethod
 
     /**
      * Start payment - Create Stripe Checkout Session
-     * This initiates the "top-up" process via Stripe
      */
     public function startPayment(Order $order, array $paymentData = []): array
     {
         try {
-            // Eager load to prevent N+1
             $order->load(['user', 'source.user']);
 
-            return DB::transaction(function () use ($order) {
-                $order->load('user');
+            return DB::transaction(function () use ($order, $paymentData) {
+                // Check if this is a top-up payment
+                $isTopUp = $paymentData['is_topup'] ?? false;
+                $topUpAmount = $paymentData['top_up_amount'] ?? null;
 
-                // Create payment record
-                $payment = Payment::firstOrCreate(
-                    ['order_id' => $order->id, 'status' => PaymentStatus::PENDING->value],
-                    [
-                        'payment_id' => generate_payment_id(),
-                        'user_id' => $order->user_id,
-                        'name' => $order?->user?->full_name ?? null,
-                        'email_address' => $order->user->email ?? null,
-                        'payment_gateway' => $this->id,
-                        'amount' => $order->grand_total,
-                        'currency' => strtoupper($order->currency ?? 'USD'),
-                        'creater_id' => $order->user_id,
-                        'creater_type' => get_class($order->user),
-                    ]
-                );
+                // Determine the payment amount
+                $paymentAmount = $isTopUp ? $topUpAmount : $order->grand_total;
+
+                // Create payment record with proper order_id
+                $payment = Payment::create([
+                    'payment_id' => generate_payment_id(),
+                    'user_id' => $order->user_id,
+                    'order_id' => $order->id, // This is the database ID, not order_id string
+                    'name' => $order->user->full_name ?? null,
+                    'email_address' => $order->user->email ?? null,
+                    'payment_gateway' => $this->id,
+                    'amount' => $paymentAmount,
+                    'currency' => strtoupper($order->currency ?? 'USD'),
+                    'status' => PaymentStatus::PENDING->value,
+                    'creater_id' => $order->user_id,
+                    'creater_type' => get_class($order->user),
+                    'metadata' => $isTopUp ? [
+                        'is_topup' => true,
+                        'top_up_amount' => $topUpAmount,
+                    ] : [],
+                ]);
+
+                // Determine success and cancel URLs
+                if ($isTopUp) {
+                    $successUrl = route('user.payment.topup.success') . '?session_id={CHECKOUT_SESSION_ID}&order_id=' . $order->order_id;
+                    $cancelUrl = route('user.payment.failed') . '?order_id=' . $order->order_id;
+                    $description = "Wallet Top-up for Order #{$order->order_id}";
+                    $productName = 'Wallet Top-Up';
+                } else {
+                    $successUrl = route('user.payment.success') . '?session_id={CHECKOUT_SESSION_ID}&order_id=' . $order->order_id;
+                    $cancelUrl = route('user.payment.failed') . '?order_id=' . $order->order_id;
+                    $description = 'Order ID: ' . $order->order_id;
+                    $productName = $order->source?->name ?? 'Order #' . $order->order_id;
+                }
 
                 // Create Stripe Checkout Session
                 $session = StripeSession::create([
@@ -70,23 +90,25 @@ class StripeMethod extends PaymentMethod
                             'price_data' => [
                                 'currency' => strtolower($payment->currency),
                                 'product_data' => [
-                                    'name' => $order->source?->name ?? 'Order #' . $order->order_id,
-                                    'description' => 'Order ID: ' . $order->order_id,
+                                    'name' => $productName,
+                                    'description' => $description,
                                 ],
-                                'unit_amount' => $this->convertToStripeAmount($order->grand_total, $payment->currency),
+                                'unit_amount' => $this->convertToStripeAmount($paymentAmount, $payment->currency),
                             ],
                             'quantity' => 1,
                         ],
                     ],
                     'mode' => 'payment',
-                    'success_url' => route('user.payment.success') . '?session_id={CHECKOUT_SESSION_ID}&order_id=' . $order->order_id,
-                    'cancel_url' => route('user.payment.failed') . '?order_id=' . $order->order_id,
+                    'success_url' => $successUrl,
+                    'cancel_url' => $cancelUrl,
                     'metadata' => [
                         'order_id' => $order->order_id,
                         'order_db_id' => $order->id,
                         'payment_id' => $payment->payment_id,
                         'payment_db_id' => $payment->id,
                         'user_id' => $order->user_id,
+                        'is_topup' => $isTopUp ? 'true' : 'false',
+                        'top_up_amount' => $topUpAmount ?? '',
                     ],
                     'customer_email' => $order->user->email ?? null,
                 ]);
@@ -103,6 +125,8 @@ class StripeMethod extends PaymentMethod
                     'order_id' => $order->order_id,
                     'session_id' => $session->id,
                     'payment_id' => $payment->payment_id,
+                    'is_topup' => $isTopUp,
+                    'amount' => $paymentAmount,
                 ]);
 
                 return [
@@ -126,7 +150,6 @@ class StripeMethod extends PaymentMethod
 
     /**
      * Confirm payment after Stripe success
-     * This implements the "Bridge Pattern": Deposit → Payment
      */
     public function confirmPayment(string $sessionId, ?string $paymentMethodId = null): array
     {
@@ -145,158 +168,22 @@ class StripeMethod extends PaymentMethod
                 throw new Exception('Payment record not found.');
             }
 
-            // If already processed (by Webhook), return success early
+            // If already processed, return success early
             if ($payment->status === PaymentStatus::COMPLETED->value) {
                 return ['success' => true, 'message' => 'Payment already processed.'];
             }
 
             $order = $payment->order;
 
-            // Get or create buyer's wallet
-            $buyerWallet = $payment->order?->user?->wallet ?? Wallet::firstOrCreate(
-                ['user_id' => $payment->user_id],
-                [
-                    'currency_code' => $payment->currency,
-                    'balance' => 0,
-                    'locked_balance' => 0,
-                    'pending_balance' => 0,
-                    'total_deposits' => 0,
-                    'total_withdrawals' => 0,
-                ]
-            );
+            // Check if this is a top-up payment
+            $isTopUp = ($payment->metadata['is_topup'] ?? false) || ($session->metadata['is_topup'] ?? 'false') === 'true';
 
             if ($session->payment_status === 'paid') {
-                return DB::transaction(function () use ($order, $payment, $session, $sessionId, $buyerWallet) {
-                    // Lock records to prevent race conditions
-                    $payment->lockForUpdate();
-                    $order->lockForUpdate();
-                    $buyerWallet->lockForUpdate();
-
-                    $paymentIntent = PaymentIntent::retrieve($session->payment_intent);
-                    $correlationId = Str::uuid();
-                    $balanceBeforeDeposit = $buyerWallet->balance;
-                    $balanceAfterDeposit = $balanceBeforeDeposit + $payment->amount;
-                    $balanceAfterPayment = $balanceAfterDeposit - $order->grand_total;
-
-                    // ===================================================
-                    // TRANSACTION 1: DEPOSIT (Top-up via Stripe)
-                    // Type: TOPUP, Calculation: DEBIT (money IN)
-                    // ===================================================
-                    $depositTransaction = Transaction::create([
-                        'transaction_id' => generate_transaction_id_hybrid(),
-                        'correlation_id' => $correlationId,
-                        'user_id' => $payment->user_id,
-                        'order_id' => $order->id,
-                        'type' => TransactionType::TOPUP->value,
-                        'status' => TransactionStatus::PAID->value,
-                        'calculation_type' => CalculationType::DEBIT->value,
-                        'amount' => $payment->amount,
-                        'currency' => $payment->currency,
-                        'payment_gateway' => $this->id,
-                        'gateway_transaction_id' => $session->payment_intent,
-                        'source_id' => $payment->id,
-                        'source_type' => Payment::class,
-                        'fee_amount' => 0,
-                        'net_amount' => $payment->amount,
-                        'balance_snapshot' => $balanceAfterDeposit,
-                        'metadata' => [
-                            'stripe_session_id' => $sessionId,
-                            'payment_intent_id' => $session->payment_intent,
-                            'receipt_url' => $paymentIntent->charges->data[0]->receipt_url ?? null,
-                            'description' => "Top-up via Stripe for Order #{$order->order_id}",
-                        ],
-                        'notes' => "Deposit: +{$payment->amount} {$payment->currency} via Stripe",
-                        'processed_at' => now(),
-                    ]);
-
-                    // Update wallet balance after deposit
-                    $buyerWallet->update([
-                        'balance' => $balanceAfterDeposit,
-                        'total_deposits' => $buyerWallet->total_deposits + $payment->amount,
-                        'last_deposit_at' => now(),
-                    ]);
-
-                    // ===================================================
-                    // TRANSACTION 2: PAYMENT (Purchase from wallet)
-                    // Type: PURCHASED, Calculation: CREDIT (money OUT)
-                    // ===================================================
-                    $paymentTransaction = Transaction::create([
-                        'transaction_id' => generate_transaction_id_hybrid(),
-                        'correlation_id' => $correlationId,
-                        'user_id' => $payment->user_id,
-                        'order_id' => $order->id,
-                        'type' => TransactionType::PURCHSED->value,
-                        'status' => TransactionStatus::PAID->value,
-                        'calculation_type' => CalculationType::CREDIT->value,
-                        'amount' => $order->grand_total,
-                        'currency' => $order->currency,
-                        'payment_gateway' => 'wallet', // Payment is from wallet
-                        'gateway_transaction_id' => $depositTransaction->transaction_id,
-                        'source_id' => $payment->id,
-                        'source_type' => Payment::class,
-                        'fee_amount' => 0,
-                        'net_amount' => $order->grand_total,
-                        'balance_snapshot' => $balanceAfterPayment,
-                        'metadata' => [
-                            'stripe_session_id' => $sessionId,
-                            'payment_intent_id' => $session->payment_intent,
-                            'description' => "Payment for Order #{$order->order_id}",
-                        ],
-                        'notes' => "Payment: -{$order->grand_total} {$order->currency} for Order #{$order->order_id}",
-                        'processed_at' => now(),
-                    ]);
-
-                    // Update wallet balance after payment
-                    $buyerWallet->update([
-                        'balance' => $balanceAfterPayment,
-                        'total_withdrawals' => $buyerWallet->total_withdrawals + $order->grand_total,
-                        'last_withdrawal_at' => now(),
-                    ]);
-
-                    // Update payment record
-                    $payment->update([
-                        'status' => PaymentStatus::COMPLETED->value,
-                        'transaction_id' => $session->payment_intent,
-                        'payment_method_id' => $paymentIntent->payment_method ?? null,
-                        'card_brand' => $paymentIntent->charges->data[0]->payment_method_details->card->brand ?? null,
-                        'card_last4' => $paymentIntent->charges->data[0]->payment_method_details->card->last4 ?? null,
-                        'paid_at' => now(),
-                        'metadata' => array_merge($payment->metadata ?? [], [
-                            'payment_intent_id' => $session->payment_intent,
-                            'stripe_receipt_url' => $paymentIntent->charges->data[0]->receipt_url ?? null,
-                            'deposit_transaction_id' => $depositTransaction->id,
-                            'payment_transaction_id' => $paymentTransaction->id,
-                            'correlation_id' => $correlationId,
-                        ]),
-                    ]);
-
-                    // Update order status
-                    $order->update([
-                        'status' => OrderStatus::PAID->value,
-                        'payment_method' => 'Wallet (via Stripe)',
-                        'completed_at' => now(),
-                    ]);
-
-                    Log::info('Stripe payment confirmed successfully (Bridge Pattern)', [
-                        'order_id' => $order->order_id,
-                        'payment_id' => $payment->payment_id,
-                        'correlation_id' => $correlationId,
-                        'deposit_transaction_id' => $depositTransaction->transaction_id,
-                        'payment_transaction_id' => $paymentTransaction->transaction_id,
-                        'balance_after' => $balanceAfterPayment,
-                    ]);
-
-                    $this->dispatchPaymentNotificationsOnce($payment);
-                    $this->sendOrderMessage($order);
-
-                    return [
-                        'success' => true,
-                        'message' => 'Payment completed successfully',
-                        'correlation_id' => $correlationId,
-                        'deposit_transaction_id' => $depositTransaction->transaction_id,
-                        'payment_transaction_id' => $paymentTransaction->transaction_id,
-                    ];
-                });
+                if ($isTopUp) {
+                    return $this->processTopUpPayment($session, $payment, $order);
+                } else {
+                    return $this->processRegularPayment($session, $payment, $order);
+                }
             }
 
             return [
@@ -315,6 +202,317 @@ class StripeMethod extends PaymentMethod
                 'message' => 'Payment confirmation failed: ' . $e->getMessage(),
             ];
         }
+    }
+
+    /**
+     * Process top-up payment: Step 1 (Top-up) → Step 2 (Pay Order)
+     */
+    protected function processTopUpPayment($session, Payment $payment, Order $order): array
+    {
+        return DB::transaction(function () use ($session, $payment, $order) {
+            // Lock records
+            $payment->lockForUpdate();
+            $order->lockForUpdate();
+
+            // Get top-up details from session
+            $topUpData = Session::get("topup_order_{$order->order_id}");
+
+            if (!$topUpData) {
+                throw new Exception('Top-up session data not found');
+            }
+
+            $topUpAmount = $topUpData['top_up_amount'];
+            $orderTotal = $topUpData['order_total'];
+
+            // Get or create buyer's wallet
+            $buyerWallet = $order->user->wallet ?? Wallet::firstOrCreate(
+                ['user_id' => $order->user_id],
+                [
+                    'currency_code' => $payment->currency,
+                    'balance' => 0,
+                    'locked_balance' => 0,
+                    'pending_balance' => 0,
+                    'total_deposits' => 0,
+                    'total_withdrawals' => 0,
+                ]
+            );
+
+            $buyerWallet->lockForUpdate();
+
+            $paymentIntent = PaymentIntent::retrieve($session->payment_intent);
+            $correlationId = Str::uuid();
+
+            // Balance calculations
+            $balanceBefore = $buyerWallet->balance;
+            $balanceAfterTopUp = $balanceBefore + $topUpAmount;
+            $balanceAfterPayment = $balanceAfterTopUp - $orderTotal;
+
+            // ===================================================
+            // STEP 1: TOP-UP (Add money to wallet)
+            // ===================================================
+            $topUpTransaction = Transaction::create([
+                'transaction_id' => generate_transaction_id_hybrid(),
+                'correlation_id' => $correlationId,
+                'user_id' => $order->user_id,
+                'order_id' => $order->id,
+                'type' => TransactionType::TOPUP->value,
+                'status' => TransactionStatus::PAID->value,
+                'calculation_type' => CalculationType::DEBIT->value,
+                'amount' => $topUpAmount,
+                'currency' => $payment->currency,
+                'payment_gateway' => $this->id,
+                'gateway_transaction_id' => $session->payment_intent,
+                'source_id' => $payment->id,
+                'source_type' => Payment::class,
+                'fee_amount' => 0,
+                'net_amount' => $topUpAmount,
+                'balance_snapshot' => $balanceAfterTopUp,
+                'metadata' => [
+                    'stripe_session_id' => $session->id,
+                    'payment_intent_id' => $session->payment_intent,
+                    'receipt_url' => $paymentIntent->charges->data[0]->receipt_url ?? null,
+                    'description' => "Wallet top-up of {$topUpAmount} {$payment->currency} via Stripe",
+                ],
+                'notes' => "Top-up: +{$topUpAmount} {$payment->currency} via Stripe",
+                'processed_at' => now(),
+            ]);
+
+            // Update wallet after top-up
+            $buyerWallet->update([
+                'balance' => $balanceAfterTopUp,
+                'total_deposits' => $buyerWallet->total_deposits + $topUpAmount,
+                'last_deposit_at' => now(),
+            ]);
+
+            Log::info('Step 1: Wallet topped up', [
+                'order_id' => $order->order_id,
+                'amount' => $topUpAmount,
+                'balance_after' => $balanceAfterTopUp,
+            ]);
+
+            // ===================================================
+            // STEP 2: PAYMENT (Deduct order amount from wallet)
+            // ===================================================
+            $paymentTransaction = Transaction::create([
+                'transaction_id' => generate_transaction_id_hybrid(),
+                'correlation_id' => $correlationId,
+                'user_id' => $order->user_id,
+                'order_id' => $order->id,
+                'type' => TransactionType::PURCHSED->value,
+                'status' => TransactionStatus::PAID->value,
+                'calculation_type' => CalculationType::CREDIT->value,
+                'amount' => $orderTotal,
+                'currency' => $order->currency,
+                'payment_gateway' => 'wallet',
+                'gateway_transaction_id' => $topUpTransaction->transaction_id,
+                'source_id' => $payment->id,
+                'source_type' => Payment::class,
+                'fee_amount' => 0,
+                'net_amount' => $orderTotal,
+                'balance_snapshot' => $balanceAfterPayment,
+                'metadata' => [
+                    'stripe_session_id' => $session->id,
+                    'description' => "Order payment for #{$order->order_id}",
+                    'top_up_transaction_id' => $topUpTransaction->transaction_id,
+                ],
+                'notes' => "Payment: -{$orderTotal} {$order->currency} for Order #{$order->order_id}",
+                'processed_at' => now(),
+            ]);
+
+            // Update wallet after payment
+            $buyerWallet->update([
+                'balance' => $balanceAfterPayment,
+                'total_withdrawals' => $buyerWallet->total_withdrawals + $orderTotal,
+                'last_withdrawal_at' => now(),
+            ]);
+
+            Log::info('Step 2: Order paid from wallet', [
+                'order_id' => $order->order_id,
+                'amount' => $orderTotal,
+                'balance_after' => $balanceAfterPayment,
+            ]);
+
+            // Update payment record
+            $payment->update([
+                'status' => PaymentStatus::COMPLETED->value,
+                'transaction_id' => $session->payment_intent,
+                'payment_method_id' => $paymentIntent->payment_method ?? null,
+                'card_brand' => $paymentIntent->charges->data[0]->payment_method_details->card->brand ?? null,
+                'card_last4' => $paymentIntent->charges->data[0]->payment_method_details->card->last4 ?? null,
+                'paid_at' => now(),
+                'metadata' => array_merge($payment->metadata ?? [], [
+                    'payment_intent_id' => $session->payment_intent,
+                    'stripe_receipt_url' => $paymentIntent->charges->data[0]->receipt_url ?? null,
+                    'top_up_transaction_id' => $topUpTransaction->id,
+                    'payment_transaction_id' => $paymentTransaction->id,
+                    'correlation_id' => $correlationId,
+                ]),
+            ]);
+
+            // Update order status
+            $order->update([
+                'status' => OrderStatus::PAID->value,
+                'payment_method' => 'Wallet (Top-up via Stripe)',
+                'completed_at' => now(),
+            ]);
+
+            // Clear session data
+            Session::forget("topup_order_{$order->order_id}");
+
+            Log::info('Top-up payment flow completed', [
+                'order_id' => $order->order_id,
+                'correlation_id' => $correlationId,
+                'top_up_amount' => $topUpAmount,
+                'order_total' => $orderTotal,
+                'final_balance' => $balanceAfterPayment,
+            ]);
+
+            $this->dispatchPaymentNotificationsOnce($payment);
+            $this->sendOrderMessage($order);
+
+            return [
+                'success' => true,
+                'message' => 'Payment completed successfully',
+                'correlation_id' => $correlationId,
+                'top_up_transaction_id' => $topUpTransaction->transaction_id,
+                'payment_transaction_id' => $paymentTransaction->transaction_id,
+            ];
+        });
+    }
+
+    /**
+     * Process regular payment (original flow - unchanged)
+     */
+    protected function processRegularPayment($session, Payment $payment, Order $order): array
+    {
+        return DB::transaction(function () use ($session, $payment, $order) {
+            $payment->lockForUpdate();
+            $order->lockForUpdate();
+
+            $buyerWallet = $order->user->wallet ?? Wallet::firstOrCreate(
+                ['user_id' => $order->user_id],
+                [
+                    'currency_code' => $payment->currency,
+                    'balance' => 0,
+                    'locked_balance' => 0,
+                    'pending_balance' => 0,
+                    'total_deposits' => 0,
+                    'total_withdrawals' => 0,
+                ]
+            );
+
+            $buyerWallet->lockForUpdate();
+
+            $paymentIntent = PaymentIntent::retrieve($session->payment_intent);
+            $correlationId = Str::uuid();
+            $balanceBeforeDeposit = $buyerWallet->balance;
+            $balanceAfterDeposit = $balanceBeforeDeposit + $payment->amount;
+            $balanceAfterPayment = $balanceAfterDeposit - $order->grand_total;
+
+            // TRANSACTION 1: DEPOSIT
+            $depositTransaction = Transaction::create([
+                'transaction_id' => generate_transaction_id_hybrid(),
+                'correlation_id' => $correlationId,
+                'user_id' => $payment->user_id,
+                'order_id' => $order->id,
+                'type' => TransactionType::TOPUP->value,
+                'status' => TransactionStatus::PAID->value,
+                'calculation_type' => CalculationType::DEBIT->value,
+                'amount' => $payment->amount,
+                'currency' => $payment->currency,
+                'payment_gateway' => $this->id,
+                'gateway_transaction_id' => $session->payment_intent,
+                'source_id' => $payment->id,
+                'source_type' => Payment::class,
+                'fee_amount' => 0,
+                'net_amount' => $payment->amount,
+                'balance_snapshot' => $balanceAfterDeposit,
+                'metadata' => [
+                    'stripe_session_id' => $session->id,
+                    'payment_intent_id' => $session->payment_intent,
+                    'receipt_url' => $paymentIntent->charges->data[0]->receipt_url ?? null,
+                    'description' => "Top-up via Stripe for Order #{$order->order_id}",
+                ],
+                'notes' => "Deposit: +{$payment->amount} {$payment->currency} via Stripe",
+                'processed_at' => now(),
+            ]);
+
+            $buyerWallet->update([
+                'balance' => $balanceAfterDeposit,
+                'total_deposits' => $buyerWallet->total_deposits + $payment->amount,
+                'last_deposit_at' => now(),
+            ]);
+
+            // TRANSACTION 2: PAYMENT
+            $paymentTransaction = Transaction::create([
+                'transaction_id' => generate_transaction_id_hybrid(),
+                'correlation_id' => $correlationId,
+                'user_id' => $payment->user_id,
+                'order_id' => $order->id,
+                'type' => TransactionType::PURCHSED->value,
+                'status' => TransactionStatus::PAID->value,
+                'calculation_type' => CalculationType::CREDIT->value,
+                'amount' => $order->grand_total,
+                'currency' => $order->currency,
+                'payment_gateway' => 'wallet',
+                'gateway_transaction_id' => $depositTransaction->transaction_id,
+                'source_id' => $payment->id,
+                'source_type' => Payment::class,
+                'fee_amount' => 0,
+                'net_amount' => $order->grand_total,
+                'balance_snapshot' => $balanceAfterPayment,
+                'metadata' => [
+                    'stripe_session_id' => $session->id,
+                    'payment_intent_id' => $session->payment_intent,
+                    'description' => "Payment for Order #{$order->order_id}",
+                ],
+                'notes' => "Payment: -{$order->grand_total} {$order->currency} for Order #{$order->order_id}",
+                'processed_at' => now(),
+            ]);
+
+            $buyerWallet->update([
+                'balance' => $balanceAfterPayment,
+                'total_withdrawals' => $buyerWallet->total_withdrawals + $order->grand_total,
+                'last_withdrawal_at' => now(),
+            ]);
+
+            $payment->update([
+                'status' => PaymentStatus::COMPLETED->value,
+                'transaction_id' => $session->payment_intent,
+                'payment_method_id' => $paymentIntent->payment_method ?? null,
+                'card_brand' => $paymentIntent->charges->data[0]->payment_method_details->card->brand ?? null,
+                'card_last4' => $paymentIntent->charges->data[0]->payment_method_details->card->last4 ?? null,
+                'paid_at' => now(),
+                'metadata' => array_merge($payment->metadata ?? [], [
+                    'payment_intent_id' => $session->payment_intent,
+                    'stripe_receipt_url' => $paymentIntent->charges->data[0]->receipt_url ?? null,
+                    'deposit_transaction_id' => $depositTransaction->id,
+                    'payment_transaction_id' => $paymentTransaction->id,
+                    'correlation_id' => $correlationId,
+                ]),
+            ]);
+
+            $order->update([
+                'status' => OrderStatus::PAID->value,
+                'payment_method' => 'Wallet (via Stripe)',
+                'completed_at' => now(),
+            ]);
+
+            Log::info('Stripe payment confirmed successfully', [
+                'order_id' => $order->order_id,
+                'payment_id' => $payment->payment_id,
+                'correlation_id' => $correlationId,
+            ]);
+
+            $this->dispatchPaymentNotificationsOnce($payment);
+            $this->sendOrderMessage($order);
+
+            return [
+                'success' => true,
+                'message' => 'Payment completed successfully',
+                'correlation_id' => $correlationId,
+            ];
+        });
     }
 
     protected function convertToStripeAmount(float $amount, string $currency): int
@@ -375,7 +573,6 @@ class StripeMethod extends PaymentMethod
 
             $payment = $order->latestPayment;
 
-            // Prevent duplicate processing
             if ($payment && $payment->status === PaymentStatus::COMPLETED->value) {
                 Log::info('Payment already processed, skipping webhook', [
                     'order_id' => $orderId,
@@ -385,7 +582,6 @@ class StripeMethod extends PaymentMethod
             }
 
             if ($payment && $session['payment_status'] === 'paid') {
-                // Call confirmPayment to execute the bridge pattern
                 $this->confirmPayment($session['id']);
             }
         } catch (Exception $e) {

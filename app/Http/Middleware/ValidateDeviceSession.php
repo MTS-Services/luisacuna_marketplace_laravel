@@ -41,13 +41,13 @@ class ValidateDeviceSession
         }
         // Skip validation for excluded routes
         if ($this->shouldSkipValidation($request)) {
-            Log::debug('Skipping validation', ['route' => $request->route()?->getName()]);
+            // Log::debug('Skipping validation', ['route' => $request->route()?->getName()]);
             return $next($request);
         }
 
         // Skip if device registration is pending
         if (session()->has('device_registration_pending')) {
-            Log::debug('Device registration pending');
+            // Log::debug('Device registration pending');
             return $next($request);
         }
 
@@ -58,18 +58,18 @@ class ValidateDeviceSession
             $device = $user->getCurrentDevice();
 
             // Log the check
-            Log::debug('Middleware check', [
-                'user_id' => $user->id,
-                'session_id' => session()->getId(),
-                'device_id' => $device?->id,
-                'device_active' => $device?->is_active,
-                'route' => $request->route()?->getName(),
-                'within_grace' => $this->isWithinGracePeriod($user),
-            ]);
+            // Log::debug('Middleware check', [
+            //     'user_id' => $user->id,
+            //     'session_id' => session()->getId(),
+            //     'device_id' => $device?->id,
+            //     'device_active' => $device?->is_active,
+            //     'route' => $request->route()?->getName(),
+            //     'within_grace' => $this->isWithinGracePeriod($user),
+            // ]);
 
             // Allow grace period ONLY if device is active
             if ($device && $device->is_active && $this->isWithinGracePeriod($user)) {
-                Log::debug('Within grace period and device active');
+                // Log::debug('Within grace period and device active');
                 return $next($request);
             }
 
@@ -171,10 +171,10 @@ class ValidateDeviceSession
     {
         $sessionId = session()->getId();
 
-        Log::info('Starting force logout process', [
-            'session_id' => $sessionId,
-            'reason' => $reason,
-        ]);
+        // Log::info('Starting force logout process', [
+        //     'session_id' => $sessionId,
+        //     'reason' => $reason,
+        // ]);
 
         // 1. Logout from Laravel Auth
         Auth::guard($guard)->logout();
