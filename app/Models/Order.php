@@ -40,6 +40,7 @@ class Order extends AuditBaseModel implements Auditable
         'deleter_type',
         'restorer_id',
         'restorer_type',
+        'is_disputed',
     ];
 
     protected $casts = [

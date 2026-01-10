@@ -25,6 +25,7 @@ class Canceled extends Component
     protected OrderService $orderService;
     public function boot(OrderService $orderService)
     {
+       
         $this->orderService = $orderService;
     }
 

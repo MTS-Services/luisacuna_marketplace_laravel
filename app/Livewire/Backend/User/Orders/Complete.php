@@ -24,6 +24,12 @@ class Complete extends Component
     public $rating;
     public $feedback;
 
+    public $disputeReason;
+
+    // Modals Code
+
+    public $showDisputeModal = false;
+
 
     protected OrderService $orderService;
     protected FeedbackService $feedbackService;
@@ -35,6 +41,7 @@ class Complete extends Component
 
     public function mount(string $orderId)
     {
+        
         $this->order = $this->orderService->findData($orderId, 'order_id');
         $this->order->load([
             'user',
@@ -56,10 +63,33 @@ class Complete extends Component
 
     public function cancelOrder()
     {
-        $this->order->status = OrderStatus::CANCELLED->value;
-        $this->order->save();
+        $this->showDisputeModal = true;
+        
+    }
 
-        return redirect()->route('user.order.purchased-orders');
+    public function submitDispute(){
+
+        $this->validate([
+            'disputeReason' => 'required|string|min:10|max:1000',
+        ],[
+            'disputeReason.required' => 'Dispute reason is required',
+            'disputeReason.min' => 'Dispute reason must be at least 10 characters',
+            'disputeReason.max' => 'Dispute reason must be at most 1000 characters',
+        ]);
+
+        $disputed_to = user()->id != $this->order->user_id ? $this->order->user_id : $this->order->source->user_id; 
+        $datas = [
+            'order_id' => $this->order->id,
+            'reason' => $this->disputeReason,
+            'disputed_by' => user()->id,
+            'disputed_to' => $disputed_to,
+        ];
+        $this->orderService->disputeOrder($datas);
+
+        $this->order->refresh();
+
+        $this->showDisputeModal = false;
+
     }
     public function render()
     {
