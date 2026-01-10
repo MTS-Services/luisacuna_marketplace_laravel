@@ -9,24 +9,27 @@
 
     {{-- Fixed Header --}}
     <div class="shrink-0 border-b border-zinc-600 mb-5">
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center mb-1">
             <h2 class="text-lg font-semibold text-text-white">{{ __('Notifications') }}</h2>
             <button @click="UserNotificationShow = false"
                 class="text-text-secondary hover:text-gray-600 transition-colors">
                 <flux:icon name="x-mark" class="w-5 h-5 stroke-current hover:stroke-pink-600" />
             </button>
         </div>
-        <div>
-            <button wire:click="markAllAsRead" wire:loading.attr="disabled" :disabled="@js($isLoading || $notifications->isEmpty())">
-                <span wire:loading.remove wire:target="markAllAsRead"
-                    class="text-sm text-pink-500 hover:text-text-hover">
-                    {{ __('Mark all as read') }}
-                </span>
-                <span wire:loading wire:target="markAllAsRead" class="text-sm text-pink-500 hover:text-text-hover">
-                    {{ __('Marking...') }}
-                </span>
-            </button>
-        </div>
+        @if (!$isLoading && $this->unreadCount() > 0)
+            <div>
+                <button wire:click="markAllAsRead" wire:loading.attr="disabled">
+                    <span wire:loading.remove wire:target="markAllAsRead"
+                        class="text-sm text-pink-500 hover:text-text-hover">
+                        {{ __('Mark all as read') }}
+                    </span>
+
+                    <span wire:loading wire:target="markAllAsRead" class="text-sm text-pink-500">
+                        {{ __('Marking...') }}
+                    </span>
+                </button>
+            </div>
+        @endif
     </div>
 
     {{-- Scrollable Content --}}

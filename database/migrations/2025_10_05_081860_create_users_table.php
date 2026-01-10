@@ -64,6 +64,7 @@ return new class extends Migration {
             $table->timestamp('privacy_accepted_at')->nullable();
 
             $table->timestamp('last_synced_at')->nullable();
+            $table->timestamp('last_seen_at')->nullable();
 
             $table->rememberToken();
             $table->string('session_version')->default('1')->index();
@@ -97,6 +98,6 @@ return new class extends Migration {
         Schema::dropIfExists('sessions');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('users');
-        Schema::dropIfExists('google_id',);
+        Schema::dropIfExists('google_id', );
     }
 };

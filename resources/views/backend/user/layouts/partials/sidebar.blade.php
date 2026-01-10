@@ -21,14 +21,18 @@
                         <div class="flex items-center w-full mb-3 gap-4 pb-5 border-b-2 border-bg-info">
                             <div class="relative">
                                 <div class="w-15 h-15">
-                                   
-                                    <img src="{{ auth_storage_url(user()->avatar) }}" alt="{{ user()->full_name }}" class="w-full h-full rounded-full">
+
+                                    <img src="{{ auth_storage_url(user()->avatar) }}" alt="{{ user()->full_name }}"
+                                        class="w-full h-full rounded-full">
 
                                 </div>
-                                <div class="absolute -right-1.5 top-7.5  w-6 h-6 ">
-                                    <img src="{{ asset(storage_url('Frame_1261153813_bcf4vf') ) }}"
-                                        alt="" class="w-full h-full rounded-full">
-                                </div>
+                                @if (user()?->isOnline())
+                                    <span
+                                        class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
+                                @else
+                                    <span
+                                        class="absolute bottom-0 right-0 w-5 h-5 bg-gray-400 border-2 border-white rounded-full"></span>
+                                @endif
                             </div>
                             <div>
                                 <div class="flex gap-2 items-center ">
