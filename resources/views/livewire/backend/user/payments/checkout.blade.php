@@ -63,7 +63,9 @@
                             <div class="w-full">
                                 <p class="text-text-white font-medium flex items-center gap-2">
                                     <span> {{ $order->user->fullname }}</span>
-                                    <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
+                                    @if ($order->user?->isVerifiedSeller())
+                                        <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
+                                    @endif
                                 </p>
 
                                 <div class="flex items-center space-x-2 mt-0">
