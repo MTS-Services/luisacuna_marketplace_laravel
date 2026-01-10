@@ -12,7 +12,8 @@
 
             <!-- Filters Section -->
             <div class="mb-8 space-y-4">
-                <div class="flex gap-4 flex-col md:flex-row justify-between items-center md:justify-start relative" x-data={filter:false}>
+                <div class="flex gap-4 flex-col md:flex-row justify-between items-center md:justify-start relative"
+                    x-data={filter:false}>
 
 
                     {{-- Search --}}
@@ -89,16 +90,16 @@
                                         <span
                                             class="absolute left-3 top-1/2 -translate-y-1/2 text-text-primary pointer-events-none">$</span>
                                         <x-ui.input type="text" placeholder="Min" class="border-zinc-700 pl-7"
-                                            x-model="selectedMin" />
+                                            x-model.live="selectedMin" />
                                     </div>
                                     <div class="relative flex-1">
                                         <span
                                             class="absolute left-3 top-1/2 -translate-y-1/2 text-text-primary pointer-events-none">$</span>
                                         <x-ui.input type="text" placeholder="Max" class="border-zinc-700 pl-7"
-                                            x-model="selectedMax" />
+                                            x-model.live="selectedMax" />
                                     </div>
                                     <x-ui.button class="py-2! px-3! w-auto! rounded! hidden md:flex bg-transparent!"
-                                        :variant="'primary'" @click="selectedMin = ''; selectedMax = '';">
+                                        :variant="'primary'" wire:click="restPrice">
                                         <flux:icon name="trash" class="w-5 h-5" />
                                     </x-ui.button>
                                 </div>
@@ -165,40 +166,37 @@
 
                 </div>
 
-               <div x-data="{
-    showAll: false,
-    limit: 5,
-    tags: @js($tags),
-    search: @entangle('search').live
-}" class="w-full">
-    <div class="flex flex-wrap gap-2 sm:gap-3 transition-all duration-300">
-        <!-- All Tags (Desktop shows all, Mobile shows limited) -->
-        <template x-for="(tag, index) in (window.innerWidth < 640 ? (showAll ? tags : tags.slice(0, limit)) : tags)" :key="index">
-            <span
-                class="px-3 py-1 bg-bg-primary dark:bg-bg-info rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-white"
-                x-text="tag" 
-                @click="search = tag">
-            </span>
-        </template>
+                <div x-data="{
+                    showAll: false,
+                    limit: 5,
+                    tags: @js($tags),
+                    search: @entangle('search').live
+                }" class="w-full">
+                    <div class="flex flex-wrap gap-2 sm:gap-3 transition-all duration-300">
+                        <!-- All Tags (Desktop shows all, Mobile shows limited) -->
+                        <template
+                            x-for="(tag, index) in (window.innerWidth < 640 ? (showAll ? tags : tags.slice(0, limit)) : tags)"
+                            :key="index">
+                            <span
+                                class="px-3 py-1 bg-bg-primary dark:bg-bg-info rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-white"
+                                x-text="tag" @click="search = tag">
+                            </span>
+                        </template>
 
-        <!-- Toggle Button (Mobile Only - Shows when tags exceed limit) -->
-        <template x-if="window.innerWidth < 640 && tags.length > limit">
-            <button 
-                @click="showAll = !showAll"
-                class="px-3 py-1 bg-bg-secondary dark:bg-bg-secondary rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-primary flex items-center gap-1">
-                <span x-text="showAll ? 'Show Less' : 'Show More'"></span>
-                <svg :class="{ 'rotate-180': showAll }" 
-                     class="w-4 h-4 transition-transform duration-300"
-                     fill="none" 
-                     stroke="currentColor" 
-                     stroke-width="2" 
-                     viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-            </button>
-        </template>
-    </div>
-</div>
+                        <!-- Toggle Button (Mobile Only - Shows when tags exceed limit) -->
+                        <template x-if="window.innerWidth < 640 && tags.length > limit">
+                            <button @click="showAll = !showAll"
+                                class="px-3 py-1 bg-bg-secondary dark:bg-bg-secondary rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-primary flex items-center gap-1">
+                                <span x-text="showAll ? 'Show Less' : 'Show More'"></span>
+                                <svg :class="{ 'rotate-180': showAll }"
+                                    class="w-4 h-4 transition-transform duration-300" fill="none"
+                                    stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                        </template>
+                    </div>
+                </div>
 
                 <!-- Recommendation -->
                 <div class="gap-3 justify-end hidden md:flex">
@@ -261,9 +259,13 @@
                     x-transition:enter-end="opacity-100"
                     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 w-full">
 
-                    @foreach ($datas as $item)
+                    @forelse ($datas as $item)
                         <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" :data="$item" :game="$game" />
-                    @endforeach
+                    @empty
+                        <div class="col-span-full ">
+                            <x-ui.empty-card />
+                        </div>
+                    @endforelse
 
                 </div>
             </div>

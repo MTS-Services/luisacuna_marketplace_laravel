@@ -21,7 +21,7 @@ class ProductService
         return $this->model->all($sortField, $order);
     }
 
-public function findData($column_value, string $column_name = 'id')
+    public function findData($column_value, string $column_name = 'id')
     {
         return $this->model->where($column_name, $column_value)->first();
     }
@@ -35,16 +35,13 @@ public function findData($column_value, string $column_name = 'id')
 
         if ($search) {
             // Scout Search
-            return Game::search($search)
+            return Product::search($search)
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
         }
         return $this->model->query()
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
-            ->with(['productTranslations' => function ($query) {
-                $query->where('language_id', get_language_id());
-            }])
             ->paginate($perPage);
     }
 
@@ -81,17 +78,17 @@ public function findData($column_value, string $column_name = 'id')
             $data['delivery_method'] = $delivery_method;
             unset($data['fields']);
             unset($data['deliveryMethod']);
-            
 
 
 
 
 
-           
+
+
 
             $record = $this->model->create($data);
 
-            
+
 
             if (!empty($dynamic_data)) {
                 $configs = [];
@@ -115,7 +112,7 @@ public function findData($column_value, string $column_name = 'id')
                 $record->product_configs()->createMany($configs);
             }
 
-            if($record){
+            if ($record) {
                 $refresh = $record->fresh();
 
                 Log::info("Product Translations Created", [
@@ -125,7 +122,7 @@ public function findData($column_value, string $column_name = 'id')
                     'quantity' => $refresh->quantity,
                 ]);
 
-                 $refresh->dispatchTranslation(
+                $refresh->dispatchTranslation(
                     defaultLanguageLocale: app()->getLocale() ?? 'en',
                     forceTranslation: true,
                     targetLanguageIds: null

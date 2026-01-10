@@ -42,7 +42,7 @@
                                     <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
                                 </div>
                                 <div class="flex items-center text-text-primary text-xs">
-                                    <p>{{ __('Registered: 2/19/2023') }}</p>
+                                    <p>{{ __('Registered: ') }} {{ user()->created_at->format('n/j/Y') }}</p>
                                 </div>
                             </div>
                         </div>
