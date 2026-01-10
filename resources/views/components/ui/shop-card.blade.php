@@ -59,7 +59,7 @@
                 </div>
             </div>
 
-            <a href="{{ route('profile', ['username' => $data->user->username]) ?? '' }}"
+            <a href="{{ route('profile', ['username' => $data?->user?->username ?? '']) }}"
                 class="border-t border-zinc-500 mt-2 pt-3 flex items-center justify-between gap-3">
 
                 <div class="w-18 h-14 relative ">
