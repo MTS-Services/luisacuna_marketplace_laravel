@@ -21,6 +21,12 @@
             <x-slot name="breadcrumb">{{ __('Order Management / Cancelled Orders List') }}</x-slot>
             <livewire:backend.admin.order-management.cancelled-orders />
         @break
+        @case('admin.orders.dispute-orders')
+            <x-slot name="pageSlug">{{ __('dispute-orders') }}</x-slot>
+            <x-slot name="title">{{ __('Dispute Orders') }}</x-slot>
+            <x-slot name="breadcrumb">{{ __('Order Management / Dispute Orders List') }}</x-slot>
+            <livewire:backend.admin.order-management.dispute-order />
+        @break
 
         @case('admin.orders.show')
             <x-slot name="pageSlug">{{ __('order-management') }}</x-slot>

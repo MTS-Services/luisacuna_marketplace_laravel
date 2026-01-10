@@ -311,6 +311,7 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
         Route::get('/progress-orders', 'progressOrders')->name('progress-orders');
         Route::get('/completed-orders', 'completedOrders')->name('completed-orders');
         Route::get('/cancelled-orders', 'cancelledOrders')->name('cancelled-orders');
+        Route::get('/dispute-orders', 'disputeOrders')->name('dispute-orders');
         Route::get('/show/{orderId}', 'show')->name('show');
     });
     Route::controller(ProfileController::class)->name('profile.')->prefix('profile')->group(function () {

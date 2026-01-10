@@ -2,11 +2,11 @@
  
 namespace App\Models;
  
-use App\Models\AuditBaseModel;
+use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
  
-class DisputeOrder extends AuditBaseModel implements Auditable
+class DisputeOrder extends BaseModel implements Auditable
 {
     use   AuditableTrait;
     //
@@ -37,6 +37,10 @@ class DisputeOrder extends AuditBaseModel implements Auditable
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
  
      //
+     public function order()
+     {
+         return $this->belongsTo(Order::class, 'order_id', 'id');
+     }
  
      /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS

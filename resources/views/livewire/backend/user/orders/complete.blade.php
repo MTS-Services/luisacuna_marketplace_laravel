@@ -334,9 +334,9 @@
                 </div>
 
                 {{-- Modal Body --}}
-                <div class="p-6">
+                <div class="p-6 py-0">
 
-                    <div class="mt-4">
+                    <div class="mt-0">
                         <label class="block text-text-white font-medium mb-2">
                             {{ __('Dispute Reason') }}
                         </label>

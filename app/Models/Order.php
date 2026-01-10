@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Order extends AuditBaseModel implements Auditable
 {
@@ -80,6 +81,11 @@ class Order extends AuditBaseModel implements Auditable
     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class, 'order_id');
+    }
+
+    public function disputes():HasOne
+    {
+        return $this->hasOne(DisputeOrder::class, 'order_id', 'id');
     }
 
     public function latestPayment()
@@ -225,8 +231,9 @@ class Order extends AuditBaseModel implements Auditable
             $query->whereDate('created_at', $created_at);
         });
 
-
-
+        $query->when($filters['is_dispute'] ?? null, function ($query, $is_dispute) {
+            $query->where('is_disputed' , '=',$is_dispute);
+        });
         // created_at
         $query->when($filters['order_date'] ?? null, function ($query, $created_at) {
             switch ($created_at) {
