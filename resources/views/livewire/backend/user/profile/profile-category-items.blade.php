@@ -19,7 +19,8 @@
                 <x-ui.shop-card :gameSlug="$product->games->slug" :categorySlug="$activeTab" :data="$product" :game="$product->games" />
             @empty
                 <div class="flex justify-center items-center mt-10 col-span-4">
-                    <img src="{{ asset('assets/images/nothing_found.jpg') }}" alt="No products found" />
+                <img src="{{ storage_url('nothing_found_kqlrqq', ['width'=>1926, 'height'=> '926']) }}" alt="No products found" class="w-full" />
+
                 </div>
             @endforelse
         </div>
@@ -64,8 +65,8 @@
                         </span>
                     </div>
                 @empty
-                    <div class="flex justify-center items-center mt-10">
-                        <img src="{{ asset('assets/images/nothing_found.png') }}" alt="No products found" />
+                    <div class="flex justify-center items-center mt-10 col-span-4">
+                        <img src="{{ storage_url('nothing_found_kqlrqq', ['width'=>1926, 'height'=> '926']) }}" alt="No products found" class="w-full" />
                     </div>
                 @endforelse
             </div>

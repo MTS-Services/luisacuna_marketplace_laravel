@@ -32,14 +32,19 @@
                         {{ __('Cancel') }}
                     </x-ui.button>
                 @else
-                    <x-ui.button wire:click="cancelOrder"
-                        class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!">
-                        {{ __('Dispute') }}
-                    </x-ui.button>
+                   
+                   <x-ui.button 
+                    wire:click="{{ $order->is_disputed ? '' : '$set(\'showDisputeModal\', true)' }}"
+                    class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none! {{ $order->is_disputed ? 'opacity-50 cursor-not-allowed' : '' }}"
+                    :disabled="$order->is_disputed"
+                >
+                    {{ $order->is_disputed ? __('Disputed') : __('Dispute') }}
+                </x-ui.button>
                 @endif
 
             </div>
         </div>
+        
         <div class="block lg:flex gap-6 justify-between items-start">
             <div class="w-full lg:w-2/3">
                 <div class=" bg-bg-secondary p-4 sm:p-10 rounded-2xl">
@@ -277,4 +282,103 @@
         </div>
     </div>
     <div class="pb-10"></div>
+
+    {{-- Dispute Modal --}}
+    <div 
+        x-data="{ show: @entangle('showDisputeModal') }"
+        x-show="show"
+        x-cloak
+        class="fixed inset-0 z-50 overflow-y-auto"
+        @keydown.escape.window="show = false">
+        
+        {{-- Overlay/Shadow --}}
+      {{-- Overlay/Shadow --}}
+    <div 
+        x-show="show"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        @click="show = false"
+        class="fixed inset-0 bg-bg-primary/50 backdrop-blur-sm" {{-- Added backdrop-blur-sm and changed opacity syntax --}}
+    >
+    </div>
+
+        {{-- Modal Content --}}
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div 
+                x-show="show"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-95"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-95"
+                @click.stop
+                class="relative bg-bg-secondary rounded-lg shadow-xl w-full sm:max-w-md lg:max-w-xl">
+                
+                {{-- Close Button --}}
+                <button 
+                    @click="show = false"
+                    class="absolute top-4 right-4 text-zinc-400 hover:text-text-white transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+
+                {{-- Modal Header --}}
+                <div class="p-6">
+                    <h2 class="text-xl font-semibold text-text-white">{{ __('Open Dispute') }}</h2>
+                </div>
+
+                {{-- Modal Body --}}
+                <div class="p-6">
+                    <p class="text-text-primary">
+                        {{ __('Please describe the issue with this order. Our team will review your dispute and contact you shortly.') }}
+                    </p>
+                    
+                    <div class="mt-4">
+                        <label class="block text-text-white font-medium mb-2">
+                            {{ __('Dispute Reason') }}
+                        </label>
+                        <textarea 
+                            wire:model="disputeReason"
+                            rows="5"
+                            class="w-full bg-bg-info text-text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
+                            placeholder="{{ __('Explain why you are opening a dispute...') }}"></textarea>
+                        @error('disputeReason')
+                            <span class="text-pink-500 text-sm">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- Modal Footer --}}
+                <div class="p-6 flex justify-end gap-3">
+                    {{-- Cancel Button --}}
+                    <x-ui.button 
+                        class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!"
+                        @click="show = false"
+                    >
+                        {{ __('Cancel') }}
+                    </x-ui.button>
+                    
+                    {{-- Submit Dispute Button --}}
+                    <x-ui.button 
+                        wire:click="submitDispute"
+                         class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!"
+                    >
+                        {{ __('Submit Dispute') }}
+                    </x-ui.button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        [x-cloak] { 
+            display: none !important; 
+        }
+    </style>
 </section>
