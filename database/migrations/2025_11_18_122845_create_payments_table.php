@@ -37,6 +37,10 @@ return new class extends Migration
             $table->string('currency', 3)->default('USD');
             $table->string('status', 20)->default(PaymentStatus::PENDING)->index();
 
+            $table->decimal('default_amount', 15, 2)->default(0);
+            $table->string('default_currency', 3)->default('USD');
+
+
             // Card Details - ADDED
             $table->string('card_brand', 20)->nullable();
             $table->string('card_last4', 4)->nullable();

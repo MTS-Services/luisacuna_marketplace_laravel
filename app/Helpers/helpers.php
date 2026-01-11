@@ -9,6 +9,8 @@ use App\Models\OtpVerification;
 use App\Services\Cloudinary\CloudinaryService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Services\CurrencyService;
+use Illuminate\Support\Facades\Session;
 
 // ==================== Existing Auth Helpers ====================
 
@@ -634,63 +636,6 @@ if (!function_exists('category_route')) {
 }
 
 
-if (!function_exists('currency_exchange')) {
-    function currency_exchange($price)
-    {
-        $defaultCurrency = Currency::where('is_default', true)->first();
-
-        if (!$defaultCurrency) {
-            return $price;
-        }
-        $selectedCurrencyCode = session('currency', $defaultCurrency->code);
-
-        $selectedCurrency = Currency::where('code', $selectedCurrencyCode)->first();
-
-        if (!$selectedCurrency) {
-            return $price;
-        }
-        $convertedAmount = $price * ($selectedCurrency->exchange_rate / $defaultCurrency->exchange_rate);
-        return $convertedAmount;
-    }
-}
-
-
-if (!function_exists('currency_symbol')) {
-    function currency_symbol()
-    {
-        $defaultCurrency = Currency::where('is_default', true)->first();
-
-        if (!$defaultCurrency) {
-            return '';
-        }
-
-        $selectedCurrencyCode = session('currency', $defaultCurrency->code);
-
-        $selectedCurrency = Currency::where('code', $selectedCurrencyCode)->first();
-
-        return $selectedCurrency?->symbol ?? '';
-    }
-}
-if (!function_exists('currency_code')) {
-    function currency_code()
-    {
-        $defaultCurrency = Currency::where('is_default', true)->first();
-
-        if (!$defaultCurrency) {
-            return '';
-        }
-
-        $selectedCurrencyCode = session('currency', $defaultCurrency->code);
-
-        $selectedCurrency = Currency::where('code', $selectedCurrencyCode)->first();
-
-        return $selectedCurrency?->code ?? '';
-    }
-}
-
-
-
-
 if (!function_exists('number_shorten')) {
     /**
      * Shorten a number to a human-readable format.
@@ -736,6 +681,108 @@ if (!function_exists('number_shorten')) {
         }
 
         return $number_format . $suffix;
+    }
+}
+
+
+if (!function_exists('currency_symbol')) {
+    /**
+     * Get current currency symbol
+     */
+    function currency_symbol(): string
+    {
+        return Session::get('currency_symbol') ?? app(CurrencyService::class)->getCurrentCurrencySymbol();
+    }
+}
+
+if (!function_exists('currency_code')) {
+    /**
+     * Get current currency code
+     */
+    function currency_code(): string
+    {
+        return Session::get('currency') ?? app(CurrencyService::class)->getCurrentCurrencyCode();
+    }
+}
+
+if (!function_exists('currency_convert')) {
+    /**
+     * Convert amount from default currency to current user's currency
+     * 
+     * @param float $amount Amount in default currency
+     * @param string|null $targetCurrency Target currency code (null = current user currency)
+     * @return float Converted amount
+     */
+    function currency_convert(float $amount, ?string $targetCurrency = null): float
+    {
+        return app(CurrencyService::class)->convertFromDefault($amount, $targetCurrency);
+    }
+}
+
+if (!function_exists('currency_convert_to_default')) {
+    /**
+     * Convert amount from current currency to default currency
+     * 
+     * @param float $amount Amount in current currency
+     * @param string|null $sourceCurrency Source currency code (null = current user currency)
+     * @return float Amount in default currency
+     */
+    function currency_convert_to_default(float $amount, ?string $sourceCurrency = null): float
+    {
+        $sourceCurrency = $sourceCurrency ?? currency_code();
+        return app(CurrencyService::class)->convertToDefault($amount, $sourceCurrency);
+    }
+}
+
+if (!function_exists('currency_format')) {
+    /**
+     * Format amount with currency symbol
+     * 
+     * @param float $amount
+     * @param string|null $currencyCode
+     * @return string
+     */
+    function currency_format(float $amount, ?string $currencyCode = null): string
+    {
+        return app(CurrencyService::class)->formatAmount($amount, $currencyCode);
+    }
+}
+
+if (!function_exists('currency_exchange')) {
+    /**
+     * Alias for currency_convert (backward compatibility)
+     * 
+     * @param float $amount
+     * @param string|null $targetCurrency
+     * @return float
+     */
+    function currency_exchange(float $amount, ?string $targetCurrency = null): float
+    {
+        return currency_convert($amount, $targetCurrency);
+    }
+}
+
+if (!function_exists('get_default_currency')) {
+    /**
+     * Get default currency object
+     * 
+     * @return \App\Models\Currency|null
+     */
+    function get_default_currency()
+    {
+        return app(CurrencyService::class)->getDefaultCurrency();
+    }
+}
+
+if (!function_exists('get_current_currency')) {
+    /**
+     * Get current user's currency object
+     * 
+     * @return \App\Models\Currency
+     */
+    function get_current_currency()
+    {
+        return app(CurrencyService::class)->getCurrentCurrency();
     }
 }
 

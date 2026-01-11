@@ -67,7 +67,6 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
     Route::group(['prefix' => 'seller'], function () {
 
         Route::get('verification/{step?}', [SellerVerificationController::class, 'index'])->name('seller.verification');
-
     });
 
 
@@ -103,6 +102,7 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
         ->prefix('payment')
         ->group(function () {
             Route::get('/success', 'paymentSuccess')->name('success');
+            Route::get('/topup-success', 'paymentSuccess')->name('topup.success');
             Route::get('/failed', 'paymentFailed')->name('failed');
             Route::get('/gateway/{slug}', 'getGatewayConfig')->name('gateway.config');
         });

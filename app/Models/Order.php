@@ -22,11 +22,26 @@ class Order extends AuditBaseModel implements Auditable
         'source_id',
         'source_type',
         'status',
+
+        // Display prices (in user's selected currency)
         'unit_price',
         'total_amount',
         'tax_amount',
         'grand_total',
         'currency',
+
+        // Original prices (in default currency)
+        'default_unit_price',
+        'default_total_amount',
+        'default_tax_amount',
+        'default_grand_total',
+        'default_currency',
+
+        // Currency conversion info
+        'exchange_rate',
+        'display_currency',
+        'display_symbol',
+
         'payment_method',
         'quantity',
         'notes',
@@ -48,10 +63,20 @@ class Order extends AuditBaseModel implements Auditable
         'customer_id' => 'integer',
         'source_id' => 'integer',
         'status' => OrderStatus::class,
+
+        // Display prices
         'unit_price' => 'decimal:2',
         'total_amount' => 'decimal:2',
         'tax_amount' => 'decimal:2',
         'grand_total' => 'decimal:2',
+
+        // Default prices
+        'default_unit_price' => 'decimal:2',
+        'default_total_amount' => 'decimal:2',
+        'default_tax_amount' => 'decimal:2',
+        'default_grand_total' => 'decimal:2',
+
+        'exchange_rate' => 'decimal:6',
         'completed_at' => 'datetime',
     ];
 
@@ -105,7 +130,45 @@ class Order extends AuditBaseModel implements Auditable
         return $this->hasMany(Feedback::class, 'order_id');
     }
 
-    /* HELPER METHODS */
+    /* CURRENCY HELPER METHODS */
+
+    /**
+     * Get the amount in default currency (for internal calculations)
+     */
+    public function getDefaultGrandTotal(): float
+    {
+        return $this->default_grand_total ?? $this->grand_total;
+    }
+
+    /**
+     * Get the amount in display currency (for showing to user)
+     */
+    public function getDisplayGrandTotal(): float
+    {
+        return $this->grand_total;
+    }
+
+    /**
+     * Check if order is in a converted currency
+     */
+    public function isConvertedCurrency(): bool
+    {
+        return $this->currency !== $this->default_currency;
+    }
+
+    /**
+     * Get currency symbol for display
+     */
+    public function getCurrencySymbol(): string
+    {
+        if ($this->display_currency) {
+            $currency = \App\Models\Currency::where('code', $this->display_currency)->first();
+            return $currency?->symbol ?? '$';
+        }
+        return currency_symbol();
+    }
+
+    /* PAYMENT HELPER METHODS */
 
     public function filter(Builder $query, array $filters): Builder
     {
@@ -117,6 +180,9 @@ class Order extends AuditBaseModel implements Auditable
         return $this->successfulPayments()->exists();
     }
 
+    /**
+     * Get total paid in default currency (for accurate calculations)
+     */
     public function getTotalPaid(): float
     {
         return (float) $this->completedTransactions()->sum('amount');
@@ -124,26 +190,26 @@ class Order extends AuditBaseModel implements Auditable
 
     public function getRemainingAmount(): float
     {
-        return max(0, $this->grand_total - $this->getTotalPaid());
+        return max(0, $this->getDefaultGrandTotal() - $this->getTotalPaid());
     }
 
     public function isFullyPaid(): bool
     {
-        return $this->getTotalPaid() >= $this->grand_total;
+        return $this->getTotalPaid() >= $this->getDefaultGrandTotal();
     }
 
     public function isPartiallyPaid(): bool
     {
         $totalPaid = $this->getTotalPaid();
-        return $totalPaid > 0 && $totalPaid < $this->grand_total;
+        return $totalPaid > 0 && $totalPaid < $this->getDefaultGrandTotal();
     }
 
     public function getPaymentProgress(): float
     {
-        if ($this->grand_total == 0) {
+        if ($this->getDefaultGrandTotal() == 0) {
             return 0;
         }
-        return min(100, ($this->getTotalPaid() / $this->grand_total) * 100);
+        return min(100, ($this->getTotalPaid() / $this->getDefaultGrandTotal()) * 100);
     }
 
     /**
@@ -175,14 +241,6 @@ class Order extends AuditBaseModel implements Auditable
 
     public function scopeFilter(Builder $query, array $filters)
     {
-
-        // $query->when($filters['search'] ?? null, function ($query, $search) {
-        //     $query->where(function ($query) use ($search) {
-        //         $query->where('order_id', 'like', '%' . $search . '%')
-        //             ->orWhere('notes', 'like', '%' . $search . '%');
-        //     });
-        // });
-
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
                 $query->where('order_id', 'like', '%' . $search . '%')
@@ -190,7 +248,6 @@ class Order extends AuditBaseModel implements Auditable
                     ->orWhereHas('user', function ($q) use ($search) {
                         $q->where('username', 'like', '%' . $search . '%');
                     })
-                    // Search in the related source (Product) name
                     ->orWhereHasMorph('source', ['App\Models\Product'], function ($q) use ($search) {
                         $q->where('name', 'like', '%' . $search . '%');
                     });
@@ -209,14 +266,12 @@ class Order extends AuditBaseModel implements Auditable
             $query->where('status', '!=', $status);
         });
 
-        // product owner filter (logged in user is the creator)
         $query->when($filters['seller_id'] ?? null, function ($query, $ownerId) {
             $query->whereHas('source', function ($q) use ($ownerId) {
                 $q->where('user_id', $ownerId);
             });
         });
 
-        // exclude buyer = owner
         $query->when($filters['buyer_id'] ?? null, function ($query, $ownerId) {
             $query->where('user_id', '!=', $ownerId);
         });
@@ -225,9 +280,6 @@ class Order extends AuditBaseModel implements Auditable
             $query->whereDate('created_at', $created_at);
         });
 
-
-
-        // created_at
         $query->when($filters['order_date'] ?? null, function ($query, $created_at) {
             switch ($created_at) {
                 case 'today':
@@ -247,12 +299,10 @@ class Order extends AuditBaseModel implements Auditable
                     break;
 
                 default:
-                    // If the value is a specific date (optional)
                     $query->whereDate('created_at', $created_at);
                     break;
             }
         });
-
 
         return $query;
     }
