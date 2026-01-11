@@ -7,11 +7,14 @@ use App\Enums\PaymentStatus;
 use App\Enums\TransactionStatus;
 use App\Enums\TransactionType;
 use App\Enums\CalculationType;
+use App\Enums\PointType;
 use App\Http\Payment\PaymentMethod;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\PointLog;
 use App\Models\Wallet;
 use App\Models\Transaction;
+use App\Models\UserPoint;
 use App\Services\ConversationService;
 use App\Services\CurrencyService;
 use Illuminate\Support\Facades\DB;
@@ -158,7 +161,6 @@ class WalletMethod extends PaymentMethod
                     'notes' => "Payment: -{$orderAmountDefault} {$defaultCurrency->code} for Order #{$order->order_id}",
                     'processed_at' => now(),
                 ]);
-
                 // Update payment with transaction_id
                 $payment->update([
                     'transaction_id' => $paymentTransaction->transaction_id,
@@ -176,11 +178,13 @@ class WalletMethod extends PaymentMethod
                     'last_withdrawal_at' => now(),
                 ]);
 
+                $this->updateUserPoints($order);
+
                 // 4. Update order status
                 $order->update([
                     'status' => OrderStatus::PAID->value,
                     'payment_method' => $this->name,
-                    'completed_at' => now(),
+                    'paid_at' => now(),
                 ]);
 
                 Log::info('Direct wallet payment processed with currency handling', [

@@ -154,6 +154,8 @@ class InitializeOrder extends Component
                 'notes' => "Order initiated by " . user()->username . ", Order ID: " . $orderId,
                 'display_symbol' => $this->displaySymbol, // Legacy field
 
+                'points' => $totalAmountDefault * env('ORDER_POINTS_MULTIPLAYER', 100),
+
                 'creater_id' => user()->id,
                 'creater_type' => User::class,
             ]);
