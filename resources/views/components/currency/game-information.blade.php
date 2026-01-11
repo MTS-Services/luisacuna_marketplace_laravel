@@ -3,7 +3,7 @@
      <div class="bg-bg-primary dark:bg-bg-secondary  rounded-lg p-6 mb-6">
          {{-- <div class="flex items-center gap-4 mb-6">
              @if ($user->avatar)
-                 <img src="{{ storage_url($user->avatar) }}" alt="{{ $user->username ?? 'User Avatar' }}"
+                 <img src="{{ auth_storage_url($user->avatar) }}" alt="{{ $user->username ?? 'User Avatar' }}"
                      class="w-16 h-16 rounded-full border-2 border-purple-500">
              @else
                  <div

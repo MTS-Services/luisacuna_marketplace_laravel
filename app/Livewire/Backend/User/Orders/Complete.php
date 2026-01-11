@@ -22,7 +22,13 @@ class Complete extends Component
     public $commentText = '';
     public $type;
     public $rating;
-    public $feedback = null;
+    public $feedback;
+
+    public $disputeReason;
+
+    // Modals Code
+
+    public $showDisputeModal = false;
 
 
     protected OrderService $orderService;
@@ -35,22 +41,59 @@ class Complete extends Component
 
     public function mount(string $orderId)
     {
+        
         $this->order = $this->orderService->findData($orderId, 'order_id');
-        $this->order->load(['user', 'source.user', 'source.game', 'source.platform', 'transactions', 'messages.conversation']);
+        $this->order->load([
+            'user',
+            'source.user',
+            'source.game',
+            'source.platform',
+            'transactions',
+            'messages.conversation'
+        ]);
         $this->isVisitSeller = $this->order->user_id !== user()->id;
         $this->conversationId = $this->order->messages?->first()?->conversation->id ?? null;
         $this->dispatch('conversation-selected', conversationId: $this->conversationId);
-        $this->feedback = $this->feedbackService->getByOrderAndUser($this->order->id, user()->id);
     }
+
+    public function fetchFeedback()
+    {
+        $this->feedback = $this->feedbackService->getFeedbackByOrder($this->order->id, $this->isVisitSeller);
+    }
+
     public function cancelOrder()
     {
-        $this->order->status = OrderStatus::CANCELLED->value;
-        $this->order->save();
+        $this->showDisputeModal = true;
+        
+    }
 
-        return redirect()->route('user.order.purchased-orders');
+    public function submitDispute(){
+
+        $this->validate([
+            'disputeReason' => 'required|string|min:10|max:1000',
+        ],[
+            'disputeReason.required' => 'Dispute reason is required',
+            'disputeReason.min' => 'Dispute reason must be at least 10 characters',
+            'disputeReason.max' => 'Dispute reason must be at most 1000 characters',
+        ]);
+
+        $disputed_to = user()->id != $this->order->user_id ? $this->order->user_id : $this->order->source->user_id; 
+        $datas = [
+            'order_id' => $this->order->id,
+            'reason' => $this->disputeReason,
+            'disputed_by' => user()->id,
+            'disputed_to' => $disputed_to,
+        ];
+        $this->orderService->disputeOrder($datas);
+
+        $this->order->refresh();
+
+        $this->showDisputeModal = false;
+
     }
     public function render()
     {
+        $this->fetchFeedback();
         return view('livewire.backend.user.orders.complete');
     }
     public function submitFeedback()
@@ -76,8 +119,6 @@ class Complete extends Component
         $this->dispatch('close-modal');
         $this->success(__('Feedback submitted successfully!'));
 
-       return $this->redirect( route('user.order.complete', ['orderId' => $this->order->order_id]), navigate: true);
-
-
+        $this->fetchFeedback();
     }
 }

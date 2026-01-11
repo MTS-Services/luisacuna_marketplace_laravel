@@ -45,7 +45,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // $middleware->group('web', [
         //     ValidateDeviceSession::class . ':web',
         // ]);
-
+    
         // $middleware->group('admin', [
         //     ValidateDeviceSession::class . ':admin',
         // ]);

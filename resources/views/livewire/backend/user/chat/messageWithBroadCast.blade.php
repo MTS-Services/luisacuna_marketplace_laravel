@@ -5,7 +5,7 @@
             <div class="flex items-center gap-2 sm:gap-3">
                 @if ($otherParticipant)
                     @if ($otherParticipant->avatar)
-                        <img src="{{ storage_url($otherParticipant->avatar) }}" alt="{{ $otherParticipant->full_name }}"
+                        <img src="{{ auth_storage_url($otherParticipant->avatar) }}" alt="{{ $otherParticipant->full_name }}"
                             class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
                     @else
                         <div
@@ -33,9 +33,9 @@
                     @if ($msg->sender_id == auth()->id())
                         {{-- Current User Message --}}
                         <div class="flex items-start gap-2 sm:gap-3 flex-row-reverse">
-                            @if (auth()->user()->avatar)
-                                <img src="{{ auth_storage_url(auth()->user()->avatar) }}"
-                                    alt="{{ auth()->user()->full_name }}"
+                            @if (user()->avatar)
+                                <img src="{{ auth_storage_url(user()->avatar) }}"
+                                    alt="{{ user()->full_name }}"
                                     class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
                             @else
                                 <div
@@ -104,7 +104,7 @@
                             @endphp
 
                             @if ($sender && $sender->avatar)
-                                <img src="{{ storage_url($sender->avatar) }}" alt="{{ $sender->full_name }}"
+                                <img src="{{ auth_storage_url($sender->avatar) }}" alt="{{ $sender->full_name }}"
                                     class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
                             @else
                                 <div

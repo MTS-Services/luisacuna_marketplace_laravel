@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use App\Models\Product;
 use App\Enums\FeedbackType;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
+use App\Traits\HasTranslations;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Feedback extends AuditBaseModel implements Auditable
 {
-    use   AuditableTrait;
+    use   AuditableTrait, HasTranslations;
     //
 
     protected $fillable = [
@@ -58,9 +61,28 @@ class Feedback extends AuditBaseModel implements Auditable
         return $this->belongsTo(Order::class, 'order_id', 'id');
     }
 
-    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
-                End of RELATIONSHIPS
-     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+    public function feedbackTranslations(): HasMany
+    {
+        return $this->hasMany(FeedbackTranslation::class, 'feedback_id', 'id');
+    }
+
+    /* =========================================
+            Translation Configuration
+     ========================================= */
+
+    public function getTranslationConfig(): array
+    {
+        return [
+            'fields' => ['message'],
+            'relation' => 'feedbackTranslations',
+            'model' => FeedbackTranslation::class,
+            'foreign_key' => 'feedback_id',
+            'field_mapping' => [
+                'message' => 'message',
+            ]
+        ];
+    }
+
 
     public function __construct(array $attributes = [])
     {
@@ -68,5 +90,29 @@ class Feedback extends AuditBaseModel implements Auditable
         $this->appends = array_merge(parent::getAppends(), [
             //
         ]);
+    }
+
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['type'] ?? null, function ($query, $type) {
+            $query->where('type', $type);
+        });
+        $query->when($filters['target_user_id'] ?? null, function ($query, $userId) {
+            $query->where('target_user_id', $userId);
+        });
+        $query->when($filters['author_id'] ?? null, function ($query, $userId) {
+            $query->where('author_id', $userId);
+        });
+        $query->when($filters['product_id'] ?? null, function ($query, $productId) {
+            $query->whereHas('order', function ($q) use ($productId) {
+                $q->where('source_id', $productId)
+                    ->where('source_type', \App\Models\Product::class);
+            });
+        });
+
+
+
+        return $query;
     }
 }

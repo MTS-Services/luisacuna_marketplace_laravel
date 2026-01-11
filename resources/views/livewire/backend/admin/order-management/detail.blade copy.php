@@ -141,7 +141,7 @@
                         </h3>
                         <div class="flex items-center gap-5">
                             <a href="{{ route('profile', $order?->source?->user?->username) }}">
-                                <img src="{{ storage_url($order?->user?->avatar) }}"
+                                <img src="{{ auth_storage_url($order?->user?->avatar) }}"
                                     alt="{{ $order?->source?->user?->full_name }}"
                                     class="w-16 h-16 rounded-full ring-2 ring-white/10 object-cover">
                             </a>
@@ -172,7 +172,7 @@
                         </h3>
                         <div class="flex items-center gap-5">
                             <a href="{{ route('profile', $order?->user?->username) }}">
-                                <img src="{{ storage_url($order?->user?->avatar) }}"
+                                <img src="{{ auth_storage_url($order?->user?->avatar) }}"
                                     alt="{{ $order?->user?->full_name }}"
                                     class="w-16 h-16 rounded-full ring-2 ring-white/10 object-cover">
                             </a>

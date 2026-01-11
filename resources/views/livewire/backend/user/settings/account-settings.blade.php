@@ -18,7 +18,7 @@
                     class="flex flex-col sm:flex-row items-center justify-center xxs:justify-start bg-bg-info rounded-lg gap-3 sm:gap-6 p-5 mb-6 w-full">
                     <!-- Profile Image -->
                     <div class="relative w-12 h-12 sm:w-20 sm:h-20">
-                        <img src="{{ storage_url($existingFile) }}"
+                        <img src="{{ auth_storage_url($existingFile) }}"
                             class="w-full h-full rounded-full object-cover ring-2 ring-purple-400/30" alt="Profile">
                     </div>
 

@@ -4,7 +4,7 @@ namespace App\Actions\User;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Models\UsersNotificationSetting;
+use App\Models\UserNotificationSetting;
 use App\Repositories\Contracts\UserRepositoryInterface;
 
 class UpdateNotificationAction
@@ -22,9 +22,9 @@ class UpdateNotificationAction
      * @param int $userId
      * @param string $field
      * @param bool $value
-     * @return UsersNotificationSetting
+     * @return UserNotificationSetting
      */
-    public function execute(int $userId, string $field, bool $value): UsersNotificationSetting
+    public function execute(int $userId, string $field, bool $value): UserNotificationSetting
     {
         try {
             return DB::transaction(function () use ($userId, $field, $value) {
@@ -58,7 +58,7 @@ class UpdateNotificationAction
                 }
 
                 // Get notification settings (must exist)
-                $notificationSetting = UsersNotificationSetting::where('user_id', $userId)->first();
+                $notificationSetting = UserNotificationSetting::where('user_id', $userId)->first();
 
                 if (!$notificationSetting) {
                     Log::error('Notification settings not found', ['user_id' => $userId]);

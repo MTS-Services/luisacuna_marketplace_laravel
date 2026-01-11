@@ -7,6 +7,7 @@ use App\Enums\UserType;
 use App\Enums\UserStatus;
 use App\Enums\userKycStatus;
 use App\Traits\AuditableTrait;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 use App\Traits\HasTranslations;
 use App\Enums\UserAccountStatus;
@@ -23,7 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends AuthBaseModel implements Auditable
 {
-    use  TwoFactorAuthenticatable, AuditableTrait, HasTranslations, Notifiable, SoftDeletes, HasDeviceManagement;
+    use TwoFactorAuthenticatable, AuditableTrait, HasTranslations, Notifiable, SoftDeletes, HasDeviceManagement;
 
     /**
      * The attributes that are mass assignable.
@@ -46,6 +47,7 @@ class User extends AuthBaseModel implements Auditable
         'google_id',
         'avatar',
         'date_of_birth',
+        'last_seen_at',
 
         'timezone',
         // 'language_id',
@@ -118,24 +120,25 @@ class User extends AuthBaseModel implements Auditable
     protected function casts(): array
     {
         return [
-            'email_verified_at'      => 'datetime',
-            'phone_verified_at'      => 'datetime',
-            'otp_expires_at'         => 'datetime',
-            'last_login_at'          => 'datetime',
-            'locked_until'           => 'datetime',
-            'terms_accepted_at'      => 'datetime',
-            'privacy_accepted_at'    => 'datetime',
-            'last_synced_at'         => 'datetime',
+            'email_verified_at' => 'datetime',
+            'phone_verified_at' => 'datetime',
+            'otp_expires_at' => 'datetime',
+            'last_login_at' => 'datetime',
+            'locked_until' => 'datetime',
+            'terms_accepted_at' => 'datetime',
+            'privacy_accepted_at' => 'datetime',
+            'last_synced_at' => 'datetime',
             'two_factor_confirmed_at' => 'datetime',
             'all_devices_logged_out_at' => 'datetime',
-            'date_of_birth'          => 'date',
+            'date_of_birth' => 'date',
 
-            'two_factor_enabled'     => 'boolean',
-            'password'               => 'hashed',
+            'two_factor_enabled' => 'boolean',
+            'password' => 'hashed',
 
-            'user_type'              => UserType::class,
-            'account_status'         => UserAccountStatus::class,
-            'kyc_status'             => userKycStatus::class,
+            'user_type' => UserType::class,
+            'account_status' => UserAccountStatus::class,
+            'kyc_status' => userKycStatus::class,
+            'last_seen_at' => 'datetime',
         ];
     }
 
@@ -151,7 +154,7 @@ class User extends AuthBaseModel implements Auditable
             }
         });
         static::created(function ($user) {
-            UsersNotificationSetting::create([
+            UserNotificationSetting::create([
                 'user_id' => $user->id,
             ]);
         });
@@ -215,9 +218,19 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->hasMany(User::class, 'unbanned_by', 'id');
     }
-    public function userRank(): HasOne
+    public function activeRank(): BelongsToMany
     {
-        return $this->hasOne(UserRank::class, 'user_id', 'id');
+        return $this->belongsToMany(Rank::class, 'user_ranks')
+            ->wherePivot('activated_at', '!=', null)
+            ->withPivot('activated_at', 'rank_id')
+            ->limit(1);
+    }
+
+    public function ranks()
+    {
+        return $this->belongsToMany(Rank::class, 'user_ranks')
+            ->withPivot('activated_at', 'rank_id')
+            ->withTimestamps();
     }
 
     public function userPoint(): HasOne
@@ -229,9 +242,9 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->morphMany(Audit::class, 'user');
     }
-    public function UserNotificationSetting(): HasOne
+    public function notificationSetting(): HasOne
     {
-        return $this->hasOne(UsersNotificationSetting::class, 'user_id', 'id');
+        return $this->hasOne(UserNotificationSetting::class, 'user_id', 'id');
     }
 
     public function rankedUsers(): HasManyThrough
@@ -239,7 +252,7 @@ class User extends AuthBaseModel implements Auditable
         return $this->hasManyThrough(
             User::class,
             UserRank::class,
-            'rank_level',
+            'rank_id',
             'id',
             'id',
             'user_id'
@@ -263,13 +276,19 @@ class User extends AuthBaseModel implements Auditable
         return $this->hasMany(MessageReadReceipt::class, 'user_id', 'id');
     }
 
-    public function author()
+
+    public function feedbacks()
     {
         return $this->hasMany(Feedback::class, 'author_id', 'id');
     }
-    public function targetUser()
+
+    public function feedbacksReceived()
     {
         return $this->hasMany(Feedback::class, 'target_user_id', 'id');
+    }
+    public function AchievementProgress()
+    {
+        return $this->hasMany(UserAchievementProgress::class, 'user_id', 'id');
     }
 
     /*
@@ -471,13 +490,12 @@ class User extends AuthBaseModel implements Auditable
     public function getTranslationConfig(): array
     {
         return [
-            'fields' => ['first_name', 'last_name'],
+            'fields' => ['description'],
             'relation' => 'userTranslations',
             'model' => UserTranslations::class,
             'foreign_key' => 'user_id',
             'field_mapping' => [
-                'first_name' => 'first_name',
-                'last_name' => 'last_name',
+                'description' => 'description',
             ],
         ];
     }
@@ -491,5 +509,23 @@ class User extends AuthBaseModel implements Auditable
     public function images()
     {
         return $this->cloudinaryFiles()->where('resource_type', 'image');
+    }
+
+
+
+    public function isOnline(): bool
+    {
+        return $this->last_seen_at !== null && $this->last_seen_at->gt(now()->subMinutes(2));
+    }
+
+    public function offlineStatus(): string
+    {
+        return (!$this->isOnline() && $this->last_seen_at !== null && $this->last_seen_at->diffInMinutes(now()) < 60) ? round($this->last_seen_at->diffInMinutes(now())) . ' min ago' : 'Offline';
+    }
+
+    public function isVerifiedSeller(): bool
+    {
+        $this->load('seller');
+        return (bool) $this->seller?->seller_verified_at;
     }
 }

@@ -12,8 +12,8 @@
 
             <!-- Logo -->
             <a href="{{ route('home') }}" wire:navigate>
-                <img src="{{ asset('assets/images/header_logo.png') }}" alt="Logo" class="h-6 sm:h-8 w-auto">
-                <img src="{{ storage_url('assets/images/header_logo.png') }}" alt="Logo" class="h-6 sm:h-8 w-auto">
+                <img src="{{ storage_url(app_logo()) }}" alt="{{ short_name() }}" class="h-6 sm:h-8 w-auto">
+                <img src="{{ storage_url(app_logo()) }}" alt="{{ short_name() }}" class="h-6 sm:h-8 w-auto">
             </a>
         </div>
 
@@ -58,8 +58,8 @@
                 <button @click="open = !open"
                     class="flex items-center p-1 sm:p-1.5 rounded-lg text-text-white transition-all focus:outline-none">
                     <div class="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full shadow-lg overflow-hidden">
-                        <img src="{{ storage_url(auth()->user()->avatar) }}" class="w-full h-full object-cover"
-                            alt="{{ auth()->user()->full_name ?? 'User Avatar' }}">
+                        <img src="{{ auth_storage_url(user()->avatar) }}" class="w-full h-full object-cover"
+                            alt="{{ user()->full_name ?? 'User Avatar' }}">
                     </div>
                 </button>
 

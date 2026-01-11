@@ -36,7 +36,7 @@
                                     {{-- <img src="{{ Storage::url($data->icon) ?? 'N/A' }}" alt=""
                                         class="rounded overflow-hidden h-10 w-10"> --}}
 
-                                    <x-cloudinary::image public-id="{{ $data->icon }}" alt="{{ $data->name }}" class="rounded overflow-hidden h-10 w-10" />
+                                    <img src="{{ storage_url($data->icon) }}" alt="{{ $data->name }}" class="rounded overflow-hidden h-10 w-10" />
                                 @else
                                     <div
                                         class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-400 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">

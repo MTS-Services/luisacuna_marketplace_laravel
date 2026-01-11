@@ -2,15 +2,22 @@
 
 namespace App\Services;
 
+use App\Enums\CustomNotificationType;
 use App\Models\Order;
+use App\Models\UserPoint;
 use App\Enums\OrderStatus;
+use App\Models\Achievement;
+use App\Models\Admin;
+use App\Models\DisputeOrder;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Models\UserAchievementProgress;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class OrderService
 {
-    public function __construct(protected Order $model) {}
+    public function __construct(protected Order $model, protected DisputeOrder $disputedOrder, protected NotificationService $notificationService) {}
 
     public function getAllDatas($sortField = 'created_at', $order = 'desc'): Collection
     {
@@ -92,6 +99,59 @@ class OrderService
             ->get();
     }
 
+    public function disputeOrder(array $datas):Order
+    {
+        $order = Order::find($datas['order_id']);
+        if(!$order) abort(404, 'Order not found');
+        $order->load('payments');
+
+        $order->is_disputed = true;
+        $order->save();
+
+        $this->disputedOrder->create($datas);
+
+
+
+        // Create in-app notification
+            $this->notificationService->create([
+                'type' => CustomNotificationType::USER,
+                'sender_id' => null,
+                'sender_type' => null,
+                'receiver_id' => $datas['disputed_to'],
+                'receiver_type' => User::class,
+                'is_announced' => false,
+                'action' => route('user.order.detail', $order->order_id),
+                'title' => 'You have been recieved a dispute order request !',
+                'message' => "You have got a order dispute request for the order #{$order->order_id}. Please check your account.",
+                'icon' => 'check-circle',
+                'additional' => [
+                    'order_id' => $order->order_id,
+                    'currency' => $order->currency,
+                    'amount' => $order->amount,
+                ],
+             ]);
+
+        // Create in-app For Admin
+            $this->notificationService->create([
+                'type' => CustomNotificationType::ADMIN,
+                'sender_id' => null,
+                'sender_type' => null,
+                'receiver_id' => null,
+                'receiver_type' => Admin::class,
+                'is_announced' => false,
+                'action' => route('user.order.detail', $order->order_id),
+                'title' => 'You have been recieved a dispute order request !',
+                'message' => "You have got a order dispute request for the order #{$order->order_id}. Please check your account.",
+                'icon' => 'check-circle',
+                'additional' => [
+                    'order_id' => $order->order_id,
+                    'currency' => $order->currency,
+                    'amount' => $order->amount,
+                ],
+             ]);
+
+        return  $order->fresh();
+    }
 
 
     public function calculateMonthlyTotal(Collection $orders): float
@@ -99,14 +159,144 @@ class OrderService
         return $orders->sum('grand_total');
     }
 
+        public function countByStatus(OrderStatus $status): int
+    {
+        return $this->model->where('status', $status->value)->count();
+    }
+
     /* ================== ================== ==================
      *                   Action Executions
      * ================== ================== ================== */
 
-    public function createData(array $data): Order
+    // public function createData(array $data): Order
+    // {
+    //     return $this->model->create($data);
+    // }
+
+
+    // public function createData(array $data)
+    // {
+    //     $product = $this->model->create($data);
+    //     $achievements = Achievement::whereNotNull('target_value')
+    //         ->whereHas('achievementType', function ($query) {
+    //             $query->where('name', 'Product Purchase');
+    //         })
+    //         ->get();
+
+    //     foreach ($achievements as $achievement) {
+
+    //         $progress = UserAchievementProgress::firstOrCreate(
+    //             [
+    //                 'user_id' => user()->id,
+    //                 'achievement_id' => $achievement->id,
+
+    //             ],
+    //             [
+    //                 'current_progress' => 0,
+    //             ]
+    //         );
+    //         $progress->increment('current_progress');
+
+    //         if ($progress->current_progress >= $achievement->target_value) {
+    //             $userPoints = UserPoint::firstOrCreate(
+    //                 ['user_id' => user()->id],
+    //                 ['points' => 0]
+    //             );
+
+    //             $userPoints->increment('points', $achievement->point_reward);
+    //         }
+    //     }
+    //     return $product;
+    // }
+
+    // public function createData(array $data)
+    // {
+    //     $product = $this->model->create($data);
+
+    //     $achievements = Achievement::whereNotNull('target_value')
+    //         ->whereHas('achievementType', function ($query) {
+    //             $query->where('name', 'Product Purchase');
+    //         })
+    //         ->get();
+
+    //     foreach ($achievements as $achievement) {
+    //         $rankId = $achievement->rank_id ?? null;
+    //         $progress = UserAchievementProgress::firstOrCreate(
+    //             [
+    //                 'user_id' => user()->id,
+    //                 'achievement_id' => $achievement->id,
+    //                 'rank_id' => $rankId,
+    //                 'unlocked_at' => now(),
+    //             ],
+    //             [
+    //                 'current_progress' => 0,
+    //             ]
+    //         );
+
+    //         $progress->increment('current_progress');
+
+    //         if ($progress->current_progress >= $achievement->target_value) {
+    //             $userPoints = UserPoint::firstOrCreate(
+    //                 ['user_id' => user()->id],
+    //                 ['points' => 0],
+
+    //             );
+
+    //             $userPoints->increment('points', $achievement->point_reward);
+    //         }
+    //     }
+
+    //     return $product;
+    // }
+
+
+    public function createData(array $data)
     {
-        return $this->model->create($data);
+        $product = $this->model->create($data);
+
+        $achievements = Achievement::whereNotNull('target_value')
+            ->whereHas('achievementType', function ($query) {
+                $query->where('name', 'Product Purchase');
+            })
+            ->get();
+
+        foreach ($achievements as $achievement) {
+
+            $rankId = $achievement->rank_id;
+            $progress = UserAchievementProgress::where('user_id', user()->id)
+                ->where('achievement_id', $achievement->id)
+                ->whereNull('achieved_at')
+                ->latest()
+                ->first();
+            if (!$progress || $progress->current_progress >= $achievement->target_value) {
+
+                $progress = UserAchievementProgress::create([
+                    'user_id' => user()->id,
+                    'achievement_id' => $achievement->id,
+                    'rank_id' => $rankId,
+                    'current_progress' => 0,
+                    'unlocked_at' => now(),
+                ]);
+            }
+            $progress->increment('current_progress');
+            if ($progress->current_progress == $achievement->target_value) {
+                $progress->update([
+                    'achieved_at' => now(),
+                ]);
+                $userPoints = UserPoint::firstOrCreate(
+                    ['user_id' => user()->id],
+                    ['points' => 0]
+                );
+
+                $userPoints->increment('points', $achievement->point_reward);
+            }
+        }
+
+        return $product;
     }
+
+
+
 
     // Manage Function According to your need
     public function updateData(int $id, array $data): Order
@@ -174,4 +364,6 @@ class OrderService
     {
         return $this->model->getInactive($sortField, $order);
     }
+
+
 }

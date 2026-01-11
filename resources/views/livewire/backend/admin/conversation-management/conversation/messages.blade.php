@@ -52,7 +52,7 @@
 
                     {{-- Avatar --}}
                     @if ($msg->sender?->avatar)
-                        <img src="{{ storage_url($msg->sender->avatar) }}"
+                        <img src="{{ auth_storage_url($msg->sender->avatar) }}"
                             alt="{{ $msg->sender->full_name ?? ($msg->sender->name ?? 'User') }}"
                             class="w-8 h-8 rounded-full flex-shrink-0">
                     @else
@@ -77,7 +77,7 @@
                             @foreach ($msg->attachments as $attachment)
                                 <div class="relative">
                                     @if (in_array($attachment->attachment_type->value, ['image', 'photo']))
-                                        <img src="{{ asset('storage/' . $attachment->file_path) }}"
+                                        <img src="{{ storage_url($attachment->file_path) }}"
                                             class="rounded-lg max-w-full max-h-64 object-cover">
                                     @else
                                         <a href="{{ asset('storage/' . $attachment->file_path) }}"

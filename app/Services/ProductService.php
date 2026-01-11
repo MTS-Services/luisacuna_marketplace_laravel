@@ -9,6 +9,7 @@ use App\Enums\ActiveInactiveEnum;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
 
 class ProductService
 {
@@ -20,7 +21,7 @@ class ProductService
         return $this->model->all($sortField, $order);
     }
 
-public function findData($column_value, string $column_name = 'id')
+    public function findData($column_value, string $column_name = 'id')
     {
         return $this->model->where($column_name, $column_value)->first();
     }
@@ -34,16 +35,13 @@ public function findData($column_value, string $column_name = 'id')
 
         if ($search) {
             // Scout Search
-            return Game::search($search)
+            return Product::search($search)
                 ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
         }
         return $this->model->query()
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
-            ->with(['productTranslations' => function ($query) {
-                $query->where('language_id', get_language_id());
-            }])
             ->paginate($perPage);
     }
 
@@ -77,10 +75,20 @@ public function findData($column_value, string $column_name = 'id')
 
             $dynamic_data = $data['fields'] ?? [];
             $delivery_method = $data['deliveryMethod'] ?? null;
+            $data['delivery_method'] = $delivery_method;
             unset($data['fields']);
             unset($data['deliveryMethod']);
 
+
+
+
+
+
+
+
             $record = $this->model->create($data);
+
+
 
             if (!empty($dynamic_data)) {
                 $configs = [];
@@ -95,13 +103,30 @@ public function findData($column_value, string $column_name = 'id')
                 }
 
 
-                $configs[] = [
-                    'game_config_id' => explode('|', $delivery_method)[0],
-                    'value' => explode('|', $delivery_method)[1],
-                    'category_id' => $record->category_id,
-                ];
+                // $configs[] = [
+                //     'game_config_id' => explode('|', $delivery_method)[0],
+                //     'value' => explode('|', $delivery_method)[1],
+                //     'category_id' => $record->category_id,
+                // ];
 
                 $record->product_configs()->createMany($configs);
+            }
+
+            if ($record) {
+                $refresh = $record->fresh();
+
+                Log::info("Product Translations Created", [
+                    'product_id' => $refresh->id,
+                    'description' => $refresh->description,
+                    'name' => $refresh->name,
+                    'quantity' => $refresh->quantity,
+                ]);
+
+                $refresh->dispatchTranslation(
+                    defaultLanguageLocale: app()->getLocale() ?? 'en',
+                    forceTranslation: true,
+                    targetLanguageIds: null
+                );
             }
 
             return $record;

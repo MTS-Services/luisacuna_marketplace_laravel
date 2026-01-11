@@ -4,10 +4,12 @@ namespace App\Livewire\Backend\User\Payments;
 
 use App\Models\User;
 use App\Models\Product;
-use App\Services\FeeSettingsService;
 use Livewire\Component;
+use App\Enums\FeedbackType;
 use App\Services\OrderService;
 use App\Services\ProductService;
+use App\Services\FeedbackService;
+use App\Services\FeeSettingsService;
 use Illuminate\Support\Facades\Session;
 use App\Traits\Livewire\WithNotification;
 
@@ -17,22 +19,33 @@ class InitializeOrder extends Component
 
     public ?Product $product = null;
     public int $quantity = 1;
+    public $feedbacks;
+    public $product_id;
+    public $positiveFeedbacksCount;
+    public $negativeFeedbacksCount;
 
     protected OrderService $orderService;
     protected ProductService $productService;
     protected FeeSettingsService $feeSettingsService;
-    public function boot(OrderService $orderService, ProductService $productService, FeeSettingsService $feeSettingsService)
+    protected FeedbackService $feedbackService;
+    public function boot(OrderService $orderService, ProductService $productService, FeeSettingsService $feeSettingsService, FeedbackService $feedbackService)
     {
         $this->orderService = $orderService;
         $this->productService = $productService;
         $this->feeSettingsService = $feeSettingsService;
+        $this->feedbackService = $feedbackService;
+        $this->feedbacks = collect([]);
     }
 
     public function mount($productId)
     {
         $this->product = $this->productService->findData(decrypt($productId));
-        // $this->product = Product::where('id', decrypt($productId))->first();
-        $this->product->load(['user.seller', 'platform', 'product_configs.game_configs']);
+        $this->product->load(['user.seller', 'user.feedbacksReceived', 'platform', 'product_configs.game_configs', 'orders.feedbacks']);
+        $this->feedbacks = $this->product->feedbacks;
+        $this->feedbacks = $this->product->feedbacks()->latest()->take(6)->get();
+        $allFeedbacks = $this->product?->user?->feedbacksReceived()->get();
+        $this->positiveFeedbacksCount = $this->product?->user?->feedbacksReceived()->where('type', FeedbackType::POSITIVE->value)->count();
+        $this->negativeFeedbacksCount = $this->product?->user?->feedbacksReceived()->where('type', FeedbackType::NEGATIVE->value)->count();
     }
 
     public function updatedQuantity()
@@ -97,6 +110,7 @@ class InitializeOrder extends Component
 
     public function render()
     {
+
         return view('livewire.backend.user.payments.initialize-order');
     }
 }

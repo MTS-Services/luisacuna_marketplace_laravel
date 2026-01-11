@@ -11,7 +11,7 @@ use App\Models\Product;
 use App\Models\ProductConfig;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Arr;
 
 class ProductSeeder extends Seeder
 {
@@ -42,6 +42,7 @@ class ProductSeeder extends Seeder
                         'name'        => $game->name . ' - ' . $category->name,
                         'description' => $game->description,
                         'delivery_timeline' => $deliveryItems[$i % count($deliveryItems)],
+                        'delivery_method' =>Arr::random(['manual', 'instant']),
                         'price'       => (($i * 10) + rand(1, 100)),
                         'quantity'    => rand(500, 1000),
                         'platform_id' => $platforms->random(),

@@ -200,7 +200,7 @@
 
 
                 {{-- Dropdown Component --}}
-                <x-backend.navlink type="dropdown" icon="box" name="Products" :page_slug="$active"
+                <x-backend.navlink type="dropdown" icon="box" name="Product Management" :page_slug="$active"
                     :items="$productItems" />
 
                 <x-backend.navlink type="dropdown" icon="layers" name="Order Management" :page_slug="$active"
@@ -213,10 +213,10 @@
                             'permission' => 'rank-list',
                         ],
                         [
-                            'name' => 'Paid Orders',
-                            'route' => route('admin.orders.paid-orders'),
+                            'name' => 'Progress Orders',
+                            'route' => route('admin.orders.progress-orders'),
                             'icon' => 'award',
-                            'active' => 'paid-orders',
+                            'active' => 'progress-orders',
                             'permission' => 'achievement-type-list',
                         ],
                         [
@@ -457,7 +457,7 @@
 
                 <div class="space-y-2">
                     <flux:separator class="bg-accent!" />
-                    <x-backend.navlink type="single" icon="user" name="Profile" active="profile" :route="route('admin.profile.index')"
+                    <x-backend.navlink type="single" icon="user" name="Profile " active="profile" :route="route('admin.profile.index')"
                         :page_slug="$active" />
 
                     <form action="{{ route('admin.logout') }}" method="post" class="w-full inline-block">

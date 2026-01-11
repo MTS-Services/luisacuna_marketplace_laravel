@@ -36,7 +36,7 @@
                 <div
                     class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-pink-100 overflow-hidden flex justify-center text-ceneter items-center">
                     @if ($user->avatar)
-                        <x-cloudinary::image public-id="{{ $user->avatar_url }}" removeBackground crop="scale" sizes="100vw"
+                        <img src="{{ auth_storage_url($user->avatar) }}"
                        class="rounded w-full height-full" alt="{{ $user->full_name}}" />
                     @else
                         <span class="font-bold text-3xl">

@@ -5,13 +5,15 @@ namespace App\Models;
 use App\Models\BaseModel;
 use App\Traits\AuditableTrait;
 use App\Enums\ActiveInactiveEnum;
+use App\Traits\HasTranslations;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 
 class Product extends BaseModel implements Auditable
 {
-    use   AuditableTrait;
+    use   AuditableTrait, HasTranslations;
     //
 
     protected $fillable = [
@@ -27,10 +29,10 @@ class Product extends BaseModel implements Auditable
         'name',
         'quantity',
         'minimum_offer_quantity',
-        'delivery_method',
         'status',
         'platform_id',
         'delivery_timeline',
+        'delivery_method',
 
         'creater_id',
         'creater_type',
@@ -83,18 +85,33 @@ class Product extends BaseModel implements Auditable
         return $this->hasMany(ProductConfig::class, 'product_id', 'id');
     }
 
-
-
     public function productTranslations()
     {
         return $this->hasMany(ProductTranslation::class, 'product_id', 'id');
     }
 
+    public function orders(): MorphMany
+    {
+        return $this->morphMany(Order::class, 'source');
+    }
+
+    public function feedbacks()
+    {
+        return $this->hasManyThrough(
+            Feedback::class,
+            Order::class,
+            'source_id',    // foreign key on orders
+            'order_id',     // foreign key on feedbacks
+            'id',           // local key on products
+            'id'            // local key on orders
+        )
+        ->where('orders.source_type', Product::class);
+    }
 
     public function getTranslationConfig(): array
     {
         return [
-            'fields' => ['name', 'description', 'delivery_timeline','price', 'quantity'],
+            'fields' => ['name', 'description', 'delivery_timeline', 'quantity', 'delivery_method'],
             'relation' => 'productTranslations',
             'model' => ProductTranslation::class,
             'foreign_key' => 'product_id',
@@ -102,8 +119,8 @@ class Product extends BaseModel implements Auditable
                 'name' => 'name',
                 'description' => 'description',
                 'delivery_timeline' => 'delivery_timeline',
-                'price' => 'price',
                 'quantity' => 'quantity',
+                'delivery_method' => 'delivery_method'
             ],
         ];
     }
@@ -136,24 +153,23 @@ class Product extends BaseModel implements Auditable
         }
 
         $query->when($filters['skipSelf'] ?? null, function ($query, $skipSelf) {
-                $query->where('user_id', '!=', user()->id ?? 0);
-
+            $query->where('user_id', '!=', user()->id ?? 0);
         });
 
         $query->when($filters['platform_id'] ?? null, function ($query, $platform_id) {
-             $query->where('platform_id', $platform_id);
+            $query->where('platform_id', $platform_id);
         });
 
         $query->when($filters['delivery_timeline'] ?? null, function ($query, $delivery_timeline) {
-             $query->where('delivery_timeline', $delivery_timeline);
+            $query->where('delivery_timeline', $delivery_timeline);
         });
 
         $query->when($filters['min_price'] ?? null, function ($query, $min_price) {
-             $query->where('price', ">=", $min_price);
+            $query->where('price', ">=", $min_price);
         });
 
         $query->when($filters['max_price'] ?? null, function ($query, $max_price) {
-             $query->where('price', "<=", $max_price);
+            $query->where('price', "<=", $max_price);
         });
 
         if (!empty($filters['isStocked'])) {
@@ -168,29 +184,29 @@ class Product extends BaseModel implements Auditable
 
 
 
-/* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
         End of RELATIONSHIPS
 =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
-#[SearchUsingPrefix([ 'name', 'description', 'delivery_timeline', 'price'])]
-public function toSearchableArray(): array
-{
-    // Load the game with its tags
-    // if (!$this->relationLoaded('game')) {
-    //     $this->load(['game:id,name', 'game.tags:id,name']);
-    // }
-    
-    // // Since there's only ONE game, just pluck the tag names directly
-    // $gameTags = $this->game?->tags->pluck('name')->all() ?? [];
+    #[SearchUsingPrefix(['name', 'description', 'delivery_timeline', 'price'])]
+    public function toSearchableArray(): array
+    {
+        // Load the game with its tags
+        // if (!$this->relationLoaded('game')) {
+        //     $this->load(['game:id,name', 'game.tags:id,name']);
+        // }
 
-    return [
-        'name' => $this->name,
-        'description' => $this->description,
-        'price' => (double) $this->price,
-        'delivery_timeline' => $this->delivery_timeline,
-      //  'game_tags' => $gameTags,
-     //   'game_name' => $this->game?->name,
-    ];
-}
+        // // Since there's only ONE game, just pluck the tag names directly
+        // $gameTags = $this->game?->tags->pluck('name')->all() ?? [];
+
+        return [
+            'name' => $this->name,
+            'description' => $this->description,
+            'price' => (float) $this->price,
+            'delivery_timeline' => $this->delivery_timeline,
+            //  'game_tags' => $gameTags,
+            //   'game_name' => $this->game?->name,
+        ];
+    }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS

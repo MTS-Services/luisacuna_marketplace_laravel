@@ -309,7 +309,7 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
 
     Route::controller(OrderController::class)->name('orders.')->prefix('orders')->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/paid-orders', 'paidOrders')->name('paid-orders');
+        Route::get('/progress-orders', 'progressOrders')->name('progress-orders');
         Route::get('/completed-orders', 'completedOrders')->name('completed-orders');
         Route::get('/cancelled-orders', 'cancelledOrders')->name('cancelled-orders');
         Route::get('/show/{orderId}', 'show')->name('show');

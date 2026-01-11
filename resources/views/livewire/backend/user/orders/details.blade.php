@@ -11,8 +11,7 @@
                 <div class="flex gap-2">
                     <div>
                         <div class="w-10 h-10 md:w-16 md:h-16">
-                            <x-cloudinary::image public-id="{{ $data?->source?->game?->logo }}" width="50"
-                                height="50" crop="scale" sizes="100vw" alt="{{ $data?->source?->game?->name }}"
+                            <img src="{{ $data?->source?->game?->logo }}" alt="{{ $data?->source?->game?->name }}" alt="{{ $data?->source?->game?->name }}"
                                 class="rounded" />
                         </div>
                     </div>
@@ -23,8 +22,7 @@
                 <div class="flex gap-5">
                     <div>
                         <div class="w-10 h-10">
-                            <x-cloudinary::image public-id="{{ $data?->source?->game?->logo }}" width="50"
-                                height="50" crop="scale" sizes="100vw" alt="{{ $data?->source?->game?->name }}"
+                            <img src="{{storage_url( $data?->source?->game?->logo) }}"  alt="{{ $data?->source?->game?->name }}"
                                 class="rounded" />
                         </div>
                     </div>
@@ -60,8 +58,7 @@
             </div>
             <div class="mt-10">
                 <div class="w-auto h-auto sm:w-[400px] sm:h-[400px]">
-                    <x-cloudinary::image public-id="{{ $data?->source?->game?->logo }}" width="50" crop="scale"
-                        sizes="100vw" alt="{{ $data?->source?->game?->name }}" class="rounded w-full h-full" />
+                    <img src="{{ storage_url( $data?->source?->game?->logo) }}" alt="{{ $data?->source?->game?->name }}" class="rounded w-full h-full" />
                 </div>
             </div>
             <div x-data="{
@@ -107,9 +104,8 @@
                 @if ($isVisitSeller)
                     <div class="pt-4 mt-4 flex items-center gap-5">
                         <div class="w-14 h-14">
-                            <x-cloudinary::image public-id="{{ $data?->user?->avatar }}" width="50"
-                                height="50" crop="scale" sizes="100vw"
-                                alt="{{ $data?->user?->username }}" class="rounded" />
+                            <img src="{{ auth_storage_url( $data?->user?->avatar) }}" 
+                                alt="{{ $data?->user?->full_name }}" class="rounded" />
                         </div>
                         <div>
                             <a href="{{ route('profile', $data?->user?->username) }}" target="_blank" class="font-semibold ">{{ $data?->user?->full_name }}</a>
@@ -118,15 +114,14 @@
                 @else
                     <div class="pt-4 mt-4 flex items-center gap-5">
                         <div class="w-14 h-14">
-                            <x-cloudinary::image public-id="{{ $data?->source?->user?->avatar }}" width="50"
-                                height="50" crop="scale" sizes="100vw"
-                                alt="{{ $data?->source?->user?->username }}" class="rounded" />
+                            <img src="{{ auth_storage_url($data?->source?->user?->avatar) }}" 
+                                alt="{{ $data?->source?->user?->full_name }}" class="rounded" />
                         </div>
                         <div>
                             <a href="{{ route('profile', $data?->source?->user?->username) }}" target="_blank" class="font-semibold ">{{ $data?->source?->user?->full_name }}</a>
                             <p class="text-sm text-text-white "> <img class="inline mr-2"
                                     src="{{ asset('assets/images/thumb up filled.png') }}" alt="">
-                                {{ __('99.3% | ')}}  {{ $data?->feedback?->count() ?? 0 }} {{ __(' reviews | ') }} {{ $data?->count() ?? 0 }} {{ __('Sold') }} </p>
+                                 {{ feedback_calculate($positiveFeedbacksCount, $negativeFeedbacksCount) }} % {{ __(' | ')}}  {{ $data?->feedback?->count() ?? 0 }} {{ __(' reviews | ') }} {{ $data?->count() ?? 0 }} {{ __('Sold') }} </p>
                         </div>
                     </div>
                 @endif

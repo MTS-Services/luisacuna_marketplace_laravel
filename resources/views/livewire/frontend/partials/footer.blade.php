@@ -7,8 +7,7 @@
                         class="inline-block inline-flex gap-1 items-center justify-center">
 
                         {{-- <img src="{{ asset('assets/images/header_logo.png') }}" alt="{{ __('Logo') }}"></a> --}}
-                        <x-cloudinary::image public-id="{{ app_logo() }}" removeBackground crop="scale" sizes="100vw"
-                            alt="{{ site_name() }}" class="rounded w-8 h-6" />
+                        <img src="{{ storage_url(app_logo()) }}" alt="{{ site_name() }}" class="rounded w-8 h-6" />
                         <p>
                             {{ short_name() }}
                         </p>
@@ -41,7 +40,7 @@
                 <div>
                     <h4 class="font-bold mb-4 text-text-white text-xl">{{ __('Quick Links') }}</h4>
                     <ul class="space-y-2 text-sm text-text-secondary">
-                        <li><a href="{{ route('home') }}#popular-games" wire:navigate
+                        <li><a href="{{ route('home') }}#popular-games"
                                 class="hover:text-purple-400 transition text-text-secondary text-md">{{ __('Explore Products') }}</a>
                         </li>
                         <li><a href="{{ route('how-to-buy') }}" wire:navigate
@@ -50,7 +49,7 @@
                         <li><a href="{{ route('buyer-protection') }}" wire:navigate
                                 class="hover:text-purple-400 transition text-text-secondary text-md">{{ __('Buyer Protection') }}</a>
                         </li>
-                        <li> <a href="{{ route('user.offers') }}" wire:navigate
+                        <li> <a href="{{ route('user.seller.verification') }}" wire:navigate
                                 class="hover:text-purple-400 transition text-text-secondary text-md">{{ __('Become a Seller') }}</a>
                         </li>
                         <li><a href="{{ route('how-to-sell') }}" wire:navigate
@@ -90,6 +89,8 @@
         </div>
     </div>
     <div class="bg-bg-primary py-4 text-center text-md text-text-secondary">
-        <p class="text-text-secondary">{{ __('© 2025 Swapy.gg. Operated by SWAPY SERVICES LIMITED. Registered in England & Wales (No. 16886669). Registered at 71-75 Shelton Street, Covent Garden, London, WC2H 9JQ.') }}</p>
+        <p class="text-text-secondary">
+            {{ __('© 2025 Swapy.gg. Operated by SWAPY SERVICES LIMITED. Registered in England & Wales (No. 16886669). Registered at 71-75 Shelton Street, Covent Garden, London, WC2H 9JQ.') }}
+        </p>
     </div>
 </footer>

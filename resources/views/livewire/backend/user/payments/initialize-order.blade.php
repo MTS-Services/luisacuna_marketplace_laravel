@@ -83,9 +83,10 @@
                 </div>
             </div> --}}
             <!-- Buy Button -->
+            {{-- @dd(currency_symbol()) --}}
             @auth('web')
                 <x-ui.button class="w-full  py-2!" type="submit">
-                    {{ currency_symbol() }}<span x-text="(quantity * price).toFixed(2)"
+                    {{ strtoupper(currency_code()) }}<span x-text="(quantity * price).toFixed(2)"
                         class="text-text-btn-primary group-hover:text-text-btn-secondary ">
                     </span>
                     {{ __('| Buy Now') }}
@@ -93,7 +94,7 @@
             @else
                 <a href="{{ route('login') }}" wire:navigate
                     class="bg-zinc-500 px-4  py-2!  text-text-btn-primary hover:text-text-btn-secondary hover:bg-zinc-50 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group text-nowrap cursor-pointer w-full mb-6">
-                    PEN<span x-text="(quantity * price).toFixed(2)"
+                    {{ strtoupper(currency_code()) }}<span x-text="(quantity * price).toFixed(2)"
                         class=" text-text-btn-primary group-hover:text-text-btn-secondary"></span>
                     {{ __('| Buy Now') }}
                 </a>
@@ -101,7 +102,7 @@
             <!-- Guarantees -->
             <div class="space-y-4">
                 <!-- Money-back -->
-                <div class="flex items-start gap-3">
+                <div class="flex items-start gap-3 mt-4">
                     <svg class="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd"
                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -157,17 +158,22 @@
             <div class="  mt-2 pt-3 flex items-center justify-between gap-2">
 
                 <div class="w-18 h-14 relative">
-                   
-                    <x-cloudinary::image publicId="{{ $product->user->avatar_url }}" alt="{{ $product->user->name}}" class="w-full h-full object-cover" />
-                    
-                    <span class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
 
+                    <img src="{{ auth_storage_url($product?->user?->avatar) }}"
+                        alt="{{ $product?->user?->full_name }}" class="w-full h-full object-cover rounded-full" />
+                    @if ($product?->user?->isOnline())
+                        <span
+                            class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
+                    @else
+                        <span
+                            class="absolute bottom-0 right-0 w-5 h-5 bg-gray-400 border-2 border-white rounded-full"></span>
+                    @endif
                 </div>
 
                 <div class="w-full">
                     <p class="text-text-primary font-medium flex items-center gap-2">
                         <span> {{ $product->user->full_name }}</span>
-                        @if ($product->user->seller?->seller_verified_at)
+                        @if ($product->user?->isVerifiedSeller())
                             <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
                         @endif
                     </p>
@@ -178,7 +184,8 @@
                             <path
                                 d="M7.493 18.5c-.425 0-.82-.236-.975-.632A7.48 7.48 0 0 1 6 15.125c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75A.75.75 0 0 1 15 2a2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23h-.777ZM2.331 10.727a11.969 11.969 0 0 0-.831 4.398 12 12 0 0 0 .52 3.507C2.28 19.482 3.105 20 3.994 20H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 0 1-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227Z" />
                         </svg>
-                        <p class="text-text-secondary text-xs">99.3% </p>
+                        <p class="text-text-secondary text-xs">
+                            {{ feedback_calculate($positiveFeedbacksCount, $negativeFeedbacksCount) }}%</p>
                     </div>
                 </div>
             </div>
@@ -187,7 +194,7 @@
             <div x-data="{
                 expanded: false,
                 limit: 50,
-                fullText: `{!! addslashes($product->user->description ?? '') !!}`,
+                fullText: `{!! addslashes($product?->user?->description ?? '') !!}`,
                 get words() {
                     // Remove HTML tags and split into words
                     return this.fullText.replace(/(<([^>]+)>)/gi, '').trim().split(/\s+/);
@@ -231,26 +238,34 @@
 
             <button class=" text-3xl mt-5 mb-4 font-semibold text-text-primary">{{ __('Recent feedback') }}</button>
             <!-- Seller Card -->
-            @foreach ([1, 2] as $item)
-                <div class="bg-bg-optional dark:bg-bg-info text-white p-5  max-w-md mb-1">
+            @foreach ($feedbacks as $key => $feedback)
+                @if ($key === $feedbacks->count() - 1)
+                    @continue
+                @endif
+                <div class="bg-bg-optional dark:bg-bg-info text-text-white p-5  max-w-md mb-1">
                     <div class="flex items-start justify-between mb-3">
                         <div class="flex items-center gap-2">
-                            <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="#853EFF" viewBox="0 0 20 20">
-                                <path
-                                    d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                            </svg>
-                            <h3 class="text-base font-medium  text-text-primary">
-                                Items <span class="text-text-secondary font-normal">| Yeg***</span>
+                            <x-phosphor name="{{ $feedback->type->icon() }}" variant="solid"
+                                class="w-5 h-5 {{ $feedback->type->iconColor() }}" />
+                            <h3 class="text-base font-medium  text-text-primary line-clamp-1">{{ $product->name }}
                             </h3>
                         </div>
-                        <span class="text-text-secondary text-sm whitespace-nowrap">24.10.25</span>
+                        <span class="text-text-secondary text-sm whitespace-nowrap">
+                            {{ $feedback->created_at->format('Y-m-d') }}</span>
                     </div>
-                    <p class="text-text-secondary text-sm">Yeg***</p>
+                    <p class="text-text-secondary text-sm line-clamp-1">{{ $feedback->message }}</p>
                 </div>
             @endforeach
-            <div class="mt-5">
+            {{-- <div class="mt-5">
                 <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{ __('All feedback') }}</x-ui.button>
-            </div>
+            </div> --}}
+
+            @if ($feedbacks->count() > 5)
+                <div class="mt-5">
+                    <x-ui.button href="{{ route('user.feedback', ['product_id' => $product->id]) }}"
+                        class="px-4! py-2! sm:px-6! sm:py-3!">{{ __('All feedback') }}</x-ui.button>
+                </div>
+            @endif
         </div>
 
     </form>

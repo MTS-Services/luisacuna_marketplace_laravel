@@ -12,8 +12,7 @@
             <div class="flex gap-5">
                 <div>
                     <div class="w-10 h-10 md:w-16 md:h-16">
-                        <x-cloudinary::image public-id="{{ $order?->source?->game?->logo }}" width="50"
-                            height="50" crop="scale" sizes="100vw" alt="{{ $order?->source?->game?->name }}"
+                        <img src="{{ storage_url($order?->source?->game?->logo) }}"  alt="{{ $order?->source?->game?->name }}"
                             class="rounded" />
                     </div>
                 </div>
@@ -111,8 +110,8 @@
                                     <div class="w-6 h-6">
                                         {{-- <img src="{{ asset('assets/images/order.png') }}" alt="Product Name"
                                             class="w-full h-full object-cover"> --}}
-                                        <x-cloudinary::image public-id="{{ $order?->source?->game?->logo }}"
-                                            width="50" height="50" crop="scale" sizes="100vw"
+                                        <img src="{{ $order?->source?->game?->logo }}"
+                                        
                                             alt="{{ $order?->source?->game?->name }}" class="rounded" />
                                     </div>
                                 </div>

@@ -40,6 +40,7 @@ class Order extends AuditBaseModel implements Auditable
         'deleter_type',
         'restorer_id',
         'restorer_type',
+        'is_disputed',
     ];
 
     protected $casts = [
@@ -99,9 +100,9 @@ class Order extends AuditBaseModel implements Auditable
             ->where('type', \App\Enums\TransactionType::PURCHSED);
     }
 
-    public function feedback()
+    public function feedbacks(): HasMany
     {
-        return $this->hasOne(Feedback::class, 'order_id');
+        return $this->hasMany(Feedback::class, 'order_id');
     }
 
     /* HELPER METHODS */

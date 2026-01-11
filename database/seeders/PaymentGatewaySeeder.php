@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\PaymentGateway;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PaymentGatewaySeeder extends Seeder
@@ -41,7 +40,7 @@ class PaymentGatewaySeeder extends Seeder
                     'api_key' => config('services.crypto.api_key', 'api_key_value'),
                 ],
                 'is_active' => true,
-            ],        
+            ],
             [
                 'sort_order' => 3,
                 'name' => 'Wallet',

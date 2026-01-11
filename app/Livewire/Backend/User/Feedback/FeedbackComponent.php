@@ -3,83 +3,80 @@
 namespace App\Livewire\Backend\User\Feedback;
 
 use Livewire\Component;
+use App\Enums\OrderStatus;
+use App\Enums\FeedbackType;
 use Livewire\Attributes\Url;
+use App\Services\OrderService;
+use App\Services\FeedbackService;
+use App\Traits\WithPaginationData;
 
 class FeedbackComponent extends Component
 {
-    #[Url(as: 'type')]
-    public $activeTab = 'all';
+    use WithPaginationData;
 
-    // ✅ Tab change method
-    public function setTab($tab)
+
+    #[Url(keep: true)]
+    public string $type = 'all';
+    public $reviewItem = null;
+    public $product_id = null;
+
+    protected FeedbackService $service;
+    protected OrderService $orderService;
+
+    public function boot(FeedbackService $service, OrderService $orderService)
     {
-        $this->activeTab = $tab;
+        $this->service = $service;
+        $this->orderService = $orderService;
     }
 
-    public function getFilteredFeedbacks()
+    public function switchReviewItem($type)
     {
-        $feedbacks = $this->getAllFeedbacks();
-
-        if ($this->activeTab === 'positive') {
-            return collect($feedbacks)->where('type', 'positive')->values();
-        } elseif ($this->activeTab === 'negative') {
-            return collect($feedbacks)->where('type', 'negative')->values();
-        }
-
-        return collect($feedbacks);
+        $this->type = $type;
     }
 
-    private function getAllFeedbacks()
-    {
-        return [
-            [
-                'id' => 1,
-                'type' => 'positive',
-                'category' => 'Items',
-                'username' => 'Yes***',
-                'comment' => 'Yes***',
-                'date' => '24.10.25'
-            ],
-            [
-                'id' => 2,
-                'type' => 'positive',
-                'category' => 'Items',
-                'username' => 'Yes***',
-                'comment' => 'Yes***',
-                'date' => '24.10.25'
-            ],
-            [
-                'id' => 3,
-                'type' => 'positive',
-                'category' => 'Items',
-                'username' => 'Yes***',
-                'comment' => 'Yes***',
-                'date' => '24.10.25'
-            ],
-            [
-                'id' => 4,
-                'type' => 'positive',
-                'category' => 'Items',
-                'username' => 'Yes***',
-                'comment' => 'Yes***',
-                'date' => '24.10.25'
-            ],
-            [
-                'id' => 5,
-                'type' => 'negative',
-                'category' => 'Items',
-                'username' => 'Yes***',
-                'comment' => 'Did not respond in over 24 hours to the messages, even though "average delivery time" is 3 hours, and being online on Fortnite. Was friended for over 48 hours and did not send the gift nor reply to the messages.',
-                'date' => '24.10.25'
-            ],
-        ];
-    }
 
     public function render()
     {
+
+        // dd($this->getFilters());
+
+        $positive = $this->service->countByType(FeedbackType::POSITIVE);
+        $negative = $this->service->countByType(FeedbackType::NEGATIVE);
+        $order = $this->orderService->countByStatus(OrderStatus::COMPLETED);
+
+        $feedbackScore = feedback_calculate($positive, $negative);
+
+
+
+        $feedbacks = $this->service->getPaginatedData(
+            perPage: 10,
+            filters: $this->getFilters()
+        );
+        $this->paginationData($feedbacks);
         return view('livewire.backend.user.feedback.feedback-component', [
-            'feedbacks' => $this->getFilteredFeedbacks(),
-            'activeTab' => $this->activeTab
+            'feedbacks' => $feedbacks,
+            'positiveFeedback' => $positive,
+            'negativeFeedback' => $negative,
+            'completedOrder' => $order,
+            'feedbackScore' => $feedbackScore
         ]);
+    }
+
+    protected function getFilters(): array
+    {
+        return [
+            'target_user_id' => user()->id,
+            'type' => $this->typeMatch($this->type),
+            'product_id' => $this->product_id,
+        ];
+    }
+
+    protected function typeMatch($type)
+    {
+        return match ($type) {
+            'all' => null,
+            'positive' => FeedbackType::POSITIVE,
+            'negative' => FeedbackType::NEGATIVE,
+        };
     }
 }

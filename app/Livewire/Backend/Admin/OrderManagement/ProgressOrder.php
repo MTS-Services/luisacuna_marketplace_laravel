@@ -8,7 +8,7 @@ use App\Services\OrderService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 
-class PaidOrders extends Component
+class ProgressOrder extends Component
 {
     use WithDataTable, WithNotification;
 
@@ -46,7 +46,7 @@ class PaidOrders extends Component
                 <div class="flex items-center gap-3">
                     <div class="min-w-0">
                         <h3 class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">'
-                    . $order->source->name .
+                    . $order?->source->name .
                     '</h3>
                     </div>
                 </div>'
@@ -55,7 +55,7 @@ class PaidOrders extends Component
                 'key' => 'user_id',
                 'label' => 'Buyer',
                 'sortable' => true,
-                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->user->username]) . '"><span class="text-text-white text-xs xxs:text-sm md:text-base truncate">' . $order->user->full_name . '</span></a>'
+                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order?->user?->username]) . '"><span class="text-text-white text-xs xxs:text-sm md:text-base truncate">' . $order?->user?->full_name . '</span></a>'
             ],
             [
                 'key' => 'source_id',
@@ -79,20 +79,18 @@ class PaidOrders extends Component
             ],
         ];
         $actions = [
-           [
+            [
                 'key' => 'order_id',
                 'label' => 'View',
-                'x_click' => "\$dispatch('order-detail-modal-open', { orderId: '{value}' }); console.log('open');",
-
+                'route' => 'admin.orders.show',
             ],
-
         ];
         $bulkActions = [
             ['value' => 'delete', 'label' => 'Delete'],
 
         ];
 
-        return view('livewire.backend.admin.order-management.paid-orders', [
+        return view('livewire.backend.admin.order-management.progress-order', [
             'datas' => $datas,
             'columns' => $columns,
             'actions' => $actions,

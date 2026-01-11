@@ -29,7 +29,7 @@
         <!-- Buy Button -->
         <a href="{{ route('game.checkout', ['orderId' => 12345]) }}" wire:navigate
             class="block text-center w-full bg-gradient-to-r bg-[#853EFF]  text-gray-100 sm:text-sm md:text-md lg:text-lg py-3 px-4 rounded-full mb-6 transition transform hover:scale-105">
-            {{  '$'.$product->price }} {{ __('Buy Now') }}
+            {{  strtoupper(currency_symbol()).$product->price }} {{ __('Buy Now') }}
         </a>
 
         <!-- Guarantees -->
@@ -119,4 +119,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>  

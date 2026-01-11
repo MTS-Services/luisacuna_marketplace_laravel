@@ -6,7 +6,7 @@
                 @if ($otherParticipant)
                     <div class="bg-bg-primary dark:bg-bg-secondary rounded-full p-0.5">
                         @if ($otherParticipant->avatar)
-                            <img src="{{ storage_url($otherParticipant->avatar) }}"
+                            <img src="{{ auth_storage_url($otherParticipant->avatar) }}"
                                 alt="{{ $otherParticipant->full_name }}"
                                 class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
                         @else
@@ -49,11 +49,11 @@
                                                     class="rounded-lg max-w-full max-h-64 object-cover cursor-pointer"
                                                     wire:click="ShowAttachemntImage('{{ encrypt(asset('storage/' . $attachment->file_path)) }}')"> --}}
 
-                                                    <x-cloudinary::image public-id="{{ $attachment->file_path }}" wire:click="ShowAttachemntImage('{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}')" alt="Uploaded File" class=" rounded-lg max-w-full max-h-64 object-cover cursor-pointer" />
+                                                    <img src="{{storage_url($attachment->file_path) }}" wire:click="ShowAttachemntImage('{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}')" alt="Uploaded File" class=" rounded-lg max-w-full max-h-64 object-cover cursor-pointer" />
 
                                             @else
 
-                                                <a href="{{  $cloudinaryService->getUrlFromPublicId($attachment->file_path))}}"
+                                                <a href="{{  $cloudinaryService->getUrlFromPublicId($attachment->file_path)}}"
                                                     class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
                                                     📎 {{ basename($cloudinaryService->getUrlFromPublicId($attachment->file_path)) }}
                                                 </a>
@@ -107,7 +107,7 @@
 
                                 @if ($sender && $sender->avatar)
 
-                                   <x-cloudinary::image public-id="{{ $attachment->file_path }}" alt="{{ $sender->full_name }}" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0 border-2 border-zinc-400" />
+                                   <img src="{{ storage_url($attachment->file_path) }}" alt="{{ $sender->full_name }}" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0 border-2 border-zinc-400" />
 
                                 @else
                                     <div
@@ -125,7 +125,7 @@
                                                     {{-- <img src="{{ asset('storage/' . $attachment->file_path) }}"
                                                         class="rounded-lg max-w-full max-h-64 object-cover cursor-pointer"
                                                         wire:click="ShowAttachemntImage('{{ encrypt(asset('storage/' . $attachment->file_path)) }}')"> --}}
-                                                    <x-cloudinary::image public-id="{{ $attachment->file_path }}" wire:click="ShowAttachemntImage('{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}')" alt="Uploaded File" class=" rounded-lg max-w-full max-h-64 object-cover cursor-pointer" />
+                                                    <img src="{{storage_url($attachment->file_path) }}" wire:click="ShowAttachemntImage('{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}')" alt="Uploaded File" class=" rounded-lg max-w-full max-h-64 object-cover cursor-pointer" />
                                                 @else
                                                     <a href="{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}"
                                                         class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
@@ -170,7 +170,7 @@
                                                             class="rounded-lg max-w-full max-h-64 object-cover cursor-pointer"
                                                             wire:click="ShowAttachemntImage('{{ encrypt(asset('storage/' . $attachment->file_path)) }}')"> --}}
 
-                                                    <x-cloudinary::image public-id="{{ $attachment->file_path }}" wire:click="ShowAttachemntImage('{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}')" alt="Uploaded File" class=" rounded-lg max-w-full max-h-64 object-cover cursor-pointer" />
+                                                    <img src="{{storage_url($attachment->file_path) }}"  wire:click="ShowAttachemntImage('{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}')" alt="Uploaded File" class=" rounded-lg max-w-full max-h-64 object-cover cursor-pointer" />
                                                             
                                                     @else
                                                         <a href="{{ $cloudinaryService->getUrlFromPublicId($attachment->file_path) }}"

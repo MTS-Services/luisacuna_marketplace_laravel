@@ -1,12 +1,11 @@
-
 <x-admin::app>
-    <x-slot name="pageSlug">{{ __('order-management') }}</x-slot>
+    <x-slot name="pageSlug">order-management</x-slot>
     @switch(Route::currentRouteName())
-        @case('admin.orders.paid-orders')
-            <x-slot name="pageSlug">{{ __('paid-orders') }}</x-slot>
-            <x-slot name="title">{{ __('Paid Orders') }}</x-slot>
-            <x-slot name="breadcrumb">{{ __('Order Management / Paid Orders List') }}</x-slot>
-            <livewire:backend.admin.order-management.paid-orders />
+        @case('admin.orders.progress-orders')
+            <x-slot name="pageSlug">progress-orders</x-slot>
+            <x-slot name="title">{{ __('Progress Orders') }}</x-slot>
+            <x-slot name="breadcrumb">{{ __('Order Management / Progress Orders List') }}</x-slot>
+            <livewire:backend.admin.order-management.progress-order />
         @break
 
         @case('admin.orders.completed-orders')
@@ -23,9 +22,8 @@
             <livewire:backend.admin.order-management.cancelled-orders />
         @break
 
-        
         @case('admin.orders.show')
-            <x-slot name="pageSlug">{{ __('order-details') }}</x-slot>
+            <x-slot name="pageSlug">{{ __('order-management') }}</x-slot>
             <x-slot name="title">{{ __('Order Details') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Order Management / Order Details') }}</x-slot>
             <livewire:backend.admin.order-management.detail :data="$data" />

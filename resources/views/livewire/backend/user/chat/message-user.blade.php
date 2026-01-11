@@ -6,7 +6,7 @@
                 @if ($otherParticipant)
                     <div class="bg-bg-primary dark:bg-bg-secondary rounded-full p-0.5">
                         @if ($otherParticipant->avatar)
-                            <img src="{{ storage_url($otherParticipant->avatar) }}"
+                            <img src="{{ auth_storage_url($otherParticipant->avatar) }}"
                                 alt="{{ $otherParticipant->full_name }}"
                                 class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0">
                         @else
@@ -50,7 +50,7 @@
                         {{-- Current User Message --}}
                         <div class="flex items-start gap-2 sm:gap-3 flex-row-reverse">
                             @if ($msg && $msg->avatar)
-                                <img src="{{ storage_url($msg->avatar) }}" alt="{{ $msg->full_name }}"
+                                <img src="{{ auth_storage_url($msg->avatar) }}" alt="{{ $msg->full_name }}"
                                     class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0 border-2 border-zinc-400">
                             @else
                                 <div
@@ -64,9 +64,9 @@
                                     @foreach ($msg->attachments as $attachment)
                                         <div class="relative mb-2">
                                             @if (in_array($attachment->attachment_type->value, ['image', 'photo']))
-                                                <img src="{{ asset('storage/' . $attachment->file_path) }}"
+                                                <img src="{{ storage_url($attachment->file_path) }}"
                                                     class="rounded-lg max-w-full max-h-64 object-cover cursor-pointer"
-                                                    wire:click="ShowAttachemntImage('{{ encrypt(asset('storage/' . $attachment->file_path)) }}')">
+                                                    wire:click="ShowAttachemntImage('{{ storage_url($attachement->file_path) }}')">
                                             @else
                                                 <a href="{{ asset('storage/' . $attachment->file_path) }}"
                                                     class="flex items-center gap-2 bg-bg-hover px-3 py-2 rounded-lg text-text-primary text-xs">
@@ -121,7 +121,7 @@
 
 
                                 @if ($sender && $sender->avatar)
-                                    <img src="{{ storage_url($sender->avatar) }}" alt="{{ $sender->full_name }}"
+                                    <img src="{{ auth_storage_url($sender->avatar) }}" alt="{{ $sender->full_name }}"
                                         class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0 border-2 border-zinc-400">
                                 @else
                                     <div

@@ -2,14 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Rank;
-use App\Models\Category;
 use App\Models\Achievement;
+use App\Models\Category;
+use App\Models\Rank;
 use Faker\Factory as Faker;
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
-use App\Enums\AchievementStatus;
+use Illuminate\Support\Carbon;
 
 class AchievementSeeder extends Seeder
 {
@@ -31,17 +29,16 @@ class AchievementSeeder extends Seeder
         //     }
         // }
 
-
         Achievement::insert([
             [
                 'sort_order' => 1,
                 'achievement_type_id' => 1, // Must exist in achievement_types
                 'rank_id' => 1,             // Must exist in ranks table
-                'icon' => 'icon-gold.png',
-                'title' => 'Gold Star Performer',
+                'icon' => 'download_i1fdsc',
+                'title' => '3 Porduct Purchased',
                 'description' => 'Awarded for achieving outstanding performance.',
-                'target_value' => 100,
-                'point_reward' => 500,
+                'target_value' => 3,
+                'point_reward' => 300,
                 'status' => 'active',
                 'created_by' => 1,
                 'updated_by' => 1,
@@ -52,11 +49,11 @@ class AchievementSeeder extends Seeder
                 'sort_order' => 2,
                 'achievement_type_id' => 2,
                 'rank_id' => 1,
-                'icon' => 'icon-silver.png',
-                'title' => 'Silver Achiever',
+                'icon' => '17155284_fdzxvx',
+                'title' => '5 Porduct Purchased',
                 'description' => 'Awarded for consistent improvement.',
-                'target_value' => 50,
-                'point_reward' => 300,
+                'target_value' => 5,
+                'point_reward' => 500,
                 'status' => 'active',
                 'created_by' => 1,
                 'updated_by' => 1,
@@ -67,7 +64,7 @@ class AchievementSeeder extends Seeder
                 'sort_order' => 3,
                 'achievement_type_id' => 3,
                 'rank_id' => 2,
-                'icon' => 'icon-bronze.png',
+                'icon' => '11881945_xhkrcc',
                 'title' => 'Bronze Contributor',
                 'description' => 'Awarded for completing initial milestones.',
                 'target_value' => 20,

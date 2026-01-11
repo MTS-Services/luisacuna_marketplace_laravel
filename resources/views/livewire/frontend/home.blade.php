@@ -24,8 +24,7 @@
     </div>
 
 
-    {{-- <x-cloudinary::image publicId="default_avatar" width="auto" height="auto" quality="auto" format="auto"
-        alt="avatar" class="" /> --}}
+    {{-- <img src="{{ storage_url('default_avatar', ['width' => 1920, 'height' => 1080]) }}" alt="default_avatar"> --}}
 
     <section class="mt-10 sm:mt-20" id="popular-games">
         {{-- New Bosting Games Section --}}
@@ -100,8 +99,8 @@
                     <div class="swiper-wrapper py-0">
                         @foreach ($top_selling_products as $product)
                             <div class="swiper-slide">
-                                <x-ui.shop-card :gameSlug="$product->games->slug" :categorySlug="$product->category->slug" :data="$product"
-                                    :game="$game" />
+                                <x-ui.shop-card :gameSlug="$product?->game?->slug ?? ''" :categorySlug="$product?->category?->slug ?? ''" :data="$product"
+                                    :game="$product?->game" />
                             </div>
                         @endforeach
                     </div>
@@ -190,8 +189,8 @@
                     {{-- <button class="btn-primary">
                         <span><x-flux::icon name="user" class="w-6 h-6 inline-block" stroke="white" /></span>
                         Explore Products</button> --}}
-                    <x-ui.button class=" mt-10! py-3! px-4! w-auto! text-base font-normal ">
-
+                    <x-ui.button class="mt-10! py-3! px-4! w-auto! text-base font-normal " href="#popular-games"
+                        :wire="false">
                         {{ __('Explore Products') }}
                     </x-ui.button>
                 </div>
