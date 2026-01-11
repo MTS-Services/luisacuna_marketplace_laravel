@@ -159,7 +159,7 @@ class User extends AuthBaseModel implements Auditable
             ]);
             UserPoint::updateOrCreate([
                 'user_id' => $user->id,
-            ][]);
+            ]);
         });
     }
 
