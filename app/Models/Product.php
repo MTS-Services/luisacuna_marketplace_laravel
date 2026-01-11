@@ -83,7 +83,7 @@ class Product extends BaseModel implements Auditable
     public function product_configs()
     {
         return $this->hasMany(ProductConfig::class, 'product_id', 'id');
-    }
+    } 
 
     public function productTranslations()
     {
