@@ -1,7 +1,6 @@
 <?php
 
 
-use App\Http\Controllers\Backend\Admin\WithdrawalManagement\WithdrawalMethodController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Admin\AuditingController;
 use App\Http\Controllers\Backend\Admin\CmsManagement\CmsController;
@@ -31,10 +30,12 @@ use App\Http\Controllers\Backend\Admin\ProductManagement\GiftCardsController;
 use App\Http\Controllers\Backend\Admin\Settings\ApplicationSettingController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementController;
 use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementTypeController;
+use App\Http\Controllers\Backend\Admin\WithdrawalManagement\UserMethoadController;
 use App\Http\Controllers\Backend\Admin\FeeSettingsManagement\FeeSettingsController;
 use App\Http\Controllers\Backend\Admin\ConversationManagement\ConversationController;
 use App\Http\Controllers\Backend\Admin\NotificationManagement\AnnouncementController;
 use App\Http\Controllers\Backend\Admin\NotificationManagement\NotificationController;
+use App\Http\Controllers\Backend\Admin\WithdrawalManagement\WithdrawalMethodController;
 use App\Http\Controllers\Backend\Admin\GatewayAndIntegration\GatewayAndIntegrationController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\CurrencyController as ProductCurrencyController;
 
@@ -121,6 +122,10 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
             Route::get('/edit/{id}', 'edit')->name('edit');
             Route::get('/view/{id}', 'show')->name('view');
 
+        });
+        Route::controller(UserMethoadController::class)->name('user-method.')->prefix('user-method')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/view/{id}', 'show')->name('view');
         });
     });
 

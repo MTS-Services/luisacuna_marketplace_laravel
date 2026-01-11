@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->string('account_name')->comment('User-defined name for this account');
             $table->json('account_data')->comment('Encrypted account details');
             $table->boolean('is_default')->default(false);
-            $table->boolean('is_vsrified')->default(false)->comment('Whether account is verified');
+            $table->boolean('is_verified')->default(false)->comment('Whether account is verified');
             $table->string('status')->comment('pending, active, declined')->default(UserWithdrawalAccount::PENDING->value);
             $table->longText('note')->nullable();
             $table->timestamp('verified_at')->nullable();

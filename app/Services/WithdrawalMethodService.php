@@ -2,19 +2,27 @@
 
 namespace App\Services;
 
-use App\Enums\ActiveInactiveEnum;
+use Illuminate\Support\Arr;
 use App\Enums\WithdrawalFeeType;
 use App\Models\WithdrawalMethod;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Arr;
+use App\Enums\ActiveInactiveEnum;
 use Illuminate\Support\Facades\DB;
+use App\Traits\FileManagementTrait;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Collection;
+use App\Services\Cloudinary\CloudinaryService;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class WithdrawalMethodService
 {
-    public function __construct(protected WithdrawalMethod $model) {}
+
+use FileManagementTrait;
+
+    public function __construct(
+        protected WithdrawalMethod $model,
+        protected CloudinaryService $cloudinaryService,
+    ) {}
 
 
     /* ================== ================== ==================
@@ -70,10 +78,14 @@ class WithdrawalMethodService
     {
         return DB::transaction(function () use ($data) {
 
-            if ($data['icon']) {
-                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $data['icon']->getClientOriginalName();
-                $data['icon'] = Storage::disk('public')->putFileAs('withdrawal-method-icons', $data['icon'], $fileName);
+            // if ($data['icon']) {
+            //     $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+            //     $fileName = $prefix . '-' . $data['icon']->getClientOriginalName();
+            //     $data['icon'] = Storage::disk('public')->putFileAs('withdrawal-method-icons', $data['icon'], $fileName);
+            // }
+            if (isset($data['icon'])) {
+                $uploaded = $this->cloudinaryService->upload($data['icon'], ['folder' => 'withdrawal-method-icons']);
+                $data['icon'] = $uploaded->publicId;
             }
             $data['status'] = $data['status'] ?? ActiveInactiveEnum::ACTIVE;
             $data['fee_type'] = $data['fee_type'] ?? WithdrawalFeeType::FIXED;
@@ -100,34 +112,42 @@ class WithdrawalMethodService
 
             $newData = $data;
 
-            $oldImagePath = $model->icon;
-            $uploadedImage = Arr::get($data, 'icon');
-            $removeFile = Arr::get($data, 'remove_file', false);
-            $newSingleImagePath = null;
 
-            if ($uploadedImage instanceof UploadedFile) {
-
-                if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
-                    Storage::disk('public')->delete($oldImagePath);
-                }
-
-                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $uploadedImage->getClientOriginalName();
-
-                $newSingleImagePath = Storage::disk('public')
-                    ->putFileAs('withdrawal-method-icons', $uploadedImage, $fileName);
-
-                $newData['icon'] = $newSingleImagePath;
-            } elseif ($removeFile) {
-
-                if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
-                    Storage::disk('public')->delete($oldImagePath);
-                }
-
-                $newData['icon'] = null;
-            } else {
-                $newData['icon'] = $oldImagePath;
+            $iconPath = $model->icon;
+            if (isset($data['icon'])) {
+                $uploaded = $this->cloudinaryService->upload($data['icon'], ['folder' => 'withdrawal-method-icons']);
+                $iconPath = $this->handleSingleFileUpload(newFile: $data['icon'], oldPath: $model->icon, removeKey: $data['remove_icon'] ?? false, folderName: 'withdrawal-method-icons');
             }
+            $newData['icon'] = $iconPath;
+            // $oldImagePath = $model->icon;
+            // $uploadedImage = Arr::get($data, 'icon');
+            // $removeFile = Arr::get($data, 'remove_file', false);
+            // $newSingleImagePath = null;
+
+            // if ($uploadedImage instanceof UploadedFile) {
+
+            //     if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
+            //         Storage::disk('public')->delete($oldImagePath);
+            //     }
+
+            //     $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+            //     $fileName = $prefix . '-' . $uploadedImage->getClientOriginalName();
+
+            //     $newSingleImagePath = Storage::disk('public')
+            //         ->putFileAs('withdrawal-method-icons', $uploadedImage, $fileName);
+
+            //     $newData['icon'] = $newSingleImagePath;
+            // } elseif ($removeFile) {
+
+            //     if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
+            //         Storage::disk('public')->delete($oldImagePath);
+            //     }
+
+            //     $newData['icon'] = null;
+            // } else {
+            //     $newData['icon'] = $oldImagePath;
+            // }
+
 
             unset($newData['remove_file']);
 

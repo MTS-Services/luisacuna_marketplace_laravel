@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\UserWithdrawalAccount;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use App\Models\UserWithdrawalAccount;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class UserWithdrawalAccountService
@@ -15,6 +16,54 @@ class UserWithdrawalAccountService
     /**
      * Get all user withdrawal accounts
      */
+
+    public function getAllDatas($sortField = 'created_at', $order = 'desc', array $with = []): Collection
+    {
+        return $this->model
+            ->query()
+            ->with('user', 'withdrawalMethod')
+            ->orderBy($sortField, $order)
+            ->get();
+    }
+
+
+    public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+            $search = $filters['search'] ?? null;
+            $sortField = $filters['sort_field'] ?? 'created_at';
+            $sortDirection = $filters['sort_direction'] ?? 'desc';
+
+            if ($search) {
+                return UserWithdrawalAccount::search($search)
+                    ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                    ->paginate($perPage);
+            }
+        return $this->model->query()
+            ->with('user', 'withdrawalMethod')
+            ->filter($filters)
+            ->paginate($perPage);
+    }
+
+    //     public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    // {
+    //     $search = $filters['search'] ?? null;
+    //     $sortField = $filters['sort_field'] ?? 'created_at';
+    //     $sortDirection = $filters['sort_direction'] ?? 'desc';
+
+    //     if ($search) {
+    //         return WithdrawalMethod::search($search)
+    //             ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+    //             ->paginate($perPage);
+    //     }
+
+    //     // Normal Eloquent Query
+    //     return $this->model->query()
+    //         ->filter($filters)
+    //         ->orderBy($sortField, $sortDirection)
+    //         ->paginate($perPage);
+    // }
+
+
     public function getUserAccounts(int $userId, array $filters = []): Collection
     {
         $query = $this->model->query()
@@ -44,7 +93,15 @@ class UserWithdrawalAccountService
             ->where('user_id', $userId)
             ->first();
     }
-
+    /**
+     * Find account by ID
+     */
+    public function findData(int $id): ?UserWithdrawalAccount
+    {
+        return $this->model
+            ->where('id', $id)
+            ->first();
+    }
     /**
      * Create new withdrawal account
      */
@@ -102,7 +159,7 @@ class UserWithdrawalAccountService
 
             // Set new default
             $account = $this->findAccount($id, $userId);
-            
+
             if (!$account) {
                 return false;
             }
@@ -129,7 +186,7 @@ class UserWithdrawalAccountService
                 $prefix = uniqid('WA-') . '-' . time();
                 $fileName = $prefix . '-' . $value->getClientOriginalName();
                 $path = Storage::disk('public')->putFileAs('withdrawal-accounts', $value, $fileName);
-                
+
                 $data[$key] = $path;
             } elseif ($oldData && isset($oldData[$key])) {
                 // Keep old file path if no new upload
@@ -155,6 +212,20 @@ class UserWithdrawalAccountService
             'is_verified' => true,
             'verified_at' => now(),
             'status' => 'active',
+        ]);
+    }
+    public function rejectAccount(int $id): bool
+    {
+        $account = $this->model->find($id);
+
+        if (!$account) {
+            return false;
+        }
+
+        return $account->update([
+            'is_verified' => false,
+            'verified_at' => 'null',
+            'status' => 'declined',
         ]);
     }
 }

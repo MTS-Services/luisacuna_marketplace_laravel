@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
+use App\Enums\UserWithdrawalAccount as UserWithdrawalAccountEnum;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -27,6 +28,7 @@ class UserWithdrawalAccount extends AuditBaseModel implements Auditable
     ];
 
     protected $casts = [
+        'status' => UserWithdrawalAccountEnum::class,
         'account_data' => 'array',
         'is_default' => 'boolean',
         'is_verified' => 'boolean',
