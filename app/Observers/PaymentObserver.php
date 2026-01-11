@@ -350,8 +350,8 @@ class PaymentObserver
                 }
 
                 // ✅ Only set completed_at if transitioning to PAID and not already set
-                if ($newStatus === OrderStatus::PAID && !$order->completed_at) {
-                    $updateData['completed_at'] = now();
+                if ($newStatus === OrderStatus::PAID && !$order->paid_at) {
+                    $updateData['paid_at'] = now();
                 }
 
                 $order->update($updateData);

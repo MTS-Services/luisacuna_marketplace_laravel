@@ -208,6 +208,12 @@
                                         {{ $displaySymbol }}{{ number_format($walletBalance ?? 0, 2) }}
                                     </p>
                                 </div>
+                                <div class="flex justify-between mb-2 border-t border-zinc-800">
+                                    <p class="text-text-white font-normal text-xs">{{ __('Points') }}</p>
+                                    <p class="text-text-white font-normal text-xs">
+                                        {{ $order->points ?? 0 }}
+                                    </p>
+                                </div>
                             </div>
 
                             <!-- Payment Fee Modal -->

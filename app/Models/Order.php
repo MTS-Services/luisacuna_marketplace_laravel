@@ -46,6 +46,9 @@ class Order extends AuditBaseModel implements Auditable
         'quantity',
         'notes',
         'completed_at',
+        'paid_at',
+
+        'points',
 
         'creater_id',
         'creater_type',
@@ -78,6 +81,9 @@ class Order extends AuditBaseModel implements Auditable
 
         'exchange_rate' => 'decimal:6',
         'completed_at' => 'datetime',
+        'paid_at' => 'datetime',
+
+        'points' => 'integer',
     ];
 
     /* RELATIONSHIPS */
