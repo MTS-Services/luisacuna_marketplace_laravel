@@ -48,11 +48,11 @@
             </x-ui.custom-select>
 
             <div class="hidden md:flex w-70">
-                <x-ui.custom-select wire:model.live="sortDirection"
-                    class="w-full rounded-full! bg-transparent! border! border-zinc-700!" label="Sort By">
-                    <x-ui.custom-option label="{{ __('Lowest to Highest') }}" value="asc" />
-                    <x-ui.custom-option label="{{ __('Highest to Lowest') }}" value="desc" />
-                </x-ui.custom-select>
+                <x-ui.select wire:model.live="sortDirection"
+                    class="w-full rounded-full! bg-transparent! border! border-zinc-700!">
+                    <option value="asc">{{ __('Lowest to Highest') }}</option>
+                    <option value="desc">{{ __('Highest to Lowest') }}</option>
+                </x-ui.select>
             </div>
         </div>
 

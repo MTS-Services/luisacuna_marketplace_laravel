@@ -20,6 +20,9 @@ class ListLayout extends Component
     public $gameSlug, $categorySlug, $game;
     public $product; // Holds the selected product
 
+    #[Url(as: 'asc')]
+    public $sortByPrice = 'asc';
+
     #[Url(keep: true)]
     public $sellerFilter = 'recommended';
 
@@ -52,7 +55,6 @@ class ListLayout extends Component
         // Load game with counts to avoid heavy relationships in mount
         $this->game = $this->gameService->findData($gameSlug, 'slug')
             ->load(['tags', 'gameConfig', 'platforms']);
-
         // Flattening tags once during mount
         $this->tags = collect($this->game->tags->pluck('name'))
             ->merge($this->platformService->getAllDatas()->pluck('name'))
@@ -61,17 +63,6 @@ class ListLayout extends Component
             ->shuffle()
             ->toArray();
     }
-
-    public function updatedSortDirection()
-    {
-        $this->resetPage();
-    }
-
-    public function updatedSerach()
-    {
-        $this->resetPage();
-    }
-
 
     public function selectItem($id)
     {
@@ -172,6 +163,14 @@ class ListLayout extends Component
         if ($this->sellerFilter === 'lowest_price') {
             $filters['sort_field'] = 'price';
             $filters['sort_direction'] = 'asc';
+        }
+        if ($this->sellerFilter === 'in_stock') {
+            $filters['sort_field'] = 'quantity';
+            $filters['sort_direction'] = 'desc';
+        }
+        if ($this->sellerFilter === 'top_sold') {
+            $filters['sort_field'] = '';
+            $filters['sort_direction'] = 'desc';
         }
 
         $otherSellers = $this->productService->getSellers(11, $filters);
