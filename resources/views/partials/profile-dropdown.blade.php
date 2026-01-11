@@ -31,7 +31,7 @@
                     <p class="text-xs text-zinc-400 truncate">{{ user()->email }}</p>
                 </div>
             </div>
-            @if (user()->isVerifiedSeller())
+            @if (!user()->isVerifiedSeller())
                 <div>
                     <x-ui.button href="{{ route('user.seller.verification') }}" wire:navigate
                         class="m-auto! py-1! lg:py-2!">
