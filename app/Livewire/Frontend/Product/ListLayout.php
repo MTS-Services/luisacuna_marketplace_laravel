@@ -19,8 +19,8 @@ class ListLayout extends Component
 
     public $gameSlug, $categorySlug, $game;
     public $product; // Holds the selected product
-    public $sellerProducts = [];
 
+    #[Url(keep: true)]
     public $sellerFilter = 'recommended';
 
     #[Url(as: 'q')]
@@ -31,6 +31,7 @@ class ListLayout extends Component
 
     public $sortBy = 'price';
     public $tags = [];
+    protected $datas;
 
     // Services
     protected $productService, $orderService, $gameService, $platformService;
@@ -129,44 +130,59 @@ class ListLayout extends Component
         $this->datas->load('user.feedbacksReceived', 'game', 'category', 'platform', 'user.wallet');
         $this->paginationData($this->datas);
 
-        $this->sellerProducts = $this->datas->unique('user_id')
-            ->filter(function ($item) {
-                return !(
-                    $this->product &&
-                    $this->product->user?->id === $item->user?->id
-                );
-            })
-            ->when($this->sellerFilter, function ($collection) {
+        // $this->sellerProducts = $this->datas->unique('user_id')
+        //     ->filter(function ($item) {
+        //         return !(
+        //             $this->product &&
+        //             $this->product->user?->id === $item->user?->id
+        //         );
+        //     })
+        //     ->when($this->sellerFilter, function ($collection) {
 
-                return match ($this->sellerFilter) {
+        //         return match ($this->sellerFilter) {
 
-                    'positive_reviews' =>
-                    $collection->sortByDesc('rating'),
+        //             'positive_reviews' =>
+        //             $collection->sortByDesc('rating'),
 
-                    'top_sold' =>
-                    $collection->sortByDesc('sold_count'),
+        //             'top_sold' =>
+        //             $collection->sortByDesc('sold_count'),
 
-                    'lowest_price' =>
-                    $collection->sortBy('price'),
+        //             'lowest_price' =>
+        //             $collection->sortBy('price'),
 
-                    'in_stock' =>
-                    $collection->filter(fn($item) => $item->quantity > 0),
+        //             'in_stock' =>
+        //             $collection->filter(fn($item) => $item->quantity > 0),
 
-                    'recommended' =>
-                    $collection,
+        //             'recommended' =>
+        //             $collection,
 
-                    default =>
-                    $collection,
-                };
-            })
-            ->values();
+        //             default =>
+        //             $collection,
+        //         };
+        //     })
+        //     ->values();
+
+        $filters = [];
+
+        if ($this->sellerFilter === 'positive_reviews') {
+            $filters['positive_reviews'] = true;
+        }
+
+        // Handle other filters
+        if ($this->sellerFilter === 'lowest_price') {
+            $filters['sort_field'] = 'price';
+            $filters['sort_direction'] = 'asc';
+        }
+
+        $otherSellers = $this->productService->getSellers(11, $filters);
+        $otherSellers->load('user.feedbacksReceived');
 
         return view('livewire.frontend.product.list-layout', [
             'gameSlug' => $this->gameSlug,
             'categorySlug' => $this->categorySlug,
             'game' => $this->game,
             'datas' => $this->datas,
-
+            'otherSellers' => $otherSellers
         ]);
     }
 }

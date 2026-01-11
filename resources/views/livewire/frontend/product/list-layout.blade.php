@@ -207,12 +207,11 @@
     {{-- Other Sellers Table --}}
     <section class="container mt-32 mb-20">
         <div class="mb-10">
-            <h2 class="text-text-white font-semibold text-3xl">{{ __('Other Sellers') }}</h2>
+            <h2 class="text-text-white font-semibold text-3xl">{{ __('Other Sellers') }} (0)</h2>
         </div>
 
         <div class="mt-10 mb-6 flex items-center justify-between gap-4">
-            <x-ui.select id="status-select" wire:model.live="sellerFilter"
-                class="py-0.5! w-full sm:w-70 rounded-full!">
+            <x-ui.select wire:model.live="sellerFilter" class="py-0.5! w-full sm:w-70 rounded-full!">
                 <option value="recommended">{{ __('Recommended') }}</option>
                 <option value="positive_reviews">{{ __('Positive Reviews') }}</option>
                 <option value="top_sold">{{ __('Top Sold') }}</option>
@@ -231,51 +230,63 @@
             <table class="w-full text-left border-separate border-spacing-y-3">
                 <thead>
                     <tr class="text-zinc-500 text-md tracking-wider">
-                        <th class="px-6 py-3 font-medium">{{ __('All Sellers') }}</th>
+                        <th class="px-6 py-3 font-medium">{{ __('All Sellers') }} (5)</th>
                         <th class="px-6 py-3 font-medium hidden md:table-cell">{{ __('Delivery Time') }}</th>
                         <th class="px-6 py-3 font-medium hidden md:table-cell">{{ __('Delivery Method') }}</th>
                         <th class="px-6 py-3 font-medium hidden md:table-cell text-center">{{ __('Stock') }}</th>
                         <th class="px-6 py-3 font-medium text-right">{{ __('Price') }}</th>
                     </tr>
                 </thead>
-                <tbody class="space-y-4">
-                    @forelse ($sellerProducts as $sellerProduct)
-                        <tr wire:key="row-{{ $sellerProduct->id }}"
-                            wire:click="selectItem({{ $sellerProduct->id }})"
+                <tbody class="space-y-4" wire.loading.remove wire:target="sellerFilter">
+                    @forelse ($otherSellers as $seller)
+                        <tr wire:key="row-{{ $seller->id }}" wire:click="selectItem({{ $seller->id }})"
                             class="bg-bg-secondary hover:bg-zinc-800 transition-colors cursor-pointer group">
 
                             <td class="px-6 py-4 rounded-l-2xl">
                                 <div class="flex items-center gap-3">
-                                    <img src="{{ auth_storage_url($sellerProduct->user?->avatar) }}"
+                                    <img src="{{ auth_storage_url($seller->user?->avatar) }}"
                                         class="w-10 h-10 rounded-full">
                                     <div>
                                         <p class="text-white font-medium text-sm">
-                                            {{ $sellerProduct->user?->full_name }}</p>
+                                            {{ $seller->user?->full_name }}</p>
                                         <div class="flex items-center gap-1 opacity-60">
                                             <x-phosphor name="thumbs-up" variant="solid"
                                                 class="w-3 h-3 fill-zinc-400" />
+                                            @php
+                                                $positiveCount =
+                                                    $seller?->user
+                                                        ?->feedbacksReceived()
+                                                        ->where('type', App\Enums\FeedbackType::POSITIVE->value)
+                                                        ->count() ?? 0;
+
+                                                $negativeCount =
+                                                    $seller?->user
+                                                        ?->feedbacksReceived()
+                                                        ->where('type', App\Enums\FeedbackType::NEGATIVE->value)
+                                                        ->count() ?? 0;
+                                            @endphp
                                             <span
-                                                class="text-[10px] text-white">{{ feedback_calculate($sellerProduct->positive_count ?? 0, 0) }}%</span>
+                                                class="text-[10px] text-white">{{ feedback_calculate($positiveCount, $negativeCount) }}%</span>
                                         </div>
                                     </div>
                                 </div>
                             </td>
 
                             <td class="px-6 py-4 hidden md:table-cell text-sm text-zinc-300">
-                                {{ $sellerProduct->delivery_timeline ?? '--' }}
+                                {{ $seller->delivery_timeline ?? '--' }}
                             </td>
 
                             <td class="px-6 py-4 hidden md:table-cell text-sm text-zinc-300">
-                                {{ $sellerProduct->delivery_method ?? '--' }}
+                                {{ $seller->delivery_method ?? '--' }}
                             </td>
 
                             <td class="px-6 py-4 hidden md:table-cell text-center text-sm text-zinc-300">
-                                {{ $sellerProduct->quantity ?? '00' }}
+                                {{ $seller->quantity ?? '00' }}
                             </td>
 
                             <td class="px-6 py-4 rounded-r-2xl text-right">
                                 <span class="text-pink-500 font-bold">
-                                    {{ currency_symbol() }}{{ currency_exchange($sellerProduct->price) ?? '00' }}
+                                    {{ currency_symbol() }}{{ currency_exchange($seller->price) ?? '00' }}
                                 </span>
                             </td>
                         </tr>

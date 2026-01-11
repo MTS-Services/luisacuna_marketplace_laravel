@@ -65,6 +65,33 @@ class ProductService
         return $this->model->count($filters);
     }
 
+    public function getSellers(int $perPage = 15, array $filters = [])
+    {
+        return $this->model->query()
+            // Select all product columns + initialize the query
+            ->select('products.*')
+
+            // N+1 Prevention: Load everything used in the Blade template
+            ->with(['user', 'game', 'platform'])
+
+            // Unique Seller Logic: Compatibility with MySQL Strict Mode
+            ->whereIn('products.id', function ($sub) {
+                $sub->selectRaw('MAX(id)')
+                    ->from('products')
+                    ->groupBy('user_id');
+            })
+
+            // Apply our scopeFilter
+            ->filter($filters)
+
+            // Default Sort (only if not sorting by positive reviews)
+            ->when(!isset($filters['positive_reviews']), function ($q) use ($filters) {
+                $q->orderBy($filters['sort_field'] ?? 'created_at', $filters['sort_direction'] ?? 'desc');
+            })
+
+            ->paginate($perPage);
+    }
+
     /* ================== ================== ==================
     *                   Action Executions
     * ================== ================== ================== */
