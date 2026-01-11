@@ -57,7 +57,7 @@
     </div>
 
 
-    <div class="py-15">
+   <div class="py-15">
         <div class="max-w-8xl mx-auto bg-bg-secondary p-5 sm:p-15 rounded-lg">
             <!-- Filter Buttons -->
             <div class="flex items-center gap-2 sm:gap-4 mt-5 mb-5">
@@ -83,7 +83,7 @@
 
                         {{-- <img src="{{ asset('assets/images/user_profile/thumb up filled.svg') }}" alt=""
                         class="inline-block"> --}}
-                        <x-phosphor name="thumbs-down" variant="solid" class="fill-[#AF0F0F] w-6 h-6 p-0! m-0!" />
+                         <x-phosphor name="thumbs-down" variant="solid" class="fill-[#AF0F0F] w-6 h-6 p-0! m-0!" />
                     </button>
                 </div>
             </div>

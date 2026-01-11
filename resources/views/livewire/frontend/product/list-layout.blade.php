@@ -91,13 +91,17 @@
                         <div wire:loading.class="opacity-0" wire:target="selectedSort, selectedRegion, resetAllFilters"
                             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
                             x-transition:enter-end="opacity-100" wire:click="selectItem('{{ encrypt($data->id) }}')"
-                            @click="data = { 
+                            {{-- @click="data = { 
                                 name: {{ Js::from(substr($data->name, 0, 20)) }},
                                 quantity: {{ $data->quantity }},
                                 price: {{ $data->quantity * $data->price }},
-                                logo: {{ Js::from(storage_url($game->logo)) }},
-                                delivery_timeline: {{ Js::from($data?->delivery_timeline ?? 'N/A') }}
-                            }"
+                                logo: {{ Js::from(storage_url($game->logo)) }}, 
+                                delivery_timeline: {{ Js::from($data?->delivery_timeline ?? 'N/A') }},
+                                seller: {{ Js::from($data->user->full_name ?? 'N/A') }},
+                                sold: {{ Js::from($data->feedbacksReceived?->sum('quantity') ?? '1642') }},
+                                rating: {{ Js::from(feedback_calculate($positiveFeedbacksCount, $negativeFeedbacksCount) ?? '0') }},
+                                avater: {{ Js::from(storage_url($data->user->avatar)) }}
+                            }" --}}
                             class="bg-bg-primary dark:bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300 cursor-pointer">
 
                             <div class="flex items-center justify-between">
@@ -136,34 +140,67 @@
 
             <div class="w-full md:w-[35%] mt-4 md:mt-0">
                 <div class="bg-bg-primary dark:bg-bg-secondary rounded-2xl py-7 px-6">
-                    <div class="flex items-center gap-1 mb-8">
-                        <div class="w-8 h-8">
-                            <img :src="data.logo" alt="" class="w-full h-full object-cover">
+                    @if ($product)
+                        <div class="flex items-center gap-1 mb-8">
+                            <div class="w-8 h-8">
+                                <img src="{{ storage_url($product->game->logo) }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
+                            <p></p>
                         </div>
-                        <p x-text="data.name"></p>
-                    </div>
+                    @else
+                        <p>{{ __('No Product Selected') }}</p>
+                    @endif
                     <div class="flex items-center justify-between py-3 border-t border-b  border-zinc-500 w-full">
                         <p class="text-base text-text-white"> {{ __('Delivery Timeline') }}</p>
-                        <p class="text-base text-text-white font-semibold" x-text="data.delivery_timeline"></p>
+                        @if ($product)
+                            <p class="text-base text-text-white font-semibold">{{ $product->delivery_timeline }}</p>
+                        @else
+                            <p class="text-base text-text-white font-semibold">N/A</p>
+                        @endif
                     </div>
                     <span class="w-full inline-block"></span>
-                    <div class="mt-4">
-                        @auth('web')
-                            <form action="" wire:submit="submit">
-                                <x-ui.button wire:click="submit" class="py-2!">
-                                    <span class="text-white group-hover:text-zinc-500">PEN</span>
-                                    <span x-text="data.price" class="text-white group-hover:text-zinc-500"></span>
-                                    {{ ' Buy Now' }}</x-ui.button>
-                            </form>
-                        @else
-                            <a href="{{ route('login') }}" wire:navigate
-                                class="bg-zinc-500 px-4 md:px-6 py-2! md:py-4 text-text-btn-primary hover:text-text-btn-secondary hover:bg-zinc-50 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group text-nowrap cursor-pointer">
-                                <span class="text-white group-hover:text-zinc-500">PEN</span>
-                                <span x-text="data.price" class="text-white group-hover:text-zinc-500"></span>
-                                {{ ' Buy Now' }}
-                            </a>
-                        @endauth
-                    </div>
+
+                    @if ($product)
+                        <div class="mt-4">
+                            @auth('web')
+                                <form action="" wire:submit="submit">
+                                    <x-ui.button wire:click="submit" class="py-2!">
+                                        <span class="text-text-white group-hover:text-zinc-500">PEN</span>
+                                        <span x-text="data.price" class="text-text-white group-hover:text-zinc-500"></span>
+                                        {{ ' Buy Now' }}
+                                    </x-ui.button>
+                                </form>
+                            @else
+                                <a href="{{ route('login') }}" wire:navigate
+                                    class="bg-zinc-500 px-4 md:px-6 py-2! md:py-4 text-text-text-btn-primary hover:text-text-btn-secondary hover:bg-zinc-50 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group text-nowrap cursor-pointer">
+                                    <span class="text-text-white group-hover:text-zinc-500">PEN</span>
+                                    <span x-text="data.price" class="text-text-white group-hover:text-zinc-500"></span>
+                                    {{ ' Buy Now' }}
+                                </a>
+                            @endauth
+                        </div>
+                    @else
+                        <div class="mt-4">
+                            @auth('web')
+                                <form action="" wire:submit.prevent>
+                                    <x-ui.button disabled class="py-2! opacity-50 cursor-not-allowed">
+                                        <span class="text-text-white">PEN</span>
+                                        <span x-text="data.price" class="text-text-white"></span>
+                                        {{ ' Buy Now' }}
+                                    </x-ui.button>
+                                </form>
+                            @else
+                                <div
+                                    class="bg-zinc-500 px-4 md:px-6 py-2! md:py-4 text-text-white border border-zinc-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 opacity-50 cursor-not-allowed text-nowrap">
+                                    <span class="text-text-white">PEN</span>
+                                    <span x-text="data.price" class="text-text-white"></span>
+                                    {{ ' Buy Now' }}
+                                </div>
+                            @endauth
+                        </div>
+                    @endif
+
 
                     <div class="flex items-center gap-2 mt-8">
                         <flux:icon name="shield-check" class="w-6 h-6" />
@@ -201,35 +238,57 @@
 
                 <div class="mt-6 bg-bg-primary dark:bg-bg-secondary rounded-2xl py-7 px-6">
                     <h3 class="text-text-white text-base font-semibold mb-2">{{ __('Delivery instructions') }}</h3>
-                    <div class="flex gap-2">
-                        <span class="text-sm text-text-white">{{ __('Welcome') }}</span>
-                        <span class="inline-block w-px h-3 bg-zinc-500"></span>
-                        <span class="text-sm text-text-white">{{ __('Why choose us') }}</span>
-                    </div>
-                    <div class="mt-4">
-                        <p class="text-sm text-text-white">{{ __('1. V-BUCKS are safe to hold and guaranteed!') }}</p>
-                        <p class="text-sm text-text-white mt-2 mb-4">{{ __('2. Fast replies and delivery.') }}</p>
-                        <a href="#" class="text-base font-semibold text-pink-500">{{ __('See all') }}</a>
-                    </div>
-                    <span class="border-t-2 border-zinc-500 w-full inline-block mt-8"></span>
+                    @if ($product)
+                        {{-- <div class="flex gap-2">
+                            <span class="text-sm text-text-white">{{ __('Welcome') }}</span>
+                            <span class="inline-block w-px h-3 bg-zinc-500"></span>
+                            <span class="text-sm text-text-white">{{ __('Why choose us') }}</span>
+                        </div> --}}
+                        <div class="" x-data="{ expanded: false }">
+                            <span class="text-sm text-text-white" :class="expanded ? '' : 'line-clamp-4'">
+                                {{ $product?->description }}
+                            </span>
 
-                    <div class="flex gap-4 items-center mt-4">
-                        <div class="w-14 h-14">
-                            <img src="{{ asset('assets/images/gift_cards/profile.png') }}" alt=""
-                                class="w-full h-full">
+                            <button @click="expanded = !expanded"
+                                class="text-base font-semibold text-pink-500 block mt-2"
+                                x-show="$el.previousElementSibling.scrollHeight > $el.previousElementSibling.clientHeight || expanded">
+                                <span class="text-base font-semibold text-pink-500 block"
+                                    x-show="!expanded">{{ __('See all') }}</span>
+                                <span class="text-base font-semibold text-pink-500 block"
+                                    x-show="expanded">{{ __('Show less') }}</span>
+                            </button>
                         </div>
-                        <div>
-                            <h2 class="text-text-white font-semibold text-base">{{ __('Devon Lane') }}</h2>
-                            <div class="flex items-center gap-2">
-                                <x-phosphor name="thumbs-up" variant="solid" class="fill-zinc-600" />
-                                <span class="text-xs text-text-white">99.3%</span>
-                                <span class="w-px h-4 bg-zinc-200"></span>
-                                <span class="text-xs text-text-white">{{ __('2434 reviews') }}</span>
-                                <span class="w-px h-4 bg-zinc-200"></span>
-                                <span class="text-xs text-text-white">{{ __('1642 Sold') }}</span>
+
+
+
+                        <span class="border-t-2 border-zinc-500 w-full inline-block mt-8"></span>
+                        <div class="flex gap-4 items-center mt-4">
+                            <div class="w-14 h-14">
+
+                                <img src="{{ auth_storage_url($product?->user?->avatar) }}" alt=""
+                                    class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h2 class="text-text-white font-semibold text-base">{{ $product?->user?->full_name }}
+                                </h2>
+                                <div class="flex items-center gap-2">
+                                    <x-phosphor name="thumbs-up" variant="solid" class="fill-zinc-600" />
+                                    <span
+                                        class="text-xs text-text-white">{{ feedback_calculate($positiveFeedbacksCount, $negativeFeedbacksCount) }}
+                                        %</span>
+                                    <span class="w-px h-4 bg-zinc-200"></span>
+                                    <span
+                                        class="text-xs text-text-white">{{ $product?->feedbacksReceived?->count() ?? 0 }}
+                                        {{ __('Reviews') }} </span>
+                                    <span class="w-px h-4 bg-zinc-200"></span>
+                                    <span class="text-xs text-text-white">{{ $product?->user?->orders?->where('status', \App\Enums\OrderStatus::COMPLETED->value)->count() ?? '0' }} {{ __('Sold') }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <p>{{ __('Product not found') }}</p>
+                    @endif
+
                 </div>
             </div>
         </div>
@@ -238,7 +297,7 @@
     {{-- Seller list section --}}
     <section class="container mt-32">
         <div class="mb-10">
-            <h2 class="text-text-white font-semibold text-40px">{{ __('Other sellers (84)') }}</h2>
+            <h2 class="text-text-white font-semibold text-40px">{{ __('Other sellers') }} {{ $data->user->count() }}</h2>
         </div>
         <div class="mt-10 mb-6 flex items-center justify-between">
             <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70 rounded-full!">
@@ -263,32 +322,51 @@
             </div>
 
             <div class="py-7 space-y-7">
-                @forelse ($lists=[1,2,3,4,5,6] as $item)
-                    <div
-                        class="flex justify-between items-center bg-bg-primary dark:bg-bg-secondary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300">
+                @forelse ($datas as $product)
+                    <div wire:click="selectItem('{{ encrypt($product->id) }}')"
+                        class="flex justify-between items-center bg-bg-primary dark:bg-bg-secondary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300 cursor-pointer">
                         <div class="px-4 py-3 flex items-center gap-4">
                             <div class="w-10 h-10">
-                                <img src="{{ asset('assets/images/gift_cards/seller.png') }}" alt=""
-                                    class="w-full h-full rounded-full">
+                                <img src="{{ auth_storage_url($product?->user?->avatar) }}"
+                                    alt="{{ $product->user->full_name }}"
+                                    class="w-full h-full rounded-full object-cover">
                             </div>
                             <div>
-                                <h3 class="text-text-white text-base font-semibold">{{ __('Devon Lane') }}</h3>
+                                <h3 class="text-text-white text-base font-semibold">
+                                    {{ $product->user->full_name }}
+                                </h3>
                                 <div class="flex items-center gap-1">
                                     <x-phosphor name="thumbs-up" variant="solid"
                                         class="fill-zinc-600 inline-block" />
-                                    <span class="text-xs text-text-white">99.3%</span>
+                                    <span class="text-xs text-text-white">
+                                        {{ feedback_calculate($positiveFeedbacksCount, $negativeFeedbacksCount) }} %
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                        <div class="px-4 py-3 text-text-white text-base font-semibold">{{ __('Instants') }}</div>
+
+                        <div class="px-4 py-3 text-text-white text-base font-semibold">
+                            {{ $product->delivery_timeline }}
+                        </div>
+
                         <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">
-                            {{ __('Login Top UP') }}</div>
-                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">$77.07</div>
-                        <div class="px-4 py-3 text-text-white text-base font-semibold">$77.07</div>
+                            {{ $product->delivery_method }}
+                        </div>
+
+                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">
+                            {{ $product->quantity }}
+                        </div>
+
+                        <div class="px-4 py-3 text-text-white text-base font-semibold">
+                            {{ currency_symbol() }}{{ currency_exchange($product->price) }}
+                        </div>
                     </div>
                 @empty
-                    <h2>No Data found</h2>
+                    <div class="text-center py-10">
+                        <h2 class="text-text-white text-lg">{{ __('No products found') }}</h2>
+                    </div>
                 @endforelse
+
             </div>
         </div>
     </section>

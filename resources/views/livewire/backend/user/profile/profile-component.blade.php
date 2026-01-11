@@ -27,13 +27,15 @@
                         <div class="flex gap-2 items-center mb-0 sm:mb-2">
                             <h3 class="text-base sm:text-2xl font-semibold text-text-white mb-2">{{ $user->full_name }}
                             </h3>
-                            <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
+                            @if ($user->isVerifiedSeller())
+                                <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
+                            @endif
                         </div>
                         <div class="flex items-center gap-2 mb-0 sm:mb-2">
                             <x-phosphor name="thumbs-up" variant="solid" class="fill-zinc-700 w-5 h-5" />
-                            <span class="text-text-white font-normal text-xs">99.3%</span>
+                            <span class="text-text-white font-normal text-xs">{{ feedback_calculate($positiveFeedbacksCount, $negativeFeedbacksCount) }} %</span>
                             <span class="text-text-white font-normal text-xs">|</span>
-                            <span class="text-text-white font-normal text-xs">2434 {{ __('Reviews') }}</span>
+                        <span class="text-text-white font-normal text-xs">{{ $user?->feedbacksReceived?->count() ?? 0 }} {{ __('Reviews') }}</span>
                         </div>
                         <div class="flex items-center">
                             @if ($user->isOnline())

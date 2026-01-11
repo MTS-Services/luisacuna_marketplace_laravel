@@ -39,7 +39,9 @@
                                     <h3 class="text-2xl font-semibold text-text-white mb-2 line-clamp-2">
                                         {{ user()->full_name }}
                                     </h3>
-                                    <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
+                                    @if (user()->isVerifiedSeller())
+                                        <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
+                                    @endif
                                 </div>
                                 <div class="flex items-center text-text-primary text-xs">
                                     <p>{{ __('Registered: ') }} {{ user()->created_at->format('n/j/Y') }}</p>

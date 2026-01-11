@@ -13,10 +13,8 @@ class Details extends Component
     public function mount($productId): void
     {
         $this->data = Product::findOrFail($productId)
-            ->with('user', 'category', 'platform', 'games', 'game')
+            ->with('user', 'category', 'platform', 'games', 'game','product_configs.game_configs')
             ->findOrFail($productId);
-
-            // dd($this->data);
 
     }
 

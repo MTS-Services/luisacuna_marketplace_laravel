@@ -785,3 +785,12 @@ if (!function_exists('get_current_currency')) {
         return app(CurrencyService::class)->getCurrentCurrency();
     }
 }
+
+
+if (!function_exists('feedback_calculate')) {
+    function feedback_calculate($positive, $negative)
+    {
+        $total = $positive + $negative;
+        return $total > 0 ? round(($positive / $total) * 100, 2) : 0;
+    }
+}

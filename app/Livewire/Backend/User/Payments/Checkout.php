@@ -2,17 +2,19 @@
 
 namespace App\Livewire\Backend\User\Payments;
 
-use App\Enums\OrderStatus;
 use App\Models\Order;
-use App\Models\PaymentGateway;
 use App\Models\Wallet;
-use App\Services\PaymentService;
-use App\Services\OrderService;
+use Livewire\Component;
+use App\Enums\OrderStatus;
+use App\Enums\FeedbackType;
+use App\Models\PaymentGateway;
 use App\Services\CurrencyService;
-use Illuminate\Database\Eloquent\Collection;
+use App\Services\OrderService;
+use App\Services\PaymentService;
+use App\Services\FeedbackService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
-use Livewire\Component;
+use Illuminate\Database\Eloquent\Collection;
 
 class Checkout extends Component
 {
@@ -23,6 +25,8 @@ class Checkout extends Component
     public ?float $walletBalanceDefault = null; // Add this for default currency balance
     public bool $showWalletWarning = false;
     public bool $processing = false;
+    public $positiveFeedbacksCount;
+    public $negativeFeedbacksCount;
 
     // Top-up modal properties
     public bool $showTopUpModal = false;
@@ -38,15 +42,16 @@ class Checkout extends Component
     protected OrderService $orderService;
     protected PaymentService $paymentService;
     protected CurrencyService $currencyService;
+    protected FeedbackService $feedbackService;
 
-    public function boot(
-        OrderService $orderService,
-        PaymentService $paymentService,
-        CurrencyService $currencyService
-    ) {
+
+
+    public function boot(OrderService $orderService, PaymentService $paymentService, FeedbackService $feedbackService, CurrencyService $currencyService)
+    {
         $this->orderService = $orderService;
         $this->paymentService = $paymentService;
         $this->currencyService = $currencyService;
+        $this->feedbackService = $feedbackService;
     }
 
     public function mount($slug, $token)
@@ -64,7 +69,7 @@ class Checkout extends Component
         }
 
         $this->order = $this->orderService->findData($sessionKey['order_id']);
-        $this->order->load(['user', 'source.platform', 'source.product_configs.game_configs', 'source.user', 'source.game', 'source.user.wallet']);
+        $this->order->load(['user', 'source.platform',  'user.feedbacksReceived', 'source.product_configs.game_configs', 'source.user', 'source.game', 'source.user.wallet']);
 
         if (!$this->order || $this->order->status !== OrderStatus::INITIALIZED) {
             abort(404, 'Checkout link is invalid or has expired');
@@ -90,6 +95,9 @@ class Checkout extends Component
         if ($this->gateways->where('slug', 'wallet')->isNotEmpty()) {
             $this->loadWalletBalance();
         }
+        $allFeedbacks = $this->order?->user?->feedbacksReceived()->get();
+        $this->positiveFeedbacksCount = $this->order?->user?->feedbacksReceived()->where('type', FeedbackType::POSITIVE->value)->count();
+        $this->negativeFeedbacksCount = $this->order?->user?->feedbacksReceived()->where('type', FeedbackType::NEGATIVE->value)->count();
     }
 
     protected function loadWalletBalance()

@@ -3,14 +3,17 @@
 namespace App\Livewire\Backend\User\Orders;
 
 use App\Models\Order;
-use App\Services\OrderService;
 use Livewire\Component;
+use App\Enums\FeedbackType;
+use App\Services\OrderService;
 
 class Details extends Component
 {
 
     public Order $data;
     public $isVisitSeller = false;
+    public $positiveFeedbacksCount;
+    public $negativeFeedbacksCount;
 
 
     protected OrderService $orderService;
@@ -21,8 +24,13 @@ class Details extends Component
     }
     public function mount($orderId): void
     {
+        
         $this->data = $this->orderService->findData($orderId, 'order_id');
         $this->isVisitSeller = $this->data->user_id !== user()->id;
+
+        $allFeedbacks = $this->data?->user?->feedbacksReceived()->get();
+        $this->positiveFeedbacksCount = $this->data?->user?->feedbacksReceived()->where('type', FeedbackType::POSITIVE->value)->count();
+        $this->negativeFeedbacksCount = $this->data?->user?->feedbacksReceived()->where('type', FeedbackType::NEGATIVE->value)->count();
 
         // dd($this->data);
     }
