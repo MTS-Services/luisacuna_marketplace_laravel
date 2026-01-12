@@ -19,7 +19,7 @@
         @endforeach
     </div>
 
-    <div class="relative flex items-center ml-auto" :style="searchActive ? 'width: 50rem' : 'width: 5.5rem'"
+    <div class="relative flex items-center ml-auto" wire:click="openGlobalSearch" :style="searchActive ? 'width: 50rem' : 'width: 5.5rem'"
         style="transition: width 300ms ease-in-out">
 
         <flux:icon name="magnifying-glass"
@@ -42,7 +42,7 @@
 
         <div class="bg-bg-primary flex flex-col rounded-lg shadow-2xl py-4 px-4 max-h-[70vh]">
             {{-- Loading Spinner --}}
-            <div wire:loading.flex wire:target="search"
+            <div wire:loading.flex wire:target="openGlobalSearch,search"
                 class="absolute inset-0 bg-bg-primary/70 backdrop-blur-sm flex flex-col items-center justify-center rounded-lg z-50">
                 <div class="relative flex items-center justify-center w-12 h-12">
                     <div class="absolute w-12 h-12 border-4 border-purple-500/30 rounded-full"></div>
