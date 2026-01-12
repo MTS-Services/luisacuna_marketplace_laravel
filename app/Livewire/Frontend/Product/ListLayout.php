@@ -126,7 +126,6 @@ class ListLayout extends Component
         if ($this->sellerFilter === 'positive_reviews') {
             $filters['positive_reviews'] = true;
         }
-
         // Handle other filters
         if ($this->sellerFilter === 'lowest_price') {
             $filters['sort_field'] = 'price';
