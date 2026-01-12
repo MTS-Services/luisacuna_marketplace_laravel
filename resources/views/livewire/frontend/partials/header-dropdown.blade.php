@@ -1,5 +1,6 @@
 <section class="absolute container top-full left-0 right-0 z-50 mt-0" x-data x-show="open != ''" x-transition x-cloak
     x-effect="$wire.setGameCategorySlug(open)" @mouseleave="open = ''">
+
     <div class="relative" x-on:click.outside="open = ''">
         {{-- 🌟 Dropdown Content --}}
         <div
@@ -21,13 +22,25 @@
                                         class="w-full h-full object-contain rounded-lg">
                                 </div>
                                 {{-- <p class="text-base font-normal dark:text-white text-gray-900">{{ $item['name'] }}</p> --}}
-                                <p class="text-base font-normal dark:text-white text-gray-900">{{ $item->gameTranslations->first()?->name ?? $item->name }}</p>
+                                <p class="text-base font-normal dark:text-white text-gray-900">
+                                    {{ $item->gameTranslations->first()?->name ?? $item->name }}</p>
                             </div>
 
                         </a>
                     @empty
-                        <div class="col-span-2 text-center py-8">
+                        <div class="col-span-2 text-center py-8" wire:loading.remove>
                             <p class="dark:text-gray-400 text-gray-600">{{ __('No popular games found') }}</p>
+                        </div>
+                        <div wire:loading.flex wire:target="setGameCategorySlug"
+                            class="absolute inset-0 bg-bg-primary/70 backdrop-blur-sm flex flex-col items-center justify-center rounded-lg z-50">
+                            <div class="relative flex items-center justify-center w-12 h-12">
+                                <div class="absolute w-12 h-12 border-4 border-purple-500/30 rounded-full"></div>
+                                <div
+                                    class="absolute w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin">
+                                </div>
+                            </div>
+                            <p class="text-sm text-purple-300 mt-3 font-medium tracking-wide">
+                                {{ __('Loading content...') }}</p>
                         </div>
                     @endforelse
                 </div>

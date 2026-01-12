@@ -1,4 +1,4 @@
-<main class="mx-auto bg-bg-primary">
+<main class="mx-auto">
 
 
     {{-- select game --}}
@@ -43,7 +43,7 @@
                             <div>
                                 @if ($product?->games?->tags?->isNotEmpty())
                                     <a href="#"
-                                        class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl inline-block text-xs">
+                                        class="bg-zinc-500 text-white py-1 px-2 rounded-2xl inline-block text-xs">
                                         <x-phosphor name="fire" variant="regular" class="inline-block fill-white" />
                                         {{ $product->games->tags->random()->name }}
                                     </a>
@@ -61,7 +61,7 @@
                         </p>
 
                         <span class="block text-base font-semibold text-pink-500 mt-4">
-                            ${{ number_format($product->quantity * $product->price, 2) }}
+                            {{ currency_symbol() . currency_exchange($product->price) }}
                         </span>
                     </div>
                 @empty
