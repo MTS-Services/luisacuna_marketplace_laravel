@@ -434,6 +434,34 @@
     .mobile-nav-item {
         @apply text-text-primary hover:bg-bg-secondary block px-3 py-2 rounded-md text-base font-medium;
     }
+
+    /* .glass-card {
+        @apply backdrop-blur-md bg-white/80 border border-white/30 shadow-xl;
+    } */
+
+    .gradient-bg {
+        @apply bg-[#ff2e91];
+    }
+
+    .hover-scale {
+        @apply transition-transform duration-200 ease-in-out;
+    }
+
+    .hover-scale:hover {
+        @apply scale-[1.02];
+    }
+
+    .status-badge {
+        @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold;
+    }
+
+    .status-active {
+        @apply bg-green-100 text-green-800;
+    }
+
+    .status-inactive {
+        @apply bg-red-100 text-red-800;
+    }
 }
 
 /* Custom Prose Styles for TinyMCE Content */

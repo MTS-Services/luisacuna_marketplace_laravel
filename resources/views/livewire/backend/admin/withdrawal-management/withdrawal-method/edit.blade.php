@@ -1,7 +1,7 @@
 <section>
     <div class="glass-card rounded-2xl p-6 mb-6">
         <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Withdrawal Method Create') }}</h2>
+            <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Withdrawal Method Edit') }}</h2>
             <div class="flex items-center gap-2">
                 <x-ui.button href="{{ route('admin.wm.method.index') }}" class="w-auto! py-2!">
                     <flux:icon name="arrow-left"
@@ -14,6 +14,10 @@
 
     <div class="glass-card rounded-2xl p-6 mb-6" x-data="fieldBuilder()">
         <form wire:submit.prevent="save">
+            <div class="w-full col-span-2">
+                <x-ui.file-input wire:model="form.icon" label="Payment Method Icon" accept="image/*" :error="$errors->first('form.icon')"
+                    hint="Upload a Payment Method Icon (Max: 2MB)" :existingFiles="$existingFile" removeModel="form.remove_file" />
+            </div>
             <div class="mt-6 space-y-4 grid grid-cols-3 gap-5">
                 <div class="w-full">
                     <x-ui.label value="Name" class="mb-1" />
@@ -234,7 +238,8 @@
                     {{ __('Reset All') }}
                 </x-ui.button>
 
-                <x-ui.button class="w-auto! py-2!" type="submit" @click="syncFields">
+                <x-ui.button class="w-auto! py-2!" type="submit"
+                    x-on:click="fields.length > 0 ? syncFields() : null">
                     <span wire:loading.remove wire:target="save"
                         class="text-text-btn-primary group-hover:text-text-btn-secondary">
                         {{ __('Update Withdrawal Method') }}
@@ -255,14 +260,29 @@
                 fieldCounter: 0,
 
                 init() {
-                    // Initialize from Livewire if editing
+                    // Initialize from Livewire (existing data for edit)
                     const existingFields = @json($form->required_fields ?? []);
                     if (existingFields && existingFields.length > 0) {
                         this.fields = existingFields.map((field, idx) => ({
                             id: this.fieldCounter++,
-                            ...field
+                            label: field.label || '',
+                            name: field.name || '',
+                            input_type: field.input_type || 'text',
+                            validation: field.validation || 'required',
+                            placeholder: field.placeholder || '',
+                            options: field.options || '',
+                            help_text: field.help_text || '',
+                            readonly: field.readonly || false,
+                            disabled: field.disabled || false,
+                            min: field.min || null,
+                            max: field.max || null,
                         }));
                     }
+
+                    // Listen for reset event from Livewire
+                    window.addEventListener('reset-fields', () => {
+                        this.init();
+                    });
                 },
 
                 addField() {

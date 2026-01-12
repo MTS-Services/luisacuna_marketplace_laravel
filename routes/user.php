@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\User\OfferManagement\OfferController;
 use App\Http\Controllers\Backend\User\OrderManagement\OrderController;
 use App\Http\Controllers\Backend\User\OfferManagement\UserOfferController;
 use App\Http\Controllers\Backend\User\OfferManagement\BulkUploadController;
+use App\Http\Controllers\Backend\User\WalletManagement\WalletController;
 use App\Livewire\Backend\User\Payments\Checkout;
 
 // , 'userVerify'
@@ -75,9 +76,6 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
         return view('backend.user.pages.loyalty.loyalty');
     })->name('loyalty');
 
-    Route::get('/wallet', function () {
-        return view('backend.user.pages.wallet.wallet');
-    })->name('wallet');
     Route::get('/messages', function () {
         return view('backend.user.pages.chat.messages');
     })->name('messages');
@@ -106,4 +104,10 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
             Route::get('/failed', 'paymentFailed')->name('failed');
             Route::get('/gateway/{slug}', 'getGatewayConfig')->name('gateway.config');
         });
+
+    Route::controller(WalletController::class)->name('wallet.')->prefix('wallet')->group(function () {
+        Route::get('/', 'wallet')->name('index');
+        Route::get('/withdrawal-methods', 'withdrawalMethod')->name('withdrawal-methods');
+        Route::get('/withdrawal-form/{id}', 'withdrawalForm')->name('withdrawal-form');
+    });
 });

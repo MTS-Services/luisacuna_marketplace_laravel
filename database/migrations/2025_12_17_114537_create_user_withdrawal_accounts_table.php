@@ -1,9 +1,10 @@
 <?php
 
 use App\Traits\AuditColumnsTrait;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Enums\UserWithdrawalAccount;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration {
     use AuditColumnsTrait;
@@ -21,14 +22,17 @@ return new class extends Migration {
             $table->string('account_name')->comment('User-defined name for this account');
             $table->json('account_data')->comment('Encrypted account details');
             $table->boolean('is_default')->default(false);
-            $table->boolean('is_vsrified')->default(false)->comment('Whether account is verified');
-            $table->string('status')->comment('pending, active, declined')->default('pending');
+            $table->boolean('is_verified')->default(false)->comment('Whether account is verified');
+            $table->string('status')->comment('pending, active, declined')->default(UserWithdrawalAccount::PENDING->value);
             $table->longText('note')->nullable();
             $table->timestamp('verified_at')->nullable();
             $table->timestamp('last_used_at')->nullable();
+            $table->unsignedBigInteger('audit_by')->nullable();
+            $table->timestamp('audit_at')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('withdrawal_method_id')->references('id')->on('withdrawal_methods')->onDelete('cascade');
+            $table->foreign('audit_by')->references('id')->on('admins')->onDelete('cascade');
 
 
             $table->softDeletes();

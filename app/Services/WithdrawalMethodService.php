@@ -2,31 +2,42 @@
 
 namespace App\Services;
 
-use App\Enums\ActiveInactiveEnum;
+use Illuminate\Support\Arr;
 use App\Enums\WithdrawalFeeType;
 use App\Models\WithdrawalMethod;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Arr;
+use App\Enums\ActiveInactiveEnum;
 use Illuminate\Support\Facades\DB;
+use App\Traits\FileManagementTrait;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Collection;
+use App\Services\Cloudinary\CloudinaryService;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+
 class WithdrawalMethodService
 {
-    public function __construct(protected WithdrawalMethod $model)
-    {
-    }
+
+use FileManagementTrait;
+
+    public function __construct(
+        protected WithdrawalMethod $model,
+        protected CloudinaryService $cloudinaryService,
+    ) {}
 
 
     /* ================== ================== ==================
      *                          Find Methods
      * ================== ================== ================== */
 
-    public function getAllDatas($sortField = 'created_at', $order = 'desc'): Collection
+    public function getAllDatas($sortField = 'created_at', $order = 'desc', array $with = []): Collection
     {
-        $query = $this->model->query();
-        return $query->orderBy($sortField, $order)->get();
+        return $this->model
+            ->query()
+            ->with($with)
+            ->orderBy($sortField, $order)
+            ->get();
     }
+
 
     public function findData($column_value, string $column_name = 'id', bool $trashed = false): ?WithdrawalMethod
     {
@@ -67,10 +78,14 @@ class WithdrawalMethodService
     {
         return DB::transaction(function () use ($data) {
 
-            if ($data['icon']) {
-                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $data['icon']->getClientOriginalName();
-                $data['icon'] = Storage::disk('public')->putFileAs('withdrawal-method-icons', $data['icon'], $fileName);
+            // if ($data['icon']) {
+            //     $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+            //     $fileName = $prefix . '-' . $data['icon']->getClientOriginalName();
+            //     $data['icon'] = Storage::disk('public')->putFileAs('withdrawal-method-icons', $data['icon'], $fileName);
+            // }
+            if (isset($data['icon'])) {
+                $uploaded = $this->cloudinaryService->upload($data['icon'], ['folder' => 'withdrawal-method-icons']);
+                $data['icon'] = $uploaded->publicId;
             }
             $data['status'] = $data['status'] ?? ActiveInactiveEnum::ACTIVE;
             $data['fee_type'] = $data['fee_type'] ?? WithdrawalFeeType::FIXED;
@@ -80,84 +95,64 @@ class WithdrawalMethodService
             $newData = $this->model->create($data);
             return $newData->fresh();
         });
-
     }
+
     public function updateData(int $id, array $data): ?WithdrawalMethod
     {
         return DB::transaction(function () use ($id, $data) {
 
-
             $model = $this->findData($id);
-            $newIconPath = null;
             if (!$model) {
                 return null;
             }
 
+            $data['status'] = $data['status'] ?? ActiveInactiveEnum::ACTIVE;
+            $data['fee_type'] = $data['fee_type'] ?? WithdrawalFeeType::FIXED;
+            $data['required_fields'] = json_encode($data['required_fields']);
 
-            $oldData = $model->getAttributes();
             $newData = $data;
 
-            // --- 1. Single Avatar Handling ---
-            $oldImagePath = Arr::get($oldData, 'image');
-            $uploadedImage = Arr::get($data, 'image');
 
-
-
-            if ($uploadedImage instanceof UploadedFile) {
-                // Delete old file permanently (File deletion is non-reversible)
-                if (!empty($oldImagePath) && Storage::disk('public')->exists($oldImagePath)) {
-                    Storage::disk('public')->delete($oldImagePath);
-                }
-                // Store the new file and track path for rollback
-                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $uploadedImage->getClientOriginalName();
-
-                $newSingleImagePath = Storage::disk('public')->putFileAs('banners', $uploadedImage, $fileName);
-                $newData['image'] = $newSingleImagePath;
-            } elseif ($newData['remove_file']) {
-                if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
-                    Storage::disk('public')->delete($oldImagePath);
-                }
-                $newData['image'] = null;
+            $iconPath = $model->icon;
+            if (isset($data['icon'])) {
+                $uploaded = $this->cloudinaryService->upload($data['icon'], ['folder' => 'withdrawal-method-icons']);
+                $iconPath = $this->handleSingleFileUpload(newFile: $data['icon'], oldPath: $model->icon, removeKey: $data['remove_icon'] ?? false, folderName: 'withdrawal-method-icons');
             }
+            $newData['icon'] = $iconPath;
+            // $oldImagePath = $model->icon;
+            // $uploadedImage = Arr::get($data, 'icon');
+            // $removeFile = Arr::get($data, 'remove_file', false);
+            // $newSingleImagePath = null;
 
-            // Cleanup temporary/file object keys
-            if (!$newData['remove_file'] && !$newSingleImagePath) {
-                $newData['image'] = $oldImagePath ?? null;
-            }
+            // if ($uploadedImage instanceof UploadedFile) {
+
+            //     if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
+            //         Storage::disk('public')->delete($oldImagePath);
+            //     }
+
+            //     $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
+            //     $fileName = $prefix . '-' . $uploadedImage->getClientOriginalName();
+
+            //     $newSingleImagePath = Storage::disk('public')
+            //         ->putFileAs('withdrawal-method-icons', $uploadedImage, $fileName);
+
+            //     $newData['icon'] = $newSingleImagePath;
+            // } elseif ($removeFile) {
+
+            //     if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
+            //         Storage::disk('public')->delete($oldImagePath);
+            //     }
+
+            //     $newData['icon'] = null;
+            // } else {
+            //     $newData['icon'] = $oldImagePath;
+            // }
+
+
             unset($newData['remove_file']);
 
-
-            //Mobile Image
-            $oldImagePathMobile = Arr::get($oldData, 'mobile_image');
-            $uploadedImageMobile = Arr::get($data, 'mobile_image');
-
-
-            if ($uploadedImageMobile instanceof UploadedFile) {
-                // Delete old file permanently (File deletion is non-reversible)
-                if (!empty($oldImagePathMobile) && Storage::disk('public')->exists($oldImagePathMobile)) {
-                    Storage::disk('public')->delete($oldImagePathMobile);
-                }
-                // Store the new file and track path for rollback
-                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $uploadedImageMobile->getClientOriginalName();
-
-                $newSingleImagePathMobile = Storage::disk('public')->putFileAs('banners', $uploadedImageMobile, $fileName);
-                $newData['mobile_image'] = $newSingleImagePathMobile;
-            } elseif ($newData['remove_file_mobile']) {
-                if ($oldImagePath && Storage::disk('public')->exists($oldImagePathMobile)) {
-                    Storage::disk('public')->delete($oldImagePathMobile);
-                }
-                $newData['mobile_image'] = null;
-            }
-
-            // Cleanup temporary/file object keys
-            if (!$newData['remove_file_mobile'] && !$newSingleImagePathMobile) {
-                $newData['mobile_image'] = $oldImagePathMobile ?? null;
-            }
-            unset($newData['remove_file_mobile']);
-
             $model->update($newData);
+
             return $model->fresh();
         });
     }
@@ -174,6 +169,4 @@ class WithdrawalMethodService
             return $deleted;
         });
     }
-
-
 }

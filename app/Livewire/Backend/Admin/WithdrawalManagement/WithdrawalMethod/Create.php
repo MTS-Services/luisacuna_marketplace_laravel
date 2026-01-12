@@ -11,6 +11,7 @@ use App\Enums\ActiveInactiveEnum;
 use App\Enums\WithdrawalFeeType;
 use App\Models\WithdrawalMethod;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Create extends Component
 {
@@ -33,7 +34,6 @@ class Create extends Component
         $this->form->min_amount = '0';
         $this->form->fee_amount = '0';
         $this->form->fee_percentage = '0';
-
     }
 
     public function resetForm()
@@ -59,7 +59,6 @@ class Create extends Component
         $data = $this->form->validate();
 
 
-
         DB::beginTransaction();
 
         try {
@@ -70,12 +69,11 @@ class Create extends Component
             $this->success('Withdrawal method created successfully.');
 
             return redirect()->route('admin.wm.method.index');
-
         } catch (\Exception $e) {
             DB::rollBack();
 
             // Log the error
-            \Log::error('Withdrawal Method Creation Error: ' . $e->getMessage(), [
+            Log::error('Withdrawal Method Creation Error: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString()
             ]);
             $this->error('Failed to create withdrawal method.' . $e->getMessage());
