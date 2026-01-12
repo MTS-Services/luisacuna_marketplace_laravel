@@ -1,6 +1,5 @@
 <section class="pb-10">
     <div class="container ">
-
         <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" :game="$game" />
 
 
@@ -205,7 +204,7 @@
                         class="px-4 py-2 border border-green text-green rounded-full text-sm hover:bg-green hover:text-white transition">{{ __('● Online Seller') }}
                     </button>
 
-                    <div class="flex-nowrap gap-5 relative hidden md:flex" x-data="{ open: false, selectedOption: '', selectedValue: '' }"
+                    {{-- <div class="flex-nowrap gap-5 relative hidden md:flex" x-data="{ open: false, selectedOption: '', selectedValue: '' }"
                         @click.away="open = false">
 
                         <!-- Hidden Input Field -->
@@ -242,9 +241,23 @@
                                 </ol>
                             </div>
                         </div>
+                    </div> --}}
+                    <div class="hidden md:flex w-56!">
+                        <x-ui.custom-select wireModel="sortDirection" :wireLive="true" :label="__('Highest to Lowest')"
+                            class="w-full rounded-full! bg-transparent! border! border-zinc-700!">
+                            <x-ui.custom-option label="Lowest To Highest" value="asc" />
+                            <x-ui.custom-option label="Highest to Lowest" value="desc" />
+                        </x-ui.custom-select>
                     </div>
 
                 </div>
+                {{-- <div class="hidden md:flex justify-end w-70">
+                    <x-ui.custom-select wireModel="sortDirection" :wireLive="true" :label="__('Highest to Lowest')"
+                        class="w-full rounded-full! bg-transparent! border! border-zinc-700!">
+                        <x-ui.custom-option label="Lowest To Highest" value="asc" />
+                        <x-ui.custom-option label="Highest to Lowest" value="desc" />
+                    </x-ui.custom-select>
+                </div> --}}
             </div>
 
 

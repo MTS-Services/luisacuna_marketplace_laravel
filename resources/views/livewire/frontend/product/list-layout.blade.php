@@ -47,12 +47,12 @@
                 @endforeach
             </x-ui.custom-select>
 
-            <div class="hidden md:flex w-70">
-                <x-ui.select wire:model.live="sortDirection"
+            <div class="hidden md:flex w-56!">
+                <x-ui.custom-select wireModel="sortDirection" :wireLive="true" :label="__('Highest to Lowest')"
                     class="w-full rounded-full! bg-transparent! border! border-zinc-700!">
-                    <option value="asc">{{ __('Lowest to Highest') }}</option>
-                    <option value="desc">{{ __('Highest to Lowest') }}</option>
-                </x-ui.select>
+                    <x-ui.custom-option label="Lowest To Highest" value="asc" />
+                    <x-ui.custom-option label="Highest to Lowest" value="desc" />
+                </x-ui.custom-select>
             </div>
         </div>
 
@@ -84,7 +84,7 @@
                                     <img src="{{ storage_url($game?->logo) }}" class="w-6 h-6 object-cover">
                                     @if ($game->tags->isNotEmpty())
                                         <span
-                                            class="bg-zinc-500 text-white py-1 px-2 rounded-2xl text-[10px] flex items-center gap-1">
+                                            class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl text-[10px] flex items-center gap-1">
                                             <x-phosphor name="fire" variant="regular" class="w-3 h-3 fill-white" />
                                             {{ $game->tags->first()->name }}
                                         </span>
@@ -124,7 +124,7 @@
                                 <p></p>
                             </div>
                         @else
-                            <p>{{ __('No Product Selected') }}</p>
+                            <p class="text-base text-text-white mb-3">{{ __('No Product Selected') }}</p>
                         @endif
                         <div class="flex items-center justify-between py-3 border-t border-b  border-zinc-500 w-full">
                             <p class="text-base text-text-white"> {{ __('Delivery Timeline') }}</p>
@@ -207,17 +207,19 @@
     {{-- Other Sellers Table --}}
     <section class="container mt-32 mb-20">
         <div class="mb-10">
-            <h2 class="text-text-white font-semibold text-3xl">{{ __('Other Sellers') }} (0)</h2>
+            <h2 class="text-text-white font-semibold text-3xl">{{ __('Other Sellers') }}
+                ({{ $otherSellers->count() }})</h2>
         </div>
 
         <div class="mt-10 mb-6 flex items-center justify-between gap-4">
-            <x-ui.select wire:model.live="sellerFilter" class="py-0.5! w-full sm:w-70 rounded-full!">
-                <option value="recommended">{{ __('Recommended') }}</option>
-                <option value="positive_reviews">{{ __('Positive Reviews') }}</option>
-                <option value="top_sold">{{ __('Top Sold') }}</option>
-                <option value="lowest_price">{{ __('Lowest Price') }}</option>
-                <option value="in_stock">{{ __('In Stock') }}</option>
-            </x-ui.select>
+            <x-ui.custom-select wireModel="sellerFilter" :wireLive="true" :label="__('Recommended')"
+                class="py-3! w-full sm:w-70 rounded-full!">
+                <x-ui.custom-option label="Recommended" value="recommended" />
+                <x-ui.custom-option label="Positive Reviews" value="positive_reviews" />
+                <x-ui.custom-option label="Top Sold" value="top_sold" />
+                <x-ui.custom-option label="Lowest Price" value="lowest_price" />
+                <x-ui.custom-option label="In Stock" value="in_stock" />
+            </x-ui.custom-select>
 
             <button
                 class="px-4 py-2 border border-green-500 text-green-500 rounded-full text-sm hover:bg-green hover:text-white transition whitespace-nowrap">
@@ -230,7 +232,7 @@
             <table class="w-full text-left border-separate border-spacing-y-3">
                 <thead>
                     <tr class="text-zinc-500 text-md tracking-wider">
-                        <th class="px-6 py-3 font-medium">{{ __('All Sellers') }} (5)</th>
+                        <th class="px-6 py-3 font-medium">{{ __('All Sellers') }} ({{ $otherSellers->count() }})</th>
                         <th class="px-6 py-3 font-medium hidden md:table-cell">{{ __('Delivery Time') }}</th>
                         <th class="px-6 py-3 font-medium hidden md:table-cell">{{ __('Delivery Method') }}</th>
                         <th class="px-6 py-3 font-medium hidden md:table-cell text-center">{{ __('Stock') }}</th>
@@ -246,7 +248,7 @@
                                     <img src="{{ auth_storage_url($seller->user?->avatar) }}"
                                         class="w-10 h-10 rounded-full">
                                     <div>
-                                        <p class="text-white font-medium text-sm">
+                                        <p class="dark:text-zinc-300 group-hover:text-zinc-300 font-medium text-sm">
                                             {{ $seller->user?->full_name }}</p>
                                         <div class="flex items-center gap-1 opacity-60">
                                             <x-phosphor name="thumbs-up" variant="solid"
@@ -265,21 +267,21 @@
                                                         ->count() ?? 0;
                                             @endphp
                                             <span
-                                                class="text-[10px] text-white">{{ feedback_calculate($positiveCount, $negativeCount) }}%</span>
+                                                class="text-[10px] dark:text-zinc-300 group-hover:text-white">{{ feedback_calculate($positiveCount, $negativeCount) }}%</span>
                                         </div>
                                     </div>
                                 </div>
                             </td>
 
-                            <td class="px-6 py-4 hidden md:table-cell text-sm text-zinc-300">
+                            <td class="px-6 py-4 hidden md:table-cell text-sm dark:text-zinc-300 group-hover:text-zinc-300">
                                 {{ $seller->delivery_timeline ?? '--' }}
                             </td>
 
-                            <td class="px-6 py-4 hidden md:table-cell text-sm text-zinc-300">
+                            <td class="px-6 py-4 hidden md:table-cell text-sm dark:text-zinc-300 group-hover:text-zinc-300">
                                 {{ $seller->delivery_method ?? '--' }}
                             </td>
 
-                            <td class="px-6 py-4 hidden md:table-cell text-center text-sm text-zinc-300">
+                            <td class="px-6 py-4 hidden md:table-cell text-center text-sm dark:text-zinc-300 group-hover:text-zinc-300">
                                 {{ $seller->quantity ?? '00' }}
                             </td>
 

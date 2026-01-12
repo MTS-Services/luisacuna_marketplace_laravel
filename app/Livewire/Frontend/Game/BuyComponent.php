@@ -3,9 +3,10 @@
 namespace App\Livewire\Frontend\Game;
 
 
+use Livewire\Component;
+use Livewire\Attributes\Url;
 use App\Services\ProductService;
 use App\Traits\WithPaginationData;
-use Livewire\Component;
 
 class BuyComponent extends Component
 {
@@ -17,6 +18,10 @@ class BuyComponent extends Component
     public $product;
     public $game;
     public $user;
+
+    #[Url(keep: true)]
+    public $sellerFilter = 'recommended';
+    
     protected ProductService $service;
 
     public function boot(ProductService $service)
@@ -44,9 +49,32 @@ class BuyComponent extends Component
     }
 
     public function othersSellerProducts(){
-      return  $this->service->getPaginatedData($this->perPage, [
-            'categorySlug' => $this->categorySlug,
-            'gameSlug' => $this->gameSlug,
-        ]);
+    //   return  $this->service->getPaginatedData($this->perPage, [
+    //         'categorySlug' => $this->categorySlug,
+    //         'gameSlug' => $this->gameSlug,
+    //     ]);
+    
+        $filters = [];
+
+        if ($this->sellerFilter === 'positive_reviews') {
+            $filters['positive_reviews'] = true;
+        }
+
+        // Handle other filters
+        if ($this->sellerFilter === 'lowest_price') {
+            $filters['sort_field'] = 'price';
+            $filters['sort_direction'] = 'asc';
+        }
+        if ($this->sellerFilter === 'in_stock') {
+            $filters['sort_field'] = 'quantity';
+            $filters['sort_direction'] = 'desc';
+        }
+        if ($this->sellerFilter === 'top_sold') {
+            $filters['top_sold'] = true;
+        }
+
+        $otherSellers = $this->service->getSellers(11, $filters);
+        $otherSellers->load('user.feedbacksReceived');
+        return $otherSellers;
     }
 }
