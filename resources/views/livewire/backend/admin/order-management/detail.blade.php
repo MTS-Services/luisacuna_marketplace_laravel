@@ -202,11 +202,10 @@
                         <div class="flex justify-end gap-2">
 
                            
-                            @if($data->disputes->is_disputed == 0)
+                            @if($data->is_disputed && $data->status->value == 'paid')
                             <x-ui.button class="mt-6 px-4! py-2! w-auto!" wire:click="rejectDispute" > {{ __('Reject') }} </x-ui.button>
                             <x-ui.button  class="mt-6 px-4! py-2! w-auto!" wire:click="acceptDispute"> {{ __('Accept') }} </x-ui.button>
                             @else 
-
                                 <p>Resolved</p>
                             @endif
                         </div>
@@ -270,94 +269,103 @@
                     </div> --}}
                 </div>
 
-                    <div 
-        x-data="{ show: @entangle('showDisputeModal') }"
+      <div 
+    x-data="{ show: @entangle('showDisputeModal') }"
+    x-show="show"
+    x-cloak
+    class="fixed inset-0 z-50 overflow-y-auto"
+    @keydown.escape.window="show = false"
+>
+
+    {{-- Red Overlay --}}
+    <div 
         x-show="show"
-        x-cloak
-        class="fixed inset-0 z-50 overflow-y-auto"
-        @keydown.escape.window="show = false">
-        
-        {{-- Overlay/Shadow --}}
-      {{-- Overlay/Shadow --}}
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        @click="show = false"
+        class="fixed inset-0 bg-bg-primary backdrop-blur-sm"
+    ></div>
+
+    {{-- Modal Wrapper --}}
+    <div class="flex items-center justify-center min-h-screen p-4">
         <div 
             x-show="show"
             x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100"
+            x-transition:enter-start="opacity-0 transform scale-95"
+            x-transition:enter-end="opacity-100 transform scale-100"
             x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0"
-            @click="show = false"
-            class="fixed inset-0 bg-bg-primary/50 backdrop-blur-sm" {{-- Added backdrop-blur-sm and changed opacity syntax --}}
+            x-transition:leave-start="opacity-100 transform scale-100"
+            x-transition:leave-end="opacity-0 transform scale-95"
+            @click.stop
+            class="relative dark:bg-[#1B0C33] bg-white rounded-lg shadow-xl w-full sm:max-w-md lg:max-w-xl"
         >
-        </div>
 
-        {{-- Modal Content --}}
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div 
-                x-show="show"
-                x-transition:enter="transition ease-out duration-300"
-                x-transition:enter-start="opacity-0 transform scale-95"
-                x-transition:enter-end="opacity-100 transform scale-100"
-                x-transition:leave="transition ease-in duration-200"
-                x-transition:leave-start="opacity-100 transform scale-100"
-                x-transition:leave-end="opacity-0 transform scale-95"
-                @click.stop
-                class="relative bg-bg-primary rounded-lg shadow-xl w-full sm:max-w-md lg:max-w-xl">
-                
-                {{-- Close Button --}}
-                <button 
-                    @click="show = false"
-                    class="absolute top-4 right-4 text-zinc-400 hover:text-text-white transition">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
+            {{-- Close Button --}}
+            <button 
+                @click="show = false"
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition"
+            >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
 
-                {{-- Modal Header --}}
-                <div class="p-6">
-                    <h2 class="text-xl font-semibold text-text-white">{{ __('Open Dispute') }}</h2>
-                </div>
-
-                {{-- Modal Body --}}
-                <div class="p-6 py-0">
-
-                    <div class="mt-0">
-                        <label class="block text-text-white font-medium mb-2">
-                            {{ __('Dispute Reason') }}
-                        </label>
-                        <textarea 
-                            wire:model="reason"
-                            rows="2"
-                            class="w-full bg-bg-info text-text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
-                            placeholder="{{ __('Explain why you are opening a dispute...') }}"></textarea>
-                        @error('reason')
-                            <span class="text-pink-500 text-sm">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-                {{-- Modal Footer --}}
-                <div class="p-6 flex justify-end gap-3">
-                    {{-- Cancel Button --}}
-                    <x-ui.button 
-                        class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!"
-                        @click="show = false"
-                    >
-                        {{ __('Cancel') }}
-                    </x-ui.button>
-                    
-                    {{-- Submit Dispute Button --}}
-                    <x-ui.button 
-                        wire:click="submitDispute"
-                         class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!"
-                    >
-                        {{ __('Submit') }}
-                    </x-ui.button>
-                </div>
+            {{-- Header --}}
+            <div class="p-6 border-b">
+                <h2 class="text-xl font-semibold text-text-primary">
+                    {{ __('Give a Reason') }}
+                </h2>
             </div>
+
+            {{-- Body --}}
+            <div class="p-6 space-y-4">
+
+                <div>
+                    
+
+                    <textarea 
+                        wire:model="reason"
+                        rows="3"
+                        class="w-full bg-transparent border border-zinc-500 text-text-primary rounded-lg px-4 py-3
+                               focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
+                        placeholder="{{ __('Explain why you are giving this action....') }}">
+                    </textarea>
+
+                    @error('reason')
+                        <span class="text-pink-600 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+            </div>
+
+            {{-- Footer --}}
+            <div class="p-6 flex justify-end gap-3 border-t">
+
+                <x-ui.button
+                    class="bg-gray-300! text-gray-800! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!"
+                    @click="show = false"
+                >
+                    {{ __('Cancel') }}
+                </x-ui.button>
+
+                <x-ui.button
+                    wire:click="submitDispute"
+                    class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!"
+                >
+                    {{ __('Submit') }}
+                </x-ui.button>
+
+            </div>
+
         </div>
     </div>
+</div>
+
 
             @endif
 

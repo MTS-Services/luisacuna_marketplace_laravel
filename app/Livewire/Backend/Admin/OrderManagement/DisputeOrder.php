@@ -106,10 +106,11 @@ class DisputeOrder extends Component
     protected function getFilters(): array
     {
         return [
-            'status'         => $this->statusFilter,
+            'status'         => OrderStatus::PAID,
             'sort_field'     => $this->sortField,
             'sort_direction' => $this->sortDirection,
             'is_distpute' => true,
+
         ];
     }
 

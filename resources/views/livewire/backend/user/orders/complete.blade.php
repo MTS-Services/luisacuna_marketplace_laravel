@@ -31,15 +31,22 @@
                         class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!">
                         {{ __('Cancel') }}
                     </x-ui.button>
-                @else
-                   
-                   <x-ui.button 
-                    wire:click="{{ $order->is_disputed ? '' : '$set(\'showDisputeModal\', true)' }}"
-                    class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none! {{ $order->is_disputed ? 'opacity-50 cursor-not-allowed' : '' }}"
-                    :disabled="$order->is_disputed"
-                >
-                    {{ $order->is_disputed ? __('Disputed') : __('Dispute') }}
-                </x-ui.button>
+                  @else
+                 
+                   @if(!$hasDispute)
+                    <x-ui.button 
+                        wire:click="{{ $order->is_disputed ? '' : '$set(\'showDisputeModal\', true)' }}"
+                        class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!"
+                        >
+                        {{ __('Dispute') }}
+                     </x-ui.button>
+                    @else 
+                    
+                        <x-ui.button class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none! opacity-50! cursor-not-allowed!">
+                            {{ __('Disputed') }}
+                        </x-ui.button>
+                    @endif
+                
                 @endif
 
             </div>
@@ -61,6 +68,12 @@
                     <div class="mt-7">
                         <p class="text-text-white text-base font-normal mb-2">
                             {{ $order->notes ?? __('No notes') }}</p>
+                    </div>
+                    <div class="mt-7">
+                        <h2 class="text-text-white text-base sm:text-2xl font-semibold"> {{ __('Order Disputed') }}</h2>
+                        <p class="text-text-white text-base font-normal mt-3">
+                            {{ $order?->disputes?->reason}}
+                        </p>
                     </div>
                 </div>
 

@@ -4,6 +4,9 @@ namespace App\Livewire\Backend\Admin\OrderManagement;
 
 use App\Enums\OrderStatus;
 use App\Models\Order;
+use App\Services\ConversationService;
+use App\Services\NotificationService;
+use App\Services\OrderService;
 use Livewire\Component;
 use Illuminate\Support\Facades\URL;
 
@@ -17,7 +20,12 @@ class Detail extends Component
     public $reason; 
 
     public $disputeType;
+
+    protected OrderService $service;
     
+    public function boot(OrderService $service) {
+        $this->service = $service;
+    }
     public function mount(Order $data): void
     {
         $this->data = $data;
@@ -51,24 +59,13 @@ class Detail extends Component
         $this->validate([
             'reason' => 'required|string|min:10',
         ]);
-        
-        if($this->disputeType == 'accept') { 
-            $this->data->disputes()->update([
-                'is_disputed' => 1, 
-                'resolution' => $this->reason
-            ]);
-            $this->data->update(['status' => OrderStatus::CANCELLED->value]);
-        }
 
-        if($this->disputeType == 'reject') {
-            $this->data->disputes()->update([
-                'is_disputed' => 0, 
-                'resolution' => $this->reason
-            ]);
-            $this->data->update(['status' => OrderStatus::COMPLETED->value]);
-        }
-        
+        $this->service->disputeResolution($this->data->id, $this->disputeType, $this->reason);
+
+
+        $this->data->refresh();
         $this->showDisputeModal = false;
+
         $this->reset('reason', 'disputeType');
         
         session()->flash('message', 'Dispute has been processed successfully.');
