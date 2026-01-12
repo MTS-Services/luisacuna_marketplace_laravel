@@ -76,6 +76,24 @@ class Header extends Component
             $this->unreadMessageCount = $this->conversationService->getUnreadCount();
         }
     }
+    public $popular_games = [];
+    public function openGlobalSearch()
+    {
+        $this->popular_games = collect();
+
+        if (!empty($this->search)) {
+            if ($this->allGamesCache === null) {
+                $this->allGamesCache = $this->game_service->getAllDatas([], $this->sortField = 'name',  $this->order = 'asc');
+            }
+        } else {
+            if ($this->allGamesCache === null) {
+                $this->allGamesCache = $this->game_service->getAllDatas([], $this->sortField = 'name',  $this->order = 'asc');
+            }
+            $this->popular_games = $this->allGamesCache->filter(function ($game) {
+                return $game->tags->contains('slug', 'popular');
+            });
+        }
+    }
 
 
     public function render()
@@ -85,26 +103,13 @@ class Header extends Component
         $this->categories = $this->categoryService->getDatas(status: "active");
         $this->currencies = $this->currencyService->getAllDatas();
 
-        $popular_games = collect();
         $search_results = collect();
 
         if (!empty($this->search)) {
             $search_results = $this->game_service->searchData($this->search);
-
-            if ($this->allGamesCache === null) {
-                $this->allGamesCache = $this->game_service->getAllDatas([], $this->sortField = 'name',  $this->order = 'asc');
-            }
-        } else {
-            if ($this->allGamesCache === null) {
-                $this->allGamesCache = $this->game_service->getAllDatas([], $this->sortField = 'name',  $this->order = 'asc');
-            }
-            $popular_games = $this->allGamesCache->filter(function ($game) {
-                return $game->tags->contains('slug', 'popular');
-            });
         }
 
         return view('livewire.frontend.partials.header', [
-            'popular_games' => $popular_games,
             'search_results' => $search_results,
         ]);
     }

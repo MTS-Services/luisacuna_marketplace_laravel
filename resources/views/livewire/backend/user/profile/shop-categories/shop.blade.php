@@ -1,4 +1,4 @@
-<div class="bg-bg-primary">
+<div class="bg-page">
     <livewire:backend.user.profile.profile-component :user="$user" />
     <section class="container mx-auto mb-30">
         <div class="mb-6">

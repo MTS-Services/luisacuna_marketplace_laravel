@@ -24,9 +24,7 @@ return new class extends Migration
             $table->text('reason');
             $table->text('resolution')->nullable();
             $table->timestamps();
-
-           $this->addMorphedAuditColumns($table);
-
+            
            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
            $table->foreign('disputed_by')->references('id')->on('users')->onDelete('cascade');
            $table->foreign('disputed_to')->references('id')->on('users')->onDelete('cascade');
