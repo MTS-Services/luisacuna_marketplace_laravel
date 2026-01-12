@@ -35,4 +35,14 @@ class WithdrawalMethodController extends Controller
             'data' => $data
          ]);
     }
+    public function show($encryptId)
+    {
+        $data = $this->service->findData(decrypt($encryptId));
+        if (!$data) {
+            abort(404,"Item Not Found");   
+        }
+         return view($this->master, [
+            'data' => $data
+         ]);
+    }
 }

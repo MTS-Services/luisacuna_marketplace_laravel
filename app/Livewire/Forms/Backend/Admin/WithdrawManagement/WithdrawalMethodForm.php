@@ -63,11 +63,11 @@ class WithdrawalMethodForm extends Form
         $this->name = $withdrawalMethod->name ?? '';
         $this->code = $withdrawalMethod->code ?? '';
         $this->description = $withdrawalMethod->description ?? '';
-        $this->status = $withdrawalMethod->status ?? ActiveInactiveEnum::ACTIVE->value;
+        $this->status = $withdrawalMethod->status->value ?? ActiveInactiveEnum::ACTIVE->value;
         $this->min_amount = $withdrawalMethod->min_amount ?? '';
         $this->max_amount = $withdrawalMethod->max_amount ?? '';
         $this->processing_time = $withdrawalMethod->processing_time ?? '';
-        $this->fee_type = $withdrawalMethod->fee_type ?? WithdrawalFeeType::FIXED->value;
+        $this->fee_type = $withdrawalMethod->fee_type->value ?? WithdrawalFeeType::FIXED->value;
         $this->fee_amount = $withdrawalMethod->fee_amount ?? '';
         $this->fee_percentage = $withdrawalMethod->fee_percentage ?? '';
 

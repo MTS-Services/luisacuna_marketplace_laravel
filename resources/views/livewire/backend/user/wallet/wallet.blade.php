@@ -17,7 +17,7 @@
                             <a href="#" class="text-pink-500 mt-2 inline-block">{{ __('Learn more') }}</a>
                         </div>
                         <div>
-                            <x-ui.button class="w-fit! py-3! px-6!">
+                            <x-ui.button href="{{ route('user.wallet.withdrawal-methods') }}" class="w-fit! py-3! px-6!">
                                 <span
                                     class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Withdraw') }}</span>
                             </x-ui.button>
