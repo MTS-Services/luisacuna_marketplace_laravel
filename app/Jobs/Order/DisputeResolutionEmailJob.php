@@ -31,7 +31,7 @@ class DisputeResolutionEmailJob implements ShouldQueue
     public function handle(): void
     {
         try {
-            $order = Order::with(['user', 'source.user','disputes'])->findOrFail($this->orderId);
+            $order = Order::with(['user', 'source.user', 'disputes'])->findOrFail($this->orderId);
 
             Mail::to($this->recipientEmail)
                 ->send(new DisputeResolutionEmail($order, $this->userName));
@@ -50,7 +50,7 @@ class DisputeResolutionEmailJob implements ShouldQueue
             throw $e;
         }
     }
-     public function failed(\Throwable $exception): void
+    public function failed(\Throwable $exception): void
     {
         Log::error('DisputeResolutionEmailJob failed permanently', [
             'order_id' => $this->orderId,
