@@ -15,6 +15,7 @@ class Show extends Component
     public bool $showModal = false;
 
     public UserWithdrawalAccount $data;
+    public $note;
 
 
     protected UserWithdrawalAccountService $service;
@@ -36,6 +37,9 @@ class Show extends Component
     public function closeModal()
     {
         $this->showModal = false;
+        $this->note = null;
+         $this->data->refresh();
+
     }
 
 
@@ -48,10 +52,11 @@ class Show extends Component
     {
 
         $id = decrypt($encryptedId);
+        $data['audit_by'] = admin()->id;
 
         try {
 
-            $this->service->verifyAccount($id);
+            $this->service->verifyAccount($id, $data);
 
             $this->success('User method verified successfully.');
 
@@ -65,14 +70,16 @@ class Show extends Component
     {
 
         $id = decrypt($encryptedId);
+        $data['audit_by'] = admin()->id;
 
         try {
 
-            $this->service->rejectAccount($id);
+            $this->service->rejectAccount($id, $this->note, $data);
 
             $this->success('User method unverified successfully.');
-
+            $this->note = null;
             $this->data->refresh();
+            $this->showModal = false;
         } catch (\Exception $e) {
             $this->error('Failed to unverify user method');
             Log::error('Error unverifying user method: ' . $e->getMessage());

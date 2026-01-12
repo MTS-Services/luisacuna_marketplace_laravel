@@ -25,6 +25,8 @@ class UserWithdrawalAccount extends AuditBaseModel implements Auditable
         'note',
         'verified_at',
         'last_used_at',
+        'audit_by',
+        'audit_at',
     ];
 
     protected $casts = [
@@ -34,6 +36,7 @@ class UserWithdrawalAccount extends AuditBaseModel implements Auditable
         'is_verified' => 'boolean',
         'verified_at' => 'datetime',
         'last_used_at' => 'datetime',
+        'audit_at' => 'datetime',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -44,6 +47,11 @@ class UserWithdrawalAccount extends AuditBaseModel implements Auditable
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function auditedBy(): BelongsTo
+    {
+        return $this->belongsTo(Admin::class, 'audit_by');
     }
 
     public function withdrawalMethod(): BelongsTo

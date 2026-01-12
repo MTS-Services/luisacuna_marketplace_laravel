@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use App\Enums\UserWithdrawalAccount as UserWithdrawalAccountEnum;
 
 class UserWithdrawalAccountService
 {
@@ -29,15 +30,15 @@ class UserWithdrawalAccountService
 
     public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-            $search = $filters['search'] ?? null;
-            $sortField = $filters['sort_field'] ?? 'created_at';
-            $sortDirection = $filters['sort_direction'] ?? 'desc';
+        $search = $filters['search'] ?? null;
+        $sortField = $filters['sort_field'] ?? 'created_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
 
-            if ($search) {
-                return UserWithdrawalAccount::search($search)
-                    ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
-                    ->paginate($perPage);
-            }
+        if ($search) {
+            return UserWithdrawalAccount::search($search)
+                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->paginate($perPage);
+        }
         return $this->model->query()
             ->with('user', 'withdrawalMethod')
             ->filter($filters)
@@ -200,7 +201,7 @@ class UserWithdrawalAccountService
     /**
      * Verify account
      */
-    public function verifyAccount(int $id): bool
+    public function verifyAccount(int $id, array $data): bool
     {
         $account = $this->model->find($id);
 
@@ -211,10 +212,12 @@ class UserWithdrawalAccountService
         return $account->update([
             'is_verified' => true,
             'verified_at' => now(),
-            'status' => 'active',
+            'status' => UserWithdrawalAccountEnum::ACTIVE->value,
+            'audit_by' => $data['audit_by'],
+            'audit_at' => now(),
         ]);
     }
-    public function rejectAccount(int $id): bool
+    public function rejectAccount(int $id, string $note, array $data): bool
     {
         $account = $this->model->find($id);
 
@@ -224,8 +227,11 @@ class UserWithdrawalAccountService
 
         return $account->update([
             'is_verified' => false,
-            'verified_at' => 'null',
-            'status' => 'declined',
+            'verified_at' => null,
+            'status' => UserWithdrawalAccountEnum::DECLINED->value,
+            'note' => $note,
+            'audit_by' => $data['audit_by'],
+            'audit_at' => now(),
         ]);
     }
 }

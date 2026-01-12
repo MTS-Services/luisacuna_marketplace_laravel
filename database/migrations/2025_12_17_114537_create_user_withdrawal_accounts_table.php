@@ -27,9 +27,12 @@ return new class extends Migration {
             $table->longText('note')->nullable();
             $table->timestamp('verified_at')->nullable();
             $table->timestamp('last_used_at')->nullable();
+            $table->unsignedBigInteger('audit_by')->nullable();
+            $table->timestamp('audit_at')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('withdrawal_method_id')->references('id')->on('withdrawal_methods')->onDelete('cascade');
+            $table->foreign('audit_by')->references('id')->on('admins')->onDelete('cascade');
 
 
             $table->softDeletes();
