@@ -3,21 +3,28 @@
 namespace App\Services;
 
 use App\Enums\CustomNotificationType;
+use App\Enums\MessageType;
 use App\Models\Order;
 use App\Models\UserPoint;
 use App\Enums\OrderStatus;
+use App\Jobs\Order\DisputeResolutionEmailJob;
 use App\Models\Achievement;
 use App\Models\Admin;
 use App\Models\DisputeOrder;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
+
 use App\Models\UserAchievementProgress;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class OrderService
 {
-    public function __construct(protected Order $model, protected DisputeOrder $disputedOrder, protected NotificationService $notificationService) {}
+    public function __construct(
+        protected Order $model,
+        protected DisputeOrder $disputedOrder,
+        protected NotificationService $notificationService,
+        protected ConversationService $conversationService
+    ) {}
 
     public function getAllDatas($sortField = 'created_at', $order = 'desc'): Collection
     {
@@ -99,10 +106,10 @@ class OrderService
             ->get();
     }
 
-    public function disputeOrder(array $datas):Order
+    public function disputeOrder(array $datas): Order
     {
         $order = Order::find($datas['order_id']);
-        if(!$order) abort(404, 'Order not found');
+        if (!$order) abort(404, 'Order not found');
         $order->load('payments');
 
         $order->is_disputed = true;
@@ -113,44 +120,147 @@ class OrderService
 
 
         // Create in-app notification
-            $this->notificationService->create([
-                'type' => CustomNotificationType::USER,
-                'sender_id' => null,
-                'sender_type' => null,
-                'receiver_id' => $datas['disputed_to'],
-                'receiver_type' => User::class,
-                'is_announced' => false,
-                'action' => route('user.order.detail', $order->order_id),
-                'title' => 'You have been recieved a dispute order request !',
-                'message' => "You have got a order dispute request for the order #{$order->order_id}. Please check your account.",
-                'icon' => 'check-circle',
-                'additional' => [
-                    'order_id' => $order->order_id,
-                    'currency' => $order->currency,
-                    'amount' => $order->amount,
-                ],
-             ]);
+        $this->notificationService->create([
+            'type' => CustomNotificationType::USER,
+            'sender_id' => null,
+            'sender_type' => null,
+            'receiver_id' => $datas['disputed_to'],
+            'receiver_type' => User::class,
+            'is_announced' => false,
+            'action' => route('user.order.detail', $order->order_id),
+            'title' => 'You have been recieved a dispute order request !',
+            'message' => "You have got a order dispute request for the order #{$order->order_id}. Please check your account.",
+            'icon' => 'check-circle',
+            'additional' => [
+                'order_id' => $order->order_id,
+                'currency' => $order->currency,
+                'amount' => $order->amount,
+            ],
+        ]);
 
         // Create in-app For Admin
-            $this->notificationService->create([
-                'type' => CustomNotificationType::ADMIN,
-                'sender_id' => null,
-                'sender_type' => null,
-                'receiver_id' => null,
-                'receiver_type' => Admin::class,
-                'is_announced' => false,
-                'action' => route('user.order.detail', $order->order_id),
-                'title' => 'You have been recieved a dispute order request !',
-                'message' => "You have got a order dispute request for the order #{$order->order_id}. Please check your account.",
-                'icon' => 'check-circle',
-                'additional' => [
-                    'order_id' => $order->order_id,
-                    'currency' => $order->currency,
-                    'amount' => $order->amount,
-                ],
-             ]);
+        $this->notificationService->create([
+            'type' => CustomNotificationType::ADMIN,
+            'sender_id' => null,
+            'sender_type' => null,
+            'receiver_id' => null,
+            'receiver_type' => Admin::class,
+            'is_announced' => false,
+            'action' => route('user.order.detail', $order->order_id),
+            'title' => 'You have been recieved a dispute order request !',
+            'message' => "You have got a order dispute request for the order #{$order->order_id}. Please check your account.",
+            'icon' => 'check-circle',
+            'additional' => [
+                'order_id' => $order->order_id,
+                'currency' => $order->currency,
+                'amount' => $order->amount,
+            ],
+        ]);
 
         return  $order->fresh();
+    }
+
+    public function disputeResolution($order_id, $disputeType, $reason)
+    {
+
+        $order = Order::find($order_id);
+        if (!$order) abort(404, 'Order not found');
+        $order->load(['payments', 'messages', 'disputes', 'source.user',]);
+
+        if ($disputeType == 'accept') {
+
+            $order->disputes()->update([
+                'resolution' => $reason
+            ]);
+            $order->update(['status' => OrderStatus::CANCELLED->value]);
+        }
+
+        if ($disputeType == 'reject') {
+            $order->disputes()->update([
+                'resolution' => $reason
+            ]);
+            $order->update(['status' => OrderStatus::COMPLETED->value]);
+        }
+
+        // Create in-app notification
+        $this->notificationService->create([
+            'type' => CustomNotificationType::USER,
+            'sender_id' => null,
+            'sender_type' => null,
+            'receiver_id' => $order->user_id,
+            'receiver_type' => User::class,
+            'is_announced' => false,
+            'action' => route('user.order.detail', $order->order_id),
+            'title' => 'You have a dispute resolution !',
+            'message' => "Your dispute request for the order #{$order->order_id} has been resolved. Please check your account.",
+            'icon' => 'check-circle',
+            'additional' => [
+                'order_id' => $order->order_id,
+                'currency' => $order->currency,
+                'amount' => $order->amount,
+            ],
+        ]);
+
+        $this->notificationService->create([
+            'type' => CustomNotificationType::USER,
+            'sender_id' => null,
+            'sender_type' => null,
+            'receiver_id' => $order->source?->user_id,
+            'receiver_type' => User::class,
+            'is_announced' => false,
+            'action' => route('user.order.detail', $order->order_id),
+            'title' => 'You have a dispute resolution !',
+            'message' => "Your dispute request for the order #{$order->order_id} has been resolved. Please check your account.",
+            'icon' => 'check-circle',
+            'additional' => [
+                'order_id' => $order->order_id,
+                'currency' => $order->currency,
+                'amount' => $order->amount,
+            ],
+        ]);
+
+        // Create in-app For Admin
+        $this->notificationService->create([
+            'type' => CustomNotificationType::ADMIN,
+            'sender_id' => null,
+            'sender_type' => null,
+            'receiver_id' => null,
+            'receiver_type' => Admin::class,
+            'is_announced' => false,
+            'action' => route('user.order.detail', $order->order_id),
+            'title' => 'An Admin has a dispute resolution !',
+            'message' => "Mr {{ user()->full_name }} has a dispute resolution for the order #{$order->order_id}. Please check it out.",
+            'icon' => 'check-circle',
+            'additional' => [
+                'order_id' => $order->order_id,
+                'currency' => $order->currency,
+                'amount' => $order->amount,
+            ],
+        ]);
+
+
+        $conversation_id = $order->messages()->first()->conversation_id;
+
+
+        $conversation = $this->conversationService->findConversation($conversation_id, 'id');
+
+        $this->conversationService->adminSendMessage(
+            $conversation,
+            admin(),
+            "Your dispute request for the order #{$order->order_id} has been resolved. Please check your account.",
+            MessageType::SYSTEM,
+        );
+
+        // DisputeResolutionEmailJob::dispatch(
+        //     $order->id,
+        //     $order->user->email,
+        //     $order->user->full_name
+        // );
+        DisputeResolutionEmailJob::dispatch(
+            $order->id,
+            $order->source?->user->email,
+            $order->source?->user->full_name
+        );
     }
 
 
@@ -159,7 +269,7 @@ class OrderService
         return $orders->sum('grand_total');
     }
 
-        public function countByStatus(OrderStatus $status): int
+    public function countByStatus(OrderStatus $status): int
     {
         return $this->model->where('status', $status->value)->count();
     }
@@ -364,6 +474,4 @@ class OrderService
     {
         return $this->model->getInactive($sortField, $order);
     }
-
-
 }

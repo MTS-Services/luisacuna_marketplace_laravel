@@ -33,6 +33,10 @@ class OrderController extends Controller
         return view($this->masterView);
     }
 
+    public function disputeOrders(){
+        return view($this->masterView);
+    }
+
     public function show($orderID)
     {
         $data = $this->service->findData(column_value: $orderID, column_name: 'order_id');
