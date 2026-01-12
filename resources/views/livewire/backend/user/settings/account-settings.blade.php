@@ -248,7 +248,7 @@
                                 <label
                                     class="block text-sm font-medium text-text-primary mb-2">{{ __('Email:') }}</label>
                                 <div class="relative">
-                                    <input type="email" wire:model.blur="form.email"
+                                    <input type="email" wire:model.live="form.email"
                                         class="w-full bg-bg-secondary border @error('form.email') border-red-500 @else border-zinc-300 dark:border-zinc-700 @enderror rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                         placeholder="Enter email">
                                 </div>
