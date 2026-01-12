@@ -241,7 +241,6 @@
                     @forelse ($otherSellers as $seller)
                         <tr wire:key="row-{{ $seller->id }}" wire:click="selectItem({{ $seller->id }})"
                             class="bg-bg-secondary hover:bg-zinc-800 transition-colors cursor-pointer group">
-
                             <td class="px-6 py-4 rounded-l-2xl">
                                 <div class="flex items-center gap-3">
                                     <img src="{{ auth_storage_url($seller->user?->avatar) }}"

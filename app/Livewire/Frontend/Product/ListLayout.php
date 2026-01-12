@@ -121,38 +121,6 @@ class ListLayout extends Component
         $this->datas->load('user.feedbacksReceived', 'game', 'category', 'platform', 'user.wallet');
         $this->paginationData($this->datas);
 
-        // $this->sellerProducts = $this->datas->unique('user_id')
-        //     ->filter(function ($item) {
-        //         return !(
-        //             $this->product &&
-        //             $this->product->user?->id === $item->user?->id
-        //         );
-        //     })
-        //     ->when($this->sellerFilter, function ($collection) {
-
-        //         return match ($this->sellerFilter) {
-
-        //             'positive_reviews' =>
-        //             $collection->sortByDesc('rating'),
-
-        //             'top_sold' =>
-        //             $collection->sortByDesc('sold_count'),
-
-        //             'lowest_price' =>
-        //             $collection->sortBy('price'),
-
-        //             'in_stock' =>
-        //             $collection->filter(fn($item) => $item->quantity > 0),
-
-        //             'recommended' =>
-        //             $collection,
-
-        //             default =>
-        //             $collection,
-        //         };
-        //     })
-        //     ->values();
-
         $filters = [];
 
         if ($this->sellerFilter === 'positive_reviews') {
@@ -169,8 +137,7 @@ class ListLayout extends Component
             $filters['sort_direction'] = 'desc';
         }
         if ($this->sellerFilter === 'top_sold') {
-            $filters['sort_field'] = '';
-            $filters['sort_direction'] = 'desc';
+            $filters['top_sold'] = true;
         }
 
         $otherSellers = $this->productService->getSellers(11, $filters);
