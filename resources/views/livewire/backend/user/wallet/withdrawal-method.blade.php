@@ -10,16 +10,19 @@
     .hover-scale:hover {
         transform: scale(1.02);
     }
+
     .box-shadow {
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     }
 </style>
 
-<div class="">
+<div x-data="{
+    showModal: @entangle('showModal').live
+}">
     <!-- Header -->
     <div class="mb-8">
-        <h1 class="text-3xl md:text-4xl font-bold text-text-white mb-2">My Wallet</h1>
-        <p class="text-text-secondary">Manage your balance and withdrawal methods</p>
+        <h1 class="text-3xl md:text-4xl font-bold text-text-white mb-2">{{ __('My Wallet') }}</h1>
+        <p class="text-text-secondary">{{ __('Manage your balance and withdrawal methods') }}</p>
     </div>
 
     <!-- Wallet Balance Card -->
@@ -125,15 +128,73 @@
                         <span
                             class="text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Add Method') }}</span>
                     </x-ui.button>
+                @elseif($method->userWithdrawalAccounts?->first()->status->value == 'declined')
+                    <div class="flex justify-between gap-3">
+                        <div class="">
+                            <x-ui.button type="button"
+                                x-on:click="showModal = true; $dispatch('setMethodReason', { methodId: {{ $method->userWithdrawalAccounts?->first()->id }} })"
+                                variant="tertiary" class="w-auto! py-2! z-50!">
+                                {{ __('Reason') }}
+                            </x-ui.button>
+                        </div>
+
+                        <x-ui.button
+                            href="{{ route('user.wallet.withdrawal-form-update', encrypt($method->userWithdrawalAccounts->first()->id)) }}"
+                            class="w-full py-2! px-6!" variant="secondary">
+                            <span
+                                class="text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Re-Submit') }}</span>
+                        </x-ui.button>
+
+
+                    </div>
                 @endif
                 {{-- <x-ui.button href="{{ route('user.wallet.withdrawal-form', encrypt($method->id)) }}" class="w-full py-2! px-6!">
                     <span
                         class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Add Method') }}</span>
                 </x-ui.button> --}}
-
+                {{-- @dd($showModal) --}}
             </div>
         @endforeach
     </div>
+    <div x-show="showModal" x-cloak
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50"
+        x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+
+        <div x-show="showModal" x-on:click.away="showModal = false"
+            class="bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-xl w-full max-w-md"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+            x-transition:leave-end="opacity-0 scale-95 translate-y-4">
+
+            <h2 class="text-xl font-semibold mb-4 text-zinc-900 dark:text-white">{{ __('Reject Reason') }}</h2>
+
+            <div class="mb-5">
+                {{-- @if (!$isLoading && $selectedMethod) --}}
+                    <p class="block text-sm font-medium text-zinc-600 dark:text-zinc-300 mb-1 leading-relaxed">
+                        {{ $selectedMethod->note ?? __('No reason provided.') }}
+                    </p>
+                {{-- @else
+                    <div class="space-y-3 animate-pulse">
+                        <div class="h-4 bg-zinc-200 dark:bg-zinc-700 rounded w-3/4"></div>
+                        <div class="h-4 bg-zinc-200 dark:bg-zinc-700 rounded w-full"></div>
+                        <div class="h-4 bg-zinc-200 dark:bg-zinc-700 rounded w-5/6"></div>
+                    </div>
+                @endif --}}
+
+                <div class="flex justify-end space-x-3 mt-6">
+                    <x-ui.button x-on:click="showModal = false" variant="tertiary" type="button" class="w-auto! py-2!">
+                        {{ __('Cancel') }}
+                    </x-ui.button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Recent Transactions -->
     <div class="mt-12">
@@ -187,7 +248,8 @@
                         <tr class="hover:bg-gray-50 transition-colors duration-150">
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-text-white">Jan 03, 2026</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-text-white">Bank Transfer</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-text-white">$1,200.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-text-white">$1,200.00
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">$5.00</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span

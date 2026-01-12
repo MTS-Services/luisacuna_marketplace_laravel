@@ -144,6 +144,15 @@ class UserWithdrawalAccountService
         });
     }
 
+    // public function updateAccount(UserWithdrawalAccount $account, array $data)
+    // {
+    //     return $account->update([
+    //         'account_name' => $data['account_name'],
+    //         'account_data' => $data['account_data'],
+    //     ]);
+    // }
+
+
     /**
      * Delete withdrawal account
      */

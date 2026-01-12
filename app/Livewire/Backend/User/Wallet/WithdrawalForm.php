@@ -36,8 +36,19 @@ class WithdrawalForm extends Component
         $this->method = $method;
 
         // Initialize dynamic fields
-        foreach (json_decode($this->method->required_fields, true) as $fieldName => $fieldRules) {
-            $this->account_data[$fieldName] = '';
+        $fields = $this->method->required_fields;
+
+        // If it's a JSON string, decode it
+        if (is_string($fields)) {
+            $fields = json_decode($fields, true);
+        }
+
+        // Now $fields is guaranteed to be an array (or null)
+        if (is_array($fields)) {
+            foreach ($fields as $field) {
+                $name = Str::snake($field['name']); // or use the proper key
+                $this->account_data[$name] = $this->account->account_data[$name] ?? '';
+            }
         }
     }
 

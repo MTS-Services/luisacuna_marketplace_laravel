@@ -109,5 +109,6 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
         Route::get('/', 'wallet')->name('index');
         Route::get('/withdrawal-methods', 'withdrawalMethod')->name('withdrawal-methods');
         Route::get('/withdrawal-form/{id}', 'withdrawalForm')->name('withdrawal-form');
+        Route::get('/withdrawal-form-update/{account}','withdrawalFormUpdate')->name('withdrawal-form-update');
     });
 });
