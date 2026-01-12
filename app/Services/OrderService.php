@@ -252,8 +252,7 @@ class OrderService
            
          DisputeResolutionEmailJob::dispatch(
                 $order->id,
-                // $order->user->email,
-                'xmonirislam75@gmail.com',
+                $order->user->email,
                 $order->user->full_name
             );
          DisputeResolutionEmailJob::dispatch(
