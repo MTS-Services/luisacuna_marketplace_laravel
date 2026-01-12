@@ -14,7 +14,6 @@
 
         <!-- Password Change Modal -->
         @if ($showModal)
-
             <div class="fixed inset-0 dark:bg-bg-primary bg-black/50 flex items-center justify-center z-50 P-5"
                 @click.self="$wire.closeModal()">
                 <div class="dark:bg-bg-secondary bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl m-2"
@@ -40,9 +39,9 @@
                         },
                         get allValid() {
                             return this.hasLowercase && this.hasUppercase && this.hasNumber && this.hasMinLength && this.noSpaces;
-                        }
+                        },
                     }">
-                    <div class="space-y-6">
+                    <div class="space-y-6" x-data="{ openAllValid: false }" x-click.outside="openAllValid = false">
                         <!-- Modal Header -->
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="text-xl font-semibold text-text-primary">{{ __('Change Password') }}</h3>
@@ -62,7 +61,7 @@
                         </div>
 
                         <!-- New Password -->
-                        <div class="w-full">
+                        <div class="w-full" x-on:click="openAllValid = true">
                             <x-ui.label value="New password:"
                                 class="text-base! font-semibold! mb-3! text-text-white!" />
                             <x-ui.input type="password" placeholder="Enter new password" wire:model="form.password"
@@ -70,8 +69,18 @@
                             <x-ui.input-error :messages="$errors->get('form.password')" />
                         </div>
 
+                        <!-- Confirm Password -->
+                        <div class="w-full" x-on:click="openAllValid = true">
+                            <x-ui.label value="Re-enter new password:"
+                                class="text-base! font-semibold! mb-3! text-text-white!" />
+                            <x-ui.input type="password" placeholder="Re-enter new password"
+                                class="border-0! bg-bg-info!  placeholder:text-text-white"
+                                wire:model="form.password_confirmation" />
+                            <x-ui.input-error :messages="$errors->get('form.password_confirmation')" />
+                        </div>
+
                         <!-- Validation Rules (Always Visible) -->
-                        <div class="space-y-2">
+                        <div x-show="openAllValid" class="space-y-2">
                             <!-- Lowercase Letter -->
                             <div class="flex items-center gap-2">
                                 <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500"
@@ -131,16 +140,6 @@
                                     {{ __('Password must not contain leading or trailing spaces') }}
                                 </p>
                             </div>
-                        </div>
-
-                        <!-- Confirm Password -->
-                        <div class="w-full">
-                            <x-ui.label value="Re-enter new password:"
-                                class="text-base! font-semibold! mb-3! text-text-white!" />
-                            <x-ui.input type="password" placeholder="Re-enter new password"
-                                class="border-0! bg-bg-info!  placeholder:text-text-white"
-                                wire:model="form.password_confirmation" />
-                            <x-ui.input-error :messages="$errors->get('form.password_confirmation')" />
                         </div>
 
                         <!-- Action Buttons -->
