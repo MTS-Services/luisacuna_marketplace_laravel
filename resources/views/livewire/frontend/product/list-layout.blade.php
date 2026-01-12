@@ -48,11 +48,11 @@
             </x-ui.custom-select>
 
             <div class="hidden md:flex w-70">
-                <x-ui.custom-select wire:model.live="sortDirection"
-                    class="w-full rounded-full! bg-transparent! border! border-zinc-700!" label="Sort By">
-                    <x-ui.custom-option label="{{ __('Lowest to Highest') }}" value="asc" />
-                    <x-ui.custom-option label="{{ __('Highest to Lowest') }}" value="desc" />
-                </x-ui.custom-select>
+                <x-ui.select wire:model.live="sortDirection"
+                    class="w-full rounded-full! bg-transparent! border! border-zinc-700!">
+                    <option value="asc">{{ __('Lowest to Highest') }}</option>
+                    <option value="desc">{{ __('Highest to Lowest') }}</option>
+                </x-ui.select>
             </div>
         </div>
 
@@ -241,7 +241,6 @@
                     @forelse ($otherSellers as $seller)
                         <tr wire:key="row-{{ $seller->id }}" wire:click="selectItem({{ $seller->id }})"
                             class="bg-bg-secondary hover:bg-zinc-800 transition-colors cursor-pointer group">
-
                             <td class="px-6 py-4 rounded-l-2xl">
                                 <div class="flex items-center gap-3">
                                     <img src="{{ auth_storage_url($seller->user?->avatar) }}"

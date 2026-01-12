@@ -184,6 +184,14 @@ class Product extends BaseModel implements Auditable
             $query->orderBy('seller_positive_count', 'desc');
         });
 
+        $query->when($filters['top_sold'] ?? null, function ($query) {
+            $query->withCount([
+                'orders as completed_orders_count' => function ($q) {
+                    $q->where('status', \App\Enums\OrderStatus::COMPLETED);
+                }
+            ])->orderByDesc('completed_orders_count');
+        });
+
         if (!empty($filters['isStocked'])) {
             $query->where('quantity', '>', 0);
         }
