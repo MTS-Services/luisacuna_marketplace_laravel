@@ -63,6 +63,62 @@ class PaymentController extends Controller
     }
 
     /**
+     * Top-up payment success page
+     * This handles the success callback for wallet top-up payments
+     */
+    public function topUpSuccess(Request $request)
+    {
+        $orderId = $request->query('order_id');
+        $sessionId = $request->query('session_id');
+
+        if (!$sessionId) {
+            return redirect()->route('user.payment.failed', ['order_id' => $orderId])
+                ->with('error', 'Invalid payment session');
+        }
+
+        // Confirm the top-up payment
+        $gateway = PaymentGateway::where('slug', 'stripe')->first();
+        if ($gateway) {
+            try {
+                $paymentMethod = $gateway->paymentMethod();
+                $result = $paymentMethod->confirmPayment($sessionId);
+
+                if ($result['success']) {
+                    Log::info('Top-up payment confirmed successfully', [
+                        'session_id' => $sessionId,
+                        'order_id' => $orderId,
+                    ]);
+
+                    // Redirect to order complete page
+                    return redirect()->route('user.order.complete', ['orderId' => $orderId])
+                        ->with('success', 'Payment completed successfully! Your wallet has been topped up and order has been paid.');
+                } else {
+                    Log::warning('Top-up payment confirmation failed', [
+                        'session_id' => $sessionId,
+                        'order_id' => $orderId,
+                        'error' => $result['message'] ?? 'Unknown error',
+                    ]);
+
+                    return redirect()->route('user.payment.failed', ['order_id' => $orderId])
+                        ->with('error', $result['message'] ?? 'Payment confirmation failed');
+                }
+            } catch (\Exception $e) {
+                Log::error('Error confirming top-up payment', [
+                    'session_id' => $sessionId,
+                    'order_id' => $orderId,
+                    'error' => $e->getMessage(),
+                ]);
+
+                return redirect()->route('user.payment.failed', ['order_id' => $orderId])
+                    ->with('error', 'An error occurred while confirming your payment');
+            }
+        }
+
+        return redirect()->route('user.payment.failed', ['order_id' => $orderId])
+            ->with('error', 'Payment gateway not available');
+    }
+
+    /**
      * Payment failed page
      */
     public function paymentFailed(Request $request)

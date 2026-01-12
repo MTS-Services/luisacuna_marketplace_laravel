@@ -7,13 +7,13 @@
             <x-ui.select name="lang" class="text-text-white!">
                 @foreach ($languages as $language)
                     <option value="{{ $language->locale }}"
-                        {{ session('locale', 'en') == $language->locale ? 'selected' : '' }}>
-                        {{ $language->native_name }} ({{ strtoupper($language->locale) }})</option>
+                        {{ session('locale', app()->getLocale()) == $language->locale ? 'selected' : '' }}>
+                        {{ $language->native_name }} ({{ strtoupper($language->locale) }})
+                    </option>
                 @endforeach
             </x-ui.select>
         </div>
 
-        <!-- Currency Selection (Only EUR for french) -->
         <div>
             <x-ui.label class="mb-1!">{{ __('Currency') }}</x-ui.label>
             <x-ui.select name="currency" class="text-text-white!">
@@ -28,7 +28,6 @@
             </x-ui.select>
         </div>
 
-        <!-- Buttons -->
         <div class="flex flex-col gap-2 mt-4">
             <x-ui.button type="submit" class="w-auto! py-2! rounded-lg! ">
                 {{ __('Save') }}

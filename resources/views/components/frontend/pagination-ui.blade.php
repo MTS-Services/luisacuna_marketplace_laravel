@@ -1,4 +1,4 @@
-@props(['pagination' => []])
+@props(['pagination' => [], 'class' => ''])
 
 @php
 
@@ -7,11 +7,11 @@
 
     $start = max(4, $current - 1);
     $end   = min($last - 3, $current + 1);
+    $class = $class ?? '';
 @endphp
 
 @if ($last > 1)
-<div class="flex flex-wrap items-center justify-end mt-8 text-sm gap-2 mb-7">
-
+<div class="flex flex-wrap items-center justify-end mt-8 text-sm gap-2 mb-7 {{ $class }}">
     {{-- Previous --}}
     <button
         wire:click="previousPage"

@@ -157,6 +157,9 @@ class User extends AuthBaseModel implements Auditable
             UserNotificationSetting::create([
                 'user_id' => $user->id,
             ]);
+            UserPoint::updateOrCreate([
+                'user_id' => $user->id,
+            ]);
         });
     }
 
@@ -291,6 +294,10 @@ class User extends AuthBaseModel implements Auditable
         return $this->hasMany(UserAchievementProgress::class, 'user_id', 'id');
     }
 
+    public function pointLogs()
+    {
+        return $this->hasMany(PointLog::class, 'user_id', 'id');
+    }
     /*
     |--------------------------------------------------------------------------
     | Query Scopes
@@ -526,6 +533,6 @@ class User extends AuthBaseModel implements Auditable
     public function isVerifiedSeller(): bool
     {
         $this->load('seller');
-        return (bool) $this->seller?->seller_verified_at;
+        return (bool) ($this->seller?->seller_verified_at !== null);
     }
 }
