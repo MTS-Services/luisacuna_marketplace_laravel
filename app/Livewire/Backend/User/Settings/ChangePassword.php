@@ -48,7 +48,7 @@ class ChangePassword extends Component
                 'password_confirmation' => $this->form->password_confirmation,
             ];
 
-            $this->service->updateData(auth()->id(), $data);
+            $this->service->updateData(user()->id, $data);
 
             $this->closeModal();
             $this->success(__('Password changed successfully!'));
@@ -59,7 +59,7 @@ class ChangePassword extends Component
             throw $e;
         } catch (\Exception $e) {
             Log::error('Password change failed', [
-                'user_id' => auth()->id(),
+                'user_id' => user()->id,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);

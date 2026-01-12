@@ -25,7 +25,7 @@
                     <!-- Upload Area -->
                     <div class="flex flex-col items-center! xxs:items-start!">
                         <label for="imageUpload"
-                            class="bg-zinc-500 hover:bg-bg-white hover:text-zinc-500 text-text-white font-medium py-2 px-4 rounded-full cursor-pointer transition text-sm w-fit">
+                            class="bg-zinc-500 text-white hover:bg-bg-white hover:text-zinc-500 text-text-white font-medium py-2 px-4 rounded-full cursor-pointer transition text-sm w-fit">
                             {{ __('Upload image') }}
                         </label>
 
@@ -230,7 +230,9 @@
                                         </div>
                                         <div class="mt-2">
                                             <p class="text-text-white text-sm sm:text-xl">
-                                                <span class="text-pink-500">{{ __('Verified') }}</span>
+                                                @if (!is_email_verified(user()))
+                                                    <span class="text-pink-500">{{ __('Verified') }}</span>
+                                                @endif
                                                 {{ __('This email is linked to your account. It is not visible to other users.') }}
                                             </p>
                                         </div>
@@ -246,7 +248,7 @@
                                 <label
                                     class="block text-sm font-medium text-text-primary mb-2">{{ __('Email:') }}</label>
                                 <div class="relative">
-                                    <input type="email" wire:model.blur="form.email"
+                                    <input type="email" wire:model.live="form.email"
                                         class="w-full bg-bg-secondary border @error('form.email') border-red-500 @else border-zinc-300 dark:border-zinc-700 @enderror rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                         placeholder="Enter email">
                                 </div>
@@ -295,7 +297,7 @@
                                 <label
                                     class="block text-sm font-medium text-text-primary mb-2">{{ __('Username:') }}</label>
                                 <div class="relative">
-                                    <input type="text" wire:model.blur="form.username"
+                                    <input type="text" wire:model.live="form.username"
                                         class="w-full bg-bg-secondary border @error('form.username') border-red-500 @else border-zinc-300 dark:border-zinc-700 @enderror rounded-lg px-4 py-2.5 text-text-primary focus:outline-hidden focus:ring-2 focus:ring-accent"
                                         placeholder="Enter username">
                                 </div>
