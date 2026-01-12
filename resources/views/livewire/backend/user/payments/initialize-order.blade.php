@@ -172,8 +172,8 @@
 
                 <div class="w-full">
                     <p class="text-text-primary font-medium flex items-center gap-2">
-                        <span> {{ $product?->user?->full_name }}</span>
-                        @if ($product?->user?->seller?->seller_verified_at)
+                        <span> {{ $product->user->full_name }}</span>
+                        @if ($product->user?->isVerifiedSeller())
                             <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
                         @endif
                     </p>

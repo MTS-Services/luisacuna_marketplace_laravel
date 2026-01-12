@@ -13,6 +13,8 @@ use App\Models\Currency;
 use App\Repositories\Contracts\CurrencyRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Session;
 
 class CurrencyService
 {
@@ -23,7 +25,8 @@ class CurrencyService
         protected DeleteAction $deleteAction,
         protected RestoreAction $restoreAction,
         protected BulkAction $bulkAction,
-        protected SetDefaultCurrencyAction $setDefaultAction
+        protected SetDefaultCurrencyAction $setDefaultAction,
+        protected Currency $model
     ) {}
 
     /* ================== ================== ==================
@@ -34,18 +37,12 @@ class CurrencyService
     {
         return $this->interface->all($sortField, $order);
     }
-  /**
-     * Get the current default currency
-     */
-    public function getDefaultCurrency(): ?Currency
-    {
-        return $this->interface->getDefaultCurrency();
-    }
+
 
     /**
      * Set a currency as default using action class
      */
-   
+
     /**
      * Set a currency as default using action class
      */
@@ -64,13 +61,6 @@ class CurrencyService
         return $this->interface->exists($id);
     }
 
-    /**
-     * Get total count
-     */
-    public function count(array $filters = []): int
-    {
-        return $this->interface->count($filters);
-    }
 
     public function findData($column_value, string $column_name = 'id'): ?Currency
     {
@@ -178,13 +168,175 @@ class CurrencyService
     *                   Accessors (optionals)
     * ================== ================== ================== */
 
-    public function getActiveData($sortField = 'created_at', $order = 'desc'): Collection
+    /**
+     * Get all active currencies
+     */
+    public function getActiveData(): Collection
     {
-        return $this->interface->getActive($sortField, $order);
+        return Cache::remember('active_currencies', 3600, function () {
+            return $this->model::active()->orderBy('sort_order')->get();
+        });
     }
 
-    public function getInactiveData($sortField = 'created_at', $order = 'desc'): Collection
+    /**
+     * Get default currency
+     */
+    public function getDefaultCurrency(): ?Currency
     {
-        return $this->interface->getInactive($sortField, $order);
+        return Cache::remember('default_currency', 3600, function () {
+            return $this->model::where('is_default', true)->first();
+        });
+    }
+
+    /**
+     * Get current user's selected currency or default
+     */
+    public function getCurrentCurrency(): Currency
+    {
+        $currencyCode = Session::get('currency');
+
+        if ($currencyCode) {
+            $currency = $this->model::where('code', $currencyCode)->first();
+            if ($currency) {
+                return $currency;
+            }
+        }
+
+        // Fallback to default currency
+        return $this->getDefaultCurrency() ?? $this->model::first();
+    }
+
+    /**
+     * Get current currency code
+     */
+    public function getCurrentCurrencyCode(): string
+    {
+        return $this->getCurrentCurrency()->code;
+    }
+
+    /**
+     * Get current currency symbol
+     */
+    public function getCurrentCurrencySymbol(): string
+    {
+        return Session::get('currency_symbol') ?? $this->getCurrentCurrency()->symbol;
+    }
+
+    /**
+     * Convert amount from default currency to target currency
+     * 
+     * @param float $amount Amount in default currency
+     * @param string|null $targetCurrencyCode Target currency code (null = current user currency)
+     * @return float Converted amount
+     */
+    public function convertFromDefault(float $amount, ?string $targetCurrencyCode = null): float
+    {
+        $defaultCurrency = $this->getDefaultCurrency();
+
+        if (!$targetCurrencyCode) {
+            $targetCurrency = $this->getCurrentCurrency();
+        } else {
+            $targetCurrency = $this->model::where('code', $targetCurrencyCode)->first();
+        }
+
+        // If converting to default currency, return as-is
+        if ($targetCurrency->code === $defaultCurrency->code) {
+            return $amount;
+        }
+
+        // Convert: amount * target_exchange_rate
+        $convertedAmount = $amount * $targetCurrency->exchange_rate;
+
+        // Round to currency's decimal places
+        return round($convertedAmount, $targetCurrency->decimal_places ?? 2);
+    }
+
+    /**
+     * Convert amount from any currency to default currency
+     * 
+     * @param float $amount Amount in source currency
+     * @param string $sourceCurrencyCode Source currency code
+     * @return float Amount in default currency
+     */
+    public function convertToDefault(float $amount, string $sourceCurrencyCode): float
+    {
+        $defaultCurrency = $this->getDefaultCurrency();
+        $sourceCurrency = $this->model::where('code', $sourceCurrencyCode)->first();
+
+        // If already in default currency, return as-is
+        if ($sourceCurrency->code === $defaultCurrency->code) {
+            return $amount;
+        }
+
+        // Convert: amount / source_exchange_rate
+        $defaultAmount = $amount / $sourceCurrency->exchange_rate;
+
+        return round($defaultAmount, $defaultCurrency->decimal_places ?? 2);
+    }
+
+    /**
+     * Convert amount between two currencies
+     * 
+     * @param float $amount
+     * @param string $fromCurrency
+     * @param string $toCurrency
+     * @return float
+     */
+    public function convert(float $amount, string $fromCurrency, string $toCurrency): float
+    {
+        // First convert to default currency
+        $defaultAmount = $this->convertToDefault($amount, $fromCurrency);
+
+        // Then convert to target currency
+        return $this->convertFromDefault($defaultAmount, $toCurrency);
+    }
+
+    /**
+     * Format amount with currency symbol
+     * 
+     * @param float $amount
+     * @param string|null $currencyCode
+     * @return string
+     */
+    public function formatAmount(float $amount, ?string $currencyCode = null): string
+    {
+        if (!$currencyCode) {
+            $currency = $this->getCurrentCurrency();
+        } else {
+            $currency = $this->model::where('code', $currencyCode)->first();
+        }
+
+        $decimalPlaces = $currency->decimal_places ?? 2;
+        $formattedAmount = number_format($amount, $decimalPlaces);
+
+        return $currency->symbol . $formattedAmount;
+    }
+
+    /**
+     * Get currency data for order processing
+     * Returns both default and current currency info
+     */
+    public function getCurrencyDataForOrder(): array
+    {
+        $defaultCurrency = $this->getDefaultCurrency();
+        $currentCurrency = $this->getCurrentCurrency();
+
+        return [
+            'default_currency' => $defaultCurrency->code,
+            'default_symbol' => $defaultCurrency->symbol,
+            'current_currency' => $currentCurrency->code,
+            'current_symbol' => $currentCurrency->symbol,
+            'exchange_rate' => $currentCurrency->exchange_rate,
+            'is_converted' => $currentCurrency->code !== $defaultCurrency->code,
+        ];
+    }
+
+    /**
+     * Clear currency cache (call this when currencies are updated)
+     */
+    public function clearCache(): void
+    {
+        Cache::forget('active_currencies');
+        Cache::forget('default_currency');
     }
 }

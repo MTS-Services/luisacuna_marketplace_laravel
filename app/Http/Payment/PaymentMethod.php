@@ -2,10 +2,13 @@
 
 namespace App\Http\Payment;
 
+use App\Enums\PointType;
 use App\Events\PaymentSuccessEvent;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\PaymentGateway;
+use App\Models\PointLog;
+use App\Models\UserPoint;
 use App\Services\ConversationService;
 use Illuminate\Support\Facades\Log;
 
@@ -94,5 +97,26 @@ abstract class PaymentMethod
     public function getGateway(): ?PaymentGateway
     {
         return $this->gateway;
+    }
+
+    public function updateUserPoints(Order $order)
+    {
+        $pointLogs = PointLog::create([
+            'user_id' => $order->user_id,
+            'source_id' => $order->id,
+            'source_type' => Order::class,
+            'type' => PointType::EARNED->value,
+            'points' => $order->points,
+            'notes' => "Points earned for Order #{$order->order_id}",
+        ]);
+
+        $userPoint = UserPoint::firstOrNew(['user_id' => $order->user_id]);
+        $userPoint->points += $pointLogs->points;
+        $userPoint->save();
+
+        Log::info('User points updated', [
+            'user_id' => $order->user_id,
+            'points' => $pointLogs->points,
+        ]);
     }
 }

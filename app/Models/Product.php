@@ -105,7 +105,7 @@ class Product extends BaseModel implements Auditable
             'id',           // local key on products
             'id'            // local key on orders
         )
-        ->where('orders.source_type', Product::class);
+            ->where('orders.source_type', Product::class);
     }
 
     public function getTranslationConfig(): array
@@ -170,6 +170,26 @@ class Product extends BaseModel implements Auditable
 
         $query->when($filters['max_price'] ?? null, function ($query, $max_price) {
             $query->where('price', "<=", $max_price);
+        });
+
+        $query->when($filters['positive_reviews'] ?? null, function ($query) {
+            // 1. Add a virtual column for the count via a subquery
+            $query->addSelect([
+                'seller_positive_count' => \App\Models\Feedback::selectRaw('count(*)')
+                    ->whereColumn('target_user_id', 'products.user_id')
+                    ->where('type', 'positive')
+            ]);
+
+            // 2. Order by that virtual column (highest first, then 0s)
+            $query->orderBy('seller_positive_count', 'desc');
+        });
+
+        $query->when($filters['top_sold'] ?? null, function ($query) {
+            $query->withCount([
+                'orders as completed_orders_count' => function ($q) {
+                    $q->where('status', \App\Enums\OrderStatus::COMPLETED);
+                }
+            ])->orderByDesc('completed_orders_count');
         });
 
         if (!empty($filters['isStocked'])) {

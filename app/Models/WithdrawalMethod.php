@@ -8,6 +8,7 @@ use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class WithdrawalMethod extends AuditBaseModel implements Auditable
 {
@@ -48,30 +49,48 @@ class WithdrawalMethod extends AuditBaseModel implements Auditable
     protected $casts = [
         'status' => ActiveInactiveEnum::class,
         'fee_type' => WithdrawalFeeType::class,
+        'required_fields' => 'array',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     //
+    public function user()
+    {
+        return $this->hasMany(UserWithdrawalAccount::class);
+    }
+    public function userWithdrawalAccounts(): HasMany
+    {
+        return $this->hasMany(UserWithdrawalAccount::class);
+    }
 
-     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     public function scopeFilter(Builder $query, array $filters): Builder
+    public function scopeFilter(Builder $query, array $filters): Builder
     {
         return $query
-            ->when($filters['status'] ?? null, fn ($q, $status) =>
+            ->when(
+                $filters['status'] ?? null,
+                fn($q, $status) =>
                 $q->where('status', $status)
             )
-            ->when($filters['fee_type'] ?? null, fn ($q, $feeType) =>
+            ->when(
+                $filters['fee_type'] ?? null,
+                fn($q, $feeType) =>
                 $q->where('fee_type', $feeType)
             )
-            ->when($filters['name'] ?? null, fn ($q, $name) =>
+            ->when(
+                $filters['name'] ?? null,
+                fn($q, $name) =>
                 $q->where('name', 'like', "%{$name}%")
             );
+    }
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', ActiveInactiveEnum::ACTIVE->value);
     }
     public function __construct(array $attributes = [])
     {
@@ -80,6 +99,4 @@ class WithdrawalMethod extends AuditBaseModel implements Auditable
             //
         ]);
     }
-
-    
 }

@@ -15,7 +15,7 @@ class PaymentGatewaySeeder extends Seeder
         $gateways = [
             [
                 'sort_order' => 1,
-                'name' => 'Stripe',
+                'name' => 'Cards',
                 'slug' => 'stripe',
                 'icon' => null,
                 'live_data' => [
@@ -43,7 +43,7 @@ class PaymentGatewaySeeder extends Seeder
             ],
             [
                 'sort_order' => 3,
-                'name' => 'Wallet',
+                'name' => 'Swapy Wallet',
                 'slug' => 'wallet',
                 'icon' => null,
                 'is_active' => true,

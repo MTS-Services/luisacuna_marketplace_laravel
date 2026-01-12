@@ -39,7 +39,9 @@
                                     <h3 class="text-2xl font-semibold text-text-white mb-2 line-clamp-2">
                                         {{ user()->full_name }}
                                     </h3>
-                                    <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
+                                    @if (user()->isVerifiedSeller())
+                                        <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
+                                    @endif
                                 </div>
                                 <div class="flex items-center text-text-primary text-xs">
                                     <p>{{ __('Registered: ') }} {{ user()->created_at->format('n/j/Y') }}</p>
@@ -199,7 +201,7 @@
                         class="text-xs sm:text-sm lg:text-base font-medium text-text-white">{{ __('Loyalty') }}</span>
                 </a>
                 <!-- Wallet Link -->
-                <a href="{{ route('user.wallet') }}" wire:navigate @click="$root.sidebarOpen = false"
+                <a href="{{ route('user.wallet.index') }}" wire:navigate @click="$root.sidebarOpen = false"
                     class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'wallet' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                     <x-phosphor name="cardholder" variant="regular" class="w-4 h-4 sm:w-5 sm:h-5 text-text-white" />
                     <span

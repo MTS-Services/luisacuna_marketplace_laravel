@@ -2,372 +2,303 @@
     <section class="container mt-2">
         <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" :game="$game" />
 
+        {{-- Breadcrumbs --}}
         <div class="flex items-center gap-2 mt-8 text-lg font-semibold">
             <div class="w-4 h-4">
                 <img src="{{ asset('assets/images/items/1.png') }}" alt="m logo" class="w-full h-full object-cover">
             </div>
             <h1 class="text-text-primary">
-                {{ ucwords(str_replace('-', ' ', $gameSlug)) . '/ ' . ucwords(str_replace('-', ' ', $categorySlug)) }}
+                {{ ucwords(str_replace('-', ' ', $gameSlug)) . ' / ' . ucwords(str_replace('-', ' ', $categorySlug)) }}
             </h1>
             <span class="text-text-primary">></span>
             <span class="text-text-primary">{{ __('Shop') }}</span>
         </div>
 
+        {{-- Filters & Sort --}}
         <div class="mt-8">
             <div class="flex items-center justify-between">
-                <div>
-                    <span class="text-base font-semibold">{{ __('Select Filter') }}</span>
-                </div>
+                <span class="text-base font-semibold">{{ __('Select Filter') }}</span>
 
                 <div class="block md:hidden relative z-10" x-data="{ open: false }">
                     <div @click="open = !open" class="cursor-pointer inline-block">
                         <x-phosphor name="sort-ascending" variant="bold" class="fill-white w-6 h-6" />
                     </div>
-
-                    <div x-show="open" @click.outside="open = false"
-                        x-transition:enter="transition ease-out duration-100"
-                        x-transition:enter-start="transform opacity-0 scale-95"
-                        x-transition:enter-end="transform opacity-100 scale-100"
-                        x-transition:leave="transition ease-in duration-75"
-                        x-transition:leave-start="transform opacity-100 scale-100"
-                        x-transition:leave-end="transform opacity-0 scale-95"
-                        class="absolute right-0 mt-2 w-48 p-2 bg-bg-primary rounded-2xl shadow-lg origin-top-right"
-                        style="display: none;">
-                        <a href="#" @click.prevent="$wire.set('sortDirection', 'asc'); open = false"
-                            class="text-text-white block px-3 py-2 text-sm hover:bg-zinc-700 rounded-lg transition-colors duration-150">
+                    <div x-show="open" @click.outside="open = false" x-transition
+                        class="absolute right-0 mt-2 w-48 p-2 bg-bg-primary rounded-2xl shadow-lg origin-top-right">
+                        <button wire:click="$set('sortDirection', 'asc')" @click="open = false"
+                            class="w-full text-left text-text-white block px-3 py-2 text-sm hover:bg-zinc-700 rounded-lg">
                             {{ __('Lowest To Highest') }}
-                        </a>
-                        <a href="#" @click.prevent="$wire.set('sortDirection', 'desc'); open = false"
-                            class="text-text-white block px-3 py-2 text-sm hover:bg-zinc-700 rounded-lg transition-colors duration-150">
+                        </button>
+                        <button wire:click="$set('sortDirection', 'desc')" @click="open = false"
+                            class="w-full text-left text-text-white block px-3 py-2 text-sm hover:bg-zinc-700 rounded-lg">
                             {{ __('Highest to Lowest') }}
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="mt-3 mb-6 flex items-center justify-between">
-
-
-            <x-ui.custom-select wire-model="serach" :wire-live="true"
+        <div class="mt-3 mb-6 flex items-center justify-between gap-4">
+            <x-ui.custom-select wire:model.live="serach"
                 class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!" label="Filter">
-
-                <x-ui.custom-option label="All" value="all" />
-
+                <x-ui.custom-option label="All" value="" />
                 @foreach ($tags as $tag)
                     <x-ui.custom-option label="{{ $tag }}" value="{{ $tag }}" />
                 @endforeach
-
             </x-ui.custom-select>
 
-
-            <div class="w-auto! sm:w-70!   hidden md:flex ">
-                <x-ui.custom-select wire-model="sortDirection" :wire-live="true"
-                    class="pl-5! rounded-full! bg-transparent! border! border-zinc-700!" label="Sort By">
-
-                    <x-ui.custom-option label="{{ __('Lowest to Highest') }}" value="{{ __('asc') }}" />
-
-                    <x-ui.custom-option label="{{ __('Highest to Lowest') }}" value="{{ __('desc') }}" />
-
+            <div class="hidden md:flex w-56!">
+                <x-ui.custom-select wireModel="sortDirection" :wireLive="true" :label="__('Highest to Lowest')"
+                    class="w-full rounded-full! bg-transparent! border! border-zinc-700!">
+                    <x-ui.custom-option label="Lowest To Highest" value="asc" />
+                    <x-ui.custom-option label="Highest to Lowest" value="desc" />
                 </x-ui.custom-select>
             </div>
         </div>
 
         <div class="mb-10">
-            <span class="text-base font-semibold text-text-white">{{ __('About 21 results') }}</span>
+            <span class="text-base font-semibold text-text-white">{{ $datas->total() }}
+                {{ __('results found') }}</span>
         </div>
     </section>
 
     {{-- Main content --}}
-    <section class="container">
-        <div class="md:flex gap-6 h-auto" x-data={data:{}}>
-            <div class="relative min-h-auto md:min-h-[40vh] ">
-                <x-loading-animation :target="'selectedSort, selectedRegion, resetAllFilters'" :style="'list'" />
-            </div>
+    <section class="container" x-data="{ selectedId: @entangle('product.id') }">
+        <div class="md:flex gap-6 items-start">
 
-            <div class="w-full md:w-[65%]">
-                <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4 content-start">
-                    @forelse ($datas as $data)
-                        <div wire:loading.class="opacity-0" wire:target="selectedSort, selectedRegion, resetAllFilters"
-                            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
-                            x-transition:enter-end="opacity-100" wire:click="selectItem('{{ encrypt($data->id) }}')"
-                            {{-- @click="data = { 
-                                name: {{ Js::from(substr($data->name, 0, 20)) }},
-                                quantity: {{ $data->quantity }},
-                                price: {{ $data->quantity * $data->price }},
-                                logo: {{ Js::from(storage_url($game->logo)) }}, 
-                                delivery_timeline: {{ Js::from($data?->delivery_timeline ?? 'N/A') }},
-                                seller: {{ Js::from($data->user->full_name ?? 'N/A') }},
-                                sold: {{ Js::from($data->feedbacksReceived?->sum('quantity') ?? '1642') }},
-                                rating: {{ Js::from(feedback_calculate($positiveFeedbacksCount, $negativeFeedbacksCount) ?? '0') }},
-                                avater: {{ Js::from(storage_url($data->user->avatar)) }}
-                            }" --}}
-                            class="bg-bg-primary dark:bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300 cursor-pointer">
+            {{-- Product Grid --}}
+            <div class="w-full md:w-[65%] flex flex-col">
+                <div class="relative">
+                    <x-loading-animation target="serach, sortDirection, selectItem" style="list" />
 
-                            <div class="flex items-center justify-between">
-                                <div class="w-6 h-6">
-                                    <img src="{{ storage_url($game?->logo) }}" alt="{{ $game->name }}"
-                                        class="w-full h-full object-cover">
-                                </div>
-                                <div>
-                                    @if ($game?->tags && $game->tags->isNotEmpty())
-                                        <a href=""
-                                            class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl inline-block text-xs">
-                                            <x-phosphor name="fire" variant="regular"
-                                                class="inline-block fill-white" />
-                                            {{ $game->tags->random()->name }}
-                                        </a>
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4 content-start"
+                        wire:loading.class="opacity-50">
+                        @forelse ($datas as $item)
+                            <div wire:key="prod-{{ $item->id }}" wire:click="selectItem({{ $item->id }})"
+                                @click="selectedId = {{ $item->id }}"
+                                :class="selectedId == {{ $item->id }} ? 'border-pink-500 ring-1 ring-pink-500' :
+                                    'border-transparent'"
+                                class="bg-bg-primary dark:bg-bg-secondary rounded-2xl p-3 border transition-all duration-300 cursor-pointer hover:border-pink-500/50">
+
+                                <div class="flex items-center justify-between">
+                                    <img src="{{ storage_url($game?->logo) }}" class="w-6 h-6 object-cover">
+                                    @if ($game->tags->isNotEmpty())
+                                        <span
+                                            class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl text-[10px] flex items-center gap-1">
+                                            <x-phosphor name="fire" variant="regular" class="w-3 h-3 fill-white" />
+                                            {{ $game->tags->first()->name }}
+                                        </span>
                                     @endif
                                 </div>
+                                <h3 class="text-base font-semibold text-text-white mt-4">{{ $item->quantity }} Units
+                                </h3>
+                                <p class="text-xs text-text-white mt-2 opacity-70">{{ Str::limit($item->name, 22) }}
+                                </p>
+                                <span class="block text-base font-semibold text-pink-500 mt-4">
+                                    {{ currency_symbol() . currency_exchange($item->price) }}
+                                </span>
                             </div>
-                            <h3 class="text-base font-semibold text-text-white mt-4">{{ $data->quantity }}</h3>
-                            <p class="text-xs text-text-white mt-2">{{ Str::limit($data->name, 20) }}</p>
-                            <span class="block text-base font-semibold text-pink-500 mt-4">
-                                ${{ number_format($data->quantity * $data->price, 2) }}
-                            </span>
-                        </div>
-                    @empty
-                        <div class="col-span-full">
-                            <x-ui.empty-card />
-                        </div>
-                    @endforelse
+                        @empty
+                            <div class="col-span-full">
+                                <x-ui.empty-card />
+                            </div>
+                        @endforelse
+                    </div>
                 </div>
 
-                <div class="mt-5">
-                    <x-frontend.pagination-ui :pagination="$pagination" />
+                <div class="mt-8">
+                    <x-frontend.pagination-ui :pagination="$pagination" class="justify-center!" />
                 </div>
             </div>
 
-            <div class="w-full md:w-[35%] mt-4 md:mt-0">
-                <div class="bg-bg-primary dark:bg-bg-secondary rounded-2xl py-7 px-6">
-                    @if ($product)
-                        <div class="flex items-center gap-1 mb-8">
-                            <div class="w-8 h-8">
-                                <img src="{{ storage_url($product->game->logo) }}" alt=""
-                                    class="w-full h-full object-cover">
-                            </div>
-                            <p></p>
-                        </div>
-                    @else
-                        <p>{{ __('No Product Selected') }}</p>
-                    @endif
-                    <div class="flex items-center justify-between py-3 border-t border-b  border-zinc-500 w-full">
-                        <p class="text-base text-text-white"> {{ __('Delivery Timeline') }}</p>
+            {{-- Checkout Sidebar --}}
+            <aside class="w-full md:w-[35%] mt-4 md:mt-0 sticky top-4">
+                <div class="bg-bg-primary dark:bg-bg-secondary rounded-2xl py-7 px-6 border border-zinc-800 shadow-xl">
+                    <div class="animate-in fade-in slide-in-from-right-4 duration-300">
                         @if ($product)
-                            <p class="text-base text-text-white font-semibold">{{ $product->delivery_timeline }}</p>
+                            <div class="flex items-center gap-1 mb-8">
+                                <div class="w-8 h-8">
+                                    <img src="{{ storage_url($product->game->logo) }}" alt=""
+                                        class="w-full h-full object-cover">
+                                </div>
+                                <p></p>
+                            </div>
                         @else
-                            <p class="text-base text-text-white font-semibold">N/A</p>
+                            <p class="text-base text-text-white mb-3">{{ __('No Product Selected') }}</p>
                         @endif
-                    </div>
-                    <span class="w-full inline-block"></span>
+                        <div class="flex items-center justify-between py-3 border-t border-b  border-zinc-500 w-full">
+                            <p class="text-base text-text-white"> {{ __('Delivery Timeline') }}</p>
+                            @if ($product)
+                                <p class="text-base text-text-white font-semibold">{{ $product->delivery_timeline }}
+                                </p>
+                            @else
+                                <p class="text-base text-text-white font-semibold">N/A</p>
+                            @endif
+                        </div>
 
-                    @if ($product)
-                        <div class="mt-4">
+                        <div class="space-y-4 mt-8">
                             @auth('web')
-                                <form action="" wire:submit="submit">
-                                    <x-ui.button wire:click="submit" class="py-2!">
-                                        <span class="text-text-white group-hover:text-zinc-500">PEN</span>
-                                        <span x-text="data.price" class="text-text-white group-hover:text-zinc-500"></span>
-                                        {{ ' Buy Now' }}
-                                    </x-ui.button>
-                                </form>
+                                <x-ui.button wire:click="submit" wire:loading.attr="disabled" class="w-full py-2!">
+                                    <span wire:loading.remove wire:target="submit"
+                                        class="text-text-white group-hover:text-zinc-500">
+                                        {{ currency_code() }} {{ currency_exchange($product->price ?? 00) }}
+                                        {{ __(' Buy Now') }}
+                                    </span>
+                                    <span wire:loading wire:target="submit"
+                                        class="text-text-white group-hover:text-zinc-500">{{ __('Processing...') }}</span>
+                                </x-ui.button>
                             @else
                                 <a href="{{ route('login') }}" wire:navigate
                                     class="bg-zinc-500 px-4 md:px-6 py-2! md:py-4 text-text-text-btn-primary hover:text-text-btn-secondary hover:bg-zinc-50 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group text-nowrap cursor-pointer">
-                                    <span class="text-text-white group-hover:text-zinc-500">PEN</span>
-                                    <span x-text="data.price" class="text-text-white group-hover:text-zinc-500"></span>
+                                    <span class="text-text-white group-hover:text-zinc-500">{{ currency_code() }}</span>
+                                    <span
+                                        class="text-text-white group-hover:text-zinc-500">{{ currency_exchange($product->price ?? 00) }}</span>
                                     {{ ' Buy Now' }}
                                 </a>
                             @endauth
                         </div>
-                    @else
-                        <div class="mt-4">
-                            @auth('web')
-                                <form action="" wire:submit.prevent>
-                                    <x-ui.button disabled class="py-2! opacity-50 cursor-not-allowed">
-                                        <span class="text-text-white">PEN</span>
-                                        <span x-text="data.price" class="text-text-white"></span>
-                                        {{ ' Buy Now' }}
-                                    </x-ui.button>
-                                </form>
-                            @else
-                                <div
-                                    class="bg-zinc-500 px-4 md:px-6 py-2! md:py-4 text-text-white border border-zinc-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 opacity-50 cursor-not-allowed text-nowrap">
-                                    <span class="text-text-white">PEN</span>
-                                    <span x-text="data.price" class="text-text-white"></span>
-                                    {{ ' Buy Now' }}
-                                </div>
-                            @endauth
-                        </div>
-                    @endif
 
-
-                    <div class="flex items-center gap-2 mt-8">
-                        <flux:icon name="shield-check" class="w-6 h-6" />
-                        <p class="text-text-white text-base font-semibold">{{ __('Money-back Guarantee') }}</p>
-                        <span
-                            class="text-xs text-text-primary dark:text-zinc-200/60">{{ __('Protected by TradeShield') }}</span>
-                    </div>
-
-                    <div class="flex items-center gap-2 mt-4">
-                        <flux:icon name="bolt" class="w-6 h-6" />
-                        <p class="text-text-white text-base font-semibold">{{ __('Fast Checkout Options') }}</p>
-                        <div class="flex items-center gap-2 w-11 h-7">
-                            <img src="{{ asset('assets/images/gift_cards/google.png') }}" alt=""
-                                class="w-full h-full">
-                            <img src="{{ asset('assets/images/gift_cards/apple.png') }}" alt=""
-                                class="w-full h-full">
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-2 mt-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="w-6 h-6">
-                            <rect fill="none" />
-                            <path d="M224,200v8a32,32,0,0,1-32,32H136" fill="none" stroke="currentColor"
-                                stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-                            <path
-                                d="M224,128H192a16,16,0,0,0-16,16v40a16,16,0,0,0,16,16h32V128a96,96,0,1,0-192,0v56a16,16,0,0,0,16,16H64a16,16,0,0,0,16-16V144a16,16,0,0,0-16-16H32"
-                                fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="16" />
-                        </svg>
-                        <p class="text-text-white text-base font-semibold">{{ __('24/7 Live Support') }}</p>
-                        <span
-                            class="text-xs text-text-primary dark:text-zinc-200/60">{{ __('We\'re always here to help') }}</span>
-                    </div>
-                </div>
-
-                <div class="mt-6 bg-bg-primary dark:bg-bg-secondary rounded-2xl py-7 px-6">
-                    <h3 class="text-text-white text-base font-semibold mb-2">{{ __('Delivery instructions') }}</h3>
-                    @if ($product)
-                        {{-- <div class="flex gap-2">
-                            <span class="text-sm text-text-white">{{ __('Welcome') }}</span>
-                            <span class="inline-block w-px h-3 bg-zinc-500"></span>
-                            <span class="text-sm text-text-white">{{ __('Why choose us') }}</span>
-                        </div> --}}
-                        <div class="" x-data="{ expanded: false }">
-                            <span class="text-sm text-text-white" :class="expanded ? '' : 'line-clamp-4'">
-                                {{ $product?->description }}
-                            </span>
-
-                            <button @click="expanded = !expanded"
-                                class="text-base font-semibold text-pink-500 block mt-2"
-                                x-show="$el.previousElementSibling.scrollHeight > $el.previousElementSibling.clientHeight || expanded">
-                                <span class="text-base font-semibold text-pink-500 block"
-                                    x-show="!expanded">{{ __('See all') }}</span>
-                                <span class="text-base font-semibold text-pink-500 block"
-                                    x-show="expanded">{{ __('Show less') }}</span>
-                            </button>
-                        </div>
-
-
-
-                        <span class="border-t-2 border-zinc-500 w-full inline-block mt-8"></span>
-                        <div class="flex gap-4 items-center mt-4">
-                            <div class="w-14 h-14">
-
-                                <img src="{{ auth_storage_url($product?->user?->avatar) }}" alt=""
-                                    class="w-full h-full object-cover">
+                        {{-- Trust Badges --}}
+                        <div class="mt-8 space-y-4 opacity-80">
+                            <div class="flex items-center gap-3">
+                                <flux:icon name="shield-check" class="w-5 h-5 text-green-500" />
+                                <p class="text-xs text-text-white font-medium">{{ __('Protected by TradeShield') }}
+                                </p>
                             </div>
-                            <div>
-                                <h2 class="text-text-white font-semibold text-base">{{ $product?->user?->full_name }}
-                                </h2>
-                                <div class="flex items-center gap-2">
-                                    <x-phosphor name="thumbs-up" variant="solid" class="fill-zinc-600" />
-                                    <span
-                                        class="text-xs text-text-white">{{ feedback_calculate($positiveFeedbacksCount, $negativeFeedbacksCount) }}
-                                        %</span>
-                                    <span class="w-px h-4 bg-zinc-200"></span>
-                                    <span
-                                        class="text-xs text-text-white">{{ $product?->feedbacksReceived?->count() ?? 0 }}
-                                        {{ __('Reviews') }} </span>
-                                    <span class="w-px h-4 bg-zinc-200"></span>
-                                    <span class="text-xs text-text-white">{{ $product?->user?->orders?->where('status', \App\Enums\OrderStatus::COMPLETED->value)->count() ?? '0' }} {{ __('Sold') }}</span>
-                                </div>
+                            <div class="flex items-center gap-3">
+                                <flux:icon name="bolt" class="w-5 h-5 text-yellow-500" />
+                                <p class="text-xs text-text-white font-medium">
+                                    {{ __('Instant Delivery Available') }}</p>
                             </div>
                         </div>
-                    @else
-                        <p>{{ __('Product not found') }}</p>
-                    @endif
 
+                        {{-- Seller Profile Card --}}
+                        @if ($product)
+                            <div class="mt-8 pt-6 border-t border-zinc-700">
+                                <div class="flex items-center gap-4">
+                                    <img src="{{ auth_storage_url($product->user?->avatar) }}"
+                                        class="w-12 h-12 rounded-full border border-zinc-700">
+                                    <div class="flex-1">
+                                        <h4 class="text-white font-semibold text-sm">
+                                            {{ $product->user?->full_name }}
+                                        </h4>
+                                        <div class="flex items-center gap-2 mt-1">
+                                            <x-phosphor name="thumbs-up" variant="solid"
+                                                class="w-3 h-3 fill-green-500" />
+                                            <span class="text-[10px] text-zinc-300">
+                                                {{ feedback_calculate($product->user->pos_count ?? 0, $product->user->neg_count ?? 0) }}%
+                                                Positive
+                                            </span>
+                                            <span class="w-px h-2 bg-zinc-600"></span>
+                                            <span
+                                                class="text-[10px] text-zinc-300">{{ $product->user->orders_count ?? 0 }}
+                                                Sold</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
                 </div>
-            </div>
+            </aside>
         </div>
     </section>
 
-    {{-- Seller list section --}}
-    <section class="container mt-32">
+    {{-- Other Sellers Table --}}
+    <section class="container mt-32 mb-20">
         <div class="mb-10">
-            <h2 class="text-text-white font-semibold text-40px">{{ __('Other sellers') }} {{ $data->user->count() }}</h2>
+            <h2 class="text-text-white font-semibold text-3xl">{{ __('Other Sellers') }}
+                ({{ $otherSellers->count() }})</h2>
         </div>
-        <div class="mt-10 mb-6 flex items-center justify-between">
-            <x-ui.select id="status-select" class="py-0.5! w-full sm:w-70 rounded-full!">
-                <option value="">{{ __('Recommended') }}</option>
-                <option value="completed">{{ __('Completed') }}</option>
-                <option value="pending">{{ __('Pending') }}</option>
-                <option value="processing">{{ __('Processing') }}</option>
-            </x-ui.select>
+
+        <div class="mt-10 mb-6 flex items-center justify-between gap-4">
+            <x-ui.custom-select wireModel="sellerFilter" :wireLive="true" :label="__('Recommended')"
+                class="py-3! w-full sm:w-70 rounded-full!">
+                <x-ui.custom-option label="Recommended" value="recommended" />
+                <x-ui.custom-option label="Positive Reviews" value="positive_reviews" />
+                <x-ui.custom-option label="Top Sold" value="top_sold" />
+                <x-ui.custom-option label="Lowest Price" value="lowest_price" />
+                <x-ui.custom-option label="In Stock" value="in_stock" />
+            </x-ui.custom-select>
+
             <button
-                class="px-4 py-2 border border-green-500 text-green-500 rounded-full text-sm hover:bg-green hover:text-white transition">
+                class="px-4 py-2 border border-green-500 text-green-500 rounded-full text-sm hover:bg-green hover:text-white transition whitespace-nowrap">
                 {{ __('● Online Seller') }}
             </button>
         </div>
 
-        <div class="min-w-full text-left border-collapse">
-            <div class="flex justify-between text-text-white text-sm">
-                <div class="px-4 py-3">{{ __('All Sellers (8)') }}</div>
-                <div class="px-4 py-3 hidden md:block">{{ __('Delivery Time') }}</div>
-                <div class="px-4 py-3 hidden md:block">{{ __('Delivery Method') }}</div>
-                <div class="px-4 py-3 hidden md:block">{{ __('Stock') }}</div>
-                <div class="px-4 py-3 hidden md:block">{{ __('Price') }}</div>
-            </div>
 
-            <div class="py-7 space-y-7">
-                @forelse ($datas as $product)
-                    <div wire:click="selectItem('{{ encrypt($product->id) }}')"
-                        class="flex justify-between items-center bg-bg-primary dark:bg-bg-secondary py-2.5 px-6 rounded-2xl hover:bg-zinc-800 transition-all duration-300 cursor-pointer">
-                        <div class="px-4 py-3 flex items-center gap-4">
-                            <div class="w-10 h-10">
-                                <img src="{{ auth_storage_url($product?->user?->avatar) }}"
-                                    alt="{{ $product->user->full_name }}"
-                                    class="w-full h-full rounded-full object-cover">
-                            </div>
-                            <div>
-                                <h3 class="text-text-white text-base font-semibold">
-                                    {{ $product->user->full_name }}
-                                </h3>
-                                <div class="flex items-center gap-1">
-                                    <x-phosphor name="thumbs-up" variant="solid"
-                                        class="fill-zinc-600 inline-block" />
-                                    <span class="text-xs text-text-white">
-                                        {{ feedback_calculate($positiveFeedbacksCount, $negativeFeedbacksCount) }} %
-                                    </span>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-separate border-spacing-y-3">
+                <thead>
+                    <tr class="text-zinc-500 text-md tracking-wider">
+                        <th class="px-6 py-3 font-medium">{{ __('All Sellers') }} ({{ $otherSellers->count() }})</th>
+                        <th class="px-6 py-3 font-medium hidden md:table-cell">{{ __('Delivery Time') }}</th>
+                        <th class="px-6 py-3 font-medium hidden md:table-cell">{{ __('Delivery Method') }}</th>
+                        <th class="px-6 py-3 font-medium hidden md:table-cell text-center">{{ __('Stock') }}</th>
+                        <th class="px-6 py-3 font-medium text-right">{{ __('Price') }}</th>
+                    </tr>
+                </thead>
+                <tbody class="space-y-4" wire.loading.remove wire:target="sellerFilter">
+                    @forelse ($otherSellers as $seller)
+                        <tr wire:key="row-{{ $seller->id }}" wire:click="selectItem({{ $seller->id }})"
+                            class="bg-bg-secondary hover:bg-zinc-800 transition-colors cursor-pointer group">
+                            <td class="px-6 py-4 rounded-l-2xl">
+                                <div class="flex items-center gap-3">
+                                    <img src="{{ auth_storage_url($seller->user?->avatar) }}"
+                                        class="w-10 h-10 rounded-full">
+                                    <div>
+                                        <p class="dark:text-zinc-300 group-hover:text-zinc-300 font-medium text-sm">
+                                            {{ $seller->user?->full_name }}</p>
+                                        <div class="flex items-center gap-1 opacity-60">
+                                            <x-phosphor name="thumbs-up" variant="solid"
+                                                class="w-3 h-3 fill-zinc-400" />
+                                            @php
+                                                $positiveCount =
+                                                    $seller?->user
+                                                        ?->feedbacksReceived()
+                                                        ->where('type', App\Enums\FeedbackType::POSITIVE->value)
+                                                        ->count() ?? 0;
+
+                                                $negativeCount =
+                                                    $seller?->user
+                                                        ?->feedbacksReceived()
+                                                        ->where('type', App\Enums\FeedbackType::NEGATIVE->value)
+                                                        ->count() ?? 0;
+                                            @endphp
+                                            <span
+                                                class="text-[10px] dark:text-zinc-300 group-hover:text-white">{{ feedback_calculate($positiveCount, $negativeCount) }}%</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            </td>
 
-                        <div class="px-4 py-3 text-text-white text-base font-semibold">
-                            {{ $product->delivery_timeline }}
-                        </div>
+                            <td class="px-6 py-4 hidden md:table-cell text-sm dark:text-zinc-300 group-hover:text-zinc-300">
+                                {{ $seller->delivery_timeline ?? '--' }}
+                            </td>
 
-                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">
-                            {{ $product->delivery_method }}
-                        </div>
+                            <td class="px-6 py-4 hidden md:table-cell text-sm dark:text-zinc-300 group-hover:text-zinc-300">
+                                {{ $seller->delivery_method ?? '--' }}
+                            </td>
 
-                        <div class="px-4 py-3 text-text-white text-base font-semibold hidden md:block">
-                            {{ $product->quantity }}
-                        </div>
+                            <td class="px-6 py-4 hidden md:table-cell text-center text-sm dark:text-zinc-300 group-hover:text-zinc-300">
+                                {{ $seller->quantity ?? '00' }}
+                            </td>
 
-                        <div class="px-4 py-3 text-text-white text-base font-semibold">
-                            {{ currency_symbol() }}{{ currency_exchange($product->price) }}
-                        </div>
-                    </div>
-                @empty
-                    <div class="text-center py-10">
-                        <h2 class="text-text-white text-lg">{{ __('No products found') }}</h2>
-                    </div>
-                @endforelse
-
-            </div>
+                            <td class="px-6 py-4 rounded-r-2xl text-right">
+                                <span class="text-pink-500 font-bold">
+                                    {{ currency_symbol() }}{{ currency_exchange($seller->price) ?? '00' }}
+                                </span>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center py-10 text-zinc-500">
+                                {{ __('No other sellers available') }}</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </section>
 </div>

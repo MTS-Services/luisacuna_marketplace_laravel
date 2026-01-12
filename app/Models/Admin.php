@@ -93,6 +93,10 @@ class Admin extends AuthBaseModel implements Auditable
     {
         return $this->morphMany(ConversationParticipant::class, 'participant_id');
     }
+    public function userMethod()
+    {
+        return $this->hasMany(UserWithdrawalAccount::class);
+    }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS

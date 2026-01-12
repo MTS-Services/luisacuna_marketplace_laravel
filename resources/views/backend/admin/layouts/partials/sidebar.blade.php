@@ -361,8 +361,14 @@
                             'icon' => 'wallet-minimal',
                             'active' => 'withdrawal-method',
                         ],
+                        [
+                            'name' => 'User Methods',
+                            'route' => route('admin.wm.user-method.index'),
+                            'icon' => 'wallet-minimal',
+                            'active' => 'user-method',
+                        ],
                     ]" />
-                <x-backend.navlink type="dropdown" icon="squares-exclude" name="Gateway's & Integration"
+                {{-- <x-backend.navlink type="dropdown" icon="squares-exclude" name="Gateway's & Integration"
                     :page_slug="$active" :items="[
                         [
                             'name' => 'Payment Gateway\'s',
@@ -382,8 +388,8 @@
                             'icon' => 'languages',
                             'active' => 'translation-key',
                         ],
-                    ]" />
-                <x-backend.navlink type="dropdown" icon="radiation" name="Track Management" :page_slug="$active"
+                    ]" /> --}}
+                <x-backend.navlink type="dropdown" icon="radiation" name="Audit Management" :page_slug="$active"
                     :items="[
                         [
                             'name' => 'Audit Logs',

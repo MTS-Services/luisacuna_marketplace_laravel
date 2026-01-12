@@ -52,22 +52,12 @@ class Index extends Component
             [
                 'key' => 'name',
                 'label' => 'Title',
-                'sortable' => true,
-                'format' => function ($data) {
-                    return '<span class="text-sm font-medium text-gray-800">'
-                        . e($data->name) .
-                        '</span>';
-                },
+                'sortable' => true
             ],
             [
                 'key' => 'code',
                 'label' => 'Code',
                 'sortable' => true,
-                'format' => function ($data) {
-                    return '<span class="text-sm text-gray-600">'
-                        . e($data->code) .
-                        '</span>';
-                },
             ],
             [
                 'key' => 'status',
@@ -82,6 +72,7 @@ class Index extends Component
         ];
 
         $actions = [
+            ['key' => 'id', 'label' => 'View', 'route' => 'admin.wm.method.view', 'encrypt' => true],
             ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.wm.method.edit', 'encrypt' => true],
             ['key' => 'id', 'label' => 'Delete', 'method' => 'confirmDelete', 'encrypt' => true],
         ];

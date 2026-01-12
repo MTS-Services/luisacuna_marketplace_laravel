@@ -9,24 +9,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserPoint extends BaseModel implements Auditable
 {
-    use SoftDeletes, AuditableTrait;
+    use AuditableTrait;
     //
 
     protected $fillable = [
         'sort_order',
         'user_id',
         'points',
-
-
-
-
-        'creater_type',
-        'updater_type',
-        'deleter_type',
-        'creater_id',
-        'updater_id',
-        'deleter_id',
-        'restorer_id',
     ];
 
     protected $hidden = [

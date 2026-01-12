@@ -35,11 +35,25 @@ return new class extends Migration
             $table->string('currency')->nullable()->index();
             $table->string('payment_method')->nullable();
 
+            // Original prices in default currency
+            $table->decimal('default_unit_price', 15, 2)->nullable()->index();
+            $table->decimal('default_total_amount', 15, 2)->nullable()->index();
+            $table->decimal('default_tax_amount', 15, 2)->nullable()->index();
+            $table->decimal('default_grand_total', 15, 2)->nullable()->index();
+            $table->string('default_currency', 10)->nullable()->index();
+            $table->string('display_symbol', 10)->nullable()->index();
+            $table->decimal('exchange_rate', 15, 6)->default(1)->index();
+            $table->string('display_currency', 10)->nullable()->index()
+                ->comment('Currency displayed to user during checkout');
+
+            $table->bigInteger('points')->default(0);
+
             $table->text('notes')->nullable();
 
             $table->boolean('is_disputed')->default(false);
 
             $table->timestamp('completed_at')->nullable()->index();
+            $table->timestamp('paid_at')->nullable()->index();
 
             $table->softDeletes();
             $table->timestamps();
