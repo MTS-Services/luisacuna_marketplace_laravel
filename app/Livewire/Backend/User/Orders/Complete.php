@@ -23,6 +23,7 @@ class Complete extends Component
     public $type;
     public $rating;
     public $feedback;
+    public $hasDispute = false;
 
     public $disputeReason;
 
@@ -49,11 +50,13 @@ class Complete extends Component
             'source.game',
             'source.platform',
             'transactions',
-            'messages.conversation'
+            'messages.conversation',
+            'disputes',
         ]);
         $this->isVisitSeller = $this->order->user_id !== user()->id;
         $this->conversationId = $this->order->messages?->first()?->conversation->id ?? null;
         $this->dispatch('conversation-selected', conversationId: $this->conversationId);
+        $this->hasDispute = $this->order->is_disputed;
     }
 
     public function fetchFeedback()
@@ -73,8 +76,6 @@ class Complete extends Component
             'disputeReason' => 'required|string|min:10|max:1000',
         ],[
             'disputeReason.required' => 'Dispute reason is required',
-            'disputeReason.min' => 'Dispute reason must be at least 10 characters',
-            'disputeReason.max' => 'Dispute reason must be at most 1000 characters',
         ]);
 
         $disputed_to = user()->id != $this->order->user_id ? $this->order->user_id : $this->order->source->user_id; 
@@ -83,13 +84,19 @@ class Complete extends Component
             'reason' => $this->disputeReason,
             'disputed_by' => user()->id,
             'disputed_to' => $disputed_to,
+            'is_disputed' => 1,
         ];
         $this->orderService->disputeOrder($datas);
 
-        $this->order->refresh();
+        $this->hasDispute = true;
+
+        $this->order->fresh();
 
         $this->showDisputeModal = false;
 
+        $this->toastInfo(
+            'Dispute submitted successfully!',
+        );
     }
     public function render()
     {

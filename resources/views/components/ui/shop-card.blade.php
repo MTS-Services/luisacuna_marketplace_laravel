@@ -59,10 +59,10 @@
                 </div>
             </div>
 
-            <a href="{{ route('profile', ['username' => $data?->user?->username ?? '']) }}"
+            <div 
                 class="border-t border-zinc-500 mt-2 pt-3 flex items-center justify-between gap-3">
 
-                <div class="w-18 h-14 relative ">
+                <a  href="{{ route('profile', ['username' => $data?->user?->username ?? '']) }}" class="w-18 h-14 relative ">
                     <img src="{{ auth_storage_url($data?->user?->avatar ?? '') }}"
                         class="w-14 h-14 rounded-full border-2 border-white "
                         alt="{{ $data?->user?->full_name ?? '' }}" />
@@ -74,7 +74,7 @@
                             class="absolute bottom-0 right-0 w-5 h-5 bg-gray-400 border-2 border-white rounded-full"></span>
                     @endif
 
-                </div>
+                </a>
 
 
                 @php
@@ -89,12 +89,12 @@
                 @endphp
 
                 <div class="w-full ">
-                    <p class="text-text-white font-semibold text-base flex items-center gap-2">
+                    <a   href="{{ route('profile', ['username' => $data?->user?->username ?? '']) }}" class="text-text-white font-semibold text-base flex items-center gap-2">
                         <span> {{ $data?->user?->first_name ?? $data?->user?->username }}</span>
                         @if ($data?->user?->isVerifiedSeller())
                         <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
                         @endif
-                    </p>
+                    </a>
                     <div class="flex items-center space-x-2 mt-1">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="w-5 h-5 fill-zinc-500">
@@ -106,7 +106,7 @@
                                 class="ml-1">{{ $data?->user?->feedbacksReceived?->count() ?? 0 }}</span></p>
                     </div>
                 </div>
-            </a>
+            </div>
         </div>
     </a>
 </div>

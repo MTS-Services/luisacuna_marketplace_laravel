@@ -31,15 +31,22 @@
                         class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!">
                         {{ __('Cancel') }}
                     </x-ui.button>
-                @else
-                   
-                   <x-ui.button 
-                    wire:click="{{ $order->is_disputed ? '' : '$set(\'showDisputeModal\', true)' }}"
-                    class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none! {{ $order->is_disputed ? 'opacity-50 cursor-not-allowed' : '' }}"
-                    :disabled="$order->is_disputed"
-                >
-                    {{ $order->is_disputed ? __('Disputed') : __('Dispute') }}
-                </x-ui.button>
+                  @else
+                 
+                   @if(!$hasDispute)
+                    <x-ui.button 
+                        wire:click="{{ $order->is_disputed ? '' : '$set(\'showDisputeModal\', true)' }}"
+                        class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!"
+                        >
+                        {{ __('Dispute') }}
+                     </x-ui.button>
+                    @else 
+                    
+                        <x-ui.button class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none! opacity-50! cursor-not-allowed!">
+                            {{ __('Disputed') }}
+                        </x-ui.button>
+                    @endif
+                
                 @endif
 
             </div>
@@ -61,6 +68,12 @@
                     <div class="mt-7">
                         <p class="text-text-white text-base font-normal mb-2">
                             {{ $order->notes ?? __('No notes') }}</p>
+                    </div>
+                    <div class="mt-7">
+                        <h2 class="text-text-white text-base sm:text-2xl font-semibold"> {{ __('Order Disputed') }}</h2>
+                        <p class="text-text-white text-base font-normal mt-3">
+                            {{ $order?->disputes?->reason}}
+                        </p>
                     </div>
                 </div>
 
@@ -334,18 +347,15 @@
                 </div>
 
                 {{-- Modal Body --}}
-                <div class="p-6">
-                    <p class="text-text-primary">
-                        {{ __('Please describe the issue with this order. Our team will review your dispute and contact you shortly.') }}
-                    </p>
-                    
-                    <div class="mt-4">
+                <div class="p-6 py-0">
+
+                    <div class="mt-0">
                         <label class="block text-text-white font-medium mb-2">
                             {{ __('Dispute Reason') }}
                         </label>
                         <textarea 
                             wire:model="disputeReason"
-                            rows="5"
+                            rows="2"
                             class="w-full bg-bg-info text-text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
                             placeholder="{{ __('Explain why you are opening a dispute...') }}"></textarea>
                         @error('disputeReason')

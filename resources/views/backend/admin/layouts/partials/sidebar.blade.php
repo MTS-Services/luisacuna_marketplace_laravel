@@ -233,6 +233,13 @@
                             'active' => 'cancelled-orders',
                             'permission' => 'achievement-list',
                         ],
+                        [
+                            'name' => 'Disputed Orders',
+                            'route' => route('admin.orders.dispute-orders'),
+                            'icon' => 'medal',
+                            'active' => 'dispute-orders',
+                            'permission' => 'achievement-list',
+                        ],
                     ]" />
 
                 <x-backend.navlink type="dropdown" icon="layers" name="Level Management" :page_slug="$active"
