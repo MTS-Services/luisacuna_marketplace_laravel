@@ -5,12 +5,15 @@ namespace App\Http\Payment\Methods;
 use App\Enums\CalculationType;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentStatus;
+use App\Enums\PointType;
 use App\Enums\TransactionStatus;
 use App\Enums\TransactionType;
 use App\Http\Payment\PaymentMethod;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\PointLog;
 use App\Models\Transaction;
+use App\Models\UserPoint;
 use App\Models\Wallet;
 use App\Services\ConversationService;
 use App\Services\CurrencyService;
@@ -360,6 +363,8 @@ class StripeMethod extends PaymentMethod
                 ]),
             ]);
 
+            $this->updateUserPoints($order);
+
             $order->update([
                 'status' => OrderStatus::PAID->value,
                 'payment_method' => 'Wallet (Top-up via Stripe)',
@@ -517,6 +522,8 @@ class StripeMethod extends PaymentMethod
                 'payment_method' => 'Wallet (via Stripe)',
                 'completed_at' => now(),
             ]);
+
+            $this->updateUserPoints($order);
 
             Log::info('Stripe payment confirmed with currency conversion', [
                 'order_id' => $order->order_id,

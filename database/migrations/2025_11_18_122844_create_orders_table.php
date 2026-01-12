@@ -46,11 +46,14 @@ return new class extends Migration
             $table->string('display_currency', 10)->nullable()->index()
                 ->comment('Currency displayed to user during checkout');
 
+            $table->bigInteger('points')->default(0);
+
             $table->text('notes')->nullable();
 
             $table->boolean('is_disputed')->default(false);
 
             $table->timestamp('completed_at')->nullable()->index();
+            $table->timestamp('paid_at')->nullable()->index();
 
             $table->softDeletes();
             $table->timestamps();

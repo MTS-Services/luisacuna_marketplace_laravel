@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-     use AuditColumnsTrait;
     /**
      * Run the migrations.
      */
@@ -17,15 +16,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('user_id')->unique();
-            $table->bigInteger('points');
+            $table->bigInteger('points')->default(0);
             $table->string('note')->nullable();
 
-
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->softDeletes();
             $table->timestamps();
-
-           $this->addMorphedAuditColumns($table);
         });
     }
 
