@@ -71,5 +71,7 @@ class Detail extends Component
         session()->flash('message', 'Dispute has been processed successfully.');
         
         $this->redirect(URL::previous());
+
+        $this->info('Dispute has been processed successfully.');
     }
 }
