@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Enums\CmsType;
+use App\Enums\HelpfulType;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Cms extends AuditBaseModel implements Auditable
@@ -45,7 +47,15 @@ class Cms extends AuditBaseModel implements Auditable
         return $this->hasMany(CmsTranslation::class, 'cms_id', 'id');
     }
 
+    public function helpfuls(): HasMany
+    {
+        return $this->hasMany(Helpful::class, 'cms_id', 'id');
+    }
  
+    public function latestHelpful(): HasOne
+{
+    return $this->hasOne(Helpful::class, 'cms_id', 'id')->latestOfMany();
+}
     /* =========================================
             Translation Configuration
      ========================================= */
@@ -65,12 +75,30 @@ class Cms extends AuditBaseModel implements Auditable
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+public function getIsUsefulAttribute(): ?bool
+{
+    if (!$this->latestHelpful) {
+        return null;
+    }
+
+    return $this->latestHelpful->type === \App\Enums\HelpfulType::POSITIVE->value;
+}
+public function getHelpfulCooldownActiveAttribute(): bool
+{
+    if (!$this->latestHelpful) {
+        return false;
+    }
+
+    return $this->latestHelpful->created_at->addHours(24)->isFuture();
+}
+
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
         $this->appends = array_merge(parent::getAppends(), [
-            //
+           'helpful_cooldown_active',
+           'is_useful',
         ]);
     }
 }
