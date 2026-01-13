@@ -247,6 +247,10 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
             Route::get('/terms-condition', 'termsCondition')->name('terms-condition');
             Route::get('/refund-policy', 'refundPolicy')->name('refund-policy');
             Route::get('/privacy-policy', 'privacyPolicy')->name('privacy-policy');
+            Route::get('/how-to-buy', 'howToBuy')->name('how-to-buy');
+            Route::get('/buyer-protection', 'buyerProtection')->name('buyer-protection');
+            Route::get('/how-to-sell', 'howToSell')->name('how-to-sell');
+            Route::get('/seller-protection', 'sellerProtection')->name('seller-protection');
         });
     });
 

@@ -351,6 +351,30 @@
                             'icon' => 'notepad-text-dashed',
                             'active' => 'refund_policy',
                         ],
+                        [
+                            'name' => 'How To Buy',
+                            'route' => route('admin.cms.how-to-buy'),
+                            'icon' => 'notepad-text-dashed',
+                            'active' => 'how_to_buy',
+                        ],
+                        [
+                            'name' => 'Buyer Protection',
+                            'route' => route('admin.cms.buyer-protection'),
+                            'icon' => 'notepad-text-dashed',
+                            'active' => 'buyer_protection',
+                        ],
+                        [
+                            'name' => 'Seller Protection',
+                            'route' => route('admin.cms.seller-protection'),
+                            'icon' => 'notepad-text-dashed',
+                            'active' => 'seller_protection',
+                        ],
+                        [
+                            'name' => 'How To Sell',
+                            'route' => route('admin.cms.how-to-sell'),
+                            'icon' => 'notepad-text-dashed',
+                            'active' => 'how_to_sell',
+                        ],
                     ]" />
                 <x-sidebar-separator title="System" />
                 <x-backend.navlink type="dropdown" icon="squares-exclude" name="Withdrawal Management"
