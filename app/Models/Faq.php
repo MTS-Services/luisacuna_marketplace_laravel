@@ -51,7 +51,7 @@ class Faq extends AuditBaseModel implements Auditable
 
     public function faqTranslations(): HasMany
     {
-        return $this->hasMany(FaqTranslation::class, 'cms_id', 'id');
+        return $this->hasMany(FaqTranslation::class, 'faq_id', 'id');
     }
 
 

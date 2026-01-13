@@ -98,7 +98,7 @@
                             {{-- <p class="text-text-white text-xs">{{ user()->description ?? 'Description no abailable' }}
                             </p> --}}
                             <p class="text-text-white text-xs">
-                                {{ user()->description ? user()->description : 'Description not available' }}
+                                {{ user()->translatedDescription(app()->getLocale()) ? user()->translatedDescription(app()->getLocale()) : 'Description not available' }}
                             </p>
 
                         </div>

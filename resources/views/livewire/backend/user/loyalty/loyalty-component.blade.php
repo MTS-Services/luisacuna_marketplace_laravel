@@ -115,8 +115,8 @@
                             </div>
                             <div class="flex-1">
                                 <h4 class="text-text-white font-semibold font-lato text-lg sm:text-3xl mb-1">
-                                    {{ $achievement->title }}</h4>
-                                <p class="text-text-white text-sm sm:text-base">{!! $achievement->description !!}</p>
+                                   {{ $achievement->translatedTitle(app()->getLocale()) }}</h4>
+                                <p class="text-text-white text-sm sm:text-base">{!! $achievement->translatedDescription(app()->getLocale()) !!}</p>
                             </div>
                         </div>
                         <div class="flex items-center justify-between text-sm mb-2">
