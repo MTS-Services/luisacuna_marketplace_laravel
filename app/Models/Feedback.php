@@ -84,6 +84,12 @@ class Feedback extends AuditBaseModel implements Auditable
     }
 
 
+    public function translatedMessage($languageIdOrLocale): string
+    {
+        return $this->getTranslated('message', $languageIdOrLocale) ?? $this->message;
+    }
+
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);

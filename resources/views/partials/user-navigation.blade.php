@@ -8,7 +8,8 @@
                     'active': open == '{{ $category->slug }}' ||
                         {{ request()->routeIs($category->slug) ? 'true' : 'false' }}
                 }">
-                <span class="relative z-10">{{ $category->categoryTranslations->first()?->name ?? $category->name }}</span>
+                {{-- <span class="relative z-10">{{ $category->categoryTranslations->first()?->name ?? $category->name }}</span> --}}
+                <span class="relative z-10">{{ $category->translatedName(app()->getLocale()) }} </span>
                 <span
                     class="absolute bottom-0 left-0 w-full h-0.5 bg-blue-500 transform scale-x-0 transition-transform duration-300 ease-in-out origin-left"
                     :class="{
@@ -19,8 +20,8 @@
         @endforeach
     </div>
 
-    <div class="relative flex items-center ml-auto" wire:click="openGlobalSearch" :style="searchActive ? 'width: 50rem' : 'width: 5.5rem'"
-        style="transition: width 300ms ease-in-out">
+    <div class="relative flex items-center ml-auto" wire:click="openGlobalSearch"
+        :style="searchActive ? 'width: 50rem' : 'width: 5.5rem'" style="transition: width 300ms ease-in-out">
 
         <flux:icon name="magnifying-glass"
             class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 stroke-text-primary pointer-events-none z-10" />
@@ -158,26 +159,28 @@
                             </h3>
                             <div class="space-y-1 pb-4">
                                 @foreach ($popular_games as $item)
-                                    <a href="{{ route('game.index', ['gameSlug' => $item->slug, 'categorySlug' => $category->slug]) }}" wire:navigate
+                                    <a href="{{ route('game.index', ['gameSlug' => $item->slug, 'categorySlug' => $category->slug]) }}"
+                                        wire:navigate
                                         class="flex items-center gap-3 p-2 hover:bg-purple-500/10 rounded-lg transition cursor-pointer">
                                         <div class="w-6 h-6 flex items-center justify-center">
                                             <img src="{{ storage_url($item->logo) }}" alt="{{ $item->name }}"
                                                 class="w-full h-full object-contain">
                                         </div>
-                                        <p class="text-base lg:text-lg font-normal text-text-white">{{ $item->gameTranslations->first()?->name ?? $item->name }}
+                                        <p class="text-base lg:text-lg font-normal text-text-white">
+                                            {{ $item->gameTranslations->first()?->name ?? $item->name }}
                                         </p>
                                     </a>
                                 @endforeach
                             </div>
                         @else
-
                             <h3
                                 class="text-xs font-semibold text-text-white/70 uppercase tracking-wider mb-2 pt-1 px-2.5">
                                 {{ __('SEARCH RESULTS') }}
                             </h3>
                             <div class="space-y-1 pb-4">
                                 @forelse ($search_results as $item)
-                                    <a href="{{ route('game.index', ['gameSlug' => $item->slug, 'categorySlug' => $category->slug]) }}" wire:navigate
+                                    <a href="{{ route('game.index', ['gameSlug' => $item->slug, 'categorySlug' => $category->slug]) }}"
+                                        wire:navigate
                                         class="flex items-center gap-3 p-2 hover:bg-purple-500/10 rounded-lg transition cursor-pointer">
                                         <div class="w-6 h-6 flex items-center justify-center">
                                             <img src="{{ storage_url($item->logo) }}" alt="{{ $item['name'] }}"
