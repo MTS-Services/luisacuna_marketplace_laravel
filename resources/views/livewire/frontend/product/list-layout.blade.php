@@ -39,7 +39,8 @@
         </div>
 
         <div class="mt-3 mb-6 flex items-center justify-between gap-4">
-            <x-ui.custom-select wire:model.live="serach"
+          <div class="sm:inline-flex gap-3">
+              <x-ui.custom-select wire-model="serach" wire-live="true"
                 class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!" label="Filter">
                 <x-ui.custom-option label="All" value="" />
                 @foreach ($tags as $tag)
@@ -47,8 +48,26 @@
                 @endforeach
             </x-ui.custom-select>
 
+            <x-ui.custom-select wire-model="platform_id" wire-live="true"
+                class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!" label="Platform">
+                <x-ui.custom-option label="All" value="" />
+                @foreach ($platforms as $label => $value)
+                
+                    <x-ui.custom-option label="{{ $label }}" value="{{ encrypt($value) }}" />
+                @endforeach
+            </x-ui.custom-select>
+
+            <x-ui.custom-select wire-model="game_tag" wire-live="true"
+                class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!" label="Game Tag">
+                <x-ui.custom-option label="All" value="" />
+                @foreach ($gameTags as $gameTag)
+                    <x-ui.custom-option label="{{ $gameTag->name }}" value="{{ $gameTag->slug }}" />
+                @endforeach
+            </x-ui.custom-select>
+          </div>
+
             <div class="hidden md:flex w-56!">
-                <x-ui.custom-select wireModel="sortDirection" :wireLive="true" :label="__('Highest to Lowest')"
+                <x-ui.custom-select wire-model="sortDirection" :wireLive="true" :label="__('Highest to Lowest')"
                     class="w-full rounded-full! bg-transparent! border! border-zinc-700!">
                     <x-ui.custom-option label="Lowest To Highest" value="asc" />
                     <x-ui.custom-option label="Highest to Lowest" value="desc" />
@@ -86,7 +105,7 @@
                                         <span
                                             class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl text-[10px] flex items-center gap-1">
                                             <x-phosphor name="fire" variant="regular" class="w-3 h-3 fill-white" />
-                                            {{ $game->tags->first()->name }}
+                                           {{ optional($game->tags->random())->name }}
                                         </span>
                                     @endif
                                 </div>

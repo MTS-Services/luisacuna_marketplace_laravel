@@ -155,7 +155,7 @@ class Product extends BaseModel implements Auditable
         $query->when($filters['skipSelf'] ?? null, function ($query, $skipSelf) {
             $query->where('user_id', '!=', user()->id ?? 0);
         });
-
+    // Platform is slug of Platform table
         $query->when($filters['platform_id'] ?? null, function ($query, $platform_id) {
             $query->where('platform_id', $platform_id);
         });
@@ -199,6 +199,12 @@ class Product extends BaseModel implements Auditable
         if ($filters['user_id'] ?? null) {
             $query->where('user_id', $filters['user_id']);
         }
+
+        if($filters['game_tag'] ?? null) {
+             $query->whereHas('game.tags', function ($q) use ($filters) {
+            $q->where('slug', $filters['game_tag']);
+          });
+        }
         return $query;
     }
 
@@ -207,26 +213,40 @@ class Product extends BaseModel implements Auditable
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
         End of RELATIONSHIPS
 =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
-    #[SearchUsingPrefix(['name', 'description', 'delivery_timeline', 'price'])]
-    public function toSearchableArray(): array
-    {
-        // Load the game with its tags
-        // if (!$this->relationLoaded('game')) {
-        //     $this->load(['game:id,name', 'game.tags:id,name']);
-        // }
-
-        // // Since there's only ONE game, just pluck the tag names directly
-        // $gameTags = $this->game?->tags->pluck('name')->all() ?? [];
-
-        return [
-            'name' => $this->name,
-            'description' => $this->description,
-            'price' => (float) $this->price,
-            'delivery_timeline' => $this->delivery_timeline,
-            //  'game_tags' => $gameTags,
-            //   'game_name' => $this->game?->name,
-        ];
+#[SearchUsingPrefix(['name', 'description', 'delivery_timeline', 'price', 'game_tags', 'product_config_values'])]
+public function toSearchableArray(): array
+{
+    if (!$this->relationLoaded('game')) {
+        $this->load([
+            'game:id,name',
+            'game.tags:id,name',
+            'product_configs:id,product_id,game_config_id,value',
+            'product_configs.gameConfig:id,name',
+        ]);
     }
+    // Game tags
+    $gameTags = $this->game?->tags->pluck('name')->all() ?? [];
+
+    $productConfigValues = $this->product_configs
+        ->map(fn($config) => $config->value)
+        ->all();
+    dd($productConfigValues);
+    $productConfigsMap = $this->product_configs
+        ->mapWithKeys(fn($config) => [$config->gameConfig?->name ?? 'unknown' => $config->value])
+        ->all();
+
+    return [
+        'name' => $this->name,
+        'description' => $this->description,
+        'price' => (float) $this->price,
+        'delivery_timeline' => $this->delivery_timeline,
+        'game_tags' => $gameTags,
+        'game_name' => $this->game?->name,
+        'product_config_values' => $productConfigValues,
+        'product_configs' => $productConfigsMap, 
+    ];
+}
+
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
