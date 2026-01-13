@@ -10,8 +10,8 @@
 
             <div class="pt-4 mb-6">
                 <div class="flex justify-between items-center ">
-                    <p class="text-text-primary text-xl">{{ $product->name }}
-                    </p>
+                    {{-- <p class="text-text-primary text-xl">{{ $product->name }}</p> --}}
+                    <p class="text-text-primary text-xl"> {{ $product->translatedName(app()->getLocale()) }}</p>
                 </div>
             </div>
 
@@ -40,7 +40,7 @@
                             <span class="text-xs text-text-secondary">{{ __('Delivery time') }}
                             </span>
                             <span class="text-xs text-text-secondary">
-                                {{ $product->delivery_timeline }}
+                                 {{ $product->translatedDeliveryTimeline(app()->getLocale()) }}
                             </span>
                         </div>
                         <div class="flex justify-between items-center mt-2 ">
@@ -194,7 +194,7 @@
             <div x-data="{
                 expanded: false,
                 limit: 50,
-                fullText: `{!! addslashes($product?->user?->description ?? '') !!}`,
+                fullText: ` {!! addslashes($product?->user?->description ?? '') !!}`,
                 get words() {
                     // Remove HTML tags and split into words
                     return this.fullText.replace(/(<([^>]+)>)/gi, '').trim().split(/\s+/);
@@ -247,13 +247,13 @@
                         <div class="flex items-center gap-2">
                             <x-phosphor name="{{ $feedback->type->icon() }}" variant="solid"
                                 class="w-5 h-5 {{ $feedback->type->iconColor() }}" />
-                            <h3 class="text-base font-medium  text-text-primary line-clamp-1">{{ $product->name }}
+                            <h3 class="text-base font-medium  text-text-primary line-clamp-1">{{ $product->translatedName(app()->getLocale()) }}
                             </h3>
                         </div>
                         <span class="text-text-secondary text-sm whitespace-nowrap">
                             {{ $feedback->created_at->format('Y-m-d') }}</span>
                     </div>
-                    <p class="text-text-secondary text-sm line-clamp-1">{{ $feedback->message }}</p>
+                    <p class="text-text-secondary text-sm line-clamp-1">{{ $feedback->translatedMessage(app()->getLocale()) }}</p>
                 </div>
             @endforeach
             {{-- <div class="mt-5">
