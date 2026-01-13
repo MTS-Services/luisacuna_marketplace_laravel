@@ -20,7 +20,8 @@
                                     </div>
                                     <div>
                                         <span class="text-text-white text-xl font-semibold">
-                                            {{ $order->source?->name ?? 'Unknown' }}
+                                            {{-- {{ $order->source?->name ?? 'Unknown' }} --}}
+                                            {{ $order->source?->translatedName(app()->getLocale()) ?? 'Unknown' }}
                                         </span>
                                     </div>
                                 </div>
@@ -72,7 +73,7 @@
                                 <div class="flex justify-between mb-2">
                                     <p class="text-text-white font-base text-xs">{{ __('Delivery time:') }}</p>
                                     <p class="text-text-white font-base text-xs">
-                                        {{ $order->source?->delivery_timeline }}</p>
+                                        {{ $order->source?->translatedDeliveryTimeline(app()->getLocale()) }}</p>
                                 </div>
                             @endif
                             @if ($order->source?->platform)

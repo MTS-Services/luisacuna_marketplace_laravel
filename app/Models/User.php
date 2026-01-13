@@ -507,6 +507,11 @@ class User extends AuthBaseModel implements Auditable
         ];
     }
 
+    public function translatedDescription($languageIdOrLocale): string
+    {
+        return $this->getTranslated('description', $languageIdOrLocale) ?? $this->description;
+    }
+
 
     public function cloudinaryFiles()
     {

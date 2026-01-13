@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Log;
 
 class Category extends AuditBaseModel implements Auditable
 {
@@ -60,6 +61,10 @@ class Category extends AuditBaseModel implements Auditable
         ];
     }
 
+    public function translatedName($languageIdOrLocale): string
+    {
+        return $this->getTranslated('name', $languageIdOrLocale) ?? $this->name;
+    }
     /* ================================================================
      |  Relationships
      ================================================================ */

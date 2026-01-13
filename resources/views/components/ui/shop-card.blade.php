@@ -34,7 +34,7 @@
                     {{-- {{
                         $data->name ?? ''
                     }} --}}
-                    {{ $data->name }}
+                    {{ $data->translatedName(app()->getLocale()) }}
                 </p>
                 <img src="{{ storage_url($game->logo) }}" alt="{{ $game->name }}"
                     class="w-16 h-16 rounded float-right" />
@@ -54,7 +54,8 @@
                             stroke-linejoin="round" />
                     </svg>
                     <span>
-                        {{ $data->delivery_timeline ?? '' }}
+                        {{-- {{ $data->delivery_timeline ?? '' }} --}}
+                        {{ $data->translatedDeliveryTimeline(app()->getLocale()) }}
                     </span>
                 </div>
             </div>

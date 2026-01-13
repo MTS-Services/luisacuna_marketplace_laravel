@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('description')->nullable();
             $table->string('delivery_timeline')->nullable();
-            $table->string('delivery_method');
+            $table->string('delivery_method')->nullable();
             $table->decimal('price', 15, 2)->default(0)->nullable();
             $table->unsignedBigInteger('quantity')->default(0);
 

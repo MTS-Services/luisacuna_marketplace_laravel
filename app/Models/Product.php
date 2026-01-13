@@ -126,6 +126,24 @@ class Product extends BaseModel implements Auditable
     }
 
 
+    public function translatedName($languageIdOrLocale): string
+    {
+        return $this->getTranslated('name', $languageIdOrLocale) ?? $this->name;
+    }
+
+    public function translatedDescription($languageIdOrLocale): string
+    {
+        return $this->getTranslated('description', $languageIdOrLocale) ?? $this->description;
+    }
+    public function translatedDeliveryTimeline($languageIdOrLocale): string
+    {
+        return $this->getTranslated('delivery_timeline', $languageIdOrLocale) ?? $this->delivery_timeline;
+    }
+    public function translatedDeliveryMethod($languageIdOrLocale): string
+    {
+        return $this->getTranslated('delivery_method', $languageIdOrLocale) ?? $this->delivery_method;
+    }
+
     public function scopeFilter(Builder $query, $filters): Builder
     {
 
