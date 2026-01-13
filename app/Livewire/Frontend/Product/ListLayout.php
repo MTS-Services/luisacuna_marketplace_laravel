@@ -19,6 +19,11 @@ class ListLayout extends Component
 
     public $gameSlug, $categorySlug, $game;
     public $product; // Holds the selected product
+    public $data;
+    public $platforms;
+    public $gameTags;
+
+
 
     #[Url(as: 'asc')]
     public $sortByPrice = 'asc';
@@ -32,8 +37,19 @@ class ListLayout extends Component
     #[Url(as: 'sort')]
     public $sortDirection = 'desc';
 
+    #[Url('t')]
+    public $game_tag = '';
+
+   #[Url('p')]
+    public $platform_id = '';
+
     public $sortBy = 'price';
+
     public $tags = [];
+
+    
+
+
     protected $datas;
 
     // Services
@@ -55,13 +71,27 @@ class ListLayout extends Component
         // Load game with counts to avoid heavy relationships in mount
         $this->game = $this->gameService->findData($gameSlug, 'slug')
             ->load(['tags', 'gameConfig', 'platforms']);
-        // Flattening tags once during mount
-        $this->tags = collect($this->game->tags->pluck('name'))
-            ->merge($this->platformService->getAllDatas()->pluck('name'))
-            ->merge(collect($this->game->gameConfig->pluck('dropdown_values'))->flatten())
-            ->filter()
-            ->shuffle()
-            ->toArray();
+
+      // 1. Game tags
+        $gameTags = $this->game->tags;
+
+        $this->gameTags = $gameTags;
+        
+        // 2. Platform service tags
+        $platforms = $this->platformService->getAllDatas()
+            ->pluck('id', 'name');
+        $this->platforms = $platforms ;
+
+        // 3. Game config dropdown values
+        $configTags = collect($this->game->gameConfig)
+            ->pluck('dropdown_values')
+            ->flatten();
+
+        // 4. Merge everything
+        $this->tags =$configTags
+                    ->filter()
+                    ->shuffle()
+                    ->toArray();
     }
 
     public function selectItem($id)
@@ -106,6 +136,7 @@ class ListLayout extends Component
         ]), navigate: true);
     }
 
+ 
     public function render()
     {
         // filter datas lowest price and highest price
@@ -117,6 +148,9 @@ class ListLayout extends Component
             'serach' => $this->serach,
             'sort_field' => $this->sortBy,
             'sort_direction' => $this->sortDirection,
+            'platform_id' => $this->platform_id != null ? decrypt($this->platform_id) : '',
+            'game_tag' => $this->game_tag
+
         ]);
         $this->datas->load('user.feedbacksReceived', 'game', 'category', 'platform', 'user.wallet');
         $this->paginationData($this->datas);
