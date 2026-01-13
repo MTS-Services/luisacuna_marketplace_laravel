@@ -18,7 +18,8 @@
                 </div>
                 <div>
                     <h2 class="text-text-white text-2xl font-semibold line-clamp-1">
-                        {{ $order?->source?->name }}
+                        {{-- {{ $order?->source?->name }} --}}
+                        {{ $order->source?->translatedName(app()->getLocale()) ?? 'Unknown' }}
                     </h2>
                     <p class="text-text-white font-normal text-base line-clamp-1">
                         {{ __('Order ID:') }} {{ $order->order_id }}
@@ -224,7 +225,7 @@
                     </div> --}}
                     <div class="flex items-center justify-between text-center">
                         <div class="flex-1">
-                            {{ $order?->source?->delivery_timeline }}
+                            {{ $order?->source?->translatedDeliveryTimeline(app()->getLocale()) }}
                         </div>
                     </div>
                 </div>

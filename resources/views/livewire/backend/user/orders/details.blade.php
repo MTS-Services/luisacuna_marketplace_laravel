@@ -28,7 +28,7 @@
                     </div>
                     <div>
                         <h2 class="text-text-white text-base sm:text-2xl font-semibold line-clamp-1">
-                            {{ $data?->source?->name }}
+                            {{ $data?->source?->translatedName(app()->getLocale()) }}
                         </h2>
                     </div>
                 </div>
@@ -48,11 +48,11 @@
                     <div class="flex justify-between mt-2">
                         <p class="text-text-white text-base font-semibold mb-2">{{ __('Guaranteed delivery time') }}
                         </p>
-                        <p class="text-text-white text-base font-normal">{{ $data?->source?->delivery_timeline }}</p>
+                        <p class="text-text-white text-base font-normal">{{ $data?->source?->translatedDeliveryTimeline(app()->getLocale()) }}</p>
                     </div>
                     <div class="flex justify-between mt-2">
                         <p class="text-text-white text-base font-semibold mb-2">{{ __('Delivery method') }}</p>
-                        <p class="text-text-white text-base font-normal">{{ $data?->source?->delivery_method }}</p>
+                        <p class="text-text-white text-base font-normal">{{ $data?->source?->translatedDeliveryMethod(app()->getLocale()) }}</p>
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
 
                 <div x-show="isExpanded" x-transition>
                     <p>
-                        {{ $data?->source?->description }}
+                        {{ $data?->source?->translatedDescription(app()->getLocale()) }}
                     </p>
 
                     <div class="flex w-fit mt-3">
@@ -148,7 +148,7 @@
             <div class="flex justify-between mt-2">
                 <p class="text-text-white text-base font-semibold mb-2">{{ __('Guaranteed delivery time') }}
                 </p>
-                <p class="text-text-white text-base font-normal">{{ $data?->source?->delivery_timeline }}</p>
+                <p class="text-text-white text-base font-normal">{{ $data?->source?->translatedDeliveryTimeline(app()->getLocale()) }}</p>
             </div>
             <div class="border-t border-zinc-500 pt-4 mt-4 flex items-center gap-3"></div>
             <div class="flex justify-between mt-2">
