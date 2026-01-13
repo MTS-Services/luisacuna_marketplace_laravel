@@ -11,22 +11,30 @@ class FrontendController extends Controller
 
     public function howToBuy()
     {
-        return view($this->masterView);
+        // return view($this->masterView);
+        $type = CmsType::HOW_TO_BUY;
+        return view($this->masterView, compact('type'));
     }
 
     public function buyerProtection()
     {
-        return view($this->masterView);
+        // return view($this->masterView);
+        $type = CmsType::BUYER_PROTECTION;
+        return view($this->masterView, compact('type'));
     }
 
     public function howtoSell()
     {
-        return view($this->masterView);
+        // return view($this->masterView);
+        $type = CmsType::HOW_TO_SELL;
+        return view($this->masterView, compact('type'));
     }
 
     public function sellerProtection()
     {
-        return view($this->masterView);
+        // return view($this->masterView);
+        $type = CmsType::SELLER_PROTECTION;
+        return view($this->masterView, compact('type'));
     }
 
     public function faq()
