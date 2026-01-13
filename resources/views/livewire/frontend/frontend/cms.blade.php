@@ -14,48 +14,39 @@
             </div>
 
             @if ($cms)
-               <div class="flex justify-end space-x-4 pt-10">
+                <div class="flex justify-end space-x-4 pt-10">
 
-    {{-- 👍 Helpful --}}
-    <button
-        {{ (!$cms->helpful_cooldown_active && $cms->is_useful !== true)
-            ? "wire:click=useful({$cms->id})"
-            : '' }}
-        class="flex items-center px-5 py-2.5 rounded-full text-sm font-medium shadow-md transition
-        {{ ($cms->helpful_cooldown_active || $cms->is_useful === true)
+                    {{-- 👍 Helpful --}}
+                    <button
+                        {{ !$cms->helpful_cooldown_active && $cms->is_useful !== true ? "wire:click=useful({$cms->id})" : '' }}
+                        class="flex items-center px-5 py-2.5 rounded-full text-sm font-medium shadow-md transition
+        {{ $cms->helpful_cooldown_active || $cms->is_useful === true
             ? 'bg-gray-200 text-gray-400 cursor-not-allowed pointer-events-none'
             : 'bg-gray-100 text-text-purple hover:bg-gray-200' }}">
 
-        <x-phosphor-thumbs-up-fill
-            class="w-5 h-5 mr-2
-            {{ ($cms->helpful_cooldown_active || $cms->is_useful === true)
-                ? 'fill-gray-400'
-                : 'fill-zinc-500' }}" />
+                        <x-phosphor-thumbs-up-fill
+                            class="w-5 h-5 mr-2
+            {{ $cms->helpful_cooldown_active || $cms->is_useful === true ? 'fill-gray-400' : 'fill-zinc-500' }}" />
 
-        {{ __("It's helpful") }}
-    </button>
+                        {{ __("It's helpful") }}
+                    </button>
 
-    {{-- 👎 Not Helpful --}}
-    <button
-        {{ (!$cms->helpful_cooldown_active && $cms->is_useful !== false)
-            ? "wire:click=notUseful({$cms->id})"
-            : '' }}
-        class="flex items-center px-5 py-2.5 rounded-full text-sm font-medium shadow-md transition
-        {{ ($cms->helpful_cooldown_active || $cms->is_useful === false)
+
+                    <button
+                        {{ !$cms->helpful_cooldown_active && $cms->is_useful !== false ? "wire:click=notUseful({$cms->id})" : '' }}
+                        class="flex items-center px-5 py-2.5 rounded-full text-sm font-medium shadow-md transition
+        {{ $cms->helpful_cooldown_active || $cms->is_useful === false
             ? 'bg-gray-200 text-gray-400 cursor-not-allowed pointer-events-none'
             : 'bg-gray-100 text-text-purple hover:bg-gray-200' }}">
 
-        <x-phosphor-thumbs-down-fill
-            class="w-5 h-5 mr-2
-            {{ ($cms->helpful_cooldown_active || $cms->is_useful === false)
-                ? 'fill-gray-400'
-                : 'fill-zinc-500' }}" />
+                        <x-phosphor-thumbs-down-fill
+                            class="w-5 h-5 mr-2
+            {{ $cms->helpful_cooldown_active || $cms->is_useful === false ? 'fill-gray-400' : 'fill-zinc-500' }}" />
 
-        {{ __("It's not helpful") }}
-    </button>
+                        {{ __("It's not helpful") }}
+                    </button>
 
-</div>
-
+                </div>
             @endif
 
 
@@ -84,7 +75,7 @@
                         {{ __('Digital Commerce priorities your security. Our escrow system safeguards your payment until you confirm delivery, and our Buyer Protection Policy ensures fair resolution in case of any issues. Buy with absolute confidence!') }}
                     </p>
                     <div class="flex! justify-center! items-center!">
-                        <x-ui.button href="{{ url('/') }}"
+                        <x-ui.button href="{{ route('home') }}#popular-games"
                             class="w-fit! px-6! py-3! bg-purple-800 text-text-secondery font-medium rounded-full hover:bg-bg-white hover:text-zinc-500">
                             {{ __('Start Shopping Now') }}
                         </x-ui.button>
