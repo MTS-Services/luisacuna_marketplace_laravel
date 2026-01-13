@@ -63,7 +63,7 @@ class AccountSettings extends Component
     {
         try {
             $this->validate([
-                'avatar' => 'image|max:2048'
+                'avatar' => 'image|mimes:jpeg,png,heic|max:10240',
             ]);
 
             $uploaded = $this->cloudinaryService->upload($this->avatar, ['folder' => 'users']);
@@ -81,6 +81,11 @@ class AccountSettings extends Component
         }
     }
 
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
     public function updateProfile()
     {
         try {
@@ -94,16 +99,16 @@ class AccountSettings extends Component
 
             // Validate the form
             $validatedData = $this->form->validate();
+            if ($validatedData['email'] !== user()->email) {
+                $validatedData['email_verified_at'] = null;
+            }
 
             logger()->info('Validated Data:', $validatedData);
 
-            $updatedUser = $this->service->updateData(user()->id, $validatedData);
-
-            $this->mount();
+            $this->service->updateData(user()->id, $validatedData);
             $this->success(__('Profile updated successfully!'));
             $this->dispatch('profile-updated');
 
-            return $this->redirect(route('user.account-settings'), navigate: true);
         } catch (\Illuminate\Validation\ValidationException $e) {
             logger()->error('Validation Error:', [
                 'errors' => $e->errors(),

@@ -146,7 +146,7 @@
                         <!-- Action Buttons -->
                         <div class="flex items-center justify-start gap-4 mt-6">
                             <x-ui.button wire:click="changePassword" class="w-fit! py-2!">
-                                <span wire:loading.remove wire:target="changePassword">
+                                <span wire:loading.remove wire:target="changePassword" class="text-white group-hover:text-black">
                                     {{ __('Change password') }}
                                 </span>
                                 <span wire:loading wire:target="changePassword">
