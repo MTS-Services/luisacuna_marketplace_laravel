@@ -103,7 +103,7 @@ class AuditBaseModel extends Model
 
     public function getUpdatedAtFormattedAttribute(): string
     {
-        return $this->updated_at ? dateTimeFormat($this->attributes['updated_at'], $this->attributes['created_at']) : "N/A";
+        return $this->updated_at ? dateTimeFormat($this->attributes['updated_at']) : "N/A";
     }
 
     public function getDeletedAtFormattedAttribute(): string
