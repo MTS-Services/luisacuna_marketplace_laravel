@@ -47,10 +47,10 @@ class SoldOrders extends Component
                     </div>
                     <div class="min-w-0">
                         <h3 class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">'
-                    . $order->source->name .
+                    . $order->source->translatedName(app()->getLocale()) .
                     '</h3>
                         <p class="text-xs text-text-primary/80 truncate xxs:block py-1">'
-                    . $order?->source?->name .
+                    . $order?->source?->translatedName(app()->getLocale()) .
                     '</p>
                         <a href="' . ($order->status->value === 'cancelled'
                         ? route('user.order.cancel', ['orderId' => $order->order_id])

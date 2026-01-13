@@ -36,8 +36,8 @@
             <div class=" {{ $routeName == 'faq' ? 'bg-bg-info' : 'bg-bg-secondary' }}  rounded-xl p-4 cursor-pointer mb-3"
                 @click="active === {{ $index }} ? active = null : active = {{ $index }}">
                 <div class="flex justify-between items-center">
-                    <h3 class="text-text-white text-xl font-semibold">{{ $faq->question }}</h3>
-                    {{-- <h3 class="text-text-white text-xl font-semibold">{{ $faq->translatedQuestion(app()->getLocale()) }}</h3> --}}
+                    {{-- <h3 class="text-text-white text-xl font-semibold">{{ $faq->question }}</h3> --}}
+                    <h3 class="text-text-white text-xl font-semibold">{{ $faq->translatedQuestion(app()->getLocale()) }}</h3>
                     <svg :class="active === {{ $index }} ? 'rotate-180' : ''"
                         class="w-5 h-5 text-text-white transition-transform" fill="none" stroke="currentColor"
                         stroke-width="2" viewBox="0 0 24 24">

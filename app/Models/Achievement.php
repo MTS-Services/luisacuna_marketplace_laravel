@@ -63,6 +63,15 @@ class Achievement extends AuditBaseModel implements Auditable
             ],
         ];
     }
+
+    public function translatedTitle($languageIdOrLocale): string
+    {
+        return $this->getTranslated('title', $languageIdOrLocale) ?? $this->title;
+    }
+    public function translatedDescription($languageIdOrLocale): string
+    {
+        return $this->getTranslated('description', $languageIdOrLocale) ?? $this->description;
+    }
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
