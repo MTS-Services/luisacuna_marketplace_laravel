@@ -23,10 +23,11 @@ class Index extends Component
     public $bulkAction = '';
     public $showDeleteModal = false;
     public $showBulkActionModal = false;
- 
+
     public $bandUserId;
     public $showBandUserModal = false;
     public $bandReason = '';
+    public $userId;
 
     public function boot(UserService $service)
     {
@@ -98,7 +99,8 @@ class Index extends Component
             [
                 'key' => 'id',
                 'label' => 'Feedbacks',
-                'route' => 'admin.um.user.feedback',
+                'encrypt' => true,
+                'route' => 'admin.um.user.feedback'
             ],
         ];
         $bulkActions = [
@@ -129,7 +131,7 @@ class Index extends Component
         try {
             $this->service->bandUser($this->bandUserId, $this->bandReason);
             $this->success('User band successfully');
-            
+
             $this->showBandUserModal = false;
             $this->bandUserId = null;
             $this->bandReason = '';
@@ -237,7 +239,8 @@ class Index extends Component
             'account_status' => $this->statusFilter,
             'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
-            'banned' => false
+            'banned' => false,
+            'target_user_id' => $this->userId,
         ];
     }
 

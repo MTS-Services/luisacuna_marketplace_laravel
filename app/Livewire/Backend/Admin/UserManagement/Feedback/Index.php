@@ -12,24 +12,30 @@ class Index extends Component
 {
     use WithDataTable;
 
-    public $userId;
 
     protected FeedbackService $service;
 
 
+    public $userId;
+    public $statusFilter = '';
     public function boot(FeedbackService $service)
     {
         $this->service = $service;
     }
+    public function mount($userId)
+    {
+        $this->userId = decrypt($userId);
+    }
+
 
     public function render()
     {
-        $users = $this->service->getPaginatedData(
+
+
+        $datas = $this->service->getUserPaginatedData(
             perPage: $this->perPage,
-            filters: $this->getFilters()
-            // filters: [
-            //      'target_user_id' => $this->userId, 
-            // ]
+            filters: $this->getFilters(),
+            userId: $this->userId,
         );
 
 
@@ -66,7 +72,7 @@ class Index extends Component
         ];
 
         return view('livewire.backend.admin.user-management.feedback.index', [
-            'datas' => $users,
+            'datas' => $datas,
             'columns' => $columns,
             'types' => FeedbackType::options(),
         ]);
@@ -75,7 +81,7 @@ class Index extends Component
 
     public function resetFilters(): void
     {
-        $this->reset(['search', 'perPage', 'sortField', 'sortDirection', 'selectedIds', 'selectAll', 'bulkAction']);
+        $this->reset(['search', 'statusFilter', 'perPage', 'sortField', 'sortDirection', 'selectedIds', 'selectAll', 'bulkAction']);
         $this->resetPage();
     }
 
@@ -86,7 +92,7 @@ class Index extends Component
             'search' => $this->search,
             'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
-            'target_user_id' => $this->userId,
+            'type' => $this->statusFilter
         ];
     }
 

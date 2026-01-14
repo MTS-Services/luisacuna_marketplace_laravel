@@ -130,7 +130,7 @@
             <x-slot name="title">{{ __('Feedback') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Feedback') }}</x-slot>
 
-            <livewire:backend.admin.user-management.feedback.index :userId="$userId" />
+            <livewire:backend.admin.user-management.feedback.index :userId="$encryptedId" />
         @break
 
         @default

@@ -29,12 +29,35 @@ class FeedbackService
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
-        $orders = $this->model->query()
+        $feedbacks = $this->model->query()
             ->with('order.source')
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
-        return $orders;
+        return $feedbacks;
+    }
+
+    public function getUserPaginatedData($userId, int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        // dd($filters['order_date'] ?? 'order_date not set');
+        $search = $filters['search'] ?? null;
+        $sortField = $filters['sort_field'] ?? 'created_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+        if ($search) {
+            // Scout Search
+            return Feedback::search($search)
+                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->paginate($perPage);
+        }
+
+        $userfeedbacks = $this->model->query()
+            ->with('order.source')
+            ->where('target_user_id', $userId)
+            ->filter($filters)
+            ->orderBy($sortField, $sortDirection)
+            ->paginate($perPage);
+        return $userfeedbacks;
     }
 
 
