@@ -194,4 +194,24 @@ class UserService
             $data
         );
     }
+
+    public function bandUser(int $userId, $banned_reason = null): void
+    {
+        $user = User::findOrFail($userId);
+        $user->account_status = UserAccountStatus::BANNED->value;
+        $user->banned_reason = $banned_reason;
+        $user->banned_at = now();
+        $user->save();
+        return;
+    }
+
+    public function unbanUser(int $userId): void
+    {
+        $user = User::findOrFail($userId);
+        $user->account_status = UserAccountStatus::ACTIVE->value;
+        $user->banned_reason = null;
+        $user->banned_at = null;
+        $user->save();
+        return;
+    }
 }

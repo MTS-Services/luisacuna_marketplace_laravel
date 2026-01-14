@@ -110,8 +110,9 @@ class Product extends BaseModel implements Auditable
 
     public function getTranslationConfig(): array
     {
+       
         return [
-            'fields' => ['name', 'description', 'delivery_timeline', 'quantity', 'delivery_method'],
+            'fields' => ['name', 'description', 'delivery_timeline', 'delivery_method', ],
             'relation' => 'productTranslations',
             'model' => ProductTranslation::class,
             'foreign_key' => 'product_id',
@@ -119,7 +120,6 @@ class Product extends BaseModel implements Auditable
                 'name' => 'name',
                 'description' => 'description',
                 'delivery_timeline' => 'delivery_timeline',
-                'quantity' => 'quantity',
                 'delivery_method' => 'delivery_method'
             ],
         ];
@@ -223,6 +223,24 @@ class Product extends BaseModel implements Auditable
             $q->where('slug', $filters['game_tag']);
           });
         }
+
+        if($filters['filter_by_config'] ?? null) {
+            $query->whereHas('product_configs', function ($q) use ($filters) {
+                $q->where('value', $filters['filter_by_config']);
+            });
+        }
+
+       if ($filters['filter_by_tag'] ?? null) {
+            $query->whereHas('platform', function ($q) use ($filters) {
+                $q->where('name', 'LIKE', '%' . $filters['filter_by_tag'] . '%');
+            })
+            ->orWhereHas('product_configs', function ($q) use ($filters) {
+                $q->where('value', 'LIKE', '%' . $filters['filter_by_tag'] . '%');
+            });
+        }
+
+
+
         return $query;
     }
 
@@ -231,16 +249,27 @@ class Product extends BaseModel implements Auditable
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
         End of RELATIONSHIPS
 =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
-#[SearchUsingPrefix(['name', 'description', 'delivery_timeline', 'price', 'game_tags', 'product_config_values'])]
+#[SearchUsingPrefix(['name', 'description', 'delivery_timeline', 'price', 'game_name', 'platform_name', 'config'])]
 public function toSearchableArray(): array
 {
-  
-
+    $this->loadMissing([
+        'game:id,name',
+        'platform:id,name',
+        'product_configs:product_id,value'
+    ]);
+    
     return [
         'name' => $this->name,
         'description' => $this->description,
         'price' => (float) $this->price,
         'delivery_timeline' => $this->delivery_timeline,
+        'game_name' => $this->game?->name ?? '',
+        'platform_name' => $this->platform?->name ?? '',
+        'config' => $this->product_configs
+            ?->pluck('value')
+            ->filter()
+            ->values()
+            ->toArray() ?? [],
     ];
 }
 

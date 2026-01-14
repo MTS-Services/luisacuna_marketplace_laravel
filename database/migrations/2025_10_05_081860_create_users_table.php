@@ -52,6 +52,8 @@ return new class extends Migration {
             $table->string('user_type')->index()->default(UserType::BUYER->value);
             $table->string('account_status')->index()->default(UserAccountStatus::PENDING_VERIFICATION->value);
             $table->text('reason')->nullable();
+            $table->text('banned_reason')->nullable();
+            $table->timestamp('banned_at')->nullable();
 
             $table->timestamp('last_login_at')->nullable();
             $table->string('last_login_ip')->nullable();

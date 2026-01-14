@@ -83,21 +83,14 @@
                         ],
                         [
                             'name' => 'Pending Verificaiton',
-                            'route' => route('admin.um.user.seller-verification'),
+                            'route' => route('admin.um.user.pending-verification'),
                             'icon' => 'user',
                             'active' => 'seller-verification-pending',
                             'permission' => 'user-list',
                         ],
                         [
-                            'name' => 'Verified Sellers',
-                            'route' => route('admin.um.user.seller-verification.verified'),
-                            'icon' => 'user',
-                            'active' => 'seller-verification-verified',
-                            'permission' => 'user-list',
-                        ],
-                        [
                             'name' => 'Banned Users',
-                            'route' => '#',
+                            'route' => route('admin.um.user.banned-user'),
                             'icon' => 'user',
                             'active' => 'admin-users-banned',
                             'permission' => 'user-list',

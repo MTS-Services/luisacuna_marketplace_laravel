@@ -78,6 +78,13 @@
             <livewire:backend.admin.user-management.user.seller.seller-trash />
         @break
 
+        @case('admin.um.user.banned-user')
+            <x-slot name="pageSlug">{{ __('admin-users-banned') }}</x-slot>
+            <x-slot name="breadcrumb">{{ __('User Management / Banned User List') }}</x-slot>
+            <x-slot name="title">{{ __('Banned User List') }}</x-slot>
+            <livewire:backend.admin.user-management.user.banned-user />
+        @break
+
         @case('admin.um.user.all-buyer')
             <x-slot name="pageSlug">{{ __('buyers') }}</x-slot>
             <x-slot name="title">{{ __('All Buyer') }}</x-slot>
@@ -92,7 +99,7 @@
             <livewire:backend.admin.user-management.user.buyer.buyer-trash />
         @break
 
-        @case('admin.um.user.seller-verification')
+        @case('admin.um.user.pending-verification')
             <x-slot name="pageSlug">{{ __('seller-verification-pending') }}</x-slot>
             <x-slot name="title">{{ __('Seller Pending Verificaiton') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Seller Management') }}</x-slot>
@@ -111,6 +118,11 @@
             <x-slot name="title">{{ __('Seller Verified') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Seller Management') }}</x-slot>
             <livewire:backend.admin.user-management.user.seller.verified-verification />
+        @case('admin.um.user.seller.view')
+            <x-slot name="pageSlug">{{ __('sellers') }}</x-slot>
+            <x-slot name="title">{{ __('Seller Details') }}</x-slot>
+            <x-slot name="breadcrumb">{{ __('Seller Management') }}</x-slot>
+            <livewire:backend.admin.user-management.user.seller.seller-details :encryptedId="$encryptedId" />
         @break
 
         @case('admin.um.user.feedback')

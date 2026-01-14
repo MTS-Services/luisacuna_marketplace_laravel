@@ -7,7 +7,7 @@ use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
-class VerificationDetails extends Component
+class SellerDetails extends Component
 {
     use WithNotification;
     public $data;
@@ -28,7 +28,7 @@ class VerificationDetails extends Component
     }
     public function render()
     {
-        return view('livewire.backend.admin.user-management.user.seller.verification-details');
+        return view('livewire.backend.admin.user-management.user.seller.seller-details');
     }
 
 

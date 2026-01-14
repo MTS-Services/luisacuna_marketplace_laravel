@@ -2,16 +2,14 @@
 
 namespace App\Livewire\Backend\Admin\UserManagement\User;
 
-use App\Models\User;
-use App\Enums\UserType;
 use Livewire\Component;
-use App\Services\UserService;
 use App\Enums\UserAccountStatus;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 
-class Index extends Component
+class BannedUser extends Component
 {
     use WithDataTable, WithNotification;
 
@@ -24,9 +22,8 @@ class Index extends Component
     public $showDeleteModal = false;
     public $showBulkActionModal = false;
  
-    public $bandUserId;
-    public $showBandUserModal = false;
-    public $bandReason = '';
+    public $unbanUserId;
+    public $showUnbanUserModal = false;
 
     public function boot(UserService $service)
     {
@@ -73,6 +70,14 @@ class Index extends Component
                         '</span>';
                 }
             ],
+            [
+                'key' => 'banned_at',
+                'label' => 'Banned At',
+                'sortable' => true,
+                'format' => function ($user) {
+                    return $user->banned_at ? dateTimeFormat($user->banned_at) : '-';
+                }
+            ]
         ];
         $actions = [
             [
@@ -82,23 +87,8 @@ class Index extends Component
             ],
             [
                 'key' => 'id',
-                'label' => 'Edit',
-                'route' => 'admin.um.user.edit'
-            ],
-            [
-                'key' => 'id',
-                'label' => 'Band User',
-                'method' => 'confirmBandUser'
-            ],
-            [
-                'key' => 'id',
-                'label' => 'Delete',
-                'method' => 'confirmDelete'
-            ],
-            [
-                'key' => 'id',
-                'label' => 'Feedbacks',
-                'route' => 'admin.um.user.feedback',
+                'label' => 'Unban User',
+                'method' => 'confirmUnbanUser'
             ],
         ];
         $bulkActions = [
@@ -106,9 +96,9 @@ class Index extends Component
             ['value' => 'activate', 'label' => 'Activate'],
             ['value' => 'deactivate', 'label' => 'Deactivate'],
             ['value' => 'suspend', 'label' => 'Suspend'],
-            ['value' => 'bandUser', 'label' => 'Band User'],
+            ['value' => 'unbanUser', 'label' => 'Unban User'],
         ];
-        return view('livewire.backend.admin.user-management.user.index', [
+        return view('livewire.backend.admin.user-management.user.banned-user', [
             'datas' => $users,
             'columns' => $columns,
             'statuses' => UserAccountStatus::options(),
@@ -118,49 +108,24 @@ class Index extends Component
         ]);
     }
 
-    public function confirmBandUser($userId): void
+    public function confirmUnbanUser($userId): void
     {
-        $this->bandUserId = $userId;
-        $this->showBandUserModal = true;
+        $this->unbanUserId = $userId;
+        $this->showUnbanUserModal = true;
     }
 
-    public function bandUser(): void
+    public function unbanUser(): void
     {
         try {
-            $this->service->bandUser($this->bandUserId, $this->bandReason);
-            $this->success('User band successfully');
+            $this->service->unbanUser($this->unbanUserId);
+            $this->success('User unban successfully');
             
-            $this->showBandUserModal = false;
-            $this->bandUserId = null;
-            $this->bandReason = '';
+            $this->showUnbanUserModal = false;
+            $this->unbanUserId = null;
         } catch (\Exception $e) {
-            $this->error('Failed to band User: ' . $e->getMessage());
-            $this->showBandUserModal = false;
-            $this->bandUserId = null;
-            $this->bandReason = '';
-        }
-    }
-
-    public function confirmDelete($userId): void
-    {
-        $this->deleteUserId = $userId;
-        $this->showDeleteModal = true;
-    }
-
-    public function delete(): void
-    {
-        try {
-            if (!$this->deleteUserId) {
-                return;
-            }
-            $this->service->deleteData($this->deleteUserId);
-
-            $this->showDeleteModal = false;
-            $this->deleteUserId = null;
-
-            $this->success('User deleted successfully');
-        } catch (\Exception $e) {
-            $this->error('Failed to delete User: ' . $e->getMessage());
+            $this->error('Failed to unban User: ' . $e->getMessage());
+            $this->showUnbanUserModal = false;
+            $this->unbanUserId = null;
         }
     }
 
@@ -237,7 +202,7 @@ class Index extends Component
             'account_status' => $this->statusFilter,
             'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
-            'banned' => false
+            'banned' => true
         ];
     }
 
