@@ -104,6 +104,77 @@
                     </div>
                 </div>
             </div>
+            <div
+                class="glass-card rounded-2xl p-6 mt-8 bg-zinc-900/40 border border-zinc-800 shadow-sm relative overflow-hidden group hover:border-zinc-700 transition-all duration-300">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 rounded-lg">
+                            <svg class="w-5 h-5 text-text-white" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="text-text-white text-base font-bold tracking-tight">
+                            {{ __('Feedback') }}
+                        </h3>
+                    </div>
+
+                    @if ($data->feedbacks->first())
+                        <span
+                            class="text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider {{ $data->feedbacks->first()->type->color() }} bg-opacity-10 border border-current opacity-80">
+                            {{ $data->feedbacks->first()->type->label() }}
+                        </span>
+                    @endif
+                </div>
+
+                <div class="relative">
+                    @forelse ($data->feedbacks->take(1) as $feedback)
+                        <div class="mb-6">
+                            <p class="text-text-white leading-relaxed font-medium">
+                                {{ $feedback->message }}
+                            </p>
+                        </div>
+
+                        <hr class="border-zinc-800 mb-5">
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-9 h-9 rounded-full bg-gradient-to-br from-zinc-700 to-zinc-800 flex items-center justify-center border border-zinc-700 shadow-inner">
+                                    <img src="{{ auth_storage_url($feedback->author?->avatar) }}"
+                                        alt="{{ $feedback->author?->username }}"
+                                        class="w-full h-full rounded-full ring-2 ring-white/10 object-cover">
+                                </div>
+                                <div>
+                                    <a href="{{ route('profile',  $feedback->author?->username) }}" class="text-text-white text-sm font-semibold leading-none mb-1" target="_blank">
+                                        {{ $feedback->author?->full_name }}
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="text-right">
+                                <span class="text-zinc-500 text-[11px] block italic mb-1">
+                                    {{ $feedback->created_at_formatted }}
+                                </span>
+                                <div class="flex gap-1 justify-end">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-zinc-500/40 animate-pulse"></span>
+                                    <span class="w-1.5 h-1.5 rounded-full bg-zinc-700"></span>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="py-10 text-center">
+                            <p class="text-zinc-500 text-sm italic">{{ __('No feedback to review.') }}</p>
+                        </div>
+                    @endforelse
+                </div>
+
+                <div class="absolute top-0 right-0 p-1">
+                    <div class="w-1.5 h-1.5 rounded-full bg-zinc-800"></div>
+                </div>
+            </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
                 <div class="glass-card p-6 bg-main border border-zinc-800 rounded-2xl">
@@ -182,7 +253,8 @@
                     <div
                         class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 border-b border-zinc-800 pb-6 gap-4">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-zinc-500/90 flex items-center justify-center shadow-inner">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-zinc-500/90 flex items-center justify-center shadow-inner">
                                 <flux:icon name="exclamation-circle" class="w-6 h-6 text-text-white" />
                             </div>
                             <div>
@@ -198,14 +270,17 @@
 
                     <div>
                         <h2>{{ __('Dispute Reason') }}</h2>
-                        <p class="text-sm text-text-primary mt-2">{{ $data->disputes->reason ?? __('No specific reason provided by the buyer.') }}</p>
+                        <p class="text-sm text-text-primary mt-2">
+                            {{ $data->disputes->reason ?? __('No specific reason provided by the buyer.') }}</p>
                         <div class="flex justify-end gap-2">
 
-                           
-                            @if($data->is_disputed && $data->status->value == 'paid')
-                            <x-ui.button class="mt-6 px-4! py-2! w-auto!" wire:click="rejectDispute" > {{ __('Reject') }} </x-ui.button>
-                            <x-ui.button  class="mt-6 px-4! py-2! w-auto!" wire:click="acceptDispute"> {{ __('Accept') }} </x-ui.button>
-                            @else 
+
+                            @if ($data->is_disputed && $data->status->value == 'paid')
+                                <x-ui.button class="mt-6 px-4! py-2! w-auto!" wire:click="rejectDispute">
+                                    {{ __('Reject') }} </x-ui.button>
+                                <x-ui.button class="mt-6 px-4! py-2! w-auto!" wire:click="acceptDispute">
+                                    {{ __('Accept') }} </x-ui.button>
+                            @else
                                 <p>Resolved</p>
                             @endif
                         </div>
@@ -269,102 +344,80 @@
                     </div> --}}
                 </div>
 
-      <div 
-    x-data="{ show: @entangle('showDisputeModal') }"
-    x-show="show"
-    x-cloak
-    class="fixed inset-0 z-50 overflow-y-auto"
-    @keydown.escape.window="show = false"
->
+                <div x-data="{ show: @entangle('showDisputeModal') }" x-show="show" x-cloak class="fixed inset-0 z-50 overflow-y-auto"
+                    @keydown.escape.window="show = false">
 
-    {{-- Red Overlay --}}
-    <div 
-        x-show="show"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0"
-        @click="show = false"
-        class="fixed inset-0 bg-bg-primary backdrop-blur-sm"
-    ></div>
+                    {{-- Red Overlay --}}
+                    <div x-show="show" x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                        x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0" @click="show = false"
+                        class="fixed inset-0 bg-bg-primary backdrop-blur-sm"></div>
 
-    {{-- Modal Wrapper --}}
-    <div class="flex items-center justify-center min-h-screen p-4">
-        <div 
-            x-show="show"
-            x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0 transform scale-95"
-            x-transition:enter-end="opacity-100 transform scale-100"
-            x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="opacity-100 transform scale-100"
-            x-transition:leave-end="opacity-0 transform scale-95"
-            @click.stop
-            class="relative dark:bg-[#1B0C33] bg-white rounded-lg shadow-xl w-full sm:max-w-md lg:max-w-xl"
-        >
+                    {{-- Modal Wrapper --}}
+                    <div class="flex items-center justify-center min-h-screen p-4">
+                        <div x-show="show" x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 transform scale-95"
+                            x-transition:enter-end="opacity-100 transform scale-100"
+                            x-transition:leave="transition ease-in duration-200"
+                            x-transition:leave-start="opacity-100 transform scale-100"
+                            x-transition:leave-end="opacity-0 transform scale-95" @click.stop
+                            class="relative dark:bg-[#1B0C33] bg-white rounded-lg shadow-xl w-full sm:max-w-md lg:max-w-xl">
 
-            {{-- Close Button --}}
-            <button 
-                @click="show = false"
-                class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition"
-            >
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
+                            {{-- Close Button --}}
+                            <button @click="show = false"
+                                class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
 
-            {{-- Header --}}
-            <div class="p-6 border-b">
-                <h2 class="text-xl font-semibold text-text-primary">
-                    {{ __('Give a Reason') }}
-                </h2>
-            </div>
+                            {{-- Header --}}
+                            <div class="p-6 border-b">
+                                <h2 class="text-xl font-semibold text-text-primary">
+                                    {{ __('Give a Reason') }}
+                                </h2>
+                            </div>
 
-            {{-- Body --}}
-            <div class="p-6 space-y-4">
+                            {{-- Body --}}
+                            <div class="p-6 space-y-4">
 
-                <div>
-                    
+                                <div>
 
-                    <textarea 
-                        wire:model="reason"
-                        rows="3"
-                        class="w-full bg-transparent border border-zinc-500 text-text-primary rounded-lg px-4 py-3
+
+                                    <textarea wire:model="reason" rows="3"
+                                        class="w-full bg-transparent border border-zinc-500 text-text-primary rounded-lg px-4 py-3
                                focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
-                        placeholder="{{ __('Explain why you are giving this action....') }}">
+                                        placeholder="{{ __('Explain why you are giving this action....') }}">
                     </textarea>
 
-                    @error('reason')
-                        <span class="text-pink-600 text-sm">{{ $message }}</span>
-                    @enderror
+                                    @error('reason')
+                                        <span class="text-pink-600 text-sm">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                            </div>
+
+                            {{-- Footer --}}
+                            <div class="p-6 flex justify-end gap-3 border-t">
+
+                                <x-ui.button
+                                    class="bg-gray-300! text-gray-800! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!"
+                                    @click="show = false">
+                                    {{ __('Cancel') }}
+                                </x-ui.button>
+
+                                <x-ui.button wire:click="submitDispute"
+                                    class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!">
+                                    {{ __('Submit') }}
+                                </x-ui.button>
+
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
-
-            </div>
-
-            {{-- Footer --}}
-            <div class="p-6 flex justify-end gap-3 border-t">
-
-                <x-ui.button
-                    class="bg-gray-300! text-gray-800! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!"
-                    @click="show = false"
-                >
-                    {{ __('Cancel') }}
-                </x-ui.button>
-
-                <x-ui.button
-                    wire:click="submitDispute"
-                    class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!"
-                >
-                    {{ __('Submit') }}
-                </x-ui.button>
-
-            </div>
-
-        </div>
-    </div>
-</div>
 
 
             @endif
