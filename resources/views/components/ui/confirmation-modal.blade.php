@@ -11,6 +11,8 @@
     'iconVariant' => 'outline',
     'iconName' => 'exclamation-triangle',
     'iconClasss' => '',
+
+    'inputs' => [],
 ])
 
 @php
@@ -87,6 +89,17 @@
                     <p class="text-base text-gray-600 mb-6">
                         {!! $message !!} {{-- Use {!! !!} to allow for bolding or links in the message if needed --}}
                     </p>
+
+                    {{-- Input Fields --}}
+                    @if (!empty($inputs))
+                        <div class="mb-6 space-y-4">
+                            @foreach ($inputs as $input)
+                                <input type="{{ $input['type'] ?? 'text' }}" wire:model.defer="{{ $input['model'] }}"
+                                    placeholder="{{ $input['placeholder'] ?? '' }}"
+                                    class="w-full rounded-lg border border-gray-600 px-4 py-2 placeholder:text-zinc-800 text-zinc-900 focus:outline-none focus:ring-zinc-500!" autofocus />
+                            @endforeach
+                        </div>
+                    @endif
 
                     {{-- Action Buttons --}}
                     <div class="flex flex-col sm:flex-row justify-center gap-3">
