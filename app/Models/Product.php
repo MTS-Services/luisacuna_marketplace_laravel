@@ -242,34 +242,13 @@ class Product extends BaseModel implements Auditable
 #[SearchUsingPrefix(['name', 'description', 'delivery_timeline', 'price', 'game_tags', 'product_config_values'])]
 public function toSearchableArray(): array
 {
-    if (!$this->relationLoaded('game')) {
-        $this->load([
-            'game:id,name',
-            'game.tags:id,name',
-            'product_configs:id,product_id,game_config_id,value',
-            'product_configs.gameConfig:id,name',
-        ]);
-    }
-    // Game tags
-    $gameTags = $this->game?->tags->pluck('name')->all() ?? [];
-
-    $productConfigValues = $this->product_configs
-        ->map(fn($config) => $config->value)
-        ->all();
-    dd($productConfigValues);
-    $productConfigsMap = $this->product_configs
-        ->mapWithKeys(fn($config) => [$config->gameConfig?->name ?? 'unknown' => $config->value])
-        ->all();
+  
 
     return [
         'name' => $this->name,
         'description' => $this->description,
         'price' => (float) $this->price,
         'delivery_timeline' => $this->delivery_timeline,
-        'game_tags' => $gameTags,
-        'game_name' => $this->game?->name,
-        'product_config_values' => $productConfigValues,
-        'product_configs' => $productConfigsMap, 
     ];
 }
 
