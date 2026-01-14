@@ -29,7 +29,9 @@ class Detail extends Component
     public function mount(Order $data): void
     {
         $this->data = $data;
-        $this->data->load(['user', 'source.user', 'source.game', 'transactions']);
+        $this->data->load(['user', 'source.user', 'source.game', 'transactions', 'feedbacks.author']);
+
+        // dd($this->data);
 
         // Capture previous URL, fallback to the default route if no referrer exists
         $this->backUrl = url()->previous() !== url()->current()
