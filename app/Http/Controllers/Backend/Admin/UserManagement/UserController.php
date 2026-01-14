@@ -167,10 +167,10 @@ class UserController extends Controller implements HasMiddleware
     {
         return view($this->masterView);
     }
-    public function feedback(string $id)
+    public function feedback(string $encryptedId)
     {
         return view($this->masterView, [
-            'userId' => $id
+            'encryptedId' => $encryptedId
         ]);
     }
 }
