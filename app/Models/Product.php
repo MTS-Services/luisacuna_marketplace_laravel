@@ -128,6 +128,7 @@ class Product extends BaseModel implements Auditable
 
     public function translatedName($languageIdOrLocale): string
     {
+        // dd($this->getTranslated('name', $languageIdOrLocale));
         return $this->getTranslated('name', $languageIdOrLocale) ?? $this->name;
     }
 
