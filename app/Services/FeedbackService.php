@@ -60,6 +60,11 @@ class FeedbackService
         return $userfeedbacks;
     }
 
+    public function findData(int $id): ?Feedback
+    {
+        return $this->model->find($id);
+    }
+
 
     public function getFeedbackByOrder(int $orderId, bool $isVisitSeller)
     {
