@@ -67,7 +67,7 @@ class PendingVerification extends Component
             [
                 'key' => 'id',
                 'label' => 'View Details',
-                'route' => 'admin.um.user.seller-verification.view',
+                'route' => 'admin.um.user.seller.view',
                 'encrypt' => true,
             ],
         ];

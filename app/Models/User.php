@@ -53,6 +53,10 @@ class User extends AuthBaseModel implements Auditable
         // 'language_id',
         // 'currency_id',
 
+        'reason',
+        'banned_reason',
+        'banned_at',
+
 
         'email_verified_at',
         'password',
@@ -331,7 +335,8 @@ class User extends AuthBaseModel implements Auditable
         $query->when($filters['search'] ?? null, fn($q, $search) => $q->search($search));
         $query->when($filters['user_type'] ?? null, fn($q, $type) => $q->where('user_type', $type));
         $query->when($filters['account_status'] ?? null, fn($q, $acc) => $q->where('account_status', $acc));
-
+        $query->when(array_key_exists('banned', $filters), fn($q) => $filters['banned'] ? $q->whereNotNull('banned_at') : $q->whereNull('banned_at'));
+        
         return $query;
     }
 
