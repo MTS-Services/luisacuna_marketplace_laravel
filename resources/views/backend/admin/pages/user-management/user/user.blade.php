@@ -91,23 +91,17 @@
             <x-slot name="breadcrumb">{{ __('Buyer Management') }}</x-slot>
             <livewire:backend.admin.user-management.user.buyer.buyer-trash />
         @break
-        @case('admin.um.user.seller-verification')
+        @case('admin.um.user.pending-verification')
             <x-slot name="pageSlug">{{ __('seller-verification-pending') }}</x-slot>
             <x-slot name="title">{{ __('Seller Pending Verificaiton') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Seller Management') }}</x-slot>
             <livewire:backend.admin.user-management.user.seller.pending-verification />
         @break
-        @case('admin.um.user.seller-verification.view')
-            <x-slot name="pageSlug">{{ __('seller-verification-pending') }}</x-slot>
-            <x-slot name="title">{{ __('Seller Verificaiton Details') }}</x-slot>
+        @case('admin.um.user.seller.view')
+            <x-slot name="pageSlug">{{ __('sellers') }}</x-slot>
+            <x-slot name="title">{{ __('Seller Details') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Seller Management') }}</x-slot>
-            <livewire:backend.admin.user-management.user.seller.verification-details :encryptedId="$encryptedId" />
-        @break
-        @case('admin.um.user.seller-verification.verified')
-            <x-slot name="pageSlug">{{ __('seller-verification-verified') }}</x-slot>
-            <x-slot name="title">{{ __('Seller Verified') }}</x-slot>
-            <x-slot name="breadcrumb">{{ __('Seller Management') }}</x-slot>
-            <livewire:backend.admin.user-management.user.seller.verified-verification />
+            <livewire:backend.admin.user-management.user.seller.seller-details :encryptedId="$encryptedId" />
         @break
 
         @default

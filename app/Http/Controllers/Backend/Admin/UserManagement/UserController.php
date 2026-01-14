@@ -145,23 +145,17 @@ class UserController extends Controller implements HasMiddleware
 
     //Seller Verificaiton 
 
-    public function sellerVerification()
+    public function pendingVerification()
     {
         return view($this->masterView);
     }
 
     // Seller Verification View Details
 
-    public function sellerVerificationView(string $encryptedId)
+    public function sellerView(string $encryptedId)
     {
-       
         return view($this->masterView, [
             'encryptedId' => $encryptedId
         ]);
-    }
-  
-    public function sellerVerified()
-    {
-        return view($this->masterView);
     }
 }
