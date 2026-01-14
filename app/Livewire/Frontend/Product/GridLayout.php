@@ -26,7 +26,7 @@ class GridLayout extends Component
     protected $datas;
 
     // This Serach
-    #[Url()]
+    #[Url('q')]
     public $search = '';
 
 

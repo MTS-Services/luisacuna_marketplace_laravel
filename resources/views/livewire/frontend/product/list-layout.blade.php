@@ -40,8 +40,8 @@
 
         <div class="mt-3 mb-6 flex items-center justify-between gap-4">
           <div class="sm:inline-flex gap-3">
-              <x-ui.custom-select wire-model="serach" wire-live="true"
-                class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!" label="Filter">
+              <x-ui.custom-select wire-model="filter_by_config" wire-live="true"
+                class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!" label="Filter Tags">
                 <x-ui.custom-option label="All" value="" />
                 @foreach ($tags as $tag)
                     <x-ui.custom-option label="{{ $tag }}" value="{{ $tag }}" />
@@ -93,6 +93,7 @@
                     <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4 content-start"
                         wire:loading.class="opacity-50">
                         @forelse ($datas as $item)
+                            {{ $item->product_configs->isNotEmpty() ? $item->product_configs->first() : $item->game_config }}
                             <div wire:key="prod-{{ $item->id }}" wire:click="selectItem({{ $item->id }})"
                                 @click="selectedId = {{ $item->id }}"
                                 :class="selectedId == {{ $item->id }} ? 'border-pink-500 ring-1 ring-pink-500' :

@@ -223,6 +223,14 @@ class Product extends BaseModel implements Auditable
             $q->where('slug', $filters['game_tag']);
           });
         }
+
+        if($filters['filter_by_config'] ?? null) {
+            $query->whereHas('product_configs', function ($q) use ($filters) {
+                $q->where('value', $filters['filter_by_config']);
+            });
+        }
+
+
         return $query;
     }
 
