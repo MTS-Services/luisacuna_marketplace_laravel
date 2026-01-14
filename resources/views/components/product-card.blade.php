@@ -25,9 +25,8 @@
             </div>
             <div class="">
                 <h3 class="font-semibold ttext-xl md:text-2xl mb-3 mt-5 text-text-white line-clamp-1">
-                    {{ $data->gameTranslations->first()?->name ?? $data->name }}
-
-                    {{-- {{ $item->gameTranslations->first()?->name ?? $item->name }} --}}
+                    {{-- {{ $data->gameTranslations->first()?->name ?? $data->name }} --}}
+                    {{ $data->translatedName(app()->getLocale()) ?? $data->name }}
                 </h3>
                 @if ($categorySlug == 'currency' || $categorySlug == 'gift-card')
                     <p class="text-pink-500 mb-0">{{ $data->products_count }} {{ __('offers') }}</p>
