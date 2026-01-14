@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Admin\UserManagement\Feedback;
 use Livewire\Component;
 
 use App\Enums\FeedbackType;
+use Illuminate\Support\Str;
 use App\Services\FeedbackService;
 use App\Traits\Livewire\WithDataTable;
 
@@ -18,6 +19,11 @@ class Index extends Component
 
     public $userId;
     public $statusFilter = '';
+
+    public $showModal = false;
+    public $selectedFeedback = null;
+
+
     public function boot(FeedbackService $service)
     {
         $this->service = $service;
@@ -27,6 +33,17 @@ class Index extends Component
         $this->userId = decrypt($userId);
     }
 
+    public function view($id)
+    {
+        $this->selectedFeedback = $this->service->findData($id);
+        $this->showModal = true;
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
+        $this->selectedFeedback = null;
+    }
 
     public function render()
     {
@@ -41,10 +58,26 @@ class Index extends Component
 
         $columns = [
             [
+                'key' => 'order_id',
+                'label' => 'Order ID',
+                'sortable' => true,
+                'format' => fn($data) => '<span class="text-text-white text-xs xxs:text-sm md:text-base truncate">' . $data->order?->order_id . '</span>'
+            ],
+            [
                 'key' => 'author_id',
                 'label' => 'Sender',
                 'sortable' => true,
-                'format' => fn($data) => '<span class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">' . $data->author->full_name . '</span>'
+                'format' => fn($data) => '<a href="' . route('profile', ['username' => $data->author->username]) . '" target="_blank" class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">' . $data->author->username . '</a>'
+            ],
+            [
+                'key' => 'message',
+                'label' => 'Message',
+                'sortable' => true,
+                'format' => fn($data) =>
+                '<span title="' . e($data->message) . '">' .
+                    Str::limit($data->message, 50) .
+                    '</span>',
+
             ],
             [
                 'key' => 'type',
@@ -57,11 +90,6 @@ class Index extends Component
                 }
             ],
             [
-                'key' => 'message',
-                'label' => 'Message',
-                'sortable' => true
-            ],
-            [
                 'key' => 'created_at',
                 'label' => 'Created Date',
                 'sortable' => true,
@@ -70,11 +98,18 @@ class Index extends Component
                 }
             ],
         ];
-
+        $actions = [
+            [
+                'key' => 'id',
+                'label' => 'View',
+                'method' => 'view',
+            ],
+        ];
         return view('livewire.backend.admin.user-management.feedback.index', [
             'datas' => $datas,
             'columns' => $columns,
             'types' => FeedbackType::options(),
+            'actions' => $actions
         ]);
     }
 
