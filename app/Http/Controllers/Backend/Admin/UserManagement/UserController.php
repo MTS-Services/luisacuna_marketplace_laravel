@@ -162,4 +162,15 @@ class UserController extends Controller implements HasMiddleware
             'encryptedId' => $encryptedId
         ]);
     }
+
+    public function sellerVerified()
+    {
+        return view($this->masterView);
+    }
+    public function feedback(string $encryptedId)
+    {
+        return view($this->masterView, [
+            'encryptedId' => $encryptedId
+        ]);
+    }
 }
