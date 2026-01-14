@@ -80,17 +80,19 @@ trait HasTranslations
         $relation = $config['relation'];
         $mappedField = $config['field_mapping'][$field] ?? $field;
 
-        // Always work with collection
+        // Get translations
         $translations = $this->relationLoaded($relation)
             ? $this->$relation
-            : $this->$relation()->with('language')->get();
+            : $this->$relation()->get();
+
+        // 🔥 Force-load language if missing
+        if ($translations->isNotEmpty() && ! $translations->first()->relationLoaded('language')) {
+            $translations->load('language');
+        }
 
         $translation = is_numeric($languageIdOrLocale)
             ? $translations->firstWhere('language_id', (int) $languageIdOrLocale)
-            : $translations->first(
-                fn($t) => $t->relationLoaded('language')
-                    && $t->language->locale === $languageIdOrLocale
-            );
+            : $translations->first(fn($t) => $t->language?->locale === $languageIdOrLocale);
 
         return $translation?->$mappedField;
     }

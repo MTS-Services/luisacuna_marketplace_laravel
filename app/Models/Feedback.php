@@ -130,7 +130,7 @@ class Feedback extends AuditBaseModel implements Auditable
             'type' => $this->type,
             'created_at' => $this->created_at,
             'phone' => $this->phone,
-            'author_username' => $this->author?->full_name,
+            'author_id' => $this->author?->username,
         ];
     }
 
