@@ -33,12 +33,16 @@ class ProductService
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
-        if ($search) {
-            // Scout Search
-            return Product::search($search)
-                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
-                ->paginate($perPage);
-        }
+       if ($search) {
+    // Scout Search
+    return Product::search($search)
+        ->query(fn($query) => $query
+            ->with(['game', 'platform', 'product_configs'])
+            ->filter($filters)
+            ->orderBy($sortField, $sortDirection)
+        )
+        ->paginate($perPage);
+}
         return $this->model->query()
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)

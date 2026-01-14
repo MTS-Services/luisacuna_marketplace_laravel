@@ -169,7 +169,7 @@
                     showAll: false,
                     limit: 5,
                     tags: @js($tags),
-                    search: @entangle('search').live
+                    search: @entangle('filter_by_tag').live
                 }" class="w-full">
                     <div class="flex flex-wrap gap-2 sm:gap-3 transition-all duration-300">
                         <!-- All Tags (Desktop shows all, Mobile shows limited) -->
@@ -178,7 +178,7 @@
                             :key="index">
                             <span
                                 class="px-3 py-1 bg-bg-primary dark:bg-bg-info rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-white"
-                                x-text="tag" @click="search = tag">
+                                x-text="tag" @click="$wire.set('filter_by_tag', tag)">
                             </span>
                         </template>
 
@@ -264,7 +264,7 @@
             <!-- Products Grid Section -->
             <div class="relative min-h-[40vh]">
                 <!-- Skeleton Loading -->
-                <x-loading-animation :target="'search, tagSelected, selectedDevice, selectedAccountType,  selectedPrice, selectedDeliveryTime , resetAllFilters'" />
+                <x-loading-animation :target="'search, tagSelected, selectedDevice, filter_by_tag, selectedAccountType,  selectedPrice, selectedDeliveryTime , resetAllFilters'" />
                 <!-- Actual Product Cards -->
                 <div wire:loading.class="opacity-0"
                     wire:target="search, tagSelected, selectedDevice, selectedAccountType,  selectedPrice, selectedDeliveryTime , resetAllFilters"
