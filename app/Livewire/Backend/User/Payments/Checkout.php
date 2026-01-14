@@ -55,7 +55,9 @@ class Checkout extends Component
     }
 
     public function mount($slug, $token)
+
     {
+
         $key = "checkout_{$token}";
         $sessionKey = Session::driver('redis')->get($key);
 
@@ -149,6 +151,8 @@ class Checkout extends Component
      */
     public function processPayment()
     {
+
+
         if ($this->processing) {
             return;
         }
