@@ -47,6 +47,9 @@ class ListLayout extends Component
 
     public $tags = [];
 
+    #[Url('config')]
+    public $filter_by_config; 
+
     
 
 
@@ -86,13 +89,14 @@ class ListLayout extends Component
         $configTags = collect($this->game->gameConfig)
             ->pluck('dropdown_values')
             ->flatten();
-
+        
         // 4. Merge everything
         $this->tags =$configTags
                     ->filter()
                     ->shuffle()
                     ->toArray();
     }
+
 
     public function selectItem($id)
     {
@@ -145,7 +149,7 @@ class ListLayout extends Component
             'gameSlug' => $this->gameSlug,
             'categorySlug' => $this->categorySlug,
             'skipSelf' => true,
-            'serach' => $this->serach,
+            'filter_by_config' => $this->filter_by_config,
             'sort_field' => $this->sortBy,
             'sort_direction' => $this->sortDirection,
             'platform_id' => $this->platform_id != null ? decrypt($this->platform_id) : '',
@@ -153,6 +157,7 @@ class ListLayout extends Component
 
         ]);
         $this->datas->load('user.feedbacksReceived', 'game', 'category', 'platform', 'user.wallet');
+
         $this->paginationData($this->datas);
 
         $filters = [];
