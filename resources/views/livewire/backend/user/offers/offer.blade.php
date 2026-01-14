@@ -19,9 +19,9 @@
                                 <div class="flex items-center space-x-3">
                                     <div class="w-8 h-8 sm:w-16 sm:h-16">
                                         @if ($category->icon)
-
-                                            <img src="{{ storage_url($category->icon) }}" class="w-full h-full rounded-lg sm:rounded-xl object-cover" crop="scale" 
-                                                alt="{{ $category->name }}" />
+                                            <img src="{{ storage_url($category->icon) }}"
+                                                class="w-full h-full rounded-lg sm:rounded-xl object-cover"
+                                                crop="scale" alt="{{ $category->name }}" />
                                         @else
                                             <img src="{{ storage_url('') }}" alt="{{ $category->name }}"
                                                 class="w-full h-full rounded-lg sm:rounded-xl object-cover">
@@ -77,8 +77,9 @@
                         </h2>
 
                         <div class="mx-auto w-full sm:w-1/2">
-                            <x-ui.custom-select :wireModel="'gameId'" :dropDownClass="'border-0!'" class="rounded-md! border-0! bg-bg-info!" label="Select Game">
-                               
+                            <x-ui.custom-select :wireModel="'gameId'" :dropDownClass="'border-0!'"
+                                class="rounded-md! border-0! bg-bg-info!" label="Select Game">
+
                                 @foreach ($games as $item)
                                     <x-ui.custom-option :value="$item->id" :label="$item->name" />
                                 @endforeach
@@ -124,10 +125,8 @@
                     @endphp
                     <div class="flex items-center justify-center gap-3 mb-5">
                         @if ($selectedGame->logo)
-
-                            <img src="{{ storage_url($selectedGame->logo) }}" alt="{{ $selectedGame->name }}" class="w-12 h-12 sm:w-16 sm:h-16 rounded-lg object-cover" crop="scale"
-                            />
-                            
+                            <img src="{{ storage_url($selectedGame->logo) }}" alt="{{ $selectedGame->name }}"
+                                class="w-12 h-12 sm:w-16 sm:h-16 rounded-lg object-cover" crop="scale" />
                         @endif
                         <span class="text-lg sm:text-xl font-semibold text-text-white">
                             {{ $selectedGame->name }}
@@ -177,54 +176,57 @@
                             {{ __('Delivery') }}
                         </h2>
                         <div class="border-t border-zinc-500 pt-4 mt-4 flex items-center gap-3"></div>
-                      
+
                         <div class="space-y-4">
                             @foreach ($gameConfigs as $config)
                                 @if ($config->delivery_methods != null)
-                                    <label class="flex items-center cursor-pointer group">
-                                            <input type="radio" 
-                                                value="manual"
+                                    @foreach ($config->delivery_methods as $delivery_method)
+                                        <label class="flex items-center cursor-pointer group">
+                                            <input type="radio" value="{{ $delivery_method }}"
                                                 wire:model.live="deliveryMethod"
                                                 class="w-5 h-5 accent-pink-500 bg-transparent border-2 border-zinc-700 cursor-pointer">
                                             <span class="ml-3 text-text-white text-base transition-colors">
-                                                Manual
+                                                {{ $delivery_method == 'instant' ? 'Instant Delivery' : 'Manual' }}
                                             </span>
-                                    </label>
-                                    
-                                    <label class="flex items-center cursor-pointer group">
-                                            <input type="radio" name="delivery_method"
-                                                value="instant"
-                                                wire:model.live="deliveryMethod"
-                                                class="w-5 h-5 accent-pink-500 bg-transparent border-2 border-zinc-700 cursor-pointer">
-                                            <span class="ml-3 text-text-white text-base transition-colors">
-                                               Auto
-                                            </span>
-                                    </label>
-
+                                        </label>
+                                    @endforeach
                                     @break
                                 @endif
                             @endforeach
                             <x-ui.input-error :messages="$errors->get('deliveryMethod')" />
                         </div>
-                          <h3 class="text-text-white text-lg sm:text-xl font-medium mb-6">
+                        <h3 class="text-text-white text-lg sm:text-xl font-medium mb-6">
                             {{ __('Guaranteed Delivery Time:') }}
                         </h3>
                         <div class="space-y-4">
                             <div class="">
-                                @php 
-                               
-                                 $isInstantDelivery = $deliveryMethod == 'instant' ? $timelineOptions['instant'] : 'Choose';
-                             
-                                @endphp
-                                <x-ui.custom-select :wireModel="'delivery_timeline'" :dropDownClass="'border-0!'" class="rounded-md! border-0 bg-bg-info!" label="{{ $isInstantDelivery }}">
-                                   
+                                @php
 
-                                    @foreach ($timelineOptions as $timelineOption)
-                                     
-                                        {{-- @dd($timelineOption) --}}
-                                        <x-ui.custom-option :value="$timelineOption" :label="$timelineOption" />
-                                    @endforeach
-                                </x-ui.custom-select>
+                                    $isInstantDelivery =
+                                        $deliveryMethod == 'manual' ? $timelineOptions['instant'] : 'Choose Delivery';
+
+                                @endphp
+                                @if (!$deliveryMethod)
+                                    <x-ui.custom-select :wireModel="'delivery_timeline'" :dropDownClass="'border-0!'"
+                                        class="rounded-md! border-0 bg-bg-info!" label="{{ $isInstantDelivery }}">
+
+
+                                        @foreach ($timelineOptions as $timelineOption)
+                                            {{-- @dd($timelineOption) --}}
+                                            <x-ui.custom-option :value="$timelineOption" :label="$timelineOption" />
+                                        @endforeach
+                                    </x-ui.custom-select>
+                                @else
+                                    <x-ui.custom-select :wireModel="'delivery_timeline'" :dropDownClass="'border-0!'"
+                                        class="rounded-md! border-0 bg-bg-info!" label="{{ $isInstantDelivery }}">
+
+
+                                        @foreach ($timelineOptions as $timelineOption)
+                                            {{-- @dd($timelineOption) --}}
+                                            <x-ui.custom-option :value="$timelineOption" :label="$timelineOption" />
+                                        @endforeach
+                                    </x-ui.custom-select>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -250,7 +252,7 @@
                                 </div>
                                 <div>
                                     <x-ui.label for="platform" :value="__('Platform')" required class="mb-2" />
-                                    <x-ui.custom-select :wireModel="'platform_id'" :dropDownClass="'border-0!'"
+                                    <x-ui.custom-select :wireModel="'platform_id'" :dropDownClass="'border-0!'" label="Select Platform"
                                         class="rounded-md! border-0! bg-bg-info!">
                                         <x-ui.custom-option :value="null" :label="__('Delivery Timeline')" />
                                         @foreach ($platforms as $platform)
@@ -262,94 +264,95 @@
                             </div>
                         </div>
                     </div>
+                    {{-- @dd($gameConfigs) --}}
+                    @if ($gameConfigs->isNotEmpty())
+                        <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
+                            <h2 class="text-2xl font-semibold text-text-white mb-2 sm:mb-7">
+                                {{ __('Specific Attributes') }}
+                            </h2>
 
-                    <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
-                        <h2 class="text-2xl font-semibold text-text-white mb-2 sm:mb-7">
-                            {{ __('Specific Attributes') }}
-                        </h2>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 justify-center mx-auto">
-                            @foreach ($gameConfigs as $config)
-                                {{-- Dropdown --}}
-                                @if ($config->input_type == App\Enums\GameConfigInputType::SELECT_DROPDOWN)
-                                    <div
-                                        class="{{ in_array($config->filter_type, ['textarea', 'filter_by_textarea']) ? 'col-span-2' : '' }}">
-                                        <div>
-                                            <x-ui.label :for="'config_' . str_replace('-', '_', $config->slug)" :value="$config->field_name" class="mb-2">
-                                            </x-ui.label>
-
-                                            @php
-                                                $options = is_array($config->dropdown_values)
-                                                    ? $config->dropdown_values
-                                                    : json_decode($config->dropdown_values, true);
-                                                $wireModel = 'fields.' . $config->id . '.value';
-                                            @endphp
-
-                                            <x-ui.custom-select :wireModel="$wireModel" class="rounded-md! border-0! bg-bg-info!"
-                                                mdWidth="md:w-full" rounded="rounded" mdLeft="md:left-0">
-                                                <x-ui.custom-option :value="null" :label="'Select ' . $config->field_name" />
-                                                @foreach ($options as $key => $option)
-                                                    <x-ui.custom-option :value="is_array($option) ? $option['value'] : $key" :label="is_array($option) ? $option['label'] : $option" />
-                                                @endforeach
-                                            </x-ui.custom-select>
-
-                                            <x-ui.input-error :messages="$errors->get($wireModel)" class="mt-2" />
-                                        </div>
-                                    </div>
-                                    {{-- Textarea --}}
-                                @elseif (in_array($config->input_type, ['textarea']))
-                                    <div
-                                        class="{{ in_array($config->filter_type, ['textarea', 'filter_by_textarea']) ? 'col-span-2' : '' }}">
-                                        <textarea wire:model="config_{{ str_replace('-', '_', $config->slug) }}" placeholder="{{ $config->field_name }}"
-                                            rows="4"
-                                            class="w-full bg-bg-info! text-text-white border-none rounded-lg px-4 py-3">
-                                </textarea>
-                                    </div>
-
-                                    {{-- Number input --}}
-                                @elseif ($config->input_type == App\Enums\GameConfigInputType::NUMBER)
-                                    <div
-                                        class="{{ in_array($config->filter_type, ['textarea', 'filter_by_textarea']) ? 'col-span-2' : '' }}">
-                                        <x-ui.label :for="'fields.{{ $config->id }}.value'" :value="$config->field_name" class="mb-2" />
-                                        <x-ui.input id="name" type="number"
-                                            class="bg-bg-info! text-text-primary! dark:text-text-primary! placeholder:text-text-primary! border-0! border-zinc-700 rounded-lg px-3 py-2"
-                                            wire:model="fields.{{ $config->id }}.value"
-                                            placeholder="{{ $config->field_name }}" />
-                                    </div>
-                                    {{-- Default text input --}}
-                                @else
-                                    @if ($config->delivery_methods == null)
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 justify-center mx-auto">
+                                @foreach ($gameConfigs as $config)
+                                    {{-- Dropdown --}}
+                                    @if ($config->input_type == App\Enums\GameConfigInputType::SELECT_DROPDOWN)
                                         <div
                                             class="{{ in_array($config->filter_type, ['textarea', 'filter_by_textarea']) ? 'col-span-2' : '' }}">
-                                            <x-ui.label :for="'config_' . str_replace('-', '_', $config->slug)" :value="$config->field_name" class="mb-2" />
+                                            <div>
+                                                <x-ui.label :for="'config_' . str_replace('-', '_', $config->slug)" :value="$config->field_name" class="mb-2">
+                                                </x-ui.label>
 
-                                            <x-ui.input type="text" placeholder="{{ $config->field_name }}"
-                                                wire:model="fields.{{ $config->id }}.value"
-                                                class="bg-bg-info! mt-2 border-zinc-700 text-text-primary placeholder:text-text-primary border-0! bg-bg-primary!"
-                                                x-model="fields.{{ $config->id }}.value" />
+                                                @php
+                                                    $options = is_array($config->dropdown_values)
+                                                        ? $config->dropdown_values
+                                                        : json_decode($config->dropdown_values, true);
+                                                    $wireModel = 'fields.' . $config->id . '.value';
+                                                @endphp
 
-                                            <x-ui.input-error :messages="$errors->get('fields.{{ $config->id }}.value')" class="mt-2" />
+                                                <x-ui.custom-select :wireModel="$wireModel"
+                                                    class="rounded-md! border-0! bg-bg-info!" mdWidth="md:w-full"
+                                                    rounded="rounded" mdLeft="md:left-0">
+                                                    <x-ui.custom-option :value="null" :label="'Select ' . $config->field_name" />
+                                                    @foreach ($options as $key => $option)
+                                                        <x-ui.custom-option :value="is_array($option) ? $option['value'] : $key" :label="is_array($option) ? $option['label'] : $option" />
+                                                    @endforeach
+                                                </x-ui.custom-select>
+
+                                                <x-ui.input-error :messages="$errors->get($wireModel)" class="mt-2" />
+                                            </div>
                                         </div>
+                                        {{-- Textarea --}}
+                                    @elseif (in_array($config->input_type, ['textarea']))
+                                        <div
+                                            class="{{ in_array($config->filter_type, ['textarea', 'filter_by_textarea']) ? 'col-span-2' : '' }}">
+                                            <textarea wire:model="config_{{ str_replace('-', '_', $config->slug) }}" placeholder="{{ $config->field_name }}"
+                                                rows="4" class="w-full bg-bg-info! text-text-white border-none rounded-lg px-4 py-3">
+                                </textarea>
+                                        </div>
+
+                                        {{-- Number input --}}
+                                    @elseif ($config->input_type == App\Enums\GameConfigInputType::NUMBER)
+                                        <div
+                                            class="{{ in_array($config->filter_type, ['textarea', 'filter_by_textarea']) ? 'col-span-2' : '' }}">
+                                            <x-ui.label :for="'fields.{{ $config->id }}.value'" :value="$config->field_name" class="mb-2" />
+                                            <x-ui.input id="name" type="number"
+                                                class="bg-bg-info! text-text-primary! dark:text-text-primary! placeholder:text-text-primary! border-0! border-zinc-700 rounded-lg px-3 py-2"
+                                                wire:model="fields.{{ $config->id }}.value"
+                                                placeholder="{{ $config->field_name }}" />
+                                        </div>
+                                        {{-- Default text input --}}
+                                    @else
+                                        @if ($config->delivery_methods == null)
+                                            <div
+                                                class="{{ in_array($config->filter_type, ['textarea', 'filter_by_textarea']) ? 'col-span-2' : '' }}">
+                                                <x-ui.label :for="'config_' . str_replace('-', '_', $config->slug)" :value="$config->field_name" class="mb-2" />
+
+                                                <x-ui.input type="text" placeholder="{{ $config->field_name }}"
+                                                    wire:model="fields.{{ $config->id }}.value"
+                                                    class="bg-bg-info! mt-2 border-zinc-700 text-text-primary placeholder:text-text-primary border-0! bg-bg-primary!"
+                                                    x-model="fields.{{ $config->id }}.value" />
+
+                                                <x-ui.input-error :messages="$errors->get('fields.{{ $config->id }}.value')" class="mt-2" />
+                                            </div>
+                                        @endif
                                     @endif
-                                @endif
 
-                                {{-- Validation errors (for non-dropdown fields) --}}
+                                    {{-- Validation errors (for non-dropdown fields) --}}
 
-                                @error("fields.{{ $config->id }}.value")
-                                    <p class="text-pink-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            @endforeach
-                        </div>
-
-                        @if ($errors->any())
-                            <div class="text-pink-500 text-start mt-4 py-2 px-3 bg-bg-primary rounded">
-                                @foreach ($errors->all() as $error)
-                                    <p class="text-sm badge badge-danger text-pink-600">{{ $error }}</p>
+                                    @error("fields.{{ $config->id }}.value")
+                                        <p class="text-pink-500 text-sm mt-1">{{ $message }}</p>
+                                    @enderror
                                 @endforeach
                             </div>
-                        @endif
-                    </div>
 
+                            @if ($errors->any())
+                                <div class="text-pink-500 text-start mt-4 py-2 px-3 bg-bg-primary rounded">
+                                    @foreach ($errors->all() as $error)
+                                        <p class="text-sm badge badge-danger text-pink-600">{{ $error }}</p>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+                    @endif
                     <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
                         <div class="mt-8">
                             <h2 class="text-xl sm:text-3xl font-semibold text-text-white">{{ __('Fee structure') }}

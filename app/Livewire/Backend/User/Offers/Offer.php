@@ -82,16 +82,8 @@ class Offer extends Component
 
     public function updatedDeliveryMethod($deliveryMethod)
     {
-
-      
-        // Update timeline options based on delivery method
-        if ($deliveryMethod == "manual") {
-            $this->timelineOptions = delivery_timelines($this->deliveryMethod);
-        } else {
-             $this->timelineOptions = delivery_timelines($this->deliveryMethod);
-        }
-
-        // Reset delivery time when method changes
+        $this->deliveryMethod = $deliveryMethod;
+        $this->timelineOptions = delivery_timelines($this->deliveryMethod);
         $this->delivery_timeline = null;
     }
 
@@ -102,9 +94,13 @@ class Offer extends Component
         $this->categoryName = $categoryName;
 
 
-        $category = $this->categoryService->findData($categoryId)->load('games');
+        $category = $this->categoryService->findData($categoryId)
+            ->load([
+                'games' => fn($q) => $q->orderBy('name', 'asc')
+            ]);
 
         $this->games = $category->games;
+
 
         $this->step = 2;
     }
