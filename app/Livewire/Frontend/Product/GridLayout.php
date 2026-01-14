@@ -40,7 +40,9 @@ class GridLayout extends Component
     public $min_price = 0;
     #[Url()]
     public $max_price = 0;
-
+    
+    #[Url('filter')]
+    public $filter_by_tag = '';
 
     public $tags = [];
 
@@ -106,6 +108,8 @@ class GridLayout extends Component
         $this->tags = $shuffledTags;
     }
 
+
+
     public function render()
     {
 
@@ -120,6 +124,7 @@ class GridLayout extends Component
             'category_id' => $this->category_id,
             'min_price' => $this->min_price,
             'max_price' => $this->max_price,
+            'filter_by_tag' => $this->filter_by_tag,
         ]);
         $this->datas->load('user');
 
@@ -140,6 +145,7 @@ class GridLayout extends Component
             'category_id',
             'min_price',
             'max_price',
+            'filter_by_tag'
         ]);
     }
 

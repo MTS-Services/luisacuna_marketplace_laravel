@@ -230,6 +230,16 @@ class Product extends BaseModel implements Auditable
             });
         }
 
+       if ($filters['filter_by_tag'] ?? null) {
+            $query->whereHas('platform', function ($q) use ($filters) {
+                $q->where('name', 'LIKE', '%' . $filters['filter_by_tag'] . '%');
+            })
+            ->orWhereHas('product_configs', function ($q) use ($filters) {
+                $q->where('value', 'LIKE', '%' . $filters['filter_by_tag'] . '%');
+            });
+        }
+
+
 
         return $query;
     }
