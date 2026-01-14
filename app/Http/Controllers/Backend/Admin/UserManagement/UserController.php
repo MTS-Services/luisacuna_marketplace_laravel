@@ -164,4 +164,11 @@ class UserController extends Controller implements HasMiddleware
     {
         return view($this->masterView);
     }
+public function feedback(string $id)
+{
+    return view($this->masterView, [
+        'userId' => $id
+    ]);
+}
+
 }

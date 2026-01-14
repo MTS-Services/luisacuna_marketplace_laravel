@@ -3,9 +3,10 @@
 namespace App\Livewire\Backend\Admin\UserManagement\User;
 
 use App\Models\User;
+use App\Enums\UserType;
 use Livewire\Component;
-use App\Enums\UserAccountStatus;
 use App\Services\UserService;
+use App\Enums\UserAccountStatus;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
@@ -84,6 +85,11 @@ class Index extends Component
                 'key' => 'id',
                 'label' => 'Delete',
                 'method' => 'confirmDelete'
+            ],
+            [
+                'key' => 'id',
+                'label' => 'Feedbacks',
+                'route' => 'admin.um.user.feedback',
             ],
         ];
         $bulkActions = [
