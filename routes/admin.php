@@ -177,6 +177,9 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
 
             // Seller Verification
             Route::get('pending-verification', 'pendingVerification')->name('pending-verification');
+
+            // Banned User
+            Route::get('banned-user', 'bannedUser')->name('banned-user');
             
         });
     });

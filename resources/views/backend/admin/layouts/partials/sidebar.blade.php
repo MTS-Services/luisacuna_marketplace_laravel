@@ -90,7 +90,7 @@
                         ],
                         [
                             'name' => 'Banned Users',
-                            'route' => '#',
+                            'route' => route('admin.um.user.banned-user'),
                             'icon' => 'user',
                             'active' => 'admin-users-banned',
                             'permission' => 'user-list',

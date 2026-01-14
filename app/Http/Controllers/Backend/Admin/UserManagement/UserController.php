@@ -74,6 +74,10 @@ class UserController extends Controller implements HasMiddleware
     {
         return view($this->masterView);
     }
+    public function bannedUser()
+    {
+        return view($this->masterView);
+    }
     public function profileInfo($id)
     {
         $user = $this->service->getDataById($id);
