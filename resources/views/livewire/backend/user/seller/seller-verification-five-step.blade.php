@@ -21,7 +21,7 @@
                     <p class="font-semibold text-xl sm:text-2xl ">{{ __('Seller ID verification') }}</p>
                 </div>
                 <div class="text-sm text-text-primary font-normal pt-2">
-                    Step <span>5</span>/<span>6</span>
+                    {{ __('Step') }} <span>5</span>/<span>6</span>
                 </div>
             </div>
 
@@ -118,15 +118,13 @@
                             <li class="flex items-start">
                                 <span class="mr-2">•</span>
                                 <span>
-                                    {{ __(' Accepted documents: **Driver\'s license, Government issued ID or Passport,
-                                                                                                                                                                                                                                                                                                                                                                                                            international student ID.**') }}
+                                    {{ __('Accepted documents: **Driver\'s license, Government issued ID or Passport, international student ID.**') }}
                                 </span>
                             </li>
                             <li class="flex items-start">
                                 <span class="mr-2">•</span>
                                 <span>
-                                    {{ __('Make sure personal details on the document are **clearly visible and easy to
-                                                                                                                                                                                                                                                                                                                                                                                                            read.**') }}
+                                    {{ __('Make sure personal details on the document are **clearly visible and easy to read.**') }}
                                 </span>
                             </li>
                         </ul>

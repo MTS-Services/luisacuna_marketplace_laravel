@@ -21,7 +21,7 @@
                     <p class="font-semibold text-xl sm:text-2xl ">{{ __('Seller ID verification') }}</p>
                 </div>
                 <div class="text-sm text-text-primary font-normal pt-2">
-                    Step <span>6</span>/<span>6</span>
+                    {{ __('Step') }} <span>6</span>/<span>6</span>
                 </div>
             </div>
 
