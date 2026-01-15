@@ -59,14 +59,26 @@
                     @if ($selectedFeedback)
                         <div class="space-y-6">
                             <div>
+                                <p class="text-text-white">{{ __('Order ID:') }} {{ $selectedFeedback->order->order_id }}</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <p class="text-text-white">{{ __('Sender:') }}</p>
+                                <a href="{{ route('profile', ['username' => $selectedFeedback->author->username]) }}"
+                                    target="_blank"
+                                    class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">{{ $selectedFeedback->author->username }}</a>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <p>{{ __('Type:') }}</p>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-xs font-medium badge badge-soft {{ $selectedFeedback->type->color() }}">{{ $selectedFeedback->type->label() }}</span>
+                            </div>
+                            <div>
                                 <label
                                     class="block text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-2">
                                     {{ __('Message Content') }}
                                 </label>
                                 <div
                                     class="bg-white dark:bg-gray-900/50 rounded-xl border border-zinc-100 dark:border-zinc-700/50 p-5">
-                                    <p
-                                        class="text-text-white leading-relaxed text-sm">
+                                    <p class="text-text-white leading-relaxed text-sm">
                                         {{ $selectedFeedback->message }}
                                     </p>
                                 </div>

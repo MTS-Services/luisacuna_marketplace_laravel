@@ -84,7 +84,7 @@ class Index extends Component
                 'label' => 'Type',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-xs font-medium badge ' . $data->type->color() . '">' .
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-xs font-medium badge badge-soft ' . $data->type->color() . '">' .
                         $data->type->label() .
                         '</span>';
                 }

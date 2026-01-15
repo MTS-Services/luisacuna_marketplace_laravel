@@ -167,7 +167,7 @@
                                                 class="w-full h-full object-contain">
                                         </div>
                                         <p class="text-base lg:text-lg font-normal text-text-white">
-                                            {{ $item->gameTranslations->first()?->name ?? $item->name }}
+                                            {{ $item->translatedName(app()->getLocale()) }}
                                         </p>
                                     </a>
                                 @endforeach
