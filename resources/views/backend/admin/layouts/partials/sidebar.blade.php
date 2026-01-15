@@ -244,13 +244,13 @@
                             'active' => 'rank',
                             'permission' => 'rank-list',
                         ],
-                        [
-                            'name' => 'Achievement Types',
-                            'route' => route('admin.rm.achievementType.index'),
-                            'icon' => 'award',
-                            'active' => 'achievement-type',
-                            // 'permission' => 'achievement-type-list',
-                        ],
+                        // [
+                        //     'name' => 'Achievement Types',
+                        //     'route' => route('admin.rm.achievementType.index'),
+                        //     'icon' => 'award',
+                        //     'active' => 'achievement-type',
+                        //     // 'permission' => 'achievement-type-list',
+                        // ],
                         [
                             'name' => 'Achievements',
                             'route' => route('admin.rm.achievement.index'),

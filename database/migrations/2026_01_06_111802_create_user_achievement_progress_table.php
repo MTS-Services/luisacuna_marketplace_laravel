@@ -27,7 +27,7 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->unique(['user_id', 'achievement_id', 'rank_id', 'unlocked_at', 'achieved_at'], 'user_achievement_unique');
+            $table->unique(['user_id', 'achievement_id', 'unlocked_at', 'achieved_at'], 'user_achievement_unique');
         });
     }
 

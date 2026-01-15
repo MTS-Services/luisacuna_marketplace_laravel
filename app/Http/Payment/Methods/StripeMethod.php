@@ -9,12 +9,14 @@ use App\Enums\PointType;
 use App\Enums\TransactionStatus;
 use App\Enums\TransactionType;
 use App\Http\Payment\PaymentMethod;
+use App\Models\Achievement;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\PointLog;
 use App\Models\Transaction;
 use App\Models\UserPoint;
 use App\Models\Wallet;
+use App\Services\AchievementService;
 use App\Services\ConversationService;
 use App\Services\CurrencyService;
 use Illuminate\Support\Facades\Log;
@@ -33,9 +35,9 @@ class StripeMethod extends PaymentMethod
     protected $requiresFrontendJs = false;
     protected CurrencyService $currencyService;
 
-    public function __construct($gateway = null, ConversationService $conversationService)
+    public function __construct($gateway = null, ConversationService $conversationService,AchievementService $achievementService )
     {
-        parent::__construct($gateway, $conversationService);
+        parent::__construct($gateway, $conversationService, $achievementService);
         $this->currencyService = app(CurrencyService::class);
         Stripe::setApiKey(config('services.stripe.secret'));
     }

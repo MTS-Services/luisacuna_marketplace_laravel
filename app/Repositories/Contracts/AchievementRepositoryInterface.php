@@ -30,6 +30,8 @@ interface AchievementRepositoryInterface
 
     public function unlockedAchievements(int $userPoints, array $filters = []): Collection;
 
+    public function nextOrProgressAchievement(int $achievement_type_id, int $userId): ?Achievement;
+
 
     /* ================== ================== ==================
     *                    Data Modification Methods

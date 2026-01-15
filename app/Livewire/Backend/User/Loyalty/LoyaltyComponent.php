@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Backend\User\Loyalty;
 
+use App\Services\AchievementService;
 use Livewire\Component;
 use App\Services\RankService;
+use App\Services\UserAchievementProgressService;
 use App\Services\UserService;
 use App\Traits\Livewire\WithNotification;
 
@@ -14,7 +16,7 @@ class LoyaltyComponent extends Component
 
     public $user = null;
     public $rank = null;
-    public $achievements;
+    // public $achievements;
     public $currentRank = null;
     public $nextRank = null;
     public $pointsNeeded = 0;
@@ -27,11 +29,15 @@ class LoyaltyComponent extends Component
 
     protected UserService $userService;
     protected RankService $rankService;
+    protected AchievementService $achievementsService;
+    protected UserAchievementProgressService $userAchievementProgressService;
 
-    public function boot(UserService $userService, RankService $rankService)
+    public function boot(UserService $userService, RankService $rankService, AchievementService $achievementsService, UserAchievementProgressService $userAchievementProgressService)
     {
         $this->userService = $userService;
         $this->rankService = $rankService;
+        $this->achievementsService = $achievementsService;
+        $this->userAchievementProgressService = $userAchievementProgressService;
     }
     public function mount()
     {
@@ -42,13 +48,19 @@ class LoyaltyComponent extends Component
         $this->canRedeem = $userPoints >= 10000;
 
         $this->currentRank = $this->rankService->getUserRank();
-        $this->achievements = $this->rankService->getUserAchievements();
-
-        // dd($this->currentRank, $this->achievements);
+        $this->completedAchievements = $this->userAchievementProgressService->completedAcheievment()->count();
     }
     public function render()
     {
-        return view('livewire.backend.user.loyalty.loyalty-component');
+        $achievements = $this->achievementsService->getPaginatedData(15, [
+            'sort_field' => 'target_value',
+            'sort_direction' => 'asc'
+        ]);
+        $achievements->load(['achievementType','progress']);
+        return view('livewire.backend.user.loyalty.loyalty-component',
+            [
+                'achievements' => $achievements
+            ]);
     }
 
     public function redeemPoints()
