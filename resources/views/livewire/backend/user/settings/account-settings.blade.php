@@ -95,11 +95,11 @@
                     <!-- Display Mode -->
                     <div x-show="!editMode" x-cloak>
                         <div class="w-full p-3 bg-zinc-50/20 rounded-lg">
-                            {{-- <p class="text-text-white text-xs">{{ user()->description ?? 'Description no abailable' }}
-                            </p> --}}
-                            <p class="text-text-white text-xs">
-                                {{ user()->translatedDescription(app()->getLocale()) ? user()->translatedDescription(app()->getLocale()) : 'Description not available' }}
+                            <p class="text-text-white text-xs">{{ user()->description ?? 'Description no abailable' }}
                             </p>
+                            {{-- <p class="text-text-white text-xs">
+                                {{ user()->translatedDescription(app()->getLocale()) ? user()->translatedDescription(app()->getLocale()) : 'Description not available' }}
+                            </p> --}}
 
                         </div>
                     </div>
@@ -329,7 +329,7 @@
                 <livewire:backend.user.settings.two-factor-authenticaiton />
 
                 <div class="bg-bg-info p-3 sm:p-6 rounded-lg mt-5">
-                    <x-ui.label value="Log out from all sessions"
+                    <x-ui.label value="{{ __('Log out from all sessions') }}"
                         class="block text-sm font-medium text-text-primary mb-2" />
                     <x-ui.button class="w-fit! py-2! my-2!" wire:click="logoutFromAllDevices">
                         <span wire:loading.remove wire:target="logoutFromAllDevices"

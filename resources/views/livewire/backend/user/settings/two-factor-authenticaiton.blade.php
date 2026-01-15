@@ -1,6 +1,6 @@
 <div>
     <div class="bg-bg-info p-3 sm:p-6 rounded-lg">
-        <x-ui.label value="Payment Lock" class="block text-sm font-medium text-text-primary mb-2" />
+        <x-ui.label value="{{ __('Payment Lock') }}" class="block text-sm font-medium text-text-primary mb-2" />
         <x-ui.button class="w-fit! py-2! my-2!" wire:click="openModal">
             <span class="text-text-white text-base font-semibold">
                 {{ __('Set up 2FA') }}
