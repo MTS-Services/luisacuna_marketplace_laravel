@@ -8,7 +8,9 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\PaymentGateway;
 use App\Models\PointLog;
+use App\Models\UserAchievementProgress;
 use App\Models\UserPoint;
+use App\Services\AchievementService;
 use App\Services\ConversationService;
 use Illuminate\Support\Facades\Log;
 
@@ -19,11 +21,13 @@ abstract class PaymentMethod
     protected ConversationService $conversationService;
     protected $requiresFrontendJs = false;
     protected $jsSDKUrl = null;
+    protected AchievementService $achievementService;
 
-    public function __construct(?PaymentGateway $gateway = null, ConversationService $conversationService)
+    public function __construct(?PaymentGateway $gateway = null, ConversationService $conversationService,  AchievementService $achievementService)
     {
         $this->gateway = $gateway;
         $this->conversationService = $conversationService;
+        $this->achievementService = $achievementService;
     }
 
     abstract public function startPayment(Order $order, array $paymentData = []);
@@ -113,6 +117,32 @@ abstract class PaymentMethod
         $userPoint = UserPoint::firstOrNew(['user_id' => $order->user_id]);
         $userPoint->points += $pointLogs->points;
         $userPoint->save();
+
+        $achievement = $this->achievementService->nextOrProgressAchievement(1, user()->id);
+
+
+        if (!$achievement == null) {
+
+
+            $progress = UserAchievementProgress::firstOrCreate(
+                [
+                    'user_id' => user()->id,
+                    'achievement_id' => $achievement->id,
+                ],
+                [
+                    'current_progress' => 0,
+                ]
+            );
+            $progress->increment('current_progress');
+
+            // ✅ Mark as completed
+            if ($progress->current_progress >= $achievement->required_progress) {
+                $progress->achieved_at = now();
+            }
+            $progress->save();
+        }
+
+
 
         Log::info('User points updated', [
             'user_id' => $order->user_id,

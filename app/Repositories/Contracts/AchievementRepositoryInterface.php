@@ -28,6 +28,10 @@ interface AchievementRepositoryInterface
 
     public function search(string $query, string $sortField = 'created_at', $order = 'desc'): Collection;
 
+    public function unlockedAchievements(int $userPoints, array $filters = []): Collection;
+
+    public function nextOrProgressAchievement(int $achievement_type_id, int $userId): ?Achievement;
+
 
     /* ================== ================== ==================
     *                    Data Modification Methods

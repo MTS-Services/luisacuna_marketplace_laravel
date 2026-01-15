@@ -63,7 +63,7 @@ return [
     ],
 
     'crypto' => [
-        'api_key' => env('COINBASE_API_KEY'),
-        'webhook_secret' => env('COINBASE_WEBHOOK_SECRET'),
+        'private_api_key' => env('NOW_PRIVATE_API_KEY'),
+        'public_api_key' => env('NOW_PUBLIC_API_KEY'),
     ],
 ];
