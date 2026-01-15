@@ -88,12 +88,12 @@
             {{-- Product Grid --}}
             <div class="w-full md:w-[65%] flex flex-col">
                 <div class="relative">
-                    <x-loading-animation target="serach, sortDirection, selectItem" style="list" />
+                    <x-loading-animation target="serach, sortDirection" style="list" />
 
                     <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4 content-start"
                         wire:loading.class="opacity-50">
                         @forelse ($datas as $item)
-                            {{ $item->product_configs->isNotEmpty() ? $item->product_configs->first() : $item->game_config }}
+                           
                             <div wire:key="prod-{{ $item->id }}" wire:click="selectItem({{ $item->id }})"
                                 @click="selectedId = {{ $item->id }}"
                                 :class="selectedId == {{ $item->id }} ? 'border-pink-500 ring-1 ring-pink-500' :

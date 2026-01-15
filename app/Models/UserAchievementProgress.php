@@ -13,7 +13,6 @@ class UserAchievementProgress extends BaseModel
         'sort_order',
         'user_id',
         'achievement_id',
-        'rank_id',
         'current_progress',
         'unlocked_at',
         'achieved_at',

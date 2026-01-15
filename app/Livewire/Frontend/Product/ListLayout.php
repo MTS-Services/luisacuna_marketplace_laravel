@@ -5,12 +5,17 @@ namespace App\Livewire\Frontend\Product;
 use App\Models\Product;
 use Livewire\Component;
 use App\Enums\FeedbackType;
+use App\Models\Currency;
+use App\Models\User;
+use App\Services\CurrencyService;
+use App\Services\FeeSettingsService;
 use Livewire\Attributes\Url;
 use App\Services\GameService;
 use App\Services\OrderService;
 use App\Services\ProductService;
 use App\Services\PlatformService;
 use App\Traits\WithPaginationData;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class ListLayout extends Component
@@ -23,6 +28,7 @@ class ListLayout extends Component
     public $platforms;
     public $gameTags;
 
+    public $displayCurrency;
 
 
     #[Url(as: 'asc')]
@@ -40,7 +46,7 @@ class ListLayout extends Component
     #[Url('t')]
     public $game_tag = '';
 
-   #[Url('p')]
+    #[Url('p')]
     public $platform_id = '';
 
     public $sortBy = 'price';
@@ -48,26 +54,42 @@ class ListLayout extends Component
     public $tags = [];
 
     #[Url('config')]
-    public $filter_by_config; 
+    public $filter_by_config;
+    public $exchangeRate;
+    public $displaySymbol;
 
-    
 
 
     protected $datas;
 
     // Services
-    protected $productService, $orderService, $gameService, $platformService;
+    protected $productService, $feeSettingsService, $orderService, $gameService, $platformService, $currencyService;
 
-    public function boot(ProductService $productService, OrderService $orderService, GameService $gameService, PlatformService $platformService)
+    public function boot(
+    ProductService $productService, 
+    OrderService $orderService,
+    GameService $gameService,
+    PlatformService $platformService,
+    CurrencyService $currencyService,
+    FeeSettingsService $feeSettingsService)
     {
         $this->productService = $productService;
         $this->orderService = $orderService;
         $this->gameService = $gameService;
         $this->platformService = $platformService;
+        $this->currencyService = $currencyService;
+        $this->feeSettingsService = $feeSettingsService;
     }
 
     public function mount($gameSlug, $categorySlug)
     {
+
+         // Get user's selected currency or default
+        $currentCurrency = $this->currencyService->getCurrentCurrency();
+        $this->displayCurrency = $currentCurrency->code;
+        $this->displaySymbol = $currentCurrency->symbol;
+        $this->exchangeRate = $currentCurrency->exchange_rate;
+
         $this->gameSlug = $gameSlug;
         $this->categorySlug = $categorySlug;
 
@@ -75,26 +97,26 @@ class ListLayout extends Component
         $this->game = $this->gameService->findData($gameSlug, 'slug')
             ->load(['tags', 'gameConfig', 'platforms']);
 
-      // 1. Game tags
+        // 1. Game tags
         $gameTags = $this->game->tags;
 
         $this->gameTags = $gameTags;
-        
+
         // 2. Platform service tags
         $platforms = $this->platformService->getAllDatas()
             ->pluck('id', 'name');
-        $this->platforms = $platforms ;
+        $this->platforms = $platforms;
 
         // 3. Game config dropdown values
         $configTags = collect($this->game->gameConfig)
             ->pluck('dropdown_values')
             ->flatten();
-        
+
         // 4. Merge everything
-        $this->tags =$configTags
-                    ->filter()
-                    ->shuffle()
-                    ->toArray();
+        $this->tags = $configTags
+            ->filter()
+            ->shuffle()
+            ->toArray();
     }
 
 
@@ -113,34 +135,127 @@ class ListLayout extends Component
     {
         if (!$this->product) return;
 
-        $total = $this->product->price * $this->product->quantity;
-        $token = bin2hex(random_bytes(32)); // Standardized token length
+        try {
 
-        $order = $this->orderService->createData([
-            'order_id'    => generate_order_id_hybrid(),
-            'user_id'     => user()->id,
-            'source_id'   => $this->product->id,
-            'source_type' => Product::class,
-            'total_amount' => $total,
-            'tax_amount'   => 0,
-            'grand_total'  => $total,
-        ]);
 
-        Session::driver('redis')->put("checkout_{$token}", [
-            'order_id'     => $order->id,
-            'price_locked' => $total,
-            'expires_at'   => now()->addMinutes((int) env('ORDER_CHECKOUT_TIMEOUT_MINUTES', 5))->timestamp,
-        ]);
+            $fee = $this->feeSettingsService->getActiveFee();
+            $defaultCurrency = $this->currencyService->getDefaultCurrency();
 
-        return $this->redirect(route('game.buy', [
-            'gameSlug' => $this->gameSlug,
-            'categorySlug' => $this->categorySlug,
-            'productId' => encrypt($this->product->id),
-            'token' => $token,
-        ]), navigate: true);
+            // =================================================================
+            // STEP 1: Calculate in DEFAULT CURRENCY (USD)
+            // Product prices are stored in default currency
+            // =================================================================
+            $unitPriceDefault = (float) $this->product->price;
+            $quantity = (int) 1;
+            $totalAmountDefault = $unitPriceDefault * $quantity;
+
+            $buyerTaxPercent = (float) $fee->buyer_fee ?? 0;
+            $taxAmountDefault = ($totalAmountDefault * $buyerTaxPercent) / 100;
+            $grandTotalDefault = $totalAmountDefault + $taxAmountDefault;
+
+            // =================================================================
+            // STEP 2: Convert to DISPLAY CURRENCY (for user-facing amounts)
+            // These will be shown to user during checkout
+            // =================================================================
+            $unitPriceDisplay = $this->currencyService->convertFromDefault(
+                $unitPriceDefault,
+                $this->displayCurrency
+            );
+            $totalAmountDisplay = $this->currencyService->convertFromDefault(
+                $totalAmountDefault,
+                $this->displayCurrency
+            );
+            $taxAmountDisplay = $this->currencyService->convertFromDefault(
+                $taxAmountDefault,
+                $this->displayCurrency
+            );
+            $grandTotalDisplay = $this->currencyService->convertFromDefault(
+                $grandTotalDefault,
+                $this->displayCurrency
+            );
+
+
+            $token = bin2hex(random_bytes(32)); // Standardized token length
+            $orderId = generate_order_id_hybrid();
+            $order = $this->orderService->createData([
+                'order_id'    => $orderId,
+                'user_id'     => user()->id,
+                'source_id'   => $this->product->id,
+                'source_type' => Product::class,
+
+
+                // Display amounts (in user's selected currency)
+                'unit_price' => $unitPriceDisplay,
+                'total_amount' => $totalAmountDisplay,
+                'tax_amount' => $taxAmountDisplay,
+                'grand_total' => $grandTotalDisplay,
+                'currency' => $this->displayCurrency,
+                'display_currency' => $this->displayCurrency,
+
+                // Default amounts (in system default currency - USD)
+                'default_unit_price' => $unitPriceDefault,
+                'default_total_amount' => $totalAmountDefault,
+                'default_tax_amount' => $taxAmountDefault,
+                'default_grand_total' => $grandTotalDefault,
+                'default_currency' => $defaultCurrency->code,
+
+                // Currency metadata
+                'exchange_rate' => $this->exchangeRate,
+                'quantity' => $quantity,
+
+                'notes' => "Order initiated by " . user()->username . ", Order ID: " . $orderId,
+                'display_symbol' => $this->displaySymbol, // Legacy field
+
+                'points' => $totalAmountDefault * env('ORDER_POINTS_MULTIPLAYER', 100),
+
+                'creater_id' => user()->id,
+                'creater_type' => User::class,
+            ]);
+
+            // =================================================================
+            // STEP 4: Store in Redis for Checkout
+            // Lock price in DEFAULT currency for accurate calculations
+            // =================================================================
+            Session::driver('redis')->put("checkout_{$token}", [
+                'order_id' => $order->id,
+                'price_locked' => $grandTotalDefault, // Store in default currency
+                'display_price' => $grandTotalDisplay, // For reference
+                'display_currency' => $this->displayCurrency,
+                'exchange_rate' => $this->exchangeRate,
+                'expires_at' => now()->addMinutes((int) env('ORDER_CHECKOUT_TIMEOUT_MINUTES', 10))->timestamp,
+            ]);
+            // Log order creation with currency details
+            Log::info('Order initialized with currency conversion', [
+                'order_id' => $orderId,
+                'user_id' => user()->id,
+                'product_id' => $this->product->id,
+                'quantity' => $quantity,
+                'default_currency' => $defaultCurrency->code,
+                'default_grand_total' => $grandTotalDefault,
+                'display_currency' => $this->displayCurrency,
+                'display_grand_total' => $grandTotalDisplay,
+                'exchange_rate' => $this->exchangeRate,
+            ]);
+
+
+            return $this->redirect(
+                route('user.checkout', ['slug' => encrypt($this->product->id), 'token' => $token]),
+                navigate: true
+            );
+        } catch (\Exception $e) {
+            Log::error('Order initialization failed', [
+                'product_id' => $this->product->id,
+                'user_id' => user()->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            $this->addError('order', 'Failed to initialize order. Please try again.');
+            return null;
+        }
     }
 
- 
+
     public function render()
     {
         // filter datas lowest price and highest price
