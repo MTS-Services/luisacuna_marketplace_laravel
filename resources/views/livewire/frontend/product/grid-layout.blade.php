@@ -18,7 +18,7 @@
                     {{-- Search --}}
                     <div class="flex-1 w-full md:min-w-64">
                         <div class="relative">
-                            <input type="text" placeholder="Search" wire:model.live="search"
+                            <input type="text" placeholder="{{ __('Search') }}" wire:model.live="search"
                                 class="w-full bg-bg-transparent rounded-full border border-zinc-700 px-4 py-2 pl-10 focus:outline-none focus:border-zinc-500">
                             <span class="absolute left-3 top-2.5">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -245,8 +245,8 @@
                     <div class="hidden md:flex w-56!">
                         <x-ui.custom-select wireModel="sortDirection" :wireLive="true" :label="__('Highest to Lowest')"
                             class="w-full rounded-full! bg-transparent! border! border-zinc-700!">
-                            <x-ui.custom-option label="Lowest To Highest" value="asc" />
-                            <x-ui.custom-option label="Highest to Lowest" value="desc" />
+                            <x-ui.custom-option label="{{ __('Lowest To Highest') }}" value="asc" />
+                            <x-ui.custom-option label="{{ __('Highest to Lowest') }}" value="desc" />
                         </x-ui.custom-select>
                     </div>
 
