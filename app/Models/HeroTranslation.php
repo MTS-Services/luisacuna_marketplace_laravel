@@ -18,6 +18,7 @@ class HeroTranslation extends BaseModel implements Auditable
         'hero_id',
         'title',
         'content',
+        'action_title'
  
       //here AuditColumns 
     ];

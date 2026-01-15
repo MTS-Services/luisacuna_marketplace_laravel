@@ -15,7 +15,7 @@
                     </span>
                 </div>
                 @endif
-                <span class="text-xl font-medium">{{ucfirst(str_replace('-', ' ', $game->gameTranslations->first()?->name ?? $game->name))}}</span>
+                <span class="text-xl font-medium">{{ucfirst(str_replace('-', ' ', $game->translatedName(app()->getLocale()) ))}}</span>
             </div>
             <!-- Navigation Links -->
             <nav

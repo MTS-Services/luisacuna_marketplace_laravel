@@ -96,7 +96,7 @@
                                 <div class="flex items-center gap-3">
                                     <x-phosphor name="{{ $feedback->type->icon() }}" variant="solid"
                                         class="w-5 h-5 {{ $feedback->type->iconColor() }}" />
-                                    <p class="font-semibold text-2xl">{{ $feedback->order->source->name }}</p>
+                                    <p class="font-semibold text-2xl">{{ $feedback->order->source->translatedName(app()->getLocale()) }}</p>
                                     {{-- <span class="border-l border-text-white self-stretch"></span>
                                     <p class="text-xs">{{ __('Yeg***') }}</p> --}}
                                 </div>
@@ -106,7 +106,7 @@
                             </div>
                             <div class="mt-2">
                                 <span class="font-normal text-base">
-                                    {{ $feedback->message }}
+                                   {{ $feedback->translatedMessage(app()->getLocale()) }}
                                 </span>
                             </div>
                         </div>

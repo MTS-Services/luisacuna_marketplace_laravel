@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace App\Models;
 
 use App\Enums\HeroStatus;
@@ -10,12 +10,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use OwenIt\Auditing\Contracts\Auditable;
- 
+
 class Hero extends BaseModel implements Auditable
 {
     use   AuditableTrait, HasTranslations;
     //
- 
+
     protected $fillable = [
         'sort_order',
         'title',
@@ -26,57 +26,70 @@ class Hero extends BaseModel implements Auditable
         'mobile_image',
         'target',
         'status',
- 
-      //here AuditColumns 
+
+        //here AuditColumns 
     ];
- 
+
     protected $hidden = [
         //
     ];
- 
+
     protected $casts = [
         'status' => HeroStatus::class,
     ];
- 
+
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
- 
-     //
+
+    //
 
 
-     public function heroTranslations(): HasMany
-     {
-         return $this->hasMany(HeroTranslation::class, 'hero_id', 'id');
-     }
+    public function heroTranslations(): HasMany
+    {
+        return $this->hasMany(HeroTranslation::class, 'hero_id', 'id');
+    }
 
 
     //  Game translation Config
     public function getTranslationConfig(): array
     {
         return [
-            'fields' => ['title', 'content'],
+            'fields' => ['title', 'content', 'action_title'],
             'relation' => 'heroTranslations',
             'model' => HeroTranslation::class,
             'foreign_key' => 'hero_id',
             'field_mapping' => [
                 'title' => 'title',
                 'content' => 'content',
+                'action_title' => 'action_title',
             ]
         ];
     }
+    public function translatedTitle($languageIdOrLocale): string
+    {
+        return $this->getTranslated('title', $languageIdOrLocale) ?? $this->title;
+    }
+    public function translatedContent($languageIdOrLocale): string
+    {
+        return $this->getTranslated('content', $languageIdOrLocale) ?? $this->content;
+    }
+    public function translatedActionTitle($languageIdOrLocale): string
+    {
+        return $this->getTranslated('action_title', $languageIdOrLocale) ?? $this->action_title;
+    }
 
-     public function scopeFilter(Builder $query, $filters): Builder
-     {
-        if($filters['status'] ?? null){
+    public function scopeFilter(Builder $query, $filters): Builder
+    {
+        if ($filters['status'] ?? null) {
             $query->where('status', $filters['status']);
         }
-         return $query;   
-     }
-     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+        return $query;
+    }
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
- 
+
     #[SearchUsingPrefix(['title', 'status'])]
     public function toSearchableArray(): array
     {
@@ -101,7 +114,4 @@ class Hero extends BaseModel implements Auditable
             //
         ]);
     }
-
- 
- 
 }
