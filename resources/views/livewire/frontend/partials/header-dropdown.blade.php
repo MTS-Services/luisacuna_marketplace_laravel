@@ -22,8 +22,7 @@
                                         class="w-full h-full object-contain rounded-lg">
                                 </div>
                                 {{-- <p class="text-base font-normal dark:text-white text-gray-900">{{ $item['name'] }}</p> --}}
-                                <p class="text-base font-normal dark:text-white text-gray-900">
-                                    {{ $item->gameTranslations->first()?->name ?? $item->name }}</p>
+                                <p class="text-base font-normal dark:text-white text-gray-900">{{ $item->translatedName(app()->getLocale()) }}</p>
                             </div>
 
                         </a>
@@ -105,7 +104,8 @@
                                     </div>
 
                                     <p class="text-sm font-normal dark:text-white text-gray-900">
-                                        {{ $gameItem->gameTranslations->first()?->name ?? $gameItem->name }}
+                                        {{-- {{ $gameItem->gameTranslations->first()?->name ?? $gameItem->name }} --}}
+                                        {{ $gameItem->translatedName(app()->getLocale()) }}
                                     </p>
                                 </div>
                             </a>
