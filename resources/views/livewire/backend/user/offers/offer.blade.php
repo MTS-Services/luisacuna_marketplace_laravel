@@ -28,7 +28,7 @@
                                         @endif
                                     </div>
                                     <span
-                                        class="text-2xl sm:text-3xl font-semibold text-text-white">{{ $category->name }}</span>
+                                        class="text-2xl sm:text-3xl font-semibold text-text-white">{{ $category->translatedName(app()->getLocale()) }}</span>
                                 </div>
 
                                 <svg class="w-6 h-6 fill-white" viewBox="0 0 256 256">
@@ -142,7 +142,7 @@
                             <div class="border-t border-zinc-500 pt-4 mt-4 flex items-center gap-3"></div>
                             <div class="">
                                 <p class="text-text-white text-base font-normal text-end mb-2">{{ __('0/200') }}</p>
-                                <x-ui.textarea wire:model="name" placeholder="Type here......"
+                                <x-ui.textarea wire:model="name" placeholder="{{ __('Type here......') }}"
                                     class="w-full bg-bg-info! placeholder:text-text-primary border-0!"
                                     rows="5"></x-ui.textarea>
                                 <p class="text-text-white text-base sm:text-xl font-normal mt-5">
@@ -161,7 +161,7 @@
                             <div class="border-t border-zinc-500 pt-4 mt-4 flex items-center gap-3"></div>
                             <div class="">
                                 <p class="text-text-white text-base font-normal text-end mb-2">{{ __('0/500') }}</p>
-                                <x-ui.textarea wire:model="description" placeholder="Type here......"
+                                <x-ui.textarea wire:model="description" placeholder="{{ __('Type here......') }}"
                                     class="w-full bg-bg-info! border-zinc-700 placeholder:text-text-primary border-0"
                                     rows="5"></x-ui.textarea>
                                 <p class="text-text-white text-base sm:text-xl font-normal mt-5">
@@ -187,7 +187,7 @@
                                                 wire:model.live="deliveryMethod"
                                                 class="w-5 h-5 accent-pink-500 bg-transparent border-2 border-zinc-700 cursor-pointer">
                                             <span class="ml-3 text-text-white text-base transition-colors">
-                                                Manual
+                                                {{ __('Manual') }}
                                             </span>
                                     </label>
                                     
@@ -197,7 +197,7 @@
                                                 wire:model.live="deliveryMethod"
                                                 class="w-5 h-5 accent-pink-500 bg-transparent border-2 border-zinc-700 cursor-pointer">
                                             <span class="ml-3 text-text-white text-base transition-colors">
-                                               Auto
+                                               {{ __('Auto') }}
                                             </span>
                                     </label>
 

@@ -242,7 +242,7 @@
                             <div class="mb-4 sm:mb-6 px-2 sm:px-6 mt-5 md:mt-11">
                                 <label
                                     class="block text-lg sm:text-2xl font-medium mb-1 sm:mb-4 text-white">{{ __('Code') }}</label>
-                                <x-ui.input type="number" placeholder="Enter your otp" wire:model="otp_code"
+                                <x-ui.input type="number" placeholder="{{ __('Enter your otp') }}" wire:model="otp_code"
                                     class="bg-bg-info! rounded-xl! border-0! focus:ring-0! text-white! placeholder:text-white!" />
                                 <x-ui.input-error :messages="$errors->get('otp_code')" />
                             </div>
