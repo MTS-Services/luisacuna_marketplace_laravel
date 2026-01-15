@@ -190,44 +190,25 @@
                                             </span>
                                         </label>
                                     @endforeach
-                                    @break
                                 @endif
                             @endforeach
                             <x-ui.input-error :messages="$errors->get('deliveryMethod')" />
                         </div>
-                        <h3 class="text-text-white text-lg sm:text-xl font-medium mb-6">
+                        <h3 class="text-text-white text-lg sm:text-xl font-medium mb-6 mt-4">
                             {{ __('Guaranteed Delivery Time:') }}
                         </h3>
                         <div class="space-y-4">
-                            <div class="">
-                                @php
-
-                                    $isInstantDelivery =
-                                        $deliveryMethod == 'manual' ? $timelineOptions['instant'] : 'Choose Delivery';
-
-                                @endphp
-                                @if (!$deliveryMethod)
-                                    <x-ui.custom-select :wireModel="'delivery_timeline'" :dropDownClass="'border-0!'"
-                                        class="rounded-md! border-0 bg-bg-info!" label="{{ $isInstantDelivery }}">
-
-
-                                        @foreach ($timelineOptions as $timelineOption)
-                                            {{-- @dd($timelineOption) --}}
-                                            <x-ui.custom-option :value="$timelineOption" :label="$timelineOption" />
-                                        @endforeach
-                                    </x-ui.custom-select>
-                                @else
-                                    <x-ui.custom-select :wireModel="'delivery_timeline'" :dropDownClass="'border-0!'"
-                                        class="rounded-md! border-0 bg-bg-info!" label="{{ $isInstantDelivery }}">
-
-
-                                        @foreach ($timelineOptions as $timelineOption)
-                                            {{-- @dd($timelineOption) --}}
-                                            <x-ui.custom-option :value="$timelineOption" :label="$timelineOption" />
-                                        @endforeach
-                                    </x-ui.custom-select>
-                                @endif
-                            </div>
+                            @if (!empty($timelineOptions))
+                                <x-ui.custom-select :wireModel="'delivery_timeline'" :dropDownClass="'border-0!'"
+                                    class="rounded-md! border-0 bg-bg-info!" :label="$timelineOptions[$delivery_timeline] ?? ($delivery_timeline ?? 'Choose')">
+                                    @foreach ($timelineOptions as $key => $timelineOption)
+                                        <x-ui.custom-option :value="$key" :label="$timelineOption" />
+                                    @endforeach
+                                </x-ui.custom-select>
+                                <x-ui.input-error :messages="$errors->get('delivery_timeline')" class="mt-2" />
+                            @else
+                                <p class="text-text-primary">{{ __('Please select a delivery method first') }}</p>
+                            @endif
                         </div>
                     </div>
 
@@ -238,13 +219,13 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div class="w-full">
                                     <x-ui.label for="price" :value="__('Price')" required />
-                                    <x-ui.input id="price" type="text" wire:model="price" placeholder="Price"
+                                    <x-ui.input id="price" type="number" wire:model="price" placeholder="Price"
                                         class="bg-bg-info! mt-2 border-zinc-700 text-text-primary  placeholder:text-text-primary border-0! focus:ring-0" />
                                     <x-ui.input-error :messages="$errors->get('price')" />
                                 </div>
                                 <div>
                                     <x-ui.label for="quantity" :value="__('Stock Quantity')" required />
-                                    <x-ui.input id="quantity" type="text"
+                                    <x-ui.input id="quantity" type="number"
                                         class="bg-bg-info! mt-2 border-zinc-700 text-text-info placeholder:text-text-primary border-0! focus:ring-0"
                                         wire:model="quantity" placeholder="quantity" />
                                     <x-ui.input-error :messages="$errors->get('quantity')" />
@@ -264,8 +245,7 @@
                             </div>
                         </div>
                     </div>
-                    {{-- @dd($gameConfigs) --}}
-                    @if ($gameConfigs->isNotEmpty())
+                    @if ($gameConfigs->isNotEmpty() && $gameConfigs->whereNotNull('input_type')->isNotEmpty())
                         <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
                             <h2 class="text-2xl font-semibold text-text-white mb-2 sm:mb-7">
                                 {{ __('Specific Attributes') }}
@@ -288,7 +268,7 @@
                                                     $wireModel = 'fields.' . $config->id . '.value';
                                                 @endphp
 
-                                                <x-ui.custom-select :wireModel="$wireModel"
+                                                <x-ui.custom-select wire-model="$wireModel"
                                                     class="rounded-md! border-0! bg-bg-info!" mdWidth="md:w-full"
                                                     rounded="rounded" mdLeft="md:left-0">
                                                     <x-ui.custom-option :value="null" :label="'Select ' . $config->field_name" />
@@ -354,11 +334,11 @@
                         </div>
                     @endif
                     <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
-                        <div class="mt-8">
+                        <div>
                             <h2 class="text-xl sm:text-3xl font-semibold text-text-white">{{ __('Fee structure') }}
                             </h2>
                             <div class="border-t border-zinc-500 pt-4 mt-4 flex items-center gap-3"></div>
-                            <div class="">
+                            <div>
                                 <p class="text-text-white text-base sm:text-xl font-normal mt-5">
                                     {{ __('Flat fee (per purchase): ') }} <span
                                         class="text-2xl font-semibold">{{ __('$0.00 USD') }}</span>
