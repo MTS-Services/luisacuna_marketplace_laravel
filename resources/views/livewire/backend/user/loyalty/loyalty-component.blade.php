@@ -123,40 +123,40 @@
                             <span class="text-text-white text-base sm:text-xl">
                                 @if($achievement->achievementType->name == 'Product Purchase')
                                     
-                                    @if($achievement?->currentProgress() >= $achievement->target_value)
+                                    {{-- @if($achievement?->currentProgress() >= $achievement->target_value)
                                         {{ __('Claimed') }}
-                                    @else
+                                    @else --}}
                                     {{ $achievement?->currentProgress() }} / 
-                                      {{ $achievement->target_value }} {{ __('Purchase To unlock') }}
-                                    @endif
+                                      {{ $achievement->target_value }} {{ $achievement?->currentProgress() >= $achievement->target_value ? __('Claimed') : __('To unlock') }}
+                                    {{-- @endif --}}
                                 @elseif ($achievement->achievementType->name == 'Profile Complete')
 
-                                    @if($achievement?->currentProgress() >= $achievement->target_value)
+                                    {{-- @if($achievement?->currentProgress() >= $achievement->target_value)
                                         {{ __('Claimed') }}
-                                    @else
+                                    @else --}}
                                     {{ $achievement?->currentProgress() }} / 
-                                      {{ $achievement->target_value }} {{ __('Profile Complete To unlock') }}
-                                    @endif
+                                      {{ $achievement->target_value }} {{ $achievement?->currentProgress() >= $achievement->target_value ? __('Claimed') : __('To unlock') }}
+                                    {{-- @endif --}}
 
                                 
 
                                 @elseif($achievement->achievementType->name == 'First Purchase') 
 
-                                    @if($achievement?->currentProgress() >= $achievement->target_value)
+                                    {{-- @if($achievement?->currentProgress() >= $achievement->target_value)
                                         {{ __('Claimed') }}
-                                    @else
+                                    @else --}}
                                     {{ $achievement?->currentProgress() }} / 
-                                      {{ $achievement->target_value }} {{ __('Purchase To unlock') }}
-                                    @endif
+                                      {{ $achievement->target_value }} {{ $achievement?->currentProgress() >= $achievement->target_value ? __('Claimed') : __('To unlock') }}
+                                    {{-- @endif --}}
 
                                 @elseif($achievement->achievementType->name == 'Referral Bonus') 
 
-                                    @if($achievement?->currentProgress() >= $achievement->target_value)
+                                    {{-- @if($achievement?->currentProgress() >= $achievement->target_value)
                                         {{ __('Claimed') }}
-                                    @else
+                                    @else --}}
                                     {{ $achievement?->currentProgress() }} / 
-                                      {{ $achievement->target_value }} {{ __('Referr To unlock') }}
-                                    @endif
+                                      {{ $achievement->target_value }} {{$achievement?->currentProgress() >= $achievement->target_value ? __('Claimed') : __('To unlock') }}
+                                    {{-- @endif --}}
 
                                 @endif
                                 
@@ -167,8 +167,8 @@
                                     class="text-text-white font-semibold text-base sm:text-xl">+{{ $achievement->point_reward }}</span>
                             </div>
                         </div>
-                        <div class="w-full bg-white rounded-full h-2">
-                            <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full" style="width: %">
+                        <div class="w-full dark:bg-white bg-bg-secondary rounded-full h-2">
+                            <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full" style="width: {{ ($achievement?->currentProgress() / $achievement->target_value) * 100 }}%">
                             </div>
                         </div>
                     </div>

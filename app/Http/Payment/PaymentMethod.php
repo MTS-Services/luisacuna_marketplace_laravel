@@ -118,29 +118,30 @@ abstract class PaymentMethod
         $userPoint->points += $pointLogs->points;
         $userPoint->save();
 
-       $achievement = $this->achievementService->nextOrProgressAchievement(1, user()->id);
+        $achievement = $this->achievementService->nextOrProgressAchievement(1, user()->id);
 
 
-        if ($achievement == null) {
-            return;
+        if (!$achievement == null) {
+
+
+            $progress = UserAchievementProgress::firstOrCreate(
+                [
+                    'user_id' => user()->id,
+                    'achievement_id' => $achievement->id,
+                ],
+                [
+                    'current_progress' => 0,
+                ]
+            );
+            $progress->increment('current_progress');
+
+            // ✅ Mark as completed
+            if ($progress->current_progress >= $achievement->required_progress) {
+                $progress->achieved_at = now();
+            }
+            $progress->save();
         }
 
-        $progress = UserAchievementProgress::firstOrCreate(
-            [
-                'user_id' => user()->id,
-                'achievement_id' => $achievement->id,
-            ],
-            [
-                'current_progress' => 0,
-            ]
-        );
-        $progress->increment('current_progress');
-
-        // ✅ Mark as completed
-        if ($progress->current_progress >= $achievement->required_progress) {
-            $progress->completed_at = now();
-        }
-        $progress->save();
 
 
         Log::info('User points updated', [
