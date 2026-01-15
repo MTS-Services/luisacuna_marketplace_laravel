@@ -4,14 +4,16 @@ namespace App\Livewire\Backend\User\Offers;
 
 use App\Services\PlatformService;
 use App\Services\ProductService;
+use App\Traits\Livewire\WithNotification;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Edit extends Component
 {
+    use WithNotification;
 
     #[Locked]
-    public $encryptedId;
+    public $productId;
 
     public $offer;
 
@@ -24,128 +26,139 @@ class Edit extends Component
     public $description = null;
     public $name = null;
     public $delivery_timeline = null;
-    public $deliveryMethod;
+    public $deliveryMethod = null;
     public $fields = [];
 
- 
+    public $gameConfigs = [];
 
     protected ProductService $service;
     protected PlatformService $platformService;
+
     public function boot(ProductService $service, PlatformService $platformService)
     {
         $this->service = $service;
         $this->platformService = $platformService;
     }
 
-    public function mount($encrypted_id) {
-        $this->encryptedId = $encrypted_id;
-        $this->updatedDeliveryMethod($this->deliveryMethod);
-    }
+    public function mount($encrypted_id)
+    {
+        $this->productId = $encrypted_id;
+        $this->offer = $this->service->findData($encrypted_id);
 
+        // Load necessary relationships
+        $this->offer->load([
+            'game',
+            'category',
+            'product_configs',
+        ]);
+
+        $this->gameConfigs = $this->offer->game->gameconfig->where('category_id', $this->offer->category_id);
+
+        // Set initial data
+        $this->setData($this->offer);
+
+        // Initialize timeline options
+        $this->updatedDeliveryMethod($this->deliveryMethod);
+
+        // Load platforms
+        $this->platforms = $this->platformService->getActiveData();
+    }
 
     public function updatedDeliveryMethod($deliveryMethod)
     {
-        // Update timeline options based on delivery method
-        if ($deliveryMethod == "manual") {
-            $this->timelineOptions = delivery_timelines($this->deliveryMethod);
-        } else {
-            $this->timelineOptions = delivery_timelines($this->deliveryMethod);
+        if (!$deliveryMethod) {
+            return;
         }
 
-        // Reset delivery time when method changes
-        $this->delivery_timeline = null;
+        $this->deliveryMethod = $deliveryMethod;
+        $this->timelineOptions = delivery_timelines($deliveryMethod);
+
+        // Auto select first option if delivery timeline not set
+        if (!$this->delivery_timeline && !empty($this->timelineOptions)) {
+            $this->delivery_timeline = array_key_first($this->timelineOptions);
+        }
     }
 
-    public function submitOffer() {
-         $data = $this->validate(
+    public function submitOffer()
+    {
+        $data = $this->validate(
             [
-
                 'platform_id' => 'required|integer|max:255',
                 'price' => 'required|numeric|min:1',
                 'quantity' => 'required|integer|min:1',
-                'description' => 'nullable',
+                'description' => 'nullable|string',
                 'deliveryMethod' => 'required|string|max:255',
                 'delivery_timeline' => 'required|string|max:255',
                 'name' => 'required|string|max:255',
-
                 'fields' => 'nullable|array',
                 'fields.*.value' => 'required',
-
             ],
             [
-                'gameId.required' => 'Please select a game.',
-                'categoryId.required' => 'Category is required.',
                 'platform_id.required' => 'Platform is required.',
                 'price.required' => 'Price is required.',
+                'price.min' => 'Price must be at least 1.',
                 'quantity.required' => 'Stock quantity is required.',
+                'quantity.min' => 'Quantity must be at least 1.',
                 'deliveryMethod.required' => 'Delivery method is required.',
-                'name.required' => 'Name is required.',
-                'delivery_timeline' => "Delivery Timeline is required.",
-                'fields.*.required' => 'This Field must to be filled.',
+                'name.required' => 'Offer title is required.',
+                'delivery_timeline.required' => 'Delivery timeline is required.',
+                'fields.*.value.required' => 'This field must be filled.',
             ]
-
         );
-        $data['user_id'] = user()->id;
 
-        if ($data['gameId']) {
-            $data['game_id'] = $data['gameId'];
-            unset($data['gameId']);
+        // Prepare data for update
+        $updateData = [
+            'platform_id' => $data['platform_id'],
+            'price' => $data['price'] * 1,
+            'quantity' => $data['quantity'],
+            'description' => $data['description'],
+            'delivery_method' => $data['deliveryMethod'],
+            'delivery_timeline' => $data['delivery_timeline'],
+            'name' => $data['name'],
+            'fields' => $data['fields'] ?? [],
+        ];
+        dd($updateData);
+
+        // Update the product
+        $updatedProduct = $this->service->updateData($this->productId, $updateData);
+
+        // Update product configs
+        if (!empty($data['fields'])) {
+            $this->updateProductConfigs($updatedProduct, $data['fields']);
         }
 
-        if ($data['categoryId']) {
-            $data['category_id'] = $data['categoryId'];
-            unset($data['categoryId']);
-        }
+        // Success notification
+        $this->toastSuccess('Offer updated successfully');
 
-        if ($data['price']) {
-            $data['price'] = $data['price'] * 1;
-        }
-
-
-
-
-        dd($data);
-
-        $createdData = $this->productService->createData($data);
-
-
-        // success
-
-        $this->toastSuccess('Offer created successfully');
-
-        // Reset properties
-        $this->resetField();
-
-        return redirect(route('user.user-offer.category', $createdData->category->slug));
-
-        // success
-
-        $this->toastSuccess('Offer created successfully');
-
-        // Reset properties
-        $this->resetField();
-
-        return redirect(route('user.user-offer.category', $createdData->category->slug));
+        // Redirect to the offer listing page
+        return redirect(route('user.user-offer.category', $this->offer->category->slug));
     }
+
+    protected function updateProductConfigs($product, $fields)
+    {
+        // Delete existing product configs for this product
+        $product->product_configs()->delete();
+
+        // Create new product configs
+        foreach ($fields as $gameConfigId => $fieldData) {
+            if (!empty($fieldData['value'])) {
+                $product->product_configs()->create([
+                    'game_config_id' => $gameConfigId,
+                    'category_id' => $product->category_id,
+                    'value' => $fieldData['value'],
+                    'sort_order' => 0,
+                ]);
+            }
+        }
+    }
+
     public function render()
     {
-
-        $this->offer = $this->service->findData($this->encryptedId);
-
-        $this->offer->load([
-            'game.gameConfig' => function ($query) {
-                $query->where('category_id', $this->offer->category_id)->where('game_id', $this->offer->game_id);
-            },
-            'category',
-        ]);
-        $this->setData($this->offer);
-
-        $this->platforms = $this->platformService->getActiveData();
         return view('livewire.backend.user.offers.edit');
     }
 
-    public function setData($data){
-
+    public function setData($data)
+    {
         $this->platform_id = $data->platform_id;
         $this->price = $data->price;
         $this->quantity = $data->quantity;
@@ -153,5 +166,14 @@ class Edit extends Component
         $this->name = $data->name;
         $this->delivery_timeline = $data->delivery_timeline;
         $this->deliveryMethod = $data->delivery_method;
+
+        // Load existing product_configs into fields array
+        if ($data->product_configs && $data->product_configs->isNotEmpty()) {
+            foreach ($data->product_configs as $config) {
+                $this->fields[$config->game_config_id] = [
+                    'value' => $config->value
+                ];
+            }
+        }
     }
 }
