@@ -40,6 +40,10 @@ class AchievementService
         return $this->interface->all($sortField, $order);
     }
 
+    public function unlockedAchievements(int $userPoints, array $filters = []): Collection
+    {
+        return $this->interface->unlockedAchievements($userPoints, $filters);
+    }
     public function findData($column_value, string $column_name = 'id'): ?Achievement
     {
         return $this->interface->find($column_value, $column_name);

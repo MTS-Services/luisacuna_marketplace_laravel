@@ -27,6 +27,13 @@ class AchievementRepository implements AchievementRepositoryInterface
         return $query->orderBy($sortField, $order)->get();
     }
 
+    public function unlockedAchievements(int $userPoints, array $filters = []): Collection
+    {
+        return $this->model->query()
+            ->filter($filters)
+            ->where('target_value', '<=', $userPoints)
+            ->get();
+    }
     public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?Achievement
     {
         $model = $this->model;

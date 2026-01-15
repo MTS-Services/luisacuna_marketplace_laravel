@@ -17,7 +17,6 @@ class Achievement extends AuditBaseModel implements Auditable
 
     protected $fillable = [
         'sort_order',
-        'rank_id',
         'icon',
         'title',
         'description',
@@ -93,8 +92,10 @@ class Achievement extends AuditBaseModel implements Auditable
     }
     public function progress()
     {
-        return $this->hasMany(UserAchievementProgress::class);
+        return $this->hasMany(UserAchievementProgress::class, 'achievement_id', 'id');
     }
+
+
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS

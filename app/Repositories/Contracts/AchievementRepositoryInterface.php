@@ -28,6 +28,8 @@ interface AchievementRepositoryInterface
 
     public function search(string $query, string $sortField = 'created_at', $order = 'desc'): Collection;
 
+    public function unlockedAchievements(int $userPoints, array $filters = []): Collection;
+
 
     /* ================== ================== ==================
     *                    Data Modification Methods
