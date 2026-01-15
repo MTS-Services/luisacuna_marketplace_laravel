@@ -16,16 +16,16 @@
 
         <div class="container py-30 relative z-10 align-left  w-100vw">
 
-            <h2 class="text-5xl md:text-6xl font-semibold mb-6 text-text-white align-left">{{ $data?->title }}</h2>
+            <h2 class="text-5xl md:text-6xl font-semibold mb-6 text-text-white align-left">{{ $data->translatedTitle(app()->getLocale()) }}</h2>
             <p class="text-2xl font-normal text-text-white mb-15 max-w-2xl align-left">
-                {{ $data->content }}
+                {{ $data->translatedContent(app()->getLocale()) }}
             </p>
 
             <div class="flex flex-col md:flex-row gap-4 justify-start">
                 <div>
                     <x-ui.button class="py-2! px-3!" href="{{ $data->action_url }}" :wire="false" :target="$data->target">
 
-                        {{ $data->action_title }}
+                        {{  $data->translatedActionTitle(app()->getLocale()) }}
                     </x-ui.button>
                 </div>
             </div>

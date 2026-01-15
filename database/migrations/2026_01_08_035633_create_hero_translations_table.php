@@ -19,8 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('language_id')->index();
             $table->unsignedBigInteger('hero_id')->index();
 
-            $table->string('title');
-            $table->text('content');
+            $table->string('title')->nullable();
+            $table->text('content')->nullable();
+            $table->string('action_title')->nullable();
 
             $table->foreign('hero_id')->references('id')->on('heroes')->onDelete('cascade');
             $table->foreign('language_id')->references('id')->on('languages')->onDelete('cascade');

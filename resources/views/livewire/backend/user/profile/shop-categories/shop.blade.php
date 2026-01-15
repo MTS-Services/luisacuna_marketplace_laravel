@@ -21,7 +21,7 @@
                         </div>
 
 
-                        <h3 class="text-xl hidden sm:block font-medium whitespace-nowrap">{{ $category->name  }} ({{ $category->userProduct($user->id) ?? '0'}})</h3>
+                        <h3 class="text-xl hidden sm:block font-medium whitespace-nowrap">{{ $category->translatedName(app()->getLocale())  }} ({{ $category->userProduct($user->id) ?? '0'}})</h3>
                     </a>
                 @endforeach
                
