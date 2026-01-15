@@ -17,7 +17,6 @@ class Achievement extends AuditBaseModel implements Auditable
 
     protected $fillable = [
         'sort_order',
-        'rank_id',
         'icon',
         'title',
         'description',
@@ -93,8 +92,17 @@ class Achievement extends AuditBaseModel implements Auditable
     }
     public function progress()
     {
-        return $this->hasMany(UserAchievementProgress::class);
+        return $this->hasMany(UserAchievementProgress::class, 'achievement_id', 'id');
     }
+
+    public function userProgress($userId){
+        return $this?->progress()?->where('user_id', $userId)->first();
+    }
+    public function currentProgress(){
+       return $this?->userProgress(user()->id)?->current_progress ?? 0;
+    }
+
+
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
@@ -177,8 +185,8 @@ class Achievement extends AuditBaseModel implements Auditable
     {
         parent::__construct($attributes);
         $this->appends = array_merge(parent::getAppends(), [
-            'status_label',
-            'status_color',
+            // 'status_label',
+            // 'status_color',
         ]);
     }
 }

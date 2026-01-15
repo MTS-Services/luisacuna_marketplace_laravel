@@ -1,5 +1,5 @@
 <div class="mx-auto bg-page">
-    
+
     <form action="#">
         <div class="container mx-auto">
             <div class="flex items-center gap-2 my-8 text-lg font-semibold">
@@ -291,7 +291,7 @@
                     {{-- Methods Comes From Method Config --}}
 
 
-{{-- 
+                    {{-- 
                     <!-- Digital Wallet Form -->
                     <div x-show="selectedPayment === 'digital_wallet'" class="mt-6">
                         <p class="text-text-white">{{ __('You have selected Digital Wallet payment method.') }}</p>
@@ -354,10 +354,10 @@
                 <div class="mb-3">
                     <h2 class="text-2xl font-semibold">{{ __('Cart Total') }}</h2>
                 </div>
-               
+
                 <div class="flex justify-between mb-3">
                     <p class="text-text-white text-sm">{{ __('Cart Subtotal') }}</p>
-                    <p class="text-text-white text-base font-semibold">$ {{ $order->grand_total}}</p>
+                    <p class="text-text-white text-base font-semibold">$ {{ $order->grand_total }}</p>
                 </div>
                 <div class="flex justify-between mb-3">
                     <p class="text-text-white text-sm">{{ __('Payment fee') }}</p>
@@ -369,7 +369,7 @@
                 </div>
                 <div class="flex justify-between mb-3">
                     <p class="text-text-white text-sm">{{ __('Cart Total') }}</p>
-                    <p class="text-text-white text-base font-semibold">${{ $order->grand_total}}</p>
+                    <p class="text-text-white text-base font-semibold">${{ $order->grand_total }}</p>
                 </div>
 
                 <div class="mt-8">
@@ -402,9 +402,9 @@
 
                 {{-- Coppied and Past             e --}}
 
-                 <div class="mt-8 lg:px-78 px-0">
+                <div class="mt-8 lg:px-78 px-0">
                     <x-ui.button href="#" class="w-auto py-3!">
-                       {{ strtoupper(currency_code()).' '. $order->grand_total }}{{ __('| Buy now') }}
+                        {{ strtoupper(currency_code()) . ' ' . $order->grand_total }}{{ __('| Buy now') }}
                     </x-ui.button>
                 </div>
             </div>
@@ -417,8 +417,8 @@
     </form>
 
 
-    
- <div class="max-w-6xl mx-auto my-12 p-4 md:p-8 bg-white rounded-3xl shadow-2xl border border-gray-100">
+
+    <div class="max-w-6xl mx-auto my-12 p-4 md:p-8 bg-white rounded-3xl shadow-2xl border border-gray-100">
 
         <h1 class="text-4xl font-extrabold text-gray-800 mb-10 text-center">
             Finalizing Order: <span class="text-primary"> #{{ $order->order_id }}</span>
@@ -457,8 +457,8 @@
                             class="gateway-label flex items-center p-4 rounded-xl transition-all duration-300 shadow-md border-2 cursor-pointer
                         {{ $gatewayItem->slug === $gateway ? 'border-primary ring-2 ring-primary/50 bg-base-200' : 'border-gray-200 hover:bg-base-100' }}">
 
-                            <input type="radio" class="radio radio-primary radio-sm" value="{{ $gatewayItem->slug }}"
-                                wire:model.live="gateway" name="gateway"
+                            <input type="radio" class="radio radio-primary radio-sm"
+                                value="{{ $gatewayItem->slug }}" wire:model.live="gateway" name="gateway"
                                 {{ $gatewayItem->slug === $gateway ? 'checked' : '' }} />
 
                             <span class="ml-4 text-lg font-medium text-gray-700">{{ $gatewayItem->name }}</span>
@@ -532,8 +532,8 @@
                 @endif
 
                 <p class="text-center text-sm text-gray-500 mt-6">
-                    All payments are processed securely. By completing this purchase, you agree to our <a href="#"
-                        class="text-primary hover:underline font-medium">Terms of Service</a>.
+                    All payments are processed securely. By completing this purchase, you agree to our <a
+                        href="#" class="text-primary hover:underline font-medium">Terms of Service</a>.
                 </p>
             </div>
         </div>
@@ -586,9 +586,9 @@
                                 },
                             },
                             invalid: {
-                                color:'#9e2146',
+                                color: '#9e2146',
                             },
-                            
+
                         },
                     });
 

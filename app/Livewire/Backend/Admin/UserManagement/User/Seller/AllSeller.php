@@ -11,7 +11,7 @@ class AllSeller extends Component
 {
 
 
-   use WithDataTable, WithNotification;
+    use WithDataTable, WithNotification;
 
 
     protected SellerProfileService $service;
@@ -70,8 +70,17 @@ class AllSeller extends Component
                 'route' => 'admin.um.user.seller.view',
                 'encrypt' => true,
             ],
+            [
+                'key' => 'user_id',
+                'label' => 'Feedbacks',
+                'route' => 'admin.um.user.feedback',
+                'encrypt' => true,
+                'format' => function ($data) {
+                    return $data->user_id;
+                }
+            ],
         ];
-      return view('livewire.backend.admin.user-management.user.seller.all-seller', [
+        return view('livewire.backend.admin.user-management.user.seller.all-seller', [
             'datas' => $datas,
             'columns' => $columns,
             'actions' => $actions,
@@ -97,5 +106,4 @@ class AllSeller extends Component
             'sort_direction' => $this->sortDirection,
         ];
     }
-
 }

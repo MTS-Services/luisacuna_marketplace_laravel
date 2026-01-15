@@ -18,8 +18,8 @@
 <div class="">
     <!-- Header -->
     <div class="mb-8">
-        <h1 class="text-3xl md:text-4xl font-bold text-text-white mb-2">My Wallet</h1>
-        <p class="text-text-secondary">Manage your balance and withdrawal methods</p>
+        <h1 class="text-3xl md:text-4xl font-bold text-text-white mb-2">{{ __('My Wallet') }}</h1>
+        <p class="text-text-secondary">{{ __('Manage your balance and withdrawal methods') }}</p>
     </div>
 
     <!-- Wallet Balance Card -->
@@ -30,8 +30,8 @@
         <div class="relative z-10">
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <p class="text-white/80 text-sm mb-1">Available Balance</p>
-                    <h2 class="text-4xl md:text-5xl font-bold text-white">$2,450.00</h2>
+                    <p class="text-white/80 text-sm mb-1">{{ __('Available Balance') }}</p>
+                    <h2 class="text-4xl md:text-5xl font-bold text-white">{{ __('$2,450.00') }}</h2>
                 </div>
                 <div class="bg-white/20 p-4 rounded-xl backdrop-blur-sm">
                     <i data-lucide="wallet" class="w-8 h-8"></i>
@@ -40,27 +40,27 @@
 
             <div class="grid grid-cols-2 gap-4 mt-6">
                 <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                    <p class="text-white/80 text-xs mb-1">Pending</p>
-                    <p class="text-xl font-semibold text-white">$150.00</p>
+                    <p class="text-white/80 text-xs mb-1">{{ __('Pending') }}</p>
+                    <p class="text-xl font-semibold text-white">{{ __('$2,450.00') }}</p>
                 </div>
                 <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                    <p class="text-white/80 text-xs mb-1">Total Withdrawn</p>
-                    <p class="text-xl font-semibold text-white">$8,320.00</p>
+                    <p class="text-white/80 text-xs mb-1">{{ __('Total Withdrawn') }}</p>
+                    <p class="text-xl font-semibold text-white">{{ __('$2,450.00') }}</p>
                 </div>
             </div>
 
             <button
                 class="mt-6 w-full bg-white text-purple-600 font-semibold py-3 px-6 rounded-xl hover:bg-gray-50 transition-all duration-200 flex items-center justify-center gap-2">
                 <i data-lucide="arrow-down-to-line" class="w-5 h-5"></i>
-                Request Withdrawal
+                {{ __('Request Withdrawal') }}
             </button>
         </div>
     </div>
 
     <!-- Withdrawal Methods Section -->
     <div class="mb-6">
-        <h2 class="text-2xl font-bold text-text-white mb-2">Withdrawal Methods</h2>
-        <p class="text-text-secondary">Choose your preferred withdrawal method</p>
+        <h2 class="text-2xl font-bold text-text-white mb-2">{{ __('Withdrawal Methods') }}</h2>
+        <p class="text-text-secondary">{{ __('Choose your preferred withdrawal method') }}</p>
     </div>
 
     <!-- Withdrawal Methods Grid -->
@@ -80,33 +80,33 @@
                         </span>
                     @else
                         <span>
-                            <span class="badge bg-green-500 text-white">Available</span>
+                            <span class="badge bg-green-500 text-white">{{ __('Available') }}</span>
                         </span>
                     @endif
                 </div>
 
                 <h3 class="text-xl font-bold text-text-white mb-2">{{ $method->name }}</h3>
-                <p class="text-sm text-text-secondary mb-4">Withdraw funds using <span
-                        class="font-semibold text-text-secondary">{{ $method->name }}</span> account</p>
+                <p class="text-sm text-text-secondary mb-4">{{ __('Withdraw funds using ') }} <span
+                        class="font-semibold text-text-secondary">{{ $method->name }}</span> {{ __('account') }}</p>
 
                 <div class="space-y-2 mb-4">
                     <div class="flex items-center justify-between text-sm">
-                        <span class="text-text-secondary">Min Amount:</span>
+                        <span class="text-text-secondary">{{ __('Min Amount:') }}:</span>
                         <span class="font-semibold text-text-white">${{ $method->min_amount }}</span>
                     </div>
                     <div class="flex items-center justify-between text-sm">
-                        <span class="text-text-secondary">Max Amount:</span>
+                        <span class="text-text-secondary">{{ __('Max Amount:') }}:</span>
                         <span class="font-semibold text-text-white">${{ $method->max_amount }}</span>
                     </div>
                     <div class="flex items-center justify-between text-sm">
-                        <span class="text-text-secondary">Fee:</span>
+                        <span class="text-text-secondary"></span>
                         <span class="font-semibold text-purple-600">${{ $method->fee_amount }}</span>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-2 text-xs text-gray-500 mb-4">
                     <i data-lucide="clock" class="w-4 h-4"></i>
-                    <span class="text-text-secondary/80">1-3 business days</span>
+                    <span class="text-text-secondary/80">{{ __('1-3 business days') }}</span>
                 </div>
                 @if ($method->userWithdrawalAccounts->isNotEmpty() && $method->userWithdrawalAccounts?->first()->status == 'active')
                     <x-ui.button class="w-full py-2! px-6!">
@@ -139,12 +139,12 @@
     <div class="mt-12">
         <div class="flex items-center justify-between mb-6">
             <div>
-                <h2 class="text-2xl font-bold text-text-white mb-2">Recent Transactions</h2>
-                <p class="text-text-secondary">Your latest withdrawal history</p>
+                <h2 class="text-2xl font-bold text-text-white mb-2">{{ __('Recent Transactions') }}</h2>
+                <p class="text-text-secondary">{{ __('Votre dernier historique de retrait') }}</p>
             </div>
             <button
                 class="text-purple-600 font-semibold hover:text-purple-700 transition-colors duration-200 flex items-center gap-2">
-                View All
+                {{ __('View All') }}
                 <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </button>
         </div>
@@ -156,19 +156,19 @@
                         <tr>
                             <th
                                 class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                Date</th>
+                                {{ __('Date') }}</th>
                             <th
                                 class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                Method</th>
+                                {{ __('Method') }}</th>
                             <th
                                 class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                Amount</th>
+                                {{ __('Amount') }}</th>
                             <th
                                 class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                Fee</th>
+                                {{ __('Fee') }}</th>
                             <th
                                 class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                Status</th>
+                                {{ __('Status') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">

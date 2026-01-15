@@ -53,9 +53,9 @@
 
                         <!-- Old Password -->
                         <div class="w-full">
-                            <x-ui.label value="Old password:"
+                            <x-ui.label value="{{ __('Old password:') }}"
                                 class="text-base! font-semibold! mb-3! text-text-white!" />
-                            <x-ui.input type="password" placeholder="Enter old password"
+                            <x-ui.input type="password" placeholder="{{ __('Enter old password') }}"
                                 class="border-0! bg-bg-info!  placeholder:text-text-white"
                                 wire:model="form.password_old" />
                             <x-ui.input-error :messages="$errors->get('form.password_old')" />
@@ -63,9 +63,9 @@
 
                         <!-- New Password -->
                         <div class="w-full">
-                            <x-ui.label value="New password:"
+                            <x-ui.label value="{{ __('New password:') }}"
                                 class="text-base! font-semibold! mb-3! text-text-white!" />
-                            <x-ui.input type="password" placeholder="Enter new password" wire:model="form.password"
+                            <x-ui.input type="password" placeholder="{{ __('Enter new password') }}" wire:model="form.password"
                                 class="border-0! bg-bg-info!  placeholder:text-text-white" />
                             <x-ui.input-error :messages="$errors->get('form.password')" />
                         </div>
@@ -135,9 +135,9 @@
 
                         <!-- Confirm Password -->
                         <div class="w-full">
-                            <x-ui.label value="Re-enter new password:"
+                            <x-ui.label value="{{ __('Re-enter new password:') }}"
                                 class="text-base! font-semibold! mb-3! text-text-white!" />
-                            <x-ui.input type="password" placeholder="Re-enter new password"
+                            <x-ui.input type="password" placeholder="{{ __('Re-enter new password') }}"
                                 class="border-0! bg-bg-info!  placeholder:text-text-white"
                                 wire:model="form.password_confirmation" />
                             <x-ui.input-error :messages="$errors->get('form.password_confirmation')" />

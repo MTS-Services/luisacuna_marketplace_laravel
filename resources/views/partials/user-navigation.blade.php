@@ -26,7 +26,7 @@
         <flux:icon name="magnifying-glass"
             class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 stroke-text-primary pointer-events-none z-10" />
 
-        <input type="text" wire:model.live="search" placeholder="Search"
+        <input type="text" wire:model.live="search" placeholder="{{ __('Search') }}"
             x-on:click="searchActive = true; open = ''; globalSearch = true"
             x-on:blur="setTimeout(() => { searchActive = false }, 200)"
             class="border dark:border-white border-gray-600 rounded-full py-2 pl-8 pr-2 text-sm focus:outline-none focus:border-purple-500 focus:bg-bg-primary w-full bg-transparent placeholder:text-text-primary">
@@ -167,7 +167,7 @@
                                                 class="w-full h-full object-contain">
                                         </div>
                                         <p class="text-base lg:text-lg font-normal text-text-white">
-                                            {{ $item->gameTranslations->first()?->name ?? $item->name }}
+                                            {{ $item->translatedName(app()->getLocale()) }}
                                         </p>
                                     </a>
                                 @endforeach

@@ -8,6 +8,7 @@ use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use App\Traits\HasTranslations;
 use OwenIt\Auditing\Contracts\Auditable;
+use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Feedback extends AuditBaseModel implements Auditable
@@ -120,5 +121,24 @@ class Feedback extends AuditBaseModel implements Auditable
 
 
         return $query;
+    }
+
+    #[SearchUsingPrefix(['type', 'created_at', 'author_id', 'author_username'])]
+    public function toSearchableArray(): array
+    {
+        return [
+            'type' => $this->type,
+            'created_at' => $this->created_at,
+            'phone' => $this->phone,
+            'author_id' => $this->author?->username,
+        ];
+    }
+
+    /**
+     * Include only non-deleted data in search index.
+     */
+    public function shouldBeSearchable(): bool
+    {
+        return is_null($this->deleted_at);
     }
 }

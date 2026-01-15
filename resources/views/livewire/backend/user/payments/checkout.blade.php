@@ -255,7 +255,7 @@
                             <div class="flex gap-2 mt-4">
                                 <x-phosphor name="shield-check" variant="variant" class="fill-zinc-500 w-6 h-6" />
                                 <p class="text-text-white text-xs font-normal flex items-center gap-2">
-                                    <span>{{ 'I accept the Terms of Service, Privacy Notice and Refund Policy.' }}</span>
+                                    <span>{{ __('I accept the Terms of Service, Privacy Notice and Refund Policy.') }}</span>
                                 </p>
                             </div>
                         </form>

@@ -22,7 +22,7 @@
                     <p class="font-semibold text-xl sm:text-2xl ">{{ __('Seller ID verification') }}</p>
                 </div>
                 <div class="text-sm text-text-primary font-normal pt-2">
-                    Step <span>4</span>/<span>6</span>
+                    {{ __('Step') }} <span>4</span>/<span>6</span>
                 </div>
             </div>
 
@@ -36,7 +36,7 @@
                         <div class="text-left">
                             <x-ui.label
                                 class="mb-2 text-xl! sm:text-2xl! font-semibold!">{{ __('First name') }}</x-ui.label>
-                            <x-ui.input type="text" wire:model="first_name" placeholder="First name"
+                            <x-ui.input type="text" wire:model="first_name" placeholder="{{ __('First name') }}"
                                 class="bg-bg-info! rounded-lg! border-0! focus:ring-0! text-text-white! placeholder:text-text-white!" />
                             <x-ui.input-error :messages="$errors->get('first_name')" />
                         </div>
@@ -44,7 +44,7 @@
                         <div class="text-left">
                             <x-ui.label
                                 class="mb-2 text-xl! sm:text-2xl! font-semibold!">{{ __('Last name') }}</x-ui.label>
-                            <x-ui.input type="text" wire:model="last_name" placeholder="Last name"
+                            <x-ui.input type="text" wire:model="last_name" placeholder="{{ __('Last name') }}"
                                 class="bg-bg-info! rounded-lg! border-0! focus:ring-0! text-text-white! placeholder:text-text-white!" />
                             <x-ui.input-error :messages="$errors->get('last_name')" />
                         </div>
@@ -101,7 +101,7 @@
                                 class="mb-2 text-xl! sm:text-2xl! font-semibold!">{{ __('Street address') }}</x-ui.label>
                             <x-ui.input type="text" wire:model="address"
                                 class="w-full bg-bg-info! rounded-lg! border-0! focus:ring-0! text-text-white! placeholder:text-text-white!"
-                                placeholder="Street address" />
+                                placeholder="{{ __('Street address') }}" />
                             <x-ui.input-error :messages="$errors->get('address')" />
                         </div>
 
@@ -110,7 +110,7 @@
                                 class="mb-2 text-xl! sm:text-2xl! font-semibold!">{{ __('City') }}</x-ui.label>
                             <x-ui.input type="text" wire:model="city"
                                 class="w-full bg-bg-info! rounded-lg! border-0! focus:ring-0! text-text-white! placeholder:text-text-white!"
-                                placeholder="City" />
+                                placeholder="{{ __('City') }}" />
                             <x-ui.input-error :messages="$errors->get('city')" />
                         </div>
 
@@ -147,16 +147,16 @@
                                 class="mb-2 text-xl! sm:text-2xl! font-semibold!">{{ __('Company name') }}</x-ui.label>
                             <x-ui.input type="text" wire:model="company_name"
                                 class="w-full bg-bg-info! rounded-lg! border-0! focus:ring-0! text-text-white! placeholder:text-text-white!"
-                                placeholder="Company name" />
+                                placeholder="{{ __('Company name') }}" />
                             <x-ui.input-error :messages="$errors->get('company_name')" />
                         </div>
 
                         <div>
                             <x-ui.label
-                                class="mb-2 text-xl! sm:text-2xl! font-semibold!">{{ __('Company code/ID') }}</x-ui.label>
+                                class="mb-2 text-xl! sm:text-2xl! font-semibold!">{{ __('Company License/ID') }}</x-ui.label>
                             <x-ui.input type="text" wire:model="company_license_number"
                                 class="w-full bg-bg-info! rounded-lg! border-0! focus:ring-0! text-text-white! placeholder:text-text-white!"
-                                placeholder="Company License/ID" />
+                                placeholder="{{ __('Company License/ID') }}" />
                             <x-ui.input-error :messages="$errors->get('company_license_number')" />
                         </div>
 
@@ -165,7 +165,7 @@
                                 class="mb-2 text-xl! sm:text-2xl! font-semibold!">{{ __('VAT/Tax number (optional)') }}</x-ui.label>
                             <x-ui.input type="text" wire:model="company_tax_number"
                                 class="w-full bg-bg-info! rounded-lg! border-0! focus:ring-0! text-text-white! placeholder:text-text-white!"
-                                placeholder="VAT/Tax number (optional)" />
+                                placeholder="{{ __('VAT/Tax number (optional)') }}" />
                             <x-ui.input-error :messages="$errors->get('company_tax_number')" />
                         </div>
 
@@ -174,7 +174,7 @@
                                 class="mb-2 text-xl! sm:text-2xl! font-semibold!">{{ __('Street address') }}</x-ui.label>
                             <x-ui.input type="text" wire:model="company_address"
                                 class="w-full bg-bg-info! rounded-lg! border-0! focus:ring-0! text-text-white! placeholder:text-text-white!"
-                                placeholder="Street address" />
+                                placeholder="{{ __('Street address') }}" />
                             <x-ui.input-error :messages="$errors->get('company_address')" />
                         </div>
 
@@ -204,7 +204,7 @@
                                     class="mb-2 text-xl! sm:text-2xl! font-semibold!">{{ __('Postal code') }}</x-ui.label>
                                 <x-ui.input type="text" wire:model="company_postal_code"
                                     class="w-full bg-bg-info! rounded-lg! border-0! focus:ring-0! text-text-white! placeholder:text-text-white!"
-                                    placeholder="Postal code" />
+                                    placeholder="{{ __('Postal code') }}" />
                                 <x-ui.input-error :messages="$errors->get('company_postal_code')" />
                             </div>
                         </div>

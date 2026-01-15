@@ -9,7 +9,7 @@
             {{-- Popular Games Section --}}
             <div class="w-full lg:w-2/3 pt-6 order-2 lg:order-1 overflow-y-auto pr-4">
                 <h3 class="dark:text-white text-gray-900 text-base font-semibold pt-2 mb-6 sticky top-0pb-2">
-                    Popular {{ ucfirst($gameCategorySlug) }}
+                    {{ __('Popular') }} {{ __(ucfirst($gameCategorySlug)) }}
                 </h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-2.5 pb-6">
                     @forelse($this->content['popular'] ?? [] as $item)
@@ -22,8 +22,7 @@
                                         class="w-full h-full object-contain rounded-lg">
                                 </div>
                                 {{-- <p class="text-base font-normal dark:text-white text-gray-900">{{ $item['name'] }}</p> --}}
-                                <p class="text-base font-normal dark:text-white text-gray-900">
-                                    {{ $item->gameTranslations->first()?->name ?? $item->name }}</p>
+                                <p class="text-base font-normal dark:text-white text-gray-900">{{ $item->translatedName(app()->getLocale()) }}</p>
                             </div>
 
                         </a>
@@ -105,7 +104,8 @@
                                     </div>
 
                                     <p class="text-sm font-normal dark:text-white text-gray-900">
-                                        {{ $gameItem->gameTranslations->first()?->name ?? $gameItem->name }}
+                                        {{-- {{ $gameItem->gameTranslations->first()?->name ?? $gameItem->name }} --}}
+                                        {{ $gameItem->translatedName(app()->getLocale()) }}
                                     </p>
                                 </div>
                             </a>

@@ -3,10 +3,12 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Achievement;
+use App\Models\UserAchievementProgress;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Repositories\Contracts\AchievementRepositoryInterface;
+use Illuminate\Support\Facades\Log;
 
 class AchievementRepository implements AchievementRepositoryInterface
 {
@@ -27,6 +29,31 @@ class AchievementRepository implements AchievementRepositoryInterface
         return $query->orderBy($sortField, $order)->get();
     }
 
+    public function unlockedAchievements(int $userPoints, array $filters = []): Collection
+    {
+        return $this->model->query()
+            ->filter($filters)
+            ->where('target_value', '<=', $userPoints)
+            ->get();
+    }
+public function nextOrProgressAchievement(int $achievement_type_id, int $userId): ?Achievement
+{
+    try {
+        return $this->model
+            ->query()
+            ->where('achievement_type_id', $achievement_type_id)
+            ->whereDoesntHave('progress', function ($query) use ($userId) {
+                $query->where('user_id', $userId)
+                      ->whereColumn('current_progress', '>=', 'achievements.target_value');
+            })
+            ->orderBy('target_value', 'asc')
+            ->first();
+        
+    } catch(\Exception $e) {
+        Log::info($e->getMessage());
+        return null;
+    }
+}
     public function find($column_value, string $column_name = 'id',  bool $trashed = false): ?Achievement
     {
         $model = $this->model;
@@ -40,6 +67,7 @@ class AchievementRepository implements AchievementRepositoryInterface
         $model = $this->model->onlyTrashed();
         return $model->where($column_name, $column_value)->first();
     }
+    
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         $search = $filters['search'] ?? null;
