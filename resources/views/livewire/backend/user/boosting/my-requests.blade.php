@@ -53,18 +53,18 @@
                     <!-- Game Filter -->
                     <div class="relative w-full sm:w-60 lg:w-60">
 
-                        <x-ui.custom-select class="rounded!" label="All Game">
+                        <x-ui.custom-select class="rounded!" label="{{ __('All Game') }}">
 
                              @foreach ($games as $game)
 
-                              <x-ui.custom-option value="{{ $game->id }}" label="{{ $game->name }}" />
+                              <x-ui.custom-option value="{{ $game->id }}" label="{{ $game->translatedName(app()->getLocale()) }}" />
 
                             @endforeach
                         </x-ui.custom-select>
                     </div>
                     <!-- Status Filter -->
                     <div class="relative w-full sm:w-60 lg:w-60">
-                       <x-ui.custom-select class="rounded!" label="All request">
+                       <x-ui.custom-select class="rounded!" label="{{ __('All Request') }}">
 
                               <x-ui.custom-option value="in_progress" label="{{ __('In Progress') }}" />
                               <x-ui.custom-option value="completed" label="{{ __('Completed') }}" />

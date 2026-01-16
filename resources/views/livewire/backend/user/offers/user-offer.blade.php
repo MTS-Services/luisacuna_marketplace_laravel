@@ -6,18 +6,18 @@
 
                 <!-- Game Filter -->
                 <div class="relative w-full sm:w-60">
-                    <x-ui.custom-select wire-model="game_id" :wire-live="true" class="rounded!" label="All Game">
-                        <x-ui.custom-option label="All Game" value="" />
+                    <x-ui.custom-select wire-model="game_id" :wire-live="true" class="rounded!" label="{{ __('All Game') }}">
+                        <x-ui.custom-option label="{{ __('All Game') }}" value="" />
 
                         @foreach ($games as $game)
-                            <x-ui.custom-option label="{{ $game->name }}" value="{{ $game->id }}" />
+                            <x-ui.custom-option label="{{ $game->translatedName(app()->getLocale()) }}" value="{{ $game->id }}" />
                         @endforeach
                     </x-ui.custom-select>
                 </div>
 
                 <!-- Game Filter -->
                 <div class="py-0.5! w-full sm:w-70">
-                    <x-ui.custom-select wire-model="status" :wire-live="true" class="rounded!" label="All">
+                    <x-ui.custom-select wire-model="status" :wire-live="true" class="rounded!" label="{{ __('All') }}">
                         @foreach ($statuses as $status)
                             <x-ui.custom-option label="{{ $status['label'] }}" value="{{ $status['value'] }}" />
                         @endforeach

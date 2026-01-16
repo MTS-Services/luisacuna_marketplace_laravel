@@ -63,8 +63,7 @@
                 </div>
 
                 <p class="text-text-white/90 text-sm mb-6">
-                    {{-- {{ __('Collect a minimum of 10,000 points and unlock a $1 reward.') }} --}}
-                    {{ __('Collect a minimum of 10,000 points and unlock a :symbol :amount reward.', ['symbol' => currency_symbol(), 'amount' => currency_exchange(1)]) }}
+                    {{ __('Collect a minimum of 10,000 points and unlock a') }} {{ currency_symbol() . currency_exchange(1) }} {{ __(' reward.') }}
 
 
                 </p>
@@ -75,7 +74,7 @@
                     <div>
                         <div class="text-text-white font-bold text-2xl mb-1">{{ __('10,000 points') }}</div>
                         <div class="text-text-white/70 text-sm">
-                            {{ __(':amount Store credit', ['amount' => currency_exchange(1)]) }}</div>
+                           {{ currency_exchange(1) }} {{ __(' Store credit') }}</div>
                         {{-- <div class="text-text-white/70 text-sm">{{ __('$1 Store credit') }}</div> --}}
                     </div>
                     {{-- <x-ui.button class="sm:w-auto! py-2!">

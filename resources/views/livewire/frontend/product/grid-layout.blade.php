@@ -49,9 +49,9 @@
 
                     <div class="w-full md:min-w-64">
                         <x-ui.custom-select wire-model="platform_id" :wire-live="true"
-                            class="rounded-full bg-transparent" label="Platforms">
+                            class="rounded-full bg-transparent" label="{{ __('Platform') }}">
 
-                            <x-ui.custom-option label="All Platforms" value="" />
+                            <x-ui.custom-option label="{{ __('All Platforms') }}" value="" />
 
                             @foreach ($platforms as $platform)
                                 <x-ui.custom-option label="{{ $platform->name }}" value="{{ $platform->id }}" />
@@ -71,7 +71,7 @@
                         <div class="price-input flex justify-between border border-zinc-700 bg-bg-transparent items-center w-50 px-3 py-2 rounded-full cursor-pointer"
                             @click="open = !open">
                             <span
-                                x-text="selectedMin && selectedMax ? `$${selectedMin} - $${selectedMax}` : 'Price'"></span>
+                                x-text="selectedMin && selectedMax ? `$${selectedMin} - $${selectedMax}` : '{{ __('Price') }}'"></span>
                             <flux:icon name="chevron-down" class="w-5 h-5 transition-transform duration-200"
                                 x-bind:class="open ? 'rotate-180' : ''" />
                         </div>
@@ -125,12 +125,12 @@
 
                     <div class="w-full md:min-w-64">
                         <x-ui.custom-select wire-model="delivery_timeline" :wire-live="true"
-                            class="rounded-full bg-transparent" label="Delivery Timeline">
+                            class="rounded-full bg-transparent" label="{{ __('Delivery Timeline') }}">
 
-                            <x-ui.custom-option label="All Timeline" value="" />
+                            <x-ui.custom-option label="{{ __('All Timeline') }}" value="" />
 
                             @foreach ($delivery_timelines as $delivery_timeline)
-                                <x-ui.custom-option label="{{ $delivery_timeline['label'] }}"
+                                <x-ui.custom-option label="{{ __($delivery_timeline['label']) }}"
                                     value="{{ $delivery_timeline['value'] }}" />
                             @endforeach
                         </x-ui.custom-select>

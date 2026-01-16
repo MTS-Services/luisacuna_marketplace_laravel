@@ -16,7 +16,11 @@ class PurchasedOrders extends Component
     public $deleteItemId = null;
     // public $perPage = 2;
     public $status = null;
-    public $order_date;
+    public $order_date = null;
+    public $search = null;
+    public $sortField = 'created_at';
+    public $sortDirection = 'desc';
+    
 
 
     protected OrderService $service;
@@ -39,15 +43,15 @@ class PurchasedOrders extends Component
                 <div class="flex items-center gap-3">
                     <div class="w-15 h-15  rounded-lg flex-shrink-0">
                         <img src="' . storage_url($order?->source?->game?->logo) . '"
-                            alt="' . $order->source->name . '" 
+                            alt="' . $order->source->translatedName(app()->getLocale()) . '" 
                             class="w-full h-full rounded-lg object-cover" />
                     </div>
                     <div class="min-w-0">
                         <h3 class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">'
-                    . $order->source->name .
+                    . $order->source->translatedName(app()->getLocale()) .
                     '</h3>
                         <p class="text-xs text-text-primary/80 truncate xxs:block py-1">'
-                    . $order?->source?->name .
+                    . $order?->source?->translatedName(app()->getLocale()) .
                     '</p>
                         <a href="' . ($order->status->value === OrderStatus::CANCELLED
                         ? route('user.order.cancel', ['orderId' => $order->order_id])
@@ -107,13 +111,12 @@ class PurchasedOrders extends Component
     protected function getFilters(): array
     {
         return [
-            'search' => $this->search ?? null,
-            'status' => $this->status ?? null,
+            'search' => $this->search,
+            'status' => $this->status,
             'exclude_status' => OrderStatus::INITIALIZED,
-            'order_date' => $this->order_date ?? null,
-            'sort_field' => $this->sortField ?? 'created_at',
-            'sort_direction' => $this->sortDirection ?? 'desc',
-            'user_id' => user()->id,
+            'order_date' => $this->order_date ,
+            'sort_field' => $this->sortField,
+            'sort_direction' => $this->sortDirection,
         ];
     }
 }

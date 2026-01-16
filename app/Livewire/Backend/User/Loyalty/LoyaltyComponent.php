@@ -77,7 +77,7 @@ class LoyaltyComponent extends Component
         $this->availablePoints = $user->userPoint->points;
         $this->canRedeem = $this->availablePoints >= 10000;
 
-        $this->success('Points redeemed successfully');
+        $this->success(__('Points redeemed successfully'));
 
         return redirect()->route('user.loyalty');
     }

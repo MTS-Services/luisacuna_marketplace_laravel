@@ -94,9 +94,7 @@ class Complete extends Component
 
         $this->showDisputeModal = false;
 
-        $this->toastInfo(
-            'Dispute submitted successfully!',
-        );
+        $this->toastInfo(__('Dispute submitted successfully!',));
     }
     public function render()
     {

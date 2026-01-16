@@ -62,11 +62,11 @@ class UserOffer extends Component
                 'format' => function ($item) {
                     if ($this->categorySlug != 'top-up') {
                         return   '<div class="flex items-center gap-3">
-                    <img src="' . storage_url($item?->games?->logo) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item?->games?->name ?? 'Game') . '">
-                    <span class="font-semibold text-text-white">' . ($item->games->name ?? '-') . '</span>
+                    <img src="' . storage_url($item?->games?->logo) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item?->games?->translatedName(app()->getLocale()) ?? 'Game') . '">
+                    <span class="font-semibold text-text-white">' . ($item->games->translatedName(app()->getLocale()) ?? '-') . '</span>
                 </div>';
                     } else {
-                        return ' <span class="font-semibold text-text-white">' . ($item->games->name ?? '-') . '</span>';
+                        return ' <span class="font-semibold text-text-white">' . ($item->games->translatedName(app()->getLocale()) ?? '-') . '</span>';
                     }
                 }
             ],
@@ -95,6 +95,11 @@ class UserOffer extends Component
             [
                 'key' => 'delivery_timeline',
                 'label' => 'Delivery time',
+                'format' => function ($data) {
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">' .
+                        ($data->translatedDeliveryTimeline(app()->getLocale())) .
+                        '</span>';
+                }
             ],
         ];
 
@@ -154,7 +159,7 @@ class UserOffer extends Component
         try {
             $this->service->updateStatus($productId, $status);
 
-            $this->success('Status updated successfully!');
+            $this->success(__('Status updated successfully'));
             $this->dispatch('refreshDataTable');
         } catch (\Exception $e) {
             $this->error('Failed to update status: ' . $e->getMessage());

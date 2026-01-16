@@ -10,7 +10,7 @@
             </div>
 
             <div class="space-y-8 prose prose-lg dark:prose-invert max-w-none mx-auto">
-                {!! $cms?->content !!}
+                {!! $cms?->translatedContent(app()->getLocale()) !!}
             </div>
 
             @if ($cms)
