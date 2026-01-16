@@ -71,8 +71,10 @@
                             <td class="px-2 sm:px-4 md:px-6 py-3">
                                 <div class="flex items-center gap-3 text-text-muted">
                                     @foreach ($actions as $action)
+                                    
                                         @php
-                                            $actionValue = data_get($item, $action['param'] ?? 'id');
+                                            $rawValue = data_get($item, $action['param'] ?? 'id');
+                                            $actionValue =!empty($action['encrypt']) && $action['encrypt'] ? encrypt($rawValue) : $rawValue;
                                             $isActive = isset($action['condition'])
                                                 ? $action['condition']($item)
                                                 : true;

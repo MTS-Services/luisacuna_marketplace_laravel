@@ -125,6 +125,7 @@ class UserOffer extends Component
                 'icon' => 'pencil-simple-fill',
                 'route' => 'user.offer.edit',
                 'label' => 'Edit',
+                'encrypt' => true,
             ],
             [
                 'icon' => 'trash-fill',

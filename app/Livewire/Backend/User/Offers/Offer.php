@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\User\Offers;
 
+use App\Models\FeeSettings;
 use App\Models\Game;
 use App\Models\User;
 use App\Models\Platform;
@@ -234,10 +235,12 @@ class Offer extends Component
 
     public function render()
     {
+        $flatFee = FeeSettings::first()->value('buyer_fee');
         $categories = $this->categoryService->getDatas();
 
         return view('livewire.backend.user.offers.offer', [
-            'categories' => $categories
+            'categories' => $categories,
+            'flatFee' => $flatFee,
         ]);
     }
 

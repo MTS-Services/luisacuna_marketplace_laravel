@@ -2,11 +2,12 @@
 
 namespace App\Livewire\Backend\User\Offers;
 
-use App\Services\PlatformService;
-use App\Services\ProductService;
-use App\Traits\Livewire\WithNotification;
-use Livewire\Attributes\Locked;
 use Livewire\Component;
+use App\Models\FeeSettings;
+use Livewire\Attributes\Locked;
+use App\Services\ProductService;
+use App\Services\PlatformService;
+use App\Traits\Livewire\WithNotification;
 
 class Edit extends Component
 {
@@ -42,8 +43,8 @@ class Edit extends Component
 
     public function mount($encrypted_id)
     {
-        $this->productId = $encrypted_id;
-        $this->offer = $this->service->findData($encrypted_id);
+        $this->productId = decrypt($encrypted_id);
+        $this->offer = $this->service->findData($this->productId);
 
         // Load necessary relationships
         $this->offer->load([
@@ -117,7 +118,6 @@ class Edit extends Component
             'name' => $data['name'],
             'fields' => $data['fields'] ?? [],
         ];
-        dd($updateData);
 
         // Update the product
         $updatedProduct = $this->service->updateData($this->productId, $updateData);
@@ -154,7 +154,10 @@ class Edit extends Component
 
     public function render()
     {
-        return view('livewire.backend.user.offers.edit');
+        $flatFee = FeeSettings::first()->value('buyer_fee');
+        return view('livewire.backend.user.offers.edit', [
+            'flatFee' => $flatFee
+        ]);
     }
 
     public function setData($data)
