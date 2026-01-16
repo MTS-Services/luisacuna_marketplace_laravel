@@ -150,6 +150,9 @@
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 justify-center mx-auto">
                             @foreach ($gameConfigs as $config)
+                                @if ($config->input_type == null)
+                                    @continue
+                                @endif
                                 @php
                                     $wireModel = 'fields.' . $config->id . '.value';
                                     $colSpanClass = in_array($config->filter_type, ['textarea', 'filter_by_textarea'])
@@ -173,7 +176,7 @@
                                             $currentLabel = 'Select ' . $config->field_name;
                                             if ($currentValue) {
                                                 foreach ($options as $key => $option) {
-                                                    $optionValue = is_array($option) ? $option['value'] : $key;
+                                                    $optionValue = is_array($option) ? $option['label'] : $option;
                                                     if ($optionValue == $currentValue) {
                                                         $currentLabel = is_array($option) ? $option['label'] : $option;
                                                         break;
@@ -185,7 +188,7 @@
                                         <x-ui.custom-select :wireModel="$wireModel" class="rounded-md! border-0! bg-bg-info!"
                                             mdWidth="md:w-full" rounded="rounded" mdLeft="md:left-0" :label="$currentLabel">
                                             @foreach ($options as $key => $option)
-                                                <x-ui.custom-option :value="is_array($option) ? $option['value'] : $key" :label="is_array($option) ? $option['label'] : $option" />
+                                                <x-ui.custom-option :value="is_array($option) ? $option['label'] : $option" :label="is_array($option) ? $option['label'] : $option" />
                                             @endforeach
                                         </x-ui.custom-select>
 

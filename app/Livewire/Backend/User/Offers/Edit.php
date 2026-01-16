@@ -42,8 +42,8 @@ class Edit extends Component
 
     public function mount($encrypted_id)
     {
-        $this->productId = $encrypted_id;
-        $this->offer = $this->service->findData($encrypted_id);
+        $this->productId = decrypt($encrypted_id);
+        $this->offer = $this->service->findData($this->productId);
 
         // Load necessary relationships
         $this->offer->load([
@@ -117,7 +117,6 @@ class Edit extends Component
             'name' => $data['name'],
             'fields' => $data['fields'] ?? [],
         ];
-        dd($updateData);
 
         // Update the product
         $updatedProduct = $this->service->updateData($this->productId, $updateData);

@@ -267,15 +267,21 @@
                                                         : json_decode($config->dropdown_values, true);
                                                     $wireModel = 'fields.' . $config->id . '.value';
                                                 @endphp
-
-                                                <x-ui.custom-select wire-model="$wireModel"
+                                                
+                                                <x-ui.custom-select :wireModel="$wireModel" :wireLive="true"
                                                     class="rounded-md! border-0! bg-bg-info!" mdWidth="md:w-full"
-                                                    rounded="rounded" mdLeft="md:left-0">
-                                                    <x-ui.custom-option :value="null" :label="'Select ' . $config->field_name" />
+                                                    rounded="rounded" mdLeft="md:left-0" :label="'Select ' . $config->field_name">
                                                     @foreach ($options as $key => $option)
-                                                        <x-ui.custom-option :value="is_array($option) ? $option['value'] : $key" :label="is_array($option) ? $option['label'] : $option" />
+                                                        <x-ui.custom-option :value="is_array($option) ? $option['label'] : $option" :label="is_array($option) ? $option['label'] : $option" />
                                                     @endforeach
                                                 </x-ui.custom-select>
+
+                                                {{-- <select class="w-full bg-bg-info! text-text-white border-none rounded-lg px-4 py-3" wire:model="{{ $wireModel }}">
+                                                    <option value="null">Select {{ $config->field_name }}</option>
+                                                    @foreach ($options as $key => $option)
+                                                        <option value="{{ is_array($option) ? $option['label'] : $option }}">{{ is_array($option) ? $option['label'] : $option }}</option>
+                                                    @endforeach
+                                                </select> --}}
 
                                                 <x-ui.input-error :messages="$errors->get($wireModel)" class="mt-2" />
                                             </div>
