@@ -25,11 +25,11 @@
             <div class=" rounded-full py-4 ">
                 <x-ui.custom-select wireModel="sellerFilter" :wireLive="true" :label="__('Recommended')"
                     class="py-3! w-full sm:w-70 rounded-full!">
-                    <x-ui.custom-option label="Recommended" value="recommended" />
-                    <x-ui.custom-option label="Positive Reviews" value="positive_reviews" />
-                    <x-ui.custom-option label="Top Sold" value="top_sold" />
-                    <x-ui.custom-option label="Lowest Price" value="lowest_price" />
-                    <x-ui.custom-option label="In Stock" value="in_stock" />
+                    <x-ui.custom-option label="{{ __('Recommended') }}" value="recommended" />
+                    <x-ui.custom-option label="{{ __('Positive Reviews') }}" value="positive_reviews" />
+                    <x-ui.custom-option label="{{ __('Top Sold') }}" value="top_sold" />
+                    <x-ui.custom-option label="{{ __('Lowest Price') }}" value="lowest_price" />
+                    <x-ui.custom-option label="{{ __('In Stock') }}" value="in_stock" />
                 </x-ui.custom-select>
             </div>
         </div>

@@ -7,7 +7,7 @@
             class="border-zinc-500! bg-transparent! rounded-lg">
             <option value="">{{ __('All Game') }}</option>
             @foreach ($games as $game)
-                <x-ui.custom-option value="{{ $game->id }}" label="{{ $game->name }}" />
+                <x-ui.custom-option value="{{ $game->id }}" label="{{ $game->translatedName(app()->getLocale()) }}" />
             @endforeach
         </x-ui.custom-select>
     </div>

@@ -14,11 +14,11 @@
 
 
                 <div class="py-0.5! w-full sm:w-70">
-                    <x-ui.custom-select wire-model="order_date" :wire-live="true" class="rounded!" label="Recent">
+                    <x-ui.custom-select wire-model="order_date" :wire-live="true" class="rounded!" label="{{ __('Recent') }}">
 
-                        <x-ui.custom-option value="today" label="Today" />
-                        <x-ui.custom-option value="week" label="This Week" />
-                        <x-ui.custom-option value="month" label="This Month" />
+                        <x-ui.custom-option value="today" label="{{ __('Today') }}" />
+                        <x-ui.custom-option value="week" label="{{ __('This Week') }}" />
+                        <x-ui.custom-option value="month" label="{{ __('This Month') }}" />
                     </x-ui.custom-select>
                 </div>
 

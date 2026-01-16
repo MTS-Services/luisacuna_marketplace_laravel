@@ -49,7 +49,7 @@
             <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
 
                 <div class="py-0.5! w-full sm:w-70">
-                    <x-ui.custom-select :wireModel="'status'" class="rounded!" label="All Statuses">
+                    <x-ui.custom-select :wireModel="'status'" class="rounded!" label="{{ __('All Statuses') }}">
                         <x-ui.custom-option label="purchased" value="{{ __('purchased') }}" />
                         <x-ui.custom-option label="sales" value="{{ __('Sales') }}" />
                         <x-ui.custom-option label="withdrawls" value="{{ __('Withdrawls') }}" />
@@ -57,10 +57,10 @@
                 </div>
 
                 <div class="py-0.5! w-full sm:w-70">
-                    <x-ui.custom-select :wireModel="'time'" class="rounded!" label="Recent">
-                        <x-ui.custom-option value="today" label="Today" />
-                        <x-ui.custom-option value="week" label="This Week" />
-                        <x-ui.custom-option value="month" label="This Month" />
+                    <x-ui.custom-select :wireModel="'time'" class="rounded!" label="{{ __('Recent') }}">
+                        <x-ui.custom-option value="today" label="{{ __('Today') }}" />
+                        <x-ui.custom-option value="week" label="{{ __('This Week') }}" />
+                        <x-ui.custom-option value="month" label="{{ __('This Month') }}" />
                     </x-ui.custom-select>
                 </div>
 
