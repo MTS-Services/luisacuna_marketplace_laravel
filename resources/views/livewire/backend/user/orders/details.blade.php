@@ -11,18 +11,18 @@
                 <div class="flex gap-2">
                     <div>
                         <div class="w-10 h-10 md:w-16 md:h-16">
-                            <img src="{{ $data?->source?->game?->logo }}" alt="{{ $data?->source?->game?->name }}" alt="{{ $data?->source?->game?->name }}"
+                            <img src="{{ $data?->source?->game?->logo }}" alt="{{ $data?->source?->game?->translatedName(app()->getLocale()) }}"
                                 class="rounded" />
                         </div>
                     </div>
-                    <p class="text-text-white text-3xl font-semibold">{{ $data?->source?->game?->name }}</p>
+                    <p class="text-text-white text-3xl font-semibold">{{ $data?->source?->game?->translatedName(app()->getLocale()) }}</p>
                 </div>
             </div>
             <div class="bg-bg-info p-7 rounded-lg mt-10">
                 <div class="flex gap-5">
                     <div>
                         <div class="w-10 h-10">
-                            <img src="{{storage_url( $data?->source?->game?->logo) }}"  alt="{{ $data?->source?->game?->name }}"
+                            <img src="{{storage_url( $data?->source?->game?->logo) }}"  alt="{{ $data?->source?->game?->translatedName(app()->getLocale()) }}"
                                 class="rounded" />
                         </div>
                     </div>
@@ -58,7 +58,7 @@
             </div>
             <div class="mt-10">
                 <div class="w-auto h-auto sm:w-[400px] sm:h-[400px]">
-                    <img src="{{ storage_url( $data?->source?->game?->logo) }}" alt="{{ $data?->source?->game?->name }}" class="rounded w-full h-full" />
+                    <img src="{{ storage_url( $data?->source?->game?->logo) }}" alt="{{ $data?->source?->game?->translatedName(app()->getLocale()) }}" class="rounded w-full h-full" />
                 </div>
             </div>
             <div x-data="{
@@ -74,7 +74,7 @@
 
                 <div x-show="!isExpanded">
                     <p x-ref="desc" class="line-clamp-2">
-                        {{ $data?->source?->description }}
+                        {{ $data?->source?->translatedDescription(app()->getLocale()) }}
                     </p>
 
                     <div x-show="isOverflow" class="flex w-fit mt-3">

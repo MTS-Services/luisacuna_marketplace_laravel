@@ -82,12 +82,12 @@
 
                     {{-- Title --}}
                     <h3 class="text-2xl font-bold text-gray-900 mb-2" id="modal-title">
-                        {{ $title }}
+                        {{ __($title) }}
                     </h3>
 
                     {{-- Description --}}
                     <p class="text-base text-gray-600 mb-6">
-                        {!! $message !!} {{-- Use {!! !!} to allow for bolding or links in the message if needed --}}
+                        {!! __($message) !!} {{-- Use {!! !!} to allow for bolding or links in the message if needed --}}
                     </p>
 
                     {{-- Input Fields --}}
@@ -106,7 +106,7 @@
                         {{-- Primary Action Button --}}
                         <button wire:click="{{ $method }}" @click="localShow = false"
                             class="w-full sm:w-auto px-6 py-3 rounded-xl {{ $buttonBg[$buttonVariant] }} text-white text-base font-semibold shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 transition duration-150">
-                            {{ $buttonText }}
+                            {{ __($buttonText) }}
                         </button>
 
                         {{-- Cancel Button --}}

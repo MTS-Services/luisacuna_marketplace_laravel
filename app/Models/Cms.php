@@ -42,7 +42,7 @@ class Cms extends AuditBaseModel implements Auditable
 
     //
 
-   public function cmsTranslations(): HasMany
+    public function cmsTranslations(): HasMany
     {
         return $this->hasMany(CmsTranslation::class, 'cms_id', 'id');
     }
@@ -51,11 +51,11 @@ class Cms extends AuditBaseModel implements Auditable
     {
         return $this->hasMany(Helpful::class, 'cms_id', 'id');
     }
- 
+
     public function latestHelpful(): HasOne
-{
-    return $this->hasOne(Helpful::class, 'cms_id', 'id')->latestOfMany();
-}
+    {
+        return $this->hasOne(Helpful::class, 'cms_id', 'id')->latestOfMany();
+    }
     /* =========================================
             Translation Configuration
      ========================================= */
@@ -72,33 +72,37 @@ class Cms extends AuditBaseModel implements Auditable
             ]
         ];
     }
+    public function translatedContent($languageIdOrLocale): string
+    {
+        return $this->getTranslated('content', $languageIdOrLocale) ?? $this->content;
+    }
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
-public function getIsUsefulAttribute(): ?bool
-{
-    if (!$this->latestHelpful) {
-        return null;
-    }
+    public function getIsUsefulAttribute(): ?bool
+    {
+        if (!$this->latestHelpful) {
+            return null;
+        }
 
-    return $this->latestHelpful->type === \App\Enums\HelpfulType::POSITIVE->value;
-}
-public function getHelpfulCooldownActiveAttribute(): bool
-{
-    if (!$this->latestHelpful) {
-        return false;
+        return $this->latestHelpful->type === \App\Enums\HelpfulType::POSITIVE->value;
     }
+    public function getHelpfulCooldownActiveAttribute(): bool
+    {
+        if (!$this->latestHelpful) {
+            return false;
+        }
 
-    return $this->latestHelpful->created_at->addHours(24)->isFuture();
-}
+        return $this->latestHelpful->created_at->addHours(24)->isFuture();
+    }
 
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
         $this->appends = array_merge(parent::getAppends(), [
-           'helpful_cooldown_active',
-           'is_useful',
+            'helpful_cooldown_active',
+            'is_useful',
         ]);
     }
 }
