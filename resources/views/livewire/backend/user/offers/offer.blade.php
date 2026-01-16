@@ -346,8 +346,8 @@
                             <div class="border-t border-zinc-500 pt-4 mt-4 flex items-center gap-3"></div>
                             <div>
                                 <p class="text-text-white text-base sm:text-xl font-normal mt-5">
-                                    {{ __('Flat fee (per purchase): ') }} <span
-                                        class="text-2xl font-semibold">{{ __('$0.00 USD') }}</span>
+                                    {{ __('Flat fee (per purchase): ') }} 
+                                    <span class="text-2xl font-semibold">{{ currency_symbol() . $flatFee . '  ' . currency_code() }}</span>
                                 </p>
                             </div>
                         </div>

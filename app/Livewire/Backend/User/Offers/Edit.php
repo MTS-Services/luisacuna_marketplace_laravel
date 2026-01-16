@@ -2,11 +2,12 @@
 
 namespace App\Livewire\Backend\User\Offers;
 
-use App\Services\PlatformService;
-use App\Services\ProductService;
-use App\Traits\Livewire\WithNotification;
-use Livewire\Attributes\Locked;
 use Livewire\Component;
+use App\Models\FeeSettings;
+use Livewire\Attributes\Locked;
+use App\Services\ProductService;
+use App\Services\PlatformService;
+use App\Traits\Livewire\WithNotification;
 
 class Edit extends Component
 {
@@ -153,7 +154,10 @@ class Edit extends Component
 
     public function render()
     {
-        return view('livewire.backend.user.offers.edit');
+        $flatFee = FeeSettings::first()->value('buyer_fee');
+        return view('livewire.backend.user.offers.edit', [
+            'flatFee' => $flatFee
+        ]);
     }
 
     public function setData($data)

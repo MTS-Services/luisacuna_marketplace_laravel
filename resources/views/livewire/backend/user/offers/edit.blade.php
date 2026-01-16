@@ -241,7 +241,7 @@
                         <div>
                             <p class="text-text-white text-base sm:text-xl font-normal mt-5">
                                 {{ __('Flat fee (per purchase): ') }}
-                                <span class="text-2xl font-semibold">{{ __('$0.00 USD') }}</span>
+                                <span class="text-2xl font-semibold">{{ currency_symbol() . $flatFee . '  ' . currency_code() }}</span>
                             </p>
                         </div>
                     </div>
