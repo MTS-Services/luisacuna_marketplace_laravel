@@ -112,22 +112,22 @@ abstract class PaymentMethod
 
     public function updateUserPoints(Order $order)
     {
-        $pointLogs = PointLog::create([
-            'user_id' => $order->user_id,
-            'source_id' => $order->id,
-            'source_type' => Order::class,
-            'type' => PointType::EARNED->value,
-            'points' => $order->points,
-            'notes' => "Points earned for Order #{$order->order_id}",
-        ]);
+        // $pointLogs = PointLog::create([
+        //     'user_id' => $order->user_id,
+        //     'source_id' => $order->id,
+        //     'source_type' => Order::class,
+        //     'type' => PointType::EARNED->value,
+        //     'points' => $order->points,
+        //     'notes' => "Points earned for Order #{$order->order_id}",
+        // ]);
 
-        $userPoint = UserPoint::firstOrNew(['user_id' => $order->user_id]);
-        $userPoint->points += $pointLogs->points;
-        $userPoint->save();
-        Log::info('User points updated', [
-            'user_id' => $order->user_id,
-            'points' => $pointLogs->points,
-        ]);
+        // $userPoint = UserPoint::firstOrNew(['user_id' => $order->user_id]);
+        // $userPoint->points += $pointLogs->points;
+        // $userPoint->save();
+        // Log::info('User points updated', [
+        //     'user_id' => $order->user_id,
+        //     'points' => $pointLogs->points,
+        // ]);
 
         $achievement = $this->achievementService->nextOrProgressAchievement(1, user()->id);
 
