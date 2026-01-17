@@ -127,7 +127,42 @@ abstract class PaymentMethod
 
         $achievement = $this->achievementService->nextOrProgressAchievement(1, user()->id);
 
-        if (! $achievement == null) {
+        if (! $achievement == null && $achievement->achievement_type_id == 1) {
+
+            $progress = UserAchievementProgress::firstOrCreate(
+                [
+                    'user_id' => user()->id,
+                    'achievement_id' => $achievement->id,
+                ],
+                [
+                    'current_progress' => 0,
+                ]
+            );
+            $progress->increment('current_progress');
+
+            // ✅ Mark as completed
+            if ($progress->current_progress >= $achievement->target_value) {
+
+                $pointLogs = PointLog::create([
+                    'user_id' => user()->id,
+                    'source_id' => $achievement->id,
+                    'source_type' => Achievement::class,
+                    'type' => PointType::REWARD->value,
+                    'points' => $achievement->point_reward,
+                    'notes' => "Points reward for Achievement #{$achievement->id}",
+                ]);
+
+                $userPoint = UserPoint::firstOrNew(['user_id' => user()->id]);
+                $userPoint->points += $pointLogs->points;
+                $userPoint->save();
+
+                $progress->achieved_at = now();
+            }
+            $progress->save();
+        }
+
+        $achievement = $this->achievementService->nextOrProgressAchievement(3, user()->id);
+           if (! $achievement == null && $achievement->achievement_type_id == 3) {
 
             $progress = UserAchievementProgress::firstOrCreate(
                 [
