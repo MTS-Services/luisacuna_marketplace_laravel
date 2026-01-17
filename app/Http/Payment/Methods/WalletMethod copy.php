@@ -2,31 +2,34 @@
 
 namespace App\Http\Payment\Methods;
 
+use App\Enums\CalculationType;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\TransactionStatus;
 use App\Enums\TransactionType;
-use App\Enums\CalculationType;
 use App\Http\Payment\PaymentMethod;
 use App\Models\Order;
 use App\Models\Payment;
-use App\Models\Wallet;
 use App\Models\Transaction;
+use App\Models\Wallet;
+use App\Services\AchievementService;
 use App\Services\ConversationService;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Exception;
 use Illuminate\Support\Str;
 
 class WalletMethod extends PaymentMethod
 {
     protected $id = 'wallet';
+
     protected $name = 'Wallet';
+
     protected $requiresFrontendJs = false;
 
-    public function __construct($gateway = null, ConversationService $conversationService)
+    public function __construct($gateway, ConversationService $conversationService, AchievementService $achievementService)
     {
-        parent::__construct($gateway, $conversationService);
+        parent::__construct($gateway, $conversationService, $achievementService);
     }
 
     /**
@@ -53,7 +56,7 @@ class WalletMethod extends PaymentMethod
             if ($wallet->balance < $order->grand_total) {
                 return [
                     'success' => false,
-                    'message' => 'Insufficient wallet balance. Your balance: ' . number_format($wallet->balance, 2) . ' ' . $wallet->currency_code,
+                    'message' => 'Insufficient wallet balance. Your balance: '.number_format($wallet->balance, 2).' '.$wallet->currency_code,
                     'current_balance' => $wallet->balance,
                     'required_amount' => $order->grand_total,
                 ];
@@ -184,7 +187,7 @@ class WalletMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Wallet payment failed: ' . $e->getMessage(),
+                'message' => 'Wallet payment failed: '.$e->getMessage(),
             ];
         }
     }
@@ -207,7 +210,7 @@ class WalletMethod extends PaymentMethod
     {
         $wallet = Wallet::where('user_id', $userId)->first();
 
-        if (!$wallet) {
+        if (! $wallet) {
             return [
                 'balance' => 0,
                 'currency_code' => 'USD',
@@ -218,7 +221,7 @@ class WalletMethod extends PaymentMethod
         return [
             'balance' => $wallet->balance,
             'currency_code' => $wallet->currency_code,
-            'formatted_balance' => number_format($wallet->balance, 2) . ' ' . $wallet->currency_code,
+            'formatted_balance' => number_format($wallet->balance, 2).' '.$wallet->currency_code,
             'locked_balance' => $wallet->locked_balance,
             'pending_balance' => $wallet->pending_balance,
             'total_deposits' => $wallet->total_deposits,
@@ -233,7 +236,7 @@ class WalletMethod extends PaymentMethod
     {
         $wallet = Wallet::where('user_id', $userId)->first();
 
-        if (!$wallet) {
+        if (! $wallet) {
             return false;
         }
 
@@ -247,7 +250,7 @@ class WalletMethod extends PaymentMethod
     {
         $wallet = Wallet::where('user_id', $userId)->first();
 
-        if (!$wallet) {
+        if (! $wallet) {
             return 0;
         }
 
