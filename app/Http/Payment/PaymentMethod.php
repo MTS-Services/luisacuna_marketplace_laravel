@@ -170,9 +170,9 @@ abstract class PaymentMethod
             $progress->save();
         }
 
-        $achievement = $this->achievementService->nextOrProgressAchievement(2, user()->id);
+        $achievement = $this->achievementService->nextOrProgressAchievement(3, user()->id);
 
-        if (! $achievement == null && $achievement->achievement_type_id == 2) {
+        if (! $achievement == null && $achievement->achievement_type_id == 3) {
 
             $progress = UserAchievementProgress::firstOrCreate(
                 [
