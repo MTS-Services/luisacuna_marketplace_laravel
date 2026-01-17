@@ -127,7 +127,7 @@ abstract class PaymentMethod
 
         $achievement = $this->achievementService->nextOrProgressAchievement(1, user()->id);
 
-        if (! $achievement == null) {
+        if (!$achievement == null) {
 
             $progress = UserAchievementProgress::firstOrCreate(
                 [
