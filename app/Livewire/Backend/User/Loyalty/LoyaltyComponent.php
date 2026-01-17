@@ -3,33 +3,43 @@
 namespace App\Livewire\Backend\User\Loyalty;
 
 use App\Services\AchievementService;
-use Livewire\Component;
 use App\Services\RankService;
 use App\Services\UserAchievementProgressService;
 use App\Services\UserService;
 use App\Traits\Livewire\WithNotification;
+use Livewire\Component;
 
 class LoyaltyComponent extends Component
 {
-
     use WithNotification;
 
     public $user = null;
+
     public $rank = null;
+
     // public $achievements;
     public $currentRank = null;
+
     public $nextRank = null;
+
     public $pointsNeeded = 0;
+
     public $progress = 0;
 
     public $canRedeem = false;
+
     public $availablePoints = 0;
+
     public $completedAchievements = 0;
+
     public $totalAchievements = 0;
 
     protected UserService $userService;
+
     protected RankService $rankService;
+
     protected AchievementService $achievementsService;
+
     protected UserAchievementProgressService $userAchievementProgressService;
 
     public function boot(UserService $userService, RankService $rankService, AchievementService $achievementsService, UserAchievementProgressService $userAchievementProgressService)
@@ -39,6 +49,7 @@ class LoyaltyComponent extends Component
         $this->achievementsService = $achievementsService;
         $this->userAchievementProgressService = $userAchievementProgressService;
     }
+
     public function mount()
     {
         $this->user = user()->load('userPoint');
@@ -49,17 +60,28 @@ class LoyaltyComponent extends Component
 
         $this->currentRank = $this->rankService->getUserRank();
         $this->completedAchievements = $this->userAchievementProgressService->completedAcheievment()->count();
+        $currentPoints = $this->user->userPoint?->points ?? 0;
+
+        $maxPoints = $this->currentRank?->maximum_points === null
+            ? $this->user->rank_points
+            : $this->currentRank->maximum_points;
+
+        $this->progress = $maxPoints > 0
+            ? round(($currentPoints / $maxPoints) * 100, 2)
+            : 0;
     }
+
     public function render()
     {
         $achievements = $this->achievementsService->getPaginatedData(15, [
             'sort_field' => 'target_value',
-            'sort_direction' => 'asc'
+            'sort_direction' => 'asc',
         ]);
-        $achievements->load(['achievementType','progress']);
+        $achievements->load(['achievementType', 'progress']);
+
         return view('livewire.backend.user.loyalty.loyalty-component',
             [
-                'achievements' => $achievements
+                'achievements' => $achievements,
             ]);
     }
 
@@ -69,8 +91,9 @@ class LoyaltyComponent extends Component
 
         $redeemed = $this->rankService->redeemUserPoints($user);
 
-        if (!$redeemed) {
+        if (! $redeemed) {
             session()->flash('error', 'You do not have enough points to redeem.');
+
             return;
         }
 
