@@ -16,7 +16,7 @@
         <form wire:submit.prevent="save">
             <div class="w-full col-span-2">
                 <x-ui.file-input wire:model="form.icon" label="Payment Method Icon" accept="image/*" :error="$errors->first('form.icon')"
-                    hint="Upload a Payment Method Icon (Max: 2MB)" :existingFiles="$existingFile" removeModel="form.remove_file" />
+                    hint="Upload a Payment Method Icon (Max: 2MB)" :existingFiles="$existingFile" removeModel="form.remove_icon" />
             </div>
             <div class="mt-6 space-y-4 grid grid-cols-3 gap-5">
                 <div class="w-full">

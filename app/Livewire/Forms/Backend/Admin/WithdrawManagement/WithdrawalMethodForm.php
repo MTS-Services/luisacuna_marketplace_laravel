@@ -4,9 +4,9 @@ namespace App\Livewire\Forms\Backend\Admin\WithdrawManagement;
 
 use App\Enums\ActiveInactiveEnum;
 use App\Enums\WithdrawalFeeType;
-use Livewire\Form;
 use Illuminate\Http\UploadedFile;
 use Livewire\Attributes\Locked;
+use Livewire\Form;
 
 class WithdrawalMethodForm extends Form
 {
@@ -14,33 +14,43 @@ class WithdrawalMethodForm extends Form
     public ?int $id = null;
 
     public string $name = '';
+
     public string $code = '';
+
     public string $description = '';
+
     public string $status = '';
+
     public string $min_amount = '';
+
     public string $max_amount = '';
+
     public string $processing_time = '';
+
     public string $fee_type = '';
+
     public string $fee_amount = '';
+
     public string $fee_percentage = '';
+
     public array $required_fields = [];
 
     public ?UploadedFile $icon = null;
 
-    // Track removed files
-    public bool $remove_file = false;
+    // Track removed files (create & update parity)
+    public bool $remove_icon = false;
 
     public function rules(): array
     {
         $rules = [
-            'name' => 'required|string|max:100|unique:withdrawal_methods,name' . ($this->isUpdating() ? ',' . $this->id : ''),
-            'code' => 'required|string|max:50|unique:withdrawal_methods,code' . ($this->isUpdating() ? ',' . $this->id : ''),
+            'name' => 'required|string|max:100|unique:withdrawal_methods,name'.($this->isUpdating() ? ','.$this->id : ''),
+            'code' => 'required|string|max:50|unique:withdrawal_methods,code'.($this->isUpdating() ? ','.$this->id : ''),
             'description' => 'nullable|string',
-            'status' => 'required|string|in:' . implode(',', array_column(ActiveInactiveEnum::cases(), 'value')),
+            'status' => 'required|string|in:'.implode(',', array_column(ActiveInactiveEnum::cases(), 'value')),
             'min_amount' => 'required|numeric|min:0',
             'max_amount' => 'nullable|numeric|gt:min_amount',
             'processing_time' => 'nullable|string|max:100',
-            'fee_type' => 'required|string|in:' . implode(',', array_column(WithdrawalFeeType::cases(), 'value')),
+            'fee_type' => 'required|string|in:'.implode(',', array_column(WithdrawalFeeType::cases(), 'value')),
             'fee_amount' => 'nullable|numeric|min:0',
             'fee_percentage' => 'nullable|numeric|min:0|max:100',
             'required_fields' => 'nullable|array',
@@ -52,6 +62,7 @@ class WithdrawalMethodForm extends Form
             'required_fields.*.options' => 'nullable|string',
             'required_fields.*.help_text' => 'nullable|string|max:500',
             'icon' => 'nullable|image|max:2048',
+            'remove_icon' => 'nullable|boolean',
         ];
 
         return $rules;
@@ -92,13 +103,13 @@ class WithdrawalMethodForm extends Form
         $this->fee_percentage = '';
         $this->required_fields = [];
         $this->icon = null;
-        $this->remove_file = false;
+        $this->remove_icon = false;
         $this->resetValidation();
     }
 
     protected function isUpdating(): bool
     {
-        return !empty($this->id);
+        return ! empty($this->id);
     }
 
     public function fillables(): array
@@ -116,6 +127,7 @@ class WithdrawalMethodForm extends Form
             'fee_percentage' => $this->fee_percentage,
             'required_fields' => $this->processRequiredFields(),
             'icon' => $this->icon,
+            'remove_icon' => $this->remove_icon,
         ];
 
         return $data;
@@ -132,7 +144,7 @@ class WithdrawalMethodForm extends Form
             unset($field['id']);
 
             // Process options for select, radio, checkbox
-            if (!empty($field['options']) && in_array($field['input_type'], ['select', 'radio', 'checkbox'])) {
+            if (! empty($field['options']) && in_array($field['input_type'], ['select', 'radio', 'checkbox'])) {
                 // If it's already an array, keep it; otherwise split by comma
                 if (is_string($field['options'])) {
                     $field['options'] = array_map('trim', explode(',', $field['options']));

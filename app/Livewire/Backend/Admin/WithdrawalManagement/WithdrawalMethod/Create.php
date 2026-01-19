@@ -55,8 +55,9 @@ class Create extends Component
 
     public function save()
     {
-        // Validate the form
-        $data = $this->form->validate();
+        // Validate the form and gather normalized payload (ensures icon + processed fields)
+        $this->form->validate();
+        $data = $this->form->fillables();
 
 
         DB::beginTransaction();
