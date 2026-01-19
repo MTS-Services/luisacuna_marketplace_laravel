@@ -79,7 +79,7 @@
                     @if ($method->userWithdrawalAccounts->isNotEmpty())
                         <span>
                             <span
-                                class="badge bg-{{ $method->userWithdrawalAccounts?->first()->status == 'active' ? 'green' : 'red' }}-500 text-white">{{ $method->userWithdrawalAccounts?->first()->status }}</span>
+                                class="badge bg-{{ $method->userWithdrawalAccounts?->first()->status?->value == 'active' ? 'green' : 'red' }}-500 text-white">{{ $method->userWithdrawalAccounts?->first()->status?->name }}</span>
                         </span>
                     @else
                         <span>
@@ -111,14 +111,14 @@
                     <i data-lucide="clock" class="w-4 h-4"></i>
                     <span class="text-text-secondary/80">{{ __('1-3 business days') }}</span>
                 </div>
-                @if ($method->userWithdrawalAccounts->isNotEmpty() && $method->userWithdrawalAccounts?->first()->status == 'active')
+                @if ($method->userWithdrawalAccounts->isNotEmpty() && $method->userWithdrawalAccounts?->first()->status?->value == 'active')
                     <x-ui.button class="w-full py-2! px-6!">
                         <span
                             class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Request Withdrawal') }}</span>
                     </x-ui.button>
                 @elseif (
                     $method->userWithdrawalAccounts->isNotEmpty() &&
-                        $method->userWithdrawalAccounts?->first()->status == 'pending')
+                        $method->userWithdrawalAccounts?->first()->status?->value == 'pending')
                     <x-ui.button class="w-full py-2! px-6! hover:bg-pink-500!" :disabled="true" variant="tertiary">
                         <span class="text-text-btn-primary">{{ __('Verify Pending') }}</span>
                     </x-ui.button>
@@ -128,7 +128,7 @@
                         <span
                             class="text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Add Method') }}</span>
                     </x-ui.button>
-                @elseif($method->userWithdrawalAccounts?->first()->status->value == 'declined')
+                @elseif($method->userWithdrawalAccounts?->first()->status?->value == 'declined')
                     <div class="flex justify-between gap-3">
                         <div class="">
                             <x-ui.button type="button"
