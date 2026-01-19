@@ -9,7 +9,7 @@
     </div>
 
 
-    <x-ui.table :data="$datas" :columns="$columns" :actions="$actions" emptyMessage="No data found. Add your first data to get started." class="rounded-lg overflow-hidden" />
+    <x-ui.table :data="$datas" :columns="$columns" :actions="$actions" emptyMessage="No data found. Add your first data to get started." class="rounded-lg overflow-y-visible" />
 
     
     {{-- Delete Confirmation Modal --}}
