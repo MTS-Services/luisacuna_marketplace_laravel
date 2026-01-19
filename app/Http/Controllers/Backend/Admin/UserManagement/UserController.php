@@ -74,6 +74,10 @@ class UserController extends Controller implements HasMiddleware
     {
         return view($this->masterView);
     }
+    public function bannedUser()
+    {
+        return view($this->masterView);
+    }
     public function profileInfo($id)
     {
         $user = $this->service->getDataById($id);
@@ -145,23 +149,28 @@ class UserController extends Controller implements HasMiddleware
 
     //Seller Verificaiton 
 
-    public function sellerVerification()
+    public function pendingVerification()
     {
         return view($this->masterView);
     }
 
     // Seller Verification View Details
 
-    public function sellerVerificationView(string $encryptedId)
+    public function sellerView(string $encryptedId)
     {
-       
         return view($this->masterView, [
             'encryptedId' => $encryptedId
         ]);
     }
-  
+
     public function sellerVerified()
     {
         return view($this->masterView);
+    }
+    public function feedback(string $encryptedId)
+    {
+        return view($this->masterView, [
+            'encryptedId' => $encryptedId
+        ]);
     }
 }

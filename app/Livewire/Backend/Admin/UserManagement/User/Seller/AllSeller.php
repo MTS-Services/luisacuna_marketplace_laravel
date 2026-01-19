@@ -3,145 +3,92 @@
 namespace App\Livewire\Backend\Admin\UserManagement\User\Seller;
 
 use Livewire\Component;
-use App\Services\UserService;
-use App\Enums\UserAccountStatus;
-use App\Services\Cloudinary\CloudinaryService;
-use Illuminate\Support\Facades\Log;
+use App\Services\SellerProfileService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 
 class AllSeller extends Component
 {
+
+
     use WithDataTable, WithNotification;
 
 
-    protected UserService $service;
+    protected SellerProfileService $service;
 
     public $statusFilter = '';
     public $deleteUserId;
     public $bulkAction = '';
     public $showDeleteModal = false;
     public $showBulkActionModal = false;
-    protected CloudinaryService $cloudinaryService;
 
-    public function boot(UserService $service, CloudinaryService $cloudinaryService)
+    public function boot(SellerProfileService $service)
     {
         $this->service = $service;
-
-        $this->cloudinaryService = $cloudinaryService;
     }
 
     public function render()
     {
-        $datas = $this->service->getAllSellersData(
-            // perPage: $this->perPage,
-            // filters: $this->getFilters()
+        $datas = $this->service->getPaginatedData(
+            perPage: $this->perPage,
+            filters: $this->getFilters()
         );
+
 
         // $users = $this->userService->getAllUsers();
 
         $columns = [
             [
-                'key' => 'icon',
-                'label' => 'icon',
-                'format' => function ($data) {
-                    return $data->avatar
-                        ? '<img src="' . auth_storage_url($data->avatar) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
-                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
-                }
-            ],
-            [
                 'key' => 'first_name',
-                'label' => 'Name',
-                'sortable' => true
-            ],
-            [
-                'key' => 'username',
-                'label' => 'User Name',
-                'sortable' => true
-            ],
-            [
-                'key' => 'email',
-                'label' => 'Email',
-                'sortable' => true
-            ],
-            [
-                'key' => 'phone',
-                'label' => 'Phone',
-                'sortable' => true
-            ],
-            [
-                'key' => 'account_status',
-                'label' => 'Status',
-                'sortable' => true,
-                'format' => function ($user) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium '
-                        . $user->account_status_color . '">'
-                        . $user->account_status_label .
-                        '</span>';
+                'label' => 'First Name',
+                'format'   => function ($data) {
+                    return $data->first_name ?? $data->company_name ?? $data->user->first_name;
                 }
+
+            ],
+            [
+                'key' => 'seller_verified',
+                'label' => 'status',
+                'format'   => function ($data) {
+                    return $data->seller_verified ? 'Verified' : 'Unverified';
+                }
+            ],
+            [
+                'key' => 'created_at',
+                'label' => 'Submitted At',
+                'sortable' => true,
+                'format'   => function ($data) {
+                    return $data->user->created_at_formatted;
+                }
+
             ],
         ];
         $actions = [
             [
                 'key' => 'id',
-                'label' => 'Profile',
-                'route' => 'admin.um.user.profileInfo'
+                'label' => 'View Details',
+                'route' => 'admin.um.user.seller.view',
+                'encrypt' => true,
             ],
             [
-                'key' => 'id',
-                'label' => 'Edit',
-                'route' => 'admin.um.user.edit'
-            ],
-            [
-                'key' => 'id',
-                'label' => 'Delete',
-                'method' => 'confirmDelete'
+                'key' => 'user_id',
+                'label' => 'Feedbacks',
+                'route' => 'admin.um.user.feedback',
+                'encrypt' => true,
+                'format' => function ($data) {
+                    return $data->user_id;
+                }
             ],
         ];
-        $bulkActions = [
-            ['value' => 'delete', 'label' => 'Delete'],
-            ['value' => 'activate', 'label' => 'Activate'],
-            ['value' => 'deactivate', 'label' => 'Deactivate'],
-            ['value' => 'suspend', 'label' => 'Suspend'],
-        ];
-        return view('livewire.backend.admin.user-management.user.seller.all-seller',[
+        return view('livewire.backend.admin.user-management.user.seller.all-seller', [
             'datas' => $datas,
             'columns' => $columns,
-            'statuses' => UserAccountStatus::options(),
             'actions' => $actions,
-            'bulkActions' => $bulkActions,
         ]);
     }
 
-    public function confirmDelete($userId): void
-    {
-        $this->deleteUserId = $userId;
-        $this->showDeleteModal = true;
-    }
 
-    public function delete(): void
-    {
-        try {
-            if (!$this->deleteUserId) {
-                return;
-            }
-
-            // if ($this->deleteUserId == user()->id) {
-            //     $this->error('You cannot delete your own account');
-            //     return;
-            // }
-
-            $this->service->deleteData($this->deleteUserId);
-
-            $this->showDeleteModal = false;
-            $this->deleteUserId = null;
-
-            $this->success('User deleted successfully');
-        } catch (\Exception $e) {
-            $this->error('Failed to delete User: ' . $e->getMessage());
-        }
-    }
+    // Not mine
 
     public function resetFilters(): void
     {
@@ -149,86 +96,14 @@ class AllSeller extends Component
         $this->resetPage();
     }
 
-    public function changeStatus($userId, $status): void
-    {
-        try {
-            $userStatus = UserAccountStatus::from($status);
-
-            match ($userStatus) {
-                UserAccountStatus::ACTIVE => $this->service->activateData($userId),
-                UserAccountStatus::INACTIVE => $this->service->deactivateData($userId),
-                default => null,
-            };
-
-            $this->success('User status updated successfully');
-        } catch (\Exception $e) {
-            $this->error('Failed to update status: ' . $e->getMessage());
-        }
-    }
-
-    public function confirmBulkAction(): void
-    {
-        if (empty($this->selectedIds) || empty($this->bulkAction)) {
-            $this->warning('Please select Users and an action');
-            Log::info('No Users selected or no bulk action selected');
-            return;
-        }
-
-        $this->showBulkActionModal = true;
-    }
-
-    public function executeBulkAction(): void
-    {
-        $this->showBulkActionModal = false;
-
-        try {
-            match ($this->bulkAction) {
-                'delete' => $this->bulkDelete(),
-                'activate' => $this->bulkUpdateStatus(UserAccountStatus::ACTIVE),
-                'deactivate' => $this->bulkUpdateStatus(UserAccountStatus::INACTIVE),
-                default => null,
-            };
-
-            $this->selectedIds = [];
-            $this->selectAll = false;
-            $this->bulkAction = '';
-        } catch (\Exception $e) {
-            $this->error('Bulk action failed: ' . $e->getMessage());
-        }
-    }
-
-    protected function bulkDelete(): void
-    {
-        $count = $this->service->bulkDeleteDatas($this->selectedIds);
-        $this->success("{$count} Users deleted successfully");
-    }
-
-    protected function bulkUpdateStatus(UserAccountStatus $status): void
-    {
-        $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);
-        $this->success("{$count} Users updated successfully");
-    }
 
     protected function getFilters(): array
     {
         return [
             'search' => $this->search,
-            'account_status' => $this->statusFilter,
+            'seller_verified' => 1,
             'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
         ];
-    }
-
-    protected function getSelectableIds(): array
-    {
-        return $this->service->getPaginateDatas(
-            perPage: $this->perPage,
-            filters: $this->getFilters()
-        )->pluck('id')->toArray();
-    }
-
-    public function updatedStatusFilter(): void
-    {
-        $this->resetPage();
     }
 }

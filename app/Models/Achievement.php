@@ -2,22 +2,20 @@
 
 namespace App\Models;
 
-use App\Models\AuditBaseModel;
-use Laravel\Scout\Searchable;
-use App\Traits\AuditableTrait;
 use App\Enums\AchievementStatus;
+use App\Traits\AuditableTrait;
 use App\Traits\HasTranslations;
-use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
+use Laravel\Scout\Searchable;
+use OwenIt\Auditing\Contracts\Auditable;
 
 class Achievement extends AuditBaseModel implements Auditable
 {
-    use Searchable, AuditableTrait, HasTranslations;
+    use AuditableTrait, HasTranslations, Searchable;
 
     protected $fillable = [
         'sort_order',
-        'rank_id',
         'icon',
         'title',
         'description',
@@ -32,8 +30,7 @@ class Achievement extends AuditBaseModel implements Auditable
         'restored_by',
         'restored_at',
 
-        //here AuditColumns 
-
+        // here AuditColumns
 
     ];
 
@@ -63,6 +60,16 @@ class Achievement extends AuditBaseModel implements Auditable
             ],
         ];
     }
+
+    public function translatedTitle($languageIdOrLocale): string
+    {
+        return $this->getTranslated('title', $languageIdOrLocale) ?? $this->title;
+    }
+
+    public function translatedDescription($languageIdOrLocale): string
+    {
+        return $this->getTranslated('description', $languageIdOrLocale) ?? $this->description;
+    }
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
@@ -82,15 +89,25 @@ class Achievement extends AuditBaseModel implements Auditable
 
         return $this->hasMany(AchievementsTranslation::class, 'achievement_id', 'id');
     }
+
     public function progress()
     {
-        return $this->hasMany(UserAchievementProgress::class);
+        return $this->hasMany(UserAchievementProgress::class, 'achievement_id', 'id');
+    }
+
+    public function userProgress($userId)
+    {
+        return $this?->progress()?->where('user_id', $userId)->first();
+    }
+
+    public function currentProgress()
+    {
+        return $this?->userProgress(user()->id)?->current_progress ?? 0;
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
-
 
     /* ================================================================
      |  Query Scopes
@@ -104,41 +121,35 @@ class Achievement extends AuditBaseModel implements Auditable
     {
         return $query->where('status', AchievementStatus::INACTIVE);
     }
+
     public function scopeFilter(Builder $query, array $filters): Builder
     {
         return $query
             ->when(
                 $filters['status'] ?? null,
-                fn($q, $status) =>
-                $q->where('status', $status)
+                fn ($q, $status) => $q->where('status', $status)
             )
             ->when(
                 $filters['title'] ?? null,
-                fn($q, $title) =>
-                $q->where('title', 'like', "%{$title}%")
+                fn ($q, $title) => $q->where('title', 'like', "%{$title}%")
             )
             ->when(
                 $filters['description'] ?? null,
-                fn($q, $description) =>
-                $q->where('description', 'like', "%{$description}%")
+                fn ($q, $description) => $q->where('description', 'like', "%{$description}%")
             )
             ->when(
                 $filters['rank_id'] ?? null,
-                fn($q, $rank_id) =>
-                $q->where('rank_id', 'like', "%{$rank_id}%")
+                fn ($q, $rank_id) => $q->where('rank_id', 'like', "%{$rank_id}%")
             )
             ->when(
                 $filters['category_id'] ?? null,
-                fn($q, $category_id) =>
-                $q->where('category_id', 'like', "%{$category_id}%")
+                fn ($q, $category_id) => $q->where('category_id', 'like', "%{$category_id}%")
             );
     }
-
 
     /* ================================================================
      |  Query Scopes
      ================================================================ */
-
 
     /* ================================================================
      |  Scout Search Configuration
@@ -168,8 +179,8 @@ class Achievement extends AuditBaseModel implements Auditable
     {
         parent::__construct($attributes);
         $this->appends = array_merge(parent::getAppends(), [
-            'status_label',
-            'status_color',
+            // 'status_label',
+            // 'status_color',
         ]);
     }
 }

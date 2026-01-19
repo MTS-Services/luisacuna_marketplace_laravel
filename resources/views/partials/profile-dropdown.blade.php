@@ -86,7 +86,7 @@
                     class="w-full flex items-center justify-between px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg transition-all text-text-white hover:bg-bg-hover">
                     <div class="flex items-center space-x-2 sm:space-x-3">
                         <x-phosphor-tag class="w-5 h-5 rotate-90 fill-text-text-white" />
-                        <span class="text-xs font-medium text-text-white">Offers</span>
+                        <span class="text-xs font-medium text-text-white">{{ __('Offers') }}</span>
                         <div x-show="isActive" x-cloak
                             class="absolute left-0 top-0 w-1.5 sm:w-2 h-full bg-gradient-to-b from-pink-500 to-zinc-600 rounded-l-full z-50">
                         </div>
@@ -103,7 +103,7 @@
                             @click="$root.sidebarOpen = false"
                             class="block px-2 sm:px-3 py-2 text-xs rounded-lg transition-all text-text-white hover:bg-bg-hover 
                                 {{ request()->route('categorySlug') === $category->slug ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
-                            {{ $category->name }}
+                            {{ $category->translatedName(app()->getLocale()) }}
                         </a>
                     @endforeach
                 </div>
@@ -120,7 +120,7 @@
                     <div class="flex items-center space-x-2 sm:space-x-3">
                         <x-phosphor name="circles-four" variant="solid"
                             class="w-5 h-5 rotate-90 fill-text-text-white" />
-                        <span class="text-xs font-medium text-text-white">Boosting</span>
+                        <span class="text-xs font-medium text-text-white">{{ __('Boosting') }}</span>
                         <div x-show="isActive" x-cloak
                             class="absolute left-0 top-0 w-1.5 sm:w-2 h-full bg-gradient-to-b from-pink-500 to-zinc-600 rounded-l-full z-50">
                         </div>
@@ -175,7 +175,7 @@
             <a href="{{ route('user.account-settings') }}" wire:navigate @click="$root.sidebarOpen = false"
                 class="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg transition-all text-text-white hover:bg-bg-hover {{ $pageSlug === 'account-settings' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                 <x-phosphor name="gear" class="w-4 h-4 sm:w-5 sm:h-5 fill-text-text-white" />
-                <span class="text-xs font-medium text-text-white">{{ __('Account Settings') }}</span>
+                <span class="text-xs font-medium text-text-white">{{ __('Account settings') }}</span>
             </a>
 
             <div class="my-2 px-2">
@@ -243,7 +243,7 @@
                     <span class="flex items-center gap-2 text-text-white">
 
                         <flux:icon name="moon" class="w-5 h-5 stroke-current" />
-                        Dark theme
+                        {{ __('Dark theme') }}
                     </span>
 
                     <!-- Perfect Switch -->
@@ -261,7 +261,7 @@
                 <a href="{{ route('profile', user()->username) }}" wire:navigate @click="open = false"
                     class="flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all {{ $pageSlug === 'profile' ? 'bg-zinc-800 text-white' : 'text-zinc-300 hover:text-white hover:bg-zinc-800/50' }}">
                     <flux:icon name="user" class="w-4 h-4" />
-                    <span>View Profile</span>
+                    <span>{{ __('View Profile') }}</span>
                 </a>
 
                 <form method="POST" action="{{ route('logout') }}">
@@ -269,7 +269,7 @@
                     <button type="submit"
                         class="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-all">
                         <flux:icon name="arrow-right-start-on-rectangle" class="w-4 h-4" />
-                        <span>Logout</span>
+                        <span>{{ __('Logout') }}</span>
                     </button>
                 </form>
             </div>

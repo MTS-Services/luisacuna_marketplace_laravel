@@ -37,4 +37,36 @@ class CmsController extends Controller
         $type = CmsType::PRIVACY_POLICY;
         return view($this->masterView, compact('type'));
     }
+    /**
+     * How to Buy Page
+     */
+    public function howToBuy(): View
+    {
+        $type = CmsType::HOW_TO_BUY;
+        return view($this->masterView, compact('type'));
+    }
+    /**
+     * Buyer Protection Page
+     */
+    public function buyerProtection(): View
+    {
+        $type = CmsType::BUYER_PROTECTION;
+        return view($this->masterView, compact('type'));
+    }
+    /**
+     * How to Sell Page
+     */
+    public function howToSell(): View
+    {
+        $type = CmsType::HOW_TO_SELL;
+        return view($this->masterView, compact('type'));
+    }
+    /**
+     * How to Sell Page
+     */
+    public function sellerProtection(): View
+    {
+        $type = CmsType::SELLER_PROTECTION;
+        return view($this->masterView, compact('type'));
+    }
 }

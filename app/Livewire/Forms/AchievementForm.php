@@ -13,7 +13,7 @@ class AchievementForm extends Form
     #[Locked]
     public ?int $id = null;
 
-    public ?int $rank_id = null;
+    // public ?int $rank_id = null;
     public ?int $achievement_type_id = null;
 
     public ?string $title = null;
@@ -33,7 +33,7 @@ class AchievementForm extends Form
     public function rules(): array
     {
         return [
-            'rank_id' => 'required|integer|exists:ranks,id',
+            // 'rank_id' => 'required|integer|exists:ranks,id',
             'achievement_type_id' => 'required|integer|exists:achievement_types,id',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -52,7 +52,7 @@ class AchievementForm extends Form
     public function setData($data)
     {
         $this->id = $data->id;
-        $this->rank_id = $data->rank_id;
+        // $this->rank_id = $data->rank_id;
         $this->achievement_type_id = $data->achievement_type_id;
         $this->title = $data->title;
         $this->description = $data->description;
@@ -68,7 +68,7 @@ class AchievementForm extends Form
     public function reset(...$properties): void
     {
         $this->id = null;
-        $this->rank_id = null;
+        // $this->rank_id = null;
         $this->achievement_type_id = null;
         $this->title = null;
         $this->description = null;

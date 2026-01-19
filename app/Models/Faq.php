@@ -31,7 +31,7 @@ class Faq extends AuditBaseModel implements Auditable
         'answer',
     ];
 
-   protected $casts = [
+    protected $casts = [
         'status' => FaqStatus::class,
         'type' => FaqType::class
 
@@ -40,8 +40,7 @@ class Faq extends AuditBaseModel implements Auditable
     /**
      * Avoid hiding "id" unless absolutely necessary for API response.
      */
-    protected $hidden = [
-    ];
+    protected $hidden = [];
 
     /*
     |--------------------------------------------------------------------------
@@ -49,13 +48,13 @@ class Faq extends AuditBaseModel implements Auditable
     |--------------------------------------------------------------------------
     */
 
-    
-   public function faqTranslations(): HasMany
+
+    public function faqTranslations(): HasMany
     {
-        return $this->hasMany(FaqTranslation::class, 'cms_id', 'id');
+        return $this->hasMany(FaqTranslation::class, 'faq_id', 'id');
     }
 
- 
+
     /* =========================================
             Translation Configuration
      ========================================= */
@@ -72,6 +71,16 @@ class Faq extends AuditBaseModel implements Auditable
                 'answer' => 'answer',
             ]
         ];
+    }
+
+    public function translatedQuestion($languageIdOrLocale): string
+    {
+        return $this->getTranslated('question', $languageIdOrLocale) ?? $this->question;
+    }
+
+    public function translatedAnswer($languageIdOrLocale): string
+    {
+        return $this->getTranslated('answer', $languageIdOrLocale) ?? $this->answer;
     }
 
 
@@ -101,7 +110,7 @@ class Faq extends AuditBaseModel implements Auditable
         return $query->where('status', FaqType::SELLER);
     }
 
-    
+
     /*
     |--------------------------------------------------------------------------
     | Scout Search Configuration
@@ -124,7 +133,7 @@ class Faq extends AuditBaseModel implements Auditable
         return $this->deleted_at === null;
     }
 
-     public function scopeFilter(Builder $query, array $filters): Builder
+    public function scopeFilter(Builder $query, array $filters): Builder
     {
         return $query
             ->when(
@@ -137,7 +146,6 @@ class Faq extends AuditBaseModel implements Auditable
                 fn($q, $type) =>
                 $q->where('type', $type)
             );
-
     }
 
     public function __construct(array $attributes = [])

@@ -110,8 +110,9 @@ class Product extends BaseModel implements Auditable
 
     public function getTranslationConfig(): array
     {
+       
         return [
-            'fields' => ['name', 'description', 'delivery_timeline', 'quantity', 'delivery_method'],
+            'fields' => ['name', 'description', 'delivery_timeline', 'delivery_method', ],
             'relation' => 'productTranslations',
             'model' => ProductTranslation::class,
             'foreign_key' => 'product_id',
@@ -119,12 +120,29 @@ class Product extends BaseModel implements Auditable
                 'name' => 'name',
                 'description' => 'description',
                 'delivery_timeline' => 'delivery_timeline',
-                'quantity' => 'quantity',
                 'delivery_method' => 'delivery_method'
             ],
         ];
     }
 
+
+    public function translatedName($languageIdOrLocale): string
+    {
+        return $this->getTranslated('name', $languageIdOrLocale) ?? $this->name;
+    }
+
+    public function translatedDescription($languageIdOrLocale): string
+    {
+        return $this->getTranslated('description', $languageIdOrLocale) ?? $this->description;
+    }
+    public function translatedDeliveryTimeline($languageIdOrLocale): string
+    {
+        return $this->getTranslated('delivery_timeline', $languageIdOrLocale) ?? $this->delivery_timeline;
+    }
+    public function translatedDeliveryMethod($languageIdOrLocale): string
+    {
+        return $this->getTranslated('delivery_method', $languageIdOrLocale) ?? $this->delivery_method;
+    }
 
     public function scopeFilter(Builder $query, $filters): Builder
     {
@@ -155,7 +173,7 @@ class Product extends BaseModel implements Auditable
         $query->when($filters['skipSelf'] ?? null, function ($query, $skipSelf) {
             $query->where('user_id', '!=', user()->id ?? 0);
         });
-
+    // Platform is slug of Platform table
         $query->when($filters['platform_id'] ?? null, function ($query, $platform_id) {
             $query->where('platform_id', $platform_id);
         });
@@ -199,6 +217,30 @@ class Product extends BaseModel implements Auditable
         if ($filters['user_id'] ?? null) {
             $query->where('user_id', $filters['user_id']);
         }
+
+        if($filters['game_tag'] ?? null) {
+             $query->whereHas('game.tags', function ($q) use ($filters) {
+            $q->where('slug', $filters['game_tag']);
+          });
+        }
+
+        if($filters['filter_by_config'] ?? null) {
+            $query->whereHas('product_configs', function ($q) use ($filters) {
+                $q->where('value', $filters['filter_by_config']);
+            });
+        }
+
+       if ($filters['filter_by_tag'] ?? null) {
+            $query->whereHas('platform', function ($q) use ($filters) {
+                $q->where('name', 'LIKE', '%' . $filters['filter_by_tag'] . '%');
+            })
+            ->orWhereHas('product_configs', function ($q) use ($filters) {
+                $q->where('value', 'LIKE', '%' . $filters['filter_by_tag'] . '%');
+            });
+        }
+
+
+
         return $query;
     }
 
@@ -207,26 +249,30 @@ class Product extends BaseModel implements Auditable
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
         End of RELATIONSHIPS
 =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
-    #[SearchUsingPrefix(['name', 'description', 'delivery_timeline', 'price'])]
-    public function toSearchableArray(): array
-    {
-        // Load the game with its tags
-        // if (!$this->relationLoaded('game')) {
-        //     $this->load(['game:id,name', 'game.tags:id,name']);
-        // }
+#[SearchUsingPrefix(['name', 'description', 'delivery_timeline', 'price', 'game_name', 'platform_name', 'config'])]
+public function toSearchableArray(): array
+{
+    $this->loadMissing([
+        'game:id,name',
+        'platform:id,name',
+        'product_configs:product_id,value'
+    ]);
+    
+    return [
+        'name' => $this->name,
+        'description' => $this->description,
+        'price' => (float) $this->price,
+        'delivery_timeline' => $this->delivery_timeline,
+        'game_name' => $this->game?->name ?? '',
+        'platform_name' => $this->platform?->name ?? '',
+        'config' => $this->product_configs
+            ?->pluck('value')
+            ->filter()
+            ->values()
+            ->toArray() ?? [],
+    ];
+}
 
-        // // Since there's only ONE game, just pluck the tag names directly
-        // $gameTags = $this->game?->tags->pluck('name')->all() ?? [];
-
-        return [
-            'name' => $this->name,
-            'description' => $this->description,
-            'price' => (float) $this->price,
-            'delivery_timeline' => $this->delivery_timeline,
-            //  'game_tags' => $gameTags,
-            //   'game_name' => $this->game?->name,
-        ];
-    }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS

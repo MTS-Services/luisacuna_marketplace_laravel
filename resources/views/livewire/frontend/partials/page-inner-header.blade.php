@@ -15,14 +15,14 @@
                     </span>
                 </div>
                 @endif
-                <span class="text-xl font-medium">{{ucfirst(str_replace('-', ' ', $game->gameTranslations->first()?->name ?? $game->name))}}</span>
+                <span class="text-xl font-medium">{{ucfirst(str_replace('-', ' ', $game->translatedName(app()->getLocale()) ))}}</span>
             </div>
             <!-- Navigation Links -->
             <nav
                 class="py-2 peer-checked:flex flex-col lg:flex lg:flex-row gap-8  w-full lg:w-auto  lg:bg-transparent border-t  lg:border-none">
              
                 @foreach ($categories as $category)
-                        <a href="{{ route('game.index', ['gameSlug' => $gameSlug, 'categorySlug' => $category->slug]) }}" wire:navigate class="navbar_style text-base py-2! {{ $categorySlug == $category->slug ? 'active' : 'text-text-primary' }}">{{ $category->categoryTranslations->first()?->name ?? $category->name }}</a>
+                        <a href="{{ route('game.index', ['gameSlug' => $gameSlug, 'categorySlug' => $category->slug]) }}" wire:navigate class="navbar_style text-base py-2! {{ $categorySlug == $category->slug ? 'active' : 'text-text-primary' }}">{{ $category->translatedName(app()->getLocale()) }}</a>
                 @endforeach
                
             </nav>

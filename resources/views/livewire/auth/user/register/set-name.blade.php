@@ -104,7 +104,7 @@
                     <div class="mb-4 sm:mb-7 px-2 sm:px-7">
                         <label
                             class="block text-lg sm:text-2xl font-medium mb-1 sm:mb-4 text-white">{{ __('First name') }}</label>
-                        <x-ui.input type="text" placeholder="Enter First Name" wire:model="first_name"
+                        <x-ui.input type="text" placeholder="{{ __('Enter First Name') }}" wire:model="first_name"
                             class="bg-bg-info! rounded-xl! border-0! focus:ring-0! text-white! placeholder:text-white!" />
                         <x-ui.input-error :messages="$errors->get('first_name')" />
                     </div>
@@ -112,7 +112,7 @@
                     <div class="mb-4 sm:mb-7 px-2 sm:px-7">
                         <label
                             class="block text-lg sm:text-2xl font-medium mb-1 sm:mb-4 text-white">{{ __('Last name') }}</label>
-                        <x-ui.input type="text" placeholder="Enter Last Name" wire:model="last_name"
+                        <x-ui.input type="text" placeholder="{{ __('Enter Last Name') }}" wire:model="last_name"
                             class="bg-bg-info! rounded-xl! border-0! focus:ring-0! text-white! placeholder:text-white!" />
                         <x-ui.input-error :messages="$errors->get('last_name')" />
                     </div>

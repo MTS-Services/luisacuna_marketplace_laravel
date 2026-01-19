@@ -40,6 +40,16 @@ class AchievementService
         return $this->interface->all($sortField, $order);
     }
 
+    public function unlockedAchievements(int $userPoints, array $filters = []): Collection
+    {
+        return $this->interface->unlockedAchievements($userPoints, $filters);
+    }
+
+    public function nextOrProgressAchievement(int $achievement_type_id, int $userId): ?Achievement
+    {
+        return $this->interface->nextOrProgressAchievement($achievement_type_id, $userId);
+    }
+    
     public function findData($column_value, string $column_name = 'id'): ?Achievement
     {
         return $this->interface->find($column_value, $column_name);
@@ -81,17 +91,17 @@ class AchievementService
 
     public function createData(array $data): Achievement
     {
-        $rank = Rank::findOrFail($data['rank_id']);
+        // $rank = Rank::findOrFail($data['rank_id']);
 
-        $totalPoints = Achievement::where('rank_id', $data['rank_id'])
-            ->sum('point_reward');
+        // $totalPoints = Achievement::where('rank_id', $data['rank_id'])
+        //     ->sum('point_reward');
 
-        $newPonits = (int) $data['point_reward'];
-        if (($totalPoints + $newPonits) > $rank->maximum_points) {
-            throw new \Exception(
-                "This Achievement's points exceed the total allowed points for this Rank ({$rank->maximum_points})"
-            );
-        }
+        // $newPonits = (int) $data['point_reward'];
+        // if (($totalPoints + $newPonits) > $rank->maximum_points) {
+        //     throw new \Exception(
+        //         "This Achievement's points exceed the total allowed points for this Rank ({$rank->maximum_points})"
+        //     );
+        // }
         return $this->createAction->execute($data);
     }
 

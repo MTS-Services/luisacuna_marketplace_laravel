@@ -120,7 +120,8 @@ class RankService
                             $q->where('user_id', $userId)
                                 ->whereNotNull('unlocked_at');
                                 // ->whereNull('achieved_at');
-                        })->get();
+                        })
+                        ->get();
         return $achievements;
     }
 

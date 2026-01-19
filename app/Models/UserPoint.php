@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
+use App\Observers\UserPointObserver;
 use App\Traits\AuditableTrait;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+#[ObservedBy([UserPointObserver::class])]
 class UserPoint extends BaseModel implements Auditable
 {
     use AuditableTrait;

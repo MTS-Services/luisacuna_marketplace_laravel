@@ -2,16 +2,15 @@
 
 namespace App\Livewire\Backend\Admin\OrderManagement;
 
-use App\Enums\OrderStatus;
 use App\Models\Order;
-use App\Services\ConversationService;
-use App\Services\NotificationService;
 use App\Services\OrderService;
+use App\Traits\Livewire\WithNotification;
 use Livewire\Component;
 use Illuminate\Support\Facades\URL;
 
 class Detail extends Component
 {
+    use WithNotification;
     public Order $data;
     public ?string $backUrl = null;
 
@@ -29,7 +28,9 @@ class Detail extends Component
     public function mount(Order $data): void
     {
         $this->data = $data;
-        $this->data->load(['user', 'source.user', 'source.game', 'transactions']);
+        $this->data->load(['user', 'source.user', 'source.game', 'transactions', 'feedbacks.author']);
+
+        // dd($this->data);
 
         // Capture previous URL, fallback to the default route if no referrer exists
         $this->backUrl = url()->previous() !== url()->current()

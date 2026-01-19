@@ -83,21 +83,14 @@
                         ],
                         [
                             'name' => 'Pending Verificaiton',
-                            'route' => route('admin.um.user.seller-verification'),
+                            'route' => route('admin.um.user.pending-verification'),
                             'icon' => 'user',
                             'active' => 'seller-verification-pending',
                             'permission' => 'user-list',
                         ],
                         [
-                            'name' => 'Verified Sellers',
-                            'route' => route('admin.um.user.seller-verification.verified'),
-                            'icon' => 'user',
-                            'active' => 'seller-verification-verified',
-                            'permission' => 'user-list',
-                        ],
-                        [
                             'name' => 'Banned Users',
-                            'route' => '#',
+                            'route' => route('admin.um.user.banned-user'),
                             'icon' => 'user',
                             'active' => 'admin-users-banned',
                             'permission' => 'user-list',
@@ -251,13 +244,13 @@
                             'active' => 'rank',
                             'permission' => 'rank-list',
                         ],
-                        [
-                            'name' => 'Achievement Types',
-                            'route' => route('admin.rm.achievementType.index'),
-                            'icon' => 'award',
-                            'active' => 'achievement-type',
-                            // 'permission' => 'achievement-type-list',
-                        ],
+                        // [
+                        //     'name' => 'Achievement Types',
+                        //     'route' => route('admin.rm.achievementType.index'),
+                        //     'icon' => 'award',
+                        //     'active' => 'achievement-type',
+                        //     // 'permission' => 'achievement-type-list',
+                        // ],
                         [
                             'name' => 'Achievements',
                             'route' => route('admin.rm.achievement.index'),
@@ -350,6 +343,30 @@
                             'route' => route('admin.cms.refund-policy'),
                             'icon' => 'notepad-text-dashed',
                             'active' => 'refund_policy',
+                        ],
+                        [
+                            'name' => 'How To Buy',
+                            'route' => route('admin.cms.how-to-buy'),
+                            'icon' => 'notepad-text-dashed',
+                            'active' => 'how_to_buy',
+                        ],
+                        [
+                            'name' => 'Buyer Protection',
+                            'route' => route('admin.cms.buyer-protection'),
+                            'icon' => 'notepad-text-dashed',
+                            'active' => 'buyer_protection',
+                        ],
+                        [
+                            'name' => 'Seller Protection',
+                            'route' => route('admin.cms.seller-protection'),
+                            'icon' => 'notepad-text-dashed',
+                            'active' => 'seller_protection',
+                        ],
+                        [
+                            'name' => 'How To Sell',
+                            'route' => route('admin.cms.how-to-sell'),
+                            'icon' => 'notepad-text-dashed',
+                            'active' => 'how_to_sell',
                         ],
                     ]" />
                 <x-sidebar-separator title="System" />

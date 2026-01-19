@@ -33,7 +33,7 @@ class AchievementSeeder extends Seeder
             [
                 'sort_order' => 1,
                 'achievement_type_id' => 1, // Must exist in achievement_types
-                'rank_id' => 1,             // Must exist in ranks table
+               
                 'icon' => 'download_i1fdsc',
                 'title' => '3 Porduct Purchased',
                 'description' => 'Awarded for achieving outstanding performance.',
@@ -48,7 +48,7 @@ class AchievementSeeder extends Seeder
             [
                 'sort_order' => 2,
                 'achievement_type_id' => 2,
-                'rank_id' => 1,
+                
                 'icon' => '17155284_fdzxvx',
                 'title' => '5 Porduct Purchased',
                 'description' => 'Awarded for consistent improvement.',
@@ -63,7 +63,7 @@ class AchievementSeeder extends Seeder
             [
                 'sort_order' => 3,
                 'achievement_type_id' => 3,
-                'rank_id' => 2,
+               
                 'icon' => '11881945_xhkrcc',
                 'title' => 'Bronze Contributor',
                 'description' => 'Awarded for completing initial milestones.',

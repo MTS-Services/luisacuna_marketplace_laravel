@@ -63,8 +63,7 @@
                 </div>
 
                 <p class="text-text-white/90 text-sm mb-6">
-                    {{-- {{ __('Collect a minimum of 10,000 points and unlock a $1 reward.') }} --}}
-                    {{ __('Collect a minimum of 10,000 points and unlock a :symbol :amount reward.', ['symbol' => currency_symbol(), 'amount' => currency_exchange(1)]) }}
+                    {{ __('Collect a minimum of 10,000 points and unlock a') }} {{ currency_symbol() . currency_exchange(1) }} {{ __(' reward.') }}
 
 
                 </p>
@@ -75,7 +74,7 @@
                     <div>
                         <div class="text-text-white font-bold text-2xl mb-1">{{ __('10,000 points') }}</div>
                         <div class="text-text-white/70 text-sm">
-                            {{ __(':amount Store credit', ['amount' => currency_exchange(1)]) }}</div>
+                           {{ currency_exchange(1) }} {{ __(' Store credit') }}</div>
                         {{-- <div class="text-text-white/70 text-sm">{{ __('$1 Store credit') }}</div> --}}
                     </div>
                     {{-- <x-ui.button class="sm:w-auto! py-2!">
@@ -115,15 +114,51 @@
                             </div>
                             <div class="flex-1">
                                 <h4 class="text-text-white font-semibold font-lato text-lg sm:text-3xl mb-1">
-                                    {{ $achievement->title }}</h4>
-                                <p class="text-text-white text-sm sm:text-base">{!! $achievement->description !!}</p>
+                                   {{ $achievement->translatedTitle(app()->getLocale()) }}</h4>
+                                <p class="text-text-white text-sm sm:text-base">{!! $achievement->translatedDescription(app()->getLocale()) !!}</p>
                             </div>
                         </div>
                         <div class="flex items-center justify-between text-sm mb-2">
                             <span class="text-text-white text-base sm:text-xl">
-                                {{-- @dd($achievement) --}}
-                                {{ $achievement?->progress->first()->current_progress }} /
-                                {{ $achievement->target_value }} {{ __('To unlock') }}
+                                @if($achievement->achievementType->name == 'Product Purchase')
+                                    
+                                    {{-- @if($achievement?->currentProgress() >= $achievement->target_value)
+                                        {{ __('Claimed') }}
+                                    @else --}}
+                                    {{ $achievement?->currentProgress() }} / 
+                                      {{ $achievement->target_value }} {{ $achievement?->currentProgress() >= $achievement->target_value ? __('Claimed') : __('To unlock') }}
+                                    {{-- @endif --}}
+                                @elseif ($achievement->achievementType->name == 'Profile Complete')
+
+                                    {{-- @if($achievement?->currentProgress() >= $achievement->target_value)
+                                        {{ __('Claimed') }}
+                                    @else --}}
+                                    {{ $achievement?->currentProgress() }} / 
+                                      {{ $achievement->target_value }} {{ $achievement?->currentProgress() >= $achievement->target_value ? __('Claimed') : __('To unlock') }}
+                                    {{-- @endif --}}
+
+                                
+
+                                @elseif($achievement->achievementType->name == 'First Purchase') 
+
+                                    {{-- @if($achievement?->currentProgress() >= $achievement->target_value)
+                                        {{ __('Claimed') }}
+                                    @else --}}
+                                    {{ $achievement?->currentProgress() }} / 
+                                      {{ $achievement->target_value }} {{ $achievement?->currentProgress() >= $achievement->target_value ? __('Claimed') : __('To unlock') }}
+                                    {{-- @endif --}}
+
+                                @elseif($achievement->achievementType->name == 'Referral Bonus') 
+
+                                    {{-- @if($achievement?->currentProgress() >= $achievement->target_value)
+                                        {{ __('Claimed') }}
+                                    @else --}}
+                                    {{ $achievement?->currentProgress() }} / 
+                                      {{ $achievement->target_value }} {{$achievement?->currentProgress() >= $achievement->target_value ? __('Claimed') : __('To unlock') }}
+                                    {{-- @endif --}}
+
+                                @endif
+                                
                             </span>
                             <div class="flex items-center gap-1">
                                 <x-phosphor-coin class="fill-yellow-500 w-4 h-4" weight="fill" />
@@ -131,8 +166,8 @@
                                     class="text-text-white font-semibold text-base sm:text-xl">+{{ $achievement->point_reward }}</span>
                             </div>
                         </div>
-                        <div class="w-full bg-white rounded-full h-2">
-                            <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full" style="width: %">
+                        <div class="w-full dark:bg-white bg-bg-secondary rounded-full h-2">
+                            <div class="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full" style="width: {{ ($achievement?->currentProgress() / $achievement->target_value) * 100 }}%">
                             </div>
                         </div>
                     </div>
@@ -146,6 +181,9 @@
                         </p>
                     </div>
                 @endforelse
+                <div>
+                    {{ $achievements->links() }}
+                </div>
             @else
                 <div class="bg-bg-primary rounded-2xl p-6  border-primary-700/30 text-center lg:col-span-2">
                     <h2 class="text-text-white font-open-sans text-2xl sm:text-3xl xl:text-4xl font-bold mb-6">

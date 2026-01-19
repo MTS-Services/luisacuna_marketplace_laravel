@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\User\Offers;
 
+use App\Models\FeeSettings;
 use App\Models\Game;
 use App\Models\User;
 use App\Models\Platform;
@@ -82,18 +83,19 @@ class Offer extends Component
 
     public function updatedDeliveryMethod($deliveryMethod)
     {
-
-      
-        // Update timeline options based on delivery method
-        if ($deliveryMethod == "manual") {
-            $this->timelineOptions = delivery_timelines($this->deliveryMethod);
-        } else {
-             $this->timelineOptions = delivery_timelines($this->deliveryMethod);
+        if (!$deliveryMethod) {
+            return;
         }
 
-        // Reset delivery time when method changes
-        $this->delivery_timeline = null;
+        $this->deliveryMethod = $deliveryMethod;
+        $this->timelineOptions = delivery_timelines($deliveryMethod);
+
+        // Auto select first option if delivery timeline not set
+        if (!$this->delivery_timeline && !empty($this->timelineOptions)) {
+            $this->delivery_timeline = array_key_first($this->timelineOptions);
+        }
     }
+
 
     // When Select Category will run Select Category with category id and name
     public function selectCategory($categoryId, $categoryName)
@@ -102,9 +104,13 @@ class Offer extends Component
         $this->categoryName = $categoryName;
 
 
-        $category = $this->categoryService->findData($categoryId)->load('games');
+        $category = $this->categoryService->findData($categoryId)
+            ->load([
+                'games' => fn($q) => $q->orderBy('name', 'asc')
+            ]);
 
         $this->games = $category->games;
+
 
         $this->step = 2;
     }
@@ -224,24 +230,17 @@ class Offer extends Component
         $this->resetField();
 
         return redirect(route('user.user-offer.category', $createdData->category->slug));
-
-        // success
-
-        $this->toastSuccess('Offer created successfully');
-
-        // Reset properties
-        $this->resetField();
-
-        return redirect(route('user.user-offer.category', $createdData->category->slug));
     }
 
 
     public function render()
     {
+        $flatFee = FeeSettings::first()->value('buyer_fee');
         $categories = $this->categoryService->getDatas();
 
         return view('livewire.backend.user.offers.offer', [
-            'categories' => $categories
+            'categories' => $categories,
+            'flatFee' => $flatFee,
         ]);
     }
 

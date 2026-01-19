@@ -20,7 +20,8 @@
                                     </div>
                                     <div>
                                         <span class="text-text-white text-xl font-semibold">
-                                            {{ $order->source?->name ?? 'Unknown' }}
+                                            {{-- {{ $order->source?->name ?? 'Unknown' }} --}}
+                                            {{ $order->source?->translatedName(app()->getLocale()) ?? 'Unknown' }}
                                         </span>
                                     </div>
                                 </div>
@@ -72,7 +73,7 @@
                                 <div class="flex justify-between mb-2">
                                     <p class="text-text-white font-base text-xs">{{ __('Delivery time:') }}</p>
                                     <p class="text-text-white font-base text-xs">
-                                        {{ $order->source?->delivery_timeline }}</p>
+                                        {{ $order->source?->translatedDeliveryTimeline(app()->getLocale()) }}</p>
                                 </div>
                             @endif
                             @if ($order->source?->platform)
@@ -254,7 +255,7 @@
                             <div class="flex gap-2 mt-4">
                                 <x-phosphor name="shield-check" variant="variant" class="fill-zinc-500 w-6 h-6" />
                                 <p class="text-text-white text-xs font-normal flex items-center gap-2">
-                                    <span>{{ 'I accept the Terms of Service, Privacy Notice and Refund Policy.' }}</span>
+                                    <span>{{ __('I accept the Terms of Service, Privacy Notice and Refund Policy.') }}</span>
                                 </p>
                             </div>
                         </form>

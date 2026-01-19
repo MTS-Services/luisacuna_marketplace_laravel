@@ -1,17 +1,5 @@
 <div class="min-h-[70vh] bg-bg-primary py-12 px-4">
     <div class="max-w-4xl mx-auto">
-
-        @if (session('success'))
-            <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-                {{ session('error') }}
-            </div>
-        @endif
         <div class="text-center w-full rounded-2xl bg-bg-secondary px-5 py-8 lg:p-20">
             <div class="mb-6">
                 <div class="mx-auto flex flex-row items-center justify-center">
@@ -21,19 +9,28 @@
                     <p class="font-semibold text-xl sm:text-2xl ">{{ __('Seller ID verification') }}</p>
                 </div>
                 <div class="text-sm text-text-primary font-normal pt-2">
-                    Step <span>6</span>/<span>6</span>
+                    {{ __('Step') }} <span>6</span>/<span>6</span>
                 </div>
             </div>
 
             <div class="p-5 lg:px-15 lg:py-10 bg-bg-info  rounded-2xl">
 
 
-                @if ($accountType == 0)
+                @if (!$accountType == 0)
                     <div>
                         <h2 class="text-base lg:text-2xl leading-2 font-semibold  mb-4 text-left">
                             {{ __('Take a selfie with your ID') }}</h2>
-
-                        <div class="flex justify-center mb-6">
+                        <div class="flex justify-center mb-6 relative">
+                            {{-- Image Upload Loading Overlay --}}
+                            <div wire:loading wire:target="selfie_image"
+                                class="absolute inset-0 z-10 flex items-center justify-center bg-bg-secondary  rounded-2xl backdrop-blur-[2px]">
+                                <div class="flex flex-col items-center">
+                                    <div
+                                        class="animate-spin rounded-full h-12 w-12 border-4 border-zinc-500 border-t-white mb-3">
+                                    </div>
+                                    <span class="text-white font-medium">{{ __('Uploading image... 100%') }}</span>
+                                </div>
+                            </div>
                             @if ($selfie_image)
                                 <div class="w-[100px] h-[100px] sm:w-[510px] sm:h-[382px]">
                                     <img src="{{ $selfie_image->temporaryUrl() }}" alt="Selfie with ID illustration"
@@ -41,9 +38,11 @@
                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                                 </div>
                             @else
-                                <img src="{{ asset('assets/images/Frame-2147226340.png') }}"
-                                    alt="Selfie with ID illustration" class="mx-auto"
-                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                                <div class="w-[100px] h-[100px] sm:w-[510px] sm:h-[382px]">
+                                    <img src="{{ asset('assets/images/Frame-2147226340.png') }}"
+                                        alt="Selfie with ID illustration" class="mx-auto"
+                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                                </div>
                             @endif
                         </div>
 
@@ -156,7 +155,19 @@
                         <h2 class="text-base lg:text-2xl leading-2 font-semibold  mb-4 text-left">
                             {{ __('Take a selfie with your ID') }}</h2>
 
-                        <div class="flex justify-center mb-6">
+                        <div class="flex justify-center mb-6 relative">
+                            {{-- Image Upload Loading Overlay --}}
+                            <div wire:loading.flex wire:target="selfie_image">
+                                <div
+                                    class="absolute inset-0 z-10 flex items-center justify-center bg-bg-secondary/60 rounded-2xl backdrop-blur-[2px]">
+                                    <div class="flex flex-col items-center">
+                                        <div
+                                            class="animate-spin rounded-full h-12 w-12 border-4 border-zinc-500 border-t-white mb-3">
+                                        </div>
+                                        <span class="text-white font-medium">{{ __('Uploading image...') }}</span>
+                                    </div>
+                                </div>
+                            </div>
                             @if ($selfie_image)
                                 <div class="w-[100px] h-[100px] sm:w-[510px] sm:h-[382px]">
                                     <img src="{{ $selfie_image->temporaryUrl() }}" alt="Selfie with ID illustration"
@@ -226,8 +237,11 @@
                     </x-ui.button>
                 </div>
                 <div class="flex justify-center">
-                    <x-ui.button type="submit" wire:click="submit"
-                        class="w-auto py-2!">{{ __('Submit') }}</x-ui.button>
+                    <x-ui.button type="submit" wire:click="submit" wire:loading.attr="disabled"
+                        wire:target="selfie_image" class="w-auto py-2! disabled:opacity-70 disabled:cursor-not-allowed">
+                        <span wire:loading.remove wire:target="selfie_image">{{ __('Submit') }}</span>
+                        <span wire:loading wire:target="selfie_image">{{ __('Please wait...') }}</span>
+                    </x-ui.button>
                 </div>
             </div>
 

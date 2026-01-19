@@ -4,7 +4,7 @@
         x-data="{ active: null, tab: 'buyers' }">
 
         <h2 class="text-text-white text-2xl sm:text-40px text-center mb-3 font-semibold">
-            {{ 'Frequently Asked Questions' }}
+            {{ __('Frequently Asked Questions') }}
         </h2>
 
         @if ($routeName == 'faq')
@@ -19,7 +19,7 @@
             {{ $faqs_type == 'buyer'
                 ? 'bg-bg-hover px-5 py-3 rounded-full shadow-lg text-text-white'
                 : 'text-text-secondery px-5 py-3' }}">
-                For Buyers
+                {{ __('For Buyers') }}
             </button>
 
             <button x-on:click="$wire.set('faqs_type', 'seller')"
@@ -27,7 +27,7 @@
             {{ $faqs_type == 'seller'
                 ? 'bg-bg-hover px-5 py-3 rounded-full shadow-lg text-text-white'
                 : 'text-text-secondery px-5 py-3' }}">
-                For Sellers
+                {{ __('For Sellers') }}
             </button>
         </div>
 
@@ -36,7 +36,8 @@
             <div class=" {{ $routeName == 'faq' ? 'bg-bg-info' : 'bg-bg-secondary' }}  rounded-xl p-4 cursor-pointer mb-3"
                 @click="active === {{ $index }} ? active = null : active = {{ $index }}">
                 <div class="flex justify-between items-center">
-                    <h3 class="text-text-white text-xl font-semibold">{{ $faq->question }}</h3>
+                    {{-- <h3 class="text-text-white text-xl font-semibold">{{ $faq->question }}</h3> --}}
+                    <h3 class="text-text-white text-xl font-semibold">{{ $faq->translatedQuestion(app()->getLocale()) }}</h3>
                     <svg :class="active === {{ $index }} ? 'rotate-180' : ''"
                         class="w-5 h-5 text-text-white transition-transform" fill="none" stroke="currentColor"
                         stroke-width="2" viewBox="0 0 24 24">
@@ -44,7 +45,8 @@
                     </svg>
                 </div>
                 <p x-show="active === {{ $index }}" x-transition class="mt-2 text-text-secondery text-base">
-                    {{ $faq->answer }}
+                    {{-- {{ $faq->answer }} --}}
+                    {{ $faq->translatedAnswer(app()->getLocale()) }}
                 </p>
             </div>
         @endforeach

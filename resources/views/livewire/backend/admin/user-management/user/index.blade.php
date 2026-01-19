@@ -6,19 +6,19 @@
                 {{ __('User List') }}
             </h2>
             <div class="flex items-center gap-2 w-full sm:w-auto">
-                 <x-ui.button href="{{ route('admin.um.user.trash')}}" variant='tertiary' class="w-auto py-2!">
+                <x-ui.button href="{{ route('admin.um.user.trash') }}" variant='tertiary' class="w-auto py-2!">
                     <flux:icon name="trash"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
                     {{ __('Trash') }}
-                     </x-ui.button>
+                </x-ui.button>
 
-                 <x-ui.button href="{{ route('admin.um.user.create')}}" class="w-auto py-2!">
+                <x-ui.button href="{{ route('admin.um.user.create') }}" class="w-auto py-2!">
                     <flux:icon name="user-plus"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                     {{ __('Add') }}
                 </x-ui.button>
 
-                
+
             </div>
         </div>
     </div>
@@ -36,4 +36,10 @@
     {{-- Bulk Action Confirmation Modal --}}
     <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="'Confirm Bulk Action'" :message="'Are you sure you want to perform this action on ' . count($selectedIds) . ' selected user(s)?'" :method="'executeBulkAction'"
         :button-text="'Confirm Action'" />
+
+    {{-- Band User Confirmation Modal --}}
+    <x-ui.confirmation-modal :show="'showBandUserModal'" :title="'Band this User?'" :message="'Are you sure you want to band this user?'" :method="'bandUser'"
+        :button-text="'Confirm Band User'" :inputs="[
+            ['model' => 'bandReason', 'placeholder' => 'Enter band reason', 'required' => true, 'type' => 'text'],
+        ]" />
 </section>

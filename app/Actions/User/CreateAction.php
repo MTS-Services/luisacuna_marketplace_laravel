@@ -17,7 +17,7 @@ class CreateAction
 {
     public function __construct(
         protected UserRepositoryInterface $interface,
-         protected CloudinaryService $cloudinaryService
+        protected CloudinaryService $cloudinaryService
     ) {}
 
     public function execute(array $data): User
@@ -25,7 +25,7 @@ class CreateAction
         return DB::transaction(function () use ($data) {
 
             if ($data['avatar']) {
-                
+
                 $uploadedAvatar = $this->cloudinaryService->upload($data['avatar'], ['folder' => 'users']);
                 $data['avatar'] = $uploadedAvatar->publicId;
             }
@@ -37,11 +37,13 @@ class CreateAction
 
             $lowestRank = Rank::orderBy('minimum_points', 'asc')->first();
 
-            UserPoint::create([
-                'user_id' => $newData->id,
-                'points' => 0,
-                'note' => 'New User Created',
-            ]);
+            UserPoint::firstOrCreate(
+                ['user_id' => $newData->id],
+                [
+                    'points' => 0,
+                    'note' => 'New User Created',
+                ]
+            );
             UserRank::create([
                 'user_id' => $newData->id,
                 'rank_id' => $lowestRank->id,
@@ -52,7 +54,7 @@ class CreateAction
             event(new UserCreated($newData));
 
 
-             $freshData = $newData->fresh();
+            $freshData = $newData->fresh();
 
             // Dispatch translation job in background
             // Assuming the source language is English (EN)
@@ -65,13 +67,13 @@ class CreateAction
             //     targetLanguageIds: null
             // );\
 
-              $freshData->dispatchTranslation(
+            $freshData->dispatchTranslation(
                 defaultLanguageLocale: app()->getLocale() ?? 'en',
                 forceTranslation: true,
                 targetLanguageIds: null
             );
 
-           
+
 
             return $freshData;
         });

@@ -3,9 +3,10 @@
 namespace App\Livewire\Backend\Admin\UserManagement\User;
 
 use App\Models\User;
+use App\Enums\UserType;
 use Livewire\Component;
-use App\Enums\UserAccountStatus;
 use App\Services\UserService;
+use App\Enums\UserAccountStatus;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
@@ -22,6 +23,11 @@ class Index extends Component
     public $bulkAction = '';
     public $showDeleteModal = false;
     public $showBulkActionModal = false;
+
+    public $bandUserId;
+    public $showBandUserModal = false;
+    public $bandReason = '';
+    public $userId;
 
     public function boot(UserService $service)
     {
@@ -82,8 +88,19 @@ class Index extends Component
             ],
             [
                 'key' => 'id',
+                'label' => 'Band User',
+                'method' => 'confirmBandUser'
+            ],
+            [
+                'key' => 'id',
                 'label' => 'Delete',
                 'method' => 'confirmDelete'
+            ],
+            [
+                'key' => 'id',
+                'label' => 'Feedbacks',
+                'encrypt' => true,
+                'route' => 'admin.um.user.feedback'
             ],
         ];
         $bulkActions = [
@@ -91,6 +108,7 @@ class Index extends Component
             ['value' => 'activate', 'label' => 'Activate'],
             ['value' => 'deactivate', 'label' => 'Deactivate'],
             ['value' => 'suspend', 'label' => 'Suspend'],
+            ['value' => 'bandUser', 'label' => 'Band User'],
         ];
         return view('livewire.backend.admin.user-management.user.index', [
             'datas' => $users,
@@ -100,6 +118,29 @@ class Index extends Component
             'bulkActions' => $bulkActions,
 
         ]);
+    }
+
+    public function confirmBandUser($userId): void
+    {
+        $this->bandUserId = $userId;
+        $this->showBandUserModal = true;
+    }
+
+    public function bandUser(): void
+    {
+        try {
+            $this->service->bandUser($this->bandUserId, $this->bandReason);
+            $this->success('User band successfully');
+
+            $this->showBandUserModal = false;
+            $this->bandUserId = null;
+            $this->bandReason = '';
+        } catch (\Exception $e) {
+            $this->error('Failed to band User: ' . $e->getMessage());
+            $this->showBandUserModal = false;
+            $this->bandUserId = null;
+            $this->bandReason = '';
+        }
     }
 
     public function confirmDelete($userId): void
@@ -198,6 +239,8 @@ class Index extends Component
             'account_status' => $this->statusFilter,
             'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
+            'banned' => false,
+            'target_user_id' => $this->userId,
         ];
     }
 

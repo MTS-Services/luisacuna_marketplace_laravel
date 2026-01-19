@@ -18,7 +18,7 @@
                     {{-- Search --}}
                     <div class="flex-1 w-full md:min-w-64">
                         <div class="relative">
-                            <input type="text" placeholder="Search" wire:model.live="search"
+                            <input type="text" placeholder="{{ __('Search') }}" wire:model.live="search"
                                 class="w-full bg-bg-transparent rounded-full border border-zinc-700 px-4 py-2 pl-10 focus:outline-none focus:border-zinc-500">
                             <span class="absolute left-3 top-2.5">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -49,9 +49,9 @@
 
                     <div class="w-full md:min-w-64">
                         <x-ui.custom-select wire-model="platform_id" :wire-live="true"
-                            class="rounded-full bg-transparent" label="Platforms">
+                            class="rounded-full bg-transparent" label="{{ __('Platform') }}">
 
-                            <x-ui.custom-option label="All Platforms" value="" />
+                            <x-ui.custom-option label="{{ __('All Platforms') }}" value="" />
 
                             @foreach ($platforms as $platform)
                                 <x-ui.custom-option label="{{ $platform->name }}" value="{{ $platform->id }}" />
@@ -71,7 +71,7 @@
                         <div class="price-input flex justify-between border border-zinc-700 bg-bg-transparent items-center w-50 px-3 py-2 rounded-full cursor-pointer"
                             @click="open = !open">
                             <span
-                                x-text="selectedMin && selectedMax ? `$${selectedMin} - $${selectedMax}` : 'Price'"></span>
+                                x-text="selectedMin && selectedMax ? `$${selectedMin} - $${selectedMax}` : '{{ __('Price') }}'"></span>
                             <flux:icon name="chevron-down" class="w-5 h-5 transition-transform duration-200"
                                 x-bind:class="open ? 'rotate-180' : ''" />
                         </div>
@@ -125,12 +125,12 @@
 
                     <div class="w-full md:min-w-64">
                         <x-ui.custom-select wire-model="delivery_timeline" :wire-live="true"
-                            class="rounded-full bg-transparent" label="Delivery Timeline">
+                            class="rounded-full bg-transparent" label="{{ __('Delivery Timeline') }}">
 
-                            <x-ui.custom-option label="All Timeline" value="" />
+                            <x-ui.custom-option label="{{ __('All Timeline') }}" value="" />
 
                             @foreach ($delivery_timelines as $delivery_timeline)
-                                <x-ui.custom-option label="{{ $delivery_timeline['label'] }}"
+                                <x-ui.custom-option label="{{ __($delivery_timeline['label']) }}"
                                     value="{{ $delivery_timeline['value'] }}" />
                             @endforeach
                         </x-ui.custom-select>
@@ -169,7 +169,7 @@
                     showAll: false,
                     limit: 5,
                     tags: @js($tags),
-                    search: @entangle('search').live
+                    search: @entangle('filter_by_tag').live
                 }" class="w-full">
                     <div class="flex flex-wrap gap-2 sm:gap-3 transition-all duration-300">
                         <!-- All Tags (Desktop shows all, Mobile shows limited) -->
@@ -178,7 +178,7 @@
                             :key="index">
                             <span
                                 class="px-3 py-1 bg-bg-primary dark:bg-bg-info rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-white"
-                                x-text="tag" @click="search = tag">
+                                x-text="tag" @click="$wire.set('filter_by_tag', tag)">
                             </span>
                         </template>
 
@@ -245,8 +245,8 @@
                     <div class="hidden md:flex w-56!">
                         <x-ui.custom-select wireModel="sortDirection" :wireLive="true" :label="__('Highest to Lowest')"
                             class="w-full rounded-full! bg-transparent! border! border-zinc-700!">
-                            <x-ui.custom-option label="Lowest To Highest" value="asc" />
-                            <x-ui.custom-option label="Highest to Lowest" value="desc" />
+                            <x-ui.custom-option label="{{ __('Lowest To Highest') }}" value="asc" />
+                            <x-ui.custom-option label="{{ __('Highest to Lowest') }}" value="desc" />
                         </x-ui.custom-select>
                     </div>
 
@@ -264,7 +264,7 @@
             <!-- Products Grid Section -->
             <div class="relative min-h-[40vh]">
                 <!-- Skeleton Loading -->
-                <x-loading-animation :target="'search, tagSelected, selectedDevice, selectedAccountType,  selectedPrice, selectedDeliveryTime , resetAllFilters'" />
+                <x-loading-animation :target="'search, tagSelected, selectedDevice, filter_by_tag, selectedAccountType,  selectedPrice, selectedDeliveryTime , resetAllFilters'" />
                 <!-- Actual Product Cards -->
                 <div wire:loading.class="opacity-0"
                     wire:target="search, tagSelected, selectedDevice, selectedAccountType,  selectedPrice, selectedDeliveryTime , resetAllFilters"

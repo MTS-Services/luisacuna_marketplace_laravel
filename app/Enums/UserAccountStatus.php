@@ -6,6 +6,7 @@ enum UserAccountStatus: string
 {
     case ACTIVE = 'active';
     case INACTIVE = 'inactive';
+    case BANNED = 'banned';
     case PENDING_VERIFICATION = 'pending_verification';
 
 
@@ -14,6 +15,7 @@ enum UserAccountStatus: string
         return match($this) {
             self::ACTIVE => 'Active',
             self::INACTIVE => 'Inactive',
+            self::BANNED => 'Banned',
             self::PENDING_VERIFICATION => 'Pending Verification',
         };
     }
@@ -24,6 +26,7 @@ enum UserAccountStatus: string
         return match($this) {
             self::ACTIVE => 'badge-success',
             self::INACTIVE => 'badge-secondary',
+            self::BANNED => 'badge-danger',
             self::PENDING_VERIFICATION => 'badge-info',
         };
     }

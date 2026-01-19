@@ -171,6 +171,7 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
 
             Route::get('all-seller', 'allSeller')->name('all-seller');
             Route::get('seller-trash', 'sellerTrash')->name('seller-trash');
+            Route::get('seller/view/{id}', 'sellerView')->name('seller.view');
             Route::get('all-buyer', 'allBuyer')->name('all-buyer');
             Route::get('buyer-trash', 'buyerTrash')->name('buyer-trash');
 
@@ -178,6 +179,13 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
             Route::get('seller-verification', 'sellerVerification')->name('seller-verification');
             Route::get('seller-verification/verified', 'sellerVerified')->name('seller-verification.verified');
             Route::get('seller-verification/view/{id}', 'sellerVerificationView')->name('seller-verification.view');
+
+            Route::get('feedback/{id}', 'feedback')->name('feedback');
+            Route::get('pending-verification', 'pendingVerification')->name('pending-verification');
+
+            // Banned User
+            Route::get('banned-user', 'bannedUser')->name('banned-user');
+            
         });
     });
 
@@ -247,6 +255,10 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
             Route::get('/terms-condition', 'termsCondition')->name('terms-condition');
             Route::get('/refund-policy', 'refundPolicy')->name('refund-policy');
             Route::get('/privacy-policy', 'privacyPolicy')->name('privacy-policy');
+            Route::get('/how-to-buy', 'howToBuy')->name('how-to-buy');
+            Route::get('/buyer-protection', 'buyerProtection')->name('buyer-protection');
+            Route::get('/how-to-sell', 'howToSell')->name('how-to-sell');
+            Route::get('/seller-protection', 'sellerProtection')->name('seller-protection');
         });
     });
 

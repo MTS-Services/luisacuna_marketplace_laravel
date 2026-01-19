@@ -41,7 +41,7 @@
                    @if(!$editMode)
                     <div class="">
                         <p class="text-base text-text-white">
-                            {{ $description ?? 'N/A' }}
+                            {{ $user->description ? $user->translatedDescription(app()->getLocale()) : 'N/A' }}
                         </p>
                     </div>
                     @else 

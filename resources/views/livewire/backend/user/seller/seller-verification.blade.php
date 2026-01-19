@@ -25,11 +25,8 @@
                 <h2 class="text-2xl font-bold dark:text-text-white text-zinc-500/80 mb-4">{{ __('Seller verification required') }}
                 </h2>
 
-                <p class="dark:text-text-white text-zinc-500/50 mb-2">{{ __('To sell currencies, please verify your identity
-                    first.') }}</p>
-                <p class="dark:text-text-white text-zinc-500/50 mb-8">{{ __('Our 24/7 support team will review your ID in up to
-                    15 minutes.
-                    ') }}</p>
+                <p class="dark:text-text-white text-zinc-500/50 mb-2">{{ __('To sell currencies, please verify your identity first.') }}</p>
+                <p class="dark:text-text-white text-zinc-500/50 mb-8">{{ __('Our 24/7 support team will review your ID in up to 15 minutes.') }}</p>
 
                 {{-- <a href="{{ route('user.seller.verification', ['step' => 1]) }}" class="bg-bg-primary rounded-lg p-6 mb-6 " > --}}
                 <a  class="cursor-pointer bg-bg-secondary rounded-lg p-6 mb-6 inline-block" wire:click.prevent="startVerification">

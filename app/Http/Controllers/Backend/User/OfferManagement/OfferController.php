@@ -13,7 +13,7 @@ class OfferController extends Controller
 
 
 
-    public function index()
+    public function create()
     {
         return view($this->masterView);
     }

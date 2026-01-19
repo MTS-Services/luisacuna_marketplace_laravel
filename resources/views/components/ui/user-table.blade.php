@@ -71,8 +71,10 @@
                             <td class="px-2 sm:px-4 md:px-6 py-3">
                                 <div class="flex items-center gap-3 text-text-muted">
                                     @foreach ($actions as $action)
+                                    
                                         @php
-                                            $actionValue = data_get($item, $action['param'] ?? 'id');
+                                            $rawValue = data_get($item, $action['param'] ?? 'id');
+                                            $actionValue =!empty($action['encrypt']) && $action['encrypt'] ? encrypt($rawValue) : $rawValue;
                                             $isActive = isset($action['condition'])
                                                 ? $action['condition']($item)
                                                 : true;
@@ -119,7 +121,7 @@
                                         d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
                                     </path>
                                 </svg>
-                                <p class="text-lg font-medium">{{ $emptyMessage }}</p>
+                                <p class="text-lg font-medium">{{ __($emptyMessage) }}</p>
                             </div>
                         </td>
                     </tr>
@@ -236,7 +238,7 @@
                         d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
                     </path>
                 </svg>
-                <p class="text-lg font-medium text-text-muted">{{ $emptyMessage }}</p>
+                <p class="text-lg font-medium text-text-muted">{{ __($emptyMessage) }}</p>
             </div>
         @endforelse
     </div>

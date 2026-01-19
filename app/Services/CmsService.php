@@ -23,7 +23,7 @@ class CmsService
     {
         $typeValue = $type instanceof CmsType ? $type->value : $type;
 
-        return $this->model->where('type', $typeValue)->first();
+        return $this->model->with(['helpfuls','latestHelpful'])->where('type', $typeValue)->first();
     }
 
     public function updateByType(CmsType|string $type, array $data): Cms

@@ -84,7 +84,7 @@
                         <div class="mb-4 sm:mb-7 px-2 sm:px-7">
                             <label
                                 class="block text-lg sm:text-2xl font-medium mb-1 sm:mb-4 text-white">{{ __('Code') }}</label>
-                            <x-ui.input type="text" placeholder="Enter your code" wire:model="form.code"
+                            <x-ui.input type="text" placeholder="{{ __('Enter your code') }}" wire:model="form.code"
                                 class="bg-bg-info! rounded-xl! border-0! focus:ring-0! text-white! placeholder:text-white!" />
                             <!-- Error message -->
                             <x-ui.input-error :messages="$errors->get('form.code')" />

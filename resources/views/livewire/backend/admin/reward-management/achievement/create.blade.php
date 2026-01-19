@@ -25,7 +25,7 @@
 
             <!-- Fields -->
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
-                <div>
+                {{-- <div>
                     <x-ui.label for="rank_id" :value="__('Rank')" />
                     <x-ui.select id="rank_id" class="mt-1 block w-full" wire:model="form.rank_id">
                         <option value="">{{ __('Select Rank') }}</option>
@@ -34,7 +34,7 @@
                         @endforeach
                     </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.rank_id')" class="mt-2" />
-                </div>
+                </div> --}}
                 <div>
                     <x-ui.label for="achievement_type_id" :value="__('Achievement Type')" />
                     <x-ui.select id="achievement_type_id" class="mt-1 block w-full" wire:model="form.achievement_type_id">

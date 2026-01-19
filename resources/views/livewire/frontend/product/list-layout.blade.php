@@ -39,19 +39,38 @@
         </div>
 
         <div class="mt-3 mb-6 flex items-center justify-between gap-4">
-            <x-ui.custom-select wire:model.live="serach"
-                class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!" label="Filter">
-                <x-ui.custom-option label="All" value="" />
+          <div class="sm:inline-flex gap-3">
+              <x-ui.custom-select wire-model="filter_by_config" wire-live="true"
+                class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!" label="{{ __('Filter Tags') }}">
+                <x-ui.custom-option label="{{ __('All') }}" value="" />
                 @foreach ($tags as $tag)
                     <x-ui.custom-option label="{{ $tag }}" value="{{ $tag }}" />
                 @endforeach
             </x-ui.custom-select>
 
+            <x-ui.custom-select wire-model="platform_id" wire-live="true"
+                class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!" label="{{ __('Platform') }}">
+                <x-ui.custom-option label="{{ __('All') }}" value="" />
+                @foreach ($platforms as $label => $value)
+                
+                    <x-ui.custom-option label="{{ $label }}" value="{{ encrypt($value) }}" />
+                @endforeach
+            </x-ui.custom-select>
+
+            <x-ui.custom-select wire-model="game_tag" wire-live="true"
+                class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!" label="{{ __('Game Tag') }}">
+                <x-ui.custom-option label="{{ __('All') }}" value="" />
+                @foreach ($gameTags as $gameTag)
+                    <x-ui.custom-option label="{{ $gameTag->name }}" value="{{ $gameTag->slug }}" />
+                @endforeach
+            </x-ui.custom-select>
+          </div>
+
             <div class="hidden md:flex w-56!">
-                <x-ui.custom-select wireModel="sortDirection" :wireLive="true" :label="__('Highest to Lowest')"
+                <x-ui.custom-select wire-model="sortDirection" :wireLive="true" :label="__('Highest to Lowest')"
                     class="w-full rounded-full! bg-transparent! border! border-zinc-700!">
-                    <x-ui.custom-option label="Lowest To Highest" value="asc" />
-                    <x-ui.custom-option label="Highest to Lowest" value="desc" />
+                    <x-ui.custom-option label="{{ __('Lowest To Highest') }}" value="asc" />
+                    <x-ui.custom-option label="{{ __('Highest to Lowest') }}" value="desc" />
                 </x-ui.custom-select>
             </div>
         </div>
@@ -69,11 +88,12 @@
             {{-- Product Grid --}}
             <div class="w-full md:w-[65%] flex flex-col">
                 <div class="relative">
-                    <x-loading-animation target="serach, sortDirection, selectItem" style="list" />
+                    <x-loading-animation target="serach, sortDirection" style="list" />
 
                     <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4 content-start"
                         wire:loading.class="opacity-50">
                         @forelse ($datas as $item)
+                           
                             <div wire:key="prod-{{ $item->id }}" wire:click="selectItem({{ $item->id }})"
                                 @click="selectedId = {{ $item->id }}"
                                 :class="selectedId == {{ $item->id }} ? 'border-pink-500 ring-1 ring-pink-500' :
@@ -86,13 +106,13 @@
                                         <span
                                             class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl text-[10px] flex items-center gap-1">
                                             <x-phosphor name="fire" variant="regular" class="w-3 h-3 fill-white" />
-                                            {{ $game->tags->first()->name }}
+                                           {{ optional($game->tags->random())->name }}
                                         </span>
                                     @endif
                                 </div>
-                                <h3 class="text-base font-semibold text-text-white mt-4">{{ $item->quantity }} Units
+                                <h3 class="text-base font-semibold text-text-white mt-4">{{ $item->quantity }} {{ __('Units') }}
                                 </h3>
-                                <p class="text-xs text-text-white mt-2 opacity-70">{{ Str::limit($item->name, 22) }}
+                                <p class="text-xs text-text-white mt-2 opacity-70">{{ Str::limit($item->translatedName(app()->getLocale()), 22) }}
                                 </p>
                                 <span class="block text-base font-semibold text-pink-500 mt-4">
                                     {{ currency_symbol() . currency_exchange($item->price) }}
@@ -129,10 +149,10 @@
                         <div class="flex items-center justify-between py-3 border-t border-b  border-zinc-500 w-full">
                             <p class="text-base text-text-white"> {{ __('Delivery Timeline') }}</p>
                             @if ($product)
-                                <p class="text-base text-text-white font-semibold">{{ $product->delivery_timeline }}
+                                <p class="text-base text-text-white font-semibold">{{ $product->translatedDeliveryTimeline(app()->getLocale()) }}
                                 </p>
                             @else
-                                <p class="text-base text-text-white font-semibold">N/A</p>
+                                <p class="text-base text-text-white font-semibold">{{ __('N/A') }}</p>
                             @endif
                         </div>
 
@@ -187,12 +207,12 @@
                                                 class="w-3 h-3 fill-green-500" />
                                             <span class="text-[10px] text-zinc-300">
                                                 {{ feedback_calculate($product->user->pos_count ?? 0, $product->user->neg_count ?? 0) }}%
-                                                Positive
+                                                {{ __('Positive') }}
                                             </span>
                                             <span class="w-px h-2 bg-zinc-600"></span>
                                             <span
                                                 class="text-[10px] text-zinc-300">{{ $product->user->orders_count ?? 0 }}
-                                                Sold</span>
+                                                {{ __('Sold') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -214,11 +234,11 @@
         <div class="mt-10 mb-6 flex items-center justify-between gap-4">
             <x-ui.custom-select wireModel="sellerFilter" :wireLive="true" :label="__('Recommended')"
                 class="py-3! w-full sm:w-70 rounded-full!">
-                <x-ui.custom-option label="Recommended" value="recommended" />
-                <x-ui.custom-option label="Positive Reviews" value="positive_reviews" />
-                <x-ui.custom-option label="Top Sold" value="top_sold" />
-                <x-ui.custom-option label="Lowest Price" value="lowest_price" />
-                <x-ui.custom-option label="In Stock" value="in_stock" />
+                <x-ui.custom-option label="{{ __('Recommended') }}" value="recommended" />
+                <x-ui.custom-option label="{{ __('Positive Reviews') }}" value="positive_reviews" />
+                <x-ui.custom-option label="{{ __('Top Sold') }}" value="top_sold" />
+                <x-ui.custom-option label="{{ __('Lowest Price') }}" value="lowest_price" />
+                <x-ui.custom-option label="{{ __('In Stock') }}" value="in_stock" />
             </x-ui.custom-select>
 
             <button
@@ -274,11 +294,12 @@
                             </td>
 
                             <td class="px-6 py-4 hidden md:table-cell text-sm dark:text-zinc-300 group-hover:text-zinc-300">
-                                {{ $seller->delivery_timeline ?? '--' }}
+                                {{-- @dd($seller) --}}
+                                {{ $seller->translatedDeliveryTimeline(app()->getLocale()) ?? '--' }}
                             </td>
 
                             <td class="px-6 py-4 hidden md:table-cell text-sm dark:text-zinc-300 group-hover:text-zinc-300">
-                                {{ $seller->delivery_method ?? '--' }}
+                                {{ $seller->translatedDeliveryMethod(app()->getLocale()) ?? '--' }}
                             </td>
 
                             <td class="px-6 py-4 hidden md:table-cell text-center text-sm dark:text-zinc-300 group-hover:text-zinc-300">

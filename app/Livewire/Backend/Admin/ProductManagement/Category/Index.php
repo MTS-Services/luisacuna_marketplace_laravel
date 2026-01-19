@@ -58,7 +58,7 @@ class Index extends Component
                 'format' => fn($item) =>
                 '<div class="flex items-center gap-3">
                     <img src="' . storage_url($item->games?->logo) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item->games->slug ?? 'Game') . '">
-                    <span class="font-semibold text-text-white">' . ($item->games->slug ?? '-') . '</span>
+                    <span class="font-semibold text-text-white">' . ($item->games->name ?? '-') . '</span>
                 </div>'
             ],
             [
