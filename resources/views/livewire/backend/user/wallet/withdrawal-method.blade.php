@@ -31,7 +31,9 @@
             <div class="flex items-center justify-between mb-6">
                 <div>
                     <p class="text-white/80 text-sm mb-1">{{ __('Available Balance') }}</p>
-                    <h2 class="text-4xl md:text-5xl font-bold text-white">{{ __('$2,450.00') }}</h2>
+                    <h2 class="text-4xl md:text-5xl font-bold text-white">
+                        {{ currency_symbol() }}{{ currency_exchange(2450) }}
+                    </h2>
                 </div>
                 <div class="bg-white/20 p-4 rounded-xl backdrop-blur-sm">
                     <i data-lucide="wallet" class="w-8 h-8"></i>
@@ -41,15 +43,19 @@
             <div class="grid grid-cols-2 gap-4 mt-6">
                 <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
                     <p class="text-white/80 text-xs mb-1">{{ __('Pending') }}</p>
-                    <p class="text-xl font-semibold text-white">{{ __('$2,450.00') }}</p>
+                    <p class="text-xl font-semibold text-white">
+                        {{ currency_symbol() }}{{ currency_exchange(2450) }}
+                    </p>
                 </div>
                 <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
                     <p class="text-white/80 text-xs mb-1">{{ __('Total Withdrawn') }}</p>
-                    <p class="text-xl font-semibold text-white">{{ __('$2,450.00') }}</p>
+                    <p class="text-xl font-semibold text-white">
+                        {{ currency_symbol() }}{{ currency_exchange(2450) }}
+                    </p>
                 </div>
             </div>
 
-            <button wire:click="openWithdrawalModal"
+            <button 
                 class="mt-6 w-full bg-white text-purple-600 font-semibold py-3 px-6 rounded-xl hover:bg-gray-50 transition-all duration-200 flex items-center justify-center gap-2">
                 <i data-lucide="arrow-down-to-line" class="w-5 h-5"></i>
                 {{ __('Request Withdrawal') }}
@@ -92,15 +98,33 @@
                 <div class="space-y-2 mb-4">
                     <div class="flex items-center justify-between text-sm">
                         <span class="text-text-secondary">{{ __('Min Amount:') }}</span>
-                        <span class="font-semibold text-text-white">${{ $method->min_amount }}</span>
+                        <span class="font-semibold text-text-white">
+                            @if (!is_null($method->min_amount))
+                                {{ currency_symbol() }}{{ currency_exchange((float) $method->min_amount) }}
+                            @else
+                                {{ __('N/A') }}
+                            @endif
+                        </span>
                     </div>
                     <div class="flex items-center justify-between text-sm">
                         <span class="text-text-secondary">{{ __('Max Amount:') }}</span>
-                        <span class="font-semibold text-text-white">${{ $method->max_amount }}</span>
+                        <span class="font-semibold text-text-white">
+                            @if (!is_null($method->max_amount))
+                                {{ currency_symbol() }}{{ currency_exchange((float) $method->max_amount) }}
+                            @else
+                                {{ __('N/A') }}
+                            @endif
+                        </span>
                     </div>
                     <div class="flex items-center justify-between text-sm">
                         <span class="text-text-secondary">{{ __('Fee Amount:') }}</span>
-                        <span class="font-semibold text-purple-600">${{ $method->fee_amount }}</span>
+                        <span class="font-semibold text-purple-600">
+                            @if (!is_null($method->fee_amount))
+                                {{ currency_symbol() }}{{ currency_exchange((float) $method->fee_amount) }}
+                            @else
+                                {{ __('N/A') }}
+                            @endif
+                        </span>
                     </div>
                 </div>
 
@@ -203,13 +227,20 @@
                         <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
                             {{ __('Withdrawal Method') }}
                         </label>
-                        <select wire:model="selectedMethodId" @disabled($methodLocked)
-                            class="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:opacity-60 disabled:cursor-not-allowed">
-                            <option value="">{{ __('Select a method') }}</option>
-                            @foreach ($methods as $methodOption)
-                                <option value="{{ $methodOption->id }}">{{ $methodOption->name }}</option>
-                            @endforeach
-                        </select>
+                        <div
+                            class="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white px-4 py-3">
+                            @if ($selectedMethodName)
+                                <div class="flex items-center gap-2">
+                                    <span
+                                        class="inline-flex items-center justify-center w-2 h-2 rounded-full bg-emerald-500"></span>
+                                    <span class="font-semibold">{{ $selectedMethodName }}</span>
+                                </div>
+                            @else
+                                <p class="text-sm text-zinc-500">
+                                    {{ __('Select a withdrawal method from the list to proceed.') }}
+                                </p>
+                            @endif
+                        </div>
                         @if ($methodLocked)
                             <p class="text-xs text-amber-500 flex items-center gap-1">
                                 <i data-lucide="info" class="w-3.5 h-3.5"></i>
@@ -236,9 +267,6 @@
                         @enderror
                     </div>
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-4">
-                        <div class="text-sm text-zinc-500 dark:text-zinc-400">
-                            {{ __('Processing time: 1-3 business days') }}
-                        </div>
                         <div class="flex gap-3 w-full md:w-auto">
                             <x-ui.button type="button" variant="tertiary" class="w-full md:w-auto py-2!"
                                 wire:click="closeWithdrawalModal">

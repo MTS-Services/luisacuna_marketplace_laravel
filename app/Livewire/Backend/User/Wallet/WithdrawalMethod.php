@@ -39,6 +39,8 @@ class WithdrawalMethod extends Component
 
     public bool $methodLocked = false;
 
+    public ?string $selectedMethodName = null;
+
     public function boot(
         WithdrawalMethodService $withdrawalMethodService,
         UserWithdrawalAccountService $accountService,
@@ -73,6 +75,7 @@ class WithdrawalMethod extends Component
         $this->resetWithdrawalForm();
         $this->selectedMethodId = $methodId;
         $this->methodLocked = filled($methodId);
+        $this->selectedMethodName = $this->resolveMethodName($methodId);
         $this->showWithdrawalModal = true;
     }
 
@@ -92,7 +95,6 @@ class WithdrawalMethod extends Component
         }
 
         $rules = [
-            'selectedMethodId' => ['required', 'integer', 'exists:withdrawal_methods,id'],
             'withdrawalAmount' => array_merge(['required', 'numeric'], $this->amountRules($method)),
         ];
 
@@ -132,6 +134,7 @@ class WithdrawalMethod extends Component
         $this->withdrawalAmount = null;
         $this->withdrawalNote = null;
         $this->methodLocked = false;
+        $this->selectedMethodName = null;
     }
 
     protected function resolveWithdrawalMethod(): ?WithdrawalMethodModel
@@ -147,6 +150,15 @@ class WithdrawalMethod extends Component
         }
 
         return $method;
+    }
+
+    protected function resolveMethodName(?int $methodId): ?string
+    {
+        if (! $methodId) {
+            return null;
+        }
+
+        return optional($this->withdrawalMethodService->findData($methodId))->name;
     }
 
     protected function amountRules(WithdrawalMethodModel $method): array
