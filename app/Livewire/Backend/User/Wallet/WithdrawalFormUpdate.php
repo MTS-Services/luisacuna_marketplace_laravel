@@ -2,27 +2,30 @@
 
 namespace App\Livewire\Backend\User\Wallet;
 
-use Livewire\Component;
-use Illuminate\Support\Str;
-use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Log;
 use App\Models\UserWithdrawalAccount;
+use App\Models\WithdrawalMethod as ModelsWithdrawalMethod;
+use App\Services\UserWithdrawalAccountService;
 use App\Services\WithdrawalMethodService;
 use App\Traits\Livewire\WithNotification;
-use App\Services\UserWithdrawalAccountService;
-use App\Models\WithdrawalMethod as ModelsWithdrawalMethod;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class WithdrawalFormUpdate extends Component
 {
     use WithFileUploads, WithNotification;
 
     public ModelsWithdrawalMethod $method;
+
     public UserWithdrawalAccount $account;
 
     public $account_name = '';
+
     public array $account_data = [];
 
     protected WithdrawalMethodService $withdrawalMethodService;
+
     protected UserWithdrawalAccountService $userWithdrawalAccountService;
 
     public function boot(
@@ -47,7 +50,6 @@ class WithdrawalFormUpdate extends Component
         }
     }
 
-
     public function update()
     {
         // dd($this->account->id);
@@ -59,19 +61,20 @@ class WithdrawalFormUpdate extends Component
 
             $account = $this->userWithdrawalAccountService->updateAccount($this->account->id, user()->id, $validated);
 
-            if (!$account) {
+            if (! $account) {
                 $this->error('Failed to update withdrawal account.');
+
                 return;
             }
 
             $this->toastSuccess('Withdrawal account updated successfully.');
+
             return redirect()->route('user.wallet.withdrawal-methods');
         } catch (\Exception $e) {
-            Log::error('Error updating withdrawal account: ' . $e->getMessage());
+            Log::error('Error updating withdrawal account: '.$e->getMessage());
             $this->error('Failed to update withdrawal account.');
         }
     }
-
 
     public function getRules(): array
     {

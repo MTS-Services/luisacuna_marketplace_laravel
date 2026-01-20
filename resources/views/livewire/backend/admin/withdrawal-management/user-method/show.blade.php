@@ -92,7 +92,12 @@
                 <div class="space-y-10">
                     <!-- Info Cards -->
                     <div class="grid grid-cols-1 sm:grid-cols-4 gap-6 w-full">
-                        @foreach (json_decode($data->account_data, true) as $key => $value)
+                        @php
+                            $accountData = is_array($data->account_data)
+                                ? $data->account_data
+                                : json_decode($data->account_data, true) ?? [];
+                        @endphp
+                        @foreach ($accountData as $key => $value)
                             <div
                                 class="bg-slate-50 dark:bg-gray-700 rounded-2xl p-6 border border-slate-200 shadow-md ">
                                 <p class="text-text-white text-xs font-semibold mb-2">

@@ -134,6 +134,12 @@ class UserWithdrawalAccountService
             // Handle file uploads
             if (isset($data['account_data'])) {
                 $oldData = $account->account_data;
+
+                if (is_string($oldData)) {
+                    $decoded = json_decode($oldData, true);
+                    $oldData = is_array($decoded) ? $decoded : [];
+                }
+
                 $newData = $this->handleFileUploads($data['account_data'], $oldData);
                 $data['account_data'] = $newData;
             }
