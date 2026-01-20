@@ -4,7 +4,6 @@ namespace App\Enums;
 
 enum WithdrawalFeeType: string
 {
-
     case FIXED = 'fixed';
     case PERCENTAGE = 'percentage';
 
@@ -27,7 +26,7 @@ enum WithdrawalFeeType: string
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

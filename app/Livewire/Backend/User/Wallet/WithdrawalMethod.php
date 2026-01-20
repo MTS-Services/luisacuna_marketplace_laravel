@@ -21,6 +21,16 @@ class WithdrawalMethod extends Component
 
     public $accountData = null;
 
+    public bool $showWithdrawalModal = false;
+
+    public ?int $selectedMethodId = null;
+
+    public ?string $withdrawalAmount = null;
+
+    public ?string $withdrawalNote = null;
+
+    public bool $methodLocked = false;
+
     public function boot(WithdrawalMethodService $withdrawalMethodService, UserWithdrawalAccountService $accountService)
     {
         $this->withdrawalMethodService = $withdrawalMethodService;
@@ -44,6 +54,43 @@ class WithdrawalMethod extends Component
         $this->showModal = false;
         $this->selectedMethod = null;
         $this->isLoading = false;
+    }
+
+    public function openWithdrawalModal(?int $methodId = null): void
+    {
+        $this->resetWithdrawalForm();
+        $this->selectedMethodId = $methodId;
+        $this->methodLocked = filled($methodId);
+        $this->showWithdrawalModal = true;
+    }
+
+    public function closeWithdrawalModal(): void
+    {
+        $this->showWithdrawalModal = false;
+        $this->methodLocked = false;
+    }
+
+    public function submitWithdrawalRequest(): void
+    {
+        $this->validate([
+            'selectedMethodId' => 'required|integer|exists:withdrawal_methods,id',
+            'withdrawalAmount' => 'required|numeric|min:1',
+            'withdrawalNote' => 'nullable|string|max:500',
+        ]);
+
+        // TODO: hook into actual withdrawal request workflow once available
+        session()->flash('success', 'Your withdrawal request has been submitted.');
+
+        $this->closeWithdrawalModal();
+    }
+
+    protected function resetWithdrawalForm(): void
+    {
+        $this->resetValidation();
+        $this->selectedMethodId = null;
+        $this->withdrawalAmount = null;
+        $this->withdrawalNote = null;
+        $this->methodLocked = false;
     }
 
     public function render()
