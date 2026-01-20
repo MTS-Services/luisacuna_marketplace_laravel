@@ -2,48 +2,62 @@
 
 namespace App\Livewire\Backend\User\Wallet;
 
-use Livewire\Component;
 use App\Enums\ActiveInactiveEnum;
+use App\Services\UserWithdrawalAccountService;
 use App\Services\WithdrawalMethodService;
-use Livewire\Attributes\On;
+use Livewire\Component;
 
 class WithdrawalMethod extends Component
 {
-
     protected WithdrawalMethodService $withdrawalMethodService;
+
+    protected UserWithdrawalAccountService $accountService;
+
     public bool $showModal = false;
-    public bool $isLoading = true;
+
+    public bool $isLoading = false;
+
     public $selectedMethod = null;
 
-    public function boot(WithdrawalMethodService $withdrawalMethodService)
+    public $accountData = null;
+
+    public function boot(WithdrawalMethodService $withdrawalMethodService, UserWithdrawalAccountService $accountService)
     {
         $this->withdrawalMethodService = $withdrawalMethodService;
+        $this->accountService = $accountService;
     }
 
-    #[On('setMethodReason')]
-    public function setMethod($methodId)
+    public function openModal($accountId)
     {
-        // 1. Reset state to trigger loading effect immediately
+        $this->showModal = true;
         $this->isLoading = true;
         $this->selectedMethod = null;
 
-        // 2. Fetch data
-        $this->selectedMethod = $this->withdrawalMethodService->findData($methodId);
+        // Fetch data
+        $this->accountData = $this->accountService->findData($accountId);
 
-        // 3. Turn off loading
         $this->isLoading = false;
-
     }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
+        $this->selectedMethod = null;
+        $this->isLoading = false;
+    }
+
     public function render()
     {
         $methods = $this->withdrawalMethodService->getAllDatas(
             'created_at',
             'desc',
-            ['userWithdrawalAccounts']
+            ['userWithdrawalAccounts' => function ($query) {
+                $query->where('user_id', user()->id);
+            }]
         )->where('status', ActiveInactiveEnum::ACTIVE->value);
 
         return view('livewire.backend.user.wallet.withdrawal-method', [
-            'methods' => $methods
+            'methods' => $methods,
         ]);
     }
 }

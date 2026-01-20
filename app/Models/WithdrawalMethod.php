@@ -62,7 +62,7 @@ class WithdrawalMethod extends AuditBaseModel implements Auditable
     }
     public function userWithdrawalAccounts(): HasMany
     {
-        return $this->hasMany(UserWithdrawalAccount::class);
+        return $this->hasMany(UserWithdrawalAccount::class,'withdrawal_method_id','id');
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
