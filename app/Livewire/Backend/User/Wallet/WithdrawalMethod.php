@@ -3,8 +3,14 @@
 namespace App\Livewire\Backend\User\Wallet;
 
 use App\Enums\ActiveInactiveEnum;
+use App\Enums\WithdrawalFeeType;
+use App\Models\WithdrawalMethod as WithdrawalMethodModel;
+use App\Models\WithdrawalRequest;
+use App\Services\CurrencyService;
 use App\Services\UserWithdrawalAccountService;
 use App\Services\WithdrawalMethodService;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 class WithdrawalMethod extends Component
@@ -12,6 +18,8 @@ class WithdrawalMethod extends Component
     protected WithdrawalMethodService $withdrawalMethodService;
 
     protected UserWithdrawalAccountService $accountService;
+
+    protected CurrencyService $currencyService;
 
     public bool $showModal = false;
 
@@ -31,10 +39,14 @@ class WithdrawalMethod extends Component
 
     public bool $methodLocked = false;
 
-    public function boot(WithdrawalMethodService $withdrawalMethodService, UserWithdrawalAccountService $accountService)
-    {
+    public function boot(
+        WithdrawalMethodService $withdrawalMethodService,
+        UserWithdrawalAccountService $accountService,
+        CurrencyService $currencyService
+    ) {
         $this->withdrawalMethodService = $withdrawalMethodService;
         $this->accountService = $accountService;
+        $this->currencyService = $currencyService;
     }
 
     public function openModal($accountId)
@@ -72,16 +84,45 @@ class WithdrawalMethod extends Component
 
     public function submitWithdrawalRequest(): void
     {
-        $this->validate([
-            'selectedMethodId' => 'required|integer|exists:withdrawal_methods,id',
-            'withdrawalAmount' => 'required|numeric|min:1',
-            'withdrawalNote' => 'nullable|string|max:500',
-        ]);
+        $method = $this->resolveWithdrawalMethod();
+        if (! $method) {
+            $this->addError('selectedMethodId', 'The selected withdrawal method is unavailable.');
 
-        // TODO: hook into actual withdrawal request workflow once available
-        session()->flash('success', 'Your withdrawal request has been submitted.');
+            return;
+        }
 
-        $this->closeWithdrawalModal();
+        $rules = [
+            'selectedMethodId' => ['required', 'integer', 'exists:withdrawal_methods,id'],
+            'withdrawalAmount' => array_merge(['required', 'numeric'], $this->amountRules($method)),
+        ];
+
+        $this->validate($rules);
+
+        try {
+            DB::transaction(function () use ($method) {
+                $amount = round((float) $this->withdrawalAmount, 2);
+                $feeAmount = $this->calculateFee($method, $amount);
+                $finalAmount = round($amount + $feeAmount, 2);
+
+                WithdrawalRequest::create([
+                    'user_id' => user()->id,
+                    'withdrawal_method_id' => $method->id,
+                    'currency_id' => $this->getCurrencyId(),
+                    'amount' => $amount,
+                    'fee_amount' => $feeAmount,
+                    'tax_amount' => 0,
+                    'final_amount' => $finalAmount,
+                ]);
+            });
+
+            session()->flash('success', 'Your withdrawal request has been submitted.');
+            $this->closeWithdrawalModal();
+        } catch (ValidationException $exception) {
+            throw $exception;
+        } catch (\Throwable $throwable) {
+            report($throwable);
+            session()->flash('error', 'We could not process your withdrawal request. Please try again.');
+        }
     }
 
     protected function resetWithdrawalForm(): void
@@ -91,6 +132,60 @@ class WithdrawalMethod extends Component
         $this->withdrawalAmount = null;
         $this->withdrawalNote = null;
         $this->methodLocked = false;
+    }
+
+    protected function resolveWithdrawalMethod(): ?WithdrawalMethodModel
+    {
+        if (! $this->selectedMethodId) {
+            return null;
+        }
+
+        $method = $this->withdrawalMethodService->findData($this->selectedMethodId);
+
+        if (! $method || $method->status?->value !== ActiveInactiveEnum::ACTIVE->value) {
+            return null;
+        }
+
+        return $method;
+    }
+
+    protected function amountRules(WithdrawalMethodModel $method): array
+    {
+        $rules = [];
+
+        if (! is_null($method->min_amount)) {
+            $rules[] = 'min:'.(float) $method->min_amount;
+        }
+
+        if (! is_null($method->max_amount) && (float) $method->max_amount > 0) {
+            $rules[] = 'max:'.(float) $method->max_amount;
+        }
+
+        return $rules;
+    }
+
+    protected function calculateFee(WithdrawalMethodModel $method, float $amount): float
+    {
+        if ($method->fee_type === WithdrawalFeeType::PERCENTAGE) {
+            $percentage = (float) ($method->fee_percentage ?? 0);
+
+            return round(($amount * $percentage) / 100, 2);
+        }
+
+        return round((float) ($method->fee_amount ?? 0), 2);
+    }
+
+    protected function getCurrencyId(): int
+    {
+        $currency = $this->currencyService->getCurrentCurrency();
+
+        if (! $currency) {
+            throw ValidationException::withMessages([
+                'selectedMethodId' => 'Unable to determine currency for this withdrawal.',
+            ]);
+        }
+
+        return (int) $currency->id;
     }
 
     public function render()

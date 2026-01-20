@@ -99,7 +99,7 @@
                         <span class="font-semibold text-text-white">${{ $method->max_amount }}</span>
                     </div>
                     <div class="flex items-center justify-between text-sm">
-                        <span class="text-text-secondary">{{ __('Fee:') }}</span>
+                        <span class="text-text-secondary">{{ __('Fee Amount:') }}</span>
                         <span class="font-semibold text-purple-600">${{ $method->fee_amount }}</span>
                     </div>
                 </div>
@@ -235,19 +235,6 @@
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
-                            {{ __('Note') }} <span class="text-zinc-400 text-xs">({{ __('optional') }})</span>
-                        </label>
-                        <textarea rows="3" wire:model="withdrawalNote"
-                            class="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                            placeholder="{{ __('Add any additional details for the reviewer...') }}"></textarea>
-                        @error('withdrawalNote')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-4">
                         <div class="text-sm text-zinc-500 dark:text-zinc-400">
                             {{ __('Processing time: 1-3 business days') }}
