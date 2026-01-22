@@ -57,7 +57,7 @@
                             </path>
                         </svg>
                         <div>
-                            <h2 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-white">
+                            <h2 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold">
                                 {{ __('Two-Factor Authentication') }}</h2>
                             <p class="text-text-white/80 mt-1 text-sm sm:text-base">
                                 {{ __('Secure your account with additional protection') }}
