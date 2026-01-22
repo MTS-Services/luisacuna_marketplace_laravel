@@ -110,7 +110,7 @@
 
                             <!-- Dropdown links -->
                             <div x-show="ordersOpen" x-collapse x-cloak class="mt-1 ml-6 sm:ml-8 space-y-1">
-                                <a href="{{ route('user.purchased-orders') }}" wire:navigate
+                                <a href="{{ route('user.order.purchased-orders') }}" wire:navigate
                                     @click="$root.sidebarOpen = false"
                                     class="block px-2 sm:px-3 py-2 text-xs  rounded-lg transition-all text-text-white hover:bg-pink-500/50 {{ $pageSlug === 'purchased_orders' ? 'bg-pink-500' : 'bg-pink-300 dark:bg-zinc-950' }}">
                                     {{ __('Purchased orders') }}
@@ -289,7 +289,7 @@
             class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{ __('Currency') }}</a>
         <a href="#"
             class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{ __('Gift
-                        Cards') }}</a>
+                                    Cards') }}</a>
         <a href="#"
             class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{ __('Boosting') }}</a>
         <a href="#"
@@ -298,7 +298,7 @@
             class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{ __('Accounts') }}</a>
         <a href="#"
             class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{ __('Top
-                        Ups') }}</a>
+                                    Ups') }}</a>
         <a href="#"
             class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{ __('Coaching') }}</a>
     </nav>
