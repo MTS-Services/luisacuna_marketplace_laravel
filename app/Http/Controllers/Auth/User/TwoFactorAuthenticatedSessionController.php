@@ -68,15 +68,113 @@ class TwoFactorAuthenticatedSessionController extends Controller
             }
         }
 
-        // Login the user
+        // Login the user and mark device validation as pending
         $guard->login($user, $request->session()->get('login.remember', false));
 
+        $request->session()->put('device_registration_pending', true);
         $request->session()->regenerate();
 
+        // Update last login details
+        $user->update([
+            'last_login_at' => now(),
+            'last_login_ip' => $request->ip(),
+            'login_attempts' => 0,
+        ]);
+
+        $this->registerUserDevice($request, $user);
+
         // Clear the login session data
-        $request->session()->forget(['login.id', 'login.remember']);
+        $request->session()->forget(['login.id', 'login.remember', 'login.device_info']);
+        $request->session()->forget('device_registration_pending');
 
         return redirect()->intended(route('user.order.purchased-orders', absolute: false));
+    }
+
+    protected function registerUserDevice(Request $request, $user): void
+    {
+        $deviceInfo = $request->session()->get('login.device_info', []);
+
+        $deviceData = [
+            'fcm_token' => $deviceInfo['fcm_token'] ?? ('web_'.$request->session()->getId()),
+            'device_type' => $deviceInfo['device_type'] ?? 'web',
+            'device_name' => $deviceInfo['device_name'] ?? $this->detectBrowser($request),
+            'device_model' => $deviceInfo['device_model'] ?? $this->detectOS($request),
+            'os_version' => $deviceInfo['os_version'] ?? $this->detectOSVersion($request),
+            'app_version' => $deviceInfo['app_version'] ?? '',
+            'device_fingerprint' => $deviceInfo['device_fingerprint'] ?? '',
+        ];
+
+        try {
+            $user->registerDevice($deviceData);
+
+            Log::info('Device registered after two-factor challenge', [
+                'user_id' => $user->id,
+                'session_id' => $request->session()->getId(),
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to register device after two-factor challenge', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    private function detectBrowser(Request $request): string
+    {
+        $userAgent = $request->userAgent();
+
+        return match (true) {
+            str_contains($userAgent, 'Firefox') => 'Firefox',
+            str_contains($userAgent, 'Edg') => 'Edge',
+            str_contains($userAgent, 'Chrome') => 'Chrome',
+            str_contains($userAgent, 'Safari') => 'Safari',
+            str_contains($userAgent, 'Opera') || str_contains($userAgent, 'OPR') => 'Opera',
+            default => 'Unknown Browser',
+        };
+    }
+
+    private function detectOS(Request $request): string
+    {
+        $userAgent = $request->userAgent();
+
+        return match (true) {
+            str_contains($userAgent, 'Windows NT 10.0') => 'Windows 10/11',
+            str_contains($userAgent, 'Windows') => 'Windows',
+            str_contains($userAgent, 'Macintosh') || str_contains($userAgent, 'Mac OS') => 'macOS',
+            str_contains($userAgent, 'Linux') => 'Linux',
+            str_contains($userAgent, 'Android') => 'Android',
+            str_contains($userAgent, 'iPhone') || str_contains($userAgent, 'iPad') => 'iOS',
+            default => 'Unknown OS',
+        };
+    }
+
+    private function detectOSVersion(Request $request): string
+    {
+        $userAgent = $request->userAgent();
+
+        if (preg_match('/Windows NT ([\d.]+)/', $userAgent, $matches)) {
+            return match ($matches[1]) {
+                '10.0' => '10/11',
+                '6.3' => '8.1',
+                '6.2' => '8',
+                '6.1' => '7',
+                default => $matches[1],
+            };
+        }
+
+        if (preg_match('/Mac OS X ([\d_]+)/', $userAgent, $matches)) {
+            return str_replace('_', '.', $matches[1]);
+        }
+
+        if (preg_match('/Android ([\d.]+)/', $userAgent, $matches)) {
+            return $matches[1];
+        }
+
+        if (preg_match('/OS ([\d_]+)/', $userAgent, $matches)) {
+            return str_replace('_', '.', $matches[1]);
+        }
+
+        return '';
     }
 
     /**
