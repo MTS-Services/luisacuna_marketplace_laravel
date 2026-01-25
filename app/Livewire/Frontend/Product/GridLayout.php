@@ -44,6 +44,9 @@ class GridLayout extends Component
     #[Url('filter')]
     public $filter_by_tag = '';
 
+    #[Url(as: 'sort')]
+    public $sortDirection = 'desc';
+
     public $tags = [];
 
     protected PlatformService $platformService;
@@ -125,6 +128,7 @@ class GridLayout extends Component
             'min_price' => $this->min_price,
             'max_price' => $this->max_price,
             'filter_by_tag' => $this->filter_by_tag,
+            'sort_direction' => $this->sortDirection,
         ]);
         $this->datas->load('user');
 

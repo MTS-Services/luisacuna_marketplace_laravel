@@ -1,7 +1,6 @@
 <div>
     <section class="container mt-2">
         <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" :game="$game" />
-
         {{-- Breadcrumbs --}}
         <div class="flex items-center gap-2 mt-8 text-lg font-semibold">
             <div class="w-4 h-4">
@@ -93,7 +92,6 @@
                     <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4 content-start"
                         wire:loading.class="opacity-50">
                         @forelse ($datas as $item)
-                           
                             <div wire:key="prod-{{ $item->id }}" wire:click="selectItem({{ $item->id }})"
                                 @click="selectedId = {{ $item->id }}"
                                 :class="selectedId == {{ $item->id }} ? 'border-pink-500 ring-1 ring-pink-500' :
@@ -106,7 +104,7 @@
                                         <span
                                             class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl text-[10px] flex items-center gap-1">
                                             <x-phosphor name="fire" variant="regular" class="w-3 h-3 fill-white" />
-                                           {{ optional($game->tags->random())->name }}
+                                            {{ optional($game->tags->random())->name }}
                                         </span>
                                     @endif
                                 </div>
@@ -185,23 +183,30 @@
                                 <p class="text-xs text-text-white font-medium">{{ __('Protected by TradeShield') }}
                                 </p>
                             </div>
-                            <div class="flex items-center gap-3">
-                                <flux:icon name="bolt" class="w-5 h-5 text-yellow-500" />
-                                <p class="text-xs text-text-white font-medium">
-                                    {{ __('Instant Delivery Available') }}</p>
-                            </div>
+                            @if ($product)
+                                <div class="flex items-center gap-3">
+                                    <flux:icon name="bolt" class="w-5 h-5 text-yellow-500" />
+                                    <p class="text-xs text-text-white font-medium">
+                                        {{ $product->delivery_method == 'instant' ? 'Instant' : 'Manual' }}
+                                        {{ __('Delivery Available') }}</p>
+                                </div>
+                            @endif
                         </div>
 
                         {{-- Seller Profile Card --}}
                         @if ($product)
                             <div class="mt-8 pt-6 border-t border-zinc-700">
                                 <div class="flex items-center gap-4">
-                                    <img src="{{ auth_storage_url($product->user?->avatar) }}"
-                                        class="w-12 h-12 rounded-full border border-zinc-700">
+                                    <a href="{{ route('profile', $product->user?->username) }}">
+                                        <img src="{{ auth_storage_url($product->user?->avatar) }}"
+                                            class="w-12 h-12 rounded-full border border-zinc-700">
+                                    </a>
                                     <div class="flex-1">
-                                        <h4 class="text-white font-semibold text-sm">
-                                            {{ $product->user?->full_name }}
-                                        </h4>
+                                        <a href="{{ route('profile', $product->user?->username) }}">
+                                            <h4 class="text-text-white font-semibold text-sm">
+                                                {{ $product->user?->full_name }}
+                                            </h4>
+                                        </a>
                                         <div class="flex items-center gap-2 mt-1">
                                             <x-phosphor name="thumbs-up" variant="solid"
                                                 class="w-3 h-3 fill-green-500" />
@@ -233,7 +238,7 @@
 
         <div class="mt-10 mb-6 flex items-center justify-between gap-4">
             <x-ui.custom-select wireModel="sellerFilter" :wireLive="true" :label="__('Recommended')"
-                class="py-3! w-full sm:w-70 rounded-full!">
+                class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!">
                 <x-ui.custom-option label="{{ __('Recommended') }}" value="recommended" />
                 <x-ui.custom-option label="{{ __('Positive Reviews') }}" value="positive_reviews" />
                 <x-ui.custom-option label="{{ __('Top Sold') }}" value="top_sold" />
@@ -262,14 +267,18 @@
                 <tbody class="space-y-4" wire.loading.remove wire:target="sellerFilter">
                     @forelse ($otherSellers as $seller)
                         <tr wire:key="row-{{ $seller->id }}" wire:click="selectItem({{ $seller->id }})"
-                            class="bg-bg-secondary hover:bg-zinc-800 transition-colors cursor-pointer group">
+                            class="bg-bg-secondary hover:bg-bg-hover transition-colors group">
                             <td class="px-6 py-4 rounded-l-2xl">
                                 <div class="flex items-center gap-3">
-                                    <img src="{{ auth_storage_url($seller->user?->avatar) }}"
-                                        class="w-10 h-10 rounded-full">
+                                    <a href="{{ route('profile', $seller->user?->username) }}">
+                                        <img src="{{ auth_storage_url($seller->user?->avatar) }}"
+                                            class="w-10 h-10 rounded-full">
+                                    </a>
                                     <div>
-                                        <p class="dark:text-zinc-300 group-hover:text-zinc-300 font-medium text-sm">
-                                            {{ $seller->user?->full_name }}</p>
+                                        <a href="{{ route('profile', $seller->user?->username) }}">
+                                            <p class="dark:text-zinc-300  font-medium text-sm">
+                                                {{ $seller->user?->full_name }}</p>
+                                        </a>
                                         <div class="flex items-center gap-1 opacity-60">
                                             <x-phosphor name="thumbs-up" variant="solid"
                                                 class="w-3 h-3 fill-zinc-400" />
@@ -287,7 +296,7 @@
                                                         ->count() ?? 0;
                                             @endphp
                                             <span
-                                                class="text-[10px] dark:text-zinc-300 group-hover:text-white">{{ feedback_calculate($positiveCount, $negativeCount) }}%</span>
+                                                class="text-[10px] dark:text-zinc-300">{{ feedback_calculate($positiveCount, $negativeCount) }}%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -302,7 +311,7 @@
                                 {{ $seller->translatedDeliveryMethod(app()->getLocale()) ?? '--' }}
                             </td>
 
-                            <td class="px-6 py-4 hidden md:table-cell text-center text-sm dark:text-zinc-300 group-hover:text-zinc-300">
+                            <td class="px-6 py-4 hidden md:table-cell text-center text-sm dark:text-zinc-300 ">
                                 {{ $seller->quantity ?? '00' }}
                             </td>
 

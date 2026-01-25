@@ -21,7 +21,7 @@
         </div>
         <!-- Other Sellers -->
         <div class="mt-10">
-            <h2 class="text-2xl font-bold mb-6">{{ __('Other sellers (84)') }}</h2>
+            <h2 class="text-2xl font-bold mb-6">{{ __('Other sellers') }} {{ $relatedProducts->count() ?? 0 }}</h2>
             <div class=" rounded-full py-4 ">
                 <x-ui.custom-select wireModel="sellerFilter" :wireLive="true" :label="__('Recommended')"
                     class="py-3! w-full sm:w-70 rounded-full!">
@@ -39,6 +39,7 @@
             @forelse ($relatedProducts as $relatedProduct)
                 <x-ui.shop-card :gameSlug="$gameSlug" :categorySlug="$categorySlug" :data="$relatedProduct" :game="$game" />
             @empty
+                <x-ui.empty-card />
             @endforelse
 
         </div>

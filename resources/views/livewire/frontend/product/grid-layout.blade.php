@@ -203,45 +203,7 @@
                     <button
                         class="px-4 py-2 border border-green text-green rounded-full text-sm hover:bg-green hover:text-white transition">{{ __('● Online Seller') }}
                     </button>
-
-                    {{-- <div class="flex-nowrap gap-5 relative hidden md:flex" x-data="{ open: false, selectedOption: '', selectedValue: '' }"
-                        @click.away="open = false">
-
-                        <!-- Hidden Input Field -->
-                        <input type="hidden" name="recommendation" x-model="selectedValue">
-
-                        <div class="flex justify-between rounded-full border border-zinc-700 bg-bg-transparent items-center w-50 px-3 py-2 cursor-pointer"
-                            @click="open = !open">
-                            <span x-text="selectedOption || '{{ __('Recomendation') }}'"></span>
-                            <flux:icon name="chevron-down" class="w-5 h-5 transition-transform duration-200"
-                                x-bind:class="open ? 'rotate-180' : ''" />
-                        </div>
-
-                        <div class="absolute top-[110%] left-0 w-50 rounded bg-bg-primary border border-zinc-700 z-20 overflow-hidden origin-top"
-                            x-show="open" x-transition:enter="transition ease-out duration-300 transform"
-                            x-transition:enter-start="opacity-0 scale-y-0"
-                            x-transition:enter-end="opacity-100 scale-y-100"
-                            x-transition:leave="transition ease-in duration-200 transform"
-                            x-transition:leave-start="opacity-100 scale-y-100"
-                            x-transition:leave-end="opacity-0 scale-y-0" @click.stop>
-                            <div class="px-5 py-5">
-                                <ol class="list space-y-2">
-                                    <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                        @click="selectedOption = '{{ __('Platform') }}'; selectedValue = ''; $wire.selectedPlatform = ''; open = false;">
-                                        {{ __('Platform') }}
-                                    </li>
-                                    <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                        @click="selectedOption = 'Device 1'; selectedValue = 'device1'; $wire.selectedPlatform = 'device1'; open = false; ">
-                                        Device 1
-                                    </li>
-                                    <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                        @click="selectedOption = 'Device 2'; selectedValue = 'device2'; $wire.selectedPlatform = 'device2'; open = false; ">
-                                        Device 2
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div> --}}
+                
                     <div class="hidden md:flex w-56!">
                         <x-ui.custom-select wireModel="sortDirection" :wireLive="true" :label="__('Highest to Lowest')"
                             class="w-full rounded-full! bg-transparent! border! border-zinc-700!">
@@ -249,15 +211,7 @@
                             <x-ui.custom-option label="{{ __('Highest to Lowest') }}" value="desc" />
                         </x-ui.custom-select>
                     </div>
-
                 </div>
-                {{-- <div class="hidden md:flex justify-end w-70">
-                    <x-ui.custom-select wireModel="sortDirection" :wireLive="true" :label="__('Highest to Lowest')"
-                        class="w-full rounded-full! bg-transparent! border! border-zinc-700!">
-                        <x-ui.custom-option label="Lowest To Highest" value="asc" />
-                        <x-ui.custom-option label="Highest to Lowest" value="desc" />
-                    </x-ui.custom-select>
-                </div> --}}
             </div>
 
 

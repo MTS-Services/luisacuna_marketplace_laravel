@@ -72,10 +72,6 @@ class ProductService
     public function getSellers(int $perPage = 15, array $filters = [])
     {
         return $this->model->query()
-            // Select all product columns + initialize the query
-            ->select('products.*')
-
-            // N+1 Prevention: Load everything used in the Blade template
             ->with(['user', 'game', 'platform'])
 
             // Unique Seller Logic: Compatibility with MySQL Strict Mode

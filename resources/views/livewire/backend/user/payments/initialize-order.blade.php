@@ -40,7 +40,7 @@
                             <span class="text-xs text-text-secondary">{{ __('Delivery time') }}
                             </span>
                             <span class="text-xs text-text-secondary">
-                                 {{ $product->translatedDeliveryTimeline(app()->getLocale()) }}
+                                {{ $product->translatedDeliveryTimeline(app()->getLocale()) }}
                             </span>
                         </div>
                         <div class="flex justify-between items-center mt-2 ">
@@ -232,41 +232,47 @@
             </div>
 
         </div>
-        <div class="bg-bg-primary dark:bg-bg-secondary rounded-lg   mt-6 px-4 py-4 ">
+        @if ($feedbacks->isNOtEmpty())
+            <div class="bg-bg-primary dark:bg-bg-secondary rounded-lg   mt-6 px-4 py-4 ">
 
 
 
-            <button class=" text-3xl mt-5 mb-4 font-semibold text-text-primary">{{ __('Recent feedback') }}</button>
-            <!-- Seller Card -->
-            @foreach ($feedbacks as $key => $feedback)
-                @if ($key === $feedbacks->count() - 1)
-                    @continue
-                @endif
-                <div class="bg-bg-optional dark:bg-bg-info text-text-white p-5  max-w-md mb-1">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="flex items-center gap-2">
-                            <x-phosphor name="{{ $feedback->type->icon() }}" variant="solid"
-                                class="w-5 h-5 {{ $feedback->type->iconColor() }}" />
-                            <h3 class="text-base font-medium  text-text-primary line-clamp-1">{{ $product->translatedName(app()->getLocale()) }}
-                            </h3>
+                <button
+                    class=" text-3xl mt-5 mb-4 font-semibold text-text-primary">{{ __('Recent feedback') }}</button>
+                <!-- Seller Card -->
+                @foreach ($feedbacks as $key => $feedback)
+                    @if ($key === $feedbacks->count() - 1)
+                        @continue
+                    @endif
+                    <div class="bg-bg-optional dark:bg-bg-info text-text-white p-5  max-w-md mb-1">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <x-phosphor name="{{ $feedback->type->icon() }}" variant="solid"
+                                    class="w-5 h-5 {{ $feedback->type->iconColor() }}" />
+                                <h3 class="text-base font-medium  text-text-primary line-clamp-1">
+                                    {{ $product->translatedName(app()->getLocale()) }}
+                                </h3>
+                            </div>
+                            <span class="text-text-secondary text-sm whitespace-nowrap">
+                                {{ $feedback->created_at->format('Y-m-d') }}</span>
                         </div>
-                        <span class="text-text-secondary text-sm whitespace-nowrap">
-                            {{ $feedback->created_at->format('Y-m-d') }}</span>
+                        <p class="text-text-secondary text-sm line-clamp-1">
+                            {{ $feedback->translatedMessage(app()->getLocale()) }}</p>
                     </div>
-                    <p class="text-text-secondary text-sm line-clamp-1">{{ $feedback->translatedMessage(app()->getLocale()) }}</p>
-                </div>
-            @endforeach
-            {{-- <div class="mt-5">
+                @endforeach
+                {{-- <div class="mt-5">
                 <x-ui.button class="px-4! py-2! sm:px-6! sm:py-3!">{{ __('All feedback') }}</x-ui.button>
             </div> --}}
 
-            @if ($feedbacks->count() > 5)
-                <div class="mt-5">
-                    <x-ui.button href="{{ route('user.feedback', ['product_id' => $product->id]) }}"
-                        class="px-4! py-2! sm:px-6! sm:py-3!">{{ __('All feedback') }}</x-ui.button>
-                </div>
-            @endif
-        </div>
+                @if ($feedbacks->count() > 5)
+                    <div class="mt-5">
+                        <x-ui.button href="{{ route('user.feedback', ['product_id' => $product->id]) }}"
+                            class="px-4! py-2! sm:px-6! sm:py-3!">{{ __('All feedback') }}</x-ui.button>
+                    </div>
+                @endif
+            </div>
+        @endif
+
 
     </form>
 
