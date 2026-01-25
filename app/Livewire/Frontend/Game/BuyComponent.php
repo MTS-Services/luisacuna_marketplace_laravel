@@ -21,7 +21,7 @@ class BuyComponent extends Component
 
     #[Url(keep: true)]
     public $sellerFilter = 'recommended';
-    
+
     protected ProductService $service;
 
     public function boot(ProductService $service)
@@ -36,7 +36,6 @@ class BuyComponent extends Component
         $this->product = $this->service->findData($this->productId)->load(['games', 'user']);
         $this->game = $this->product->games;
         $this->user = $this->product->user;
-
     }
     public function render()
     {
@@ -48,12 +47,13 @@ class BuyComponent extends Component
         ]);
     }
 
-    public function othersSellerProducts(){
-    //   return  $this->service->getPaginatedData($this->perPage, [
-    //         'categorySlug' => $this->categorySlug,
-    //         'gameSlug' => $this->gameSlug,
-    //     ]);
-    
+    public function othersSellerProducts()
+    {
+        //   return  $this->service->getPaginatedData($this->perPage, [
+        //         'categorySlug' => $this->categorySlug,
+        //         'gameSlug' => $this->gameSlug,
+        //     ]);
+
         $filters = [];
 
         if ($this->sellerFilter === 'positive_reviews') {
@@ -72,8 +72,12 @@ class BuyComponent extends Component
         if ($this->sellerFilter === 'top_sold') {
             $filters['top_sold'] = true;
         }
-
-        $otherSellers = $this->service->getSellers(11, $filters);
+        $otherSellers = $this->service->getSellers(
+            $this->product->category_id,
+            $this->product->game_id,
+            11,
+            $filters
+        );
         $otherSellers->load('user.feedbacksReceived');
         return $otherSellers;
     }
