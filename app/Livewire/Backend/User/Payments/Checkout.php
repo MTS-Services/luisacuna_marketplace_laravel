@@ -8,14 +8,17 @@ use Livewire\Component;
 use App\Enums\OrderStatus;
 use App\Enums\FeedbackType;
 use App\Models\PaymentGateway;
-use App\Services\CurrencyService;
 use App\Services\OrderService;
+use Livewire\Attributes\Layout;
 use App\Services\PaymentService;
+use App\Services\CurrencyService;
 use App\Services\FeedbackService;
+use App\Services\NowPaymentService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Collection;
 
+#[Layout('frontend.layouts.app', ['title' => 'Checkout'])]
 class Checkout extends Component
 {
     public ?Order $order;
@@ -39,6 +42,19 @@ class Checkout extends Component
     public string $displaySymbol;
     public float $exchangeRate;
 
+
+
+    // =========================================================
+
+    public $priceAmount = 2000000000000000;
+    public $priceCurrency = 'usd';
+    public $payCurrency = 'btc';
+    public $orderDescription = '';
+    public $availableCurrencies = [];
+    public $estimatedAmount = null;
+    public $minimumAmount = 20;
+    public $paymentDetails = null;
+
     protected OrderService $orderService;
     protected PaymentService $paymentService;
     protected CurrencyService $currencyService;
@@ -57,7 +73,6 @@ class Checkout extends Component
     public function mount($slug, $token)
 
     {
-
         $key = "checkout_{$token}";
         $sessionKey = Session::driver('redis')->get($key);
 
@@ -193,6 +208,7 @@ class Checkout extends Component
                 return;
             }
 
+
             // Process normal payment
             $result = $this->paymentService->processPayment(
                 order: $this->order,
@@ -211,7 +227,17 @@ class Checkout extends Component
                     'currency' => $this->displayCurrency,
                 ]);
 
-                if ($this->gateway === 'stripe' && isset($result['checkout_url'])) {
+                // if ($this->gateway === 'stripe' && isset($result['checkout_url'])) {
+                //     return redirect()->to($result['checkout_url']);
+                // } elseif ($this->gateway === 'wallet' && isset($result['redirect_url'])) {
+                //     session()->flash('success', $result['message']);
+                //     return redirect()->to($result['redirect_url']);
+                // } else {
+                //     session()->flash('success', $result['message']);
+                //     return redirect()->route('user.order.complete', ['orderId' => $this->order->order_id]);
+                // }
+
+                if (isset($result['checkout_url']) && !empty($result['checkout_url'])) {
                     return redirect()->to($result['checkout_url']);
                 } elseif ($this->gateway === 'wallet' && isset($result['redirect_url'])) {
                     session()->flash('success', $result['message']);
@@ -236,6 +262,7 @@ class Checkout extends Component
             $this->processing = false;
         }
     }
+
 
     /**
      * Process top-up and then payment
@@ -298,9 +325,36 @@ class Checkout extends Component
         }
     }
 
+
+
     public function closeTopUpModal()
     {
         $this->showTopUpModal = false;
         $this->topUpGateway = null;
+    }
+
+
+
+
+    public function createPayment(NowPaymentService $nowPaymentService)
+    {
+        // $this->validate();
+
+        try {
+            $invoice = $nowPaymentService->createInvoice([
+                'price_amount' => $this->priceAmount,
+                'price_currency' => $this->priceCurrency,
+                'order_id' => 'Order Payment #' . $this->order->order_id,
+                'order_description' => $this->orderDescription ?: 'Cryptocurrency Payment',
+                'ipn_callback_url' => url('/nowpayments/ipn'),
+                'success_url' => route('user.payment.success'),
+                'cancel_url' => route('user.payment.failed'),
+            ]);
+
+            return redirect()->away($invoice['invoice_url']);
+        } catch (\Exception $e) {
+            $this->errorMessage = $e->getMessage();
+            session()->flash('error', $e->getMessage());
+        }
     }
 }

@@ -26,6 +26,7 @@
         "livewire/volt": "^1.7.0",
         "owen-it/laravel-auditing": "^14.0",
         "predis/predis": "^3.2",
+        "prevailexcel/laravel-nowpayments": "^1.0",
         "pusher/pusher-php-server": "^7.2",
         "spatie/laravel-permission": "^6.23",
         "stripe/stripe-php": "^18.2",
