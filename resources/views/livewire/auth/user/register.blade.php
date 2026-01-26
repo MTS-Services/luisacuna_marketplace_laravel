@@ -105,7 +105,7 @@
             <!-- Sign Up Link -->
             <p class="text-center text-text-white">
                 Have an account already?
-                <a href="#" class="text-purple-700 transition font-medium">Sign in</a>
+                <a href="{{ route('login') }}" class="text-purple-700 transition font-medium">Sign in</a>
             </p>
         </div>
     </div>
