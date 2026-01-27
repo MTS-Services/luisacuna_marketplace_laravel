@@ -61,6 +61,25 @@
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('Maximum Amount') }}</p>
                                 <p class="text-slate-400 text-lg font-bold">{{ $data->maximum_amount }}</p>
                             </div>
+
+                            <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('Daily Limit') }}</p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->daily_limit ?? 'N/A' }}</p>
+                            </div>
+                            <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('Weekly Limit') }}</p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->weekly_limit ?? 'N/A' }}</p>
+                            </div>
+                            <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('Monthly Limit') }}</p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->monthly_limit ?? 'N/A' }}</p>
+                            </div>
+                            <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
+                                <p class="text-text-white text-xs font-semibold mb-2">{{ __('Per Transaction Limit') }}
+                                </p>
+                                <p class="text-slate-400 text-lg font-bold">{{ $data->per_transaction_limit ?? 'N/A' }}
+                                </p>
+                            </div>
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('Fee Type') }}</p>
                                 <p class="text-slate-400 text-lg font-bold">{{ $data->fee_type }}</p>

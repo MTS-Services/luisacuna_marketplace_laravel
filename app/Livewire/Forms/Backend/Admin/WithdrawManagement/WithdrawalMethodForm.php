@@ -25,6 +25,14 @@ class WithdrawalMethodForm extends Form
 
     public string $max_amount = '';
 
+    public string $daily_limit = '';
+
+    public string $weekly_limit = '';
+
+    public string $monthly_limit = '';
+
+    public string $per_transaction_limit = '';
+
     public string $processing_time = '';
 
     public string $fee_type = '';
@@ -49,6 +57,10 @@ class WithdrawalMethodForm extends Form
             'status' => 'required|string|in:'.implode(',', array_column(ActiveInactiveEnum::cases(), 'value')),
             'min_amount' => 'required|numeric|min:0',
             'max_amount' => 'nullable|numeric|gt:min_amount',
+            'daily_limit' => 'nullable|numeric|min:0',
+            'weekly_limit' => 'nullable|numeric|min:0',
+            'monthly_limit' => 'nullable|numeric|min:0',
+            'per_transaction_limit' => 'nullable|numeric|min:0',
             'processing_time' => 'nullable|string|max:100',
             'fee_type' => 'required|string|in:'.implode(',', array_column(WithdrawalFeeType::cases(), 'value')),
             'fee_amount' => 'nullable|numeric|min:0',
@@ -77,6 +89,10 @@ class WithdrawalMethodForm extends Form
         $this->status = $withdrawalMethod->status->value ?? ActiveInactiveEnum::ACTIVE->value;
         $this->min_amount = $withdrawalMethod->min_amount ?? '';
         $this->max_amount = $withdrawalMethod->max_amount ?? '';
+        $this->daily_limit = $withdrawalMethod->daily_limit ?? '';
+        $this->weekly_limit = $withdrawalMethod->weekly_limit ?? '';
+        $this->monthly_limit = $withdrawalMethod->monthly_limit ?? '';
+        $this->per_transaction_limit = $withdrawalMethod->per_transaction_limit ?? '';
         $this->processing_time = $withdrawalMethod->processing_time ?? '';
         $this->fee_type = $withdrawalMethod->fee_type->value ?? WithdrawalFeeType::FIXED->value;
         $this->fee_amount = $withdrawalMethod->fee_amount ?? '';
@@ -97,6 +113,10 @@ class WithdrawalMethodForm extends Form
         $this->status = ActiveInactiveEnum::ACTIVE->value;
         $this->min_amount = '';
         $this->max_amount = '';
+        $this->daily_limit = '';
+        $this->weekly_limit = '';
+        $this->monthly_limit = '';
+        $this->per_transaction_limit = '';
         $this->processing_time = '';
         $this->fee_type = WithdrawalFeeType::FIXED->value;
         $this->fee_amount = '';
@@ -121,6 +141,10 @@ class WithdrawalMethodForm extends Form
             'status' => $this->status,
             'min_amount' => $this->min_amount,
             'max_amount' => $this->max_amount,
+            'daily_limit' => $this->daily_limit,
+            'weekly_limit' => $this->weekly_limit,
+            'monthly_limit' => $this->monthly_limit,
+            'per_transaction_limit' => $this->per_transaction_limit,
             'processing_time' => $this->processing_time,
             'fee_type' => $this->fee_type,
             'fee_amount' => $this->fee_amount,
@@ -170,6 +194,10 @@ class WithdrawalMethodForm extends Form
             'status' => $this->status,
             'min_amount' => $this->min_amount,
             'max_amount' => $this->max_amount,
+            'daily_limit' => $this->daily_limit,
+            'weekly_limit' => $this->weekly_limit,
+            'monthly_limit' => $this->monthly_limit,
+            'per_transaction_limit' => $this->per_transaction_limit,
             'processing_time' => $this->processing_time,
             'fee_type' => $this->fee_type,
             'fee_amount' => $this->fee_amount,

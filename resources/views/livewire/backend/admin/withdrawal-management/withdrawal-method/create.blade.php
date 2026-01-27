@@ -44,8 +44,34 @@
                 </div>
 
                 <div class="w-full">
+                    <x-ui.label value="Daily Limit" class="mb-1" />
+                    <x-ui.input type="number" placeholder="Daily Limit" wire:model="form.daily_limit" />
+                    <x-ui.input-error :messages="$errors->get('form.daily_limit')" />
+                </div>
+
+                <div class="w-full">
+                    <x-ui.label value="Weekly Limit" class="mb-1" />
+                    <x-ui.input type="number" placeholder="Weekly Limit" wire:model="form.weekly_limit" />
+                    <x-ui.input-error :messages="$errors->get('form.weekly_limit')" />
+                </div>
+
+                <div class="w-full">
+                    <x-ui.label value="Monthly Limit" class="mb-1" />
+                    <x-ui.input type="number" placeholder="Monthly Limit" wire:model="form.monthly_limit" />
+                    <x-ui.input-error :messages="$errors->get('form.monthly_limit')" />
+                </div>
+
+                <div class="w-full">
+                    <x-ui.label value="Per Transaction Limit" class="mb-1" />
+                    <x-ui.input type="number" placeholder="Per Transaction Limit"
+                        wire:model="form.per_transaction_limit" />
+                    <x-ui.input-error :messages="$errors->get('form.per_transaction_limit')" />
+                </div>
+
+                <div class="w-full">
                     <x-ui.label value="Processing Time" class="mb-1" />
-                    <x-ui.input type="text" placeholder="Processing Time (e.g., 1-3 business days)" wire:model="form.processing_time" />
+                    <x-ui.input type="text" placeholder="Processing Time (e.g., 1-3 business days)"
+                        wire:model="form.processing_time" />
                     <x-ui.input-error :messages="$errors->get('form.processing_time')" />
                 </div>
 
@@ -110,7 +136,8 @@
                     <template x-if="fields.length > 0">
                         <div class="space-y-6">
                             <template x-for="(field, index) in fields" :key="field.id">
-                                <div class="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800" x-data="{ showOptions: ['select', 'radio', 'checkbox'].includes(field.input_type) }">
+                                <div class="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800"
+                                    x-data="{ showOptions: ['select', 'radio', 'checkbox'].includes(field.input_type) }">
 
                                     <div class="flex items-center justify-between mb-4">
                                         <h4 class="font-medium text-text-black dark:text-text-white">
