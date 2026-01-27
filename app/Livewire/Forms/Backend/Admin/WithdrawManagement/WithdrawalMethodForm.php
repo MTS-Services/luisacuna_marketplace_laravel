@@ -132,6 +132,11 @@ class WithdrawalMethodForm extends Form
         return ! empty($this->id);
     }
 
+    protected function emptyStringToNull(mixed $value): mixed
+    {
+        return $value === '' ? null : $value;
+    }
+
     public function fillables(): array
     {
         $data = [
@@ -140,15 +145,15 @@ class WithdrawalMethodForm extends Form
             'description' => $this->description,
             'status' => $this->status,
             'min_amount' => $this->min_amount,
-            'max_amount' => $this->max_amount,
-            'daily_limit' => $this->daily_limit,
-            'weekly_limit' => $this->weekly_limit,
-            'monthly_limit' => $this->monthly_limit,
-            'per_transaction_limit' => $this->per_transaction_limit,
+            'max_amount' => $this->emptyStringToNull($this->max_amount),
+            'daily_limit' => $this->emptyStringToNull($this->daily_limit),
+            'weekly_limit' => $this->emptyStringToNull($this->weekly_limit),
+            'monthly_limit' => $this->emptyStringToNull($this->monthly_limit),
+            'per_transaction_limit' => $this->emptyStringToNull($this->per_transaction_limit),
             'processing_time' => $this->processing_time,
             'fee_type' => $this->fee_type,
-            'fee_amount' => $this->fee_amount,
-            'fee_percentage' => $this->fee_percentage,
+            'fee_amount' => $this->emptyStringToNull($this->fee_amount),
+            'fee_percentage' => $this->emptyStringToNull($this->fee_percentage),
             'required_fields' => $this->processRequiredFields(),
             'icon' => $this->icon,
             'remove_icon' => $this->remove_icon,
