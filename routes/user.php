@@ -106,7 +106,8 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
             Route::get('/gateway/{slug}', 'getGatewayConfig')->name('gateway.config');
         });
 
-
+// NOWPayments IPN webhook
+Route::post('/nowpayments/ipn', [PaymentController::class, 'nowpaymentsWebhook'])->name('nowpayments.webhook');
     // Route::get('/payment/create/{id}', NowPayment::class)->name('payment.create');
     // Route::get('/payment/success', function () {
     //     return view('payment.success');
