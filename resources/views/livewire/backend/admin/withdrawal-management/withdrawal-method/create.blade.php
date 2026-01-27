@@ -45,7 +45,7 @@
 
                 <div class="w-full">
                     <x-ui.label value="Processing Time" class="mb-1" />
-                    <x-ui.input type="text" placeholder="Processing Time" wire:model="form.processing_time" />
+                    <x-ui.input type="text" placeholder="Processing Time (e.g., 1-3 business days)" wire:model="form.processing_time" />
                     <x-ui.input-error :messages="$errors->get('form.processing_time')" />
                 </div>
 
