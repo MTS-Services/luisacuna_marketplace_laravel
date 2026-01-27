@@ -24,6 +24,7 @@ return new class extends Migration
             $table->decimal('fee_amount', 15, 2)->default(0.00);
             $table->decimal('tax_amount', 15, 2)->default(0.00);
             $table->decimal('final_amount', 15, 2)->comment('Amount user receives after fees');
+            $table->text('note')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('withdrawal_method_id')->references('id')->on('withdrawal_methods')->onDelete('cascade');

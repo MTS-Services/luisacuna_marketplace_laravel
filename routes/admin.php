@@ -36,6 +36,7 @@ use App\Http\Controllers\Backend\Admin\ConversationManagement\ConversationContro
 use App\Http\Controllers\Backend\Admin\NotificationManagement\AnnouncementController;
 use App\Http\Controllers\Backend\Admin\NotificationManagement\NotificationController;
 use App\Http\Controllers\Backend\Admin\WithdrawalManagement\WithdrawalMethodController;
+use App\Http\Controllers\Backend\Admin\WithdrawalManagement\WithdrawalRequestController;
 use App\Http\Controllers\Backend\Admin\GatewayAndIntegration\GatewayAndIntegrationController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\CurrencyController as ProductCurrencyController;
 
@@ -124,6 +125,11 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
 
         });
         Route::controller(UserMethoadController::class)->name('user-method.')->prefix('user-method')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/view/{id}', 'show')->name('view');
+        });
+
+        Route::controller(WithdrawalRequestController::class)->name('request.')->prefix('request')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/view/{id}', 'show')->name('view');
         });

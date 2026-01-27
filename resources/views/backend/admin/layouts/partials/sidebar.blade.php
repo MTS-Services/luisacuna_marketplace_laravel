@@ -384,6 +384,12 @@
                             'icon' => 'wallet-minimal',
                             'active' => 'user-method',
                         ],
+                        [
+                            'name' => 'Withdrawal Requests',
+                            'route' => route('admin.wm.request.index'),
+                            'icon' => 'wallet-minimal',
+                            'active' => 'withdrawal-request',
+                        ],
                     ]" />
                 {{-- <x-backend.navlink type="dropdown" icon="squares-exclude" name="Gateway's & Integration"
                     :page_slug="$active" :items="[

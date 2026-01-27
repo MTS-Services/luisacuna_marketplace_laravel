@@ -6,6 +6,7 @@ use App\Enums\ActiveInactiveEnum;
 use App\Enums\WithdrawalFeeType;
 use App\Models\WithdrawalMethod as WithdrawalMethodModel;
 use App\Models\WithdrawalRequest;
+use App\Models\WithdrawalStatusHistory;
 use App\Services\CurrencyService;
 use App\Services\UserWithdrawalAccountService;
 use App\Services\WithdrawalMethodService;
@@ -106,7 +107,7 @@ class WithdrawalMethod extends Component
                 $feeAmount = $this->calculateFee($method, $amount);
                 $finalAmount = round($amount + $feeAmount, 2);
 
-                WithdrawalRequest::create([
+                $request = WithdrawalRequest::create([
                     'user_id' => user()->id,
                     'withdrawal_method_id' => $method->id,
                     'currency_id' => $this->getCurrencyId(),
@@ -114,6 +115,15 @@ class WithdrawalMethod extends Component
                     'fee_amount' => $feeAmount,
                     'tax_amount' => 0,
                     'final_amount' => $finalAmount,
+                ]);
+
+                WithdrawalStatusHistory::create([
+                    'withdrawal_request_id' => $request->id,
+                    'from_status' => null,
+                    'to_status' => 'pending',
+                    'changed_by' => null,
+                    'notes' => null,
+                    'metadata' => null,
                 ]);
             });
 
