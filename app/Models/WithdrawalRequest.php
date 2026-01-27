@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class WithdrawalRequest extends AuditBaseModel implements Auditable
 {
-    use   AuditableTrait;
+    use AuditableTrait;
     //
 
     protected $fillable = [
@@ -20,11 +20,10 @@ class WithdrawalRequest extends AuditBaseModel implements Auditable
         'final_amount',
         'currency_id',
         'sort_order',
-        'status',
         'verified_at',
         'last_used_at',
 
-      //here AuditColumns
+        // here AuditColumns
     ];
 
     protected $hidden = [
@@ -39,11 +38,14 @@ class WithdrawalRequest extends AuditBaseModel implements Auditable
                 Start of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-     //
+    public function withdrawalStatusHistory(): HasMany 
+    {
+        return $this->hasMany(WithdrawalStatusHistory::class, 'withdrawal_request_id', 'id');
+    }
 
-     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
-                End of RELATIONSHIPS
-     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+               End of RELATIONSHIPS
+    =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
     public function __construct(array $attributes = [])
     {
@@ -52,6 +54,4 @@ class WithdrawalRequest extends AuditBaseModel implements Auditable
             //
         ]);
     }
-
-
 }
