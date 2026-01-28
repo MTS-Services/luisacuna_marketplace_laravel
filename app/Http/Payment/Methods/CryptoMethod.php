@@ -61,23 +61,19 @@ class CryptoMethod extends PaymentMethod
             $order->load(['user', 'source.user']);
 
             return DB::transaction(function () use ($order, $paymentData) {
-                // Check if this is a top-up payment
                 $isTopUp = $paymentData['is_topup'] ?? false;
                 $topUpAmount = $paymentData['top_up_amount'] ?? null;
-
-                // Get display currency from payment data or use current
-                $displayCurrency = $paymentData['display_currency'] ?? $order->currency ?? currency_code();
+                $defultCurrency = $paymentData['default_currency'] ?? $order->currency ?? currency_code();
                 $exchangeRate = $paymentData['exchange_rate'] ?? 1;
-
-                // Determine the payment amount IN DISPLAY CURRENCY
                 $paymentAmount = $isTopUp ? $topUpAmount : $order->grand_total;
+                $paymentAmountDefault = $this->currencyService->convertToDefault($paymentAmount, $defultCurrency);
 
-                // Convert to default currency for internal storage
-                $paymentAmountDefault = $this->currencyService->convertToDefault(
-                    $paymentAmount,
-                    $displayCurrency
-                );
 
+                $gatewayCurrency = $this->currencyService->getDefaultCurrency()->code;
+                $gatewayAmount   = $paymentAmountDefault;
+
+
+                // Update order status to pending
                 $order->update([
                     'status' => OrderStatus::PENDING->value,
                     'payment_status' => 'pending',
@@ -86,30 +82,21 @@ class CryptoMethod extends PaymentMethod
 
                 $metadata = [
                     'is_topup' => $isTopUp,
-                    'display_currency' => $displayCurrency,
-                    'display_amount' => $paymentAmount,
+                    'default_currency' => $defultCurrency,
+                    'default_amount' => $paymentAmount,
                     'exchange_rate' => $exchangeRate,
                 ];
 
                 if ($isTopUp) {
-                    $topUpAmountDefault = $this->currencyService->convertToDefault(
-                        $topUpAmount,
-                        $displayCurrency
-                    );
-
-                    $orderTotalDefault = $this->currencyService->convertToDefault(
-                        $order->grand_total,
-                        $displayCurrency
-                    );
-
+                    $topUpAmountDefault = $this->currencyService->convertToDefault($topUpAmount, $defultCurrency);
                     $metadata['top_up_amount'] = $topUpAmount;
                     $metadata['top_up_amount_default'] = $topUpAmountDefault;
-                    $metadata['order_total_default'] = $orderTotalDefault;
                 }
 
                 // Create payment record
                 $payment = Payment::create([
-                    'payment_id' => generate_payment_id(),
+                    'payment_id' => null,
+                    'payment_intent_id' => null,
                     'user_id' => $order->user_id,
                     'order_id' => $order->id,
                     'name' => $order->user->full_name ?? null,
@@ -123,32 +110,22 @@ class CryptoMethod extends PaymentMethod
                     'metadata' => $metadata,
                 ]);
 
-                // Determine description and URLs
+                // Set success/cancel URLs
                 if ($isTopUp) {
-                    // $successUrl = route('user.payment.topup.success') . '?order_id=' . $order->order_id;
-                     $successUrl = route('user.payment.success') . "?invoice_id=test&order_id=" . $order->order_id;
-                    $cancelUrl = route('user.payment.failed') . '?order_id=' . $order->order_id;
+                    $successUrl = route('user.payment.success') . "?order_id={$order->order_id}";
+                    $cancelUrl = route('user.payment.failed') . "?order_id={$order->order_id}";
                     $description = "Wallet Top-up for Order #{$order->order_id}";
-                    $productName = 'Wallet Top-Up';
                 } else {
-                    $successUrl = route('user.payment.success') . '?order_id=' . $order->order_id;
-                    $cancelUrl = route('user.payment.failed') . '?order_id=' . $order->order_id;
-                    $description = 'Order ID: ' . $order->order_id;
-                    $productName = $order->source?->name ?? 'Order #' . $order->order_id;
+                    $successUrl = route('user.payment.success') . "?order_id={$order->order_id}";
+                    $cancelUrl = route('user.payment.failed') . "?order_id={$order->order_id}";
+                    $description = "Order ID: {$order->order_id}";
                 }
 
-                Log::info('Starting crypto payment', [
-                    'order_id' => $order->order_id,
-                    'amount' => $paymentAmount,
-                    'currency' => $displayCurrency,
-                    'is_topup' => $isTopUp,
-                ]);
-
-                // Create Invoice via NOWPayments API
+                // Create NOWPayments invoice
                 $response = Http::withHeaders($this->headers())
                     ->post("{$this->baseUrl}/invoice", [
-                        'price_amount' => (float) $paymentAmount,
-                        'price_currency' => strtolower($displayCurrency),
+                        'price_amount' => (float) $gatewayAmount,
+                        'price_currency' => strtolower($gatewayCurrency),
                         'order_id' => $order->order_id,
                         'order_description' => $description,
                         'ipn_callback_url' => url('/nowpayments/ipn'),
@@ -157,237 +134,72 @@ class CryptoMethod extends PaymentMethod
                     ]);
 
                 if ($response->failed()) {
+                    $payment->update(['status' => PaymentStatus::FAILED->value]);
                     $order->update([
                         'status' => OrderStatus::FAILED->value,
                         'payment_status' => 'failed',
                     ]);
 
-                    $payment->update([
-                        'status' => PaymentStatus::FAILED->value,
-                    ]);
-
-                    Log::error('NOWPayments Invoice creation failed', [
-                        'order_id' => $order->order_id,
-                        'status' => $response->status(),
-                        'response' => $response->body(),
-                    ]);
-
                     return [
                         'success' => false,
-                        'message' => 'Failed to create payment invoice. Please try again.',
+                        'message' => 'Failed to create payment invoice.',
                     ];
                 }
 
-                
                 $invoice = $response->json();
 
-               
-                if (!isset($invoice['id']) || empty($invoice['id'])) {
-                    Log::error('NOWPayments Invoice ID missing', [
-                        'order_id' => $order->order_id,
-                        'response' => $invoice,
-                    ]);
 
+                if (!isset($invoice['id'])) {
                     return [
                         'success' => false,
-                        'message' => 'Invoice ID not received from payment gateway.',
+                        'message' => 'Invoice ID missing from gateway.',
                     ];
                 }
 
-                $invoiceId = $invoice['id'];
-                $invoiceUrl = $invoice['invoice_url'] ?? null;
-
-                Log::info('NOWPayments Invoice created with currency', [
-                    'order_id' => $order->order_id,
-                    'invoice_id' => $invoiceId,
-                    'invoice_url' => $invoiceUrl,
-                    'payment_id' => $payment->payment_id,
-                    'is_topup' => $isTopUp,
-                    'display_amount' => $paymentAmount,
-                    'display_currency' => $displayCurrency,
-                    'default_amount' => $paymentAmountDefault,
-                    'default_currency' => $this->currencyService->getDefaultCurrency()->code,
-                ]);
-
+                // Store invoice ID in payment & order
                 $payment->update([
-                    'payment_intent_id' => $invoiceId,
+                    'payment_intent_id' => $invoice['id'],
                     'metadata' => array_merge($payment->metadata ?? [], [
-                        'checkout_url' => $invoiceUrl,
+                        'checkout_url' => $invoice['invoice_url'] ?? null,
                         'nowpayments_invoice' => $invoice,
                     ]),
                 ]);
 
-                $order->update([
-                    'payment_intent_id' => $invoiceId,
-                ]);
+                $order->update(['payment_intent_id' => $invoice['id']]);
 
                 return [
                     'success' => true,
                     'message' => 'Redirecting to payment gateway...',
-                    'checkout_url' => $invoiceUrl,
-                    'invoice_id' => $invoiceId,
+                    'checkout_url' => $invoice['invoice_url'] ?? null,
+                    'invoice_id' => $invoice['id'],
                     'payment_id' => $payment->payment_id,
                 ];
             });
         } catch (Exception $e) {
-            try {
-                $order->update([
-                    'status' => OrderStatus::FAILED->value,
-                    'payment_status' => 'failed',
-                ]);
-            } catch (Exception $ex) {
-                // Ignore if order update fails
-            }
+            $order->update([
+                'status' => OrderStatus::FAILED->value,
+                'payment_status' => 'failed',
+            ]);
 
-            Log::error('Crypto payment initialization failed', [
-                'order_id' => $order->order_id ?? 'unknown',
+            Log::error('Crypto payment init failed', [
+                'order_id' => $order->order_id ?? null,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
             ]);
 
             return [
                 'success' => false,
-                'message' => 'Failed to initialize crypto payment: ' . $e->getMessage(),
+                'message' => 'Failed to initialize payment: ' . $e->getMessage(),
             ];
         }
     }
 
 
-//     public function startPayment(Order $order, array $paymentData = []): array
-// {
-//     try {
-//         $order->load(['user', 'source.user']);
-
-//         return DB::transaction(function () use ($order, $paymentData) {
-//             $isTopUp = $paymentData['is_topup'] ?? false;
-//             $topUpAmount = $paymentData['top_up_amount'] ?? null;
-
-//             $displayCurrency = $paymentData['display_currency'] ?? $order->currency ?? currency_code();
-//             $paymentAmount = $isTopUp ? $topUpAmount : $order->grand_total;
-
-//             $paymentAmountDefault = $this->currencyService->convertToDefault($paymentAmount, $displayCurrency);
-
-//             $order->update([
-//                 'status' => OrderStatus::PENDING->value,
-//                 'payment_status' => 'pending',
-//                 'payment_method' => $this->name,
-//             ]);
-
-//             $metadata = [
-//                 'is_topup' => $isTopUp,
-//                 'display_currency' => $displayCurrency,
-//                 'display_amount' => $paymentAmount,
-//             ];
-
-//             // Create payment record
-//             $payment = Payment::create([
-//                 'payment_id' => generate_payment_id(),
-//                 'user_id' => $order->user_id,
-//                 'order_id' => $order->id,
-//                 'name' => $order->user->full_name ?? null,
-//                 'email_address' => $order->user->email ?? null,
-//                 'payment_gateway' => $this->id,
-//                 'amount' => $paymentAmountDefault,
-//                 'currency' => $this->currencyService->getDefaultCurrency()->code,
-//                 'status' => PaymentStatus::PENDING->value,
-//                 'creater_id' => $order->user_id,
-//                 'creater_type' => get_class($order->user),
-//                 'metadata' => $metadata,
-//             ]);
-
-//             $description = $isTopUp ? "Wallet Top-up for Order #{$order->order_id}" : 'Order ID: ' . $order->order_id;
-//             $cancelUrl = route('user.payment.failed') . '?order_id=' . $order->order_id;
-
-//             // ১) প্রথমে invoice create করি
-//             $response = Http::withHeaders($this->headers())
-//                 ->post("{$this->baseUrl}/invoice", [
-//                     'price_amount' => (float)$paymentAmount,
-//                     'price_currency' => strtolower($displayCurrency),
-//                     'order_id' => $order->order_id,
-//                     'order_description' => $description,
-//                     'ipn_callback_url' => url('/nowpayments/ipn'),
-//                     'success_url' => '', // পরে update করব
-//                     'cancel_url' => $cancelUrl,
-//                 ]);
-
-//             if ($response->failed()) {
-//                 $order->update([
-//                     'status' => OrderStatus::FAILED->value,
-//                     'payment_status' => 'failed',
-//                 ]);
-//                 $payment->update(['status' => PaymentStatus::FAILED->value]);
-
-//                 return [
-//                     'success' => false,
-//                     'message' => 'Failed to create payment invoice. Please try again.',
-//                 ];
-//             }
-
-//             $invoice = $response->json();
-//             $invoiceId = $invoice['id'] ?? null;
-//             $invoiceUrl = $invoice['invoice_url'] ?? null;
-
-//             if (!$invoiceId) {
-//                 return [
-//                     'success' => false,
-//                     'message' => 'Invoice ID not received from payment gateway.',
-//                 ];
-//             }
-
-//             // ২) এখন success_url তৈরি
-//             $successUrl = route('user.payment.success') 
-//                 . '?order_id=' . $order->order_id 
-//                 . '&invoice_id=' . $invoiceId;
-
-//             // ৩) invoice update করি success_url এর সাথে
-//             Http::withHeaders($this->headers())
-//                 ->put("{$this->baseUrl}/invoice/{$invoiceId}", [
-//                     'success_url' => $successUrl,
-//                     'cancel_url' => $cancelUrl,
-//                 ]);
-
-//             // payment এবং order update
-//             $payment->update([
-//                 'payment_intent_id' => $invoiceId,
-//                 'metadata' => array_merge($payment->metadata ?? [], [
-//                     'checkout_url' => $invoiceUrl,
-//                     'nowpayments_invoice' => $invoice,
-//                 ]),
-//             ]);
-
-//             $order->update([
-//                 'payment_intent_id' => $invoiceId,
-//             ]);
-
-//             return [
-//                 'success' => true,
-//                 'message' => 'Redirecting to payment gateway...',
-//                 'checkout_url' => $invoiceUrl,
-//                 'invoice_id' => $invoiceId,
-//                 'payment_id' => $payment->payment_id,
-//             ];
-//         });
-//     } catch (\Exception $e) {
-//         $order->update([
-//             'status' => OrderStatus::FAILED->value,
-//             'payment_status' => 'failed',
-//         ]);
-
-//         return [
-//             'success' => false,
-//             'message' => 'Failed to initialize crypto payment: ' . $e->getMessage(),
-//         ];
-//     }
-// }
 
     /**
      * Confirm payment after NOWPayments success
      */
     public function confirmPayment(string $invoiceId, ?string $paymentMethodId = null): array
     {
-        // dd($paymentMethodId);
-
-        // dd($invoiceId);
         try {
             $response = Http::withHeaders($this->headers())
                 ->get("{$this->baseUrl}/payment/{$invoiceId}");
@@ -397,18 +209,25 @@ class CryptoMethod extends PaymentMethod
             }
 
             $invoice = $response->json();
+
             $status = $invoice['payment_status'] ?? null;
+            $nowPaymentId = $invoice['payment_id'];
+            $nowInvoiceId = $invoice['invoice_id'];
 
-        
-
-            $payment = Payment::where('payment_intent_id', $invoiceId)
-            ->with(['order.user.wallet', 'order.source.user.wallet', 'user'])
+            // Fetch payment by invoice ID
+            $payment = Payment::where('payment_intent_id', $nowInvoiceId)
+                ->with(['order.user.wallet', 'order.source.user.wallet', 'user'])
                 ->first();
-            
-                // dd($payment);
 
             if (!$payment) {
                 throw new Exception('Payment record not found.');
+            }
+
+            // Store final payment_id once
+            if (!$payment->payment_id) {
+                $payment->update([
+                    'payment_id' => $nowPaymentId,
+                ]);
             }
 
             if ($payment->status === PaymentStatus::COMPLETED->value) {
@@ -434,7 +253,6 @@ class CryptoMethod extends PaymentMethod
             Log::error('Payment confirmation failed', [
                 'invoice_id' => $invoiceId,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
             ]);
 
             return [
@@ -450,9 +268,12 @@ class CryptoMethod extends PaymentMethod
      */
     protected function processTopUpPayment($invoice, Payment $payment, Order $order): array
     {
+
         return DB::transaction(function () use ($invoice, $payment, $order) {
             $payment->lockForUpdate();
             $order->lockForUpdate();
+
+           
 
             $topUpData = Session::get("topup_order_{$order->order_id}");
 
