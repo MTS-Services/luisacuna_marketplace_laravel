@@ -10,6 +10,7 @@ use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 
 class OtpVerify extends Component
@@ -286,7 +287,7 @@ class OtpVerify extends Component
         $user = User::find(session('registration.user_id'));
         if ($user && $user->email_verified_at) {
             $this->success('Email already verified.');
-            return $this->redirect(route('login'), navigate: true);
+            $this->redirect(route('profile', ['username' => $user->username]), navigate: true);
         }
 
         $this->validate();
@@ -328,8 +329,10 @@ class OtpVerify extends Component
             'email' => $user->email
         ]);
 
-        $this->success('Email verified successfully! You can now login.');
-        return $this->redirect(route('login'), navigate: true);
+        Auth::login($user);
+
+        $this->success('Email verified successfully!');
+       $this->redirect(route('profile', ['username' => $user->username]), navigate: true);
     }
 
     public function resendOtp()

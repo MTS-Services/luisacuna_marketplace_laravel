@@ -20,17 +20,22 @@ class PaymentController extends Controller
      */
     public function paymentSuccess(Request $request)
     {
+        // dd($request->all());
         $orderId = $request->query('order_id');
         $sessionId = $request->query('session_id');
+        $invoiceId = $request->query('NP_id');
+        $method = $request->query('method');
+
+
 
         // If coming from Stripe, confirm the payment
         if ($sessionId) {
+
             $gateway = PaymentGateway::where('slug', 'stripe')->first();
             if ($gateway) {
                 try {
                     $paymentMethod = $gateway->paymentMethod();
                     $result = $paymentMethod->confirmPayment($sessionId);
-
                     if (!$result['success']) {
                         Log::warning('Payment confirmation failed on success page', [
                             'session_id' => $sessionId,
@@ -41,6 +46,45 @@ class PaymentController extends Controller
                     Log::error('Error confirming payment on success page', [
                         'session_id' => $sessionId,
                         'error' => $e->getMessage(),
+                    ]);
+                }
+            }
+        }
+
+        // Crypto (NOWPayments) confirmation
+        if ($invoiceId) {
+            $gateway = PaymentGateway::where('slug', 'crypto')->first();
+
+            if ($gateway) {
+                try {
+                    $paymentMethod = $gateway->paymentMethod();
+                    $result = $paymentMethod->confirmPayment($invoiceId);
+
+                    // dd($result);
+                    Log::info('Crypto payment confirmation result', [
+                        'invoice_id' => $invoiceId,
+                        'order_id' => $orderId,
+                        'result' => $result,
+                    ]);
+
+                    if (!$result['success']) {
+                        Log::warning('Crypto payment confirmation failed', [
+                            'invoice_id' => $invoiceId,
+                            'order_id' => $orderId,
+                            'result' => $result,
+                        ]);
+
+                        // Don't redirect yet, show a pending message
+                        return view('user.payment.pending', [
+                            'order_id' => $orderId,
+                            'message' => $result['message'] ?? 'Payment is being processed',
+                        ]);
+                    }
+                } catch (\Exception $e) {
+                    Log::error('Error confirming crypto payment', [
+                        'invoice_id' => $invoiceId,
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString(),
                     ]);
                 }
             }
@@ -61,7 +105,6 @@ class PaymentController extends Controller
 
         return redirect()->route('user.order.complete', ['orderId' => $orderId]);
     }
-
     /**
      * Top-up payment success page
      * This handles the success callback for wallet top-up payments
