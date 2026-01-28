@@ -178,13 +178,12 @@ class Show extends Component
             ]);
         }
 
-        // Update wallet: Deduct from both balance and pending_balance
-        $newBalance = max(0, (float) $wallet->balance - $finalAmount);
+        // Update wallet: move funds from pending to total withdrawals (balance already deducted when request created)
+        $currentBalance = (float) $wallet->balance;
         $newPendingBalance = max(0, (float) $wallet->pending_balance - $finalAmount);
         $newTotalWithdrawals = (float) $wallet->total_withdrawals + $finalAmount;
 
         $wallet->update([
-            'balance' => $newBalance,
             'pending_balance' => $newPendingBalance,
             'total_withdrawals' => $newTotalWithdrawals,
             'last_withdrawal_at' => now(),
@@ -194,7 +193,7 @@ class Show extends Component
             'request_id' => $request->id,
             'user_id' => $request->user_id,
             'final_amount' => $finalAmount,
-            'new_balance' => $newBalance,
+            'new_balance' => $currentBalance,
             'new_pending_balance' => $newPendingBalance,
             'approved_by' => admin()?->id,
         ]);
@@ -252,10 +251,12 @@ class Show extends Component
             ]);
         }
 
-        // Update wallet: Release funds from pending_balance only (balance stays same)
+        // Update wallet: release funds back to available balance and reduce pending balance
         $newPendingBalance = max(0, (float) $wallet->pending_balance - $finalAmount);
+        $restoredBalance = (float) $wallet->balance + $finalAmount;
 
         $wallet->update([
+            'balance' => $restoredBalance,
             'pending_balance' => $newPendingBalance,
         ]);
 
@@ -263,7 +264,7 @@ class Show extends Component
             'request_id' => $request->id,
             'user_id' => $request->user_id,
             'final_amount' => $finalAmount,
-            'balance' => $wallet->balance, // Balance unchanged
+            'balance' => $restoredBalance,
             'new_pending_balance' => $newPendingBalance,
             'rejected_by' => admin()?->id,
             'reason' => $notes,
