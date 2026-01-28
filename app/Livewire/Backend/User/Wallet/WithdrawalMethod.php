@@ -300,7 +300,6 @@ class WithdrawalMethod extends Component
         return WithdrawalRequest::with(['withdrawalMethod', 'currentStatusHistory'])
             ->where('user_id', user()->id)
             ->latest()
-            ->limit(5)
-            ->get();
+            ->paginate(10);
     }
 }

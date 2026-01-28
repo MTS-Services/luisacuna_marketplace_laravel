@@ -130,7 +130,7 @@
 
                 <div class="flex items-center gap-2 text-xs text-gray-500 mb-4">
                     <i data-lucide="clock" class="w-4 h-4"></i>
-                    <span class="text-text-secondary/80">{{ __('1-3 business days') }}</span>
+                    <span class="text-text-secondary/80">{{ $method->processing_time }} {{ __('business days') }}</span>
                 </div>
 
                 @if (
@@ -292,11 +292,6 @@
                 <h2 class="text-2xl font-bold text-text-white mb-2">{{ __('Recent Transactions') }}</h2>
                 <p class="text-text-secondary">{{ __('Votre dernier historique de retrait') }}</p>
             </div>
-            <button
-                class="text-purple-600 font-semibold hover:text-purple-700 transition-colors duration-200 flex items-center gap-2">
-                {{ __('View All') }}
-                <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </button>
         </div>
 
         <div class="glass-card rounded-xl overflow-hidden">
@@ -364,5 +359,10 @@
                 </div>
             @endif
         </div>
+        @if ($recentWithdrawals->hasPages())
+            <div class="mt-4">
+                {{ $recentWithdrawals->links() }}
+            </div>
+        @endif
     </div>
 </div>
