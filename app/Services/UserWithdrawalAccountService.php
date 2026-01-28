@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\DB;
+use App\Enums\UserWithdrawalAccount as UserWithdrawalAccountEnum;
 use App\Models\UserWithdrawalAccount;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-use App\Enums\UserWithdrawalAccount as UserWithdrawalAccountEnum;
 
 class UserWithdrawalAccountService
 {
@@ -17,7 +17,6 @@ class UserWithdrawalAccountService
     /**
      * Get all user withdrawal accounts
      */
-
     public function getAllDatas($sortField = 'created_at', $order = 'desc', array $with = []): Collection
     {
         return $this->model
@@ -27,7 +26,6 @@ class UserWithdrawalAccountService
             ->get();
     }
 
-
     public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         $search = $filters['search'] ?? null;
@@ -36,9 +34,10 @@ class UserWithdrawalAccountService
 
         if ($search) {
             return UserWithdrawalAccount::search($search)
-                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->query(fn ($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
         }
+
         return $this->model->query()
             ->with('user', 'withdrawalMethod')
             ->filter($filters)
@@ -63,7 +62,6 @@ class UserWithdrawalAccountService
     //         ->orderBy($sortField, $sortDirection)
     //         ->paginate($perPage);
     // }
-
 
     public function getUserAccounts(int $userId, array $filters = []): Collection
     {
@@ -94,6 +92,7 @@ class UserWithdrawalAccountService
             ->where('user_id', $userId)
             ->first();
     }
+
     /**
      * Find account by ID
      */
@@ -103,6 +102,7 @@ class UserWithdrawalAccountService
             ->where('id', $id)
             ->first();
     }
+
     /**
      * Create new withdrawal account
      */
@@ -127,15 +127,35 @@ class UserWithdrawalAccountService
         return DB::transaction(function () use ($id, $userId, $data) {
             $account = $this->findAccount($id, $userId);
 
-            if (!$account) {
+            if (! $account) {
                 return null;
             }
 
             // Handle file uploads
             if (isset($data['account_data'])) {
                 $oldData = $account->account_data;
+
+                if (is_string($oldData)) {
+                    $decoded = json_decode($oldData, true);
+                    $oldData = is_array($decoded) ? $decoded : [];
+                }
+
                 $newData = $this->handleFileUploads($data['account_data'], $oldData);
                 $data['account_data'] = $newData;
+            }
+
+            if (
+                $account->status === UserWithdrawalAccountEnum::DECLINED ||
+                $account->status === UserWithdrawalAccountEnum::PENDING
+            ) {
+                $data = array_merge($data, [
+                    'status' => UserWithdrawalAccountEnum::PENDING->value,
+                    'is_verified' => false,
+                    'verified_at' => null,
+                    'note' => null,
+                    'audit_by' => null,
+                    'audit_at' => null,
+                ]);
             }
 
             $account->update($data);
@@ -143,6 +163,14 @@ class UserWithdrawalAccountService
             return $account->fresh();
         });
     }
+
+    // public function updateAccount(UserWithdrawalAccount $account, array $data)
+    // {
+    //     return $account->update([
+    //         'account_name' => $data['account_name'],
+    //         'account_data' => $data['account_data'],
+    //     ]);
+    // }
 
     /**
      * Delete withdrawal account
@@ -161,7 +189,7 @@ class UserWithdrawalAccountService
             // Set new default
             $account = $this->findAccount($id, $userId);
 
-            if (!$account) {
+            if (! $account) {
                 return false;
             }
 
@@ -184,8 +212,8 @@ class UserWithdrawalAccountService
                 }
 
                 // Store new file
-                $prefix = uniqid('WA-') . '-' . time();
-                $fileName = $prefix . '-' . $value->getClientOriginalName();
+                $prefix = uniqid('WA-').'-'.time();
+                $fileName = $prefix.'-'.$value->getClientOriginalName();
                 $path = Storage::disk('public')->putFileAs('withdrawal-accounts', $value, $fileName);
 
                 $data[$key] = $path;
@@ -205,7 +233,7 @@ class UserWithdrawalAccountService
     {
         $account = $this->model->find($id);
 
-        if (!$account) {
+        if (! $account) {
             return false;
         }
 
@@ -217,11 +245,12 @@ class UserWithdrawalAccountService
             'audit_at' => now(),
         ]);
     }
+
     public function rejectAccount(int $id, string $note, array $data): bool
     {
         $account = $this->model->find($id);
 
-        if (!$account) {
+        if (! $account) {
             return false;
         }
 

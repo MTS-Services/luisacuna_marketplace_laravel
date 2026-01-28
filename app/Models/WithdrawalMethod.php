@@ -25,6 +25,10 @@ class WithdrawalMethod extends AuditBaseModel implements Auditable
         'icon',
         'min_amount',
         'max_amount',
+        'daily_limit',
+        'weekly_limit',
+        'monthly_limit',
+        'per_transaction_limit',
         'processing_time',
         'fee_type',
         'fee_amount',
@@ -62,7 +66,7 @@ class WithdrawalMethod extends AuditBaseModel implements Auditable
     }
     public function userWithdrawalAccounts(): HasMany
     {
-        return $this->hasMany(UserWithdrawalAccount::class);
+        return $this->hasMany(UserWithdrawalAccount::class,'withdrawal_method_id','id');
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

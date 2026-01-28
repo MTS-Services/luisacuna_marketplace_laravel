@@ -2,16 +2,15 @@
 
 namespace App\Livewire\Backend\Admin\WithdrawalManagement\WithdrawalMethod;
 
+use App\Enums\ActiveInactiveEnum;
+use App\Enums\WithdrawalFeeType;
 use App\Livewire\Forms\Backend\Admin\WithdrawManagement\WithdrawalMethodForm;
 use App\Services\WithdrawalMethodService;
 use App\Traits\Livewire\WithNotification;
-use Livewire\Component;
-use Livewire\WithFileUploads;
-use App\Enums\ActiveInactiveEnum;
-use App\Enums\WithdrawalFeeType;
-use App\Models\WithdrawalMethod;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Create extends Component
 {
@@ -20,7 +19,6 @@ class Create extends Component
     public WithdrawalMethodForm $form;
 
     protected WithdrawalMethodService $service;
-
 
     public function boot(WithdrawalMethodService $service)
     {
@@ -55,9 +53,9 @@ class Create extends Component
 
     public function save()
     {
-        // Validate the form
-        $data = $this->form->validate();
-
+        // Validate the form and gather normalized payload (ensures icon + processed fields)
+        $this->form->validate();
+        $data = $this->form->fillables();
 
         DB::beginTransaction();
 
@@ -73,10 +71,10 @@ class Create extends Component
             DB::rollBack();
 
             // Log the error
-            Log::error('Withdrawal Method Creation Error: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
+            Log::error('Withdrawal Method Creation Error: '.$e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
             ]);
-            $this->error('Failed to create withdrawal method.' . $e->getMessage());
+            $this->error('Failed to create withdrawal method.'.$e->getMessage());
         }
     }
 

@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="glass-card rounded-2xl p-6 mb-6">
-        <form wire:submit="save">
+        <form wire:submit="update">
             <div class="mt-6 grid grid-cols-2 gap-5">
                 <div class="w-full">
                     {{-- Label --}}
@@ -28,38 +28,9 @@
                         placeholder="{{ __('Enter your account name') }}"></x-ui.input>
                     <x-ui.input-error :messages="$errors->get('account_name')" />
                 </div>
+
                 @foreach ($dynamicFields as $field)
                     <div class="w-full">
-                        {{-- Dynamic Fields --}}
-                        {{-- @foreach (json_decode($method->required_fields, true) as $fieldName => $fieldRules)
-                            @php
-                                $field = [
-                                    'name' => $fieldName,
-                                    'validation' => $fieldRules,
-                                    'label' => Str::title(str_replace('_', ' ', $fieldName)),
-                                    'input_type' => 'text',
-                                    'placeholder' => 'Enter ' . Str::lower(str_replace('_', ' ', $fieldName)),
-                                ];
-
-                                // Detect input type from field name
-                                if (Str::contains($fieldName, 'email')) {
-                                    $field['input_type'] = 'email';
-                                } elseif (Str::contains($fieldName, ['phone', 'mobile', 'number'])) {
-                                    $field['input_type'] = 'tel';
-                                }
-                            @endphp
-
-                            <div class="w-full">
-                                <x-ui.label :value="$field['label']" class="mb-1" />
-
-                                <x-ui.input type="{{ $field['input_type'] }}"
-                                    wire:model="account_data.{{ Str::snake(Str::snake($field['name'])) }}"
-                                    placeholder="{{ $field['placeholder'] }}" />
-
-                                <x-ui.input-error :messages="$errors->get('account_data.' . Str::snake(Str::snake($field['name'])))" />
-                            </div>
-                        @endforeach --}}
-
                         {{-- Label --}}
                         <x-ui.label :value="$field['label']" class="mb-1" />
 
@@ -142,9 +113,9 @@
 
                 <x-ui.button class="w-auto! py-2!" type="submit">
                     <span wire:loading.remove wire:target="save"
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Create') }}</span>
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Update') }}</span>
                     <span wire:loading wire:target="save"
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Saving...') }}</span>
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Updating...') }}</span>
                 </x-ui.button>
             </div>
         </form>
