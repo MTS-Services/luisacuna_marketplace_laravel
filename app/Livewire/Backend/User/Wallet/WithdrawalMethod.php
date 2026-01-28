@@ -271,6 +271,36 @@ class WithdrawalMethod extends Component
 
         return view('livewire.backend.user.wallet.withdrawal-method', [
             'methods' => $methods,
+            'walletSummary' => $this->walletSummary(),
+            'recentWithdrawals' => $this->recentWithdrawals(),
         ]);
+    }
+
+    protected function walletSummary(): object
+    {
+        $currency = $this->currencyService->getCurrentCurrency();
+
+        $walletQuery = Wallet::where('user_id', user()->id);
+
+        if ($currency?->code) {
+            $walletQuery->where('currency_code', $currency->code);
+        }
+
+        $wallet = $walletQuery->first();
+
+        return (object) [
+            'available' => (float) ($wallet?->balance ?? 0),
+            'pending' => (float) ($wallet?->pending_balance ?? 0),
+            'total_withdrawn' => (float) ($wallet?->total_withdrawals ?? 0),
+        ];
+    }
+
+    protected function recentWithdrawals()
+    {
+        return WithdrawalRequest::with(['withdrawalMethod', 'currentStatusHistory'])
+            ->where('user_id', user()->id)
+            ->latest()
+            ->limit(5)
+            ->get();
     }
 }

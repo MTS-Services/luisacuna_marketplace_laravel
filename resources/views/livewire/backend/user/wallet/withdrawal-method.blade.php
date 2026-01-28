@@ -32,7 +32,7 @@
                 <div>
                     <p class="text-white/80 text-sm mb-1">{{ __('Available Balance') }}</p>
                     <h2 class="text-4xl md:text-5xl font-bold text-white">
-                        {{ currency_symbol() }}{{ currency_exchange(2450) }}
+                        {{ currency_symbol() }}{{ currency_exchange($walletSummary->available ?? 0) }}
                     </h2>
                 </div>
                 <div class="bg-white/20 p-4 rounded-xl backdrop-blur-sm">
@@ -44,22 +44,22 @@
                 <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
                     <p class="text-white/80 text-xs mb-1">{{ __('Pending') }}</p>
                     <p class="text-xl font-semibold text-white">
-                        {{ currency_symbol() }}{{ currency_exchange(2450) }}
+                        {{ currency_symbol() }}{{ currency_exchange($walletSummary->pending ?? 0) }}
                     </p>
                 </div>
                 <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
                     <p class="text-white/80 text-xs mb-1">{{ __('Total Withdrawn') }}</p>
                     <p class="text-xl font-semibold text-white">
-                        {{ currency_symbol() }}{{ currency_exchange(2450) }}
+                        {{ currency_symbol() }}{{ currency_exchange($walletSummary->total_withdrawn ?? 0) }}
                     </p>
                 </div>
             </div>
 
-            <button
+            {{-- <button type="button" wire:click="openWithdrawalModal"
                 class="mt-6 w-full bg-white text-purple-600 font-semibold py-3 px-6 rounded-xl hover:bg-gray-50 transition-all duration-200 flex items-center justify-center gap-2">
                 <i data-lucide="arrow-down-to-line" class="w-5 h-5"></i>
                 {{ __('Request Withdrawal') }}
-            </button>
+            </button> --}}
         </div>
     </div>
 
@@ -300,68 +300,69 @@
         </div>
 
         <div class="glass-card rounded-xl overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead class="bg-purple-50">
-                        <tr>
-                            <th
-                                class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                {{ __('Date') }}</th>
-                            <th
-                                class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                {{ __('Method') }}</th>
-                            <th
-                                class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                {{ __('Amount') }}</th>
-                            <th
-                                class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                {{ __('Fee') }}</th>
-                            <th
-                                class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                {{ __('Status') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        <tr class="hover:bg-gray-50 transition-colors duration-150">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-text-white">Jan 05, 2026</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-text-white">Payoneer</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-text-white">$500.00</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">$10.00</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    Completed
-                                </span>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 transition-colors duration-150">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-text-white">Jan 03, 2026</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-text-white">Bank Transfer</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-text-white">$1,200.00
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">$5.00</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                    Processing
-                                </span>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 transition-colors duration-150">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-text-white">Dec 28, 2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-text-white">Payoneer</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-text-white">$750.00</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">$15.00</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    Completed
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            @if ($recentWithdrawals->isEmpty())
+                <div class="p-6 text-center text-text-secondary">
+                    {{ __('No recent withdrawals yet.') }}
+                </div>
+            @else
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-purple-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                                    {{ __('Date') }}</th>
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                                    {{ __('Method') }}</th>
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                                    {{ __('Amount') }}</th>
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                                    {{ __('Fee') }}</th>
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                                    {{ __('Status') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            @foreach ($recentWithdrawals as $withdrawal)
+                                <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-white">
+                                        {{ $withdrawal->created_at?->format('M d, Y') }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-white">
+                                        {{ $withdrawal->withdrawalMethod?->name ?? 'N/A' }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-text-white">
+                                        {{ currency_symbol() }}{{ currency_exchange($withdrawal->amount) }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">
+                                        {{ currency_symbol() }}{{ currency_exchange($withdrawal->fee_amount) }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @php
+                                            $statusLabel = $withdrawal->current_status_label;
+                                            $statusValue = $withdrawal->current_status ?? '';
+                                            $color = match (Str::lower($statusValue)) {
+                                                'completed', 'accepted' => 'bg-green-100 text-green-800',
+                                                'pending' => 'bg-yellow-100 text-yellow-800',
+                                                'rejected', 'canceled' => 'bg-red-100 text-red-800',
+                                                default => 'bg-gray-100 text-gray-800',
+                                            };
+                                        @endphp
+                                        <span
+                                            class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {{ $color }}">
+                                            {{ $statusLabel }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
         </div>
     </div>
 </div>
