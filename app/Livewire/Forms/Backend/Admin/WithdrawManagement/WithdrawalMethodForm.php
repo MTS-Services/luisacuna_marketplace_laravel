@@ -31,8 +31,6 @@ class WithdrawalMethodForm extends Form
 
     public string $monthly_limit = '';
 
-    public string $per_transaction_limit = '';
-
     public string $processing_time = '';
 
     public string $fee_type = '';
@@ -60,7 +58,6 @@ class WithdrawalMethodForm extends Form
             'daily_limit' => 'nullable|numeric|min:0',
             'weekly_limit' => 'nullable|numeric|min:0',
             'monthly_limit' => 'nullable|numeric|min:0',
-            'per_transaction_limit' => 'nullable|numeric|min:0',
             'processing_time' => 'nullable|string|max:100',
             'fee_type' => 'required|string|in:'.implode(',', array_column(WithdrawalFeeType::cases(), 'value')),
             'fee_amount' => 'nullable|numeric|min:0',
@@ -92,7 +89,6 @@ class WithdrawalMethodForm extends Form
         $this->daily_limit = $withdrawalMethod->daily_limit ?? '';
         $this->weekly_limit = $withdrawalMethod->weekly_limit ?? '';
         $this->monthly_limit = $withdrawalMethod->monthly_limit ?? '';
-        $this->per_transaction_limit = $withdrawalMethod->per_transaction_limit ?? '';
         $this->processing_time = $withdrawalMethod->processing_time ?? '';
         $this->fee_type = $withdrawalMethod->fee_type->value ?? WithdrawalFeeType::FIXED->value;
         $this->fee_amount = $withdrawalMethod->fee_amount ?? '';
@@ -116,7 +112,6 @@ class WithdrawalMethodForm extends Form
         $this->daily_limit = '';
         $this->weekly_limit = '';
         $this->monthly_limit = '';
-        $this->per_transaction_limit = '';
         $this->processing_time = '';
         $this->fee_type = WithdrawalFeeType::FIXED->value;
         $this->fee_amount = '';
@@ -149,7 +144,6 @@ class WithdrawalMethodForm extends Form
             'daily_limit' => $this->emptyStringToNull($this->daily_limit),
             'weekly_limit' => $this->emptyStringToNull($this->weekly_limit),
             'monthly_limit' => $this->emptyStringToNull($this->monthly_limit),
-            'per_transaction_limit' => $this->emptyStringToNull($this->per_transaction_limit),
             'processing_time' => $this->processing_time,
             'fee_type' => $this->fee_type,
             'fee_amount' => $this->emptyStringToNull($this->fee_amount),
@@ -202,7 +196,6 @@ class WithdrawalMethodForm extends Form
             'daily_limit' => $this->daily_limit,
             'weekly_limit' => $this->weekly_limit,
             'monthly_limit' => $this->monthly_limit,
-            'per_transaction_limit' => $this->per_transaction_limit,
             'processing_time' => $this->processing_time,
             'fee_type' => $this->fee_type,
             'fee_amount' => $this->fee_amount,

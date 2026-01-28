@@ -343,7 +343,6 @@ class WithdrawalMethod extends Component
         $monthCount = (clone $monthQuery)->count();
 
         $limits = [
-            'per_transaction_limit' => $this->normalizeLimit($method->per_transaction_limit),
             'daily_limit' => $this->normalizeLimit($method->daily_limit),
             'weekly_limit' => $this->normalizeLimit($method->weekly_limit),
             'monthly_limit' => $this->normalizeLimit($method->monthly_limit),
@@ -364,7 +363,6 @@ class WithdrawalMethod extends Component
         }
 
         return $this->limitContextCache[$method->id] = [
-            'per_transaction_limit' => $limits['per_transaction_limit'],
             'daily_limit' => $limits['daily_limit'],
             'weekly_limit' => $limits['weekly_limit'],
             'monthly_limit' => $limits['monthly_limit'],
@@ -394,12 +392,6 @@ class WithdrawalMethod extends Component
     {
         $context = $this->buildLimitContext($method);
         $errors = [];
-
-        if (! is_null($context['per_transaction_limit']) && $amount > $context['per_transaction_limit']) {
-            $errors[] = __('The requested amount exceeds the per-transaction limit of :limit.', [
-                'limit' => currency_symbol().currency_exchange($context['per_transaction_limit']),
-            ]);
-        }
 
         if (! is_null($context['daily_limit'])) {
             $nextCount = $context['daily_count'] + 1;

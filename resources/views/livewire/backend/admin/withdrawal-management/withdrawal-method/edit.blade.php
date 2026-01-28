@@ -62,13 +62,6 @@
                 </div>
 
                 <div class="w-full">
-                    <x-ui.label value="Per Transaction Limit" class="mb-1" />
-                    <x-ui.input type="number" placeholder="Per Transaction Limit"
-                        wire:model="form.per_transaction_limit" />
-                    <x-ui.input-error :messages="$errors->get('form.per_transaction_limit')" />
-                </div>
-
-                <div class="w-full">
                     <x-ui.label value="Processing Time" class="mb-1" />
                     <x-ui.input type="text" placeholder="Processing Time" wire:model="form.processing_time" />
                     <x-ui.input-error :messages="$errors->get('form.processing_time')" />

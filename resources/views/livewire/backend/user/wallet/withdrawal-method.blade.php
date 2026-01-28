@@ -75,7 +75,8 @@
             @php
                 $limitContext = ($limitContexts ?? [])[$method->id] ?? null;
             @endphp
-            <div class="glass-card rounded-2xl p-6 hover-scale border border-gray-200/30 backdrop-blur-lg">
+            <div
+                class="glass-card rounded-2xl p-6 hover-scale border border-gray-200/30 backdrop-blur-lg h-full flex flex-col">
                 <div class="flex items-start justify-between mb-4">
                     <div class="bg-linear-to-br from-purple-100 to-pink-100 p-3 rounded-xl">
                         <i data-lucide="credit-card" class="w-6 h-6 text-purple-600"></i>
@@ -136,59 +137,61 @@
                         {{ __('business days') }}</span>
                 </div>
 
-                @if ($limitContext && ($limitContext['blocked'] ?? false))
-                    <div
-                        class="rounded-xl bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-500/40 p-3 mb-4">
-                        <p class="text-sm text-red-600 dark:text-red-300 font-semibold">
-                            {{ $limitContext['blocked_reason'] ?? __('Withdrawal limit reached.') }}
-                        </p>
-                    </div>
-                @endif
-
-                @if (
-                    $method->userWithdrawalAccounts->isNotEmpty() &&
-                        $method->userWithdrawalAccounts?->first()->status?->value == 'active')
+                <div class="mt-auto space-y-4">
                     @if ($limitContext && ($limitContext['blocked'] ?? false))
-                        <x-ui.button class="w-full py-2! px-6!" type="button" :disabled="true" variant="tertiary">
-                            <span class="text-text-white">{{ __('Limit Reached') }}</span>
-                        </x-ui.button>
-                    @else
-                        <x-ui.button class="w-full py-2! px-6!" type="button"
-                            wire:click="openWithdrawalModal({{ $method->id }})">
-                            <span
-                                class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Request Withdrawal') }}</span>
-                        </x-ui.button>
-                    @endif
-                @elseif (
-                    $method->userWithdrawalAccounts->isNotEmpty() &&
-                        $method->userWithdrawalAccounts?->first()->status?->value == 'pending')
-                    <x-ui.button class="w-full py-2! px-6! hover:bg-pink-500!" :disabled="true" variant="tertiary">
-                        <span class="text-text-btn-primary">{{ __('Verify Pending') }}</span>
-                    </x-ui.button>
-                @elseif(!$method->userWithdrawalAccounts->isNotEmpty())
-                    <x-ui.button href="{{ route('user.wallet.withdrawal-form', encrypt($method->id)) }}"
-                        class="w-full py-2! px-6!" variant="secondary">
-                        <span
-                            class="text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Add Method') }}</span>
-                    </x-ui.button>
-                @elseif($method->userWithdrawalAccounts?->first()->status?->value == 'declined')
-                    <div class="flex justify-between gap-3">
-                        <div class="">
-                            <x-ui.button type="button"
-                                wire:click="openModal({{ $method->userWithdrawalAccounts?->first()->id }})"
-                                variant="tertiary" class="w-auto! py-2! z-50!">
-                                {{ __('Reason') }}
-                            </x-ui.button>
+                        <div
+                            class="rounded-xl bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-500/40 p-3">
+                            <p class="text-sm text-red-600 dark:text-red-300 font-semibold">
+                                {{ $limitContext['blocked_reason'] ?? __('Withdrawal limit reached.') }}
+                            </p>
                         </div>
+                    @endif
 
-                        <x-ui.button
-                            href="{{ route('user.wallet.withdrawal-form-update', encrypt($method->userWithdrawalAccounts->first()->id)) }}"
+                    @if (
+                        $method->userWithdrawalAccounts->isNotEmpty() &&
+                            $method->userWithdrawalAccounts?->first()->status?->value == 'active')
+                        @if ($limitContext && ($limitContext['blocked'] ?? false))
+                            <x-ui.button class="w-full py-2! px-6!" type="button" :disabled="true" variant="tertiary">
+                                <span class="text-text-white">{{ __('Limit Reached') }}</span>
+                            </x-ui.button>
+                        @else
+                            <x-ui.button class="w-full py-2! px-6!" type="button"
+                                wire:click="openWithdrawalModal({{ $method->id }})">
+                                <span
+                                    class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Request Withdrawal') }}</span>
+                            </x-ui.button>
+                        @endif
+                    @elseif (
+                        $method->userWithdrawalAccounts->isNotEmpty() &&
+                            $method->userWithdrawalAccounts?->first()->status?->value == 'pending')
+                        <x-ui.button class="w-full py-2! px-6! hover:bg-pink-500!" :disabled="true" variant="tertiary">
+                            <span class="text-text-btn-primary">{{ __('Verify Pending') }}</span>
+                        </x-ui.button>
+                    @elseif(!$method->userWithdrawalAccounts->isNotEmpty())
+                        <x-ui.button href="{{ route('user.wallet.withdrawal-form', encrypt($method->id)) }}"
                             class="w-full py-2! px-6!" variant="secondary">
                             <span
-                                class="text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Re-Submit') }}</span>
+                                class="text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Add Method') }}</span>
                         </x-ui.button>
-                    </div>
-                @endif
+                    @elseif($method->userWithdrawalAccounts?->first()->status?->value == 'declined')
+                        <div class="flex justify-between gap-3">
+                            <div class="">
+                                <x-ui.button type="button"
+                                    wire:click="openModal({{ $method->userWithdrawalAccounts?->first()->id }})"
+                                    variant="tertiary" class="w-auto! py-2! z-50!">
+                                    {{ __('Reason') }}
+                                </x-ui.button>
+                            </div>
+
+                            <x-ui.button
+                                href="{{ route('user.wallet.withdrawal-form-update', encrypt($method->userWithdrawalAccounts->first()->id)) }}"
+                                class="w-full py-2! px-6!" variant="secondary">
+                                <span
+                                    class="text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Re-Submit') }}</span>
+                            </x-ui.button>
+                        </div>
+                    @endif
+                </div>
             </div>
         @endforeach
     </div>
