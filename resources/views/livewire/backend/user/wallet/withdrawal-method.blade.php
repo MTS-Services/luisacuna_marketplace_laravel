@@ -71,10 +71,11 @@
 
     <!-- Withdrawal Methods Grid -->
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Withdrawal Method Cards -->
         @foreach ($methods as $method)
-            <div
-                class="glass-card box-shadow bg-bg-secondary rounded-xl p-6 hover-scale border-2 border-transparent dark:border-zinc-700 hover:border-purple-500 transition-all duration-200">
+            @php
+                $limitContext = ($limitContexts ?? [])[$method->id] ?? null;
+            @endphp
+            <div class="glass-card rounded-2xl p-6 hover-scale border border-gray-200/30 backdrop-blur-lg">
                 <div class="flex items-start justify-between mb-4">
                     <div class="bg-linear-to-br from-purple-100 to-pink-100 p-3 rounded-xl">
                         <i data-lucide="credit-card" class="w-6 h-6 text-purple-600"></i>
@@ -93,7 +94,8 @@
 
                 <h3 class="text-xl font-bold text-text-white mb-2">{{ $method->name }}</h3>
                 <p class="text-sm text-text-secondary mb-4">{{ __('Withdraw funds using ') }} <span
-                        class="font-semibold text-text-secondary">{{ $method->name }}</span> {{ __('account') }}</p>
+                        class="font-semibold text-text-secondary">{{ $method->name }}</span> {{ __('account') }}
+                </p>
 
                 <div class="space-y-2 mb-4">
                     <div class="flex items-center justify-between text-sm">
@@ -130,17 +132,33 @@
 
                 <div class="flex items-center gap-2 text-xs text-gray-500 mb-4">
                     <i data-lucide="clock" class="w-4 h-4"></i>
-                    <span class="text-text-secondary/80">{{ $method->processing_time }} {{ __('business days') }}</span>
+                    <span class="text-text-secondary/80">{{ $method->processing_time }}
+                        {{ __('business days') }}</span>
                 </div>
+
+                @if ($limitContext && ($limitContext['blocked'] ?? false))
+                    <div
+                        class="rounded-xl bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-500/40 p-3 mb-4">
+                        <p class="text-sm text-red-600 dark:text-red-300 font-semibold">
+                            {{ $limitContext['blocked_reason'] ?? __('Withdrawal limit reached.') }}
+                        </p>
+                    </div>
+                @endif
 
                 @if (
                     $method->userWithdrawalAccounts->isNotEmpty() &&
                         $method->userWithdrawalAccounts?->first()->status?->value == 'active')
-                    <x-ui.button class="w-full py-2! px-6!" type="button"
-                        wire:click="openWithdrawalModal({{ $method->id }})">
-                        <span
-                            class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Request Withdrawal') }}</span>
-                    </x-ui.button>
+                    @if ($limitContext && ($limitContext['blocked'] ?? false))
+                        <x-ui.button class="w-full py-2! px-6!" type="button" :disabled="true" variant="tertiary">
+                            <span class="text-text-btn-primary">{{ __('Limit Reached') }}</span>
+                        </x-ui.button>
+                    @else
+                        <x-ui.button class="w-full py-2! px-6!" type="button"
+                            wire:click="openWithdrawalModal({{ $method->id }})">
+                            <span
+                                class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Request Withdrawal') }}</span>
+                        </x-ui.button>
+                    @endif
                 @elseif (
                     $method->userWithdrawalAccounts->isNotEmpty() &&
                         $method->userWithdrawalAccounts?->first()->status?->value == 'pending')
@@ -214,7 +232,8 @@
                 <div class="flex items-center justify-between mb-6">
                     <div>
                         <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('Withdraw funds securely') }}</p>
-                        <h2 class="text-2xl font-semibold text-zinc-900 dark:text-white">{{ __('Request Withdrawal') }}
+                        <h2 class="text-2xl font-semibold text-zinc-900 dark:text-white">
+                            {{ __('Request Withdrawal') }}
                         </h2>
                     </div>
                     <button type="button" class="text-zinc-400 hover:text-zinc-600" wire:click="closeWithdrawalModal">

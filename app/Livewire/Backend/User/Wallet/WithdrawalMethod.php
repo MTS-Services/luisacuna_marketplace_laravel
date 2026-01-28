@@ -16,6 +16,7 @@ use App\Services\CurrencyService;
 use App\Services\UserWithdrawalAccountService;
 use App\Services\WithdrawalMethodService;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
@@ -49,6 +50,10 @@ class WithdrawalMethod extends Component
     public bool $methodLocked = false;
 
     public ?string $selectedMethodName = null;
+
+    protected array $limitStatuses = ['pending', 'completed'];
+
+    protected array $limitContextCache = [];
 
     public function boot(
         WithdrawalMethodService $withdrawalMethodService,
@@ -113,6 +118,8 @@ class WithdrawalMethod extends Component
                 $amount = round((float) $this->withdrawalAmount, 2);
                 $feeAmount = $this->calculateFee($method, $amount);
                 $finalAmount = round($amount + $feeAmount, 2);
+
+                $this->validateLimits($method, $amount);
 
                 $currency = $this->currencyService->getCurrentCurrency();
 
@@ -269,10 +276,16 @@ class WithdrawalMethod extends Component
             }]
         )->where('status', ActiveInactiveEnum::ACTIVE->value);
 
+        $limitContexts = [];
+        foreach ($methods as $method) {
+            $limitContexts[$method->id] = $this->buildLimitContext($method);
+        }
+
         return view('livewire.backend.user.wallet.withdrawal-method', [
             'methods' => $methods,
             'walletSummary' => $this->walletSummary(),
             'recentWithdrawals' => $this->recentWithdrawals(),
+            'limitContexts' => $limitContexts,
         ]);
     }
 
@@ -301,5 +314,121 @@ class WithdrawalMethod extends Component
             ->where('user_id', user()->id)
             ->latest()
             ->paginate(10);
+    }
+
+    protected function buildLimitContext(WithdrawalMethodModel $method): array
+    {
+        if (isset($this->limitContextCache[$method->id])) {
+            return $this->limitContextCache[$method->id];
+        }
+
+        $baseQuery = WithdrawalRequest::where('user_id', user()->id)
+            ->where('withdrawal_method_id', $method->id)
+            ->whereHas('currentStatusHistory', function ($query) {
+                $query->whereIn('to_status', $this->limitStatuses);
+            });
+        $todayQuery = (clone $baseQuery)->whereDate('created_at', Carbon::now()->toDateString());
+        $todayAmount = (clone $todayQuery)->sum('amount');
+        $todayCount = (clone $todayQuery)->count();
+
+        $weekQuery = (clone $baseQuery)->where('created_at', '>=', Carbon::now()->startOfWeek());
+        $weekAmount = (clone $weekQuery)->sum('amount');
+        $weekCount = (clone $weekQuery)->count();
+
+        $monthQuery = (clone $baseQuery)->where('created_at', '>=', Carbon::now()->startOfMonth());
+        $monthAmount = (clone $monthQuery)->sum('amount');
+        $monthCount = (clone $monthQuery)->count();
+
+        $limits = [
+            'per_transaction_limit' => $this->normalizeLimit($method->per_transaction_limit),
+            'daily_limit' => $this->normalizeLimit($method->daily_limit),
+            'weekly_limit' => $this->normalizeLimit($method->weekly_limit),
+            'monthly_limit' => $this->normalizeLimit($method->monthly_limit),
+        ];
+
+        $blocked = false;
+        $blockedReason = null;
+
+        if (! is_null($limits['daily_limit']) && $todayCount >= $limits['daily_limit']) {
+            $blocked = true;
+            $blockedReason = __('Daily withdrawal limit reached.');
+        } elseif (! is_null($limits['weekly_limit']) && $weekCount >= $limits['weekly_limit']) {
+            $blocked = true;
+            $blockedReason = __('Weekly withdrawal limit reached.');
+        } elseif (! is_null($limits['monthly_limit']) && $monthCount >= $limits['monthly_limit']) {
+            $blocked = true;
+            $blockedReason = __('Monthly withdrawal limit reached.');
+        }
+
+        return $this->limitContextCache[$method->id] = [
+            'per_transaction_limit' => $limits['per_transaction_limit'],
+            'daily_limit' => $limits['daily_limit'],
+            'weekly_limit' => $limits['weekly_limit'],
+            'monthly_limit' => $limits['monthly_limit'],
+            'daily_count' => (int) $todayCount,
+            'weekly_count' => (int) $weekCount,
+            'monthly_count' => (int) $monthCount,
+            'daily_used' => (float) $todayAmount,
+            'weekly_used' => (float) $weekAmount,
+            'monthly_used' => (float) $monthAmount,
+            'blocked' => $blocked,
+            'blocked_reason' => $blockedReason,
+        ];
+    }
+
+    protected function normalizeLimit($value): ?float
+    {
+        if (is_null($value)) {
+            return null;
+        }
+
+        $float = (float) $value;
+
+        return $float > 0 ? $float : null;
+    }
+
+    protected function validateLimits(WithdrawalMethodModel $method, float $amount): void
+    {
+        $context = $this->buildLimitContext($method);
+        $errors = [];
+
+        if (! is_null($context['per_transaction_limit']) && $amount > $context['per_transaction_limit']) {
+            $errors[] = __('The requested amount exceeds the per-transaction limit of :limit.', [
+                'limit' => currency_symbol().currency_exchange($context['per_transaction_limit']),
+            ]);
+        }
+
+        if (! is_null($context['daily_limit'])) {
+            $nextCount = $context['daily_count'] + 1;
+            if ($nextCount > $context['daily_limit']) {
+                $errors[] = __('Daily withdrawal request limit exceeded. Allowed: :limit per day.', [
+                    'limit' => $context['daily_limit'],
+                ]);
+            }
+        }
+
+        if (! is_null($context['weekly_limit'])) {
+            $nextCount = $context['weekly_count'] + 1;
+            if ($nextCount > $context['weekly_limit']) {
+                $errors[] = __('Weekly withdrawal request limit exceeded. Allowed: :limit per week.', [
+                    'limit' => $context['weekly_limit'],
+                ]);
+            }
+        }
+
+        if (! is_null($context['monthly_limit'])) {
+            $nextCount = $context['monthly_count'] + 1;
+            if ($nextCount > $context['monthly_limit']) {
+                $errors[] = __('Monthly withdrawal request limit exceeded. Allowed: :limit per month.', [
+                    'limit' => $context['monthly_limit'],
+                ]);
+            }
+        }
+
+        if (! empty($errors)) {
+            throw ValidationException::withMessages([
+                'withdrawalAmount' => implode(' ', $errors),
+            ]);
+        }
     }
 }
