@@ -33,7 +33,7 @@ class WalletMethod extends PaymentMethod
 
     public function __construct($gateway = null, ConversationService $conversationService,  AchievementService $achievementService)
     {
-        parent::__construct($gateway, $conversationService);
+        parent::__construct($gateway, $conversationService, $achievementService);
         $this->currencyService = app(CurrencyService::class);
         $this->achievementService = $achievementService;
     }
