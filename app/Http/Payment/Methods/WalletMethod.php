@@ -15,6 +15,7 @@ use App\Models\PointLog;
 use App\Models\Wallet;
 use App\Models\Transaction;
 use App\Models\UserPoint;
+use App\Services\AchievementService;
 use App\Services\ConversationService;
 use App\Services\CurrencyService;
 use Illuminate\Support\Facades\DB;
@@ -28,11 +29,13 @@ class WalletMethod extends PaymentMethod
     protected $name = 'Wallet';
     protected $requiresFrontendJs = false;
     protected CurrencyService $currencyService;
+    protected AchievementService $achievementService;
 
-    public function __construct($gateway = null, ConversationService $conversationService)
+    public function __construct($gateway = null, ConversationService $conversationService,  AchievementService $achievementService)
     {
         parent::__construct($gateway, $conversationService);
         $this->currencyService = app(CurrencyService::class);
+        $this->achievementService = $achievementService;
     }
 
     /**
