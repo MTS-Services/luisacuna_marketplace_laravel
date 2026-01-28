@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <button 
+            <button
                 class="mt-6 w-full bg-white text-purple-600 font-semibold py-3 px-6 rounded-xl hover:bg-gray-50 transition-all duration-200 flex items-center justify-center gap-2">
                 <i data-lucide="arrow-down-to-line" class="w-5 h-5"></i>
                 {{ __('Request Withdrawal') }}
@@ -272,9 +272,12 @@
                                 wire:click="closeWithdrawalModal">
                                 {{ __('Cancel') }}
                             </x-ui.button>
-                            <x-ui.button type="submit" class="w-full md:w-auto py-2!">
-                                {{ __('Submit Request') }}
-                            </x-ui.button>
+                            <button type="submit"
+                                class="w-full md:w-auto py-2 px-6 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl transition-colors duration-200"
+                                wire:loading.attr="disabled" wire:loading.class="opacity-50 cursor-not-allowed">
+                                <span wire:loading.remove>{{ __('Submit Request') }}</span>
+                                <span wire:loading>{{ __('Processing...') }}</span>
+                            </button>
                         </div>
                     </div>
                 </form>

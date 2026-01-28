@@ -3,7 +3,12 @@
 namespace App\Livewire\Backend\User\Wallet;
 
 use App\Enums\ActiveInactiveEnum;
+use App\Enums\CalculationType;
+use App\Enums\TransactionStatus;
+use App\Enums\TransactionType;
 use App\Enums\WithdrawalFeeType;
+use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Models\WithdrawalMethod as WithdrawalMethodModel;
 use App\Models\WithdrawalRequest;
 use App\Models\WithdrawalStatusHistory;
@@ -107,6 +112,32 @@ class WithdrawalMethod extends Component
                 $feeAmount = $this->calculateFee($method, $amount);
                 $finalAmount = round($amount + $feeAmount, 2);
 
+                $currency = $this->currencyService->getCurrentCurrency();
+
+                $wallet = Wallet::where('user_id', user()->id)->where('currency_code', $currency?->code)->first();
+
+                if (!$wallet) {
+                    throw ValidationException::withMessages([
+                        'withdrawalAmount' => 'Wallet not found for the selected currency.',
+                    ]);
+                }
+
+                // Calculate available balance (balance - pending_balance)
+                $availableBalance = (float) $wallet->balance - (float) $wallet->pending_balance;
+
+                // Check if user has sufficient available balance
+                if ($availableBalance < $finalAmount) {
+                    throw ValidationException::withMessages([
+                        'withdrawalAmount' => 'Insufficient available balance. Available: '.currency_symbol().number_format($availableBalance, 2),
+                    ]);
+                }
+
+                $wallet->update([
+                    'balance' => $wallet->balance - $finalAmount,
+                    'pending_balance' => $wallet->pending_balance + $finalAmount,
+                ]);
+
+                // Create withdrawal request with pending status
                 $request = WithdrawalRequest::create([
                     'user_id' => user()->id,
                     'withdrawal_method_id' => $method->id,
@@ -115,25 +146,58 @@ class WithdrawalMethod extends Component
                     'fee_amount' => $feeAmount,
                     'tax_amount' => 0,
                     'final_amount' => $finalAmount,
+                    'status' => 'pending',
                 ]);
 
+                // Create status history entry for pending status
                 WithdrawalStatusHistory::create([
                     'withdrawal_request_id' => $request->id,
                     'from_status' => null,
                     'to_status' => 'pending',
                     'changed_by' => null,
-                    'notes' => null,
-                    'metadata' => null,
+                    'notes' => 'Withdrawal request submitted by user',
+                    'metadata' => [
+                        'requested_amount' => $amount,
+                        'fee_amount' => $feeAmount,
+                        'final_amount' => $finalAmount,
+                        'available_balance_before' => $availableBalance,
+                        'wallet_balance_before' => $wallet->balance,
+                        'pending_balance_before' => $wallet->pending_balance,
+                    ],
+                ]);
+
+                // Create Transaction record with pending status
+                Transaction::create([
+                    'user_id' => user()->id,
+                    'type' => TransactionType::WITHDRAWAL,
+                    'status' => TransactionStatus::PENDING,
+                    'calculation_type' => CalculationType::DEBIT,
+                    'amount' => $finalAmount,
+                    'fee_amount' => $feeAmount,
+                    'net_amount' => $amount,
+                    'currency' => $currency?->code ?? 'USD',
+                    'source_id' => $request->id,
+                    'source_type' => WithdrawalRequest::class,
+                    'balance_snapshot' => $wallet->balance,
+                    'notes' => 'Withdrawal request submitted - pending admin approval',
+                    'metadata' => [
+                        'requested_amount' => $amount,
+                        'fee_amount' => $feeAmount,
+                        'final_amount' => $finalAmount,
+                        'withdrawal_method' => $method->name,
+                        'withdrawal_method_id' => $method->id,
+                    ],
                 ]);
             });
 
-            session()->flash('success', 'Your withdrawal request has been submitted.');
+            $this->toastSuccess('Your withdrawal request has been submitted successfully and is pending approval.');
             $this->closeWithdrawalModal();
+            $this->dispatch('withdrawal-submitted');
         } catch (ValidationException $exception) {
             throw $exception;
         } catch (\Throwable $throwable) {
             report($throwable);
-            session()->flash('error', 'We could not process your withdrawal request. Please try again.');
+            session()->flash('error', 'We could not process your withdrawal request. Please try again later.');
         }
     }
 

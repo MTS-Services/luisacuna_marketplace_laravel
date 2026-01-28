@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class WithdrawalStatusHistory extends AuditBaseModel implements Auditable
 {
-    use   AuditableTrait;
+    use AuditableTrait;
     //
 
     protected $fillable = [
@@ -22,7 +21,7 @@ class WithdrawalStatusHistory extends AuditBaseModel implements Auditable
         'metadata',
         'created_at',
 
-      //here AuditColumns
+        // here AuditColumns
     ];
 
     protected $hidden = [
@@ -30,7 +29,7 @@ class WithdrawalStatusHistory extends AuditBaseModel implements Auditable
     ];
 
     protected $casts = [
-        //
+        'metadata' => 'json',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -47,9 +46,9 @@ class WithdrawalStatusHistory extends AuditBaseModel implements Auditable
         return $this->belongsTo(User::class, 'changed_by');
     }
 
-     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
-                End of RELATIONSHIPS
-     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+    /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
+               End of RELATIONSHIPS
+    =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
     public function __construct(array $attributes = [])
     {
@@ -58,6 +57,4 @@ class WithdrawalStatusHistory extends AuditBaseModel implements Auditable
             //
         ]);
     }
-
-
 }
