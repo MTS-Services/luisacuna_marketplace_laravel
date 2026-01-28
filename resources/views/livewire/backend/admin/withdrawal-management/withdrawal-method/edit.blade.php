@@ -16,7 +16,7 @@
         <form wire:submit.prevent="save">
             <div class="w-full col-span-2">
                 <x-ui.file-input wire:model="form.icon" label="Payment Method Icon" accept="image/*" :error="$errors->first('form.icon')"
-                    hint="Upload a Payment Method Icon (Max: 2MB)" :existingFiles="$existingFile" removeModel="form.remove_file" />
+                    hint="Upload a Payment Method Icon (Max: 2MB)" :existingFiles="$existingFile" removeModel="form.remove_icon" />
             </div>
             <div class="mt-6 space-y-4 grid grid-cols-3 gap-5">
                 <div class="w-full">
@@ -41,6 +41,24 @@
                     <x-ui.label value="Maximum Amount" class="mb-1" />
                     <x-ui.input type="number" placeholder="Maximum Amount" wire:model="form.max_amount" />
                     <x-ui.input-error :messages="$errors->get('form.max_amount')" />
+                </div>
+
+                <div class="w-full">
+                    <x-ui.label value="Daily Limit" class="mb-1" />
+                    <x-ui.input type="number" placeholder="Daily Limit" wire:model="form.daily_limit" />
+                    <x-ui.input-error :messages="$errors->get('form.daily_limit')" />
+                </div>
+
+                <div class="w-full">
+                    <x-ui.label value="Weekly Limit" class="mb-1" />
+                    <x-ui.input type="number" placeholder="Weekly Limit" wire:model="form.weekly_limit" />
+                    <x-ui.input-error :messages="$errors->get('form.weekly_limit')" />
+                </div>
+
+                <div class="w-full">
+                    <x-ui.label value="Monthly Limit" class="mb-1" />
+                    <x-ui.input type="number" placeholder="Monthly Limit" wire:model="form.monthly_limit" />
+                    <x-ui.input-error :messages="$errors->get('form.monthly_limit')" />
                 </div>
 
                 <div class="w-full">
@@ -110,7 +128,8 @@
                     <template x-if="fields.length > 0">
                         <div class="space-y-6">
                             <template x-for="(field, index) in fields" :key="field.id">
-                                <div class="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800" x-data="{ showOptions: ['select', 'radio', 'checkbox'].includes(field.input_type) }">
+                                <div class="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800"
+                                    x-data="{ showOptions: ['select', 'radio', 'checkbox'].includes(field.input_type) }">
 
                                     <div class="flex items-center justify-between mb-4">
                                         <h4 class="font-medium text-text-black dark:text-text-white">

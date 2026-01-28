@@ -7,8 +7,10 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     use AuditColumnsTrait;
+
     /**
      * Run the migrations.
      */
@@ -24,6 +26,10 @@ return new class extends Migration {
             $table->string('status')->default(ActiveInactiveEnum::ACTIVE)->index();
             $table->decimal('min_amount', 15, 2)->default(0.00)->comment('Minimum withdrawal amount');
             $table->decimal('max_amount', 15, 2)->nullable()->comment('Maximum withdrawal amount');
+            $table->decimal('daily_limit', 15, 2)->nullable();
+            $table->decimal('weekly_limit', 15, 2)->nullable();
+            $table->decimal('monthly_limit', 15, 2)->nullable();
+            $table->decimal('per_transaction_limit', 15, 2)->nullable();
             $table->string('processing_time', 100)->nullable()->comment('e.g., 1-3 business days');
             $table->string('fee_type')->default(WithdrawalFeeType::FIXED)->index();
             $table->decimal('fee_amount', 15, 2)->default(0.00);

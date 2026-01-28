@@ -2,26 +2,28 @@
 
 namespace App\Livewire\Backend\Admin\WithdrawalManagement\WithdrawalMethod;
 
+use App\Enums\ActiveInactiveEnum;
+use App\Enums\WithdrawalFeeType;
 use App\Livewire\Forms\Backend\Admin\WithdrawManagement\WithdrawalMethodForm;
+use App\Models\WithdrawalMethod;
 use App\Services\WithdrawalMethodService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use App\Enums\ActiveInactiveEnum;
-use App\Enums\WithdrawalFeeType;
-use App\Models\WithdrawalMethod;
-use Illuminate\Support\Facades\DB;
 
 class Edit extends Component
 {
     use WithFileUploads, WithNotification;
 
     public WithdrawalMethodForm $form;
+
     protected WithdrawalMethodService $service;
 
     public WithdrawalMethod $data;
+
     public $dataId;
+
     public $existingFile;
 
     public function boot(WithdrawalMethodService $service)
@@ -38,9 +40,6 @@ class Edit extends Component
         $this->existingFile = $this->data->icon;
     }
 
-
-
-
     public function render()
     {
         return view('livewire.backend.admin.withdrawal-management.withdrawal-method.edit', [
@@ -51,22 +50,23 @@ class Edit extends Component
 
     public function save()
     {
-        $data = $this->form->validate();
-
+        $this->form->validate();
+        $data = $this->form->fillables();
 
         try {
             $data['updater_id'] = admin()->id;
             $this->service->updateData($this->data->id, $data);
             Log::info('Data updated successfully', ['data_id' => $this->data->id]);
             $this->success('Data updated successfully');
+
             return redirect()->route('admin.wm.method.index');
         } catch (\Exception $e) {
             Log::error('Failed to update User', [
                 'user_id' => $this->dataId,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
-            $this->error('Failed to update User: ' . $e->getMessage());
+            $this->error('Failed to update User: '.$e->getMessage());
         }
     }
 

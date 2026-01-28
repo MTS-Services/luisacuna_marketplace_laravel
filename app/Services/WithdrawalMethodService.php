@@ -112,13 +112,12 @@ use FileManagementTrait;
 
             $newData = $data;
 
-
-            $iconPath = $model->icon;
-            if (isset($data['icon'])) {
-                $uploaded = $this->cloudinaryService->upload($data['icon'], ['folder' => 'withdrawal-method-icons']);
-                $iconPath = $this->handleSingleFileUpload(newFile: $data['icon'], oldPath: $model->icon, removeKey: $data['remove_icon'] ?? false, folderName: 'withdrawal-method-icons');
-            }
-            $newData['icon'] = $iconPath;
+            $newData['icon'] = $this->handleSingleFileUpload(
+                newFile: $data['icon'] ?? null,
+                oldPath: $model->icon,
+                removeKey: $data['remove_icon'] ?? false,
+                folderName: 'withdrawal-method-icons'
+            );
             // $oldImagePath = $model->icon;
             // $uploadedImage = Arr::get($data, 'icon');
             // $removeFile = Arr::get($data, 'remove_file', false);
@@ -147,9 +146,7 @@ use FileManagementTrait;
             // } else {
             //     $newData['icon'] = $oldImagePath;
             // }
-
-
-            unset($newData['remove_file']);
+            unset($newData['remove_icon']);
 
             $model->update($newData);
 

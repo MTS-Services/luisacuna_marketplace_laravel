@@ -2,11 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\AuditBaseModel;
-use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use OwenIt\Auditing\Contracts\Auditable;
 
 class Wallet extends BaseModel
 {
