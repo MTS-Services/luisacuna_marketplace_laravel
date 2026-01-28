@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Backend\Admin\WithdrawalManagement\UserMethod;
 
-use Livewire\Component;
-use Illuminate\Support\Facades\Log;
 use App\Models\UserWithdrawalAccount;
-use App\Traits\Livewire\WithNotification;
 use App\Services\UserWithdrawalAccountService;
+use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Log;
+use Livewire\Component;
 
 class Show extends Component
 {
@@ -15,8 +15,8 @@ class Show extends Component
     public bool $showModal = false;
 
     public UserWithdrawalAccount $data;
-    public $note;
 
+    public $note;
 
     protected UserWithdrawalAccountService $service;
 
@@ -24,6 +24,7 @@ class Show extends Component
     {
         $this->service = $service;
     }
+
     public function mount(UserWithdrawalAccount $data): void
     {
         $this->data = $data;
@@ -38,10 +39,9 @@ class Show extends Component
     {
         $this->showModal = false;
         $this->note = null;
-         $this->data->refresh();
+        $this->data->refresh();
 
     }
-
 
     public function render()
     {
@@ -63,9 +63,10 @@ class Show extends Component
             $this->data->refresh();
         } catch (\Exception $e) {
             $this->error('Failed to verify user method');
-            Log::error('Error verifying user method: ' . $e->getMessage());
+            Log::error('Error verifying user method: '.$e->getMessage());
         }
     }
+
     public function makeRejected($encryptedId): void
     {
 
@@ -82,7 +83,7 @@ class Show extends Component
             $this->showModal = false;
         } catch (\Exception $e) {
             $this->error('Failed to unverify user method');
-            Log::error('Error unverifying user method: ' . $e->getMessage());
+            Log::error('Error unverifying user method: '.$e->getMessage());
         }
     }
 }

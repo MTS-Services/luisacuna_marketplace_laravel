@@ -29,7 +29,7 @@
                     <x-ui.input-error :messages="$errors->get('account_name')" />
                 </div>
 
-                @foreach (json_decode($method->required_fields, true) as $field)
+                @foreach ($dynamicFields as $field)
                     <div class="w-full">
                         {{-- Label --}}
                         <x-ui.label :value="$field['label']" class="mb-1" />
@@ -37,12 +37,12 @@
                         {{-- Dynamic Input --}}
                         @switch($field['input_type'])
                             @case('textarea')
-                                <x-ui.textarea wire:model="account_data.{{ Str::snake(Str::snake($field['name'])) }}"
+                                <x-ui.textarea wire:model="account_data.{{ Str::slug($field['name'], '_') }}"
                                     placeholder="{{ $field['placeholder'] ?? '' }}"></x-ui.textarea>
                             @break
 
                             @case('select')
-                                <x-ui.select wire:model="account_data.{{ Str::snake($field['name']) }}">
+                                <x-ui.select wire:model="account_data.{{ Str::slug($field['name'], '_') }}">
                                     <option value="">Select option</option>
                                     @foreach (explode(',', $field['options'] ?? '') as $option)
                                         <option value="{{ trim($option) }}">{{ trim($option) }}</option>
@@ -55,7 +55,7 @@
                                     @foreach (explode(',', $field['options'] ?? '') as $option)
                                         <label class="flex items-center gap-2">
                                             <input type="radio" value="{{ trim($option) }}"
-                                                wire:model="account_data.{{ Str::snake($field['name']) }}">
+                                                wire:model="account_data.{{ Str::slug($field['name'], '_') }}">
                                             <span>{{ trim($option) }}</span>
                                         </label>
                                     @endforeach
@@ -67,7 +67,7 @@
                                     @foreach (explode(',', $field['options'] ?? '') as $option)
                                         <label class="flex items-center gap-2">
                                             <input type="checkbox" value="{{ trim($option) }}"
-                                                wire:model="account_data.{{ Str::snake($field['name']) }}">
+                                                wire:model="account_data.{{ Str::slug($field['name'], '_') }}">
                                             <span>{{ trim($option) }}</span>
                                         </label>
                                     @endforeach
@@ -75,14 +75,14 @@
                             @break
 
                             @case('file')
-                                <x-ui.input type="file" wire:model="account_data.{{ Str::snake($field['name']) }}" />
+                                <x-ui.input type="file" wire:model="account_data.{{ Str::slug($field['name'], '_') }}" />
                             @break
 
                             @default
                                 {{-- For dynamic fields --}}
                                 <x-ui.input type="{{ $field['input_type'] }}"
-                                    wire:model="account_data.{{ Str::snake($field['name']) }}" />
-                                <x-ui.input-error :messages="$errors->get('account_data.' . Str::snake($field['name']))" />
+                                    wire:model="account_data.{{ Str::slug($field['name'], '_') }}" />
+                                <x-ui.input-error :messages="$errors->get('account_data.' . Str::slug($field['name'], '_'))" />
                         @endswitch
 
                         {{-- Help Text --}}
@@ -93,7 +93,7 @@
                         @endif
 
                         {{-- Error --}}
-                        <x-ui.input-error :messages="$errors->get('account_data.' . Str::snake($field['name']))" />
+                        <x-ui.input-error :messages="$errors->get('account_data.' . Str::slug($field['name'], '_'))" />
                     </div>
                 @endforeach
             </div>

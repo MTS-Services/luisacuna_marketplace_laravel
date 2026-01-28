@@ -20,6 +20,9 @@ class WithdrawalForm extends Component
     public $account_name = '';
     public array $account_data = [];
 
+    /** @var array<int, array<string, mixed>> */
+    public array $dynamicFields = [];
+
     protected WithdrawalMethodService $withdrawalMethodService;
     protected UserWithdrawalAccountService $userWithdrawalAccountService;
 
@@ -34,20 +37,12 @@ class WithdrawalForm extends Component
     public function mount(ModelsWithdrawalMethod $method)
     {
         $this->method = $method;
+        $this->dynamicFields = $this->normalizeFields($method->required_fields);
 
-        // Initialize dynamic fields
-        $fields = $this->method->required_fields;
-
-        // If it's a JSON string, decode it
-        if (is_string($fields)) {
-            $fields = json_decode($fields, true);
-        }
-
-        // Now $fields is guaranteed to be an array (or null)
-        if (is_array($fields)) {
-            foreach ($fields as $field) {
-                $name = Str::snake($field['name']); // or use the proper key
-                $this->account_data[$name] = $this->account->account_data[$name] ?? '';
+        foreach ($this->dynamicFields as $field) {
+            $key = $this->fieldKey($field['name']);
+            if (! array_key_exists($key, $this->account_data)) {
+                $this->account_data[$key] = '';
             }
         }
     }
@@ -82,10 +77,9 @@ class WithdrawalForm extends Component
     public function resetForm()
     {
         $this->account_name = '';
-        $this->account_data = [];
 
-        foreach (json_decode($this->method->required_fields, true) as $field) {
-            $name = Str::slug($field['name'], '_');
+        foreach ($this->dynamicFields as $field) {
+            $name = $this->fieldKey($field['name']);
             $this->account_data[$name] = '';
         }
 
@@ -99,17 +93,37 @@ class WithdrawalForm extends Component
             'account_name' => 'required|string|max:255',
         ];
 
-        foreach (json_decode($this->method->required_fields, true) as $field) {
-            $name = Str::slug($field['name'], '_');
-            $validation = $field['validation'] === 'optional' ? 'nullable' : $field['validation'];
+        foreach ($this->dynamicFields as $field) {
+            $name = $this->fieldKey($field['name']);
+            $validation = ($field['validation'] ?? 'nullable') === 'optional'
+                ? 'nullable'
+                : ($field['validation'] ?? 'nullable');
+
             $rules["account_data.$name"] = $validation;
         }
 
         return $rules;
     }
 
+    protected function normalizeFields($fields): array
+    {
+        if (is_string($fields)) {
+            $decoded = json_decode($fields, true);
+            $fields = is_array($decoded) ? $decoded : [];
+        }
+
+        return is_array($fields) ? $fields : [];
+    }
+
+    protected function fieldKey(string $name): string
+    {
+        return Str::slug($name, '_');
+    }
+
     public function render()
     {
-        return view('livewire.backend.user.wallet.withdrawal-form');
+        return view('livewire.backend.user.wallet.withdrawal-form', [
+            'dynamicFields' => $this->dynamicFields,
+        ]);
     }
 }

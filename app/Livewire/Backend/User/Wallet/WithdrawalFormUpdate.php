@@ -24,6 +24,9 @@ class WithdrawalFormUpdate extends Component
 
     public array $account_data = [];
 
+    /** @var array<int, array<string, mixed>> */
+    public array $dynamicFields = [];
+
     protected WithdrawalMethodService $withdrawalMethodService;
 
     protected UserWithdrawalAccountService $userWithdrawalAccountService;
@@ -42,18 +45,16 @@ class WithdrawalFormUpdate extends Component
         $this->account = $account;
         $this->account_name = $this->account->account_name ?? '';
 
-        $fields = json_decode($this->method->required_fields, true);
+        $this->dynamicFields = $this->normalizeFields($this->method->required_fields);
 
-        foreach ($fields as $field) {
-            $name = Str::slug($field['name'], '_');
-            $this->account_data[$name] = $this->account->account_data[$name] ?? '';
+        foreach ($this->dynamicFields as $field) {
+            $key = $this->fieldKey($field['name']);
+            $this->account_data[$key] = $this->account->account_data[$key] ?? '';
         }
     }
 
     public function update()
     {
-        // dd($this->account->id);
-
         $validated = $this->validate($this->getRules());
 
         try {
@@ -82,17 +83,49 @@ class WithdrawalFormUpdate extends Component
             'account_name' => 'required|string|max:255',
         ];
 
-        foreach (json_decode($this->method->required_fields, true) as $field) {
-            $name = Str::slug($field['name'], '_');
-            $validation = $field['validation'] === 'optional' ? 'nullable' : $field['validation'];
+        foreach ($this->dynamicFields as $field) {
+            $name = $this->fieldKey($field['name']);
+            $validation = ($field['validation'] ?? 'nullable') === 'optional'
+                ? 'nullable'
+                : ($field['validation'] ?? 'nullable');
+
             $rules["account_data.$name"] = $validation;
         }
 
         return $rules;
     }
 
+    public function resetForm(): void
+    {
+        $this->account_name = $this->account->account_name ?? '';
+
+        foreach ($this->dynamicFields as $field) {
+            $key = $this->fieldKey($field['name']);
+            $this->account_data[$key] = $this->account->account_data[$key] ?? '';
+        }
+
+        $this->resetValidation();
+    }
+
+    protected function normalizeFields($fields): array
+    {
+        if (is_string($fields)) {
+            $decoded = json_decode($fields, true);
+            $fields = is_array($decoded) ? $decoded : [];
+        }
+
+        return is_array($fields) ? $fields : [];
+    }
+
+    protected function fieldKey(string $name): string
+    {
+        return Str::slug($name, '_');
+    }
+
     public function render()
     {
-        return view('livewire.backend.user.wallet.withdrawal-form-update');
+        return view('livewire.backend.user.wallet.withdrawal-form-update', [
+            'dynamicFields' => $this->dynamicFields,
+        ]);
     }
 }
