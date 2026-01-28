@@ -33,16 +33,17 @@ class ProductService
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
-       if ($search) {
-    // Scout Search
-    return Product::search($search)
-        ->query(fn($query) => $query
-            ->with(['game', 'platform', 'product_configs'])
-            ->filter($filters)
-            ->orderBy($sortField, $sortDirection)
-        )
-        ->paginate($perPage);
-}
+        if ($search) {
+            // Scout Search
+            return Product::search($search)
+                ->query(
+                    fn($query) => $query
+                        ->with(['game', 'platform', 'product_configs'])
+                        ->filter($filters)
+                        ->orderBy($sortField, $sortDirection)
+                )
+                ->paginate($perPage);
+        }
         return $this->model->query()
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
@@ -69,28 +70,50 @@ class ProductService
         return $this->model->count($filters);
     }
 
-    public function getSellers(int $perPage = 15, array $filters = [])
+    // public function getSellers(int $perPage = 15, array $filters = [])
+    // {
+    //     return $this->model->query()
+    //         ->with(['user', 'game', 'platform'])
+
+    //         // Unique Seller Logic: Compatibility with MySQL Strict Mode
+    //         ->whereIn('products.id', function ($sub) {
+    //             $sub->selectRaw('MAX(id)')
+    //                 ->from('products')
+    //                 ->groupBy('user_id');
+    //         })
+
+    //         // Apply our scopeFilter
+    //         ->filter($filters)
+
+    //         // Default Sort (only if not sorting by positive reviews)
+    //         ->when(!isset($filters['positive_reviews']), function ($q) use ($filters) {
+    //             $q->orderBy($filters['sort_field'] ?? 'created_at', $filters['sort_direction'] ?? 'desc');
+    //         })
+
+    //         ->paginate($perPage);
+    // }
+
+    public function getSellers(int $perPage = 15, $filters = [])
     {
+        $filters = is_array($filters) ? $filters : [];
+
         return $this->model->query()
             ->with(['user', 'game', 'platform'])
-
-            // Unique Seller Logic: Compatibility with MySQL Strict Mode
             ->whereIn('products.id', function ($sub) {
                 $sub->selectRaw('MAX(id)')
                     ->from('products')
                     ->groupBy('user_id');
             })
-
-            // Apply our scopeFilter
             ->filter($filters)
-
-            // Default Sort (only if not sorting by positive reviews)
             ->when(!isset($filters['positive_reviews']), function ($q) use ($filters) {
-                $q->orderBy($filters['sort_field'] ?? 'created_at', $filters['sort_direction'] ?? 'desc');
+                $q->orderBy(
+                    $filters['sort_field'] ?? 'created_at',
+                    $filters['sort_direction'] ?? 'desc'
+                );
             })
-
             ->paginate($perPage);
     }
+
 
     /* ================== ================== ==================
     *                   Action Executions

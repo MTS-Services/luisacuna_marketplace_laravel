@@ -44,6 +44,7 @@ class PaymentService
             }
 
             $paymentMethod = $paymentGateway->paymentMethod();
+            
             return $paymentMethod->startPayment($order, $paymentData);
         } catch (Exception $e) {
             Log::error('Payment processing failed', [

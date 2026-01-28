@@ -131,6 +131,7 @@
                         </h2>
 
                         <form class="flex flex-col gap-3" wire:submit.prevent="processPayment">
+                        
                             @forelse ($gateways as $gatewayItem)
                                 <div wire:click="$set('gateway', '{{ $gatewayItem->slug }}')"
                                     class="gateway-label flex items-center p-4 rounded-xl transition-all duration-300 border-2 cursor-pointer
@@ -155,10 +156,18 @@
                                                     <path d="M3 5v14a2 2 0 002 2h16v-5" stroke-width="2" />
                                                     <circle cx="18" cy="12" r="2" />
                                                 </svg>
-                                            @endif
+                                            @elseif ($gatewayItem->slug === 'now-payment')
+                                                <svg class="w-5 h-5 text-text-white" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M21 12V7H5a2 2 0 01-2-2V4a2 2 0 012-2h14v5"
+                                                        stroke-width="2" />
+                                                    <path d="M3 5v14a2 2 0 002 2h16v-5" stroke-width="2" />
+                                                    <circle cx="18" cy="12" r="2" />
+                                                </svg>
 
-                                            <span
-                                                class="text-base font-normal text-text-white">{{ $gatewayItem->name }}</span>
+                                            @endif
+                                                <span
+                                                    class="text-base font-normal text-text-white">{{ $gatewayItem->name }}</span>
                                         </div>
 
                                         @if ($gatewayItem->slug === 'wallet' && $walletBalance !== null)
@@ -171,8 +180,9 @@
                                 </div>
                             @empty
                                 <div class="alert alert-warning shadow-lg rounded-xl">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6"
-                                        fill="none" viewBox="0 0 24 24">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="stroke-current flex-shrink-0 h-6 w-6" fill="none"
+                                        viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.398 16c-.77 1.333.192 3 1.732 3z" />
                                     </svg>

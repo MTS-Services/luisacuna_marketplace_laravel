@@ -63,7 +63,7 @@ return [
     ],
 
     'crypto' => [
-        'private_api_key' => env('NOW_PRIVATE_API_KEY'),
+        'private_api_key' => env('NOWPAYMENTS_API_KEY'),
         'public_api_key' => env('NOW_PUBLIC_API_KEY'),
     ],
 ];
