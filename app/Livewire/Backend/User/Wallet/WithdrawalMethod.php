@@ -22,7 +22,8 @@ use Livewire\Component;
 
 class WithdrawalMethod extends Component
 {
-    use  WithNotification;
+    use WithNotification;
+
     protected WithdrawalMethodService $withdrawalMethodService;
 
     protected UserWithdrawalAccountService $accountService;
