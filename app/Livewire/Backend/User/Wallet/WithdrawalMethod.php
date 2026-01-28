@@ -15,12 +15,14 @@ use App\Models\WithdrawalStatusHistory;
 use App\Services\CurrencyService;
 use App\Services\UserWithdrawalAccountService;
 use App\Services\WithdrawalMethodService;
+use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 class WithdrawalMethod extends Component
 {
+    use  WithNotification;
     protected WithdrawalMethodService $withdrawalMethodService;
 
     protected UserWithdrawalAccountService $accountService;
@@ -87,8 +89,7 @@ class WithdrawalMethod extends Component
 
     public function closeWithdrawalModal(): void
     {
-        $this->showWithdrawalModal = false;
-        $this->methodLocked = false;
+        $this->resetWithdrawalForm();
     }
 
     public function submitWithdrawalRequest(): void
@@ -114,24 +115,7 @@ class WithdrawalMethod extends Component
 
                 $currency = $this->currencyService->getCurrentCurrency();
 
-                $wallet = Wallet::where('user_id', user()->id)->where('currency_code', $currency?->code)->first();
-
-                if (!$wallet) {
-                    throw ValidationException::withMessages([
-                        'withdrawalAmount' => 'Wallet not found for the selected currency.',
-                    ]);
-                }
-
-                // Calculate available balance (balance - pending_balance)
-                $availableBalance = (float) $wallet->balance - (float) $wallet->pending_balance;
-
-                // Check if user has sufficient available balance
-                if ($availableBalance < $finalAmount) {
-                    throw ValidationException::withMessages([
-                        'withdrawalAmount' => 'Insufficient available balance. Available: '.currency_symbol().number_format($availableBalance, 2),
-                    ]);
-                }
-
+                $wallet = Wallet::where('user_id', user()->id)->where('currency_code', $currency->code)->first();
                 $wallet->update([
                     'balance' => $wallet->balance - $finalAmount,
                     'pending_balance' => $wallet->pending_balance + $finalAmount,
@@ -160,7 +144,6 @@ class WithdrawalMethod extends Component
                         'requested_amount' => $amount,
                         'fee_amount' => $feeAmount,
                         'final_amount' => $finalAmount,
-                        'available_balance_before' => $availableBalance,
                         'wallet_balance_before' => $wallet->balance,
                         'pending_balance_before' => $wallet->pending_balance,
                     ],
@@ -209,6 +192,7 @@ class WithdrawalMethod extends Component
         $this->withdrawalNote = null;
         $this->methodLocked = false;
         $this->selectedMethodName = null;
+        $this->showWithdrawalModal = false;
     }
 
     protected function resolveWithdrawalMethod(): ?WithdrawalMethodModel
