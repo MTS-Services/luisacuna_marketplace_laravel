@@ -184,6 +184,8 @@ class WithdrawalMethod extends Component
             $this->toastSuccess('Your withdrawal request has been submitted successfully and is pending approval.');
             $this->closeWithdrawalModal();
             $this->dispatch('withdrawal-submitted');
+
+            $this->redirect(route('user.wallet.withdrawal-methods'), navigate: true);
         } catch (ValidationException $exception) {
             throw $exception;
         } catch (\Throwable $throwable) {
@@ -201,6 +203,7 @@ class WithdrawalMethod extends Component
         $this->methodLocked = false;
         $this->selectedMethodName = null;
         $this->showWithdrawalModal = false;
+
     }
 
     protected function resolveWithdrawalMethod(): ?WithdrawalMethodModel

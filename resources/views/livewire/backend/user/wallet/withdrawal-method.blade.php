@@ -150,7 +150,7 @@
                         $method->userWithdrawalAccounts?->first()->status?->value == 'active')
                     @if ($limitContext && ($limitContext['blocked'] ?? false))
                         <x-ui.button class="w-full py-2! px-6!" type="button" :disabled="true" variant="tertiary">
-                            <span class="text-text-btn-primary">{{ __('Limit Reached') }}</span>
+                            <span class="text-text-white">{{ __('Limit Reached') }}</span>
                         </x-ui.button>
                     @else
                         <x-ui.button class="w-full py-2! px-6!" type="button"
