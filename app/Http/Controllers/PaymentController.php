@@ -20,7 +20,6 @@ class PaymentController extends Controller
      */
     public function paymentSuccess(Request $request)
     {
-        // dd($request->all());
         $orderId = $request->query('order_id');
         $sessionId = $request->query('session_id');
         $invoiceId = $request->query('NP_id');

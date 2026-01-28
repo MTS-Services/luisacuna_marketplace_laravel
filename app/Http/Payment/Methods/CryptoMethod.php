@@ -133,6 +133,7 @@ class CryptoMethod extends PaymentMethod
                         'cancel_url' => $cancelUrl,
                     ]);
 
+
                 if ($response->failed()) {
                     $payment->update(['status' => PaymentStatus::FAILED->value]);
                     $order->update([
@@ -174,6 +175,8 @@ class CryptoMethod extends PaymentMethod
                     'invoice_id' => $invoice['id'],
                     'payment_id' => $payment->payment_id,
                 ];
+
+                dd($response);
             });
         } catch (Exception $e) {
             $order->update([
@@ -213,6 +216,7 @@ class CryptoMethod extends PaymentMethod
             $status = $invoice['payment_status'] ?? null;
             $nowPaymentId = $invoice['payment_id'];
             $nowInvoiceId = $invoice['invoice_id'];
+
 
             // Fetch payment by invoice ID
             $payment = Payment::where('payment_intent_id', $nowInvoiceId)
@@ -262,18 +266,12 @@ class CryptoMethod extends PaymentMethod
         }
     }
 
-    /**
-     * Process top-up payment with currency conversion
-     * Wallet is ALWAYS in default currency
-     */
-    protected function processTopUpPayment($invoice, Payment $payment, Order $order): array
-    {
 
-        return DB::transaction(function () use ($invoice, $payment, $order) {
+    protected function processTopUpPayment($paymentData, Payment $payment, Order $order): array
+    {
+        return DB::transaction(function () use ($paymentData, $payment, $order) {
             $payment->lockForUpdate();
             $order->lockForUpdate();
-
-           
 
             $topUpData = Session::get("topup_order_{$order->order_id}");
 
@@ -281,18 +279,13 @@ class CryptoMethod extends PaymentMethod
                 throw new Exception('Top-up session data not found');
             }
 
-            // Amounts from session are in DISPLAY currency
             $topUpAmountDisplay = $topUpData['top_up_amount'];
             $orderTotalDisplay = $topUpData['order_total'];
+            $displayCurrency = $payment->metadata['default_currency'] ?? $order->display_currency;
 
-            // Get display currency from metadata
-            $displayCurrency = $payment->metadata['display_currency'] ?? $order->display_currency;
-
-            // Convert amounts to DEFAULT currency for wallet operations
             $topUpAmountDefault = $this->currencyService->convertToDefault($topUpAmountDisplay, $displayCurrency);
             $orderTotalDefault = $order->default_grand_total ?? $this->currencyService->convertToDefault($orderTotalDisplay, $displayCurrency);
 
-            // Get wallet (always in default currency)
             $buyerWallet = $order->user->wallet ?? Wallet::firstOrCreate(
                 ['user_id' => $order->user_id],
                 [
@@ -314,7 +307,12 @@ class CryptoMethod extends PaymentMethod
             $balanceAfterTopUp = $balanceBefore + $topUpAmountDefault;
             $balanceAfterPayment = $balanceAfterTopUp - $orderTotalDefault;
 
-            // STEP 1: TOP-UP (in default currency)
+            $nowPaymentId = $paymentData['payment_id'];
+            $nowInvoiceId = $paymentData['invoice_id'];
+            $payinHash = $paymentData['payin_hash'] ?? null;
+            $payoutHash = $paymentData['payout_hash'] ?? null;
+
+            // STEP 1: TOP-UP Transaction
             $topUpTransaction = Transaction::create([
                 'transaction_id' => generate_transaction_id_hybrid(),
                 'correlation_id' => $correlationId,
@@ -326,19 +324,26 @@ class CryptoMethod extends PaymentMethod
                 'amount' => $topUpAmountDefault,
                 'currency' => $defaultCurrency,
                 'payment_gateway' => 'nowpayments',
-                'gateway_transaction_id' => $invoice['id'] ?? null,
+
+                'gateway_transaction_id' => (string)$nowPaymentId,
+
                 'source_id' => $payment->id,
                 'source_type' => Payment::class,
                 'fee_amount' => 0,
                 'net_amount' => $topUpAmountDefault,
                 'balance_snapshot' => $balanceAfterTopUp,
                 'metadata' => [
-                    'nowpayments_invoice_id' => $invoice['id'] ?? null,
+                    'nowpayments_payment_id' => $nowPaymentId,
+                    'nowpayments_invoice_id' => $nowInvoiceId,
+                    'payin_hash' => $payinHash,
+                    'payout_hash' => $payoutHash,
+                    'pay_currency' => $paymentData['pay_currency'] ?? null,
+                    'actually_paid' => $paymentData['actually_paid'] ?? null,
                     'display_amount' => $topUpAmountDisplay,
                     'display_currency' => $displayCurrency,
-                    'description' => "Wallet top-up of {$topUpAmountDisplay} {$displayCurrency} (={$topUpAmountDefault} {$defaultCurrency}) via Crypto",
+                    'description' => "Wallet top-up of {$topUpAmountDisplay} {$displayCurrency} via Crypto",
                 ],
-                'notes' => "Top-up: +{$topUpAmountDefault} {$defaultCurrency} via Crypto",
+                'notes' => "Top-up: +{$topUpAmountDefault} {$defaultCurrency} via Crypto (Payment ID: {$nowPaymentId})",
                 'processed_at' => now(),
             ]);
 
@@ -348,7 +353,7 @@ class CryptoMethod extends PaymentMethod
                 'last_deposit_at' => now(),
             ]);
 
-            // STEP 2: PAYMENT (in default currency)
+            // STEP 2: PAYMENT Transaction
             $paymentTransaction = Transaction::create([
                 'transaction_id' => generate_transaction_id_hybrid(),
                 'correlation_id' => $correlationId,
@@ -367,7 +372,6 @@ class CryptoMethod extends PaymentMethod
                 'net_amount' => $orderTotalDefault,
                 'balance_snapshot' => $balanceAfterPayment,
                 'metadata' => [
-                    'nowpayments_invoice_id' => $invoice['id'] ?? null,
                     'description' => "Order payment for #{$order->order_id}",
                     'top_up_transaction_id' => $topUpTransaction->transaction_id,
                     'display_amount' => $orderTotalDisplay,
@@ -385,10 +389,19 @@ class CryptoMethod extends PaymentMethod
 
             $payment->update([
                 'status' => PaymentStatus::COMPLETED->value,
-                'transaction_id' => $invoice['id'] ?? null,
+                'transaction_id' => (string)$nowInvoiceId,
+
+                'payment_method_id' => (string)$nowPaymentId,
+
                 'paid_at' => now(),
                 'metadata' => array_merge($payment->metadata ?? [], [
-                    'nowpayments_status' => $invoice['payment_status'] ?? null,
+                    'nowpayments_payment_id' => $nowPaymentId,
+                    'nowpayments_invoice_id' => $nowInvoiceId,
+                    'nowpayments_status' => $paymentData['payment_status'],
+                    'payin_hash' => $payinHash,
+                    'payout_hash' => $payoutHash,
+                    'pay_currency' => $paymentData['pay_currency'] ?? null,
+                    'actually_paid' => $paymentData['actually_paid'] ?? null,
                     'top_up_transaction_id' => $topUpTransaction->id,
                     'payment_transaction_id' => $paymentTransaction->id,
                     'correlation_id' => $correlationId,
@@ -405,12 +418,11 @@ class CryptoMethod extends PaymentMethod
 
             Session::forget("topup_order_{$order->order_id}");
 
-            Log::info('Top-up payment flow completed with currency conversion', [
+            Log::info('Crypto top-up payment completed', [
                 'order_id' => $order->order_id,
+                'nowpayments_payment_id' => $nowPaymentId,
+                'nowpayments_invoice_id' => $nowInvoiceId,
                 'correlation_id' => $correlationId,
-                'display_currency' => $displayCurrency,
-                'top_up_display' => $topUpAmountDisplay,
-                'top_up_default' => $topUpAmountDefault,
                 'final_balance' => $balanceAfterPayment,
             ]);
 
@@ -425,15 +437,15 @@ class CryptoMethod extends PaymentMethod
         });
     }
 
+
     /**
      * Process regular payment with currency conversion
      */
-    protected function processRegularPayment($invoice, Payment $payment, Order $order): array
+    protected function processRegularPayment($paymentData, Payment $payment, Order $order): array
     {
-        return DB::transaction(function () use ($invoice, $payment, $order) {
+        return DB::transaction(function () use ($paymentData, $payment, $order) {
             $payment->lockForUpdate();
             $order->lockForUpdate();
-
             $buyerWallet = $order->user->wallet ?? Wallet::firstOrCreate(
                 ['user_id' => $order->user_id],
                 [
@@ -451,7 +463,7 @@ class CryptoMethod extends PaymentMethod
             $correlationId = Str::uuid();
             $defaultCurrency = $this->currencyService->getDefaultCurrency()->code;
 
-            // Payment amount is already in default currency
+            // Payment amount already in default currency
             $paymentAmountDefault = $payment->amount;
             $orderTotalDefault = $order->default_grand_total ?? $order->grand_total;
 
@@ -459,11 +471,17 @@ class CryptoMethod extends PaymentMethod
             $balanceAfterDeposit = $balanceBefore + $paymentAmountDefault;
             $balanceAfterPayment = $balanceAfterDeposit - $orderTotalDefault;
 
-            // Get display currency info
-            $displayCurrency = $payment->metadata['display_currency'] ?? $order->display_currency;
-            $displayAmount = $payment->metadata['display_amount'] ?? null;
+            $displayCurrency = $payment->metadata['default_currency'] ?? $order->display_currency;
+            $displayAmount = $payment->metadata['default_amount'] ?? null;
 
-            // TRANSACTION 1: DEPOSIT
+            $nowPaymentId = $paymentData['payment_id'];
+            $nowInvoiceId = $paymentData['invoice_id'];
+            $payinHash = $paymentData['payin_hash'] ?? null;
+            $payoutHash = $paymentData['payout_hash'] ?? null;
+            $payCurrency = $paymentData['pay_currency'] ?? null;
+            $actuallyPaid = $paymentData['actually_paid'] ?? null;
+            $paymentStatus = $paymentData['payment_status'] ?? null;
+
             $depositTransaction = Transaction::create([
                 'transaction_id' => generate_transaction_id_hybrid(),
                 'correlation_id' => $correlationId,
@@ -475,19 +493,27 @@ class CryptoMethod extends PaymentMethod
                 'amount' => $paymentAmountDefault,
                 'currency' => $defaultCurrency,
                 'payment_gateway' => 'nowpayments',
-                'gateway_transaction_id' => $invoice['id'] ?? null,
+
+                'gateway_transaction_id' => (string)$nowPaymentId,
+
                 'source_id' => $payment->id,
                 'source_type' => Payment::class,
                 'fee_amount' => 0,
                 'net_amount' => $paymentAmountDefault,
                 'balance_snapshot' => $balanceAfterDeposit,
                 'metadata' => [
-                    'nowpayments_invoice_id' => $invoice['id'] ?? null,
+                    'nowpayments_payment_id' => $nowPaymentId,
+                    'nowpayments_invoice_id' => $nowInvoiceId,
+                    'payin_hash' => $payinHash,
+                    'payout_hash' => $payoutHash,
+                    'pay_currency' => $payCurrency,
+                    'actually_paid' => $actuallyPaid,
+                    'payment_status' => $paymentStatus,
                     'display_amount' => $displayAmount,
                     'display_currency' => $displayCurrency,
                     'description' => "Top-up via Crypto for Order #{$order->order_id}",
                 ],
-                'notes' => "Deposit: +{$paymentAmountDefault} {$defaultCurrency} via Crypto",
+                'notes' => "Deposit: +{$paymentAmountDefault} {$defaultCurrency} via Crypto (Payment ID: {$nowPaymentId})",
                 'processed_at' => now(),
             ]);
 
@@ -497,7 +523,6 @@ class CryptoMethod extends PaymentMethod
                 'last_deposit_at' => now(),
             ]);
 
-            // TRANSACTION 2: PAYMENT
             $paymentTransaction = Transaction::create([
                 'transaction_id' => generate_transaction_id_hybrid(),
                 'correlation_id' => $correlationId,
@@ -516,8 +541,10 @@ class CryptoMethod extends PaymentMethod
                 'net_amount' => $orderTotalDefault,
                 'balance_snapshot' => $balanceAfterPayment,
                 'metadata' => [
-                    'nowpayments_invoice_id' => $invoice['id'] ?? null,
+                    'nowpayments_payment_id' => $nowPaymentId,
+                    'nowpayments_invoice_id' => $nowInvoiceId,
                     'description' => "Payment for Order #{$order->order_id}",
+                    'deposit_transaction_id' => $depositTransaction->id,
                 ],
                 'notes' => "Payment: -{$orderTotalDefault} {$defaultCurrency} for Order #{$order->order_id}",
                 'processed_at' => now(),
@@ -531,10 +558,20 @@ class CryptoMethod extends PaymentMethod
 
             $payment->update([
                 'status' => PaymentStatus::COMPLETED->value,
-                'transaction_id' => $invoice['id'] ?? null,
+
+
+                'transaction_id' => (string)$nowInvoiceId,
+                'payment_method_id' => (string)$nowPaymentId,
+
                 'paid_at' => now(),
                 'metadata' => array_merge($payment->metadata ?? [], [
-                    'nowpayments_status' => $invoice['payment_status'] ?? null,
+                    'nowpayments_payment_id' => $nowPaymentId,
+                    'nowpayments_invoice_id' => $nowInvoiceId,
+                    'nowpayments_status' => $paymentStatus,
+                    'payin_hash' => $payinHash,
+                    'payout_hash' => $payoutHash,
+                    'pay_currency' => $payCurrency,
+                    'actually_paid' => $actuallyPaid,
                     'deposit_transaction_id' => $depositTransaction->id,
                     'payment_transaction_id' => $paymentTransaction->id,
                     'correlation_id' => $correlationId,
@@ -551,9 +588,18 @@ class CryptoMethod extends PaymentMethod
 
             Log::info('Crypto payment confirmed with currency conversion', [
                 'order_id' => $order->order_id,
+                'nowpayments_payment_id' => $nowPaymentId,
+                'nowpayments_invoice_id' => $nowInvoiceId,
                 'correlation_id' => $correlationId,
                 'display_currency' => $displayCurrency,
+                'display_amount' => $displayAmount,
+                'default_amount' => $paymentAmountDefault,
+                'default_currency' => $defaultCurrency,
+                'balance_before' => $balanceBefore,
+                'balance_after_deposit' => $balanceAfterDeposit,
+                'balance_after_payment' => $balanceAfterPayment,
             ]);
+
 
             $this->dispatchPaymentNotificationsOnce($payment);
             $this->sendOrderMessage($order);
@@ -562,6 +608,8 @@ class CryptoMethod extends PaymentMethod
                 'success' => true,
                 'message' => 'Payment completed successfully',
                 'correlation_id' => $correlationId,
+                'nowpayments_payment_id' => $nowPaymentId,
+                'nowpayments_invoice_id' => $nowInvoiceId,
             ];
         });
     }
