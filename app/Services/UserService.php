@@ -222,37 +222,39 @@ class UserService
 
     // ==============================================================
 
-    public function accountAnniversaryPoints(User $user)
+    public function dataUpdatePoints($coulmn = 'avatar'): void
     {
 
-    $user = User::get()->all;
-        $accountAge = now()->diffInDays($user->created_at);
 
+        $isAlreadyClaimed = user()->is_avatar_bio_verified;
+        
+        if ($isAlreadyClaimed) return;
 
-        $alreadyGiven = PointLog::where('user_id', $user->id)
-            ->where('notes', 'like', '%Account 1 year anniversary%')
-            ->exists();
+        $isAlreadyUpdated = user()->$coulmn;
 
-        if ($accountAge >= 365 && !$alreadyGiven) {
+        if (!$isAlreadyUpdated) return;
 
-            $pointLog = PointLog::create([
-                'user_id' => $user->id,
-                'source_id' => $user->id,
-                'source_type' => User::class,
-                'type' => PointType::EARNED->value,
-                'points' => 2000,
-                'notes' => "Account 1 year anniversary points",
-            ]);
+        $pointLogs = PointLog::create([
+            'user_id' => user()->id,
+            'source_id' => 1,
+            'source_type' => User::class,
+            'type' => PointType::EARNED->value,
+            'points' => 500,
+            'notes' => "Points earned for giving profile",
+        ]);
 
+        $userPoint = UserPoint::firstOrNew(['user_id' => user()->id]);
+        $userPoint->points += $pointLogs->points;
+        $userPoint->save();
 
-            $userPoint = UserPoint::firstOrNew(['user_id' => $user->id]);
-            $userPoint->points += $pointLog->points;
-            $userPoint->save();
+        $user = User::find(user()->id);
+        $user->is_avatar_bio_verified = true;
+        $user->save();
 
-            Log::info("User anniversary points added", [
-                'user_id' => $user->id,
-                'points' => $pointLog->points,
-            ]);
-        }
+        Log::info('Author points updated for first feedback', [
+            'user_id' => $user->id,
+            'user' => $user->id,
+            'points' => $pointLogs->points,
+        ]);
     }
 }
