@@ -93,6 +93,7 @@ class User extends AuthBaseModel implements Auditable
         'updater_id',
         'deleter_id',
         'restorer_id',
+        'is_first_verified',
 
 
     ];

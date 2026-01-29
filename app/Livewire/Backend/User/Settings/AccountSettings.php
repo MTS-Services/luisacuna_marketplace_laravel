@@ -103,12 +103,15 @@ class AccountSettings extends Component
                 $validatedData['email_verified_at'] = null;
             }
 
+            if (empty($validatedData['date_of_birth'])) {
+                $validatedData['date_of_birth'] = null;
+            }
+
             logger()->info('Validated Data:', $validatedData);
 
             $this->service->updateData(user()->id, $validatedData);
             $this->success(__('Profile updated successfully!'));
             $this->dispatch('profile-updated');
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             logger()->error('Validation Error:', [
                 'errors' => $e->errors(),
