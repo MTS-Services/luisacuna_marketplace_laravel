@@ -3,12 +3,16 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Enums\PointType;
+use App\Models\PointLog;
+use App\Models\UserPoint;
 use App\Actions\User\BulkAction;
 use App\Enums\UserAccountStatus;
 use App\Actions\User\CreateAction;
 use App\Actions\User\DeleteAction;
 use App\Actions\User\UpdateAction;
 use App\Actions\User\RestoreAction;
+use Illuminate\Support\Facades\Log;
 use App\Models\UserNotificationSetting;
 use Illuminate\Database\Eloquent\Collection;
 use App\Actions\User\UpdateNotificationAction;
@@ -213,5 +217,42 @@ class UserService
         $user->banned_at = null;
         $user->save();
         return;
+    }
+
+
+    // ==============================================================
+
+    public function accountAnniversaryPoints(User $user)
+    {
+
+    $user = User::get()->all;
+        $accountAge = now()->diffInDays($user->created_at);
+
+
+        $alreadyGiven = PointLog::where('user_id', $user->id)
+            ->where('notes', 'like', '%Account 1 year anniversary%')
+            ->exists();
+
+        if ($accountAge >= 365 && !$alreadyGiven) {
+
+            $pointLog = PointLog::create([
+                'user_id' => $user->id,
+                'source_id' => $user->id,
+                'source_type' => User::class,
+                'type' => PointType::EARNED->value,
+                'points' => 2000,
+                'notes' => "Account 1 year anniversary points",
+            ]);
+
+
+            $userPoint = UserPoint::firstOrNew(['user_id' => $user->id]);
+            $userPoint->points += $pointLog->points;
+            $userPoint->save();
+
+            Log::info("User anniversary points added", [
+                'user_id' => $user->id,
+                'points' => $pointLog->points,
+            ]);
+        }
     }
 }
