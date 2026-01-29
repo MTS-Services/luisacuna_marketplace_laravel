@@ -172,7 +172,7 @@
             </div>
         @endif
 
-        {{-- Step 4: CSV Upload --}}
+        {{-- Step 4: CSV/Excel Upload --}}
         @if ($currentStep === 3)
             <div class="bg-bg-secondary rounded-2xl p-4 sm:p-10 md:p-20">
                 <h2 class="text-2xl sm:text-40px font-semibold text-center text-text-white mb-3">
@@ -193,15 +193,23 @@
 
                     @if ($gameId)
                         <div class="flex items-center gap-2 mb-4 p-4 border border-pink-500/30 rounded-lg bg-pink-500/10 cursor-pointer"
-                            wire:click="downloadTemplate">
+                            wire:click="downloadTemplate('csv')">
                             <x-phosphor name="download-simple" variant="regular" class="w-6 h-6 fill-pink-500" />
                             <p class="text-pink-500 text-xs xxs:text-base font-bold">
-                                {{ __('Click here to download template for selected game') }}
+                                {{ __('Download CSV Template for selected game') }}
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-2 mb-4 p-4 border border-pink-500/30 rounded-lg bg-pink-500/10 cursor-pointer"
+                            wire:click="downloadTemplate('excel')">
+                            <x-phosphor name="download-simple" variant="regular" class="w-6 h-6 fill-pink-500" />
+                            <p class="text-pink-500 text-xs xxs:text-base font-bold">
+                                {{ __('Download Excel Template for selected game') }}
                             </p>
                         </div>
                     @else
                         <p class="text-yellow-500 text-sm mb-4 italic">
-                            {{ __('Please select a game first to download the correct template.') }}</p>
+                            {{ __('Please select a game first to download the correct template.') }}
+                        </p>
                     @endif
 
                     <div class="flex flex-col gap-2 opacity-60">
@@ -222,17 +230,18 @@
                 </div>
 
                 <div class="block xxs:flex gap-4 mt-5! sm:mt-10!">
-                    <div class="flex md:w-auto!">
+                    {{-- <div class="flex md:w-auto!">
                         <x-ui.button class="w-fit! py-2! px-4! text-text-white opacity-50" disabled>
                             {{ __('Upload images') }}
                         </x-ui.button>
-                    </div>
+                    </div> --}}
 
                     <label for="file-input-alt"
                         class="bg-bg-primary text-text-white font-medium py-2 px-4 rounded-lg cursor-pointer transition-colors inline-block hover:bg-opacity-90 mt-2 xxs:mt-0">
                         {{ __('Choose CSV File') }}
                     </label>
-                    <input id="file-input-alt" type="file" wire:model="file" accept=".csv" class="hidden w-full">
+                    <input id="file-input-alt" type="file" wire:model="file" accept=".csv"
+                        class="hidden w-full">
 
                     @if ($file)
                         <span class="text-green-500 py-2 font-semibold">
@@ -249,7 +258,7 @@
                 @enderror
 
                 @if (session()->has('success'))
-                    <p x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 10000)"
+                    <p x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)"
                         class="text-green-500 mt-2 bg-green-500/10 p-2 rounded">
                         {{ session('success') }}
                     </p>
@@ -259,8 +268,8 @@
                 <div class="flex justify-start mt-5! sm:mt-10!">
                     <x-ui.button wire:click="uploadFile" wire:loading.attr="disabled"
                         class="w-auto py-2! disabled:opacity-50 text-white! hover:text-black!">
-                        <span wire:loading.remove>{{ __('Confirm & Upload') }}</span>
-                        <span wire:loading>{{ __('Processing...') }}</span>
+                        <span wire:loading.remove class="text-white group-hover:text-black">{{ __('Confirm & Upload') }}</span>
+                        <span wire:loading class="text-white group-hover:text-black">{{ __('Processing...') }}</span>
                     </x-ui.button>
                 </div>
             </div>

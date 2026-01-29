@@ -2,18 +2,14 @@
 
 namespace App\Livewire\Backend\User\Offers;
 
-use App\Jobs\ProcessBulkOfferUploadJob;
-use App\Models\Platform;
-use App\Models\Game;
-use App\Models\GameConfig;
-use App\Services\CategoryService;
-use App\Services\GameService;
-use App\Services\PlatformService;
-use App\Services\ProductService;
 use Livewire\Component;
+use App\Exports\ArrayExport;
+use App\Services\GameService;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use App\Services\CategoryService;
+use App\Services\PlatformService;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Jobs\ProcessBulkOfferUploadJob;
 
 class BulkUpload extends Component
 {
@@ -23,16 +19,18 @@ class BulkUpload extends Component
     public $gameId;
     public $file;
     public $games = [];
+    public $format = 'csv'; // csv | excel
 
     protected GameService $gameService;
-    protected ProductService $productService;
     protected CategoryService $categoryService;
     protected PlatformService $platformService;
 
-    public function boot(GameService $gameService, ProductService $productService, CategoryService $categoryService, PlatformService $platformService)
-    {
+    public function boot(
+        GameService $gameService,
+        CategoryService $categoryService,
+        PlatformService $platformService
+    ) {
         $this->gameService = $gameService;
-        $this->productService = $productService;
         $this->categoryService = $categoryService;
         $this->platformService = $platformService;
     }
@@ -54,85 +52,59 @@ class BulkUpload extends Component
         $this->currentStep = 3;
     }
 
-    public function downloadTemplate(): StreamedResponse
+    /**
+     * CSV / Excel Template Download
+     */
+    public function downloadTemplate($method = 'csv')
     {
         $game = $this->gameService->findData($this->gameId);
 
-        // -------- Delivery Methods (Readable) --------
-        $deliveryMethods = [];
-        if ($game->gameConfig->isNotEmpty()) {
-            $game->gameConfig->first()->delivery_methods ?? [];
-        }
-        $timelineOptions = delivery_timelines('manual');
-        $platforms = $this->platformService->getActiveData()->pluck('name', 'id')->map(fn($name, $id) => "{$id}:{$name}")->implode(' | ');
+        $platforms = $this->platformService
+            ->getActiveData()
+            ->pluck('name', 'id')
+            ->map(fn($name, $id) => "{$id}:{$name}")
+            ->implode(' | ');
 
-        // -------- Categories (id:name format) --------
         $categories = $this->categoryService
             ->getDatas()
             ->pluck('name', 'id')
             ->map(fn($name, $id) => "{$id}:{$name}")
             ->implode(' | ');
 
-        // ---------- Static Headers ----------
-        $headers = [
-            'Product Title',
-            'Description',
-            'Quantity',
-            'Price',
-            'Delivery Method',
-            'Delivery Time',
-            'Platform',
-            'Category'
-        ];
-
-        // ---------- Example Row ----------
-        $exampleRow = [
-            '100 Gold Package',
-            'Instant delivery product',
-            '1',
-            '9.99',
-            implode(' / ', $deliveryMethods),
-            implode(' / ', $timelineOptions),
-            $platforms,
-            $categories,
-        ];
-
-        // ---------- Dynamic Game Config Headers ----------
-        $configs = GameConfig::where('game_id', $this->gameId)->get();
-
-        foreach ($configs as $config) {
-            if (!$config->field_name) {
-                continue;
-            }
-
-            $headers[] = $config->field_name;
-
-            if ($config->input_type === 'select') {
-                $options = json_decode($config->options, true);
-                $exampleRow[] = implode(' / ', $options ?? []);
-            } else {
-                $exampleRow[] = 'Enter value';
-            }
+        if ($method === 'csv') {
+            $export = new ArrayExport($game, $platforms, $categories);
+            return response()->streamDownload(function () use ($export) {
+                $handle = fopen('php://output', 'w');
+                fputcsv($handle, $export->headings());
+                foreach ($export->array() as $row) {
+                    fputcsv($handle, $row);
+                }
+                fclose($handle);
+            }, "bulk_template_game_{$this->gameId}.csv");
         }
 
-        return response()->streamDownload(function () use ($headers, $exampleRow) {
-            $handle = fopen('php://output', 'w');
-            fputcsv($handle, $headers);
-            fputcsv($handle, $exampleRow);
-            fclose($handle);
-        }, 'bulk_template_game_' . $this->gameId . '.csv');
+        // Excel
+        return Excel::download(new ArrayExport($game, $platforms, $categories), 'bulk_template_game_' . $this->gameId . '.xlsx');
     }
+
+
+    /**
+     * Upload CSV / Excel
+     */
     public function uploadFile()
     {
         $this->validate([
-            'file'   => 'required|mimes:csv,txt|max:10240',
+            'file'   => 'required|mimes:csv,xlsx|max:10240',
             'gameId' => 'required|integer',
         ]);
 
-        // file store temporarily
         $path = $this->file->store('bulk-uploads');
 
-        dispatch(new ProcessBulkOfferUploadJob(storage_path('app/' . $path), $this->gameId, user()->id));
+        ProcessBulkOfferUploadJob::dispatch(
+            storage_path('app/' . $path),
+            $this->gameId,
+            user()->id
+        )->onQueue('bulk-upload');
 
         session()->flash(
             'success',
@@ -141,9 +113,6 @@ class BulkUpload extends Component
 
         $this->reset(['file']);
     }
-
-
-
 
     public function render()
     {

@@ -24,6 +24,7 @@
         "league/csv": "^9.27",
         "livewire/flux": "^2.1.1",
         "livewire/volt": "^1.7.0",
+        "maatwebsite/excel": "^3.1",
         "owen-it/laravel-auditing": "^14.0",
         "predis/predis": "^3.2",
         "prevailexcel/laravel-nowpayments": "^1.0",

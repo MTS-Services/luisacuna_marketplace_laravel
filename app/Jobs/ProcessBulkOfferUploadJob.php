@@ -10,25 +10,29 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProcessBulkOfferUploadJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected string $filePath;
-    protected int $gameId;
-    protected int $userId;
-
-    public function __construct(string $filePath, int $gameId, int $userId)
-    {
-        $this->filePath = $filePath;
-        $this->gameId   = $gameId;
-        $this->userId   = $userId;
-    }
+    public function __construct(
+        protected string $filePath,
+        protected int $gameId,
+        protected int $userId
+    ) {}
 
     public function handle(ProductService $productService): void
     {
-        $rows = array_map('str_getcsv', file($this->filePath));
+        $extension = pathinfo($this->filePath, PATHINFO_EXTENSION);
+
+        // Load rows
+        if (in_array($extension, ['xlsx', 'xls'])) {
+            $rows = Excel::toArray([], $this->filePath)[0];
+        } else {
+            $rows = array_map('str_getcsv', file($this->filePath));
+        }
+
         $headers = array_shift($rows);
 
         DB::beginTransaction();
@@ -41,12 +45,10 @@ class ProcessBulkOfferUploadJob implements ShouldQueue
 
                 $csv = array_combine($headers, $row);
 
-                // Platform (id:name)
                 [$platformId] = explode(':', $csv['Platform'] ?? '');
-                $platformId = (int) $platformId;
-
-                // Category (id:name)
                 [$categoryId] = explode(':', $csv['Category'] ?? '');
+
+                $platformId = (int) $platformId;
                 $categoryId = (int) $categoryId;
 
                 if (!$platformId || !$categoryId) {
@@ -83,7 +85,6 @@ class ProcessBulkOfferUploadJob implements ShouldQueue
             }
 
             DB::commit();
-
         } catch (\Throwable $e) {
             DB::rollBack();
             throw $e;
