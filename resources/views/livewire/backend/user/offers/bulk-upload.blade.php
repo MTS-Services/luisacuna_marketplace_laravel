@@ -20,7 +20,7 @@
                                 </div>
                             </div>
 
-                            <svg class="w-6 h-6 fill-white" viewBox="0 0 256 256">
+                            <svg class="w-6 h-6 fill-text-white" viewBox="0 0 256 256">
                                 <path
                                     d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z">
                                 </path>
@@ -41,7 +41,7 @@
                                 </div>
                             </div>
 
-                            <svg class="w-6 h-6 fill-white" viewBox="0 0 256 256">
+                            <svg class="w-6 h-6 fill-text-white" viewBox="0 0 256 256">
                                 <path
                                     d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z">
                                 </path>
@@ -72,9 +72,9 @@
                     <div class="mx-auto w-full sm:w-1/2">
                         <x-ui.custom-select :wireModel="'gameId'" :dropDownClass="'border-0!'" class="rounded-md! border-0!">
                             <x-ui.custom-option :value="null" :label="__('Select a game')" />
-                            {{-- @foreach ($games as $item)
+                            @foreach ($games as $item)
                                 <x-ui.custom-option :value="$item->id" :label="$item->name" />
-                            @endforeach --}}
+                            @endforeach
                         </x-ui.custom-select>
                     </div>
 
@@ -99,7 +99,7 @@
         @endif
 
         {{-- Step 3: Item Details (Region & Server) --}}
-        @if ($currentStep === 3)
+        @if ($currentStep === 30)
             <div class="bg-bg-secondary rounded-2xlp-4 sm:p-10 md:p-20">
                 <h2 class="text-2xl sm:text-40px font-semibold text-center text-text-white mb-3">
                     {{ __('Sell Game Currency') }}
@@ -173,43 +173,46 @@
         @endif
 
         {{-- Step 4: CSV Upload --}}
-        @if ($currentStep === 4)
+        @if ($currentStep === 3)
             <div class="bg-bg-secondary rounded-2xl p-4 sm:p-10 md:p-20">
                 <h2 class="text-2xl sm:text-40px font-semibold text-center text-text-white mb-3">
-                    {{ __('Bulk Upload') }}</h2>
+                    {{ __('Bulk Upload') }}
+                </h2>
 
-                <div class="bg-bg-info p-6 rounded-2xl my-10">
+                {{-- <div class="bg-bg-info p-6 rounded-2xl my-10">
                     <p class="text-pink-500 font-normal text-2xl">{{ __('NOTE!') }}</p>
                     <p class="text-text-white font-normal text-lg xxs:text-xl">
                         {{ __('Bulk upload is available only on currency category at the moment.') }}
                     </p>
-                </div>
+                </div> --}}
 
                 <div>
                     <h3 class="text-text-white font-semibold text-xl xxs:text-2xl mb-4">
-                        {{ __('1. Download the bulk upload template file.') }}</h3>
-                    <div class="flex items-center gap-2">
-                        <x-phosphor name="paperclip" variant="regular" class="w-5 h-5 fill-pink-500" />
-                        <p class="text-pink-500 text-xs xxs:text-base font-normal">{{ __('WOW Example') }}</p>
+                        {{ __('1. Download the bulk upload template file.') }}
+                    </h3>
+
+                    @if ($gameId)
+                        <div class="flex items-center gap-2 mb-4 p-4 border border-pink-500/30 rounded-lg bg-pink-500/10 cursor-pointer"
+                            wire:click="downloadTemplate">
+                            <x-phosphor name="download-simple" variant="regular" class="w-6 h-6 fill-pink-500" />
+                            <p class="text-pink-500 text-xs xxs:text-base font-bold">
+                                {{ __('Click here to download template for selected game') }}
+                            </p>
+                        </div>
+                    @else
+                        <p class="text-yellow-500 text-sm mb-4 italic">
+                            {{ __('Please select a game first to download the correct template.') }}</p>
+                    @endif
+
+                    <div class="flex flex-col gap-2 opacity-60">
+                        <p class="text-text-white text-sm mb-1">{{ __('Sample Examples:') }}</p>
+                        <div class="flex items-center gap-2">
+                            <x-phosphor name="paperclip" variant="regular" class="w-5 h-5 fill-pink-500" />
+                            <p class="text-pink-500 text-xs xxs:text-base font-normal cursor-not-allowed">
+                                {{ __('WOW Example') }}</p>
+                        </div>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <x-phosphor name="paperclip" variant="regular" class="w-5 h-5 fill-pink-500" />
-                        <p class="text-pink-500 text-xs xxs:text-base font-normal">
-                            {{ __('WOW Mists of Pandaria Example') }}</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <x-phosphor name="paperclip" variant="regular" class="w-5 h-5 fill-pink-500" />
-                        <p class="text-pink-500 text-xs xxs:text-base font-normal">{{ __('WOW Classic Era Example') }}
-                        </p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <x-phosphor name="paperclip" variant="regular" class="w-5 h-5 fill-pink-500" />
-                        <p class="text-pink-500 text-xs xxs:text-base font-normal">{{ __('New World Example') }}</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <x-phosphor name="paperclip" variant="regular" class="w-5 h-5 fill-pink-500" />
-                        <p class="text-pink-500 text-xs xxs:text-base font-normal">{{ __('Lost Ark Example') }}</p>
-                    </div>
+
                     <h3 class="text-text-white font-semibold text-xl xxs:text-2xl mt-3 xxs:mt-6">
                         {{ __('2. Fill in the required fields in the template file.') }}</h3>
                     <h3 class="text-text-white font-semibold text-xl xxs:text-2xl mt-3 xxs:mt-6">
@@ -220,30 +223,45 @@
 
                 <div class="block xxs:flex gap-4 mt-5! sm:mt-10!">
                     <div class="flex md:w-auto!">
-                        <x-ui.button wire:click=""
-                            class="w-fit! py-2! px-4! text-text-white">{{ __('Upload images') }}</x-ui.button>
+                        <x-ui.button class="w-fit! py-2! px-4! text-text-white opacity-50" disabled>
+                            {{ __('Upload images') }}
+                        </x-ui.button>
                     </div>
+
                     <label for="file-input-alt"
                         class="bg-bg-primary text-text-white font-medium py-2 px-4 rounded-lg cursor-pointer transition-colors inline-block hover:bg-opacity-90 mt-2 xxs:mt-0">
-                        {{ __('Choose File') }}
+                        {{ __('Choose CSV File') }}
                     </label>
-                    <input id="file-input-alt" type="file" wire:model="file" accept=".csv"
-                        class="hidden w-full">
+                    <input id="file-input-alt" type="file" wire:model="file" accept=".csv" class="hidden w-full">
 
                     @if ($file)
-                        <span class="text-text-white py-2">{{ $file->getClientOriginalName() }}</span>
+                        <span class="text-green-500 py-2 font-semibold">
+                            <x-phosphor name="check-circle" class="inline w-5 h-5" />
+                            {{ $file->getClientOriginalName() }}
+                        </span>
                     @endif
                 </div>
 
-                <p class="text-text-white block! mt-2">{{ __('Must be CSV and cannot exceed 1MB.') }}</p>
+                <p class="text-text-white block! mt-2 text-sm">{{ __('File must be CSV and cannot exceed 1MB.') }}</p>
 
                 @error('file')
-                    <p class="text-pink-500 mt-2">{{ $message }}</p>
+                    <p class="text-pink-500 mt-2 bg-pink-500/10 p-2 rounded">{{ $message }}</p>
                 @enderror
+
+                @if (session()->has('success'))
+                    <p x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 10000)"
+                        class="text-green-500 mt-2 bg-green-500/10 p-2 rounded">
+                        {{ session('success') }}
+                    </p>
+                @endif
+
+
                 <div class="flex justify-start mt-5! sm:mt-10!">
-                    <div class="flex justify-center px-2">
-                        <x-ui.button wire:click="uploadFile" class="w-auto py-2!">{{ __('Upload') }}</x-ui.button>
-                    </div>
+                    <x-ui.button wire:click="uploadFile" wire:loading.attr="disabled"
+                        class="w-auto py-2! disabled:opacity-50 text-white! hover:text-black!">
+                        <span wire:loading.remove>{{ __('Confirm & Upload') }}</span>
+                        <span wire:loading>{{ __('Processing...') }}</span>
+                    </x-ui.button>
                 </div>
             </div>
         @endif
