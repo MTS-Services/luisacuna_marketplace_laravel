@@ -2,13 +2,16 @@
 
 namespace App\Services;
 
-use App\Enums\FeedbackType;
 use App\Models\Order;
 use App\Models\Product;
+use App\Enums\PointType;
 use App\Models\Feedback;
+use App\Models\PointLog;
+use App\Models\UserPoint;
+use App\Enums\FeedbackType;
 use Illuminate\Support\Collection;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class FeedbackService
 {
@@ -108,5 +111,41 @@ class FeedbackService
     {
         return $this->model->where('target_user_id', user()->id)
             ->where('type', $type->value)->count();
+    }
+
+
+    public function feedbackPoints(Feedback $feedback)
+    {
+        $author = $feedback->author()->withCount([
+            'feedbacks as first_feedback_given' => function ($query) {
+                $query->where('is_first_feedback', true);
+            }
+        ])->first();
+
+
+        if ($author->first_feedback_given == 0) {
+            $pointLogs = PointLog::create([
+                'user_id' => $author->id,
+                'source_id' => $feedback->id,
+                'source_type' => Feedback::class,
+                'type' => PointType::EARNED->value,
+                'points' => 500,
+                'notes' => "Points earned for giving first feedback",
+            ]);
+
+            $userPoint = UserPoint::firstOrNew(['user_id' => $author->id]);
+            $userPoint->points += $pointLogs->points;
+            $userPoint->save();
+
+
+            $feedback->is_first_feedback = true;
+            $feedback->save();
+
+            Log::info('Author points updated for first feedback', [
+                'author_id' => $author->id,
+                'feedback_id' => $feedback->id,
+                'points' => $pointLogs->points,
+            ]);
+        }
     }
 }

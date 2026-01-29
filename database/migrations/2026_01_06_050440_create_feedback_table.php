@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('type');
             $table->text('message');
             $table->smallInteger('rating')->nullable();
+            $table->boolean('is_first_feedback')->default(false);
 
 
 
