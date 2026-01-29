@@ -227,7 +227,7 @@ class UserService
 
 
         $isAlreadyClaimed = user()->is_avatar_bio_verified;
-        
+
         if ($isAlreadyClaimed) return;
 
         $isAlreadyUpdated = user()->$coulmn;
@@ -239,7 +239,7 @@ class UserService
             'source_id' => 1,
             'source_type' => User::class,
             'type' => PointType::EARNED->value,
-            'points' => 500,
+            'points' => 300,
             'notes' => "Points earned for giving profile",
         ]);
 
