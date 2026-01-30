@@ -257,4 +257,11 @@ class UserService
             'points' => $pointLogs->points,
         ]);
     }
+
+
+    public function sendReward(int $userId): void
+    {
+        $user = User::findOrFail($userId);
+        $user->sendReward();
+    }
 }
