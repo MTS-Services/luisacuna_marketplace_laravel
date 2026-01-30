@@ -5,12 +5,16 @@ namespace App\Livewire\Auth\User;
 use App\Models\User;
 use App\Enums\OtpType;
 use Livewire\Component;
+use App\Enums\PointType;
+use App\Models\PointLog;
+use App\Models\UserPoint;
 use App\Mail\OtpVerificationMail;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Traits\Livewire\WithNotification;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
 
 class OtpVerify extends Component
@@ -283,6 +287,8 @@ class OtpVerify extends Component
 
     public function verifyOtp()
     {
+
+
         // Check if already verified
         $user = User::find(session('registration.user_id'));
         if ($user && $user->email_verified_at) {
@@ -311,9 +317,37 @@ class OtpVerify extends Component
         }
 
         // Update user's email_verified_at
-        $user->update([
+        $isUpdated =  $user->update([
             'email_verified_at' => now()
         ]);
+   
+        Log::info('Exicute This line');
+        if ($isUpdated && !$user->is_first_verified) {
+
+            DB::transaction(function () use ($user) {
+                $pointLogs = PointLog::create([
+                    'user_id' => $user->id,
+                    'source_id' => $user->id,
+                    'source_type' => User::class,
+                    'type' => PointType::EARNED->value,
+                    'points' => 500,
+                    'notes' => "Points earned for Email Verification",
+                ]);
+
+                $userPoint = UserPoint::firstOrNew(['user_id' => $user->id]);
+                $userPoint->points += $pointLogs->points;
+                $userPoint->save();
+
+              $user->is_first_verified = true;
+            $user->save();
+
+                Log::info('User points updated', [
+                    'user_id' => $user->id,
+                    'points' => $pointLogs->points,
+                ]);
+            });
+        }
+
 
         // Clear session
         session()->forget('registration');

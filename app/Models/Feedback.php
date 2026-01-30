@@ -25,6 +25,7 @@ class Feedback extends AuditBaseModel implements Auditable
         'type',
         'message',
         'rating',
+        'is_first_feedback',
 
         'creater_type',
         'updater_type',

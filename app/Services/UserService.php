@@ -3,12 +3,16 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Enums\PointType;
+use App\Models\PointLog;
+use App\Models\UserPoint;
 use App\Actions\User\BulkAction;
 use App\Enums\UserAccountStatus;
 use App\Actions\User\CreateAction;
 use App\Actions\User\DeleteAction;
 use App\Actions\User\UpdateAction;
 use App\Actions\User\RestoreAction;
+use Illuminate\Support\Facades\Log;
 use App\Models\UserNotificationSetting;
 use Illuminate\Database\Eloquent\Collection;
 use App\Actions\User\UpdateNotificationAction;
@@ -213,5 +217,44 @@ class UserService
         $user->banned_at = null;
         $user->save();
         return;
+    }
+
+
+    // ==============================================================
+
+    public function dataUpdatePoints($coulmn = 'avatar'): void
+    {
+
+
+        $isAlreadyClaimed = user()->is_avatar_bio_verified;
+
+        if ($isAlreadyClaimed) return;
+
+        $isAlreadyUpdated = user()->$coulmn;
+
+        if (!$isAlreadyUpdated) return;
+
+        $pointLogs = PointLog::create([
+            'user_id' => user()->id,
+            'source_id' => 1,
+            'source_type' => User::class,
+            'type' => PointType::EARNED->value,
+            'points' => 300,
+            'notes' => "Points earned for giving profile",
+        ]);
+
+        $userPoint = UserPoint::firstOrNew(['user_id' => user()->id]);
+        $userPoint->points += $pointLogs->points;
+        $userPoint->save();
+
+        $user = User::find(user()->id);
+        $user->is_avatar_bio_verified = true;
+        $user->save();
+
+        Log::info('Author points updated for first feedback', [
+            'user_id' => $user->id,
+            'user' => $user->id,
+            'points' => $pointLogs->points,
+        ]);
     }
 }
