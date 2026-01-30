@@ -7,20 +7,21 @@ use App\Enums\UserType;
 use App\Enums\UserStatus;
 use App\Enums\userKycStatus;
 use App\Traits\AuditableTrait;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 use App\Traits\HasTranslations;
 use App\Enums\UserAccountStatus;
 use App\Traits\HasDeviceManagement;
+use App\Observers\UserTwoFAObserver;
+use Illuminate\Notifications\Notifiable;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends AuthBaseModel implements Auditable
 {
@@ -85,6 +86,7 @@ class User extends AuthBaseModel implements Auditable
 
         'session_version',
         'all_devices_logged_out_at',
+        'is_two_factor_verified',
 
         'creater_type',
         'updater_type',
@@ -93,6 +95,7 @@ class User extends AuthBaseModel implements Auditable
         'updater_id',
         'deleter_id',
         'restorer_id',
+        'is_first_verified',
 
 
     ];
@@ -165,6 +168,8 @@ class User extends AuthBaseModel implements Auditable
                 'user_id' => $user->id,
             ]);
         });
+
+        User::observe(UserTwoFAObserver::class);
     }
 
     /*

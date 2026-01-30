@@ -42,7 +42,7 @@ class Complete extends Component
 
     public function mount(string $orderId)
     {
-        
+
         $this->order = $this->orderService->findData($orderId, 'order_id');
         $this->order->load([
             'user',
@@ -67,18 +67,18 @@ class Complete extends Component
     public function cancelOrder()
     {
         $this->showDisputeModal = true;
-        
     }
 
-    public function submitDispute(){
+    public function submitDispute()
+    {
 
         $this->validate([
             'disputeReason' => 'required|string|min:10|max:1000',
-        ],[
+        ], [
             'disputeReason.required' => 'Dispute reason is required',
         ]);
 
-        $disputed_to = user()->id != $this->order->user_id ? $this->order->user_id : $this->order->source->user_id; 
+        $disputed_to = user()->id != $this->order->user_id ? $this->order->user_id : $this->order->source->user_id;
         $datas = [
             'order_id' => $this->order->id,
             'reason' => $this->disputeReason,
@@ -105,12 +105,12 @@ class Complete extends Component
     {
 
 
-        $this->validate([
+       $this->validate([
             'type' => 'required|in:' . FeedbackType::POSITIVE->value . ',' . FeedbackType::NEGATIVE->value,
             'commentText' => 'required|string|min:5|max:1000',
         ]);
 
-        $this->feedbackService->createData([
+       $feedback = $this->feedbackService->createData([
             'author_id'      => user()->id,
             'target_user_id' => $this->isVisitSeller ? $this->order->user_id : $this->order->source->user_id,
             'order_id'       => $this->order->id,
@@ -118,7 +118,7 @@ class Complete extends Component
             'message'        => $this->commentText,
             'rating'         => $this->rating,
         ]);
-
+        $this->feedbackService->FeedbackPoints($feedback);
         $this->reset(['commentText', 'type']);
 
         $this->dispatch('close-modal');

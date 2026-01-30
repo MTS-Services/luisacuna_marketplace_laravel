@@ -68,10 +68,13 @@ class AccountSettings extends Component
 
             $uploaded = $this->cloudinaryService->upload($this->avatar, ['folder' => 'users']);
             $path = $uploaded->publicId;
-            auth()->user()->update([
+          $isUpdated =   auth()->user()->update([
                 'avatar' => $path,
             ]);
 
+            if($isUpdated) {
+                $this->service->dataUpdatePoints('description');
+            }
             $this->success(__('Profile photo updated successfully!'));
         } catch (\Exception $e) {
             $this->error(__('Profile photo update failed!'));
@@ -103,12 +106,20 @@ class AccountSettings extends Component
                 $validatedData['email_verified_at'] = null;
             }
 
+            if (empty($validatedData['date_of_birth'])) {
+                $validatedData['date_of_birth'] = null;
+            }
+
             logger()->info('Validated Data:', $validatedData);
 
-            $this->service->updateData(user()->id, $validatedData);
+           $data = $this->service->updateData(user()->id, $validatedData);
+
+           if($data) {
+            $description = $validatedData['description'];
+            $this->service->dataUpdatePoints('avatar', $description);
+           }
             $this->success(__('Profile updated successfully!'));
             $this->dispatch('profile-updated');
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             logger()->error('Validation Error:', [
                 'errors' => $e->errors(),

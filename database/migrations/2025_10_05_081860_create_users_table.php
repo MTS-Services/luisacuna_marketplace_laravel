@@ -40,6 +40,12 @@ return new class extends Migration {
 
             $table->string('timezone')->default('UTC');
 
+            $table->boolean('is_first_verified')->default(false);
+            $table->boolean('is_avatar_bio_verified')->default(false);
+            $table->boolean('is_two_factor_verified')->default(false);
+
+            
+
             // $table->unsignedBigInteger('language_id')->nullable();
             // $table->unsignedBigInteger('currency_id')->nullable();
 
