@@ -324,15 +324,18 @@ class OtpVerify extends Component
 
         $this->isVerified = true;
 
-        Log::info('Email Verified Successfully', [
-            'user_id' => $user->id,
-            'email' => $user->email
-        ]);
+        session()->put('device_registration_pending', true);
 
         Auth::login($user);
 
-        $this->success('Email verified successfully!');
-       $this->redirect(route('profile', ['username' => $user->username]), navigate: true);
+        $user->update([
+            'last_login_at' => now(),
+        ]);
+
+        return $this->redirect(
+            route('profile', ['username' => $user->username]),
+            navigate: true
+        );
     }
 
     public function resendOtp()
