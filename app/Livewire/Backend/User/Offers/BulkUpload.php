@@ -3,13 +3,17 @@
 namespace App\Livewire\Backend\User\Offers;
 
 use Livewire\Component;
+use App\Models\GameConfig;
 use App\Exports\ArrayExport;
 use App\Services\GameService;
 use Livewire\WithFileUploads;
 use App\Services\CategoryService;
 use App\Services\PlatformService;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Jobs\ProcessBulkOfferUploadJob;
+use App\Services\ProductService;
+use Illuminate\Support\Facades\Storage;
 
 class BulkUpload extends Component
 {
@@ -24,15 +28,18 @@ class BulkUpload extends Component
     protected GameService $gameService;
     protected CategoryService $categoryService;
     protected PlatformService $platformService;
+    protected ProductService $productService;
 
     public function boot(
         GameService $gameService,
         CategoryService $categoryService,
-        PlatformService $platformService
+        PlatformService $platformService,
+        ProductService $productService
     ) {
         $this->gameService = $gameService;
         $this->categoryService = $categoryService;
         $this->platformService = $platformService;
+        $this->productService = $productService;
     }
 
     public function selectUploadMethod($method)
@@ -91,6 +98,29 @@ class BulkUpload extends Component
     /**
      * Upload CSV / Excel
      */
+    // public function uploadFile()
+    // {
+    //     $this->validate([
+    //         'file'   => 'required|mimes:csv,xlsx|max:10240',
+    //         'gameId' => 'required|integer',
+    //     ]);
+
+    //     $path = $this->file->store('bulk-uploads');
+
+    //     ProcessBulkOfferUploadJob::dispatch(
+    //         storage_path('app/' . $path),
+    //         $this->gameId,
+    //         user()->id
+    //     )->onQueue('bulk-upload');
+
+    //     session()->flash(
+    //         'success',
+    //         'Bulk upload is processing in background. You will see offers shortly.'
+    //     );
+
+    //     $this->reset(['file']);
+    // }
+
     public function uploadFile()
     {
         $this->validate([
@@ -98,13 +128,69 @@ class BulkUpload extends Component
             'gameId' => 'required|integer',
         ]);
 
-        $path = $this->file->store('bulk-uploads');
+        $path = $this->file->store('bulk-uploads', 'local');
 
-        ProcessBulkOfferUploadJob::dispatch(
-            storage_path('app/' . $path),
-            $this->gameId,
-            user()->id
-        )->onQueue('bulk-upload');
+        $fullPath = Storage::path($path);
+
+        $rows = array_map('str_getcsv', file($fullPath));
+        $headers = array_shift($rows);
+
+        DB::beginTransaction();
+
+        try {
+            foreach ($rows as $row) {
+                if (count($headers) !== count($row)) {
+                    continue;
+                }
+
+                $csv = array_combine($headers, $row);
+
+                // Platform (id:name)
+                [$platformId] = explode(':', $csv['Platform'] ?? '');
+                $platformId = (int) $platformId;
+
+                // Category (id:name)
+                [$categoryId] = explode(':', $csv['Category'] ?? '');
+                $categoryId = (int) $categoryId;
+
+                if (!$platformId || !$categoryId) {
+                    continue;
+                }
+
+                $productData = [
+                    'user_id'           => user()->id,
+                    'game_id'           => $this->gameId,
+                    'category_id'       => $categoryId,
+                    'platform_id'       => $platformId,
+                    'name'              => $csv['Product Title'],
+                    'description'       => $csv['Description'],
+                    'quantity'          => (int) $csv['Quantity'],
+                    'price'             => (float) $csv['Price'],
+                    'deliveryMethod'    => trim($csv['Delivery Method']),
+                    'delivery_timeline' => trim($csv['Delivery Time']),
+                    'fields'            => [],
+                ];
+
+                $configs = GameConfig::where('game_id', $this->gameId)
+                    ->where('category_id', $categoryId)
+                    ->get();
+
+                foreach ($configs as $config) {
+                    if (!empty($csv[$config->field_name])) {
+                        $productData['fields'][$config->id] = [
+                            'value' => trim($csv[$config->field_name]),
+                        ];
+                    }
+                }
+
+                $this->productService->createData($productData);
+            }
+
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
 
         session()->flash(
             'success',
@@ -113,7 +199,6 @@ class BulkUpload extends Component
 
         $this->reset(['file']);
     }
-
     public function render()
     {
         return view('livewire.backend.user.offers.bulk-upload');
