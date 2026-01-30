@@ -42,6 +42,7 @@ return new class extends Migration {
 
             $table->boolean('is_first_verified')->default(false);
             $table->boolean('is_avatar_bio_verified')->default(false);
+            $table->boolean('is_two_factor_verified')->default(false);
 
             
 
