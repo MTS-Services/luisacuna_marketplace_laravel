@@ -140,4 +140,7 @@
             <livewire:backend.admin.user-management.user.index />
     @endswitch
 
+
+    <livewire:backend.admin.user-management.user.reward />
+
 </x-admin::app>

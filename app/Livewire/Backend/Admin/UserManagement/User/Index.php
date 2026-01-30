@@ -102,6 +102,11 @@ class Index extends Component
                 'encrypt' => true,
                 'route' => 'admin.um.user.feedback'
             ],
+            [
+                'key' => 'id',
+                'label' => 'Reward',
+                'x_click' => "\$dispatch('point-modal-open', { userId: '{value}' })",
+            ],
         ];
         $bulkActions = [
             ['value' => 'delete', 'label' => 'Delete'],
