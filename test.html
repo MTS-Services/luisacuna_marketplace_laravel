@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WHY TENNESSEE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom animations and additional styles */
+        .flip-card {
+            perspective: 1000px;
+        }
+        .flip-card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            backface-visibility: hidden;
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Property Listings Section -->
+    <section class="py-16 px-4 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Property Card 1 -->
+            <div class="relative group">
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <!-- Property Image -->
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://via.placeholder.com/400x300" alt="Gated Community Luxury Home" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        
+                        <!-- Price Badge -->
+                        <div class="absolute top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-full font-semibold text-sm">
+                            $999
+                        </div>
+                        
+                        <!-- Status Badge -->
+                        <div class="absolute top-4 left-4 bg-yellow-500 text-white px-4 py-2 rounded-full font-semibold text-xs uppercase">
+                            Platinum
+                        </div>
+                    </div>
+                    
+                    <!-- Property Details -->
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Gated Community Luxury Home</h3>
+                        
+                        <!-- Features -->
+                        <div class="flex items-center gap-6 text-gray-600 text-sm">
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-bed"></i>
+                                <span>Bedroom: 6</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-bath"></i>
+                                <span>Bathroom: 5</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Overlay Link -->
+                    <a href="#" class="absolute inset-0 z-10"></a>
+                </div>
+            </div>
+
+            <!-- Property Card 2 -->
+            <div class="relative group">
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <!-- Property Image -->
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://via.placeholder.com/400x300" alt="Historic Renovated Estate" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        
+                        <!-- Price Badge -->
+                        <div class="absolute top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-full font-semibold text-sm">
+                            $999
+                        </div>
+                        
+                        <!-- Status Badge -->
+                        <div class="absolute top-4 left-4 bg-yellow-500 text-white px-4 py-2 rounded-full font-semibold text-xs uppercase">
+                            Platinum
+                        </div>
+                    </div>
+                    
+                    <!-- Property Details -->
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Historic Renovated Estate</h3>
+                        
+                        <!-- Features -->
+                        <div class="flex items-center gap-6 text-gray-600 text-sm">
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-bed"></i>
+                                <span>Bedroom: 5</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-bath"></i>
+                                <span>Bathroom: 4</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Overlay Link -->
+                    <a href="#" class="absolute inset-0 z-10"></a>
+                </div>
+            </div>
+
+            <!-- Property Card 3 -->
+            <div class="relative group">
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <!-- Property Image -->
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://via.placeholder.com/400x300" alt="Modern Lakefront Villa" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        
+                        <!-- Price Badge -->
+                        <div class="absolute top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-full font-semibold text-sm">
+                            $999
+                        </div>
+                        
+                        <!-- Status Badge -->
+                        <div class="absolute top-4 left-4 bg-yellow-500 text-white px-4 py-2 rounded-full font-semibold text-xs uppercase">
+                            Platinum
+                        </div>
+                    </div>
+                    
+                    <!-- Property Details -->
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Modern Lakefront Villa</h3>
+                        
+                        <!-- Features -->
+                        <div class="flex items-center gap-6 text-gray-600 text-sm">
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-bed"></i>
+                                <span>Bedroom: 4</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-bath"></i>
+                                <span>Bathroom: 3</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Overlay Link -->
+                    <a href="#" class="absolute inset-0 z-10"></a>
+                </div>
+            </div>
+
+            <!-- Property Card 4 -->
+            <div class="relative group">
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <!-- Property Image -->
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://via.placeholder.com/400x300" alt="Luxury Suburban Home" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        
+                        <!-- Price Badge -->
+                        <div class="absolute top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-full font-semibold text-sm">
+                            $999
+                        </div>
+                        
+                        <!-- Status Badge -->
+                        <div class="absolute top-4 left-4 bg-yellow-500 text-white px-4 py-2 rounded-full font-semibold text-xs uppercase">
+                            Platinum
+                        </div>
+                    </div>
+                    
+                    <!-- Property Details -->
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Luxury Suburban Home</h3>
+                        
+                        <!-- Features -->
+                        <div class="flex items-center gap-6 text-gray-600 text-sm">
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-bed"></i>
+                                <span>Bedroom: 4</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-bath"></i>
+                                <span>Bathroom: 4</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Overlay Link -->
+                    <a href="#" class="absolute inset-0 z-10"></a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Flip Box Carousel Section (Alternative Design) -->
+    <section class="py-16 px-4 max-w-7xl mx-auto bg-gray-100">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Featured Properties with Flip Cards</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Flip Card 1 -->
+            <div class="flip-card h-80">
+                <div class="flip-card-inner relative w-full h-full">
+                    <!-- Front -->
+                    <div class="flip-card-front absolute w-full h-full bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg shadow-xl flex items-center justify-center p-6 text-white">
+                        <div class="text-center">
+                            <i class="fas fa-home text-6xl mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">Luxury Homes</h3>
+                            <p class="text-sm opacity-90">Hover to see details</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Back -->
+                    <div class="flip-card-back absolute w-full h-full bg-white rounded-lg shadow-xl p-6">
+                        <div class="h-full flex flex-col justify-center">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">Premium Features</h3>
+                            <ul class="space-y-2 text-gray-600">
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>Gated Community</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>Smart Home System</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>Pool & Spa</span>
+                                </li>
+                            </ul>
+                            <button class="mt-6 bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flip Card 2 -->
+            <div class="flip-card h-80">
+                <div class="flip-card-inner relative w-full h-full">
+                    <!-- Front -->
+                    <div class="flip-card-front absolute w-full h-full bg-gradient-to-br from-purple-500 to-purple-700 rounded-lg shadow-xl flex items-center justify-center p-6 text-white">
+                        <div class="text-center">
+                            <i class="fas fa-building text-6xl mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">Urban Living</h3>
+                            <p class="text-sm opacity-90">Hover to see details</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Back -->
+                    <div class="flip-card-back absolute w-full h-full bg-white rounded-lg shadow-xl p-6">
+                        <div class="h-full flex flex-col justify-center">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">City Amenities</h3>
+                            <ul class="space-y-2 text-gray-600">
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>Downtown Location</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>Rooftop Terrace</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>Concierge Service</span>
+                                </li>
+                            </ul>
+                            <button class="mt-6 bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flip Card 3 -->
+            <div class="flip-card h-80">
+                <div class="flip-card-inner relative w-full h-full">
+                    <!-- Front -->
+                    <div class="flip-card-front absolute w-full h-full bg-gradient-to-br from-green-500 to-green-700 rounded-lg shadow-xl flex items-center justify-center p-6 text-white">
+                        <div class="text-center">
+                            <i class="fas fa-tree text-6xl mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">Suburban Estates</h3>
+                            <p class="text-sm opacity-90">Hover to see details</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Back -->
+                    <div class="flip-card-back absolute w-full h-full bg-white rounded-lg shadow-xl p-6">
+                        <div class="h-full flex flex-col justify-center">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">Family Features</h3>
+                            <ul class="space-y-2 text-gray-600">
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>Large Backyard</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>Top Schools Nearby</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>Safe Neighborhood</span>
+                                </li>
+                            </ul>
+                            <button class="mt-6 bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 transition-colors">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flip Card 4 -->
+            <div class="flip-card h-80">
+                <div class="flip-card-inner relative w-full h-full">
+                    <!-- Front -->
+                    <div class="flip-card-front absolute w-full h-full bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg shadow-xl flex items-center justify-center p-6 text-white">
+                        <div class="text-center">
+                            <i class="fas fa-water text-6xl mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">Waterfront Properties</h3>
+                            <p class="text-sm opacity-90">Hover to see details</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Back -->
+                    <div class="flip-card-back absolute w-full h-full bg-white rounded-lg shadow-xl p-6">
+                        <div class="h-full flex flex-col justify-center">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">Waterfront Perks</h3>
+                            <ul class="space-y-2 text-gray-600">
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>Private Dock</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>Panoramic Views</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-500"></i>
+                                    <span>Beach Access</span>
+                                </li>
+                            </ul>
+                            <button class="mt-6 bg-orange-600 text-white px-6 py-2 rounded-full hover:bg-orange-700 transition-colors">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</body>
+</html>
