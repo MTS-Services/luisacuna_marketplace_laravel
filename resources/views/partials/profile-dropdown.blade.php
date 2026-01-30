@@ -110,7 +110,7 @@
             </div>
 
             <!-- Boosting Dropdown -->
-            <div x-data="{
+            {{-- <div x-data="{
                 boostingOpen: {{ in_array($pageSlug, ['my-requests', 'received-requests']) ? 'true' : 'false' }},
                 isActive: {{ in_array($pageSlug, ['my-requests', 'received-requests']) ? 'true' : 'false' }}
             }">
@@ -141,7 +141,7 @@
                         {{ __('Received Requests') }}
                     </a>
                 </div>
-            </div>
+            </div> --}}
 
             <!-- Loyalty Link -->
             <a href="{{ route('user.loyalty') }}" wire:navigate @click="$root.sidebarOpen = false"
