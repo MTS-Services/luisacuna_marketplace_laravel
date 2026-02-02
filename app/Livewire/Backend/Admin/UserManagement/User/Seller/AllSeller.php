@@ -34,6 +34,8 @@ class AllSeller extends Component
             filters: $this->getFilters()
         );
 
+        $datas->load('user');
+
 
         // $users = $this->userService->getAllUsers();
 
@@ -41,8 +43,10 @@ class AllSeller extends Component
             [
                 'key' => 'first_name',
                 'label' => 'First Name',
-                'format'   => function ($data) {
-                    return $data->first_name ?? $data->company_name ?? $data->user->first_name;
+                'format' => function ($data) {
+                    $url = route('profile', ['username' => $data->user->username]);
+                    $name = $data->user?->full_name;
+                    return "<a href='{$url}' target='_blank'>{$name}</a>";
                 }
 
             ],

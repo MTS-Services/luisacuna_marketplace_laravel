@@ -38,32 +38,34 @@
         </div>
 
         <div class="mt-3 mb-6 flex items-center justify-between gap-4">
-          <div class="sm:inline-flex gap-3">
-              <x-ui.custom-select wire-model="filter_by_config" wire-live="true"
-                class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!" label="{{ __('Filter Tags') }}">
-                <x-ui.custom-option label="{{ __('All') }}" value="" />
-                @foreach ($tags as $tag)
-                    <x-ui.custom-option label="{{ $tag }}" value="{{ $tag }}" />
-                @endforeach
-            </x-ui.custom-select>
+            <div class="sm:inline-flex gap-3">
+                <x-ui.custom-select wire-model="filter_by_config" wire-live="true"
+                    class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!"
+                    label="{{ __('Filter Tags') }}">
+                    <x-ui.custom-option label="{{ __('All') }}" value="" />
+                    @foreach ($tags as $tag)
+                        <x-ui.custom-option label="{{ $tag }}" value="{{ $tag }}" />
+                    @endforeach
+                </x-ui.custom-select>
 
-            <x-ui.custom-select wire-model="platform_id" wire-live="true"
-                class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!" label="{{ __('Platform') }}">
-                <x-ui.custom-option label="{{ __('All') }}" value="" />
-                @foreach ($platforms as $label => $value)
-                
-                    <x-ui.custom-option label="{{ $label }}" value="{{ encrypt($value) }}" />
-                @endforeach
-            </x-ui.custom-select>
+                <x-ui.custom-select wire-model="platform_id" wire-live="true"
+                    class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!"
+                    label="{{ __('Platform') }}">
+                    <x-ui.custom-option label="{{ __('All') }}" value="" />
+                    @foreach ($platforms as $label => $value)
+                        <x-ui.custom-option label="{{ $label }}" value="{{ encrypt($value) }}" />
+                    @endforeach
+                </x-ui.custom-select>
 
-            <x-ui.custom-select wire-model="game_tag" wire-live="true"
-                class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!" label="{{ __('Game Tag') }}">
-                <x-ui.custom-option label="{{ __('All') }}" value="" />
-                @foreach ($gameTags as $gameTag)
-                    <x-ui.custom-option label="{{ $gameTag->name }}" value="{{ $gameTag->slug }}" />
-                @endforeach
-            </x-ui.custom-select>
-          </div>
+                <x-ui.custom-select wire-model="game_tag" wire-live="true"
+                    class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!"
+                    label="{{ __('Game Tag') }}">
+                    <x-ui.custom-option label="{{ __('All') }}" value="" />
+                    @foreach ($gameTags as $gameTag)
+                        <x-ui.custom-option label="{{ $gameTag->name }}" value="{{ $gameTag->slug }}" />
+                    @endforeach
+                </x-ui.custom-select>
+            </div>
 
             <div class="hidden md:flex w-56!">
                 <x-ui.custom-select wire-model="sortDirection" :wireLive="true" :label="__('Highest to Lowest')"
@@ -108,9 +110,11 @@
                                         </span>
                                     @endif
                                 </div>
-                                <h3 class="text-base font-semibold text-text-white mt-4">{{ $item->quantity }} {{ __('Units') }}
+                                <h3 class="text-base font-semibold text-text-white mt-4">{{ $item->quantity }}
+                                    {{ __('Units') }}
                                 </h3>
-                                <p class="text-xs text-text-white mt-2 opacity-70">{{ Str::limit($item->translatedName(app()->getLocale()), 22) }}
+                                <p class="text-xs text-text-white mt-2 opacity-70">
+                                    {{ Str::limit($item->translatedName(app()->getLocale()), 22) }}
                                 </p>
                                 <span class="block text-base font-semibold text-pink-500 mt-4">
                                     {{ currency_symbol() . currency_exchange($item->price) }}
@@ -147,7 +151,8 @@
                         <div class="flex items-center justify-between py-3 border-t border-b  border-zinc-500 w-full">
                             <p class="text-base text-text-white"> {{ __('Delivery Timeline') }}</p>
                             @if ($product)
-                                <p class="text-base text-text-white font-semibold">{{ $product->translatedDeliveryTimeline(app()->getLocale()) }}
+                                <p class="text-base text-text-white font-semibold">
+                                    {{ $product->translatedDeliveryTimeline(app()->getLocale()) }}
                                 </p>
                             @else
                                 <p class="text-base text-text-white font-semibold">{{ __('N/A') }}</p>
@@ -156,22 +161,27 @@
 
                         <div class="space-y-4 mt-8">
                             @auth('web')
-                                <x-ui.button wire:click="submit" wire:loading.attr="disabled" class="w-full py-2!">
+                                <x-ui.button wire:click="submit" wire:loading.attr="disabled" :disabled="!isset($product)"
+                                    class="w-full py-2!">
                                     <span wire:loading.remove wire:target="submit"
                                         class="text-text-white group-hover:text-zinc-500">
                                         {{ currency_code() }} {{ currency_exchange($product->price ?? 00) }}
                                         {{ __(' Buy Now') }}
                                     </span>
                                     <span wire:loading wire:target="submit"
-                                        class="text-text-white group-hover:text-zinc-500">{{ __('Processing...') }}</span>
+                                        class="text-text-white group-hover:text-zinc-500">
+                                        {{ __('Processing...') }}
+                                    </span>
                                 </x-ui.button>
                             @else
-                                <a href="{{ route('login') }}" wire:navigate
-                                    class="bg-zinc-500 px-4 md:px-6 py-2! md:py-4 text-text-text-btn-primary hover:text-text-btn-secondary hover:bg-zinc-50 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group text-nowrap cursor-pointer">
-                                    <span class="text-text-white group-hover:text-zinc-500">{{ currency_code() }}</span>
-                                    <span
-                                        class="text-text-white group-hover:text-zinc-500">{{ currency_exchange($product->price ?? 00) }}</span>
-                                    {{ ' Buy Now' }}
+                                <a href="{{ route('login') }}" wire:navigate @class([
+                                    'bg-zinc-500 px-4 md:px-6 py-2! md:py-4 text-text-text-btn-primary hover:text-text-btn-secondary hover:bg-zinc-50 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 transition duration-150 ease-in-out group text-nowrap cursor-pointer',
+                                    'opacity-50 pointer-events-none' => !isset($product),
+                                ])>
+                                    <span class="text-text-white group-hover:text-zinc-500">
+                                        {{ currency_code() }} {{ currency_exchange($product->price ?? 00) }}
+                                        {{ ' Buy Now' }}
+                                    </span>
                                 </a>
                             @endauth
                         </div>
@@ -237,14 +247,16 @@
         </div>
 
         <div class="mt-10 mb-6 flex items-center justify-between gap-4">
-            <x-ui.custom-select wireModel="sellerFilter" :wireLive="true" :label="__('Recommended')"
-                class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!">
-                <x-ui.custom-option label="{{ __('Recommended') }}" value="recommended" />
-                <x-ui.custom-option label="{{ __('Positive Reviews') }}" value="positive_reviews" />
-                <x-ui.custom-option label="{{ __('Top Sold') }}" value="top_sold" />
-                <x-ui.custom-option label="{{ __('Lowest Price') }}" value="lowest_price" />
-                <x-ui.custom-option label="{{ __('In Stock') }}" value="in_stock" />
-            </x-ui.custom-select>
+            <div>
+                <x-ui.custom-select wireModel="sellerFilter" :wireLive="true" :label="__('Recommended')"
+                    class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!">
+                    <x-ui.custom-option label="{{ __('Recommended') }}" value="recommended" />
+                    <x-ui.custom-option label="{{ __('Positive Reviews') }}" value="positive_reviews" />
+                    <x-ui.custom-option label="{{ __('Top Sold') }}" value="top_sold" />
+                    <x-ui.custom-option label="{{ __('Lowest Price') }}" value="lowest_price" />
+                    <x-ui.custom-option label="{{ __('In Stock') }}" value="in_stock" />
+                </x-ui.custom-select>
+            </div>
 
             <button
                 class="px-4 py-2 border border-green-500 text-green-500 rounded-full text-sm hover:bg-green hover:text-white transition whitespace-nowrap">
@@ -267,7 +279,7 @@
                 <tbody class="space-y-4" wire.loading.remove wire:target="sellerFilter">
                     @forelse ($otherSellers as $seller)
                         <tr wire:key="row-{{ $seller->id }}" wire:click="selectItem({{ $seller->id }})"
-                            class="bg-bg-secondary hover:bg-bg-hover transition-colors group">
+                            class="bg-bg-primary dark:bg-bg-secondary hover:bg-bg-hover transition-colors group">
                             <td class="px-6 py-4 rounded-l-2xl">
                                 <div class="flex items-center gap-3">
                                     <a href="{{ route('profile', $seller->user?->username) }}">
@@ -302,12 +314,14 @@
                                 </div>
                             </td>
 
-                            <td class="px-6 py-4 hidden md:table-cell text-sm dark:text-zinc-300 group-hover:text-zinc-300">
+                            <td
+                                class="px-6 py-4 hidden md:table-cell text-sm dark:text-zinc-300 group-hover:text-zinc-300">
                                 {{-- @dd($seller) --}}
                                 {{ $seller->translatedDeliveryTimeline(app()->getLocale()) ?? '--' }}
                             </td>
 
-                            <td class="px-6 py-4 hidden md:table-cell text-sm dark:text-zinc-300 group-hover:text-zinc-300">
+                            <td
+                                class="px-6 py-4 hidden md:table-cell text-sm dark:text-zinc-300 group-hover:text-zinc-300">
                                 {{ $seller->translatedDeliveryMethod(app()->getLocale()) ?? '--' }}
                             </td>
 

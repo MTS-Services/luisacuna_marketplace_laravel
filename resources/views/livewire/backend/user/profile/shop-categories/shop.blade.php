@@ -1,6 +1,6 @@
-<div class="bg-page">
+<div class="bg-page" >
     <livewire:backend.user.profile.profile-component :user="$user" />
-    <section class="container mx-auto mb-30">
+    <section class="container mx-auto">
         <div class="mb-6">
             <h3 class="text-4xl mb-4">{{ __('Shop') }}</h3>
             {{-- profile nav --}}
