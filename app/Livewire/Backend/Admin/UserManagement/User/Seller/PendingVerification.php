@@ -33,19 +33,24 @@ class PendingVerification extends Component
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
+        $datas->load('user');
+
+    
 
 
         // $users = $this->userService->getAllUsers();
 
         $columns = [
-            [
+           [
                 'key' => 'first_name',
-                'label' => 'First Name',
-                'format'   => function ($data) {
-                    return $data->first_name ?? $data->company_name ?? $data->user->first_name;
+                'label' => 'Name',
+                'format' => function ($data) {
+                    $url = route('profile', ['username' => $data->user->username]);
+                    $name = $data->user?->full_name;
+                    return "<a href='{$url}' target='_blank'>{$name}</a>";
                 }
-
             ],
+
             [
                 'key' => 'seller_verified',
                 'label' => 'status',
