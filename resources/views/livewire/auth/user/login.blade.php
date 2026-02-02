@@ -79,11 +79,11 @@
                             <img src="{{ asset('assets/icons/icons8-google.svg') }}" class="w-full h-full rounded-md"
                                 alt="Google" />
                         </a>
-                        <a href="{{ route('apple.login') }}"
+                        {{-- <a href="{{ route('apple.login') }}"
                             class="w-14 h-14 p-3.5 flex items-center justify-center bg-bg-white rounded-md">
                             <img src="{{ asset('assets/icons/icons8-apple-logo.svg') }}"
                                 class="w-full h-full rounded-md" alt="Apple" />
-                        </a>
+                        </a> --}}
                         <a href="{{ route('auth.facebook') }}"
                             class="w-14 h-14 p-3.5 flex items-center justify-center bg-bg-white rounded-md">
                             <img src="{{ asset('assets/icons/facebook.svg') }}" class="w-full h-full rounded-md"
