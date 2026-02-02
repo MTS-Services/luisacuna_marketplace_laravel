@@ -237,7 +237,8 @@
         </div>
 
         <div class="mt-10 mb-6 flex items-center justify-between gap-4">
-            <x-ui.custom-select wireModel="sellerFilter" :wireLive="true" :label="__('Recommended')"
+          <div>
+              <x-ui.custom-select wireModel="sellerFilter" :wireLive="true" :label="__('Recommended')"
                 class="w-full sm:w-70 rounded-full! bg-transparent! border! border-zinc-700!">
                 <x-ui.custom-option label="{{ __('Recommended') }}" value="recommended" />
                 <x-ui.custom-option label="{{ __('Positive Reviews') }}" value="positive_reviews" />
@@ -245,6 +246,7 @@
                 <x-ui.custom-option label="{{ __('Lowest Price') }}" value="lowest_price" />
                 <x-ui.custom-option label="{{ __('In Stock') }}" value="in_stock" />
             </x-ui.custom-select>
+          </div>
 
             <button
                 class="px-4 py-2 border border-green-500 text-green-500 rounded-full text-sm hover:bg-green hover:text-white transition whitespace-nowrap">
@@ -267,7 +269,7 @@
                 <tbody class="space-y-4" wire.loading.remove wire:target="sellerFilter">
                     @forelse ($otherSellers as $seller)
                         <tr wire:key="row-{{ $seller->id }}" wire:click="selectItem({{ $seller->id }})"
-                            class="bg-bg-secondary hover:bg-bg-hover transition-colors group">
+                            class="bg-bg-primary dark:bg-bg-secondary hover:bg-bg-hover transition-colors group">
                             <td class="px-6 py-4 rounded-l-2xl">
                                 <div class="flex items-center gap-3">
                                     <a href="{{ route('profile', $seller->user?->username) }}">
