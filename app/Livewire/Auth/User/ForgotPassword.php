@@ -40,10 +40,10 @@ class ForgotPassword extends Component
 
         if (has_valid_otp($user, OtpType::PASSWORD_RESET)) {
 
-            $this->info('A verification code was already sent to your email.');
+            // $this->info('A verification code was already sent to your email.');
 
             session(['password_reset_email' => $this->email]);
-            
+
             $this->redirect(route('verify-reset-otp'), navigate: true);
             return;
         }
@@ -57,7 +57,7 @@ class ForgotPassword extends Component
 
         session(['password_reset_email' => $this->email]);
 
-        $this->success('Verification code has been sent to your email.');
+        // $this->success('Verification code has been sent to your email.');
         $this->redirect(route('verify-reset-otp'), navigate: true);
     }
 
