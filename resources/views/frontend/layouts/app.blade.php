@@ -109,6 +109,7 @@
         <livewire:frontend.partials.header />
     @endif
     <main class="flex-1">
+       
         {{ $slot }}
     </main>
     @if (
