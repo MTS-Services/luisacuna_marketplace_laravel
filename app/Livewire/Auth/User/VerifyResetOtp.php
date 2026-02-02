@@ -19,6 +19,7 @@ class VerifyResetOtp extends Component
     public OtpForm $form;
     public string $email = '';
     public ?int $resendCooldown = null;
+    public ?int $nextResendTimer = 120;
 
     public function mount()
     {
@@ -124,6 +125,8 @@ class VerifyResetOtp extends Component
 
     public function resendOtp(): void
     {
+        $this->nextResendTimer = 120;     
+
         $this->ensureResendIsNotRateLimited();
 
         $user = User::where('email', $this->email)->first();

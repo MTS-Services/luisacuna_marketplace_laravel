@@ -39,8 +39,11 @@ class ForgotPassword extends Component
         }
 
         if (has_valid_otp($user, OtpType::PASSWORD_RESET)) {
+
             $this->info('A verification code was already sent to your email.');
+
             session(['password_reset_email' => $this->email]);
+            
             $this->redirect(route('verify-reset-otp'), navigate: true);
             return;
         }

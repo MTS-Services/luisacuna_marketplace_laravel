@@ -1,66 +1,5 @@
 <div>
-    {{-- <div class="min-h-[80vh] flex items-center justify-center  text-text-white">
 
-        <!-- Correct form submission -->
-        <form wire:submit="verifyOtp"
-            class=" w-full min-h-[55vh] max-w-lg bg-bg-primary rounded-2xl p-8 shadow-lg space-y-8">
-
-            <!-- Header -->
-            <div class="text-center">
-                <h2 class="text-4xl font-medium p-4 text-text-white">{{ __('Confirm your account') }}</h2>
-                <p class="text-text-whitelg:text-xl text-sm">
-                    {{ __('We have sent a code in an Email message to ex***@gmail.com To confirm your account, please enter the code.') }}
-                </p>
-            </div>
-
-            <!-- Code -->
-            <div>
-                <label class="block text-xl font-medium mb-2 text-text-white">{{ __('Code') }}</label>
-                <x-ui.input type="text" placeholder="Enter your code" wire:model="form.code" />
-            </div>
-
-            @error('form.code')
-                <p class="mt-2 text-center text-sm text-red-600 dark:text-red-400">
-                    {{ $message }}
-                </p>
-            @enderror
-
-            <div class="text-right" id="resend-container">
-                @if (isset($resendLimitReached) && $resendLimitReached)
-                    <span class="text-md text-red-400 font-semibold">
-                        {{ __('Don\'t resend again. Maximum limit reached.') }}
-                    </span>
-                @elseif($resendCooldown && $resendCooldown > 0)
-                    <span class="text-md text-zinc-400">
-                        {{ __('Resend available in') }} <span id="countdown"
-                            class="font-semibold text-text-white">{{ $resendCooldown }}</span>s
-                        <span class="text-xs text-zinc-500">({{ 6 - ($resendAttempts ?? 0) }} left)</span>
-                    </span>
-                @else
-                    <button type="button" wire:click="resendOtp" wire:loading.attr="disabled"
-                        class="text-md text-zinc-300 hover:underline disabled:opacity-50 disabled:cursor-not-allowed">
-                        <span wire:loading.remove wire:target="resendOtp">{{ __('Resend') }} <span
-                                class="text-xs text-zinc-500">({{ 6 - ($resendAttempts ?? 0) }} left)</span></span>
-                        <span wire:loading wire:target="resendOtp">{{__('Sending...')}}</span>
-                    </button>
-                @endif
-            </div>
-
-            <!-- Submit button -->
-            <div>
-                <x-ui.button class="w-auto py-2!" type="submit">
-                    {{ __('Verify') }}
-                </x-ui.button>
-            </div>
-
-            <!-- Back to login page -->
-            <div>
-                <x-ui.button href="{{ route('login') }}" variant='secondary' class="w-auto py-2!">
-                    {{ __('Back') }}
-                </x-ui.button>
-            </div>
-        </form>
-    </div> --}}
     <div class="bg-cover bg-center bg-page-login">
 
         <div class="min-h-[100vh] flex items-center justify-center text-white px-4  sm:px-6 lg:px-8 ">
@@ -87,7 +26,26 @@
                             <x-ui.input type="text" placeholder="{{ __('Enter your code') }}" wire:model="form.code"
                                 class="bg-bg-info! rounded-xl! border-0! focus:ring-0! text-white! placeholder:text-white!" />
                             <!-- Error message -->
-                            <x-ui.input-error :messages="$errors->get('form.code')" />
+                            <div>
+                                <x-ui.input-error :messages="$errors->get('form.code')" />
+
+                            <div x-data="resendTimer(@entangle('nextResendTimer').live)" class="flex justify-end mt-2">
+                                <template x-if="nextResendTimer > 0">
+                                    <span class=" text-white text-xs">
+                                        Resend available in <span x-text="nextResendTimer" class="text-xs text-zinc-400"></span>s
+                                    </span>
+                                </template>
+                                
+                                <template x-if="nextResendTimer === 0">
+                                    <button type="button" wire:click="resendOtp" 
+                                        class=" text-whtie hover:underline text-xs">
+                                        
+                                        Resend OTP
+                                    </button>
+                                </template>
+                            </div>
+
+                            </div>
                         </div>
                         <!-- Submit button -->
                         <div class=" flex justify-center px-2 sm:px-6 mt-11">
@@ -234,4 +192,45 @@
             }
         });
     });
+
+    
+ function resendTimer(nextResendTimer) {
+    return {
+        nextResendTimer,
+        interval: null,
+
+        init() {
+            // Start timer if value is greater than 0
+            if (this.nextResendTimer > 0) {
+                this.start()
+            }
+
+            this.$watch('nextResendTimer', value => {
+                if (value > 0 && !this.interval) {
+                    this.start()
+                }
+                if (value === 0) {
+                    this.stop()
+                }
+            })
+        },
+
+        start() {
+            this.interval = setInterval(() => {
+                if (this.nextResendTimer > 0) {
+                    this.nextResendTimer--
+                } else {
+                    this.stop()
+                }
+            }, 1000)
+        },
+
+        stop() {
+            if (this.interval) {
+                clearInterval(this.interval)
+                this.interval = null
+            }
+        }
+    }
+}
 </script>
