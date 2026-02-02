@@ -86,12 +86,12 @@
                 </button>
 
                 <!-- Apple -->
-                <button class="bg-white rounded-lg p-3 hover:bg-gray-100 transition shadow-md">
+                {{-- <button class="bg-white rounded-lg p-3 hover:bg-gray-100 transition shadow-md">
                     <svg class="w-6 h-6" fill="black" viewBox="0 0 24 24">
                         <path
                             d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.06 2.29.77 3.06.8.98-.04 1.88-.63 2.99-.52 1.45.12 2.51.72 3.15 1.81-2.94 1.82-2.45 5.76.48 6.75-.48 1.45-1.47 2.38-2.68 2.93zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
                     </svg>
-                </button>
+                </button> --}}
 
                 <!-- Facebook -->
                 <button class="bg-white rounded-lg p-3 hover:bg-gray-100 transition shadow-md">
