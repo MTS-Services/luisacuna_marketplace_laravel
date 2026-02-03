@@ -19,7 +19,7 @@
                 <flux:icon name="x-mark" class="w-5 h-5 stroke-current hover:stroke-pink-600" />
             </button>
         </div>
-        @if(! $conversations->isEmpty())
+        {{-- @if(! $conversations->isEmpty())
         <div>
             <button wire:click="markAllAsRead" wire:loading.attr="disabled" :disabled="@js($isLoading || $conversations->isEmpty())">
                 <span wire:loading.remove wire:target="markAllAsRead"
@@ -31,7 +31,7 @@
                 </span>
             </button>
         </div>
-        @endif
+        @endif --}}
     </div>
 
     <div class="flex-1 overflow-y-auto">
