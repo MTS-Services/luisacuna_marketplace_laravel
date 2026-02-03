@@ -1,7 +1,6 @@
 <?php 
 
 namespace App\Livewire\Backend\User\Seller;
-use App\Enums\AccountType;
 use App\Models\Country;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
@@ -20,13 +19,12 @@ class SellerVerificationFourStep extends Component
     public $company_country, $company_postal_code;
     public $company_license_number, $company_tax_number;
 
-    public $countries = [];
 
     public function mount()
     {
         $this->protectStep();
 
-        $this->countries = Country::all();
+      
 
         $data = Session::get('kyc_' . user()->id);
         if (!$data) return;
@@ -39,10 +37,12 @@ class SellerVerificationFourStep extends Component
         } else {
             $this->fillCompany($data);
         }
+
     }
 
     public function render()
     {
+          
         return view('livewire.backend.user.seller.seller-verification-four-step');
     }
 
@@ -50,8 +50,8 @@ class SellerVerificationFourStep extends Component
 
     protected function fillIndividual(array $data): void
     {
-        $this->first_name  = $data['first_name'] ?? null;
-        $this->last_name   = $data['last_name'] ?? null;
+        $this->first_name  = $data['first_name'] ?? user()->first_name ?? null;
+        $this->last_name   = $data['last_name'] ?? user()->last_name ?? null;
         $this->nationality = $data['nationality'] ?? null;
         $this->address     = $data['address'] ?? null;
         $this->city        = $data['city'] ?? null;
