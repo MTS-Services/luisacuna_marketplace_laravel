@@ -51,7 +51,7 @@ class SellerProfileService{
        return DB::transaction(function () use ($data) {
             $categories = [];
 
-           
+        
             if (isset($data['selfie_image'])) {
 
                 $uploadedFile = $this->cloudinaryService->upload($data['selfie_image'], ['folder' => 'seller_profiles']);

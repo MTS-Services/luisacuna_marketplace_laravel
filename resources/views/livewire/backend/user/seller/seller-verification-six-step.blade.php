@@ -70,7 +70,7 @@
                             <input type="file" wire:model.live="selfie_image" accept="image/*" class="hidden"
                                 id="selfie_image">
                             <label for="selfie_image"
-                                class="shrink-0 px-6 py-2 bg-zinc-600 rounded-3xl text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
+                                class="shrink-0 px-6 py-2 bg-zinc-600 border border-zinc-500 text-zinc-950 font-semibold rounded-3xl hover:text-primary hover:bg-transparent  cursor-pointer transition duration-150 ease-in-out">
                                 {{ __('Choose file') }}
                             </label>
 
@@ -205,7 +205,7 @@
                             <input type="file" wire:model.live="selfie_image" accept="image/*" class="hidden"
                                 id="selfie_image">
                             <label for="selfie_image"
-                                class="shrink-0 px-6 py-2 bg-zinc-600 rounded-3xl text-white font-semibold hover:bg-gray-800 cursor-pointer transition duration-150">
+                                class="shrink-0 px-6 py-2 bg-zinc-600 border border-zinc-500 text-zinc-950 font-semibold rounded-3xl hover:text-primary hover:bg-transparent  cursor-pointer transition duration-150 ease-in-out">
                                 {{ __('Choose file') }}
                             </label>
 
@@ -224,7 +224,7 @@
                         {{ __('Must be JPEG, PNG or HEIC and cannot exceed 10MB.') }}
                     </p>
 
-                    @error('selfieWithId')
+                    @error('selfie_image')
                         <p class="text-pink-500 text-sm text-center mt-2">{{ $message }}</p>
                     @enderror
                 @endif
@@ -238,9 +238,10 @@
                 </div>
                 <div class="flex justify-center">
                     <x-ui.button type="submit" wire:click="submit" wire:loading.attr="disabled"
-                        wire:target="selfie_image" class="w-auto py-2! disabled:opacity-70 disabled:cursor-not-allowed">
-                        <span wire:loading.remove wire:target="selfie_image">{{ __('Submit') }}</span>
-                        <span wire:loading wire:target="selfie_image">{{ __('Please wait...') }}</span>
+                        wire:target="selfie_image, submit" class="w-auto py-2! disabled:opacity-70 disabled:cursor-not-allowed ">
+                        <span wire:loading.remove  wire:target="selfie_image,submit" class="group-hover:text-primary">{{ __('Submit') }}</span>
+                        <span wire:loading wire:target="selfie_image" class="group-hover:text-primary" >{{ __('Please wait...') }}</span>
+                        <span wire:loading wire:target="submit" class="group-hover:text-primary">{{ __('Please wait...') }}</span>
                     </x-ui.button>
                 </div>
             </div>

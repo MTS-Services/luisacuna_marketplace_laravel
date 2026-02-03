@@ -157,7 +157,7 @@
 
             <div class="  mt-2 pt-3 flex items-center justify-between gap-2">
 
-                <div class="w-18 h-14 relative">
+                <a class="w-18 h-14 relative block" href="{{ route('profile', $product->user->username) }}" wire:navigate>
 
                     <img src="{{ auth_storage_url($product?->user?->avatar) }}"
                         alt="{{ $product?->user?->full_name }}" class="w-full h-full object-cover rounded-full" />
@@ -168,9 +168,9 @@
                         <span
                             class="absolute bottom-0 right-0 w-5 h-5 bg-gray-400 border-2 border-white rounded-full"></span>
                     @endif
-                </div>
+                </a>
 
-                <div class="w-full">
+                <a class="block w-full" href="{{ route('profile', $product->user->username) }}" wire:navigate >
                     <p class="text-text-primary font-medium flex items-center gap-2">
                         <span> {{ $product->user->full_name }}</span>
                         @if ($product->user?->isVerifiedSeller())
@@ -187,7 +187,7 @@
                         <p class="text-text-secondary text-xs">
                             {{ feedback_calculate($positiveFeedbacksCount, $negativeFeedbacksCount) }}%</p>
                     </div>
-                </div>
+                </a>
             </div>
 
             <h3 class="font-bold m-4 text-text-primary">{{ __('Seller Description') }}</h3>

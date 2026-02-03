@@ -17,9 +17,10 @@ class SellerProfile extends AuditBaseModel implements Auditable
     use AuditableTrait, HasTranslations;
 
     protected $fillable = [
+        'id',
         'sort_order',
         'user_id',
-        'country_id',
+        'country',
         'account_type',
         'first_name',
         'last_name',
@@ -39,13 +40,10 @@ class SellerProfile extends AuditBaseModel implements Auditable
         'id_verified_at',
         'seller_verified',
         'seller_verified_at',
-        'seller_level',
         'commission_rate',
         'minimum_payout',
-        'deleted_at',
+        'created_at',
         'updated_at',
-        'restored_at',
-
     ];
 
     protected $hidden = [
@@ -115,10 +113,7 @@ class SellerProfile extends AuditBaseModel implements Auditable
         )->withTimestamps();
     }
 
-    public function country(): BelongsTo
-    {
-        return $this->belongsTo(Country::class, 'country_id', 'id');
-    }
+
     /* ================================================================
      |  Translation Helper Methods (Convenience)
      ================================================================ */
