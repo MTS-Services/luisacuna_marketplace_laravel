@@ -13,11 +13,11 @@ class SellerVerificationFourStep extends Component
     public $accountType;
     public $first_name, $last_name;
     public $dob_year, $dob_month, $dob_day;
-    public $nationality, $address, $city, $country_id, $postal_code;
+    public $nationality, $address, $city, $country, $postal_code;
 
     // Company
     public $company_name, $company_address, $company_city;
-    public $company_country_id, $company_postal_code;
+    public $company_country, $company_postal_code;
     public $company_license_number, $company_tax_number;
 
     public $countries = [];
@@ -55,7 +55,7 @@ class SellerVerificationFourStep extends Component
         $this->nationality = $data['nationality'] ?? null;
         $this->address     = $data['address'] ?? null;
         $this->city        = $data['city'] ?? null;
-        $this->country_id  = $data['country_id'] ?? null;
+        $this->country  = $data['country'] ?? null;
         $this->postal_code = $data['postal_code'] ?? null;
 
         if (!empty($data['dob'])) {
@@ -73,7 +73,7 @@ class SellerVerificationFourStep extends Component
         $this->company_name           = $data['company_name'] ?? null;
         $this->company_address        = $data['company_address'] ?? null;
         $this->company_city           = $data['company_city'] ?? null;
-        $this->company_country_id     = $data['company_country_id'] ?? null;
+        $this->company_country       = $data['company_country'] ?? null;
         $this->company_postal_code    = $data['company_postal_code'] ?? null;
         $this->company_license_number = $data['company_license_number'] ?? null;
         $this->company_tax_number     = $data['company_tax_number'] ?? null;
@@ -110,14 +110,14 @@ class SellerVerificationFourStep extends Component
                 'nationality'=> $this->nationality,
                 'address'    => $this->address,
                 'city'       => $this->city,
-                'country_id' => $this->country_id,
+                'country' => $this->country,
                 'postal_code'=> $this->postal_code,
             ]
             : [
                 'company_name'           => $this->company_name,
                 'company_address'        => $this->company_address,
                 'company_city'           => $this->company_city,
-                'company_country_id'     => $this->company_country_id,
+                'company_country'     => $this->company_country,
                 'company_postal_code'    => $this->company_postal_code,
                 'company_license_number' => $this->company_license_number,
                 'company_tax_number'     => $this->company_tax_number,
@@ -143,14 +143,14 @@ class SellerVerificationFourStep extends Component
                 'nationality'=> 'required',
                 'address'    => 'required',
                 'city'       => 'required',
-                'country_id' => 'required',
+                'country' => 'required',
                 'postal_code'=> 'required',
             ]
             : [
                 'company_name' => 'required',
                 'company_address' => 'required',
                 'company_city' => 'required',
-                'company_country_id' => 'required',
+                'company_country' => 'required',
                 'company_postal_code' => 'required',
                 'company_license_number' => 'required',
                 'company_tax_number' => 'nullable',

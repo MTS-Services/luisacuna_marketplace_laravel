@@ -86,13 +86,7 @@
                         <div>
                             <x-ui.label
                                 class="mb-2 text-xl! sm:text-2xl! font-semibold!">{{ __('Nationality:') }}</x-ui.label>
-                            <x-ui.select wire:model="nationality"
-                                class="w-full bg-bg-info! rounded-lg! border-0! focus:ring-0! text-text-white! placeholder:text-text-white!">
-                                <option value="">{{ __('Select nationality') }}</option>
-                                @foreach ($countries as $country)
-                                    <option value="{{ strtolower($country->name) }}">{{ $country->name }}</option>
-                                @endforeach
-                            </x-ui.select>
+                            <x-ui.input wire:model="nationality" type="text" placeholder="Nationality"  class="w-full bg-bg-info! rounded-lg! border-0! focus:ring-0! text-text-white! placeholder:text-text-white!"/>
                             <x-ui.input-error :messages="$errors->get('nationality')" />
                         </div>
 
@@ -118,22 +112,13 @@
                             <div>
                                 <x-ui.label
                                     class="mb-2 text-xl! sm:text-2xl! font-semibold!">{{ __('Country') }}</x-ui.label>
-                                <x-ui.select wire:model="country_id"
-                                    class="w-full bg-bg-info! rounded-lg! border-0! focus:ring-0! text-text-white! placeholder:text-text-white!">
-                                    <option value="">{{ __('Select country') }}</option>
-                                    @foreach ($countries as $country)
-                                        <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                    @endforeach
-
-
-
-                                </x-ui.select>
-                                <x-ui.input-error :messages="$errors->get('country_id')" />
+                                 <x-ui.input  type="text" placeholder="{{ __('Country') }}" wire:model="country"   class="w-full bg-bg-info! rounded-lg! border-0! focus:ring-0! text-text-white! placeholder:text-text-white!" />
+                                <x-ui.input-error :messages="$errors->get('country')" />
                             </div>
                             <div>
                                 <x-ui.label
                                     class="mb-2 text-xl! sm:text-2xl! font-semibold!">{{ __('Postal code') }}</x-ui.label>
-                                <x-ui.input type="text" wire:model="postal_code"
+                                <x-ui.input type="number" wire:model="postal_code"
                                     class="w-full bg-bg-info! rounded-lg! border-0! focus:ring-0! text-text-white! placeholder:text-text-white!"
                                     placeholder="Postal code" />
                                 <x-ui.input-error :messages="$errors->get('postal_code')" />
@@ -191,18 +176,13 @@
                             <div>
                                 <x-ui.label
                                     class="mb-2 text-xl! sm:text-2xl! font-semibold!">{{ __('Country') }}</x-ui.label>
-                                <x-ui.select wire:model="company_country_id"
-                                    class="w-full bg-bg-info! rounded-lg! border-0! focus:ring-0! text-text-white! placeholder:text-text-white!">
-                                    @foreach ($countries as $country)
-                                        <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                    @endforeach
-                                </x-ui.select>
-                                <x-ui.input-error :messages="$errors->get('company_country_id')" />
+                                <x-ui.input type="text" wire:model="company_country" class="w-full bg-bg-info! rounded-lg! border-0! focus:ring-0! text-text-white! placeholder:text-text-white!" placeholder="Country" />
+                                <x-ui.input-error :messages="$errors->get('company_country')" />
                             </div>
                             <div>
                                 <x-ui.label
                                     class="mb-2 text-xl! sm:text-2xl! font-semibold!">{{ __('Postal code') }}</x-ui.label>
-                                <x-ui.input type="text" wire:model="company_postal_code"
+                                <x-ui.input type="number" wire:model="company_postal_code"
                                     class="w-full bg-bg-info! rounded-lg! border-0! focus:ring-0! text-text-white! placeholder:text-text-white!"
                                     placeholder="{{ __('Postal code') }}" />
                                 <x-ui.input-error :messages="$errors->get('company_postal_code')" />

@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('country_id');
+            $table->string('country');
             $table->boolean('account_type');
             $table->string('first_name')->nullable();
             $table->string( 'last_name')->nullable();
@@ -51,7 +51,6 @@ return new class extends Migration {
 
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
 
-            $table->foreign('country_id')->references('id')->on('countries')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

@@ -67,7 +67,7 @@
 
                             <label for="idDocument" wire:loading.class="opacity-50 cursor-not-allowed"
                                 wire:target="front_image"
-                                class="shrink-0 px-6 py-1.5 bg-zinc-600 text-white font-semibold rounded-3xl hover:bg-gray-800 cursor-pointer transition duration-150 ease-in-out">
+                                class="shrink-0 px-6 py-2 bg-zinc-600 border border-zinc-500 text-zinc-950 font-semibold rounded-3xl hover:text-primary hover:bg-transparent  cursor-pointer transition duration-150 ease-in-out">
                                 {{ __('Choose file') }}
                             </label>
 
@@ -84,7 +84,7 @@
                         <p class="text-xs text-text-white text-center mt-2">
                             {{ __('Must be JPEG, PNG or HEIC and cannot exceed 10MB.') }}
                         </p>
-                        <x-ui.input-error :messages="$errors->get('front_image')" class="mt-2" />
+                        <x-ui.input-error :messages="$errors->get('front_image')" class="mt-2 flex items-center justify-center" />
                     </div>
                 @else
                     <h2 class="text-base lg:text-xl font-semibold mb-8 text-left">
@@ -138,7 +138,8 @@
 
                             <label for="front_image" wire:loading.class="opacity-50 cursor-not-allowed"
                                 wire:target="front_image"
-                                class="shrink-0 px-6 py-1.5 bg-zinc-600 text-text-white font-semibold rounded-3xl hover:bg-gray-800 cursor-pointer transition duration-150 ease-in-out">
+                                 class="shrink-0 px-6 py-2 bg-zinc-600 border border-zinc-500 text-zinc-950 font-semibold rounded-3xl hover:text-primary hover:bg-transparent  cursor-pointer transition duration-150 ease-in-out">
+
                                 {{ __('Choose file') }}
                             </label>
 
@@ -154,8 +155,11 @@
                         <p class="text-xs text-text-white text-center mt-2">
                             {{ __('Must be JPEG, PNG or HEIC and cannot exceed 10MB.') }}
                         </p>
-                        @error('ultimateBeneficialOwnerIdDocument')
-                            <span class="text-pink-500 text-sm">{{ $message }}</span>
+
+                        {{-- <x-ui.input-error classname="flex justify-center items-center" :messages="$errors->get('front_image')" class="mt-2" /> --}}
+
+                        @error('front_image')
+                            <span class="text-xs text-pink-500 text-center mt-2">{{ $message }}</span>
                         @enderror
                     </div>
                 @endif
@@ -172,8 +176,8 @@
                     <x-ui.button type="submit" wire:click="nextStep" wire:loading.attr="disabled"
                         wire:target="front_image" class="w-auto py-2! disabled:opacity-70 disabled:cursor-not-allowed">
                         {{-- Show 'Next' by default, show 'Wait' while uploading --}}
-                        <span wire:loading.remove wire:target="front_image">{{ __('Next') }}</span>
-                        <span wire:loading wire:target="front_image">{{ __('Please wait...') }}</span>
+                        <span wire:loading.remove wire:target="front_image,nextStep" class="group-hover:text-primary!">{{ __('Next') }}</span>
+                        <span wire:loading wire:target="front_image,nextStep">{{ __('Please wait...') }}</span>
                     </x-ui.button>
                 </div>
             </div>
