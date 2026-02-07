@@ -4,12 +4,12 @@
         <div class="flex gap-4 items-center py-10">
             <x-phosphor name="less-than" variant="regular" class="w-4 h-4 text-zinc-400" />
             @if ($isVisitSeller)
-                <a wire:navigate href="{{ route('user.order.sold-orders') }}"
+                <a wire:navigate href="{{ route('user.order.purchased-orders') }}"
                     class="text-text-white text-base">
                     {{ __('All Orders') }}
                 </a>
             @else
-                <a wire:navigate href="{{ route('user.order.purchased-orders') }}"
+                <a wire:navigate href="{{ route('user.order.sold-orders') }}"
                     class="text-text-white text-base">
                     {{ __('All Orders') }}
                 </a>

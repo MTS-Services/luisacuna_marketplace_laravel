@@ -6,25 +6,30 @@
                 {{ __('Seller List') }}
             </h2>
             <div class="flex items-center gap-2 w-full sm:w-auto">
-                 <x-ui.button href="{{ route('admin.um.user.seller-trash')}}" variant='tertiary' class="w-auto py-2!">
+                <x-ui.button href="{{ route('admin.um.user.seller-trash') }}" variant='tertiary' class="w-auto py-2!">
                     <flux:icon name="trash"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
                     {{ __('Trash') }}
-                     </x-ui.button>
+                </x-ui.button>
 
-                 <x-ui.button href="{{ route('admin.um.user.create')}}" class="w-auto py-2!">
+                <x-ui.button href="{{ route('admin.um.user.create') }}" class="w-auto py-2!">
                     <flux:icon name="user-plus"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                     {{ __('Add') }}
                 </x-ui.button>
 
-                
+
             </div>
         </div>
     </div>
 
     {{-- Table Component --}}
 
-    <x-ui.table :data="$datas" :columns="$columns" :actions="$actions" :selectedIds="$selectedIds" :mobileVisibleColumns="2" searchProperty="search" perPageProperty="perPage"
-        :showBulkActions="true" emptyMessage="No sellers found. Create your first seller to get started." />
+    <x-ui.table :data="$datas" :columns="$columns" :actions="$actions" :selectedIds="$selectedIds" :mobileVisibleColumns="2"
+        searchProperty="search" perPageProperty="perPage" :showBulkActions="true"
+        emptyMessage="No sellers found. Create your first seller to get started." />
+
+    {{-- Delete Confirmation Modal --}}
+    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this Seller?'" :message="'Are you absolutely sure you want to remove this Seller? All associated data will be permanently deleted.'" :method="'delete'"
+        :button-text="'Delete Seller'" />
 </section>
