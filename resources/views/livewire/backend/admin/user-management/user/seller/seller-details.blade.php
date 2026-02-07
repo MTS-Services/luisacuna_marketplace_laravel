@@ -6,7 +6,7 @@
                 {{ __('Seller Verification Details') }}
             </h2>
             <div class="flex items-center gap-2">
-                <x-ui.button href="{{ route('admin.um.user.pending-verification') }}" class="w-auto! py-2!">
+                <x-ui.button href="{{ route('admin.um.user.all-seller') }}" class="w-auto! py-2!">
                     <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
                     {{ __('Back') }}
                 </x-ui.button>

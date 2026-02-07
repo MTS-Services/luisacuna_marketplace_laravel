@@ -68,7 +68,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         $this->commonQuery($query, $status, $layout, $trashed);
         if ($search) {
             return $query->search($search)
-                ->filter($filters)
+                // ->filter($filters)
                 ->orderBy($sortField, $sortDirection)
                 ->paginate($perPage);
         }

@@ -83,6 +83,11 @@ class AllSeller extends Component
                     return $data->user_id;
                 }
             ],
+            [
+                'key' => 'id',
+                'label' => 'Delete',
+                'method' => 'confirmDelete'
+            ],
         ];
         return view('livewire.backend.admin.user-management.user.seller.all-seller', [
             'datas' => $datas,
@@ -109,5 +114,28 @@ class AllSeller extends Component
             'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
         ];
+    }
+
+    public function confirmDelete($userId): void
+    {
+        $this->deleteUserId = $userId;
+        $this->showDeleteModal = true;
+    }
+
+    public function delete(): void
+    {
+        try {
+            if (!$this->deleteUserId) {
+                return;
+            }
+            $this->service->deleteData($this->deleteUserId);
+
+            $this->showDeleteModal = false;
+            $this->deleteUserId = null;
+
+            $this->success('User deleted successfully');
+        } catch (\Exception $e) {
+            $this->error('Failed to delete User: ' . $e->getMessage());
+        }
     }
 }
