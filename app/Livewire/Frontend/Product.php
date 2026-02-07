@@ -39,7 +39,6 @@ class Product extends Component
 
         $games = $this->getGames();
 
-       
         $category = $this->categoryService->findData($this->categorySlug, 'slug');
 
         $this->paginationData($games);
@@ -83,6 +82,7 @@ class Product extends Component
                 'category' => $this->categorySlug,
                 'relations' => ['tags', 'categories'],
                 'withProductCount' => true,
+                'hasProduct' => true,
                 'search' => $this->search,
                 'status' => GameStatus::ACTIVE,
             ];
