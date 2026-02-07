@@ -295,10 +295,10 @@
                                 {{ __('Cancel') }}
                             </x-ui.button>
                             <button type="submit"
-                                class="w-full md:w-auto py-2 px-6 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl transition-colors duration-200"
+                                class="w-full md:w-auto py-2 px-6 bg-purple-600 hover:bg-purple-700  font-semibold rounded-xl transition-colors duration-200"
                                 wire:loading.attr="disabled" wire:loading.class="opacity-50 cursor-not-allowed">
-                                <span wire:loading.remove>{{ __('Submit Request') }}</span>
-                                <span wire:loading>{{ __('Processing...') }}</span>
+                                <span wire:loading.remove class="text-white">{{ __('Submit Request') }}</span>
+                                <span wire:loading class="text-white">{{ __('Processing...') }}</span>
                             </button>
                         </div>
                     </div>
