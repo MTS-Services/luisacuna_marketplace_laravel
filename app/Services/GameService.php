@@ -83,7 +83,7 @@ class GameService
         // // Normal Eloquent Query
         return $this->model->query()
             ->filter($filters)
-            ->with(['categories', 'gameTranslations' => function ($query) {
+            ->with(['categories', 'products',  'gameTranslations' => function ($query) {
                 $query->where('language_id', get_language_id());
             }])
             ->orderBy($sortField, $sortDirection)

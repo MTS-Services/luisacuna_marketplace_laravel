@@ -222,6 +222,17 @@ class Game extends AuditBaseModel implements Auditable
             });
         });
 
+        //Only get game who has prouducts
+
+        $query->when($filters['hasProduct'] ?? null, function (Builder $query) {
+            $query->whereHas('products');
+        });
+        // Get Only Active 
+
+        $query->when($filters['stats'] ?? null, function (Builder $query, $status) {
+            $query->where('status', $status);
+        });
+
         return $query;
     }
 
