@@ -3,8 +3,19 @@
         {{-- breadcrumb --}}
         <div class="flex gap-4 items-center py-10">
             <x-phosphor name="less-than" variant="regular" class="w-4 h-4 text-zinc-400" />
-            <h2 class="text-text-white text-base">
-                {{ __('All Orders') }}
+            @if ($isVisitSeller)
+                <a wire:navigate href="{{ route('user.order.sold-orders') }}"
+                    class="text-text-white text-base">
+                    {{ __('All Orders') }}
+                </a>
+            @else
+                <a wire:navigate href="{{ route('user.order.purchased-orders') }}"
+                    class="text-text-white text-base">
+                    {{ __('All Orders') }}
+                </a>
+            @endif
+            {{-- <h2 class="text-text-white text-base">
+                {{ __('All Orders') }} --}}
 
             </h2>
         </div>
@@ -12,8 +23,8 @@
             <div class="flex gap-5">
                 <div>
                     <div class="w-10 h-10 md:w-16 md:h-16">
-                        <img src="{{ storage_url($order?->source?->game?->logo) }}" alt="{{ $order?->source?->game?->name }}"
-                            class="rounded" />
+                        <img src="{{ storage_url($order?->source?->game?->logo) }}"
+                            alt="{{ $order?->source?->game?->name }}" class="rounded" />
                     </div>
                 </div>
                 <div>
@@ -32,27 +43,24 @@
                         class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!">
                         {{ __('Cancel') }}
                     </x-ui.button>
-                  @else
-                 
-                   @if(!$hasDispute)
-                    <x-ui.button 
-                        wire:click="{{ $order->is_disputed ? '' : '$set(\'showDisputeModal\', true)' }}"
-                        class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!"
-                        >
-                        {{ __('Dispute') }}
-                     </x-ui.button>
-                    @else 
-                    
-                        <x-ui.button class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none! opacity-50! cursor-not-allowed!">
+                @else
+                    @if (!$hasDispute)
+                        <x-ui.button wire:click="{{ $order->is_disputed ? '' : '$set(\'showDisputeModal\', true)' }}"
+                            class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!">
+                            {{ __('Dispute') }}
+                        </x-ui.button>
+                    @else
+                        <x-ui.button
+                            class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none! opacity-50! cursor-not-allowed!">
                             {{ __('Disputed') }}
                         </x-ui.button>
                     @endif
-                
+
                 @endif
 
             </div>
         </div>
-        
+
         <div class="block lg:flex gap-6 justify-between items-start">
             <div class="w-full lg:w-2/3">
                 <div class=" bg-bg-secondary p-4 sm:p-10 rounded-2xl">
@@ -71,9 +79,10 @@
                             {{ $order->notes ?? __('No notes') }}</p>
                     </div>
                     <div class="mt-7">
-                        <h2 class="text-text-white text-base sm:text-2xl font-semibold"> {{ __('Order Disputed') }}</h2>
+                        <h2 class="text-text-white text-base sm:text-2xl font-semibold"> {{ __('Order Disputed') }}
+                        </h2>
                         <p class="text-text-white text-base font-normal mt-3">
-                            {{ $order?->disputes?->reason}}
+                            {{ $order?->disputes?->reason }}
                         </p>
                     </div>
                 </div>
@@ -285,11 +294,11 @@
                     </div>
                     <div class="flex w-full md:w-auto justify-center items-center mt-10!">
 
-                        <x-ui.button class="w-fit! py-3! px-6!"
+                        <x-ui.button class="w-fit! py-3! px-6!" wire:navigate
                             href="{{ route('user.order.detail', ['orderId' => $order->order_id]) }}">
                             {{ __('View full description') }}
                             <x-phosphor-arrow-right-light
-                                class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" /></x-ui.button>
+                                class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-primary" /></x-ui.button>
                     </div>
                 </div>
             </div>
@@ -298,47 +307,34 @@
     <div class="pb-10"></div>
 
     {{-- Dispute Modal --}}
-    <div 
-        x-data="{ show: @entangle('showDisputeModal') }"
-        x-show="show"
-        x-cloak
-        class="fixed inset-0 z-50 overflow-y-auto"
+    <div x-data="{ show: @entangle('showDisputeModal') }" x-show="show" x-cloak class="fixed inset-0 z-50 overflow-y-auto"
         @keydown.escape.window="show = false">
-        
+
         {{-- Overlay/Shadow --}}
-      {{-- Overlay/Shadow --}}
-    <div 
-        x-show="show"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0"
-        @click="show = false"
-        class="fixed inset-0 bg-bg-primary/50 backdrop-blur-sm" {{-- Added backdrop-blur-sm and changed opacity syntax --}}
-    >
-    </div>
+        {{-- Overlay/Shadow --}}
+        <div x-show="show" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0" @click="show = false"
+            class="fixed inset-0 bg-bg-primary/50 backdrop-blur-sm" {{-- Added backdrop-blur-sm and changed opacity syntax --}}>
+        </div>
 
         {{-- Modal Content --}}
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div 
-                x-show="show"
-                x-transition:enter="transition ease-out duration-300"
+            <div x-show="show" x-transition:enter="transition ease-out duration-300"
                 x-transition:enter-start="opacity-0 transform scale-95"
                 x-transition:enter-end="opacity-100 transform scale-100"
                 x-transition:leave="transition ease-in duration-200"
                 x-transition:leave-start="opacity-100 transform scale-100"
-                x-transition:leave-end="opacity-0 transform scale-95"
-                @click.stop
+                x-transition:leave-end="opacity-0 transform scale-95" @click.stop
                 class="relative bg-bg-secondary rounded-lg shadow-xl w-full sm:max-w-md lg:max-w-xl">
-                
+
                 {{-- Close Button --}}
-                <button 
-                    @click="show = false"
+                <button @click="show = false"
                     class="absolute top-4 right-4 text-zinc-400 hover:text-text-white transition">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
 
@@ -354,9 +350,7 @@
                         <label class="block text-text-white font-medium mb-2">
                             {{ __('Dispute Reason') }}
                         </label>
-                        <textarea 
-                            wire:model="disputeReason"
-                            rows="2"
+                        <textarea wire:model="disputeReason" rows="2"
                             class="w-full bg-bg-info text-text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
                             placeholder="{{ __('Explain why you are opening a dispute...') }}"></textarea>
                         @error('disputeReason')
@@ -368,18 +362,14 @@
                 {{-- Modal Footer --}}
                 <div class="p-6 flex justify-end gap-3">
                     {{-- Cancel Button --}}
-                    <x-ui.button 
-                        class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!"
-                        @click="show = false"
-                    >
+                    <x-ui.button class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!"
+                        @click="show = false">
                         {{ __('Cancel') }}
                     </x-ui.button>
-                    
+
                     {{-- Submit Dispute Button --}}
-                    <x-ui.button 
-                        wire:click="submitDispute"
-                         class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!"
-                    >
+                    <x-ui.button wire:click="submitDispute"
+                        class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!">
                         {{ __('Submit Dispute') }}
                     </x-ui.button>
                 </div>
@@ -388,8 +378,8 @@
     </div>
 
     <style>
-        [x-cloak] { 
-            display: none !important; 
+        [x-cloak] {
+            display: none !important;
         }
     </style>
 </section>
