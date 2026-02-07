@@ -27,5 +27,8 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::twoFactorChallengeView(function () {
             return view('frontend.auth.user.two-factor-challenge');
         });
+
+
+        // Only 2FA challenge view - Use your existing login      
     }
 }
