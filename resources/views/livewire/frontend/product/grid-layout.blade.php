@@ -200,10 +200,20 @@
                 <!-- Recommendation -->
                 <div class="gap-3 justify-end hidden md:flex">
 
-                    <button
-                        class="px-4 py-2 border border-green text-green rounded-full text-sm hover:bg-green hover:text-white transition">{{ __('● Online Seller') }}
+
+                    <button wire:click="toggleOnlineFilter" type="button"
+                        class="px-4 py-2 border rounded-full text-sm transition whitespace-nowrap
+                        {{ $onlineOnly
+                            ? 'bg-green-500 text-white border-green-500'
+                            : 'border-green-500 text-green-500 hover:bg-green-500 hover:text-white' }}">
+                        <span
+                            class="inline-block w-2 h-2 rounded-full mr-2 
+                                {{ $onlineOnly ? 'bg-white' : 'bg-green-500' }}"></span>
+                        {{ __('Online Seller') }}
+                        @if ($onlineOnly)
+                            <span class="ml-1 text-xs"></span>
+                        @endif
                     </button>
-                
                     <div class="hidden md:flex w-56!">
                         <x-ui.custom-select wireModel="sortDirection" :wireLive="true" :label="__('Highest to Lowest')"
                             class="w-full rounded-full! bg-transparent! border! border-zinc-700!">

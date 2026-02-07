@@ -26,26 +26,62 @@ class ProductService
         return $this->model->where($column_name, $column_value)->first();
     }
 
+    // public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    // {
+
+    //     $search = $filters['search'] ?? null;
+    //     $sortField = $filters['sort_field'] ?? 'created_at';
+    //     $sortDirection = $filters['sort_direction'] ?? 'desc';
+
+    //     if ($search) {
+    //         // Scout Search
+    //         return Product::search($search)
+    //             ->query(
+    //                 fn($query) => $query
+    //                     ->with(['game', 'platform', 'product_configs'])
+    //                     ->filter($filters)
+    //                     ->orderBy($sortField, $sortDirection)
+    //             )
+    //             ->paginate($perPage);
+    //     }
+    //     return $this->model->query()
+    //         ->filter($filters)
+    //         ->orderBy($sortField, $sortDirection)
+    //         ->paginate($perPage);
+    // }
+
     public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-
         $search = $filters['search'] ?? null;
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
         if ($search) {
-            // Scout Search
+            // Scout Search with online filter
             return Product::search($search)
                 ->query(
                     fn($query) => $query
-                        ->with(['game', 'platform', 'product_configs'])
+                        ->with(['game', 'platform', 'product_configs', 'user'])
                         ->filter($filters)
+                        ->when(isset($filters['online_only']) && $filters['online_only'], function ($q) {
+                            $q->whereHas('user', function ($query) {
+                                $query->where('last_seen_at', '>=', now()->subMinutes(1));
+                            });
+                        })
                         ->orderBy($sortField, $sortDirection)
                 )
                 ->paginate($perPage);
         }
+
+        // Normal query with online filter
         return $this->model->query()
+            ->with(['game', 'platform', 'product_configs', 'user'])
             ->filter($filters)
+            ->when(isset($filters['online_only']) && $filters['online_only'], function ($q) {
+                $q->whereHas('user', function ($query) {
+                    $query->where('last_seen_at', '>=', now()->subMinutes(5));
+                });
+            })
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
     }
@@ -103,6 +139,12 @@ class ProductService
                 $sub->selectRaw('MAX(id)')
                     ->from('products')
                     ->groupBy('user_id');
+            })
+            // Online filter
+            ->when(isset($filters['online_only']) && $filters['online_only'], function ($q) {
+                $q->whereHas('user', function ($query) {
+                    $query->where('last_seen_at', '>=', now()->subMinutes(1));
+                });
             })
             ->filter($filters)
             ->when(!isset($filters['positive_reviews']), function ($q) use ($filters) {
