@@ -222,6 +222,12 @@ class Game extends AuditBaseModel implements Auditable
             });
         });
 
+        // Get Only Active 
+
+        $query->when($filters['stats'] ?? null, function (Builder $query, $status) {
+            $query->where('status', $status);
+        });
+
         return $query;
     }
 
