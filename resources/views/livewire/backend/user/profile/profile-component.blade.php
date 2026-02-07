@@ -16,10 +16,12 @@
                                 <img src="{{ auth_storage_url($user?->avatar) }}" alt="{{ $user->name }}"
                                     class="h-full w-full rounded-full border-2 border-text-white" />
                             </div>
+                            @if($user->isVerifiedSeller())
                             <div class="absolute -right-5 top-7 sm:-right-3 sm:top-20 w-10 h-10 sm:w-12 sm:h-12">
                                 <img src="{{ asset('assets/images/user_profile/Frame 1261153813.png') }}" alt=""
                                     class="w-full h-full rounded-full">
                             </div>
+                            @endif
                         </div>
 
                     </div>

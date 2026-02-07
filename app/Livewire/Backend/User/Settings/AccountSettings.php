@@ -104,6 +104,7 @@ class AccountSettings extends Component
             $validatedData = $this->form->validate();
             if ($validatedData['email'] !== user()->email) {
                 $validatedData['email_verified_at'] = null;
+                $validatedData['is_avatar_bio_verified'] = false;
             }
 
             if (empty($validatedData['date_of_birth'])) {
@@ -115,11 +116,15 @@ class AccountSettings extends Component
            $data = $this->service->updateData(user()->id, $validatedData);
 
            if($data) {
+          
             $description = $validatedData['description'];
             $this->service->dataUpdatePoints('avatar', $description);
+           
            }
+           Log::info('Description Changed', ['description' => $description]);
             $this->success(__('Profile updated successfully!'));
             $this->dispatch('profile-updated');
+
         } catch (\Illuminate\Validation\ValidationException $e) {
             logger()->error('Validation Error:', [
                 'errors' => $e->errors(),
