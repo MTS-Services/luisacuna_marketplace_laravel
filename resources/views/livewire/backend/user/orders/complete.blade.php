@@ -79,7 +79,7 @@
                             {{ $order->notes ?? __('No notes') }}</p>
                     </div>
                     <div class="mt-7">
-                        <h2 class="text-text-white text-base sm:text-2xl font-semibold"> {{ __('Order Disputed') }}
+                        <h2 class="text-text-white text-base sm:text-2xl font-semibold"> {{ $order->status->label() }}
                         </h2>
                         <p class="text-text-white text-base font-normal mt-3">
                             {{ $order?->disputes?->reason }}
