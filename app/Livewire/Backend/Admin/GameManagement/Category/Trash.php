@@ -103,11 +103,10 @@ class Trash extends Component
         ];
 
         // $category = GameCategory::onlyTrashed()->get();
-        $datas = $this->service->getPaginatedData(
+        $datas = $this->service->getTrashedPaginateDatas(
 
             perPage: $this->perPage,
             filters: $this->getFilters(),
-            trashed: true
         );
         return view('livewire.backend.admin.game-management.category.trash', [
             'datas' => $datas,

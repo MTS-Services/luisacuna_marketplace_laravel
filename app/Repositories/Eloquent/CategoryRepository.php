@@ -79,6 +79,25 @@ class CategoryRepository implements CategoryRepositoryInterface
             ->paginate($perPage);
     }
 
+    public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        $query = $this->model->query();
+
+        $query = $this->model->onlyTrashed();
+
+        // Apply filters
+        if (!empty($filters)) {
+            $query->filter($filters);
+        }
+
+        // Apply sorting
+        $sortField = $filters['sort_field'] ?? 'created_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+        $query->orderBy($sortField, $sortDirection);
+
+        return $query->paginate($perPage);
+    }
+
     public function searchData(string $query, string $sortField, $order, $status, $layout, $trashed): Collection
     {
         $query = $this->model->query();

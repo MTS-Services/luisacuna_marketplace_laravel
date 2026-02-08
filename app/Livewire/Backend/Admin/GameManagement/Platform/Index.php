@@ -78,13 +78,6 @@ class Index extends Component
                     return $data->creater_admin?->name ?? 'System';
                 }
             ],
-            [
-                'key' => 'restored_by',
-                'label' => 'Restored By',
-                'format' => function ($data) {
-                    return $data->restorer_admin?->name ?? 'N/A';
-                }
-            ],
         ];
 
         $actions = [
