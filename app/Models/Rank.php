@@ -102,12 +102,14 @@ class Rank extends AuditBaseModel implements Auditable
      |  Scout Search Configuration
      ================================================================ */
 
-    #[SearchUsingPrefix(['id', 'name',])]
+    #[SearchUsingPrefix(['id', 'name', 'minimum_points', 'maximum_points'])]
     public function toSearchableArray(): array
     {
         return [
             'name' => $this->name,
             'status' => $this->status,
+            'minimum_points' => $this->minimum_points,
+            'maximum_points' => $this->maximum_points,
         ];
     }
 
