@@ -76,24 +76,44 @@ class RankRepository implements RankRepositoryInterface
     /**
      * Paginate only trashed records with optional search.
      */
+    // public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    // {
+    //     $search = $filters['search'] ?? null;
+    //     $sortField = $filters['sort_field'] ?? 'deleted_at';
+    //     $sortDirection = $filters['sort_direction'] ?? 'desc';
+
+    //     if ($search) {
+    //         // 👇 Manually filter trashed + search
+    //         return Rank::search($search)
+    //             ->onlyTrashed()
+    //             ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+    //             ->paginate($perPage);
+    //     }
+
+    //     return $this->model->onlyTrashed()
+    //         ->filter($filters)
+    //         ->orderBy($sortField, $sortDirection)
+    //         ->paginate($perPage);
+    // }
+
+
     public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         $search = $filters['search'] ?? null;
         $sortField = $filters['sort_field'] ?? 'deleted_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
+        $query = $this->model->onlyTrashed()->filter($filters);
+
         if ($search) {
-            // 👇 Manually filter trashed + search
-            return Rank::search($search)
-                ->onlyTrashed()
-                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
-                ->paginate($perPage);
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('minimum_points', 'like', "%{$search}%")
+                    ->orWhere('maximum_points', 'like', "%{$search}%");
+            });
         }
 
-        return $this->model->onlyTrashed()
-            ->filter($filters)
-            ->orderBy($sortField, $sortDirection)
-            ->paginate($perPage);
+        return $query->orderBy($sortField, $sortDirection)->paginate($perPage);
     }
 
     public function exists(int $id): bool
