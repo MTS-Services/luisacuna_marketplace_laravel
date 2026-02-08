@@ -2,7 +2,7 @@
     @if ($data)
         <div class="bg-main rounded-3xl p-3 sm:p-6 md:p-10 w-full shadow-2xl">
 
-            <div class="flex items-center justify-between mb-8 border-b border-zinc-800 pb-5">
+            <div class="flex items-center justify-between mb-8 border-b border-primary-200 dark:border-zinc-800 pb-5">
                 <div>
                     <h2 class="text-text-white text-2xl md:text-3xl font-bold tracking-tight">
                         {{ __('Order Detail') }}
@@ -18,13 +18,13 @@
                 </x-ui.button>
             </div>
 
-            <div class="glass-card rounded-2xl p-2 sm:p-6 md:p-8 bg-white/5 border border-zinc-800">
+            <div class="glass-card rounded-2xl p-2 sm:p-6 md:p-8 bg-white/5 border border-primary-200 dark:border-zinc-800">
                 <div class="flex flex-col lg:flex-row gap-8">
 
                     <div class="flex-1 flex flex-col md:flex-row gap-4 sm:gap-6">
                         <div class="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 flex-shrink-0 mx-auto md:mx-0">
                             <img src="{{ storage_url($data?->source?->game?->logo) }}" alt="{{ $data?->source?->name }}"
-                                class="w-full h-full object-cover rounded-full border border-zinc-800 shadow-lg">
+                                class="w-full h-full object-cover rounded-full border border-primary-200 dark:border-zinc-800 shadow-lg">
                         </div>
 
                         <div class="flex-1 space-y-4">
@@ -33,34 +33,34 @@
                                 {{ __('Order Info') }}
                             </h3>
                             <div class="grid grid-cols-1 gap-y-3">
-                                <div class="flex justify-between items-start border-b border-zinc-800 pb-2">
+                                <div class="flex justify-between items-start border-b border-primary-200 dark:border-zinc-800 pb-2">
                                     <span class="text-text-muted text-sm">{{ __('Order ID: ') }}</span>
                                     <span
                                         class="text-text-white font-medium text-right break-all ml-4 text-sm uppercase">{{ $data->order_id }}</span>
                                 </div>
-                                <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
+                                <div class="flex justify-between items-center border-b border-primary-200 dark:border-zinc-800 pb-2">
                                     <span class="text-text-muted text-sm">{{ __('Product: ') }}</span>
                                     <span class="text-text-white font-medium">{{ $data?->source?->name }}</span>
                                 </div>
-                                <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
+                                <div class="flex justify-between items-center border-b border-primary-200 dark:border-zinc-800 pb-2">
                                     <span class="text-text-muted text-sm">{{ __('Purchased at: ') }}</span>
                                     <span class="text-text-white font-medium">{{ $data->created_at_formatted }}</span>
                                 </div>
-                                <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
+                                <div class="flex justify-between items-center border-b border-primary-200 dark:border-zinc-800 pb-2">
                                     <span class="text-text-muted text-sm">{{ __('Status: ') }}</span>
                                     <span
                                         class="text-text-white font-medium badge badge-soft {{ $data->status->color() }}">{{ $data->status->label() }}</span>
                                 </div>
-                                {{-- <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
+                                {{-- <div class="flex justify-between items-center border-b border-primary-200 dark:border-zinc-800 pb-2">
                                     <span class="text-text-muted text-sm">{{ __('Currency: ') }}</span>
                                     <span class="text-text-white font-medium">{{ $data->currency }}</span>
                                 </div> --}}
-                                <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
+                                <div class="flex justify-between items-center border-b border-primary-200 dark:border-zinc-800 pb-2">
                                     <span class="text-text-muted text-sm">{{ __('Default Price: ') }} </span>
                                     <span class="text-text-white font-medium">{{ ($data->default_currency ) }}</span>
                                 </div>
 
-                                <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
+                                <div class="flex justify-between items-center border-b border-primary-200 dark:border-zinc-800 pb-2">
                                     <span class="text-text-muted text-sm">{{ __('Display Currency: ') }}</span>
                                     <span class="text-text-white font-medium">{{ $data->display_currency }}</span>
                                 </div>
@@ -74,10 +74,10 @@
 
                     <div class="flex-1">
                         <h3
-                            class="text-text-white text-xl font-semibold mb-4 border-l-4 border-zinc-800 pl-3 leading-none">
+                            class="text-text-white text-xl font-semibold mb-4 border-l-4 border-primary-200 dark:border-zinc-800 pl-3 leading-none">
                             {{ __('Transaction History') }}
                         </h3>
-                        <div class="overflow-hidden border border-zinc-800 rounded-xl bg-main">
+                        <div class="overflow-hidden border border-primary-200 dark:border-zinc-800 rounded-xl bg-main">
                             <table class="w-full text-sm text-left">
                                 <thead class="bg-card text-text-white uppercase text-xs">
                                     <tr>
@@ -114,7 +114,7 @@
                 </div>
             </div>
             <div
-                class="glass-card rounded-2xl p-6 mt-8 bg-zinc-900/40 border border-zinc-800 shadow-sm relative overflow-hidden group hover:border-zinc-700 transition-all duration-300">
+                class="glass-card rounded-2xl p-6 mt-8 bg-zinc-900/40 border border-primary-200 dark:border-zinc-800 shadow-sm relative overflow-hidden group hover:border-zinc-700 transition-all duration-300">
                 <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center gap-3">
                         <div class="p-2 rounded-lg">
@@ -187,7 +187,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                <div class="glass-card p-6 bg-main border border-zinc-800 rounded-2xl">
+                <div class="glass-card p-6 bg-main border border-primary-200 dark:border-zinc-800 rounded-2xl">
                     <h3 class="text-text-white text-lg font-semibold mb-6 flex items-center gap-2">
                         <span class="w-2 h-2 bg-zinc-500 rounded-full"></span>
                         {{ __('Seller Details') }}
@@ -222,7 +222,7 @@
                     @endif
                 </div>
 
-                <div class="glass-card p-6 bg-main border border-zinc-800 rounded-2xl">
+                <div class="glass-card p-6 bg-main border border-primary-200 dark:border-zinc-800 rounded-2xl">
                     <h3 class="text-text-white text-lg font-semibold mb-6 flex items-center gap-2">
                         <span class="w-2 h-2 bg-zinc-500 rounded-full"></span>
                         {{ __('Buyer Details') }}
@@ -259,7 +259,7 @@
             </div>
             {{-- @dd($data->is_disputed); --}}
             @if ($data->is_disputed)
-                <div class="glass-card rounded-2xl p-6 sm:p-8 bg-white/5 border border-zinc-800 mt-8">
+                <div class="glass-card rounded-2xl p-6 sm:p-8 bg-white/5 border border-primary-200 dark:border-zinc-800 mt-8">
                     <div
                         class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 border-b border-zinc-800 pb-6 gap-4">
                         <div class="flex items-center gap-4">
@@ -303,7 +303,7 @@
                                     <span class="w-1.5 h-4 bg-zinc-700 rounded-full"></span>
                                     {{ __('Buyer Claim') }}
                                 </h3>
-                                <div class="bg-main border border-zinc-800 rounded-2xl p-5 md:p-7">
+                                <div class="bg-main border border-primary-200 dark:border-zinc-800 rounded-2xl p-5 md:p-7">
                                     <p class="text-text-muted text-sm leading-relaxed italic">
                                         "{{ $data->dispute_reason ?? __('No specific reason provided by the buyer.') }}"
                                     </p>
@@ -320,14 +320,14 @@
 
                         <div class="lg:col-span-1">
                             <div
-                                class="bg-main border border-zinc-800 rounded-2xl p-6 h-full flex flex-col justify-center">
+                                class="bg-main border border-primary-200 dark:border-zinc-800 rounded-2xl p-6 h-full flex flex-col justify-center">
                                 <h3 class="text-text-white text-center text-sm font-semibold mb-6">
                                     {{ __('Resolution Center') }}
                                 </h3>
 
                                 <div class="space-y-4">
                                     <button
-                                        class="w-full group flex flex-col items-center justify-center gap-1 px-6 py-4 rounded-xl border border-zinc-800 hover:bg-white/5 transition-all">
+                                        class="w-full group flex flex-col items-center justify-center gap-1 px-6 py-4 rounded-xl border border-primary-200 dark:border-zinc-800 hover:bg-white/5 transition-all">
                                         <span
                                             class="text-text-white font-bold text-sm">{{ __('Accept Dispute') }}</span>
                                         <span
@@ -342,7 +342,7 @@
                                     </div>
 
                                     <button
-                                        class="w-full group flex flex-col items-center justify-center gap-1 px-6 py-4 rounded-xl border border-zinc-800 hover:bg-white/5 transition-all">
+                                        class="w-full group flex flex-col items-center justify-center gap-1 px-6 py-4 rounded-xl border border-primary-200 dark:border-zinc-800 hover:bg-white/5 transition-all">
                                         <span
                                             class="text-text-white font-bold text-sm">{{ __('Reject Dispute') }}</span>
                                         <span
