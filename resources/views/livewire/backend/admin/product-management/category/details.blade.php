@@ -26,7 +26,9 @@
                                 class="w-4 h-4 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
                             {{ __('Manage Translations') }}
                         </x-ui.button>
-                        <x-ui.button href="{{ url()->previous() !== url()->current() ? url()->previous() : route('admin.pm.category.index', $data->category->slug) }}" class="w-auto py-2! text-nowrap">
+                        <x-ui.button
+                            href="{{ url()->previous() !== url()->current() ? url()->previous() : route('admin.pm.category.index', $data->category->slug) }}"
+                            class="w-auto py-2! text-nowrap">
                             <flux:icon name="arrow-left"
                                 class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                             {{ __('Back') }}
@@ -76,7 +78,22 @@
                                     <div class="p-4 rounded-xl bg-main/50 border border-border">
                                         <label
                                             class="text-[10px] uppercase tracking-wider text-text-muted font-bold">{{ __('Stock') }}</label>
-                                        <p class="text-xl font-black text-text-primary">{{ $data->quantity }}</p>
+                                        {{-- <p class="text-xl font-black text-text-primary">{{ $data->quantity }}</p> --}}
+                                        <p class="text-xl font-black text-text-primary">
+                                            @php
+                                                $qty = $data->quantity;
+                                                if ($qty >= 1000000000) {
+                                                    $formattedQty = round($qty / 1000000000, 1) . 'B';
+                                                } elseif ($qty >= 1000000) {
+                                                    $formattedQty = round($qty / 1000000, 1) . 'M';
+                                                } elseif ($qty >= 1000) {
+                                                    $formattedQty = round($qty / 1000, 1) . 'K';
+                                                } else {
+                                                    $formattedQty = $qty;
+                                                }
+                                            @endphp
+                                            {{ $formattedQty }}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
