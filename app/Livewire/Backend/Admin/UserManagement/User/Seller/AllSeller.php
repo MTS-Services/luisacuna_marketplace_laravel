@@ -75,6 +75,12 @@ class AllSeller extends Component
                 'encrypt' => true,
             ],
             [
+                'key' => 'user.username',
+                'label' => 'View Account',
+                'route' => 'profile',
+                'target' => '_blank'
+            ],
+            [
                 'key' => 'user_id',
                 'label' => 'Feedbacks',
                 'route' => 'admin.um.user.feedback',
