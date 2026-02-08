@@ -16,11 +16,11 @@
                                 <img src="{{ auth_storage_url($user?->avatar) }}" alt="{{ $user->name }}"
                                     class="h-full w-full rounded-full border-2 border-text-white" />
                             </div>
-                            @if($user->isVerifiedSeller())
-                            <div class="absolute -right-5 top-7 sm:-right-3 sm:top-20 w-10 h-10 sm:w-12 sm:h-12">
-                                <img src="{{ asset('assets/images/user_profile/Frame 1261153813.png') }}" alt=""
-                                    class="w-full h-full rounded-full">
-                            </div>
+                            @if ($user->isVerifiedSeller())
+                                <div class="absolute -right-5 top-7 sm:-right-3 sm:top-20 w-10 h-10 sm:w-12 sm:h-12">
+                                    <img src="{{ asset('assets/images/user_profile/Frame 1261153813.png') }}"
+                                        alt="" class="w-full h-full rounded-full">
+                                </div>
                             @endif
                         </div>
 
@@ -35,9 +35,13 @@
                         </div>
                         <div class="flex items-center gap-2 mb-0 sm:mb-2">
                             <x-phosphor name="thumbs-up" variant="solid" class="fill-zinc-700 w-5 h-5" />
-                            <span class="text-text-white font-normal text-xs">{{ feedback_calculate($positiveFeedbacksCount, $negativeFeedbacksCount) }} %</span>
+                            <span
+                                class="text-text-white font-normal text-xs">{{ feedback_calculate($positiveFeedbacksCount, $negativeFeedbacksCount) }}
+                                %</span>
                             <span class="text-text-white font-normal text-xs">|</span>
-                        <span class="text-text-white font-normal text-xs">{{ $user?->feedbacksReceived?->count() ?? 0 }} {{ __('Reviews') }}</span>
+                            <span
+                                class="text-text-white font-normal text-xs">{{ $user?->feedbacksReceived?->count() ?? 0 }}
+                                {{ __('Reviews') }}</span>
                         </div>
                         <div class="flex items-center">
                             @if ($user->isOnline())
@@ -51,14 +55,15 @@
 
                     </div>
                 </div>
-                @auth
+                @if (user()->id === $user->id)
                     <div class="icon">
                         <a href="{{ route('user.account-settings') }}" wire:navigate>
                             <x-flux::icon name="pencil-square" class="w-6 h-6 inline-block stroke-text-text-white"
                                 stroke="currentColor" />
                         </a>
                     </div>
-                @endauth
+                @endif
+
 
             </div>
             <div class="border-b border-zinc-700 mt-6 mb-4"></div>

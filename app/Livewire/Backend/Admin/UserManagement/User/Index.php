@@ -82,6 +82,12 @@ class Index extends Component
                 'route' => 'admin.um.user.profileInfo'
             ],
             [
+                'key' => 'username',
+                'label' => 'View Account',
+                'route' => 'profile',
+                'target' => '_blank'
+            ],
+            [
                 'key' => 'id',
                 'label' => 'Edit',
                 'route' => 'admin.um.user.edit'

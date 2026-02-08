@@ -14,7 +14,6 @@
 
         <!-- Password Change Modal -->
         @if ($showModal)
-
             <div class="fixed inset-0 dark:bg-bg-primary bg-black/50 flex items-center justify-center z-50 P-5"
                 @click.self="$wire.closeModal()">
                 <div class="dark:bg-bg-secondary bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl m-2"
@@ -65,8 +64,8 @@
                         <div class="w-full">
                             <x-ui.label value="{{ __('New password:') }}"
                                 class="text-base! font-semibold! mb-3! text-text-white!" />
-                            <x-ui.input type="password" placeholder="{{ __('Enter new password') }}" wire:model="form.password"
-                                class="border-0! bg-bg-info!  placeholder:text-text-white" />
+                            <x-ui.input type="password" placeholder="{{ __('Enter new password') }}"
+                                wire:model="form.password" class="border-0! bg-bg-info!  placeholder:text-text-white" />
                             <x-ui.input-error :messages="$errors->get('form.password')" />
                         </div>
 
@@ -88,8 +87,12 @@
 
                             <!-- Uppercase Letter -->
                             <div class="flex items-center gap-2">
-                                <x-phosphor name="check" variant="regular"
-                                    x-bind:class="hasUppercase ? 'w-4 h-4 text-green-500' : 'w-4 h-4 text-zinc-500'" />
+                                {{-- <x-phosphor name="check" variant="regular"
+                                    x-bind:class="hasUppercase ? 'w-4 h-4 text-green-500' : 'w-4 h-4 text-zinc-500'" /> --}}
+                                <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500"
+                                    x-show="!hasLowercase" />
+                                <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500"
+                                    x-show="hasLowercase" x-cloak />
                                 <p class="text-xs font-normal"
                                     x-bind:class="hasUppercase ? 'text-green-500' : 'text-text-white'">
                                     {{ __('Password must contain an uppercase letter') }}
@@ -99,9 +102,9 @@
                             <!-- Number -->
                             <div class="flex items-center gap-2">
                                 <x-phosphor name="x" variant="regular" class="w-4 h-4 text-pink-500"
-                                    x-show="!hasUppercase" />
+                                    x-show="!hasNumber" />
                                 <x-phosphor name="check" variant="regular" class="w-4 h-4 text-zinc-500"
-                                    x-show="hasUppercase" x-cloak />
+                                    x-show="hasNumber" x-cloak />
                                 <p class="text-xs font-normal"
                                     x-bind:class="hasNumber ? 'text-green-500' : 'text-text-white'">
                                     {{ __('Password must contain a number') }}
@@ -146,7 +149,8 @@
                         <!-- Action Buttons -->
                         <div class="flex items-center justify-start gap-4 mt-6">
                             <x-ui.button wire:click="changePassword" class="w-fit! py-2!">
-                                <span wire:loading.remove wire:target="changePassword" class="text-white group-hover:text-black">
+                                <span wire:loading.remove wire:target="changePassword"
+                                    class="text-white group-hover:text-black">
                                     {{ __('Change password') }}
                                 </span>
                                 <span wire:loading wire:target="changePassword">
