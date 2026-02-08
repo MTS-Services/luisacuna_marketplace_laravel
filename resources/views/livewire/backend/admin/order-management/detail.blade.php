@@ -51,9 +51,18 @@
                                     <span
                                         class="text-text-white font-medium badge badge-soft {{ $data->status->color() }}">{{ $data->status->label() }}</span>
                                 </div>
-                                <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
+                                {{-- <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
                                     <span class="text-text-muted text-sm">{{ __('Currency: ') }}</span>
                                     <span class="text-text-white font-medium">{{ $data->currency }}</span>
+                                </div> --}}
+                                <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
+                                    <span class="text-text-muted text-sm">{{ __('Default Price: ') }} </span>
+                                    <span class="text-text-white font-medium">{{ ($data->default_currency ) }}</span>
+                                </div>
+
+                                <div class="flex justify-between items-center border-b border-zinc-800 pb-2">
+                                    <span class="text-text-muted text-sm">{{ __('Display Currency: ') }}</span>
+                                    <span class="text-text-white font-medium">{{ $data->display_currency }}</span>
                                 </div>
                                 <div class="flex justify-between items-center">
                                     <span class="text-text-muted text-sm">{{ __('Total Amount: ') }}</span>
@@ -148,7 +157,8 @@
                                         class="w-full h-full rounded-full ring-2 ring-white/10 object-cover">
                                 </div>
                                 <div>
-                                    <a href="{{ route('profile',  $feedback->author?->username) }}" class="text-text-white text-sm font-semibold leading-none mb-1" target="_blank">
+                                    <a href="{{ route('profile', $feedback->author?->username) }}"
+                                        class="text-text-white text-sm font-semibold leading-none mb-1" target="_blank">
                                         {{ $feedback->author?->full_name }}
                                     </a>
                                 </div>

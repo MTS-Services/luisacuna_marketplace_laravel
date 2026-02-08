@@ -4,6 +4,7 @@ namespace App\Livewire\Backend\Admin\UserManagement\User;
 
 use Livewire\Component;
 use App\Enums\UserAccountStatus;
+use App\Enums\UserType;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
@@ -60,13 +61,13 @@ class BannedUser extends Component
                 'sortable' => true
             ],
             [
-                'key' => 'account_status',
-                'label' => 'Status',
+                'key' => 'user_type',
+                'label' => 'User Type',
                 'sortable' => true,
                 'format' => function ($user) {
                     return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium '
-                        . $user->account_status_color . '">'
-                        . $user->account_status_label .
+                        . $user->user_type_color . '">'
+                        . $user->user_type_label .
                         '</span>';
                 }
             ],
@@ -101,7 +102,7 @@ class BannedUser extends Component
         return view('livewire.backend.admin.user-management.user.banned-user', [
             'datas' => $users,
             'columns' => $columns,
-            'statuses' => UserAccountStatus::options(),
+            'types' => UserType::options(),
             'actions' => $actions,
             'bulkActions' => $bulkActions,
 

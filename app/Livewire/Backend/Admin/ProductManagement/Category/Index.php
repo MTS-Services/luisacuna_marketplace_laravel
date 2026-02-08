@@ -20,6 +20,7 @@ class Index extends Component
     public $categoryFilter = null;
     public $categorySlug = null;
     // public $categorySlug;
+    public $bulkAction = null;
 
 
 
@@ -62,6 +63,11 @@ class Index extends Component
                 </div>'
             ],
             [
+                'key' => 'name',
+                'label' => 'Product Title',
+                'sortable' => true,
+            ],
+            [
                 'key' => 'username',
                 'label' => 'Name',
                 'sortable' => true,
@@ -75,6 +81,19 @@ class Index extends Component
                 'key' => 'quantity',
                 'label' => 'Quantity',
                 'sortable' => true,
+                'format' => function ($item) {
+                    $qty = $item->quantity;
+
+                    if ($qty >= 1000000000) {
+                        return round($qty / 1000000000, 1) . 'B';
+                    } elseif ($qty >= 1000000) {
+                        return round($qty / 1000000, 1) . 'M';
+                    } elseif ($qty >= 1000) {
+                        return round($qty / 1000, 1) . 'K';
+                    }
+
+                    return $qty;
+                },
             ],
             [
                 'key' => 'grand_total',
