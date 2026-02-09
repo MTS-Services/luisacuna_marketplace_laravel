@@ -243,6 +243,10 @@ class GameService
         $game = $this->findData(value: $id, column: 'id', withTrashed: true);
         if (!$game) return false;
 
+        if ($game->hasRelatedData()) {
+            return false;
+        }
+
         if ($force) {
             return $game->forceDelete();
         }
